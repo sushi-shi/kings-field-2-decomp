@@ -252,11 +252,11 @@ class InventoryTests(unittest.TestCase):
         # Initial SLPS-00069 seed: every carveable non-vendored function has a
         # (candidate) identity row; update these counts with each admission.
         counts = validate(RETAIL_CONFIG)
-        self.assertEqual(counts["functions"], 529)
-        self.assertEqual(counts["signatures_started"], 529)
+        self.assertEqual(counts["functions"], 533)
+        self.assertEqual(counts["signatures_started"], 533)
         self.assertEqual(counts["data"], 3306)
-        self.assertGreaterEqual(counts["functions_named"], 62)
-        self.assertEqual(counts["structures"], 0)
+        self.assertGreaterEqual(counts["functions_named"], 87)
+        self.assertEqual(counts["structures"], 2)
 
     def test_static_signature_hint_tracks_live_arguments_and_result(self) -> None:
         parameters, result, shape = _signature_hints(words(

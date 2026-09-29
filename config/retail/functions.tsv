@@ -41,6 +41,7 @@ GAME.EXE	0x800148cc	0x40cc	0x13c	0x13c	1	function	ghidra-analysis			Ghidra-12.0.
 GAME.EXE	0x80014a08	0x4208	0xb8	0xb8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80014ac0	0x42c0	0x4c	0x4c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80014b0c	0x430c	0x224	0x224	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80014d30	0x4530	0xe4	0xe4	1	function	mips-frame-carve			manual:math	bounded by the preceding jr ra delay slot and the next start
 GAME.EXE	0x80014e14	0x4614	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80014e84	0x4684	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80014ef4	0x46f4	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -50,6 +51,9 @@ GAME.EXE	0x80015034	0x4834	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/
 GAME.EXE	0x80015104	0x4904	0x44	0x44	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80015148	0x4948	0x40	0x40	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80015188	0x4988	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x800151e4	0x49e4	0x40	0x40	1	function	mips-frame-carve			manual:math	bounded by the preceding jr ra delay slot and the next start
+GAME.EXE	0x80015224	0x4a24	0x5c	0x5c	1	function	mips-frame-carve			manual:math	bounded by the preceding jr ra delay slot and the next start
+GAME.EXE	0x80015280	0x4a80	0x2c	0x2c	1	function	mips-frame-carve			manual:math	bounded by the preceding jr ra delay slot and the next start
 GAME.EXE	0x800152ac	0x4aac	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800152e8	0x4ae8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800152f8	0x4af8	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

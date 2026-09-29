@@ -1,3 +1,5 @@
 # MANUALLY MANAGED - target C layouts used by semantic function/data identities.
 # A supported layout proves current size/offset modeling, not an original typedef spelling.
 name	size	layout_confidence	evidence	note
+KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
+KfVecXZi	0x08	supported	lib/math.h;asm;angle_to_forward_xz;vector3i_add_xz	two signed horizontal word coordinates

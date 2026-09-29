@@ -80,6 +80,18 @@ source = "src/psx/main.c"
 profile = "probe-gcc257-o2-plain-g8"
 
 [[unit]]
+unit = "game.matrix_rotation"
+image = "GAME.EXE"
+source = "src/game/matrix_rotation.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.vector_math"
+image = "GAME.EXE"
+source = "src/game/vector_math.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.resource_copy"
 image = "GAME.EXE"
 source = "src/game/resource_copy.c"

@@ -16,6 +16,9 @@ extern int printf(const char *format, ...);
 extern void exit(int status);
 extern char *strcpy(char *destination, const char *source);
 extern char *strcat(char *destination, const char *source);
+/* LIBC exports abs, but Psy-Q 3.0 comments its CONVERT.H declaration out and
+ * ABS.H's macro is unparenthesized. GCC expands this prototype as its builtin. */
+extern int abs(int value);
 
 #if defined(__cplusplus)
 extern void *memcpy(void *destination, const void *source, unsigned long size);

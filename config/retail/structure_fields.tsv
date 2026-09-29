@@ -1,3 +1,8 @@
 # MANUALLY MANAGED - exact target offsets/extents for every field in structures.tsv.
 # opaque means the byte range is modeled for layout but has no supported semantic meaning yet.
 structure	offset	size	name	datatype	meaning_confidence	evidence	note
+KfEulerAngles	0x00	0x02	x	s16	supported	lib/math.h;asm;xrefs	x angle
+KfEulerAngles	0x02	0x02	y	s16	supported	lib/math.h;asm;xrefs	y angle
+KfEulerAngles	0x04	0x02	z	s16	supported	lib/math.h;asm;xrefs	z angle
+KfVecXZi	0x00	0x04	x	s32	supported	lib/math.h;asm;angle_to_forward_xz	x coordinate
+KfVecXZi	0x04	0x04	z	s32	supported	lib/math.h;asm;angle_to_forward_xz	z coordinate

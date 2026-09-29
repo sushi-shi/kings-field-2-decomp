@@ -1,0 +1,3 @@
+image	va	name	section	evidence
+PSX.EXE	0x80010260	overlay_index	.sdata	retail layout: follows the 2MBYTE.OBJ .data words after overlay_path_table;native-gcc257-aspsx107-G8
+PSX.EXE	0x80010264	overlay_next_request	.sdata	retail layout: follows the 2MBYTE.OBJ .data words after overlay_path_table;native-gcc257-aspsx107-G8

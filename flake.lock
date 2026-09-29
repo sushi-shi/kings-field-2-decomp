@@ -1,0 +1,83 @@
+{
+  "nodes": {
+    "ghidra-psx-loader-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783552612,
+        "narHash": "sha256-/8S16vOfCj2bQcrO8rRWqAGVhdNHI6DhRNFTu9RP4PI=",
+        "ref": "refs/heads/master",
+        "rev": "85d9efaf5693418979152c2298f776734824035b",
+        "revCount": 285,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/lab313ru/ghidra_psx_ldr.git"
+      },
+      "original": {
+        "rev": "85d9efaf5693418979152c2298f776734824035b",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/lab313ru/ghidra_psx_ldr.git"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1779560665,
+        "narHash": "sha256-tpyBcxPpcQb8ukyNF7DoCwfSY3VPsxHoYwj00Cayv5o=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "64c08a7ca051951c8eae34e3e3cb1e202fe36786",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "64c08a7ca051951c8eae34e3e3cb1e202fe36786",
+        "type": "github"
+      }
+    },
+    "objdiff-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783665201,
+        "narHash": "sha256-2Rzoj8JXv9MOGRHWiIodaBbP8ID+8RFJFuB3hzrodh8=",
+        "owner": "encounter",
+        "repo": "objdiff",
+        "rev": "6bcac60df8bb0b4de5b1cb98b033bdedb9ac6aa4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "encounter",
+        "repo": "objdiff",
+        "rev": "6bcac60df8bb0b4de5b1cb98b033bdedb9ac6aa4",
+        "type": "github"
+      }
+    },
+    "psy-k-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766124917,
+        "narHash": "sha256-CcqfcSKMX88za+ImWMGLcXz4LtGspLxHI9uC1mUgSuk=",
+        "owner": "ttkb-oss",
+        "repo": "psy-k",
+        "rev": "e25c309c48cf5a1ae133e092f661fb874cc0f47f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ttkb-oss",
+        "repo": "psy-k",
+        "rev": "e25c309c48cf5a1ae133e092f661fb874cc0f47f",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ghidra-psx-loader-src": "ghidra-psx-loader-src",
+        "nixpkgs": "nixpkgs",
+        "objdiff-src": "objdiff-src",
+        "psy-k-src": "psy-k-src"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

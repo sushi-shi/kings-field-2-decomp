@@ -1,0 +1,5 @@
+# MANUALLY REVIEWED - native comparison-view referents; never linker inputs.
+# Offsets are bytes from the named native function. Every row requires an existing
+# LUI/signed-low patch pair and an unchanged section-relative target address.
+# Retail referent evidence remains independently curated in retail/relocs.tsv.
+image	function	site_offset	paired_site_offset	owner	addend	provenance

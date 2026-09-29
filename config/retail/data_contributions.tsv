@@ -1,0 +1,4 @@
+# Independently supplied complete config-owned data sections; never game-function progress.
+# VA, size and linkage come from the named image-local data identity, not duplicated claims.
+# Alignment is in bytes; LNK v2 raw tag 8 means four bytes under PSYLINK 1.17.
+image	unit	identity	provider	library	member	section	alignment	object_sha256	evidence

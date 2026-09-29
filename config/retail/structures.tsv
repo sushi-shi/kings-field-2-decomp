@@ -1,0 +1,3 @@
+# MANUALLY MANAGED - target C layouts used by semantic function/data identities.
+# A supported layout proves current size/offset modeling, not an original typedef spelling.
+name	size	layout_confidence	evidence	note

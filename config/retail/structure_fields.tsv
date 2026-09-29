@@ -1,0 +1,3 @@
+# MANUALLY MANAGED - exact target offsets/extents for every field in structures.tsv.
+# opaque means the byte range is modeled for layout but has no supported semantic meaning yet.
+structure	offset	size	name	datatype	meaning_confidence	evidence	note

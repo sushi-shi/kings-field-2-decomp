@@ -1,0 +1,172 @@
+# Explicit reconstruction build units. Compiler profiles are named probes until
+# the historical compiler and flags are proven.
+
+[profiles.probe-gcc260-o2-g0]
+language = "c"
+compiler = "gcc260-native"
+optimization = "O2"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = []
+
+# GCC 2.5.7 probe. Its text epilogue (`lw $31; nop; j $31; addu $sp`), load
+# hoisting above the frame allocation, and -O2 schedule reproduce retail forms
+# that the 2.6.0 probe cannot emit. Native ASPSX supplies the checked
+# div/rem expansion (`break 7`/`break 6`) that retail contains. Still a probe.
+# `-mcpu=r3000` selects the R3000 scheduling model explicitly: the rebuilt
+# cc1 reports Cpu 3000 but schedules with the generic latencies unless the
+# flag is passed, and the explicit model reproduces retail's argument setup
+# and load placement (ten additional exact units, no regressions).
+[profiles.probe-gcc257-o2-g0]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = ["-mcpu=r2000"]
+
+# Initialized small-data probe; native actor code remains identical to G0.
+[profiles.probe-gcc257-o2-g8]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 8
+aspsx_version = "1.07"
+cc1_flags = ["-mcpu=r2000"]
+
+[profiles.probe-gcc257-o2-plain]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = []
+
+# Native private-small-BSS probe for the SDK PAD verification sources.
+[profiles.probe-gcc257-o2-plain-g8]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 8
+aspsx_version = "1.07"
+cc1_flags = []
+
+# Per-TU scheduling-model probes. `-mcpu=r2000` (the default g0) is a per-unit
+# discriminator, not a global truth: some TUs reach byte-exact only under a
+# different R3000A scheduling model. `-fno-schedule-insns` disables the cc1
+# instruction scheduler and reproduces retail's unscheduled load placement for
+# the units that were compiled that way. These remain probes.
+[profiles.probe-gcc257-o2-nosched]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = ["-mcpu=r2000", "-fno-schedule-insns"]
+
+[profiles.asm-r3000-g0]
+language = "assembly"
+compiler = "aspsx"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = []
+
+# Add one [[unit]] per reconstructed source, in linked (ascending address) order per image.
+
+[[unit]]
+unit = "psx.main"
+image = "PSX.EXE"
+source = "src/psx/main.c"
+profile = "probe-gcc257-o2-plain-g8"
+
+[[unit]]
+unit = "open.display_init"
+image = "OPEN.EXE"
+source = "src/lib/display_init.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_OPEN"]
+
+[[unit]]
+unit = "open.audio_init"
+image = "OPEN.EXE"
+source = "src/lib/audio_init.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_OPEN"]
+
+[[unit]]
+unit = "open.display_frame"
+image = "OPEN.EXE"
+source = "src/lib/display_frame.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_OPEN"]
+
+[[unit]]
+unit = "open.cd_file"
+image = "OPEN.EXE"
+source = "src/lib/cd_file.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_OPEN"]
+
+[[unit]]
+unit = "open.movie_stream"
+image = "OPEN.EXE"
+source = "src/lib/movie_stream.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["MOVIE_END_FRAME=1085"]
+
+[[unit]]
+unit = "end.main"
+image = "END.EXE"
+source = "src/end/main.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.display_init"
+image = "END.EXE"
+source = "src/lib/display_init.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.audio_init"
+image = "END.EXE"
+source = "src/lib/audio_init.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.audio"
+image = "END.EXE"
+source = "src/end/audio.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.display_frame"
+image = "END.EXE"
+source = "src/lib/display_frame.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.cd_file"
+image = "END.EXE"
+source = "src/lib/cd_file.c"
+profile = "probe-gcc257-o2-plain"
+bind = "name"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.movie"
+image = "END.EXE"
+source = "src/end/movie.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["KF_END"]
+
+[[unit]]
+unit = "end.movie_stream"
+image = "END.EXE"
+source = "src/lib/movie_stream.c"
+profile = "probe-gcc257-o2-plain"
+defines = ["MOVIE_END_FRAME=2136"]

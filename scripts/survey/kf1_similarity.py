@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Rank KF2 functions by instruction-shape similarity to reconstructed KF1 functions.
 
-Usage: kf1_similarity.py KF2_IMAGE [KF1_IMAGES...]  (default KF1 images: GAME.EXE OPEN.EXE)
+Usage: KF1_REPO=... KF1_RETAIL_DIR=... kf1_similarity.py KF2_IMAGE [KF1_IMAGES...]
+(default KF1 images: GAME.EXE OPEN.EXE). KF1_REPO is a King's Field (SLPS-00017)
+reconstruction checkout; KF1_RETAIL_DIR holds its verified retail executables.
 
 Each instruction becomes a token of opcode, funct and registers; j/jal
 targets, lui immediates and non-$sp immediates are masked, so address and
@@ -12,13 +14,14 @@ kf2_va, kf2_size, kf1_image, kf1_va, kf1_name, kf1_size, ratio, exact_shape.
 from __future__ import annotations
 
 import difflib
+import os
 import struct
 import sys
 from pathlib import Path
 
-KF1 = Path("/home/sheep/Projects/kings-field")
+KF1 = Path(os.environ["KF1_REPO"])
 KF2 = Path(__file__).resolve().parents[2]
-KF1_RETAIL = Path("/home/sheep/Projects/kings-field-investigation/extracted/kings-field-japan-retail/disc")
+KF1_RETAIL = Path(os.environ["KF1_RETAIL_DIR"])
 LOADS = {("kf1", "GAME.EXE"): 0x80012000, ("kf1", "OPEN.EXE"): 0x80012000,
          ("kf2", "GAME.EXE"): 0x80011000, ("kf2", "OPEN.EXE"): 0x80011000, ("kf2", "END.EXE"): 0x80011000}
 

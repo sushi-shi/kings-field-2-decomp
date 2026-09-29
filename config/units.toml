@@ -116,6 +116,12 @@ source = "src/game/vector_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.vector_distance"
+image = "GAME.EXE"
+source = "src/game/vector_distance.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.resource_copy"
 image = "GAME.EXE"
 source = "src/game/resource_copy.c"
@@ -161,6 +167,30 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.memory_card_wait"
 image = "GAME.EXE"
 source = "src/game/memory_card_wait.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_progress"
+image = "GAME.EXE"
+source = "src/game/player_progress.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_motion"
+image = "GAME.EXE"
+source = "src/game/player_motion.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_distance"
+image = "GAME.EXE"
+source = "src/game/player_distance.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_vitals"
+image = "GAME.EXE"
+source = "src/game/player_vitals.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

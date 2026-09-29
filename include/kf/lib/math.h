@@ -19,6 +19,13 @@ enum {
     KF_LENGTH_SQUARE_DOWNSHIFT = 3
 };
 
+/* vector_distance_to_point: a point_y of KF_DISTANCE_IGNORE_HEIGHT skips the
+ * vertical test; KF_DISTANCE_NONE reports a point out of range. */
+enum {
+    KF_DISTANCE_IGNORE_HEIGHT = 0xffff,
+    KF_DISTANCE_NONE = -1
+};
+
 /* Quarter turns about Y applied by matrix_rotate_quarter_turns and
  * svector_rotate_quarter_turns. */
 enum {
@@ -65,5 +72,19 @@ s32 angle_shortest_delta(s32 from, s32 to);
 s32 vector_xz_to_angle(s32 x, s32 z);
 s32 fixed_vector2_length(s32 x, s32 y);
 s32 fixed_vector3_length(s32 x, s32 y, s32 z);
+s32 vector_distance_to_point(
+    const VECTOR *position, s32 point_x, s32 point_y, s32 point_z,
+    s32 max_distance, s32 height, s32 point_height);
+
+static inline s16 angle_error_magnitude(s16 difference)
+{
+    s16 folded;
+    difference &= KF_ANGLE_WRAP_MASK;
+    folded = difference;
+    if (difference > KF_ANGLE_HALF_TURN) {
+        folded = KF_ANGLE_FULL_TURN - difference;
+    }
+    return folded;
+}
 
 #endif

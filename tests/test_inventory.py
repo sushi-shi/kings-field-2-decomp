@@ -254,9 +254,9 @@ class InventoryTests(unittest.TestCase):
         counts = validate(RETAIL_CONFIG)
         self.assertEqual(counts["functions"], 543)
         self.assertEqual(counts["signatures_started"], 543)
-        self.assertEqual(counts["data"], 3308)
+        self.assertEqual(counts["data"], 3310)
         self.assertGreaterEqual(counts["functions_named"], 147)
-        self.assertEqual(counts["structures"], 18)
+        self.assertEqual(counts["structures"], 21)
 
     def test_static_signature_hint_tracks_live_arguments_and_result(self) -> None:
         parameters, result, shape = _signature_hints(words(

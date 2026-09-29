@@ -61,6 +61,36 @@ KfNotificationControl	0x01	0x01	queue_head	u8	supported	game headers;asm;xrefs	m
 KfNotificationControl	0x02	0x01	effect_phase	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfNotificationControl	0x03	0x01	hold_frames	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfOrderingTable	0x00	0x8000	entries	u32[8192]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPlayerLevelGrowth	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerLevelGrowth	0x02	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerLevelGrowth	0x04	0x02	physical_power_step	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerLevelGrowth	0x06	0x02	magic_step	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerLevelGrowth	0x08	0x04	experience_threshold	u32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x00	0x04	experience	s32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x04	0x04	next_level_experience	s32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x08	0x01	level	u8	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x09	0x09	unknown_09	u8[9]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0x12	0x08	vitals	KfPlayerVitals	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x1a	0x06	unknown_1a	u8[6]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0x20	0x02	physical_power_training	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x22	0x02	magic_training	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x24	0x02	base_physical_power	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x26	0x02	base_magic	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x28	0xb0	unknown_28	u8[176]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0xd8	0x10	camera_position	VECTOR	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0xe8	0x42	unknown_e8	u8[66]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0x12a	0x02	strafe_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x12c	0x02	forward_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x12e	0x02	movement_speed	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x130	0x02	yaw_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x132	0x02	pitch_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerState	0x134	0x0c	unknown_134	u8[12]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0x140	0x02	unknown_140	u16	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerState	0x142	0x1e	unknown_142	u8[30]	opaque	asm;xrefs;KF1 player.h counterpart	not yet modelled
+KfPlayerVitals	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerVitals	0x02	0x02	current_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerVitals	0x04	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerVitals	0x06	0x02	current_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPoolRecord	0x00	0x02	state	s16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x02	0x02	asset_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x04	0x02	clip_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code

@@ -11,6 +11,9 @@ KfGraphicsRuntimeGame	0x17cf0	supported	game headers;asm;xrefs	layout from the r
 KfMemoryBlock	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfOrderingTable	0x8000	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfPlayerLevelGrowth	0x0c	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
+KfPlayerState	0x160	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
+KfPlayerVitals	0x08	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfRenderState	0x94	supported	game headers;asm;xrefs	layout from the reconstructed header

@@ -1,4 +1,5 @@
 /build/
+/tools/target/
 /compile_commands.json
 /.cache/clangd/
 /.direnv/

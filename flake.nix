@@ -575,6 +575,18 @@
         touch "$out"
       '';
 
+      codecTests = pkgs.runCommand "kings-field-codec-tests" {
+        nativeBuildInputs = [ pkgs.cargo pkgs.rustc pkgs.rustfmt pkgs.stdenv.cc ];
+      } ''
+        cp -r ${./tools} tools
+        chmod -R u+w tools
+        export CARGO_TARGET_DIR="$TMPDIR/cargo-target"
+        cargo fmt --manifest-path tools/Cargo.toml --all -- --check
+        cargo check --offline --manifest-path tools/Cargo.toml --lib
+        cargo test --offline --manifest-path tools/Cargo.toml
+        touch "$out"
+      '';
+
     in {
       packages.${system} = {
         gcc257Debug = gcc257Probe.debug;
@@ -604,6 +616,7 @@
         ghidra-psx-loader-discovery = ghidraPluginTests;
         retail-config = retailConfigTests;
         objdiff-mips = objdiffMipsTests;
+        codecs = codecTests;
         pcsx-redux = pcsxRedux;
       };
     };

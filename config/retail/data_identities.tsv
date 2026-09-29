@@ -2294,7 +2294,8 @@ GAME.EXE	0x8006d64c	0x4	DAT_8006d64c	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8006d650	0x4	DAT_8006d650	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d654	0x4	DAT_8006d654	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d658	0x4	DAT_8006d658	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d684	0x1	DAT_8006d684	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix
+GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1
 GAME.EXE	0x8006d68c	0x4	DAT_8006d68c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d690	0x4	DAT_8006d690	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2470,6 +2471,10 @@ GAME.EXE	0x8006dbf0	0x4	DAT_8006dbf0	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006dbf4	0x4	DAT_8006dbf4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbf8	0x4	DAT_8006dbf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbfc	0x4	DAT_8006dbfc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x801b5d6c	0x4	cd_error_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpERROR event handle
+GAME.EXE	0x801b5d70	0x4	cd_complete_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpCOMP event handle
+GAME.EXE	0x801b5d78	0x4	cd_data_ready_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpDR event handle
+GAME.EXE	0x801b6004	0x60	cd_archives	global	bss	KfCdArchive[8]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	open CD\\COM\\*.T archives by slot
 OPEN.EXE	0x800114e4	0x4	DAT_800114e4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114e8	0x4	DAT_800114e8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114ec	0x4	DAT_800114ec	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

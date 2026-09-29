@@ -35,14 +35,21 @@ from scripts.kf.sema.image import RetailImage
 
 RAM_BASE = 0x80000000
 RAM_SIZE = 0x200000
-CODE_BASE = 0x80100000
-CODE_END = 0x80140000
-RODATA_BASE = 0x80140000
-RODATA_END = 0x80170000
-HOOK_BASE = 0x80170000
-HOOK_END = 0x8017F000
-UNPATCHED_CODE_VA = 0x8017F000
-RETURN_VA = 0x8017FFF0
+# King's Field II GAME uses all 2 MiB: .bss ends at 0x801da018 and InitHeap
+# gives the heap everything up to 0x801f8000 below the stack. Candidate code,
+# relocated rodata, hook stubs and the return sentinel therefore live in a
+# harness-only window above RAM, where hardware would mirror RAM instead.
+HARNESS_BASE = 0x80200000
+HARNESS_SIZE = 0x80000
+MAPPED_SIZE = RAM_SIZE + HARNESS_SIZE
+CODE_BASE = 0x80200000
+CODE_END = 0x80240000
+RODATA_BASE = 0x80240000
+RODATA_END = 0x80270000
+HOOK_BASE = 0x80270000
+HOOK_END = 0x8027F000
+UNPATCHED_CODE_VA = 0x8027F000
+RETURN_VA = 0x8027FFF0
 DEFAULT_STACK_VA = 0x801FF000
 DEFAULT_INSTRUCTION_LIMIT = 20_000_000
 
@@ -916,7 +923,7 @@ def _unicorn_api():
 
 def _physical(address: int, size: int = 1) -> int:
     physical = address & 0x1FFFFFFF if address & 0x80000000 else address
-    if physical < 0 or size < 0 or physical + size > RAM_SIZE:
+    if physical < 0 or size < 0 or physical + size > MAPPED_SIZE:
         raise ParserMachineError(
             f"RAM access {address:#010x}+{size:#x} is outside mapped PSX RAM"
         )
@@ -1047,7 +1054,7 @@ class ParserMachine:
         self._uc = Uc(architecture, mode)
         # CPU accesses KSEG0 virtual addresses.  This Unicorn build aliases
         # them to physical RAM, while its host mapping/read/write API does not.
-        self._uc.mem_map(0, RAM_SIZE)
+        self._uc.mem_map(0, MAPPED_SIZE)
         load_image = self.retail.data[0x800:0x800 + self.retail.layout.load_size]
         self._write(self.retail.layout.load_address, load_image)
         for patch in self.program.patches:

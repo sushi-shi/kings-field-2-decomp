@@ -49,8 +49,8 @@ GAME.EXE	0x80011064	0x864	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghid
 GAME.EXE	0x80011068	0x868	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8001106c	0x86c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80011070	0x870	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80011074	0x874	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
-GAME.EXE	0x80011093	0x893	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
+GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011098	0x898	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8001109c	0x89c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x800110a0	0x8a0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -3925,9 +3925,10 @@ GAME.EXE	0x8006d650	0x5ce50	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.
 GAME.EXE	0x8006d654	0x5ce54	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d658	0x5ce58	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d65c	0x5ce5c	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d680	0x5ce80	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
-GAME.EXE	0x8006d684	0x5ce84	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d685	0x5ce85	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
+GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d68b	0x5ce8b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d690	0x5ce90	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d694	0x5ce94	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

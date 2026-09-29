@@ -64,8 +64,8 @@ GAME.EXE	0x80016820	func_80016820			unknown		address-only	candidate	mips-live-in
 GAME.EXE	0x80016ee0	func_80016ee0			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80016f10	func_80016f10			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80016f4c	func_80016f4c			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800171c8	func_800171c8			unknown	unknown *object;unknown *pointer1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800171f8	func_800171f8			unknown	unknown *object;unknown *pointer1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800171c8	resource_copy_words	resource	copy_words	const u32 *	u32 *destination;const u32 *source;u32 word_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x800171f8	resource_copy_halfwords	resource	copy_halfwords	const u16 *	u16 *destination;const u16 *source;u32 halfword_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80017228	func_80017228			unknown	unknown *object;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017270	func_80017270			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800172f4	func_800172f4			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
@@ -78,31 +78,34 @@ GAME.EXE	0x800176c0	func_800176c0			void	unknown arg0	address-only	candidate	mip
 GAME.EXE	0x800176e0	func_800176e0			void	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800176e8	func_800176e8			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017708	func_80017708			void	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001771c	func_8001771c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017754	func_80017754			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8001771c	memory_allocate_checked	memory	allocate_checked	void *	u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017754	memory_allocate	memory	allocate	void *	u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x8001777c	func_8001777c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8001779c	func_8001779c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017804	func_80017804			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017864	func_80017864			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017aa0	func_80017aa0			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017ac0	func_80017ac0			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017aec	func_80017aec			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017b6c	func_80017b6c			void	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017bf0	func_80017bf0			void	unknown arg0;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017c2c	func_80017c2c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80017aa0	cd_bcd_to_int	cd	bcd_to_int	s32	u8 bcd	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017ac0	cd_int_to_bcd	cd	int_to_bcd	u32	u8 value	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017aec	cd_location_to_sector	cd	location_to_sector	u32	CdlLOC *location	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017b6c	cd_sector_to_location	cd	sector_to_location	void	CdlLOC *location;u32 sector	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017bf0	cd_location_add	cd	location_add	void	CdlLOC *base;u32 sector_offset;CdlLOC *result	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80017c2c	cd_request_wait_idle	cd	request_wait_idle	void		supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80017ca8	func_80017ca8			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017d00	func_80017d00			unknown	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80017d00	cd_sectors_corrupt	cd	sectors_corrupt	s32	u32 *data;s32 sector_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80017d54	func_80017d54			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017e6c	func_80017e6c			unknown	unknown arg0;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017ef4	func_80017ef4			void	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017f9c	func_80017f9c			void	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017ff0	func_80017ff0			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800180b4	func_800180b4			unknown	unknown arg0;unknown *pointer1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800180f8	func_800180f8			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80018100	func_80018100			unknown	unknown *object;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80018298	func_80018298			unknown	unknown *object;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800182d0	func_800182d0			unknown	unknown arg0;unknown *pointer1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800184d0	func_800184d0			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800180b4	cd_archive_entry_size	cd_archive	entry_size	u32	u16 slot;u16 entry	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x800180f8	cd_report_error	cd	report_error	void	s32 code	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80018100	cd_read_sectors	cd	read_sectors	void	CdlLOC *location;u_long *destination;s32 sector_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80018240	cd_extent_load	cd_extent	load	u8 *	KfCdExtent *extent	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80018298	cd_extent_read_into	cd_extent	read_into	void	u_long *destination;KfCdExtent *extent;u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x800182d0	cd_archive_read	cd_archive	read	void	u16 slot;u16 entry;u_long *destination	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80018364	cd_file_load	cd_file	load	u8 *	const char *name	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x80018418	cd_file_load_into	cd_file	load_into	s32	u_long *destination;const char *name;u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
+GAME.EXE	0x800184d0	cd_archive_open	cd_archive	open	void	u16 slot;const char *name	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x800185c0	func_800185c0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800186fc	func_800186fc			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8001876c	func_8001876c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review

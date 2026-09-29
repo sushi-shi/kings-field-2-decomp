@@ -15,6 +15,7 @@ from scripts.kf.mips_elf import (
 )
 from scripts.kf.parser_machine import (
     CODE_BASE,
+    RETURN_VA,
     CandidateFunction,
     CandidateLinkError,
     CandidateProgram,
@@ -59,7 +60,7 @@ class ParserMachineTest(unittest.TestCase):
             "candidate",
         )
         machine = ParserMachine(synthetic_retail(b""), program)
-        # Use the low physical alias of a range spanning 0x80100000. This is
+        # Use the low physical alias of a range spanning CODE_BASE. This is
         # the shape of the oversized VB input that previously erased code.
         with self.assertRaisesRegex(ParserMachineError, "executable function 'root'"):
             machine.call(
@@ -542,7 +543,7 @@ class ParserMachineTest(unittest.TestCase):
             "root", [DATA_VA], memory=[MemoryInput(DATA_VA, bytes(4))]
         )
         self.assertEqual(result.v0, 0x44)
-        self.assertEqual(result.pc, 0x8017FFF0)
+        self.assertEqual(result.pc, RETURN_VA)
 
     def test_retail_cannot_fall_into_undeclared_function(self) -> None:
         target = LOAD_VA + 16

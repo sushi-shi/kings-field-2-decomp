@@ -13,6 +13,9 @@
 - [kf2-open-source-shapes.md](kf2-open-source-shapes.md): OPEN title-screen
   shapes (goto restart, chained RECT origin, in-place fade level) and the
   unattributed 24-byte `audio_play_voice` frame residue.
+- [kf2-game-cd-layer.md](kf2-game-cd-layer.md): GAME's `-mcpu=r2000`
+  profile evidence, the `.T` archive reader's source shapes, reviewed relocations
+  for uncalled loaders, and its two frame residues.
 
 Reusable, evidence-backed observations about the retail code generation and
 about which source shapes reproduce it under the current probes. Each note

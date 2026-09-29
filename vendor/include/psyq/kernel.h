@@ -20,6 +20,7 @@
 extern long OpenEvent(
     unsigned long descriptor, long spec, long mode, void (*handler)(void));
 extern long EnableEvent(long event);
+extern long DisableEvent(long event);
 extern long TestEvent(long event);
 extern long UnDeliverEvent(long event);
 extern long CloseEvent(long event);

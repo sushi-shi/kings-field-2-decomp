@@ -112,8 +112,11 @@ GAME.EXE	0x80017ff0	0x77f0	0xc4	0xc4	1	function	ghidra-analysis			Ghidra-12.0.4/
 GAME.EXE	0x800180b4	0x78b4	0x44	0x44	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800180f8	0x78f8	0x8	0x8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80018100	0x7900	0x140	0x140	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80018240	0x7a40	0x58	0x58	1	function	mips-frame-carve			manual:cd_archive	uncalled; bounded by the preceding jr ra delay slot and its frame prologue
 GAME.EXE	0x80018298	0x7a98	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800182d0	0x7ad0	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80018364	0x7b64	0xb4	0xb4	1	function	mips-frame-carve			manual:cd_archive	uncalled; bounded by the preceding jr ra delay slot and its frame prologue
+GAME.EXE	0x80018418	0x7c18	0xb8	0xb8	1	function	mips-frame-carve			manual:cd_archive	uncalled; bounded by the preceding jr ra delay slot and its frame prologue
 GAME.EXE	0x800184d0	0x7cd0	0xf0	0xf0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800185c0	0x7dc0	0x13c	0x13c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800186fc	0x7efc	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

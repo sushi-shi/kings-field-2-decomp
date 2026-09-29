@@ -23,8 +23,8 @@ extern KfDisplayBuffer display_buffers[2];
 extern KfDisplayBuffer *display_current;
 extern u8 display_primitives[2][KF_PRIMITIVE_BUFFER_BYTES];
 extern POLY_FT4 *current_poly_ft4;
-/* OPEN.EXE only: cleared at the start of each frame. */
-extern u8 primitive_allocation_count;
+/* OPEN.EXE only: darkening applied to committed quads; cleared per frame. */
+extern u8 display_fade_level;
 
 void display_initialize(void);
 void display_begin_frame(void);

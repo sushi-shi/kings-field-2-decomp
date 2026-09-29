@@ -80,6 +80,12 @@ source = "src/psx/main.c"
 profile = "probe-gcc257-o2-plain-g8"
 
 [[unit]]
+unit = "open.main"
+image = "OPEN.EXE"
+source = "src/open/main.c"
+profile = "probe-gcc257-o2-plain"
+
+[[unit]]
 unit = "open.display_init"
 image = "OPEN.EXE"
 source = "src/lib/display_init.c"
@@ -94,6 +100,18 @@ profile = "probe-gcc257-o2-plain"
 defines = ["KF_OPEN"]
 
 [[unit]]
+unit = "open.audio"
+image = "OPEN.EXE"
+source = "src/open/audio.c"
+profile = "probe-gcc257-o2-plain"
+
+[[unit]]
+unit = "open.title"
+image = "OPEN.EXE"
+source = "src/open/title.c"
+profile = "probe-gcc257-o2-plain"
+
+[[unit]]
 unit = "open.display_frame"
 image = "OPEN.EXE"
 source = "src/lib/display_frame.c"
@@ -106,6 +124,18 @@ image = "OPEN.EXE"
 source = "src/lib/cd_file.c"
 profile = "probe-gcc257-o2-plain"
 defines = ["KF_OPEN"]
+
+[[unit]]
+unit = "open.resources"
+image = "OPEN.EXE"
+source = "src/open/resources.c"
+profile = "probe-gcc257-o2-plain"
+
+[[unit]]
+unit = "open.movie"
+image = "OPEN.EXE"
+source = "src/open/movie.c"
+profile = "probe-gcc257-o2-plain"
 
 [[unit]]
 unit = "open.movie_stream"

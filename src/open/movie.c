@@ -1,0 +1,89 @@
+#include <kf/lib/address.h>
+#include <kf/open/opening.h>
+#include <kf/lib/audio.h>
+#include <kf/lib/display.h>
+#include <kf/lib/movie_stream.h>
+#include <psyq/libc.h>
+#include <psyq/pad.h>
+
+/* The opening STR runs to frame 1085; its music replaces the title music. */
+enum {
+    OPENING_LAST_FRAME = 1085,
+    OPENING_MASTER_VOLUME = 128,
+    OPENING_VOLUME_STEP = 2,
+    OPENING_SEQUENCE_VOLUME = 64,
+    /* Frames held after an unskipped movie before the music fades. */
+    OPENING_HOLD_FRAMES = 90
+};
+
+RODATA(0x80011000, 0x1f)
+
+/* The tutorial's anim(): decodes the opening movie at 320 pixels, stops when
+ * a button is pressed, then restores the 640-pixel title display. */
+ADDRESS(0x800134f0, 0x34c)
+void opening_play_movie(void)
+{
+    CdlFILE file;
+    u_char mode;
+    s32 volume;
+    s32 skipped = 0;
+
+    SsSeqStop(audio_title_sequence_id);
+    if (CdSearchFile(&file, "\\OP\\OP.S;1") == 0) {
+        printf("\n__ file not found");
+        return;
+    }
+    for (volume = 0; volume < OPENING_MASTER_VOLUME; volume += OPENING_VOLUME_STEP) {
+        VSync(0);
+        SsSetMVol(volume, volume);
+    }
+    SsSeqSetVol(audio_movie_sequence_id, OPENING_SEQUENCE_VOLUME, OPENING_SEQUENCE_VOLUME);
+    SsSeqPlay(audio_movie_sequence_id, SSPLAY_PLAY, 1);
+    strSetDefDecEnv();
+    strInit(&file.pos);
+    strNextVlc();
+    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 320, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[1].disp, 0, 0, 320, KF_DISPLAY_HEIGHT);
+    display_current = &display_buffers[0];
+    do {
+        display_begin_frame();
+        DecDCTin(dec.vlcbuf[dec.vlcid], 2);
+        DecDCTout((u_long *)dec.imgbuf, dec.slice.w * dec.slice.h / 2);
+        strNextVlc();
+        strSync(&dec);
+        display_present_frame();
+        if (Rewind_Switch == 1) {
+            break;
+        }
+        if (PadRead(1) != 0) {
+            skipped = 1;
+            while (PadRead(1) != 0) {
+            }
+            break;
+        }
+    } while (StrFrame < OPENING_LAST_FRAME);
+    if (!skipped) {
+        for (volume = 0; volume < OPENING_HOLD_FRAMES; volume++) {
+            VSync(0);
+        }
+    }
+    for (volume = OPENING_SEQUENCE_VOLUME; volume >= 0; volume--) {
+        VSync(0);
+        SsSeqSetVol(audio_movie_sequence_id, volume, volume);
+    }
+    SsSeqSetVol(audio_movie_sequence_id, 0, 0);
+    mode = CdlModeSpeed;
+    CdControlB(CdlSetmode, &mode, 0);
+    DecDCToutCallback(0);
+    CdDataCallback(0);
+    CdReadyCallback(0);
+    CdControlB(CdlPause, 0, 0);
+    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 640, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, 640, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, 640, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[1].disp, 0, 0, 640, KF_DISPLAY_HEIGHT);
+    display_current = &display_buffers[0];
+    SsSeqStop(audio_movie_sequence_id);
+}

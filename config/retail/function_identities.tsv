@@ -488,24 +488,24 @@ GAME.EXE	0x800489ac	func_800489ac			unknown	unknown *object	address-only	candida
 GAME.EXE	0x80048d24	func_80048d24			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800492dc	func_800492dc			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80058298	func_80058298			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80011ac0	func_80011ac0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80011f9c	func_80011f9c			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012060	func_80012060			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+OPEN.EXE	0x80011ac0	main			void		supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80011f9c	opening_fade_out	opening	fade_out	void	s32 prompt_mode	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80012060	opening_load_data	opening	load_data	void		supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
 OPEN.EXE	0x800120c8	display_initialize			unknown		supported	candidate	asm;cfg;callees;KF1 counterpart naming	initial static signature seed; requires call-site review
 OPEN.EXE	0x80012204	audio_initialize			void		supported	candidate	asm;cfg;callees;KF1 counterpart naming	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012270	func_80012270			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012560	func_80012560			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012b7c	func_80012b7c			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012d7c	func_80012d7c			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80012f3c	func_80012f3c			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x800130ac	func_800130ac			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x800130fc	func_800130fc			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+OPEN.EXE	0x80012270	opening_open_audio	opening	open_audio	void		supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80012560	opening_draw_title	opening	draw_title	s32	s32 mode	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80012b7c	opening_draw_banner	opening	draw_banner	s32	s32 mode	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80012d7c	opening_draw_prompt	opening	draw_prompt	void	s32 mode	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80012f3c	opening_poll_pad	opening	poll_pad	s32	s32 *prompt_mode;s32 *idle_frames	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x800130ac	primitive_buffer_begin_poly_ft4	primitive_buffer	begin_poly_ft4	void		supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x800130fc	primitive_buffer_commit_poly_ft4	primitive_buffer	commit_poly_ft4	void	s32 depth	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
 OPEN.EXE	0x800131c8	display_begin_frame			unknown		supported	candidate	asm;cfg;callees;KF1 counterpart naming	initial static signature seed; requires call-site review
 OPEN.EXE	0x8001322c	display_present_frame			void		supported	candidate	asm;cfg;callees;KF1 counterpart naming	initial static signature seed; requires call-site review
 OPEN.EXE	0x80013284	cd_file_load_into			unknown	unknown arg0	supported	candidate	asm;cfg;callees;KF1 counterpart naming	initial static signature seed; requires call-site review
-OPEN.EXE	0x800133e0	func_800133e0			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x80013450	func_80013450			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-OPEN.EXE	0x800134f0	func_800134f0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+OPEN.EXE	0x800133e0	tim_upload_images	tim	upload_images	void	u8 *tim_data	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x80013450	audio_play_voice	audio	play_voice	void	s16 vab_id;s16 program;s16 tone;s16 note;s16 left_volume;s16 right_volume	supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
+OPEN.EXE	0x800134f0	opening_play_movie	opening	play_movie	void		supported	candidate	asm;cfg;callers;callees;strings;KF1 counterpart naming	call sites reviewed while reconstructing OPEN.EXE
 OPEN.EXE	0x8001383c	strSetDefDecEnv			unknown		supported	candidate	asm;cfg;callees;Sony streaming movie tutorial (addons/cd/MOVIE/TUTO0.C) call structure	initial static signature seed; requires call-site review
 OPEN.EXE	0x800138f8	strInit			void	unknown arg0	supported	candidate	asm;cfg;callees;Sony streaming movie tutorial (addons/cd/MOVIE/TUTO0.C) call structure	initial static signature seed; requires call-site review
 OPEN.EXE	0x8001396c	strCallback			void		supported	candidate	asm;cfg;callees;Sony streaming movie tutorial (addons/cd/MOVIE/TUTO0.C) call structure	initial static signature seed; requires call-site review

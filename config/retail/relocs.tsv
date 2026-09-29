@@ -9489,18 +9489,28 @@ OPEN.EXE	0x80011afc	0x12fc		mips26	reachable-code	0x8001a458	load		jal		control-
 OPEN.EXE	0x80011b04	0x1304		mips26	reachable-code	0x8001da34	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011b0c	0x130c		mips26	reachable-code	0x80014284	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011b14	0x1314		mips26	reachable-code	0x80013f54	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b1c	0x131c	0x80011b20	mips_hi16_lo16	reachable-code	0x800a5ac8	bss	audio_vab_header	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b24	0x1324		mips26	reachable-code	0x80013f54	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b2c	0x132c	0x80011b30	mips_hi16_lo16	reachable-code	0x800a5a90	bss	audio_title_sequence_data	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b34	0x1334		mips26	reachable-code	0x80013f54	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b3c	0x133c	0x80011b40	mips_hi16_lo16	reachable-code	0x800a5a98	bss	audio_movie_sequence_data	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b44	0x1344		mips26	reachable-code	0x80012204	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011b4c	0x134c		mips26	reachable-code	0x80012060	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011b54	0x1354		mips26	reachable-code	0x800120c8	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b5c	0x135c	0x80011b60	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011b64	0x1364	0x80011b68	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b6c	0x136c		mips26	reachable-code	0x80015788	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b74	0x1374	0x80011b78	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b7c	0x137c		mips26	reachable-code	0x800158a8	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b88	0x1388	0x80011b8c	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011b90	0x1390		mips26	reachable-code	0x80015788	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011b98	0x1398	0x80011b9c	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011ba4	0x13a4		mips26	reachable-code	0x800158a8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011bac	0x13ac		mips26	reachable-code	0x80012270	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011bb8	0x13b8		mips26	reachable-code	0x8001f458	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011bc4	0x13c4	0x80011bc8	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011bd0	0x13d0		mips26	reachable-code	0x8001e3dc	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011bd8	0x13d8	0x80011bdc	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011be4	0x13e4		mips26	reachable-code	0x80025c70	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011bec	0x13ec		mips26	reachable-code	0x800131c8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011bfc	0x13fc		mips26	reachable-code	0x80012560	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -9515,12 +9525,12 @@ OPEN.EXE	0x80011c64	0x1464		mips26	reachable-code	0x800131c8	load		jal		control-
 OPEN.EXE	0x80011c6c	0x146c		mips26	reachable-code	0x80012560	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011c74	0x1474		mips26	reachable-code	0x80012b7c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011c80	0x1480		mips26	reachable-code	0x80012f3c	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80011c94	0x1494	0x80011c98	mips_hi16_lo16	reachable-code	0x8003db88	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011c94	0x1494	0x80011c98	mips_hi16_lo16	reachable-code	0x8003db88	load	overlay_next_request	lui+lw	v0	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011ca8	0x14a8		mips26	reachable-code	0x80011f9c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011cb0	0x14b0		mips26	reachable-code	0x80011d74	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011cc4	0x14c4		mips26	reachable-code	0x80011f9c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011ccc	0x14cc		mips26	reachable-code	0x800134f0	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80011cd4	0x14d4	0x80011cd8	mips_hi16_lo16	reachable-code	0x8003db88	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011cd4	0x14d4	0x80011cd8	mips_hi16_lo16	reachable-code	0x8003db88	load	overlay_next_request	lui+lw	v0	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011cdc	0x14dc		mips26	reachable-code	0x80011d6c	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011cfc	0x14fc		mips26	reachable-code	0x80011f9c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011d04	0x1504		mips26	reachable-code	0x80012560	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -9531,36 +9541,62 @@ OPEN.EXE	0x80011d48	0x1548		mips26	reachable-code	0x80011bb8	load		j		control-fl
 OPEN.EXE	0x80011d54	0x1554		mips26	reachable-code	0x80012d7c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011d5c	0x155c		mips26	reachable-code	0x8001322c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011d64	0x1564		mips26	reachable-code	0x80011c64	load		j		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011d74	0x1574	0x80011d78	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011d84	0x1584		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011d90	0x1590	0x80011d94	mips_hi16_lo16	reachable-code	0x800a74ac	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011da0	0x15a0		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011dac	0x15ac	0x80011db0	mips_hi16_lo16	reachable-code	0x800a6494	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011dbc	0x15bc		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011dc8	0x15c8	0x80011dcc	mips_hi16_lo16	reachable-code	0x800a7508	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011dd8	0x15d8		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011de4	0x15e4	0x80011de8	mips_hi16_lo16	reachable-code	0x800a74c4	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011dec	0x15ec	0x80011df0	mips_hi16_lo16	reachable-code	0x800a6450	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011dfc	0x15fc	0x80011e00	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011e04	0x1604		mips26	reachable-code	0x80015788	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011e0c	0x160c	0x80011e10	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011e1c	0x161c		mips26	reachable-code	0x800158a8	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011e28	0x1628	0x80011e2c	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011e30	0x1630		mips26	reachable-code	0x80015788	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011e38	0x1638	0x80011e3c	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011e48	0x1648		mips26	reachable-code	0x800158a8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011e50	0x1650		mips26	reachable-code	0x800131c8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011e58	0x1658		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011e6c	0x166c		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011e74	0x1674	0x80011e78	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011e84	0x1684	0x80011e88	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011ebc	0x16bc	0x80011ec0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011ecc	0x16cc	0x80011ed0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011edc	0x16dc	0x80011ee0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011eec	0x16ec	0x80011ef0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011efc	0x16fc	0x80011f00	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80011f0c	0x170c	0x80011f10	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011f18	0x1718		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011f20	0x1720		mips26	reachable-code	0x8001322c	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011f34	0x1734	0x80011f38	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011f3c	0x173c		mips26	reachable-code	0x80027070	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011f44	0x1744	0x80011f48	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011f4c	0x174c		mips26	reachable-code	0x80027070	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011f54	0x1754	0x80011f58	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011f5c	0x175c		mips26	reachable-code	0x80026f88	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011f64	0x1764		mips26	reachable-code	0x8001eb70	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011f6c	0x176c		mips26	reachable-code	0x8001dab4	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011f74	0x1774		mips26	reachable-code	0x80015144	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011fb4	0x17b4		mips26	reachable-code	0x800131c8	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80011fbc	0x17bc	0x80011fc0	mips_hi16_lo16	reachable-code	0x800ac540	bss	display_fade_level	lui+sb		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80011fc4	0x17c4		mips26	reachable-code	0x80012560	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011fcc	0x17cc		mips26	reachable-code	0x80012b7c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011fd4	0x17d4		mips26	reachable-code	0x80012d7c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80011fdc	0x17dc		mips26	reachable-code	0x8001322c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012008	0x1808		mips26	reachable-code	0x8001f458	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001201c	0x181c	0x80012020	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012024	0x1824		mips26	reachable-code	0x80025ec4	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001202c	0x182c	0x80012030	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012038	0x1838		mips26	reachable-code	0x8001e3dc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012044	0x1844		mips26	reachable-code	0x8001f458	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012074	0x1874		mips26	reachable-code	0x80013f54	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012094	0x1894	0x80012098	mips_hi16_lo16	reachable-code	0x8003db8c	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001207c	0x187c	0x80012080	mips_hi16_lo16	reachable-code	0x800a6410	bss	opening_data	lui+sw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001208c	0x188c	0x80012090	mips_hi16_lo16	reachable-code	0x800a6410	bss	opening_data	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012094	0x1894	0x80012098	mips_hi16_lo16	reachable-code	0x8003db8c	load	opening_data_file	lui+addiu	a1	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001209c	0x189c		mips26	reachable-code	0x80013284	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800120d4	0x18d4		mips26	reachable-code	0x80015144	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800120dc	0x18dc		mips26	reachable-code	0x800153e0	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -9568,24 +9604,24 @@ OPEN.EXE	0x800120e4	0x18e4		mips26	reachable-code	0x80019cf8	load		jal		control-
 OPEN.EXE	0x800120f0	0x18f0		mips26	reachable-code	0x80019b9c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800120f8	0x18f8		mips26	reachable-code	0x80019bb4	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012108	0x1908		mips26	reachable-code	0x80019ae8	load	SetBackColor	jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012114	0x1914	0x80012118	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012114	0x1914	0x80012118	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012124	0x1924		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012130	0x1930	0x80012134	mips_hi16_lo16	reachable-code	0x800a74ac	bss		lui+addiu		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012130	0x1930	0x80012134	mips_hi16_lo16	reachable-code	0x800a74ac	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012140	0x1940		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001214c	0x194c	0x80012150	mips_hi16_lo16	reachable-code	0x800a6494	bss		lui+addiu		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001214c	0x194c	0x80012150	mips_hi16_lo16	reachable-code	0x800a6494	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001215c	0x195c		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012168	0x1968	0x8001216c	mips_hi16_lo16	reachable-code	0x800a7508	bss		lui+addiu		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012168	0x1968	0x8001216c	mips_hi16_lo16	reachable-code	0x800a7508	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012178	0x1978		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012184	0x1984	0x80012188	mips_hi16_lo16	reachable-code	0x800a74c2	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001218c	0x198c	0x80012190	mips_hi16_lo16	reachable-code	0x800a644e	bss		lui+addiu		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012198	0x1998	0x8001219c	mips_hi16_lo16	reachable-code	0x800a74c4	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121a0	0x19a0	0x800121a4	mips_hi16_lo16	reachable-code	0x800a6450	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121a8	0x19a8	0x800121ac	mips_hi16_lo16	reachable-code	0x800a6451	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121b0	0x19b0	0x800121b4	mips_hi16_lo16	reachable-code	0x800a6452	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121b8	0x19b8	0x800121bc	mips_hi16_lo16	reachable-code	0x800a6453	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121c0	0x19c0	0x800121c4	mips_hi16_lo16	reachable-code	0x800a74c5	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121c8	0x19c8	0x800121cc	mips_hi16_lo16	reachable-code	0x800a74c6	bss		lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800121d0	0x19d0	0x800121d4	mips_hi16_lo16	reachable-code	0x800a74c7	bss		lui+sb		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012184	0x1984	0x80012188	mips_hi16_lo16	reachable-code	0x800a74c2	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001218c	0x198c	0x80012190	mips_hi16_lo16	reachable-code	0x800a644e	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012198	0x1998	0x8001219c	mips_hi16_lo16	reachable-code	0x800a74c4	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121a0	0x19a0	0x800121a4	mips_hi16_lo16	reachable-code	0x800a6450	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121a8	0x19a8	0x800121ac	mips_hi16_lo16	reachable-code	0x800a6451	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121b0	0x19b0	0x800121b4	mips_hi16_lo16	reachable-code	0x800a6452	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121b8	0x19b8	0x800121bc	mips_hi16_lo16	reachable-code	0x800a6453	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121c0	0x19c0	0x800121c4	mips_hi16_lo16	reachable-code	0x800a74c5	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121c8	0x19c8	0x800121cc	mips_hi16_lo16	reachable-code	0x800a74c6	bss		lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800121d0	0x19d0	0x800121d4	mips_hi16_lo16	reachable-code	0x800a74c7	bss		lui+sb		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800121d8	0x19d8		mips26	reachable-code	0x8001547c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800121e0	0x19e0	0x800121e4	mips_hi16_lo16	reachable-code	0x800a8540	bss	display_primitives	lui+addiu		paired-reviewed	reviewed	manual:display
 OPEN.EXE	0x8001220c	0x1a0c		mips26	reachable-code	0x8001e5d8	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -9597,198 +9633,214 @@ OPEN.EXE	0x80012238	0x1a38		mips26	reachable-code	0x8001eda8	load		jal		control-
 OPEN.EXE	0x80012244	0x1a44		mips26	reachable-code	0x8001ee58	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001224c	0x1a4c		mips26	reachable-code	0x8001eb50	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012258	0x1a58		mips26	reachable-code	0x8001f458	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012278	0x1a78	0x8001227c	mips_hi16_lo16	reachable-code	0x800a6410	bss	opening_data	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012284	0x1a84		mips26	reachable-code	0x800133e0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012294	0x1a94	0x80012298	mips_hi16_lo16	reachable-code	0x800a5ac8	bss	audio_vab_header	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012300	0x1b00		mips26	reachable-code	0x80012338	load		j		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012338	0x1b38	0x8001233c	mips_hi16_lo16	reachable-code	0x800a5ac8	bss	audio_vab_header	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012344	0x1b44		mips26	reachable-code	0x8001ef94	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001234c	0x1b4c	0x80012350	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+sh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012368	0x1b68		mips26	reachable-code	0x80022e3c	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012370	0x1b70	0x80012374	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012388	0x1b88		mips26	reachable-code	0x80025e9c	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012398	0x1b98	0x8001239c	mips_hi16_lo16	reachable-code	0x800a5a90	bss	audio_title_sequence_data	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012404	0x1c04		mips26	reachable-code	0x8001243c	load		j		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001243c	0x1c3c	0x80012440	mips_hi16_lo16	reachable-code	0x800a5a98	bss	audio_movie_sequence_data	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800124a4	0x1ca4		mips26	reachable-code	0x800124d8	load		j		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800124f8	0x1cf8	0x800124fc	mips_hi16_lo16	reachable-code	0x800a5a90	bss	audio_title_sequence_data	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012500	0x1d00	0x80012504	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012508	0x1d08		mips26	reachable-code	0x80022f0c	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012510	0x1d10	0x80012514	mips_hi16_lo16	reachable-code	0x800a5a98	bss	audio_movie_sequence_data	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012518	0x1d18	0x8001251c	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012520	0x1d20	0x80012524	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+sh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012528	0x1d28		mips26	reachable-code	0x80022f0c	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012530	0x1d30	0x80012534	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+sh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012538	0x1d38		mips26	reachable-code	0x800154bc	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012540	0x1d40	0x80012544	mips_hi16_lo16	reachable-code	0x800a6410	bss	opening_data	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012548	0x1d48		mips26	reachable-code	0x80014188	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800125a4	0x1da4	0x800125a8	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800125ac	0x1dac	0x800125b0	mips_hi16_lo16	reachable-code	0x8003db98	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800125a4	0x1da4	0x800125a8	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800125ac	0x1dac	0x800125b0	mips_hi16_lo16	reachable-code	0x8003db98	load	title_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800125b4	0x1db4		mips26	reachable-code	0x80012b4c	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800125bc	0x1dbc	0x800125c0	mips_hi16_lo16	reachable-code	0x8003db98	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800125c8	0x1dc8	0x800125cc	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800125bc	0x1dbc	0x800125c0	mips_hi16_lo16	reachable-code	0x8003db98	load	title_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800125c8	0x1dc8	0x800125cc	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800125d0	0x1dd0		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800125d8	0x1dd8	0x800125dc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800125e8	0x1de8	0x800125ec	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800125fc	0x1dfc	0x80012600	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x800125d8	0x1dd8	0x800125dc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800125e8	0x1de8	0x800125ec	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800125fc	0x1dfc	0x80012600	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001260c	0x1e0c		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012614	0x1e14	0x80012618	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012624	0x1e24	0x80012628	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001265c	0x1e5c	0x80012660	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001266c	0x1e6c	0x80012670	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001267c	0x1e7c	0x80012680	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001268c	0x1e8c	0x80012690	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001269c	0x1e9c	0x800126a0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800126ac	0x1eac	0x800126b0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012614	0x1e14	0x80012618	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012624	0x1e24	0x80012628	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001265c	0x1e5c	0x80012660	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001266c	0x1e6c	0x80012670	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001267c	0x1e7c	0x80012680	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001268c	0x1e8c	0x80012690	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001269c	0x1e9c	0x800126a0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800126ac	0x1eac	0x800126b0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800126b8	0x1eb8		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800126c0	0x1ec0	0x800126c4	mips_hi16_lo16	reachable-code	0x8003db98	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800126d4	0x1ed4	0x800126d8	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800126e4	0x1ee4	0x800126e8	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800126f8	0x1ef8	0x800126fc	mips_hi16_lo16	reachable-code	0x8003db98	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800126c0	0x1ec0	0x800126c4	mips_hi16_lo16	reachable-code	0x8003db98	load	title_phase	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800126d4	0x1ed4	0x800126d8	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800126e4	0x1ee4	0x800126e8	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800126f8	0x1ef8	0x800126fc	mips_hi16_lo16	reachable-code	0x8003db98	load	title_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012700	0x1f00		mips26	reachable-code	0x80012734	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012708	0x1f08	0x8001270c	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012720	0x1f20	0x80012724	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012708	0x1f08	0x8001270c	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+lw	v1	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012720	0x1f20	0x80012724	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012728	0x1f28		mips26	reachable-code	0x80012734	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012734	0x1f34		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012748	0x1f48		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012750	0x1f50	0x80012754	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012758	0x1f58	0x8001275c	mips_hi16_lo16	reachable-code	0x8003db94	load		lui+addiu	s0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012770	0x1f70	0x80012774	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012784	0x1f84	0x80012788	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012798	0x1f98	0x8001279c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800127a8	0x1fa8	0x800127ac	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800127dc	0x1fdc	0x800127e0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800127ec	0x1fec	0x800127f0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800127fc	0x1ffc	0x80012800	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001280c	0x200c	0x80012810	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001281c	0x201c	0x80012820	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001282c	0x202c	0x80012830	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012750	0x1f50	0x80012754	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012758	0x1f58	0x8001275c	mips_hi16_lo16	reachable-code	0x8003db94	load	title_level	lui+addiu	s0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012770	0x1f70	0x80012774	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012784	0x1f84	0x80012788	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012798	0x1f98	0x8001279c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800127a8	0x1fa8	0x800127ac	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800127dc	0x1fdc	0x800127e0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800127ec	0x1fec	0x800127f0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800127fc	0x1ffc	0x80012800	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001280c	0x200c	0x80012810	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001281c	0x201c	0x80012820	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001282c	0x202c	0x80012830	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012838	0x2038		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012840	0x2040		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012854	0x2054		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001285c	0x205c	0x80012860	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012878	0x2078	0x8001287c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001288c	0x208c	0x80012890	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800128a0	0x20a0	0x800128a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800128b0	0x20b0	0x800128b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800128dc	0x20dc	0x800128e0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800128ec	0x20ec	0x800128f0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800128fc	0x20fc	0x80012900	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001290c	0x210c	0x80012910	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001291c	0x211c	0x80012920	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001292c	0x212c	0x80012930	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001285c	0x205c	0x80012860	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012878	0x2078	0x8001287c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001288c	0x208c	0x80012890	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800128a0	0x20a0	0x800128a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800128b0	0x20b0	0x800128b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800128dc	0x20dc	0x800128e0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800128ec	0x20ec	0x800128f0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800128fc	0x20fc	0x80012900	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001290c	0x210c	0x80012910	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001291c	0x211c	0x80012920	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001292c	0x212c	0x80012930	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012938	0x2138		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012940	0x2140		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012954	0x2154		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001295c	0x215c	0x80012960	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012978	0x2178	0x8001297c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001298c	0x218c	0x80012990	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800129a0	0x21a0	0x800129a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800129b0	0x21b0	0x800129b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800129e0	0x21e0	0x800129e4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800129f0	0x21f0	0x800129f4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a00	0x2200	0x80012a04	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a10	0x2210	0x80012a14	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a20	0x2220	0x80012a24	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a30	0x2230	0x80012a34	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001295c	0x215c	0x80012960	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012978	0x2178	0x8001297c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001298c	0x218c	0x80012990	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800129a0	0x21a0	0x800129a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800129b0	0x21b0	0x800129b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800129e0	0x21e0	0x800129e4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800129f0	0x21f0	0x800129f4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a00	0x2200	0x80012a04	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a10	0x2210	0x80012a14	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a20	0x2220	0x80012a24	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a30	0x2230	0x80012a34	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012a3c	0x223c		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012a44	0x2244		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012a58	0x2258		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012a60	0x2260	0x80012a64	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a7c	0x227c	0x80012a80	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012a90	0x2290	0x80012a94	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012aa4	0x22a4	0x80012aa8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ab4	0x22b4	0x80012ab8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ae4	0x22e4	0x80012ae8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012af4	0x22f4	0x80012af8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012b04	0x2304	0x80012b08	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012b14	0x2314	0x80012b18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012b24	0x2324	0x80012b28	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012b34	0x2334	0x80012b38	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012a60	0x2260	0x80012a64	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a7c	0x227c	0x80012a80	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012a90	0x2290	0x80012a94	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012aa4	0x22a4	0x80012aa8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ab4	0x22b4	0x80012ab8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ae4	0x22e4	0x80012ae8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012af4	0x22f4	0x80012af8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012b04	0x2304	0x80012b08	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012b14	0x2314	0x80012b18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012b24	0x2324	0x80012b28	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012b34	0x2334	0x80012b38	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012b40	0x2340		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012ba0	0x23a0	0x80012ba4	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012ba8	0x23a8	0x80012bac	mips_hi16_lo16	reachable-code	0x8003dba0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012ba0	0x23a0	0x80012ba4	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ba8	0x23a8	0x80012bac	mips_hi16_lo16	reachable-code	0x8003dba0	load	banner_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012bb0	0x23b0		mips26	reachable-code	0x80012d6c	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012bb8	0x23b8	0x80012bbc	mips_hi16_lo16	reachable-code	0x8003dba0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012bc4	0x23c4	0x80012bc8	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012bcc	0x23cc	0x80012bd0	mips_hi16_lo16	reachable-code	0x8003dba0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012be0	0x23e0	0x80012be4	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012bf0	0x23f0	0x80012bf4	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c04	0x2404	0x80012c08	mips_hi16_lo16	reachable-code	0x8003dba0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012bb8	0x23b8	0x80012bbc	mips_hi16_lo16	reachable-code	0x8003dba0	load	banner_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012bc4	0x23c4	0x80012bc8	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012bcc	0x23cc	0x80012bd0	mips_hi16_lo16	reachable-code	0x8003dba0	load	banner_phase	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012be0	0x23e0	0x80012be4	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012bf0	0x23f0	0x80012bf4	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012c04	0x2404	0x80012c08	mips_hi16_lo16	reachable-code	0x8003dba0	load	banner_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012c0c	0x240c		mips26	reachable-code	0x80012c40	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c14	0x2414	0x80012c18	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c2c	0x242c	0x80012c30	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012c14	0x2414	0x80012c18	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+lw	v1	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012c2c	0x242c	0x80012c30	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012c34	0x2434		mips26	reachable-code	0x80012c40	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012c40	0x2440		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012c54	0x2454		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c5c	0x245c	0x80012c60	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012c5c	0x245c	0x80012c60	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012c70	0x2470		mips26	reachable-code	0x80019098	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c78	0x2478	0x80012c7c	mips_hi16_lo16	reachable-code	0x8003db9c	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012c80	0x2480	0x80012c84	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012c94	0x2494	0x80012c98	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ca8	0x24a8	0x80012cac	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012cbc	0x24bc	0x80012cc0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ccc	0x24cc	0x80012cd0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d04	0x2504	0x80012d08	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d14	0x2514	0x80012d18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d24	0x2524	0x80012d28	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d34	0x2534	0x80012d38	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d44	0x2544	0x80012d48	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012d54	0x2554	0x80012d58	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012c78	0x2478	0x80012c7c	mips_hi16_lo16	reachable-code	0x8003db9c	load	banner_level	lui+addiu	v1	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012c80	0x2480	0x80012c84	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012c94	0x2494	0x80012c98	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ca8	0x24a8	0x80012cac	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012cbc	0x24bc	0x80012cc0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ccc	0x24cc	0x80012cd0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d04	0x2504	0x80012d08	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d14	0x2514	0x80012d18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d24	0x2524	0x80012d28	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d34	0x2534	0x80012d38	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d44	0x2544	0x80012d48	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d54	0x2554	0x80012d58	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012d60	0x2560		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012d7c	0x257c	0x80012d80	mips_hi16_lo16	reachable-code	0x8003dba8	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012d98	0x2598	0x80012d9c	mips_hi16_lo16	reachable-code	0x8003dba4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012da8	0x25a8	0x80012dac	mips_hi16_lo16	reachable-code	0x8003dba4	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012dbc	0x25bc	0x80012dc0	mips_hi16_lo16	reachable-code	0x8003dba8	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012d7c	0x257c	0x80012d80	mips_hi16_lo16	reachable-code	0x8003dba8	load	prompt_phase	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012d98	0x2598	0x80012d9c	mips_hi16_lo16	reachable-code	0x8003dba4	load	prompt_level	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012da8	0x25a8	0x80012dac	mips_hi16_lo16	reachable-code	0x8003dba4	load	prompt_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012dbc	0x25bc	0x80012dc0	mips_hi16_lo16	reachable-code	0x8003dba8	load	prompt_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012dc4	0x25c4		mips26	reachable-code	0x80012df8	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012dcc	0x25cc	0x80012dd0	mips_hi16_lo16	reachable-code	0x8003dba4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012ddc	0x25dc	0x80012de0	mips_hi16_lo16	reachable-code	0x8003dba4	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012df0	0x25f0	0x80012df4	mips_hi16_lo16	reachable-code	0x8003dba8	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012dcc	0x25cc	0x80012dd0	mips_hi16_lo16	reachable-code	0x8003dba4	load	prompt_level	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ddc	0x25dc	0x80012de0	mips_hi16_lo16	reachable-code	0x8003dba4	load	prompt_level	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012df0	0x25f0	0x80012df4	mips_hi16_lo16	reachable-code	0x8003dba8	load	prompt_phase	lui+sw	at	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012df8	0x25f8		mips26	reachable-code	0x800130ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012e0c	0x260c		mips26	reachable-code	0x80018e30	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012e14	0x2614	0x80012e18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012e14	0x2614	0x80012e18	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012e28	0x2628		mips26	reachable-code	0x80019098	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012e38	0x2638	0x80012e3c	mips_hi16_lo16	reachable-code	0x8003dba4	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012e40	0x2640	0x80012e44	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012e54	0x2654	0x80012e58	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012e68	0x2668	0x80012e6c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012e7c	0x267c	0x80012e80	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012e8c	0x268c	0x80012e90	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ec8	0x26c8	0x80012ecc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ed8	0x26d8	0x80012edc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ee8	0x26e8	0x80012eec	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012ef8	0x26f8	0x80012efc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012f08	0x2708	0x80012f0c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80012f18	0x2718	0x80012f1c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80012e38	0x2638	0x80012e3c	mips_hi16_lo16	reachable-code	0x8003dba4	load	prompt_level	lui+addiu	v1	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012e40	0x2640	0x80012e44	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012e54	0x2654	0x80012e58	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012e68	0x2668	0x80012e6c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012e7c	0x267c	0x80012e80	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012e8c	0x268c	0x80012e90	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ec8	0x26c8	0x80012ecc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ed8	0x26d8	0x80012edc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ee8	0x26e8	0x80012eec	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ef8	0x26f8	0x80012efc	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012f08	0x2708	0x80012f0c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012f18	0x2718	0x80012f1c	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80012f24	0x2724		mips26	reachable-code	0x800130fc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012f58	0x2758		mips26	reachable-code	0x8001da8c	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012f70	0x2770	0x80012f74	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012f90	0x2790	0x80012f94	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012fb0	0x27b0	0x80012fb4	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012fd0	0x27d0	0x80012fd4	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80012ff0	0x27f0	0x80012ff4	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80012f70	0x2770	0x80012f74	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012f90	0x2790	0x80012f94	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012fb0	0x27b0	0x80012fb4	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012fd0	0x27d0	0x80012fd4	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80012ff0	0x27f0	0x80012ff4	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001301c	0x281c	0x80013020	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013028	0x2828		mips26	reachable-code	0x80013450	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013030	0x2830		mips26	reachable-code	0x8001307c	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80013040	0x2840	0x80013044	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013040	0x2840	0x80013044	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+lw	v0	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013068	0x2868	0x8001306c	mips_hi16_lo16	reachable-code	0x800a5ab8	bss	audio_vab_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013074	0x2874		mips26	reachable-code	0x80013450	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001307c	0x287c	0x80013080	mips_hi16_lo16	reachable-code	0x8003dbac	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800130ac	0x28ac	0x800130b0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001307c	0x287c	0x80013080	mips_hi16_lo16	reachable-code	0x8003dbac	load	pad_previous_buttons	lui+sw	at	paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800130ac	0x28ac	0x800130b0	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800130bc	0x28bc		mips26	reachable-code	0x8001914c	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800130c4	0x28c4	0x800130c8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800130d4	0x28d4	0x800130d8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800130e4	0x28e4	0x800130e8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013100	0x2900	0x80013104	mips_hi16_lo16	reachable-code	0x800ac540	bss	primitive_allocation_count	lui+lbu		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013114	0x2914	0x80013118	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x800130c4	0x28c4	0x800130c8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800130d4	0x28d4	0x800130d8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800130e4	0x28e4	0x800130e8	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013100	0x2900	0x80013104	mips_hi16_lo16	reachable-code	0x800ac540	bss	display_fade_level	lui+lbu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013114	0x2914	0x80013118	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013134	0x2934		mips26	reachable-code	0x80013150	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001313c	0x293c	0x80013140	mips_hi16_lo16	reachable-code	0x800ac540	bss	primitive_allocation_count	lui+lbu		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013150	0x2950	0x80013154	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013160	0x2960	0x80013164	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013170	0x2970	0x80013174	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013184	0x2984	0x80013188	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001318c	0x298c	0x80013190	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001313c	0x293c	0x80013140	mips_hi16_lo16	reachable-code	0x800ac540	bss	display_fade_level	lui+lbu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013150	0x2950	0x80013154	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013160	0x2960	0x80013164	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013170	0x2970	0x80013174	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013184	0x2984	0x80013188	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001318c	0x298c	0x80013190	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013198	0x2998		mips26	reachable-code	0x80018fe4	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800131a0	0x29a0	0x800131a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800131b0	0x29b0	0x800131b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+sw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800131c8	0x29c8	0x800131cc	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800131d4	0x29d4	0x800131d8	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x800131e8	0x29e8	0x800131ec	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x800131a0	0x29a0	0x800131a4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800131b0	0x29b0	0x800131b4	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+sw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800131c8	0x29c8	0x800131cc	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800131d4	0x29d4	0x800131d8	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x800131e8	0x29e8	0x800131ec	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800131f4	0x29f4		mips26	reachable-code	0x80015620	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800131fc	0x29fc	0x80013200	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x8001320c	0x2a0c	0x80013210	mips_hi16_lo16	reachable-code	0x800ac540	bss	primitive_allocation_count	lui+sb		paired-reviewed	reviewed	manual:display
-OPEN.EXE	0x80013214	0x2a14	0x80013218	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+sw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x800131fc	0x29fc	0x80013200	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001320c	0x2a0c	0x80013210	mips_hi16_lo16	reachable-code	0x800ac540	bss	display_fade_level	lui+sb		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013214	0x2a14	0x80013218	mips_hi16_lo16	reachable-code	0x800ac5d8	bss	current_poly_ft4	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013234	0x2a34		mips26	reachable-code	0x800154bc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001323c	0x2a3c		mips26	reachable-code	0x8001e250	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80013244	0x2a44	0x80013248	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80013244	0x2a44	0x80013248	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001324c	0x2a4c		mips26	reachable-code	0x80015788	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80013254	0x2a54	0x80013258	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80013254	0x2a54	0x80013258	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001325c	0x2a5c		mips26	reachable-code	0x800158a8	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80013264	0x2a64	0x80013268	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x80013264	0x2a64	0x80013268	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001326c	0x2a6c		mips26	reachable-code	0x80015730	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800132b4	0x2ab4	0x800132b8	mips_hi16_lo16	reachable-code	0x8003dbb0	load	cd_path_prefix	lui+lw	v0	paired-reviewed	reviewed	manual:display
 OPEN.EXE	0x800132bc	0x2abc	0x800132c0	mips_hi16_lo16	reachable-code	0x8003dbb4	load		lui+lb	v1	paired-reviewed	reviewed	manual:display
@@ -9812,8 +9864,9 @@ OPEN.EXE	0x80013414	0x2c14		mips26	reachable-code	0x8001553c	load		jal		control-
 OPEN.EXE	0x80013430	0x2c30		mips26	reachable-code	0x8001553c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013438	0x2c38		mips26	reachable-code	0x800133f0	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800134c0	0x2cc0		mips26	reachable-code	0x80021da0	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800134e0	0x2ce0	0x800134e4	mips_hi16_lo16	reachable-code	0x8003db88	load		lui+addiu	gp	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800134e0	0x2ce0	0x800134e4	mips_hi16_lo16	reachable-code	0x8003db88	load	overlay_next_request	lui+addiu	gp	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800134e8	0x2ce8		mips26	reachable-code	0x80011ac0	load		j		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800134f0	0x2cf0	0x800134f4	mips_hi16_lo16	reachable-code	0x800a63c0	bss	audio_title_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001350c	0x2d0c		mips26	reachable-code	0x80025ec4	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013514	0x2d14	0x80013518	mips_hi16_lo16	reachable-code	0x80011000	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001351c	0x2d1c		mips26	reachable-code	0x8001cd40	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -9822,39 +9875,58 @@ OPEN.EXE	0x80013534	0x2d34		mips26	reachable-code	0x800142c4	load	printf	jal		co
 OPEN.EXE	0x8001353c	0x2d3c		mips26	reachable-code	0x80013824	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013544	0x2d44		mips26	reachable-code	0x8001e250	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013550	0x2d50		mips26	reachable-code	0x8001f458	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013568	0x2d68	0x8001356c	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013570	0x2d70	0x80013574	mips_hi16_lo16	reachable-code	0x800a1c58	bss	dec	lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013578	0x2d78		mips26	reachable-code	0x8001e3dc	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013580	0x2d80	0x80013584	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001358c	0x2d8c		mips26	reachable-code	0x80025c70	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013594	0x2d94		mips26	reachable-code	0x8001383c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001359c	0x2d9c		mips26	reachable-code	0x800138f8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800135a4	0x2da4		mips26	reachable-code	0x80013a78	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800135b0	0x2db0	0x800135b4	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800135c0	0x2dc0		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800135cc	0x2dcc	0x800135d0	mips_hi16_lo16	reachable-code	0x800a74ac	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800135dc	0x2ddc		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800135e8	0x2de8	0x800135ec	mips_hi16_lo16	reachable-code	0x800a6494	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800135f8	0x2df8		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013604	0x2e04	0x80013608	mips_hi16_lo16	reachable-code	0x800a7508	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013614	0x2e14		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001361c	0x2e1c	0x80013620	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013624	0x2e24	0x80013628	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001362c	0x2e2c		mips26	reachable-code	0x800131c8	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013634	0x2e34	0x80013638	mips_hi16_lo16	reachable-code	0x800a1c60	bss		lui+lw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001364c	0x2e4c		mips26	reachable-code	0x80014358	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013678	0x2e78		mips26	reachable-code	0x800143d4	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013680	0x2e80		mips26	reachable-code	0x80013a78	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013688	0x2e88		mips26	reachable-code	0x80013bbc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013690	0x2e90		mips26	reachable-code	0x8001322c	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80013698	0x2e98	0x8001369c	mips_hi16_lo16	reachable-code	0x8003dec0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013698	0x2e98	0x8001369c	mips_hi16_lo16	reachable-code	0x8003dec0	load	Rewind_Switch	lui+lw	v1	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800136ac	0x2eac		mips26	reachable-code	0x8001da8c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800136c0	0x2ec0		mips26	reachable-code	0x8001da8c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800136d0	0x2ed0		mips26	reachable-code	0x800136c0	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800136d8	0x2ed8	0x800136dc	mips_hi16_lo16	reachable-code	0x8003dec8	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800136d8	0x2ed8	0x800136dc	mips_hi16_lo16	reachable-code	0x8003dec8	load	StrFrame	lui+lw	v0	paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800136fc	0x2efc		mips26	reachable-code	0x8001e250	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013718	0x2f18		mips26	reachable-code	0x8001e250	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013720	0x2f20	0x80013724	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013730	0x2f30		mips26	reachable-code	0x8001e3dc	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013740	0x2f40	0x80013744	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x80013748	0x2f48		mips26	reachable-code	0x8001e3dc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013760	0x2f60		mips26	reachable-code	0x8001a8a0	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013768	0x2f68		mips26	reachable-code	0x8001d7b8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013770	0x2f70		mips26	reachable-code	0x8001d7dc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013778	0x2f78		mips26	reachable-code	0x8001a704	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80013788	0x2f88		mips26	reachable-code	0x8001a8a0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013798	0x2f98	0x8001379c	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800137a8	0x2fa8		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800137b4	0x2fb4	0x800137b8	mips_hi16_lo16	reachable-code	0x800a74ac	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800137c4	0x2fc4		mips26	reachable-code	0x80019644	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800137d0	0x2fd0	0x800137d4	mips_hi16_lo16	reachable-code	0x800a6494	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800137e0	0x2fe0		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800137ec	0x2fec	0x800137f0	mips_hi16_lo16	reachable-code	0x800a7508	bss		lui+addiu		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x800137fc	0x2ffc		mips26	reachable-code	0x800196d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80013804	0x3004	0x80013808	mips_hi16_lo16	reachable-code	0x800a63c8	bss	audio_movie_sequence_id	lui+lh		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x8001380c	0x300c	0x80013810	mips_hi16_lo16	reachable-code	0x800a6438	bss	display_buffers	lui+addiu		paired-reviewed	reviewed	manual:opening
+OPEN.EXE	0x80013814	0x3014	0x80013818	mips_hi16_lo16	reachable-code	0x800a5ad0	bss	display_current	lui+sw		paired-reviewed	reviewed	manual:opening
 OPEN.EXE	0x8001381c	0x301c		mips26	reachable-code	0x80025ec4	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001383c	0x303c	0x80013840	mips_hi16_lo16	reachable-code	0x8003e058	bss	vlcbuf0	lui+addiu		paired-reviewed	reviewed	manual:movie_stream
 OPEN.EXE	0x80013844	0x3044	0x80013848	mips_hi16_lo16	reachable-code	0x800a1c58	bss	dec	lui+sw		paired-reviewed	reviewed	manual:movie_stream

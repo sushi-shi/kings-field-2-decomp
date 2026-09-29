@@ -2717,14 +2717,15 @@ OPEN.EXE	0x8003d24e	0x2	DAT_8003d24e	unknown	load	undefined2		address-only	data.
 OPEN.EXE	0x8003d26c	0x4	DAT_8003d26c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d270	0x4	DAT_8003d270	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d820	0x4	DAT_8003d820	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003db88	0x4	DAT_8003db88	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003db94	0x4	DAT_8003db94	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003db98	0x4	DAT_8003db98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003db9c	0x4	DAT_8003db9c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dba0	0x4	DAT_8003dba0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dba4	0x4	DAT_8003dba4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dba8	0x4	DAT_8003dba8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dbac	0x4	DAT_8003dbac	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003db88	0x4	overlay_next_request	global	load	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	points at the PSX.EXE mailbox byte 0x800102f0
+OPEN.EXE	0x8003db8c	0x5	opening_data_file	global	load	char[5]	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	OP.D resource file name
+OPEN.EXE	0x8003db94	0x4	title_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	title tile brightness
+OPEN.EXE	0x8003db98	0x4	title_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the title fades in, 1 while it settles
+OPEN.EXE	0x8003db9c	0x4	banner_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	banner brightness
+OPEN.EXE	0x8003dba0	0x4	banner_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the banner fades in, 1 while it settles
+OPEN.EXE	0x8003dba4	0x4	prompt_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	prompt pulse brightness
+OPEN.EXE	0x8003dba8	0x4	prompt_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the prompt brightens, 1 while it dims
+OPEN.EXE	0x8003dbac	0x4	pad_previous_buttons	global	load	u32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	PadRead result of the previous poll
 OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	display	supported	asm;xrefs;display_initialize/display_begin_frame	\\OP\\ CD directory prefix
 OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	display	supported	asm;xrefs;display_initialize/display_begin_frame	ISO9660 version suffix ;1
 OPEN.EXE	0x8003dbc4	0x4	DAT_8003dbc4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2873,17 +2874,17 @@ OPEN.EXE	0x80066058	0x28000	vlcbuf1	global	bss	u_long[40960]	movie_stream	suppor
 OPEN.EXE	0x8008e058	0x3c00	imgbuf	global	bss	u_short[]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	decoded slice buffer; extent measured to Ring_Buff (twice one 16x240 slice), declaration unknown
 OPEN.EXE	0x80091c58	0x10000	Ring_Buff	global	bss	u_long[16384]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	32-sector streaming ring buffer
 OPEN.EXE	0x800a1c58	0x30	dec	global	bss	DECENV	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	DECENV decode environment
-OPEN.EXE	0x800a5a90	0x4	DAT_800a5a90	unknown	bss	u32		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
-OPEN.EXE	0x800a5a98	0x4	DAT_800a5a98	unknown	bss	u32		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
-OPEN.EXE	0x800a5ab8	0x2	DAT_800a5ab8	unknown	bss	u16		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
-OPEN.EXE	0x800a5ac8	0x4	DAT_800a5ac8	unknown	bss	u32		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
+OPEN.EXE	0x800a5a90	0x4	audio_title_sequence_data	global	bss	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	title SEQ copied from OP.D for SsSeqOpen
+OPEN.EXE	0x800a5a98	0x4	audio_movie_sequence_data	global	bss	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	movie SEQ copied from OP.D for SsSeqOpen
+OPEN.EXE	0x800a5ab8	0x2	audio_vab_id	global	bss	short	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	SsVabOpenHead result
+OPEN.EXE	0x800a5ac8	0x4	audio_vab_header	global	bss	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	VAB header copied from OP.D for SsVabOpenHead
 OPEN.EXE	0x800a5ad0	0x4	display_current	global	bss	KfDisplayBuffer *	display	supported	asm;xrefs;display_initialize/display_begin_frame	buffer being drawn
-OPEN.EXE	0x800a63c0	0x2	DAT_800a63c0	unknown	bss	u16		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
-OPEN.EXE	0x800a63c8	0x2	DAT_800a63c8	unknown	bss	u16		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
-OPEN.EXE	0x800a6410	0x4	DAT_800a6410	unknown	bss	u32		address-only	ghidra-12.0.4-memory-xref	unresolved referenced RAM global/static candidate
+OPEN.EXE	0x800a63c0	0x2	audio_title_sequence_id	global	bss	short	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	SsSeqOpen result for the title music
+OPEN.EXE	0x800a63c8	0x2	audio_movie_sequence_id	global	bss	short	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	SsSeqOpen result for the movie music
+OPEN.EXE	0x800a6410	0x4	opening_data	global	bss	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	malloc'd OP.D image
 OPEN.EXE	0x800a6438	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display	supported	asm;xrefs;display_initialize/display_begin_frame	double-buffered draw/display environments and ordering tables
 OPEN.EXE	0x800a8540	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
-OPEN.EXE	0x800ac540	0x1	primitive_allocation_count	global	bss	u8	display	supported	asm;xrefs;display_initialize/display_begin_frame	cleared at the start of each frame
+OPEN.EXE	0x800ac540	0x1	display_fade_level	global	bss	u8	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	darkening applied by primitive_buffer_commit_poly_ft4; cleared per frame
 OPEN.EXE	0x800ac5d8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
 OPEN.EXE	0x800ac618	0x158	audio_sequence_table	global	bss	char[344]	display	supported	asm;xrefs;display_initialize/display_begin_frame	SsSetTableSize work area: 2 sequences x 1 track
 END.EXE	0x8001141c	0x4	DAT_8001141c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

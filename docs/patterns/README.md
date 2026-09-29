@@ -10,6 +10,9 @@
 - [kf2-end-template-residue.md](kf2-end-template-residue.md): END frames and
   global reloads explained by trimmed OPEN templates (unreachable cleanup,
   leftover locals, cursor advances); count-down loops spelled `!= -1`.
+- [kf2-open-source-shapes.md](kf2-open-source-shapes.md): OPEN title-screen
+  shapes (goto restart, chained RECT origin, in-place fade level) and the
+  unattributed 24-byte `audio_play_voice` frame residue.
 
 Reusable, evidence-backed observations about the retail code generation and
 about which source shapes reproduce it under the current probes. Each note

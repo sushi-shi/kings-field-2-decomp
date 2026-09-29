@@ -5316,8 +5316,8 @@ OPEN.EXE	0x8003d824	0x2d024	0x2f4	unclassified	coverage-gap			payload-complement
 OPEN.EXE	0x8003db18	0x2d318	0x6f	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: s_crwa.c,v 1.8 1995/03/11 08:24:16 kaol Exp $ : \tCopyright (C) by 1994-95 Sony Computer Entertainment Inc.
 OPEN.EXE	0x8003db87	0x2d387	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003db88	0x2d388	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003db8c	0x2d38c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: OP.D
-OPEN.EXE	0x8003db90	0x2d390	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003db8c	0x2d38c	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: OP.D
+OPEN.EXE	0x8003db91	0x2d391	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003db94	0x2d394	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003db98	0x2d398	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003db9c	0x2d39c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

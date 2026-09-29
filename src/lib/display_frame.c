@@ -8,7 +8,7 @@ void display_begin_frame(void)
     display_current = (display_current == &display_buffers[0]) ? &display_buffers[1] : &display_buffers[0];
     ClearOTag(display_current->ordering_table, KF_ORDERING_TABLE_LENGTH);
 #ifdef KF_OPEN
-    primitive_allocation_count = 0;
+    display_fade_level = 0;
 #endif
     current_poly_ft4 = display_current->primitives;
 }

@@ -127,6 +127,7 @@ def audit(
     *,
     config_comparisons: tuple = (),
     include_entry: bool = False,
+    link_labels: frozenset[int] = frozenset(),
 ) -> dict:
     """Lossless reference worklist with weakest-edge reachability witnesses.
 
@@ -216,6 +217,11 @@ def audit(
                 continue
             path_rank = min(rank, TIER_RANK[reference.tier])
             found = owners(reference.destination)
+            if not found and reference.target in link_labels:
+                # A curated zero-size link-layout label (BSS_END) names a
+                # boundary, not storage, so it has no owner to reach.
+                destinations[number] = []
+                continue
             if not found:
                 issue("unmodeled-target", key, number, target=reference.target)
                 destinations[number] = []
@@ -324,6 +330,7 @@ def audit(
 
 def run(images: tuple[str, ...], *, output: Path | None = None) -> int:
     from scripts.kf.config_data import audit as compare_config_data
+    from scripts.kf.roundtrip import link_labels
 
     manifest = load_manifest()
     extents = data_extents(manifest)
@@ -332,7 +339,8 @@ def run(images: tuple[str, ...], *, output: Path | None = None) -> int:
     for image in images:
         ctx = Context(image)
         report = audit(image, ctx.idx.functions, extents, ctx.refs.references, ctx.img,
-                       config_comparisons=comparisons)
+                       config_comparisons=comparisons,
+                       link_labels=frozenset(link_labels(image).values()))
         reports.append(report)
         summary = report["summary"]
         print(f"{image} known-reference closure: {summary['game_roots']} game roots, "

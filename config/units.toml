@@ -80,6 +80,30 @@ source = "src/psx/main.c"
 profile = "probe-gcc257-o2-plain-g8"
 
 [[unit]]
+unit = "game.main"
+image = "GAME.EXE"
+source = "src/game/main.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.game"
+image = "GAME.EXE"
+source = "src/game/game.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.audio_spatial"
+image = "GAME.EXE"
+source = "src/game/audio_spatial.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.audio_play_sound"
+image = "GAME.EXE"
+source = "src/game/audio_play_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.matrix_rotation"
 image = "GAME.EXE"
 source = "src/game/matrix_rotation.c"
@@ -98,6 +122,12 @@ source = "src/game/resource_copy.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.memory"
+image = "GAME.EXE"
+source = "src/game/memory.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.cd_location"
 image = "GAME.EXE"
 source = "src/game/cd_location.c"
@@ -113,6 +143,54 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.cd_archive"
 image = "GAME.EXE"
 source = "src/game/cd_archive.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_events"
+image = "GAME.EXE"
+source = "src/game/memory_card_events.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_format"
+image = "GAME.EXE"
+source = "src/game/memory_card_format.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_wait"
+image = "GAME.EXE"
+source = "src/game/memory_card_wait.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.display"
+image = "GAME.EXE"
+source = "src/game/display.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.tmd_register"
+image = "GAME.EXE"
+source = "src/game/tmd_register.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.tmd_transform"
+image = "GAME.EXE"
+source = "src/game/tmd_transform.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.asset_registry"
+image = "GAME.EXE"
+source = "src/game/asset_registry.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.pool"
+image = "GAME.EXE"
+source = "src/game/pool.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

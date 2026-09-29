@@ -75,7 +75,24 @@ def address_book(image: str, config_dir: Path = RETAIL_CONFIG) -> dict[str, set[
         if row["image"] == image:
             va = int(row["va"], 0)
             book[sanitize_symbol(row["name"], f"DAT_{va:08x}")].add(va)
+    for name, va in link_labels(image, config_dir).items():
+        book[name].add(va)
     return dict(book)
+
+
+def link_labels(image: str, config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
+    """Zero-size link-layout labels (BSS_END): boundaries, not storage."""
+    path = config_dir / "link_labels.tsv"
+    if not path.is_file():
+        return {}
+    labels: dict[str, int] = {}
+    for row in read_tsv(path)[1]:
+        if row["image"] != image:
+            continue
+        if row["name"] in labels or not SYMBOL_NAME.fullmatch(row["name"]):
+            raise ValueError(f"{path}: invalid or duplicate label {row['name']!r}")
+        labels[row["name"]] = int(row["va"], 0)
+    return labels
 
 
 def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:

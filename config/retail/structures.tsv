@@ -1,5 +1,21 @@
 # MANUALLY MANAGED - target C layouts used by semantic function/data identities.
 # A supported layout proves current size/offset modeling, not an original typedef spelling.
 name	size	layout_confidence	evidence	note
+KfAssetHeader	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfCdRequest	0x28	supported	game/cd.h;asm;cd_initialize;func_80017d54	one queued asynchronous CD request
+KfCdState	0x2a4	supported	game/cd.h;asm;cd_initialize;cd_close_events;cd_read_sectors	CD events, VSync counters and request ring
+KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
+KfFloorItem	0x18	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfGraphicsRuntimeGame	0x17cf0	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfMemoryBlock	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfOrderingTable	0x8000	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfRenderState	0x94	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdHeader	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdObject	0x1c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdState	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfVecXZi	0x08	supported	lib/math.h;asm;angle_to_forward_xz;vector3i_add_xz	two signed horizontal word coordinates

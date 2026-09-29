@@ -1,8 +1,100 @@
 # MANUALLY MANAGED - exact target offsets/extents for every field in structures.tsv.
 # opaque means the byte range is modeled for layout but has no supported semantic meaning yet.
 structure	offset	size	name	datatype	meaning_confidence	evidence	note
+KfAssetHeader	0x00	0x08	unknown_00	u8[8]	opaque	game headers;asm;xrefs	not yet modelled
+KfAssetHeader	0x08	0x04	tmd_data_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfCdRequest	0x00	0x01	kind	u8	supported	game/cd.h;asm;cd_initialize	request kind, zero when idle
+KfCdRequest	0x01	0x01	phase	u8	supported	game/cd.h;asm;cd_initialize	request phase
+KfCdRequest	0x02	0x26	unknown_02	u8[38]	opaque	game/cd.h;asm	not yet modelled
+KfCdState	0x00	0x04	vsync_event	long	supported	game/cd.h;asm;cd_initialize	RCntCNT3 interrupt event
+KfCdState	0x04	0x04	vsync_count	u32	supported	game/cd.h;asm;cd_initialize;cd_vsync_handler	VSync interrupt count
+KfCdState	0x08	0x04	frame_count	u32	supported	game/cd.h;asm;cd_initialize;cd_vsync_handler	second VSync counter
+KfCdState	0x0c	0x04	error_event	long	supported	game/cd.h;asm;cd_initialize	HwCdRom EvSpERROR event
+KfCdState	0x10	0x04	complete_event	long	supported	game/cd.h;asm;cd_initialize	HwCdRom EvSpCOMP event
+KfCdState	0x14	0x04	unknown_14	u8[4]	opaque	game/cd.h;asm	never referenced
+KfCdState	0x18	0x04	data_ready_event	long	supported	game/cd.h;asm;cd_initialize	HwCdRom EvSpDR event
+KfCdState	0x1c	0x280	requests	KfCdRequest[16]	supported	game/cd.h;asm;cd_initialize	request ring
+KfCdState	0x29c	0x04	tail	KfCdRequest *	supported	game/cd.h;asm;cd_initialize	next free request; ring end marker
+KfCdState	0x2a0	0x04	current	KfCdRequest *	supported	game/cd.h;asm;cd_initialize;cd_request_wait_idle	request being serviced
+KfDisplayState	0x00	0x01	buffer_index	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfDisplayState	0x01	0x03	unknown_01	u8[3]	opaque	game headers;asm;xrefs	not yet modelled
+KfDisplayState	0x04	0x04	asset_load_buffer	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfDisplayState	0x08	0x18	primitive_buffers	KfPrimitiveBuffer[2]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfDisplayState	0x20	0x04	primitive_buffer	KfPrimitiveBuffer *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfDisplayState	0x24	0x10000	ordering_tables	KfOrderingTable[2]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfDisplayState	0x10024	0x04	ordering_table	u32 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfEulerAngles	0x00	0x02	x	s16	supported	lib/math.h;asm;xrefs	x angle
 KfEulerAngles	0x02	0x02	y	s16	supported	lib/math.h;asm;xrefs	y angle
 KfEulerAngles	0x04	0x02	z	s16	supported	lib/math.h;asm;xrefs	z angle
+KfFloorItem	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfFloorItem	0x01	0x17	unknown_01	u8[23]	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x00	0x10028	display_state	KfDisplayState	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x10028	0xb8	display_draw_environments	DRAWENV[2]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x100e0	0x28	display_disp_environments	DISPENV[2]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x10108	0x14	tmd_state	KfTmdState	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x1011c	0x900	asset_registry_entries	KfAssetHeader *[576]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x10a1c	0x04	current_tmd_vertices	SVECTOR *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x10a20	0xf0	pool_records	KfPoolRecord[12]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x10b10	0x1f40	tmd_projected_vertices	KfScreenVertex[1000]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x12a50	0x1f94	unknown_12a50	u8[8084]	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x149e4	0x2c0	clip_edges	EVECTOR[16]	supported	game headers;asm;xrefs	InitClip edge buffer
+KfGraphicsRuntimeGame	0x14ca4	0x08	notification_message_ids	u8[8]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14cac	0x10	notification_payloads	u16[8]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14cbc	0x04	notification_control	KfNotificationControl	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14cc0	0x01	unknown_14cc0	u8	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x14cc1	0x01	unknown_14cc1	u8	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x14cc2	0x0a	unknown_14cc2	u8[10]	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x14ccc	0x04	frame_counter_a	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14cd0	0x04	frame_counter_b	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14cd4	0xc0	floor_items	KfFloorItem[8]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14d94	0x94	render_state	KfRenderState	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14e28	0x22c4	unknown_14e28	u8[8900]	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x170ec	0x04	unknown_170ec	s32	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x170f0	0xc00	unknown_170f0	u8[3072]	opaque	game headers;asm;xrefs	not yet modelled
+KfMemoryBlock	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfMemoryBlock	0x01	0x01	flags	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfMemoryBlock	0x02	0x02	tag	u16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfMemoryBlock	0x04	0x04	size	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfMemoryBlock	0x08	0x04	owner	u8 **	supported	game headers;asm;xrefs	member used by reconstructed code
+KfNotificationControl	0x00	0x01	queue_tail	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfNotificationControl	0x01	0x01	queue_head	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfNotificationControl	0x02	0x01	effect_phase	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfNotificationControl	0x03	0x01	hold_frames	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfOrderingTable	0x00	0x8000	entries	u32[8192]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x00	0x02	state	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x02	0x02	asset_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x04	0x02	clip_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x06	0x02	keyframe_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x08	0x04	rest_morph	KfMorphObject *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x0c	0x04	cached_vertices	SVECTOR *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x10	0x04	owner_slot	KfPoolRecord **	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPrimitiveBuffer	0x00	0x04	start	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPrimitiveBuffer	0x04	0x04	end	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPrimitiveBuffer	0x08	0x04	cursor	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x00	0x20	view_matrix	MATRIX	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x20	0x20	pitch_matrix	MATRIX	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x40	0x20	unknown_matrix_40	MATRIX	opaque	game headers;asm;xrefs	not yet modelled
+KfRenderState	0x60	0x10	view_position	VECTOR	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x70	0x08	view_rotation	SVECTOR	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x78	0x04	view_cell_x	s32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x7c	0x04	view_cell_z	s32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfRenderState	0x80	0x10	unknown_80	u8[16]	opaque	game headers;asm;xrefs	not yet modelled
+KfRenderState	0x90	0x04	fog_near_distance	s32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfScreenVertex	0x00	0x02	x	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfScreenVertex	0x02	0x02	y	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfScreenVertex	0x04	0x02	sz	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfScreenVertex	0x06	0x02	p2	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdHeader	0x00	0x04	id	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdHeader	0x04	0x04	flags	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdHeader	0x08	0x04	object_count	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x00	0x04	vertex_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x04	0x04	vertex_count	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x08	0x04	normal_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x0c	0x04	normal_count	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x10	0x04	primitive_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x14	0x04	primitive_count	u32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdObject	0x18	0x04	scale	s32	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdState	0x00	0x10	slots	KfTmdHeader *[4]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdState	0x10	0x04	current_asset	KfTmdHeader *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfVecXZi	0x00	0x04	x	s32	supported	lib/math.h;asm;angle_to_forward_xz	x coordinate
 KfVecXZi	0x04	0x04	z	s32	supported	lib/math.h;asm;angle_to_forward_xz	z coordinate

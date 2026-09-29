@@ -4,23 +4,23 @@
 # Future analysis writes build/function-inventory proposals and never overwrites this file.
 image	va	name	owner	action	return_type	parameters	name_confidence	signature_confidence	evidence	note
 PSX.EXE	0x80010038	main			void		supported	supported	asm;cfg;xrefs;SNMAIN-caller	SetMem(2), then loads and executes the overlay named by overlay_index forever; the next index comes from the byte GAME writes at 0x800102f0
-GAME.EXE	0x80013634	func_80013634			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001369c	func_8001369c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001398c	func_8001398c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80013634	main			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x8001369c	game_main_loop			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x8001398c	game_shutdown			void		supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
 GAME.EXE	0x800139c4	func_800139c4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80013ae4	func_80013ae4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80013b7c	func_80013b7c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80013bd4	func_80013bd4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80013c8c	func_80013c8c			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80013f50	func_80013f50			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80013f84	func_80013f84			unknown	unknown arg0;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80013bd4	audio_shutdown			void		supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
+GAME.EXE	0x80013c8c	audio_play_spatial			KfAudioPlaybackResult	s32 sound;const VECTOR *position;s16 volume;s32 max_distance;s32 attenuation_distance;s32 note_offset	supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
+GAME.EXE	0x80013f50	audio_play_spatial_default_range			KfAudioPlaybackResult	s32 sound;const VECTOR *position;s16 volume;s32 note_offset	supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
+GAME.EXE	0x80013f84	audio_play_spatial_range			KfAudioPlaybackResult	s32 sound;const VECTOR *position;s16 volume;s32 max_distance;s32 attenuation_distance;s32 note_offset	supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
 GAME.EXE	0x80013fb8	func_80013fb8			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80014030	func_80014030			unknown	unknown arg0;unknown *pointer1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800140dc	func_800140dc			void	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800140dc	audio_play_sound			void	s32 sound;s32 volume	supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
 GAME.EXE	0x80014100	func_80014100			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80014164	func_80014164			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80014278	func_80014278			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800144b8	func_800144b8			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80014278	audio_key_on			void	s32 sound;s32 left_volume;s32 right_volume;s32 note_offset	supported	candidate	asm;cfg;callers;callees;KF1 game.c/audio counterparts	reviewed with the KF1-similar wrappers
+GAME.EXE	0x800144b8	cd_request_service_vab			void		supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x800145f4	func_800145f4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800146d0	func_800146d0			unknown	unknown arg0;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800147a0	angle_approach			s16	s32 current;s32 target;s32 step	supported	candidate	asm;cfg;callers;callees;KF1 matrix_rotation.c/vector_math.c counterparts	KF1-counterpart fixed-point math band reviewed for reconstruction
@@ -67,27 +67,34 @@ GAME.EXE	0x80016260	func_80016260			unknown	unknown *object;unknown *pointer1;un
 GAME.EXE	0x80016820	func_80016820			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80016ee0	func_80016ee0			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80016f10	func_80016f10			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80016f4c	func_80016f4c			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80016f4c	cd_request_service_stream			void		supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x800171c8	resource_copy_words	resource	copy_words	const u32 *	u32 *destination;const u32 *source;u32 word_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x800171f8	resource_copy_halfwords	resource	copy_halfwords	const u16 *	u16 *destination;const u16 *source;u32 halfword_count	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
-GAME.EXE	0x80017228	func_80017228			unknown	unknown *object;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80017228	repeat_store_word			void	u32 *destination;u32 value;s32 count	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x80017270	func_80017270			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800172f4	func_800172f4			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800172f4	memory_arena_free			void	KfMemoryBlock *block	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x80017314	func_80017314			unknown	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8001746c	func_8001746c			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017504	func_80017504			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800175e8	func_800175e8			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017608	func_80017608			unknown	unknown arg0;unknown arg1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800176c0	func_800176c0			void	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800176e0	func_800176e0			void	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800176e8	func_800176e8			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80017708	func_80017708			void	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001771c	memory_allocate_checked	memory	allocate_checked	void *	u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
-GAME.EXE	0x80017754	memory_allocate	memory	allocate	void *	u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
-GAME.EXE	0x8001777c	func_8001777c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001779c	func_8001779c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800176c0	memory_block_release			void	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176e0	memory_block_set_kind			void	void *data;u8 kind	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176e8	memory_block_kind			u8	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176f4	memory_block_set_flags			void	void *data;u8 flags	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176fc	memory_block_flags			u8	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x80017708	memory_block_set_tag			void	void *data;u16 tag	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x80017710	memory_block_tag			u16	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x8001771c	memory_malloc_checked			void *	u32 size	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x80017754	memory_allocate			void *	u32 size	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x8001777c	memory_free			void	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x8001779c	cd_request_yield			void		supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800177d4	cd_vsync_handler			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
 GAME.EXE	0x80017804	func_80017804			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80017864	func_80017864			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800178d0	cd_complete_handler			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
+GAME.EXE	0x80017a1c	cd_data_ready_handler			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
+GAME.EXE	0x80017a98	cd_error_handler			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
 GAME.EXE	0x80017aa0	cd_bcd_to_int	cd	bcd_to_int	s32	u8 bcd	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80017ac0	cd_int_to_bcd	cd	int_to_bcd	u32	u8 value	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80017aec	cd_location_to_sector	cd	location_to_sector	u32	CdlLOC *location	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
@@ -110,8 +117,8 @@ GAME.EXE	0x800182d0	cd_archive_read	cd_archive	read	void	u16 slot;u16 entry;u_lo
 GAME.EXE	0x80018364	cd_file_load	cd_file	load	u8 *	const char *name	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x80018418	cd_file_load_into	cd_file	load_into	s32	u_long *destination;const char *name;u32 size	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
 GAME.EXE	0x800184d0	cd_archive_open	cd_archive	open	void	u16 slot;const char *name	supported	candidate	asm;cfg;callers;callees;strings;data	CD layer reviewed for the .T archive codec oracle
-GAME.EXE	0x800185c0	func_800185c0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800186fc	func_800186fc			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800185c0	cd_initialize			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
+GAME.EXE	0x800186fc	cd_close_events			void		supported	candidate	asm;cfg;OpenEvent handler operands	CD layer reviewed for cd_initialize/cd_close_events
 GAME.EXE	0x8001876c	func_8001876c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800189f0	func_800189f0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80018ac8	func_80018ac8			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
@@ -194,20 +201,21 @@ GAME.EXE	0x800222bc	func_800222bc			unknown		address-only	candidate	mips-live-in
 GAME.EXE	0x80022300	func_80022300			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80022394	func_80022394			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800223cc	func_800223cc			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80022438	func_80022438			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80022468	func_80022468			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800225b0	func_800225b0			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800225d8	func_800225d8			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80022438	input_wait_release			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x80022468	memory_card_initialize			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x80022550	memory_card_shutdown_events			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x800225b0	memory_card_start			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x800225d8	memory_card_stop			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
 GAME.EXE	0x80022600	func_80022600			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800226ec	func_800226ec			unknown	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800228c8	func_800228c8			unknown	unknown arg0;unknown *pointer1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80022b48	func_80022b48			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80022b48	memory_card_format			s32		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
 GAME.EXE	0x80022b74	func_80022b74			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80022ca0	func_80022ca0			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80023178	func_80023178			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80023288	func_80023288			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800232ac	func_800232ac			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002332c	func_8002332c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x800232ac	memory_card_wait_event			s32		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
+GAME.EXE	0x8002332c	memory_card_clear_events			void		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
 GAME.EXE	0x80023384	func_80023384			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80023430	func_80023430			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80023484	func_80023484			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
@@ -293,23 +301,25 @@ GAME.EXE	0x8002c670	func_8002c670			unknown		address-only	candidate	mips-live-in
 GAME.EXE	0x8002ce2c	func_8002ce2c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8002ce68	func_8002ce68			unknown	unknown arg0;unknown arg1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8002cf40	func_8002cf40			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d0a4	func_8002d0a4			void	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d0d4	func_8002d0d4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d248	func_8002d248			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d32c	func_8002d32c			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d3c4	func_8002d3c4			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d458	func_8002d458			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d484	func_8002d484			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d4b8	func_8002d4b8			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8002d0a4	fog_set_near			void	s32 distance	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d0d4	display_initialize			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d248	display_reset			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d32c	display_begin_frame			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d3c4	display_present_frame			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d458	tmd_select			void	u16 slot	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d484	tmd_get_object			KfTmdObject *	u16 index	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d4a8	tmd_set_current_vertices			void	SVECTOR *vertices	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d4b8	tmd_select_object_vertices			void	u16 index	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x8002d4f4	func_8002d4f4			unknown	unknown arg0;unknown *pointer1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d5dc	func_8002d5dc			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d8b0	func_8002d8b0			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002d8f0	func_8002d8f0			void	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8002d5dc	tmd_prepare_primitive_indices			void	KfTmdHeader *tmd	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d8b0	tmd_register			void	u16 slot;KfTmdHeader *tmd	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d8f0	tmd_set_slot			void	u16 slot;KfTmdHeader *tmd	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002d910	tmd_release_slot			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x8002d918	func_8002d918			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8002da94	func_8002da94			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002dbd8	func_8002dbd8			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002dc80	func_8002dc80			unknown	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8002dd28	func_8002dd28			void	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8002dbd8	tmd_transform_vertices			void	s32 count	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002dc80	tmd_transform_vertices_depth			void	s32 count;s16 depth	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x8002dd28	tmd_project_vertices			void	s32 count	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x8002ddb4	func_8002ddb4			unknown	unknown arg0;unknown *pointer1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8002e4dc	func_8002e4dc			unknown	unknown arg0;unknown *pointer1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8002ebe0	func_8002ebe0			unknown	unknown *object;unknown *pointer1;unknown arg2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
@@ -347,8 +357,8 @@ GAME.EXE	0x80033284	func_80033284			unknown		address-only	candidate	mips-live-in
 GAME.EXE	0x800335a0	func_800335a0			unknown	unknown *object;unknown *pointer1;unknown arg2;unknown *pointer3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80033994	func_80033994			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800339fc	func_800339fc			unknown	unknown arg0;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80033ab4	func_80033ab4			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80033afc	func_80033afc			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80033ab4	asset_registry_set			void	u16 index;KfAssetHeader *asset	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x80033afc	asset_registry_select			void	u16 index	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x80033b34	func_80033b34			unknown	unknown *object;unknown *pointer1;unknown arg2;unknown *pointer3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80033bfc	func_80033bfc			unknown	unknown *object;unknown *pointer1;unknown *pointer2	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80033cc0	func_80033cc0			unknown	unknown *object;unknown *pointer1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
@@ -357,12 +367,12 @@ GAME.EXE	0x80033ff4	func_80033ff4			unknown	unknown *object;unknown arg1	address
 GAME.EXE	0x80034070	func_80034070			unknown	unknown *object;unknown *pointer1;unknown arg2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80034344	func_80034344			unknown	unknown arg0;unknown *pointer1;unknown *pointer2;unknown arg3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800345e4	func_800345e4			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80034644	func_80034644			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80034674	func_80034674			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800346b0	func_800346b0			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800346f8	func_800346f8			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80034764	func_80034764			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x800347d0	func_800347d0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80034644	pool_reset			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x80034674	pool_mark_allocated			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x800346b0	pool_record_release			void	KfPoolRecord *record	supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x800346f8	pool_release_all			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x80034764	pool_release_stale			void		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
+GAME.EXE	0x800347d0	pool_allocate			KfPoolRecord *		supported	candidate	asm;cfg;callers;callees;KF1 display/tmd/pool counterparts	graphics runtime family reviewed with its KF1 counterparts
 GAME.EXE	0x80034818	func_80034818			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x8003494c	func_8003494c			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x800349bc	func_800349bc			unknown	unknown *object;unknown arg1	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review

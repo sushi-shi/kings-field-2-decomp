@@ -34,19 +34,57 @@ typedef struct {
 
 typedef char kf_cd_archive_size[sizeof(KfCdArchive) == 12 ? 1 : -1];
 
+enum {
+    KF_CD_REQUEST_CAPACITY = 16,
+    KF_CD_REQUEST_IDLE = 0
+};
+
+/* One queued asynchronous CD request; only the fields the reconstructed
+ * functions use are named. */
+typedef struct KfCdRequest {
+    u8 kind;
+    u8 phase;
+    u8 unknown_02[38];
+} KfCdRequest;
+
+typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
+
+/* CD layer state: event handles, VSync counters and the request ring. The
+ * ring is addressed relative to the counters and ends at the tail pointer,
+ * so they are one object. */
+typedef struct KfCdState {
+    long vsync_event;
+    u32 vsync_count;
+    u32 frame_count;
+    long error_event;
+    long complete_event;
+    u8 unknown_14[4];
+    long data_ready_event;
+    KfCdRequest requests[KF_CD_REQUEST_CAPACITY];
+    KfCdRequest *tail;
+    KfCdRequest *current;
+} KfCdState;
+
+typedef char kf_cd_state_size[sizeof(KfCdState) == 0x2a4 ? 1 : -1];
+
 extern char cd_path_prefix[5];
 extern char cd_version_suffix[3];
 extern KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
-extern long cd_error_event;
-extern long cd_complete_event;
-extern long cd_data_ready_event;
+extern KfCdState cd_state;
 
 s32 cd_bcd_to_int(u8 bcd);
 u32 cd_int_to_bcd(u8 value);
 u32 cd_location_to_sector(CdlLOC *location);
 void cd_sector_to_location(CdlLOC *location, u32 sector);
 void cd_location_add(CdlLOC *base, u32 sector_offset, CdlLOC *result);
+void cd_vsync_handler(void);
+void cd_complete_handler(void);
+void cd_data_ready_handler(void);
+void cd_error_handler(void);
 void cd_request_wait_idle(void);
+void cd_request_yield(void);
+void cd_request_service_vab(void);
+void cd_request_service_stream(void);
 s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
 u32 cd_archive_entry_size(u16 slot, u16 entry);
 void cd_report_error(s32 code);
@@ -57,5 +95,7 @@ void cd_archive_read(u16 slot, u16 entry, u_long *destination);
 u8 *cd_file_load(const char *name);
 s32 cd_file_load_into(u_long *destination, const char *name, u32 size);
 void cd_archive_open(u16 slot, const char *name);
+void cd_initialize(void);
+void cd_close_events(void);
 
 #endif

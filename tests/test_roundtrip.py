@@ -16,7 +16,9 @@ from elftools.elf.elffile import ELFFile
 from scripts.kf.delink import Datum, Function
 from scripts.kf.manifest import Unit
 from scripts.kf.mips_elf import STT_OBJECT, DefinedSymbol, MipsRelocation, write_mips_elf
-from scripts.kf.roundtrip import LINKER, SectionPlacement, UnitResult, audit, find_overlaps, plan, verify_unit
+from scripts.kf.roundtrip import (
+    LINKER, SectionPlacement, UnitResult, audit, find_overlaps, link_labels, plan, verify_unit,
+)
 from scripts.kf.sema.image import RetailImage
 
 
@@ -248,3 +250,24 @@ class LinkerTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class LinkLabelTests(unittest.TestCase):
+    def test_labels_are_image_local_and_unique(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory)
+            (config / "link_labels.tsv").write_text(
+                "# comment\nimage\tname\tva\tevidence\tnote\n"
+                "GAME.EXE\tBSS_END\t0x801da018\tasm\theap start\n"
+                "OPEN.EXE\tBSS_END\t0x800a0000\tasm\theap start\n"
+            )
+            self.assertEqual(link_labels("GAME.EXE", config), {"BSS_END": 0x801DA018})
+            self.assertEqual(link_labels("END.EXE", config), {})
+            with open(config / "link_labels.tsv", "a") as stream:
+                stream.write("GAME.EXE\tBSS_END\t0x801da01c\tasm\tduplicate\n")
+            with self.assertRaises(ValueError):
+                link_labels("GAME.EXE", config)
+
+    def test_missing_table_supplies_no_labels(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertEqual(link_labels("GAME.EXE", Path(directory)), {})

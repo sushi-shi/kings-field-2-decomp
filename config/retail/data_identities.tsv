@@ -1958,14 +1958,14 @@ GAME.EXE	0x80063ed4	0x2	DAT_80063ed4	unknown	load	undefined2		address-only	data.
 GAME.EXE	0x80063ed6	0x2	DAT_80063ed6	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063ed8	0x1	DAT_80063ed8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063eda	0x1	DAT_80063eda	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063edc	0x1	DAT_80063edc	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ede	0x1	DAT_80063ede	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80063edc	0x2	DAT_80063edc	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
+GAME.EXE	0x80063ede	0x2	DAT_80063ede	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
 GAME.EXE	0x80063eec	0x2	DAT_80063eec	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063eee	0x2	DAT_80063eee	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063ef0	0x1	DAT_80063ef0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063ef2	0x1	DAT_80063ef2	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ef4	0x1	DAT_80063ef4	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ef6	0x1	DAT_80063ef6	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80063ef4	0x2	DAT_80063ef4	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
+GAME.EXE	0x80063ef6	0x2	DAT_80063ef6	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
 GAME.EXE	0x80063ef8	0x2	DAT_80063ef8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063efa	0x2	DAT_80063efa	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063efc	0x1	DAT_80063efc	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2297,7 +2297,7 @@ GAME.EXE	0x8006d658	0x4	DAT_8006d658	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix
 GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1
 GAME.EXE	0x8006d68c	0x4	DAT_8006d68c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d690	0x4	DAT_8006d690	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	memory_card	supported	asm;cleared on every pad input by func_8001e484 and input_wait_release	counter reset by any input; increment site not yet reviewed
 GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d698	0x4	DAT_8006d698	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d69c	0x4	DAT_8006d69c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2417,11 +2417,11 @@ GAME.EXE	0x8006da08	0x2	DAT_8006da08	unknown	load	undefined2		address-only	data.
 GAME.EXE	0x8006da0a	0x2	DAT_8006da0a	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006da0c	0x2	DAT_8006da0c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006da10	0x4	DAT_8006da10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da18	0x4	DAT_8006da18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da20	0x4	DAT_8006da20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da28	0x4	DAT_8006da28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da30	0x4	DAT_8006da30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da58	0x4	DAT_8006da58	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006da18	0x4	memory_card_io_end_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpIOE event handle
+GAME.EXE	0x8006da20	0x4	memory_card_timeout_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpTIMOUT event handle
+GAME.EXE	0x8006da28	0x4	memory_card_new_device_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpNEW event handle
+GAME.EXE	0x8006da30	0x4	memory_card_error_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpERROR event handle
+GAME.EXE	0x8006da58	0x4	memory_card_buffer	global	load	u8 *	memory_card	supported	asm;set by memory_card_initialize;read/checksum base in func_80022b74	memory-card file I/O buffer pointer
 GAME.EXE	0x8006da60	0x4	DAT_8006da60	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006da68	0x4	DAT_8006da68	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006da70	0x4	DAT_8006da70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2471,10 +2471,12 @@ GAME.EXE	0x8006dbf0	0x4	DAT_8006dbf0	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006dbf4	0x4	DAT_8006dbf4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbf8	0x4	DAT_8006dbf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbfc	0x4	DAT_8006dbfc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x801b5d6c	0x4	cd_error_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpERROR event handle
-GAME.EXE	0x801b5d70	0x4	cd_complete_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpCOMP event handle
-GAME.EXE	0x801b5d78	0x4	cd_data_ready_event	global	bss	long	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	HwCdRom EvSpDR event handle
-GAME.EXE	0x801b6004	0x60	cd_archives	global	bss	KfCdArchive[8]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	open CD\\COM\\*.T archives by slot
+GAME.EXE	0x8006dc00	0x4000	memory_card_buffer_storage	global	bss	u8[0x4000]	memory_card	supported	asm;memory_card_initialize;0x4000-byte card reads into it	memory-card file I/O buffer
+GAME.EXE	0x800fba58	0x32000	display_primitive_memory	global	bss	u8[0x32000]	graphics	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members	split into the two 0x19000-byte primitive buffers by display_reset
+GAME.EXE	0x8017d140	0x17cf0	game_graphics_runtime	global	bss	KfGraphicsRuntimeGame	graphics	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members	display, TMD, asset, pool, notification and render state
+GAME.EXE	0x801b5d60	0x2a4	cd_state	global	bss	KfCdState	cd	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	CD events, VSync counters and the 16-request ring
+GAME.EXE	0x801b6004	0x60	cd_archives	global	bss	KfCdArchive[8]	cd	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	open CD\\COM\\*.T archives by slot
+GAME.EXE	0x801d9610	0x4	display_frame_cleared_word	global	bss	s32	graphics	supported	asm;only reference clears it in display_begin_frame	meaning unresolved; cleared once per frame
 OPEN.EXE	0x800114e4	0x4	DAT_800114e4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114e8	0x4	DAT_800114e8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114ec	0x4	DAT_800114ec	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

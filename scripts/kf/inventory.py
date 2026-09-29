@@ -407,6 +407,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         "CVECTOR": (4, 1),
         "DVECTOR": (4, 2),
         "DRAWENV": (0x5C, 4),
+        "EVECTOR": (0x2C, 4),
         "DISPENV": (0x14, 2),
         "POLY_F4": (0x18, 4),
         "POLY_FT4": (0x28, 4),

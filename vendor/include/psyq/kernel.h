@@ -30,6 +30,10 @@ extern void ExitCriticalSection(void);
 extern void ResetCallback(void);
 
 extern void InitHeap(void *head, long size);
+extern void InitCARD(long pad_enable);
+extern long StartCARD(void);
+extern long StopCARD(void);
+extern void ChangeClearPAD(long value);
 extern void InitCARD2(long pad_enable);
 extern void StartCARD2(void);
 extern void StopCARD2(void);

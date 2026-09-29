@@ -152,6 +152,14 @@ class ReachabilityTest(unittest.TestCase):
         self.assertEqual(len(report["references"]), 1)
         self.assertEqual(report["summary"]["issues"], {"unmodeled-target": 1})
 
+    def test_link_label_target_is_a_boundary_not_an_unmodeled_owner(self):
+        img = RetailImage.synthetic(IMAGE, 0x1000, b"\0" * 0x1000)
+        refs = (ref(0x1000, 0x1300),)
+        unlabelled = audit(IMAGE, (function(),), (), refs, img)
+        self.assertEqual(unlabelled["summary"]["issues"], {"unmodeled-target": 1})
+        labelled = audit(IMAGE, (function(),), (), refs, img, link_labels=frozenset({0x1300}))
+        self.assertEqual(labelled["summary"]["issues"], {})
+
     def test_partial_config_prefix_is_not_promoted_to_source_ownership(self):
         prefix = replace(datum(0x1200, 4, source="data_identities.tsv"),
                          note="referenced prefix; full array capacity unknown")

@@ -11,6 +11,18 @@ enum {
     CD_PATH_BYTES = 64
 };
 
+/* LIBAPI's HwCdRom, RCntCNT3, EvSpINT, EvSpCOMP, EvSpDR, EvSpERROR and
+ * EvMdINTR, which the Psy-Q 3.0 kit's headers do not define. */
+#define CD_EVENT_CLASS_CDROM 0xf0000003
+#define CD_EVENT_CLASS_VSYNC_COUNTER 0xf2000003
+enum {
+    CD_EVENT_SPEC_INTERRUPT = 0x0002,
+    CD_EVENT_SPEC_COMPLETE = 0x0020,
+    CD_EVENT_SPEC_DATA_READY = 0x0040,
+    CD_EVENT_SPEC_ERROR = 0x8000,
+    CD_EVENT_MODE_INTERRUPT = 0x1000
+};
+
 RODATA(0x80011074, 0x21)
 
 DATA(0x8006d680, 0x5)
@@ -44,9 +56,9 @@ void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
     s32 result;
 
     cd_request_wait_idle();
-    DisableEvent(cd_error_event);
-    DisableEvent(cd_complete_event);
-    DisableEvent(cd_data_ready_event);
+    DisableEvent(cd_state.error_event);
+    DisableEvent(cd_state.complete_event);
+    DisableEvent(cd_state.data_ready_event);
     CdControl(CdlPause, NULL, NULL);
     for (; attempt < CD_READ_ATTEMPTS; attempt++) {
         CdControl(CdlSetloc, (u_char *)location, NULL);
@@ -59,9 +71,9 @@ void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
             break;
         }
     }
-    EnableEvent(cd_error_event);
-    EnableEvent(cd_complete_event);
-    EnableEvent(cd_data_ready_event);
+    EnableEvent(cd_state.error_event);
+    EnableEvent(cd_state.complete_event);
+    EnableEvent(cd_state.data_ready_event);
     if (failed == 1) {
         cd_report_error(KF_CD_ERROR_READ);
     }
@@ -71,7 +83,7 @@ ADDRESS(0x80018240, 0x58)
 u8 *cd_extent_load(KfCdExtent *extent)
 {
     s32 size = (extent->size + KF_CD_SECTOR_BYTES - 1) & -KF_CD_SECTOR_BYTES;
-    u8 *data = (u8 *)memory_allocate(size);
+    u8 *data = memory_allocate(size);
 
     cd_read_sectors(&extent->pos, (u_long *)data, size >> KF_CD_SECTOR_SHIFT);
     return data;
@@ -120,7 +132,7 @@ u8 *cd_file_load(const char *name)
         cd_report_error(KF_CD_ERROR_SEARCH);
     }
     size = (file.size + KF_CD_SECTOR_BYTES - 1) & -KF_CD_SECTOR_BYTES;
-    data = (u8 *)memory_allocate(size);
+    data = memory_allocate(size);
     cd_read_sectors(&file.pos, (u_long *)data, size >> KF_CD_SECTOR_SHIFT);
     return data;
 }
@@ -172,4 +184,46 @@ void cd_archive_open(u16 slot, const char *name)
     cd_extent_read_into((u_long *)table, &archive->extent, KF_CD_SECTOR_BYTES);
     archive->sector_offsets = (u16 *)memory_allocate((table[0] + 1) * 2);
     resource_copy_halfwords(archive->sector_offsets, &table[1], table[0] + 1);
+}
+
+ADDRESS(0x800185c0, 0x13c)
+void cd_initialize(void)
+{
+    KfCdRequest *request;
+    s32 index;
+
+    EnterCriticalSection();
+    cd_state.vsync_count = 0;
+    cd_state.vsync_event = OpenEvent(CD_EVENT_CLASS_VSYNC_COUNTER, CD_EVENT_SPEC_INTERRUPT,
+        CD_EVENT_MODE_INTERRUPT, cd_vsync_handler);
+    EnableEvent(cd_state.vsync_event);
+    cd_state.frame_count = 0;
+    request = cd_state.requests;
+    for (index = 0; index < KF_CD_REQUEST_CAPACITY; index++) {
+        request->kind = KF_CD_REQUEST_IDLE;
+        request->phase = 0;
+        request++;
+    }
+    cd_state.tail = cd_state.current = cd_state.requests;
+    cd_state.error_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_ERROR,
+        CD_EVENT_MODE_INTERRUPT, cd_error_handler);
+    cd_state.complete_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_COMPLETE,
+        CD_EVENT_MODE_INTERRUPT, cd_complete_handler);
+    cd_state.data_ready_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_DATA_READY,
+        CD_EVENT_MODE_INTERRUPT, cd_data_ready_handler);
+    EnableEvent(cd_state.error_event);
+    EnableEvent(cd_state.complete_event);
+    EnableEvent(cd_state.data_ready_event);
+    ExitCriticalSection();
+}
+
+ADDRESS(0x800186fc, 0x68)
+void cd_close_events(void)
+{
+    EnterCriticalSection();
+    CloseEvent(cd_state.vsync_event);
+    CloseEvent(cd_state.error_event);
+    CloseEvent(cd_state.complete_event);
+    CloseEvent(cd_state.data_ready_event);
+    ExitCriticalSection();
 }

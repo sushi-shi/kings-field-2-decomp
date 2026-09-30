@@ -41,13 +41,13 @@ int cd_file_load_into(u_long *destination, const char *relative_path)
     while (--sectors != -1) {
         if (CdReady(0, 0) != CdlDataReady) {
             CdControl(CdlSetloc, (u_char *)&start, 0);
-            CdControl(CdlPause, 0, 0);
+            CdPause();
             return KF_CD_READ_FAILED;
         }
         CdGetSector(destination, KF_CD_SECTOR_WORDS);
         destination += KF_CD_SECTOR_WORDS;
     }
     CdControl(CdlSetloc, (u_char *)&start, 0);
-    CdControl(CdlPause, 0, 0);
+    CdPause();
     return KF_CD_LOADED;
 }

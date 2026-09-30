@@ -1,0 +1,65 @@
+# GAME menu and memory-card follow-up
+
+This 25-function GAME campaign follows direct calls from the menu frame,
+item-model, and memory-card flows. Each function's retail extent, disassembly,
+CFG, callers, direct calls, strings, and prior match state was inspected. The
+address span is a survey boundary; it is not evidence of a single original TU.
+
+| GAME address | Retail role and decisive evidence | Verdict |
+| --- | --- | --- |
+| `0x8001876c` | top menu controller; enters display mode, draws windows, dispatches to item/card flows | unclaimed; dispatch state and indirect paths WIP |
+| `0x800189f0` | formats player values into a six-digit glyph row, then draws it | unclaimed; arithmetic source expression and player-state inputs WIP |
+| `0x80018ac8` | item menu controller; list setup, item-model loading, frame and input calls | unclaimed; selection record and state flow WIP |
+| `0x80018d08` | filters a 24-byte glyph-row table using a caller byte mask and writes two output streams | unclaimed; table at `0x80064c30` has no reviewed extent/identity |
+| `0x80018dec` | related 24-byte glyph-row filter with player-dependent exclusions | **exact in later follow-up**; player-state equipped IDs establish the exclusion owner |
+| `0x80018f8c` | menu action updates player equipment/stat state and emits sound cue | unclaimed; player-state transition model WIP |
+| `0x800217f0` | nine-slice menu panel using sprite descriptors 11–19 | **exact**, 624/624 bytes |
+| `0x80021c8c` | enters menu display mode, snapshots graphics buffers and music state | WIP, **99.956985%**; only 32-byte retail versus 24-byte compiled stack frame remains |
+| `0x80021e00` | restores display buffers and sequence state on menu exit | **exact**, 272/272 bytes |
+| `0x800221e8` | loads menu item-model archive entry into TMD slot 3 and resets preview vectors | **exact**, 212/212 bytes |
+| `0x800222bc` | releases allocated menu item model | already exact |
+| `0x80022468` | initializes memory-card events | already exact |
+| `0x80022550` | shuts down memory-card events | already exact |
+| `0x800225b0` | starts card services | already exact |
+| `0x800225d8` | stops card services and restores pad | already exact |
+| `0x80022600` | probes and removes stale card file with event waits | already exact |
+| `0x800226ec` | enumerates card directory, parses save names and slot numbers | unclaimed; card-entry record and directory extent WIP |
+| `0x800228c8` | reads card files and checks header/name fields | unclaimed; card record and failure-state model WIP |
+| `0x80022b48` | calls SDK card format wrapper | already exact |
+| `0x80022b74` | reads a card save and checks payload checksum | unclaimed; header and buffer ownership WIP |
+| `0x80022ca0` | creates/writes card save; draws icon and fills card metadata | unclaimed; card layout and large state flow WIP |
+| `0x80023178` | writes Shift-JIS player experience and level digits into card label | WIP, **93.529410%**; CFG and signed divisions agree, register/order residue remains |
+| `0x80023288` | sums card payload bytes | already exact |
+| `0x800232ac` | waits for one of four card events | already exact |
+| `0x8002332c` | clears card event states | already exact |
+
+`0x800217f0` uses the reviewed 20-entry, 12-byte sprite table at
+`0x80063e80`; its calls, six arguments, panel geometry, and 19 direct
+relocation sites match retail. The display entry and exit now share the
+24-byte typed primitive-buffer snapshot at `0x8006dbe8` and the one-byte
+music snapshot at `0x8006d9e8`. Both snapshots are BSS. The exit function is
+strict exact. The entry function's instruction listing, CFG, calls, and
+referents agree with retail except for the stack-frame size; no unsupported
+local was added to force the frame.
+
+The item-model loader uses the KF1 counterpart's resource lifecycle as a
+guide, but follows GAME's separate archive-size, allocation, archive-read,
+and TMD-registration calls. A byte item ID, the player's menu-enable byte,
+and early-return control flow produce an identical retail instruction listing.
+Its strict result is 100%. The preview translation and rotation at
+`0x8006da00` and `0x8006da08` are each SDK `SVECTOR`s, followed by the
+32-bit rotation step at `0x8006da10`; prior 2-byte Ghidra fragments were
+interior fields, not independent globals.
+
+The card-label probe at `0x80023178` preserves the two decimal loops and
+Shift-JIS byte layout, using the player's 32-bit experience and 8-bit level.
+The level must promote to signed `int`: retail emits signed division and its
+zero/overflow checks. The current object still differs in register selection
+and some scheduling; the source is WIP, not an exact claim. No function in
+this batch was attributed to vendored code.
+
+Focused `kf match` verified the new item-model function at strict 100% and
+reported the card-label probe at 93.529410%, with GAME target relink 163/163.
+The command exits at the repository-wide known-reference data-ownership
+closure. The parent campaign owner will run the full build and repository
+tests.

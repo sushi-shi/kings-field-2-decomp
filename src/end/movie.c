@@ -58,7 +58,7 @@ void ending_play_movie(void)
             }
         }
     } while (StrFrame < ENDING_LAST_FRAME);
-    CdControl(CdlStop, 0, 0);
+    CdStop();
     for (;;) {
     }
     /* Unreachable: the cleanup OPEN's movie loop runs after its stream. The

@@ -1,6 +1,50 @@
 #include <kf/lib/address.h>
 #include <kf/game/card.h>
+#include <kf/game/player.h>
 #include <psyq/kernel.h>
+
+ADDRESS(0x80023178, 0x110)
+void func_80023178(u8 *label, s32 slot_glyph)
+{
+    s32 experience = player_state.experience;
+    s32 level = player_state.level;
+    s32 digit;
+    s32 index;
+
+    label[34] = 0x82;
+    label[35] = slot_glyph + 0x4f;
+    for (index = 0; index < 6; index++) {
+        digit = experience % 10;
+        experience /= 10;
+        label[4 + (25 - index) * 2] = 0x82;
+        label[5 + (25 - index) * 2] = digit + 0x4f;
+        if (experience == 0)
+            index = 6;
+    }
+
+    for (index = 0; index < 2; index++) {
+        digit = level % 10;
+        level /= 10;
+        label[4 + (30 - index) * 2] = 0x82;
+        label[5 + (30 - index) * 2] = digit + 0x4f;
+        if (level == 0)
+            index = 2;
+    }
+}
+
+ADDRESS(0x80023288, 0x24)
+u32 memory_card_payload_byte_sum(const u8 *payload)
+{
+    u32 sum = 0;
+    s32 index;
+
+    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0;) {
+        sum += *payload;
+        index--;
+        payload++;
+    }
+    return sum;
+}
 
 ADDRESS(0x800232ac, 0x80)
 s32 memory_card_wait_event(void)

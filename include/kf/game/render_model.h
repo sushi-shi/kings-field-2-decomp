@@ -1,0 +1,32 @@
+#ifndef KF_GAME_RENDER_MODEL_H
+#define KF_GAME_RENDER_MODEL_H
+
+#include <kf/lib/types.h>
+#include <kf/game/pool.h>
+#include <psyq/sdk.h>
+
+enum { KF_RENDER_MODEL_ROW_COUNT = 15 };
+
+/* Fourteen live initialized rows followed by a full-width 0xff sentinel. */
+typedef struct KfRenderModelRow {
+    u8 state;
+    u8 animation_clip;
+    u8 lighting_index;
+    u8 unknown_03;
+    u16 asset_id;
+    u16 animation_phase;
+    SVECTOR scale;
+    SVECTOR translation;
+    SVECTOR rotation;
+    KfPoolRecord *animation_state;
+} KfRenderModelRow;
+
+typedef char kf_render_model_row_size[sizeof(KfRenderModelRow) == 36 ? 1 : -1];
+typedef char kf_render_model_rotation_offset[
+    (u32)&((KfRenderModelRow *)0)->rotation == 24 ? 1 : -1];
+typedef char kf_render_model_animation_state_offset[
+    (u32)&((KfRenderModelRow *)0)->animation_state == 32 ? 1 : -1];
+
+extern KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT];
+
+#endif

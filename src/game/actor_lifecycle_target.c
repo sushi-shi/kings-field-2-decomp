@@ -1,0 +1,118 @@
+#include <kf/lib/address.h>
+#include <kf/lib/math.h>
+#include <kf/game/actor.h>
+#include <kf/game/player.h>
+
+extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
+extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
+
+ADDRESS(0x8003983c, 0x31c)
+void func_8003983c(void)
+{
+    KfActor *actor = actor_state.current;
+    KfTargetGroup *group = actor_state.active_group;
+    u8 slot_state = actor->slot_state;
+    s32 distance;
+
+    switch (actor->lifecycle) {
+    case 0:
+        distance = vector_distance_to_point(
+            &actor->position, player_state.camera_position.vx,
+            KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
+            (group->unknown_0a[0] + 1) << KF_FIXED11_BITS, 0, 0);
+        if (distance == KF_DISTANCE_NONE) {
+            return;
+        }
+
+        if (slot_state == 3 || slot_state == 4) {
+            if (actor_state.other_actor->lifecycle != 1) {
+                return;
+            }
+            actor_prepare_and_initialize(actor_state.current);
+            actor_select_best_target(distance);
+            return;
+        }
+
+        if (slot_state == 2) {
+            u8 chance = actor->unknown_0a[0];
+            if (chance != 0xff && chance < (rand() >> 4)) {
+                return;
+            }
+        } else {
+            if (distance < (group->unknown_0a[0] << KF_FIXED11_BITS) &&
+                ((u8 *)&player_state.unknown_108[1])[0] == 0) {
+                goto set_dormant;
+            }
+            if (slot_state == 1) {
+                goto check_actor_overlap;
+            }
+            if (slot_state != 0) {
+                goto set_dormant;
+            }
+            if (actor->unknown_0a[0] == 0 ||
+                actor->unknown_0a[0] < (rand() >> 7)) {
+                goto set_dormant;
+            }
+        }
+
+    check_actor_overlap:
+        if (func_8003a9f4(actor->position.vx, actor->position.vy,
+                          actor->position.vz, group->unknown_12,
+                          group->unknown_14) != -1) {
+            goto set_dormant;
+        }
+
+    activate:
+        actor_prepare_and_initialize(actor_state.current);
+        {
+            KfTargetCandidate *target = actor_find_target_of_type(group, 0x15);
+            if (target == 0) {
+                target = actor_find_target_of_type(group, 0x1a);
+            }
+            if (target != 0) {
+                actor_set_target(actor, target);
+                return;
+            }
+        }
+        actor_select_best_target(distance);
+        return;
+
+    set_dormant:
+        if (slot_state != 2) {
+            actor->lifecycle = 2;
+        }
+        return;
+
+    case 1:
+        distance = vector_distance_to_point(
+            &actor->position, player_state.camera_position.vx,
+            KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
+            group->unknown_0a[1] << KF_FIXED11_BITS, 0, 0);
+        if (distance != KF_DISTANCE_NONE) {
+            return;
+        }
+        func_8002b73c(actor->position.vx, actor->position.vz,
+                       actor->unknown_1c, -1);
+        actor->lifecycle = 0;
+        actor_set_home_position(actor);
+        return;
+
+    case 2:
+        if (slot_state == 3 || slot_state == 4) {
+            if (actor_state.other_actor->lifecycle == 1) {
+                return;
+            }
+        } else {
+            distance = vector_distance_to_point(
+                &actor->position, player_state.camera_position.vx,
+                KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
+                group->unknown_0a[1] << KF_FIXED11_BITS, 0, 0);
+            if (distance != KF_DISTANCE_NONE) {
+                return;
+            }
+        }
+        actor->lifecycle = 0;
+        actor_set_home_position(actor);
+        return;
+    }
+}

@@ -6,7 +6,8 @@
 
 /* Standard Sony TMD layout as registered by GAME.EXE. */
 enum {
-    KF_TMD_HEADER_BYTES = 12
+    KF_TMD_HEADER_BYTES = 12,
+    KF_TMD_SLOT_MENU_ITEM = 3
 };
 
 typedef struct KfTmdHeader {
@@ -40,6 +41,8 @@ void tmd_select_object_vertices(u16 index);
 void tmd_prepare_primitive_indices(KfTmdHeader *tmd);
 void tmd_register(u16 slot, KfTmdHeader *tmd);
 void tmd_set_slot(u16 slot, KfTmdHeader *tmd);
+void func_8002d918(s32 count);
+void func_8002da94(s32 count);
 void tmd_transform_vertices(s32 count);
 void tmd_transform_vertices_depth(s32 count, s16 depth);
 void tmd_project_vertices(s32 count);

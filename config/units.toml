@@ -92,15 +92,9 @@ source = "src/game/game.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.audio_spatial"
+unit = "game.audio_runtime"
 image = "GAME.EXE"
-source = "src/game/audio_spatial.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.audio_play_sound"
-image = "GAME.EXE"
-source = "src/game/audio_play_sound.c"
+source = "src/game/audio_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -116,39 +110,279 @@ source = "src/game/vector_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.vector_actor_helpers"
+image = "GAME.EXE"
+source = "src/game/vector_actor_helpers.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.vector_distance"
 image = "GAME.EXE"
 source = "src/game/vector_distance.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.resource_copy"
+unit = "game.vector_distance_between"
 image = "GAME.EXE"
-source = "src/game/resource_copy.c"
+source = "src/game/vector_distance_between.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.memory"
+unit = "game.actor_random_scalar"
 image = "GAME.EXE"
-source = "src/game/memory.c"
+source = "src/game/actor_random_scalar.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.cd_location"
+unit = "game.actor_fixed_interpolation"
 image = "GAME.EXE"
-source = "src/game/cd_location.c"
+source = "src/game/actor_fixed_interpolation.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.cd_checksum"
+unit = "game.actor_trajectory_math"
 image = "GAME.EXE"
-source = "src/game/cd_checksum.c"
+source = "src/game/actor_trajectory_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.cd_archive"
+unit = "game.world_translate"
 image = "GAME.EXE"
-source = "src/game/cd_archive.c"
+source = "src/game/world_translate.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.resource_transition_phase"
+image = "GAME.EXE"
+source = "src/game/resource_transition_phase.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.cd_memory"
+image = "GAME.EXE"
+source = "src/game/cd_memory.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_location_number"
+image = "GAME.EXE"
+source = "src/game/menu_location_number.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_selection"
+image = "GAME.EXE"
+source = "src/game/menu_item_selection.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_glyph_rows"
+image = "GAME.EXE"
+source = "src/game/menu_glyph_rows.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_player_clamps"
+image = "GAME.EXE"
+source = "src/game/menu_player_clamps.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_selection_rows"
+image = "GAME.EXE"
+source = "src/game/menu_selection_rows.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_equipment_list"
+image = "GAME.EXE"
+source = "src/game/menu_equipment_list.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_glyph_selection_rows"
+image = "GAME.EXE"
+source = "src/game/menu_glyph_selection_rows.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_magic_list"
+image = "GAME.EXE"
+source = "src/game/menu_magic_list.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_simple_loop"
+image = "GAME.EXE"
+source = "src/game/menu_simple_loop.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_equipment"
+image = "GAME.EXE"
+source = "src/game/menu_item_equipment.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_choice_controller"
+image = "GAME.EXE"
+source = "src/game/menu_card_choice_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_rows"
+image = "GAME.EXE"
+source = "src/game/menu_card_rows.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_panel"
+image = "GAME.EXE"
+source = "src/game/menu_card_panel.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_labels"
+image = "GAME.EXE"
+source = "src/game/menu_card_labels.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_format_flow"
+image = "GAME.EXE"
+source = "src/game/menu_card_format_flow.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_label_templates"
+image = "GAME.EXE"
+source = "src/game/menu_label_templates.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_code_primary"
+image = "GAME.EXE"
+source = "src/game/menu_item_code_primary.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_code_secondary"
+image = "GAME.EXE"
+source = "src/game/menu_item_code_secondary.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_list_choice_controller"
+image = "GAME.EXE"
+source = "src/game/menu_list_choice_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_input_poll"
+image = "GAME.EXE"
+source = "src/game/menu_input_poll.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_pair_rows"
+image = "GAME.EXE"
+source = "src/game/menu_pair_rows.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_preview_choice"
+image = "GAME.EXE"
+source = "src/game/menu_preview_choice.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_draw_window"
+image = "GAME.EXE"
+source = "src/game/menu_draw_window.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_two_option"
+image = "GAME.EXE"
+source = "src/game/menu_two_option.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_blit_sprite_translucent"
+image = "GAME.EXE"
+source = "src/game/menu_blit_sprite_translucent.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_blit_sprite"
+image = "GAME.EXE"
+source = "src/game/menu_blit_sprite.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_blit_sprite_fixed_clut"
+image = "GAME.EXE"
+source = "src/game/menu_blit_sprite_fixed_clut.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_draw_string"
+image = "GAME.EXE"
+source = "src/game/menu_draw_string.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_draw_number"
+image = "GAME.EXE"
+source = "src/game/menu_draw_number.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_panel_nine_slice"
+image = "GAME.EXE"
+source = "src/game/menu_panel_nine_slice.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_frame_begin"
+image = "GAME.EXE"
+source = "src/game/menu_frame_begin.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_present_frame"
+image = "GAME.EXE"
+source = "src/game/menu_present_frame.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_display_state"
+image = "GAME.EXE"
+source = "src/game/menu_display_state.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.primitive_buffer"
+image = "GAME.EXE"
+source = "src/game/primitive_buffer.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_format_number"
+image = "GAME.EXE"
+source = "src/game/menu_format_number.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_model"
+image = "GAME.EXE"
+source = "src/game/menu_item_model.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_sound_cue"
+image = "GAME.EXE"
+source = "src/game/menu_sound_cue.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -158,9 +392,15 @@ source = "src/game/memory_card_events.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.memory_card_format"
+unit = "game.memory_card_probe"
 image = "GAME.EXE"
-source = "src/game/memory_card_format.c"
+source = "src/game/memory_card_probe.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_directory"
+image = "GAME.EXE"
+source = "src/game/memory_card_directory.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -170,27 +410,99 @@ source = "src/game/memory_card_wait.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_progress"
+unit = "game.player_collision_bounds"
 image = "GAME.EXE"
-source = "src/game/player_progress.c"
+source = "src/game/player_collision_bounds.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_motion"
+unit = "game.player_distance_margin"
 image = "GAME.EXE"
-source = "src/game/player_motion.c"
+source = "src/game/player_distance_margin.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_distance"
+unit = "game.player_reset_view"
 image = "GAME.EXE"
-source = "src/game/player_distance.c"
+source = "src/game/player_reset_view.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_vitals"
+unit = "game.player_core_run"
 image = "GAME.EXE"
-source = "src/game/player_vitals.c"
+source = "src/game/player_core_run.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_status_cap"
+image = "GAME.EXE"
+source = "src/game/player_status_cap.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_radial_damage"
+image = "GAME.EXE"
+source = "src/game/player_radial_damage.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_state_equipment"
+image = "GAME.EXE"
+source = "src/game/player_state_equipment.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_weapon_transform_power"
+image = "GAME.EXE"
+source = "src/game/player_weapon_transform_power.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_magic_dispatch"
+image = "GAME.EXE"
+source = "src/game/player_magic_dispatch.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_collision_sound"
+image = "GAME.EXE"
+source = "src/game/player_collision_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_camera_turn"
+image = "GAME.EXE"
+source = "src/game/player_camera_turn.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_interval_71_80"
+image = "GAME.EXE"
+source = "src/game/player_interval_71_80.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_reaction"
+image = "GAME.EXE"
+source = "src/game/player_reaction.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.collision_grid_sample"
+image = "GAME.EXE"
+source = "src/game/collision_grid_sample.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.collision_height_wrappers"
+image = "GAME.EXE"
+source = "src/game/collision_height_wrappers.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.floor_item_find_free"
+image = "GAME.EXE"
+source = "src/game/floor_item_find_free.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -200,15 +512,111 @@ source = "src/game/display.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.tmd_register"
+unit = "game.tmd_prepare_primitive_indices"
 image = "GAME.EXE"
-source = "src/game/tmd_register.c"
+source = "src/game/tmd_prepare_primitive_indices.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.tmd_transform"
+unit = "game.tmd_pipeline"
 image = "GAME.EXE"
-source = "src/game/tmd_transform.c"
+source = "src/game/tmd_pipeline.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_map"
+image = "GAME.EXE"
+source = "src/game/render_map.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_map_cell"
+image = "GAME.EXE"
+source = "src/game/render_map_cell.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.graphics_textured_quad"
+image = "GAME.EXE"
+source = "src/game/graphics_textured_quad.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.graphics_sliding_panels"
+image = "GAME.EXE"
+source = "src/game/graphics_sliding_panels.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.graphics_color_bytes_draw"
+image = "GAME.EXE"
+source = "src/game/graphics_color_bytes_draw.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.graphics_color_bytes_set"
+image = "GAME.EXE"
+source = "src/game/graphics_color_bytes_set.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.collision_channel_draw"
+image = "GAME.EXE"
+source = "src/game/collision_channel_draw.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.collision_channel_add"
+image = "GAME.EXE"
+source = "src/game/collision_channel_add.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_weapon_render"
+image = "GAME.EXE"
+source = "src/game/player_weapon_render.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_world_model"
+image = "GAME.EXE"
+source = "src/game/render_world_model.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_animated_object"
+image = "GAME.EXE"
+source = "src/game/render_animated_object.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.resource_runtime"
+image = "GAME.EXE"
+source = "src/game/resource_runtime.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.notification_quad"
+image = "GAME.EXE"
+source = "src/game/notification_quad.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.notify_enqueue"
+image = "GAME.EXE"
+source = "src/game/notify_enqueue.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_frame"
+image = "GAME.EXE"
+source = "src/game/render_frame.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_model_render"
+image = "GAME.EXE"
+source = "src/game/menu_model_render.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -218,9 +626,351 @@ source = "src/game/asset_registry.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.animation_keyframe"
+image = "GAME.EXE"
+source = "src/game/animation_keyframe.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.animation_sparse_vertices"
+image = "GAME.EXE"
+source = "src/game/animation_sparse_vertices.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.animation_sparse_find"
+image = "GAME.EXE"
+source = "src/game/animation_sparse_find.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.asset_vertex_count"
+image = "GAME.EXE"
+source = "src/game/asset_vertex_count.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.pool"
 image = "GAME.EXE"
 source = "src/game/pool.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_placed_expand"
+image = "GAME.EXE"
+source = "src/game/map_placed_expand.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_transition"
+image = "GAME.EXE"
+source = "src/game/menu_transition.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_cell_pattern_place"
+image = "GAME.EXE"
+source = "src/game/map_cell_pattern_place.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_reset"
+image = "GAME.EXE"
+source = "src/game/map_object_reset.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_collision_query"
+image = "GAME.EXE"
+source = "src/game/map_object_collision_query.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object"
+image = "GAME.EXE"
+source = "src/game/map_object.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_spawn_scatter"
+image = "GAME.EXE"
+source = "src/game/map_object_spawn_scatter.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_vertex_world"
+image = "GAME.EXE"
+source = "src/game/map_object_vertex_world.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_motion"
+image = "GAME.EXE"
+source = "src/game/map_object_motion.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.frame_step_cd_service"
+image = "GAME.EXE"
+source = "src/game/frame_step_cd_service.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_pool_find"
+image = "GAME.EXE"
+source = "src/game/actor_pool_find.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_set_home_position"
+image = "GAME.EXE"
+source = "src/game/actor_set_home_position.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_copy_group_defaults"
+image = "GAME.EXE"
+source = "src/game/actor_copy_group_defaults.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_initialize_from_group"
+image = "GAME.EXE"
+source = "src/game/actor_initialize_from_group.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_home_wrapper"
+image = "GAME.EXE"
+source = "src/game/actor_home_wrapper.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_prepare_initialize"
+image = "GAME.EXE"
+source = "src/game/actor_prepare_initialize.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_pool_clear"
+image = "GAME.EXE"
+source = "src/game/actor_pool_clear.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_set_target"
+image = "GAME.EXE"
+source = "src/game/actor_set_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_select_best_target"
+image = "GAME.EXE"
+source = "src/game/actor_select_best_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_target_distance"
+image = "GAME.EXE"
+source = "src/game/actor_target_distance.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_find_target"
+image = "GAME.EXE"
+source = "src/game/actor_find_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_select_group_target"
+image = "GAME.EXE"
+source = "src/game/actor_select_group_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_target_reset"
+image = "GAME.EXE"
+source = "src/game/actor_target_reset.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_byte_0c_set"
+image = "GAME.EXE"
+source = "src/game/actor_byte_0c_set.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_byte_0c_set_changed"
+image = "GAME.EXE"
+source = "src/game/actor_byte_0c_set_changed.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_lifecycle_target"
+image = "GAME.EXE"
+source = "src/game/actor_lifecycle_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_fixed_curve"
+image = "GAME.EXE"
+source = "src/game/actor_fixed_curve.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_player_damage"
+image = "GAME.EXE"
+source = "src/game/actor_player_damage.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_animation"
+image = "GAME.EXE"
+source = "src/game/actor_animation.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_motion_collision"
+image = "GAME.EXE"
+source = "src/game/actor_motion_collision.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_motion"
+image = "GAME.EXE"
+source = "src/game/actor_motion.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_group_position"
+image = "GAME.EXE"
+source = "src/game/actor_group_position.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_spatial_sound"
+image = "GAME.EXE"
+source = "src/game/actor_spatial_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_fixup_group_targets"
+image = "GAME.EXE"
+source = "src/game/actor_fixup_group_targets.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_spatial_sound"
+image = "GAME.EXE"
+source = "src/game/effect_spatial_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_collision_probe"
+image = "GAME.EXE"
+source = "src/game/effect_collision_probe.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_update"
+image = "GAME.EXE"
+source = "src/game/effect_update.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_rotate_scale_offset_y"
+image = "GAME.EXE"
+source = "src/game/effect_rotate_scale_offset_y.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_move_probe"
+image = "GAME.EXE"
+source = "src/game/effect_move_probe.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_aim_and_move"
+image = "GAME.EXE"
+source = "src/game/effect_aim_and_move.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_target_motion"
+image = "GAME.EXE"
+source = "src/game/effect_target_motion.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_scale_step"
+image = "GAME.EXE"
+source = "src/game/effect_scale_step.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_spawn_zero_direction"
+image = "GAME.EXE"
+source = "src/game/effect_spawn_zero_direction.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_spawn_motion"
+image = "GAME.EXE"
+source = "src/game/effect_spawn_motion.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_scatter"
+image = "GAME.EXE"
+source = "src/game/effect_scatter.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_reset"
+image = "GAME.EXE"
+source = "src/game/effect_reset.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.audio_sound_wrappers"
+image = "GAME.EXE"
+source = "src/game/audio_sound_wrappers.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_pose_interpolate"
+image = "GAME.EXE"
+source = "src/game/event_pose_interpolate.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_animation_seek_phase"
+image = "GAME.EXE"
+source = "src/game/actor_animation_seek_phase.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.message_stream_find_marker"
+image = "GAME.EXE"
+source = "src/game/message_stream_find_marker.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_map_object_spawn"
+image = "GAME.EXE"
+source = "src/game/event_map_object_spawn.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_counter"
+image = "GAME.EXE"
+source = "src/game/event_counter.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_state"
+image = "GAME.EXE"
+source = "src/game/event_state.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

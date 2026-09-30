@@ -132,7 +132,7 @@ ADDRESS_AT("OPEN", 0x80013c30, 0x48)
 ADDRESS_AT("END", 0x800125e0, 0x48)
 void strKickCD(CdlLOC *loc)
 {
-    while (CdControl(CdlSeekL, (u_char *)loc, 0) == 0) {
+    while (CdSeekL(loc) == 0) {
     }
     while (CdRead2(CdlModeStream | CdlModeSpeed | CdlModeRT | CdlModeSF) == 0) {
     }

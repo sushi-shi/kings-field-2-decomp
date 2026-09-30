@@ -1,24 +1,111 @@
 # MANUALLY MANAGED - target C layouts used by semantic function/data identities.
 # A supported layout proves current size/offset modeling, not an original typedef spelling.
 name	size	layout_confidence	evidence	note
-KfAssetHeader	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
+KfActorHalfword4a	0x2	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
+KfActorHalfword4aBytes	0x2	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
+KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
+KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
+KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
+KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset
+KfAudioVabStreamSlot	0x08	supported	game/audio.h;audio_acquire_vab_stream_slot;audio_vab_stream_callback	stream slot state and transfer buffer
+KfBss801c7540	0x11844	supported	asm;player_set_equipment_slot;game_main_loop startup clear	layout from the reconstructed header
+KfCdArchive	0x0c	supported	game/cd.h;cd_archive_open;cd_archive_entry_extent	sector-offset table and file extent
+KfCdExtent	0x08	supported	game/cd.h;cd_file_load;cd_archive_open	CD location and byte extent
 KfCdRequest	0x28	supported	game/cd.h;asm;cd_initialize;func_80017d54	one queued asynchronous CD request
+KfCdRequestPayload	0x08	supported	game/cd.h;cd_request_service_stream;audio_vab_stream_callback	overlaid image rectangle and VAB stream payload
+KfCdRequestPayloadVab	0x08	supported	game/cd.h;audio_vab_stream_callback	VAB stream phase and slot state
+KfCdRequestStreamChunk	0x04	supported	game/cd.h;cd_stream_limit_chunk	two halfword stream counters
+KfCdRequestStreamState	0x04	supported	game/cd.h;audio_vab_stream_callback;cd_stream_limit_chunk	overlaid VAB slot pointer and chunk counters
 KfCdState	0x2a4	supported	game/cd.h;asm;cd_initialize;cd_close_events;cd_read_sectors	CD events, VSync counters and request ring
+KfCollisionDefaultRow	0x2c	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
+KfCollisionDefaultTail	0x6	supported	game/graphics.h;asm;collision defaults	six-byte default filter tail
+KfCollisionFilterPayload	0x2c	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
+KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
+KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
+KfCollisionRotation	0x14	supported	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
+KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collision row
+KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEffectState	0x2a8c	supported	asm;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEquipmentRecord	0x20	supported	asm;player_set_equipment_slot;game_main_loop startup clear	layout from the reconstructed header
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
+KfEventArena	0x3800	supported	game/event_state.h;func_800482f8;save pointer helpers	memory-block arena and word/byte clear views
+KfEventControl	0x100	supported	game/event_state.h;func_800482f8;func_800461a0	word and byte views of event control storage
+KfEventControlFields	0x32	candidate	game/event_state.h;func_800482f8	observed control halfwords through +0x34
+KfEventControlSentinels	0x0a	supported	game/event_state.h;func_800482f8	three ordered 0xffff sentinel halfwords and intervening opaque bytes
+KfEventObjectView	0x3a	candidate	game/event_stream.h;func_80046700	partial event-object view through effect index
+KfEventState	0x3918	supported	game/event_state.h;game_main_loop startup clear;func_800482f8;save pointer helpers	control region, memory arena and ten saved offsets
 KfFloorItem	0x18	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfGpuGT3	0x28	supported	game/tmd_packets.h;SDK POLY_GT3;render_enqueue_map	SDK and packed views of one GT3 GPU packet
+KfGpuGT3Packed	0x28	supported	game/tmd_packets.h;SDK POLY_GT3;render_enqueue_map	40-byte packed GT3 GPU packet view
+KfGpuGT4	0x34	supported	game/tmd_packets.h;SDK POLY_GT4;render_enqueue_map	SDK and packed views of one GT4 GPU packet
+KfGpuGT4Packed	0x34	supported	game/tmd_packets.h;SDK POLY_GT4;render_enqueue_map	52-byte packed GT4 GPU packet view
 KfGraphicsRuntimeGame	0x17cf0	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfItemMenuList	0x34	supported	game/menu.h;func_8001d030;func_8001d3b4;func_8001d6a8;func_80018ac8	item list prefix with glyph-row, byte-value, and code-word pointers
+KfMagicMenuList	0x34	supported	game/menu.h;func_80019834;func_8001a2f4	menu list prefix plus row and value pointers
+KfMagicRecord	0x1a	supported	game/effect.h;asm;magic_load_records	26-byte archive magic record
+KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants and signed cell offsets
+KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant
+KfMapClippedVertex	0x24	candidate	asm;func_8002f5b0;SDK Clip3FTP/Clip4FTP result table	game-side read view of SDK clip-result vertices; header displacement unresolved
+KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	layout from the reconstructed header
+KfMapObjectExtra40	0x04	supported	asm;func_800291ec;func_80036b68	pointer and byte views of map-object +0x40
+KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
+KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
+KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
+KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
+KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
+KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
+KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
+KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
+KfMapPlacedEntry	0x18	supported	asm;func_80034818;map resource caller	128 runtime rows at graphics runtime +0x170f0
+KfMapPlacedSource	0x10	supported	asm;func_80034818;map resource caller	16-byte map resource rows
 KfMemoryBlock	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfMenuGlyphRow	0x18	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	twelve halfword codes in a positioned menu row
+KfMenuGlyphString	0x1c	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
+KfMenuLabelSuffix	0x14	supported	retail bytes;menu label builder xrefs	one 20-byte source suffix copied into a positioned glyph row
+KfMenuList	0x24	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
+KfMenuPoint	0x04	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
+KfMenuSpriteDef	0x0c	supported	asm;menu sprite blitters;seven-entry loaded descriptor table;KF1 counterpart	texture page, CLUT, UV origin and dimensions
+KfMenuWindowLayout	0x134	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
 KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfNotificationQuad	0x12	supported	game/notification_quad.h;notification_draw_quad;notification_quads	seven 18-byte textured notification descriptors
 KfOrderingTable	0x8000	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfPlayerDamageReaction	0x10	supported	asm;func_800293d4;func_80029464	rotation and motion view of the player reaction overlay
+KfPlayerFlags140	0x04	supported	asm;func_80029014;player_clear_motion	word and low-halfword views of player motion flags
 KfPlayerLevelGrowth	0x0c	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
+KfPlayerPositionReaction	0x14	supported	asm;func_800291ec	mode and three signed position words in the player reaction overlay
+KfPlayerReactionOverlay	0x14	supported	asm;func_800291ec;func_800293d4;func_80029464	three overlapping player reaction views
 KfPlayerState	0x160	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
+KfPlayerViewReaction	0x10	supported	asm;player_reset_view;player_get_camera_pose	camera view of the player reaction overlay
+KfPlayerViewRotation	0x08	supported	asm;player_get_camera_pose;player_reset_view	two rotation records copied by view reset
 KfPlayerVitals	0x08	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
-KfRenderState	0x94	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfRenderGridState	0x24c	supported	asm;func_8002c670;func_80030f5c	scan origin, fog threshold, and contiguous 24-by-24 map mask grid
+KfRenderMaskScanState	0x20	supported	asm;func_8002c290;func_8002c670	observed 32-byte window and layer-mask scan state
+KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;func_800335a0	36-byte mutable model render row
+KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
+KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-pose view through angle_z; trailing alignment padding
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
+KfTargetCandidate	0x15	candidate	game/actor.h;actor sound and marker helpers	minimum observed view through byte stream at +0x14; full extent unknown
+KfTargetGroup	0x78	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
+KfTargetReference	0x4	supported	game/actor.h;asm;actor target fixup	relative offset and target pointer share one slot
+KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat triangle primitive body
+KfTmdF4	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat quadrilateral primitive body
+KfTmdFt3	0x14	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x24	textured triangle primitive source layout
+KfTmdFt4	0x1c	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x2c	textured quadrilateral primitive source layout
+KfTmdG3	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded triangle primitive body
+KfTmdG4	0x14	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded quadrilateral primitive body
+KfTmdGt3	0x18	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	textured shaded triangle primitive body
+KfTmdGt4	0x20	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	textured shaded quadrilateral primitive body
 KfTmdHeader	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfTmdObject	0x1c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdPreparedAsset	0x1000	supported	game/tmd_packets.h;render_map_cell_object;func_8002ff5c	4096-byte temporary header, object, and payload
+KfTmdPrimitive	0x20	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	mode-discriminated primitive body
 KfTmdState	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfVecXZi	0x08	supported	lib/math.h;asm;angle_to_forward_xz;vector3i_add_xz	two signed horizontal word coordinates
+KfWeaponAssetBuffer	0xc000	candidate	asm;player_initialize_session;KF1 48KiB capacity	extent remains candidate
+KfWeaponRecordGame	0x44	supported	asm;player_recalculate_combat_stats	68-byte weapon record with eight attack halfwords at +6

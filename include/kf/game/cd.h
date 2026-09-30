@@ -2,6 +2,7 @@
 #define KF_GAME_CD_H
 #include <kf/lib/types.h>
 #include <psyq/cd.h>
+#include <psyq/sdk.h>
 
 /* GAME.EXE CD layer: whole-sector file reads and the sector-indexed
  * CD\COM\*.T archives. */
@@ -21,13 +22,13 @@ enum {
 };
 
 /* Location and byte size of a file, the leading fields of CdlFILE. */
-typedef struct {
+typedef struct KfCdExtent {
     CdlLOC pos;
     u_long size;
 } KfCdExtent;
 
 /* Open .T archive: sector 0's `count + 1` sector offsets and the file extent. */
-typedef struct {
+typedef struct KfCdArchive {
     u16 *sector_offsets;
     KfCdExtent extent;
 } KfCdArchive;
@@ -39,15 +40,57 @@ enum {
     KF_CD_REQUEST_IDLE = 0
 };
 
-/* One queued asynchronous CD request; only the fields the reconstructed
- * functions use are named. */
-typedef struct KfCdRequest {
+typedef struct KfCdRequest KfCdRequest;
+typedef void (*KfCdRequestCallback)(KfCdRequest *request);
+struct KfAudioVabStreamSlot;
+
+typedef struct KfCdRequestStreamChunk {
+    u16 unknown_1c;
+    u16 unknown_1e;
+} KfCdRequestStreamChunk;
+
+typedef union KfCdRequestStreamState {
+    struct KfAudioVabStreamSlot *vab_stream_slot;
+    KfCdRequestStreamChunk chunk;
+} KfCdRequestStreamState;
+
+typedef struct KfCdRequestPayloadVab {
+    u8 phase;
+    u8 unknown_19;
+    s16 slot_index;
+    KfCdRequestStreamState stream_state;
+} KfCdRequestPayloadVab;
+
+typedef union KfCdRequestPayload {
+    KfCdRequestPayloadVab vab;
+    RECT image_rect;
+} KfCdRequestPayload;
+
+typedef char kf_cd_request_payload_size[
+    sizeof(KfCdRequestPayload) == 8 ? 1 : -1];
+
+/* One queued asynchronous CD request. */
+struct KfCdRequest {
     u8 kind;
     u8 phase;
-    u8 unknown_02[38];
-} KfCdRequest;
+    CdlLOC location;
+    CdlLOC initial_location;
+    u8 unknown_0a[2];
+    u_long *destination;
+    s32 sector_count;
+    KfCdRequestCallback on_complete;
+    KfCdRequestPayload payload;
+    s16 chunk_sectors;
+    s16 remaining_sectors;
+    u8 stream_complete;
+    u8 unknown_25[3];
+};
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
+typedef char kf_cd_request_stream_complete_offset[
+    (u32)&((KfCdRequest *)0)->stream_complete == 0x24 ? 1 : -1];
+
+void cd_stream_limit_chunk(KfCdRequest *request);
 
 /* CD layer state: event handles, VSync counters and the request ring. The
  * ring is addressed relative to the counters and ends at the tail pointer,
@@ -71,6 +114,7 @@ extern char cd_path_prefix[5];
 extern char cd_version_suffix[3];
 extern KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
 extern KfCdState cd_state;
+extern u8 cd_stream_work_buffer[];
 
 s32 cd_bcd_to_int(u8 bcd);
 u32 cd_int_to_bcd(u8 value);
@@ -78,14 +122,26 @@ u32 cd_location_to_sector(CdlLOC *location);
 void cd_sector_to_location(CdlLOC *location, u32 sector);
 void cd_location_add(CdlLOC *base, u32 sector_offset, CdlLOC *result);
 void cd_vsync_handler(void);
+void cd_wait_two_vsyncs(void);
+void cd_request_advance(KfCdRequest *request);
 void cd_complete_handler(void);
 void cd_data_ready_handler(void);
 void cd_error_handler(void);
 void cd_request_wait_idle(void);
+void cd_request_wait_done(KfCdRequest *request);
+KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
+    u_long *destination, KfCdRequestCallback on_complete);
 void cd_request_yield(void);
 void cd_request_service_vab(void);
 void cd_request_service_stream(void);
 s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
+u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location);
+void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete);
+void cd_archive_queue_read_kind_20(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete);
+void cd_archive_queue_stream_read(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete);
 u32 cd_archive_entry_size(u16 slot, u16 entry);
 void cd_report_error(s32 code);
 void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count);
@@ -95,6 +151,10 @@ void cd_archive_read(u16 slot, u16 entry, u_long *destination);
 u8 *cd_file_load(const char *name);
 s32 cd_file_load_into(u_long *destination, const char *name, u32 size);
 void cd_archive_open(u16 slot, const char *name);
+void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
+    KfCdRequestCallback on_complete);
+void cd_stream_mark_complete(KfCdRequest *request);
+void cd_map_stream_read(s32 slot, s32 entry);
 void cd_initialize(void);
 void cd_close_events(void);
 

@@ -75,6 +75,23 @@ s32 fixed_vector3_length(s32 x, s32 y, s32 z);
 s32 vector_distance_to_point(
     const VECTOR *position, s32 point_x, s32 point_y, s32 point_z,
     s32 max_distance, s32 height, s32 point_height);
+void func_800154fc(s32 x, s32 y, s32 z, struct KfEulerAngles *angles);
+KfBool func_80015574(s32 first, s32 first_width, s32 second, s32 second_width);
+s32 func_80015698(const VECTOR *first, s32 reach, const VECTOR *second,
+                  s32 offset, s32 height);
+s32 func_800157ac(s32 amplitude);
+s32 func_800157f8(s32 amplitude);
+s32 func_8001584c(s32 start, s32 end, s32 fraction);
+s32 func_8001586c(s32 start, s32 end, s32 fraction);
+void func_800158b4(const u16 *start, const u16 *end, u16 *output, s16 fraction);
+s32 func_80015918(s32 mode, s32 horizontal_distance,
+    s32 vertical_distance, s32 speed, s32 amplitude,
+    s32 *travel_time, s32 *angle);
+s32 func_80015bc8(s32 mode, s32 source_x, s32 source_y,
+    s32 source_z, s32 target_x, s32 target_y, s32 target_z,
+    s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z);
+void func_80015ce0(const VECTOR *origin, const SVECTOR *delta, s32 scale,
+    VECTOR *output);
 
 static inline s16 angle_error_magnitude(s16 difference)
 {

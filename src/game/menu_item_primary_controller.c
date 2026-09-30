@@ -41,8 +41,7 @@ void func_8001d030(s32 kind)
     menu.codes = codes;
     menu.list.glyphs_per_entry = 12;
 
-    selected_item = indices[menu.list.selected_index];
-    if (menu_load_item_model(selected_item) != 0)
+    if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
         return;
 
     for (;;) {
@@ -62,16 +61,13 @@ void func_8001d030(s32 kind)
         func_8001e484(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            cost = (s32)menu.codes[menu.list.selected_index] * DAT_8006d694;
-            if (player_state.gold < (u32)cost) {
+            cost = DAT_8006d694 * (s32)menu.codes[menu.list.selected_index];
+            if (player_state.gold < (u32)cost
+                    || counters[selected_item] + DAT_8006d694 >= 100) {
                 func_80022300(18);
                 selection = 0;
-            } else if (counters[selected_item]
-                       + (u8)DAT_8006d694 < 100) {
-                func_80022300(17);
             } else {
-                func_80022300(18);
-                selection = 0;
+                func_80022300(17);
             }
         }
 

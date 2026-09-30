@@ -20,7 +20,7 @@ typedef struct KfMapObjectTemplate {
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
-    u8 unknown_0a[2];
+    u16 unknown_0a;
     u8 marker_action_05;
     u8 unknown_0d[10];
     u8 marker_action_51;
@@ -33,6 +33,29 @@ typedef char kf_map_object_template_interaction_radius_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_radius == 6 ? 1 : -1];
 typedef char kf_map_object_template_interaction_height_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_height == 8 ? 1 : -1];
+typedef char kf_map_object_template_unknown_0a_offset[
+    (u32)&((KfMapObjectTemplate *)0)->unknown_0a == 0x0a ? 1 : -1];
+
+/* Map resource placements consumed in 24-byte rows by func_80035894. */
+typedef struct KfMapObjectPlacement {
+    u8 layer;
+    u8 region_z;
+    u8 region_x;
+    u8 unknown_03;
+    u16 object_id;
+    s16 rotation_y;
+    s16 local_z;
+    s16 local_x;
+    s16 height;
+    u16 unknown_0e;
+    u32 tail_10;
+    u32 tail_14;
+} KfMapObjectPlacement;
+
+typedef char kf_map_object_placement_size[
+    sizeof(KfMapObjectPlacement) == 24 ? 1 : -1];
+typedef char kf_map_object_placement_height_offset[
+    (u32)&((KfMapObjectPlacement *)0)->height == 12 ? 1 : -1];
 
 typedef struct KfMapObjectTailHalfwordBytes {
     u8 low;

@@ -49,11 +49,12 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
             }
     
             if ((u32)(render_mode - 10) < 6 && render_mode != 12) {
+                value = *number_values;
                 text.position.x += 140;
                 if (render_mode == 15)
-                    menu_format_number(*number_values, 6, 0, 6, text.glyphs.codes);
+                    menu_format_number(value, 6, 0, 6, text.glyphs.codes);
                 else
-                    menu_format_number(*number_values, 6, 0, 2, text.glyphs.codes);
+                    menu_format_number(value, 6, 0, 2, text.glyphs.codes);
                 number_values++;
                 menu_draw_number(&menu_sprite_defs[0], &text);
             }

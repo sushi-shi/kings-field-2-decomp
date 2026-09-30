@@ -464,12 +464,6 @@ source = "src/game/memory_card_directory.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.memory_card_write"
-image = "GAME.EXE"
-source = "src/game/memory_card_write.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.memory_card_wait"
 image = "GAME.EXE"
 source = "src/game/memory_card_wait.c"
@@ -551,6 +545,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.player_collision_sound"
 image = "GAME.EXE"
 source = "src/game/player_collision_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_collision_response"
+image = "GAME.EXE"
+source = "src/game/player_collision_response.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -1073,6 +1073,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_restore_stream"
+image = "GAME.EXE"
+source = "src/game/event_restore_stream.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

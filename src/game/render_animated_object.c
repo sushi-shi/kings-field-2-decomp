@@ -4,12 +4,12 @@
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
 
-extern void func_8002ebe0(s32 object_index, void *render_data, s16 depth);
+extern void func_8002ebe0(u16 object_index, s32 blend_mode, s16 depth);
 
 ADDRESS(0x80031d8c, 0x214)
 void func_80031d8c(s32 asset_index, const struct KfEulerAngles *rotation,
                    KfPoolRecord **cache, s32 clip, u16 phase,
-                   void *render_data, s32 lighting_flags, s16 depth)
+                   s32 blend_mode, s32 lighting_flags, s16 depth)
 {
     MATRIX model;
     MATRIX reversed_light;
@@ -56,5 +56,5 @@ void func_80031d8c(s32 asset_index, const struct KfEulerAngles *rotation,
     } else {
         tmd_project_vertices(object->vertex_count);
     }
-    func_8002ebe0(0, render_data, depth);
+    func_8002ebe0(0, blend_mode, depth);
 }

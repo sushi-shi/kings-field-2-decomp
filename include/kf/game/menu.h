@@ -177,6 +177,7 @@ extern SVECTOR menu_item_preview_rotation;
 extern s32 menu_item_preview_rotation_step;
 extern KfMenuGlyphRow menu_glyph_rows[120];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
+extern u8 menu_item_mask_pages[6][120];
 void func_80019ce4(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];
 extern u16 menu_item_code_secondary[5][120];

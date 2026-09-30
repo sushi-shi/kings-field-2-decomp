@@ -21,13 +21,24 @@ typedef struct KfTargetCandidate {
     u8 type;
     u8 unknown_01[3];
     u8 unknown_04;
-    u8 unknown_05[0x0b];
+    u8 unknown_05[3];
+    u16 unknown_08;
+    u8 unknown_0a[2];
+    u16 unknown_0c;
+    u16 unknown_0e;
     u8 fallback_offset;
-    u8 unknown_11[2];
+    u8 unknown_11;
+    u8 unknown_12;
     u8 marker_state;
-    u8 bytes[1];
+    u8 bytes[2];
 } KfTargetCandidate;
+typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x16 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidate *)0)->fallback_offset == 0x10 ? 1 : -1];
+typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
+typedef char kf_target_candidate_unknown_0c_offset[(u32)&((KfTargetCandidate *)0)->unknown_0c == 0x0c ? 1 : -1];
+typedef char kf_target_candidate_unknown_0e_offset[(u32)&((KfTargetCandidate *)0)->unknown_0e == 0x0e ? 1 : -1];
+typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidate *)0)->unknown_11 == 0x11 ? 1 : -1];
+typedef char kf_target_candidate_unknown_12_offset[(u32)&((KfTargetCandidate *)0)->unknown_12 == 0x12 ? 1 : -1];
 typedef char kf_target_candidate_marker_state_offset[(u32)&((KfTargetCandidate *)0)->marker_state == 0x13 ? 1 : -1];
 typedef char kf_target_candidate_bytes_offset[(u32)&((KfTargetCandidate *)0)->bytes == 0x14 ? 1 : -1];
 

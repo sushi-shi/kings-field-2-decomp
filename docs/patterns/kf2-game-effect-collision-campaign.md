@@ -120,9 +120,9 @@ Large unclaimed functions are WIP triage verdicts, not speculative C claims.
 | 0x8003d184 | WIP | 0x248c-byte gameplay dispatcher calls occupancy writer and collision dispatcher; indirect/data ownership unresolved. |
 | 0x80045e5c | WIP | 0xb4-byte effect-orientation probe calls 0x8002b604 and reads provisional collision state at 0x801d8d44. |
 | 0x80045f20 | WIP | 0xb4-byte vector rotation/translation reads unresolved 0x801a position state. |
-| 0x800462bc | WIP | 0x444-byte object caller in the channel-transition graph; object field family incomplete. |
+| 0x800462bc | WIP, focused 89.9% | Provisional typed actor-target bytecode interpreter has matching CFG and bounded 16-entry table; offset algebra and one load-delay schedule differ. |
 | 0x800474c4 | Exact | Seven-argument three-channel transition, 276/276 code bytes at 100%; nine direct call relocations reviewed. |
-| 0x800475d8 | WIP | 0x6c0-byte gameplay interaction calls the transition and collision/map-object functions; multiple object/state owners unresolved. |
+| 0x800475d8 | WIP, unclaimed | Two-argument map-object controller signature and template/tail/player owners are supported; pose/CD/pad branches lack a full source model. |
 | 0x80047c98 | WIP | 0x660-byte interaction dispatcher calls actor probe, map-object selector and channel transition; unproven data/indirect owner. |
 
 At 0x801d8d40..0x801d8d68, direct users establish a collision pointer,
@@ -761,13 +761,64 @@ retail unsigned subtraction and use the curated 0x80012890 table. The indirect
 slot-4 callback remains indirect; the target candidate's still-opaque payload
 bytes are accessed through its existing typed owner.
 
-The first focused `kf try` compiles and compares at 74.5% similarity, with
-46/46 CFG blocks, 21/21 branches, and matching return frontiers. Its first
-residue is initialization/register scheduling, followed by the compiler
-reducing a byte-sized pointer difference algebraically. This is **WIP, not
-strict exact**. Thirty-one direct `j`/`jal` words were individually checked
+The latest focused `kf try` compares at 89.9% similarity, with 46/46 CFG
+blocks, 21/21 branches, and matching return frontiers. Ordering the 0xf9
+handler next to the shared 0xf0/0xf8 rewind handler and reusing the single
+rewind operand follows the retail load sequence. The first remaining body
+residue is equivalent byte-sized pointer-difference algebra (`cursor + 236 -
+candidate` versus `cursor - (candidate + 20)`), followed by one action-handler
+load-delay scheduling instruction. This is **WIP, not strict exact**.
+Thirty-one direct `j`/`jal` words were individually checked
 against retail instructions and admitted as reviewed relocations, as were
 twelve HI16/LO16 references into established actor, event, callback, and
 counter owners and the one RODATA-base pair. The sixteen in-body table pointer
 words and runtime `jalr` target remain candidate. No repository test, full
 build, broad match, banking, or commit was run for this unit.
+
+## Event map-object controller at 0x800475d8
+
+The two decoded direct calls from 0x80047c98 pass existing map-object records.
+Retail 0x800475d8 uses its first argument as a `KfMapObject *`; when null, it
+acquires one from the effect pool, resets it, and writes the second argument
+to the object's +6 halfword. The third and fourth O32 arguments have no body
+uses. Its supported WIP signature is therefore
+`void func_800475d8(KfMapObject *, s32 spawn_object_id)`; no source body is
+claimed yet. The acquire call reads its sequence from
+`map_object_state.unknown_873e` at 0x8017d10e, and the later 24-byte template
+walk starts at `map_object_state.templates` at 0x801749d0. Two camera-relative
+reads at 0x801984fc and 0x801985c0 belong to `player_state` +0x2c and +0xf0.
+These references identify existing owners but do not yet explain the full
+pose/CD/pad branch family in the 0x6c0-byte body.
+All 38 in-body direct `j`/`jal` words were checked against retail opcode and
+target and promoted to reviewed control-flow relocations. Six signed-low
+HI16/LO16 pairs for the map-object tail/templates and player-state words were
+checked against raw instructions and curated to their existing BSS owners.
+A focused one-VA safe delink admitted the rows without withheld relocations;
+the function still has no C claim or exact verdict.
+
+The paired 0x80047c98 dispatcher has a direct call from 0x80029014 with
+`&player_state.camera_position` and
+`&player_state.camera_rotation_target`. Its entry copies the three position
+words to a stack `VECTOR`, raises Y by 500, and repeatedly reads the rotation
+view's signed +2 halfword. This supports
+`void func_80047c98(const VECTOR *, const KfPlayerViewRotation *)` in the
+function inventory. The tail calls active callback-table slot zero with the
+temporary position and rotation pointer; the runtime callee remains indirect.
+Its 48 direct `j`/`jal` words were checked against raw retail opcode/target and
+promoted to reviewed control-flow rows. Two raw signed-low pairs identify the
+`event_state` control clear and `state_8017d118.active_table` load. Focused
+safe delinking of this one VA reported zero withheld relocations; the terminal
+`jalr` target remains unresolved.
+
+The following save-offset pair, 0x80048554 and 0x800489ac, each uses its
+first argument as a four-word stack-table index. The former receives a byte
+from callback state +4 at the 0x47c98 call site and serializes actor/target
+indices into an arena payload; the latter restores that state and is directly
+called by 0x16820. Both inventories now carry a conservative
+`void (s32 save_slot)` ABI. Their 165-word and 16-word switch tables are
+bounded, and their raw table-base HI16/LO16 pairs are reviewed. The eighteen
+and fourteen direct `j`/`jal` words were checked individually against retail
+and promoted to reviewed control-flow rows. Focused safe delinking admits all
+of these relocations with zero withheld rows. In-body table pointer targets
+remain candidate for indirect reachability; neither function has a C source
+claim.

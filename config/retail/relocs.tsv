@@ -2210,36 +2210,50 @@ GAME.EXE	0x80015c1c	0x541c		mips26	reachable-code	0x80015468	load	fixed_vector2_
 GAME.EXE	0x80015c44	0x5444		mips26	reachable-code	0x80015918	load	func_80015918	jal		control-flow	reviewed	manual:actor_trajectory_vector
 GAME.EXE	0x80015c5c	0x545c		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:actor_trajectory_vector
 GAME.EXE	0x80015c80	0x5480		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:actor_trajectory_vector
-GAME.EXE	0x80015dc8	0x55c8	0x80015dcc	mips_hi16_lo16	reachable-code	0x80011000	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015dd0	0x55d0		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015dd8	0x55d8	0x80015ddc	mips_hi16_lo16	reachable-code	0x8001100c	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015de0	0x55e0		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015de8	0x55e8	0x80015dec	mips_hi16_lo16	reachable-code	0x80011018	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015df0	0x55f0		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015df8	0x55f8	0x80015dfc	mips_hi16_lo16	reachable-code	0x80011024	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e00	0x5600		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e08	0x5608	0x80015e0c	mips_hi16_lo16	reachable-code	0x80011030	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e10	0x5610		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e18	0x5618	0x80015e1c	mips_hi16_lo16	reachable-code	0x8001103c	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e20	0x5620		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e28	0x5628	0x80015e2c	mips_hi16_lo16	reachable-code	0x80011048	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e30	0x5630		mips26	reachable-code	0x800184d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e40	0x5640		mips26	reachable-code	0x800182d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e4c	0x564c		mips26	reachable-code	0x80016ee0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e5c	0x565c		mips26	reachable-code	0x800146d0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e74	0x5674		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015e98	0x5698		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015ebc	0x56bc		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015ee0	0x56e0		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f04	0x5704		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f10	0x5710	0x80015f14	mips_hi16_lo16	reachable-code	0x80066ab4	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f28	0x5728		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f4c	0x574c		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f70	0x5770		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015f8c	0x578c		mips26	reachable-code	0x800339fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015fa4	0x57a4		mips26	reachable-code	0x800171c8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015fb4	0x57b4		mips26	reachable-code	0x800339fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80015fbc	0x57bc		mips26	reachable-code	0x80025184	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80015d70	0x5570	0x80015d74	mips_hi16_lo16	reachable-code	0x8017d11f	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015d78	0x5578	0x80015d7c	mips_hi16_lo16	reachable-code	0x8017d11e	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015d80	0x5580	0x80015d84	mips_hi16_lo16	reachable-code	0x8017d11d	bss	state_8017d118	lui+addiu	v1	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015d8c	0x558c	0x80015d90	mips_hi16_lo16	reachable-code	0x8017d118	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015d94	0x5594	0x80015d98	mips_hi16_lo16	reachable-code	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015d9c	0x559c	0x80015da0	mips_hi16_lo16	reachable-code	0x8017d11c	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015da8	0x55a8	0x80015dac	mips_hi16_lo16	reachable-code	0x8017d11e	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015db0	0x55b0	0x80015db4	mips_hi16_lo16	reachable-code	0x8017d11f	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015db8	0x55b8	0x80015dbc	mips_hi16_lo16	reachable-code	0x8017d120	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015dc0	0x55c0	0x80015dc4	mips_hi16_lo16	reachable-code	0x8017d121	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
+GAME.EXE	0x80015dc8	0x55c8	0x80015dcc	mips_hi16_lo16	reachable-code	0x80011000	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015dd0	0x55d0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015dd8	0x55d8	0x80015ddc	mips_hi16_lo16	reachable-code	0x8001100c	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015de0	0x55e0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015de8	0x55e8	0x80015dec	mips_hi16_lo16	reachable-code	0x80011018	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015df0	0x55f0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015df8	0x55f8	0x80015dfc	mips_hi16_lo16	reachable-code	0x80011024	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e00	0x5600		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e08	0x5608	0x80015e0c	mips_hi16_lo16	reachable-code	0x80011030	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e10	0x5610		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e18	0x5618	0x80015e1c	mips_hi16_lo16	reachable-code	0x8001103c	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e20	0x5620		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e28	0x5628	0x80015e2c	mips_hi16_lo16	reachable-code	0x80011048	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e30	0x5630		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e40	0x5640		mips26	reachable-code	0x800182d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e4c	0x564c		mips26	reachable-code	0x80016ee0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e5c	0x565c		mips26	reachable-code	0x800146d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e64	0x5664	0x80015e68	mips_hi16_lo16	reachable-code	0x801749d0	bss	map_object_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
+GAME.EXE	0x80015e74	0x5674		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e98	0x5698		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015ebc	0x56bc		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015ec8	0x56c8	0x80015ecc	mips_hi16_lo16	reachable-code	0x800758f0	bss	player_level_growth_table	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
+GAME.EXE	0x80015ee0	0x56e0		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015eec	0x56ec	0x80015ef0	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
+GAME.EXE	0x80015f04	0x5704		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f10	0x5710	0x80015f14	mips_hi16_lo16	reachable-code	0x80066ab4	load	collision_default_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
+GAME.EXE	0x80015f28	0x5728		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f34	0x5734	0x80015f38	mips_hi16_lo16	reachable-code	0x80197a94	bss	audio_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
+GAME.EXE	0x80015f4c	0x574c		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f70	0x5770		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f8c	0x578c		mips26	reachable-code	0x800339fc	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015fa4	0x57a4		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015fb4	0x57b4		mips26	reachable-code	0x800339fc	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015fbc	0x57bc		mips26	reachable-code	0x80025184	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015fe0	0x57e0	0x80015fe4	mips_hi16_lo16	reachable-code	0x8017d118	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:audio-cd-state-snapshot
 GAME.EXE	0x80015fe8	0x57e8	0x80015fec	mips_hi16_lo16	reachable-code	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:audio-cd-state-snapshot
 GAME.EXE	0x80015ff0	0x57f0	0x80015ff4	mips_hi16_lo16	reachable-code	0x8017d11c	bss	state_8017d118	lui+lbu	v1	paired-reviewed	reviewed	manual:audio-cd-state-snapshot
@@ -2297,43 +2311,93 @@ GAME.EXE	0x800167d4	0x5fd4	0x800167d8	mips_hi16_lo16	reachable-code	0x8017d11a	b
 GAME.EXE	0x800167e8	0x5fe8	0x800167ec	mips_hi16_lo16	reachable-code	0x8017d11a	bss		lui+sh	at	paired-reviewed	reviewed	manual:resource transition phase setter
 GAME.EXE	0x800167fc	0x5ffc	0x80016800	mips_hi16_lo16	reachable-code	0x8017d11a	bss		lui+sh	at	paired-reviewed	reviewed	manual:resource transition phase setter
 GAME.EXE	0x80016810	0x6010	0x80016814	mips_hi16_lo16	reachable-code	0x8017d11a	bss		lui+sh	at	paired-reviewed	reviewed	manual:resource transition phase setter
-GAME.EXE	0x80016870	0x6070	0x80016874	mips_hi16_lo16	reachable-code	0x80011058	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x800168e0	0x60e0	0x800168e4	mips_hi16_lo16	instruction-word	0x800167bc	load		lui+addiu	a3	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x800168ec	0x60ec		mips26	instruction-word	0x80017ef4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800168f4	0x60f4		mips26	instruction-word	0x80016eb0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016910	0x6110	0x80016914	mips_hi16_lo16	instruction-word	0x80063e00	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016934	0x6134	0x80016938	mips_hi16_lo16	instruction-word	0x800167e4	load		lui+addiu	a3	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016944	0x6144		mips26	instruction-word	0x80017ef4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016958	0x6158		mips26	instruction-word	0x800171c8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016978	0x6178		mips26	instruction-word	0x800171c8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800169b8	0x61b8		mips26	instruction-word	0x800160e8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800169d4	0x61d4		mips26	instruction-word	0x80016eb0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800169fc	0x61fc	0x80016a00	mips_hi16_lo16	instruction-word	0x800167d0	load		lui+addiu	a3	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016a0c	0x620c		mips26	instruction-word	0x80017ef4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016a24	0x6224		mips26	instruction-word	0x80016eb0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016a58	0x6258	0x80016a5c	mips_hi16_lo16	instruction-word	0x800167f8	load		lui+addiu	a3	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016a60	0x6260		mips26	instruction-word	0x80017ef4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016aa8	0x62a8		mips26	instruction-word	0x800346b0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016ae4	0x62e4		mips26	instruction-word	0x800346b0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016b00	0x6300		mips26	instruction-word	0x8001777c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016b70	0x6370		mips26	instruction-word	0x8002b73c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016b84	0x6384		mips26	instruction-word	0x800171c8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016b8c	0x638c		mips26	instruction-word	0x8003f7ec	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016ba4	0x63a4		mips26	instruction-word	0x8003f860	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016bbc	0x63bc		mips26	instruction-word	0x80035894	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016bd4	0x63d4		mips26	instruction-word	0x80034818	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016be4	0x63e4		mips26	instruction-word	0x800489ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016c3c	0x643c		mips26	instruction-word	0x80016ee0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016d40	0x6540		mips26	instruction-word	0x80016eb0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016db0	0x65b0		mips26	instruction-word	0x80050ad4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016dd0	0x65d0		mips26	instruction-word	0x800584fc	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016de0	0x65e0		mips26	instruction-word	0x80059778	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016e20	0x6620		mips26	instruction-word	0x800146d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016e54	0x6654	0x80016e58	mips_hi16_lo16	instruction-word	0x8001680c	load		lui+addiu	a3	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016e64	0x6664		mips26	instruction-word	0x80017ef4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016e78	0x6678		mips26	instruction-word	0x80016eb0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016ea0	0x66a0		mips26	instruction-word	0x80013ae4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80016ea8	0x66a8		mips26	instruction-word	0x80016c70	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80016820	0x6020	0x80016824	mips_hi16_lo16	reachable-code	0x8017d118	bss	state_8017d118	lui+lh	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016858	0x6058	0x8001685c	mips_hi16_lo16	reachable-code	0x8017d11a	bss	state_8017d118	lui+lh	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016870	0x6070	0x80016874	mips_hi16_lo16	reachable-code	0x80011058	load	resource_transition_phase_switch_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:resource transition bounded phase switch table
+GAME.EXE	0x8001688c	0x608c	0x80016890	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800168a0	0x60a0	0x800168a4	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800168d8	0x60d8	0x800168dc	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800168e0	0x60e0	0x800168e4	mips_hi16_lo16	instruction-word	0x800167bc	load	resource_transition_set_phase_1	lui+addiu	a3	paired-reviewed	reviewed	manual:resource-transition-phase-callback
+GAME.EXE	0x800168ec	0x60ec		mips26	instruction-word	0x80017ef4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x800168f4	0x60f4		mips26	instruction-word	0x80016eb0	load		j		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016908	0x6108	0x8001690c	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016910	0x6110	0x80016914	mips_hi16_lo16	instruction-word	0x80063e00	load	callback_default_table	lui+addiu	v0	paired-reviewed	reviewed	manual:resource transition initialized callback table
+GAME.EXE	0x80016918	0x6118	0x8001691c	mips_hi16_lo16	instruction-word	0x8017d124	bss	state_8017d118	lui+sw	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x8001692c	0x612c	0x80016930	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016934	0x6134	0x80016938	mips_hi16_lo16	instruction-word	0x800167e4	load	resource_transition_set_phase_2	lui+addiu	a3	paired-reviewed	reviewed	manual:resource-transition-phase-callback
+GAME.EXE	0x80016944	0x6144		mips26	instruction-word	0x80017ef4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016958	0x6158		mips26	instruction-word	0x800171c8	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016978	0x6178		mips26	instruction-word	0x800171c8	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016980	0x6180	0x80016984	mips_hi16_lo16	instruction-word	0x8017d12f	bss	state_8017d118	lui+lb	a0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016994	0x6194	0x80016998	mips_hi16_lo16	instruction-word	0x8017d12d	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169a0	0x61a0	0x800169a4	mips_hi16_lo16	instruction-word	0x8017d131	bss	state_8017d118	lui+lb	a1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169a8	0x61a8	0x800169ac	mips_hi16_lo16	instruction-word	0x8017d130	bss	state_8017d118	lui+lb	a2	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169b8	0x61b8		mips26	instruction-word	0x800160e8	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x800169c0	0x61c0	0x800169c4	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169cc	0x61cc	0x800169d0	mips_hi16_lo16	instruction-word	0x8017d121	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169d4	0x61d4		mips26	instruction-word	0x80016eb0	load		j		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x800169e0	0x61e0	0x800169e4	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169f4	0x61f4	0x800169f8	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x800169fc	0x61fc	0x80016a00	mips_hi16_lo16	instruction-word	0x800167d0	load	resource_transition_set_phase_3	lui+addiu	a3	paired-reviewed	reviewed	manual:resource-transition-phase-callback
+GAME.EXE	0x80016a0c	0x620c		mips26	instruction-word	0x80017ef4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016a1c	0x621c	0x80016a20	mips_hi16_lo16	instruction-word	0x8017d124	bss	state_8017d118	lui+sw	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016a24	0x6224		mips26	instruction-word	0x80016eb0	load		j		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016a2c	0x622c	0x80016a30	mips_hi16_lo16	instruction-word	0x8017d129	bss	state_8017d118	lui+addiu	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016a44	0x6244	0x80016a48	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016a58	0x6258	0x80016a5c	mips_hi16_lo16	instruction-word	0x800167f8	load	resource_transition_set_phase_4	lui+addiu	a3	paired-reviewed	reviewed	manual:resource-transition-phase-callback
+GAME.EXE	0x80016a60	0x6260		mips26	instruction-word	0x80017ef4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016a68	0x6268	0x80016a6c	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016aa8	0x62a8		mips26	instruction-word	0x800346b0	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016ae4	0x62e4		mips26	instruction-word	0x800346b0	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016b00	0x6300		mips26	instruction-word	0x8001777c	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016b18	0x6318	0x80016b1c	mips_hi16_lo16	instruction-word	0x8017d12f	bss	state_8017d118	lui+lb	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016b70	0x6370		mips26	instruction-word	0x8002b73c	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016b84	0x6384		mips26	instruction-word	0x800171c8	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016b8c	0x638c		mips26	instruction-word	0x8003f7ec	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016ba4	0x63a4		mips26	instruction-word	0x8003f860	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016bbc	0x63bc		mips26	instruction-word	0x80035894	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016bd4	0x63d4		mips26	instruction-word	0x80034818	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016bdc	0x63dc	0x80016be0	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+lbu	a0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016be4	0x63e4		mips26	instruction-word	0x800489ac	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016bec	0x63ec	0x80016bf0	mips_hi16_lo16	instruction-word	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:resource transition active callback table
+GAME.EXE	0x80016c14	0x6414	0x80016c18	mips_hi16_lo16	instruction-word	0x8017d129	bss	state_8017d118	lui+lbu	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c28	0x6428	0x80016c2c	mips_hi16_lo16	instruction-word	0x8017d12a	bss	state_8017d118	lui+lbu	a1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c3c	0x643c		mips26	instruction-word	0x80016ee0	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016c44	0x6444	0x80016c48	mips_hi16_lo16	instruction-word	0x8017d12b	bss	state_8017d118	lui+lbu	v1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c4c	0x644c	0x80016c50	mips_hi16_lo16	instruction-word	0x8017d12e	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c5c	0x645c	0x80016c60	mips_hi16_lo16	instruction-word	0x8017d12c	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c70	0x6470	0x80016c74	mips_hi16_lo16	instruction-word	0x8017d128	bss	state_8017d118	lui+addiu	a0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c90	0x6490	0x80016c94	mips_hi16_lo16	instruction-word	0x8017d11c	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016c98	0x6498	0x80016c9c	mips_hi16_lo16	instruction-word	0x8017d129	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016cac	0x64ac	0x80016cb0	mips_hi16_lo16	instruction-word	0x8017d129	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016cb8	0x64b8	0x80016cbc	mips_hi16_lo16	instruction-word	0x8017d11d	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016cc0	0x64c0	0x80016cc4	mips_hi16_lo16	instruction-word	0x8017d12a	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016cd4	0x64d4	0x80016cd8	mips_hi16_lo16	instruction-word	0x8017d12a	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016ce0	0x64e0	0x80016ce4	mips_hi16_lo16	instruction-word	0x8017d11e	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016ce8	0x64e8	0x80016cec	mips_hi16_lo16	instruction-word	0x8017d12b	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016cfc	0x64fc	0x80016d00	mips_hi16_lo16	instruction-word	0x8017d12b	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d08	0x6508	0x80016d0c	mips_hi16_lo16	instruction-word	0x8017d11f	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d10	0x6510	0x80016d14	mips_hi16_lo16	instruction-word	0x8017d12c	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d24	0x6524	0x80016d28	mips_hi16_lo16	instruction-word	0x8017d12c	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d30	0x6530	0x80016d34	mips_hi16_lo16	instruction-word	0x8017d120	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d38	0x6538	0x80016d3c	mips_hi16_lo16	instruction-word	0x8017d118	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d40	0x6540		mips26	instruction-word	0x80016eb0	load		j		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016d48	0x6548	0x80016d4c	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d54	0x6554	0x80016d58	mips_hi16_lo16	instruction-word	0x8017d132	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016d7c	0x657c	0x80016d80	mips_hi16_lo16	instruction-word	0x8017d132	bss	state_8017d118	lui+addiu	s0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016db0	0x65b0		mips26	instruction-word	0x80050ad4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016dd0	0x65d0		mips26	instruction-word	0x800584fc	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016de0	0x65e0		mips26	instruction-word	0x80059778	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016e08	0x6608	0x80016e0c	mips_hi16_lo16	instruction-word	0x8017d12b	bss	state_8017d118	lui+lbu	a1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016e20	0x6620		mips26	instruction-word	0x800146d0	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016e28	0x6628	0x80016e2c	mips_hi16_lo16	instruction-word	0x8017d12c	bss	state_8017d118	lui+lbu	a1	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016e54	0x6654	0x80016e58	mips_hi16_lo16	instruction-word	0x8001680c	load	resource_transition_set_phase_6	lui+addiu	a3	paired-reviewed	reviewed	manual:resource-transition-phase-callback
+GAME.EXE	0x80016e64	0x6664		mips26	instruction-word	0x80017ef4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016e70	0x6670	0x80016e74	mips_hi16_lo16	instruction-word	0x8017d11a	bss	state_8017d118	lui+sh	at	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016e78	0x6678		mips26	instruction-word	0x80016eb0	load		j		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016e80	0x6680	0x80016e84	mips_hi16_lo16	instruction-word	0x8017d12c	bss	state_8017d118	lui+lbu	v0	paired-reviewed	reviewed	manual:resource-transition-state
+GAME.EXE	0x80016ea0	0x66a0		mips26	instruction-word	0x80013ae4	load		jal		control-flow	reviewed	manual:resource-transition-direct-control
+GAME.EXE	0x80016ea8	0x66a8		mips26	instruction-word	0x80016c70	load		j		control-flow	reviewed	manual:resource-transition-direct-control
 GAME.EXE	0x80016ee8	0x66e8	0x80016eec	mips_hi16_lo16	reachable-code	0x801b6064	bss	cd_stream_work_buffer	lui+addiu	a2	paired-reviewed	reviewed	manual:cd_stream_wrapper
 GAME.EXE	0x80016ef0	0x66f0	0x80016ef4	mips_hi16_lo16	reachable-code	0x80016ed4	load	cd_stream_mark_complete	lui+addiu	a3	paired-reviewed	reviewed	manual:cd_stream_wrapper
 GAME.EXE	0x80016ef8	0x66f8		mips26	reachable-code	0x80017ff0	load	cd_archive_read_chunked	jal		control-flow	reviewed	manual:cd_stream_wrapper
@@ -2801,23 +2865,28 @@ GAME.EXE	0x8001a498	0x9c98		mips26	instruction-word	0x8001fc94	load		jal		contro
 GAME.EXE	0x8001a4a0	0x9ca0		mips26	instruction-word	0x80021be0	load		jal		control-flow	reviewed	manual:decoded GAME 0x8001a2f4 direct jump/call
 GAME.EXE	0x8001a4b4	0x9cb4		mips26	instruction-word	0x8001a3e0	load		j		control-flow	reviewed	manual:decoded GAME 0x8001a2f4 direct jump/call
 GAME.EXE	0x8001a4cc	0x9ccc		mips26	instruction-word	0x800253fc	load		jal		control-flow	reviewed	manual:decoded GAME 0x8001a2f4 direct jump/call
-GAME.EXE	0x8001a5b8	0x9db8		mips26	instruction-word	0x80018d08	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a604	0x9e04		mips26	instruction-word	0x800199d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a620	0x9e20	0x8001a624	mips_hi16_lo16	instruction-word	0x800649ec	load		lui+addiu	a2	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a654	0x9e54		mips26	instruction-word	0x80021fb0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a68c	0x9e8c		mips26	instruction-word	0x800221e8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a6c8	0x9ec8		mips26	instruction-word	0x80022438	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a6e8	0x9ee8		mips26	instruction-word	0x8001f8b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a6fc	0x9efc		mips26	instruction-word	0x8001a710	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a728	0x9f28		mips26	instruction-word	0x8001e484	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a748	0x9f48		mips26	instruction-word	0x80022300	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a750	0x9f50		mips26	instruction-word	0x80021a68	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a768	0x9f68		mips26	instruction-word	0x8002083c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a774	0x9f74		mips26	instruction-word	0x8001fc94	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a77c	0x9f7c		mips26	instruction-word	0x80021be0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a790	0x9f90		mips26	instruction-word	0x8001a6a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a7ac	0x9fac		mips26	instruction-word	0x8002540c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001a7c4	0x9fc4		mips26	instruction-word	0x80025434	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001a570	0x9d70	0x8001a574	mips_hi16_lo16	reachable-code	0x8009a648	bss	game_counter_bytes	lui+addiu	s1	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 signed-low address pair
+GAME.EXE	0x8001a57c	0x9d7c	0x8001a580	mips_hi16_lo16	reachable-code	0x8009a649	bss	game_counter_bytes	lui+lbu	s6	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 signed-low address pair
+GAME.EXE	0x8001a588	0x9d88	0x8001a58c	mips_hi16_lo16	reachable-code	0x8009a649	bss	game_counter_bytes	lui+sb	at	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 signed-low address pair
+GAME.EXE	0x8001a5b8	0x9db8		mips26	reachable-code	0x80018d08	load	func_80018d08	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a5d8	0x9dd8	0x8001a5dc	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu	a0	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 signed-low address pair
+GAME.EXE	0x8001a5fc	0x9dfc	0x8001a600	mips_hi16_lo16	reachable-code	0x8009a649	bss	game_counter_bytes	lui+sb	at	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 signed-low address pair
+GAME.EXE	0x8001a604	0x9e04		mips26	reachable-code	0x800199d0	load	func_800199d0	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a620	0x9e20	0x8001a624	mips_hi16_lo16	reachable-code	0x800649ec	load	menu_row_prefix_649ec	lui+addiu	a2	paired-reviewed	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a654	0x9e54		mips26	reachable-code	0x80021fb0	load	menu_list_init	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a68c	0x9e8c		mips26	reachable-code	0x800221e8	load	menu_load_item_model	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a6c8	0x9ec8		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a6e8	0x9ee8		mips26	reachable-code	0x8001f8b8	load	func_8001f8b8	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a6fc	0x9efc		mips26	reachable-code	0x8001a710	load		j		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a728	0x9f28		mips26	reachable-code	0x8001e484	load	func_8001e484	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a748	0x9f48		mips26	reachable-code	0x80022300	load	func_80022300	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a750	0x9f50		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a768	0x9f68		mips26	reachable-code	0x8002083c	load	func_8002083c	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a774	0x9f74		mips26	reachable-code	0x8001fc94	load	func_8001fc94	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a77c	0x9f7c		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a790	0x9f90		mips26	reachable-code	0x8001a6a8	load		j		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a7ac	0x9fac		mips26	reachable-code	0x8002540c	load	player_set_unknown_98	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
+GAME.EXE	0x8001a7c4	0x9fc4		mips26	reachable-code	0x80025434	load	player_set_unknown_99	jal		control-flow	reviewed	manual:decoded GAME 0x8001a4f0 direct instruction
 GAME.EXE	0x8001a820	0xa020		mips26	instruction-word	0x80022438	load		jal		control-flow	reviewed	manual:menu loop direct call
 GAME.EXE	0x8001a828	0xa028		mips26	instruction-word	0x8001a880	load		j		control-flow	reviewed	manual:menu loop decoded exit branch
 GAME.EXE	0x8001a830	0xa030		mips26	instruction-word	0x800223cc	load		jal		control-flow	reviewed	manual:menu loop direct call
@@ -2859,31 +2928,31 @@ GAME.EXE	0x8001ac30	0xa430		mips26	reachable-code	0x8001b030	load		jal		control-
 GAME.EXE	0x8001ac44	0xa444	0x8001ac48	mips_hi16_lo16	reachable-code	0x80197634	bss	audio_state	lui+lh	a0	paired-reviewed	reviewed	manual:card-choice sequence id at audio_state+4
 GAME.EXE	0x8001ac50	0xa450		mips26	reachable-code	0x80050ad4	load		jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ac58	0xa458		mips26	reachable-code	0x8001ac04	load		j		control-flow	reviewed	manual:decoded card-choice branch
-GAME.EXE	0x8001aca8	0xa4a8		mips26	instruction-word	0x8001c550	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ace0	0xa4e0		mips26	instruction-word	0x8001b030	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ace8	0xa4e8		mips26	instruction-word	0x800225b0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001acf4	0xa4f4		mips26	instruction-word	0x800226ec	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ad1c	0xa51c		mips26	instruction-word	0x8001af30	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ad30	0xa530		mips26	instruction-word	0x80021fb0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ad80	0xa580		mips26	instruction-word	0x80022438	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ada0	0xa5a0		mips26	instruction-word	0x8001f8b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001adb4	0xa5b4		mips26	instruction-word	0x8001add8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001adf0	0xa5f0		mips26	instruction-word	0x8001e484	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae08	0xa608		mips26	instruction-word	0x80022300	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae10	0xa610		mips26	instruction-word	0x80021a68	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae1c	0xa61c		mips26	instruction-word	0x8001fc94	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae24	0xa624		mips26	instruction-word	0x80021be0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae38	0xa638		mips26	instruction-word	0x8001ad60	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae50	0xa650		mips26	instruction-word	0x8001cad4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae88	0xa688		mips26	instruction-word	0x8001b030	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001ae94	0xa694		mips26	instruction-word	0x80022b74	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aea4	0xa6a4		mips26	instruction-word	0x8001cb44	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aed0	0xa6d0		mips26	instruction-word	0x8001b030	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aed8	0xa6d8		mips26	instruction-word	0x80022438	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aee0	0xa6e0		mips26	instruction-word	0x8005e800	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aef0	0xa6f0		mips26	instruction-word	0x80022438	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001aefc	0xa6fc		mips26	instruction-word	0x8001af08	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001af08	0xa708		mips26	instruction-word	0x800225d8	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001aca8	0xa4a8		mips26	reachable-code	0x8001c550	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ace0	0xa4e0		mips26	reachable-code	0x8001b030	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ace8	0xa4e8		mips26	reachable-code	0x800225b0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001acf4	0xa4f4		mips26	reachable-code	0x800226ec	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ad1c	0xa51c		mips26	reachable-code	0x8001af30	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ad30	0xa530		mips26	reachable-code	0x80021fb0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ad80	0xa580		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ada0	0xa5a0		mips26	reachable-code	0x8001f8b8	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001adb4	0xa5b4		mips26	reachable-code	0x8001add8	load		j		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001adf0	0xa5f0		mips26	reachable-code	0x8001e484	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae08	0xa608		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae10	0xa610		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae1c	0xa61c		mips26	reachable-code	0x8001fc94	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae24	0xa624		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae38	0xa638		mips26	reachable-code	0x8001ad60	load		j		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae50	0xa650		mips26	reachable-code	0x8001cad4	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae88	0xa688		mips26	reachable-code	0x8001b030	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae94	0xa694		mips26	reachable-code	0x80022b74	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aea4	0xa6a4		mips26	reachable-code	0x8001cb44	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aed0	0xa6d0		mips26	reachable-code	0x8001b030	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aed8	0xa6d8		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aee0	0xa6e0		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aef0	0xa6f0		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aefc	0xa6fc		mips26	reachable-code	0x8001af08	load		j		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001af08	0xa708		mips26	reachable-code	0x800225d8	load		jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001af7c	0xa77c		mips26	reachable-code	0x800228c8	load		jal		control-flow	reviewed	manual:card row direct probe call
 GAME.EXE	0x8001b07c	0xa87c	0x8001b080	mips_hi16_lo16	reachable-code	0x800640c0	load		lui+addiu	v1	paired-reachable	reviewed	manual:card panel layout title row
 GAME.EXE	0x8001b08c	0xa88c		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:card panel direct call
@@ -3127,30 +3196,34 @@ GAME.EXE	0x8001cfe4	0xc7e4		mips26	reachable-code	0x8001fb8c	load		jal		control-
 GAME.EXE	0x8001cfec	0xc7ec		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001d000	0xc800		mips26	reachable-code	0x8001cf40	load		j		control-flow	reviewed	manual:decoded menu-choice branch
 GAME.EXE	0x8001d008	0xc808		mips26	reachable-code	0x80021e00	load		jal		control-flow	reviewed	manual:decoded menu-choice call
-GAME.EXE	0x8001d07c	0xc87c	0x8001d080	mips_hi16_lo16	instruction-word	0x80065aeb	load		lui+sb	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d084	0xc884		mips26	instruction-word	0x8001d098	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d08c	0xc88c	0x8001d090	mips_hi16_lo16	instruction-word	0x80065aeb	load		lui+sb	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d0ac	0xc8ac	0x8001d0b0	mips_hi16_lo16	instruction-word	0x80065950	load		lui+addiu	a0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d0cc	0xc8cc		mips26	instruction-word	0x80018d08	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d0f4	0xc8f4		mips26	instruction-word	0x8001d340	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d104	0xc904		mips26	instruction-word	0x80021fb0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d130	0xc930		mips26	instruction-word	0x800221e8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d168	0xc968		mips26	instruction-word	0x80022438	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d18c	0xc98c		mips26	instruction-word	0x8001f8b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d1a0	0xc9a0		mips26	instruction-word	0x8001d1ac	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d1c4	0xc9c4		mips26	instruction-word	0x8001e484	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d1ec	0xc9ec	0x8001d1f0	mips_hi16_lo16	instruction-word	0x8006d694	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d23c	0xca3c		mips26	instruction-word	0x80022300	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d244	0xca44		mips26	instruction-word	0x8001d258	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d24c	0xca4c		mips26	instruction-word	0x80022300	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d258	0xca58		mips26	instruction-word	0x80021a68	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d270	0xca70		mips26	instruction-word	0x8002083c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d27c	0xca7c		mips26	instruction-word	0x8001fc94	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d284	0xca84		mips26	instruction-word	0x80021be0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d298	0xca98		mips26	instruction-word	0x8001d148	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d2a0	0xcaa0		mips26	instruction-word	0x800222bc	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d2cc	0xcacc	0x8001d2d0	mips_hi16_lo16	instruction-word	0x8006d694	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001d304	0xcb04	0x8001d308	mips_hi16_lo16	instruction-word	0x8006d694	load		lui+lbu	v1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001d060	0xc860	0x8001d064	mips_hi16_lo16	reachable-code	0x8009a61b	bss	game_counter_bytes	lui+lbu	v0	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 signed-low address pair
+GAME.EXE	0x8001d068	0xc868	0x8001d06c	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu	s6	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 signed-low address pair
+GAME.EXE	0x8001d07c	0xc87c	0x8001d080	mips_hi16_lo16	reachable-code	0x80065aeb	load	menu_item_mask_pages	lui+sb	at	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d084	0xc884		mips26	reachable-code	0x8001d098	load		j		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d08c	0xc88c	0x8001d090	mips_hi16_lo16	reachable-code	0x80065aeb	load	menu_item_mask_pages	lui+sb	at	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d0ac	0xc8ac	0x8001d0b0	mips_hi16_lo16	reachable-code	0x80065950	load	menu_item_mask_pages	lui+addiu	a0	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d0cc	0xc8cc		mips26	reachable-code	0x80018d08	load	func_80018d08	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d0f4	0xc8f4		mips26	reachable-code	0x8001d340	load	func_8001d340	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d104	0xc904		mips26	reachable-code	0x80021fb0	load	menu_list_init	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d130	0xc930		mips26	reachable-code	0x800221e8	load	menu_load_item_model	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d168	0xc968		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d18c	0xc98c		mips26	reachable-code	0x8001f8b8	load	func_8001f8b8	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d1a0	0xc9a0		mips26	reachable-code	0x8001d1ac	load		j		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d1c4	0xc9c4		mips26	reachable-code	0x8001e484	load	func_8001e484	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d1ec	0xc9ec	0x8001d1f0	mips_hi16_lo16	reachable-code	0x8006d694	load	DAT_8006d694	lui+lw	a0	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d20c	0xca0c	0x8001d210	mips_hi16_lo16	reachable-code	0x801984fc	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 signed-low address pair
+GAME.EXE	0x8001d23c	0xca3c		mips26	reachable-code	0x80022300	load	func_80022300	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d244	0xca44		mips26	reachable-code	0x8001d258	load		j		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d24c	0xca4c		mips26	reachable-code	0x80022300	load	func_80022300	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d258	0xca58		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d270	0xca70		mips26	reachable-code	0x8002083c	load	func_8002083c	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d27c	0xca7c		mips26	reachable-code	0x8001fc94	load	func_8001fc94	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d284	0xca84		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d298	0xca98		mips26	reachable-code	0x8001d148	load		j		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d2a0	0xcaa0		mips26	reachable-code	0x800222bc	load	menu_release_item_model	jal		control-flow	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d2cc	0xcacc	0x8001d2d0	mips_hi16_lo16	reachable-code	0x8006d694	load	DAT_8006d694	lui+lw	v0	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
+GAME.EXE	0x8001d2e4	0xcae4	0x8001d2e8	mips_hi16_lo16	reachable-code	0x801984fc	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 signed-low address pair
+GAME.EXE	0x8001d304	0xcb04	0x8001d308	mips_hi16_lo16	reachable-code	0x8006d694	load	DAT_8006d694	lui+lbu	v1	paired-reviewed	reviewed	manual:decoded GAME 0x8001d030 direct instruction
 GAME.EXE	0x8001d35c	0xcb5c	0x8001d360	mips_hi16_lo16	instruction-word	0x80065c20	load	menu_item_code_primary	lui+addiu	v1	paired-pattern	reviewed	manual:six-page 120-halfword lookup table base
 GAME.EXE	0x8001d40c	0xcc0c		mips26	instruction-word	0x80018dec	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8001d42c	0xcc2c		mips26	instruction-word	0x8001d654	load		jal		range-filtered	candidate	investigation:relocs.tsv
@@ -5049,28 +5122,90 @@ GAME.EXE	0x80028940	0x18140		mips26	reachable-code	0x800274ec	load	player_move_h
 GAME.EXE	0x80028948	0x18148		mips26	reachable-code	0x80028960	load		j		control-flow	reviewed	manual:player_camera_follow
 GAME.EXE	0x80028950	0x18150	0x80028954	mips_hi16_lo16	reachable-code	0x801985bc	bss		lui+sh		paired-reviewed	reviewed	manual:player_camera_follow
 GAME.EXE	0x80028958	0x18158	0x8002895c	mips_hi16_lo16	reachable-code	0x801985b8	bss		lui+sh		paired-reviewed	reviewed	manual:player_camera_follow
-GAME.EXE	0x800289f0	0x181f0		mips26	instruction-word	0x8002722c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028a30	0x18230		mips26	instruction-word	0x8002722c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028a68	0x18268		mips26	instruction-word	0x8002897c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028a80	0x18280		mips26	instruction-word	0x80018f8c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028a88	0x18288		mips26	instruction-word	0x80028ab0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028a98	0x18298		mips26	instruction-word	0x8004678c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028aa0	0x182a0		mips26	instruction-word	0x80028ab0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028aa8	0x182a8		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028af0	0x182f0		mips26	instruction-word	0x80025a18	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028b1c	0x1831c		mips26	instruction-word	0x80028b38	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028c34	0x18434		mips26	instruction-word	0x80028eac	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80028998	0x18198	0x8002899c	mips_hi16_lo16	reachable-code	0x8019856e	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x800289b8	0x181b8	0x800289bc	mips_hi16_lo16	reachable-code	0x80198610	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x800289d4	0x181d4	0x800289d8	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x800289e8	0x181e8	0x800289ec	mips_hi16_lo16	reachable-code	0x80198567	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x800289f0	0x181f0		mips26	reachable-code	0x8002722c	load	func_8002722c	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x800289fc	0x181fc	0x80028a00	mips_hi16_lo16	reachable-code	0x80198610	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a1c	0x1821c	0x80028a20	mips_hi16_lo16	reachable-code	0x80198568	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a30	0x18230		mips26	reachable-code	0x8002722c	load	func_8002722c	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028a38	0x18238	0x80028a3c	mips_hi16_lo16	reachable-code	0x80198569	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a4c	0x1824c	0x80028a50	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a68	0x18268		mips26	reachable-code	0x8002897c	load	func_8002897c	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028a78	0x18278	0x80028a7c	mips_hi16_lo16	reachable-code	0x80198569	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a80	0x18280		mips26	reachable-code	0x80018f8c	load	func_80018f8c	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028a88	0x18288		mips26	reachable-code	0x80028ab0	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028a90	0x18290	0x80028a94	mips_hi16_lo16	reachable-code	0x80198569	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028a98	0x18298		mips26	reachable-code	0x8004678c	load	func_8004678c	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028aa0	0x182a0		mips26	reachable-code	0x80028ab0	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028aa8	0x182a8		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028ab0	0x182b0	0x80028ab4	mips_hi16_lo16	reachable-code	0x801985a1	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028ac8	0x182c8	0x80028acc	mips_hi16_lo16	reachable-code	0x801985a4	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028ad8	0x182d8	0x80028adc	mips_hi16_lo16	reachable-code	0x801985a4	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028af0	0x182f0		mips26	reachable-code	0x80025a18	load	func_80025a18	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028af8	0x182f8	0x80028afc	mips_hi16_lo16	reachable-code	0x801985a2	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b08	0x18308	0x80028b0c	mips_hi16_lo16	reachable-code	0x801985a2	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b1c	0x1831c		mips26	reachable-code	0x80028b38	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028b24	0x18324	0x80028b28	mips_hi16_lo16	reachable-code	0x801985a3	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b30	0x18330	0x80028b34	mips_hi16_lo16	reachable-code	0x801985a4	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b3c	0x1833c	0x80028b40	mips_hi16_lo16	reachable-code	0x80198610	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b54	0x18354	0x80028b58	mips_hi16_lo16	reachable-code	0x80198594	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b68	0x18368	0x80028b6c	mips_hi16_lo16	reachable-code	0x801984dd	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b7c	0x1837c	0x80028b80	mips_hi16_lo16	reachable-code	0x801984dd	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b8c	0x1838c	0x80028b90	mips_hi16_lo16	reachable-code	0x801984dd	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028b98	0x18398	0x80028b9c	mips_hi16_lo16	reachable-code	0x801984db	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028ba0	0x183a0	0x80028ba4	mips_hi16_lo16	reachable-code	0x801984ea	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028bb0	0x183b0	0x80028bb4	mips_hi16_lo16	reachable-code	0x801984ea	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028bc4	0x183c4	0x80028bc8	mips_hi16_lo16	reachable-code	0x801984ea	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028bcc	0x183cc	0x80028bd0	mips_hi16_lo16	reachable-code	0x801984db	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028bd4	0x183d4	0x80028bd8	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028be4	0x183e4	0x80028be8	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028bf8	0x183f8	0x80028bfc	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c00	0x18400	0x80028c04	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c10	0x18410	0x80028c14	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c2c	0x1842c	0x80028c30	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c34	0x18434		mips26	reachable-code	0x80028eac	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028c3c	0x1843c	0x80028c40	mips_hi16_lo16	reachable-code	0x8019854c	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c50	0x18450	0x80028c54	mips_hi16_lo16	reachable-code	0x801984fa	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
 GAME.EXE	0x80028c58	0x18458		mips26	reachable-code	0x80023814	load	func_80023814	jal		control-flow	reviewed	manual:player_scaled_value
-GAME.EXE	0x80028c78	0x18478		mips26	instruction-word	0x80028cc8	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80028c60	0x18460	0x80028c64	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c70	0x18470	0x80028c74	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028c78	0x18478		mips26	reachable-code	0x80028cc8	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028c80	0x18480	0x80028c84	mips_hi16_lo16	reachable-code	0x801984fa	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
 GAME.EXE	0x80028c8c	0x1848c		mips26	reachable-code	0x80023814	load	func_80023814	jal		control-flow	reviewed	manual:player_scaled_value
-GAME.EXE	0x80028d50	0x18550		mips26	instruction-word	0x80028d68	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80028c98	0x18498	0x80028c9c	mips_hi16_lo16	reachable-code	0x80198590	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028cb0	0x184b0	0x80028cb4	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028cc0	0x184c0	0x80028cc4	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028cc8	0x184c8	0x80028ccc	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028ce8	0x184e8	0x80028cec	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028cf8	0x184f8	0x80028cfc	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d14	0x18514	0x80028d18	mips_hi16_lo16	reachable-code	0x801984e0	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d1c	0x1851c	0x80028d20	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d28	0x18528	0x80028d2c	mips_hi16_lo16	reachable-code	0x801984dd	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d38	0x18538	0x80028d3c	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d48	0x18548	0x80028d4c	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d50	0x18550		mips26	reachable-code	0x80028d68	load		j		control-flow	reviewed	manual:player_action_update
 GAME.EXE	0x80028d58	0x18558	0x80028d5c	mips_hi16_lo16	instruction-word	0x800667f4	load	DAT_800667e8	lui+addiu	v0	paired-reviewed	reviewed	manual:player_magic_effect_ids
-GAME.EXE	0x80028db8	0x185b8		mips26	instruction-word	0x80026464	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80028d60	0x18560	0x80028d64	mips_hi16_lo16	reachable-code	0x80198548	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d68	0x18568	0x80028d6c	mips_hi16_lo16	reachable-code	0x80198610	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d84	0x18584	0x80028d88	mips_hi16_lo16	reachable-code	0x80198612	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028d9c	0x1859c	0x80028da0	mips_hi16_lo16	reachable-code	0x80198550	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028db8	0x185b8		mips26	reachable-code	0x80026464	load	player_has_power_and_magic_60	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028dc8	0x185c8	0x80028dcc	mips_hi16_lo16	reachable-code	0x80198548	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
 GAME.EXE	0x80028de8	0x185e8	0x80028dec	mips_hi16_lo16	instruction-word	0x800667f4	load	DAT_800667e8	lui+addiu	v0	paired-reviewed	reviewed	manual:player_magic_effect_ids
-GAME.EXE	0x80028e38	0x18638		mips26	instruction-word	0x80025754	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028e40	0x18640		mips26	instruction-word	0x80028eac	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028e50	0x18650		mips26	instruction-word	0x80028e60	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80028ea4	0x186a4		mips26	instruction-word	0x80025754	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80028df8	0x185f8	0x80028dfc	mips_hi16_lo16	reachable-code	0x801984ea	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e0c	0x1860c	0x80028e10	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e20	0x18620	0x80028e24	mips_hi16_lo16	reachable-code	0x80198548	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e38	0x18638		mips26	reachable-code	0x80025754	load	player_begin_weapon_attack	jal		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028e40	0x18640		mips26	reachable-code	0x80028eac	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028e48	0x18648	0x80028e4c	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e50	0x18650		mips26	reachable-code	0x80028e60	load		j		control-flow	reviewed	manual:player_action_update
+GAME.EXE	0x80028e58	0x18658	0x80028e5c	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e60	0x18660	0x80028e64	mips_hi16_lo16	reachable-code	0x801984db	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e74	0x18674	0x80028e78	mips_hi16_lo16	reachable-code	0x80198566	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028e88	0x18688	0x80028e8c	mips_hi16_lo16	reachable-code	0x80198610	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_action_update decoded direct address pair
+GAME.EXE	0x80028ea4	0x186a4		mips26	reachable-code	0x80025754	load	player_begin_weapon_attack	jal		control-flow	reviewed	manual:player_action_update
 GAME.EXE	0x80028edc	0x186dc	0x80028ee0	mips_hi16_lo16	reachable-code	0x801985d0	bss		lui+addiu		paired-reviewed	reviewed	manual:player_reaction_angle_step
 GAME.EXE	0x80028ee8	0x186e8	0x80028eec	mips_hi16_lo16	reachable-code	0x80198624	bss		lui+lh		paired-reviewed	reviewed	manual:player_reaction_angle_step
 GAME.EXE	0x80028ef0	0x186f0		mips26	reachable-code	0x80014a08	load	angle_velocity_step	jal		control-flow	reviewed	manual:player_reaction_angle_step
@@ -5319,54 +5454,77 @@ GAME.EXE	0x8002aa7c	0x1a27c	0x8002aa80	mips_hi16_lo16	reachable-code	0x801d8d4a	
 GAME.EXE	0x8002aa84	0x1a284	0x8002aa88	mips_hi16_lo16	reachable-code	0x801d8d4c	bss		lui+sw		paired-reviewed	reviewed	manual:collision_grid_sample
 GAME.EXE	0x8002aa8c	0x1a28c	0x8002aa90	mips_hi16_lo16	reachable-code	0x801d8d40	bss		lui+sw		paired-reviewed	reviewed	manual:collision_grid_sample
 GAME.EXE	0x8002aa94	0x1a294	0x8002aa98	mips_hi16_lo16	reachable-code	0x801d8d4c	bss		lui+lw		paired-reviewed	reviewed	manual:collision_grid_sample
+GAME.EXE	0x8002aaec	0x1a2ec	0x8002aaf0	mips_hi16_lo16	instruction-word	0x801d8d50	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002aafc	0x1a2fc	0x8002ab00	mips_hi16_lo16	instruction-word	0x801d8d58	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab04	0x1a304	0x8002ab08	mips_hi16_lo16	instruction-word	0x801d8d5c	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab14	0x1a314	0x8002ab18	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v0	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab1c	0x1a31c	0x8002ab20	mips_hi16_lo16	instruction-word	0x801d8d4a	bss		lui+lhu	a0	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab24	0x1a324	0x8002ab28	mips_hi16_lo16	instruction-word	0x801d8d40	bss		lui+lw	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab34	0x1a334	0x8002ab38	mips_hi16_lo16	instruction-word	0x801d8d54	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab40	0x1a340	0x8002ab44	mips_hi16_lo16	instruction-word	0x801d8d44	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab68	0x1a368	0x8002ab6c	mips_hi16_lo16	instruction-word	0x801d7540	bss		lui+addiu	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ab78	0x1a378	0x8002ab7c	mips_hi16_lo16	instruction-word	0x801d7540	bss		lui+addiu	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
 GAME.EXE	0x8002ac54	0x1a454	0x8002ac58	mips_hi16_lo16	reachable-code	0x8001134c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002aca8	0x1a4a8		mips26	instruction-word	0x8002b3b8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002acf4	0x1a4f4		mips26	instruction-word	0x8002ad24	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ad1c	0x1a51c		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ad2c	0x1a52c		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ad6c	0x1a56c		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ad84	0x1a584		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ade0	0x1a5e0		mips26	instruction-word	0x8002b5c4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ade8	0x1a5e8		mips26	instruction-word	0x8002b5c4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002adf4	0x1a5f4		mips26	instruction-word	0x8002af70	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ae14	0x1a614		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ae20	0x1a620		mips26	instruction-word	0x8002afc4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ae60	0x1a660		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ae78	0x1a678		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ae98	0x1a698		mips26	instruction-word	0x8002af70	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002aeb8	0x1a6b8		mips26	instruction-word	0x8002af9c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002aed8	0x1a6d8		mips26	instruction-word	0x8002afc4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002aef8	0x1a6f8		mips26	instruction-word	0x8002aff0	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002af38	0x1a738		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002af50	0x1a750		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002af7c	0x1a77c		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002afa4	0x1a7a4		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002afd0	0x1a7d0		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002aff8	0x1a7f8		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b038	0x1a838		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b050	0x1a850		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b060	0x1a860		mips26	instruction-word	0x8002b09c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b074	0x1a874		mips26	instruction-word	0x8002b09c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b088	0x1a888		mips26	instruction-word	0x8002b09c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b0a8	0x1a8a8		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b0e4	0x1a8e4		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b0fc	0x1a8fc		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b170	0x1a970		mips26	instruction-word	0x8002b38c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b1dc	0x1a9dc		mips26	instruction-word	0x8002b168	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b248	0x1aa48		mips26	instruction-word	0x8002b168	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b2b4	0x1aab4		mips26	instruction-word	0x8002b168	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b2f0	0x1aaf0		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b308	0x1ab08		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b3c0	0x1abc0		mips26	instruction-word	0x8002b5c4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b3c8	0x1abc8		mips26	instruction-word	0x8002b31c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b3d4	0x1abd4		mips26	instruction-word	0x8002b31c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b3e0	0x1abe0		mips26	instruction-word	0x8002b31c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b42c	0x1ac2c		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b444	0x1ac44		mips26	instruction-word	0x8002b5c8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b4c8	0x1acc8		mips26	instruction-word	0x8002b5c4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b4d0	0x1acd0		mips26	instruction-word	0x8002b44c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b52c	0x1ad2c		mips26	instruction-word	0x8002ab5c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002b59c	0x1ad9c		mips26	instruction-word	0x8002b5c4	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002aca8	0x1a4a8		mips26	instruction-word	0x8002b3b8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002acf4	0x1a4f4		mips26	instruction-word	0x8002ad24	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ad1c	0x1a51c		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ad24	0x1a524	0x8002ad28	mips_hi16_lo16	instruction-word	0x801d8d54	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002ad2c	0x1a52c		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ad6c	0x1a56c		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ad84	0x1a584		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ade0	0x1a5e0		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ade8	0x1a5e8		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002adf4	0x1a5f4		mips26	instruction-word	0x8002af70	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ae14	0x1a614		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ae20	0x1a620		mips26	instruction-word	0x8002afc4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ae60	0x1a660		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ae78	0x1a678		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002ae98	0x1a698		mips26	instruction-word	0x8002af70	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002aeb8	0x1a6b8		mips26	instruction-word	0x8002af9c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002aed8	0x1a6d8		mips26	instruction-word	0x8002afc4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002aef8	0x1a6f8		mips26	instruction-word	0x8002aff0	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002af38	0x1a738		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002af50	0x1a750		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002af7c	0x1a77c		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002afa4	0x1a7a4		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002afd0	0x1a7d0		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002aff8	0x1a7f8		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b038	0x1a838		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b050	0x1a850		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b060	0x1a860		mips26	instruction-word	0x8002b09c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b074	0x1a874		mips26	instruction-word	0x8002b09c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b088	0x1a888		mips26	instruction-word	0x8002b09c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b0a8	0x1a8a8		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b0e4	0x1a8e4		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b0fc	0x1a8fc		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b170	0x1a970		mips26	instruction-word	0x8002b38c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b1dc	0x1a9dc		mips26	instruction-word	0x8002b168	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b248	0x1aa48		mips26	instruction-word	0x8002b168	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b2b4	0x1aab4		mips26	instruction-word	0x8002b168	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b2f0	0x1aaf0		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b308	0x1ab08		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b3c0	0x1abc0		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b3c8	0x1abc8		mips26	instruction-word	0x8002b31c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b3d4	0x1abd4		mips26	instruction-word	0x8002b31c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b3e0	0x1abe0		mips26	instruction-word	0x8002b31c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b42c	0x1ac2c		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b444	0x1ac44		mips26	instruction-word	0x8002b5c8	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b484	0x1ac84	0x8002b488	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b494	0x1ac94	0x8002b498	mips_hi16_lo16	instruction-word	0x801d8d50	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b4a8	0x1aca8	0x8002b4ac	mips_hi16_lo16	instruction-word	0x801d8d54	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b4c8	0x1acc8		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b4d0	0x1acd0		mips26	instruction-word	0x8002b44c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b4e0	0x1ace0	0x8002b4e4	mips_hi16_lo16	instruction-word	0x801d8d4a	bss		lui+addiu	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b504	0x1ad04	0x8002b508	mips_hi16_lo16	instruction-word	0x801d8d40	bss		lui+lw	v0	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b524	0x1ad24	0x8002b528	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b52c	0x1ad2c		mips26	instruction-word	0x8002ab5c	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b53c	0x1ad3c	0x8002b540	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v0	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b54c	0x1ad4c	0x8002b550	mips_hi16_lo16	instruction-word	0x801d8d58	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b55c	0x1ad5c	0x8002b560	mips_hi16_lo16	instruction-word	0x801d8d50	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b58c	0x1ad8c	0x8002b590	mips_hi16_lo16	instruction-word	0x801d8d54	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b59c	0x1ad9c		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
+GAME.EXE	0x8002b5ac	0x1adac	0x8002b5b0	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
+GAME.EXE	0x8002b5bc	0x1adbc	0x8002b5c0	mips_hi16_lo16	instruction-word	0x801d8d5c	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
 GAME.EXE	0x8002b634	0x1ae34		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b64c	0x1ae4c		mips26	reachable-code	0x8002aaa4	load		jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b654	0x1ae54	0x8002b658	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -6767,15 +6925,22 @@ GAME.EXE	0x800397b0	0x28fb0	0x800397b4	mips_hi16_lo16	reachable-code	0x801749ac	
 GAME.EXE	0x800397c0	0x28fc0		mips26	instruction-word	0x800396c4	load	actor_select_target_for_player_distance	jal		range-filtered	reviewed	manual:actor_target_reset
 GAME.EXE	0x800397e8	0x28fe8	0x800397ec	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_byte_0c_set
 GAME.EXE	0x80039804	0x29004	0x80039808	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_byte_0c_set_changed
+GAME.EXE	0x8003985c	0x2905c	0x80039860	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+addiu	s5	paired-reviewed	reviewed	manual:actor_lifecycle_target
+GAME.EXE	0x80039868	0x29068	0x8003986c	mips_hi16_lo16	reachable-code	0x801749a8	bss	actor_state	lui+lw	s3	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039894	0x29094		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800398a8	0x290a8		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800398c0	0x290c0	0x800398c4	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
+GAME.EXE	0x800398c8	0x290c8	0x800398cc	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x800398d8	0x290d8		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800398fc	0x290fc	0x80039900	mips_hi16_lo16	reachable-code	0x801749b4	bss	actor_state	lui+lw	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x8003991c	0x2911c		mips26	reachable-code	0x80038ff0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039924	0x29124		mips26	reachable-code	0x80039a40	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039948	0x29148		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039960	0x29160		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039980	0x29180	0x80039984	mips_hi16_lo16	reachable-code	0x801984da	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x800399b4	0x291b4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800399e4	0x291e4		mips26	reachable-code	0x8003a9f4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800399f8	0x291f8	0x800399fc	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw	a0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039a00	0x29200		mips26	reachable-code	0x80038ff0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a0c	0x2920c		mips26	reachable-code	0x80039710	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a20	0x29220		mips26	reachable-code	0x80039710	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -6784,10 +6949,15 @@ GAME.EXE	0x80039a38	0x29238		mips26	reachable-code	0x80039b34	load		j		control-f
 GAME.EXE	0x80039a40	0x29240		mips26	reachable-code	0x800395c8	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a48	0x29248		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a60	0x29260		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a7c	0x2927c	0x80039a80	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
+GAME.EXE	0x80039a84	0x29284	0x80039a88	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039a90	0x29290		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039ab0	0x292b0		mips26	reachable-code	0x8002b73c	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039ab8	0x292b8		mips26	reachable-code	0x80039b2c	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039acc	0x292cc	0x80039ad0	mips_hi16_lo16	reachable-code	0x801749b4	bss	actor_state	lui+lw	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039ae8	0x292e8		mips26	reachable-code	0x80039b2c	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039b00	0x29300	0x80039b04	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
+GAME.EXE	0x80039b08	0x29308	0x80039b0c	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039b14	0x29314		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039b2c	0x2932c		mips26	reachable-code	0x80038d04	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039bbc	0x293bc		mips26	instruction-word	0x80039758	load		jal		range-filtered	candidate	investigation:relocs.tsv
@@ -8178,92 +8348,100 @@ GAME.EXE	0x80047568	0x36d68		mips26	reachable-code	0x800335a0	load		jal		control
 GAME.EXE	0x80047580	0x36d80		mips26	reachable-code	0x8002bc18	load		jal		control-flow	reviewed	manual:collision_channel_transition
 GAME.EXE	0x80047594	0x36d94		mips26	reachable-code	0x80031634	load		jal		control-flow	reviewed	manual:collision_channel_transition
 GAME.EXE	0x800475a0	0x36da0		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:collision_channel_transition
-GAME.EXE	0x80047630	0x36e30		mips26	instruction-word	0x800363dc	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004763c	0x36e3c		mips26	instruction-word	0x80035590	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800476c0	0x36ec0		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800476ec	0x36eec		mips26	instruction-word	0x80047c68	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800477a4	0x36fa4		mips26	instruction-word	0x800477bc	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800477bc	0x36fbc		mips26	instruction-word	0x8005e800	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047824	0x37024		mips26	instruction-word	0x80045f20	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004782c	0x3702c		mips26	instruction-word	0x8004795c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800478b4	0x370b4		mips26	instruction-word	0x80045f20	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800478c4	0x370c4		mips26	instruction-word	0x8005e800	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800478f8	0x370f8		mips26	instruction-word	0x80045fd4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047910	0x37110		mips26	instruction-word	0x80014864	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004792c	0x3712c		mips26	instruction-word	0x8001586c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047934	0x37134		mips26	instruction-word	0x800144b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004793c	0x3713c		mips26	instruction-word	0x80016f4c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047948	0x37148		mips26	instruction-word	0x800335a0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047968	0x37168		mips26	instruction-word	0x8005e800	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047994	0x37194		mips26	instruction-word	0x800144b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004799c	0x3719c		mips26	instruction-word	0x80016f4c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800479ac	0x371ac		mips26	instruction-word	0x800335a0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800479b4	0x371b4		mips26	instruction-word	0x80047968	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800479d8	0x371d8		mips26	instruction-word	0x80047434	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047a08	0x37208		mips26	instruction-word	0x80047a9c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047a10	0x37210		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047a58	0x37258		mips26	instruction-word	0x80047a98	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047a60	0x37260		mips26	instruction-word	0x80047a98	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047a88	0x37288		mips26	instruction-word	0x80047a94	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047ac4	0x372c4		mips26	instruction-word	0x80045f20	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047af4	0x372f4		mips26	instruction-word	0x80047b60	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047b14	0x37314		mips26	instruction-word	0x800152ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047b40	0x37340		mips26	instruction-word	0x800335a0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047b48	0x37348		mips26	instruction-word	0x80047b08	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047bd4	0x373d4		mips26	instruction-word	0x80045fd4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047be4	0x373e4		mips26	instruction-word	0x8001586c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047c00	0x37400		mips26	instruction-word	0x80014864	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047c18	0x37418		mips26	instruction-word	0x800335a0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047c3c	0x3743c		mips26	instruction-word	0x80047c60	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047c60	0x37460		mips26	instruction-word	0x800251f0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047cec	0x374ec		mips26	instruction-word	0x80045e5c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047d1c	0x3751c		mips26	instruction-word	0x800474c4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047d50	0x37550		mips26	instruction-word	0x800474c4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047d6c	0x3756c		mips26	instruction-word	0x8003a9f4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047db0	0x375b0		mips26	instruction-word	0x80015318	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047dc0	0x375c0		mips26	instruction-word	0x800152ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047dd0	0x375d0		mips26	instruction-word	0x800462bc	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047e08	0x37608		mips26	instruction-word	0x80036190	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047e88	0x37688		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047e9c	0x3769c		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047ec0	0x376c0		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047edc	0x376dc		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f10	0x37710		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f2c	0x3772c		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f50	0x37750		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f7c	0x3777c		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f84	0x37784		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047f8c	0x3778c		mips26	instruction-word	0x800475d8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047fa4	0x377a4		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047fe0	0x377e0		mips26	instruction-word	0x800475d8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80047ffc	0x377fc		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048014	0x37814		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004803c	0x3783c		mips26	instruction-word	0x8004819c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048084	0x37884		mips26	instruction-word	0x800152ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800480b0	0x378b0		mips26	instruction-word	0x800152ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800480e4	0x378e4		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004810c	0x3790c		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048120	0x37920		mips26	instruction-word	0x800152ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048148	0x37948		mips26	instruction-word	0x8004819c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048160	0x37960		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048168	0x37968		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004818c	0x3798c		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048194	0x37994		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800481a0	0x379a0		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800481a8	0x379a8		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800481c0	0x379c0		mips26	instruction-word	0x800331d0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800481c8	0x379c8		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800481e4	0x379e4		mips26	instruction-word	0x800293d4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048204	0x37a04		mips26	instruction-word	0x800482a8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048214	0x37a14		mips26	instruction-word	0x80034e10	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004821c	0x37a1c		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048244	0x37a44		mips26	instruction-word	0x800474c4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048278	0x37a78		mips26	instruction-word	0x800474c4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048280	0x37a80		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048290	0x37a90		mips26	instruction-word	0x80048554	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048298	0x37a98		mips26	instruction-word	0x80028fa8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800482a0	0x37aa0		mips26	instruction-word	0x8001bcfc	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800482a8	0x37aa8		mips26	instruction-word	0x80047dec	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80047628	0x36e28	0x8004762c	mips_hi16_lo16	instruction-word	0x8017d10e	bss	map_object_state	lui+lhu	a2	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x80047630	0x36e30		mips26	reachable-code	0x800363dc	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004763c	0x36e3c		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004767c	0x36e7c	0x80047680	mips_hi16_lo16	instruction-word	0x801749d0	bss	map_object_state	lui+addiu	a2	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x800476c0	0x36ec0		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800476d8	0x36ed8	0x800476dc	mips_hi16_lo16	instruction-word	0x801984fc	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x800476ec	0x36eec		mips26	reachable-code	0x80047c68	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004777c	0x36f7c	0x80047780	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x800477a4	0x36fa4		mips26	reachable-code	0x800477bc	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800477bc	0x36fbc		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800477f0	0x36ff0	0x800477f4	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x80047824	0x37024		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004782c	0x3702c		mips26	reachable-code	0x8004795c	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047864	0x37064	0x80047868	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+addiu	t0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
+GAME.EXE	0x800478b4	0x370b4		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800478c4	0x370c4		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800478f8	0x370f8		mips26	reachable-code	0x80045fd4	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047910	0x37110		mips26	reachable-code	0x80014864	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004792c	0x3712c		mips26	reachable-code	0x8001586c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047934	0x37134		mips26	reachable-code	0x800144b8	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004793c	0x3713c		mips26	reachable-code	0x80016f4c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047948	0x37148		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047968	0x37168		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047994	0x37194		mips26	reachable-code	0x800144b8	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004799c	0x3719c		mips26	reachable-code	0x80016f4c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800479ac	0x371ac		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800479b4	0x371b4		mips26	reachable-code	0x80047968	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800479d8	0x371d8		mips26	reachable-code	0x80047434	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047a08	0x37208		mips26	reachable-code	0x80047a9c	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047a10	0x37210		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047a58	0x37258		mips26	reachable-code	0x80047a98	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047a60	0x37260		mips26	reachable-code	0x80047a98	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047a88	0x37288		mips26	reachable-code	0x80047a94	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047ac4	0x372c4		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047af4	0x372f4		mips26	reachable-code	0x80047b60	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047b14	0x37314		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047b40	0x37340		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047b48	0x37348		mips26	reachable-code	0x80047b08	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047bd4	0x373d4		mips26	reachable-code	0x80045fd4	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047be4	0x373e4		mips26	reachable-code	0x8001586c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c00	0x37400		mips26	reachable-code	0x80014864	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c18	0x37418		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c3c	0x3743c		mips26	reachable-code	0x80047c60	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c60	0x37460		mips26	reachable-code	0x800251f0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047ce4	0x374e4	0x80047ce8	mips_hi16_lo16	instruction-word	0x801b2140	bss	event_state	lui+sw	at	paired-reviewed	reviewed	manual:0x80047c98 event-state control clear
+GAME.EXE	0x80047cec	0x374ec		mips26	reachable-code	0x80045e5c	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d1c	0x3751c		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d50	0x37550		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d6c	0x3756c		mips26	reachable-code	0x8003a9f4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047db0	0x375b0		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047dc0	0x375c0		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047dd0	0x375d0		mips26	reachable-code	0x800462bc	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047e08	0x37608		mips26	reachable-code	0x80036190	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047e88	0x37688		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047e9c	0x3769c		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047ec0	0x376c0		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047edc	0x376dc		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f10	0x37710		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f2c	0x3772c		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f50	0x37750		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f7c	0x3777c		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f84	0x37784		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047f8c	0x3778c		mips26	reachable-code	0x800475d8	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047fa4	0x377a4		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047fe0	0x377e0		mips26	reachable-code	0x800475d8	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047ffc	0x377fc		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048014	0x37814		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x8004803c	0x3783c		mips26	reachable-code	0x8004819c	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048084	0x37884		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800480b0	0x378b0		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800480e4	0x378e4		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x8004810c	0x3790c		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048120	0x37920		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048148	0x37948		mips26	reachable-code	0x8004819c	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048160	0x37960		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048168	0x37968		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x8004818c	0x3798c		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048194	0x37994		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800481a0	0x379a0		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800481a8	0x379a8		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800481c0	0x379c0		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800481c8	0x379c8		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800481e4	0x379e4		mips26	reachable-code	0x800293d4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048204	0x37a04		mips26	reachable-code	0x800482a8	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048214	0x37a14		mips26	reachable-code	0x80034e10	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x8004821c	0x37a1c		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048244	0x37a44		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048278	0x37a78		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048280	0x37a80		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048290	0x37a90		mips26	reachable-code	0x80048554	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80048298	0x37a98		mips26	reachable-code	0x80028fa8	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800482a0	0x37aa0		mips26	reachable-code	0x8001bcfc	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800482a8	0x37aa8		mips26	reachable-code	0x80047dec	load		j		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x800482b0	0x37ab0	0x800482b4	mips_hi16_lo16	instruction-word	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:0x80047c98 active callback-table slot zero
 GAME.EXE	0x80048304	0x37b04	0x80048308	mips_hi16_lo16	reachable-code	0x801b2144	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:event-state-initialize
 GAME.EXE	0x80048310	0x37b10		mips26	reachable-code	0x80017228	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80048318	0x37b18	0x8004831c	mips_hi16_lo16	reachable-code	0x801b2244	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:event-state-initialize
@@ -8282,46 +8460,156 @@ GAME.EXE	0x80048428	0x37c28	0x8004842c	mips_hi16_lo16	reachable-code	0x801b2244	
 GAME.EXE	0x80048498	0x37c98	0x8004849c	mips_hi16_lo16	reachable-code	0x801b5a44	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:event-save-offsets
 GAME.EXE	0x800484c0	0x37cc0		mips26	reachable-code	0x800484d0	load		j		control-flow	reviewed	manual:event-save-offsets
 GAME.EXE	0x800484e4	0x37ce4	0x800484e8	mips_hi16_lo16	reachable-code	0x801b2244	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:event-arena-rebase
-GAME.EXE	0x800485b8	0x37db8		mips26	instruction-word	0x800485c4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048688	0x37e88		mips26	instruction-word	0x800488fc	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800486bc	0x37ebc	0x800486c0	mips_hi16_lo16	instruction-word	0x80012960	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048708	0x37f08		mips26	instruction-word	0x800488a4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004871c	0x37f1c		mips26	instruction-word	0x800488a4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048798	0x37f98		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048804	0x38004		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048880	0x38080		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004889c	0x3809c		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800488a8	0x380a8		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800488cc	0x380cc		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800488ec	0x380ec		mips26	instruction-word	0x800488f8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048910	0x38110		mips26	instruction-word	0x800483d8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048918	0x38118		mips26	instruction-word	0x80048428	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004893c	0x3813c		mips26	instruction-word	0x800176c0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048964	0x38164		mips26	instruction-word	0x80017608	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048978	0x38178		mips26	instruction-word	0x800171c8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048980	0x38180		mips26	instruction-word	0x80048498	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048988	0x38188		mips26	instruction-word	0x800484e4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800489d4	0x381d4		mips26	instruction-word	0x800483d8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048a24	0x38224		mips26	instruction-word	0x800489fc	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048a70	0x38270		mips26	instruction-word	0x80048a38	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048aa8	0x382a8	0x80048aac	mips_hi16_lo16	instruction-word	0x80012bf8	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048ac8	0x382c8		mips26	instruction-word	0x80048ce8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048ae4	0x382e4		mips26	instruction-word	0x80048ce8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048aec	0x382ec		mips26	instruction-word	0x80035590	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048b94	0x38394		mips26	instruction-word	0x8002a988	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048bb8	0x383b8		mips26	instruction-word	0x80048ce4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048bc0	0x383c0		mips26	instruction-word	0x80035590	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048c20	0x38420		mips26	instruction-word	0x80048b68	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048c28	0x38428		mips26	instruction-word	0x80035590	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048c88	0x38488		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048cb8	0x384b8		mips26	instruction-word	0x80048b68	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80048cc0	0x384c0		mips26	instruction-word	0x80035590	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800490f0	0x388f0		mips26	instruction-word	0x80049124	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800491ac	0x389ac		mips26	instruction-word	0x800491e4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049248	0x38a48		mips26	instruction-word	0x8004927c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800496d0	0x38ed0		mips26	reachable-code	0x80049704	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004978c	0x38f8c		mips26	reachable-code	0x800497c0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049828	0x39028		mips26	reachable-code	0x8004985c	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800485b8	0x37db8		mips26	reachable-code	0x800485c4	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048688	0x37e88		mips26	reachable-code	0x800488fc	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x800486bc	0x37ebc	0x800486c0	mips_hi16_lo16	instruction-word	0x80012960	load	DAT_80012960	lui+addiu	at	paired-reviewed	reviewed	manual:0x80048554 bounded 165-word switch-table base
+GAME.EXE	0x80048708	0x37f08		mips26	reachable-code	0x800488a4	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x8004871c	0x37f1c		mips26	reachable-code	0x800488a4	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048798	0x37f98		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048804	0x38004		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048880	0x38080		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x8004889c	0x3809c		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x800488a8	0x380a8		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x800488cc	0x380cc		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x800488ec	0x380ec		mips26	reachable-code	0x800488f8	load		j		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048910	0x38110		mips26	reachable-code	0x800483d8	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048918	0x38118		mips26	reachable-code	0x80048428	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x8004893c	0x3813c		mips26	reachable-code	0x800176c0	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048964	0x38164		mips26	reachable-code	0x80017608	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048978	0x38178		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048980	0x38180		mips26	reachable-code	0x80048498	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x80048988	0x38188		mips26	reachable-code	0x800484e4	load		jal		control-flow	reviewed	manual:0x80048554 decoded direct MIPS26
+GAME.EXE	0x800489d4	0x381d4		mips26	reachable-code	0x800483d8	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048a24	0x38224		mips26	reachable-code	0x800489fc	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048a70	0x38270		mips26	reachable-code	0x80048a38	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048aa8	0x382a8	0x80048aac	mips_hi16_lo16	instruction-word	0x80012bf8	load	event_restore_opcode_jump_table	lui+addiu	at	paired-reviewed	reviewed	manual:0x800489ac bounded 16-word switch-table base
+GAME.EXE	0x80048ac8	0x382c8		mips26	reachable-code	0x80048ce8	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048ae4	0x382e4		mips26	reachable-code	0x80048ce8	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048aec	0x382ec		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048b94	0x38394		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048bb8	0x383b8		mips26	reachable-code	0x80048ce4	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048bc0	0x383c0		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048c20	0x38420		mips26	reachable-code	0x80048b68	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048c28	0x38428		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048c88	0x38488		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048cb8	0x384b8		mips26	reachable-code	0x80048b68	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048cc0	0x384c0		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
+GAME.EXE	0x80048d28	0x38528	0x80048d2c	mips_hi16_lo16	reachable-code	0x8017d11c	bss	state_8017d118	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048d48	0x38548	0x80048d4c	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048d74	0x38574	0x80048d78	mips_hi16_lo16	reachable-code	0x801985c8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048d9c	0x3859c	0x80048da0	mips_hi16_lo16	reachable-code	0x801984d0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048dac	0x385ac	0x80048db0	mips_hi16_lo16	reachable-code	0x801984d4	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048dbc	0x385bc	0x80048dc0	mips_hi16_lo16	reachable-code	0x801984fc	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048dcc	0x385cc	0x80048dd0	mips_hi16_lo16	reachable-code	0x801985f8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048ddc	0x385dc	0x80048de0	mips_hi16_lo16	reachable-code	0x801984e2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048dec	0x385ec	0x80048df0	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048dfc	0x385fc	0x80048e00	mips_hi16_lo16	reachable-code	0x801984e6	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e0c	0x3860c	0x80048e10	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e1c	0x3861c	0x80048e20	mips_hi16_lo16	reachable-code	0x801984f4	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e2c	0x3862c	0x80048e30	mips_hi16_lo16	reachable-code	0x801984f6	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e3c	0x3863c	0x80048e40	mips_hi16_lo16	reachable-code	0x801984f0	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e4c	0x3864c	0x80048e50	mips_hi16_lo16	reachable-code	0x801984f2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e5c	0x3865c	0x80048e60	mips_hi16_lo16	reachable-code	0x80198524	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e6c	0x3866c	0x80048e70	mips_hi16_lo16	reachable-code	0x80198526	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e7c	0x3867c	0x80048e80	mips_hi16_lo16	reachable-code	0x80198528	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e8c	0x3868c	0x80048e90	mips_hi16_lo16	reachable-code	0x8019852a	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048e9c	0x3869c	0x80048ea0	mips_hi16_lo16	reachable-code	0x8019852c	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048eac	0x386ac	0x80048eb0	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048ebc	0x386bc	0x80048ec0	mips_hi16_lo16	reachable-code	0x80198530	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048ecc	0x386cc	0x80048ed0	mips_hi16_lo16	reachable-code	0x80198532	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048edc	0x386dc	0x80048ee0	mips_hi16_lo16	reachable-code	0x80198534	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048eec	0x386ec	0x80048ef0	mips_hi16_lo16	reachable-code	0x80198536	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048efc	0x386fc	0x80048f00	mips_hi16_lo16	reachable-code	0x80198538	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f0c	0x3870c	0x80048f10	mips_hi16_lo16	reachable-code	0x8019853a	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f1c	0x3871c	0x80048f20	mips_hi16_lo16	reachable-code	0x8019853c	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f2c	0x3872c	0x80048f30	mips_hi16_lo16	reachable-code	0x8019853e	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f3c	0x3873c	0x80048f40	mips_hi16_lo16	reachable-code	0x801984d8	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f4c	0x3874c	0x80048f50	mips_hi16_lo16	reachable-code	0x801984d9	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f5c	0x3875c	0x80048f60	mips_hi16_lo16	reachable-code	0x80198590	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f6c	0x3876c	0x80048f70	mips_hi16_lo16	reachable-code	0x80198591	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f7c	0x3877c	0x80048f80	mips_hi16_lo16	reachable-code	0x80198592	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f8c	0x3878c	0x80048f90	mips_hi16_lo16	reachable-code	0x80198593	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048f9c	0x3879c	0x80048fa0	mips_hi16_lo16	reachable-code	0x80198594	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048fac	0x387ac	0x80048fb0	mips_hi16_lo16	reachable-code	0x80198595	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048fbc	0x387bc	0x80048fc0	mips_hi16_lo16	reachable-code	0x80198596	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048fcc	0x387cc	0x80048fd0	mips_hi16_lo16	reachable-code	0x80198567	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048fdc	0x387dc	0x80048fe0	mips_hi16_lo16	reachable-code	0x80198568	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048fec	0x387ec	0x80048ff0	mips_hi16_lo16	reachable-code	0x80198569	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80048ffc	0x387fc	0x80049000	mips_hi16_lo16	reachable-code	0x8019856b	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004900c	0x3880c	0x80049010	mips_hi16_lo16	reachable-code	0x80198597	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004901c	0x3881c	0x80049020	mips_hi16_lo16	reachable-code	0x80198598	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004902c	0x3882c	0x80049030	mips_hi16_lo16	reachable-code	0x80198599	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004903c	0x3883c	0x80049040	mips_hi16_lo16	reachable-code	0x8019859a	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049044	0x38844	0x80049048	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049050	0x38850	0x80049054	mips_hi16_lo16	reachable-code	0x8019859b	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049060	0x38860	0x80049064	mips_hi16_lo16	reachable-code	0x8019859c	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004908c	0x3888c	0x80049090	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800490f0	0x388f0		mips26	reachable-code	0x80049124	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x80049148	0x38948	0x8004914c	mips_hi16_lo16	reachable-code	0x801b2144	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800491ac	0x389ac		mips26	reachable-code	0x800491e4	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x800491e4	0x389e4	0x800491e8	mips_hi16_lo16	reachable-code	0x801b2244	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049248	0x38a48		mips26	reachable-code	0x8004927c	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x8004927c	0x38a7c	0x80049280	mips_hi16_lo16	reachable-code	0x801b5a44	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800492e0	0x38ae0	0x800492e4	mips_hi16_lo16	reachable-code	0x8017d11c	bss	state_8017d118	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049308	0x38b08	0x8004930c	mips_hi16_lo16	reachable-code	0x8017d11d	bss	state_8017d118	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049310	0x38b10	0x80049314	mips_hi16_lo16	reachable-code	0x8017d11e	bss	state_8017d118	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049318	0x38b18	0x8004931c	mips_hi16_lo16	reachable-code	0x8017d11f	bss	state_8017d118	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049320	0x38b20	0x80049324	mips_hi16_lo16	reachable-code	0x8017d120	bss	state_8017d118	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049328	0x38b28	0x8004932c	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049354	0x38b54	0x80049358	mips_hi16_lo16	reachable-code	0x801985c8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049384	0x38b84	0x80049388	mips_hi16_lo16	reachable-code	0x801984d0	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049394	0x38b94	0x80049398	mips_hi16_lo16	reachable-code	0x801984d4	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493a4	0x38ba4	0x800493a8	mips_hi16_lo16	reachable-code	0x801984fc	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493b4	0x38bb4	0x800493b8	mips_hi16_lo16	reachable-code	0x801985f8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493c4	0x38bc4	0x800493c8	mips_hi16_lo16	reachable-code	0x801984e2	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493d4	0x38bd4	0x800493d8	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493e4	0x38be4	0x800493e8	mips_hi16_lo16	reachable-code	0x801984e6	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800493f4	0x38bf4	0x800493f8	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049404	0x38c04	0x80049408	mips_hi16_lo16	reachable-code	0x801984f4	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049414	0x38c14	0x80049418	mips_hi16_lo16	reachable-code	0x801984f6	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049424	0x38c24	0x80049428	mips_hi16_lo16	reachable-code	0x801984f0	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049434	0x38c34	0x80049438	mips_hi16_lo16	reachable-code	0x801984f2	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049444	0x38c44	0x80049448	mips_hi16_lo16	reachable-code	0x80198524	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049454	0x38c54	0x80049458	mips_hi16_lo16	reachable-code	0x80198526	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049464	0x38c64	0x80049468	mips_hi16_lo16	reachable-code	0x80198528	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049474	0x38c74	0x80049478	mips_hi16_lo16	reachable-code	0x8019852a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049484	0x38c84	0x80049488	mips_hi16_lo16	reachable-code	0x8019852c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049494	0x38c94	0x80049498	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494a4	0x38ca4	0x800494a8	mips_hi16_lo16	reachable-code	0x80198530	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494b4	0x38cb4	0x800494b8	mips_hi16_lo16	reachable-code	0x80198532	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494c4	0x38cc4	0x800494c8	mips_hi16_lo16	reachable-code	0x80198534	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494d4	0x38cd4	0x800494d8	mips_hi16_lo16	reachable-code	0x80198536	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494e4	0x38ce4	0x800494e8	mips_hi16_lo16	reachable-code	0x80198538	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800494f4	0x38cf4	0x800494f8	mips_hi16_lo16	reachable-code	0x8019853a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049504	0x38d04	0x80049508	mips_hi16_lo16	reachable-code	0x8019853c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049514	0x38d14	0x80049518	mips_hi16_lo16	reachable-code	0x8019853e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049524	0x38d24	0x80049528	mips_hi16_lo16	reachable-code	0x801984d8	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049534	0x38d34	0x80049538	mips_hi16_lo16	reachable-code	0x801984d9	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049544	0x38d44	0x80049548	mips_hi16_lo16	reachable-code	0x80198590	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049554	0x38d54	0x80049558	mips_hi16_lo16	reachable-code	0x80198591	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049564	0x38d64	0x80049568	mips_hi16_lo16	reachable-code	0x80198592	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049574	0x38d74	0x80049578	mips_hi16_lo16	reachable-code	0x80198593	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049584	0x38d84	0x80049588	mips_hi16_lo16	reachable-code	0x80198594	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049594	0x38d94	0x80049598	mips_hi16_lo16	reachable-code	0x80198595	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495a4	0x38da4	0x800495a8	mips_hi16_lo16	reachable-code	0x80198596	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495b4	0x38db4	0x800495b8	mips_hi16_lo16	reachable-code	0x80198567	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495c4	0x38dc4	0x800495c8	mips_hi16_lo16	reachable-code	0x80198568	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495d4	0x38dd4	0x800495d8	mips_hi16_lo16	reachable-code	0x80198569	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495e4	0x38de4	0x800495e8	mips_hi16_lo16	reachable-code	0x8019856b	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800495f4	0x38df4	0x800495f8	mips_hi16_lo16	reachable-code	0x80198597	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049604	0x38e04	0x80049608	mips_hi16_lo16	reachable-code	0x80198598	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049614	0x38e14	0x80049618	mips_hi16_lo16	reachable-code	0x80198599	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049624	0x38e24	0x80049628	mips_hi16_lo16	reachable-code	0x8019859a	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049630	0x38e30	0x80049634	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049638	0x38e38	0x8004963c	mips_hi16_lo16	reachable-code	0x8019859b	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049648	0x38e48	0x8004964c	mips_hi16_lo16	reachable-code	0x8019859c	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049668	0x38e68	0x8004966c	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x800496d0	0x38ed0		mips26	reachable-code	0x80049704	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x80049724	0x38f24	0x80049728	mips_hi16_lo16	reachable-code	0x801b2144	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x8004978c	0x38f8c		mips26	reachable-code	0x800497c0	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x800497c0	0x38fc0	0x800497c4	mips_hi16_lo16	reachable-code	0x801b2244	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
+GAME.EXE	0x80049828	0x39028		mips26	reachable-code	0x8004985c	load		j		control-flow	reviewed	manual:card-payload-direct-jump-audit
+GAME.EXE	0x8004985c	0x3905c	0x80049860	mips_hi16_lo16	reachable-code	0x801b5a44	bss	event_state	lui+addiu		paired-reviewed	reviewed	manual:card-payload-raw-pair-audit
 GAME.EXE	0x800498c4	0x390c4	0x800498c8	mips_hi16_lo16	reachable-code	0x8006d674	load		lui+addiu	gp	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800498cc	0x390cc		mips26	reachable-code	0x80013634	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800498dc	0x390dc	0x800498e0	mips_hi16_lo16	reachable-code	0x8006da68	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
@@ -10695,38 +10983,38 @@ GAME.EXE	0x80063d7c	0x5357c		mips26	reachable-code	0x80063a80	load		jal		control
 GAME.EXE	0x80063d88	0x53588	0x80063d8c	mips_hi16_lo16	reachable-code	0x8001360c	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80063d98	0x53598	0x80063d9c	mips_hi16_lo16	reachable-code	0x8006d8c8	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80063dac	0x535ac		mips26	reachable-code	0x80063db8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e00	0x53600		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e04	0x53604		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e08	0x53608		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e0c	0x5360c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e10	0x53610		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e14	0x53614		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e18	0x53618		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e1c	0x5361c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e20	0x53620		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e24	0x53624		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e28	0x53628		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e2c	0x5362c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e30	0x53630		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e34	0x53634		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e38	0x53638		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e3c	0x5363c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e40	0x53640		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e44	0x53644		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e48	0x53648		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e4c	0x5364c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e50	0x53650		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e54	0x53654		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e58	0x53658		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e5c	0x5365c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e60	0x53660		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e64	0x53664		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e68	0x53668		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e6c	0x5366c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e70	0x53670		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e74	0x53674		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e78	0x53678		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80063e7c	0x5367c		mips32_candidate	raw-word	0x80015d50	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x80063e00	0x53600		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e04	0x53604		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e08	0x53608		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e0c	0x5360c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e10	0x53610		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e14	0x53614		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e18	0x53618		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e1c	0x5361c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e20	0x53620		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e24	0x53624		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e28	0x53628		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e2c	0x5362c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e30	0x53630		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e34	0x53634		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e38	0x53638		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e3c	0x5363c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e40	0x53640		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e44	0x53644		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e48	0x53648		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e4c	0x5364c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e50	0x53650		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e54	0x53654		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e58	0x53658		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e5c	0x5365c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e60	0x53660		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e64	0x53664		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e68	0x53668		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e6c	0x5366c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e70	0x53670		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e74	0x53674		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e78	0x53678		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
+GAME.EXE	0x80063e7c	0x5367c		mips32_candidate	raw-word	0x80015d50	load		.word		pointer-reviewed	reviewed	manual:callback default table 32 pointer rows to no-op stub
 GAME.EXE	0x80067a48	0x57248		mips32_candidate	raw-word	0x8006d758	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80067a4c	0x5724c		mips32_candidate	raw-word	0x8006d750	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80067a50	0x57250		mips32_candidate	raw-word	0x80012d2c	load		.word		range-only	candidate	investigation:relocs.tsv

@@ -40,7 +40,7 @@ void func_8001e94c(void)
 {
     KfMenuGlyphString heading;
     KfMenuGlyphString amount;
-    const s32 row_step = 23;
+    s32 row_step = 23;
 
     heading.position.x = 168;
     heading.position.y = 30;

@@ -3,7 +3,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern const u8 DAT_800667e8[13];
 extern void func_80026330(s32 mode, VECTOR *output);
 extern void func_80025a18();
 
@@ -26,7 +25,7 @@ void func_80026498(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 
     switch (magic_id - 38) {
     case 1:
-        func_80026330(DAT_800667e8[effect_parameter], &position);
+        func_80026330(DAT_800667e8.effect_ids[effect_parameter], &position);
         func_80025a18(magic_id, &position);
         break;
     case 11:

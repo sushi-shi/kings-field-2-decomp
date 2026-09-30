@@ -55,9 +55,9 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         high_collision = 0;
         if (flags & -6) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
-            if (collision_height + 1280 < player_state.camera_position.vy) {
-                high_collision = 1;
-            } else if (player_state.death_state == 0 && (flags & 0x30) == 0
+            high_collision = 1;
+            if (collision_height + 1280 >= player_state.camera_position.vy
+                && player_state.death_state == 0 && (flags & 0x30) == 0
                        /* The cache/equipment boundary remains provisional. */
                        && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
                            - collision_height) < -PLAYER_MOVE_HEIGHT) {

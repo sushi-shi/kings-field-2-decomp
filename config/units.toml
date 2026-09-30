@@ -212,6 +212,12 @@ source = "src/game/menu_magic_list.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_magic_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_magic_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_simple_loop"
 image = "GAME.EXE"
 source = "src/game/menu_simple_loop.c"
@@ -227,6 +233,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_card_choice_controller"
 image = "GAME.EXE"
 source = "src/game/menu_card_choice_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_load_browser"
+image = "GAME.EXE"
+source = "src/game/menu_card_load_browser.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -275,6 +287,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_label_templates"
 image = "GAME.EXE"
 source = "src/game/menu_label_templates.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_primary_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_primary_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -557,6 +575,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.collision_grid_sample"
 image = "GAME.EXE"
 source = "src/game/collision_grid_sample.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.collision_shape_dispatch"
+image = "GAME.EXE"
+source = "src/game/collision_shape_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -1049,6 +1073,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_payload"
+image = "GAME.EXE"
+source = "src/game/memory_card_payload.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

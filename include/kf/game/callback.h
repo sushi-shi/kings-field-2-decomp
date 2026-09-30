@@ -17,14 +17,15 @@ typedef struct KfState8017d118 {
     KfCallback *active_table;
     u8 values_10[5];
     u8 unknown_15[2];
-    u8 values_17[3];
-    u8 unknown_1a[2];
+    s8 values_17[3];
+    u16 unknown_1a;
 } KfState8017d118;
 
 typedef char kf_state_8017d118_size[sizeof(KfState8017d118) == 0x1c ? 1 : -1];
 typedef char kf_state_8017d118_table_offset[(u32)&((KfState8017d118 *)0)->active_table == 0xc ? 1 : -1];
 typedef char kf_state_8017d118_values_10_offset[(u32)&((KfState8017d118 *)0)->values_10 == 0x10 ? 1 : -1];
 typedef char kf_state_8017d118_values_17_offset[(u32)&((KfState8017d118 *)0)->values_17 == 0x17 ? 1 : -1];
+typedef char kf_state_8017d118_unknown_1a_offset[(u32)&((KfState8017d118 *)0)->unknown_1a == 0x1a ? 1 : -1];
 
 extern KfState8017d118 state_8017d118;
 

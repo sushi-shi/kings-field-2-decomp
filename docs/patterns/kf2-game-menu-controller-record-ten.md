@@ -8,7 +8,7 @@ Sony/Psy-Q library-body evidence.
 
 | Address | Retail role and ownership boundary | Final verdict |
 | --- | --- | --- |
-| `0x8001a4f0` | Item/model list controller calls the row selectors and preview helpers; its `0x800649ec` glyph prefix and large list record need a shared type. | WIP, unclaimed |
+| `0x8001a4f0` | Mixed item/magic list controller uses 74-row glyph, count, value, and ID buffers, then previews and stores the selected entry. | WIP, source claimed; 96.0% focused listing, 22/22 CFG blocks, 12/12 branches; initialization-loop register residue |
 | `0x8001ac80` | Card startup and directory/preview flow calls 18 distinct helpers; the card-entry array and lifetime remain unresolved. | WIP, unclaimed |
 | `0x8001b2dc` | Seven-row option controller copies six player-state flags, toggles a selected flag, and draws paired glyph labels. | **WIP, 95.601265% strict**; 22/22 CFG blocks and 12/12 branches agree, but the option-count register and resulting schedule differ. |
 | `0x8001b554` | Card startup, temporary-file probe, directory scan, input loop, and frame rendering; the card-list record is not typed completely. | WIP, unclaimed |
@@ -18,6 +18,15 @@ Sony/Psy-Q library-body evidence.
 | `0x8001e94c` | Status/numeric renderer draws glyph suffix rows and player values with menu string/number helpers. | WIP, unclaimed; full label workspace and ordered calls unresolved |
 | `0x8001f008` | Straight-line paired component renderer reads player attack/combat halfwords and glyph suffix rows 2 and 3. | WIP, unclaimed; label-prefix copy and full repeated call schedule unresolved |
 | `0x8001fc94` | Shared numeric/list renderer emits several FT4 packets and calls the exact primitive-buffer pair. | WIP, unclaimed; complete render record and packet paths unresolved |
+
+The `0x8001a4f0` source uses the shared 52-byte menu render view and exact
+stack extents: 74 glyph rows, two 74-byte ID arrays, one 74-byte count array,
+and 74 number words. Retail clears two event counters only during the initial
+item selection, appends magic rows, and copies the shared eight-byte row
+prefix. The focused target has 22 reviewed direct-control/data relocation
+rows and no withheld rows. After correcting the result to a selected row
+index, the remaining listing differences are confined to register allocation
+in the 74-entry initializer; the source does not add a carrier for them.
 
 The new `0x8001b2dc` source is appended to the contiguous
 `game.menu_card_panel` unit. Retail loads `0x80198597..0x8019859c` from

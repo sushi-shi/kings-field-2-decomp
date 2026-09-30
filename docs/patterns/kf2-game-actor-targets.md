@@ -586,7 +586,7 @@ Indirect branch targets below remain unresolved.
 | GAME VA | Final verdict | Confirmed connection or residue |
 | --- | --- | --- |
 | `80039108` | WIP, no source | Actor candidate scorer called by `39640`; 59 CFG blocks and two indirect jumps require dispatch-table and candidate-record ownership. |
-| `8003983c` | WIP, strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers now align. Source-level slot-state gating was corrected from retail. The player-state +0x10a byte meaning and residual saved-register choices remain open. |
+| `8003983c` | WIP, historical strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers align. A later focused carve reviewed twelve actor/player BSS relocation pairs and corrected the byte read from player-state +0x10a to retail-proven +0x0a. The focused listing still swaps the actor pointer and constant-one saved registers; current strict score has not been refreshed. |
 | `80039c94` | WIP, no source | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block body includes an unresolved indirect call. |
 | `8003a318` | WIP, strict `73.591620000%` | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls; unsigned attenuation matches retail shifts. Retail has 26 CFG blocks versus 25 compiled; the sentinel branch is folded. |
 | `8003a778` | exact, strict `100.000000000%` | Typed best-target scan retains retail angle wrapping, range test, random variation, and loop schedule; five confirmed callers include player and effect paths. |

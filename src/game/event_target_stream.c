@@ -25,15 +25,20 @@ void func_800462bc(KfActor *actor)
     KfTargetCandidate *candidate =
         actor_state.target_groups[actor->group_index].targets[0].pointer;
     u8 *cursor;
-    s32 repeat = 0;
-    s32 restore_state = 0;
-    u8 saved_state = 0;
+    s32 repeat;
+    s32 restore_state;
+    u8 saved_state;
     s32 old_counter;
     s32 choice;
 
-    if (candidate == 0 || candidate->type != 0x70) {
+    if (candidate == 0) {
         return;
     }
+    if (candidate->type != 0x70) {
+        return;
+    }
+    restore_state = 0;
+    repeat = 0;
     if (candidate->fallback_offset == 0) {
         event_state.control.bytes[0x3f] = actor->unknown_01;
     }
@@ -53,8 +58,20 @@ void func_800462bc(KfActor *actor)
             candidate->marker_state = 1;
             /* The two rewind opcodes share their byte-count operand. */
         case 8:
-            candidate->fallback_offset -= cursor[1];
-            cursor -= cursor[1];
+        {
+            u8 count = cursor[1];
+            candidate->fallback_offset -= count;
+            cursor -= count;
+            break;
+        }
+        case 9:
+            if (event_state.control.bytes[cursor[1]] == cursor[2]) {
+                candidate->fallback_offset = func_80046144(candidate, cursor[3]);
+                cursor = candidate->bytes + candidate->fallback_offset;
+            } else {
+                cursor += 4;
+                candidate->fallback_offset += 4;
+            }
             break;
         case 2:
             cursor += 2;
@@ -83,15 +100,6 @@ void func_800462bc(KfActor *actor)
             cursor += 2;
             candidate->fallback_offset += 2;
             goto advance;
-        case 9:
-            if (event_state.control.bytes[cursor[1]] == cursor[2]) {
-                candidate->fallback_offset = func_80046144(candidate, cursor[3]);
-                cursor = candidate->bytes + candidate->fallback_offset;
-            } else {
-                cursor += 4;
-                candidate->fallback_offset += 4;
-            }
-            break;
         case 15:
             goto after_script;
         default:
@@ -100,17 +108,18 @@ void func_800462bc(KfActor *actor)
         continue;
 
 execute:
-        if (restore_state == 0 && ((u8 *)candidate)[1] != 0xff) {
+        if (restore_state == 0 && candidate->unknown_01[0] != 0xff) {
+            u16 phase = actor->animation_phase;
             saved_state = actor->unknown_0c;
             restore_state = 1;
-            if (actor->animation_phase != 0) {
+            if (phase != 0) {
                 func_800460a0(actor, actor->unknown_0c,
-                              actor->animation_phase, 0, actor->animation_step);
+                              phase, 0, actor->animation_step);
             }
-            func_800460a0(actor, ((u8 *)candidate)[1], 0, 0xfff,
-                          *(u16 *)((u8 *)candidate + 8));
+            func_800460a0(actor, candidate->unknown_01[0], 0, 0xfff,
+                          candidate->unknown_08);
         }
-        func_80034e10(3, *(u16 *)((u8 *)candidate + 0x0c) + *cursor);
+        func_80034e10(3, candidate->unknown_0c + *cursor);
 
 advance:
         cursor++;
@@ -124,10 +133,10 @@ advance:
 
 after_script:
     old_counter = game_counter_bytes[0x53];
-    switch (((u8 *)candidate)[0x12] & 0xf0) {
+    switch (candidate->unknown_12 & 0xf0) {
     case 0:
         func_80028fa8();
-        func_8001ceb8(((u8 *)candidate)[0x12] & 0xf);
+        func_8001ceb8(candidate->unknown_12 & 0xf);
         break;
     case 0x10:
         func_80028fa8();
@@ -150,9 +159,9 @@ after_script:
         event_state.control.bytes[0x1c] = 1;
     }
     event_state.control.bytes[0x3f] = actor->unknown_01;
-    if (restore_state != 0 && ((u8 *)candidate)[0x11] != 0xff) {
-        func_800460a0(actor, ((u8 *)candidate)[0x11], 0, 0xfff,
-                      *(u16 *)((u8 *)candidate + 0x0e));
+    if (restore_state != 0 && candidate->unknown_11 != 0xff) {
+        func_800460a0(actor, candidate->unknown_11, 0, 0xfff,
+                      candidate->unknown_0e);
         actor->unknown_0c = saved_state;
     }
     event_state.state_word = 1;

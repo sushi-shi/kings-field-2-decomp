@@ -12,7 +12,7 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
     const s32 *number_values = view->number_values;
     const u8 *byte_values = view->byte_values;
     KfMenuGlyphString text;
-    s32 card_columns;
+    s16 *out_codes;
     s32 row;
     s32 code;
     s32 value;
@@ -23,25 +23,27 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
         menu_draw_string(&menu_sprite_defs[1], &list->title);
     }
 
-    row_glyphs += list->scroll_offset * list->glyphs_per_entry;
     detail_rows += list->scroll_offset;
+    row_glyphs += list->scroll_offset * list->glyphs_per_entry;
     number_values += list->scroll_offset;
     byte_values += list->scroll_offset;
 
-    if (list->visible_rows != 0 && list->entry_count != 0) {
-        card_columns = (u32)(render_mode - 8) < 2;
-        for (row = 0; row < list->entry_count && row < list->visible_rows; row++) {
+    if (list->visible_rows > 0) {
+        const s32 card_columns = (u32)(render_mode - 8) < 2;
+        for (row = 0; row < list->visible_rows && row < list->entry_count; row++) {
             text.position.x = list->list_x + 5;
             text.position.y = list->list_y + 5 + row * 14;
+            out_codes = text.glyphs.codes;
             for (code = 0; code < list->glyphs_per_entry; code++)
-                text.glyphs.codes[code] = *row_glyphs++;
+                *out_codes++ = *row_glyphs++;
             menu_draw_string(&menu_sprite_defs[1], &text);
     
             if (render_mode == 3) {
                 text.position.x += 84;
+                out_codes = text.glyphs.codes;
                 for (code = 0; code < 10; code++)
-                    text.glyphs.codes[code] = detail_rows->codes[code];
-                text.glyphs.codes[10] = -1;
+                    *out_codes++ = detail_rows->codes[code];
+                *out_codes = -1;
                 detail_rows++;
                 menu_draw_string(&menu_sprite_defs[1], &text);
             }

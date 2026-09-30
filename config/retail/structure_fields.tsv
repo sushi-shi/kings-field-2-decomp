@@ -444,11 +444,16 @@ KfPlayerDamageReaction	0x00	0x08	rotation	SVECTOR	supported	asm;func_800293d4;fu
 KfPlayerDamageReaction	0x08	0x08	motion	SVECTOR	supported	asm;func_800293d4;func_80029464	damage reaction motion
 KfPlayerFlags140	0x00	0x04	word	u32	supported	asm;func_80029014	full flag word masked against 0x00200020 and 0x00400040
 KfPlayerFlags140	0x00	0x02	low	u16	supported	asm;player_clear_motion	low motion bits masked while clearing velocity
+KfPlayerFlags140	0x00	0x04	halves	KfPlayerFlags140Halves	supported	asm;func_80028998	two-halfword view of motion flags
+KfPlayerFlags140Halves	0x00	0x02	low	u16	supported	asm;func_80028998	low flag halfword
+KfPlayerFlags140Halves	0x02	0x02	high	u16	supported	asm;func_80028998	retail reads high flag halfword separately
 KfPlayerLevelGrowth	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x02	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x04	0x02	physical_power_step	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x06	0x02	magic_step	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x08	0x04	experience_threshold	u32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
+KfPlayerMagicIdSequence	0x00	0x0c	effect_ids	u8[12]	supported	asm;func_80026498 indexed lbu;retail bytes	twelve effect IDs
+KfPlayerMagicIdSequence	0x0c	0x08	attack_masks	u16[4]	supported	asm;func_80028998 lhu and pointer increment;retail bytes	0x20,0x10,0x80,0xffff sentinel
 KfPlayerPositionReaction	0x00	0x01	mode	u8	supported	asm;func_800291ec	cleared before position reaction
 KfPlayerPositionReaction	0x01	0x03	unknown_01	u8[3]	opaque	game/player.h	padding before aligned position
 KfPlayerPositionReaction	0x04	0x10	position	VECTOR	supported	asm;func_800291ec	three signed world-position words stored at +0x150/+0x154/+0x158
@@ -493,7 +498,7 @@ KfPlayerState	0x6c	0x02	unknown_6c	s16	opaque	asm;player_reset_status	cleared by
 KfPlayerState	0x6e	0x02	unknown_6e	s16	opaque	asm;player_recalculate_combat_stats	nonzero raises magic by 30
 KfPlayerState	0x70	0x04	unknown_70	u8[4]	opaque	asm;player_sync_position_to_map	not yet modelled
 KfPlayerState	0x74	0x04	equipment_effect_ticks	u32	supported	asm;func_800297b4;KF1 player_update	unsigned modulo clock for equipment HP effects
-KfPlayerState	0x78	0x04	unknown_78	u8[4]	opaque	asm;player_initialize_state	not yet modelled
+KfPlayerState	0x78	0x04	unknown_78	const u16 *	supported	asm;GAME 0x80028d64 sw and 0x80028dcc/0x80028e28 lw+lhu	pointer to consecutive halfwords; target datum extent remains unresolved
 KfPlayerState	0x7c	0x04	selected_magic_record	KfMagicRecord *	supported	asm;func_80026498;player_initialize_state	26-byte magic row pointer stored after the MP check; cleared during initialization
 KfPlayerState	0x80	0x04	equipped_weapon_record	KfWeaponRecordGame *	supported	asm;player_equip_weapon;KF1 player_core.c	68-byte weapon record index
 KfPlayerState	0x84	0x04	weapon_asset_buffer	KfAssetHeader *	supported	asm;player_equip_weapon;KF1 player_core.c	archive read destination and registry asset
@@ -639,16 +644,21 @@ KfState8017d118	0x09	0x03	unknown_09	u8[3]	opaque	asm;game_main_loop startup cle
 KfState8017d118	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table
 KfState8017d118	0x10	0x05	values_10	u8[5]	supported	asm;func_80015fd4	prior values copied from +0x04 through +0x08
 KfState8017d118	0x15	0x02	unknown_15	u8[2]	opaque	asm;game_main_loop startup clear	purpose not yet modelled
-KfState8017d118	0x17	0x03	values_17	u8[3]	supported	asm;func_80015fd4	three bytes set to 127
-KfState8017d118	0x1a	0x02	unknown_1a	u8[2]	opaque	asm;game_main_loop startup clear	purpose not yet modelled
+KfState8017d118	0x17	0x03	values_17	s8[3]	supported	asm;func_80016820 signed lb;func_80015fd4 stores	three signed bytes set to 127 during transition setup
+KfState8017d118	0x1a	0x02	unknown_1a	u16	opaque	asm;func_80016820 sh and address use	two-byte transition field; purpose not yet modelled
 KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfTargetCandidate	0x1	0x3	unknown_01	u8[3]	opaque	game/actor.h;actor sound wrapper	intervening bytes before sound selector
 KfTargetCandidate	0x4	0x1	unknown_04	u8	supported	game/actor.h;actor sound wrapper	sound selector with alternate range in high bit
-KfTargetCandidate	0x5	0x0b	unknown_05	u8[11]	opaque	game/actor.h;message marker scan	intervening bytes before message cursor
+KfTargetCandidate	0x5	0x3	unknown_05	u8[3]	opaque	game/actor.h;message marker scan	intervening bytes before halfword fields
+KfTargetCandidate	0x8	0x2	unknown_08	u16	supported	GAME 0x800462bc retail lhu at +8	phase-step operand for event action
+KfTargetCandidate	0xa	0x2	unknown_0a	u8[2]	opaque	game/actor.h	meaning unresolved
+KfTargetCandidate	0xc	0x2	unknown_0c	u16	supported	GAME 0x800462bc retail lhu at +0xc	base entry added to event byte before archive call
+KfTargetCandidate	0xe	0x2	unknown_0e	u16	supported	GAME 0x800462bc retail lhu at +0xe	phase-step operand for restored actor state
 KfTargetCandidate	0x10	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
-KfTargetCandidate	0x11	0x2	unknown_11	u8[2]	opaque	game/actor.h;message marker scan	intervening bytes before marker state
+KfTargetCandidate	0x11	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at +0x11	actor state restored after event action
+KfTargetCandidate	0x12	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
 KfTargetCandidate	0x13	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
-KfTargetCandidate	0x14	0x1	bytes	u8[1]	candidate	game/actor.h;message marker scan	start of variable byte stream; complete extent unresolved
+KfTargetCandidate	0x14	0x2	bytes	u8[2]	candidate	game/actor.h;message marker scan;GAME 0x800462bc	start of variable byte stream; complete extent unresolved
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1	0x8	unknown_01	u8[8]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x9	0x1	unknown_09	u8	supported	asm;actor record loader	animation selector copied into actor +0x0c
@@ -779,7 +789,8 @@ KfWeaponRecordGame	0x05	0x01	magic_shots	u8	supported	asm;player_begin_weapon_at
 KfWeaponRecordGame	0x06	0x10	attack_components	u16[8]	supported	asm;player_recalculate_combat_stats	eight attack halfwords
 KfWeaponRecordGame	0x16	0x08	unknown_16	u8[8]	opaque	asm;player_begin_weapon_attack	not yet modelled
 KfWeaponRecordGame	0x1e	0x02	unknown_1e	u16	opaque	asm;player_begin_weapon_attack	normal mode attack parameter
-KfWeaponRecordGame	0x20	0x06	unknown_20	u8[6]	opaque	asm;player_begin_weapon_attack	not yet modelled
+KfWeaponRecordGame	0x20	0x04	unknown_20	u8[4]	opaque	asm;player_begin_weapon_attack	not yet modelled
+KfWeaponRecordGame	0x24	0x02	unknown_24	u16	supported	asm;GAME 0x80028da8 lhu	charged-weapon gate; meaning unresolved
 KfWeaponRecordGame	0x26	0x02	unknown_26	u16	opaque	asm;player_begin_weapon_attack	alternate mode attack parameter
 KfWeaponRecordGame	0x28	0x04	unknown_28	u8[4]	opaque	asm;player_begin_weapon_attack	not yet modelled
 KfWeaponRecordGame	0x2c	0x02	unknown_2c	u16	opaque	asm;player_begin_weapon_attack	normal mode attack parameter

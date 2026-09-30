@@ -759,17 +759,34 @@ HI16/LO16 pairs were separately validated against raw opcodes, base registers,
 and signed low addends before curation. A second focused carve reports zero
 withheld relocations. A subsequent shared accept-position join follows the
 retail backward edge and reduces the compiled CFG from 40 to 39 blocks, though
-focused similarity moves from 36.8% to **35.7% WIP**. Retail has 35 blocks and
-20 branches versus 39 and 23 in the current probe. GCC reuses a player-state
+focused similarity moves from 36.8% to 35.7%. The retail `0x27624` branch
+sets its retry flag in the delay slot on both outcomes, so the source now does
+the same. This reduces the compiled CFG again, to 38 blocks, while focused
+similarity moves to **34.6% WIP**. Retail has 35 blocks and 20 branches versus
+38 and 23 in the current probe. GCC reuses a player-state
 base register across accesses that retail materializes separately; collision
 cache ownership at BSS `+0x11800` is still provisional. No strict exact claim
 is made.
 
-The other two player-controller gaps remain unclaimed. `80028998` writes the
-address `DAT_800667e8+0xc` to `player_state+0x78` and later reads a halfword
-through it. The current `u8[13]` datum ends at the first of those two bytes;
-the second lies in the following unclassified seven-byte gap. That read proves
-the current extent is insufficient for this pointer view, but does not by
-itself establish whether the neighboring byte belongs to the same source
-object. `8002985c` still has two retail fragments and no complete CFG. Both
-need ownership/control-flow evidence before a responsible source claim.
+GAME `80028998` is now sourced beside the existing `8002897c` interval leaf
+in `player_interval_71_80.c`. Retail and the KF1 analogue support queued item
+actions, timed magic shots, charge recovery, and a halfword mask sequence for
+weapon attacks. Its 18 direct J/JAL sites and 62 adjacent HI16/LO16 address
+pairs were checked against raw retail words; the focused carve now withholds
+zero relocations. The source needed separate charge additions on the null and
+nonnull magic-record paths, and a shared cancel path for failed charged
+attacks. A checked high-halfword flag view reproduces retail's independent
+`lhu player_state+0x142`. Focused `kf try` reports **SAME** for all 0x528
+bytes of `80028998`; no strict objdiff pass was run under the focused-only
+constraint. Adjacent `8002897c` remains WIP (28.6% focused) with its prior
+source unchanged.
+
+Retail `80028998` writes `DAT_800667e8+0xc` to `player_state+0x78`, then reads
+and advances through halfwords. Bytes at `800667e8..800667fb` resolve the
+formerly split datum: twelve indexed effect IDs (`27 28 3c 42 54 56`, twice)
+followed by four aligned masks `0x20, 0x10, 0x80, 0xffff`. The complete
+0x14-byte `KfPlayerMagicIdSequence` layout and checked player pointer at
++0x78 are curated, while the data's original TU owner remains unresolved.
+Focused `game.player_magic_dispatch` stays 1/1 SAME after the typed table read.
+`8002985c` still has two retail fragments and no complete CFG; its 113
+outgoing xrefs remain candidate until the ranges are curated.

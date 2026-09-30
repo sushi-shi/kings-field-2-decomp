@@ -2,6 +2,7 @@
 #include <kf/game/graphics.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
+#include <kf/lib/math.h>
 
 enum {
     KF_GPU_RESET_KEEP_DISPLAY = 3,
@@ -21,7 +22,7 @@ enum {
 ADDRESS(0x8002d0a4, 0x30)
 void fog_set_near(s32 distance)
 {
-    GRAPHICS.render_state.fog_near_distance = distance;
+    GRAPHICS.render_grid.fog_near_distance = distance;
     SetFogNear((distance & KF_FOG_DISTANCE_MASK) >> 1, KF_PROJECTION_DISTANCE);
 }
 
@@ -81,7 +82,7 @@ void display_reset(void)
         item++;
     }
     GRAPHICS.unknown_14cc1 = 0xff;
-    GRAPHICS.unknown_170ec = 0;
+    GRAPHICS.map_placed_frame_counter = 0;
     pool_reset();
 }
 
@@ -131,4 +132,26 @@ void tmd_select_object_vertices(u16 index)
 {
     GRAPHICS.current_tmd_vertices =
         TMD_OBJECT_VERTICES(GRAPHICS.tmd_state.current_asset, tmd_get_object(index));
+}
+
+ADDRESS(0x8002d4f4, 0xe8)
+void func_8002d4f4(const VECTOR *position, const SVECTOR *rotation)
+{
+    struct KfEulerAngles angles;
+
+    if (position != 0) {
+        GRAPHICS.render_state.view_position = *position;
+        GRAPHICS.render_state.view_cell_x =
+            GRAPHICS.render_state.view_position.vx >> KF_FIXED11_BITS;
+        GRAPHICS.render_state.view_cell_z =
+            GRAPHICS.render_state.view_position.vz >> KF_FIXED11_BITS;
+    }
+    if (rotation != 0)
+        GRAPHICS.render_state.view_rotation = *rotation;
+
+    angles.x = (u16)GRAPHICS.render_state.view_rotation.vx;
+    angles.y = -(u16)GRAPHICS.render_state.view_rotation.vy;
+    angles.z = (u16)GRAPHICS.render_state.view_rotation.vz;
+    matrix_set_rotation_xzy(&angles, &GRAPHICS.render_state.view_matrix);
+    matrix_set_rotation_x(angles.x, &GRAPHICS.render_state.pitch_matrix);
 }

@@ -13,14 +13,12 @@ enum {
     KF_ANIMATION_CLIP_NONE = 0xff
 };
 
-struct KfMorphObject;
-
 typedef struct KfPoolRecord {
     s16 state;
     u16 asset_index;
     u16 clip_index;
     u16 keyframe_index;
-    struct KfMorphObject *rest_morph;
+    u32 rest_morph_offset;
     SVECTOR *cached_vertices;
     struct KfPoolRecord **owner_slot;
 } KfPoolRecord;
@@ -33,5 +31,7 @@ void pool_record_release(KfPoolRecord *record);
 void pool_release_all(void);
 void pool_release_stale(void);
 KfPoolRecord *pool_allocate(void);
+s32 func_80034070(KfPoolRecord **owner_slot, s32 asset_index, s32 clip,
+                  s32 phase, s32 vertex_count);
 
 #endif

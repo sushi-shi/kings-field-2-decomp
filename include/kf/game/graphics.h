@@ -5,6 +5,7 @@
 #include <kf/game/asset.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
+#include <kf/game/map_placed.h>
 #include <psyq/sdk.h>
 
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
@@ -22,7 +23,9 @@ enum {
     KF_PROJECTED_VERTEX_EXTENT = 1000,
     KF_NOTIFICATION_CAPACITY = 8,
     KF_CLIP_EDGE_COUNT = 16,
-    KF_FLOOR_ITEM_CAPACITY = 8
+    KF_FLOOR_ITEM_CAPACITY = 8,
+    KF_MAP_CELL_GRID_SIDE = 24,
+    KF_COLLISION_ROW_COUNT = 80
 };
 
 typedef struct KfPrimitiveBuffer {
@@ -58,6 +61,17 @@ typedef struct KfScreenVertex {
     s16 p2;
 } KfScreenVertex;
 
+/* Game-side view of the records returned through the SDK clip pointer table.
+ * The SDK call still receives EVECTOR **; these are the fields GAME reads. */
+typedef struct KfMapClippedVertex {
+    u8 unknown_00[16];
+    s32 sz;
+    s32 p2;
+    long xy;
+    u32 color_word;
+    u16 uv;
+} KfMapClippedVertex;
+
 typedef struct KfNotificationControl {
     u8 queue_tail;
     u8 queue_head;
@@ -67,7 +81,14 @@ typedef struct KfNotificationControl {
 
 typedef struct KfFloorItem {
     u8 kind;
-    u8 unknown_01[23];
+    u8 unknown_01;
+    u8 unknown_02;
+    u8 unknown_03;
+    u16 unknown_04;
+    RECT rect;
+    u16 unknown_0e;
+    u_long *pixels;
+    u8 unknown_14[4];
 } KfFloorItem;
 
 typedef struct KfRenderState {
@@ -78,9 +99,70 @@ typedef struct KfRenderState {
     SVECTOR view_rotation;
     s32 view_cell_x;
     s32 view_cell_z;
-    u8 unknown_80[0x10];
-    s32 fog_near_distance;
+    s32 cell_origin_x;
+    s32 cell_origin_z;
 } KfRenderState;
+
+typedef struct KfRenderGridState {
+    s32 map_scan_start_x;
+    s32 map_scan_start_z;
+    s32 fog_near_distance;
+    u8 map_cell_layer_masks[KF_MAP_CELL_GRID_SIDE][KF_MAP_CELL_GRID_SIDE];
+} KfRenderGridState;
+
+/* Each transform occupies 20 bytes: the rotation helper uses its first
+ * nine halfwords, while the translation part of SDK MATRIX is not present. */
+typedef struct KfCollisionRotation {
+    s16 m[3][3];
+    s16 pad;
+} KfCollisionRotation;
+
+typedef struct KfCollisionMotion {
+    s16 values[9];
+} KfCollisionMotion;
+
+typedef struct KfCollisionKinds {
+    u8 types[3];
+    u8 pad;
+} KfCollisionKinds;
+
+typedef struct KfCollisionTail {
+    KfCollisionKinds kinds;
+    s16 angle;
+} KfCollisionTail;
+
+typedef struct KfCollisionDefaultTail {
+    KfCollisionKinds kinds;
+    u16 angle;
+} KfCollisionDefaultTail;
+
+typedef struct KfCollisionRow {
+    KfCollisionRotation rotations[4];
+    KfCollisionMotion motion;
+    KfCollisionTail filter;
+} KfCollisionRow;
+
+typedef struct KfCollisionFilterPayload {
+    u8 unknown_00[38];
+    KfCollisionTail filter;
+} KfCollisionFilterPayload;
+
+typedef struct KfCollisionDefaultRow {
+    KfCollisionRotation rotation;
+    KfCollisionMotion motion;
+    KfCollisionDefaultTail filter;
+} KfCollisionDefaultRow;
+
+void func_8002be9c(s32 flags, const KfCollisionFilterPayload *payload,
+                    s32 value);
+void func_8002bc18(void);
+void func_80031634(s32 first, s32 second, s32 third, s32 scale);
+void func_800311b0(s32 x, s32 y, s32 right, s32 bottom,
+                   u8 texture_u, u8 texture_v, u8 texture_width,
+                   u8 texture_height, u8 semitrans, u16 tpage,
+                   u16 clut, u8 red, u8 green, u8 blue, s32 depth);
+void func_800312f4(void);
+void func_80031384(void);
 
 typedef struct KfGraphicsRuntimeGame {
     KfDisplayState display_state;
@@ -91,32 +173,76 @@ typedef struct KfGraphicsRuntimeGame {
     SVECTOR *current_tmd_vertices;
     KfPoolRecord pool_records[KF_ANIMATION_CACHE_CAPACITY];
     KfScreenVertex tmd_projected_vertices[KF_PROJECTED_VERTEX_EXTENT];
-    u8 unknown_12a50[0x1f94];
+    u8 unknown_12a50[0x1f44];
+    /* First three are consumed by GAME; capacity beyond those is provisional. */
+    EVECTOR *clip_result_vertices[KF_CLIP_EDGE_COUNT];
+    u8 unknown_149d4[0x10];
     EVECTOR clip_edges[KF_CLIP_EDGE_COUNT];
     u8 notification_message_ids[KF_NOTIFICATION_CAPACITY];
     u16 notification_payloads[KF_NOTIFICATION_CAPACITY];
     KfNotificationControl notification_control;
-    u8 unknown_14cc0;
+    u8 notification_brightness;
     u8 unknown_14cc1;
-    u8 unknown_14cc2[0x0a];
+    u8 unknown_14cc2[3];
+    u8 unknown_14cc5;
+    u16 unknown_14cc6;
+    u16 unknown_14cc8;
+    u16 unknown_14cca;
     u32 frame_counter_a;
     u32 frame_counter_b;
     KfFloorItem floor_items[KF_FLOOR_ITEM_CAPACITY];
     KfRenderState render_state;
-    u8 unknown_14e28[0x22c4];
-    s32 unknown_170ec;
-    u8 unknown_170f0[0xc00];
+    KfRenderGridState render_grid;
+    s32 collision_rotation_dirty;
+    KfCollisionRow collision_rows[KF_COLLISION_ROW_COUNT];
+    s32 map_placed_frame_counter;
+    KfMapPlacedEntry map_placed_entries[KF_MAP_PLACED_ENTRY_COUNT];
 } KfGraphicsRuntimeGame;
 
 typedef char kf_display_state_size[sizeof(KfDisplayState) == 0x10028 ? 1 : -1];
-typedef char kf_render_state_size[sizeof(KfRenderState) == 0x94 ? 1 : -1];
+typedef char kf_render_state_size[sizeof(KfRenderState) == 0x88 ? 1 : -1];
+typedef char kf_render_grid_size[sizeof(KfRenderGridState) == 0x24c ? 1 : -1];
+typedef char kf_collision_row_size[sizeof(KfCollisionRow) == 104 ? 1 : -1];
+typedef char kf_floor_item_size[sizeof(KfFloorItem) == 24 ? 1 : -1];
+typedef char kf_floor_item_rect_offset[
+    (u32)&((KfFloorItem *)0)->rect == 6 ? 1 : -1];
+typedef char kf_floor_item_pixels_offset[
+    (u32)&((KfFloorItem *)0)->pixels == 16 ? 1 : -1];
+typedef char kf_collision_row_types_offset[
+    (u32)&((KfCollisionRow *)0)->filter.kinds.types == 98 ? 1 : -1];
+typedef char kf_collision_row_angle_offset[
+    (u32)&((KfCollisionRow *)0)->filter.angle == 102 ? 1 : -1];
+typedef char kf_collision_default_row_size[
+    sizeof(KfCollisionDefaultRow) == 44 ? 1 : -1];
+typedef char kf_collision_rows_offset[
+    (u32)&((KfGraphicsRuntimeGame *)0)->collision_rows == 0x1506c ? 1 : -1];
+typedef char kf_collision_control_offset[
+    (u32)&((KfGraphicsRuntimeGame *)0)->unknown_14cc6 == 0x14cc6 ? 1 : -1];
 typedef char kf_graphics_runtime_size[sizeof(KfGraphicsRuntimeGame) == 0x17cf0 ? 1 : -1];
+typedef char kf_clip_result_vertices_offset[
+    (u32)&((KfGraphicsRuntimeGame *)0)->clip_result_vertices == 0x14994 ? 1 : -1];
+typedef char kf_map_clipped_xy_offset[
+    (u32)&((KfMapClippedVertex *)0)->xy == 24 ? 1 : -1];
+typedef char kf_map_clipped_depth_offset[
+    (u32)&((KfMapClippedVertex *)0)->sz == 16 ? 1 : -1];
+typedef char kf_map_clipped_perspective_offset[
+    (u32)&((KfMapClippedVertex *)0)->p2 == 20 ? 1 : -1];
+typedef char kf_map_clipped_color_offset[
+    (u32)&((KfMapClippedVertex *)0)->color_word == 28 ? 1 : -1];
+typedef char kf_map_clipped_uv_offset[
+    (u32)&((KfMapClippedVertex *)0)->uv == 32 ? 1 : -1];
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
+extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];
+extern POLY_FT4 *current_poly_ft4;
+extern KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
+extern u8 menu_saved_music_enabled;
 /* Primitive memory the display reset splits into the two primitive buffers. */
 extern u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
 /* Cleared with the per-frame counters; no other reference is known yet. */
 extern s32 display_frame_cleared_word;
+extern RECT menu_transition_rect;
+s32 func_800349bc(s32 level, s32 step);
 
 enum {
     KF_NOTIFICATION_NONE = 0xff,
@@ -125,9 +251,13 @@ enum {
 };
 
 void fog_set_near(s32 distance);
+void func_800314d4(u8 control, u8 red, u8 green, u8 blue);
 void display_initialize(void);
 void display_reset(void);
 void display_begin_frame(void);
 void display_present_frame(void);
+void func_8002d4f4(const VECTOR *position, const SVECTOR *rotation);
+void primitive_buffer_begin_poly_ft4(void);
+void primitive_buffer_commit_poly_ft4(s32 depth);
 
 #endif

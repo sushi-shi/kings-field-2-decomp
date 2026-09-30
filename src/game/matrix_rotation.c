@@ -97,14 +97,14 @@ void vector_direction_scaled(VECTOR *from, VECTOR *to, s32 scale, SVECTOR *direc
     direction->vz = dz * scale / length;
 }
 
-/* Turns VELOCITY toward TARGET by ACCELERATION and damps it, unless CURRENT
- * already faces TARGET and VELOCITY is within one ACCELERATION of rest. */
+/* Turns VELOCITY toward TARGET by ACCELERATION and damps it. When CURRENT is
+ * within the angular and velocity tolerances, return the remaining angle. */
 ADDRESS(0x80014a08, 0xb8)
 s32 angle_velocity_step(s32 current, s32 target, s32 velocity, s32 acceleration, s32 damping)
 {
     if (angle_within_tolerance(current, target, acceleration >> 1)
         && velocity <= acceleration && -acceleration <= velocity) {
-        return velocity;
+        return current - target;
     }
     if (target != current) {
         if (angle_mod_delta_le_half_turn(target, current)) {
@@ -185,9 +185,7 @@ void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 tur
 {
     switch (turns) {
     case KF_QUARTER_TURN_0:
-        destination->vx = source->vx;
-        destination->vy = source->vy;
-        destination->vz = source->vz;
+        copyVector(destination, source);
         break;
     case KF_QUARTER_TURN_1:
         destination->vx = -source->vz;

@@ -639,6 +639,41 @@ class CatalogNamingTests(unittest.TestCase):
 
 
 class ModuleObjectTests(unittest.TestCase):
+    def test_same_unit_function_addresses_use_section_relocations(self) -> None:
+        first = Function("GAME.EXE", 0x80010000, 16, 16, 1, "first", "test", "test")
+        second = Function("GAME.EXE", 0x80010010, 16, 16, 1, "second", "test", "test")
+        address_words = (0x3c030000, 0x24630000)
+        carved = {
+            first.va: (
+                struct.pack("<4I", *address_words, 0x0c000000, 0),
+                [MipsRelocation(0, "R_MIPS_HI16", "second"),
+                 MipsRelocation(4, "R_MIPS_LO16", "second"),
+                 MipsRelocation(8, "R_MIPS_26", "second")],
+            ),
+            second.va: (
+                struct.pack("<4I", *address_words, 0x0c000000, 0),
+                [MipsRelocation(0, "R_MIPS_HI16", "first"),
+                 MipsRelocation(4, "R_MIPS_LO16", "first"),
+                 MipsRelocation(8, "R_MIPS_26", "external")],
+            ),
+        }
+        module = Module("GAME.EXE", "game.pair", "pair", (first.va, second.va))
+        built = _module_object(module, {first.va: first, second.va: second}, carved)
+
+        self.assertEqual(built.relocations, [
+            MipsRelocation(0, "R_MIPS_HI16", ".text"),
+            MipsRelocation(4, "R_MIPS_LO16", ".text"),
+            MipsRelocation(8, "R_MIPS_26", ".text"),
+            MipsRelocation(16, "R_MIPS_HI16", ".text"),
+            MipsRelocation(20, "R_MIPS_LO16", ".text"),
+            MipsRelocation(24, "R_MIPS_26", "external"),
+        ])
+        sections = elf_sections(built.data)
+        text = built.data[sections[".text"][4]:sections[".text"][4] + sections[".text"][5]]
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text, 0)), 16)
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text, 16)), 0)
+        self.assertEqual((struct.unpack_from("<I", text, 8)[0] & 0x03FFFFFF) << 2, 16)
+
     def test_module_concatenates_functions_and_rebases_section_jumps(self) -> None:
         first = Function("GAME.EXE", 0x80010000, 8, 8, 1, "first", "test", "test")
         second = Function("GAME.EXE", 0x80010008, 12, 8, 1, "second", "test", "test")
@@ -791,6 +826,62 @@ class ModuleObjectTests(unittest.TestCase):
         self.assertEqual(names["first"][1], 0)
         self.assertEqual(names["second"][1], 8)
         self.assertEqual(names["third"][1], 0x10)
+
+    def test_same_module_static_bss_references_use_section_offsets(self) -> None:
+        function = Function("GAME.EXE", 0x80010000, 24, 24, 1, "only", "test", "test")
+        words = (0x3c020000, 0x24420004, 12, 0x3c030000, 0x24630000, 0)
+        carved = {function.va: (struct.pack("<6I", *words), [
+            MipsRelocation(0, "R_MIPS_HI16", "second"),
+            MipsRelocation(4, "R_MIPS_LO16", "second"),
+            MipsRelocation(8, "R_MIPS_32", "second"),
+            MipsRelocation(12, "R_MIPS_HI16", "global_data"),
+            MipsRelocation(16, "R_MIPS_LO16", "global_data"),
+        ])}
+        module = Module("GAME.EXE", "game.unit", "unit", (function.va,), (
+            Datum(0x80058020, 4, "first", "bss", "static"),
+            Datum(0x80058028, 4, "second", "bss", "static"),
+            Datum(0x80058030, 4, "global_data", "bss", "global"),
+        ))
+        built = _module_object(module, {function.va: function}, carved)
+        self.assertEqual([item.symbol for item in built.relocations],
+                         [".bss", ".bss", ".bss", "global_data", "global_data"])
+        section = elf_sections(built.data)[".text"]
+        text = built.data[section[4]:section[4] + section[5]]
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text)), 12)
+        self.assertEqual(struct.unpack_from("<I", text, 8)[0], 20)
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text, 12)), 0)
+
+    def test_same_module_initialized_data_uses_section_offsets(self) -> None:
+        function = Function("GAME.EXE", 0x80010000, 32, 32, 1, "only", "test", "test")
+        words = (0x3c020000, 0x24420004, 12, 0x3c030000, 0x24630000,
+                 0x3c040000, 0x24840000, 0)
+        carved = {function.va: (struct.pack("<8I", *words), [
+            MipsRelocation(0, "R_MIPS_HI16", "local_direction"),
+            MipsRelocation(4, "R_MIPS_LO16", "local_direction"),
+            MipsRelocation(8, "R_MIPS_32", "local_direction"),
+            MipsRelocation(12, "R_MIPS_HI16", "exported_counter"),
+            MipsRelocation(16, "R_MIPS_LO16", "exported_counter"),
+            MipsRelocation(20, "R_MIPS_HI16", "external_counter"),
+            MipsRelocation(24, "R_MIPS_LO16", "external_counter"),
+        ])}
+        module = Module("GAME.EXE", "game.unit", "unit", (function.va,), (
+            Datum(0x80058020, 4, "exported_counter", "load", "global"),
+            Datum(0x80058024, 8, "local_direction", "load", "static"),
+        ))
+        blobs = {
+            0x80058020: (struct.pack("<I", 64), []),
+            0x80058024: (bytes(8), []),
+        }
+        built = _module_object(module, {function.va: function}, carved, blobs)
+        self.assertEqual([item.symbol for item in built.relocations],
+                         [".data", ".data", ".data", ".data", ".data",
+                          "external_counter", "external_counter"])
+        section = elf_sections(built.data)[".text"]
+        text = built.data[section[4]:section[4] + section[5]]
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text)), 8)
+        self.assertEqual(struct.unpack_from("<I", text, 8)[0], 16)
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text, 12)), 0)
+        self.assertEqual(decode_hi_lo_target(*struct.unpack_from("<2I", text, 20)), 0)
 
     def test_exported_bss_preserves_retail_bank_allocation_gap_without_an_extra_global(self):
         function = Function('GAME.EXE', 0x80010000, 8, 8, 1, 'control', 'test', 'test')

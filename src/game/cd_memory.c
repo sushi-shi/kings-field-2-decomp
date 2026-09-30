@@ -1,0 +1,924 @@
+#include <kf/lib/address.h>
+#include <kf/lib/null.h>
+#include <kf/game/cd.h>
+#include <kf/game/memory.h>
+#include <psyq/kernel.h>
+#include <psyq/libc.h>
+#include <psyq/pad.h>
+#include <psyq/sdk.h>
+
+enum {
+    MEMORY_RAM_BYTES = 0x200000
+};
+
+/* KSEG0 base of main RAM, which malloc results must fall within. */
+#define MEMORY_RAM_BASE 0x80000000u
+
+#define NEXT_BLOCK(block) ((KfMemoryBlock *)((u8 *)((block) + 1) + (block)->size))
+#define MEMORY_BLOCK(data) ((KfMemoryBlock *)(data) - 1)
+
+enum {
+    CD_READ_ATTEMPTS = 3,
+    CD_READ_SYNC_POLL = 1,
+    CD_PATH_BYTES = 64
+};
+
+/* LIBAPI's HwCdRom, RCntCNT3, EvSpINT, EvSpCOMP, EvSpDR, EvSpERROR and
+ * EvMdINTR, which the Psy-Q 3.0 kit's headers do not define. */
+#define CD_EVENT_CLASS_CDROM 0xf0000003
+#define CD_EVENT_CLASS_VSYNC_COUNTER 0xf2000003
+enum {
+    CD_EVENT_SPEC_INTERRUPT = 0x0002,
+    CD_EVENT_SPEC_COMPLETE = 0x0020,
+    CD_EVENT_SPEC_DATA_READY = 0x0040,
+    CD_EVENT_SPEC_ERROR = 0x8000,
+    CD_EVENT_MODE_INTERRUPT = 0x1000
+};
+
+RODATA(0x80011074, 0x21)
+
+DATA(0x8006d680, 0x5)
+char cd_path_prefix[5] = "\\CD\\";
+DATA(0x8006d688, 0x3)
+char cd_version_suffix[3] = ";1";
+
+ADDRESS(0x80016ed4, 0xc)
+void cd_stream_mark_complete(KfCdRequest *request)
+{
+    request->stream_complete = 1;
+}
+
+ADDRESS(0x80016ee0, 0x30)
+void cd_map_stream_read(s32 slot, s32 entry)
+{
+    cd_archive_read_chunked(slot, entry, cd_stream_work_buffer,
+        cd_stream_mark_complete);
+}
+
+ADDRESS(0x80016f10, 0x3c)
+void cd_stream_limit_chunk(KfCdRequest *request)
+{
+    if (request->remaining_sectors > 16) {
+        request->sector_count = 16;
+        request->remaining_sectors -= 16;
+    } else {
+        request->sector_count = request->remaining_sectors;
+        request->remaining_sectors = 0;
+    }
+}
+
+ADDRESS(0x80016f4c, 0x27c)
+void cd_request_service_stream(void)
+{
+    KfCdRequest *request;
+    u16 *source;
+    s32 consumed;
+
+    EnterCriticalSection();
+    request = cd_state.current;
+    if (request->kind != 0x40) {
+        goto leave_critical;
+    }
+    if (request->stream_complete != 1) {
+        goto leave_critical;
+    }
+    consumed = 0;
+    source = (u16 *)request->destination;
+    request->stream_complete = 0;
+    ExitCriticalSection();
+
+    for (;;) {
+        s32 available = 0x8000 - consumed;
+        s16 height = request->payload.image_rect.h;
+
+        if (height != 0) {
+            s32 width = request->payload.image_rect.w;
+            s32 bytes = (height * width) << 1;
+
+            if (available < bytes) {
+                s32 rows = (available / width) >> 1;
+                if ((s16)rows != 0) {
+                    request->payload.image_rect.h = rows;
+                    LoadImage(&request->payload.image_rect, (u_long *)source);
+                    request->payload.image_rect.h = height - rows;
+                    request->payload.image_rect.y = rows + request->payload.image_rect.y;
+                }
+                goto next_read;
+            }
+            request->payload.image_rect.h = height;
+            LoadImage(&request->payload.image_rect, (u_long *)source);
+            request->payload.image_rect.h = 0;
+            consumed += bytes;
+            source = (u16 *)((u8 *)source + bytes);
+            continue;
+        }
+
+        if ((u32)available < 16) {
+            goto next_read;
+        }
+        if (source[0] != source[4] || source[1] != source[5] ||
+            source[2] != source[6] || source[3] != source[7] ||
+            source[2] == 0 || source[3] == 0) {
+            request->payload.image_rect.h = 0;
+            request->stream_complete = 0;
+            request->remaining_sectors = request->chunk_sectors;
+            request->location = request->initial_location;
+            cd_stream_limit_chunk(request);
+            request->phase = 0;
+            goto seek;
+        }
+
+        consumed += 16;
+        if (source[0] == 0xffff) {
+            goto complete;
+        }
+        setRECT(&request->payload.image_rect, source[0], source[1],
+                source[2], source[3]);
+        source += 8;
+    }
+
+next_read:
+    cd_location_add(&request->location, request->sector_count,
+        &request->location);
+    cd_stream_limit_chunk(request);
+    request->phase = 0;
+    DrawSync(0);
+
+seek:
+    CdSeekP(&request->location);
+    goto done;
+
+complete:
+    DrawSync(0);
+    request->sector_count = 0;
+    cd_request_advance(request);
+    goto done;
+
+leave_critical:
+    ExitCriticalSection();
+
+done:
+    return;
+}
+
+ADDRESS(0x800171c8, 0x30)
+const u32 *resource_copy_words(u32 *destination, const u32 *source, u32 word_count)
+{
+    while (word_count-- != 0) {
+        *destination++ = *source++;
+    }
+    return source;
+}
+
+ADDRESS(0x800171f8, 0x30)
+const u16 *resource_copy_halfwords(u16 *destination, const u16 *source, u32 halfword_count)
+{
+    while (halfword_count-- != 0) {
+        *destination++ = *source++;
+    }
+    return source;
+}
+
+ADDRESS(0x80017228, 0x24)
+u32 *repeat_store_word(u32 *destination, u32 value, s32 count)
+{
+    while (count-- != 0) {
+        *destination++ = value;
+    }
+    return destination;
+}
+
+ADDRESS(0x8001724c, 0x24)
+u16 *repeat_store_halfword(u16 *destination, u16 value, s32 count)
+{
+    while (count-- != 0) {
+        *destination++ = value;
+    }
+    return destination;
+}
+
+ADDRESS(0x80017270, 0x84)
+void memory_arena_coalesce_free(KfMemoryBlock *block)
+{
+    KfMemoryBlock *first = block;
+
+    if (block->kind == 0xff) {
+        return;
+    }
+    do {
+        if (block->kind == 0) {
+            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+            if (block->kind != 0) {
+                return;
+            }
+            first->size += sizeof(KfMemoryBlock) + block->size;
+        } else {
+            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+        }
+    } while (block->kind != 0xff);
+}
+
+ADDRESS(0x800172f4, 0x20)
+void memory_arena_free(KfMemoryBlock *block)
+{
+    u8 **owner = block->owner;
+
+    block->kind = 0;
+    if (owner != 0) {
+        *owner = 0;
+        block->owner = 0;
+    }
+}
+
+ADDRESS(0x80017314, 0x158)
+KfMemoryBlock *memory_arena_find_block(KfMemoryBlock *arena, u32 size)
+{
+    KfMemoryBlock *block = arena;
+    KfMemoryBlock *first;
+
+    while (block->kind != 0xff) {
+        if (block->kind == 0 && block->size >= size) {
+            return block;
+        }
+        block = NEXT_BLOCK(block);
+    }
+
+    block = arena;
+    while (block->kind != 0xff) {
+        if (block->kind == 1) {
+            first = block;
+            while (block->kind == 1) {
+                block = NEXT_BLOCK(block);
+            }
+            if ((u32)((u8 *)block - (u8 *)first - sizeof(KfMemoryBlock)) >= size) {
+                block = first;
+                while (block->kind == 1) {
+                    memory_arena_free(block);
+                    block = NEXT_BLOCK(block);
+                }
+                memory_arena_coalesce_free(first);
+                return first;
+            }
+        } else {
+            block = NEXT_BLOCK(block);
+        }
+    }
+    return 0;
+}
+
+ADDRESS(0x8001746c, 0x98)
+void memory_arena_wait_pending(KfMemoryBlock *arena)
+{
+    KfMemoryBlock *block = arena;
+
+    while (block->kind != 0xff) {
+        while (block->kind == 3) {
+            cd_request_wait_idle();
+        }
+        block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+    }
+}
+
+ADDRESS(0x80017504, 0xe4)
+void memory_arena_compact(KfMemoryBlock *arena)
+{
+    KfMemoryBlock *read = arena;
+    KfMemoryBlock *write = arena;
+
+    memory_arena_wait_pending(arena);
+    if (read->kind != 0xff) {
+        do {
+            KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read + read->size + sizeof(KfMemoryBlock));
+
+            if (read->kind == 1) {
+                memory_arena_free(read);
+            }
+            if (read->kind == 2) {
+                if (read != write) {
+                    u32 *source = (u32 *)read;
+                    u32 *destination = (u32 *)write;
+                    u32 word_count = (read->size + sizeof(KfMemoryBlock)) >> 2;
+
+                    do {
+                        *destination++ = *source++;
+                    } while (--word_count != 0);
+                    *write->owner = (u8 *)(write + 1);
+                    write = (KfMemoryBlock *)destination;
+                } else {
+                    write = next;
+                }
+            }
+            read = next;
+        } while (read->kind != 0xff);
+    }
+    write->kind = 0;
+    write->size = (u8 *)read - (u8 *)write - sizeof(KfMemoryBlock);
+}
+
+ADDRESS(0x800175e8, 0x20)
+void memory_arena_initialize_blocks(KfMemoryBlock *arena, u32 capacity)
+{
+    arena->kind = 0;
+    arena->size = capacity - 16;
+    capacity -= 4;
+    arena = (KfMemoryBlock *)((u8 *)arena + capacity);
+    arena->kind = 0xff;
+}
+
+ADDRESS(0x80017608, 0xb8)
+u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
+{
+    KfMemoryBlock *block = memory_arena_find_block(arena, size);
+    s32 available;
+    s32 remainder;
+    u8 *data;
+
+    if (block == 0) {
+        memory_arena_compact(arena);
+        block = memory_arena_find_block(arena, size);
+        if (block == 0) {
+            return NULL;
+        }
+    }
+    available = block->size;
+    remainder = available - sizeof(KfMemoryBlock);
+    remainder -= (s32)size;
+    if (remainder >= 2060) {
+        KfMemoryBlock *payload_end = (KfMemoryBlock *)((u8 *)block + size);
+        payload_end[1].kind = 0;
+        payload_end[1].size = remainder;
+        payload_end[1].owner = 0;
+    } else {
+        size = available;
+    }
+    block->kind = 2;
+    block->size = size;
+    block->owner = owner;
+    data = (u8 *)(block + 1);
+    if (owner != 0) {
+        *owner = data;
+    }
+    return data;
+}
+
+ADDRESS(0x800176c0, 0x20)
+void memory_block_release(u8 *data)
+{
+    memory_arena_free(MEMORY_BLOCK(data));
+}
+
+ADDRESS(0x800176e0, 0x8)
+void memory_block_set_kind(u8 *data, u8 kind)
+{
+    MEMORY_BLOCK(data)->kind = kind;
+}
+
+ADDRESS(0x800176e8, 0xc)
+u8 memory_block_kind(u8 *data)
+{
+    return MEMORY_BLOCK(data)->kind;
+}
+
+ADDRESS(0x800176f4, 0x8)
+void memory_block_set_flags(u8 *data, u8 flags)
+{
+    MEMORY_BLOCK(data)->flags = flags;
+}
+
+ADDRESS(0x800176fc, 0xc)
+u8 memory_block_flags(u8 *data)
+{
+    return MEMORY_BLOCK(data)->flags;
+}
+
+ADDRESS(0x80017708, 0x8)
+void memory_block_set_tag(u8 *data, u16 tag)
+{
+    MEMORY_BLOCK(data)->tag = tag;
+}
+
+ADDRESS(0x80017710, 0xc)
+u16 memory_block_tag(u8 *data)
+{
+    return MEMORY_BLOCK(data)->tag;
+}
+
+ADDRESS(0x8001771c, 0x38)
+u8 *memory_malloc_checked(u32 size)
+{
+    u8 *block = malloc(size);
+
+    if ((u32)block + MEMORY_RAM_BASE > MEMORY_RAM_BYTES - 1) {
+        return NULL;
+    }
+    return block;
+}
+
+ADDRESS(0x80017754, 0x28)
+u8 *memory_allocate(u32 size)
+{
+    return memory_malloc_checked((size + 3) & ~3);
+}
+
+ADDRESS(0x8001777c, 0x20)
+void memory_free(u8 *data)
+{
+    free(data);
+}
+
+/* Services the VAB and stream requests at the head of the CD queue, then
+ * waits for the GPU and the next VSync. */
+ADDRESS(0x8001779c, 0x38)
+void cd_request_yield(void)
+{
+    cd_request_service_vab();
+    cd_request_service_stream();
+    DrawSync(0);
+    VSync(0);
+}
+
+ADDRESS(0x800177d4, 0x30)
+void cd_vsync_handler(void)
+{
+    cd_state.vsync_count++;
+    cd_state.frame_count++;
+}
+
+ADDRESS(0x80017804, 0x60)
+void cd_wait_two_vsyncs(void)
+{
+    for (;;) {
+        EnterCriticalSection();
+        if (cd_state.vsync_count < 2) {
+            ExitCriticalSection();
+            VSync(0);
+        } else {
+            cd_state.vsync_count = 0;
+            ExitCriticalSection();
+            break;
+        }
+    }
+}
+
+ADDRESS(0x80017864, 0x6c)
+void cd_request_advance(KfCdRequest *request)
+{
+    KfCdRequest *next = request;
+
+    next->kind = KF_CD_REQUEST_IDLE;
+    next->phase = 0;
+    next++;
+    if (next == cd_state.requests + KF_CD_REQUEST_CAPACITY) {
+        next -= KF_CD_REQUEST_CAPACITY;
+    }
+    cd_state.current = next;
+    if (next->kind != KF_CD_REQUEST_IDLE) {
+        CdSeekP(&next->location);
+    } else {
+        CdPause();
+    }
+}
+
+ADDRESS(0x800178d0, 0x14c)
+void cd_complete_handler(void)
+{
+    KfCdRequest *request = cd_state.current;
+
+    switch (request->kind) {
+    case KF_CD_REQUEST_IDLE:
+        break;
+    case 0x10:
+    case 0x30:
+    case 0x40:
+        switch (request->phase) {
+        case 0:
+            CdRead(request->sector_count, request->destination, CdlModeSpeed);
+            request->phase = 1;
+            break;
+        case 1:
+            if (request->kind == 0x10) {
+                if (cd_sectors_corrupt((u32 *)request->destination,
+                        request->sector_count)) {
+                    request->phase = 0;
+                    CdSeekP(&request->initial_location);
+                    break;
+                }
+                if (request->on_complete != 0) {
+                    ((void (*)(u_long *))request->on_complete)(request->destination);
+                }
+                cd_request_advance(request);
+            } else if (request->on_complete != 0) {
+                request->on_complete(request);
+            }
+            break;
+        }
+        break;
+    case 0x20:
+        if (request->phase == 0) {
+            CdRead2(CdlModeSpeed);
+            request->phase = 1;
+        }
+        break;
+    }
+}
+
+ADDRESS(0x80017a1c, 0x7c)
+void cd_data_ready_handler(void)
+{
+    KfCdRequest *request = cd_state.current;
+
+    if (request->kind != KF_CD_REQUEST_IDLE && request->kind == 0x20) {
+        CdGetSector(request->destination, KF_CD_SECTOR_WORDS);
+        request->sector_count--;
+        if (request->on_complete != 0) {
+            request->on_complete(request);
+        }
+        if (request->sector_count == 0) {
+            cd_request_advance(request);
+        }
+    }
+}
+
+ADDRESS(0x80017a98, 0x8)
+void cd_error_handler(void)
+{
+}
+
+enum {
+    CD_SECTORS_PER_SECOND = 75,
+    CD_SECTORS_PER_MINUTE = 60 * CD_SECTORS_PER_SECOND
+};
+
+ADDRESS(0x80017aa0, 0x20)
+s32 cd_bcd_to_int(u8 bcd)
+{
+    return (bcd >> 4) * 10 + (bcd & 0xf);
+}
+
+ADDRESS(0x80017ac0, 0x2c)
+u32 cd_int_to_bcd(u8 value)
+{
+    return itob(value);
+}
+
+/* Absolute sector of a BCD location, without CdPosToInt's 150-sector lead-in. */
+ADDRESS(0x80017aec, 0x80)
+u32 cd_location_to_sector(CdlLOC *location)
+{
+    return cd_bcd_to_int(location->minute) * CD_SECTORS_PER_MINUTE
+        + cd_bcd_to_int(location->second) * CD_SECTORS_PER_SECOND
+        + cd_bcd_to_int(location->sector);
+}
+
+ADDRESS(0x80017b6c, 0x84)
+void cd_sector_to_location(CdlLOC *location, u32 sector)
+{
+    u32 rest;
+
+    location->minute = cd_int_to_bcd(sector / CD_SECTORS_PER_MINUTE);
+    rest = sector % CD_SECTORS_PER_MINUTE;
+    location->second = cd_int_to_bcd(rest / CD_SECTORS_PER_SECOND);
+    location->sector = cd_int_to_bcd(rest % CD_SECTORS_PER_SECOND);
+    location->track = 0;
+}
+
+ADDRESS(0x80017bf0, 0x3c)
+void cd_location_add(CdlLOC *base, u32 sector_offset, CdlLOC *result)
+{
+    cd_sector_to_location(result, cd_location_to_sector(base) + sector_offset);
+}
+
+ADDRESS(0x80017c2c, 0x7c)
+void cd_request_wait_idle(void)
+{
+    for (;;) {
+        EnterCriticalSection();
+        if (cd_state.current == cd_state.tail && cd_state.current->kind == KF_CD_REQUEST_IDLE) {
+            break;
+        }
+        ExitCriticalSection();
+        cd_request_yield();
+    }
+    ExitCriticalSection();
+}
+
+ADDRESS(0x80017ca8, 0x58)
+void cd_request_wait_done(KfCdRequest *request)
+{
+    for (;;) {
+        EnterCriticalSection();
+        if (request->kind == KF_CD_REQUEST_IDLE) {
+            break;
+        }
+        ExitCriticalSection();
+        cd_request_yield();
+    }
+    ExitCriticalSection();
+}
+
+/* Nonzero unless the last word of DATA equals KF_CD_CHECKSUM_SEED plus the
+ * sum of every preceding word. */
+ADDRESS(0x80017d00, 0x54)
+s32 cd_sectors_corrupt(u32 *data, s32 sector_count)
+{
+    u32 sum = KF_CD_CHECKSUM_SEED;
+    s32 last = sector_count * KF_CD_SECTOR_WORDS - 1;
+    u32 *word = data;
+    s32 remaining;
+
+    for (remaining = last - 1; remaining != -1; remaining--) {
+        sum += *word++;
+    }
+    return sum != data[last];
+}
+
+ADDRESS(0x80017d54, 0x118)
+KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
+    u_long *destination, KfCdRequestCallback on_complete)
+{
+    KfCdRequest *request = cd_state.tail;
+
+    cd_request_wait_done(request);
+    EnterCriticalSection();
+    request->kind = kind;
+    request->phase = 0;
+    request->location = *location;
+    request->initial_location = request->location;
+    request->destination = destination;
+    request->sector_count = (byte_size + KF_CD_SECTOR_BYTES - 1) >> KF_CD_SECTOR_SHIFT;
+    request->on_complete = on_complete;
+    cd_state.tail = cd_state.tail + 1;
+    if (cd_state.tail == cd_state.requests + KF_CD_REQUEST_CAPACITY) {
+        cd_state.tail = cd_state.requests;
+    }
+    if (cd_state.current == request) {
+        ExitCriticalSection();
+    CdSeekP(location);
+    } else {
+        ExitCriticalSection();
+    }
+    return request;
+}
+
+ADDRESS(0x80017e6c, 0x88)
+u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location)
+{
+    KfCdArchive *archive = &cd_archives[slot];
+    u32 start = archive->sector_offsets[entry];
+
+    if (location != NULL) {
+        cd_location_add(&archive->extent.pos, start, location);
+    }
+    return (archive->sector_offsets[entry + 1] - start) << KF_CD_SECTOR_SHIFT;
+}
+
+ADDRESS(0x80017ef4, 0x54)
+void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete)
+{
+    CdlLOC location;
+    u32 size = cd_archive_entry_extent(slot, entry, &location);
+
+    cd_request_enqueue(0x10, &location, size, destination, on_complete);
+}
+
+ADDRESS(0x80017f48, 0x54)
+void cd_archive_queue_read_kind_20(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete)
+{
+    CdlLOC location;
+    u32 size = cd_archive_entry_extent(slot, entry, &location);
+
+    cd_request_enqueue(0x20, &location, size, destination, on_complete);
+}
+
+ADDRESS(0x80017f9c, 0x54)
+void cd_archive_queue_stream_read(u16 slot, u16 entry, u_long *destination,
+    KfCdRequestCallback on_complete)
+{
+    CdlLOC location;
+    u32 size = cd_archive_entry_extent(slot, entry, &location);
+
+    cd_request_enqueue(0x30, &location, size, destination, on_complete);
+}
+
+ADDRESS(0x80017ff0, 0xc4)
+void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
+    KfCdRequestCallback on_complete)
+{
+    KfCdRequest *request = cd_state.tail;
+    CdlLOC location;
+    u32 size;
+
+    cd_request_wait_done(request);
+    request->payload.image_rect.h = 0;
+    request->stream_complete = 0;
+    size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
+    request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
+    request->chunk_sectors = request->remaining_sectors;
+    if (request->remaining_sectors < 17) {
+        request->remaining_sectors = 0;
+        cd_request_enqueue(0x40, &location, size, (u_long *)destination, on_complete);
+    } else {
+        request->remaining_sectors -= 16;
+        cd_request_enqueue(0x40, &location, 0x8000, (u_long *)destination, on_complete);
+    }
+}
+
+ADDRESS(0x800180b4, 0x44)
+u32 cd_archive_entry_size(u16 slot, u16 entry)
+{
+    u16 *offsets = cd_archives[slot].sector_offsets;
+    u32 start = offsets[entry];
+    u32 end = offsets[entry + 1];
+
+    return (end - start) << KF_CD_SECTOR_SHIFT;
+}
+
+/* Error hook left empty in retail. */
+ADDRESS(0x800180f8, 0x8)
+void cd_report_error(s32 code)
+{
+}
+
+/* Reads SECTOR_COUNT sectors synchronously, with the request queue idle and
+ * its CD events disabled. */
+ADDRESS(0x80018100, 0x140)
+void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
+{
+    s32 attempt = 0;
+    s32 failed = 1;
+    s32 result;
+
+    cd_request_wait_idle();
+    DisableEvent(cd_state.error_event);
+    DisableEvent(cd_state.complete_event);
+    DisableEvent(cd_state.data_ready_event);
+    CdPause();
+    for (; attempt < CD_READ_ATTEMPTS; attempt++) {
+        CdControl(CdlSetloc, (u_char *)location, NULL);
+        CdRead(sector_count, destination, CdlModeSpeed);
+        while ((result = CdReadSync(CD_READ_SYNC_POLL, NULL)) > 0) {
+        }
+        CdPause();
+        if (result == 0) {
+            failed = 0;
+            break;
+        }
+    }
+    EnableEvent(cd_state.error_event);
+    EnableEvent(cd_state.complete_event);
+    EnableEvent(cd_state.data_ready_event);
+    if (failed == 1) {
+        cd_report_error(KF_CD_ERROR_READ);
+    }
+}
+
+ADDRESS(0x80018240, 0x58)
+u8 *cd_extent_load(KfCdExtent *extent)
+{
+    s32 size = (extent->size + KF_CD_SECTOR_BYTES - 1) & -KF_CD_SECTOR_BYTES;
+    u8 *data = memory_allocate(size);
+
+    cd_read_sectors(&extent->pos, (u_long *)data, size >> KF_CD_SECTOR_SHIFT);
+    return data;
+}
+
+/* Reads SIZE bytes of the extent, or all of it when SIZE is zero. */
+ADDRESS(0x80018298, 0x38)
+void cd_extent_read_into(u_long *destination, KfCdExtent *extent, u32 size)
+{
+    if (size == 0) {
+        size = extent->size;
+    }
+    cd_read_sectors(&extent->pos, destination,
+        (size + KF_CD_SECTOR_BYTES - 1) >> KF_CD_SECTOR_SHIFT);
+}
+
+/* Reads archive entry ENTRY until its checksum holds. */
+ADDRESS(0x800182d0, 0x94)
+void cd_archive_read(u16 slot, u16 entry, u_long *destination)
+{
+    KfCdArchive *archive = &cd_archives[slot];
+    u16 *offsets = archive->sector_offsets;
+    s32 sector_count = offsets[entry + 1] - offsets[entry];
+    CdlLOC location;
+
+    cd_location_add(&archive->extent.pos, offsets[entry], &location);
+    do {
+        cd_read_sectors(&location, destination, sector_count);
+    } while (cd_sectors_corrupt((u32 *)destination, sector_count));
+}
+
+/* Loads \CD\<name>;1 into a fresh allocation. */
+ADDRESS(0x80018364, 0xb4)
+u8 *cd_file_load(const char *name)
+{
+    char path[CD_PATH_BYTES];
+    CdlFILE file;
+    u32 size;
+    u8 *data;
+
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    strcat(path, name);
+    strcat(path, cd_version_suffix);
+    cd_request_wait_idle();
+    if (CdSearchFile(&file, path) == NULL) {
+        cd_report_error(KF_CD_ERROR_SEARCH);
+    }
+    size = (file.size + KF_CD_SECTOR_BYTES - 1) & -KF_CD_SECTOR_BYTES;
+    data = memory_allocate(size);
+    cd_read_sectors(&file.pos, (u_long *)data, size >> KF_CD_SECTOR_SHIFT);
+    return data;
+}
+
+/* Loads SIZE bytes of \CD\<name>;1, or all of it when SIZE is zero. */
+ADDRESS(0x80018418, 0xb8)
+s32 cd_file_load_into(u_long *destination, const char *name, u32 size)
+{
+    char path[CD_PATH_BYTES];
+    CdlFILE file;
+    /* Unused: the OPEN/END cd_file_load_into seeks back to this location
+     * itself; this copy reads through cd_read_sectors but keeps the local,
+     * and retail keeps its frame slot. */
+    CdlLOC start;
+
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    strcat(path, name);
+    strcat(path, cd_version_suffix);
+    cd_request_wait_idle();
+    if (CdSearchFile(&file, path) == NULL) {
+        cd_report_error(KF_CD_ERROR_SEARCH);
+    }
+    if (size == 0) {
+        size = file.size;
+    }
+    cd_read_sectors(&file.pos, destination,
+        (size + KF_CD_SECTOR_BYTES - 1) >> KF_CD_SECTOR_SHIFT);
+    return 0;
+}
+
+/* Opens \CD\<name>;1 as archive SLOT: keeps its extent and copies the
+ * sector-offset table out of sector 0. */
+ADDRESS(0x800184d0, 0xf0)
+void cd_archive_open(u16 slot, const char *name)
+{
+    u16 table[(KF_CD_SECTOR_BYTES + 0x40) / 2];
+    CdlFILE file;
+    char path[CD_PATH_BYTES];
+    KfCdArchive *archive = &cd_archives[slot];
+
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    strcat(path, name);
+    strcat(path, cd_version_suffix);
+    if (CdSearchFile(&file, path) == NULL) {
+        printf("CdSearchFile error  FileName=%s\n", path);
+    }
+    archive->extent.pos = file.pos;
+    archive->extent.size = file.size;
+    cd_extent_read_into((u_long *)table, &archive->extent, KF_CD_SECTOR_BYTES);
+    archive->sector_offsets = (u16 *)memory_allocate((table[0] + 1) * 2);
+    resource_copy_halfwords(archive->sector_offsets, &table[1], table[0] + 1);
+}
+
+ADDRESS(0x800185c0, 0x13c)
+void cd_initialize(void)
+{
+    KfCdRequest *request;
+    s32 index;
+
+    EnterCriticalSection();
+    cd_state.vsync_count = 0;
+    cd_state.vsync_event = OpenEvent(CD_EVENT_CLASS_VSYNC_COUNTER, CD_EVENT_SPEC_INTERRUPT,
+        CD_EVENT_MODE_INTERRUPT, cd_vsync_handler);
+    EnableEvent(cd_state.vsync_event);
+    cd_state.frame_count = 0;
+    request = cd_state.requests;
+    for (index = 0; index < KF_CD_REQUEST_CAPACITY; index++) {
+        request->kind = KF_CD_REQUEST_IDLE;
+        request->phase = 0;
+        request++;
+    }
+    cd_state.tail = cd_state.current = cd_state.requests;
+    cd_state.error_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_ERROR,
+        CD_EVENT_MODE_INTERRUPT, cd_error_handler);
+    cd_state.complete_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_COMPLETE,
+        CD_EVENT_MODE_INTERRUPT, cd_complete_handler);
+    cd_state.data_ready_event = OpenEvent(CD_EVENT_CLASS_CDROM, CD_EVENT_SPEC_DATA_READY,
+        CD_EVENT_MODE_INTERRUPT, cd_data_ready_handler);
+    EnableEvent(cd_state.error_event);
+    EnableEvent(cd_state.complete_event);
+    EnableEvent(cd_state.data_ready_event);
+    ExitCriticalSection();
+}
+
+ADDRESS(0x800186fc, 0x68)
+void cd_close_events(void)
+{
+    EnterCriticalSection();
+    CloseEvent(cd_state.vsync_event);
+    CloseEvent(cd_state.error_event);
+    CloseEvent(cd_state.complete_event);
+    CloseEvent(cd_state.data_ready_event);
+    ExitCriticalSection();
+}

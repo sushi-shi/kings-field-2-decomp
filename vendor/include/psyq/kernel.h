@@ -52,7 +52,10 @@ extern long lseek(long file, long offset, long origin);
 extern long read(long file, void *buffer, long length);
 extern long write(long file, const void *buffer, long length);
 extern long erase(const char *name);
+extern long delete(const char *name);
 extern long format(const char *device);
+extern struct DIRENTRY *firstfile(const char *pattern, struct DIRENTRY *entry);
+extern struct DIRENTRY *nextfile(struct DIRENTRY *entry);
 
 extern long _96_init(void);
 extern long _96_remove(void);

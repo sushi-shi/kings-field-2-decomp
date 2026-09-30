@@ -18,6 +18,8 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 from scripts.kf.mips_elf import (
+    BSS_SECTION_SYMBOL,
+    DATA_SECTION_SYMBOL,
     RODATA_SECTION_SYMBOL,
     STB_GLOBAL,
     STB_LOCAL,
@@ -622,6 +624,116 @@ def _rebase_section_relocations(
             pending_hi = None
 
 
+def _module_function_address_relocations(
+    blob: bytearray,
+    relocations: list[MipsRelocation],
+    function_offsets: dict[str, int],
+) -> list[MipsRelocation]:
+    """Express same-unit function addresses through the joined .text section.
+
+    The assembler emits section-relative relocations for references to a
+    function defined in the same translation unit, including direct calls.
+    """
+    result = list(relocations)
+    for index, high in enumerate(result):
+        if high.kind == "R_MIPS_26" and high.symbol in function_offsets:
+            word = _get_word(blob, high.offset)
+            addend = (word & 0x03FFFFFF) << 2
+            _put_word(blob, high.offset, encode_mips26_addend(
+                word, addend + function_offsets[high.symbol]
+            ))
+            result[index] = MipsRelocation(high.offset, high.kind, SECTION_SYMBOL)
+            continue
+        if high.kind != "R_MIPS_HI16" or high.symbol not in function_offsets:
+            continue
+        if index + 1 >= len(result):
+            raise ValueError(f"unpaired function-address HI16: {high.symbol}")
+        low = result[index + 1]
+        if low.kind != "R_MIPS_LO16" or low.symbol != high.symbol:
+            raise ValueError(f"unpaired function-address HI16: {high.symbol}")
+        hi_word = _get_word(blob, high.offset)
+        lo_word = _get_word(blob, low.offset)
+        addend = decode_hi_lo_target(hi_word, lo_word) + function_offsets[high.symbol]
+        new_hi, new_lo = encode_hi_lo_addend(hi_word, lo_word, addend)
+        _put_word(blob, high.offset, new_hi)
+        _put_word(blob, low.offset, new_lo)
+        result[index] = MipsRelocation(high.offset, high.kind, SECTION_SYMBOL)
+        result[index + 1] = MipsRelocation(low.offset, low.kind, SECTION_SYMBOL)
+    return result
+
+
+def _module_static_bss_relocations(
+    blob: bytearray,
+    relocations: list[MipsRelocation],
+    offsets: dict[str, int],
+) -> list[MipsRelocation]:
+    """Use the BSS section for references to this module's static objects.
+
+    The native assembler resolves a local BSS label through its section symbol.
+    The object's section offset must be added to the implicit MIPS addend.
+    """
+    result = list(relocations)
+    for index, high in enumerate(result):
+        if high.symbol not in offsets:
+            continue
+        offset = offsets[high.symbol]
+        if high.kind == "R_MIPS_HI16":
+            if index + 1 >= len(result):
+                raise ValueError(f"unpaired static BSS HI16: {high.symbol}")
+            low = result[index + 1]
+            if low.kind != "R_MIPS_LO16" or low.symbol != high.symbol:
+                raise ValueError(f"unpaired static BSS HI16: {high.symbol}")
+            hi_word = _get_word(blob, high.offset)
+            lo_word = _get_word(blob, low.offset)
+            addend = decode_hi_lo_target(hi_word, lo_word) + offset
+            new_hi, new_lo = encode_hi_lo_addend(hi_word, lo_word, addend)
+            _put_word(blob, high.offset, new_hi)
+            _put_word(blob, low.offset, new_lo)
+            result[index] = MipsRelocation(high.offset, high.kind, BSS_SECTION_SYMBOL)
+            result[index + 1] = MipsRelocation(low.offset, low.kind, BSS_SECTION_SYMBOL)
+        elif high.kind == "R_MIPS_32":
+            _put_word(blob, high.offset, _get_word(blob, high.offset) + offset)
+            result[index] = MipsRelocation(high.offset, high.kind, BSS_SECTION_SYMBOL)
+    return result
+
+
+def _module_load_relocations(
+    blob: bytearray,
+    relocations: list[MipsRelocation],
+    offsets: dict[str, int],
+    section_symbol: str,
+) -> list[MipsRelocation]:
+    """Use this module's initialized section for same-module data references.
+
+    The pinned assembler resolves locally defined initialized data through
+    its section symbol, even when the datum is exported. References to data
+    owned by another module retain their named symbols.
+    """
+    result = list(relocations)
+    for index, high in enumerate(result):
+        if high.symbol not in offsets:
+            continue
+        offset = offsets[high.symbol]
+        if high.kind == "R_MIPS_HI16":
+            if index + 1 >= len(result):
+                raise ValueError(f"unpaired static load-data HI16: {high.symbol}")
+            low = result[index + 1]
+            if low.kind != "R_MIPS_LO16" or low.symbol != high.symbol:
+                raise ValueError(f"unpaired static load-data HI16: {high.symbol}")
+            hi_word = _get_word(blob, high.offset)
+            lo_word = _get_word(blob, low.offset)
+            addend = decode_hi_lo_target(hi_word, lo_word) + offset
+            new_hi, new_lo = encode_hi_lo_addend(hi_word, lo_word, addend)
+            _put_word(blob, high.offset, new_hi)
+            _put_word(blob, low.offset, new_lo)
+            result[index] = MipsRelocation(high.offset, high.kind, section_symbol)
+            result[index + 1] = MipsRelocation(low.offset, low.kind, section_symbol)
+        elif high.kind == "R_MIPS_32":
+            _put_word(blob, high.offset, _get_word(blob, high.offset) + offset)
+            result[index] = MipsRelocation(high.offset, high.kind, section_symbol)
+    return result
+
+
 @dataclass(frozen=True)
 class ModuleImage:
     """One module target object plus the sizes recorded in objects.tsv."""
@@ -726,6 +838,9 @@ def _module_object(
     relocations: list[MipsRelocation] = []
     symbols: list[DefinedSymbol] = []
     body_total = 0
+    function_offsets = {
+        functions[va].symbol: va - module.vas[0] for va in module.vas
+    }
     for va in module.vas:
         function = functions[va]
         if function.va != module.vas[0] + len(text):
@@ -740,6 +855,9 @@ def _module_object(
         # object; inside the module section they are relative to the run start.
         if offset:
             _rebase_section_relocations(rebased, function_relocations, offset)
+        function_relocations = _module_function_address_relocations(
+            rebased, function_relocations, function_offsets
+        )
         relocations.extend(
             MipsRelocation(item.offset + offset, item.kind, item.symbol)
             for item in function_relocations
@@ -757,6 +875,21 @@ def _module_object(
     _, _, _, sbss_size, sbss_symbols = _module_data(
         module, {}, section=".sbss"
     )
+    static_bss = {
+        symbol.name: symbol.value for symbol in bss_symbols
+        if symbol.binding == STB_LOCAL
+    }
+    if static_bss:
+        relocations = _module_static_bss_relocations(text, relocations, static_bss)
+    for section_symbol, section_symbols in (
+        (DATA_SECTION_SYMBOL, data_symbols),
+        (".sdata", sdata_symbols),
+    ):
+        module_load = {symbol.name: symbol.value for symbol in section_symbols}
+        if module_load:
+            relocations = _module_load_relocations(
+                text, relocations, module_load, section_symbol
+            )
     rodata, rodata_relocations = b"", []
     if module.rodata is not None:
         if rodata_blob is None:

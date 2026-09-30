@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 from unittest.mock import patch
 
 from scripts.kf.inventory import (
     _data_access,
     _ghidra_type,
     _header_structure_layouts,
+    _structural_data_matches_identity,
     _signature_hints,
+    load_data_identities,
     validate,
 )
 from scripts.kf.paths import REPO, RETAIL_CONFIG
@@ -42,6 +45,14 @@ class FakeReference:
 
 
 class InventoryTests(unittest.TestCase):
+    def test_bss_identity_can_extend_beyond_final_load_fragment(self) -> None:
+        row = load_data_identities(RETAIL_CONFIG)[("GAME.EXE", 0x8006DC00)]
+        self.assertTrue(_structural_data_matches_identity(row, "bss", 0x400))
+        self.assertFalse(_structural_data_matches_identity(row, "defined", 0x400))
+        self.assertFalse(_structural_data_matches_identity(row, "bss", 0x200))
+        self.assertFalse(_structural_data_matches_identity(row, "bss", 0x5000))
+        self.assertFalse(_structural_data_matches_identity(replace(row, va=row.va - 4), "bss", 0x400))
+
     def test_enum_storage_typedef_preserves_abi_and_rejects_unknown_types(self) -> None:
         domain = "KF_ENUM_BEGIN(Mode, s16) MODE_FIRST = 1 KF_ENUM_END(Mode)"
         alias = "typedef KF_ENUM_STORAGE(Mode, u32) ModeWord;"
@@ -252,11 +263,11 @@ class InventoryTests(unittest.TestCase):
         # Initial SLPS-00069 seed: every carveable non-vendored function has a
         # (candidate) identity row; update these counts with each admission.
         counts = validate(RETAIL_CONFIG)
-        self.assertEqual(counts["functions"], 543)
-        self.assertEqual(counts["signatures_started"], 543)
-        self.assertEqual(counts["data"], 3310)
+        self.assertEqual(counts["functions"], 544)
+        self.assertEqual(counts["signatures_started"], 544)
+        self.assertEqual(counts["data"], 3306)
         self.assertGreaterEqual(counts["functions_named"], 147)
-        self.assertEqual(counts["structures"], 21)
+        self.assertEqual(counts["structures"], 34)
 
     def test_static_signature_hint_tracks_live_arguments_and_result(self) -> None:
         parameters, result, shape = _signature_hints(words(

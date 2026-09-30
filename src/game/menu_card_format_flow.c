@@ -1,0 +1,132 @@
+#include <kf/lib/address.h>
+#include <kf/game/card.h>
+#include <kf/game/menu.h>
+#include <psyq/pad.h>
+
+extern s32 func_8001c12c(s32 kind);
+extern void func_8001c62c(KfMenuGlyphString *rows);
+extern void func_8001c770(KfMenuGlyphString *rows);
+extern void func_8001c8b0(KfMenuGlyphString *rows);
+extern void func_8001c9f4(KfMenuGlyphString *rows);
+extern void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
+    s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
+extern s32 func_80022ca0(s32 slot);
+
+ADDRESS(0x8001bf68, 0x1c4)
+void func_8001bf68(s32 slot)
+{
+    KfMenuGlyphString rows[4];
+    s32 probe = memory_card_probe_temporary_file();
+    s32 result;
+
+    if (probe != 0) {
+        if (probe != 2) {
+            func_8001c62c(rows);
+            func_8001cdb0(rows, 3, 70, 87, 178, 81, 2, 0);
+            input_wait_release();
+            while (PadRead(1) == 0) {}
+            goto wait_release;
+        }
+        if (func_8001c12c(1) == 0) {
+            memory_card_format();
+            goto write_file;
+        }
+        func_8001c770(rows);
+        func_8001cdb0(rows, 3, 70, 87, 192, 66, 2, 0);
+        input_wait_release();
+        while (PadRead(1) == 0) {}
+        goto wait_release;
+    }
+
+write_file:
+    func_8001c9f4(rows);
+    func_8001cdb0(rows, 2, 70, 87, 178, 66, 2, 0);
+    result = func_80022ca0(slot);
+    if (result == 0)
+        return;
+    if (result == 1)
+        func_8001c62c(rows);
+    else
+        func_8001c8b0(rows);
+    func_8001cdb0(rows, 3, 70, 87, 178, 81, 2, 0);
+    input_wait_release();
+    while (PadRead(1) == 0) {}
+
+wait_release:
+    input_wait_release();
+}
+
+ADDRESS(0x8001c12c, 0x424)
+s32 func_8001c12c(s32 kind)
+{
+    KfMenuGlyphString labels[7];
+    s32 cursor = 0;
+    s32 confirmed = 0;
+    s32 result = -99;
+    s32 selection = -1;
+    s32 frame;
+
+    labels[0].position.x = menu_window_layouts[1].rows[0].position.x;
+    labels[0].position.y = menu_window_layouts[1].rows[0].position.y;
+    labels[0].glyphs.codes[0] = 89;
+    labels[0].glyphs.codes[1] = 65;
+    labels[0].glyphs.codes[2] = -1;
+    labels[1].position.x = menu_window_layouts[1].rows[1].position.x;
+    labels[1].position.y = menu_window_layouts[1].rows[1].position.y;
+    labels[1].glyphs.codes[0] = 65;
+    labels[1].glyphs.codes[1] = 65;
+    labels[1].glyphs.codes[2] = 67;
+    labels[1].glyphs.codes[3] = -1;
+
+    if (kind == 1) {
+        labels[2].position.x = 90;
+        labels[2].position.y = 110;
+        *(KfMenuLabelSuffix *)labels[2].glyphs.codes = menu_label_suffixes[5];
+        labels[3].position.x = 90;
+        labels[3].position.y = 125;
+        *(KfMenuLabelSuffix *)labels[3].glyphs.codes = menu_label_suffixes[6];
+        labels[4].position.x = 174;
+        labels[4].position.y = 125;
+        *(KfMenuLabelSuffix *)labels[4].glyphs.codes = menu_label_suffixes[7];
+        labels[5].position.x = 90;
+        labels[5].position.y = 140;
+        *(KfMenuLabelSuffix *)labels[5].glyphs.codes = menu_label_suffixes[6];
+        labels[6].position.x = 174;
+        labels[6].position.y = 140;
+        *(KfMenuLabelSuffix *)labels[6].glyphs.codes = menu_label_suffixes[8];
+    }
+
+    for (;;) {
+        if (selection != -1 || result != -99)
+            input_wait_release();
+        switch (selection) {
+        case 0:
+            result = 0;
+            break;
+        case 1:
+            result = -1;
+            break;
+        }
+        if (result != -99)
+            break;
+
+        cursor = func_8001e378(cursor, 1, &selection, &confirmed, &result);
+        for (frame = 0; frame < 2; frame++) {
+            menu_frame_begin();
+            menu_draw_two_option(&labels[0], &labels[1], cursor, confirmed);
+            menu_blit_sprite_translucent(&menu_sprite_defs[5],
+                &menu_window_layouts[1].rows[3].position);
+            menu_draw_string(&menu_sprite_defs[1], &menu_window_layouts[1].rows[3]);
+            if (kind == 1) {
+                menu_draw_string(&menu_sprite_defs[1], &labels[2]);
+                menu_draw_string(&menu_sprite_defs[1], &labels[3]);
+                menu_draw_string(&menu_sprite_defs[1], &labels[4]);
+                menu_draw_string(&menu_sprite_defs[1], &labels[5]);
+                menu_draw_string(&menu_sprite_defs[1], &labels[6]);
+                func_800217f0(70, 92, 220, 81, 2, 0);
+            }
+            menu_present_frame();
+        }
+    }
+    return result;
+}

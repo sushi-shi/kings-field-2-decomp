@@ -18,13 +18,7 @@ GAME.EXE	0x80011064	0x4	DAT_80011064	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x80011068	0x4	DAT_80011068	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8001106c	0x4	DAT_8001106c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011070	0x4	DAT_80011070	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011098	0x4	DAT_80011098	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001109c	0x4	DAT_8001109c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110a0	0x4	DAT_800110a0	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110a4	0x4	DAT_800110a4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110a8	0x4	DAT_800110a8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110ac	0x4	DAT_800110ac	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110b0	0x4	DAT_800110b0	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80011098	0x1c	menu_root_switch_rodata	unknown	load	pointer[7]	func_8001876c	supported	retail words;seven case blocks;func_8001876c jr table	compiler switch table inside the menu controller unit
 GAME.EXE	0x800110b8	0x4	DAT_800110b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800110bc	0x4	DAT_800110bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800110c0	0x4	DAT_800110c0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -45,28 +39,9 @@ GAME.EXE	0x800110fc	0x4	DAT_800110fc	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x80011100	0x4	DAT_80011100	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8001111d	0x1	DAT_8001111d	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011125	0x1	DAT_80011125	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011128	0x4	DAT_80011128	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001112c	0x4	DAT_8001112c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011130	0x4	DAT_80011130	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011134	0x4	DAT_80011134	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011138	0x4	DAT_80011138	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001113c	0x4	DAT_8001113c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011140	0x4	DAT_80011140	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011144	0x4	DAT_80011144	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011148	0x4	DAT_80011148	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001114c	0x4	DAT_8001114c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011150	0x4	DAT_80011150	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011154	0x4	DAT_80011154	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011158	0x4	DAT_80011158	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001115c	0x4	DAT_8001115c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011160	0x4	DAT_80011160	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011168	0x4	DAT_80011168	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001116c	0x4	DAT_8001116c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011170	0x4	DAT_80011170	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011174	0x4	DAT_80011174	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011178	0x4	DAT_80011178	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001117c	0x4	DAT_8001117c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011180	0x4	DAT_80011180	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80011128	0x20	DAT_80011128	unknown	load	pointer[8]		address-only	asm;bounded jr index;raw pointer targets	8 in-function case targets; address-derived table identity retained
+GAME.EXE	0x80011148	0x1c	DAT_80011148	unknown	load	pointer[7]		address-only	asm;bounded jr index;raw pointer targets	7 in-function case targets; address-derived table identity retained
+GAME.EXE	0x80011168	0x1c	player_equipment_jump_table	unknown	load	pointer[7]	player	supported	asm;raw pointer targets	seven switch cases in player_set_equipment_slot; owned by its RODATA claim
 GAME.EXE	0x80011188	0x4	DAT_80011188	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8001118c	0x4	DAT_8001118c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011190	0x4	DAT_80011190	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -120,44 +95,9 @@ GAME.EXE	0x8001124c	0x4	DAT_8001124c	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x80011250	0x4	DAT_80011250	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011254	0x4	DAT_80011254	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011258	0x4	DAT_80011258	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011260	0x4	DAT_80011260	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011264	0x4	DAT_80011264	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011268	0x4	DAT_80011268	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001126c	0x4	DAT_8001126c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011270	0x4	DAT_80011270	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011274	0x4	DAT_80011274	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011278	0x4	DAT_80011278	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001127c	0x4	DAT_8001127c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011280	0x4	DAT_80011280	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011284	0x4	DAT_80011284	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011288	0x4	DAT_80011288	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001128c	0x4	DAT_8001128c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011290	0x4	DAT_80011290	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011298	0x4	DAT_80011298	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001129c	0x4	DAT_8001129c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112a0	0x4	DAT_800112a0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112a4	0x4	DAT_800112a4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112a8	0x4	DAT_800112a8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112ac	0x4	DAT_800112ac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112b0	0x4	DAT_800112b0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112b4	0x4	DAT_800112b4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112b8	0x4	DAT_800112b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112bc	0x4	DAT_800112bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112c0	0x4	DAT_800112c0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112c4	0x4	DAT_800112c4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112c8	0x4	DAT_800112c8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112cc	0x4	DAT_800112cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112d0	0x4	DAT_800112d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112d4	0x4	DAT_800112d4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112d8	0x4	DAT_800112d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112dc	0x4	DAT_800112dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112e0	0x4	DAT_800112e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112e4	0x4	DAT_800112e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112e8	0x4	DAT_800112e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112ec	0x4	DAT_800112ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112f0	0x4	DAT_800112f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112f4	0x4	DAT_800112f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800112f8	0x4	DAT_800112f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80011260	0x34	player_magic_dispatch_rodata	unknown	load	pointer[13]	func_80026498	supported	asm;13 retail pointer words;func_80026498 jr switch	13-entry magic-ID switch table owned by the player magic dispatch unit
+GAME.EXE	0x80011298	0x18	DAT_80011298	unknown	load	pointer[6]		address-only	asm;bounded jr index;raw pointer targets	6 in-function case targets; address-derived table identity retained
+GAME.EXE	0x800112b0	0x4c	DAT_800112b0	unknown	load	pointer[19]		address-only	asm;bounded jr index;raw pointer targets	19 in-function case targets; address-derived table identity retained
 GAME.EXE	0x80011300	0x4	DAT_80011300	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011304	0x4	DAT_80011304	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011308	0x4	DAT_80011308	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -226,35 +166,7 @@ GAME.EXE	0x80011400	0x4	DAT_80011400	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x80011404	0x4	DAT_80011404	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011408	0x4	DAT_80011408	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8001140c	0x4	DAT_8001140c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011410	0x4	DAT_80011410	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011414	0x4	DAT_80011414	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011418	0x4	DAT_80011418	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001141c	0x4	DAT_8001141c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011420	0x4	DAT_80011420	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011424	0x4	DAT_80011424	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011428	0x4	DAT_80011428	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001142c	0x4	DAT_8001142c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011430	0x4	DAT_80011430	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011434	0x4	DAT_80011434	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011438	0x4	DAT_80011438	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001143c	0x4	DAT_8001143c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011440	0x4	DAT_80011440	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011444	0x4	DAT_80011444	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011448	0x4	DAT_80011448	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001144c	0x4	DAT_8001144c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011450	0x4	DAT_80011450	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011454	0x4	DAT_80011454	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011458	0x4	DAT_80011458	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001145c	0x4	DAT_8001145c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011460	0x4	DAT_80011460	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011464	0x4	DAT_80011464	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011468	0x4	DAT_80011468	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001146c	0x4	DAT_8001146c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011470	0x4	DAT_80011470	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011474	0x4	DAT_80011474	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011478	0x4	DAT_80011478	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001147c	0x4	DAT_8001147c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011480	0x4	DAT_80011480	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80011410	0x74	tmd_prepare_primitive_indices_rodata	unknown	load	pointer[29]	tmd_prepare_primitive_indices	supported	asm;29 jump-table targets;KF1 exact counterpart	mode-index switch table owned by unit RODATA claim
 GAME.EXE	0x80011484	0x4	DAT_80011484	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011488	0x4	DAT_80011488	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8001148c	0x4	DAT_8001148c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -509,44 +421,8 @@ GAME.EXE	0x8001186c	0x4	DAT_8001186c	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x80011870	0x4	DAT_80011870	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011874	0x4	DAT_80011874	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011878	0x4	DAT_80011878	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001187c	0x4	DAT_8001187c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011880	0x4	DAT_80011880	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011884	0x4	DAT_80011884	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011888	0x4	DAT_80011888	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001188c	0x4	DAT_8001188c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011890	0x4	DAT_80011890	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011894	0x4	DAT_80011894	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011898	0x4	DAT_80011898	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001189c	0x4	DAT_8001189c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118a0	0x4	DAT_800118a0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118a4	0x4	DAT_800118a4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118a8	0x4	DAT_800118a8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118ac	0x4	DAT_800118ac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118b0	0x4	DAT_800118b0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118b4	0x4	DAT_800118b4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118b8	0x4	DAT_800118b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118bc	0x4	DAT_800118bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118c4	0x4	DAT_800118c4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118c8	0x4	DAT_800118c8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118cc	0x4	DAT_800118cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118d0	0x4	DAT_800118d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118d4	0x4	DAT_800118d4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118d8	0x4	DAT_800118d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118dc	0x4	DAT_800118dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118e0	0x4	DAT_800118e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118e4	0x4	DAT_800118e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118e8	0x4	DAT_800118e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118ec	0x4	DAT_800118ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118f0	0x4	DAT_800118f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118f4	0x4	DAT_800118f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118f8	0x4	DAT_800118f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800118fc	0x4	DAT_800118fc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011900	0x4	DAT_80011900	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011904	0x4	DAT_80011904	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011908	0x4	DAT_80011908	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001190c	0x4	DAT_8001190c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011910	0x4	DAT_80011910	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011914	0x4	DAT_80011914	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8001187c	0x44	map_object_effect_jump_table	unknown	load	pointer[17]	map_object	supported	asm;raw pointer targets	17 template-kind switch cases in map_object_spawn_effect; owned by its RODATA claim
+GAME.EXE	0x800118c4	0x54	map_object_action_jump_table	unknown	load	pointer[21]	map_object	supported	asm;raw pointer targets	21-case action switch in func_800368b4; owned by its RODATA claim
 GAME.EXE	0x8001191c	0x4	DAT_8001191c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011920	0x4	DAT_80011920	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011924	0x4	DAT_80011924	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -1403,134 +1279,8 @@ GAME.EXE	0x80012678	0x4	DAT_80012678	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x8001267c	0x4	DAT_8001267c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80012680	0x4	DAT_80012680	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80012684	0x4	DAT_80012684	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001268c	0x4	DAT_8001268c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012690	0x4	DAT_80012690	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012694	0x4	DAT_80012694	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012698	0x4	DAT_80012698	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001269c	0x4	DAT_8001269c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126a0	0x4	DAT_800126a0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126a4	0x4	DAT_800126a4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126a8	0x4	DAT_800126a8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126ac	0x4	DAT_800126ac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126b0	0x4	DAT_800126b0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126b4	0x4	DAT_800126b4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126b8	0x4	DAT_800126b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126bc	0x4	DAT_800126bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126c0	0x4	DAT_800126c0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126c4	0x4	DAT_800126c4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126c8	0x4	DAT_800126c8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126cc	0x4	DAT_800126cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126d0	0x4	DAT_800126d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126d4	0x4	DAT_800126d4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126d8	0x4	DAT_800126d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126dc	0x4	DAT_800126dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126e0	0x4	DAT_800126e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126e4	0x4	DAT_800126e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126e8	0x4	DAT_800126e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126ec	0x4	DAT_800126ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126f0	0x4	DAT_800126f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126f4	0x4	DAT_800126f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126f8	0x4	DAT_800126f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800126fc	0x4	DAT_800126fc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012700	0x4	DAT_80012700	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012704	0x4	DAT_80012704	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012708	0x4	DAT_80012708	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001270c	0x4	DAT_8001270c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012710	0x4	DAT_80012710	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012714	0x4	DAT_80012714	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012718	0x4	DAT_80012718	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001271c	0x4	DAT_8001271c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012720	0x4	DAT_80012720	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012724	0x4	DAT_80012724	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012728	0x4	DAT_80012728	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001272c	0x4	DAT_8001272c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012730	0x4	DAT_80012730	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012734	0x4	DAT_80012734	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012738	0x4	DAT_80012738	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001273c	0x4	DAT_8001273c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012740	0x4	DAT_80012740	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012744	0x4	DAT_80012744	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012748	0x4	DAT_80012748	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001274c	0x4	DAT_8001274c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012750	0x4	DAT_80012750	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012754	0x4	DAT_80012754	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012758	0x4	DAT_80012758	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001275c	0x4	DAT_8001275c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012760	0x4	DAT_80012760	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012764	0x4	DAT_80012764	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012768	0x4	DAT_80012768	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001276c	0x4	DAT_8001276c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012770	0x4	DAT_80012770	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012774	0x4	DAT_80012774	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012778	0x4	DAT_80012778	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001277c	0x4	DAT_8001277c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012780	0x4	DAT_80012780	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012784	0x4	DAT_80012784	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012788	0x4	DAT_80012788	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001278c	0x4	DAT_8001278c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012790	0x4	DAT_80012790	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012794	0x4	DAT_80012794	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012798	0x4	DAT_80012798	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001279c	0x4	DAT_8001279c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127a0	0x4	DAT_800127a0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127a4	0x4	DAT_800127a4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127a8	0x4	DAT_800127a8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127ac	0x4	DAT_800127ac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127b0	0x4	DAT_800127b0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127b4	0x4	DAT_800127b4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127b8	0x4	DAT_800127b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127bc	0x4	DAT_800127bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127c0	0x4	DAT_800127c0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127c4	0x4	DAT_800127c4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127c8	0x4	DAT_800127c8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127cc	0x4	DAT_800127cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127d0	0x4	DAT_800127d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127d4	0x4	DAT_800127d4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127d8	0x4	DAT_800127d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127dc	0x4	DAT_800127dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127e0	0x4	DAT_800127e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127e4	0x4	DAT_800127e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127e8	0x4	DAT_800127e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127ec	0x4	DAT_800127ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127f0	0x4	DAT_800127f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127f4	0x4	DAT_800127f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127f8	0x4	DAT_800127f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800127fc	0x4	DAT_800127fc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012800	0x4	DAT_80012800	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012804	0x4	DAT_80012804	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012808	0x4	DAT_80012808	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001280c	0x4	DAT_8001280c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012810	0x4	DAT_80012810	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012814	0x4	DAT_80012814	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012818	0x4	DAT_80012818	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001281c	0x4	DAT_8001281c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012820	0x4	DAT_80012820	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012824	0x4	DAT_80012824	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012828	0x4	DAT_80012828	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001282c	0x4	DAT_8001282c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012830	0x4	DAT_80012830	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012834	0x4	DAT_80012834	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012838	0x4	DAT_80012838	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001283c	0x4	DAT_8001283c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012840	0x4	DAT_80012840	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012844	0x4	DAT_80012844	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012848	0x4	DAT_80012848	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001284c	0x4	DAT_8001284c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012850	0x4	DAT_80012850	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012854	0x4	DAT_80012854	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012858	0x4	DAT_80012858	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001285c	0x4	DAT_8001285c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012860	0x4	DAT_80012860	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012864	0x4	DAT_80012864	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012868	0x4	DAT_80012868	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001286c	0x4	DAT_8001286c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012870	0x4	DAT_80012870	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012874	0x4	DAT_80012874	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001287c	0x4	DAT_8001287c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012880	0x4	DAT_80012880	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012884	0x4	DAT_80012884	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80012888	0x4	DAT_80012888	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8001288c	0x4	DAT_8001288c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8001268c	0x1ec	effect_update_kind_jump_table	unknown	load	pointer[123]	effect	supported	asm;raw pointer targets	effect kind 0..122 table indexed by effect_update_dispatch; TU boundary WIP
+GAME.EXE	0x8001287c	0x14	effect_update_phase_jump_table	unknown	load	pointer[5]	effect	supported	asm;raw pointer targets	effect phase 0..4 table indexed by effect_update_dispatch; TU boundary WIP
 GAME.EXE	0x80012890	0x4	DAT_80012890	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80012894	0x4	DAT_80012894	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80012898	0x4	DAT_80012898	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -1922,6 +1672,7 @@ GAME.EXE	0x80013368	0x4	DAT_80013368	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8001336c	0x4	DAT_8001336c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80013370	0x4	DAT_80013370	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80013374	0x4	DAT_80013374	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80063dcc	0x20	render_world_identity_matrix	global	load	MATRIX	func_8003247c	supported	retail bytes;two direct func_8003247c address references;SDK MATRIX layout	identity world matrix, original TU/static linkage unresolved
 GAME.EXE	0x80063e00	0x4	DAT_80063e00	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063e04	0x4	DAT_80063e04	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063e08	0x4	DAT_80063e08	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -1954,48 +1705,10 @@ GAME.EXE	0x80063e70	0x4	DAT_80063e70	unknown	load	undefined *		address-only	data
 GAME.EXE	0x80063e74	0x4	DAT_80063e74	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063e78	0x4	DAT_80063e78	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063e7c	0x4	DAT_80063e7c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ed4	0x2	DAT_80063ed4	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ed6	0x2	DAT_80063ed6	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ed8	0x1	DAT_80063ed8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063eda	0x1	DAT_80063eda	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063edc	0x2	DAT_80063edc	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
-GAME.EXE	0x80063ede	0x2	DAT_80063ede	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
-GAME.EXE	0x80063eec	0x2	DAT_80063eec	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063eee	0x2	DAT_80063eee	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ef0	0x1	DAT_80063ef0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ef2	0x1	DAT_80063ef2	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063ef4	0x2	DAT_80063ef4	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
-GAME.EXE	0x80063ef6	0x2	DAT_80063ef6	unknown	load	u16		address-only	asm;halfword loads and stores by func_8001fc94	unresolved global/static candidate
-GAME.EXE	0x80063ef8	0x2	DAT_80063ef8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063efa	0x2	DAT_80063efa	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063efc	0x1	DAT_80063efc	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063efe	0x1	DAT_80063efe	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f00	0x1	DAT_80063f00	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f02	0x1	DAT_80063f02	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f04	0x2	DAT_80063f04	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f06	0x2	DAT_80063f06	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f08	0x1	DAT_80063f08	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f0a	0x1	DAT_80063f0a	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f0c	0x2	DAT_80063f0c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f0e	0x1	DAT_80063f0e	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f18	0x2	DAT_80063f18	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80063f1a	0x2	DAT_80063f1a	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800640c0	0x2	DAT_800640c0	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800640c2	0x2	DAT_800640c2	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800640dc	0x2	DAT_800640dc	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800640de	0x2	DAT_800640de	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064910	0x4	DAT_80064910	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064914	0x4	DAT_80064914	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064918	0x4	DAT_80064918	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006491c	0x4	DAT_8006491c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064920	0x4	DAT_80064920	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064924	0x4	DAT_80064924	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064928	0x4	DAT_80064928	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006492c	0x4	DAT_8006492c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064930	0x4	DAT_80064930	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064934	0x4	DAT_80064934	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800649ec	0x4	DAT_800649ec	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800649f0	0x4	DAT_800649f0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]		supported	asm;xrefs;20 aligned 12-byte load records;KF1 counterpart	20 contiguous menu sprite descriptors through the nine-grid; TU owner unresolved
+GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]		supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; TU owner unresolved
+GAME.EXE	0x80064910	0xc8	menu_equipment_labels_64910	global	load	KfMenuLabelSuffix[10]	func_80019ac4	supported	retail 200-byte copy at 0x80019af0;loaded glyph words	ten 20-byte menu label rows; original TU owner provisional
+GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	func_8001a2f4	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
 GAME.EXE	0x80064a00	0x4	DAT_80064a00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80064a04	0x4	DAT_80064a04	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80064a14	0x4	DAT_80064a14	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2027,87 +1740,13 @@ GAME.EXE	0x80064ad0	0x4	DAT_80064ad0	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x80064adc	0x4	DAT_80064adc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80064ae0	0x4	DAT_80064ae0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80064ae4	0x2	DAT_80064ae4	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064af0	0x4	DAT_80064af0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064af4	0x4	DAT_80064af4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064af8	0x4	DAT_80064af8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064afc	0x4	DAT_80064afc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b00	0x4	DAT_80064b00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b04	0x4	DAT_80064b04	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b08	0x4	DAT_80064b08	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b0c	0x4	DAT_80064b0c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b10	0x4	DAT_80064b10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b14	0x4	DAT_80064b14	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b18	0x4	DAT_80064b18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b1c	0x4	DAT_80064b1c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b20	0x4	DAT_80064b20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b24	0x4	DAT_80064b24	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b28	0x4	DAT_80064b28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b2c	0x4	DAT_80064b2c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b30	0x4	DAT_80064b30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b34	0x4	DAT_80064b34	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b38	0x4	DAT_80064b38	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b3c	0x4	DAT_80064b3c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b40	0x4	DAT_80064b40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b44	0x4	DAT_80064b44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b48	0x4	DAT_80064b48	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b4c	0x4	DAT_80064b4c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b50	0x4	DAT_80064b50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b54	0x4	DAT_80064b54	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b58	0x4	DAT_80064b58	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b5c	0x4	DAT_80064b5c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b60	0x4	DAT_80064b60	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b64	0x4	DAT_80064b64	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b68	0x4	DAT_80064b68	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b6c	0x4	DAT_80064b6c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b70	0x4	DAT_80064b70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b74	0x4	DAT_80064b74	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b78	0x4	DAT_80064b78	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b7c	0x4	DAT_80064b7c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b80	0x4	DAT_80064b80	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b84	0x4	DAT_80064b84	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b88	0x4	DAT_80064b88	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b8c	0x4	DAT_80064b8c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b90	0x4	DAT_80064b90	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b94	0x4	DAT_80064b94	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b98	0x4	DAT_80064b98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064b9c	0x4	DAT_80064b9c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064ba0	0x4	DAT_80064ba0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064ba4	0x4	DAT_80064ba4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064ba8	0x4	DAT_80064ba8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bac	0x4	DAT_80064bac	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bb0	0x4	DAT_80064bb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bb4	0x4	DAT_80064bb4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bb8	0x4	DAT_80064bb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bbc	0x4	DAT_80064bbc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bc0	0x4	DAT_80064bc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bc4	0x4	DAT_80064bc4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bc8	0x4	DAT_80064bc8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bcc	0x4	DAT_80064bcc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bd0	0x4	DAT_80064bd0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bd4	0x4	DAT_80064bd4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bd8	0x4	DAT_80064bd8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bdc	0x4	DAT_80064bdc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064be0	0x4	DAT_80064be0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064be4	0x4	DAT_80064be4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064be8	0x4	DAT_80064be8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bec	0x4	DAT_80064bec	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bf0	0x4	DAT_80064bf0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bf4	0x4	DAT_80064bf4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bf8	0x4	DAT_80064bf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064bfc	0x4	DAT_80064bfc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c00	0x4	DAT_80064c00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c04	0x4	DAT_80064c04	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c08	0x4	DAT_80064c08	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c0c	0x4	DAT_80064c0c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c10	0x4	DAT_80064c10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c14	0x4	DAT_80064c14	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c18	0x4	DAT_80064c18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c1c	0x4	DAT_80064c1c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c20	0x4	DAT_80064c20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c24	0x4	DAT_80064c24	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c28	0x4	DAT_80064c28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80064c2c	0x4	DAT_80064c2c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80064af0	0x140	menu_label_suffixes	global	load	KfMenuLabelSuffix[16]	menu_label_templates	supported	retail bytes;label builder xrefs	sixteen 20-byte glyph suffix templates
+GAME.EXE	0x80064c30	0xb40	menu_glyph_rows	global	load	KfMenuGlyphRow[120]	menu_glyph_rows	supported	retail bytes;selector xrefs	120 rows copied by menu selectors
+GAME.EXE	0x80065770	0x1e0	menu_glyph_rows_extra	global	load	KfMenuGlyphRow[20]	menu_glyph_rows	supported	retail bytes;second table xrefs	20 distinct rows addressed from second table base
 GAME.EXE	0x80065aeb	0x1	DAT_80065aeb	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80065c20	0x5a0	menu_item_code_primary	global	load	u16[6][120]	menu_item_code_primary	supported	retail bytes;func_8001d340 lookup	six 240-byte menu code pages
+GAME.EXE	0x800661c0	0x4b0	menu_item_code_secondary	global	load	u16[5][120]	menu_item_code_secondary	supported	retail bytes;func_8001d654 lookup	five 240-byte numeric menu code pages; byte-pattern strings are false positives
+GAME.EXE	0x80066670	0x10	memory_card_file_prefix	global	load	char[16]	memory_card_format	supported	retail bytes;card-file xrefs	shared save-file prefix and NUL padding
 GAME.EXE	0x800667a0	0x4	DAT_800667a0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800667a4	0x4	DAT_800667a4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800667a8	0x4	DAT_800667a8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2118,70 +1757,11 @@ GAME.EXE	0x800667c8	0x4	DAT_800667c8	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x800667cc	0x4	DAT_800667cc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800667d0	0x4	DAT_800667d0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800667d4	0x4	DAT_800667d4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066808	0x1	DAT_80066808	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066809	0x1	DAT_80066809	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006680a	0x1	DAT_8006680a	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006681a	0x1	DAT_8006681a	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006681b	0x1	DAT_8006681b	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006681c	0x1	DAT_8006681c	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006682c	0x1	DAT_8006682c	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006683e	0x1	DAT_8006683e	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066850	0x1	DAT_80066850	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066862	0x1	DAT_80066862	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066888	0x1	DAT_80066888	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066889	0x1	DAT_80066889	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006688a	0x1	DAT_8006688a	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006688c	0x2	DAT_8006688c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006688e	0x2	DAT_8006688e	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066890	0x2	DAT_80066890	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066892	0x2	DAT_80066892	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066894	0x2	DAT_80066894	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066898	0x2	DAT_80066898	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006689a	0x2	DAT_8006689a	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006689c	0x2	DAT_8006689c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668a0	0x2	DAT_800668a0	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668a2	0x2	DAT_800668a2	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668ac	0x1	DAT_800668ac	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668ae	0x1	DAT_800668ae	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668bc	0x2	DAT_800668bc	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668be	0x2	DAT_800668be	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668c0	0x2	DAT_800668c0	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668d0	0x1	DAT_800668d0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668f4	0x1	DAT_800668f4	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800668f8	0x2	DAT_800668f8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066918	0x1	DAT_80066918	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006691c	0x2	DAT_8006691c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006693c	0x1	DAT_8006693c	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066940	0x2	DAT_80066940	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066960	0x1	DAT_80066960	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066964	0x2	DAT_80066964	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066984	0x1	DAT_80066984	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066988	0x2	DAT_80066988	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669a8	0x1	DAT_800669a8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669ac	0x2	DAT_800669ac	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669cc	0x1	DAT_800669cc	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669d4	0x2	DAT_800669d4	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669f0	0x1	DAT_800669f0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800669f8	0x2	DAT_800669f8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066a14	0x1	DAT_80066a14	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066a38	0x1	DAT_80066a38	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066a5c	0x1	DAT_80066a5c	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ab4	0x4	DAT_80066ab4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ab8	0x4	DAT_80066ab8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066abc	0x4	DAT_80066abc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ac0	0x4	DAT_80066ac0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ac4	0x4	DAT_80066ac4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ac8	0x4	DAT_80066ac8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066acc	0x4	DAT_80066acc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ad0	0x4	DAT_80066ad0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ad4	0x4	DAT_80066ad4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066ad8	0x4	DAT_80066ad8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066adc	0x4	DAT_80066adc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066af4	0x4	DAT_80066af4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066af8	0x4	DAT_80066af8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066afc	0x4	DAT_80066afc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066b00	0x4	DAT_80066b00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80066b04	0x2	DAT_80066b04	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x800667e8	0xd	DAT_800667e8	unknown	load	u8[13]		address-only	asm;func_80026498;func_80028998	13 indexed effect IDs; owner unresolved
+GAME.EXE	0x800667fc	0xa	collision_default_cell	global	load	KfMapOccupancyCell	collision_grid_sample	supported	retail bytes;func_8002a988 fallback pointer	two default five-byte map layers
+GAME.EXE	0x80066808	0x7e	notification_quads	global	load	KfNotificationQuad[7]	notify_enqueue	supported	retail rows;renderer xrefs;kind writes	six notification quads and a sentinel
+GAME.EXE	0x80066888	0x21c	render_model_rows	global	load	KfRenderModelRow[15]	render_map_cell_object	supported	retail bytes;func_80031024 scan;func_800335a0 writes	14 active render rows and a full-width sentinel
+GAME.EXE	0x80066ab4	0xdc0	collision_default_rows	global	load	KfCollisionDefaultRow[80]	collision_height_wrappers	supported	retail bytes;func_8002bc18 row copy;startup archive write	80 mutable 44-byte defaults for collision rows
 GAME.EXE	0x80067874	0x2	DAT_80067874	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80067876	0x2	DAT_80067876	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80067878	0x2	DAT_80067878	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2296,18 +1876,19 @@ GAME.EXE	0x8006d654	0x4	DAT_8006d654	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8006d658	0x4	DAT_8006d658	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix
 GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1
-GAME.EXE	0x8006d68c	0x4	DAT_8006d68c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d68c	0x4	menu_item_model_allocation_pending	global	load	s32	menu_item_model	supported	asm;read-write xrefs;KF1 counterpart	loaded allocation flag; defining TU remains unresolved
 GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	memory_card	supported	asm;cleared on every pad input by func_8001e484 and input_wait_release	counter reset by any input; increment site not yet reviewed
 GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d698	0x4	DAT_8006d698	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d69c	0x4	DAT_8006d69c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d6a0	0x1	DAT_8006d6a0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32		supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; TU owner unresolved
+GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32		supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; TU owner unresolved
+GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
 GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d6d4	0x4	DAT_8006d6d4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d6dc	0x2	DAT_8006d6dc	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d6de	0x2	DAT_8006d6de	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
+GAME.EXE	0x8006d6d4	0x4	render_model_yaw_smoothing_accumulator	global	load	s32	func_800335a0	supported	retail zero word;four direct read-write xrefs;angle_shortest_delta	Yaw-delta accumulator used to ease the first render-model row; original linkage WIP
+GAME.EXE	0x8006d6dc	0x8	menu_transition_rect	global	load	RECT		supported	asm;StoreImage;MoveImage;LoadImage;initialized bytes	320 by 240 VRAM transfer rectangle; defining TU remains unresolved
 GAME.EXE	0x8006d704	0x4	DAT_8006d704	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d708	0x8	effect_zero_direction	static	load	SVECTOR	effect_spawn_zero_direction	supported	asm;single xref;retail zero bytes;constructor argument	zero vector passed as initial direction by func_80041d7c
 GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d71c	0x4	DAT_8006d71c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d778	0x4	DAT_8006d778	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -2403,20 +1984,13 @@ GAME.EXE	0x8006d8fc	0x4	DAT_8006d8fc	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x8006d900	0x4	DAT_8006d900	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d904	0x4	DAT_8006d904	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d908	0x4	DAT_8006d908	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9e0	0x4	DAT_8006d9e0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9e8	0x1	DAT_8006d9e8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9f0	0x4	DAT_8006d9f0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9f8	0x2	DAT_8006d9f8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9fa	0x2	DAT_8006d9fa	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9fc	0x2	DAT_8006d9fc	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d9fe	0x2	DAT_8006d9fe	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da00	0x2	DAT_8006da00	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da02	0x2	DAT_8006da02	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da04	0x2	DAT_8006da04	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da08	0x2	DAT_8006da08	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da0a	0x2	DAT_8006da0a	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da0c	0x2	DAT_8006da0c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006da10	0x4	DAT_8006da10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d9e0	0x4	current_poly_ft4	global	bss	POLY_FT4 *		supported	asm;xrefs;KF1 counterpart;CPE residue	current textured quad pointer; CPE residue occupies padded load page; TU owner unresolved
+GAME.EXE	0x8006d9e8	0x1	menu_saved_music_enabled	global	bss	u8	menu	supported	asm;menu entry and exit;CPE zero tail	music enabled flag captured before the menu and compared on exit
+GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *		supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; TU owner unresolved
+GAME.EXE	0x8006d9f8	0x8	menu_frame_upload_rect	global	bss	RECT		supported	asm;LoadImage call;menu frame setup	8-byte GPU upload rectangle; TU owner unresolved
+GAME.EXE	0x8006da00	0x8	menu_item_preview_translation	global	load	SVECTOR		supported	asm;SDK vector layout;preview renderer	translation coordinates used by menu model preview; defining TU unresolved
+GAME.EXE	0x8006da08	0x8	menu_item_preview_rotation	global	load	SVECTOR		supported	asm;SDK vector layout;preview renderer	rotation coordinates used by menu model preview; defining TU unresolved
+GAME.EXE	0x8006da10	0x4	menu_item_preview_rotation_step	global	load	s32		supported	asm;preview renderer	rotation increment for menu model preview; defining TU unresolved
 GAME.EXE	0x8006da18	0x4	memory_card_io_end_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpIOE event handle
 GAME.EXE	0x8006da20	0x4	memory_card_timeout_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpTIMOUT event handle
 GAME.EXE	0x8006da28	0x4	memory_card_new_device_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpNEW event handle
@@ -2465,19 +2039,27 @@ GAME.EXE	0x8006dba8	0x4	DAT_8006dba8	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006dbb0	0x4	DAT_8006dbb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbb8	0x4	DAT_8006dbb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbc0	0x4	DAT_8006dbc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbe8	0x4	DAT_8006dbe8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbec	0x4	DAT_8006dbec	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbf0	0x4	DAT_8006dbf0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbf4	0x4	DAT_8006dbf4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbf8	0x4	DAT_8006dbf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbfc	0x4	DAT_8006dbfc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006dbe8	0x18	menu_saved_primitive_buffers	global	bss	KfPrimitiveBuffer[2]	menu	supported	asm;menu entry and exit;CPE zero tail	two saved primitive-buffer triples restored when leaving the menu
 GAME.EXE	0x8006dc00	0x4000	memory_card_buffer_storage	global	bss	u8[0x4000]	memory_card	supported	asm;memory_card_initialize;0x4000-byte card reads into it	memory-card file I/O buffer
 GAME.EXE	0x800758f0	0x4b0	player_level_growth_table	global	bss	KfPlayerLevelGrowth[100]	player	supported	asm;xrefs;game_main_loop clears 0x58 words at the base;experience routine addresses members from a registered base	per-level HP/MP, stat steps and experience thresholds; levels past 100 extrapolate from rows 98 and 99
+GAME.EXE	0x80075da0	0xc000	player_weapon_asset_buffer	static	bss	KfWeaponAssetBuffer	player	candidate	asm;game_initialize_session;KF1 48KiB weapon buffer	extent inferred from KF1 allocation; GAME owner boundary remains WIP
+GAME.EXE	0x8009a5e8	0x78	game_counter_bytes	global	bss	u8[0x78]	event	supported	asm;func_800482f8 0x1e-word clear;event counter callers;menu numeric overlay	contiguous byte counters; menu display reads byte +0x60
 GAME.EXE	0x800fba58	0x32000	display_primitive_memory	global	bss	u8[0x32000]	graphics	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members	split into the two 0x19000-byte primitive buffers by display_reset
+GAME.EXE	0x8016b600	0x93cc	actor_state	global	bss	KfActorStateGame	actor	supported	asm;game_main_loop startup clear;actor pool 0x7c stride	200 actors followed by unresolved runtime fields
+GAME.EXE	0x801749d0	0x8744	map_object_state	global	bss	KfMapObjectStateGame	map_object	supported	asm;callers;game_main_loop startup clear;0x18c records at +0x1e00	map-object runtime with 396 records of 68 bytes and 20-byte trailer
+GAME.EXE	0x8017d118	0x1c	state_8017d118	global	bss	KfState8017d118	callback	supported	game_main_loop clears seven words;active table written from load/BSS;func_80015fd4 byte writes	callback table at +0xc; five current/prior bytes and three +0x17 bytes have proven extents
 GAME.EXE	0x8017d140	0x17cf0	game_graphics_runtime	global	bss	KfGraphicsRuntimeGame	graphics	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members	display, TMD, asset, pool, notification and render state
+GAME.EXE	0x80197630	0xe9c	audio_state	global	bss	KfGameAudioState	audio	supported	asm;xrefs;game_main_loop clears 0x3a7 words at the base;sequence fields at +0x4/+0x8	GAME audio sequence, listener and voice state
 GAME.EXE	0x801984d0	0x160	player_state	global	bss	KfPlayerState	player	supported	asm;xrefs;game_main_loop clears 0x58 words at the base;experience routine addresses members from a registered base	experience, level, vitals, training and base stats, camera position and motion
+GAME.EXE	0x8019b6a8	0x2a8c	effect_state	global	bss	KfEffectState	effect	supported	asm;xrefs;game_main_loop clears 0xaa3 words at the base;effect pool scan/reset at +0x680	128 effect slots at 72-byte stride within the startup-cleared effect region
+GAME.EXE	0x801b2140	0x3918	event_state	global	bss	KfEventState	event	supported	game_main_loop 0xe46-word clear;func_800482f8 control and arena clears;save offset table	0x100-byte control region, 0x3800-byte memory arena and ten saved halfword offsets
+GAME.EXE	0x801b5a70	0x20	render_mask_scan_state	global	bss	KfRenderMaskScanState	render_mask	candidate	asm;func_8002c290;func_8002c670;func_8003247c	observed 32-byte scan cursor extent; source allocation owner unresolved
 GAME.EXE	0x801b5d60	0x2a4	cd_state	global	bss	KfCdState	cd	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	CD events, VSync counters and the 16-request ring
 GAME.EXE	0x801b6004	0x60	cd_archives	global	bss	KfCdArchive[8]	cd	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	open CD\\COM\\*.T archives by slot
+GAME.EXE	0x801b6064	0x4	cd_stream_work_buffer	global	bss	u8[]	cd	candidate	asm;map load xrefs;adjacent cd_archives	first referenced word of map resource stream storage; full extent unresolved
+GAME.EXE	0x801c7068	0x8	DAT_801c7068	global	bss	SVECTOR		address-only	asm;func_80042298 writes;func_80042424 reads	three signed motion halfwords; allocation extent and defining source remain unresolved
+GAME.EXE	0x801c7078	0x4c8	player_weapon_records	global	bss	KfWeaponRecordGame[18]	player	candidate	asm;player_recalculate_combat_stats;68-byte stride;adjacent BSS	weapon combat records immediately precede separately cleared 0x801c7540 region
+GAME.EXE	0x801c7540	0x11844	bss_801c7540	global	bss	KfBss801c7540	player	candidate	game_main_loop startup clear;player_set_equipment_slot	startup-cleared region; equipment records begin at +0x115a8
 GAME.EXE	0x801d9610	0x4	display_frame_cleared_word	global	bss	s32	graphics	supported	asm;only reference clears it in display_begin_frame	meaning unresolved; cleared once per frame
 OPEN.EXE	0x800114e4	0x4	DAT_800114e4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114e8	0x4	DAT_800114e8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

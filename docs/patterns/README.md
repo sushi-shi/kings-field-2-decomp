@@ -7,6 +7,126 @@
 
 ## King's Field II (SLPS-00069)
 
+- [psyq30-macro-audit.md](psyq30-macro-audit.md): complete pinned Psy-Q 3.0
+  macro definition and source census, per-site SDK macro trials, retained exact
+  forms, and explicit rejection boundaries.
+- [kf2-game-menu-item-list-controller-ten.md](kf2-game-menu-item-list-controller-ten.md):
+  ten menu item-list verdicts, one newly exact 3,232-byte controller, and a
+  shared typed byte-value/code-pointer record.
+- [kf2-game-menu-controller-record-ten.md](kf2-game-menu-controller-record-ten.md):
+  ten card/list renderer verdicts and a typed WIP seven-row option controller.
+- [kf2-game-menu-preview-sprite-ten.md](kf2-game-menu-preview-sprite-ten.md):
+  ten menu-preview/render verdicts and two newly exact cursor sprite packets.
+- [kf2-game-map-placement.md](kf2-game-map-placement.md): exact 128-row map
+  placement expansion, typed resource/runtime records, and the exact 24-by-24
+  cell layer-mask lookup.
+- [kf2-game-notification-quads.md](kf2-game-notification-quads.md): exact
+  notification primitive drawing, seven initialized quad rows, and the
+  cross-unit table referent.
+- [kf2-game-map-object-reset.md](kf2-game-map-object-reset.md): exact map-object
+  reset with typed rotation and scale fields.
+- [kf2-game-actor-targets.md](kf2-game-actor-targets.md): GAME actor, animation,
+  map, rendering, and menu matching verdicts with strict exact and WIP
+  boundaries recorded by function.
+- [kf2-game-player-actor-trajectory.md](kf2-game-player-actor-trajectory.md):
+  player damage and actor motion verdicts, exact trajectory and collision
+  helpers, and contiguous unit consolidation.
+- [kf2-game-animation-sparse.md](kf2-game-animation-sparse.md): four exact
+  animation clip and sparse-vertex helpers, signed count and skip encoding,
+  and the remaining morph accumulator.
+- [game-audio-cd-batch.md](game-audio-cd-batch.md): 25 GAME audio/CD verdicts,
+  twelve exact CD request functions, and the same-unit direct-call relocation.
+- [game-card-directory-ten.md](game-card-directory-ten.md): ten GAME card/menu
+  caller verdicts, two sourced directory/header readers, and the card data boundary.
+- [game-card-menu-controller-ten.md](game-card-menu-controller-ten.md): ten GAME
+  card/list verdicts and a newly exact 1,060-byte format dialog.
+- [game-menu-render-controller-ten.md](game-menu-render-controller-ten.md): ten
+  menu-render verdicts, a sourced preview selector, and recorded codegen residues.
+- [game-resource-effect-event-ten.md](game-resource-effect-event-ten.md): ten
+  GAME resource/effect/event verdicts and preserved strict source controls.
+- [game-collision-mask-ten.md](game-collision-mask-ten.md): ten GAME collision
+  and floor-item verdicts, with a retail-order snapshot store refinement.
+- [game-actor-collision-ten.md](game-actor-collision-ten.md): ten actor/collision
+  verdicts, including two newly exact actor proximity scanners.
+- [game-main-audio-event-ten.md](game-main-audio-event-ten.md): ten GAME
+  main/audio/event verdicts and the remaining VAB and phase-step residues.
+- [kf2-game-primitive-menu-list.md](kf2-game-primitive-menu-list.md): three
+  exact GAME quad/menu helpers, the loaded 28-byte glyph rows, and the current
+  quad pointer's CPE residue boundary.
+- [kf2-game-menu-render.md](kf2-game-menu-render.md): menu widget and frame
+  renderers, four new exact matches, typed sprite descriptors, and recorded
+  non-exact residues across the remaining pilot band.
+- [kf2-game-menu-screen.md](kf2-game-menu-screen.md): 25 connected GAME menu
+  screen functions, one exact input helper, and the glyph-template/table
+  ownership boundaries for unclaimed renderers.
+- [kf2-game-menu-display-batch.md](kf2-game-menu-display-batch.md): 25 further
+  GAME menu/display verdicts, three exact menu helpers, and fade/card data WIP.
+- [kf2-game-menu-card-followup.md](kf2-game-menu-card-followup.md): 25 connected
+  menu/card verdicts, exact panel, display-exit and item-model C, and the
+  remaining display-entry/card-label codegen residues.
+- [kf2-game-menu-graphics-links.md](kf2-game-menu-graphics-links.md): 25
+  menu/graphics/card linkage verdicts, an exact numeric overlay, and the
+  signed-low referent correction for its byte-sized counter.
+- [kf2-game-tmd-display.md](kf2-game-tmd-display.md): 24 connected GAME
+  display/TMD verdicts, three new exact view/projection functions, and
+  packet-renderer and jump-table ownership boundaries.
+- [kf2-game-tmd-primitive-preparation.md](kf2-game-tmd-primitive-preparation.md):
+  typed GAME TMD parser, its 29-row switch-table owner, and the remaining
+  entry, branch, and table-addend WIP residue.
+- [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
+  render-frame and notification verdicts, three new strict matches, and
+  remaining model, map-grid, and resource boundaries.
+- [kf2-game-menu-notify-transition.md](kf2-game-menu-notify-transition.md):
+  27 menu, notification, resource, and display verdicts; a model-preview
+  frame residue and two contiguous module consolidations.
+- [kf2-game-event-notification-stream.md](kf2-game-event-notification-stream.md):
+  25 connected event, pose, and notification verdicts; one new exact pose
+  projector and a typed WIP script scanner.
+- [kf2-game-early-menu-controllers.md](kf2-game-early-menu-controllers.md):
+  25 call-connected early-menu verdicts, five new strict location/player/card
+  helpers, and the loaded glyph-table ownership boundary.
+- [kf2-game-card-label-suffixes.md](kf2-game-card-label-suffixes.md):
+  25 connected card/menu verdicts, eleven strict label/render functions,
+  and one exact sixteen-entry initialized glyph-suffix table.
+- [kf2-game-menu-render-followup.md](kf2-game-menu-render-followup.md):
+  28 connected menu/render verdicts, one newly exact six-row renderer, and
+  preserved frame, sprite, and data-owner residues.
+- [kf2-game-menu-glyph-row-selectors.md](kf2-game-menu-glyph-row-selectors.md):
+  25 call-connected menu verdicts, two exact selector functions, and 140
+  source-owned initialized glyph rows across two table bases.
+- [kf2-game-menu-item-code-pages.md](kf2-game-menu-item-code-pages.md):
+  25 item-list/render verdicts, one 1440-byte exact code table, and the
+  honest translator and second-table residues.
+- [kf2-game-card-save-io.md](kf2-game-card-save-io.md): 25 card-save and
+  adjacent menu/player verdicts, source-owned prefix and loaded-slot data,
+  and the non-exact save reader's frame and loop residue.
+- [kf2-game-menu-render-ten.md](kf2-game-menu-render-ten.md): ten linked
+  menu-render verdicts, one newly exact empty callback, and reviewed sprite
+  coordinate and stack-frame residues.
+- [kf2-game-menu-tim-list-ten.md](kf2-game-menu-tim-list-ten.md): ten
+  archive-image/list verdicts, four preserved exacts, and the single-byte
+  archive selector signature with unresolved outside-load state.
+- [kf2-game-menu-card-choice-ten.md](kf2-game-menu-card-choice-ten.md): ten
+  menu/list/card verdicts, four preserved exacts, and a typed card-choice
+  controller with an isolated result-join CFG residue.
+- [kf2-game-card-dialog-ten.md](kf2-game-card-dialog-ten.md): ten previously
+  non-exact card/list verdicts, two new strict choice-loop exacts, and a
+  truthful card-format flow residue.
+- [kf2-game-menu-list-pages-ten.md](kf2-game-menu-list-pages-ten.md): ten
+  previously non-exact menu/list verdicts, an exact 1,200-byte secondary
+  item-code table, and the unresolved numeric suffix-table owner.
+- [kf2-game-menu-sprite-transition-ten.md](kf2-game-menu-sprite-transition-ten.md):
+  ten menu/render/transition verdicts, a source-owned seven-way menu switch,
+  and the remaining controller and packet codegen residues.
+- [kf2-game-menu-item-effect-ten.md](kf2-game-menu-item-effect-ten.md): ten
+  menu/item/event caller verdicts, one new strict glyph selector, and a typed
+  item-effect handler with an explicit remaining branch-layout residue.
+- [kf2-game-menu-list-selection-ten.md](kf2-game-menu-list-selection-ten.md):
+  ten linked list/item-code verdicts, one new strict ten-row glyph builder,
+  exact source tables, and unresolved complete list-record ownership.
+- [kf2-game-menu-tmd-ten.md](kf2-game-menu-tmd-ten.md): ten item-list and TMD
+  renderer verdicts, three typed near-exact C renderers, and eight preserved
+  exact claims in one contiguous pipeline unit.
 - [kf2-end-template-residue.md](kf2-end-template-residue.md): END frames and
   global reloads explained by trimmed OPEN templates (unreachable cleanup,
   leftover locals, cursor advances); count-down loops spelled `!= -1`.
@@ -410,6 +530,12 @@ promotes a probe to a proven historical toolchain.
   source-before-destination column advances recover the five-grid copy loop.
 - [game-map-enqueue.md](game-map-enqueue.md): restore allocation-overflow
   returns and retail packet dispatch in the GAME map polygon emitter.
+- [kf2-game-render-map.md](kf2-game-render-map.md): KF2's exact FT3/FT4 map
+  packet emitter and its four-byte shared neutral-color owner.
+- [kf2-game-collision-height.md](kf2-game-collision-height.md): map-cell
+  elevation wrappers, reviewed cache referents, and their unresolved BSS owner.
+- [kf2-game-collision-grid-sample.md](kf2-game-collision-grid-sample.md):
+  three-argument grid sampler, exact fallback-cell data, and shared cache view.
 - [game-model-enqueue.md](game-model-enqueue.md): four-mode model packet
   traversal, material publication and shared depth tails.
 - [game-tmd-enqueue.md](game-tmd-enqueue.md): twelve TMD mode entries,
@@ -666,6 +792,12 @@ promotes a probe to a proven historical toolchain.
   impact/blast and ground-branch visual identities, constructor scale/audio
   units, emergence-depth and orbit-center relationships; includes the complete
   [effect-pool literal ledger](game-effect-pool-literal-ledger.md).
+- [KF2 GAME effect/collision campaign](kf2-game-effect-collision-campaign.md):
+  strict verdicts for the effect pilot and 25 confirmed collision-linked
+  functions, including the 80-row defaults and same-module DATA relocation rule.
+- [KF2 GAME effect dispatcher map](kf2-game-effect-dispatch-map.md): retail
+  123-kind and five-phase switch tables, decoded handler/call topology, and
+  remaining source and collision-cache ownership limits at `0x80042650`.
 - [game-screen-image-loop.md](game-screen-image-loop.md): three admitted
   DRAWENV address pairs and unconditional per-frame RGB stores close the
   screen-image/input helper.
@@ -966,3 +1098,27 @@ promotes a probe to a proven historical toolchain.
   switches and conditional reads through misindexed armor records.
 - [Codec type consistency](codec-type-consistency.md): shared vector and sound
   types, header-backed record models, and explicit encoded-byte boundaries.
+- [GAME near-exact follow-up verdicts](kf2-game-root-near-exact-verdicts.md):
+  eleven retail-backed WIP verdicts with preserved exact neighbors and no
+  speculative codegen steering.
+- [GAME target-candidate scorer pilot](kf2-game-target-candidate-scorer.md):
+  131-row candidate switch-table evidence, direct calls, object referents,
+  and the unresolved callback blocking a source claim.
+- [GAME card, menu, and transition ten](game-card-menu-transition-ten.md):
+  strict verdicts for ten linked card/menu functions, focused source probes,
+  and preserved exact neighbors.
+- [GAME card and CD follow-up ten](game-card-cd-followup-ten.md):
+  seven card/menu WIPs, two newly certified exact CD functions, and the
+  remaining VAB scheduling residue.
+- [GAME TMD and render ten](game-tmd-render-ten.md):
+  strict verdicts for ten typed packet, map-cell, world-render, and sparse
+  animation WIPs with preserved exact neighbors.
+- [GAME map, resource, and effect ten](game-map-resource-effect-ten.md):
+  ten collision, frame, actor, and effect verdicts with proven calls, open
+  indirect/data owners, and preserved exact effect-update neighbors.
+- [GAME menu and card final ten](game-menu-card-final-ten.md):
+  ten source-backed menu and memory-card verdicts, with exact data and
+  neighboring functions preserved.
+- [GAME menu render-mode follow-up ten](kf2-game-menu-render-mode-ten.md):
+  an integer preview-mode ABI correction, ten strict WIP verdicts, and
+  preserved exact card/menu callers.

@@ -399,6 +399,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         "KfBool16": (2, 2),
         # Target O32/Psy-Q long, independent of the host Python ABI.
         "long": (4, 4),
+        "u_long": (4, 4),
         # Psy-Q SDK fixed-layout types (declared in real LIBGTE/LIBGPU headers,
         # not parsed here); registered so project structs can use them.
         "MATRIX": (0x20, 4),
@@ -409,8 +410,12 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         "DRAWENV": (0x5C, 4),
         "EVECTOR": (0x2C, 4),
         "DISPENV": (0x14, 2),
+        "CdlLOC": (4, 1),
+        "RECT": (8, 2),
         "POLY_F4": (0x18, 4),
         "POLY_FT4": (0x28, 4),
+        "POLY_GT3": (0x28, 4),
+        "POLY_GT4": (0x34, 4),
     }
     layouts: dict[str, HeaderStructureLayout] = {}
     definition_pattern = re.compile(
@@ -433,6 +438,9 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
     )
     enum_storage_typedef_pattern = re.compile(
         r"\btypedef\s+" + enum_storage_pattern.pattern + r"\s+([A-Za-z_]\w*)\s*;"
+    )
+    callback_typedef_pattern = re.compile(
+        r"\btypedef\s+[^;()]+\(\s*\*\s*([A-Za-z_]\w*)\s*\)\s*\([^;]*\)\s*;"
     )
     enum_storage_types = {"s8", "u8", "s16", "u16", "s32", "u32", "long"}
     integer_enumerator = re.compile(r"([A-Za-z_]\w*)\s*=\s*(0x[0-9a-fA-F]+|\d+)")
@@ -459,6 +467,11 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
     for path in checked_headers:
         text = re.sub(r"/\*.*?\*/", "", path.read_text(), flags=re.DOTALL)
         text = re.sub(r"//[^\n]*", "", text)
+        for callback in callback_typedef_pattern.finditer(text):
+            name = callback.group(1)
+            if name in primitive_layouts or name in definitions:
+                raise ValueError(f"{path}: duplicate checked type {name}")
+            primitive_layouts[name] = (4, 4)
         enum_bodies = [enum[1] for enum in enum_pattern.finditer(text)]
         for enum in stored_enum_pattern.finditer(text):
             name, storage, body = enum.groups()
@@ -692,6 +705,25 @@ def _validate_structure_identities(config_dir: Path) -> dict[str, int]:
     }
 
 
+def _structural_data_matches_identity(
+    row: DataIdentity, structural_kind: str, structural_size: int
+) -> bool:
+    if row.storage == "bss" and structural_kind != "bss":
+        return False
+    if row.size == structural_size:
+        return True
+    layout = IMAGE_LAYOUTS[row.image]
+    # A loaded payload census stops at the EXE boundary even when one BSS
+    # object occupies the final bytes of that payload and continues in RAM.
+    return (
+        row.storage == "bss"
+        and structural_kind == "bss"
+        and row.va < layout.load_end
+        and row.va + structural_size == layout.load_end
+        and row.size > structural_size
+    )
+
+
 def validate(config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
     structure_counts = _validate_structure_identities(config_dir)
     universe = _function_universe(config_dir)
@@ -792,9 +824,8 @@ def validate(config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
             raise ValueError(f"{data_path}: invalid confidence/scope at {key!r}")
         if key in data_starts:
             structural = structural_data_by_start[key]
-            if (
-                row.size != parse_int(structural["size"])
-                or (row.storage == "bss" and structural["kind"] != "bss")
+            if not _structural_data_matches_identity(
+                row, structural["kind"], parse_int(structural["size"])
             ):
                 raise ValueError(
                     f"{data_path}: structural storage/extent differs at {key!r}"

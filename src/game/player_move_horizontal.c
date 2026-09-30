@@ -22,8 +22,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 dz = (rcos(heading) * distance) >> 12;
     s32 initial_dx = dx;
     s32 initial_dz = dz;
-    s32 next_x;
-    s32 next_z;
+    VECTOR next;
     s32 flags;
     s32 angle;
     s32 radius;
@@ -38,15 +37,15 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 diagonal_kind;
 
     for (;;) {
-        next_x = player_state.camera_position.vx + dx;
-        next_z = player_state.camera_position.vz + dz;
-        flags = func_8002b9d4(next_x, player_state.camera_position.vy, next_z,
+        next.vx = player_state.camera_position.vx + dx;
+        next.vz = player_state.camera_position.vz + dz;
+        flags = func_8002b9d4(next.vx, player_state.camera_position.vy, next.vz,
                               PLAYER_MOVE_RADIUS, PLAYER_MOVE_HEIGHT,
                               PLAYER_MOVE_COLLISION_MODE);
         if (flags == 0) {
         accept_position:
-            player_state.camera_position.vx = next_x;
-            player_state.camera_position.vz = next_z;
+            player_state.camera_position.vx = next.vx;
+            player_state.camera_position.vz = next.vz;
             player_state.unknown_128 = KF_COLLISION_CACHE_LAYER;
             result = 1;
             break;
@@ -81,10 +80,10 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             }
             angle &= KF_ANGLE_WRAP_MASK;
             radius = KF_COLLISION_CACHE_RADIUS + PLAYER_MOVE_SLIDE_RADIUS;
-            next_x = KF_COLLISION_CACHE_POSITION.vx + ((-rsin(angle) * radius) >> 12);
-            next_z = KF_COLLISION_CACHE_POSITION.vz + ((rcos(angle) * radius) >> 12);
-            dx = next_x - player_state.camera_position.vx;
-            dz = next_z - player_state.camera_position.vz;
+            next.vx = KF_COLLISION_CACHE_POSITION.vx + ((-rsin(angle) * radius) >> 12);
+            next.vz = KF_COLLISION_CACHE_POSITION.vz + ((rcos(angle) * radius) >> 12);
+            dx = next.vx - player_state.camera_position.vx;
+            dz = next.vz - player_state.camera_position.vz;
             continue;
         }
 
@@ -92,15 +91,15 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             slide_distance = distance - PLAYER_MOVE_STEP;
             if (slide_distance >= 0) {
                 do {
-                    next_x = player_state.camera_position.vx
+                    next.vx = player_state.camera_position.vx
                            + ((-rsin(heading) * slide_distance) >> 12);
-                    next_z = player_state.camera_position.vz
+                    next.vz = player_state.camera_position.vz
                            + ((rcos(heading) * slide_distance) >> 12);
-                    if (func_8002b9d4(next_x, player_state.camera_position.vy,
-                                       next_z, PLAYER_MOVE_RADIUS,
+                    if (func_8002b9d4(next.vx, player_state.camera_position.vy,
+                                       next.vz, PLAYER_MOVE_RADIUS,
                                        PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
-                        player_state.camera_position.vx = next_x;
-                        player_state.camera_position.vz = next_z;
+                        player_state.camera_position.vx = next.vx;
+                        player_state.camera_position.vz = next.vz;
                         break;
                     }
                     slide_distance -= PLAYER_MOVE_STEP;

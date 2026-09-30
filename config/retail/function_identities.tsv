@@ -142,22 +142,22 @@ GAME.EXE	0x80019834	func_80019834			unknown		address-only	candidate	mips-live-in
 GAME.EXE	0x800199d0	func_800199d0			unknown	unknown arg0;unknown arg1;unknown arg2;unknown *pointer3	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
 GAME.EXE	0x80019ac4	func_80019ac4			void		address-only	supported	asm;cfg;caller 0x8001876c;exact 200-byte label table	updates equipment menu rows and dispatches selected equipment group
 GAME.EXE	0x80019ce4	func_80019ce4			void	KfMenuLabelSuffix *rows	address-only	supported	asm;caller 0x80019ac4;player-state loads;glyph-row tables	writes ten 20-byte menu labels from selected equipment IDs and glyph tables
-GAME.EXE	0x80019ed4	func_80019ed4			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80019ed4	func_80019ed4			void	s32 category	address-only	supported	asm;cfg;caller 0x80019ac4;two bounded switch tables	lists selected equipment category and applies chosen item to slot
 GAME.EXE	0x8001a2f4	func_8001a2f4			void		address-only	supported	asm;cfg;caller 0x80019ac4;strict exact C and 8-byte table	magic menu list controller
 GAME.EXE	0x8001a4f0	func_8001a4f0			void		supported	candidate	asm;cfg;func_80019ac4 caller;item and magic list helpers	builds a mixed item/magic list, previews entries, and stores the selected identifiers
 GAME.EXE	0x8001a7fc	func_8001a7fc			void		address-only	supported	asm;caller;exact-C-match	polls menu input and presents two frames until the active state changes
 GAME.EXE	0x8001a898	func_8001a898			void		address-only	supported	asm;cfg;caller 0x8001876c;item selector and menu model calls	uses selected item to decrement game_counter_bytes after confirmation
-GAME.EXE	0x8001aa9c	func_8001aa9c			s32		address-only	supported	asm;cfg;caller;card-choice and frame calls	menu/card controller returns choice result or enters the stop-and-fade branch; source WIP
+GAME.EXE	0x8001aa9c	func_8001aa9c			s32		address-only	supported	asm;cfg;caller;focused listing match	menu/card controller returns choice result or enters the stop-and-fade branch
 GAME.EXE	0x8001ac80	func_8001ac80			s32		address-only	supported	asm;caller;focused listing match	loads a selected card slot and returns zero, or negative one after cancel or read failure
 GAME.EXE	0x8001af30	func_8001af30			s32	const u8 *card_entries;s16 *glyph_rows;s32 *experience_values;u8 *levels;s32 *slot_ids	address-only	supported	asm;callers;exact-C-match;func_800228c8 card header	probes fifteen 40-byte card entries and appends glyph rows, EXP, LV, and save-slot ID
 GAME.EXE	0x8001b030	func_8001b030			void	s32 panel;const KfMenuGlyphString *rows;s32 count;s32 detail0;s32 detail1;s32 detail2;s32 detail3;s32 detail4;s32 detail5	address-only	supported	asm;nine-arg-callers;exact-C-match	renders two frames of a memory-card menu panel and six detail arguments
 GAME.EXE	0x8001b14c	func_8001b14c			s32		address-only	supported	asm;caller;call-set	polls a two-choice memory-card prompt and returns the selected result
 GAME.EXE	0x8001b2dc	func_8001b2dc			void		address-only	supported	asm;cfg;xrefs;caller	seven-row menu option controller saves six player-state bytes, toggles selected row, and restores bytes on exit
-GAME.EXE	0x8001b554	func_8001b554			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001b834	func_8001b834			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8001b554	func_8001b554			s32		address-only	supported	asm;cfg;card-choice caller;focused comparison	probes card state and directory, then returns the selected slot or negative one
+GAME.EXE	0x8001b834	func_8001b834			s32		address-only	supported	asm;cfg;card-browser callers;focused listing match	selects a numbered card slot, reads it, and returns the slot or negative one
 GAME.EXE	0x8001ba80	func_8001ba80			void	KfMenuGlyphString *row	address-only	supported	asm;callers;glyph suffix table	writes three positioned memory-card menu labels
 GAME.EXE	0x8001bb94	func_8001bb94			void	KfMenuGlyphString *row	address-only	supported	asm;callers;glyph suffix table	writes four positioned memory-card menu labels
-GAME.EXE	0x8001bcfc	func_8001bcfc			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8001bcfc	func_8001bcfc			void		address-only	supported	asm;cfg;format-flow caller;focused listing match	lists card slots and invokes the selected save or format flow
 GAME.EXE	0x8001bf68	func_8001bf68			void	s32 slot	address-only	supported	asm;caller;card slot flow	caller passes selected card slot, which is forwarded to func_80022ca0
 GAME.EXE	0x8001c12c	func_8001c12c			s32	s32 kind	address-only	supported	asm;caller;menu choice flow	caller passes format-dialog kind 1; return is selected outcome
 GAME.EXE	0x8001c550	func_8001c550			void	KfMenuGlyphString *row	address-only	supported	asm;callers;glyph suffix table	writes two positioned menu glyph rows
@@ -175,10 +175,10 @@ GAME.EXE	0x8001d340	func_8001d340			unknown	unknown arg0;unknown *pointer1;unkno
 GAME.EXE	0x8001d3b4	func_8001d3b4			void	s32 kind	address-only	supported	asm;caller;indexed table	menu choice passes low-nibble index to the paired list controller
 GAME.EXE	0x8001d654	func_8001d654			void	u32 *codes;const u8 *indices;s32 first;s32 last;s32 group	address-only	supported	asm;caller;table xref	copies indexed halfword menu codes from five 240-byte pages into word slots
 GAME.EXE	0x8001d6a8	func_8001d6a8			s32		address-only	supported	asm;cfg;callers;menu list fields	item selection controller returns selected byte index, cancel sentinel, or model-load failure
-GAME.EXE	0x8001d8d0	func_8001d8d0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8001d8d0	func_8001d8d0			void	void	address-only	supported	asm;caller;menu item list	sole proven caller 0x800462bc passes no arguments; body constructs a 40-entry item list and returns without a value
 GAME.EXE	0x8001dc64	func_8001dc64			void		address-only	supported	asm;caller;menu choice flow	draws two-frame list window and dispatches two list branches
-GAME.EXE	0x8001ddd0	func_8001ddd0			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x8001e0a8	func_8001e0a8			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x8001ddd0	func_8001ddd0			void	void	address-only	supported	asm;caller;menu item list	sole proven caller 0x8001dc64 passes no arguments; body constructs a 40-entry item list and returns without a value
+GAME.EXE	0x8001e0a8	func_8001e0a8			void	void	address-only	supported	asm;caller;menu item list	sole proven caller 0x8001dc64 passes no arguments; body builds a 40-row item list using the secondary code table and returns without a value
 GAME.EXE	0x8001e378	func_8001e378			s32	s32 index;s32 last;s32 *selection;s32 *confirmed;s32 *cancelled	address-only	supported	asm;cfg;callers;callees	reads menu input, updates the cursor, and reports confirm or cancel
 GAME.EXE	0x8001e484	func_8001e484			u32	KfMenuList *list;const u8 *item_ids;s32 *selection;s32 *result	address-only	supported	asm;27 incoming xrefs;callers;typed list offsets;exact focused listing	Polls menu list input, updates selection and preview controls, and returns pad bits
 GAME.EXE	0x8001e94c	func_8001e94c			void		address-only	supported	asm;cfg;callers;player-state and label xrefs	draws the status values and condition label
@@ -220,7 +220,7 @@ GAME.EXE	0x800226ec	func_800226ec			s32	struct DIRENTRY *entries;s32 *matching_c
 GAME.EXE	0x800228c8	func_800228c8			s32	const char *filename;s32 *experience;s32 *level;s32 *slot	address-only	supported	asm;cfg;caller;40-byte directory entry;0x280-byte card header	reads a card header and decodes two Shift-JIS numeric fields and slot digit
 GAME.EXE	0x80022b48	memory_card_format			s32		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
 GAME.EXE	0x80022b74	func_80022b74			s32	s32 slot	address-only	supported	asm;cfg;callers;card-buffer and checksum referents	reads a numbered save slot; returns 0 on success or 1/2 on I/O/checksum failure; codegen WIP
-GAME.EXE	0x80022ca0	func_80022ca0			unknown	unknown *object	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80022ca0	func_80022ca0			s32	s32 slot	address-only	supported	asm;cfg;format-flow caller;save file and palette referents	writes the requested slot and returns zero on success or one/two on failure
 GAME.EXE	0x80023178	func_80023178			void	u8 *label;s32 slot_glyph	address-only	supported	asm;cfg;caller;player fields	writes player experience and level as Shift-JIS digits in the card label; WIP codegen
 GAME.EXE	0x80023288	memory_card_payload_byte_sum	memory_card	payload_byte_sum	u32	const u8 *payload	supported	candidate	asm;cfg;callers;callees	sums 0x3c00 payload bytes after the save header
 GAME.EXE	0x800232ac	memory_card_wait_event			s32		supported	candidate	asm;cfg;callers;callees;KF1 save_system.c counterparts	memory-card event and control helpers
@@ -267,7 +267,7 @@ GAME.EXE	0x800274ec	player_move_horizontal	player	move_horizontal	s32	s32 headin
 GAME.EXE	0x80027928	func_80027928			void		supported	candidate	asm;cfg;three confirmed callers;player death call	begins death and flags a player byte when collision depth exceeds 32000 above a height threshold
 GAME.EXE	0x80027988	func_80027988			void	s32 magnitude	supported	proven	asm;func_800279cc caller	clamps and scales a signed magnitude into sound 12 volume
 GAME.EXE	0x800279cc	func_800279cc			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
-GAME.EXE	0x80027f78	func_80027f78			unknown		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80027f78	func_80027f78			s32		address-only	supported	asm;cfg;candidate xrefs from 0x8002985c	returns 0 for accepted camera position or 1 for blocked motion; no live-in argument register
 GAME.EXE	0x80028224	func_80028224			void		address-only	supported	asm;cfg;func_8002985c callers;KF1 player_update.c	updates player camera yaw and pitch velocities, clamps target pitch, and wraps angles
 GAME.EXE	0x8002851c	func_8002851c			void		address-only	supported	asm;cfg;func_8002985c callers;KF1 player_update.c	accelerates forward and strafe motion, normalizes speed and applies horizontal movement
 GAME.EXE	0x8002897c	func_8002897c			s32	s32 value	supported	proven	asm;func_80028998;func_80029014	signed inclusive interval predicate for values 71 through 80
@@ -396,7 +396,7 @@ GAME.EXE	0x80035590	map_object_reset	map_object	reset	void	KfMapObject *object	s
 GAME.EXE	0x800355d8	map_object_set_property	map_object	set_property	void	s32 index;s32 property;...	supported	candidate	asm;cfg;15 references;map object pool/template	applies one of four property updates to a map object
 GAME.EXE	0x800356ac	map_object_set_cell_marker	map_object	set_cell_marker	void	KfMapObject *object;s32 mode;u8 marker	supported	candidate	asm;cfg;proven callers;map occupancy grid	writes map occupancy marker and object scale
 GAME.EXE	0x800357a0	func_800357a0			void	s32 mode	address-only	candidate	asm;cfg;map object pool/template xrefs	updates map-object cell markers for action 5 and 0x51
-GAME.EXE	0x80035894	func_80035894			unknown	unknown arg0	address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80035894	func_80035894			void	const KfMapObjectPlacement *placements	address-only	supported	asm;caller 0x80016bbc;24-byte input stride;KfMapObject output stride	initializes 350 map-object records from placement rows
 GAME.EXE	0x80036078	func_80036078			s32	s32 x;s32 y;s32 z;s32 radius;s32 point_height	address-only	supported	asm;cfg;collision caller;vector_distance_to_point;strict match	returns first eligible map-object index within range or -1
 GAME.EXE	0x80036190	func_80036190			s32	s32 first_index;const VECTOR *position;s32 radius;s32 point_height;s32 angle;s32 tolerance	address-only	candidate	asm;cfg;six callers;map object pool/template	searches map objects by distance and facing
 GAME.EXE	0x800363bc	map_object_start_action_if_idle			void	KfMapObject *object;u8 action	supported	candidate	asm;cfg;callers;KF1 map_object.c counterpart	writes action and clears timer only when idle

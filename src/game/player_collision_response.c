@@ -15,6 +15,7 @@ s32 func_80027f78(void)
     s32 length;
     s32 remaining;
     s32 minimum_length;
+    SVECTOR *motion;
 
     next.vx = player_state.camera_position.vx + player_state.reaction.damage.rotation.vx;
     next.vy = player_state.camera_position.vy + player_state.reaction.damage.rotation.vy;
@@ -22,7 +23,17 @@ s32 func_80027f78(void)
 
     flags = func_8002b9d4(next.vx, next.vy, next.vz, 800, 1700, 49);
     if (flags == 0) {
-        goto accept;
+    accept:
+        if (player_state.reaction.damage.rotation.vy >= 160
+            && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy > 32000) {
+            player_death_begin(NULL);
+            player_state.unknown_d1[4] = 1;
+        }
+        player_state.camera_position.vx = next.vx;
+        player_state.camera_position.vy = next.vy;
+        player_state.camera_position.vz = next.vz;
+        player_state.reaction.damage.rotation.vy += 32;
+        goto accepted;
     }
 
     next.vy = player_state.camera_position.vy;
@@ -32,7 +43,18 @@ s32 func_80027f78(void)
         flags = func_8002b9d4(next.vx, next.vy, next.vz, 800, 1700, 49);
         if (flags == 0) {
             minimum_length = 32;
-            goto scale_motion;
+        scale_motion:
+            motion = &player_state.reaction.damage.rotation;
+            length = fixed_vector2_length(motion->vx, motion->vz);
+            remaining = length - minimum_length;
+            if (length <= minimum_length) {
+                motion->vz = 0;
+                motion->vx = 0;
+                return 1;
+            }
+            motion->vx = (motion->vx * remaining) / length;
+            motion->vz = (motion->vz * remaining) / length;
+            goto accept;
         }
     }
 
@@ -44,31 +66,9 @@ s32 func_80027f78(void)
     }
     next.vy = KF_COLLISION_CACHE_RESULT;
     minimum_length = 56;
+    goto scale_motion;
 
-scale_motion:
-    length = fixed_vector2_length(player_state.reaction.damage.rotation.vx,
-                                  player_state.reaction.damage.rotation.vz);
-    remaining = length - minimum_length;
-    if (length <= minimum_length) {
-        player_state.reaction.damage.rotation.vz = 0;
-        player_state.reaction.damage.rotation.vx = 0;
-        return 1;
-    }
-    player_state.reaction.damage.rotation.vx =
-        (player_state.reaction.damage.rotation.vx * remaining) / length;
-    player_state.reaction.damage.rotation.vz =
-        (player_state.reaction.damage.rotation.vz * remaining) / length;
-
-accept:
-    if (player_state.reaction.damage.rotation.vy >= 160
-        && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy > 32000) {
-        player_death_begin(NULL);
-        player_state.unknown_d1[4] = 1;
-    }
-    player_state.camera_position.vx = next.vx;
-    player_state.camera_position.vy = next.vy;
-    player_state.camera_position.vz = next.vz;
-    player_state.reaction.damage.rotation.vy += 32;
+accepted:
     func_80023384();
     return 0;
 }

@@ -64,6 +64,7 @@ typedef struct KfMapObjectTailHalfwordBytes {
 
 typedef union KfMapObjectTailHalfword {
     u16 value;
+    s16 signed_value;
     KfMapObjectTailHalfwordBytes bytes;
 } KfMapObjectTailHalfword;
 
@@ -73,7 +74,7 @@ typedef struct KfMapObjectTailFields {
     u8 unknown_39;
     KfMapObjectTailHalfword unknown_3a;
     u16 spawn_sequence;
-    s16 unknown_3e;
+    KfMapObjectTailHalfword unknown_3e;
 } KfMapObjectTailFields;
 
 typedef union KfMapObjectTail {
@@ -87,8 +88,10 @@ typedef struct KfMapObjectRecord40 KfMapObjectRecord40;
 
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
+    u32 raw;
     u8 bytes[4];
     u16 object_index;
+    u16 halfwords[2];
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];

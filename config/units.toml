@@ -206,6 +206,12 @@ source = "src/game/menu_glyph_selection_rows.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_equipment_category_controller"
+image = "GAME.EXE"
+source = "src/game/menu_equipment_category_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_magic_list"
 image = "GAME.EXE"
 source = "src/game/menu_magic_list.c"
@@ -302,15 +308,39 @@ source = "src/game/menu_item_code_primary.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_sell_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_sell_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_item_code_secondary"
 image = "GAME.EXE"
 source = "src/game/menu_item_code_secondary.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_trade_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_trade_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_list_choice_controller"
 image = "GAME.EXE"
 source = "src/game/menu_list_choice_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_stock_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_stock_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_secondary_stock_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_secondary_stock_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -776,6 +806,12 @@ source = "src/game/map_object_reset.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.map_object_init_records"
+image = "GAME.EXE"
+source = "src/game/map_object_init_records.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.map_object_collision_query"
 image = "GAME.EXE"
 source = "src/game/map_object_collision_query.c"
@@ -1073,6 +1109,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_save_stream"
+image = "GAME.EXE"
+source = "src/game/event_save_stream.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

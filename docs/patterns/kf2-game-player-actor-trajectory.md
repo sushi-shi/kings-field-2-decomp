@@ -790,3 +790,46 @@ followed by four aligned masks `0x20, 0x10, 0x80, 0xffff`. The complete
 Focused `game.player_magic_dispatch` stays 1/1 SAME after the typed table read.
 `8002985c` still has two retail fragments and no complete CFG; its 113
 outgoing xrefs remain candidate until the ranges are curated.
+
+### Collision response and reaction follow-up
+
+`src/game/player_collision_response.c` claims GAME `80027f78` as a
+first-pass collision response. Eleven direct control relocations and twenty
+player/cache HI16/LO16 pairs were checked against raw retail words; its
+focused carve withholds none. Retail's three world probes, accepted camera
+position, death check, horizontal motion scaling, and signed cache-height
+fallback are represented. Moving the accepted-position and scaling joins to
+the retail backward-edge order raised the focused listing from 46.2% to
+**80.0% WIP**. The probe has 26 versus retail's 27 CFG blocks, with 14/14
+branches and 1/1 returns. The first substantive residue starts at the
+horizontal scale: retail keeps one pointer to the reaction vector in `s0`
+and loads both components through it, while the probe materializes the Z
+component as a separate global address. A pointer-lifetime source trial
+produced a larger frame and 78.3%; a shared blocked-return trial produced
+79.6%. Neither was retained. The collision-cache field is still an interior
+view of a provisionally bounded BSS object, and this listing is not exact.
+
+The adjacent `800279cc` remains unclaimed after a full retail CFG, call, and
+data pass: its 70-block mode dispatch uses modes 0, 16, 32, 64, and 80, with
+collision probes, sound, damage, and death effects sharing the provisional
+cache. A complete source model would need the mode-specific state contract;
+the adjacency alone does not establish a common translation unit.
+
+Two small player WIPs were probed without retained source changes.
+`8002897c` still has its exact `80028998` sibling; a direct early-return
+form changed its focused listing to 50.0% but inverted the retail branch
+direction and added an internal jump. `80029624` still has fifteen exact
+reaction siblings; preserving the raw unsigned phase halfword in a local
+gave 55.4% and moving the invalid-phase return to a trailing branch gave
+54.0%, both below the current focused 57.4%. Retail explicitly loads raw
+halfwords before signed comparisons, so the signed interpretation remains
+part of its supported semantics despite the codegen residue.
+
+The existing `player_move_horizontal` WIP at `800274ec` now keeps its trial
+destination as a `VECTOR`. Retail repeatedly stores X and Z at stack offsets
+24 and 32, consistent with that field stride; the original local declaration
+is not proved. The view models one trial world position rather than two
+independent coordinates. Focused similarity rises from 34.6% to **46.4% WIP**;
+retail/probe CFG still differs at 35/38 blocks and 20/23 branches. The
+cache boundary and retry semantics remain provisional, so the listing is not
+exact and no score-driven locals were introduced.

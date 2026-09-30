@@ -13,6 +13,8 @@ void func_800489ac(s32 save_slot)
     u8 *saved[10];
     u8 *stream;
     s32 index;
+    KfActor *actors;
+    KfTargetGroup *groups;
     KfMapObject *object;
 
     func_800483d8(saved);
@@ -21,27 +23,29 @@ void func_800489ac(s32 save_slot)
         return;
     }
 
-    for (index = 0; index < KF_ACTOR_CAPACITY; index++) {
-        u8 actor_index = *stream++;
+    actors = actor_state.actors;
+    for (;;) {
+        s32 actor_index = *stream++;
         if (actor_index == 0xff) {
             break;
         }
-        actor_state.actors[actor_index].lifecycle = *stream++;
+        actors[actor_index].lifecycle = *stream++;
     }
 
-    for (index = 0; index < 40; index++) {
-        u8 group_index = *stream++;
+    groups = actor_state.target_groups;
+    for (;;) {
+        s32 group_index = *stream++;
         KfTargetCandidate *candidate;
         if (group_index == 0xff) {
             break;
         }
-        candidate = actor_state.target_groups[group_index].targets[0].pointer;
+        candidate = groups[group_index].targets[0].pointer;
         candidate->fallback_offset = *stream++;
         candidate->marker_state = *stream++;
     }
 
     object = map_object_state.objects;
-    for (index = 0; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
+    for (index = 0; index < KF_MAP_OBJECT_CAPACITY; object++, index++) {
         u8 opcode = *stream++;
         u16 x;
         u16 y;
@@ -55,35 +59,61 @@ void func_800489ac(s32 save_slot)
             object->tail.fields.unknown_38 = *stream++;
             object->tail.fields.unknown_39 = *stream++;
             break;
-        case 0:
+        case 0: {
+            s32 x_high;
+            s32 z_high;
+            s32 y_high;
+            s32 angle;
+
             map_object_reset(object);
             object->action = 0x60;
             object->object_id = *stream++;
-            x = stream[0] | (stream[1] << 8);
-            z = stream[2] | (stream[3] << 8);
-            y = stream[4] | (stream[5] << 8);
+            x = *stream++;
+            x_high = *stream++;
+            z = *stream++;
+            z_high = *stream++;
+            y = *stream++;
+            y_high = *stream++;
+            angle = *stream++;
+            x |= x_high << 8;
+            z |= z_high << 8;
+            y |= y_high << 8;
             object->rotation.vz = 0x400;
-            object->rotation.vy = stream[6] << 4;
-            stream += 7;
-            goto apply_position;
+            object->rotation.vy = angle << 4;
+apply_position:
+            object->position.vx = x << 2;
+            object->position.vz = z << 2;
+            object->position.vy = (s16)y;
+            object->action_timer = 0x63;
+            func_8002a988(object->position.vx, object->position.vy,
+                           object->position.vz);
+            object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+            object->tail.fields.unknown_38 = 0xff;
+            continue;
+        }
         case 1:
             map_object_reset(object);
             object->action = 0x61;
             object->object_id = *stream++;
-            x = stream[0] | (stream[1] << 8);
-            z = stream[2] | (stream[3] << 8);
-            y = stream[4] | (stream[5] << 8);
-            stream += 6;
+            x = *stream++;
+            x |= *stream++ << 8;
+            z = *stream++;
+            z |= *stream++ << 8;
+            y = *stream++;
+            y |= *stream++ << 8;
             goto apply_position;
         case 2:
             map_object_reset(object);
             object->action = 0x62;
             object->object_id = *stream++;
-            x = stream[0] | (stream[1] << 8);
-            z = stream[2] | (stream[3] << 8);
-            y = stream[4] | (stream[5] << 8);
-            object->tail.fields.unknown_3a.value = (stream[6] << 2) + (rand() >> 13);
-            stream += 7;
+            x = *stream++;
+            x |= *stream++ << 8;
+            z = *stream++;
+            z |= *stream++ << 8;
+            y = *stream++;
+            y |= *stream++ << 8;
+            object->tail.fields.unknown_3a.value = (*stream << 2) + (rand() >> 13);
+            stream++;
             if (object->object_id == 0x67) {
                 object->rotation.vx = 0x400;
             }
@@ -99,15 +129,5 @@ void func_800489ac(s32 save_slot)
         default:
             break;
         }
-        continue;
-
-apply_position:
-        object->position.vx = x << 2;
-        object->position.vz = z << 2;
-        object->position.vy = (s16)y;
-        object->action_timer = 0x63;
-        func_8002a988(object->position.vx, object->position.vy,
-                       object->position.vz);
-        object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
     }
 }

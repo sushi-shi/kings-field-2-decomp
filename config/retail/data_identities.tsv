@@ -13,24 +13,8 @@ PSX.EXE	0x8001026c	0x3c	overlay_header	global	bss	struct EXEC	bootstrap	supporte
 PSX.EXE	0x800102f0	0x1	DAT_800102f0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011058	0x1c	resource_transition_phase_switch_rodata	unknown	load	pointer[7]	func_80016820	supported	retail words;phase bound 0..6;func_80016820 jr table	compiler phase switch table; original TU owner remains unresolved
 GAME.EXE	0x80011098	0x1c	menu_root_switch_rodata	unknown	load	pointer[7]	func_8001876c	supported	retail words;seven case blocks;func_8001876c jr table	compiler switch table inside the menu controller unit
-GAME.EXE	0x800110b8	0x4	DAT_800110b8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110bc	0x4	DAT_800110bc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110c0	0x4	DAT_800110c0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110c4	0x4	DAT_800110c4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110c8	0x4	DAT_800110c8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110cc	0x4	DAT_800110cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110d0	0x4	DAT_800110d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110d4	0x4	DAT_800110d4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110d8	0x4	DAT_800110d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110e0	0x4	DAT_800110e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110e4	0x4	DAT_800110e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110e8	0x4	DAT_800110e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110ec	0x4	DAT_800110ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110f0	0x4	DAT_800110f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110f4	0x4	DAT_800110f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110f8	0x4	DAT_800110f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800110fc	0x4	DAT_800110fc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011100	0x4	DAT_80011100	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x800110b8	0x24	menu_equipment_first_switch_rodata	unknown	load	pointer[9]	func_80019ed4	supported	retail words;bounded jr;in-function case targets	compiler switch table within equipment category controller unit
+GAME.EXE	0x800110e0	0x24	menu_equipment_apply_switch_rodata	unknown	load	pointer[9]	func_80019ed4	supported	retail words;bounded jr;in-function case targets	compiler switch table within equipment category controller unit
 GAME.EXE	0x8001111d	0x1	DAT_8001111d	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011125	0x1	DAT_80011125	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011128	0x20	DAT_80011128	unknown	load	pointer[8]		address-only	asm;bounded jr index;raw pointer targets	8 in-function case targets; address-derived table identity retained
@@ -1046,6 +1030,7 @@ GAME.EXE	0x80066808	0x7e	notification_quads	global	load	KfNotificationQuad[7]	no
 GAME.EXE	0x80066888	0x21c	render_model_rows	global	load	KfRenderModelRow[15]	render_map_cell_object	supported	retail bytes;func_80031024 scan;func_800335a0 writes	14 active render rows and a full-width sentinel
 GAME.EXE	0x80066ab4	0xdc0	collision_default_rows	global	load	KfCollisionDefaultRow[80]	collision_height_wrappers	supported	retail bytes;func_8002bc18 row copy;startup archive write	80 mutable 44-byte defaults for collision rows
 GAME.EXE	0x80067874	0x1c	DAT_80067874	global	load	KfMapMaskShapePair[7]	map_mask_window_sweep	address-only	asm;func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
+GAME.EXE	0x80067890	0x10e	map_object_cell_patterns	global	load	KfMapCellPattern[9][3]	map_object_init_records	supported	asm;func_80035894 calls;func_80034f90 pattern format;retail bytes	nine groups of three cell patterns
 GAME.EXE	0x800679a0	0x1	DAT_800679a0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800679a8	0x1	DAT_800679a8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x800679b0	0x1	DAT_800679b0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

@@ -31,7 +31,7 @@ void func_800365d8(u16 parameter, const VECTOR *origin, s32 height_offset)
     object->rotation.vy = rand() >> 3;
     object->tail.fields.unknown_38 = 0xff;
     map_object_start_action_if_idle(object, 0x62);
-    object->tail.fields.unknown_3e = -120;
+    object->tail.fields.unknown_3e.signed_value = -120;
 }
 
 ADDRESS(0x800366fc, 0x1b8)

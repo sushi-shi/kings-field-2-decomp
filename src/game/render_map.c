@@ -16,7 +16,7 @@ ADDRESS(0x8002f194, 0x41c)
 void render_enqueue_map(u16 object_index)
 {
     KfTmdObject *object;
-    u32 header;
+    KfTmdPacketHeader header;
     u8 *normals;
     u8 *packet;
     u32 remaining;
@@ -36,9 +36,9 @@ void render_enqueue_map(u16 object_index)
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
 
-        header = *(u32 *)packet;
+        header.word = *(u32 *)packet;
         packet += KF_TMD_PACKET_HEADER_BYTES;
-        switch ((header >> 24) & KF_TMD_MODE_MASK) {
+        switch (header.bytes.mode & KF_TMD_MODE_MASK) {
         case KF_TMD_MODE_FT4: {
             KfTmdFt4 *face = (KfTmdFt4 *)packet;
             KfGpuGT4 *prim;
@@ -74,7 +74,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vc->p2, &prim->packed.color2);
             DpqColor(&shade, vd->p2, &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 0x0c;
-            prim->sdk.code = (header >> 24) | 0x3c;
+            prim->sdk.code = header.bytes.mode | 0x3c;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
@@ -114,7 +114,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vb->p2, &prim->packed.color1);
             DpqColor(&shade, vc->p2, &prim->packed.color2);
             ((u8 *)&prim->sdk.tag)[3] = 0x09;
-            prim->sdk.code = (header >> 24) | 0x34;
+            prim->sdk.code = header.bytes.mode | 0x34;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth],
@@ -123,7 +123,7 @@ void render_enqueue_map(u16 object_index)
             break;
         }
         }
-        packet += (header >> 6) & 0x3fc;
+        packet += header.bytes.input_length * KF_TMD_WORD_BYTES;
     }
 }
 
@@ -213,7 +213,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
     u8 *vertices;
     SVECTOR *original_vertices;
     u32 remaining;
-    u32 header;
+    KfTmdPacketHeader header;
     CVECTOR shade;
 
     if (prepared_asset != 0) {
@@ -243,9 +243,9 @@ void func_8002f808(u16 object_index, s32 depth_bias,
     if (remaining != 0) {
         remaining--;
         do {
-            header = *(u32 *)packet;
+            header.word = *(u32 *)packet;
             packet += KF_TMD_PACKET_HEADER_BYTES;
-            switch ((header >> 24) & KF_TMD_MODE_MASK) {
+            switch (header.bytes.mode & KF_TMD_MODE_MASK) {
             case KF_TMD_MODE_FT4: {
                 KfTmdFt4 *face = (KfTmdFt4 *)packet;
                 KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
@@ -295,7 +295,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                         func_8002f5b0(clipped_count,
                                        (SVECTOR *)(normals + face->normal),
                                        face->clut, face->tpage,
-                                       (header >> 24) & 2, depth_bias);
+                                       header.bytes.mode & 2, depth_bias);
                     }
                     break;
                 }
@@ -325,7 +325,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                 DpqColor(&shade, vc->p2, &prim->packed.color2);
                 DpqColor(&shade, vd->p2, &prim->packed.color3);
                 ((u8 *)&prim->sdk.tag)[3] = 12;
-                prim->sdk.code = ((header >> 24) & 2) | 0x3c;
+                prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
                 depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
                 if (depth < 16) {
                     depth = 16;
@@ -370,7 +370,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                         func_8002f5b0(clipped_count,
                                        (SVECTOR *)(normals + face->normal),
                                        face->clut, face->tpage,
-                                       (header >> 24) & 2, depth_bias);
+                                       header.bytes.mode & 2, depth_bias);
                     }
                     break;
                 }
@@ -397,7 +397,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                 DpqColor(&shade, vb->p2, &prim->packed.color1);
                 DpqColor(&shade, vc->p2, &prim->packed.color2);
                 ((u8 *)&prim->sdk.tag)[3] = 9;
-                prim->sdk.code = ((header >> 24) & 2) | 0x34;
+                prim->sdk.code = (header.bytes.mode & 2) | 0x34;
                 depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
                 if (depth < 16) {
                     depth = 16;
@@ -407,7 +407,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                 break;
             }
             }
-            packet += (header >> 6) & 0x3fc;
+            packet += header.bytes.input_length * KF_TMD_WORD_BYTES;
         } while (remaining-- != 0);
     }
 }

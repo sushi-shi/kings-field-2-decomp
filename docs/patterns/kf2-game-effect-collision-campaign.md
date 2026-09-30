@@ -544,8 +544,8 @@ adjacent-boundary, source-history, vendored, and current-match evidence under
 | 0x800461a0 | WIP, 99.12676% | The explicit `0xf1`/`0xfe` branches and shared fallback join restore 14/14 blocks and 5/5 branches. Only the two record-cursor register assignments remain exchanged. The adjacent marker helper remains exact. |
 | 0x80047c98 | WIP, unclaimed | The 0x660-byte event controller has reviewed direct map/effect/menu calls, but its final indirect call and event-state/table owner are unresolved. |
 | 0x800482f8 | **Exact, 100%** | A checked 0x0a-byte event-control sentinel view at +0x2c and post-clear pointer setup reproduce all three halfword stores. All six event-state functions remain exact. |
-| 0x80048554 | WIP, unclaimed | The 0x458-byte event/actor/map serializer allocates and restores arena records, but the proposed pointer table at 0x80012960 has no proven full extent or owner. |
-| 0x800489ac | WIP, unclaimed | The 0x378-byte packed event-stream decoder has direct map/collision calls; its candidate table at 0x80012bf8 and complete stream schema remain unproved. |
+| 0x80048554 | Focused WIP, 72.9% | Source owns the 0x458-byte serializer and bounded 165-word opcode table. Actor/group sentinels, map packets, and arena allocation are reconstructed; register assignments, object-ID byte loads, and switch-tail placement differ. |
+| 0x800489ac | Focused WIP, 95.1% | Source owns the 0x378-byte decoder and bounded 16-word opcode table. Sentinel streams, packed map packets, and calls align; two initial loop register assignments remain different. |
 
 The event sentinel has checked header and inventory rows. No candidate table
 or overlapping BSS global was defined. GAME target relink verified 144/144
@@ -694,8 +694,8 @@ strict report predates the retained source correction below.
 | 0x8004678c | WIP, unclaimed | The 0xc54-byte event controller has two indirect transfers and mixed CD, spatial-audio, actor, and event-state branches. |
 | 0x800475d8 | WIP, unclaimed | The 0x6c0-byte controller's four-argument event state and pose/CD branches remain incomplete. |
 | 0x80047c98 | WIP, unclaimed | The 0x660-byte paired controller has an unresolved indirect callback and incomplete event-record ownership. |
-| 0x80048554 | WIP, unclaimed | The 0x458-byte serializer uses an indirect table and a packed arena payload whose complete schema is not yet typed. |
-| 0x800489ac | WIP, unclaimed | The 0x378-byte decoder has an indirect table and shares the unresolved packed payload. |
+| 0x80048554 | Focused WIP, 72.9% | A source claim now models the 3,072-byte stack payload, three record scans, 165-entry switch, and arena calls. The table's in-body pointer edges remain candidate. |
+| 0x800489ac | Focused WIP, 95.1% | A source claim now models the sentinel-delimited actor/group streams and 16-entry map opcode switch. The table's in-body pointer edges remain candidate. |
 | 0x80048d24 | WIP, unclaimed | The 0x5b8-byte save walker is a direct-copy field sequence, but the large destination payload and live-state field family need a common owner. |
 
 The in-place `kind` update is semantically equivalent to masking a separate
@@ -821,4 +821,19 @@ and fourteen direct `j`/`jal` words were checked individually against retail
 and promoted to reviewed control-flow rows. Focused safe delinking admits all
 of these relocations with zero withheld rows. In-body table pointer targets
 remain candidate for indirect reachability; neither function has a C source
-claim.
+claim at this evidence checkpoint.
+
+Both functions now have separate C and RODATA claims. The 0x800489ac decoder's
+focused listing is 95.1%: its call set, four reviewed BSS address pairs,
+sequential packet reads, and map-object update path align, leaving the two
+actor/group sentinel-loop register assignments. Focused CFG has 23/23 blocks
+and 7/7 branches; indirect switch reachability remains incomplete. The 0x80048554 serializer's
+focused listing is 72.9% after retaining the raw kind-83 fallthrough: its
+165-word retail table has five distinct in-body destinations, including 16
+tail-byte kinds and two two-byte kinds. A 3,072-byte stack payload and the
+actor, target-group, map-object, and arena address pairs are source-backed.
+Its focused CFG has 43/43 blocks and 19/19 branches, with a differing
+kind-83 successor placement and incomplete indirect switch reachability.
+The five new BSS pairs and both function bodies passed focused one-VA safe
+delinking with zero withheld relocations. The table pointers still have only
+candidate indirect-edge status; neither fuzzy score is a strict exact claim.

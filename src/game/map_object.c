@@ -153,6 +153,6 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
         }
         break;
     }
-    object->tail.fields.unknown_3e = 0;
+    object->tail.fields.unknown_3e.value = 0;
     object->tail.fields.unknown_38 = 0xff;
 }

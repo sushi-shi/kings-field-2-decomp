@@ -13,7 +13,7 @@ typedef char kf_menu_equipment_list_size[sizeof(KfMenuEquipmentList) == 52 ? 1 :
 
 extern KfMenuLabelSuffix menu_equipment_labels_64910[10];
 extern void func_80019ce4(KfMenuLabelSuffix *rows);
-extern void func_80019ed4(void);
+extern void func_80019ed4(s32 category);
 extern void func_8001a2f4(void);
 extern void func_8001a4f0(void);
 extern void func_8001e484(void *list_state, s32 mode, s32 *selection, s32 *result);
@@ -50,7 +50,7 @@ void func_80019ac4(void)
             else if (choice == 9)
                 func_8001a4f0();
             else
-                func_80019ed4();
+                func_80019ed4(choice);
             func_80019ce4(current_rows);
         }
 

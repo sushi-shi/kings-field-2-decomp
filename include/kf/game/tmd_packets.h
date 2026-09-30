@@ -38,6 +38,9 @@ typedef union KfTmdPacketHeader {
     } bytes;
 } KfTmdPacketHeader;
 
+typedef char kf_tmd_packet_header_size[
+    sizeof(KfTmdPacketHeader) == KF_TMD_PACKET_HEADER_BYTES ? 1 : -1];
+
 /* The cell renderer supplies a complete temporary TMD to its packet helper. */
 typedef struct KfTmdPreparedAsset {
     KfTmdHeader header;

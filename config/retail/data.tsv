@@ -47,25 +47,9 @@ GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-c
 GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011098	0x898	0x1c	pointer	manual:menu-root-switch		pointer[7]	retail words;func_8001876c jr table	seven consecutive case pointers within the menu controller
 GAME.EXE	0x800110b4	0x8b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800110b8	0x8b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110bc	0x8bc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110c0	0x8c0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110c4	0x8c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110c8	0x8c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110cc	0x8cc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110d0	0x8d0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110d4	0x8d4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110d8	0x8d8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x800110b8	0x8b8	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;func_80019ed4 bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x800110dc	0x8dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800110e0	0x8e0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110e4	0x8e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110e8	0x8e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110ec	0x8ec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110f0	0x8f0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110f4	0x8f4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110f8	0x8f8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800110fc	0x8fc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80011100	0x900	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x800110e0	0x8e0	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;func_80019ed4 bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x80011104	0x904	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:BISLPS-00069TEMP\x20\x20\x20\x20
 GAME.EXE	0x8001111d	0x91d	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8001111e	0x91e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1633,7 +1617,8 @@ GAME.EXE	0x80066888	0x56088	0x21c	defined	manual:render model rows	render_model_
 GAME.EXE	0x80066aa4	0x562a4	0x10	unclassified	coverage-gap			payload-complement	distinct bytes before collision defaults
 GAME.EXE	0x80066ab4	0x562b4	0xdc0	defined	manual:collision defaults		KfCollisionDefaultRow[80]	retail bytes;func_8002bc18 row copy;startup archive write	mutable default collision rows copied into the graphics runtime
 GAME.EXE	0x80067874	0x57074	0x1c	defined	reviewed-asm		KfMapMaskShapePair[7]	func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
-GAME.EXE	0x80067890	0x57090	0x110	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80067890	0x57090	0x10e	defined	reviewed-asm		KfMapCellPattern[9][3]	func_80035894 and func_80034f90 pattern argument;retail bytes	nine groups of three 10-byte patterns
+GAME.EXE	0x8006799e	0x5719e	0x2	unclassified	coverage-gap			payload-complement	two trailing zero alignment bytes after pattern family
 GAME.EXE	0x800679a0	0x571a0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x800679a1	0x571a1	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800679a8	0x571a8	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

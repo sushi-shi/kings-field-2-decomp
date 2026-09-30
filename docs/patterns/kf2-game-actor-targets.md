@@ -960,3 +960,82 @@ preserved.
 | `800349bc` | WIP, strict `92.342960000%` | Menu transition has 14/14 blocks and 8/8 branches; retail's frame is 72 bytes versus current C's 64, with different register and constant lifetimes. Adjacent TIM upload and `34e10` remain exact. |
 | `80035194` | WIP, strict `89.595450000%` | Rotated occupancy rectangle copier has 51/51 blocks and 26/26 branches. Retail saves eight registers in a 40-byte frame; compiled C uses fewer in a 32-byte frame and differs in field-mask and row/column register lifetimes. Its map-pattern sibling remains WIP. |
 | `800460a0` | WIP, strict `99.268295000%` | Animation phase seeker has 6/6 blocks, 2/2 branches, and matching calls/referents. Only the saved-register assignment of the even step and half-step remains; no independently supported source correction was found. |
+
+## Actor animation and target continuation after merge
+
+This ten-function GAME.EXE batch is confined to actor animation, target,
+group-position, and their proven motion/behavior calls. Current retail CFG,
+call and referent evidence was checked against the merged source. Focused
+`kf try` comparisons kept exact siblings exact. Moving a common yaw-scale
+assignment, duplicating sparse-morph reset assignments, reversing a target
+pointer addition, and reordering phase-seeker local declarations either
+worsened or did not change the focused listing; all trials were reverted.
+No source or configuration edit was retained.
+
+| GAME VA | Final verdict | Evidence and remaining boundary |
+| --- | --- | --- |
+| `80015918` | WIP, strict `95.494190000%` | Fixed-point trajectory solver has 41/41 blocks and 24/24 branches; the arithmetic result register differs from the first discriminant subtraction onward. Exact adjacent trajectory caller `15bc8` and vector helper `15ce0` remain intact. |
+| `80033d3c` | WIP, strict `95.218390000%` | Sparse morph accumulator has 17/17 blocks, 10/10 branches and three `ScaleMatrix` calls. The pending-flush skip branches to a different common tail; an explicit per-branch reset trial reduced the compiled CFG to 16 blocks and was reverted. Both preceding sparse-animation claims remain exact. |
+| `80039108` | WIP, unclaimed | Actor candidate scorer is called by the target selector. Its 59-block body uses a 131-row candidate jump table at `80011cd8` with ten unique internal targets; the indirect callback and table owner remain unresolved. |
+| `80039c94` | WIP, unclaimed | Actor combat/magic recipient has 72 blocks, repeated calls to `39c14`, and an unresolved indirect callback. Its shared actor/player/effect record contract remains incomplete. |
+| `8003ae50` | WIP, unclaimed | Motion/collision helper reached by exact actor-motion functions has 58 blocks and terrain, trigonometric, angle, and `SquareRoot0` paths. KF1 has a comparable sliding-move shape, but the KF2 retry and output contract requires further reconstruction. |
+| `8003c3e0` | WIP, strict `99.645390000%` | Group-position solver has 23/23 blocks, 11/11 branches, matching calls and referents, and three exact siblings. Only the yaw-error and scaled-yaw register assignments differ; consolidating the scale assignment lowered focused similarity and was reverted. |
+| `8003c614` | WIP, unclaimed | Actor behavior dispatcher is called by `3d184` and calls group-position helper `3c3e0` eleven times. Its 45-block switch retains an unresolved indirect jump and candidate table at `80011ee8`. |
+| `8003d184` | WIP, unclaimed | Higher actor behavior dispatcher reaches animation, collision, movement, and sound helpers. Its 0x248c-byte body has multiple indirect control sites and lacks a proved complete dispatch-table/source owner. |
+| `8003f7ec` | WIP, strict `85.862070000%` | Target-group fixup has 9/9 blocks and 4/4 branches with typed group ownership. Focused listing differs only in one constant initialization order and commutative pointer addition; reversing the C addition emitted identical bytes. Exact adjacent `3f610` and `3f860` remain intact. |
+| `800460a0` | WIP, strict `99.268295000%` | Animation phase seeker has 6/6 blocks and 2/2 branches, with only even-step versus half-step saved registers swapped. Reordering the two local declarations emitted identical bytes. |
+
+The remaining disjoint actor-owned source WIPs in this neighborhood were
+checked as a small follow-up. `8003983c` is strict `99.075380000%`: its 37/37
+blocks, 24/24 branches, calls, and referents agree, while saved-register
+assignment differs from the first actor-state load. `8003bd40` is strict
+`86.532260000%`: 9/9 blocks and 5/5 branches agree, but actor-position load
+order and angle/reference register lifetimes differ; six neighboring motion
+functions remain exact. `8003b5d0` is strict `75.669390000%`: 40/40 blocks and
+21/21 branches agree, but state-dispatch and collision-return paths use a
+different layout. An explicit layer-selection branch changed the first branch
+shape but lowered focused similarity and was reverted. The source bodies in
+other nearby non-exact units belong to the player, effect, or audio campaigns.
+
+The actor-side damage pair was checked against retail calls, CFG, and focused
+listings after the player attenuation correction. `8003a318` remains strict
+`77.020940000%` WIP: its 26 blocks and 13 branches now match retail, but its
+16-argument loop uses a 192-byte frame against retail's 200 bytes, with
+different stack-argument scheduling. `8003a614` remains strict
+`96.910110000%` WIP: its 6 blocks, 3 branches, and direct calls match, while
+retail independently forms the later player-camera Z address and the compiler
+reuses an earlier base. Exact `8003a778` was SAME in the focused comparison.
+No source correction supported by independent evidence was retained.
+
+For `8003b5d0`, reversing both equivalent collision-layer ternaries matched
+retail's initial branch direction and raised focused listing similarity from
+65.1% to 66.5%, but did not resolve the state-dispatch topology. The change
+was reverted because it only steered code generation. Moving state `0x20`
+ahead of state `0` in the C switch was also reverted without comparison when
+the focused target object became unavailable during concurrent target work.
+The three contiguous preceding functions remain exact in the last completed
+focused comparison.
+
+The later sparse-morph control-flow correction reached focused SAME for all
+three claims in `game.animation_sparse_vertices`. Retail's skip with no
+pending vertices preserves the already-reset delta pointer and jumps to the
+shared group tail. A real flush or completed three-vertex batch resets that
+pointer; a partial batch only increments its pending count. Expressing these
+paths in C removed the earlier skip-tail and partial-batch branch differences.
+`80033d3c` has a byte-identical focused listing, with `80033bfc` and
+`80033cc0` still SAME. Broad strict matching was not run under the current
+quick-build constraint, so this is a focused exact verdict pending strict
+certification.
+
+The contiguous `8003ae50` actor X/Z motion helper is now source-owned after
+retail review of its three actor-motion callers, collision/floor callees,
+cache references, and 58-block control flow. The C body models proposed
+motion as a local `VECTOR`, the two floor probes, obstacle-angle steering,
+axis and diagonal retries, and optional halfword motion writeback. Retail
+evidence corrected the floor-height comparison, fixed-point negation before
+the right shift, and the unscaled second-axis retry. A seven-function focused
+carve and `kf try` preserve the six preceding actor-animation listings as
+SAME; `8003ae50` remains WIP at 99.2% listing similarity. Its remaining
+printed difference is the angle adjustment temporary (`a1` versus retail
+`v0`) and the independent angle-mask scheduling before the length products.
+No broad strict report was run under the quick-build constraint.

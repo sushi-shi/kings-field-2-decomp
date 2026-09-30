@@ -676,3 +676,98 @@ known-reference check still stops at the three established unrelated
 TMD/map-object `.rodata` addends. After retained edits, full `kf build` built
 PSX; GAME/OPEN/END retain their existing first unresolved InitCARD, malloc,
 and display_buffers links. No repository tests, banking, or commit were run.
+
+## Effect and event source pass after the merged master
+
+The GAME effect and event ten were checked against retail disassembly/CFG,
+incoming and outgoing xrefs, strings, current identities, relocation evidence,
+source history, and the current match report. Fresh navigator captures are
+under `/tmp/effect2026_0x800*.txt`. This pass used focused `kf try` only; the
+strict report predates the retained source correction below.
+
+| GAME VA | Current verdict | Decisive evidence or residue |
+| --- | --- | --- |
+| 0x8003fa68 | WIP, last strict 70.73333% | Four separate retail collision calls are folded into one shared call in the source probe. `if`/`else if` and reordered-case probes did not restore those call sites; both were discarded. |
+| 0x8003fb94 | Focused `SAME` (strict refresh pending) | Updating `kind` in place after extracting option bits matches the retail prologue and mask schedule; all ten listings in `game.effect_update` are identical. |
+| 0x80040308 | WIP, unclaimed | The 0x13e4-byte constructor has a bounded 123-word table with all entries inside its body, now curated as one datum. The indirect edges remain candidate and no source-owned RODATA or complete collision-cache model exists. |
+| 0x80042650 | WIP, unclaimed | The 0x3670-byte dispatcher has two decoded indirect switches, but the in-body pointer-table relocations and collision-cache owner remain provisional. |
+| 0x8004678c | WIP, unclaimed | The 0xc54-byte event controller has two indirect transfers and mixed CD, spatial-audio, actor, and event-state branches. |
+| 0x800475d8 | WIP, unclaimed | The 0x6c0-byte controller's four-argument event state and pose/CD branches remain incomplete. |
+| 0x80047c98 | WIP, unclaimed | The 0x660-byte paired controller has an unresolved indirect callback and incomplete event-record ownership. |
+| 0x80048554 | WIP, unclaimed | The 0x458-byte serializer uses an indirect table and a packed arena payload whose complete schema is not yet typed. |
+| 0x800489ac | WIP, unclaimed | The 0x378-byte decoder has an indirect table and shares the unresolved packed payload. |
+| 0x80048d24 | WIP, unclaimed | The 0x5b8-byte save walker is a direct-copy field sequence, but the large destination payload and live-state field family need a common owner. |
+
+The in-place `kind` update is semantically equivalent to masking a separate
+mode local; it leaves the option bits available to the later actor branch.
+`kf try --unit game.effect_update` reports 10/10 identical listings, including
+the nine previously exact neighboring claims. No broad match, repository
+tests, full build, banking, or commit were run in this pass.
+
+The constructor's kind bound at `0x800404a8..b0`, four-byte index, table base
+`0x8001249c`, and indirect jump at `0x800404d0` establish exactly 123 entries
+through `0x80012687`; all raw words target its body, and the following word is
+zero before the separate dispatcher table. The event interpreter at
+`0x800462bc` similarly bounds opcodes `0xf0..0xff`, indexes 16 words at
+`0x80012890..cf`, and jumps to in-body handlers. Both table extents now have
+one curated data identity each; the indirect control-flow relocations stay
+candidate until source objects validate them. The paired save-state walkers at
+`0x80048d24` and `0x800492dc` still need a shared payload schema before C
+ownership can be claimed.
+
+Three more event switch-table extents are fixed by retail bounds and pointer
+loads. `0x8004678c` subtracts 82 from its command, bounds the result to
+0..34, and indexes 35 words at `0x800128d0..0x8001295b` (21 distinct in-body
+targets). `0x80048554` bounds a record-kind byte to 0..164 and indexes 165
+words at `0x80012960..0x80012bf3` (five distinct in-body targets).
+`0x800489ac` subtracts `0xf0` from an opcode, bounds it to 0..15, and indexes
+16 words at `0x80012bf8..0x80012c37` (eight distinct in-body targets). The
+zero words at `0x8001295c` and `0x80012bf4`, and the string following
+`0x80012c38`, remain separate. The three ranges now each have one curated
+pointer-table identity, while their in-body pointer relocations remain
+candidate until source-owned RODATA validates them.
+
+The event callbacks have a supported pointer owner even though their runtime
+targets remain indirect. Retail `0x80046474..88` loads
+`state_8017d118.active_table[4]` and calls it with the event object and the
+stream byte. `0x80047374..88` calls slot 2 with three event operands, and
+`0x800482b0..c4` calls slot 0 with the local position and event argument.
+Those three `jalr` instructions do not prove which function each table slot
+contains at runtime; their target edges remain unresolved. The existing
+`KfState8017d118` layout checks establish the pointer field at +0x0c, so no
+new callback global or guessed direct callee is needed.
+
+The fixed resource arena address `0x8009b0a0` is formed by the same signed-low
+`lui 0x800a; addiu -0x4f60` pair at exactly three raw GAME sites:
+`game_main_loop` at `0x8001389c`, the unclaimed resource initializer at
+`0x80015d64`, and `resource_tmd_queue_read` at `0x80032200`. The initializer
+first reads an archive stream into that buffer and walks its length-prefixed
+records. Startup later initializes a 0x5f000-byte block arena there; the TMD
+queue allocates from it. That RAM range ends at `0x800fa0a0`, before the
+separate display primitive memory at `0x800fba58` and within the 2 MiB main
+RAM policy. A temporary extern-symbol probe emits the retail `lui/addiu`
+shape with HI16/LO16 relocations, whereas the current integer literal emits
+`lui/ori`. No original symbol, complete BSS extent, or defining TU has been
+proved, so no global or arithmetic replacement was retained.
+
+## Event target byte stream at 0x800462bc
+
+The interpreter now has a separate, provisional C unit. Its argument is a
+`KfActor *`: retail reads the actor's group index at +2, multiplies it by the
+0x78-byte target-group stride, and loads the first target pointer at group
+offset +0x38. A non-null candidate of type 0x70 supplies the
+byte stream. The sixteen cases for opcodes 0xf0..0xff are bounded by the
+retail unsigned subtraction and use the curated 0x80012890 table. The indirect
+slot-4 callback remains indirect; the target candidate's still-opaque payload
+bytes are accessed through its existing typed owner.
+
+The first focused `kf try` compiles and compares at 74.5% similarity, with
+46/46 CFG blocks, 21/21 branches, and matching return frontiers. Its first
+residue is initialization/register scheduling, followed by the compiler
+reducing a byte-sized pointer difference algebraically. This is **WIP, not
+strict exact**. Thirty-one direct `j`/`jal` words were individually checked
+against retail instructions and admitted as reviewed relocations, as were
+twelve HI16/LO16 references into established actor, event, callback, and
+counter owners and the one RODATA-base pair. The sixteen in-body table pointer
+words and runtime `jalr` target remain candidate. No repository test, full
+build, broad match, banking, or commit was run for this unit.

@@ -477,7 +477,7 @@ KfPlayerState	0x2c	0x04	gold	u32	supported	asm;player_initialize_state;KF1 playe
 KfPlayerState	0x30	0x10	attack_components	u16[8]	supported	asm;player_recalculate_combat_stats	weapon attack totals
 KfPlayerState	0x40	0x02	unknown_40	u16	opaque	asm;player_recalculate_combat_stats	not yet modelled
 KfPlayerState	0x42	0x12	combat_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats	nine unsigned additive totals
-KfPlayerState	0x54	0x02	unknown_54	u16	opaque	asm;player_cap_status_components	cleared for mask bits 1 or 2
+KfPlayerState	0x54	0x02	unknown_54	s16	opaque	asm;GAME 0x8001e94c lh;player_cap_status_components	signed halfword read by menu status; cleared for mask bits 1 or 2
 KfPlayerState	0x56	0x02	curse_strength	s16	supported	asm;player_recalculate_combat_stats;player_cap_status_components	nonzero reduces physical power by 20; capped at 64
 KfPlayerState	0x58	0x02	unknown_58	u16	opaque	asm;player_cap_status_components	cleared for mask bit 1
 KfPlayerState	0x5a	0x02	unknown_5a	s16	opaque	asm;player_cap_status_components	capped at 64 for mask bit 2

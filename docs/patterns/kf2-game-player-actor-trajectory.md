@@ -690,3 +690,86 @@ verified 149/149 units. Global edge check still stops at three unrelated
 RODATA addends. The full `kf build` built PSX; GAME, OPEN, and END retain the
 known first unresolved `InitCARD`, `malloc`, and `display_buffers` links with
 no module-cap failure. No repository tests, banking, or commit were run.
+
+## Merged-master player damage and movement pass
+
+This ten-function GAME pass rechecked retail blocks, incoming and outgoing
+references, strings, current source ownership, and the available KF1 source.
+The percentages below are the existing strict objdiff baselines; this pass
+used focused `kf try` only, as requested. No source or inventory edit was
+retained.
+
+| GAME VA | Verdict | Evidence or remaining constraint |
+| --- | --- | --- |
+| `80023384` | WIP, source, 50.744186% baseline | Both collision-cache margins and two death calls are modeled; focused 5/5 CFG differs in address formation and arithmetic scheduling. Cache extent at BSS `+0x11818/+0x1181c` remains provisional. |
+| `80024498` | WIP, unclaimed | The 0x34c-byte damage path has an eight-entry internal switch at `80011128`, but complete case control flow and source ownership remain unresolved. |
+| `800248a8` | WIP, unclaimed | The 0x3fc-byte damage dispatcher calls the exact component helper eight times and has a seven-entry internal switch at `80011148`; its twelve-argument body remains incomplete. |
+| `80025a18` | WIP, unclaimed | The 0x918-byte weapon/effect dispatcher calls the exact target selector and effect constructor; the indirect table and state contract remain provisional. |
+| `8002665c` | WIP, unclaimed | The 0xbd0-byte weapon/magic updater mixes two weapon-effect calls with animation, rotation, and collision paths; no complete C body is established. |
+| `8002722c` | WIP, unclaimed | Two bounded jump tables at `80011298/800112b0` are reviewed, but indirect control flow and the full action-state model remain unresolved. |
+| `800279cc` | WIP, unclaimed | The 0x5ac-byte main collision branch calls the provisional cache probes, damage reaction, and death helpers; cache ownership remains open. |
+| `80027f78` | WIP, unclaimed | The 0x2ac-byte sibling collision branch makes three collision probes and invokes distance and death handling; its complete probe result contract remains open. |
+| `8002897c` | WIP, source, 88.571430% baseline | Retail checks signed `<81`, then `<71`, and returns the inverse lower check. Five source-only semantic forms were probed; none matched the 0x1c-byte listing, so the original 3/3 CFG source was kept. |
+| `80029624` | WIP, source, 62.448980% baseline | The phase/ramp helper still has 20/20 CFG blocks and 9/9 branches. A positive-guard return trial lost a CFG block; widening its signed phase local changed retail's halfword load and reduced listing similarity. Both were discarded, preserving fifteen exact neighbors. |
+
+The next player-owned gaps examined read-only are `800274ec`, `80028998`,
+and `8002985c`. The first has a KF1 movement analogue but a different KF2
+collision call graph; the second depends on the unresolved action selector and
+effect-ID table; the third is fragmented and has no curated CFG yet. These
+are not a second completed ten-function batch.
+
+### Focused damage-source continuation
+
+`src/game/player_apply_damage.c` now claims GAME `800248a8` and its seven-word
+switch table at `80011148`. The twelve-argument source models the eight
+component calls, status application, and final signed damage forwarded to
+`80024498`. Twenty-nine direct player-state HI16/LO16 relocations and ten
+direct internal branch/call rows were checked against raw retail opcodes and
+targets. Focused `kf try` reports **1/1 SAME** for the 0x3fc-byte listing;
+no strict objdiff run was performed under the current focused-only constraint.
+
+`src/game/player_damage_reaction.c` now claims GAME `80024498` and its
+eight-word switch table at `80011128`. The source preserves the caller-backed
+three-argument ABI, HP subtraction, origin-relative knockback, death path,
+and 8-way reaction. Ten direct player-state HI16/LO16 pairs and seven internal
+jumps were raw-checked and curated. A full-word reaction-flags parameter,
+explicit origin-height intermediate, reverse-order null vector stores,
+signed-halfword duration arguments, and explicit case 7 improved the focused
+listing from 79.6% to **88.5% WIP**. The remaining difference is localized to
+duration arithmetic register allocation and a four-byte body-size gap; the
+direct calls, referents, switch bound, and 53/53 CFG blocks with 22/22 branches
+now agree. No strict exact claim is
+made.
+
+Retail `lh` at `8001e94c` supports `KfPlayerState.unknown_54` as `s16`.
+The layout-identical header and structure row refinement preserves focused
+`game.player_state_equipment` 15/15 SAME,
+`game.player_status_cap` 1/1 SAME, and
+`game.player_apply_damage` 1/1 SAME. The menu owner's focused
+`game.menu_status_render` probe confirms the signed `lh` now matches retail;
+that unit remains 97.8% WIP for unrelated row-step register scheduling.
+
+`src/game/player_move_horizontal.c` now claims GAME `800274ec` as a first-pass
+movement/collision source. Retail and KF1 both support heading-derived X/Z
+motion, collision sliding, an alternate diagonal retry, and final motion-state
+halfwords; KF2's two collision probes and cache layout remain distinct. The
+focused target initially withheld 18 candidate direct calls/jumps. All 18
+were validated against encoded retail instruction targets, and 24 player/cache
+HI16/LO16 pairs were separately validated against raw opcodes, base registers,
+and signed low addends before curation. A second focused carve reports zero
+withheld relocations. A subsequent shared accept-position join follows the
+retail backward edge and reduces the compiled CFG from 40 to 39 blocks, though
+focused similarity moves from 36.8% to **35.7% WIP**. Retail has 35 blocks and
+20 branches versus 39 and 23 in the current probe. GCC reuses a player-state
+base register across accesses that retail materializes separately; collision
+cache ownership at BSS `+0x11800` is still provisional. No strict exact claim
+is made.
+
+The other two player-controller gaps remain unclaimed. `80028998` writes the
+address `DAT_800667e8+0xc` to `player_state+0x78` and later reads a halfword
+through it. The current `u8[13]` datum ends at the first of those two bytes;
+the second lies in the following unclassified seven-byte gap. That read proves
+the current extent is insufficient for this pointer view, but does not by
+itself establish whether the neighboring byte belongs to the same source
+object. `8002985c` still has two retail fragments and no complete CFG. Both
+need ownership/control-flow evidence before a responsible source claim.

@@ -39,35 +39,13 @@ void func_800366fc(u8 identifier)
 {
     KfMapObject *object = map_object_state.objects;
     u16 remaining;
-    u8 paired_identifier;
-    s32 pair_mode;
 
     if (identifier == 0xff) {
         return;
     }
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
-    paired_identifier = identifier + 106;
-    pair_mode = paired_identifier < 49;
     do {
         switch (object->action) {
-        case 2:
-        case 3:
-        case 4:
-            if (pair_mode) {
-                if ((object->tail.fields.unknown_38 & 0xfe) == identifier) {
-                    object->tail.fields.unknown_38 ^= 1;
-                }
-            } else if (object->tail.fields.unknown_38 == identifier) {
-                if (object->tail.fields.unknown_38 >= 200) {
-                    object->tail.fields.unknown_38 = 0xff;
-                } else if (object->action_timer == 0) {
-                    object->action_timer = 1;
-                    if (object->tail.fields.unknown_38 >= 100) {
-                        object->tail.fields.unknown_38 = 0xff;
-                    }
-                }
-            }
-            break;
         case 0x50:
         case 0x54:
         case 0x5f:
@@ -77,12 +55,6 @@ void func_800366fc(u8 identifier)
                 object->tail.fields.unknown_38 = 0xff;
             }
             break;
-        case 0x51:
-            if (((u8 *)&object->tail.fields.spawn_sequence)[1] == identifier) {
-                object->tail.fields.unknown_38 =
-                    object->tail.fields.unknown_38 == 0 ? 0xff : 0;
-            }
-            break;
         case 0x58:
             if (object->tail.fields.unknown_39 == identifier) {
                 object->action_timer = 1;
@@ -90,9 +62,37 @@ void func_800366fc(u8 identifier)
                     object->tail.fields.unknown_38 == 0;
             }
             break;
+        case 0x51:
+            if (((u8 *)&object->tail.fields.spawn_sequence)[1] == identifier) {
+                object->tail.fields.unknown_38 =
+                    object->tail.fields.unknown_38 == 0 ? 0xff : 0;
+            }
+            break;
         case 0x59:
             if (object->tail.fields.unknown_38 == identifier) {
                 object->action_timer = 1;
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+            if ((u8)(identifier + 106) < 49) {
+                if ((object->tail.fields.unknown_38 & 0xfe) == identifier) {
+                    object->tail.fields.unknown_38 ^= 1;
+                }
+            } else {
+                u8 marker = object->tail.fields.unknown_38;
+
+                if (marker == identifier) {
+                    if (marker >= 200) {
+                        object->tail.fields.unknown_38 = 0xff;
+                    } else if (object->action_timer == 0) {
+                        object->action_timer = 1;
+                        if (marker >= 100) {
+                            object->tail.fields.unknown_38 = 0xff;
+                        }
+                    }
+                }
             }
             break;
         }

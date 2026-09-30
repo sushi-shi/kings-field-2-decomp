@@ -26,13 +26,13 @@ void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
                    u16 magic_12, u16 magic_14, const VECTOR *position)
 {
     s32 options = kind & 0xf0000;
-    s32 mode = kind & ~0xf0000;
+    kind &= ~0xf0000;
 
-    if (mode == 0x80) {
+    if (kind == 0x80) {
         func_800248a8(magic_06, magic_08, magic_0a, magic_04,
                       magic_0c, magic_0e, magic_10, magic_12,
                       magic_14, radius, record_id, position);
-    } else if (mode == 0x10) {
+    } else if (kind == 0x10) {
         s32 actor_index = KF_COLLISION_CACHE_ACTOR_INDEX;
         KfActor *actor = &actor_state.actors[actor_index];
         KfTargetGroup *group = &actor_state.target_groups[actor->group_index];

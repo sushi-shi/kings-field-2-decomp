@@ -102,6 +102,7 @@ void func_8001b2dc(void)
     KfMenuGlyphString labels[2];
     s32 choice = 0;
     s32 result = KF_MENU_OPTION_PENDING;
+    s32 last_row = KF_MENU_OPTION_COUNT;
     s32 confirmed;
     s32 frame;
     u32 buttons;
@@ -140,17 +141,17 @@ void func_8001b2dc(void)
             if (choice != 0)
                 choice--;
             else
-                choice = KF_MENU_OPTION_CANCEL_ROW;
+                choice = last_row;
         } else if (buttons & 0x4000) {
             menu_cursor_animation_direction = 0;
             func_80022300(16);
-            if (choice != KF_MENU_OPTION_CANCEL_ROW)
+            if (choice != last_row)
                 choice++;
             else
                 choice = 0;
         } else if ((buttons & 0x20) || (buttons & 0x2000)
             || (buttons & 0x8000)) {
-            if (choice < KF_MENU_OPTION_COUNT) {
+            if (choice < last_row) {
                 func_80022300(17);
                 confirmed = 1;
                 selected[choice] = selected[choice] == 0;

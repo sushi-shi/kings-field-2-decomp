@@ -109,6 +109,19 @@ typedef struct KfItemMenuList {
     u32 *codes;
 } KfItemMenuList;
 
+/* Card catalogue rows carry ten glyph codes; the renderer advances 20 bytes. */
+typedef struct KfCardSlotGlyphRow {
+    s16 codes[10];
+} KfCardSlotGlyphRow;
+
+typedef struct KfCardMenuList {
+    KfMenuList list;
+    KfCardSlotGlyphRow *rows;
+    u8 unknown_28[4];
+    u8 *values;
+    s32 *codes;
+} KfCardMenuList;
+
 /* Selection menus extend the initialized list prefix with row/value storage. */
 typedef struct KfMagicMenuList {
     KfMenuList list;
@@ -116,6 +129,16 @@ typedef struct KfMagicMenuList {
     u8 unknown_28[8];
     s32 *values;
 } KfMagicMenuList;
+
+/* The renderer reads these payload slots according to its mode. Row width
+ * comes from glyphs_per_entry, so card and item rows share this view. */
+typedef struct KfMenuRenderList {
+    KfMenuList list;
+    const s16 *row_glyphs;
+    const KfMenuLabelSuffix *detail_rows;
+    const u8 *byte_values;
+    const s32 *number_values;
+} KfMenuRenderList;
 
 typedef char kf_menu_glyph_string_size[sizeof(KfMenuGlyphString) == 28 ? 1 : -1];
 typedef char kf_menu_label_suffix_size[sizeof(KfMenuLabelSuffix) == 20 ? 1 : -1];
@@ -126,11 +149,22 @@ typedef char kf_item_menu_list_size[sizeof(KfItemMenuList) == 52 ? 1 : -1];
 typedef char kf_item_menu_list_rows_offset[(u32)&((KfItemMenuList *)0)->rows == 0x24 ? 1 : -1];
 typedef char kf_item_menu_list_values_offset[(u32)&((KfItemMenuList *)0)->values == 0x2c ? 1 : -1];
 typedef char kf_item_menu_list_codes_offset[(u32)&((KfItemMenuList *)0)->codes == 0x30 ? 1 : -1];
+typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
+typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
+typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
+typedef char kf_card_menu_list_values_offset[(u32)&((KfCardMenuList *)0)->values == 0x2c ? 1 : -1];
+typedef char kf_card_menu_list_codes_offset[(u32)&((KfCardMenuList *)0)->codes == 0x30 ? 1 : -1];
 typedef char kf_magic_menu_list_size[sizeof(KfMagicMenuList) == 52 ? 1 : -1];
 typedef char kf_magic_menu_list_rows_offset[(u32)&((KfMagicMenuList *)0)->rows == 0x24 ? 1 : -1];
 typedef char kf_magic_menu_list_values_offset[(u32)&((KfMagicMenuList *)0)->values == 0x30 ? 1 : -1];
+typedef char kf_menu_render_list_size[sizeof(KfMenuRenderList) == 52 ? 1 : -1];
+typedef char kf_menu_render_row_offset[(u32)&((KfMenuRenderList *)0)->row_glyphs == 0x24 ? 1 : -1];
+typedef char kf_menu_render_detail_offset[(u32)&((KfMenuRenderList *)0)->detail_rows == 0x28 ? 1 : -1];
+typedef char kf_menu_render_byte_offset[(u32)&((KfMenuRenderList *)0)->byte_values == 0x2c ? 1 : -1];
+typedef char kf_menu_render_number_offset[(u32)&((KfMenuRenderList *)0)->number_values == 0x30 ? 1 : -1];
 
 extern KfMenuWindowLayout menu_window_layouts[KF_MENU_WINDOW_COUNT];
+extern KfMenuLabelSuffix menu_header_labels[12];
 extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
@@ -157,6 +191,7 @@ void func_8002083c(s32 item_id);
 void func_80020990(s32 kind);
 void menu_present_frame(void);
 void menu_frame_begin(void);
+void func_80021a60(void);
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
     const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);

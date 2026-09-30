@@ -171,6 +171,8 @@ def parser() -> argparse.ArgumentParser:
     trial.add_argument("--unit", required=True)
     trial.add_argument("--source", type=Path)
     trial.add_argument("--context", type=int, default=2)
+    trial.add_argument("--no-flow", action="store_true",
+                       help="skip CFG/flow clues for faster iterative listing comparisons")
     hypotheses = subs.add_parser(
         "hypotheses", help="compile and strict-score a matrix of source hypotheses"
     )
@@ -319,7 +321,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "try":
             from scripts.kf.trial import compare
 
-            return compare(args.unit, args.source, args.context)
+            return compare(args.unit, args.source, args.context, flow=not args.no_flow)
         if args.command == "hypotheses":
             from scripts.kf.hypotheses import run
 

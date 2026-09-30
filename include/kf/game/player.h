@@ -216,7 +216,7 @@ typedef struct KfPlayerState {
     u16 attack_components[8];
     u16 unknown_40;
     u16 combat_components[9];
-    u16 unknown_54;
+    s16 unknown_54;
     s16 curse_strength;
     u16 unknown_58;
     s16 unknown_5a;

@@ -143,10 +143,10 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
         tmd_select_object_vertices(object_index);
         object = tmd_get_object(object_index);
     }
-    if (world_matrix == 0) {
-        tmd_transform_vertices_depth(object->vertex_count, depth);
-    } else {
+    if (world_matrix != 0) {
         func_8002d918(object->vertex_count);
+    } else {
+        tmd_transform_vertices_depth(object->vertex_count, depth);
     }
     if (render_mode == 0xff) {
         func_8002e4dc(object_index, depth);

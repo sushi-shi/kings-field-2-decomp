@@ -39,30 +39,30 @@ s32 func_8001aa9c(void)
         if (selection != -1 && result == -1)
             result = -99;
 
-        if (result == -99) {
-            cursor = func_8001e378(cursor, 2, &selection, &confirmed, &result);
-            for (frame = 0; frame < 2; frame++) {
-                menu_frame_begin();
-                menu_draw_window(1, 3, cursor, confirmed);
-                menu_present_frame();
-            }
-            continue;
-        }
+        if (result != -99)
+            break;
 
-        if (result == -2) {
-            u32 cd_result;
-
-            CdControl(CdlStop, 0, (u8 *)&cd_result);
-            volume = 60;
-            func_8001ccd4(labels);
-            for (;;) {
-                func_8001b030(5, labels, 2, 70, 87, 178, 66, 2, 0);
-                if (volume > 0) {
-                    volume--;
-                    SsSeqSetVol(audio_state.sequence_id, volume, volume);
-                }
-            }
+        cursor = func_8001e378(cursor, 2, &selection, &confirmed, &result);
+        for (frame = 0; frame < 2; frame++) {
+            menu_frame_begin();
+            menu_draw_window(1, 3, cursor, confirmed);
+            menu_present_frame();
         }
-        return result;
     }
+
+    if (result == -2) {
+        u32 cd_result;
+
+        CdControl(CdlStop, 0, (u8 *)&cd_result);
+        volume = 60;
+        func_8001ccd4(labels);
+        for (;;) {
+            func_8001b030(5, labels, 2, 70, 87, 178, 66, 2, 0);
+            if (volume > 0) {
+                volume--;
+                SsSeqSetVol(audio_state.sequence_id, volume, volume);
+            }
+        }
+    }
+    return result;
 }

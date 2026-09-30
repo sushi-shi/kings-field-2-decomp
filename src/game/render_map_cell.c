@@ -91,11 +91,11 @@ void func_80030de4(s32 x, s32 z, u8 flags)
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                       (u16)game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
+        position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
+                      (u16)game_graphics_runtime.render_state.view_position.vy;
         position.vz = z * KF_MAP_GRID_CELL_LENGTH -
                       (u16)game_graphics_runtime.render_state.view_position.vz +
                       KF_MAP_GRID_CELL_MIDPOINT;
-        position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vy;
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
@@ -110,11 +110,11 @@ void func_80030de4(s32 x, s32 z, u8 flags)
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
+            position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
+                          (u16)game_graphics_runtime.render_state.view_position.vy;
             position.vz = z * KF_MAP_GRID_CELL_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vz +
                           KF_MAP_GRID_CELL_MIDPOINT;
-            position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     }

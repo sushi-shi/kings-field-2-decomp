@@ -84,7 +84,8 @@ void func_8001d340(const u8 *source, u8 *decoded, u32 *codes,
     const u16 *page;
 
     if (first < last) {
-        page = menu_item_code_primary[group];
+        const u16 (*pages)[120] = menu_item_code_primary;
+        page = pages[group];
         do {
             *decoded++ = source[*indices];
             *codes++ = page[*indices++];

@@ -240,171 +240,174 @@ void func_8002f808(u16 object_index, s32 depth_bias,
     vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
 
     remaining = object->primitive_count;
-    while (remaining-- != 0) {
-        header = *(u32 *)packet;
-        packet += KF_TMD_PACKET_HEADER_BYTES;
-        switch ((header >> 24) & KF_TMD_MODE_MASK) {
-        case KF_TMD_MODE_FT4: {
-            KfTmdFt4 *face = (KfTmdFt4 *)packet;
-            KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
-            KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
-            KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
-            KfScreenVertex *vd = MAP_VERTEX(vertices, face->vertex3);
-            s32 dy01;
-            s32 dy13;
-            s32 dy32;
-            s32 dy20;
-            s32 dy12;
-            s32 dx01;
-            s32 dx13;
-            s32 dx32;
-            s32 dx20;
-            s32 dx12;
-            s32 clipped_count;
-            s32 depth;
-            KfGpuGT4 *prim;
+    if (remaining != 0) {
+        remaining--;
+        do {
+            header = *(u32 *)packet;
+            packet += KF_TMD_PACKET_HEADER_BYTES;
+            switch ((header >> 24) & KF_TMD_MODE_MASK) {
+            case KF_TMD_MODE_FT4: {
+                KfTmdFt4 *face = (KfTmdFt4 *)packet;
+                KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
+                KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
+                KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
+                KfScreenVertex *vd = MAP_VERTEX(vertices, face->vertex3);
+                s32 dy01;
+                s32 dy13;
+                s32 dy32;
+                s32 dy20;
+                s32 dy12;
+                s32 dx01;
+                s32 dx13;
+                s32 dx32;
+                s32 dx20;
+                s32 dx12;
+                s32 clipped_count;
+                s32 depth;
+                KfGpuGT4 *prim;
 
-            dy01 = va->y - vb->y;
-            dy13 = vb->y - vd->y;
-            dy32 = vd->y - vc->y;
-            dy20 = vc->y - va->y;
-            dy12 = vb->y - vc->y;
-            dx01 = va->x - vb->x;
-            dx13 = vb->x - vd->x;
-            dx32 = vd->x - vc->x;
-            dx20 = vc->x - va->x;
-            dx12 = vb->x - vc->x;
-            if ((s16)(va->sz | vb->sz | vc->sz | vd->sz) == -1 ||
-                MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy13) ||
-                MAP_OUTSIDE_Y(dy32) || MAP_OUTSIDE_Y(dy20) ||
-                MAP_OUTSIDE_Y(dy12) || MAP_OUTSIDE_X(dx01) ||
-                MAP_OUTSIDE_X(dx13) || MAP_OUTSIDE_X(dx32) ||
-                MAP_OUTSIDE_X(dx20) || MAP_OUTSIDE_X(dx12)) {
-                clipped_count = Clip4FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
-                                         MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
-                                         MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
-                                         MAP_ORIGINAL_VERTEX(original_vertices, face->vertex3),
-                                         (short *)&face->uv0,
-                                         (short *)&face->uv1,
-                                         (short *)&face->uv2,
-                                         (short *)&face->uv3,
-                                         game_graphics_runtime.clip_result_vertices);
-                if (clipped_count >= 3) {
-                    func_8002f5b0(clipped_count,
-                                   (SVECTOR *)(normals + face->normal),
-                                   face->clut, face->tpage,
-                                   (header >> 24) & 2, depth_bias);
+                dy01 = va->y - vb->y;
+                dy13 = vb->y - vd->y;
+                dy32 = vd->y - vc->y;
+                dy20 = vc->y - va->y;
+                dy12 = vb->y - vc->y;
+                dx01 = va->x - vb->x;
+                dx13 = vb->x - vd->x;
+                dx32 = vd->x - vc->x;
+                dx20 = vc->x - va->x;
+                dx12 = vb->x - vc->x;
+                if ((s16)(va->sz | vb->sz | vc->sz | vd->sz) == -1 ||
+                    MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy13) ||
+                    MAP_OUTSIDE_Y(dy32) || MAP_OUTSIDE_Y(dy20) ||
+                    MAP_OUTSIDE_Y(dy12) || MAP_OUTSIDE_X(dx01) ||
+                    MAP_OUTSIDE_X(dx13) || MAP_OUTSIDE_X(dx32) ||
+                    MAP_OUTSIDE_X(dx20) || MAP_OUTSIDE_X(dx12)) {
+                    clipped_count = Clip4FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
+                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
+                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
+                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex3),
+                                             (short *)&face->uv0,
+                                             (short *)&face->uv1,
+                                             (short *)&face->uv2,
+                                             (short *)&face->uv3,
+                                             game_graphics_runtime.clip_result_vertices);
+                    if (clipped_count >= 3) {
+                        func_8002f5b0(clipped_count,
+                                       (SVECTOR *)(normals + face->normal),
+                                       face->clut, face->tpage,
+                                       (header >> 24) & 2, depth_bias);
+                    }
+                    break;
                 }
+                if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    break;
+                }
+                prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
+                game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
+                if (game_graphics_runtime.display_state.primitive_buffer->cursor >
+                    game_graphics_runtime.display_state.primitive_buffer->end) {
+                    return;
+                }
+                prim->packed.clut = face->clut;
+                prim->packed.tpage = face->tpage;
+                prim->packed.xy0 = MAP_XY(va);
+                prim->packed.xy1 = MAP_XY(vb);
+                prim->packed.xy2 = MAP_XY(vc);
+                prim->packed.xy3 = MAP_XY(vd);
+                prim->packed.uv0 = face->uv0;
+                prim->packed.uv1 = face->uv1;
+                prim->packed.uv2 = face->uv2;
+                prim->packed.uv3 = face->uv3;
+                NormalColorCol((SVECTOR *)(normals + face->normal),
+                               &map_textured_primitive_color, &shade);
+                DpqColor(&shade, va->p2, &prim->packed.color0);
+                DpqColor(&shade, vb->p2, &prim->packed.color1);
+                DpqColor(&shade, vc->p2, &prim->packed.color2);
+                DpqColor(&shade, vd->p2, &prim->packed.color3);
+                ((u8 *)&prim->sdk.tag)[3] = 12;
+                prim->sdk.code = ((header >> 24) & 2) | 0x3c;
+                depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
+                if (depth < 16) {
+                    depth = 16;
+                }
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                        &prim->sdk);
                 break;
             }
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
-                break;
-            }
-            prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
-            game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
-            if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end) {
-                return;
-            }
-            prim->packed.clut = face->clut;
-            prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
-            prim->packed.xy3 = MAP_XY(vd);
-            prim->packed.uv0 = face->uv0;
-            prim->packed.uv1 = face->uv1;
-            prim->packed.uv2 = face->uv2;
-            prim->packed.uv3 = face->uv3;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
-                           &map_textured_primitive_color, &shade);
-            DpqColor(&shade, va->p2, &prim->packed.color0);
-            DpqColor(&shade, vb->p2, &prim->packed.color1);
-            DpqColor(&shade, vc->p2, &prim->packed.color2);
-            DpqColor(&shade, vd->p2, &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
-            prim->sdk.code = ((header >> 24) & 2) | 0x3c;
-            depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
-            if (depth < 16) {
-                depth = 16;
-            }
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
-                    &prim->sdk);
-            break;
-        }
-        case KF_TMD_MODE_FT3: {
-            KfTmdFt3 *face = (KfTmdFt3 *)packet;
-            KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
-            KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
-            KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
-            s32 dy01;
-            s32 dy12;
-            s32 dy20;
-            s32 dx01;
-            s32 dx12;
-            s32 dx20;
-            s32 clipped_count;
-            s32 depth;
-            KfGpuGT3 *prim;
+            case KF_TMD_MODE_FT3: {
+                KfTmdFt3 *face = (KfTmdFt3 *)packet;
+                KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
+                KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
+                KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
+                s32 dy01;
+                s32 dy12;
+                s32 dy20;
+                s32 dx01;
+                s32 dx12;
+                s32 dx20;
+                s32 clipped_count;
+                s32 depth;
+                KfGpuGT3 *prim;
 
-            dy01 = va->y - vb->y;
-            dy12 = vb->y - vc->y;
-            dy20 = vc->y - va->y;
-            dx01 = va->x - vb->x;
-            dx12 = vb->x - vc->x;
-            dx20 = vc->x - va->x;
-            if ((s16)(va->sz | vb->sz | vc->sz) == -1 ||
-                MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy12) ||
-                MAP_OUTSIDE_Y(dy20) || MAP_OUTSIDE_X(dx01) ||
-                MAP_OUTSIDE_X(dx12) || MAP_OUTSIDE_X(dx20)) {
-                clipped_count = Clip3FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
-                                         MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
-                                         MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
-                                         (short *)&face->uv0,
-                                         (short *)&face->uv1,
-                                         (short *)&face->uv2,
-                                         game_graphics_runtime.clip_result_vertices);
-                if (clipped_count >= 3) {
-                    func_8002f5b0(clipped_count,
-                                   (SVECTOR *)(normals + face->normal),
-                                   face->clut, face->tpage,
-                                   (header >> 24) & 2, depth_bias);
+                dy01 = va->y - vb->y;
+                dy12 = vb->y - vc->y;
+                dy20 = vc->y - va->y;
+                dx01 = va->x - vb->x;
+                dx12 = vb->x - vc->x;
+                dx20 = vc->x - va->x;
+                if ((s16)(va->sz | vb->sz | vc->sz) == -1 ||
+                    MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy12) ||
+                    MAP_OUTSIDE_Y(dy20) || MAP_OUTSIDE_X(dx01) ||
+                    MAP_OUTSIDE_X(dx12) || MAP_OUTSIDE_X(dx20)) {
+                    clipped_count = Clip3FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
+                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
+                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
+                                             (short *)&face->uv0,
+                                             (short *)&face->uv1,
+                                             (short *)&face->uv2,
+                                             game_graphics_runtime.clip_result_vertices);
+                    if (clipped_count >= 3) {
+                        func_8002f5b0(clipped_count,
+                                       (SVECTOR *)(normals + face->normal),
+                                       face->clut, face->tpage,
+                                       (header >> 24) & 2, depth_bias);
+                    }
+                    break;
                 }
+                if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    break;
+                }
+                prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
+                game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
+                if (game_graphics_runtime.display_state.primitive_buffer->cursor >
+                    game_graphics_runtime.display_state.primitive_buffer->end) {
+                    return;
+                }
+                prim->packed.clut = face->clut;
+                prim->packed.tpage = face->tpage;
+                prim->packed.xy0 = MAP_XY(va);
+                prim->packed.xy1 = MAP_XY(vb);
+                prim->packed.xy2 = MAP_XY(vc);
+                prim->packed.uv0 = face->uv0;
+                prim->packed.uv1 = face->uv1;
+                prim->packed.uv2 = face->uv2;
+                NormalColorCol((SVECTOR *)(normals + face->normal),
+                               &map_textured_primitive_color, &shade);
+                DpqColor(&shade, va->p2, &prim->packed.color0);
+                DpqColor(&shade, vb->p2, &prim->packed.color1);
+                DpqColor(&shade, vc->p2, &prim->packed.color2);
+                ((u8 *)&prim->sdk.tag)[3] = 9;
+                prim->sdk.code = ((header >> 24) & 2) | 0x34;
+                depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
+                if (depth < 16) {
+                    depth = 16;
+                }
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                        &prim->sdk);
                 break;
             }
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
-                break;
             }
-            prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
-            game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
-            if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end) {
-                return;
-            }
-            prim->packed.clut = face->clut;
-            prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
-            prim->packed.uv0 = face->uv0;
-            prim->packed.uv1 = face->uv1;
-            prim->packed.uv2 = face->uv2;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
-                           &map_textured_primitive_color, &shade);
-            DpqColor(&shade, va->p2, &prim->packed.color0);
-            DpqColor(&shade, vb->p2, &prim->packed.color1);
-            DpqColor(&shade, vc->p2, &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
-            prim->sdk.code = ((header >> 24) & 2) | 0x34;
-            depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
-            if (depth < 16) {
-                depth = 16;
-            }
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
-                    &prim->sdk);
-            break;
-        }
-        }
-        packet += (header >> 6) & 0x3fc;
+            packet += (header >> 6) & 0x3fc;
+        } while (remaining-- != 0);
     }
 }

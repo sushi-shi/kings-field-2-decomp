@@ -79,7 +79,8 @@ void func_8001d654(u32 *codes, const u8 *indices, s32 first, s32 last, s32 group
     const u16 *page;
 
     if (first < last) {
-        page = menu_item_code_secondary[group];
+        const u16 (*pages)[120] = menu_item_code_secondary;
+        page = pages[group];
         do {
             *codes++ = page[*indices++];
             first++;

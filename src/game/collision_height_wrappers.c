@@ -90,15 +90,17 @@ s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height)
 ADDRESS(0x8002b874, 0x160)
 void func_8002b874(void)
 {
+    u16 interaction_height;
+
     if (COLLISION_CACHE_FLAGS & 0x80) {
         COLLISION_CACHE_POSITION = player_state.camera_position;
         COLLISION_CACHE_RADIUS = 800;
-        COLLISION_CACHE_INTERACTION_HEIGHT = 1700;
+        interaction_height = 1700;
     } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
         KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
         COLLISION_CACHE_POSITION = actor->position;
         COLLISION_CACHE_RADIUS = actor->unknown_1c;
-        COLLISION_CACHE_INTERACTION_HEIGHT = actor->unknown_1e;
+        interaction_height = actor->unknown_1e;
     } else {
         KfMapObject *object;
         KfMapObjectTemplate *object_template;
@@ -110,8 +112,9 @@ void func_8002b874(void)
         object_template = &map_object_state.templates[object->object_id];
         COLLISION_CACHE_POSITION = object->position;
         COLLISION_CACHE_RADIUS = object_template->collision_radius;
-        COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
+        interaction_height = object_template->interaction_height;
     }
+    COLLISION_CACHE_INTERACTION_HEIGHT = interaction_height;
 }
 
 extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
@@ -382,11 +385,6 @@ void func_8002bfac(void)
     } while (index != -1);
 }
 
-typedef struct KfCollisionMaskPoint {
-    s32 x;
-    s32 z;
-} KfCollisionMaskPoint;
-
 ADDRESS(0x8002bfd4, 0x19c)
 void func_8002bfd4(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
@@ -551,12 +549,11 @@ ADDRESS(0x8002c424, 0x24c)
 void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
                    s8 window_step, s32 mask_stride, s32 count)
 {
-    KfRenderMaskScanState *scan = &render_mask_scan_state;
-    s32 map_x = scan->map_x;
-    s32 map_z = scan->map_z;
-    s32 window_x = scan->window_x;
-    s32 window_z = scan->window_z;
-    u8 *cursor = scan->mask_cursor;
+    s32 map_x = render_mask_scan_state.map_x;
+    s32 map_z = render_mask_scan_state.map_z;
+    s32 window_x = render_mask_scan_state.window_x;
+    s32 window_z = render_mask_scan_state.window_z;
+    u8 *cursor = render_mask_scan_state.mask_cursor;
     u8 *first_cursor = cursor + first_offset;
     u8 *second_cursor = cursor + second_offset;
 
@@ -569,23 +566,23 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
                 KfMapOccupancyCell *cell = &bss_801c7540.map_cells[map_z][map_x];
                 KfMapOccupancyLayer *first_layer =
                     (KfMapOccupancyLayer *)((u8 *)cell +
-                                            scan->first_layer_byte_offset);
+                                            render_mask_scan_state.first_layer_byte_offset);
                 KfMapOccupancyLayer *second_layer =
                     (KfMapOccupancyLayer *)((u8 *)cell +
-                                            scan->second_layer_byte_offset);
+                                            render_mask_scan_state.second_layer_byte_offset);
 
-                if ((!(first & scan->first_layer_mask) &&
-                     !(second & scan->first_layer_mask)) ||
+                if ((!(first & render_mask_scan_state.first_layer_mask) &&
+                     !(second & render_mask_scan_state.first_layer_mask)) ||
                     first_layer->object_index == 0xff) {
-                    *cursor &= ~scan->first_layer_mask;
+                    *cursor &= ~render_mask_scan_state.first_layer_mask;
                 } else if (first_layer->lighting_index & 0x80) {
-                    *cursor |= scan->second_layer_mask;
+                    *cursor |= render_mask_scan_state.second_layer_mask;
                     goto advance_second;
                 }
                 if (second_layer->object_index != 0xff) {
-                    if ((first & scan->second_layer_mask) ||
-                        (second & scan->second_layer_mask)) {
-                        *cursor |= scan->second_layer_mask;
+                    if ((first & render_mask_scan_state.second_layer_mask) ||
+                        (second & render_mask_scan_state.second_layer_mask)) {
+                        *cursor |= render_mask_scan_state.second_layer_mask;
                     } else {
                         goto advance_without_second;
                     }
@@ -606,9 +603,9 @@ advance_without_second:
         count--;
     } while (count != -1);
 
-    scan->window_x = window_x;
-    scan->window_z = window_z;
-    scan->map_x = map_x;
-    scan->map_z = map_z;
-    scan->mask_cursor = cursor;
+    render_mask_scan_state.window_x = window_x;
+    render_mask_scan_state.window_z = window_z;
+    render_mask_scan_state.map_x = map_x;
+    render_mask_scan_state.map_z = map_z;
+    render_mask_scan_state.mask_cursor = cursor;
 }

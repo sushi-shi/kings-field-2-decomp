@@ -3,6 +3,7 @@
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/render_mask.h>
 
@@ -56,7 +57,7 @@ void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
     s32 first_z = (z - expanded) >> 11;
     s32 height = ((z + expanded) >> 11) - first_z;
     KfMapOccupancyCell *row = &bss_801c7540.map_cells[first_z][first_x];
-    s32 value = amount << 2;
+    u32 value = (u32)amount << 2;
 
     do {
         KfMapOccupancyCell *current_row = row;

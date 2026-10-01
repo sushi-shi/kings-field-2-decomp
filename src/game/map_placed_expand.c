@@ -1,9 +1,8 @@
 #include <kf/lib/address.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_placed.h>
 #include <psyq/libc.h>
-
-extern s32 func_8002b67c(s32 layer, s32 x, s32 z, s32 radius, s32 height);
 
 enum { KF_MAP_PLACED_REGION_SHIFT = 11, KF_MAP_PLACED_RANDOM_SHIFT = 15 };
 

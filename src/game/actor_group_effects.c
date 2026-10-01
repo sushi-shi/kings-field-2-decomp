@@ -4,6 +4,7 @@
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
+#include <stdarg.h>
 
 extern s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output);
 extern s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
@@ -16,12 +17,15 @@ RODATA(0x80011ee8, 0x1ec)
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
 ADDRESS(0x8003c614, 0xa70)
-void func_8003c614(s32 kind, s32 effect_id, s32 position_mode,
-                   s32 first, s32 second, s32 third, const u16 *script)
+void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
 {
+    va_list arguments;
     KfActor *current = actor_state.current;
     const VECTOR *player = &player_state.camera_position;
-    const u16 *parameters = (const u16 *)first;
+    const u16 *parameters;
+    s32 first;
+    s32 second;
+    s32 third;
     VECTOR offset;
     VECTOR position;
     VECTOR target;
@@ -38,13 +42,20 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode,
     s32 count;
     u16 group_index;
 
+    va_start(arguments, position_mode);
+    first = va_arg(arguments, s32);
     if (position_mode == -1) {
-        parameters = script;
+        second = va_arg(arguments, s32);
+        third = va_arg(arguments, s32);
+        parameters = va_arg(arguments, const u16 *);
         rotated.vx = first;
         rotated.vy = second;
         rotated.vz = third;
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
     } else if (position_mode == -2) {
+        second = va_arg(arguments, s32);
+        third = va_arg(arguments, s32);
+        parameters = va_arg(arguments, const u16 *);
         func_8003c000(current, first, &target);
         func_8003c000(current, second, &offset);
         predicted.vx = func_8001584c(player->vx,
@@ -54,6 +65,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode,
         predicted.vz = func_8001584c(player->vz,
             ((offset.vz - target.vz) << 8) + current->position.vz, third);
     } else {
+        parameters = (const u16 *)first;
         func_8003c000(current, position_mode, &offset);
     }
 
@@ -202,4 +214,5 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode,
         func_80040308(effect_id, 0x23, kind, &position, &direction);
         break;
     }
+    va_end(arguments);
 }

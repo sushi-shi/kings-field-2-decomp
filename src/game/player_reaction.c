@@ -118,9 +118,9 @@ void func_80029168(void)
     player_state.unknown_100[2] = 0;
     player_state.unknown_100[1] = 0;
     player_state.unknown_100[0] = 0;
-    player_state.unknown_108[2] = 0;
-    player_state.unknown_108[1] = 0;
-    player_state.unknown_108[0] = 0;
+    player_state.unknown_108.components[2] = 0;
+    player_state.unknown_108.components[1] = 0;
+    player_state.unknown_108.components[0] = 0;
     player_state.unknown_110[2] = 0;
     player_state.unknown_110[1] = 0;
     player_state.unknown_110[0] = 0;
@@ -162,12 +162,12 @@ void func_800291ec(KfMapObject *object)
     }
 
     record = object->extra_40.record;
-    player_state.camera_rotation_target.angles[0] += player_state.unknown_108[0];
-    player_state.camera_rotation_target.angles[1] += player_state.unknown_108[1];
-    player_state.camera_rotation_target.angles[2] += player_state.unknown_108[2];
-    player_state.unknown_108[0] = 0;
-    player_state.unknown_108[1] = 0;
-    player_state.unknown_108[2] = 0;
+    player_state.camera_rotation_target.angles[0] += player_state.unknown_108.components[0];
+    player_state.camera_rotation_target.angles[1] += player_state.unknown_108.components[1];
+    player_state.camera_rotation_target.angles[2] += player_state.unknown_108.components[2];
+    player_state.unknown_108.components[0] = 0;
+    player_state.unknown_108.components[1] = 0;
+    player_state.unknown_108.components[2] = 0;
 
     if (record->unknown_01 == 0) {
         SVECTOR rotation;
@@ -379,21 +379,12 @@ void func_8002985c(void)
         player_state.flags_140.low = 0x40;
     }
 
-    player_state.turn_step_limit =
-        (player_state.flags_140.low & 0x5000) == 0 ? 35 : 28;
-    if (player_state.unknown_5e == 0) {
-        if (player_state.unknown_0c[1] == 0) {
-            player_state.unknown_0e += 800;
-            if ((s16)player_state.unknown_0e > 2800) {
-                player_state.unknown_0e = 2800;
-            }
-        } else {
-            player_state.unknown_0e -= 800;
-            if ((s16)player_state.unknown_0e < 0) {
-                player_state.unknown_0e = 0;
-            }
-        }
-    } else {
+    player_state.movement_step_limit = 200;
+    player_state.turn_step_limit = 28;
+    if ((player_state.flags_140.low & 0x5000) == 0) {
+        player_state.turn_step_limit = 35;
+    }
+    if (player_state.unknown_5e != 0) {
         if (player_state.unknown_5e < 64) {
             player_state.unknown_0e += 100;
             if ((s16)player_state.unknown_0e > 0) {
@@ -407,9 +398,21 @@ void func_8002985c(void)
         }
         player_state.turn_step_limit >>= 1;
         player_state.unknown_5e--;
+    } else {
+        if (player_state.unknown_0c[1] == 0) {
+            player_state.unknown_0e += 800;
+            if ((s16)player_state.unknown_0e > 2800) {
+                player_state.unknown_0e = 2800;
+            }
+        } else {
+            player_state.unknown_0e -= 800;
+            if ((s16)player_state.unknown_0e < 0) {
+                player_state.unknown_0e = 0;
+            }
+        }
     }
-    player_state.movement_step_limit =
-        (((s16)player_state.unknown_0e * 200) >> 12) + 200;
+    player_state.movement_step_limit +=
+        ((s16)player_state.unknown_0e * player_state.movement_step_limit) >> 12;
     if (player_state.unknown_60 != 0) {
         player_state.movement_step_limit = 0;
         player_state.turn_step_limit = 0;
@@ -428,8 +431,7 @@ void func_8002985c(void)
         func_80028998();
         func_80028224();
         func_8002851c();
-        func_800279cc();
-        break;
+        goto update_reaction_pose;
     case 1:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
@@ -442,10 +444,10 @@ void func_8002985c(void)
         player_state.unknown_ec = (s16)object->position.vz
                                 - (s16)player_state.camera_position.vz;
         player_state.camera_position = object->position;
-        player_state.unknown_108[0] = object->rotation.vx;
-        player_state.unknown_108[1] = object->rotation.vy;
-        player_state.unknown_108[2] = object->rotation.vz;
-        break;
+        player_state.unknown_108.vector = object->rotation;
+update_reaction_view:
+        func_80029014();
+        goto after_reaction;
     case 2:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
@@ -457,9 +459,9 @@ void func_8002985c(void)
             player_state.camera_position.vy, object->position.vy, fraction);
         player_state.camera_position.vz = func_8001584c(
             player_state.camera_position.vz, object->position.vz, fraction);
-        player_state.unknown_108[0] = func_8001586c(0, object->rotation.vx, fraction);
-        player_state.unknown_108[1] = func_8001586c(0, object->rotation.vy, fraction);
-        player_state.unknown_108[2] = func_8001586c(0, object->rotation.vz, fraction);
+        player_state.unknown_108.components[0] = func_8001586c(0, object->rotation.vx, fraction);
+        player_state.unknown_108.components[1] = func_8001586c(0, object->rotation.vy, fraction);
+        player_state.unknown_108.components[2] = func_8001586c(0, object->rotation.vz, fraction);
         player_state.camera_rotation_target.angles[0] = func_8001586c(
             player_state.reaction.view.rotation.angles[0], 0, fraction);
         player_state.camera_rotation_target.angles[1] = func_8001586c(
@@ -471,27 +473,6 @@ void func_8002985c(void)
             func_800291d0(object_index);
         }
         goto after_reaction;
-    case 3:
-        if (func_80027f78() != 0) {
-            func_80029168();
-        }
-        break;
-    case 4:
-        func_80028998();
-        func_80028224();
-        func_8002851c();
-        player_state.unknown_134 = 0;
-        func_800279cc();
-        player_state.unknown_134 += -256
-                                   + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
-        player_state.unknown_108[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
-        player_state.reaction.angle_phase =
-            (player_state.reaction.angle_phase + 128) & 0xfff;
-        if (player_state.reaction.angle_phase == 0) {
-            player_state.unknown_108[2] = 0;
-            func_80029168();
-        }
-        break;
     case 5:
         step = ++player_state.reaction.position.unknown_01[0];
         fraction = step << 8;
@@ -508,31 +489,58 @@ void func_8002985c(void)
             func_80029168();
         }
         goto after_reaction;
+    case 3:
+        if (func_80027f78() != 0) {
+            func_80029168();
+        }
+        goto update_reaction_view;
+    case 4:
+        func_80028998();
+        func_80028224();
+        func_8002851c();
+        player_state.unknown_134 = 0;
+        func_800279cc();
+        player_state.unknown_134 += -256
+                                   + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
+        player_state.unknown_108.components[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
+        player_state.reaction.angle_phase =
+            (player_state.reaction.angle_phase + 128) & 0xfff;
+        if (player_state.reaction.angle_phase == 0) {
+            player_state.unknown_108.components[2] = 0;
+            func_80029168();
+        }
+        goto update_reaction_view;
     case 16:
         func_80028998();
         func_80028224();
         func_8002851c();
-        player_state.reaction.damage.rotation.vx = 1;
+        player_state.reaction.damage.rotation.vy = 1;
         func_80027f78();
         func_80028ec0();
         if (player_state.unknown_100[0] == 0
             && player_state.unknown_100[1] == 0
-            && player_state.unknown_100[2] == 0
-            && player_state.unknown_106 == 0) {
+            && player_state.unknown_100[2] == 0) {
             func_80029168();
         }
+update_reaction_pose:
         func_800279cc();
-        break;
+        goto update_reaction_view;
+    case 18:
+        func_80028ec0();
+        if (player_state.unknown_100[0] == 0
+            && player_state.unknown_100[1] == 0
+            && player_state.unknown_100[2] == 0) {
+            func_80029168();
+        }
+        goto update_reaction_view;
     case 17:
         player_state.vitals.current_hp = 0;
         value = angle_velocity_step(-1024, player_state.unknown_100[0],
-                                    player_state.unknown_110[0], 8, 4);
-        player_state.unknown_110[0] = value;
+                                    player_state.reaction.damage.motion.vx, 8, 4);
+        player_state.reaction.damage.motion.vx = value;
         player_state.unknown_100[0] += (value * 3) >> 1;
-        player_state.unknown_134 += 500;
-        if (player_state.unknown_134 > 1500) {
-            player_state.unknown_134 = 1500;
-        }
+        value = player_state.unknown_134;
+        player_state.unknown_134 = value < 1500 ? value + 500 : 1500;
         func_80027f78();
         player_state.unknown_106++;
         if (player_state.unknown_106 == 31
@@ -553,15 +561,13 @@ void func_8002985c(void)
                                             (player_state.unknown_106 - 32) * 128);
                 func_800314d4(0x82, shade, shade, shade);
             } else {
-                for (index = 0; index < KF_EFFECT_CAPACITY; index++) {
-                    effect_state.records[index].type = 0xff;
+                KfEffectRecord *effect = effect_state.records;
+                for (index = KF_EFFECT_CAPACITY; index != 0; index--) {
+                    effect->type = 0xff;
+                    effect++;
                 }
-                if (game_counter_bytes[0x4c] == 0
-                    || (event_state.control.bytes[1] & 8) == 0) {
-                    player_initialize_state();
-                    func_800482f8();
-                    func_8002360c(0, 0, 0, 0, 0, 255);
-                } else {
+                if (game_counter_bytes[0x4c] != 0
+                    && (event_state.control.bytes[1] & 8) != 0) {
                     func_80038f20();
                     player_state.camera_rotation_target.angles[0] = 0;
                     player_state.camera_rotation_target.angles[1] = 0xc00;
@@ -574,23 +580,17 @@ void func_8002985c(void)
                     func_80048554(state_8017d118.values_04[0]);
                     player_reset_status();
                     func_8002360c(1, 1, 1, 1, 1, 0x43);
+                } else {
+                    player_initialize_state();
+                    func_800482f8();
+                    func_8002360c(0, 0, 0, 0, 0, 255);
                 }
             }
         }
         goto after_reaction;
-    case 18:
-        func_80028ec0();
-        if (player_state.unknown_100[0] == 0
-            && player_state.unknown_100[1] == 0
-            && player_state.unknown_100[2] == 0
-            && player_state.unknown_106 == 0) {
-            func_80029168();
-        }
-        break;
     default:
         goto after_reaction;
     }
-    func_80029014();
 
 after_reaction:
     player_state.flags_140.halves.high = player_state.flags_140.low;
@@ -650,15 +650,15 @@ after_reaction:
 
     player_state.camera_rotation.angles[0] =
         player_state.camera_rotation_target.angles[0]
-        + player_state.unknown_100[0] + player_state.unknown_108[0]
+        + player_state.unknown_100[0] + player_state.unknown_108.components[0]
         + player_state.unknown_110[0];
     player_state.camera_rotation.angles[1] =
         player_state.camera_rotation_target.angles[1]
-        + player_state.unknown_100[1] + player_state.unknown_108[1]
+        + player_state.unknown_100[1] + player_state.unknown_108.components[1]
         + player_state.unknown_110[1];
     player_state.camera_rotation.angles[2] =
         player_state.camera_rotation_target.angles[2]
-        + player_state.unknown_100[2] + player_state.unknown_108[2]
+        + player_state.unknown_100[2] + player_state.unknown_108.components[2]
         + player_state.unknown_110[2];
     func_8002b73c(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);

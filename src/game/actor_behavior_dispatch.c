@@ -27,11 +27,9 @@ void func_8003d184(void)
             should_play_sound = actor_animation_crossed_phase(actor, interval);
             break;
         case 0x4000:
-            if (interval != 0) {
-                should_play_sound =
-                    (interval * actor_state.unknown_93b8 / 3) % interval ==
-                    actor_state.unknown_93c4 % interval;
-            }
+            should_play_sound =
+                (interval * actor_state.unknown_93b8 / 3) % interval ==
+                actor_state.unknown_93c4 % interval;
             break;
         case 0x8000:
             should_play_sound = (rand() >> 3) < interval;

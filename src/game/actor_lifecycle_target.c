@@ -1,10 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/player.h>
 
 extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 
 ADDRESS(0x8003983c, 0x31c)
 void func_8003983c(void)

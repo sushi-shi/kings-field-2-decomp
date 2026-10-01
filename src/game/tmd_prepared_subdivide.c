@@ -123,6 +123,7 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
             WRITE_INDEX(first->vertex1, ab);
             WRITE_INDEX(first->vertex2, ac);
             WRITE_INDEX(first->vertex3, ad);
+            WRITE_INDEX(first->pad2, ac);
             output_packet += 32;
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
             second = (KfTmdFt4 *)(output_packet + 4);

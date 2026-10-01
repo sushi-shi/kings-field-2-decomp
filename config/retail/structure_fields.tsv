@@ -21,7 +21,7 @@ KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offse
 KfActor	0x13	0x1	unknown_13	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x14	0x1	unknown_14	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x15	0x1	unknown_15	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x16	0x2	unknown_16	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x16	0x2	unknown_16	s16	opaque	game/actor.h;retail GAME 0x8003247c actor draw	signed halfword read at 0x800325c0; meaning unresolved
 KfActor	0x18	0x2	animation_phase	u16	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x1c	0x2	unknown_1c	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
@@ -169,7 +169,7 @@ KfEffectRecord	0xb	0x1	cooldown	u8	supported	game/effect.h;asm;effect pool;game_
 KfEffectRecord	0xc	0x1	unknown_0c	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0xd	0x1	unknown_0d	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0xe	0x2	updates_remaining	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x10	0x2	unknown_10	u16	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x10	0x2	unknown_10	s16	opaque	game/effect.h;retail GAME 0x8003247c effect draws	signed halfword reads in both render paths; semantic meaning provisional
 KfEffectRecord	0x12	0x2	unknown_12	u16	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x14	0x10	position	VECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x24	0x8	rotation	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional

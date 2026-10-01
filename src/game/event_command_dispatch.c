@@ -3,6 +3,7 @@
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
+#include <kf/game/event_stream.h>
 #include <kf/game/map_object.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
@@ -10,6 +11,8 @@
 extern s32 func_80045e5c(const VECTOR *position,
                          const struct KfEulerAngles *rotation);
 extern void func_800366fc(u8 identifier);
+extern s32 func_800368b4(KfMapObject *object, s32 command);
+extern void func_80046700(KfEventObjectView *event, s32 object_id);
 
 typedef void (*KfEventCommandCallback)(const VECTOR *position,
                                        const KfPlayerViewRotation *rotation,
@@ -66,6 +69,61 @@ void func_8004678c(const VECTOR *position,
             event_state.state_word = 1;
         }
         audio_play_sound_at_volume_100(8);
+        break;
+    case 0x63:
+    case 0x64:
+    case 0x65:
+    case 0x66:
+    case 0x68:
+    case 0x6a:
+    case 0x6b:
+    case 0x6c:
+    case 0x6d:
+        index = 0;
+        for (;;) {
+            KfMapObject *object;
+            s32 status;
+
+            index = func_80036190(index, position, 800, 1700,
+                                   rotation->angles[1], 512);
+            if (index == -1) {
+                break;
+            }
+            object = &map_object_state.objects[index];
+            status = func_800368b4(object, command);
+            if (status == 1) {
+                audio_play_sound_64();
+            } else if (status == 3) {
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+            } else if (status == 4) {
+                notify_enqueue(4);
+            } else {
+                index++;
+                continue;
+            }
+            event_state.state_word = 1;
+            break;
+        }
+        break;
+    case 0x67:
+        index = func_80036190(0, position, 800, 1700,
+                               rotation->angles[1], 512);
+        if (index != -1) {
+            KfMapObject *object = &map_object_state.objects[index];
+
+            if (object->object_id == 0xb8) {
+                if (object->tail.fields.unknown_38 == 0xff) {
+                    object->tail.fields.unknown_38 = command;
+                    object->action_timer = 0;
+                    event_state.state_word = 1;
+                    func_800473e0(command);
+                    func_80046700((KfEventObjectView *)object, command);
+                }
+            } else if (func_800368b4(object, command) == 3) {
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+                event_state.state_word = 1;
+            }
+        }
         break;
     /* Remaining command arms are source WIP. The retail table has 35
      * entries; its indirect jump is not a proven direct-call edge. */

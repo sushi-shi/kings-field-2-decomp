@@ -32,29 +32,33 @@ void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
     if ((u8)first == 255) {
         current_first = state_8017d118.values_04[0];
         prior_first = state_8017d118.values_10[0];
-        current_second = (u8)second;
-        prior_second = (u8)second;
         if ((u8)second == 255) {
             current_second = state_8017d118.values_04[1];
             prior_second = state_8017d118.values_10[1];
+        } else {
+            current_second = (u8)second;
+            prior_second = (u8)second;
         }
-        current_third = (u8)third;
-        prior_third = (u8)third;
         if ((u8)third == 255) {
             current_third = state_8017d118.values_04[2];
             prior_third = state_8017d118.values_10[2];
+        } else {
+            current_third = (u8)third;
+            prior_third = (u8)third;
         }
-        current_fourth = (u8)fourth;
-        prior_fourth = (u8)fourth;
         if ((u8)fourth == 255) {
             current_fourth = state_8017d118.values_04[3];
             prior_fourth = state_8017d118.values_10[3];
+        } else {
+            current_fourth = (u8)fourth;
+            prior_fourth = (u8)fourth;
         }
-        current_fifth = fifth;
-        prior_fifth = fifth;
         if (fifth == 255) {
             current_fifth = state_8017d118.values_04[4];
             prior_fifth = state_8017d118.values_10[4];
+        } else {
+            current_fifth = fifth;
+            prior_fifth = fifth;
         }
     } else {
         current_first = first;
@@ -78,51 +82,10 @@ void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
             return;
         }
     } else {
-        if ((state_8017d118.transition_active != 1 ||
-             state_8017d118.values_10[0] == prior_first) &&
-            state_8017d118.values_10[1] == prior_second &&
-            state_8017d118.values_10[2] == prior_third &&
-            state_8017d118.values_10[3] == prior_fourth &&
-            state_8017d118.values_10[4] == prior_fifth) {
-            return;
-        }
-        if (state_8017d118.values_10[0] == 255 &&
-            state_8017d118.values_04[0] == current_first) return;
-        if (state_8017d118.values_10[1] == 255 &&
-            state_8017d118.values_04[1] == (u8)second) return;
-        if (state_8017d118.values_10[2] == 255 &&
-            state_8017d118.values_04[2] == (u8)third) return;
-        if (state_8017d118.values_10[3] == 255 &&
-            state_8017d118.values_04[3] == (u8)fourth) return;
-        if (state_8017d118.values_10[4] == 255 &&
-            state_8017d118.values_04[4] == fifth) return;
-
-        if ((state_8017d118.values_10[0] == 255 || (u8)first != 255) &&
-            (state_8017d118.values_10[1] == 255 || (u8)second != 255) &&
-            (state_8017d118.values_10[2] == 255 || (u8)third != 255) &&
-            (state_8017d118.values_10[3] == 255 || (u8)fourth != 255) &&
-            (state_8017d118.values_10[4] == 255 || fifth != 255)) {
-            do {
-                EnterCriticalSection();
-                if (state_8017d118.transition_phase != 0xf0) break;
-                ExitCriticalSection();
-                cd_request_yield();
-            } while (1);
-        } else {
-            while (state_8017d118.transition_active != 0) {
-                cd_request_yield();
-                func_80016820();
-            }
-        }
-        ExitCriticalSection();
-        if (state_8017d118.unknown_15 != 0 && (u8)first != 255 &&
-            offset_x == 127) {
-            offset_x = -state_8017d118.values_17[0];
-            offset_z = -state_8017d118.values_17[1];
-            offset_y = -state_8017d118.values_17[2];
-        }
+        goto handle_active;
     }
 
+apply:
     if (state_8017d118.values_04[0] != 99 &&
         state_8017d118.values_04[0] != current_first) {
         func_80048554(state_8017d118.values_04[0]);
@@ -137,9 +100,60 @@ void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
     state_8017d118.values_10[2] = (u8)third;
     state_8017d118.values_10[3] = (u8)fourth;
     state_8017d118.values_10[4] = fifth;
-    state_8017d118.unknown_15 = 0;
     state_8017d118.values_17[0] = offset_x;
     state_8017d118.values_17[1] = offset_z;
+    state_8017d118.unknown_15 = 0;
     state_8017d118.values_17[2] = offset_y;
-    state_8017d118.flag_16 = (u8)second != 255;
+    if ((u8)second == 255) {
+        state_8017d118.flag_16 = 0;
+    } else {
+        state_8017d118.flag_16 = 1;
+    }
+    return;
+
+handle_active:
+    if ((state_8017d118.transition_active != 1 ||
+         state_8017d118.values_10[0] == prior_first) &&
+        state_8017d118.values_10[1] == prior_second &&
+        state_8017d118.values_10[2] == prior_third &&
+        state_8017d118.values_10[3] == prior_fourth &&
+        state_8017d118.values_10[4] == prior_fifth) {
+        return;
+    }
+    if (state_8017d118.values_10[0] == 255 &&
+        state_8017d118.values_04[0] == current_first) return;
+    if (state_8017d118.values_10[1] == 255 &&
+        state_8017d118.values_04[1] == (u8)second) return;
+    if (state_8017d118.values_10[2] == 255 &&
+        state_8017d118.values_04[2] == (u8)third) return;
+    if (state_8017d118.values_10[3] == 255 &&
+        state_8017d118.values_04[3] == (u8)fourth) return;
+    if (state_8017d118.values_10[4] == 255 &&
+        state_8017d118.values_04[4] == fifth) return;
+
+    if ((state_8017d118.values_10[0] != 255 && (u8)first == 255) ||
+        (state_8017d118.values_10[1] != 255 && (u8)second == 255) ||
+        (state_8017d118.values_10[2] != 255 && (u8)third == 255) ||
+        (state_8017d118.values_10[3] != 255 && (u8)fourth == 255) ||
+        (state_8017d118.values_10[4] != 255 && fifth == 255)) {
+        while (state_8017d118.transition_active != 0) {
+            cd_request_yield();
+            func_80016820();
+        }
+    } else {
+        do {
+            EnterCriticalSection();
+            if (state_8017d118.transition_phase != 0xf0) break;
+            ExitCriticalSection();
+            cd_request_yield();
+        } while (1);
+    }
+    ExitCriticalSection();
+    if (state_8017d118.unknown_15 != 0 && (u8)first != 255 &&
+        offset_x == 127) {
+        offset_x = -state_8017d118.values_17[0];
+        offset_z = -state_8017d118.values_17[1];
+        offset_y = -state_8017d118.values_17[2];
+    }
+    goto apply;
 }

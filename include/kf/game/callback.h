@@ -19,7 +19,7 @@ typedef struct KfState8017d118 {
     u8 unknown_15;
     u8 flag_16;
     s8 values_17[3];
-    u16 unknown_1a;
+    s16 unknown_1a;
 } KfState8017d118;
 
 typedef char kf_state_8017d118_size[sizeof(KfState8017d118) == 0x1c ? 1 : -1];

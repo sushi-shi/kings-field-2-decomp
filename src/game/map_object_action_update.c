@@ -1,7 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/game/callback.h>
+#include <kf/game/cd.h>
+#include <kf/game/event_state.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/map_object.h>
+#include <psyq/sdk.h>
 
 extern KfMapCellPattern map_object_cell_patterns[9][3];
 extern void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
@@ -11,6 +14,13 @@ extern void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
                           s32 destination_x, s32 destination_z, s32 width,
                           s32 height, s32 rotation, u32 field_mask);
 extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
+extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
+extern void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
+                           u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y);
+extern s32 func_80036b68(KfMapObject *source, KfMapObject *target,
+                          SVECTOR *start_offset, SVECTOR *end_offset,
+                          s32 brighten, s32 duration);
+extern SVECTOR DAT_8006d6e4[4];
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
@@ -131,13 +141,151 @@ void func_80036ed4(void)
             }
             break;
 
+        case 5:
+            if (object->action_timer == 0) {
+                u16 linked_index = object->tail.fields.unknown_3a.value;
+                if (linked_index != 0xffff) {
+                    KfMapObject *linked = &map_object_state.objects[linked_index];
+                    linked->unknown_0e += 200;
+                }
+                if (object->tail.fields.unknown_38 == 0xfe) {
+                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                    object->unknown_0a = 0xfff;
+                    object->action_timer = 3;
+                } else {
+                    map_object_set_property(linked_index, 0);
+                    object->action_timer = 1;
+                }
+            } else if (object->action_timer == 1) {
+                if (object->tail.fields.unknown_38 == 0xfe) {
+                    object->action_timer = 2;
+                    map_object_set_property(object->tail.fields.unknown_3a.value,
+                                            1, object->unknown_00);
+                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                }
+            } else if (object->action_timer == 2) {
+                object->unknown_0a += 128;
+                if (object->unknown_0a >= 0xfff) {
+                    object->unknown_0a = 0xfff;
+                    map_object_set_property(object->tail.fields.unknown_3a.value, 2);
+                    object->action_timer = 3;
+                }
+            }
+            break;
+
+        case 9: {
+            u16 linked_index = object->tail.fields.unknown_3a.value;
+            if (linked_index != 0xffff) {
+                KfMapObject *linked = &map_object_state.objects[linked_index];
+                if (linked->object_id != 0xff) {
+                    linked->unknown_00 = 0;
+                    linked->tail.fields.unknown_38 = 0;
+                }
+            }
+            object->action = KF_MAP_OBJECT_ACTION_NONE;
+            break;
+        }
+
+        case 15: {
+            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
+            if (object->action_timer != 0 && target->object_id == 0xff) {
+                switch (object->tail.fields.unknown_38) {
+                case 0x72:
+                    event_state.control.fields.sentinels.unknown_00 = 0xffff;
+                    break;
+                case 0x73:
+                    event_state.control.fields.sentinels.unknown_04 = 0xffff;
+                    break;
+                case 0x74:
+                    event_state.control.fields.sentinels.unknown_08 = 0xffff;
+                    break;
+                }
+                object->tail.fields.unknown_38 = 0xff;
+                object->action_timer = 0;
+            }
+            func_80036b68(object, target, &DAT_8006d6e4[0], &DAT_8006d6e4[1], 1, 32);
+            break;
+        }
+
+        case 16:
+            object->rotation.pad += 128;
+            object->position.vy = object->extra_40.raw +
+                                  (rsin((s16)object->rotation.pad) >> 6);
+            break;
+
+        case 18:
+            if ((s32)(object->extra_40.raw - cd_state.frame_count) < 0) {
+                object->extra_40.raw = cd_state.frame_count + 30;
+                map_object_play_spatial_sound(object, 0xee);
+            }
+            break;
+
+        case 88:
+            if (object->action_timer == 1) {
+                if (object->tail.fields.unknown_38 == 0) {
+                    object->action_timer = 2;
+                    map_object_play_spatial_sound(object, 0x44);
+                } else if (object->tail.fields.unknown_38 == 1) {
+                    object->action_timer = 3;
+                    map_object_play_spatial_sound(object, 0x44);
+                }
+                func_80035194(object->unknown_00,
+                              (u8)object->tail.fields.spawn_sequence +
+                                  object->tail.fields.unknown_3e.bytes.low,
+                              (u8)(object->tail.fields.spawn_sequence >> 8),
+                              object->tail.fields.unknown_3a.bytes.low,
+                              object->tail.fields.unknown_3a.bytes.high,
+                              object->tail.fields.unknown_3e.bytes.low,
+                              object->tail.fields.unknown_3e.bytes.high,
+                              object->rotation.pad, 0x2d);
+            } else if (object->action_timer == 2) {
+                object->unknown_0a -= 64;
+                if ((s16)object->unknown_0a <= 0) {
+                    object->unknown_0a = 0;
+                    object->action_timer = 99;
+                    func_80035194(object->unknown_00,
+                                  (u8)object->tail.fields.spawn_sequence,
+                                  (u8)(object->tail.fields.spawn_sequence >> 8),
+                                  object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.high,
+                                  object->tail.fields.unknown_3e.bytes.low,
+                                  object->tail.fields.unknown_3e.bytes.high,
+                                  object->rotation.pad, 0x2d);
+                }
+            } else if (object->action_timer == 3) {
+                object->unknown_0a += 64;
+                if (object->unknown_0a >= 0x1000) {
+                    object->unknown_0a = 0xfff;
+                    object->action_timer = 99;
+                }
+            }
+            break;
+
+        case 224:
+            if (func_80036ad8(object->position.vx >> 11,
+                               object->position.vz >> 11,
+                               object->tail.fields.unknown_38,
+                               object->tail.fields.unknown_39,
+                               object->position.vy)) {
+                func_80016260(object->tail.fields.unknown_3a.bytes.low,
+                              object->tail.fields.unknown_3a.bytes.high,
+                              (u8)object->tail.fields.spawn_sequence,
+                              (u8)(object->tail.fields.spawn_sequence >> 8),
+                              object->tail.fields.unknown_3e.bytes.low,
+                              (s8)object->extra_40.bytes[0],
+                              (s8)object->extra_40.bytes[1],
+                              (s8)object->extra_40.bytes[2]);
+            }
+            break;
+
         /* The remaining bounded action arms have retail case targets, but
          * their side effects are not yet reconstructed in this WIP body. */
-        case 4: case 5: case 8: case 9:
-        case 15: case 16: case 17: case 18: case 19:
+        case 4: case 8:
+        case 17: case 19:
         case 22: case 34: case 81: case 83: case 84:
-        case 88: case 89: case 96: case 97: case 98:
-        case 224: case 225:
+        case 89: case 96: case 97: case 98:
+        case 225:
             break;
 
         default:

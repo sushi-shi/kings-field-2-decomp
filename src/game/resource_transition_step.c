@@ -24,7 +24,7 @@ ADDRESS(0x80016820, 0x6b4)
 void func_80016820(void)
 {
     u8 *buffer;
-    u8 *cursor;
+    u8 *stream;
     KfActor *actor;
     KfMapObject *object;
     s32 phase;
@@ -37,9 +37,6 @@ void func_80016820(void)
         return;
     }
     phase = state_8017d118.transition_phase;
-    if ((u32)phase > 6) {
-        return;
-    }
 
     switch (phase) {
     case 0:
@@ -97,6 +94,7 @@ phase_three:
                 (KfCdRequestCallback)resource_transition_set_phase_4);
         }
         if (state_8017d118.values_10[0] != 255) {
+            stream = cd_stream_work_buffer;
             actor = actor_state.actors;
             index = KF_ACTOR_CAPACITY - 1;
             do {
@@ -133,17 +131,15 @@ phase_three:
                 func_8002b73c(player_state.camera_position.vx,
                     player_state.camera_position.vz, 800, 1);
             }
-            buffer = cd_stream_work_buffer;
             resource_copy_words((u32 *)actor_state.target_groups,
-                (u32 *)(buffer + 4), 0xcb0);
+                (u32 *)(stream + 4), 0xcb0);
             actor_fixup_group_targets();
-            cursor = buffer;
-            cursor += *(u32 *)cursor + 4;
-            func_8003f860(cursor + 4);
-            cursor += *(u32 *)cursor + 4;
-            func_80035894((KfMapObjectPlacement *)(cursor + 4));
-            cursor += *(u32 *)cursor + 4;
-            func_80034818((KfMapPlacedSource *)(cursor + 4));
+            stream += *(u32 *)stream + 4;
+            func_8003f860(stream + 4);
+            stream += *(u32 *)stream + 4;
+            func_80035894((KfMapObjectPlacement *)(stream + 4));
+            stream += *(u32 *)stream + 4;
+            func_80034818((KfMapPlacedSource *)(stream + 4));
             func_800489ac(state_8017d118.values_10[0]);
             state_8017d118.active_table[5]();
             player_state.unknown_09[1] = 1;

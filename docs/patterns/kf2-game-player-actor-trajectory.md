@@ -1121,11 +1121,11 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | DIFF, 40.7% | First-pass variadic effect dispatcher covers the bounded 53-entry switch; ordering the first retail case bodies in source improved the focused listing. |
+| `80025a18` | DIFF, 52.1% | Variadic effect dispatcher covers the 53-entry switch; retail case order and 19 newly reviewed direct address pairs improve the focused listing. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | DIFF, 25.7% | First-pass weapon/magic update covers the observed direct call set; the entry range check now follows retail, and caller `8002a728` passes no arguments and discards `v0`. |
+| `8002665c` | DIFF, 39.0% | Weapon/magic update covers the observed direct call set; the entry range check and 92 newly reviewed address pairs follow retail. |
 | `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
@@ -1143,10 +1143,29 @@ internal switch targets. That caller does not prepare arguments or consume
 `v0`, and the callee initializes `a0`–`a3` before using them. Its first-pass
 `void func_8002985c(void)` source now covers the bounded 19-entry switch,
 status timers, texture animation, and collision update, and focused `kf try`
-reports **40.0% WIP**. The four VRAM source rows at `8006d6b0` are one
+reports **90.0% WIP**. The four VRAM source rows at `8006d6b0` are one
 initialized `RECT[4]` owner; four raw-checked HI16/LO16 pairs identify its
-interior row addresses. The current compiler frame and several block shapes
+interior row addresses. Another 182 raw-audited HI16/LO16 pairs resolve into
+owned player, actor, map-object, callback, event, and effect state; two
+`lui`/`ori` low-memory constants remain literal values. The movement-limit
+source now follows the observed base-value stores, branch order, and the
+bounded switch table's physical case-body order. The
+case-1 reaction rotation copies the complete eight-byte `SVECTOR`, including
+its last two bytes, as proved by paired unaligned word loads and stores; the
+shared player-state union preserves all earlier component accesses and the
+separate `player_reset_view` listing stays SAME. Case 0 and case 16 converge
+on the observed pose tail, while the live reaction states converge on the
+single view-update call. The current compiler frame and several block shapes
 still diverge from retail, so this is a started claim, not an exact match.
+The death state reads a signed `unknown_106` counter and uses the reaction
+overlay's motion halfword at `+0x154`; the case-16 flag is its rotation
+halfword at `+0x14e`. The height update compares the old `+0x134` value
+with 1500 before adding 500, as shown by the branch delay slot, rather than
+clamping the incremented value.
+The case-16/18 stop checks cover the three signed rotation-delta halfwords,
+without including the adjacent death counter. The effect-clear loop walks
+128 records by pointer while counting down, and the death continuation
+executes the teleport branch before the reset branch, matching the raw CFG.
 
 The first-pass `8002722c` source now owns the contiguous run through
 `800274ec` in `game.player_select_magic_action`, reducing one module. Its

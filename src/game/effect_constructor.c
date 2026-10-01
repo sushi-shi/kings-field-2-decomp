@@ -1,6 +1,8 @@
 #include <kf/lib/address.h>
+#include <kf/game/audio.h>
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
+#include <stdarg.h>
 
 RODATA(0x8001249c, 0x1ec)
 
@@ -52,11 +54,34 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         (s32)record->direction.vz * record->direction.vz;
     record->unknown_0d = length_squared >= 810001;
 
+    if (kind > 122 || kind == 18 || kind == 21 || kind == 36 ||
+        kind == 37 || kind == 41 || kind == 43 || kind == 44 ||
+        (kind >= 55 && kind <= 99) || kind == 108 || kind == 110 ||
+        kind == 112) {
+        record->type = KF_EFFECT_SLOT_FREE;
+        return record;
+    }
+
     switch (kind) {
     case 0:
         effect_pool_initialize_scaled(record, 0xe, 0x200);
         record->updates_remaining = 50;
         record->unknown_3c[4] = 0;
+        break;
+    case 1:
+    case 28:
+        if (kind == 28) {
+            record->scale_x = 0x800;
+            record->scale_y = 0x800;
+            record->scale_z = 0x800;
+        }
+        record->unknown_08 = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x20;
+        record->render_id = 0x20;
+        record->unknown_3c[4] = 0;
+        record->updates_remaining = 70;
+        effect_play_spatial_sound(record, 0x1b);
         break;
     case 3:
         record->unknown_08 = 1;
@@ -84,6 +109,68 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_z = 0x32c8;
         record->unknown_0d = 1;
         effect_play_spatial_sound(record, 0x20);
+        break;
+    case 7:
+    case 49:
+        effect_pool_initialize_scaled(record, 0x2d, 0x1800);
+        record->updates_remaining = 50;
+        record->unknown_0d = 1;
+        effect_play_spatial_sound(record, 0x23);
+        break;
+    case 13:
+        effect_pool_initialize_scaled(record, 0x21, 0x1000);
+        record->updates_remaining = 50;
+        effect_play_spatial_sound(record, 0x2a);
+        break;
+    case 14:
+    case 16:
+    case 19:
+        record->unknown_08 = 0;
+        record->updates_remaining = kind == 16 ? 8 : 16;
+        audio_play_sound(0x2b, 120);
+        break;
+    case 15:
+        effect_pool_initialize_fixed(record, 0x19);
+        break;
+    case 17:
+        effect_pool_initialize_fixed(record, 0x1a);
+        break;
+    case 23: {
+        va_list arguments;
+        const u16 *parameters;
+
+        va_start(arguments, direction);
+        parameters = va_arg(arguments, const u16 *);
+        va_end(arguments);
+        effect_pool_initialize_scaled(record, 8, 0x400);
+        record->direction.vx = 0;
+        record->direction.vy = 0;
+        record->direction.vz = 0;
+        record->phase = 9;
+        *(u16 *)&record->unknown_3c[4] = parameters[2];
+        *(u16 *)&record->unknown_3c[6] = parameters[4];
+        *(u16 *)&record->unknown_3c[8] = parameters[6];
+        effect_play_spatial_sound(record, 0x26);
+        break;
+    }
+    case 24:
+        record->unknown_08 = 0;
+        record->updates_remaining = 70;
+        break;
+    case 26:
+        record->unknown_08 = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x24;
+        record->render_id = 0x24;
+        record->unknown_3c[4] = 0;
+        record->updates_remaining = 70;
+        record->scale_x = 600;
+        record->scale_y = 600;
+        record->scale_z = 600;
+        break;
+    case 32:
+        effect_pool_initialize_scaled(record, 0x21, 0x1800);
+        record->updates_remaining = 50;
         break;
     /* The remaining kinds and their O32 trailing operands are not yet
      * reconstructed. The 123-word table and its indirect dispatch remain

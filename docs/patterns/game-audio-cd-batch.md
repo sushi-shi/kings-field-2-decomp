@@ -1105,10 +1105,19 @@ The seven-phase controller owns the reviewed 0x1c-byte switch-table range at
 | `0x800139c4` | WIP, 60.6% listing similarity | Unbound SDK table and stream/sequence workspaces compile as literal `lui/ori`, while retail constructs signed-low addresses with relocations. The calls and audio-state loops are present. |
 | `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and two copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
 | `0x80015fd4` | WIP, 96.1% listing similarity | The TMD slot pointer at `0x8012da68` has no proved owner; retail uses a relocation and signed-low address construction. State writes, CD/controller loop, and indirect callback align. |
-| `0x80016260` | WIP, 25.0% listing similarity | Eight byte-valued request controls, early returns, critical-section wait, state updates, and direct calls are modeled. The compiler selects a different register and branch schedule near the first sentinel dispatch; CFG/codegen remains under review. |
-| `0x80016820` | WIP, 88.5% listing similarity | Seven-phase switch, CD loads, actor/map cleanup, callback-table swap, sequence fade, and VAB queue are modeled. Moving completion before the fade phases, advancing the length-prefixed buffer in place, and clamping the signed fade at zero restored the retail CFG and copy schedule. Frame size and later pointer scheduling differ; `0x8019e138` and `0x8012da68` remain unbound workspaces. |
+| `0x80016260` | WIP, 71.6% listing similarity | Eight byte-valued request controls, early returns, critical-section wait, state updates, and direct calls are modeled. The shared state-update path precedes the active wait path with a backward jump, and the conflict wait precedes the critical-section wait, matching retail's block order. Sentinel-value registers and some later branches remain WIP. |
+| `0x80016820` | WIP, 98.4% listing similarity | Seven-phase switch, CD loads, actor/map cleanup, callback-table swap, sequence fade, and VAB queue are modeled. The switch has one range check, phase-specific buffer lifetimes and in-place cursor advances match retail, and the fade timer is a signed halfword. The remaining differences are the unbound fixed-address workspaces at `0x8019e138` and `0x8012da68`. |
 
 All new units compile under focused `kf try` with the pinned probe. The 15
 previously exact audio neighbors stayed `SAME` in the focused audio unit build;
 `cd_request_service_vab` remains its established WIP. No strict 100% result
 was claimed, and no bank or README write was made.
+
+The current `0x80016820` object also has the retail's seven switch-table
+offsets `0x6c`, `0xdc`, `0x1bc`, `0x20c`, `0x408`, `0x544`, and `0x660`, with
+seven ordered `R_MIPS_32 .text` relocations. Its 32-entry initialized default
+callback table has identical bytes and ordered function-pointer relocations.
+The startup unit's seven archive literals match the retail `.rodata` prefix
+byte for byte through `0x53`; retail's claimed `0x58`-byte range ends with five
+zero bytes beyond the compiled literal extent. Their source or section-padding
+mechanism remains unresolved.

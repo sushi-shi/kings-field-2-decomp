@@ -17,7 +17,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
     s32 angle;
 
     if (target->type == 0xff) {
-        goto done;
+        return 0;
     }
 
     switch (target->type) {
@@ -28,6 +28,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
                 goto done;
             }
             score = func_800157ac(target->unknown_01[2]);
+            goto done;
         } else if (*(const u16 *)&target->fallback_offset >= player_distance) {
             score = func_800157ac(target->unknown_01[1]);
         }

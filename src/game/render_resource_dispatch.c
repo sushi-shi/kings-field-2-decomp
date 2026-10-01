@@ -39,13 +39,13 @@ void func_8003247c(void)
     KfEffectRecord *effect;
     KfMapPlacedEntry *placed;
     s32 frame;
-    s32 i;
+    s16 remaining;
 
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
-    for (i = 0; i < KF_ACTOR_CAPACITY; i++, actor++) {
-        u8 visible;
+    for (remaining = KF_ACTOR_CAPACITY - 1;
+         remaining != -1; remaining--, actor++) {
         u8 layer;
         KfTargetGroup *group;
         const VECTOR *position;
@@ -54,17 +54,20 @@ void func_8003247c(void)
         if (actor->lifecycle != 1) {
             continue;
         }
-        layer = actor->unknown_03;
         if (actor->unknown_28 & 0x2000) {
-            layer |= 0x20;
+            layer = actor->unknown_03 | 0x20;
+        } else {
+            layer = actor->unknown_03;
         }
         if (actor->unknown_28 & 0x80000) {
-            visible = map_cell_layer_mask_radius(&actor->position, 3) & actor->unknown_03;
+            if ((map_cell_layer_mask_radius(&actor->position, 3) &
+                 actor->unknown_03) == 0) {
+                continue;
+            }
         } else {
-            visible = map_cell_layer_mask(&actor->position) & layer;
-        }
-        if (visible == 0) {
-            continue;
+            if ((map_cell_layer_mask(&actor->position) & layer) == 0) {
+                continue;
+            }
         }
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
             position = func_8003c10c(actor, &actor_position);
@@ -99,7 +102,8 @@ void func_8003247c(void)
     repeat_store_word((u32 *)tmd_flags, 0, 80);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
-    for (i = 0; i < KF_MAP_OBJECT_CAPACITY; i++, object++) {
+    for (remaining = KF_MAP_OBJECT_CAPACITY - 1;
+         remaining != -1; remaining--, object++) {
         u8 visibility;
         s32 object_index;
 
@@ -154,7 +158,7 @@ void func_8003247c(void)
             }
         } else if ((s8)object->action == -16) {
             if (map_cell_visible(&object->position,
-                                 (s8)object->tail.fields.unknown_38,
+                                 object->tail.fields.unknown_38,
                                  object->tail.fields.unknown_39) != 0 &&
                 (object->unknown_00 & render_mask_scan_state.first_layer_mask)) {
                 if (resource_registry_get(object->object_id + 0x100) != 0) {
@@ -162,7 +166,7 @@ void func_8003247c(void)
                                    (const struct KfEulerAngles *)&object->rotation,
                                    (KfPoolRecord **)&object->tail,
                                    object->unknown_01, object->unknown_0a,
-                                   (s8)object->tail.fields.spawn_sequence,
+                                   (u8)object->tail.fields.spawn_sequence,
                                    object->tail.fields.unknown_3a.bytes.high,
                                    0x1fff - object->tail.fields.unknown_3a.bytes.low);
                     object->collision_flags |= 0x80;
@@ -205,7 +209,8 @@ void func_8003247c(void)
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
-    for (i = 0; i < KF_EFFECT_CAPACITY; i++, effect++) {
+    for (remaining = KF_EFFECT_CAPACITY - 1;
+         remaining != -1; remaining--, effect++) {
         MATRIX *world_matrix;
         const struct KfEulerAngles *angles;
 
@@ -254,7 +259,8 @@ void func_8003247c(void)
     rotation.y = 0;
     rotation.z = 0;
     placed = game_graphics_runtime.map_placed_entries;
-    for (i = 0; i < KF_MAP_PLACED_ENTRY_COUNT; i++, placed++) {
+    for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
+         remaining != -1; remaining--, placed++) {
         u8 visibility;
         if (placed->id == 0xffff) continue;
         visibility = map_cell_layer_mask(&placed->position);

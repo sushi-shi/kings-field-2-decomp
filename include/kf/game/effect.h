@@ -29,7 +29,7 @@ typedef struct KfEffectRecord {
     u8 unknown_0c;
     u8 unknown_0d;
     s16 updates_remaining;
-    u16 unknown_10;
+    s16 unknown_10;
     u16 unknown_12;
     VECTOR position;
     SVECTOR rotation;

@@ -42,6 +42,7 @@ u8 *func_800461a0(KfActor *actor)
             goto marker_record;
         }
         if (code != 0xfe) {
+            /* Retail retries this byte; the stream must supply a control code. */
             continue;
         }
         if (candidate->fallback_offset == 0) {

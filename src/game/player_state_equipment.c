@@ -5,6 +5,7 @@
 #include <kf/game/asset.h>
 #include <kf/game/cd.h>
 #include <kf/game/effect.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 #include <stdarg.h>
@@ -146,7 +147,6 @@ void player_clear_motion(void)
     player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;
 }
 
-extern s32 func_8002b67c(s32 layer, s32 x, s32 z, s32 radius, s32 height);
 extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 mode);
 extern void func_80023384(void);
 
@@ -417,6 +417,7 @@ void func_80025a18(s32 effect_id, ...)
     VECTOR position;
     SVECTOR direction;
     s32 distance;
+    s32 adjusted_distance;
     KfActor *actor;
     KfEffectRecord *effect;
     s32 i;
@@ -477,17 +478,17 @@ void func_80025a18(s32 effect_id, ...)
                        &position, &direction);
         break;
     case 11:
-        func_80025878(600, &position, &direction, &distance);
-        if (distance == -1) {
-            distance = 10;
+        func_80025878(600, &position, &direction, &adjusted_distance);
+        if (adjusted_distance == -1) {
+            adjusted_distance = 10;
         } else {
-            distance = distance / 600 - 8;
-            if (distance < 2) {
-                distance = 2;
+            adjusted_distance = adjusted_distance / 600 - 8;
+            if (adjusted_distance < 2) {
+                adjusted_distance = 2;
             }
         }
         direction.vy = 0;
-        func_80040308(10, 0x12, 0x67, &position, &direction, distance);
+        func_80040308(10, 0x12, 0x67, &position, &direction, adjusted_distance);
         break;
     case 5:
     case 9:
@@ -500,8 +501,7 @@ void func_80025a18(s32 effect_id, ...)
         break;
     case 6:
     case 10:
-    case 40:
-        func_80025878(effect_id == 6 ? 250 : effect_id == 10 ? 300 : 1000,
+        func_80025878(effect_id == 6 ? 250 : 300,
                        &position, &direction, &distance);
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
@@ -518,38 +518,6 @@ void func_80025a18(s32 effect_id, ...)
     case 1:
         func_80025878(500, &position, &direction, &distance);
         func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
-    case 14:
-    case 16:
-    case 19:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
-                       &direction);
-        break;
-    case 15:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
-                       &direction);
-        player_state.unknown_62 = 900;
-        player_recalculate_combat_stats();
-        break;
-    case 17:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
-                       &direction);
-        player_state.unknown_64 = 900;
-        player_recalculate_combat_stats();
-        break;
-    case 34:
-    case 35:
-    case 38:
-        func_80025878(900, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction,
-                       &player_state.camera_rotation);
-        break;
-    case 39:
-        func_80025878(50, 0, &direction, &distance);
-        override_position = va_arg(arguments, const VECTOR *);
-        position = *override_position;
-        func_80040308(10, 0x12, effect_id, &position, &direction,
-                       &player_state.camera_rotation);
         break;
     case 42:
     case 43: {
@@ -574,6 +542,17 @@ void func_80025a18(s32 effect_id, ...)
         func_80040308(10, 0x12, effect_id == 44 ? 0x75 : 0x74,
                        &position, &direction, &player_state.camera_rotation);
         break;
+    case 40:
+        func_80025878(1000, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
+        break;
+    case 39:
+        func_80025878(50, 0, &direction, &distance);
+        override_position = va_arg(arguments, const VECTOR *);
+        position = *override_position;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
     case 49:
         func_80025878(550, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
@@ -586,6 +565,31 @@ void func_80025a18(s32 effect_id, ...)
         position = *override_position;
         func_80040308(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
+        break;
+    case 34:
+    case 35:
+    case 38:
+        func_80025878(900, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
+    case 15:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
+        player_state.unknown_62 = 900;
+        player_recalculate_combat_stats();
+        break;
+    case 17:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
+        player_state.unknown_64 = 900;
+        player_recalculate_combat_stats();
+        break;
+    case 14:
+    case 16:
+    case 19:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
         break;
     default:
         break;

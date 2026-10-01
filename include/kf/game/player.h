@@ -111,6 +111,12 @@ typedef struct KfPlayerViewRotation {
     u16 unknown_06;
 } KfPlayerViewRotation;
 
+typedef union KfPlayerUnknown108 {
+    SVECTOR vector;
+    u16 components[4];
+} KfPlayerUnknown108;
+typedef char kf_player_unknown_108_size[sizeof(KfPlayerUnknown108) == 8 ? 1 : -1];
+
 typedef struct KfPlayerDamageReaction {
     SVECTOR rotation;
     SVECTOR motion;
@@ -323,10 +329,9 @@ typedef struct KfPlayerState {
     u16 unknown_ee;
     KfPlayerViewRotation camera_rotation;
     KfPlayerViewRotation camera_rotation_target;
-    u16 unknown_100[3];
-    u16 unknown_106;
-    u16 unknown_108[3];
-    u8 unknown_10e[2];
+    s16 unknown_100[3];
+    s16 unknown_106;
+    KfPlayerUnknown108 unknown_108;
     s16 unknown_110[3];
     u8 unknown_116[2];
     SVECTOR unknown_118;

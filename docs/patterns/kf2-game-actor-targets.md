@@ -1489,13 +1489,13 @@ record earlier checkpoints, not the current verdict.
 | GAME VA | Verdict | Evidence and limit |
 | --- | --- | --- |
 | `36944` | exact | The 396-object scatter wrapper is 116/116 bytes exact in direct objdiff; its contiguous map-object unit is 4/4 focused SAME. Its input source has no proved static caller, so the address-derived identity remains. |
-| `39108` | WIP | The candidate scorer now has a complete C control path and a 131-word bounded switch table at `80011cd8`, all targeting this function. One-VA delink has zero withheld references. Direct objdiff reports 90.54% fuzzy text with 1216 retail versus 1188 compiled bytes; the 524-byte table has a distinct case-target layout. The callback through active slot 16 remains indirect, and the candidate's complete record stride is unresolved. |
-| `36ed4` | WIP, incomplete source | The 396-object traversal, current object/template pointers, actions 2 and 3, and fallback callback are source-backed. The three adjacent dispatch tables occupy `8001191c..80011cd7`; the other 21 nondefault action bodies remain explicit unresolved arms. Focused comparison compiles but is DIFF, and no strict exact claim is made. |
+| `39108` | WIP | The candidate scorer now has a complete C control path and a 131-word bounded switch table at `80011cd8`, all targeting this function. One-VA delink has zero withheld references. Retail's early zero return and current-target return before score doubling are restored; direct objdiff reports 91.414474% fuzzy text with 1216 retail versus 1196 compiled bytes. Focused CFG remains 59/56 blocks and 37/33 branches; the 524-byte table still has a distinct case-target layout. The callback through active slot 16 remains indirect, and the candidate's complete record stride is unresolved. |
+| `36ed4` | WIP, incomplete source | The 396-object traversal, current object/template pointers, actions 2, 3, 5, 9, 15, 16, 18, 88, and 224, and fallback callback are source-backed. The three adjacent dispatch tables occupy `8001191c..80011cd7`; the other 14 nondefault action bodies remain explicit unresolved arms. Action 15 uses the existing event-control sentinel fields and the four-vector loaded table; its two raw HI/LO pairs are curated. Focused comparison compiles but is DIFF, and no strict exact claim is made. |
 
 The `39108` scorer reads candidate halfwords at offsets `+0x16` and `+0x1a`.
 `KfTargetCandidate` therefore describes an observed 0x1c-byte prefix only;
 neither these reads nor the switch table prove the allocation stride. For
 `36ed4`, the retail first loop has 24 unique primary dispatch targets, of
 which 201 table entries select the fallback callback. The source leaves the
-remaining 22 concrete action bodies unresolved rather than sending them to
+remaining 14 concrete action bodies unresolved rather than sending them to
 that fallback.

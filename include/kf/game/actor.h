@@ -121,7 +121,7 @@ typedef struct KfActor {
     u8 unknown_13;
     u8 unknown_14;
     u8 unknown_15;
-    u16 unknown_16;
+    s16 unknown_16;
     u16 animation_phase;
     u16 unknown_1a;
     u16 unknown_1c;

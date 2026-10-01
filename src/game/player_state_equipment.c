@@ -581,16 +581,14 @@ sequence_effect: {
     case 44:
         func_80025878(1000, &position, &direction, &distance);
         effect_id = 0x75;
-        goto regular_weapon_effect;
+        goto emit_rotation_effect;
     case 45:
         func_80025878(1000, &position, &direction, &distance);
         effect_id = 0x74;
-        goto regular_weapon_effect;
+        goto emit_simple_effect;
     case 40:
         rotation_scale = 1000;
         goto probe_rotation_effect;
-regular_weapon_effect:
-        goto emit_rotation_effect;
     case 39:
         func_80025878(50, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);

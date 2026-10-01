@@ -501,3 +501,15 @@ comes from changed body offsets, not a missing case label or a different
 case-to-body mapping. The source body remains 52 bytes shorter than retail
 (1,164 versus 1,216 bytes), so the text-layout cause is still open; no table
 row was rewritten to improve a score.
+
+A fresh focused rebuild after the shared actor-tail view changes preserves
+`0x80039108` at 89.06250% direct strict text and its sole proven caller
+`actor_select_best_target` (`0x800395c8`) at 100%. At the first structural
+gap, retail case 9 has its own `vector_xz_to_angle` and
+`angle_within_tolerance` sequence at `0x80039260..0x8003929c`; the current
+object joins that equivalent angle check with the later case 11 sequence,
+omitting 15 instructions there. The raw case-9 success and failure edges,
+including the `rand` gate, are represented by the C. No KF1 analogue or
+retail caller establishes a different condition or field width, so the source
+keeps its defined zero score and the separate retail call placement remains
+an unattributed source/codegen residue.

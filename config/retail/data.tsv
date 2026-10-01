@@ -970,7 +970,7 @@ GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	DAT_800
 GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6ec	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	second motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	third motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	fourth motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d704	0x5cf04	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	DAT_8006d704	u32	retail zero bytes;func_80040308 raw read/write pairs	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;func_80041d7c xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 GAME.EXE	0x8006d714	0x5cf14	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

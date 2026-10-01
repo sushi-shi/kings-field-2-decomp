@@ -27,7 +27,7 @@ notes that list `0x80045f20` as WIP predate its typed reconstruction.
 | `0x80047434` | Exact | Increments a counter through 99 and enqueues a notification. |
 | `0x800474c4` | Exact | Seven-argument collision-channel transition. |
 | `0x800475d8` | WIP, 98.56481% strict | Scene interaction calls the pose projector, channel transition, and notification path; saved-register and instruction scheduling remain open. |
-| `0x80047c98` | WIP, 98.05147% strict | Event dispatcher calls the terrain probe, notification queue, and `0x80034e10` image transition; the early map-loop zero matches retail, with saved-register and control-layout residue. |
+| `0x80047c98` | WIP, 99.81618% strict | Event dispatcher calls the terrain probe, notification queue, and `0x80034e10` image transition; its shared linked-object notification block now follows retail, leaving saved-register and one commutative-add residue. |
 | `0x800482f8` | Exact | Clears and initializes typed event-state control, sentinels, and arena regions; 100% strict. |
 | `0x800483a8` | Exact | Invokes the active callback with a zero argument. |
 | `0x800483d8` | Exact | Saves event-arena offsets through the typed pointer table; 100% strict. |
@@ -62,10 +62,14 @@ The probe reverses those loads and inserts one `nop`; its two differing
 jump-table pointer addends are exactly four bytes later as a consequence.
 Swapping the two ordinary C assignments in an off-tree probe emitted the same
 listing, so the source remains unchanged. Direct strict `0x80047c98` is
-98.05147% text; retail shares `notify_enqueue(6)` at `0x80048160` before the
-linked-object lookup and branches back to it when the linked ID is `0xff`.
-The current source expresses that behavior, but its probe places the call
-after the lookup. Direct strict `0x800489ac` remains 98.82883% text with
+99.81618% text after spelling the shared notification block explicitly.
+Retail shares `notify_enqueue(6)` at `0x80048160` before the linked-object
+lookup and branches back to it when the linked ID is `0xff`; the retained C
+now emits that order. Focused similarity rose from 86.3% to 97.1%, with
+85/85 blocks and 55/55 branches. The remaining listing differences exchange
+the rotation argument and constant-one saved registers and reverse the
+operands of one commutative `addu`; they do not establish a source correction.
+Direct strict `0x800489ac` remains 98.82883% text with
 100% rodata; the actor-state base and `0xff` sentinel use the opposite
 argument registers. None of these residues establishes a different C field,
 call, or source operation.
@@ -94,6 +98,17 @@ It changed only their register assignment and raised direct objdiff similarity
 to `99.23943%`, without bringing either pointer's retail register or increment
 order into agreement. The simpler cursor-derived pointer was restored and
 rebuilt; `0x80046144` remains strict exact.
+
+The current connected-control quick builds remain identical for all six
+event-state functions, both pose functions, the save-stream function, and the
+`0x80046144` marker leaf. At `0x800461a0`, retail reads the marker record's
+second and third bytes as `-2(a0)` and `-1(a0)` from a payload pointer.
+An equivalent payload-relative source probe introduced a third pointer in the
+pinned compiler and lowered focused similarity from 86.6% to 73.9%; it was
+discarded. A single payload-pointer model also changed the fallback-offset
+calculation and reached only 83.4% focused. Retail keeps two independently
+advanced pointers, so the existing two-pointer source and its WIP verdict
+remain unchanged.
 
 The menu preview at `0x8002083c` still has a 64-byte stack-frame extent gap.
 JP and US retail both use a 224-byte frame; EU retail also has a 224-byte

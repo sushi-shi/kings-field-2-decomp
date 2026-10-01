@@ -199,55 +199,55 @@ GAME.EXE	0x8001133c	0xb3c		mips32_candidate	raw-word	0x8002a360	load		.word		poi
 GAME.EXE	0x80011340	0xb40		mips32_candidate	raw-word	0x80029fcc	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
 GAME.EXE	0x80011344	0xb44		mips32_candidate	raw-word	0x8002a080	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
 GAME.EXE	0x80011348	0xb48		mips32_candidate	raw-word	0x8002a040	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x8001134c	0xb4c		mips32_candidate	raw-word	0x8002ac70	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011350	0xb50		mips32_candidate	raw-word	0x8002acb0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011354	0xb54		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011358	0xb58		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001135c	0xb5c		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011360	0xb60		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011364	0xb64		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011368	0xb68		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001136c	0xb6c		mips32_candidate	raw-word	0x8002b534	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011370	0xb70		mips32_candidate	raw-word	0x8002b5a4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011374	0xb74		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011378	0xb78		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001137c	0xb7c		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011380	0xb80		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011384	0xb84		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011388	0xb88		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001138c	0xb8c		mips32_candidate	raw-word	0x8002ad34	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011390	0xb90		mips32_candidate	raw-word	0x8002ae28	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011394	0xb94		mips32_candidate	raw-word	0x8002af00	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011398	0xb98		mips32_candidate	raw-word	0x8002b000	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001139c	0xb9c		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113a0	0xba0		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113a4	0xba4		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113a8	0xba8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113ac	0xbac		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113b0	0xbb0		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113b4	0xbb4		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113b8	0xbb8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113bc	0xbbc		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113c0	0xbc0		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113c4	0xbc4		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113c8	0xbc8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113cc	0xbcc		mips32_candidate	raw-word	0x8002b0b0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113d0	0xbd0		mips32_candidate	raw-word	0x8002b3e8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113d4	0xbd4		mips32_candidate	raw-word	0x8002b2bc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113d8	0xbd8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113dc	0xbdc		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113e0	0xbe0		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113e4	0xbe4		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113e8	0xbe8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113ec	0xbec		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113f0	0xbf0		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113f4	0xbf4		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113f8	0xbf8		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800113fc	0xbfc		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011400	0xc00		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011404	0xc04		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011408	0xc08		mips32_candidate	raw-word	0x8002b5c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001140c	0xc0c		mips32_candidate	raw-word	0x8002b4d8	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001134c	0xb4c		mips32_candidate	raw-word	0x8002ac70	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011350	0xb50		mips32_candidate	raw-word	0x8002acb0	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011354	0xb54		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011358	0xb58		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001135c	0xb5c		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011360	0xb60		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011364	0xb64		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011368	0xb68		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001136c	0xb6c		mips32_candidate	raw-word	0x8002b534	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011370	0xb70		mips32_candidate	raw-word	0x8002b5a4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011374	0xb74		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011378	0xb78		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001137c	0xb7c		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011380	0xb80		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011384	0xb84		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011388	0xb88		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001138c	0xb8c		mips32_candidate	raw-word	0x8002ad34	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011390	0xb90		mips32_candidate	raw-word	0x8002ae28	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011394	0xb94		mips32_candidate	raw-word	0x8002af00	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011398	0xb98		mips32_candidate	raw-word	0x8002b000	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001139c	0xb9c		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113a0	0xba0		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113a4	0xba4		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113a8	0xba8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113ac	0xbac		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113b0	0xbb0		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113b4	0xbb4		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113b8	0xbb8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113bc	0xbbc		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113c0	0xbc0		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113c4	0xbc4		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113c8	0xbc8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113cc	0xbcc		mips32_candidate	raw-word	0x8002b0b0	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113d0	0xbd0		mips32_candidate	raw-word	0x8002b3e8	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113d4	0xbd4		mips32_candidate	raw-word	0x8002b2bc	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113d8	0xbd8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113dc	0xbdc		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113e0	0xbe0		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113e4	0xbe4		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113e8	0xbe8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113ec	0xbec		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113f0	0xbf0		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113f4	0xbf4		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113f8	0xbf8		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x800113fc	0xbfc		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011400	0xc00		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011404	0xc04		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x80011408	0xc08		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
+GAME.EXE	0x8001140c	0xc0c		mips32_candidate	raw-word	0x8002b4d8	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
 GAME.EXE	0x80011410	0xc10		mips32_candidate	raw-word	0x8002d65c	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80011414	0xc14		mips32_candidate	raw-word	0x8002d608	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80011418	0xc18		mips32_candidate	raw-word	0x8002d608	load		.word		range-only	candidate	investigation:relocs.tsv
@@ -7310,6 +7310,7 @@ GAME.EXE	0x80037d80	0x27580		mips26	instruction-word	0x80038c7c	load		j		range-f
 GAME.EXE	0x80037db0	0x275b0		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037dd0	0x275d0		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037ddc	0x275dc		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037e3c	0x2763c	0x80037e40	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_action89_cell_base_raw_pair
 GAME.EXE	0x80037e68	0x27668		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037e84	0x27684		mips26	instruction-word	0x8005dda4	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037e98	0x27698		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -8244,8 +8245,9 @@ GAME.EXE	0x8004093c	0x3013c		mips26	control-flow	0x80040264	load	effect_pool_ini
 GAME.EXE	0x8004095c	0x3015c		mips26	control-flow	0x800416c4	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x800409d4	0x301d4		mips26	control-flow	0x8003fa2c	load	effect_play_spatial_sound	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x800409dc	0x301dc		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
-GAME.EXE	0x80040a48	0x30248	0x80040a4c	mips_hi16_lo16	instruction-word	0x8006d704	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80040a78	0x30278	0x80040a7c	mips_hi16_lo16	instruction-word	0x8006d704	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80040a48	0x30248	0x80040a4c	mips_hi16_lo16	instruction-word	0x8006d704	load	DAT_8006d704	lui+lw	v1	paired-pattern	reviewed	manual:func_80040308 raw signed-low index load
+GAME.EXE	0x80040a50	0x30250	0x80040a54	mips_hi16_lo16	instruction-word	0x801d9628	bss	DAT_801d9628	lui+addiu	a0	paired-pattern	reviewed	manual:func_80040308 raw signed-low trail base
+GAME.EXE	0x80040a78	0x30278	0x80040a7c	mips_hi16_lo16	instruction-word	0x8006d704	load	DAT_8006d704	lui+sw	at	paired-pattern	reviewed	manual:func_80040308 raw signed-low index store
 GAME.EXE	0x80040ae0	0x302e0		mips26	control-flow	0x8003fa2c	load	effect_play_spatial_sound	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x80040ae8	0x302e8		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80040b54	0x30354		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump

@@ -402,14 +402,21 @@ void func_80036ed4(void)
             switch (object->action_timer) {
             case 1:
                 map_object_play_spatial_sound(object, template->unknown_0d[2]);
-                if (object->tail.fields.unknown_38 == 2) {
+                switch (object->tail.fields.unknown_38) {
+                case 2:
                     object->action_timer = 2;
                     object->tail.fields.unknown_38 = 3;
-                } else if (object->tail.fields.unknown_38 == 3) {
+                    break;
+                case 3:
                     object->action_timer = 3;
                     object->tail.fields.unknown_38 = 2;
-                } else if (object->tail.fields.unknown_38 < 2) {
+                    break;
+                case 0:
+                case 1:
                     object->action_timer = 2;
+                    break;
+                default:
+                    break;
                 }
                 break;
             case 2:
@@ -418,13 +425,6 @@ void func_80036ed4(void)
                     break;
                 }
                 object->unknown_0a = 0xfff;
-                goto action83_complete;
-            case 3:
-                object->unknown_0a -= 256;
-                if ((s16)object->unknown_0a > 0) {
-                    break;
-                }
-                object->unknown_0a = 0;
             action83_complete:
                 func_800366fc(object->tail.fields.unknown_39);
                 if (object->tail.fields.unknown_38 == 0) {
@@ -436,6 +436,13 @@ void func_80036ed4(void)
                     object->action_timer = 0;
                 }
                 break;
+            case 3:
+                object->unknown_0a -= 256;
+                if ((s16)object->unknown_0a > 0) {
+                    break;
+                }
+                object->unknown_0a = 0;
+                goto action83_complete;
             case 4:
                 object->unknown_0a -= 256;
                 if ((s16)object->unknown_0a <= 0) {
@@ -540,9 +547,13 @@ void func_80036ed4(void)
                     KfMapOccupancyCell *cell =
                         &bss_801c7540.map_cells[object->position.vz >> 11]
                                                   [object->position.vx >> 11];
+                    KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->unknown_10 = 0x1000;
                     object->action_timer = 0;
-                    cell->layer[object->unknown_00 == 1 ? 0 : 1].unknown_03 = 0x75;
+                    if (object->unknown_00 != 1) {
+                        layer = &cell->layer[1];
+                    }
+                    layer->unknown_03 = 0x75;
                     object->unknown_00 = 0;
                 }
                 break;
@@ -750,17 +761,22 @@ void func_80036ed4(void)
         case 15: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
             if (object->action_timer != 0 && target->object_id == 0xff) {
+                u32 sentinel_offset;
                 switch (object->tail.fields.unknown_38) {
                 case 0x72:
-                    event_state.control.fields.sentinels.unknown_00 = 0xffff;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_00;
                     break;
                 case 0x73:
-                    event_state.control.fields.sentinels.unknown_04 = 0xffff;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_04;
                     break;
                 case 0x74:
-                    event_state.control.fields.sentinels.unknown_08 = 0xffff;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_08;
                     break;
+                default:
+                    goto no_sentinel;
                 }
+                *(u16 *)&event_state.control.bytes[sentinel_offset] = 0xffff;
+            no_sentinel:
                 object->tail.fields.unknown_38 = 0xff;
                 object->action_timer = 0;
             }
@@ -770,16 +786,16 @@ void func_80036ed4(void)
 
         case 17: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
-            KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
-            u8 marker_mask = object->tail.fields.unknown_3a.bytes.low;
             if (object->action_timer != 0 && target->object_id == 0xff) {
+                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
                 object->tail.fields.unknown_38 = 0xff;
                 object->action_timer = 0;
-                linked->tail.fields.unknown_38 &= ~marker_mask;
+                linked->tail.fields.unknown_38 &= ~object->tail.fields.unknown_3a.bytes.low;
             }
             if (func_80036b68(object, target, &DAT_8006d6f4,
                               &DAT_8006d6fc, 0, 20)) {
-                linked->tail.fields.unknown_38 |= marker_mask;
+                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
+                linked->tail.fields.unknown_38 |= object->tail.fields.unknown_3a.bytes.low;
             }
             break;
         }
@@ -808,26 +824,33 @@ void func_80036ed4(void)
                     linked->tail.fields.unknown_38 = 0;
                     linked->unknown_00 = object->unknown_00;
                     scale = object->tail.fields.unknown_38 << 5;
-                    linked->scale.vx = scale;
-                    linked->scale.vy = scale;
                     linked->scale.vz = scale;
+                    linked->scale.vy = scale;
+                    linked->scale.vx = scale;
                     object->action_timer = 1;
                 }
                 break;
             case 1: {
-                u8 chance = game_counter_bytes[0x4c];
+                s32 chance = game_counter_bytes[0x4c];
                 if (chance < 16 && rand() >= chance * 2048) {
                     s16 scale = (u16)linked->scale.vz + 1;
-                    linked->scale.vx = scale;
-                    linked->scale.vy = scale;
                     linked->scale.vz = scale;
+                    linked->scale.vy = scale;
+                    linked->scale.vx = scale;
                     object->tail.fields.unknown_38 = (u16)linked->scale.vz >> 5;
-                    if (linked->scale.vx >= 0x1000) {
-                        goto start_action_19;
+                    if (linked->scale.vx < 0x1000) {
+                        break;
                     }
+                    goto start_action_19;
                 }
                 break;
             }
+        start_action_19:
+            object->tail.fields.unknown_38 = 0xff;
+            linked->tail.fields.unknown_38 = 0xff;
+            map_object_start_action_if_idle(linked, 0x62);
+            object->action_timer = 2;
+            break;
             case 2:
                 if (linked->object_id == KF_MAP_OBJECT_ID_NONE) {
                     object->tail.fields.unknown_38 = 0;
@@ -835,16 +858,11 @@ void func_80036ed4(void)
                 break;
             }
             break;
-        start_action_19:
-            object->tail.fields.unknown_38 = 0xff;
-            linked->tail.fields.unknown_38 = 0xff;
-            map_object_start_action_if_idle(linked, 0x62);
-            object->action_timer = 2;
-            break;
         }
 
         case 96:
-            if (object->action_timer == 0) {
+            switch (object->action_timer) {
+            case 0: {
                 s32 floor_y = func_8002b604(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
@@ -856,13 +874,16 @@ void func_80036ed4(void)
                     object->tail.fields.unknown_3e.value = 16;
                     object->action_timer = 1;
                 }
-            } else if (object->action_timer == 1) {
+                break;
+            }
+            case 1:
                 object->rotation.vz += object->tail.fields.unknown_3e.value;
                 object->tail.fields.unknown_3e.value += 16;
                 if (object->rotation.vz >= 0x400) {
                     object->rotation.vz = 0x400;
                     object->action_timer = 99;
                 }
+                break;
             }
             break;
 

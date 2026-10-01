@@ -349,7 +349,7 @@ GAME.EXE	0x8006d6e4	0x8	DAT_8006d6e4	global	load	SVECTOR	map_object	supported	re
 GAME.EXE	0x8006d6ec	0x8	DAT_8006d6ec	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x800384f4/0x800384f8;func_80036b68 end offset	second of four adjacent motion offsets; original linkage WIP
 GAME.EXE	0x8006d6f4	0x8	DAT_8006d6f4	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x80038584/0x80038588;func_80036b68 start offset	third of four adjacent motion offsets; original linkage WIP
 GAME.EXE	0x8006d6fc	0x8	DAT_8006d6fc	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x8003858c/0x80038590;func_80036b68 end offset	fourth of four adjacent motion offsets; original linkage WIP
-GAME.EXE	0x8006d704	0x4	DAT_8006d704	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d704	0x4	DAT_8006d704	global	load	u32	effect_constructor	candidate	retail zero word;func_80040308 reads and writes modulo four	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x8	effect_zero_direction	static	load	SVECTOR	effect_spawn_zero_direction	supported	asm;single xref;retail zero bytes;constructor argument	zero vector passed as initial direction by func_80041d7c
 GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d71c	0x4	DAT_8006d71c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -524,6 +524,7 @@ GAME.EXE	0x801c7068	0x8	DAT_801c7068	global	bss	SVECTOR	effect	address-only	asm;
 GAME.EXE	0x801c7078	0x4c8	player_weapon_records	global	bss	KfWeaponRecordGame[18]	player	candidate	asm;player_recalculate_combat_stats;68-byte stride;adjacent BSS	weapon combat records immediately precede separately cleared 0x801c7540 region
 GAME.EXE	0x801c7540	0x11844	bss_801c7540	global	bss	KfBss801c7540	player	candidate	game_main_loop startup clear;player_set_equipment_slot	startup-cleared region; equipment records begin at +0x115a8
 GAME.EXE	0x801d9610	0x4	display_frame_cleared_word	global	bss	s32	graphics	supported	asm;only reference clears it in display_begin_frame	meaning unresolved; cleared once per frame
+GAME.EXE	0x801d9628	0x900	DAT_801d9628	global	bss	KfEffectTrailRow[4][24]	effect_constructor	candidate	func_80040308 base and 576-byte slot stride;24 rows per slot	observed minimum trail storage span; original allocation extent and TU unproved
 OPEN.EXE	0x800114e4	0x4	DAT_800114e4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114e8	0x4	DAT_800114e8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x800114ec	0x4	DAT_800114ec	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

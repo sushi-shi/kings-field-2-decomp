@@ -1321,3 +1321,39 @@ The configured retail folder contains the executables but no `CD/COM/FDAT.T`,
 so the archive entry loaded into the first workspace cannot yet constrain its
 complete size. Both literals and their reviewed relocation candidates remain
 unchanged rather than manufacturing BSS owners from adjacency or codegen.
+
+### Fresh audio runtime and startup control pass
+
+Focused rebuilds and isolated direct strict comparison of
+`game.audio_runtime` and `game.resource_startup` leave 15 of their 19 GAME
+functions exact. The exact audio runtime addresses are `0x80013ae4`,
+`0x80013b7c`, `0x80013bd4`, `0x80013c8c`, `0x80013f50`, `0x80013f84`,
+`0x80013fb8`, `0x80014030`, `0x800140dc`, `0x80014100`, `0x80014164`,
+`0x80014278`, `0x80014394`, `0x800145f4`, and `0x800146d0`.
+
+| Address | Direct strict verdict | First substantive difference |
+| --- | --- | --- |
+| `0x800139c4` | WIP, 89.30556% | Four sequence/VAB workspace constructors still use fixed `lui/ori` literals in C where retail has signed-low relocations; the ensuing temporary registers differ. |
+| `0x800144b8` | WIP, 94.87342% | The VAB service has matching calls and 11/11 CFG blocks; retail retains phase value 1 in `s3`, while compiled C retains retry sentinel -1. |
+| `0x80015d58` | WIP, 89.03145% | The fixed arena boundary and three copy destinations lack complete owning objects; literal `lui/ori` differs from retail's signed-low constructors. |
+| `0x80015fd4` | WIP, 89.710144% | The TMD destination at `0x8012da68` remains unowned, so the literal address constructor and its scheduled call operands differ. |
+
+The 15 exact function bodies stayed byte exact. No source or identity change was
+justified by this fresh comparison.
+
+The connected transition request, five phase callbacks, and transition step
+were also rebuilt and directly compared. The five callbacks remain 100%.
+`0x80016260` remains 98.790085% strict with the established argument-register
+and sentinel-order residue; `0x80016820` remains 99.193474% strict with the
+two unowned fixed-RAM referents at `0x8019e138` and `0x8012da68`. Together
+these audio/startup/transition units cover 26 functions: 20 exact and six
+explicit WIPs. No source edit was justified for this seven-function extension.
+
+The direct startup caller `game.main` was rebuilt separately. Its `main`
+entry at `0x80013634` remains 100%; `game_main_loop` at `0x8001369c`
+remains 99.67553% strict (752 retail bytes). Only its two-instruction
+constructor for the shared fixed `0x8009b0a0` arena boundary differs:
+retail uses carry-adjusted `lui/addiu`, while the source's explicit fixed
+boundary emits `lui/ori`. The five floor-item calls and the connected audio
+and resource calls are byte exact. The boundary's original defining source
+is still unproved, so no global owner was invented to erase this residue.

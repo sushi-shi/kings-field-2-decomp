@@ -1650,6 +1650,10 @@ probe. No source fact supports forcing that schedule.
 Combining the branch choice and angle mask into one C assignment compiled to
 91.7% focused instead of the retained 99.2%, with all six exact siblings
 still SAME; this off-tree probe was discarded.
+The axis-retry fallback also looks asymmetric in C, but retail confirms it:
+after zeroing Z motion, the no-scaling path copies original Z back into the
+same Z register at `8003b270`. It does not assign original X. This is a
+decoded source behavior, so the current C assignment is retained.
 An isolated compile of `game.actor_group_position` likewise directly confirms
 its three preceding functions at 100% (268, 276, and 448 bytes), identical
 ordered relocations, and `3c3e0` at 99.64539% over 564 retail bytes. Its
@@ -1977,6 +1981,20 @@ fixed script length or candidate stride. Focused listing rises 37.7% to
 41.5% WIP with the C path; CFG is 410/358 retail/compiled blocks and
 213/179 branches, with the indirect switch still unresolved. Six exact
 animation listings and the two exact group-fixup siblings remain SAME.
+The action-script actor tail now has a two-halfword view: raw `lh` at
+`3ed70` and `lhu` at `3ed88` read actor +0x72, while `lh` at `3eeb8` and
+`lhu` at `3eed4` read actor +0x74. The source uses signed conversion only
+for the two signed consumers and retains unsigned index/increment paths.
+The view preserves the eight-byte union and actor layout. Focused dispatcher
+remains 41.5% WIP after this width correction; six animation and two fixup
+exact siblings, fixed-curve `39c14`, and both home-wrapper functions remain
+SAME. The script's full extent and candidate stride are still unproved.
+Selector 21's state-2 countdown independently confirms a mixed-width actor
++0x72 view: `lhu` at `3ebb4`, `sh` at `3ebc0`, then `sll`/`sra` before
+testing for -1. The source now decrements an unsigned halfword and tests
+the signed result, preserving the eight-byte tail layout. Focused `3d184`
+remains 41.5% WIP; fixed-curve `39c14`, both home-wrapper functions, and
+the two exact group-fixup siblings remain SAME.
 
 Selectors 28 and 30 have bounded source paths from the retail control flow.
 Selector 28 at `8003f138` starts animation and motion state, plays spatial
@@ -2044,7 +2062,7 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3ad90` | SAME | `3adc4` | SAME |
 | `3ae20` | SAME | `3ae50` | WIP 99.2% |
 | `3b33c` | SAME | `3b520` | SAME |
-| `3b5bc` | SAME | `3b5d0` | WIP 66.5% |
+| `3b5bc` | SAME | `3b5d0` | WIP 68.2% |
 | `3b9a4` | SAME | `3bae4` | SAME |
 | `3bba0` | SAME | `3bcd0` | SAME |
 | `3bd40` | WIP 68.2% | `3be38` | SAME |

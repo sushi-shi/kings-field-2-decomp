@@ -25,7 +25,6 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     KfCollisionRow *override;
     KfCollisionRow *light_rotation;
     KfTmdObject *object;
-    const u8 *cell_lighting;
     u16 object_index;
     s32 red;
     s32 green;
@@ -58,12 +57,15 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
         model.t[0] = position->vx;
         model.t[1] = position->vy;
         model.t[2] = position->vz;
-        cell_lighting = &bss_801c7540.map_cells[
-            game_graphics_runtime.render_state.view_position.vz >> 11][
-            game_graphics_runtime.render_state.view_position.vx >> 11]
-            .layer[0].lighting_index;
-        cell_lighting += player_state.unknown_128;
-        lighting = &game_graphics_runtime.collision_rows[*cell_lighting & 0x3f];
+        {
+            u16 layer_offset = player_state.unknown_128;
+            u8 lighting_index = *(
+                &bss_801c7540.map_cells[
+                    game_graphics_runtime.render_state.view_position.vz >> 11][
+                    game_graphics_runtime.render_state.view_position.vx >> 11]
+                    .layer[0].lighting_index + layer_offset);
+            lighting = &game_graphics_runtime.collision_rows[lighting_index & 0x3f];
+        }
     }
 
     if (render_mode == 0x80) {

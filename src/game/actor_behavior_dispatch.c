@@ -671,8 +671,8 @@ void func_8003d184(void)
             actor_state.unknown_93a4 &= ~0x20;
             func_8003bcd0(actor->unknown_64,
                            target->word_0e.value, 0, 0xff, 0, 5);
-            actor->tail_72.signed_state--;
-            if (actor->tail_72.signed_state == -1) {
+            actor->tail_72.unsigned_state--;
+            if ((s16)actor->tail_72.unsigned_state == -1) {
                 actor_reset_target_and_reselect();
             }
             actor_state.unknown_93a4 = saved_flags;
@@ -773,8 +773,8 @@ void func_8003d184(void)
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
             actor->state_70.signed_state = target->word_0e.value;
-            actor->tail_72.signed_state = 0;
-            actor->tail_72.angles.y = 0;
+            actor->tail_72.script.word_index = 0;
+            actor->tail_72.script.unknown_74 = 0;
             if (target->unknown_05[2] == 1) {
                 actor->unknown_0d = 16;
             }
@@ -788,20 +788,20 @@ void func_8003d184(void)
             if (target->word_10.value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;
             }
-            cursor = script->stream + actor->tail_72.signed_state;
+            cursor = script->stream + (s16)actor->tail_72.script.word_index;
             for (;;) {
                 u16 opcode = *cursor++;
-                s32 index = actor->tail_72.signed_state;
-                actor->tail_72.signed_state = index + 1;
+                u16 index = actor->tail_72.script.word_index;
+                actor->tail_72.script.word_index = index + 1;
 
                 switch (opcode) {
                 case 0x8000:
                     cursor = script->stream;
-                    actor->tail_72.signed_state = 0;
+                    actor->tail_72.script.word_index = 0;
                     continue;
                 case 0x8001:
                     repeat = *cursor++;
-                    actor->tail_72.signed_state = index + 2;
+                    actor->tail_72.script.word_index = index + 2;
                     continue;
                 case 0x8003: {
                     u16 skip = *cursor;
@@ -812,7 +812,7 @@ void func_8003d184(void)
                     s16 x = *cursor++;
                     s16 y = *cursor++;
                     s16 z = *cursor++;
-                    actor->tail_72.signed_state = index + 4;
+                    actor->tail_72.script.word_index = index + 4;
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, -1, x, y, z, cursor);
                     break;
@@ -821,7 +821,7 @@ void func_8003d184(void)
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
-                    actor->tail_72.signed_state = index + 4;
+                    actor->tail_72.script.word_index = index + 4;
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, -2,
                                    first, second, third);
@@ -831,14 +831,14 @@ void func_8003d184(void)
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
-                                   actor->tail_72.angles.y);
+                                   (s16)actor->tail_72.script.unknown_74);
                     break;
                 }
                 if (--repeat == 0) {
                     break;
                 }
             }
-            actor->tail_72.angles.y++;
+            actor->tail_72.script.unknown_74++;
         }
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();

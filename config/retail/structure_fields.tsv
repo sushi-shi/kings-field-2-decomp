@@ -54,7 +54,7 @@ KfActor	0x6a	0x2	unknown_6a	s16	opaque	GAME 0x8003b520;0x80015bc8	trajectory res
 KfActor	0x6c	0x2	unknown_6c	s16	opaque	GAME 0x8003b520 sh	trajectory setup parameter
 KfActor	0x6e	0x2	unknown_6e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x70	0x2	state_70	KfActorState70	supported	GAME 0x8003d8f0-0x8003da98;GAME 0x80038f7c	Signed halfword and byte state views overlap at actor +0x70
-KfActor	0x72	0x8	tail_72	KfActorTail72	supported	GAME 0x8003e414-0x8003e468;0x8003d784	SVECTOR output/copy and actor height baseline share action-specific tail
+KfActor	0x72	0x8	tail_72	KfActorTail72	supported	GAME 0x8003e414-0x8003e468;0x8003d784;0x8003ed70-0x8003eed4	Action-specific vector, motion baseline, and script halfwords share one tail
 KfActor	0x7a	0x2	unknown_7a	u8[2]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
 KfActorHalfword4a	0x0	0x2	value	u16	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4a	0x0	0x2	bytes	KfActorHalfword4aBytes	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
@@ -80,11 +80,15 @@ KfActorStateGame	0x93c0	0x4	active_actor_count	u32	supported	game/actor.h;GAME 0
 KfActorStateGame	0x93c4	0x4	unknown_93c4	u32	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActorStateGame	0x93c8	0x4	actor_93c8	KfActor *	supported	game/actor.h;retail GAME 80025878	actor pointer written from 8003a778 result
 KfActorTail72	0x0	0x2	signed_state	s16	supported	GAME 0x8003ef8c;0x8003efd4;0x8003efdc	signed state halfword used by alternate action
+KfActorTail72	0x0	0x2	unsigned_state	u16	supported	GAME 0x8003ebb4 lhu;0x8003ebc0 sh;0x8003ebc4-0x8003ebc8 sll/sra	Unsigned decrement with signed terminal test in selector 21
 KfActorTail72	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x8003e660	Euler output at actor +0x72 consumed by func_8003bf74
 KfActorTail72	0x0	0x8	direction	SVECTOR	supported	GAME 0x8003e414-0x8003e468	Eight-byte vector output and copy at actor +0x72
 KfActorTail72	0x0	0x8	motion	KfActorTail72Motion	supported	GAME 0x8003d784;0x8003d804	Euler view with signed baseline at actor +0x78
+KfActorTail72	0x0	0x4	script	KfActorTail72Script	supported	GAME 0x8003ed70;0x8003ed88;0x8003eeb8;0x8003eed4	Two-word script cursor and counter view at actor +0x72/+0x74
 KfActorTail72Motion	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x8003e660	Action-specific Euler halfwords
 KfActorTail72Motion	0x6	0x2	baseline	s16	supported	GAME 0x8003d784 sh and 0x8003d804 lh	Signed actor height baseline for selectors 12/16
+KfActorTail72Script	0x0	0x2	word_index	u16	supported	GAME 0x8003ed70 lh;0x8003ed88 lhu	Script word index at actor +0x72; both signed and unsigned reads observed
+KfActorTail72Script	0x2	0x2	unknown_74	u16	supported	GAME 0x8003eeb8 lh;0x8003eed4 lhu	Action-script second halfword at actor +0x74; meaning unresolved
 KfAnimClip	0x00	0x02	keyframe_count	u16	supported	asm;animation_select_keyframe	frame count for the selected clip
 KfAnimClip	0x02	0x02	unknown_02	u16	opaque	game/animation.h;animation_select_keyframe	meaning unresolved
 KfAnimClip	0x04	0x04	keyframe_offsets	u32[1]	candidate	asm;animation_select_keyframe	first offset in variable-length keyframe table

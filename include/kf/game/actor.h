@@ -293,12 +293,21 @@ typedef struct KfActorTail72Motion {
 typedef char kf_actor_tail_72_motion_size[
     sizeof(KfActorTail72Motion) == 8 ? 1 : -1];
 
-/* Action-specific tail storage overlaps a vector and a signed state. */
+typedef struct KfActorTail72Script {
+    u16 word_index;
+    u16 unknown_74;
+} KfActorTail72Script;
+typedef char kf_actor_tail_72_script_size[
+    sizeof(KfActorTail72Script) == 4 ? 1 : -1];
+
+/* Action-specific tail storage overlaps a vector, signed state, and script words. */
 typedef union KfActorTail72 {
     s16 signed_state;
+    u16 unsigned_state;
     struct KfEulerAngles angles;
     SVECTOR direction;
     KfActorTail72Motion motion;
+    KfActorTail72Script script;
 } KfActorTail72;
 typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 8 ? 1 : -1];
 typedef char kf_actor_tail_72_baseline_offset[
@@ -383,7 +392,10 @@ typedef char kf_actor_state_70_offset[(u32)&((KfActor *)0)->state_70 == 0x70 ? 1
 typedef char kf_actor_state_71_offset[(u32)&((KfActor *)0)->state_70.bytes.high == 0x71 ? 1 : -1];
 typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed_state == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_unsigned_offset[(u32)&((KfActor *)0)->tail_72.unsigned_state == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_script_index_offset[(u32)&((KfActor *)0)->tail_72.script.word_index == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_script_word_74_offset[(u32)&((KfActor *)0)->tail_72.script.unknown_74 == 0x74 ? 1 : -1];
 typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
 typedef char kf_actor_unknown_7a_offset[(u32)&((KfActor *)0)->unknown_7a == 0x7a ? 1 : -1];
 

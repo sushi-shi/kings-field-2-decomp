@@ -1616,6 +1616,21 @@ The current C already expresses those cases through one labelled call, so
 moving or duplicating it without an independently supported source shape
 would only steer the compiler's placement.
 
+The reviewed 53-word switch table identifies case 44 at `80011188+0xb0`
+and case 45 at `+0xb4`. Retail case 44 sets effect ID `0x75` at
+`80026148` and jumps through `80025de0` to `80026220`, which writes the
+camera-rotation pointer as the constructor's sixth argument. Case 45 sets
+`0x74` at `80026168` and jumps through `80025a8c` directly to `8002622c`,
+skipping that sixth-argument store. The C previously sent both cases to
+the rotation path; case 45 now joins the five-argument simple-effect path.
+The constructor corroborates the distinction: retail kind 116 at
+`80040f98` returns without reading a variadic argument, whereas kind 117
+at `80040fa8` reaches the caller-supplied rotation-vector copy.
+Focused comparison preserves all 15 exact equipment siblings. The dispatcher
+remains WIP at 95.54467% strict, slightly below the prior 95.54811% score;
+the corrected argument count is independently established by the raw call
+path and overrides that transient similarity change.
+
 The consolidated native GAME link no longer lists `DAT_800667e8` among its
 unresolved names. A scratch placement of `va_start` only in cases 39/49/50
 removed the early named-argument home store and lowered focused similarity;
@@ -1655,3 +1670,30 @@ strict objdiff reports 100% for `80042298`, `80042424`, and `800424f0`.
 The candidate symbol is an eight-byte COMMON allocation, so its final
 placement and the retail BSS class remain open even if the native link
 resolves the name.
+
+## Player collision and damage strict controls
+
+A direct isolated objdiff of 14 related GAME units covers 29 functions:
+23 are strict exact and six remain WIP. The exact set includes all ten
+`player_core_run` functions, both camera-turn functions, the distance-margin
+and reset-view helpers, the collision helpers at `80027928`, `80027988`, and
+`80028998`, and six damage, status, and weapon-power functions at
+`80024498`, `800247e4`, `800248a8`, `80024ca4`, `80026330`, and `80026464`.
+The WIPs are `80023384` (76.23256%), `8002722c` (99.09091%),
+`800274ec` (88.631%), `800279cc` (97.09642%), `80027f78` (95.91228%),
+and `8002897c` (88.57143%). These are strict text comparisons, separate
+from the focused listing percentages above.
+
+Retail `80023384` reads the lower and upper collision-cache bounds and
+repeats signed player `+0x134`, word camera Y `+0xdc`, and signed `+0x138`
+loads in each arm before the two death calls. The current C preserves those
+fields, arithmetic, branches, and call sites, but the probe compiler reuses
+one saved player-state address and emits fewer address pairs. The other
+large collision WIPs retain their ordered calls and known referents; no
+source-backed change was accepted in this strict pass. Three isolated
+natural spellings of the `8002897c` interval predicate either kept its
+v0/v1 scheduling residue or changed the retail CFG, so the source remains
+unchanged. The adjacent `game.actor_player_damage` focused control is
+`8003a778` SAME; `8003a318` differs in argument-register assignment, while
+`8003a614` retains the correct call/branch set but reuses the camera-position
+base where retail rematerializes the Z-field address.

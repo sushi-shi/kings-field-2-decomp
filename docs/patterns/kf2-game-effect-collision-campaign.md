@@ -2025,6 +2025,29 @@ The adjacent `game.effect_update` unit was rebuilt as a focused control;
 all ten functions, including both pool initializers, remain direct strict
 100%.
 
+## Constructor kind-6 trail ownership
+
+The raw kind-6 block at `0x800409e4..0x80040aec` establishes the previously
+missing trail path. Its `0x80040a48/4c` and `0x80040a78/7c` signed-low pairs
+read and write the initialized-zero word `DAT_8006d704`, incrementing it
+modulo four. The `0x80040a50/54` signed-low pair names the destination base
+`0x801d9628`. A selected slot is 576 bytes, and the block copies 24
+position/rotation rows of 24 bytes from the effect record, then clears two
+trailer bytes, sets 150 updates, and calls `effect_play_spatial_sound` with
+sound `0x22`. The updater reads the stored row pointer through record +0x40.
+
+The source now models that four-slot trail and its index with address-derived
+identities. The BSS claim covers the observed minimum `4 * 24 * 24 = 0x900`
+bytes; original allocation extent and defining TU remain candidate. The two
+index pairs and one base pair were checked against the raw words and admitted
+by a safe one-VA GAME carve with zero withheld relocations. A focused rebuild
+improves the constructor listing from 27.8% to 32.4%; fresh isolated strict
+objdiff improves `.text` from 70.960724% to 76.343285% (5,092 retail bytes,
+4,700 candidate bytes), with the four initialized data bytes exact. The
+123-entry `.rodata` table remains WIP because kind 102 still has an unmodeled
+entry, and the retail 72-byte versus probe 56-byte frame remains the first
+divergence. No exact claim is made.
+
 A related focused GAME effect-motion pass then rebuilt
 `effect_rotate_scale_offset_y` (`0x800416ec`), `effect_move_probe`
 (`0x8004177c`), `effect_aim_and_move` (`0x8004195c`), `effect_target_motion`

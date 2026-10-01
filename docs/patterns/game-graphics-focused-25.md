@@ -182,7 +182,7 @@ needed or retained.
 | `game.graphics_sliding_panels` | 2/2 exact |
 | `game.graphics_color_bytes_draw` | 1/1 exact |
 | `game.graphics_color_bytes_set` | 1/1 exact |
-| `game.render_world_model` | `0x80031850` WIP, 97.11642% |
+| `game.render_world_model` | `0x80031850` WIP, 98.92538% |
 | `game.render_animated_object` | `0x80031d8c` WIP, 94.65414% |
 | `game.render_frame` | 2/2 exact |
 | `game.animation_sparse_vertices` | 3/3 exact |
@@ -270,6 +270,17 @@ has 40/40 blocks, 16/16 branches, and matching known successors; the first
 control difference is a register assignment at branch 10. The exact weapon
 renderer reads this same lighting byte through the cached player offset;
 collision-shape dispatch updates that offset between zero and five.
+
+The null-path byte is now read as one scalar after the player layer-byte
+offset. This retains the typed 80-column grid lookup and matches retail's
+ordered `player_state+0x128` and `bss_801c7540+4` address pairs, `lbu 0`,
+and surrounding instruction schedule. The prior pointer-local form created
+the BSS address too early and selected the same byte with `lbu 4`. A targeted
+one-unit rebuild and isolated direct objdiff improve the source from
+**97.11642% to 98.92538%**; focused listing rises from 92.3% to **93.8%**.
+Retail/source still have 40/40 CFG blocks and 16/16 branches. The remaining
+first difference is saved-register assignment. A separate typed row/cell
+pointer probe scored 87.3% focused and was discarded.
 
 A focused dispatcher relocation census appears to differ at the player camera
 position (`player_state +0xdc` in retail versus `+0xe0` in the probe), but the

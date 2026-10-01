@@ -130,7 +130,7 @@ certification is pending.
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
-| `0x80036ed4` | WIP, 90.466354% direct strict code; 76.5% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section has all 238 reviewed pointer rows; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
+| `0x80036ed4` | WIP, 90.94679% direct strict code; 78.6% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section has all 238 reviewed pointer rows; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
 
 The current 27-function focused cohort comprises the 17 collision-height
 wrappers, two map-cell pattern helpers, six map-object reset helpers, the
@@ -482,6 +482,43 @@ The focused safe carve accepts all four renamed referents with zero addends
 and no withheld rows. Direct strict code is now 90.466354%, the focused
 listing is 76.5%, and the 32-byte `.data` remains 100%; the 956-byte
 `.rodata` pointer-addend result is still WIP at 17.033543%.
+Action 83's retail case 2 falls into the `func_800366fc` completion block,
+while case 3 appears later and jumps back into that completion block. Moving
+the common label/body immediately after case 2 gives the source the same
+physical CFG. Its state-byte dispatch also uses a signed `slti` range test
+and `bltz` after an `lbu`, a pattern emitted by a nested switch over states
+0–3 but not by the earlier if/else chain, which emitted `sltiu` and omitted
+the negative-range branch. The retained switch preserves all four cases and
+the default behavior. The final quick focused listing is 78.6%; direct
+strict code is 90.94679% (7,664 probe bytes versus 7,668 retail), 32-byte
+`.data` remains 100%, and the 956-byte `.rodata` rises to 39.937107% as
+case pointers move toward their retail offsets. The label-only intermediate
+scored higher on code alone (91.22796%) but did not reproduce the retail
+state-dispatch CFG or table addends, so it was not retained.
+
+Action 17's retail call at dispatcher offset `+0x16c0` separates two
+independent reads of the linked object index and marker mask. Retail reloads
+the bytes at object offsets `+0x31` and `+0x30` after `func_80036b68` and
+rebuilds the linked-object address before setting its marker. Keeping the
+pointer and mask live across the call omitted that sequence; scoping the
+reads to the two branches reproduces the local instructions. Action 15's
+retail cases `0x72`, `0x73`, and `0x74` select control offsets `0x28`,
+`0x2c`, and `0x30`, then share one halfword write through
+`event_state.control`. Selecting offsets from the typed control fields
+reproduces the raw branch schedule, HI/LO referent, and shared store.
+Action 19's three scale halfword stores run at object offsets `+0x30`,
+`+0x2e`, then `+0x2c` in retail; spelling the assignments in that order
+reproduces the local sequence. Its `game_counter_bytes[0x4c]` is zero
+extended on load but then compared by signed `slti`, so an `s32` local
+captures the promoted comparison type. Moving the shared action-start block
+between timer cases 1 and 2 reproduces retail's fallthrough, removing an
+extra compiled jump. Action 96 has an explicit timer-0 branch, timer-1
+branch, and default exit in retail; a `switch` yields that raw dispatch
+schedule and preserves both cases. The retained object now has a 80.6%
+focused listing, 94.6771% strict code (7,672 probe bytes versus 7,668
+retail), exact 32-byte `.data`, and 39.989517% strict `.rodata`; the
+dispatcher remains WIP. The focused fuzzy score dipped from 81.5% after
+the action-96 switch, while direct strict code and the local raw CFG improved.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
@@ -802,6 +839,19 @@ The eight remaining strict verdicts are:
 | `0x8002c424` | WIP, 98.299320% | Indexed cursor and direct cell lookup are retained; saved-register assignment remains. |
 | `0x8002c670` | WIP, 90.127270% | The typed center lighting byte has a different base-add schedule; its 28-byte shape table matches exactly. |
 | `0x8002ce68` | WIP, 65.851850% | Retail reloads late O32 arguments after free-slot acquisition; the probe retains them in saved registers. |
+
+Fresh focused `game.floor_item_find_free` reconstruction confirms the two
+adjacent functions `0x8002ce2c` and `0x8002cf40` remain direct strict 100%,
+while `0x8002ce68` remains 65.85185% WIP. Its five proven retail callers
+are all in `game_main_loop` and pass kind 1. Retail reads the fifth O32
+argument as `lbu` for the stored item kind, then as `lw` for the kind-1
+branch; it reads the seventh as `lhu` for height. The current full-width
+kind and `u16` height source preserve those width facts and the three
+calls, but GCC hoists arguments 5–7 into saved registers before the
+free-slot call, expanding the frame from 40 to 56 bytes. KF1's floor-item
+loader uses a different placement record system and has no matching GPU
+upload body. No width, call, or control-flow correction is supported, so
+the source remains unchanged.
 
 All calls, decoded referents, and exact sibling controls used for these
 verdicts remain intact. No source or inventory change was justified by this

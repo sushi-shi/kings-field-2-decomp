@@ -7,8 +7,9 @@ KfActorHalfword4aBytes	0x2	supported	game/actor.h;asm;actor motion	low and signe
 KfActorState70	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003d934;GAME 0x80038f7c	Signed halfword and two byte action-state views at actor +0x70
 KfActorState70Bytes	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003da98	Two byte action-state view at actor +0x70/+0x71
 KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
-KfActorTail72	0x8	supported	game/actor.h;GAME 0x8003e414-0x8003e468;GAME 0x8003d784;GAME 0x8003d804	SVECTOR output/copy overlaps signed actor +0x78 baseline and +0x72 state
+KfActorTail72	0x8	supported	game/actor.h;GAME 0x8003e414-0x8003e468;GAME 0x8003d784;GAME 0x8003d804;GAME 0x8003ed70-0x8003eed4	SVECTOR output/copy overlaps motion baseline, signed state, and script halfwords
 KfActorTail72Motion	0x8	supported	game/actor.h;GAME 0x8003d784;GAME 0x8003d804	Euler halfwords followed by signed actor +0x78 baseline
+KfActorTail72Script	0x4	supported	game/actor.h;GAME 0x8003ed70;GAME 0x8003ed88;GAME 0x8003eeb8;GAME 0x8003eed4	Minimum two-halfword action-script state; first word has signed and unsigned reads
 KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset

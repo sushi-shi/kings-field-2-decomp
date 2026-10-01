@@ -7,6 +7,12 @@
 
 extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 
+DATA(0x8006d704, 0x4)
+u32 DAT_8006d704 = 0;
+
+DATA(0x801d9628, 0x900)
+KfEffectTrailRow DAT_801d9628[4][24];
+
 RODATA(0x8001249c, 0x1ec)
 
 ADDRESS(0x80040308, 0x13e4)
@@ -249,9 +255,40 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x27);
         break;
     }
-    case 6:
+    case 6: {
+        const SVECTOR *angles;
+        KfEffectTrailRow *rows;
+        s32 index;
+        u32 slot;
+
+        record->unknown_08 = 0;
+        record->animation_clip = 0x80;
+        record->unknown_09 = 1;
+        record->base_render_id = 0;
+        record->render_id = 0;
+        record->scale_x = 0x1000;
+        record->scale_y = 0x1000;
+        record->scale_z = 0x1000;
+        record->unknown_0c = 0x44;
+        record->unknown_10 = 0x1000;
+        angles = va_arg(arguments, const SVECTOR *);
+        record->rotation = *angles;
+        slot = DAT_8006d704;
+        rows = DAT_801d9628[slot];
+        *(KfEffectTrailRow **)&record->unknown_3c[4] = rows;
+        DAT_8006d704 = (slot + 1) & 3;
+        for (index = 23; index != -1; index--, rows++) {
+            rows->position = record->position;
+            rows->rotation = record->rotation;
+        }
+        record->unknown_3c[8] = 0;
+        record->unknown_3c[9] = 0;
+        record->updates_remaining = 150;
+        effect_play_spatial_sound(record, 0x22);
+        break;
+    }
     case 102:
-        /* Their buffer and timer owners remain unresolved. */
+        /* The timer and sequence owners remain unresolved. */
         break;
     case 107: {
         const SVECTOR *angles;

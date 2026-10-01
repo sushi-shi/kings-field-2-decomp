@@ -634,7 +634,7 @@ TMD width correction were retained; other speculative probes were reverted.
 | 0x8002ddb4 | WIP, 97.34716% | The TMD primitive renderer has matching packet/referent semantics, but retail has 44 blocks and 28 branches versus 42 and 26 in the probe; two depth/loop guards remain structurally different. Eight sibling TMD functions remain exact. |
 | 0x8002e4dc | WIP, 96.587975% | The sibling renderer has the same 44/42 block and 28/26 branch gap, with distinct stack and register lifetimes around its packet loop. The shared TMD exact siblings remain intact. |
 | 0x8002ebe0 | WIP, 95.27945% | Retail retains `blend_mode << 5` as a full word and stores it with `sw`; changing the C local from a prematurely truncated halfword to `u32` follows that evidence. The focused listing improves, but strict score falls slightly while one CFG block/branch gap remains. The truthful full-width source is retained. |
-| 0x80036464 | WIP, 95.32258% | Map-object effect spawn has 12/12 CFG blocks, three branches, and matching field/call semantics. The first remaining differences assign object ID and height offset to opposite saved registers and schedule one store/call delay differently. Its unit also has an independent switch-table `.rodata` addend issue. |
+| 0x80036464 | WIP, 95.32258% | Map-object effect spawn has 12/12 CFG blocks, three branches, and matching field/call semantics. The first remaining differences assign object ID and height offset to opposite saved registers and schedule one store/call delay differently. Its 17 switch-table R_MIPS_32 rows have identical case grouping but a uniform +4 addend shift caused by the preceding 0x80036190 body compiling 560 bytes versus retail's 556; this is an upstream size residue, not an independent table-owner issue. |
 | 0x800366fc | WIP, 37.336365% | Map-object scatter has 37 retail versus 38 probe blocks and 25 branches. The first substantial mismatch uses the object action byte through different base pointers, followed by case-arm joins; the unit's switch-table addend also differs. The exact 0x368b4 sibling remains untouched. |
 
 The strict target after the TMD correction relinked 145/145 GAME units. The
@@ -1116,7 +1116,7 @@ strict exact):
 | 0x8003c614 | 22.7% WIP | Branch-local script argument reads now use retail halfword/word widths; frame and local lifetime still diverge. |
 | 0x8003d184 | 3.6% WIP | Target-state 1 continuation now has its active-group probe, timer refresh, and animation call; the large indirect switch remains incomplete. |
 | 0x80040308 | 11.4% WIP | Only kinds 6 and 102 lack source arms; their buffers are unowned, and the broader source/code shape still diverges. |
-| 0x80042650 | 8.2% focused WIP | Additional decoded motion, collision, scale, healing, and spawn arms are source-claimed; most of the 123-entry switch and two indirect dispatches remain unresolved. |
+| 0x80042650 | 8.0% focused WIP | Additional decoded motion, collision, scale, healing, and spawn arms are source-claimed; most of the 123-entry switch and two indirect dispatches remain unresolved. |
 | 0x8004678c | 16.4% WIP | Command 0x55 now has the direct actor/map-object search path; other commands and the terminal callback value chain remain unresolved. |
 
 For 0x8003c614, retail's argument-slot cursor starts at sp+200 (the saved
@@ -1355,7 +1355,37 @@ plays spatial sound 0x18, and frees the original slot. The other path
 calls `func_80041e0c(&position, 0x2000, 0x2000, 500)`. These are decoded
 direct edges, with no indirect target inferred. The new source compiles
 at 8.2% focused WIP; most outer-switch arms remain absent.
+Kind 113 enters 0x80042d14. Retail probes `func_80042298(180, 360, 0)`;
+a nonzero result or signed update count below 2 takes three kind-0x2a
+constructor calls with trailing values 0/1/2, plays spatial sound 0x17,
+then frees the original slot. Otherwise it calls
+`func_80041e0c(&position, 0x2000, 0x2000, 500)`. It does not call the
+position helper used by kind 115. This decoded arm compiles at 8.1% focused
+WIP, a small aggregate decline from 8.2% while the outer switch is
+incomplete.
+
+Kind 117 enters 0x80043008 and advances all three position components by
+their signed direction halfwords. Retail probes actors at that position
+with Y raised by 5000, radius 100, and height 10000 through
+`func_8003a9f4`. Its nonnegative result indexes the 0x7c-byte actor pool;
+the base `0x8016b62c` is `actor_state.actors[0].position`, so the
+constructor receives that actor position with trailing 0x4ec. Both paths
+then call `func_80041e0c` on the elevated local position with
+`(0x2000, 0x7fff, 10000)`. No new global or indirect target is inferred.
+Focused compilation is 8.0% WIP after this arm; the complete actor-pool
+referent is source-backed despite aggregate score movement.
+
 The raw 123-word kind table has 55 entries that jump straight to the common
-return and 68 active entries; the current C names 36 of those 68 active
-kinds. The remaining 32 active entries are still WIP, regardless of the
+return and 68 active entries; the current C names 38 of those 68 active
+kinds. The remaining 30 active entries are still WIP, regardless of the
 aggregate fuzzy score.
+
+A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.
+Its first divergence is the prologue: retail reserves 72 stack bytes and
+sets the variadic cursor at sp+88 after calling `effect_pool_find_free`,
+while the current source reserves 56 bytes and sets its cursor at sp+76
+before that call. The following optional 16-byte position copy uses the
+same load/store widths and order, albeit different saved registers. The
+missing kind-6 and kind-102 storage owners prevent treating the frame
+residue as an attributable compiler problem; no frame-padding source was
+added.

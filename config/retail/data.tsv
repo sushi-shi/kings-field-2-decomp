@@ -674,9 +674,6 @@ GAME.EXE	0x8001360c	0x2e0c	0x25	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80013631	0x2e31	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80018764	0x7f64	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80039048	0x28848	0x38	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80039b58	0x29358	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80039bda	0x293da	0x5	string	byte-pattern		shift_jis	investigation:string-census	escaped text: B&!拭
-GAME.EXE	0x80039bdf	0x293df	0x35	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80045f10	0x35710	0x10	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80049f20	0x39720	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80049f30	0x39730	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

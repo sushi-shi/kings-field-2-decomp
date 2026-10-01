@@ -7,7 +7,7 @@ that changed bytes without independent source evidence were reverted.
 
 | VA | Function | Strict verdict | First remaining evidence |
 | --- | --- | --- | --- |
-| `0x800158b4` | `func_800158b4` | WIP, 98.0% | Nine signed halfword interpolations and 3/3 CFG blocks agree. The probe assigns loop pointer/count registers differently and schedules the two pointer increments in the opposite order; `func_8001584c` and `func_8001586c` remain exact. |
+| `0x800158b4` | `func_800158b4` | **Exact, 100%** | A fresh focused rebuild and direct objdiff match all 100 function bytes. The nine signed halfword interpolations retain the retail load-delay and pointer-increment schedule; the complete three-function unit matches 204/204 `.text` bytes. The earlier 98.0% report was stale. |
 | `0x80017608` | `memory_arena_allocate_block` | WIP, 99.78261% | Arena calls, owner write, 8/8 CFG blocks, and 4/4 branches agree. Retail computes `available - 12` in `$v0` before subtracting size into `$a0`; the probe keeps both operations in `$a0`. The 56 exact sibling functions remain unchanged. |
 | `0x8001876c` | `func_8001876c` | WIP, 96.36646% | Seven-entry switch, call set, and 34/34 CFG blocks agree. The remaining tail has a different reload/constant-register schedule; `func_800189f0` remains exact. |
 | `0x8002083c` | `func_8002083c` | WIP, 99.65882% | Four MATRIX locals account for the used stack slots, but retail reserves 64 more bytes. There is no evidence for another live object; adjacent `menu_draw_two_option` and `func_80020990` remain exact. |
@@ -22,8 +22,8 @@ that changed bytes without independent source evidence were reverted.
 | `0x8003983c` | `func_8003983c` | WIP, 99.07538% | New typed lifecycle/target source matches the direct call set, actor/player referents, 37/37 CFG blocks, 24/24 branches, and 13/13 return frontiers. Retail keeps current actor in `$s0` and constant/chance in `$s1`; the probe uses the reverse registers. Player byte +0x10a remains unnamed. |
 | `0x8003d084` | `func_8003d084` | WIP, 91.6% | Signed actor byte, ±12 clamp, and `rand()` call agree. Two natural reassociations of the return expression moved the `-2` to the wrong instruction position; both were reverted. `func_8003d0e8` remains exact. |
 
-The thirteen WIP rows are observable residues, not compiler/backend
-attributions. The new exact row is not banked while the matching campaign and
+The twelve WIP rows are observable residues, not compiler/backend
+attributions. The new exact rows are not banked while the matching campaign and
 shared worktree changes continue. The shared source remains typed and the exact
 neighbors above were preserved by focused comparison.
 
@@ -143,3 +143,14 @@ blocks while retaining three incoming return edges. It introduced an extra
 saved result register, so the original returns were restored and rebuilt.
 Redirecting only the entry guard to the existing final `return -1` produced
 the same 82.6%/14-block listing as guard removal, and was also reverted.
+Moving the three `continue` paths to one explicit labelled index/object
+increment tail produced a byte-identical 82.9% object and was reverted in
+favor of the simpler `for` loop.
+
+A bounded raw-byte scan of the remaining GAME `data.tsv` rows between
+`80013000` and `80050000` looked for aligned negative stack-frame prologues
+and `jr $ra` returns inside the same row. The six hits begin at `8004a208`,
+`8004b668`, `8004b778`, `8004c2d4`, `8004c41c`, and `8004db38`; each falls
+inside a Sony/Psy-Q CD or SPU archive span already supported by the vendored
+inventory. This filter cannot rule out leaf functions or split rows, but it
+found no further game-code candidate among those prologue-shaped gaps.

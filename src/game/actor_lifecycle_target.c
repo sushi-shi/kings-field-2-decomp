@@ -116,3 +116,22 @@ void func_8003983c(void)
         return;
     }
 }
+
+ADDRESS(0x80039b58, 0xbc)
+void func_80039b58(s32 group_index)
+{
+    KfActor *actor = actor_state.actors;
+    s16 remaining = KF_ACTOR_CAPACITY - 1;
+
+    do {
+        if (actor->slot_state != 0xff &&
+            actor->group_index == (u16)group_index) {
+            if (actor->lifecycle == 1) {
+                actor_select_target_type_in_own_group(actor, 3);
+            } else {
+                actor_set_lifecycle_and_home_position(actor);
+            }
+        }
+        actor++;
+    } while (--remaining != -1);
+}

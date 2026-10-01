@@ -44,8 +44,8 @@ void func_8003247c(void)
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
-    for (remaining = KF_ACTOR_CAPACITY - 1;
-         remaining != -1; remaining--, actor++) {
+    remaining = KF_ACTOR_CAPACITY - 1;
+    while (remaining != -1) {
         u32 layer;
         KfTargetGroup *group;
         const VECTOR *actor_position_ptr;
@@ -54,7 +54,7 @@ void func_8003247c(void)
 
         actor_position_ptr = &actor->position;
         if (actor->lifecycle != 1) {
-            continue;
+            goto actor_next;
         }
         if (actor->unknown_28 & 0x2000) {
             layer = actor->unknown_03 | 0x20;
@@ -62,7 +62,7 @@ void func_8003247c(void)
             layer = actor->unknown_03;
         }
         if (actor->unknown_28 & 0x80000) goto actor_radius_check;
-        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) continue;
+        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
             position = func_8003c10c(actor, &actor_position);
@@ -89,10 +89,13 @@ actor_visible:
         vab_flags[group->unknown_07[0]] = 1;
         vab_flags[group->unknown_07[1]] = 1;
         tmd_flags[actor->unknown_01] = 1;
-        continue;
+        goto actor_next;
 actor_radius_check:
         if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
             actor->unknown_03) goto actor_visible;
+actor_next:
+        actor++;
+        remaining--;
     }
     resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);
     resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
@@ -101,13 +104,13 @@ actor_radius_check:
     repeat_store_word((u32 *)tmd_flags, 0, 80);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
-    for (remaining = KF_MAP_OBJECT_CAPACITY - 1;
-         remaining != -1; remaining--, object++) {
+    remaining = KF_MAP_OBJECT_CAPACITY - 1;
+    while (remaining != -1) {
         u32 visibility;
         s32 object_index;
 
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
-            continue;
+            goto map_object_next;
         }
         object->collision_flags &= 0x7f;
         if (object->action == 0x1f) goto map_sound_action;
@@ -128,7 +131,7 @@ actor_radius_check:
             }
             tmd_flags[object->object_id] = 1;
         }
-        continue;
+        goto map_object_next;
 map_sound_action: {
             s32 sound;
             s32 distance;
@@ -163,7 +166,7 @@ map_sound_action: {
                 if (volume >= radius) {
                     volume = object->tail.fields.unknown_3a.bytes.high;
                 } else {
-                    if (radius == 0) continue;
+                    if (radius == 0) goto map_object_next;
                     volume = object->tail.fields.unknown_3a.bytes.high * volume / radius;
                 }
                 if (object->tail.spawn_bytes.spawn_sequence.high & 1) {
@@ -175,18 +178,18 @@ map_sound_action: {
                     audio_play_sound(sound, volume);
                 }
             }
-            continue;
+            goto map_object_next;
 map_sound_outside:
             object->extra_40.raw = frame +
                 object->tail.fields.unknown_3e.value * 6;
-            continue;
+            goto map_object_next;
         }
 map_ordinary_object: {
             u8 render_mode;
             KfMapObjectTemplate *object_template;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
-            if ((visibility & object->unknown_00) == 0) continue;
+            if ((visibility & object->unknown_00) == 0) goto map_object_next;
             object_template = &map_object_state.templates[object->object_id];
 map_ordinary_visible:
             object_index = object->object_id;
@@ -210,27 +213,31 @@ map_ordinary_visible:
                                (s16)object->unknown_0e);
                 object->collision_flags |= 0x80;
             }
-            continue;
+            goto map_object_next;
 map_radius_check:
             object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->marker_action_05);
             if (visibility & object->unknown_00) goto map_ordinary_visible;
         }
+map_object_next:
+        object++;
+        remaining--;
     }
     resource_tmd_update_range(0, 0x80, 0x100, 0x140, tmd_flags);
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
-    for (remaining = KF_EFFECT_CAPACITY - 1;
-         remaining != -1; remaining--, effect++) {
+    remaining = KF_EFFECT_CAPACITY - 1;
+    while (remaining != -1) {
         MATRIX *world_matrix;
         const struct KfEulerAngles *angles;
 
         if (effect->type == KF_EFFECT_SLOT_FREE ||
-            (effect->unknown_08 & 3) == 0) continue;
+            (effect->unknown_08 & 3) == 0) goto effect_next;
         if ((effect->unknown_08 & 3) != 2 &&
-            (map_cell_layer_mask(&effect->position) & effect->unknown_0a) == 0) continue;
+            (map_cell_layer_mask(&effect->position) & effect->unknown_0a) == 0)
+            goto effect_next;
         switch (effect->unknown_08 & 12) {
         case 0:
             rotation.x = effect->rotation.vx;
@@ -256,9 +263,9 @@ map_radius_check:
                            effect->animation_clip, effect->unknown_12,
                            effect->unknown_0c, effect->unknown_10,
                            effect->unknown_09, 0x14);
-            continue;
+            goto effect_next;
         default:
-            continue;
+            goto effect_next;
         }
         func_80031850(effect->unknown_0a, effect->render_id + 0x28,
                        &effect->position, angles, (SVECTOR *)&effect->scale_x,
@@ -266,16 +273,19 @@ map_radius_check:
                        effect->animation_clip, effect->unknown_12,
                        effect->unknown_0c, effect->unknown_10,
                        effect->unknown_09, -60);
+effect_next:
+        effect++;
+        remaining--;
     }
 
     rotation.z = 0;
     rotation.y = 0;
     rotation.x = 0;
     placed = game_graphics_runtime.map_placed_entries;
-    for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
-         remaining != -1; remaining--, placed++) {
+    remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
+    while (remaining != -1) {
         u32 visibility;
-        if (placed->id == 0xffff) continue;
+        if (placed->id == 0xffff) goto placed_next;
         visibility = map_cell_layer_mask(&placed->position);
         if (visibility & placed->layer) {
             func_80031850(placed->layer, placed->id + 0x28,
@@ -289,6 +299,9 @@ map_radius_check:
             placed->frame_index++;
             if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
         }
+placed_next:
+        placed++;
+        remaining--;
     }
     game_graphics_runtime.map_placed_frame_counter++;
 }

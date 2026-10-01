@@ -36,6 +36,7 @@ positive `< 119` pad arm with an `else` return keeps the same behavior and
 recovers the retail branch direction: focused similarity changes from 43.2%
 to 44.8%, with 14/14 blocks, 8/8 branches, and known successors now agreeing.
 The first remaining control difference moves to the later pad-state check.
-`tim_upload_images` and the adjacent `func_80034e10` remain `SAME` in the
-focused unit. The saved pad state and quad setup still differ, so the fade
-function remains WIP; the earlier strict score above is a historical report.
+`tim_upload_images` and the adjacent `func_80034e10` remain strict 100% in
+direct one-unit objdiff. The saved pad state and quad setup still differ, so
+the fade function remains WIP at 92.34296% strict; the earlier score happens
+to be unchanged, but its older CFG description is superseded.

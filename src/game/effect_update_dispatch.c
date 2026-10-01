@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/game/actor.h>
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
@@ -23,6 +24,7 @@ extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 extern s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
                          s32 probe_radius, s32 probe_angle, s32 proximity,
                          s32 close_scale, s32 target_filter);
+extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -364,6 +366,21 @@ void effect_update_dispatch(void)
             &effect_state.records[record->unknown_3c[4]].position,
             500, 15, -1, 0, 0, -1);
         break;
+    case 113:
+        collision = func_80042298(180, 360, 0);
+        if (collision != 0 || record->updates_remaining < 2) {
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 0);
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 1);
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 2);
+            effect_play_spatial_sound(record, 0x17);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        }
+        break;
     case 115:
         collision = func_8004195c(0x258, 0x28, 0x24, 0xb4,
                                   0x168, 0x1000, 0x104, 0x800);
@@ -396,6 +413,25 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         }
         func_80040308(10, record->type, 0x2d, &record->position, 0, 0x1a4);
+        break;
+    }
+    case 117: {
+        VECTOR elevated;
+        s32 actor_index;
+
+        record->position.vx += record->direction.vx;
+        record->position.vy += record->direction.vy;
+        record->position.vz += record->direction.vz;
+        elevated = record->position;
+        elevated.vy += 5000;
+        actor_index = func_8003a9f4(elevated.vx, elevated.vy, elevated.vz,
+                                    100, 10000);
+        if (actor_index != -1) {
+            func_80040308(10, record->type, 0x2d,
+                           &actor_state.actors[actor_index].position, 0,
+                           0x4ec);
+        }
+        func_80041e0c(&elevated, 0x2000, 0x7fff, 10000);
         break;
     }
     case 118:

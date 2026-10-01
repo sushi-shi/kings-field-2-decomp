@@ -221,3 +221,31 @@ The KF1 sibling defines its `memory_card_root_path` as a load-image `char`
 array in `src/game/save_system.c`, consistent with the KF2 `bu00:*` bytes at
 `0x8006d6a8` being writable card data. It does not determine KF2's original
 TU boundary or the separate `0x8006d6a4/5` seed extent.
+
+## Current menu/card ten-function recheck
+
+Focused rebuilds and direct per-unit objdiff give **2/10 strict exact** in
+this disjoint controller/card set. Each WIP retains its source claim and was
+left unchanged where raw control flow, calls, and referents provide no
+independent correction.
+
+| GAME address | Current strict verdict | First supported residue |
+| --- | ---: | --- |
+| `0x8001a898` | **exact, 516/516 bytes** | Complete item/equipment controller. |
+| `0x8001a4f0` | WIP, 99.74359% | Initial 74-record clearing loop uses a different index and constant register; 22/22 CFG blocks agree. |
+| `0x8001b554` | WIP, 98.478264% | Probe result stays in `v0` rather than retail's `a0`. |
+| `0x8001bf68` | WIP, 97.12389% | Probe-status and dialog-constant registers differ. |
+| `0x8001d3b4` | **exact, 672/672 bytes** | Complete item-sale controller. |
+| `0x8002083c` | WIP, 99.65882% | Four live matrix locals explain the calls, but retail reserves 64 more stack bytes. |
+| `0x800226ec` | WIP, 93.60504% | Signed slot-seed loads and first `memset` scheduling differ. |
+| `0x800228c8` | WIP, 85.15625% | Signed title-byte loads and two digit-loop schedules differ. |
+| `0x80022b74` | WIP, 93.666664% | Retail keeps the slot in another saved register and uses an 80-byte frame. |
+| `0x80022ca0` | WIP, 95.896774% | Slot-seed and zero-fill setup order differs. |
+
+The `0x8001bf68` neighbor `0x8001c12c`, the two-option draw and heading
+helpers beside `0x8002083c`, and `memory_card_format` beside the four card
+WIPs remain strict exact controls. The card-directory unit's 304-byte `.data`
+and six-byte `.rodata` claims are also 100%. The wildcard identity at
+`0x8006d6a8` remains a seven-byte candidate without a DATA owner; the
+directory focused listing did not change when it entered the inventory.
+No linked build, repository tests, or banking were run for this recheck.

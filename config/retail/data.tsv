@@ -65,8 +65,7 @@ GAME.EXE	0x80011188	0x988	0xd4	pointer	manual:player-effect-switch		pointer[53]	
 GAME.EXE	0x8001125c	0xa5c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011260	0xa60	0x34	pointer	manual:player-magic-switch		pointer[13]	retail words;func_80026498 jr table	13 rows indexed by magic ID minus 38, all targeting branches in func_80026498
 GAME.EXE	0x80011294	0xa94	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011298	0xa98	0x18	pointer	manual:player-action-switch		pointer[6]	retail words;func_8002722c bounded jr table	6 direct case pointers within func_8002722c
-GAME.EXE	0x800112b0	0xab0	0x4c	pointer	manual:player-action-switch		pointer[19]	retail words;func_8002722c bounded jr table	19 direct case pointers within func_8002722c
+GAME.EXE	0x80011298	0xa98	0x64	pointer	manual:player-action-switch		pointer[25]	retail words;func_8002722c two contiguous bounded jr tables	6 preliminary-case pointers followed by 19 action-case pointers within func_8002722c
 GAME.EXE	0x800112fc	0xafc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011300	0xb00	0x4c	pointer	manual:player-update-switch		pointer[19]	retail words;func_8002985c bounded jr table	19 case targets inside contiguous func_8002985c body
 GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	func_8002aaa4 jump-table dispatch;retail words	49 opcode rows, all targets within func_8002aaa4

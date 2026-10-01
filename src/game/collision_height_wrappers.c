@@ -145,14 +145,14 @@ s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
             if (index != -1) {
                 result |= 0x10;
             }
-        } else if (mode & 0x40) {
-            index = func_8003ab5c(x, y, z, radius, height);
-            COLLISION_CACHE_ACTOR_INDEX = index;
-            if (index != -1) {
-                result |= 0x10;
-            }
-            COLLISION_CACHE_ACTOR_INDEX = -1;
         } else {
+            if (mode & 0x40) {
+                index = func_8003ab5c(x, y, z, radius, height);
+                COLLISION_CACHE_ACTOR_INDEX = index;
+                if (index != -1) {
+                    result |= 0x10;
+                }
+            }
             COLLISION_CACHE_ACTOR_INDEX = -1;
         }
 

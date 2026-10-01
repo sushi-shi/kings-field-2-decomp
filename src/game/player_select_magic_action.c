@@ -1,8 +1,128 @@
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
 #include <kf/game/collision_cache.h>
+#include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
+
+RODATA(0x80011298, 0x64)
+
+ADDRESS(0x8002722c, 0x2c0)
+void func_8002722c(s32 magic_id)
+{
+    KfMagicRecord *record;
+    u16 mp_cost;
+
+    if (player_state.unknown_d1[0] != 0xff || magic_id == 0xff) {
+        return;
+    }
+
+    record = &effect_state.magic_records[magic_id];
+    if (player_state.vitals.current_mp < record->mp_cost) {
+        return;
+    }
+
+    if (player_state.equipped_weapon_id == 12 && magic_id < 11) {
+        if (magic_id >= 7) {
+            return;
+        }
+    }
+    if (player_state.equipped_body_id == 31 && magic_id >= 11) {
+        if (magic_id < 13) {
+            return;
+        }
+        if (magic_id < 20) {
+            if (magic_id >= 18) {
+                return;
+            }
+        }
+    }
+
+    switch (magic_id - 14) {
+    case 0:
+    case 2:
+    case 5:
+        break;
+    case 1:
+        if (player_state.unknown_62 != 0) {
+            return;
+        }
+        break;
+    case 3:
+        if (player_state.unknown_64 != 0) {
+            return;
+        }
+        break;
+    case 4:
+        player_state.unknown_68 = 900;
+        player_state.vitals.current_mp -= record->mp_cost;
+        return;
+    default:
+        goto charge_gate;
+    }
+    player_state.unknown_d1[1] = 1;
+    player_state.unknown_d1[2] = 1;
+
+charge_gate:
+    if (player_state.magic_charge < 5000) {
+        return;
+    }
+    player_state.magic_charge = 0;
+    mp_cost = record->mp_cost;
+    player_state.unknown_d1[0] = magic_id;
+    player_state.unknown_118.vx = -200;
+    player_state.unknown_118.vy = 200;
+    player_state.unknown_118.vz = 400;
+    player_state.unknown_d1[3] = 1;
+    player_state.vitals.current_mp -= mp_cost;
+
+    switch (magic_id) {
+    case 10:
+        player_state.unknown_118.vx = 0;
+        player_state.unknown_118.vy = -512;
+        player_state.unknown_118.vz = 2000;
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 1:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 11:
+    case 18:
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 12:
+        player_state.unknown_118.vx = -200;
+        goto action_six_two;
+    case 9:
+        player_state.unknown_d1[1] = 6;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 0:
+    case 2:
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        player_state.unknown_118.vz = 0;
+        player_state.unknown_118.vy = 0;
+        player_state.unknown_118.vx = 0;
+        break;
+    case 13:
+        player_state.unknown_d1[1] = 7;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 3:
+    action_six_two:
+        player_state.unknown_d1[1] = 6;
+        player_state.unknown_d1[2] = 2;
+        break;
+    }
+
+    player_state.selected_magic_record = record;
+}
 
 extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 extern void func_8002b874(void);

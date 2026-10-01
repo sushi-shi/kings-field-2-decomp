@@ -1126,7 +1126,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
 | `8002665c` | Unclaimed WIP | 114 CFG blocks; zero withheld relocations; full weapon/effect semantics unresolved. |
-| `8002722c` | Unclaimed WIP | Two bounded tables; eight to zero withheld direct jumps; indirect C form unresolved. |
+| `8002722c` | DIFF, 85.7% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
 | `80027988` | SAME | Landing-sound helper control. |
@@ -1136,3 +1136,27 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
 | `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
 | `80028998` | SAME | Attack/action controller and magic selector caller. |
+
+The first-pass `8002722c` source now owns the contiguous run through
+`800274ec` in `game.player_select_magic_action`, reducing one module. Its
+two tables occupy one `RODATA(80011298, 0x64)` claim. Thirty-five direct
+`lui`/signed-low pairs were checked against raw GAME words: 34 target
+interior fields of the complete `player_state` object and one addresses
+`effect_state.magic_records`. A two-VA safe carve with `8002722c` and
+`800274ec` withholds zero relocations. Focused `kf try` reports **85.7%
+WIP** for the action selector and preserves the horizontal mover's **61.9%
+WIP** listing. The selector's 26-byte magic-row stride, unsigned MP cost,
+signed equipment restrictions, six preliminary cases, nineteen action
+cases, and final selected-record pointer are modeled in C. The retail
+`+0x1e` charge gate reads and clears `magic_charge`; an initial source pass
+incorrectly used `+0x1c` `attack_charge_committed` until the focused listing
+exposed the field difference. Loading the unsigned MP cost before the
+action-state stores reproduces retail's `a1` magic ID and `a2` record
+lifetime. Ordering the second switch's case bodies by their retail block
+sequence and clearing its three vector halfwords in retail store order
+improves the listing while keeping the same case results. A shared
+`repeat_count` local lowered similarity to 72.8% and was discarded. Retail
+and C still differ at the initial stack frame and several case joins; CFG is
+33/34 blocks with 16/16 branches. The raw table pointers prove
+bounded destinations, but semantic indirect edges and the original C/TU
+form remain candidate.

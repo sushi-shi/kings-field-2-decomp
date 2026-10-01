@@ -123,6 +123,44 @@ Changing only those cached pair locals from 16-bit to 32-bit values gave
 word operations support testing this width, but the small score movement is
 not proof of the original declaration; the wider probe is also discarded.
 
+A later temporary probe advanced one `SVECTOR *` cursor after each generated
+midpoint instead of addressing `midpoints[count + n]`. This follows retail's
+sequential eight-byte writes and raised direct objdiff to 46.58282%. Advancing
+the destination packet cursor after each 32-byte FT4 or 24-byte FT3 child
+copy, as the retail stores and copy calls do, raised it to 49.0454%. Moving
+the input word count from loop entry to the generic arm and common loop tail
+raised it to 49.46135%. That last probe has a 0xbbc-byte body and a
+1224-byte frame, against retail's 0xcbc bytes and 1248-byte frame. The
+14-copy call set and six conditional branches agree, but the first remaining
+instruction difference is the frame/local setup, followed by packet scratch
+register and store order. An equivalent two-pointer view of the midpoint
+`x` and `z` halfwords did not improve alignment enough to justify a source
+claim. All variants remain temporary and the function remains unclaimed.
+
+Retail's UV midpoint path updates byte lanes inside word-sized temporaries
+with masks and ORs, then writes their low two bytes into child packets. A
+temporary four-byte union with `u8` UV fields reproduced more of that shape:
+the 14-copy, moving-cursor probe reached 60.007362% direct objdiff with a
+0xc94-byte body and a 1288-byte frame. Placing the output-object and
+midpoint-cursor initialization before source-object reads reached 60.429447%
+and a 0xc98-byte body. The 40-byte frame excess, remaining packet-store
+order, and purpose of the union's unused high bytes are unresolved. A plain
+four-byte struct fell to 48.98405%; a two-byte union reached 57.235584% but
+expanded the frame further. These are controlled type probes, not proof of
+the historical declaration. Only the computed UV bytes are read, and no
+uninitialized bytes are copied to the prepared output in the probe.
+
+The common source-packet advance exposed a real semantic error in those
+earlier temporary bodies. Child-index byte writes reuse the four-byte local
+that first held the packet header, overwriting its input-length byte. Retail
+loads the source header again at `+0xb9c` before reading that byte and
+advancing the source pointer. Adding the same reload to the temporary C
+raised direct objdiff to 62.844173% and produced a 0xcbc-byte body, exactly
+the retail body size, with all 14 static copy calls. The compiled frame is
+still 1280 bytes against retail's 1248, and the packed UV union ownership and
+many instruction-order differences remain unresolved. The body is not a
+defensible production claim yet.
+
 Retail spills `t5`, `t8`, and `t9` around the first packet copy before their
 first visible assignments. The low UV bytes later read from those words have
 their prior bits masked out before they are stored, so this does not establish

@@ -117,3 +117,30 @@ functions identical. Isolated objdiff gave the two-function unit 1,040/1,040
 1,012/1,012. Raw section bytes and ordered `readelf -r` relocations match the
 carved target exactly. The earlier frame-driver WIP score was stale under this
 target; no frame-driver C was changed to obtain this verdict.
+
+## Floor-item constructor ABI check
+
+The adjacent floor-item unit has two identical focused controls,
+`0x8002ce2c` and `0x8002cf40`, while constructor `0x8002ce68` remains
+**55.7% focused WIP** (65.85185% in the older strict report's different
+metric). Its five proven call sites are all in `game_main_loop` and pass seven
+arguments. Retail uses a
+40-byte frame, keeps the first four arguments in `s3`, `s4`, `s1`, and `s2`,
+then reads the fifth stack slot both as `lbu` for `item->kind` and as `lw`
+for the `kind == 1` test. It reads width as a word and height as an unsigned
+halfword only on that branch, before `memory_allocate`; its `StoreImage` and
+`DrawSync` calls agree with C. The current probe saves all three stack
+arguments into extra saved registers at entry and allocates 56 bytes. A
+controlled GCC 2.6.0 compile of the same source also chose a 56-byte frame,
+so merely switching that compiler does not explain the retail ABI schedule.
+No source change was retained without evidence for a different signature or
+evaluation order.
+
+The resource unit's nearby `map_cell_visible` at `0x80032174` is also WIP:
+retail and source agree on the single caller at `0x800327b4`, both render-grid
+referents, and the four return paths. Its current focused listing is 37.9%
+similar because the probe uses `v0` for the position arithmetic and moves a
+temporary result into `v0` in the return slot, whereas retail calculates the
+fallback predicate directly in `v0` and returns with a `nop` slot. The older
+strict report gives 93.6%. A source-only early-return spelling lowered the
+focused comparison to 26.7% and introduced an extra jump; it was discarded.

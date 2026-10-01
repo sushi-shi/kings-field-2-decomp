@@ -8,10 +8,10 @@ campaign; adjacency alone does not establish a translation-unit boundary.
 
 | GAME address | Retail role or ownership issue | Verdict |
 | --- | --- | --- |
-| `0x8001ddd0` | first item-list controller, 14 direct calls | WIP: list record and table ownership |
-| `0x8001e0a8` | paired item-list controller, 14 direct calls | WIP: list record and table ownership |
+| `0x8001ddd0` | first item-list controller, 14 direct calls | **exact, 728/728 code bytes** in later isolated objdiff; table TU owner remains open |
+| `0x8001e0a8` | paired item-list controller, 14 direct calls | **exact, 720/720 code bytes** in later isolated objdiff; table TU owner remains open |
 | `0x8001e378` | menu input poll | **exact**, existing source |
-| `0x8001e484` | menu/model input controller | WIP: 66-block state flow |
+| `0x8001e484` | menu/model input controller | **exact, 1,224/1,224 code bytes** in later isolated objdiff |
 | `0x8001e94c` | numeric text renderer | **exact, 1,724/1,724 code and 240/240 data bytes** in current direct objdiff |
 | `0x8001f008` | second numeric text renderer | **exact, 1,936/1,936 code bytes** in current direct objdiff |
 | `0x8001f798` | paired, six-row menu labels | **exact, 288/288 bytes**, newly resolved |
@@ -25,7 +25,7 @@ campaign; adjacency alone does not establish a translation-unit boundary.
 | `0x80020d20` | cursor sprite packet | **exact, 472/472 code bytes** in current direct objdiff |
 | `0x80020ef8` | fixed-CLUT sprite packet | **exact, 436/436 code bytes** in current direct objdiff |
 | `0x800210ac` | glyph-string packets | WIP: 99.66904% direct objdiff, 90.4% focused; frame/register choice |
-| `0x80021510` | number-glyph packets | WIP: 98.61957% direct objdiff, 93.1% focused; atlas-U load/order |
+| `0x80021510` | number-glyph packets | **exact, 736/736 code bytes** in later isolated objdiff |
 | `0x800217f0` | nine-slice panel | **exact**, existing source |
 | `0x80021a60` | eight-byte return stub | **exact**, source-owned with adjacent frame-begin function |
 | `0x80021a68` | frame begin | **exact**, existing source |
@@ -84,3 +84,12 @@ with the same 36-byte list prefix but mode-dependent pointer slots afterward.
 The renderer uses a checked `KfMenuRenderList` view internally. This keeps the
 interface faithful to its callers without giving them incompatible struct
 types; its focused 97.7% listing is unchanged.
+
+A later follow-on closed both stock-list controllers by expressing their
+one-use purchase cost directly in the funds condition. It also closed
+`menu_draw_number`: a byte cast at the Psy-Q U-coordinate boundary restores
+the retail addition order, and checking through the initialized code pointer
+restores the first argument-save placement. Normal focused listings and
+isolated native objdiff are exact for these three; their raw ordered
+relocation listings match the carved retail objects. The earlier failed
+typed-temporary probe above remains a historical source-shape control.

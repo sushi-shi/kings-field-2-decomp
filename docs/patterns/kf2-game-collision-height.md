@@ -122,14 +122,29 @@ certification is pending.
 | `0x8002a988` | Exact, 100% (284/284) | Retail's backward alternate-layer branch and shared write blocks now match; fallback data remains 10/10. |
 | `0x8002b67c` | WIP, 94.895836% | Correct four-block CFG and referents; retail reloads cached height as call argument after storing it, while compiled C carries the elevation value. |
 | `0x8002b73c` | WIP, 98.404260% | Correct eight-block footprint loop, four branches, and map-grid reference; row pointer and loop-index registers differ. |
-| `0x8002b874` | WIP, 91.5% | Player/actor/map-object snapshot is modeled, but the actor/object radius and interaction-height load order and common-tail schedule differ. |
-| `0x8002b9d4` | WIP, 89.4% | Grid, actor, map-object, and player call set is modeled; 23-block CFG has a differing actor-scan successor and result lifetime. |
+| `0x8002b874` | WIP, 85.8% focused listing | Player/actor/map-object snapshot is modeled, but the actor/object radius and interaction-height load order and common-tail schedule differ. |
+| `0x8002b9d4` | Prior strict WIP, 89.4% | Grid, actor, map-object, and player call set was modeled; the prior actor-scan successor difference is corrected in the focused pass below, while result lifetime remains unresolved. |
 | `0x8002bfd4` | WIP, 54.155340% | Both mask-segment axes are modeled; coordinate and render-grid address scheduling diverges before the raster loops. |
 | `0x8002c170` | WIP, 89.8% | Eleven-block mask-row scan and bounds agree; pointer and state registers differ. |
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 75.8% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4; the first-lighting access uses the retail BSS+4 field-base referent. Mask-byte addressing and traversal scheduling remain different. |
 | `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte no-argument map-object dispatcher has three bounded indirect jumps. Their raw pointer-table extents and in-function targets are established; case reachability and callback targets remain unresolved. |
+
+The current 27-function focused cohort comprises the 17 collision-height
+wrappers, two map-cell pattern helpers, six map-object reset helpers, the
+placement initializer, and the mask sweep. Its retained listings are 15 SAME
+and 12 DIFF; no new strict 100% certification is claimed.
+
+The retained `0x8002b9d4` actor branch now uses one common reset of
+`COLLISION_CACHE_ACTOR_INDEX` after its optional mode-`0x40` scan, matching
+retail's `0x8002bb44`/`0x8002bb48` join. An isolated source probe changed
+the focused listing from 58.0% to 59.4% and made the 23/23-block CFG's
+known successor lists agree by block order. The shared focused build keeps
+10/17 SAME collision-height listings; the other six WIP neighbors and
+`0x8002b9d4` remain non-exact. The earlier strict report row above is
+historical and has not been recertified under the user's focused-build-only
+constraint.
 
 Retail `0x8002c670` forms a saved pointer to the scan state's +0x0c field
 and uses it for several relative stores. An isolated C probe that changed
@@ -151,6 +166,13 @@ the loop farther from retail, so the source was retained. `0x80036464`
 remains WIP at 92.8%, with saved-register and initial-store scheduling
 differences. These focused verdicts are listing checks, not strict objdiff
 closure.
+
+The two branches of `map_object_set_cell_marker` each load the object's Z
+and X coordinates before forming the map-cell address in retail. A temporary
+source probe with explicit coordinate locals preserved all five SAME
+listings in `game.map_object_reset`, but left this function at 55.9% and
+changed only its arithmetic/address schedule. No source change was retained;
+the duplicated marker writes and scale updates still agree with retail.
 
 The map-placed expansion at `0x80034818` is also focused-listing SAME. It
 expands 128 typed 24-byte destination records, sampling elevation through
@@ -175,6 +197,14 @@ function. The preceding `0x800368b4` returns at `0x8003693c` with its
 `0x800369b8`. A safe GAME one-VA carve admits the complete target with no
 withheld function, but withholds its direct `jal` at `0x80036980` as
 `non-reachable-code-channel`: no static caller establishes reachability.
+The same `0x800368b4` callee has three proven direct calls from event
+controller `0x8004678c` at `0x8004684c`, `0x800469d4`, and `0x80046d50`.
+Those callers use its result to select event paths; `0x80036944` discards
+that result on every loop iteration. This constrains the callee, but does
+not supply an incoming signature or return consumer for `0x80036944`.
+At this function's epilogue, the marker-`0xff` fast path leaves `$v0=0xff`
+and the completed loop leaves `$v0=0` from its count check. Those residual
+register values do not prove an integer return without a caller.
 
 KF1's `map_object_pool_trigger_link(u8)` and `map_object_pool_clear_link(u8)`
 use the same 396-record/count-down loop idiom; this supports the loop model
@@ -205,6 +235,12 @@ Focused `0x8002c424` and `0x8002c670` listings remain 73.5% and 75.8%; the
 adjacent spawn/scatter three-function and vertex-world two-function units
 remain all SAME listings. These are focused listing verdicts, not strict
 closure.
+Direct target/compiled disassembly of `0x8002c424` accounts for its 23/22
+block count: retail's two first-layer-mask branches enter one instruction
+apart, while the compiled object schedules the common shift in their delay
+slots and merges the entries. The second-neighbor failure advances its
+cursor in a jump delay slot in both objects, skipping the ordinary advance.
+The source-level scan behavior is unchanged by this block-count difference.
 
 The exact `0x8002bc18` copy uses `lui t1,0x8006; addiu t1,0x6ab4` to form
 the source-owned `collision_default_rows` base. The raw pair, its
@@ -334,6 +370,11 @@ This overlap does not yet prove that the map grid has only 80 rows:
 and `0x80036ed4` has additional rectangle-copy calls. Rows beyond 79 may
 share or repurpose the region. Keep the grid extent and shape-bank owner WIP
 until those coordinate ranges and all consumers are established.
+The dispatcher has six proven direct calls to `0x80035194` at `0x800371c0`,
+`0x80037230`, `0x800372e8`, `0x800374e0`, `0x800375d0`, and `0x80037c70`;
+they pass byte-loaded coordinates and field mask `0x2d`. Together with its
+two calls from `0x80035894`, these establish eight direct callers, but do
+not establish a bound on every resource-provided source row.
 
 The strict `game.collision_grid_sample` report relinked 142/142 GAME target
 units. Overall edge-check remains open on three unrelated `.rodata` addends

@@ -53,8 +53,8 @@ void func_8001ddd0(void)
         func_8001e484(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            cost = DAT_8006d694 * (s32)menu.codes[menu.list.selected_index];
-            if (player_state.gold < (u32)cost
+            if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
+                    * DAT_8006d694)
                     || counters[selected_item] + DAT_8006d694 >= 100) {
                 func_80022300(18);
                 selection = 0;

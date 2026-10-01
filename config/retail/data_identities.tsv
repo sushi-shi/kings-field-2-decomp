@@ -22,8 +22,7 @@ GAME.EXE	0x80011148	0x1c	DAT_80011148	unknown	load	pointer[7]		address-only	asm;
 GAME.EXE	0x80011168	0x1c	player_equipment_jump_table	unknown	load	pointer[7]	player	supported	asm;raw pointer targets	seven switch cases in player_set_equipment_slot; owned by its RODATA claim
 GAME.EXE	0x80011188	0xd4	DAT_80011188	unknown	load	pointer[53]		address-only	asm;bounded jr index;53 raw pointer targets	53 in-function case targets; address-derived table identity retained
 GAME.EXE	0x80011260	0x34	player_magic_dispatch_rodata	unknown	load	pointer[13]	func_80026498	supported	asm;13 retail pointer words;func_80026498 jr switch	13-entry magic-ID switch table owned by the player magic dispatch unit
-GAME.EXE	0x80011298	0x18	DAT_80011298	unknown	load	pointer[6]		address-only	asm;bounded jr index;raw pointer targets	6 in-function case targets; address-derived table identity retained
-GAME.EXE	0x800112b0	0x4c	DAT_800112b0	unknown	load	pointer[19]		address-only	asm;bounded jr index;raw pointer targets	19 in-function case targets; address-derived table identity retained
+GAME.EXE	0x80011298	0x64	DAT_80011298	unknown	load	pointer[25]		address-only	asm;two bounded jr indices;raw pointer targets	One RODATA owner holds adjacent 6- and 19-pointer tables; internal base +0x18 remains address-derived
 GAME.EXE	0x80011300	0x4c	DAT_80011300	unknown	load	pointer[19]		address-only	asm;bounded jr index;19 raw pointer targets	19 in-function case targets; source owner remains unresolved
 GAME.EXE	0x8001134c	0xc4	func_8002aaa4_rodata	unknown	load	pointer[49]	collision_shape_dispatch	supported	asm;49 jump-table targets;retail words	shape-record opcode switch table owned by unit RODATA claim
 GAME.EXE	0x80011410	0x74	tmd_prepare_primitive_indices_rodata	unknown	load	pointer[29]	tmd_prepare_primitive_indices	supported	asm;29 jump-table targets;KF1 exact counterpart	mode-index switch table owned by unit RODATA claim

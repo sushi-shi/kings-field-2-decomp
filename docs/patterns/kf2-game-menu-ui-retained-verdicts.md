@@ -35,15 +35,15 @@ remain the criteria for retaining changes.
 | `0x8001ccd4` | `func_8001ccd4` | SAME |
 | `0x8001cdb0` | `func_8001cdb0` | SAME |
 | `0x8001ceb8` | `func_8001ceb8` | SAME |
-| `0x8001d030` | `func_8001d030` | DIFF 96.6%; price/quantity load and register order |
+| `0x8001d030` | `func_8001d030` | SAME; 100% isolated direct objdiff |
 | `0x8001d340` | `func_8001d340` | SAME |
 | `0x8001d3b4` | `func_8001d3b4` | SAME |
 | `0x8001d654` | `func_8001d654` | SAME |
 | `0x8001d6a8` | `func_8001d6a8` | SAME |
 | `0x8001d8d0` | `func_8001d8d0` | SAME |
 | `0x8001dc64` | `func_8001dc64` | SAME |
-| `0x8001ddd0` | `func_8001ddd0` | DIFF 96.2%; same purchase-expression residue |
-| `0x8001e0a8` | `func_8001e0a8` | DIFF 96.2%; same purchase-expression residue |
+| `0x8001ddd0` | `func_8001ddd0` | SAME; 100% isolated direct objdiff |
+| `0x8001e0a8` | `func_8001e0a8` | SAME; 100% isolated direct objdiff |
 | `0x8001e378` | `func_8001e378` | SAME |
 | `0x8001e484` | `func_8001e484` | SAME |
 | `0x8001e94c` | `func_8001e94c` | SAME |
@@ -55,7 +55,7 @@ remain the criteria for retaining changes.
 | `0x80020d20` | `menu_blit_sprite` | SAME |
 | `0x80020ef8` | `menu_blit_sprite_fixed_clut` | SAME |
 | `0x800210ac` | `menu_draw_string` | DIFF 90.4%; target 56-byte versus probe 48-byte frame and glyph UV register choice |
-| `0x80021510` | `menu_draw_number` | DIFF 93.1%; font width/height load order in two UV paths |
+| `0x80021510` | `menu_draw_number` | SAME; 100% isolated direct objdiff |
 | `0x800217f0` | `func_800217f0` | SAME |
 | `0x80021a60` | `func_80021a60` | SAME |
 | `0x80021a68` | `menu_frame_begin` | SAME |
@@ -190,7 +190,8 @@ primitive-buffer, and display state through 25 functions from `0x8001d030`
 to `0x80021fb0`. Fifteen listings were SAME and ten remained DIFF. These
 are focused `kf try --no-flow` verdicts, not strict banking claims; the
 frame unit's adjacent `0x80021a60` also rebuilt SAME but is outside this
-25-function count.
+25-function count. The three purchase-controller DIFF rows in this historical
+pass were later closed by the connected label and item-list follow-on below.
 
 | Address | Function or role | Focused verdict |
 | --- | --- | --- |
@@ -341,8 +342,9 @@ newly recognized exact functions above.
 A fresh focused GAME sweep followed the label builders into the primary and
 secondary item controllers, their code translators, list input, and status
 display. All 23 functions in `0x8001c550`–`0x8001f008` have a retained
-verdict: 20 listings are SAME and three purchase controllers remain DIFF.
-These are quick `kf try --context 0 --no-flow` results. The ten label
+SAME listing after the purchase-controller correction below. These are
+quick focused `kf try` results; the three changed controllers also passed
+normal focused comparisons with flow clues. The ten label
 functions also have separate direct objdiff proof for their whole unit:
 `.text` 2,784/2,784 bytes and `.data` 320/320 bytes.
 
@@ -358,27 +360,99 @@ functions also have separate direct objdiff proof for their whole unit:
 | `0x8001ccd4` | label builder 8 | SAME |
 | `0x8001cdb0` | row layout | SAME |
 | `0x8001ceb8` | item-category dispatcher | SAME |
-| `0x8001d030` | primary item controller | DIFF 96.6% |
+| `0x8001d030` | primary item controller | SAME; 100% isolated direct objdiff |
 | `0x8001d340` | primary code translator | SAME |
 | `0x8001d3b4` | sell controller | SAME |
 | `0x8001d654` | secondary code translator | SAME |
 | `0x8001d6a8` | secondary code helper | SAME |
 | `0x8001d8d0` | trade controller | SAME |
 | `0x8001dc64` | stock-list dispatcher | SAME |
-| `0x8001ddd0` | primary stock list | DIFF 96.2% |
-| `0x8001e0a8` | secondary stock list | DIFF 96.2% |
+| `0x8001ddd0` | primary stock list | SAME; 100% isolated direct objdiff |
+| `0x8001e0a8` | secondary stock list | SAME; 100% isolated direct objdiff |
 | `0x8001e378` | input poll | SAME |
 | `0x8001e484` | list input | SAME |
 | `0x8001e94c` | status display | SAME |
 | `0x8001f008` | attribute display | SAME |
 
-The three DIFF functions have confirmed incoming calls from `0x8001ceb8`
+The three previously DIFF functions have confirmed incoming calls from `0x8001ceb8`
 to the primary controller and from `0x8001dc64` to both stock lists. They
-have no retail string references. Their first focused difference is the
+have no retail string references. Before correction, their first focused difference was the
 same price/gold load order and temporary-register assignment: the probe
 loads the selected price stack value before retail does, then changes the
 `DAT_8006d694` multiplier register, `mult` operand order, and unsigned funds
 comparison register. The purchase path, direct call sets, and relevant
-referents remain represented in source. The same residue across all three
-does not establish a different item table, signedness, or purchase rule, so
-the C sources and exact sibling controls were left unchanged.
+referents remained represented in source. The same residue across all three
+does not establish a different item table, signedness, or purchase rule.
+Inlining the one-use purchase cost into the funds condition, with the price
+as the left multiplication operand, expresses the same calculation and now
+matches the retail load order and `mult` operands in all three. Final normal
+focused builds are SAME; isolated native objdiff confirms exact `.text`
+sections of 784/784, 728/728, and 720/720 bytes respectively. All three
+ordered relocation lists match the carved retail objects. The later cost
+assignment for the completed purchase is unchanged.
+
+## Renderer, sprite, and frame call-graph extension
+
+The item-list controllers' direct rendering, model, buffer, and cue helpers
+form a 25-function follow-on in `0x8001f798`–`0x800223cc`, excluding the
+separately owned preview-choice and number-formatter functions. Twenty
+current focused listings are SAME and five are DIFF. Existing exact sprite,
+buffer, model, and cue siblings remained stable after the item-controller
+edits. The five WIPs had fresh image-qualified retail block disassembly,
+callers, callees, strings, and match-state review; none has a retail string
+reference.
+
+| GAME address | Role | Focused verdict |
+| --- | --- | --- |
+| `0x8001f798` | paired menu rows | SAME |
+| `0x8001fb8c` | window drawing | DIFF 83.5% |
+| `0x8001fc94` | item/card list renderer | DIFF 97.7% |
+| `0x80020748` | two-option drawing | SAME |
+| `0x8002083c` | item-model preview | DIFF 73.1% |
+| `0x80020990` | value heading | SAME |
+| `0x80020b50` | translucent sprite | SAME |
+| `0x80020d20` | sprite | SAME |
+| `0x80020ef8` | fixed-CLUT sprite | SAME |
+| `0x800210ac` | glyph string | DIFF 90.4% |
+| `0x80021510` | numeric glyph string | SAME; 100% isolated direct objdiff |
+| `0x800217f0` | nine-slice panel | SAME |
+| `0x80021a60` | frame stub | SAME |
+| `0x80021a68` | frame begin | SAME |
+| `0x80021be0` | frame present | SAME |
+| `0x80021c8c` | display entry | DIFF 97.2% |
+| `0x80021e00` | display exit | SAME |
+| `0x80021f10` | primitive begin | SAME |
+| `0x80021f60` | primitive commit | SAME |
+| `0x80021fb0` | list initialization | SAME |
+| `0x800221e8` | item-model load | SAME |
+| `0x800222bc` | item-model release | SAME |
+| `0x80022300` | menu cue | SAME |
+| `0x80022394` | input activation | SAME |
+| `0x800223cc` | input release | SAME |
+
+For `menu_draw_number`, the retail second-column U computation adds seven
+to the font's byte U before adding glyph width. Casting that expression to
+`u8` at the Psy-Q packet boundary expresses the stored coordinate's width
+and fixes both UV paths. The pinned Psy-Q 3.0 `LIBGPU.H` `setUVWH` macro
+adds width for the `u1` and `u3` packet writes, and `POLY_FT4` stores
+each U coordinate as `u_char`; this supports the byte boundary independently
+of the score. Initializing the code pointer before checking its
+first halfword fixes the one remaining argument-save placement. Normal
+focused comparison is SAME, and isolated native objdiff proves all 736
+text bytes with an identical raw ordered relocation listing. A guard-only
+rewrite left the 99.5% intermediate listing unchanged; a while-loop form
+moved the code-pointer calculation too early and was discarded.
+
+For the other five WIPs, direct call sets and referents remain supported.
+The list renderer still first differs at the scroll/card-mode calculation;
+its 55 blocks and 33 branches agree with retail. The window and display
+entry helpers retain unexplained eight-byte frame surpluses, while the
+item-model preview has a 64-byte surplus over its four live `MATRIX`
+objects. The glyph-string renderer retains a frame surplus and glyph-UV
+register choices. A single controlled GCC 2.6.0 probe for window drawing
+fell to 63.7% isolated objdiff, compared with the existing GCC 2.5.7
+probe's 99.8%; no compiler-profile change was retained. There is no
+supported source object for the surplus frame bytes, so these five sources
+were left unchanged. A `u16` glyph-index local left the string renderer's
+focused listing at 90.4%, and swapping independent scroll-pointer updates
+left the list renderer at 97.7%; both source-only probes were discarded.

@@ -31,8 +31,8 @@ the KF2 80-row collision structures.
 | 0x80041cd0 | Exact | Scale step, 0xac bytes. |
 | 0x80041d7c | Exact | Zero-direction spawn, 0x90 code plus eight initialized bytes at 0x8006d708. |
 | 0x80041e0c | Exact | Height-window spawn is 136/136 strict exact, using the provisional startup-BSS collision lower-bound view without defining an overlapping global. |
-| 0x80041e94 | WIP | Correct call/CFG shape, 92.65% fuzzy; argument/register schedule residue. |
-| 0x8004212c | WIP | Same unresolved signed BSS bound. |
+| 0x80041e94 | Exact | Fresh isolated direct objdiff confirms all 664 code bytes; the earlier 92.65% report is stale. |
+| 0x8004212c | Exact | Fresh isolated direct objdiff preserves all 364 code bytes while the signed BSS bound remains a provisional interior view. |
 | 0x80042298 | WIP | BSS halfwords 0x801c7068–0x801c706c need an owner. |
 | 0x80042424 | WIP | Same unresolved halfword group. |
 | 0x800424f0 | Exact | Scatter, 0x160 bytes. |
@@ -521,7 +521,7 @@ The listed percentages are strict objdiff scores, not `--loose` scores.
 | 0x8003bd40 | WIP, 86.53226% | Actor horizontal steering has 9/9 blocks and five branches; first differences are independent actor-coordinate load/subtract order and angle/limit saved-register assignments. Six adjacent motion helpers remain exact. |
 | 0x8003f7ec | WIP, 85.86207% | Group-target pointer fixup has 9/9 blocks and correct 40×16 offset walk. The two listing residues are sentinel constant setup order and `addu` operand order; reversing the C pointer addition did not change the object and was reverted. Adjacent scan/load functions remain exact. |
 | 0x8003fb94 | WIP, 87.791046% | Fifteen-argument effect precursor has 11/11 CFG blocks, six branches, and the expected effect/actor calls; the first difference is prologue saves and argument/mask scheduling. Its nine contiguous update helpers remain exact. |
-| 0x80041e94 | WIP, 92.650604% | Variadic effect motion spawn has 14/14 blocks, five branches, and matching constructor/transform/rand calls. The first difference is saved-register and stack-argument lifetime; adjacent 0x4212c remains exact. |
+| 0x80041e94 | **Exact, 100% direct objdiff** | A fresh isolated pinned compile matches all 664 function bytes; the contiguous 0x4212c sibling also remains exact. The whole 1,028-byte `.text` and all 22 ordered relocations match the safe retail module. The earlier 92.650604% report was stale. |
 
 No data or relocation owner was changed for this batch. The source changes
 retained here are the 0x15918 mode-branch shape and the earlier 0x3c3e0
@@ -570,7 +570,7 @@ strict GAME report, after the layout-identical effect phase-field refinement.
 | 0x80035894 | WIP, unclaimed | The 0x7e4-byte map-placement controller has one proven incoming call and eleven direct outgoing calls. Its placement/occupancy path and candidate pattern table near 0x80067874 need a non-overlapping data owner before a source claim. |
 | 0x80036190 | WIP, 89.78417% | The map-object interaction query has 15/15 blocks, eight branches, and matching GTE/distance/angle calls. The first divergence is the initial bound branch and return frontier; natural shared-return, single-loop-bound, and signed-halfword-index probes lowered focused similarity and were reverted. Two following map-object helpers remain exact. |
 | 0x80036e24 | WIP, 98.86364% | Five-block frame/CD service loop has all five direct calls, two branches, and exact referents. Only the three saved assignments for mode, endpoint, and step are cyclically exchanged; no artificial local was introduced to force registers. |
-| 0x8004678c | WIP, unclaimed | The 0xc54-byte scene/effect controller reaches the exact CD, sound, map-object, and effect helpers, but its command switch, later indirect call, and shared event-state ownership remain incomplete. |
+| 0x8004678c | WIP, unclaimed | The 0xc54-byte scene/effect controller has all 96 direct call/jump words and supported event/player/callback-state address pairs reviewed. Its bounded 35-row command table and CD-loaded callback table still lack proved source ownership; the switch `jr` and final `jalr` remain indirect. |
 | 0x800475d8 | Focused WIP, 89.4% | The 0x6c0-byte controller has one fixed map-object argument and a variadic spawn ID, a 120-byte frame, and source-backed pose-buffer reuse; one CFG block differs. |
 | 0x80048d24 | WIP, unclaimed | The 0x5b8-byte serializer has no decoded direct calls; it writes a large runtime payload whose disjoint field extents lack a complete owner. |
 | 0x800492dc | WIP, unclaimed | The paired 0x5e0-byte deserializer has three data references but no direct calls; its payload schema and exact source field widths remain open. |
@@ -950,6 +950,19 @@ Six further raw pairs at 0x80046a10/46a24/46a40/46a80/46aa0/46ab4
 identify the already modeled callback state (+4, +0, +4), event control
 (+4, +6), and player state (+0x18) during the transition branch. They too
 pass safe one-VA delinking without a new data owner.
+Two tail stores at 0x80047318/1c and 0x80047354/58 use `lui at,0x801a`
+with signed low halfwords 0x853c and 0x853e. They write 0x384 to existing
+`player_state` signed halfwords +0x6c and +0x6e after separate event-counter
+calls. The raw pairs pass safe one-VA delinking; the halfwords remain
+address-derived status fields until their complete gameplay semantics are
+proved.
+A further adjacent-pair audit of this controller reviewed 23 omitted raw
+HI16/LO16 pairs: thirteen resolve within `player_state`, six within
+`event_state`, three within `state_8017d118`, and one at
+0x80046ecc/46ed0 loads `audio_state.listener_position.vy` at +0x14. Each raw
+opcode, shared register, and complete owner extent was checked; safe one-VA
+delinking retains zero withheld rows. No new global or narrower object extent
+was inferred.
 
 The following save-offset pair, 0x80048554 and 0x800489ac, each uses its
 first argument as a four-word stack-table index. The former receives a byte

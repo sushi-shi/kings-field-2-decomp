@@ -57,3 +57,9 @@ form preserved behavior but lowered listing similarity to 81.2%, so the
 tracked C remains unchanged. The decimal formatter `0x80022058` remains
 **78.5% focused WIP** with the same unexplained eight-byte frame and return
 delay-slot difference; neither residue supports a fake local or padding.
+KF1 uses a plain `for` fill loop for its four-argument formatter. A temporary
+KF2 spelling with that loop fell to 62.3% focused because it lost retail's
+zero-index instructions on the style branches and chose a different fill
+cursor. The retained KF2 `do` loop remains the better-evidenced source.
+A controlled GCC 2.6.0 compile of the retained C also omitted the eight-byte
+frame, so that compiler switch alone does not explain the remaining residue.

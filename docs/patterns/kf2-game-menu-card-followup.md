@@ -69,12 +69,22 @@ the focused listing retains the exact `memory_card_format` control and the
 four directory-unit WIP verdicts above. The distinct `DIRENTRY` entry type
 comes from the pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
 The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
-retail NUL terminator; its source owner is still unresolved.
+retail NUL terminator. Its reviewed `0x80022744` `lui`/`addiu` pair computes
+that address immediately before the direct `firstfile` call; the string's
+source owner is still unresolved.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
 Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
 all three xref pairs, but the original object boundary and source owner remain
 unproved, so their address-derived identities stay separate.
+
+The carved directory module's initialized sections contain its 0x130-byte
+file-prefix/card-asset data and six-byte path literal; neither section owns
+`0x8006d6a4` or `0x8006d6a5`. A pooled local `" "` initializer is compatible
+with the two bytes and three callers, but this object evidence does not prove
+that source spelling or the defining TU. The focused source therefore keeps
+the two external byte identities pending a source-backed ownership claim.
+
 The first four header fields follow the KF1 `KfPsxSaveHeader` layout, while
 KF2's own `SC 13 02` retail stores, three icon frames, and two-block `FCREAT`
 argument support each field independently. Focused directory, wait, payload,

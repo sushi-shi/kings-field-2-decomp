@@ -1107,6 +1107,12 @@ zero-extended byte from `actor->target` +0x0c, `a1` is a zero-extended
 halfword from that target +0x18, and `a2` is a mode value (`-1` or `-2` on
 two paths). The first
 two calls also write O32 stack arguments at `sp+0x10` and `sp+0x14`.
+At `3ee54`, the stream halfwords passed in `a3`, `sp+0x10`, and
+`sp+0x14` are explicitly sign-extended, with a stream pointer in
+`sp+0x18`. At `3ee9c`, `a3` and both stack halfwords remain zero-extended.
+The `3eec0` path instead forms `a3` from the stream cursor and writes a
+signed actor halfword to `sp+0x10`. These are distinct observed call forms,
+not a single proved high-level parameter type.
 The target pointer remains in `s4` throughout `3d184`; its furthest direct
 read is `lhu` at +0x2a (`3e1ac`). The pointed record therefore covers at
 least 0x2c bytes, beyond the current 0x16-byte common-prefix
@@ -1120,6 +1126,11 @@ arguments are `0`, then target bytes +0x0e, +0x0f, and +0x10; O32 arguments
 `3a614` loads all four later arguments with `lhu`, so the byte is promoted
 for the call. This links a compact target-record parameter group to an
 observed damage action without establishing the whole target record layout.
+The first group is reused at `3e1a4`, `3e344`, and `3e6b8`; `3e1a4` ORs
+`0x80` into its final byte argument. The `3e200` call uses a parallel
+group at target offsets +0x1c..+0x25, with byte arguments at +0x1c..+0x1f
+and three halfwords at +0x20/+0x22/+0x24. These direct reads prove two
+packed damage-parameter spans, but not the enclosing record stride.
 At `16820+0x358`, `resource_copy_words` copies 0xcb0 words to
 `actor_state.target_groups` and then calls `3f7ec`. Its 0x32c0-byte copy
 covers 40 group records (0x12c0 bytes) and the following 0x2000-byte
@@ -1398,7 +1409,7 @@ listed successor difference is the shared return block's renumbering.
 | `3c220` | SAME | Animation event group dispatcher. |
 | `3c3e0` | WIP 95.4% | Yaw-error temporary register differs. |
 | `3c614` | WIP, unclaimed | Three direct `3d184` calls; 123-word candidate switch at `80011ee8` and unresolved indirect jump at `3c7c0`. |
-| `3d084` | WIP 92.6% | Spatial-sound note arithmetic reassociation remains. |
+| `3d084` | Exact 100% | Centered random pitch jitter now matches the retail instruction and relocation listing. |
 | `3d0e8` | SAME | Actor target sound wrapper. |
 | `3d184` | WIP, unclaimed | Behavior dispatcher calls damage, movement, and group-position helpers; complete table and target-record layout unproved. |
 | `3f7ec` | WIP 93.8% | Archive-loaded group target fixup; two instruction-order differences remain. |
@@ -1415,3 +1426,27 @@ Default focused comparison reports matching 26/26 CFG blocks and 13/13
 branches for `3a318`, and 6/6 blocks and 3/3 branches for `3a614`.
 Removing redundant `u16` falloff casts or spelling the amount/flags formal
 as `u32` left `3a318` at the same 97.5% listing, so neither probe was kept.
+Moving the masked amount initialization ahead of the damage-position flag
+check fell to 84.6%; retail supports the existing source order.
+For `3d084`, retail calls `rand`, multiplies by five, computes the clamped
+offset minus two, then shifts the random product and adds. Expressing the
+random term as centered pitch jitter, `offset + (scaled_random - 2)`, retains
+the same range and emits the retail order. Focused comparison is 2/2 SAME
+for `3d084` and its `3d0e8` neighbor; isolated direct objdiff reports 100%
+for both (100/100 and 156/156 bytes), and all seven ordered `.text`
+relocations agree. The `3d0e8` wrapper is called directly by the behavior
+dispatcher at `3d184+0x1b0`; the pair remains in that actor call graph.
+Moving the offset subtraction into a post-`rand` local
+statement instead filled retail's empty call delay slot and fell to 90.6%.
+Retail `3b5d0` reads the vertical-motion halfword unsigned on its successful
+increment path, while other actor consumers read the same storage signed.
+An explicit `(u16)` view on its three increments compiled identically at
+66.5%; the shared signed field and existing source were left intact.
+The only proven external direct caller of `3a318` is effect dispatcher
+`3ff18+0x174`: it forwards falloff and packed amount/flags from its fifth
+and sixth arguments, preserving the callee's
+observed halfword and word loads without a new parameter identity.
+For `3ae50`, fusing the obstacle-angle choice and wrap into one C assignment
+emits the `andi` at retail's earlier point but adds an extra register move;
+the source-only listing falls from 99.2% to 91.7%. The retained two-step C
+spelling preserves the exact neighboring animation claims.

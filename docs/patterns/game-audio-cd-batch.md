@@ -909,3 +909,36 @@ GAME delinker accepts all 58 and semantic disassembly annotates both
 instructions of each pair. This resolves their referents without claiming a
 source body, changing the six caller declarations, or inventing storage for
 the separate startup and callback workspaces.
+
+The six direct callers are three sites in `0x8002360c`, one in `0x80036ed4`,
+and two in `0x8004678c`. They all populate eight scalar slots. The
+`0x80036ed4` caller loads the first four with `lbu` and the final three with
+`lb`; `0x80016260` itself reads all four stack arguments with `lbu` and
+masks the register arguments with `andi 0xff` where used. Those facts prove
+byte-valued behavior but do not prove the original C widths of the register
+arguments. Nineteen direct `j`/`jal` words inside `0x80016260` were decoded
+against their target addresses and promoted to reviewed control flow; a safe
+one-function GAME delink accepted 135 relocations with none withheld. The
+body and its candidate signature remain WIP.
+
+The source-owned VAB service `0x800144b8` and arena allocator `0x80017608`
+also had candidate direct-control rows despite their near-complete C bodies.
+Raw GAME words verify all 14 and four `j`/`jal` targets respectively. Their
+reviewed rows pass separate safe one-function delinks with 18 and four
+relocations, neither withholding any function or relocation. The VAB service
+still differs in its shared `1`/`-1` register choice, and the allocator in one
+two-instruction temporary assignment; no source-level correction is proved.
+Focused listings after the relocation review remain 15/16 identical in
+`game.audio_runtime` and 56/57 in `game.cd_memory`; the two noted WIPs are the
+only listing differences. This quick comparison is not a new strict match.
+
+The contiguous 29-function CD/memory run from `0x80016ed4` through
+`0x80017864` has 28 identical focused listings and the existing
+`0x80017608` allocator WIP. Its 36 remaining candidate direct-control rows
+were decoded from hash-identical GAME.EXE words: each `j`/`jal` opcode and
+encoded target agrees with the curated row. Calls into Psy-Q `LIBAPI.LIB`,
+`LIBGPU.LIB`, and `LIBCD.LIB` are vendor boundaries; the functions in this run
+are game-owned. This review confirms control flow, not historical linker
+relocation records or a source-level fix for the allocator residue.
+Safe GAME delinking of the ten affected functions produced ten objects with
+44 relocations and zero withheld relocations or functions.

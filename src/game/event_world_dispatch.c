@@ -64,61 +64,16 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
         event_state.state_word = 1;
         kind = templates[object_id].collision_kind;
         switch (kind) {
-        case 2:
-            if (object->action_timer == 0) {
-                if (object->tail.fields.unknown_38 == 0xff) {
-                    object->action_timer = 1;
-                } else {
-                    notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
-                }
-            }
-            break;
-        case 3:
-            if (object->action_timer == 0) {
-                u8 state = object->tail.fields.unknown_38;
-                if (state >= 0xfc) {
-                    if ((state & 1) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy, 900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
-                    if ((state & 2) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy + 0x800,
-                                               900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
-                }
-                if (state == 0x0f && game_counter_bytes[0x0f] != 0) {
-                    object->action_timer = 1;
-                    break;
-                }
+        case 0xa5:
+        case 0xff:
+            if (object->tail.fields.unknown_3e.bytes.high != 0xff) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
             }
             break;
-        case 8:
-        case 0x16:
-            if (!angle_within_tolerance(rotation->angles[1],
-                                        object->rotation.vy + 0x800, 0x155)) {
-                break;
-            }
-            /* Kind five enters the same state handler without the angle gate. */
-        case 5:
-            {
-                u8 state = object->tail.fields.unknown_38;
-                s32 linked_index = object->tail.fields.unknown_3a.value;
-                if (state == 0xfe) {
-                    if (linked_index == 0xffff ||
-                        objects[linked_index].object_id == 0xff) {
-                        notify_enqueue(6);
-                    }
-                } else if (state == 0xff) {
-                    object->tail.fields.unknown_38 = 0xfe;
-                } else {
-                    notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
-                }
+        case 0x40:
+            func_800475d8(object);
+            if (object->object_id == 0xff) {
+                goto invoke_callback;
             }
             break;
         case 9:
@@ -131,25 +86,88 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             }
             {
                 KfMapObject *linked = &objects[linked_index];
+                u8 linked_state = object->extra_40.bytes[0];
+                u16 result_id;
                 linked->tail.fields.unknown_38 = 0xff;
-                linked->unknown_00 = object->extra_40.bytes[0];
+                linked->unknown_00 = linked_state;
                 func_800475d8(linked);
-                if (linked->object_id == 0xff) {
-                    object->tail.fields.unknown_3a.value = 0xffff;
-                }
+                result_id = linked->object_id;
                 linked->unknown_00 = 0;
                 linked->tail.fields.unknown_38 = 0;
+                if (result_id == 0xff) {
+                    object->tail.fields.unknown_3a.value = 0xffff;
+                }
             }
             break;
         }
-        case 0x0d:
-        case 0x14:
-            func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
+        case 0x53:
+            if (object->action_timer == 0) {
+                object->action_timer = 1;
+            }
             break;
-        case 0x0e:
-            func_80048554(state_8017d118.values_04[0]);
-            func_80028fa8();
-            func_8001bcfc();
+        case 2:
+            if (object->action_timer == 0) {
+                if (object->tail.fields.unknown_38 == 0xff) {
+                    object->action_timer = 1;
+                } else {
+                    notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                }
+            }
+            break;
+        case 3:
+            if (object->action_timer == 0) {
+                if (object->tail.fields.unknown_38 >= 0xfc) {
+                    if ((object->tail.fields.unknown_38 & 1) &&
+                        angle_within_tolerance(rotation->angles[1],
+                                               object->rotation.vy, 900)) {
+                        object->action_timer = 1;
+                        break;
+                    }
+                    if ((object->tail.fields.unknown_38 & 2) &&
+                        angle_within_tolerance(rotation->angles[1],
+                                               object->rotation.vy + 0x800,
+                                               900)) {
+                        object->action_timer = 1;
+                        break;
+                    }
+                }
+                if (object->tail.fields.unknown_38 == 0x0f && game_counter_bytes[0x0f] != 0) {
+                    object->action_timer = 1;
+                    break;
+                }
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+            }
+            break;
+        case 0x51:
+            if (object->action_timer == 0 &&
+                object->tail.fields.unknown_38 == 0xff) {
+                object->action_timer = 1;
+            }
+            break;
+        case 8:
+        case 0x16:
+            if (!angle_within_tolerance(rotation->angles[1],
+                                        object->rotation.vy + 0x800, 0x155)) {
+                break;
+            }
+            /* Kind five enters the same state handler without the angle gate. */
+        case 5:
+            switch (object->tail.fields.unknown_38) {
+            case 0xfe: {
+                u16 linked_index = object->tail.fields.unknown_3a.value;
+                if (linked_index == 0xffff ||
+                    objects[linked_index].object_id == 0xff) {
+                    notify_enqueue(6);
+                }
+                break;
+            }
+            case 0xff:
+                object->tail.fields.unknown_38 = 0xfe;
+                break;
+            default:
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                break;
+            }
             break;
         case 0x0f:
             if (object->tail.fields.unknown_38 == 0xff) {
@@ -166,33 +184,19 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
                 }
             }
             break;
-        case 0x40:
-            func_800475d8(object);
-            if (object->object_id == 0xff) {
-                goto invoke_callback;
-            }
-            break;
-        case 0x51:
-            if (object->action_timer == 0 &&
-                object->tail.fields.unknown_38 == 0xff) {
-                object->action_timer = 1;
-            }
-            break;
-        case 0x53:
-            if (object->action_timer == 0) {
-                object->action_timer = 1;
-            }
-            break;
-        case 0xa5:
-        case 0xff:
-            if (object->tail.fields.unknown_3e.bytes.high != 0xff) {
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
-            }
+        case 0x0d:
+        case 0x14:
+            func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
             break;
         case 0x12:
             func_800474c4(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
             player_state.vitals.current_hp = player_state.vitals.maximum_hp;
             func_800474c4(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
+            break;
+        case 0x0e:
+            func_80048554(state_8017d118.values_04[0]);
+            func_80028fa8();
+            func_8001bcfc();
             break;
         }
         object_index++;

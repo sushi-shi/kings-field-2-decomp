@@ -926,10 +926,6 @@ GAME.EXE	0x80013609	0x2e09	0x3	unclassified	coverage-gap			payload-complement	ma
 GAME.EXE	0x8001360c	0x2e0c	0x25	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: bad prim:addr=%08X,type=%s,len=%d
 GAME.EXE	0x80013631	0x2e31	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80018764	0x7f64	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80033584	0x22d84	0x1c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80036944	0x26144	0x37	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8003697b	0x2617b	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: 4!\x20\x20
-GAME.EXE	0x8003697f	0x2617f	0x39	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80039048	0x28848	0x38	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80039b58	0x29358	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80039bda	0x293da	0x5	string	byte-pattern		shift_jis	investigation:string-census	escaped text: B&!拭
@@ -1289,18 +1285,8 @@ GAME.EXE	0x80065c20	0x55420	0x5a0	defined	manual:menu item code pages		u16[6][12
 GAME.EXE	0x800661c0	0x559c0	0x4b0	defined	manual:menu item code pages		u16[5][120]	retail bytes;func_8001d654 indexed halfword lookup	five 240-byte pages ending at card-file prefix
 GAME.EXE	0x80066670	0x55e70	0x10	defined	manual:card save prefix		char[16]	retail bytes;four card-file xrefs	12-character save prefix, NUL and alignment zeros
 GAME.EXE	0x80066680	0x55e80	0x120	defined	manual:card title and icon palettes		KfCardAssets	retail title bytes;card-writer indexed palette copy	Shift-JIS title and seven 16-color icon palettes
-GAME.EXE	0x800667a0	0x55fa0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667a4	0x55fa4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667a8	0x55fa8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667ac	0x55fac	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667b0	0x55fb0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667b4	0x55fb4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667b8	0x55fb8	0x10	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800667c8	0x55fc8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667cc	0x55fcc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667d0	0x55fd0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667d4	0x55fd4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800667d8	0x55fd8	0x10	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records		s16[5][4]	retail bytes;func_80025a18 eight-byte copy stride	five XYZ-plus-parameter records; fourth signed halfword is read separately at 0x800260fc; original C type and TU unresolved
+GAME.EXE	0x800667c8	0x55fc8	0x20	defined	manual:player effect vector templates		SVECTOR[4]	retail bytes;func_80025a18 eight-byte copy stride	four signed corner records read by the bounded effect-spawn loop; defining TU unresolved
 GAME.EXE	0x800667e8	0x55fe8	0x14	defined	manual:player magic IDs and attack masks		KfPlayerMagicIdSequence	retail bytes;func_80026498 indexed lbu;func_80028998 halfword sequence	12 effect IDs followed by 0x20,0x10,0x80,0xffff masks; source owner unresolved
 GAME.EXE	0x800667fc	0x55ffc	0xa	defined	manual:collision grid sample		KfMapOccupancyCell	retail bytes;func_8002a988 fallback pointer	two five-byte layers with object index 0xff and flags 0x3f
 GAME.EXE	0x80066806	0x56006	0x2	unclassified	coverage-gap			payload-complement	padding before notification quads

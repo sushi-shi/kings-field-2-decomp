@@ -59,14 +59,15 @@ and some scheduling; the source is WIP, not an exact claim. No function in
 this batch was attributed to vendored code.
 
 A later pass established the card file's 0x280-byte header prefix. Its
-magic begins at zero, title at +4, icon palette at +0x60, three 0x80-byte
+two-byte `SC` magic begins at zero, icon type `0x13` is at +2, two-block
+count at +3, title at +4, icon palette at +0x60, three 0x80-byte
 icon frames at +0x80, and payload checksum at +0x200. The writer zeroes the
 0x400-byte block header before copying this prefix. A shared typed view with
 static size/offset checks now serves the header reader, checksum reader,
 title-digit writer, and file writer;
 the focused listing retains the exact `memory_card_format` control and the
-four WIP verdicts above. The distinct `DIRENTRY` entry type comes from the
-pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
+four directory-unit WIP verdicts above. The distinct `DIRENTRY` entry type
+comes from the pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
 The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
 retail NUL terminator; its source owner is still unresolved.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
@@ -74,8 +75,63 @@ Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
 all three xref pairs, but the original object boundary and source owner remain
 unproved, so their address-derived identities stay separate.
+The first four header fields follow the KF1 `KfPsxSaveHeader` layout, while
+KF2's own `SC 13 02` retail stores, three icon frames, and two-block `FCREAT`
+argument support each field independently. Focused directory, wait, payload,
+events, and probe comparisons retained all prior exact controls after the
+layout-identical field split. The writer now uses the same two-block constant
+for its header byte and `FCREAT` argument; the focused directory and probe
+listings remain at their baseline.
+
+In a later focused card-choice check, `0x8001aa9c` became **strict exact**
+without a source edit. A fresh isolated compile and one-unit objdiff comparison
+match all 484 `.text` bytes and all 17 ordered relocations in the carved
+retail module; the unit owns no `.data` or `.rodata` claims. The older
+97.305786% report is stale and does not describe this object pair.
+The adjacent `game.menu_card_panel` unit is likewise **strict exact** in a
+fresh isolated comparison: 1,316/1,316 `.text` bytes and 75/75 ordered
+relocations match, with no owned data sections. Its `0x8001b030` (284 bytes)
+and `0x8001b14c` (400 bytes) controls remain exact, and `0x8001b2dc`
+(632 bytes) is newly exact despite its older 95.601265% report.
 
 Focused `kf match` verified the new item-model function at strict 100% and
 reported the card-label probe at 93.529410%, with GAME target relink 163/163.
 The command exits at the repository-wide known-reference data-ownership
 closure. No full build or repository tests were run in this focused pass.
+
+## Fresh card graph verdicts
+
+A separate isolated 14-unit comparison compiled only the 30 GAME card
+functions below against their current carved retail modules. Direct objdiff
+reports **23/30 strict exact**, 9,604/13,720 exact code bytes, and 337/337
+data bytes. The seven remaining functions are WIP; their percentages are
+fuzzy comparison scores, not closure.
+
+| Function addresses | Final strict verdict |
+| --- | --- |
+| `0x8001aa9c`, `0x8001ac80`, `0x8001af30` | all exact |
+| `0x8001b030`, `0x8001b14c`, `0x8001b2dc` | all exact; panel unit 1,316/1,316 code bytes and 75/75 ordered relocations |
+| `0x8001b554` | WIP, 98.478264%; probe-branch register and delay-slot order differ |
+| `0x8001b834`, `0x8001ba80`, `0x8001bb94`, `0x8001bcfc` | all exact |
+| `0x8001bf68`, `0x8001c12c` | WIP 97.123890%; exact, respectively |
+| `0x80022438`, `0x80022468`, `0x80022550`, `0x800225b0`, `0x800225d8` | all exact; event unit's one initialized data byte also matches |
+| `0x80022600` | exact; 26/26 claimed `.rodata` bytes match |
+| `0x800226ec`, `0x800228c8`, `0x80022b48`, `0x80022b74`, `0x80022ca0` | WIP 93.605040%; WIP 85.156250%; exact; WIP 93.666664%; WIP 95.896774%, respectively; directory unit's 310/310 initialized data and `.rodata` bytes match |
+| `0x80023178`, `0x80023288`, `0x800232ac`, `0x8002332c` | WIP 93.529410%; three exact wait/checksum helpers |
+| `0x80048d24`, `0x800492dc` | both exact; payload unit 2,968/2,968 code bytes and 226/226 ordered relocations |
+
+The newly verified exact `0x8001aa9c` has 484/484 code bytes and 17/17
+ordered relocations. The earlier browser, label, event, and payload exact
+controls remain exact. No repository tests, full build, or banking accompanied
+this isolated comparison.
+The payload pair has one proven external caller each: writer `0x80022ca0`
+calls serializer `0x80048d24` at `0x80023020`, and reader `0x80022b74`
+calls deserializer `0x800492dc` at `0x80022c5c`. The other xrefs to each
+payload body are internal validated branches, so this pair adds no unresolved
+neighboring game call to the card graph.
+The browser, format-flow, and wait WIP units retain the same ordered
+relocation kinds and target identities as retail. The directory unit has the
+same 137 relocation count, but the `0x800228c8` compiled reader places the
+card-prefix `.data` pair before the two slot-seed pairs; retail orders the
+slot seeds first. This is a reference-order difference, not evidence for a
+new data identity.

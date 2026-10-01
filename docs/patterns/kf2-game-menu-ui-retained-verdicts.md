@@ -266,3 +266,119 @@ A further ten direct callees remained focused SAME: glyph-row builders
 memory-card event unit also rebuilt SAME as adjacent controls. This
 rules out a newly broken direct callee as the cause of the ten renderer
 and controller differences above.
+
+## Early menu controller and strict-object audit
+
+The next GAME pass followed the root menu controller through its item,
+equipment, magic, status, and TIM-view branches. Of the 19 functions in
+`0x8001876c`–`0x8001a898`, sixteen retained focused SAME listings and three
+remain DIFF. Six direct callees outside that address band also retained
+SAME, making the connected 25-function pass 22 SAME and three DIFF.
+
+| Address | Focused verdict | Address | Focused verdict |
+| --- | --- | --- | --- |
+| `0x8001876c` | DIFF 90.8% | `0x800189f0` | SAME |
+| `0x80018ac8` | SAME | `0x80018d08` | SAME |
+| `0x80018dec` | SAME | `0x80018f8c` | SAME |
+| `0x80019240` | SAME | `0x800192ac` | SAME |
+| `0x800192dc` | SAME | `0x8001930c` | DIFF 80.2% |
+| `0x80019834` | SAME | `0x800199d0` | SAME |
+| `0x80019ac4` | SAME | `0x80019ce4` | SAME |
+| `0x80019ed4` | SAME | `0x8001a2f4` | SAME |
+| `0x8001a4f0` | DIFF 96.0% | `0x8001a7fc` | SAME |
+| `0x8001a898` | SAME | `0x8001e484` | SAME |
+| `0x800221e8` | SAME | `0x800222bc` | SAME |
+| `0x80022300` | SAME | `0x80022394` | SAME |
+| `0x800223cc` | SAME | | |
+
+The mixed item/magic controller `0x8001a4f0` matches its 22 CFG blocks,
+12 branches, calls, data references, and 2,440-byte frame. Its remaining
+focused difference is register choice in the 74-row initializer. Reusing
+the `count` local as that loop counter reduced similarity from 96.0% to
+83.4% and changed later saved-register assignments, so the source-only
+probe was discarded. The TIM preview `0x8001930c` preserves its archive,
+allocation, TIM upload, packet, frame, pad, and release calls and its
+47-block/27-branch CFG. Reversing the two archive-index addition operands
+in a source-only probe reduced similarity from 80.2% to 79.9%; the
+current expression remains. Its first differences are the 64-byte retail
+versus 56-byte source frame and initial archive-index register schedule.
+For `0x8001876c`, the first difference swaps the two saved registers used
+for `-1` and `-99`; later the source probe carries a result across the exit
+condition where retail reloads it, leaving the same direct call set but a
+different branch schedule. No source-backed state or ABI change was retained.
+
+A bounded audit rebuilt focused-SAME objects in `/tmp` with their pinned unit
+profiles and compared each to its carved retail module through isolated
+native objdiff reports. The old shared strict report had marked three
+functions WIP and omitted three; all six now prove exact. Raw ordered
+relocation listings also match for every row.
+
+| GAME address | Unit | Isolated strict result | Old report |
+| --- | --- | --- | --- |
+| `0x80019ac4` | `game.menu_equipment_list` | `.text` 544/544, `.data` 200/200 | 99.88971% |
+| `0x8001d340` | `game.menu_item_code_primary` | `.text` 116/116, `.data` 1440/1440 | 93.10345% |
+| `0x8001d3b4` | `game.menu_item_sell_controller` | `.text` 672/672 | absent |
+| `0x8001d654` | `game.menu_item_code_secondary` | `.text` 84/84; unit `.text` 636/636, `.data` 1200/1200 | 90.47619% |
+| `0x8001d8d0` | `game.menu_item_trade_controller` | `.text` 916/916 | absent |
+| `0x8001e484` | `game.menu_list_input_controller` | `.text` 1224/1224 | absent |
+
+The secondary code unit's exact `0x8001d6a8` sibling occupies the other
+552 code bytes. The primary code unit has two ordered text relocations,
+and the secondary has 26; their candidate and retail relocation lists are
+identical. No unit above claims `.rodata`. These isolated object findings
+are strict evidence for the listed functions, without a broad match run or
+banking.
+
+The status and attribute renderers were absent from the old shared report
+but already had direct exact evidence. Fresh isolated objects reconfirm
+`0x8001e94c` at 1,724/1,724 text and 240/240 data bytes, and
+`0x8001f008` at 1,936/1,936 text bytes. Both ordered relocation lists
+match their retail targets. These are confirmations, separate from the six
+newly recognized exact functions above.
+
+## Connected label and item-list follow-on
+
+A fresh focused GAME sweep followed the label builders into the primary and
+secondary item controllers, their code translators, list input, and status
+display. All 23 functions in `0x8001c550`–`0x8001f008` have a retained
+verdict: 20 listings are SAME and three purchase controllers remain DIFF.
+These are quick `kf try --context 0 --no-flow` results. The ten label
+functions also have separate direct objdiff proof for their whole unit:
+`.text` 2,784/2,784 bytes and `.data` 320/320 bytes.
+
+| GAME address | Function or role | Focused verdict |
+| --- | --- | --- |
+| `0x8001c550` | label builder 1 | SAME |
+| `0x8001c62c` | label builder 2 | SAME |
+| `0x8001c770` | label builder 3 | SAME |
+| `0x8001c8b0` | label builder 4 | SAME |
+| `0x8001c9f4` | label builder 5 | SAME |
+| `0x8001cad4` | label builder 6 | SAME |
+| `0x8001cb44` | typed label selector | SAME |
+| `0x8001ccd4` | label builder 8 | SAME |
+| `0x8001cdb0` | row layout | SAME |
+| `0x8001ceb8` | item-category dispatcher | SAME |
+| `0x8001d030` | primary item controller | DIFF 96.6% |
+| `0x8001d340` | primary code translator | SAME |
+| `0x8001d3b4` | sell controller | SAME |
+| `0x8001d654` | secondary code translator | SAME |
+| `0x8001d6a8` | secondary code helper | SAME |
+| `0x8001d8d0` | trade controller | SAME |
+| `0x8001dc64` | stock-list dispatcher | SAME |
+| `0x8001ddd0` | primary stock list | DIFF 96.2% |
+| `0x8001e0a8` | secondary stock list | DIFF 96.2% |
+| `0x8001e378` | input poll | SAME |
+| `0x8001e484` | list input | SAME |
+| `0x8001e94c` | status display | SAME |
+| `0x8001f008` | attribute display | SAME |
+
+The three DIFF functions have confirmed incoming calls from `0x8001ceb8`
+to the primary controller and from `0x8001dc64` to both stock lists. They
+have no retail string references. Their first focused difference is the
+same price/gold load order and temporary-register assignment: the probe
+loads the selected price stack value before retail does, then changes the
+`DAT_8006d694` multiplier register, `mult` operand order, and unsigned funds
+comparison register. The purchase path, direct call sets, and relevant
+referents remain represented in source. The same residue across all three
+does not establish a different item table, signedness, or purchase rule, so
+the C sources and exact sibling controls were left unchanged.

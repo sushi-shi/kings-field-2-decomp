@@ -166,18 +166,55 @@ four-byte string seed at `0x8003697b` intersects the little-endian bytes
 of `move a0,s1` and the following `jal`; it is a false string detection.
 No aligned `j/jal` or 32-bit pointer word in GAME.EXE targets `0x80036944`,
 and no matching low-immediate address constructor was found. The entry's
-caller ABI and return use remain unproved, so this is boundary evidence,
-not yet a source/identity claim; its direct `jal` row stays candidate.
+caller ABI and return use remain unproved. The contiguous `0x74`-byte
+function boundary and address-derived `func_80036944` identity are curated;
+the three overlapping false data/string seeds were removed. Its tentative
+`u8` parameter and `void` return remain candidate, and no source claims the
+function. The preceding `0x800368b4` returns at `0x8003693c` with its
+`0x80036940` delay slot; the following claimed function starts exactly at
+`0x800369b8`. A safe GAME one-VA carve admits the complete target with no
+withheld function, but withholds its direct `jal` at `0x80036980` as
+`non-reachable-code-channel`: no static caller establishes reachability.
+
+KF1's `map_object_pool_trigger_link(u8)` and `map_object_pool_clear_link(u8)`
+use the same 396-record/count-down loop idiom; this supports the loop model
+and byte-width hypothesis, not a semantic name or a KF2 callsite.
+
 The related map-object band `0x80034f90`–`0x80036ed3` had 17 remaining
 candidate direct `j/jal` rows. All 17 retail words encode their curated
 opcode class and target. Sixteen are in identified reachable functions;
 their internal jumps land on CFG block heads and their external calls name
 the decoded callees, so those rows are now reviewed. The seventeenth is
-the `0x80036980` call in the unresolved `0x80036944` gap and remains
-candidate. Focused controls after the review retain 5/6 identical listings
-in `game.map_object_reset`, 1/1 in `game.map_object_collision_query`, and
-2/2 in `game.map_object_vertex_world`; the sole reset-unit WIP is the
+the `0x80036980` call in the newly bounded but caller-unresolved
+`0x80036944` function and remains candidate. Focused controls after the
+review retain 5/6 identical listings in `game.map_object_reset`, 1/1 in
+`game.map_object_collision_query`, and 2/2 in
+`game.map_object_vertex_world`; the sole reset-unit WIP is the
 historical `map_object_set_cell_marker` at 55.9% focused similarity.
+
+A later raw-word pass checked all 54 still-candidate `mips26` rows in
+`0x8002aaa4`–`0x8002ce2b`: every word has the curated `j`/`jal` opcode and
+target, and each site lies in an identified function. A safe one-VA carve of
+`0x8002c670` already materializes its decoded direct calls (82 target
+relocations, none withheld), so no candidate tier was promoted merely to
+change the focused listing. The `0x80035194` rectangle copier's apparent
+extra zero-width branch is an instruction-order difference: retail also
+checks `width - 1 == -1` at each row's inner-loop entry. Its source and
+the 92.5% `0x80034f90` neighbor therefore remain unchanged in this pass.
+Focused `0x8002c424` and `0x8002c670` listings remain 73.5% and 75.8%; the
+adjacent spawn/scatter three-function and vertex-world two-function units
+remain all SAME listings. These are focused listing verdicts, not strict
+closure.
+
+The exact `0x8002bc18` copy uses `lui t1,0x8006; addiu t1,0x6ab4` to form
+the source-owned `collision_default_rows` base. The raw pair, its
+`0x80066ab4` target, and the 80-record copy establish a reviewed direct
+relocation. A safe one-VA carve retains the pair, and the focused
+collision-height unit remains 10/17 SAME listings. A separate apparent
+`rcos` xref at `0x8005df68/6c` forms `0x8006749c + angle * 2` only for
+angles 3072–4095, actually reading `0x80068c9c`–`0x8006949a`. Its base
+literal happens to fall within `collision_default_rows`; the dynamic reads
+do not, so it is not evidence to change that datum's owner.
 
 The placement helpers also retain their focused WIP verdicts:
 `0x80034f90` is 92.5% with equivalent 10-byte pattern writes but a

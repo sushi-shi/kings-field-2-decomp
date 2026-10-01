@@ -16,10 +16,17 @@ enum {
     KF_CARD_PAYLOAD_BYTES = KF_CARD_BLOCK_BYTES - KF_CARD_HEADER_BYTES
 };
 
+enum {
+    KF_CARD_ICON_TYPE_THREE_FRAMES = 0x13,
+    KF_CARD_FILE_BLOCKS = 2
+};
+
 /* The file header copies this 0x280-byte prefix; the rest of the 0x400-byte
  * block header remains zero in memory_card_buffer. */
 typedef struct KfCardHeader {
-    u8 magic[4];
+    u8 magic[2];
+    u8 icon_type;
+    u8 block_count;
     char title[0x40];
     u8 reserved_44[0x1c];
     u16 icon_palette[16];
@@ -28,6 +35,10 @@ typedef struct KfCardHeader {
     u8 reserved_204[0x7c];
 } KfCardHeader;
 typedef char kf_card_header_size[sizeof(KfCardHeader) == 0x280 ? 1 : -1];
+typedef char kf_card_header_icon_type_offset[
+    (u32)&((KfCardHeader *)0)->icon_type == 2 ? 1 : -1];
+typedef char kf_card_header_block_count_offset[
+    (u32)&((KfCardHeader *)0)->block_count == 3 ? 1 : -1];
 typedef char kf_card_header_title_offset[
     (u32)&((KfCardHeader *)0)->title == 4 ? 1 : -1];
 typedef char kf_card_header_palette_offset[

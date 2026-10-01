@@ -89,6 +89,50 @@ The builder reads source vertex offsets with `lh`; downstream prepared-packet
 walkers read their remapped indices with `lhu`. A future raw-source view must
 keep that consumer-specific signedness without changing the exact prepared
 walker types.
+
+The corner-vertex scratch has a separate alignment constraint. Copying an SDK
+`SVECTOR` aggregate made this compiler use `lwl/lwr` and `swl/swr`, while
+retail reads two aligned words and stores two aligned words for each corner.
+A temporary four-entry union with an `SVECTOR` field and two-word view, using
+one typed source pointer per corner, reproduced that local `lw/lw/sw/sw`
+shape. It reduced the temporary frame from 1232 to 1224 bytes, farther from
+retail's 1248 bytes, and did not fix the entry order or complete packet writes.
+The word view remains a source hypothesis rather than a retained claim.
+
+A second temporary probe combined that aligned corner view with the retail
+bytewise UV and index writes. The first FT4 child writes paired generated
+indices as two full words at packet `+24` and `+28`; the second word also
+replaces the nominal padding halfword with the previously generated index.
+The other child indices are assembled through a four-byte stack scratch and
+stored as individual bytes. This is a real packet-byte difference from the
+first probe's halfword field assignments. Direct one-function objdiff improved
+from 27.071165% for the 0x984-byte first probe to 33.385277% for the
+0xcb0-byte byte-write probe, versus a 0xcbc-byte retail body. Both have the
+14 direct copy calls and six conditional branches; the newer probe still has
+a 1192-byte frame against 1248 retail and remains unclaimed.
+
+Keeping the five midpoint UV pairs as computed local values and reading their
+individual bytes at each child write improved a further temporary probe to
+43.1227% direct objdiff. It still has 14 copy calls and six conditional
+branches; its body is 0xb84 bytes and its frame 1208 bytes. This supports the
+retail value reuse across child-copy calls but leaves 40 frame bytes and much
+of the instruction order unexplained. No version was installed in the game
+source.
+Changing only those cached pair locals from 16-bit to 32-bit values gave
+43.646626% direct objdiff with the same 0xb84-byte body. The retail masked
+word operations support testing this width, but the small score movement is
+not proof of the original declaration; the wider probe is also discarded.
+
+Retail spills `t5`, `t8`, and `t9` around the first packet copy before their
+first visible assignments. The low UV bytes later read from those words have
+their prior bits masked out before they are stored, so this does not establish
+extra input arguments. It is consistent with packed-word scratch whose live
+byte components are filled incrementally. The temporary source recomputes
+byte averages at each child write and therefore does not preserve the same
+live word values across calls. The source initializer and full packed record
+are still unknown; adding undefined locals or stack padding would not be an
+evidence-backed correction.
+
 The pinned Psy-Q `LIBGPU.H` describes `TMD_PRIM` as a decoded multipurpose
 record with byte UV fields and separate vertex/normal arrays; it does not
 have this copied on-disk packet layout, so using it as the builder's packet

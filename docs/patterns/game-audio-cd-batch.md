@@ -835,3 +835,77 @@ a readiness flag, not a sequence-data pointer;
 signedness is not directly observable, so `s32` follows the adjacent
 `sequence_active` flag's convention. The focused audio unit retains 15/16
 identical listings, with only the pre-existing VAB-service WIP.
+
+## GAME VAB/CD controller referents after checkpoint 39dd6fd
+
+The controller at `0x80016820` constructs eight more addresses inside already
+complete objects. Retail `lui`/signed-low pairs and the safe GAME delinker
+validate `map_object_state.objects` at `0x168a8/0x168ac` (+0x1e00) and
+`0x16acc/0x16ad0` (+0x1e06), `actor_state.actors` at
+`0x16a84/0x16a88`, and `actor_state.target_groups` at
+`0x16b78/0x16b7c` (+0x60e0). The loops use the documented 0x44-byte map
+object and 0x7c-byte actor strides, while the target-group copy spans
+0x32c0 bytes to the proved actor-state tail. Another four pairs construct
+`bss_801c7540+7` at `0x16b30/34`, `player_state.camera_position` at
+`0x16b60/64` (+0xd8) and `0x16b68/6c` (+0xe0), and a byte of the same
+complete player object at `0x16c0c/10` (+0xa). The byte's meaning remains
+unresolved. All eight rows retain their true interior addends; no overlapping
+global was introduced. Safe GAME delinking passed, and semantic disassembly
+annotates the reviewed owner/addend at each pair.
+
+This connected 30-function control set has 25 earlier strict exact results
+and five honest WIPs. Fresh focused probes preserve 15/16 identical
+`game.audio_runtime` listings, 5/5 phase setters, and 56/57 in
+`game.cd_memory`. `0x17608` still differs only in the register holding the
+intermediate `available - 12` value; its source was left unchanged.
+
+| GAME address | Verdict |
+| --- | --- |
+| `0x80013ae4` | Exact: sequence start. |
+| `0x80013b7c` | Exact: sequence stop. |
+| `0x80013bd4` | Exact: audio shutdown. |
+| `0x80013c8c` | Exact: spatial playback. |
+| `0x80013f50` | Exact: spatial playback default range. |
+| `0x80013f84` | Exact: spatial playback caller range. |
+| `0x80013fb8` | Exact: tracked voice key-off. |
+| `0x80014030` | Exact: listener update. |
+| `0x800140dc` | Exact: equal-volume playback. |
+| `0x80014100` | Exact: voice-handle refresh. |
+| `0x80014164` | Exact: voice-handle allocation. |
+| `0x80014278` | Exact: voice key-on. |
+| `0x80014394` | Exact: VAB stream callback. |
+| `0x800144b8` | WIP: shared 1/-1 register choice; calls, CFG, ABI and referents align. |
+| `0x800145f4` | Exact: VAB stream-slot acquisition. |
+| `0x800146d0` | Exact: VAB queue wrapper. |
+| `0x80015d58` | WIP, unclaimed: startup CD copy destinations and arena source are unproved. |
+| `0x80015fd4` | WIP, unclaimed: loaded TMD destination at 0x8012da68 has no owner. |
+| `0x800167bc` | Exact: resource phase 1. |
+| `0x800167d0` | Exact: resource phase 3. |
+| `0x800167e4` | Exact: resource phase 2. |
+| `0x800167f8` | Exact: resource phase 4. |
+| `0x8001680c` | Exact: resource phase 6. |
+| `0x80016820` | WIP, unclaimed: seven phases proved; CD-loaded callback extent and indirect call remain open. |
+| `0x80016ed4` | Exact: CD stream completion callback. |
+| `0x80016ee0` | Exact: map-stream read wrapper. |
+| `0x80016f10` | Exact: stream chunk limiter. |
+| `0x80016f4c` | Exact: image-stream CD service. |
+| `0x80017608` | WIP: allocator has one two-instruction temporary-register residue. |
+| `0x80017f9c` | Exact: kind-0x30 archive stream read. |
+
+The pinned Psy-Q 3.0 `LIBSND.H` specifies the signed short return of
+`SsVabTransBodyPartly`; its matching `LIBSND.LIB` body and the CD/Event SDK
+callees are vendored boundaries. The GAME wrappers and allocator in this set
+are game-owned. No literal workspace owner was inferred from a matching byte
+sequence or a nearby BSS boundary.
+
+Adjacent GAME `0x80016260` remains an unclaimed WIP controller with a
+candidate eight-byte-valued-argument ABI. Its retail body has 58 reviewed
+consecutive HI16/LO16 pairs: 56 read or write the complete
+`state_8017d118` at offsets 0 through 0x19, one loads
+`audio_state.sequence_active` at +8, and one constructs
+`event_state.control` +4. All raw low opcodes (`lbu`, `lh`, `sb`, `sh`,
+`lw`, or `addiu`) and signed addends were checked before curation. The safe
+GAME delinker accepts all 58 and semantic disassembly annotates both
+instructions of each pair. This resolves their referents without claiming a
+source body, changing the six caller declarations, or inventing storage for
+the separate startup and callback workspaces.

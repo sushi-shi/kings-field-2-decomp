@@ -355,7 +355,7 @@ the map, actor, player, or audio campaigns; WIP rows have no exact claim.
 | 0x80045e5c | Strict 100% | The trigonometric event/collision probe is exact in `game.audio_sound_wrappers`; the collision-cache BSS owner remains provisional. |
 | 0x80045f20 | External exact | Adjacent event pose interpolation, 180/180 bytes. |
 | 0x8004678c | WIP | Event dispatcher calls 0x36ad8, 0x38f20 and 0x45e5c; no source claim. |
-| 0x80047c98 | WIP, focused 57.1% | Event caller of 0x45e5c; source claims the controller and retains its indirect callback. |
+| 0x80047c98 | WIP, focused 85.1% | Event caller of 0x45e5c; source claims the controller and retains its indirect callback. |
 
 The two-function 0x800369b8–0x80036b68 unit is strict 432/432 bytes, with
 both listings identical. Its new leaf checks camera X/Z after a signed
@@ -411,7 +411,7 @@ superseded where a new exact result is recorded here.
 | 0x80040308 | WIP, no source claim | The 0x13e4-byte effect constructor uses exact pool initializers, but its indirect jump through candidate table 0x8001249c and associated record/data owners remain unresolved. |
 | 0x80041e0c | Exact, 100% | New 136-byte height-window spawn uses the existing provisional collision-bound interior view and calls the constructor with kind 0x66; its adjacent 0x80041d7c listing remains exact. |
 | 0x80041e94 | WIP, 92.650604% | Motion spawn has matching 14/14 CFG blocks, 5/5 branches and call set; remaining differences begin with saved-register and stack-argument lifetimes. Adjacent 0x8004212c remains exact. |
-| 0x80047c98 | WIP, focused 57.1% | The 0x660-byte event/effect controller calls the collision probe at 0x80045e5c, event-counter interpolation and map-object selection, then an unresolved indirect callback near its tail. Its source claim is provisional. |
+| 0x80047c98 | WIP, focused 85.1% | The 0x660-byte event/effect controller calls the collision probe at 0x80045e5c, event-counter interpolation and map-object selection, then an unresolved indirect callback near its tail. Its source claim is provisional. |
 
 The exact-count movement in this batch is two functions, 0x8002cf40 and
 0x80041e0c. Neither source introduces an overlapping definition for the
@@ -542,7 +542,7 @@ adjacent-boundary, source-history, vendored, and current-match evidence under
 | 0x800349bc | WIP, 92.34296% | Four fade quads retain 14/14 CFG blocks and eight branches. Retail keeps `state` on a 72-byte frame; the probe uses a saved register and a 64-byte frame. An independently weaker local-name probe was reverted. |
 | 0x80034e10 | **Exact, 100%** | The two scratch-buffer increments and typed primitive-buffer boundaries now emit the retail order. `tim_upload_images` in the same source remains exact. |
 | 0x800461a0 | WIP, 99.12676% | The explicit `0xf1`/`0xfe` branches and shared fallback join restore 14/14 blocks and 5/5 branches. Only the two record-cursor register assignments remain exchanged. The adjacent marker helper remains exact. |
-| 0x80047c98 | WIP, focused 57.1% | The 0x660-byte event controller has a provisional C claim and reviewed direct map/effect/menu calls; its final indirect call remains unresolved. |
+| 0x80047c98 | WIP, focused 85.1% | The 0x660-byte event controller has a provisional C claim and reviewed direct map/effect/menu calls; its final indirect call remains unresolved. |
 | 0x800482f8 | **Exact, 100%** | A checked 0x0a-byte event-control sentinel view at +0x2c and post-clear pointer setup reproduce all three halfword stores. All six event-state functions remain exact. |
 | 0x80048554 | **Exact, 100%** | The 0x458-byte serializer follows the retail target-group terminator, reads the low byte of the 16-bit object ID for save packets, and releases one loaded saved-block pointer. Direct objdiff confirms `.text` 1112/1112 and `.rodata` 660/660; the table's indirect edges remain candidate. |
 | 0x800489ac | Focused WIP, 95.1% | Source owns the 0x378-byte decoder and bounded 16-word opcode table. Sentinel streams, packed map packets, and calls align; two initial loop register assignments remain different. |
@@ -693,7 +693,7 @@ strict report predates the retained source correction below.
 | 0x80042650 | WIP, unclaimed | The 0x3670-byte dispatcher has two decoded indirect switches, but the in-body pointer-table relocations and collision-cache owner remain provisional. |
 | 0x8004678c | WIP, unclaimed | Both direct callers pass the player camera position, a rotation view, and an integer command; the 0xc54-byte controller ends by forwarding those to active callback slot two. Its 35-way command switch and callback targets remain indirect. |
 | 0x800475d8 | Focused WIP, 89.4% | One fixed `KfMapObject *` plus a variadic spawned ID reproduces the four argument homes and duplicate first-argument store. The two interpolation phases reuse position/angle buffers; one CFG block remains different. |
-| 0x80047c98 | WIP, focused 57.1% | The 0x660-byte paired controller has a provisional C claim and unresolved indirect callback; CFG counts now match. |
+| 0x80047c98 | WIP, focused 85.1% | The 0x660-byte paired controller has a provisional C claim and unresolved indirect callback; CFG has 85 retail versus 83 compiled blocks. |
 | 0x80048554 | **Exact, 100%** | The 3,072-byte payload, sentinel-terminated target-group scan, low-byte object IDs, 165-entry switch, and arena calls emit identical `.text` (1112/1112) and `.rodata` (660/660) under direct objdiff. In-body table edges remain candidate. |
 | 0x800489ac | Focused WIP, 95.1% | A source claim now models the sentinel-delimited actor/group streams and 16-entry map opcode switch. The table's in-body pointer edges remain candidate. |
 | 0x80048d24 | WIP, unclaimed | The 0x5b8-byte save walker is a direct-copy field sequence, but the large destination payload and live-state field family need a common owner. |
@@ -837,16 +837,21 @@ references. Focused
 safe delinking of this one VA reported zero withheld relocations; the terminal
 `jalr` target remains unresolved.
 
-The separate 0x80047c98 C claim is focused 57.1% WIP. It copies only the
+The separate 0x80047c98 C claim is focused 85.1% WIP. It copies only the
 three retail-read position words, adds 500 to Y, uses one actor/map index,
 and holds the map-object pool and template bases across the scan. Its frame
 is now the retail 88 bytes, and the focused target admits all twelve reviewed
 address pairs with zero withheld relocations. Kind 5 bypasses the angle gate
 used by kinds 8 and 0x16, and successful kind-3 checks exit immediately;
-these retail-backed corrections align 85/85 CFG blocks and 55/55 branches.
-The same direct call set and two return frontiers remain. The first divergence is rotation
-pointer and sentinel saved-register assignment, followed by case-dispatch
-ordering. Retail 0x80047f58..0x80047f7c confirms kinds 0xa5 and 0xff
+these retail-backed corrections preserve 55/55 branches and two return
+frontiers. Reordering the case bodies to match their retail instruction order,
+reloading the kind-3 state byte where retail does, and preserving the linked
+object's read/reset order raised the focused listing from 57.1% to 85.1%.
+The current CFG has 85 retail versus 83 compiled blocks. The first difference
+is rotation-pointer and sentinel saved-register assignment and a zero-index
+move scheduled after the optional actor call rather than in the retail branch
+delay slot. The remaining case-5 control shape is WIP. Retail
+0x80047f58..0x80047f7c confirms kinds 0xa5 and 0xff
 converge on the same guarded notification handler, so their combined C cases
 remain semantically correct despite the differing decision-tree layout. The
 CD-loaded active-table slot remains an indirect call, with no
@@ -856,7 +861,7 @@ not assert that the pointed object is a full map-object record. Retail loads
 that pointer after calling 0x800293d4, so the source preserves the same order.
 The kinds 0x0d/0x14 use a named, layout-identical halfword view of tail bytes
 +0x38/+0x39 for their retail `lhu`; existing byte paths and the twelve-byte
-tail remain unchanged. Focused 0x47c98 stays at 57.1%; map-object reset
+tail remain unchanged. Focused 0x47c98 is 85.1%; map-object reset
 preserves five exact listings, while its separate cell-marker and init-record
 functions retain their prior WIP verdicts.
 Both calls to the WIP varargs 0x800475d8 callee pass a non-null map-object
@@ -927,13 +932,15 @@ Thus any active table used on that path must provide at least 20 four-byte
 entries (0x50 bytes). It is not yet proved that the CD-loaded table is active
 on that path; neither its complete allocation size nor a slot-to-callee map
 is established.
-Twenty-two direct `jal` sites in this controller were checked against their
-raw MIPS-26 words, named with existing function identities, and promoted to
-reviewed control-flow rows: 0x8004681c/4684c/46880/469c0/46a90/46a98/
-46b68/46b74/46c58/46c80/46d40/46e70/46ef0/46fa4/46fb0/47020/
-4706c/470ac/47178/471dc/47244/47368. A safe GAME one-VA delink succeeds
-with these rows. The other direct-call candidates await individual review,
-while the switch-table `jr` and final `jalr` remain indirect.
+All 66 direct `jal` sites in this controller were checked against their raw
+MIPS-26 words and named with curated function identities, except the SDK
+`rsin` target at 0x8005dda4, which retains its vendored attribution. The 22
+previously reviewed sites and 44 newly reviewed sites are control-flow rows.
+All 30 direct `j` sites were also checked against their raw MIPS-26 words;
+their targets remain inside the function. The four previously reviewed and 26
+newly reviewed rows pass a safe GAME one-VA delink with zero withheld
+relocations or functions. The switch-table `jr` and final `jalr` remain
+indirect, with no promoted callback target.
 Seven independently decoded `lui`/signed-low pairs at 0x800467bc,
 46888/468a4/468bc, and 46988/469a4/469b8 address the existing
 `event_state` BSS owner. Five use the state word at +0; two construct indexed

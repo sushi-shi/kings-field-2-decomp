@@ -228,8 +228,8 @@ s32 func_80022ca0(s32 slot)
     path[18] = 0;
     header.magic[0] = 'S';
     header.magic[1] = 'C';
-    header.magic[2] = 0x13;
-    header.magic[3] = 2;
+    header.icon_type = KF_CARD_ICON_TYPE_THREE_FRAMES;
+    header.block_count = KF_CARD_FILE_BLOCKS;
     strcpy(header.title, DAT_80066680.title);
     func_80023178(&header, slot);
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
@@ -250,7 +250,7 @@ s32 func_80022ca0(s32 slot)
     memcpy(memory_card_buffer, &header, sizeof(header));
 
     if (!present) {
-        handle = open(path, FCREAT | (2 << 16));
+        handle = open(path, FCREAT | (KF_CARD_FILE_BLOCKS << 16));
         if (handle == -1)
             return 1;
         close(handle);

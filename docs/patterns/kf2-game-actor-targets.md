@@ -1300,3 +1300,118 @@ base directly from `actor_state.unknown_73a0`, the beginning of that loaded
 tail. This is the same address as `target_groups + 40`; focused comparison
 still reports 93.8% with only sentinel scheduling and commutative `addu`
 operand order different, while `3f610` and `3f860` remain `SAME`.
+
+## Actor target and motion focused pass after 39dd6fd
+
+This 28-function pass follows the target-selection, animation, movement,
+group-position, and group-fixup calls into actor dispatch. Each verdict is a
+current focused listing; `SAME` is an identical listing, not a new broad
+strict certification. No source-only trial below was retained.
+
+| GAME VA | Verdict | First unresolved difference or control role |
+| --- | --- | --- |
+| `3983c` | WIP 87.0% | Actor, sentinel, and chance saved registers exchange roles; call and branch targets agree. |
+| `39c14` | SAME | Fixed-curve leaf control for `39c94`. |
+| `39c94` | WIP 50.3% | Initial stack argument schedule and register lifetimes differ; recipient callback remains indirect. |
+| `3a9f4` | SAME | Filtered actor-distance scan. |
+| `3ab5c` | SAME | Unfiltered actor-distance scan. |
+| `3acb4` | SAME | Current-actor binding. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Animation phase crossing. |
+| `3ae50` | WIP 99.2% | Angle mask and temporary schedule differ in two listing regions. |
+| `3b33c` | SAME | Collision motion helper. |
+| `3b520` | SAME | Trajectory setup. |
+| `3b5bc` | SAME | Movement-state setter. |
+| `3b5d0` | WIP 66.5% | Vertical-state dispatch differs after the same initial collision setup. |
+| `3b9a4` | SAME | Actor motion step. |
+| `3bae4` | SAME | Forward-motion approach. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Motion wrapper. |
+| `3bd40` | WIP 68.2% | Current-actor position load order and argument register lifetimes differ. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Actor group-space position control. |
+| `3c10c` | SAME | Actor group-position mode control. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c3e0` | WIP 95.4% | Yaw-error temporary uses `v1` rather than retail `a2`. |
+| `3f610` | SAME | Actor frame scan and dispatcher caller. |
+| `3f7ec` | WIP 93.8% | Sentinel load timing and commutative pointer addition remain. |
+| `3f860` | SAME | Actor record loader after group fixup. |
+
+Retail `3b5d0` checks vertical state `0x20` first, whereas the current
+compiler orders the switch around `0x10`. A source-only special-case check
+for `0x20` improved its listing to 68.0% and retained 40/40 CFG blocks, but
+the branch landed one block later than retail. A plain if-chain lost two CFG
+blocks; adding the shared collision-success tail lost one. These trials did
+not prove the original source shape and were discarded. A source-only
+`3c3e0` rewrite that computed the yaw shift once fell from 95.4% to 90.4%:
+retail does execute the shift in both branch arms. Promoting `3bd40`'s angle
+parameter to `s32` with an explicit `s16` use compiled identically at 68.2%,
+so its existing narrower source signature was preserved.
+Changing `3c3e0`'s masked yaw error to `u16` fell to 84.1% and selected
+unsigned halfword loads and `sltiu`, unlike retail's `lh` and `slti`.
+Using `s16` for that temporary also fell to 84.1% because of extra
+extension, so the retained `s32` expression remains the closest truthful
+model of the observed operations.
+Changing `3ae50`'s obstacle-angle temporary to `u16` fell from 99.2% to
+72.9%; the retained signed integer temporary is supported by the listing.
+Default focused comparison keeps `3bd40` at 9/9 CFG blocks and 5/5 branches
+despite its 68.2% register and instruction-order residue.
+
+## Actor damage and behavior focused pass after 39dd6fd
+
+This 30-function pass follows actor radial damage and behavior calls through
+animation, motion, group position, and target fixup. Source-backed verdicts
+are current focused listings. The `3c614` and `3d184` bodies remain unclaimed:
+their retail indirect switches and candidate table ownership do not yet
+support a complete C translation. No source-only probe in this pass was kept.
+Default focused flow shows `39c94` at 72 retail versus 71 compiled CFG
+blocks, with the same 46 branches and seven incoming return edges; its first
+listed successor difference is the shared return block's renumbering.
+
+| GAME VA | Verdict | Connection or residue |
+| --- | --- | --- |
+| `3a318` | WIP 97.5% | Actor radial-damage loop; two entry stack-argument temporaries exchange registers. |
+| `3a614` | WIP 81.2% | Actor-to-player damage gate; compiler reuses a camera-position base where retail reloads two HI16/LO16 pairs. |
+| `3a778` | SAME | Actor target scan and damage caller control. |
+| `3a9f4` | SAME | Filtered actor-distance scan. |
+| `3ab5c` | SAME | Unfiltered actor-distance scan. |
+| `3acb4` | SAME | Current-actor binding. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Crossed-phase test. |
+| `3ae50` | WIP 99.2% | Motion collision retry; angle mask schedule remains. |
+| `3b33c` | SAME | Collision motion helper. |
+| `3b520` | SAME | Trajectory setup. |
+| `3b5bc` | SAME | Vertical-motion state setter. |
+| `3b5d0` | WIP 66.5% | Vertical-state collision body retains retail 40/40 CFG blocks and 21/21 branches. |
+| `3b9a4` | SAME | Motion step. |
+| `3bae4` | SAME | Forward-motion approach. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Motion wrapper. |
+| `3bd40` | WIP 68.2% | Motion-to-point caller; position-load schedule and argument registers differ. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Actor group-space position helper. |
+| `3c10c` | SAME | Group-position mode helper. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c3e0` | WIP 95.4% | Yaw-error temporary register differs. |
+| `3c614` | WIP, unclaimed | Three direct `3d184` calls; 123-word candidate switch at `80011ee8` and unresolved indirect jump at `3c7c0`. |
+| `3d084` | WIP 92.6% | Spatial-sound note arithmetic reassociation remains. |
+| `3d0e8` | SAME | Actor target sound wrapper. |
+| `3d184` | WIP, unclaimed | Behavior dispatcher calls damage, movement, and group-position helpers; complete table and target-record layout unproved. |
+| `3f7ec` | WIP 93.8% | Archive-loaded group target fixup; two instruction-order differences remain. |
+
+Retail `3c614` has three proven direct calls from `3d184` and a 45-block
+reachable CFG with an unresolved indirect jump. The 123 candidate pointer
+rows at `80011ee8` do not promote the switch owner or the indirect branch to
+proven control flow. Its complete source claim remains deferred. In `3a318`,
+retail and C both load the halfword falloff and word amount/flags from their
+O32 stack slots; only the selected `a0`/`v1` temporaries differ. `3a614`'s
+extra retail camera-position relocations cannot be modeled as overlapping
+interior globals. The exact `3a778` sibling was preserved.
+Default focused comparison reports matching 26/26 CFG blocks and 13/13
+branches for `3a318`, and 6/6 blocks and 3/3 branches for `3a614`.
+Removing redundant `u16` falloff casts or spelling the amount/flags formal
+as `u32` left `3a318` at the same 97.5% listing, so neither probe was kept.

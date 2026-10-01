@@ -47,3 +47,13 @@ Focused comparison and the strict report preserve exact `0x800189f0`,
 `0x8001af30`, and the 28-byte switch table. Retail census validation passed.
 The report's remaining menu functions are WIP; no repository tests, banking,
 or commit were performed in this batch.
+
+The adjacent two-option preview controller `0x8001f8b8` was also rechecked
+after the later GAME target refresh. Its focused listing remains **84.8% WIP**.
+The first differences assign the four incoming values to different saved
+registers and place the `-99` result test and return block differently; the
+retail and compiled call sets still agree. A temporary source-only `while`
+form preserved behavior but lowered listing similarity to 81.2%, so the
+tracked C remains unchanged. The decimal formatter `0x80022058` remains
+**78.5% focused WIP** with the same unexplained eight-byte frame and return
+delay-slot difference; neither residue supports a fake local or padding.

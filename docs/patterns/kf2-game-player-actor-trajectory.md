@@ -1016,18 +1016,37 @@ the address-derived identity keeps its ABI unresolved.
 The safe one-VA carve for `8002665c` also withholds zero relocations and
 functions. That closes its current target-object references, not the
 114-block source semantics or call-site ABI.
-The separate `80025a18` effect dispatcher still withholds 66 relocation
-rows in a safe one-VA carve. Its 53 pointer words are bounded, but the
-indirect case paths and source owner remain candidate; those withheld
-J/JAL and HI/LO rows were not promoted by analogy with `8002985c`.
+The separate `80025a18` effect dispatcher has 53 bounded pointer words
+to 31 in-body case targets. A CFG walk from those entries reaches all 64
+previously withheld J/JAL sites; every raw word decodes to its recorded
+destination. The conservative one-VA delinker accepted their reviewed rows.
+The remaining HI/LO pairs at `80025cf4` and `8002600c` point at adjacent
+initialized templates: four `SVECTOR` records at `800667c8` and five
+four-halfword records at `800667a0`. The first array's fourth halfword is
+also read separately as a signed effect parameter, so its original C type
+is unresolved. The retail loops copy each eight-byte record with `lwl/lwr`
+and advance by eight; the arrays exactly fill the two spans between the
+card assets and the magic-ID sequence. Their bounded data identities and
+raw-checked HI/LO pairs also passed the conservative carve, reducing the
+dispatcher from 66 to **zero** withheld relocations. The indirect jump's
+original C form and defining TU remain candidate.
 Focused controls in the same player/equipment graph remain 15/15 SAME for
 `game.player_state_equipment`, 2/2 SAME for weapon transform/power, and
 1/1 SAME for the magic selector. The sourced horizontal mover `800274ec`
 remains 61.9% WIP; its wider register/stack schedule residue supplies no
 new source-backed correction.
-The separate `8002722c` action selector still withholds eight relocation
-rows in a safe one-VA carve. Its two bounded pointer tables remain reviewed
-data, but the indirect case edges and C control flow remain unresolved.
+The separate `8002722c` action selector initially withheld eight direct-J
+rows. Its two bounded tables contain 25 raw pointers to twelve unique
+in-body targets, and a CFG walk from those targets reaches all eight sites.
+Every raw instruction decodes to its recorded in-body destination; the
+conservative one-VA delinker accepted the eight reviewed rows and now
+withholds zero relocations. The indirect case edges, C control flow, and
+source owner remain unresolved.
+KF1 `player_select_magic` in `../kings-field/src/game/player_death.c`
+only clears charge and stores the selected magic record. KF2 `8002722c`
+adds an unsigned MP-cost gate, status restrictions, two bounded switches,
+and a charged-action state transition. The KF1 function supports the family
+relationship but is not a source-equivalent body.
 
 The GAME `8002985c` seed understated its body as `0x9dc` bytes and two
 fragments. Raw code continues directly at `8002a238`: nine encoded branches
@@ -1079,3 +1098,41 @@ union. Collision-cache ownership at `bss_801c7540+0x11800` remains
 provisional. The separate map campaign observed a `0x1800`-byte shape-bank
 copy ending there, which supports a boundary but does not establish the cache
 or equipment extents on either side.
+
+### Current player and weapon call-graph verdicts
+
+This 30-function pass used focused listing comparisons; `SAME` below does
+not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
+
+| GAME VA | Verdict | Current evidence |
+| --- | --- | --- |
+| `80024ed4` | SAME | Player pose control in the 15-function equipment unit. |
+| `80024f4c` | SAME | Player reset control in the same unit. |
+| `80025004` | SAME | Player initialization control. |
+| `80025184` | SAME | Session initialization control. |
+| `800251f0` | SAME | Motion clear control. |
+| `80025234` | SAME | Map-position sync control. |
+| `800252e4` | SAME | Point-cone distance control. |
+| `800253ac` | SAME | Point distance control. |
+| `800253fc` | SAME | Player byte setter. |
+| `8002540c` | SAME | Player byte setter. |
+| `80025434` | SAME | Player byte setter. |
+| `8002545c` | SAME | Equipment slot control. |
+| `8002569c` | SAME | Weapon equip control. |
+| `80025754` | SAME | Attack begin control. |
+| `80025878` | SAME | Actor-target selector control. |
+| `80025a18` | Unclaimed WIP | 53 bounded case pointers; 66 to zero withheld relocations; indirect C form unresolved. |
+| `80026330` | SAME | Weapon transform control. |
+| `80026464` | SAME | Power/magic threshold control. |
+| `80026498` | SAME | Magic selector control. |
+| `8002665c` | Unclaimed WIP | 114 CFG blocks; zero withheld relocations; full weapon/effect semantics unresolved. |
+| `8002722c` | Unclaimed WIP | Two bounded tables; eight to zero withheld direct jumps; indirect C form unresolved. |
+| `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
+| `80027928` | SAME | Collision-depth death helper control. |
+| `80027988` | SAME | Landing-sound helper control. |
+| `800279cc` | DIFF, 77.8% | 70/70 CFG blocks; frame and load-schedule residue. |
+| `80027f78` | DIFF, 80.0% | Reaction-motion scaling rematerializes one proven halfword view. |
+| `80028224` | SAME | Camera-turn control. |
+| `8002851c` | SAME | Camera update control and horizontal-mover caller. |
+| `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
+| `80028998` | SAME | Attack/action controller and magic selector caller. |

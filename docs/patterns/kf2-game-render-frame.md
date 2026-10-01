@@ -33,7 +33,8 @@ These structural similarities do not establish original KF2 TU boundaries.
 | `0x800331d0` | enqueues a notification and optional payload | existing exact |
 | `0x80033274` | sets a notification digit's texture V | existing exact |
 | `0x80033284` | advances notification phase and dequeues groups | **new exact, 768/768 bytes** |
-| `0x800335a0` | orchestrates view, map, panel, and notification rendering | unclaimed; 0x3f4-byte frame driver |
+| `0x80033584` | flips the display-buffer index after the notification updater | exact, 28/28 bytes; no known direct caller |
+| `0x800335a0` | orchestrates view, map, panel, and notification rendering | exact, 1,012/1,012 bytes after target refresh |
 | `0x80033994` | renders menu model preview | existing exact |
 | `0x800339fc` | loads TMD archive through resource registry | existing exact |
 
@@ -54,7 +55,7 @@ the four phases: prepare, brighten, hold, and darken. The strict report
 matches all three functions (948/948 code bytes) and the owned 126-byte quad
 table. No separate interior global was introduced.
 
-The six unclaimed functions above are larger render paths with direct calls
+The five unclaimed functions above are larger render paths with direct calls
 and shared graphics data but incomplete object/model ownership. In particular,
 the `0x8003247c` traversal feeds `0x80031850` and `0x80031d8c`; the
 `0x800335a0` frame driver reaches the exact panel and notification helpers.
@@ -98,3 +99,21 @@ All ten have no string references. The existing exact panel, map-mask,
 notification, and frame-driver listings were preserved. No source, data,
 identity, or relocation claim was added from a candidate table or an
 instruction-order residue.
+
+## Display-buffer leaf at 0x80033584
+
+The 0x1c-byte gap between the exact notification updater and the frame driver
+is a return-delimited leaf, not padding. Retail loads the graphics runtime's
+display-buffer byte at `0x8017d140`, compares it with zero, and stores the
+result in the return delay slot. The HI16/LO16 pair uses the signed low half
+`0xd140`; no direct caller or string reference is known. Its source claim in
+`render_frame.c` preserves the existing typed field and is contiguous with the
+frame-driver claim. This grouping establishes a valid unit run, not an
+original TU boundary.
+
+After an image-specific target refresh, a focused build reported both
+functions identical. Isolated objdiff gave the two-function unit 1,040/1,040
+`.text` bytes and 4/4 `.data` bytes, with the leaf 28/28 and frame driver
+1,012/1,012. Raw section bytes and ordered `readelf -r` relocations match the
+carved target exactly. The earlier frame-driver WIP score was stale under this
+target; no frame-driver C was changed to obtain this verdict.

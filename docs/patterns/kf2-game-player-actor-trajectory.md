@@ -1124,7 +1124,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | DIFF, 77.4% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 share one probe with distinct retail scales; cases 39/49/50 enter the retail-proven common constructor tail. Cases 5 and 9 now have separate switch entries and supply 200/500 to one selector call, matching retail's 31 distinct table targets and 31 branch instructions. The candidate has 15 target-selector call sites versus retail's 16: its cases 39/49 share one selector/copy block, whereas retail has two. Both have 11 effect-constructor sites. The 31 local jump sites agree in count; the candidate's single missing `.text` relocation is the missing selector call. The candidate places the shared probe after the case-11 call, while retail places it before. CFG remains 99/95 blocks with one unresolved switch jump on each side; stack frames are 112/104 bytes. |
+| `80025a18` | DIFF, 82.9% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 share one probe with distinct retail scales. Cases 39/49/50 now follow retail's distinct constructor signatures: case 39 passes the camera rotation as argument six, while cases 49/50 join case 7's five-argument tail. Cases 14/16/19 spell their literal status kinds in separate constructor calls; the candidate now reproduces the retail argument-preparation tail at matching object offsets. Retail and candidate each have 16 selector sites, 11 constructor sites, 108 relocations with identical kind/referent counts, 31 local jumps, 31 branch instructions, a 0x918-byte body, and all 53 switch rows with the same 31 destination groups. Relocation order and earlier code still differ: the candidate places the shared rotation probe after case 11, while retail places it before. CFG remains 99/95 blocks with one unresolved switch jump on each side; stack frames are 112/104 bytes. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
@@ -1139,6 +1139,11 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
 | `8002897c` | DIFF, 28.6% | Seven-instruction signed interval predicate has v0/v1 assignment residue. Equivalent early-return, ternary, and conjunction spellings either leave that residue or change the retail CFG; the conjunction folds to a two-instruction unsigned range test. Exact `80028998` remains unchanged. |
 | `80028998` | SAME | Attack/action controller and magic selector caller. |
+
+For `80025a18`, the override-pointer load uses retail `lw 4(s0)` after
+`s0 = sp + 112` and candidate `lw 0(s0)` after `s0 = sp + 108`. With the
+respective 112- and 104-byte frames, both address the saved `a1` argument
+slot at the entry stack pointer `+4`; the offset difference does not change ABI.
 
 The adjacent `8002985c` update body has one proven external call from
 `game_main_loop` at `800138e0`; the other incoming pointers are its bounded

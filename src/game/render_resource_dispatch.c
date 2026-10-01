@@ -134,6 +134,7 @@ map_sound_action: {
             s32 distance;
             s32 radius;
             s32 volume;
+            const VECTOR *camera_position;
 
             if (func_80036ad8(object->position.vx >> 11,
                               object->position.vz >> 11,
@@ -148,11 +149,12 @@ map_sound_action: {
             if ((s32)(object->extra_40.raw - frame) < 0) {
                 object->extra_40.raw = frame +
                     object->tail.fields.unknown_3e.value * 6;
-                distance = player_state.camera_position.vx -
+                camera_position = &player_state.camera_position;
+                distance = camera_position->vx -
                     (object->tail.fields.unknown_38 * 0x400 + object->position.vx);
                 if (distance < 0) distance = -distance;
                 volume = object->tail.fields.unknown_38 * 0x400 - distance;
-                distance = player_state.camera_position.vz -
+                distance = camera_position->vz -
                     (object->tail.fields.unknown_39 * 0x400 + object->position.vz);
                 if (distance < 0) distance = -distance;
                 distance = object->tail.fields.unknown_39 * 0x400 - distance;
@@ -165,7 +167,7 @@ map_sound_action: {
                     volume = object->tail.fields.unknown_3a.bytes.high * volume / radius;
                 }
                 if (object->tail.spawn_bytes.spawn_sequence.high & 1) {
-                    distance = player_state.camera_position.vy - object->position.vy;
+                    distance = camera_position->vy - object->position.vy;
                     if (distance < 0) distance = -distance;
                     volume -= object->tail.fields.unknown_3a.bytes.high * distance >> 13;
                 }

@@ -1116,7 +1116,7 @@ strict exact):
 | 0x8003c614 | 22.7% WIP | Branch-local script argument reads now use retail halfword/word widths; frame and local lifetime still diverge. |
 | 0x8003d184 | 3.6% WIP | Target-state 1 continuation now has its active-group probe, timer refresh, and animation call; the large indirect switch remains incomplete. |
 | 0x80040308 | 11.4% WIP | Only kinds 6 and 102 lack source arms; their buffers are unowned, and the broader source/code shape still diverges. |
-| 0x80042650 | 3.2% WIP | Kinds 1/28 now share their decoded two-phase motion arm; most other kinds and two indirect dispatches remain unresolved. |
+| 0x80042650 | 8.2% focused WIP | Additional decoded motion, collision, scale, healing, and spawn arms are source-claimed; most of the 123-entry switch and two indirect dispatches remain unresolved. |
 | 0x8004678c | 16.4% WIP | Command 0x55 now has the direct actor/map-object search path; other commands and the terminal callback value chain remain unresolved. |
 
 For 0x8003c614, retail's argument-slot cursor starts at sp+200 (the saved
@@ -1323,3 +1323,39 @@ kind 0x33 or 0x34 before a shared collision check. Retail probes
 selector with type `record->type | 3`, current position and a null direction,
 then frees the original record. Their source compiles at 7.4% aggregate WIP;
 the indirect outer dispatch is still provisional.
+
+Kinds 51 and 52 enter 0x80043b98 and 0x80043bb0, respectively. Both call
+`func_80041cd0` with multiplier 0x1000, argument four 0x800 and final
+0x8000; kind 51 passes limit/increment 0x400/0x80, while kind 52 passes
+0x800/0x100. Kind 40 enters 0x800430d4 and probes
+`func_80042298(100, 200, 0)`. A collision reports its result and frees the
+slot; otherwise it calls `func_80041e0c(&position, 0x2000, 0x2000, 500)`.
+All three arms have decoded table entries and direct call targets. The
+focused dispatcher comparison remains WIP at 7.8%; the retail 224-byte
+frame and much of its 123-entry switch are still absent from this source.
+
+Kind 42 enters 0x80042bfc. Retail reads the signed phase byte at record
++0x40; zero calls `func_80041cd0(0x3800, 0x1f8, 0x46, 0x800, 0x8000)`,
+while a nonzero byte decrements in place. The direct table entry and byte
+width are decoded. Adding that branch lowers the aggregate focused score
+from 7.8% to 7.4% WIP as the incomplete outer switch changes layout; the
+source-backed behavior is retained.
+
+Kind 45 enters 0x80042f08 and calls that same scale helper with
+`(0x4000, (s16)record_tail_40, 0x46, 0x800, 0x8000)`. Retail uses `lh`
+for the +0x40 argument; the tail remains a provisional variant-specific
+view. The focused dispatcher still compiles at 7.4% WIP.
+
+Kind 115 enters 0x80042c30. Its direct aim call uses eight decoded O32
+arguments `(0x258, 0x28, 0x24, 0xb4, 0x168, 0x1000, 0x104, 0x800)`.
+When that call returns -1 or the signed update count is below 2, retail
+calls the effect-position helper, spawns three kind-0x2a effects at the
+current position with null direction and trailing values 0, 1, and 2,
+plays spatial sound 0x18, and frees the original slot. The other path
+calls `func_80041e0c(&position, 0x2000, 0x2000, 500)`. These are decoded
+direct edges, with no indirect target inferred. The new source compiles
+at 8.2% focused WIP; most outer-switch arms remain absent.
+The raw 123-word kind table has 55 entries that jump straight to the common
+return and 68 active entries; the current C names 36 of those 68 active
+kinds. The remaining 32 active entries are still WIP, regardless of the
+aggregate fuzzy score.

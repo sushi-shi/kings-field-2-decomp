@@ -432,6 +432,7 @@ void func_80025a18(s32 effect_id, ...)
     switch (effect_id) {
     case 7:
         func_80025878(1000, &position, &direction, &distance);
+emit_simple_effect:
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
     case 2:
@@ -587,14 +588,15 @@ regular_weapon_effect:
         position = *override_position;
         goto emit_rotation_effect;
     case 49:
+        /* Cases 49 and 50 omit the rotation argument. */
         func_80025878(550, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
-        goto emit_rotation_effect;
+        goto emit_simple_effect;
     case 50:
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
-        goto emit_rotation_effect;
+        goto emit_simple_effect;
     case 34:
     case 35:
     case 38:
@@ -617,15 +619,15 @@ emit_rotation_effect:
         player_recalculate_combat_stats();
         break;
     case 14:
-        kind = 14;
-        goto status_effect;
+        func_80040308(10, 0x10, 14, &player_state.camera_position,
+                       &direction);
+        break;
     case 16:
-        kind = 16;
-        goto status_effect;
+        func_80040308(10, 0x10, 16, &player_state.camera_position,
+                       &direction);
+        break;
     case 19:
-        kind = 19;
-status_effect:
-        func_80040308(10, 0x10, kind, &player_state.camera_position,
+        func_80040308(10, 0x10, 19, &player_state.camera_position,
                        &direction);
         break;
     default:

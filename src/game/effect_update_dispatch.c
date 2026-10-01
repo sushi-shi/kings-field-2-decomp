@@ -20,6 +20,9 @@ extern s32 func_80041b14(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance,
                          s32 probe_radius, s32 probe_angle);
 extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
+extern s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
+                         s32 probe_radius, s32 probe_angle, s32 proximity,
+                         s32 close_scale, s32 target_filter);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -311,6 +314,32 @@ void effect_update_dispatch(void)
             }
         }
         break;
+    case 40:
+        collision = func_80042298(100, 200, 0);
+        if (collision != 0) {
+            func_8003feb0(collision);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        }
+        break;
+    case 42:
+        if ((s8)record->unknown_3c[4] == 0) {
+            func_80041cd0(0x3800, 0x1f8, 0x46, 0x800, 0x8000);
+        } else {
+            record->unknown_3c[4]--;
+        }
+        break;
+    case 45:
+        func_80041cd0(0x4000, (s16)*(u16 *)&record->unknown_3c[4],
+                       0x46, 0x800, 0x8000);
+        break;
+    case 51:
+        func_80041cd0(0x1000, 0x400, 0x80, 0x800, 0x8000);
+        break;
+    case 52:
+        func_80041cd0(0x1000, 0x800, 0x100, 0x800, 0x8000);
+        break;
     case 101:
         record->direction.vy = (u16)record->direction.vy +
                                *(u16 *)&record->unknown_3c[6];
@@ -334,6 +363,23 @@ void effect_update_dispatch(void)
         func_80041b14(
             &effect_state.records[record->unknown_3c[4]].position,
             500, 15, -1, 0, 0, -1);
+        break;
+    case 115:
+        collision = func_8004195c(0x258, 0x28, 0x24, 0xb4,
+                                  0x168, 0x1000, 0x104, 0x800);
+        if (collision == -1 || record->updates_remaining < 2) {
+            func_80042424();
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 0);
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 1);
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 2);
+            effect_play_spatial_sound(record, 0x18);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        }
         break;
     case 116: {
         VECTOR midpoint;

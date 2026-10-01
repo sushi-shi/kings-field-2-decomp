@@ -25,3 +25,17 @@ A fresh strict `kf match --image game` relinked all 145/145 target units and
 confirmed every score above. Global edge-check still stops on the three known,
 unrelated TMD/map-object `.rodata` addends. No repository tests, bank, or commit
 were run.
+
+## Fade boundary follow-up (2026-10-01)
+
+Retail `0x80034d80` computes `level - 1`, compares it unsigned against 119,
+then uses `beqz` at `0x80034d88` to branch directly to the return `DrawSync`
+path. The prior source spelling made the probe branch into the pad path instead,
+so its 14-block CFG had different successor and return-frontier mappings. A
+positive `< 119` pad arm with an `else` return keeps the same behavior and
+recovers the retail branch direction: focused similarity changes from 43.2%
+to 44.8%, with 14/14 blocks, 8/8 branches, and known successors now agreeing.
+The first remaining control difference moves to the later pad-state check.
+`tim_upload_images` and the adjacent `func_80034e10` remain `SAME` in the
+focused unit. The saved pad state and quad setup still differ, so the fade
+function remains WIP; the earlier strict score above is a historical report.

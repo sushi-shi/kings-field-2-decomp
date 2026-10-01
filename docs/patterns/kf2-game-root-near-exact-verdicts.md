@@ -113,3 +113,33 @@ actor initializer declaration was removed, and its exact listing stayed
 identical. Exact actor-home and map-placement callers retained their strict
 100% status after adopting the shared signature; actor-home also uses the
 common collision-cache height view instead of a duplicate raw offset.
+
+A later focused pass compared the related `80036464` map-object effect
+spawner and `8002c670` mask sweep with retail before editing. The spawner has
+12/12 visible CFG blocks, three branches, the same direct call set, and the
+same map-object field effects; its 92.8% focused listing first assigns object
+ID and height offset to opposite saved registers. The mask sweep has 11/11
+blocks and four branches; spelling the lighting access through its typed
+field instead of the checked byte offset emitted an identical 76.4% listing,
+so the original byte-base expression was retained. Removing the redundant
+entry guard from `80036190` reduced that function from 15 to 14 blocks and
+82.9% to 82.6% focused similarity; the guard and baseline object were
+restored. None of these probes establishes an exact match or a source
+correction.
+
+The `game.map_object` switch table is not an independent case-map defect.
+Both object files carry 17 `R_MIPS_32` four-byte rows with the same four
+destination groups in the same order. The target function offsets are
+`0x000`, `0x22c`, `0x24c`, and `0x2d4`; the probe offsets are `0x000`,
+`0x230`, `0x250`, and `0x2d8`. Only the first function, `80036190`, is four
+bytes longer in the probe. All 17 table addends
+therefore shift by exactly four bytes while the spawner itself remains 372
+bytes. Resolve the first function's control-flow residue before treating those
+table addends as a separate relocation-owner problem.
+
+An explicit shared-result return path for `80036190` moved the initial guard
+to a direct exit, but reduced the focused listing to 77.7% and CFG to 14
+blocks while retaining three incoming return edges. It introduced an extra
+saved result register, so the original returns were restored and rebuilt.
+Redirecting only the entry guard to the existing final `return -1` produced
+the same 82.6%/14-block listing as guard removal, and was also reverted.

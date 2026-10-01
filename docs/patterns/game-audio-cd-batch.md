@@ -1211,16 +1211,23 @@ none is an exact closure without `100%`.
 | `0x8003ae50` | WIP, 99.2%; 99.31746% recorded strict | The 58-block collision response has all direct calls and six exact siblings; obstacle-angle mask timing and temporary register differ. |
 | `0x8003c3e0` | WIP, 95.4%; 99.64539% recorded strict | The 23-block group-position solver keeps its calls and three exact siblings; yaw-error and shifted-numerator registers are exchanged. |
 
-In the adjacent radius-mask helper `0x800320b0`, retail forms the Z row offset
-and row pointer before computing the X start cell. Moving the source's X start
-calculation below the row pointer reflects that order and improves
-the focused listing from 26.9% to 40.4%. All four exact siblings in
-`game.resource_runtime` remain `SAME`; `map_cell_visible`, the TMD queue, and
-the VAB range updater retain their prior WIP listings. The remaining radius
-difference begins with accumulator/span register assignment and address-load
-scheduling, so no source-only register carrier was added. The previous
-73.95918% strict radius score is a stale checkpoint, not a new closure claim.
+In the adjacent radius-mask helper `0x800320b0`, raw GAME instructions
+complete the Z start coordinate, then the X start coordinate, and only then
+form the Z row offset and row pointer at `0x800320fc..0x80032108`. Moving the
+source's X calculation below the row pointer raised the focused fuzzy listing
+from 26.9% to 40.4%, but contradicted that instruction order. The source-order
+probe was reverted; the current 26.9% focused WIP retains the X calculation
+before row-pointer formation. All four exact siblings in
+`game.resource_runtime` remain `SAME`. The previous 73.95918% strict radius
+score is a stale checkpoint, not a new closure claim.
 For `map_cell_visible` at `0x80032174`, direct early returns preserve the
 boolean result but add a jump absent from retail and lower the focused listing
 from 37.9% to 26.7%; that probe was reverted. Its shared-tail source and
 93.6% stale strict verdict remain WIP.
+
+The older `0x80016f4c` stream-service WIP rows are historical. The recorded
+strict match state now gives `cd_request_service_stream` 100%, and a fresh
+focused `game.cd_memory` rebuild lists it `SAME` alongside 55 other functions.
+The strict report flags itself stale, so this pass did not create a new banking
+claim. `memory_arena_allocate_block` is the one remaining focused DIFF in that
+57-function unit, at 96.0% listing similarity.

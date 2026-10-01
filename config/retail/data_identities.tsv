@@ -580,6 +580,7 @@ GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32		support
 GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
 GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d6a8	0x7	DAT_8006d6a8	unknown	load	char[7]		candidate	retail bytes;firstfile argument at 0x80022744;reviewed HI16/LO16 pair	seven-byte bu00:* NUL wildcard; defining TU and original extent beyond NUL unresolved
 GAME.EXE	0x8006d6b0	0x20	player_status_texture_rows	static	load	RECT[4]	player_reaction	supported	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM copy rows
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
 GAME.EXE	0x8006d6d4	0x4	render_model_yaw_smoothing_accumulator	global	load	s32	func_800335a0	supported	retail zero word;four direct read-write xrefs;angle_shortest_delta	Yaw-delta accumulator used to ease the first render-model row; original linkage WIP

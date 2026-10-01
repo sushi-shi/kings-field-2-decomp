@@ -7,8 +7,8 @@ address span is a survey boundary; it is not evidence of a single original TU.
 
 | GAME address | Retail role and decisive evidence | Verdict |
 | --- | --- | --- |
-| `0x8001876c` | top menu controller; enters display mode, draws windows, dispatches to item/card flows | unclaimed; dispatch state and indirect paths WIP |
-| `0x800189f0` | formats player values into a six-digit glyph row, then draws it | unclaimed; arithmetic source expression and player-state inputs WIP |
+| `0x8001876c` | top menu controller; enters display mode, draws windows, dispatches to item/card flows | WIP, **96.36646%** recorded strict; 34-block source claim, saved-register and return reload residue |
+| `0x800189f0` | formats player values into a six-digit glyph row, then draws it | **exact**, 216/216 bytes in later focused comparison |
 | `0x80018ac8` | item menu controller; list setup, item-model loading, frame and input calls | unclaimed; selection record and state flow WIP |
 | `0x80018d08` | filters a 24-byte glyph-row table using a caller byte mask and writes two output streams | unclaimed; table at `0x80064c30` has no reviewed extent/identity |
 | `0x80018dec` | related 24-byte glyph-row filter with player-dependent exclusions | **exact in later follow-up**; player-state equipped IDs establish the exclusion owner |
@@ -74,6 +74,8 @@ that address immediately before the direct `firstfile` call; the string's
 source owner is still unresolved. Its exact bytes do not occur in the supplied
 Psy-Q 3.0 library archives or card sample sources, which narrows but does not
 prove ownership.
+The identity inventory now records only the seven-byte candidate at that
+address; no module claims its DATA definition or padding beyond the NUL.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
 Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
@@ -208,3 +210,14 @@ extra saved register, and dropped from 67.6% to 62.5% focused. Moving the
 card-column predicate into the row loop in `0x8001fc94` dropped its focused
 listing from 98.6% to 92.4% and removed the retail-sized frame. Both probes
 were reverted; `memory_card_format` remained an exact listing control.
+
+Moving the card writer's `present = 0` initialization to just after its
+directory scan left `0x80022ca0` at 96.7% focused and the exact format sibling
+`SAME`. Retail initializes the value after the scan, but the probe compiler
+still scheduled the zero before the slot-seed loads; the source-order probe
+was reverted because it established no new data or control fact.
+
+The KF1 sibling defines its `memory_card_root_path` as a load-image `char`
+array in `src/game/save_system.c`, consistent with the KF2 `bu00:*` bytes at
+`0x8006d6a8` being writable card data. It does not determine KF2's original
+TU boundary or the separate `0x8006d6a4/5` seed extent.

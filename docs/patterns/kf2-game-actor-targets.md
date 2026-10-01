@@ -1538,3 +1538,43 @@ After sharing the action-19 completion tail, the compiled body has one
 matches all 79 retail direct-call targets and multiplicities; both bodies also
 have two indirect callbacks. The focused CFG is still 329/298 blocks and
 180/168 branches, so the function remains WIP beyond this corrected path.
+
+### Map-object and actor target follow-up
+
+The ten-function follow-up uses direct map-object calls and the actor candidate
+and lifecycle data graph. The former `366fc` WIP has a source-backed exact
+resolution: retail loads the high byte of `object+0x3c` with `lbu`; using the
+shared `KfMapObjectTail.spawn_bytes.spawn_sequence.high` view instead of a cast
+through the overlapping halfword emits the retail instruction sequence. Focused comparison reports SAME
+for all four functions in `game.map_object_spawn_scatter`. Fresh direct objdiff
+reports 992/992 `.text` bytes and 84/84 `.rodata` bytes at 100%, with ordered
+text and switch-table relocations identical. Exact `365d8`, `368b4`, and
+`36944` remain unchanged; the historical `366fc` WIP rows above are superseded.
+
+Raw GAME `39048..3907f`, formerly one unclassified 56-byte data gap, is a
+complete actor-index wrapper with a stack frame, `jal` to the adjacent exact
+`actor_prepare_and_initialize`, and `jr ra` plus its stack-restore delay slot.
+Its `andi` masks argument zero to 16 bits, then computes a 124-byte actor
+stride from `actor_state.actors`; no external caller or original TU boundary
+is proved. An address-derived C claim now follows `38ff0` in one contiguous
+unit. A focused two-function carve has zero withheld references, `kf try`
+reports 2/2 SAME, and direct objdiff reports 144/144 `.text` bytes at 100%
+with the ordered relocations identical. The old data gap is removed and GAME's
+eligible function count increases by one.
+
+Final focused verdicts for the related map-object/actor WIP ten follow. These
+listing values are not closure claims; `366fc` alone has a fresh direct
+100% object comparison in this pass.
+
+| GAME VA | Final verdict | Evidence limit |
+| --- | --- | --- |
+| `356ac` | WIP, 55.9% listing | Five reset siblings stay SAME; two map-cell row/column address schedules differ. |
+| `35894` | WIP, 92.7% listing | Typed low-byte tail probe left the listing unchanged; the first store schedule and region-index arithmetic still differ. |
+| `36190` | WIP, 82.9% listing | Outer-guard source-only probe fell to 82.6% and was discarded; initial bound exit and retry joins still differ. |
+| `36464` | WIP, 92.8% listing | Spawn register/store scheduling differs; the preceding `36190` length still shifts this unit's switch-table addend. |
+| `366fc` | Exact, 100% direct | Typed spawn high-byte access gives all four scatter-unit listings SAME, 992/992 text and 84/84 RODATA bytes, with identical ordered relocations. |
+| `36ed4` | WIP, 27.7% listing | All 23 primary action IDs have C paths; the dispatch body and some subactions remain structurally different. |
+| `39108` | WIP, 35.1% listing | The proved byte/halfword view at candidate +0x0e preserves the current listing; one CFG block and one branch remain unmatched. |
+| `3983c` | WIP, 87.0% listing | Actor pointer and sentinel saved-register assignments differ; the new adjacent claim preserves its listing. |
+| `39b58` | WIP, 79.2% listing | New actor-group wrapper has 9/9 CFG blocks, 4/4 branches, and ordered referents; saved `s4` sentinel differs. |
+| `39c94` | WIP, 62.1% listing | Exact `39c14` sibling preserved; stack-argument schedule and callback path register lifetimes differ. |

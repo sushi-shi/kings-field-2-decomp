@@ -1375,9 +1375,87 @@ then call `func_80041e0c` on the elevated local position with
 Focused compilation is 8.0% WIP after this arm; the complete actor-pool
 referent is source-backed despite aggregate score movement.
 
+Kind 106 enters 0x80044748. With phase zero, retail adds 20 to the
+direction Y halfword and calls `func_80042298(140, 0x80000000, -300)`.
+A nonzero result subtracts all three signed direction components from the
+position, calls `func_800424f0` with `(1, 0, -400, 60)`,
+`(6, 60, -330, 56)`, and `(8, 140, -170, 40)` in that order, plays
+spatial sound 0x25, and sets the tail byte at +0x40 to 15, phase to 1,
+and byte +0x08 to zero. The zero-result path calls the nine-argument
+`func_80041e94(record, -1, -3, 6000, -800, 6, 8, 0, -1024)`.
+In phase one, a zero tail byte frees the slot; other phases return.
+This complete decoded arm raises the focused aggregate listing from
+8.0% to 8.1% WIP; it does not prove the outer indirect switch's
+source ownership.
+
+Kind 120 enters 0x80045bb0. Retail increases direction Y by 20 and, while
+signed scale X is below 0x1000, increases scale Z by 0x200 and copies that
+halfword to X and Y. A first `rand() < 400` proceeds directly to the
+completion path; otherwise it probes `func_80042298(180, 0, -300)` and
+only collision bits `& 5` proceed, after copying the provisional collision
+cache result word at 0x801d8d50 to position Y. The completion path runs a
+second `rand() < 8192`; on success it spawns two kind-0x2a effects with
+trailing operands zero and one and plays spatial sound 0x18. Both completion
+outcomes free the slot, while the nonmatching collision path leaves it
+active. Every path adds 2700 to rotation Z. Source uses the existing
+`KF_COLLISION_CACHE_RESULT` interior view; the complete BSS owner remains
+provisional. Focused aggregate listing is 8.0% WIP after this arm, a small
+score decline despite the directly decoded branch and call structure.
+
+Kind 50 enters 0x80043264 and switches on the signed tail byte at +0x40.
+Phase zero adds 64 to scale Z and copies it to Y/X, calls
+`func_80026330(0, &position)`, and once signed scale X reaches 256 sets
+phase one and calls `func_80025878(1000, NULL, &direction, &distance)`.
+Phase one probes `func_80042298(512, 0x80000200, 0)`; a nonzero result
+sets phase two and calls `func_8003ff18` with the decoded six arguments.
+Phase two frees the slot when signed scale X reaches 512, then still
+increments and copies the three scales. Other phase values return.
+The focused aggregate listing is 7.7% WIP after this complete decoded
+arm; the score decline does not contradict its direct call and branch
+evidence while most of the dispatcher remains absent.
+
+Kinds 29, 30, 31, 47, and 48 share the phase-zero path beginning at
+0x800426b0/0x800426b8. Kinds 30/47 use trajectory factor 5; the others
+use 10. A zero halfword at record +0x42 first plays spatial sound 5.
+Retail increments that halfword as signed age, projects X/Z from the
+direction vector, and projects Y from the signed +0x40 origin plus
+direction-Y times age and `(factor * age * age) >> 1`. It probes the
+projected point with `func_8003fa68(..., 20, 20)` and, only on a zero
+result, probes the midpoint with the previous position. It writes only
+the three position words before `func_80041e0c`. A nonzero collision
+reports `collision | 0x20000` and frees the slot. Otherwise retail sets
+byte +0x0a from the provisional collision-cache layer and calls
+`func_800154fc` with direction X, actual Y displacement, direction Z,
+and the record rotation. Nonzero phases return. These variant-specific
+tail halfwords are kept as a provisional view of the shared record, not
+a global layout assertion. The focused aggregate listing remains 7.7%
+WIP after all five directly decoded entries.
+
+Kinds 38 and 39 enter 0x80043130/0x8004310c. Kind 39 with a signed update
+count below 45 uses the eight-argument `func_8004195c` probe; otherwise
+it adds 10 to direction Y and uses `func_80042298(100, 0, 0)`. Kind 38
+uses that collision probe without the Y increment. A triggering result
+reads the provisional cache flags at 0x801d8d60: bit 0x10 emits one
+collision report on the first transition of tail byte +0x40 to one,
+while its absence clears that byte. Retail then calls the 14-argument
+`func_80041e94` twelve times, reloads the cache flags, and frees the
+slot if their low nibble is nonzero. Every path finishes with
+`func_80041e0c(&position, 0x2000, 0x2000, 500)`. The second flag read
+is kept separate because those calls may change the cache. Focused
+aggregate listing rises from 7.7% to 7.9% WIP after these two paths;
+the cache's complete BSS layout remains provisional.
+
+Kind 107 remains unsourced WIP. Its 0x800454a8 path uses the tail byte at
++0x40 to index the proved 72-byte effect-record pool. The selected
+record's +0x40 word points to 24-byte snapshots; retail derives a wrapped
+index from its +0x44 byte and the current record's +0x41 byte, then copies
+one 24-byte snapshot into current record +0x24..+0x3b (rotation, scale,
+and direction). The pointed allocation and variant-specific tail layout
+are not yet proved, so the source does not assert a shared pointer field.
+
 The raw 123-word kind table has 55 entries that jump straight to the common
-return and 68 active entries; the current C names 38 of those 68 active
-kinds. The remaining 30 active entries are still WIP, regardless of the
+return and 68 active entries; the current C names 48 of those 68 active
+kinds. The remaining 20 active entries are still WIP, regardless of the
 aggregate fuzzy score.
 
 A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.

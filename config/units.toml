@@ -188,6 +188,12 @@ source = "src/game/cd_memory.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.return_stub_18764"
+image = "GAME.EXE"
+source = "src/game/return_stub_18764.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_location_number"
 image = "GAME.EXE"
 source = "src/game/menu_location_number.c"
@@ -1145,6 +1151,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.audio_sound_wrappers"
 image = "GAME.EXE"
 source = "src/game/audio_sound_wrappers.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.return_stubs_45f10"
+image = "GAME.EXE"
+source = "src/game/return_stubs_45f10.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

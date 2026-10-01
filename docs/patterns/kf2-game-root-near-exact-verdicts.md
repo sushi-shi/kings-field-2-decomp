@@ -147,10 +147,25 @@ Moving the three `continue` paths to one explicit labelled index/object
 increment tail produced a byte-identical 82.9% object and was reverted in
 favor of the simpler `for` loop.
 
-A bounded raw-byte scan of the remaining GAME `data.tsv` rows between
-`80013000` and `80050000` looked for aligned negative stack-frame prologues
-and `jr $ra` returns inside the same row. The six hits begin at `8004a208`,
-`8004b668`, `8004b778`, `8004c2d4`, `8004c41c`, and `8004db38`; each falls
-inside a Sony/Psy-Q CD or SPU archive span already supported by the vendored
-inventory. This filter cannot rule out leaf functions or split rows, but it
-found no further game-code candidate among those prologue-shaped gaps.
+A raw-byte follow-up of GAME `data.tsv` gaps found additional missed code.
+The initial prologue-and-return filter accidentally excluded a `jr $ra`
+whose delay slot ended exactly at the row boundary. Correcting that boundary
+exposed the complete `80039048` actor wrapper, now a strict-exact claim in
+the actor dossier. Scanning return words independently found three eight-byte
+`jr $ra; nop` bodies: `80018764`, `80045f10`, and `80045f18`. All three
+have provisional exact C claims; their no-xref limitations are recorded in
+`game-return-stub-18764.md` and `game-return-stubs-45f10.md`. Six other
+prologue-shaped unclassified hits from `8004a208` through `8004db38` fall
+within Sony/Psy-Q CD or SPU archive spans already supported by the vendored
+inventory. The scan is still a bounded heuristic, not a proof that every
+unreferenced function has been found.
+No curated GAME `mips26` target before the `80049f74` library region lands in
+any remaining `data.tsv` row; this is a negative xref check, not proof that
+all unreferenced code has been identified.
+A separate decode of every direct `j`/`jal` word in admitted GAME function
+bodies before that library boundary likewise found zero targets in the
+remaining data rows. Indirect transfers and unadmitted code are outside that
+negative control.
+A corrected scan including a return whose delay slot ends at the data-row
+boundary now finds no `jr $ra` word in the remaining pre-library GAME data
+rows.

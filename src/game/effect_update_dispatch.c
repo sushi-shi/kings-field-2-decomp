@@ -1,5 +1,7 @@
 #include <kf/lib/address.h>
+#include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
@@ -25,6 +27,11 @@ extern s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
                          s32 probe_radius, s32 probe_angle, s32 proximity,
                          s32 close_scale, s32 target_filter);
 extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
+extern void func_800424f0(s32 count, s32 radius, s32 vertical_angle,
+                          s32 arg3);
+extern void func_80026330(s32 mode, VECTOR *output);
+extern KfActor *func_80025878(s32 scale, VECTOR *position,
+                              SVECTOR *direction, s32 *distance);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -316,6 +323,94 @@ void effect_update_dispatch(void)
             }
         }
         break;
+    case 29:
+    case 30:
+    case 31:
+    case 47:
+    case 48: {
+        VECTOR projected;
+        VECTOR midpoint;
+        s32 age;
+        s32 prior_y;
+        s32 acceleration;
+
+        if (record->phase != 0) {
+            break;
+        }
+        acceleration = record->kind == 30 || record->kind == 47 ? 5 : 10;
+        /* These kinds overlay the record tail with a Y origin and age. */
+        if ((s16)*(u16 *)&record->unknown_3c[6] == 0) {
+            audio_play_spatial_range(5, &record->position, 110,
+                                     28000, 29000, 0);
+        }
+        age = *(u16 *)&record->unknown_3c[6] + 1;
+        *(u16 *)&record->unknown_3c[6] = age;
+        age = (s16)age;
+        projected.vx = record->position.vx + record->direction.vx;
+        prior_y = record->position.vy;
+        projected.vy = (s16)*(u16 *)&record->unknown_3c[4] +
+                       record->direction.vy * age +
+                       ((acceleration * age * age) >> 1);
+        projected.vz = record->position.vz + record->direction.vz;
+        collision = func_8003fa68(&projected, 20, 20);
+        if (collision == 0) {
+            midpoint.vx = (projected.vx + record->position.vx) >> 1;
+            midpoint.vy = (projected.vy + record->position.vy) >> 1;
+            midpoint.vz = (projected.vz + record->position.vz) >> 1;
+            collision = func_8003fa68(&midpoint, 20, 20);
+        }
+        record->position.vx = projected.vx;
+        record->position.vy = projected.vy;
+        record->position.vz = projected.vz;
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        if (collision != 0) {
+            func_8003feb0(collision | 0x20000);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            record->unknown_0a = KF_COLLISION_CACHE_LAYER ? 2 : 1;
+            func_800154fc(record->direction.vx,
+                          record->position.vy - prior_y,
+                          record->direction.vz,
+                          (struct KfEulerAngles *)&record->rotation);
+        }
+        break;
+    }
+    case 38:
+    case 39: {
+        s32 trigger;
+        s32 count;
+        u32 flags;
+
+        if (record->kind == 39 && record->updates_remaining < 45) {
+            trigger = func_8004195c(0x258, 0x28, 0x24, 0x32,
+                                    100, 0x1000, 0x104, 0x800) == -1;
+        } else {
+            if (record->kind == 39) {
+                record->direction.vy = (u16)record->direction.vy + 10;
+            }
+            trigger = func_80042298(100, 0, 0) != 0;
+        }
+        if (trigger) {
+            flags = KF_COLLISION_CACHE_FLAGS;
+            if (flags & 0x10) {
+                if (record->unknown_3c[4] == 0) {
+                    func_8003feb0(flags);
+                }
+                record->unknown_3c[4] = 1;
+            } else {
+                record->unknown_3c[4] = 0;
+            }
+            for (count = 11; count >= 0; count--) {
+                func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
+                               0x200, -256, 0x200, -256, 0x200, -256);
+            }
+            if (KF_COLLISION_CACHE_FLAGS & 0xf) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+        }
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        break;
+    }
     case 40:
         collision = func_80042298(100, 200, 0);
         if (collision != 0) {
@@ -336,6 +431,40 @@ void effect_update_dispatch(void)
         func_80041cd0(0x4000, (s16)*(u16 *)&record->unknown_3c[4],
                        0x46, 0x800, 0x8000);
         break;
+    case 50: {
+        s32 distance;
+
+        switch ((s8)record->unknown_3c[4]) {
+        case 0:
+            step = (u16)record->scale_z + 64;
+            record->scale_z = step;
+            record->scale_y = step;
+            record->scale_x = step;
+            func_80026330(0, &record->position);
+            if ((s16)record->scale_x >= 256) {
+                record->unknown_3c[4] = 1;
+                func_80025878(1000, 0, &record->direction, &distance);
+            }
+            break;
+        case 1:
+            if (func_80042298(512, (s32)0x80000200, 0) != 0) {
+                record->unknown_3c[4] = 2;
+                func_8003ff18(&record->position, 0, 0x400,
+                               0x8000, 0x1000, 0x1000);
+            }
+            break;
+        case 2:
+            if ((s16)record->scale_x >= 512) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+            step = (u16)record->scale_z + 64;
+            record->scale_z = step;
+            record->scale_y = step;
+            record->scale_x = step;
+            break;
+        }
+        break;
+    }
     case 51:
         func_80041cd0(0x1000, 0x400, 0x80, 0x800, 0x8000);
         break;
@@ -358,6 +487,29 @@ void effect_update_dispatch(void)
         record->scale_y = (rsin(record->phase << 8) *
                            (s16)*(u16 *)&record->unknown_3c[4]) >> 12;
         if (record->phase >= 8) {
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        break;
+    case 106:
+        if (record->phase == 0) {
+            record->direction.vy = (u16)record->direction.vy + 20;
+            collision = func_80042298(140, (s32)0x80000000, -300);
+            if (collision != 0) {
+                record->position.vx -= record->direction.vx;
+                record->position.vy -= record->direction.vy;
+                record->position.vz -= record->direction.vz;
+                func_800424f0(1, 0, -400, 60);
+                func_800424f0(6, 60, -330, 56);
+                func_800424f0(8, 140, -170, 40);
+                effect_play_spatial_sound(record, 0x25);
+                record->unknown_3c[4] = 15;
+                record->phase = 1;
+                record->unknown_08 = 0;
+            } else {
+                func_80041e94(record, -1, -3, 6000, -800,
+                               6, 8, 0, -1024);
+            }
+        } else if (record->phase == 1 && record->unknown_3c[4] == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -443,6 +595,37 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
+    case 120: {
+        s32 finish;
+
+        record->direction.vy = (u16)record->direction.vy + 20;
+        if ((s16)record->scale_x < 0x1000) {
+            step = (u16)record->scale_z + 0x200;
+            record->scale_z = step;
+            record->scale_y = step;
+            record->scale_x = step;
+        }
+        finish = rand() < 400;
+        if (!finish) {
+            collision = func_80042298(180, 0, -300);
+            if ((collision & 5) != 0) {
+                record->position.vy = KF_COLLISION_CACHE_RESULT;
+                finish = 1;
+            }
+        }
+        if (finish) {
+            if (rand() < 8192) {
+                func_80040308(10, record->type | 3, 0x2a,
+                               &record->position, 0, 0);
+                func_80040308(10, record->type | 3, 0x2a,
+                               &record->position, 0, 1);
+                effect_play_spatial_sound(record, 0x18);
+            }
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        record->rotation.vz += 2700;
+        break;
+    }
     /* The remaining effect kinds, including two indirect switch dispatches,
      * are not yet reconstructed. Their callback and BSS owners remain open. */
     }

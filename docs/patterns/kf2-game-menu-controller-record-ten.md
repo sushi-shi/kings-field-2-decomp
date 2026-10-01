@@ -8,16 +8,16 @@ Sony/Psy-Q library-body evidence.
 
 | Address | Retail role and ownership boundary | Final verdict |
 | --- | --- | --- |
-| `0x8001a4f0` | Mixed item/magic list controller uses 74-row glyph, count, value, and ID buffers, then previews and stores the selected entry. | WIP, source claimed; 96.0% focused listing, 22/22 CFG blocks, 12/12 branches; initialization-loop register residue |
-| `0x8001ac80` | Card startup and directory/preview flow calls 18 distinct helpers; the card-entry array and lifetime remain unresolved. | WIP, unclaimed |
-| `0x8001b2dc` | Seven-row option controller copies six player-state flags, toggles a selected flag, and draws paired glyph labels. | **WIP, 95.601265% strict**; 22/22 CFG blocks and 12/12 branches agree, but the option-count register and resulting schedule differ. |
-| `0x8001b554` | Card startup, temporary-file probe, directory scan, input loop, and frame rendering; the card-list record is not typed completely. | WIP, unclaimed |
-| `0x8001d030` | Primary item-list branch uses the `0x80065950` page and `0x80065aeb` interior lookup plus preview/menu helpers. | WIP, unclaimed; table and list workspace owner unresolved |
-| `0x8001d3b4` | Secondary item-list branch uses the paired translator and a large stack workspace. | WIP, unclaimed; list/model record unresolved |
-| `0x8001d6a8` | Item-model selector has a 3,232-byte frame with typed glyph rows, two 120-byte arrays, and an incomplete menu-list record. | WIP, unclaimed; complete list workspace type unresolved |
-| `0x8001e94c` | Status/numeric renderer draws glyph suffix rows and player values with menu string/number helpers. | WIP, unclaimed; full label workspace and ordered calls unresolved |
-| `0x8001f008` | Straight-line paired component renderer reads player attack/combat halfwords and glyph suffix rows 2 and 3. | WIP, unclaimed; label-prefix copy and full repeated call schedule unresolved |
-| `0x8001fc94` | Shared numeric/list renderer emits several FT4 packets and calls the exact primitive-buffer pair. | WIP, unclaimed; complete render record and packet paths unresolved |
+| `0x8001a4f0` | Mixed item/magic list controller uses 74-row glyph, count, value, and ID buffers, then previews and stores the selected entry. | **WIP, 99.74359% strict**; 22/22 CFG blocks, initialization-loop register residue |
+| `0x8001ac80` | Card startup and directory/preview flow calls 18 distinct helpers. | **exact, 688/688 code bytes** |
+| `0x8001b2dc` | Seven-row option controller copies six player-state flags, toggles a selected flag, and draws paired glyph labels. | **exact, 632/632 code bytes** |
+| `0x8001b554` | Card startup, temporary-file probe, directory scan, input loop, and frame rendering. | **WIP, 98.478264% strict**; probe-result register and delay-slot order differ |
+| `0x8001d030` | Primary item-list branch uses the `0x80065950` page and `0x80065aeb` interior lookup plus preview/menu helpers. | **exact, 784/784 code bytes** |
+| `0x8001d3b4` | Secondary item-list branch uses the paired translator and a large stack workspace. | **exact, 672/672 code bytes** |
+| `0x8001d6a8` | Item-model selector has a 3,232-byte frame with typed glyph rows and two 120-byte arrays. | **exact, 552/552 code bytes** |
+| `0x8001e94c` | Status/numeric renderer draws glyph suffix rows and player values with menu string/number helpers. | **exact, 1,724/1,724 code and 240/240 owned data bytes** |
+| `0x8001f008` | Straight-line paired component renderer reads player attack/combat halfwords and glyph suffix rows 2 and 3. | **exact, 1,936/1,936 code bytes** |
+| `0x8001fc94` | Shared numeric/list renderer emits several FT4 packets and calls the exact primitive-buffer pair. | **WIP, 98.44964% strict**; row-count and card-column scheduling differ |
 
 The `0x8001a4f0` source uses the shared 52-byte menu render view and exact
 stack extents: 74 glyph rows, two 74-byte ID arrays, one 74-byte count array,
@@ -36,13 +36,16 @@ not define an overlapping BSS object. Its two 28-byte glyph strings and six
 local flags account for the observed stack accesses. Twelve decoded HI/LO
 pairs were curated to `player_state`, and the direct calls, internal jumps,
 and cursor-data pairs in its range were promoted from candidate rows after
-instruction review. The source's 22-block CFG and calls match retail, while
-the probe reloads the literal option count where retail keeps six in `s4`.
-No artificial register carrier was added.
+instruction review. The initial source probe had a 22-block CFG and matching
+calls but reloaded the literal option count where retail kept six in `s4`.
+That 95.601265% observation is historical: a fresh focused build and direct
+objdiff find this 632-byte function and its two preceding panel siblings
+strict exact. No artificial register carrier was added.
 
-The two preceding functions in `game.menu_card_panel` remain focused SAME.
-`kf-retail-validate` passed, strict GAME matching relinked 145/145 units, and
-the new function scored 95.601265%. The global edge check retains the same
-three unrelated TMD/map-object `.rodata` addends. A full `kf build` after the
-source and relocation edits built PSX; GAME, OPEN, and END retained the known
-first unresolved `InitCARD`, `malloc`, and `display_buffers` symbols.
+Fresh focused builds and direct per-unit objdiff now establish **7/10 strict
+exact** in this controller-record survey. The three WIPs are `0x8001a4f0`
+(99.74359%), `0x8001b554` (98.478264%), and `0x8001fc94` (98.44964%);
+their current differences remain register, delay-slot, or scheduling residues
+after the reviewed calls and referents. The exact `0x8001e94c` unit also owns
+240/240 correct initialized bytes at `0x80064a00`. No source edit, linked
+build, repository test, or banking was done for this recheck.

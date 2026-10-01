@@ -16,6 +16,20 @@ enum {
     KF_ACTOR_LIFECYCLE_DORMANT = 0
 };
 
+typedef struct KfTargetCandidateWord0eBytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord0eBytes;
+typedef char kf_target_candidate_word0e_bytes_size[
+    sizeof(KfTargetCandidateWord0eBytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord0e {
+    u16 value;
+    KfTargetCandidateWord0eBytes bytes;
+} KfTargetCandidateWord0e;
+typedef char kf_target_candidate_word0e_size[
+    sizeof(KfTargetCandidateWord0e) == 2 ? 1 : -1];
+
 typedef struct KfTargetCandidateWord10Bytes {
     u8 fallback_offset;
     u8 unknown_11;
@@ -60,7 +74,7 @@ typedef struct KfTargetCandidate {
     u16 unknown_08;
     u16 unknown_0a;
     u16 unknown_0c;
-    u16 unknown_0e;
+    KfTargetCandidateWord0e word_0e;
     KfTargetCandidateWord10 word_10;
     KfTargetCandidateWord12 word_12;
     KfTargetCandidateWord14 word_14;
@@ -74,7 +88,8 @@ typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10
 typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
 typedef char kf_target_candidate_unknown_0a_offset[(u32)&((KfTargetCandidate *)0)->unknown_0a == 0x0a ? 1 : -1];
 typedef char kf_target_candidate_unknown_0c_offset[(u32)&((KfTargetCandidate *)0)->unknown_0c == 0x0c ? 1 : -1];
-typedef char kf_target_candidate_unknown_0e_offset[(u32)&((KfTargetCandidate *)0)->unknown_0e == 0x0e ? 1 : -1];
+typedef char kf_target_candidate_word_0e_offset[(u32)&((KfTargetCandidate *)0)->word_0e == 0x0e ? 1 : -1];
+typedef char kf_target_candidate_word_0e_low_offset[(u32)&((KfTargetCandidate *)0)->word_0e.bytes.low == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->unknown_11 == 1 ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_total_offset[(u32)&((KfTargetCandidate *)0)->word_10.bytes.unknown_11 == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_word_12_offset[(u32)&((KfTargetCandidate *)0)->word_12 == 0x12 ? 1 : -1];

@@ -1218,12 +1218,13 @@ source's X calculation below the row pointer raised the focused fuzzy listing
 from 26.9% to 40.4%, but contradicted that instruction order. The source-order
 probe was reverted; the current 26.9% focused WIP retains the X calculation
 before row-pointer formation. All four exact siblings in
-`game.resource_runtime` remain `SAME`. The previous 73.95918% strict radius
-score is a stale checkpoint, not a new closure claim.
+`game.resource_runtime` remain `SAME`. Fresh direct objdiff still reports
+73.95918% strict for the radius helper; it remains WIP despite the
+raw-supported declaration order.
 For `map_cell_visible` at `0x80032174`, direct early returns preserve the
 boolean result but add a jump absent from retail and lower the focused listing
 from 37.9% to 26.7%; that probe was reverted. Its shared-tail source and
-93.6% stale strict verdict remain WIP.
+93.6% direct strict verdict remain WIP.
 
 The older `0x80016f4c` stream-service WIP rows are historical. The recorded
 strict match state now gives `cd_request_service_stream` 100%, and a fresh
@@ -1231,3 +1232,28 @@ focused `game.cd_memory` rebuild lists it `SAME` alongside 55 other functions.
 The strict report flags itself stale, so this pass did not create a new banking
 claim. `memory_arena_allocate_block` is the one remaining focused DIFF in that
 57-function unit, at 96.0% listing similarity.
+
+### Current ten-function resource/audio strict verdicts
+
+Fresh focused rebuilds and direct per-unit objdiff compare the selected GAME
+functions below against their current carved targets. **1/10 is strict exact**;
+the other nine remain WIP with their known source/referent limits. These are
+strict scores, separate from the focused listing similarities above.
+
+| GAME VA | Current strict verdict | Decisive remaining evidence |
+| --- | ---: | --- |
+| `0x800139c4` | WIP, 86.30556% | Unowned sequence/VAB workspace addresses change the address construction and subsequent register use. |
+| `0x80015d58` | WIP, 89.03145% | Archive/resource destination boundaries lack a defensible DATA/BSS owner. |
+| `0x80015fd4` | WIP, 89.710144% | The TMD destination at `0x8012da68` remains unowned. |
+| `0x80016260` | WIP, 98.790085% | Five unsigned controls and three signed offsets are typed; saved-register and branch order remains. |
+| `0x80016820` | WIP, 99.193474% | Seven phase offsets and callback entries agree; two workspace constructors remain unowned. |
+| `0x800320b0` | WIP, 73.95918% | Raw X-before-row calculation is retained; loop induction and register allocation differ. |
+| `0x80032174` | WIP, 93.6% | Five-block visibility CFG and view-cell referents agree; result register differs. |
+| `0x800321d8` | WIP, 98.4359% | Fixed arena boundary still emits `lui/ori` rather than retail signed-low `lui/addiu`. |
+| `0x80032274` | WIP, 90.933334% | VAB slot lookup uses an induction offset where retail recomputes the eight-byte index. |
+| `0x80032364` | **exact, 100%** | Complete TMD range update and registry referents match. |
+
+The same focused resource-runtime unit keeps `resource_registry_get`,
+`resource_tmd_read_complete`, and `map_cell_layer_mask` exact. The audio
+runtime's other fifteen functions also remain strict exact. No source edit,
+linked build, repository test, or banking was done for this strict recheck.

@@ -89,6 +89,22 @@ typedef struct KfTmdFt4 {
     u16 pad2;
 } KfTmdFt4;
 
+/* The first subdivided FT4 child writes its two trailing index pairs as words. */
+typedef struct KfTmdFt4PackedIndices {
+    u16 uv0;
+    u16 clut;
+    u16 uv1;
+    u16 tpage;
+    u16 uv2;
+    u16 pad0;
+    u16 uv3;
+    u16 pad1;
+    u16 normal;
+    u16 vertex0;
+    u32 vertex1_vertex2;
+    u32 vertex3_pad2;
+} KfTmdFt4PackedIndices;
+
 /* On-disk primitive bodies. Each index is a halfword until the preparation
  * pass converts it to a byte offset into the projected-vector array. */
 typedef struct KfTmdF3 {
@@ -243,6 +259,10 @@ typedef union KfGpuGT4 {
 
 typedef char kf_tmd_ft3_size[sizeof(KfTmdFt3) == 20 ? 1 : -1];
 typedef char kf_tmd_ft4_size[sizeof(KfTmdFt4) == 28 ? 1 : -1];
+typedef char kf_tmd_ft4_packed_indices_size[
+    sizeof(KfTmdFt4PackedIndices) == sizeof(KfTmdFt4) ? 1 : -1];
+typedef char kf_tmd_ft4_packed_indices_offset[
+    (u32)&((KfTmdFt4PackedIndices *)0)->vertex1_vertex2 == 20 ? 1 : -1];
 typedef char kf_tmd_ft3_normal_offset[
     (u32)&((KfTmdFt3 *)0)->normal == 12 ? 1 : -1];
 typedef char kf_tmd_ft4_normal_offset[

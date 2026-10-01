@@ -161,7 +161,7 @@ after_script:
     event_state.control.bytes[0x3f] = actor->unknown_01;
     if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
         func_800460a0(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
-                      candidate->unknown_0e);
+                      candidate->word_0e.value);
         actor->unknown_0c = saved_state;
     }
     event_state.state_word = 1;

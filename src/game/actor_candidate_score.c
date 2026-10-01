@@ -80,7 +80,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         score = target->unknown_01[1];
         {
-            s32 near_distance = (u8)target->unknown_0e << 6;
+            s32 near_distance = target->word_0e.bytes.low << 6;
             s32 middle_distance = (near_distance + target->unknown_1a) >> 1;
             if (player_distance >= middle_distance) {
                 score -= score / 3;
@@ -117,7 +117,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
 
     case 19:
     case 20:
-        if (target->unknown_0e < player_distance || player_state.weapon_attack_phase == -1) {
+        if (target->word_0e.value < player_distance || player_state.weapon_attack_phase == -1) {
             goto done;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,

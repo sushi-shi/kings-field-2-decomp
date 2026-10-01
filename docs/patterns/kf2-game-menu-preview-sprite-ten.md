@@ -15,8 +15,8 @@ The source models remain GAME code; none has vendored-library evidence.
 | `0x80020d20` | **Strict exact, 100%** | Animated cursor quad, 472/472 code bytes. |
 | `0x80020ef8` | **Strict exact, 100%** | Fixed-CLUT cursor quad, 436/436 code bytes. |
 | `0x800210ac` | WIP, 99.669040% | Glyph packets, kana marks, and eight CFG blocks agree; retail has a 56-byte frame versus 48, plus a UV register choice. |
-| `0x80021510` | WIP, 98.619570% | Two-column number glyph atlas and seven CFG blocks agree; entry and atlas-U instruction order differ. |
-| `0x80022058` | WIP, 95.740000% | Decimal digits, blank fill, style glyphs, and 36/37 CFG blocks agree; retail reserves eight stack bytes, while the probe is a leaf. |
+| `0x80021510` | **Strict exact, 100%** | Two-column number glyph atlas, 736/736 code bytes in a fresh direct per-unit comparison. The historical 98.619570% probe has been superseded. |
+| `0x80022058` | WIP, 97.390000% strict | Decimal digits, blank fill, and style glyphs agree; CFG is 36/36 blocks and 19/19 branches with matching successor lists. Retail reserves eight stack bytes, while the probe is a leaf. |
 | `0x8002d5dc` | WIP, 96.132600% | The typed TMD packet parser has 17/17 CFG blocks, but one extra entry instruction shifts its 29-row switch-table addend by four bytes. |
 
 For both exact sprite functions, the quad's left edge is naturally expressed as
@@ -31,6 +31,15 @@ a leaf return without retail's eight-byte frame, so its existing source was
 kept. KF1's four-argument decimal formatter supports the digit/padding loop;
 KF2's fifth style argument and glyph prefixes are separately visible in its
 retail branches.
+
+A later fresh focused build and direct per-unit objdiff give `0x80022058`
+97.39% strict across its 400-byte body. The first difference is the retail
+`addiu sp,sp,-8`, followed by the fifth-argument load at `24(sp)` instead of
+the probe's `16(sp)`; the return delay slot restores that frame where the probe
+emits `nop`. The numeric and style instructions, call set, and referents remain
+aligned. No additional live source object has been established, so the source
+retains the supported formatter behavior rather than introducing artificial
+frame storage.
 
 Focused comparisons reported both sprite listings SAME. Strict `kf match`
 confirmed 100% for each and relinked 145/145 GAME units. The global edge check

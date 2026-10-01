@@ -69,7 +69,8 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
         header.word = *(u32 *)source_packet;
         if (header.bytes.mode == 0x2c || header.bytes.mode == 0x2e) {
             KfTmdFt4 *face = (KfTmdFt4 *)(source_packet + 4);
-            KfTmdFt4 *first = (KfTmdFt4 *)(output_packet + 4);
+            KfTmdFt4PackedIndices *first =
+                (KfTmdFt4PackedIndices *)(output_packet + 4);
             KfTmdFt4 *second;
             KfTmdFt4 *third;
             KfTmdFt4 *fourth;
@@ -120,10 +121,8 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
             WRITE_UV_CACHED(first->uv1, uv_ab);
             WRITE_UV_CACHED(first->uv2, uv_ac);
             WRITE_UV_CACHED(first->uv3, uv_ad);
-            WRITE_INDEX(first->vertex1, ab);
-            WRITE_INDEX(first->vertex2, ac);
-            WRITE_INDEX(first->vertex3, ad);
-            WRITE_INDEX(first->pad2, ac);
+            first->vertex1_vertex2 = (u32)ab | ((u32)ac << 16);
+            first->vertex3_pad2 = (u32)ad | ((u32)ac << 16);
             output_packet += 32;
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
             second = (KfTmdFt4 *)(output_packet + 4);

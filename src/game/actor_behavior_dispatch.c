@@ -60,7 +60,7 @@ void func_8003d184(void)
             func_80039804(target->unknown_01[0]);
             *(s16 *)actor->unknown_64 = rand() >> 3;
         } else if (func_8003bcd0(*(s16 *)actor->unknown_64,
-                                  target->unknown_0c, target->unknown_0e,
+                                  target->unknown_0c, target->word_0e.value,
                                   actor_state.active_group->unknown_01[2],
                                   actor_state.active_group->unknown_01[3], 5) != 0 ||
                    (rand() >> 5) < target->word_10.bytes.fallback_offset) {

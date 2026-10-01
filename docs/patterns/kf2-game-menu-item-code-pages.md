@@ -8,19 +8,19 @@ references define the campaign; the address range is not a TU claim.
 
 | GAME address | Role or decisive remaining question | Verdict |
 | --- | --- | --- |
-| `0x8001d030` | item-list controller calling the primary translator | WIP: list state and `0x80065950` data |
+| `0x8001d030` | item-list controller calling the primary translator | **strict exact, 784/784 code bytes** in the later item-list audit |
 | `0x8001d340` | primary byte/code translator | **exact: 116/116 code and 1440/1440 data bytes** |
-| `0x8001d3b4` | paired item-list controller | WIP: list state and second lookup owner |
-| `0x8001d654` | secondary indexed halfword lookup | WIP: see the later [menu list and numeric pages](kf2-game-menu-list-pages-ten.md) audit |
-| `0x8001d6a8` | item-list/model renderer | WIP: model and row state |
-| `0x8001d8d0` | related list/model renderer and primary translator caller | WIP: record/state model |
-| `0x8001dc64` | display, window, input, and item-list controller | WIP: menu lifecycle |
-| `0x8001ddd0` | item-list controller and primary translator caller | WIP: list state |
-| `0x8001e0a8` | paired item-list controller | WIP: list state |
+| `0x8001d3b4` | paired item-list controller | **strict exact, 672/672 code bytes** in the later item-list audit |
+| `0x8001d654` | secondary indexed halfword lookup | **strict exact, 84/84 code bytes**, with its owned 1,200-byte table exact in the later [menu list and numeric pages](kf2-game-menu-list-pages-ten.md) audit |
+| `0x8001d6a8` | item-list/model renderer | **strict exact, 552/552 code bytes** in the later item-list audit |
+| `0x8001d8d0` | related list/model renderer and primary translator caller | **strict exact, 916/916 code bytes** in the later item-list audit |
+| `0x8001dc64` | display, window, input, and item-list controller | **strict exact** in the later retained menu-unit audit |
+| `0x8001ddd0` | item-list controller and primary translator caller | **strict exact, 728/728 code bytes** in the later list-pages audit |
+| `0x8001e0a8` | paired item-list controller | **strict exact, 720/720 code bytes** in the later item-list audit |
 | `0x8001e378` | menu input poll | **exact**, existing source |
-| `0x8001e484` | menu/model input controller | WIP: 66-block state flow |
-| `0x8001e94c` | numeric text renderer | WIP: glyph/data owner |
-| `0x8001f008` | second numeric text renderer | WIP: glyph/data owner |
+| `0x8001e484` | menu/model input controller | **strict exact, 1,224/1,224 code bytes** in the later item-list audit |
+| `0x8001e94c` | numeric text renderer | **strict exact, 1,724/1,724 code bytes** in the later list-pages audit |
+| `0x8001f008` | second numeric text renderer | **strict exact, 1,936/1,936 code bytes** in the later list-pages audit |
 | `0x8001f798` | six-row paired label renderer | **exact**, existing source |
 | `0x8001f8b8` | menu model/preview controller | WIP: list/model record |
 | `0x8001fb8c` | window title and highlighted rows | WIP: 99.78788%, frame extent |
@@ -32,7 +32,7 @@ references define the campaign; the address range is not a TU claim.
 | `0x80020d20` | cursor sprite packet | **exact, 472/472 code bytes** in current direct objdiff |
 | `0x80020ef8` | fixed-CLUT sprite packet | **exact, 436/436 code bytes** in current direct objdiff |
 | `0x800210ac` | glyph-string packets | WIP: 99.66904%, frame/register choice |
-| `0x80021510` | number-glyph packets | WIP: 98.61957%, atlas-U load/order |
+| `0x80021510` | number-glyph packets | **strict exact, 736/736 code bytes** in a fresh direct per-unit comparison |
 
 `0x8001d340` computes a group page stride of 240 bytes and uses a byte index
 to fetch a halfword code. The next distinct table base at `0x800661c0`
@@ -46,8 +46,8 @@ fresh focused build; direct objdiff reports 100% for both code and data.
 The secondary translator at `0x8001d654` uses the next table base and the
 same 240-byte page stride. A later [byte and reference audit](kf2-game-menu-list-pages-ten.md)
 established its five-page, 1,200-byte extent, replaced the false Ghidra string
-fragments with one initialized table, and reconstructed the translator as
-90.47619% strict WIP. No surveyed function was attributed to vendored code.
+fragments with one initialized table, and matched the translator exactly.
+No surveyed function was attributed to vendored code.
 
 The initial pass verified 156/156 GAME target relinks and stopped global
 strict comparison at known-reference closure and two unrelated map-object

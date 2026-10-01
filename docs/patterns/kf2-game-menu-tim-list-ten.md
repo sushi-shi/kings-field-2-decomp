@@ -11,7 +11,7 @@ The address span is a survey boundary, not a claim of original TU ownership.
 | `0x80019240` | player/menu clamp caller of the adjacent two leaves | strict exact, 100% |
 | `0x800192ac` | clamp leaf called by `0x80018f8c` and `0x80019240` | strict exact, 100% |
 | `0x800192dc` | related clamp leaf with the same callers | strict exact, 100% |
-| `0x8001930c` | menu code selects archive 6 entry, uploads TIM, emits textured quads, waits for pad input, frees buffer | Source claimed; focused WIP at 80.2% listing similarity, with aligned calls, referents, and CFG |
+| `0x8001930c` | menu code selects archive 6 entry, uploads TIM, emits textured quads, waits for pad input, frees buffer | WIP, 98.26363% direct strict; 80.2% focused listing similarity, with aligned calls, referents, and CFG |
 | `0x80019834` | filters list records, runs input/dialog loop, redraws through `0x8001fc94` | **strict exact, 100%** in the current two-function unit |
 | `0x800199d0` | exact 26-byte selection-record filter used by three list controllers | strict exact, 100% |
 | `0x80019ac4` | list controller copies the reviewed 200-byte `menu_equipment_labels_64910` table, then calls row builder and three selection branches | **strict exact, 100%** in the current focused unit |
@@ -47,8 +47,17 @@ code bytes at 100%; `0x80019ac4` is 544/544 code bytes and 200/200 owned
 data bytes, `0x80019ed4` is 1,056/1,056,
 and `0x8001a2f4` is 508/508. The three `0x80019240`–`0x800192dc` clamp
 functions and `0x80019ce4` also retain 100% strict scores. Only the TIM menu
-preview at `0x8001930c` remains WIP at 80.2% focused: its 47/47 blocks,
+preview at `0x8001930c` remains WIP at 98.26363% direct strict and 80.2%
+focused listing similarity: its 47/47 blocks,
 27/27 branches, calls, and known successors agree, while the first arithmetic
 residue reassociates the archive-index `+480` and retains the image pointer
 in a different saved register. No source edit or linked build was needed for
 this verification.
+
+A fresh direct per-unit comparison of the 1,320-byte preview confirms the
+98.26363% strict verdict. Retail computes the archive entry with the masked
+menu index shifted by three, then adds the loaded state byte plus 480; the
+current probe reassociates the same bounded sum as index plus 480, then the
+state byte. Reversing the source operands retained the same value but lowered
+focused similarity to 79.9% and was reverted. The source keeps the supported
+archive-index semantics without a score-driven type or artificial local.

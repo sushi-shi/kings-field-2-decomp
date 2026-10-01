@@ -95,6 +95,8 @@ KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-p
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfTargetCandidate	0x1c	candidate	game/actor.h;GAME 0x80039108;actor sound and event-bytecode helpers	minimum observed view through halfword +0x1a; full extent and stride unknown
+KfTargetCandidateWord0e	0x2	supported	GAME 0x800391d0/0x80039358 lbu;0x800394a8 lhu	overlapping candidate +0x0e byte and halfword views
+KfTargetCandidateWord0eBytes	0x2	supported	GAME 0x800391d0/0x80039358 lbu	low and high bytes of candidate +0x0e halfword
 KfTargetCandidateWord10	0x2	supported	GAME 0x800391ac lhu candidate+0x10;event byte consumers	overlapping halfword and byte views at candidate +0x10
 KfTargetCandidateWord10Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x10 and +0x11
 KfTargetCandidateWord12	0x2	supported	GAME 0x80039108 lhu candidate+0x12;event byte consumers	overlapping halfword and byte views at candidate +0x12

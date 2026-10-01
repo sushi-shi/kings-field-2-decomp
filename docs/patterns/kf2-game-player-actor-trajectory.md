@@ -1234,10 +1234,10 @@ references; the main update directly calls the phase ramp, vital helpers, and
 equipment helper. A fresh focused `kf try --unit game.player_reaction`
 reports `SAME` for the first nine and **91.3% listing similarity** for
 `8002985c`. Existing strict match records mark the nine controls
-`100.000000000% exact`; direct one-function objdiff confirms the update at
-**92.414010000% strict WIP**. The semantic report warns that its recorded
-match state is stale, so the focused listing and direct object comparison
-are the current source evidence.
+`100.000000000% exact`; explicit retail-versus-current-scratch objdiff
+confirms the update at **97.582344% strict WIP**. The project-configured
+base object and semantic match report were stale; the focused listing and
+explicit object comparison are the current source evidence.
 
 The retail `80029624` phase ramp reads both counters as unsigned halfwords,
 sign-extends their working values, uses a shared scaled result, and returns
@@ -1272,3 +1272,100 @@ removing repeated HI16/LO16 pairs; its conditions and observed referents
 otherwise agree. The cache words at BSS `+0x11818`/`+0x1181c` now use shared
 lower/upper-bound views in source. A focused rebuild kept the 63.2% listing,
 and the complete cache/equipment boundary remains provisional.
+
+### Player damage and early equipment control slice
+
+A disjoint ten-function slice covering `80024164`, `80024384`, `80024448`,
+`80024498`, `800247e4`, `800248a8`, `80024ca4`, `80024ed4`, `80024f4c`,
+and `80025004` remains **10/10 exact** in strict per-function records.
+Fresh focused comparisons of the owning core, damage-reaction, status-cap,
+apply-damage, radial-damage, and equipment units report `SAME` for every
+selected function. Direct one-function objdiff independently confirms
+`80024498` and `800248a8` at 100%; these own the eight- and seven-entry
+bounded damage switch tables respectively. The equipment unit's separate
+`80025a18` dispatcher remains WIP, but its neighboring selected controls
+are unchanged. No C correction was needed in this slice.
+
+### Player equipment selector and dispatcher slice
+
+The next disjoint ten-function slice comprises `80025184`, `800251f0`,
+`80025234`, `800252e4`, `800253ac`, `800253fc`, `8002540c`, `80025434`,
+`8002545c`, and `80025a18`. The first nine remain `SAME` in a fresh
+focused equipment-unit comparison and have exact strict records. A direct
+target-versus-fresh-scratch objdiff gives the dispatcher **95.54467% strict
+WIP** while its normalized focused listing remains **82.9% similar**;
+the semantic navigator's older 70.391754% row is stale. Direct objdiff
+also confirms the adjacent target-selector control `80025878` at 100%.
+
+Of the dispatcher's 53 switch rows, 42 have byte-identical destination
+offsets. The other eleven are cases 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, and
+12; all rows from case 13 onward are byte-identical, as is case 0. Retail
+places a shared `func_80025878` selector immediately after the cases 51/52
+effect-ID store at body `+0x3b0`; case 4 enters at `+0x3b4`, and cases 6/10
+jump into the selector's argument setup at `+0x3b8`. The candidate moves
+that selector to a later shared tail; its switch grouping and ordered
+call/referent sets remain correct. A bounded
+scratch probe spelling literal selector calls for cases 4/6/10/40 produced
+the same compiled object as the current shared-call source. The earlier
+case-order probe moved this selector but lowered focused similarity and was
+discarded. No source-backed C correction was retained.
+
+### Player weapon, magic, and horizontal-movement slice
+
+The next disjoint ten-function slice is `8002569c`, `80025754`, `80025878`,
+`80026330`, `80026464`, `80026498`, `8002665c`, `8002722c`, `800274ec`,
+and `80027928`. The seven controls remain `SAME` in fresh focused unit
+comparisons and have 100% strict records. Fresh direct target-versus-scratch
+objdiff gives `8002665c` **98.67857% strict WIP** (`91.1%` normalized
+listing), `8002722c` **99.09091% strict WIP** (`89.3%` listing), and
+`800274ec` **88.631% strict WIP** (`61.9%` listing). Older semantic match
+rows for the first two WIPs are stale and must not replace these direct
+comparisons.
+
+The magic/weapon updater's first mismatches choose different registers for
+the same equipped-ID and attack-phase loads; later the candidate keeps a
+player-state base across the sound call where retail reloads it. Its 20
+ordered calls and 114/114 CFG blocks still agree. The action selector's
+four-byte extent gap reflects retail's otherwise-unused eight-byte leaf frame;
+its 82 ordered relocations, bounded switch destination groups, 33/33 CFG blocks,
+and 16/16 branches agree. In the horizontal mover, retail individually
+forms camera-position addresses when accepting a position, whereas the
+candidate reuses a player-state base and fills a jump delay slot with the
+cache-layer store. It retains 11 ordered calls and 20/20 branches, but its
+CFG still has 33 blocks against retail's 35. These observed source-equivalent
+differences do not justify artificial locals or redundant loads, so no C
+correction was retained.
+
+### Player reaction-state caller and helper slice
+
+Another related ten are `80029014`, `80029168`, `800291d0`, `800291ec`,
+`800293d4`, `80029428`, `80029464`, `800294f8`, `80029570`, and the
+update at `8002985c`. Nine helper listings remain `SAME` in a fresh focused
+reaction-unit build, and their existing strict records are 100%. An
+explicit retail-versus-current-scratch comparison confirms `800291ec`
+at 100% and `8002985c` at **97.582344% strict WIP**. The update retains
+91.3% normalized listing similarity, 142/142 known CFG blocks and 79/79
+branches, with one unresolved switch jump on both sides. Its first
+differences remain the `4096` clamp value held in different registers and
+the `-100`/`-800` immediate-subtraction schedule; no source-backed change
+was retained.
+
+### Player collision, camera, and reaction control slice
+
+The next disjoint ten-function slice is `80027988`, `800279cc`, `80027f78`,
+`80028224`, `8002851c`, `8002897c`, `80028998`, `80028ec0`, `80028fa8`,
+and `80029014`. Seven controls remain `SAME` in fresh focused comparisons
+and have 100% strict records. Direct target-versus-fresh-scratch objdiff
+gives the three WIPs `800279cc` **97.09642% strict** (`78.1%` normalized
+listing), `80027f78` **95.91228% strict** (`80.5%` listing), and `8002897c`
+**88.57143% strict** (`28.6%` listing). The first two semantic match rows
+are stale; these direct object scores are current.
+
+The landing and collision responses retain their retail ordered calls and
+known CFG block/branch counts. Their remaining referent differences are
+repeated player-state HI16/LO16 pairs: the landing candidate emits two fewer,
+while the response candidate emits four extra pairs. The seven-instruction
+signed `[71,80]` predicate differs only in `v0`/`v1` assignment and its
+return delay slot; a natural nested-if scratch spelling emitted the same
+candidate instructions as the current source and left exact neighbor
+`80028998` unchanged. No tracked source correction was retained.

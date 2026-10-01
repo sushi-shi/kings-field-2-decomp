@@ -1575,11 +1575,18 @@ listing values are not closure claims; `366fc` alone has a fresh direct
 | `36190` | WIP, 89.78417% direct (82.9% focused listing) | All 15 CFG blocks and 8 branches exist, but the first bound check takes the final `-1` exit in retail and enters the body in the probe. Off-tree removal of the explicit guard (82.6%) and a guarded `do` loop (81.6%) changed the return joins and were discarded; exact `363bc`/`363dc` siblings remain 100% direct. |
 | `36464` | WIP, 95.32258% direct (92.8% focused listing) | Spawn register/store scheduling differs; the preceding `36190` length still shifts this unit's switch-table addend. |
 | `366fc` | Exact, 100% direct | Typed spawn high-byte access gives all four scatter-unit listings SAME, 992/992 text and 84/84 RODATA bytes, with identical ordered relocations. |
-| `36ed4` | WIP, 27.7% listing | All 23 primary action IDs have C paths; the dispatch body and some subactions remain structurally different. |
-| `39108` | WIP, 35.1% listing | The proved byte/halfword view at candidate +0x0e preserves the current listing; one CFG block and one branch remain unmatched. |
+| `36ed4` | WIP, 7.06938% direct (27.7% focused listing) | All 23 primary action IDs have C paths, but the 7668-byte dispatch body remains structurally different. The 956-byte unit RODATA is 26.57233% direct because case-code targets move; its table ownership and action identities remain WIP. |
+| `39108` | WIP, 85.72369% direct (35.1% focused listing) | The proved byte/halfword view at candidate +0x0e preserves the current 1216-byte body; one CFG block and one branch remain unmatched. Its 524-byte table is 37.30916% direct because compiled case-code offsets differ, while the 131-entry target-equivalence pattern agrees. |
 | `3983c` | WIP, 99.19598% direct (87.0% focused listing) | Actor pointer and sentinel saved-register assignments differ. Direct comparison covers 796 retail bytes; relocation sites shift with the generated text. |
 | `39b58` | WIP, 90.95744% direct (79.2% focused listing) | The wrapper has 9/9 CFG blocks and 4/4 branches, but retail keeps the `0xff` sentinel in saved `s4`; direct comparison covers 188 retail bytes. |
-| `39c94` | WIP, 62.1% listing | Exact `39c14` sibling preserved; stack-argument schedule and callback path register lifetimes differ. |
+| `39c94` | WIP, 91.85132% direct (62.1% focused listing) | The 1668-byte recipient/target update retains stack-argument and callback-path register-lifetime differences; the 128-byte `39c14` sibling is 100% direct. |
+
+An off-tree `39108` probe moved proven zero-result eligibility exits to
+explicit `return 0` statements and initialized the scoring accumulator only
+in the case that needs it. The compiler collapsed retail's shared return
+joins: 55/59 blocks, 33/37 branches, and 22.9% focused listing versus the
+retained 35.1%. The probe was discarded; the current shared-result C remains
+closer to retail without a fabricated control edge.
 
 ### Actor motion and map-boundary follow-up
 
@@ -1597,6 +1604,34 @@ discarded; the source remains unchanged.
 An early `if (state == 0x20)` `/tmp` probe instead reached 68.0% with the
 same block and branch counts, but emitted a `bne` to the wrong B4 successor
 where retail has `beq`. That source-shape trial was also discarded.
+A further off-tree conditional-chain spelling put state `0x20` first, but
+produced only 37/40 blocks, 20/21 branches, and 62.6% focused listing;
+retail's B4 `beq` still became a `bne`. The typed `switch` remains the
+best-supported source shape pending new evidence.
+Direct isolated comparison of this actor-motion collision unit confirms its
+three preceding functions at 100% (484, 156, and 20 bytes), while `3b5d0`
+remains 76.17551% over 980 retail bytes. That direct score does not resolve
+the first dispatch-successor difference.
+The actor-damage unit directly compares at 99.86911% for `3a318` over 764
+retail bytes and 96.91011% for `3a614` over 356 bytes; its adjacent `3a778`
+is 100% over 636 bytes. `3a318` differs only in two independent incoming
+stack-argument registers, while `3a614` still reuses a camera-data base that
+retail reloads. The typed C expresses the observed values without a forced
+register assignment or volatile global.
+The seven-function actor-motion unit also has six exact direct siblings
+(320, 188, 304, 112, 316, and 140 bytes). Its `3bd40` body is 86.53226%
+direct over 248 retail bytes; the focused actor-state load and angle-temporary
+residue remains uncorrected. Its proven caller `3d184` passes actor +0x72
+with `lh` as stack argument five, two byte controls from its target stream as
+arguments six and seven, and literal `5` as argument eight. The returned angle
+is stored at actor +0x72 and sign-extended for a `-1` check, corroborating the
+current halfword ABI. The shared `KfActor` view now names only that two-byte
+slot as `s16 unknown_72` and leaves +0x74..+0x7b opaque; size 0x7c and
+offset assertions hold. Focused actor-motion, actor-animation, and
+actor-group-position probes preserve their six, six, and three exact
+listings, respectively. The same `3d184` caller uses both `lh` and `lhu` at
+actor +0x74 and copies two unaligned words across +0x72..+0x79; these accesses
+do not yet prove a complete nested record or the remaining fields' types.
 An isolated pinned GCC 2.5.7 compile of `game.actor_animation` directly
 confirms all six exact sibling functions at 100% and identical ordered
 relocations. Its `3ae50` function is 99.31746% direct over 1260 retail bytes;
@@ -1612,13 +1647,13 @@ remaining yaw-error register assignment has no proved source correction.
 | `34f90` | WIP, 92.5% focused listing | All 14 CFG blocks, seven branches, and ordered successor lists agree; register and independent instruction schedules differ. |
 | `35194` | WIP, 58.8% focused listing | All 51 CFG blocks, 26 branches, and ordered successor lists agree; retail's 40-byte frame versus the probe's 32-byte frame changes argument/register lifetimes. |
 | `36ad8` | Exact, 100% direct | Rectangle/height predicate uses `player_state.camera_position`; both contiguous functions and ordered relocations match. |
-| `3a318` | WIP, 97.5% focused listing | Two incoming O32 stack-argument loads exchange temporary registers; exact `3a778` remains SAME. |
-| `3a614` | WIP, 81.2% focused listing | Retail separately reloads player camera fields where GCC reuses a base; calls and return paths agree. |
+| `3a318` | WIP, 99.86911% direct (97.5% focused listing) | Two incoming O32 stack-argument loads exchange temporary registers; exact `3a778` is 100% direct. |
+| `3a614` | WIP, 96.91011% direct (81.2% focused listing) | Retail separately reloads player camera fields where GCC reuses a base; calls and return paths agree. |
 | `3ae50` | WIP, 99.31746% direct | Angle-wrap masking is scheduled after `SquareRoot0` in the probe and before it in retail; six contiguous siblings are 100% direct and ordered relocations agree. |
-| `3b5d0` | WIP, 66.5% focused listing | Both versions have 40 CFG blocks and 21 branches, but B4 tests vertical state `0x20` first in retail and `0x10` first in the probe; three preceding siblings remain SAME. |
-| `3bd40` | WIP, 68.2% focused listing | Actor-state load and angle-temporary lifetimes differ; six actor-motion siblings remain SAME. |
+| `3b5d0` | WIP, 76.17551% direct (66.5% focused listing) | Both versions have 40 CFG blocks and 21 branches, but B4 tests vertical state `0x20` first in retail and `0x10` first in the probe; three preceding siblings are 100% direct. |
+| `3bd40` | WIP, 86.53226% direct (68.2% focused listing) | Actor-state load and angle-temporary lifetimes differ; six actor-motion siblings are 100% direct. |
 | `3c3e0` | WIP, 99.64539% direct | Yaw-error and scaled-yaw temporaries exchange registers; three group-position siblings are 100% direct with identical ordered relocations. |
-| `3f7ec` | WIP, 93.8% focused listing | Sentinel initialization order and commutative pointer addition differ; exact `3f610` and `3f860` remain SAME. |
+| `3f7ec` | WIP, 85.86207% direct (93.8% focused listing) | Sentinel initialization order and commutative pointer addition differ; `3f610` and `3f860` are 100% direct over 476 and 460 bytes. |
 
 The connected lifecycle unit was rechecked after this table: `3983c` remains
 87.0% focused with 37/37 CFG blocks and 24/24 branches, and `39b58` remains

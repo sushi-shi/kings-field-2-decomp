@@ -19,6 +19,12 @@ enum {
 #define GRAPHICS game_graphics_runtime
 #define DISPLAY game_graphics_runtime.display_state
 
+DATA(0x800fba58, 0x32000)
+u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
+
+DATA(0x8017d140, 0x17cf0)
+KfGraphicsRuntimeGame game_graphics_runtime;
+
 DATA(0x801d9610, 0x4)
 s32 display_frame_cleared_word;
 

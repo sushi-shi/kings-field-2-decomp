@@ -18,7 +18,7 @@ typedef struct KfCardAssets {
 typedef char kf_card_assets_size[sizeof(KfCardAssets) == 0x120 ? 1 : -1];
 
 DATA(0x80066680, 0x120)
-KfCardAssets DAT_80066680 = {
+KfCardAssets memory_card_assets = {
     "\202j\202h\202m\202f\201f\202r\201@\202e"
     "\202h\202d\202k\202c\201@\202Q\201|\201@"
     "\201@\202d\202w\202o\201@\201@\201@\201@"
@@ -230,10 +230,10 @@ s32 func_80022ca0(s32 slot)
     header.magic[1] = 'C';
     header.icon_type = KF_CARD_ICON_TYPE_THREE_FRAMES;
     header.block_count = KF_CARD_FILE_BLOCKS;
-    strcpy(header.title, DAT_80066680.title);
+    strcpy(header.title, memory_card_assets.title);
     func_80023178(&header, slot);
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
-    memcpy(header.icon_palette, DAT_80066680.icon_palette[slot - 1],
+    memcpy(header.icon_palette, memory_card_assets.icon_palette[slot - 1],
         sizeof(header.icon_palette));
 
     setRECT(&icon_rect, 800, 240 + slot * 16, 4, 16);

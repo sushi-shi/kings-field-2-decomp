@@ -6,7 +6,6 @@
 #include <kf/game/player.h>
 #include <kf/game/tmd.h>
 
-extern s32 DAT_8006d694;
 
 ADDRESS(0x800221e8, 0xd4)
 s32 menu_load_item_model(u8 item_id)

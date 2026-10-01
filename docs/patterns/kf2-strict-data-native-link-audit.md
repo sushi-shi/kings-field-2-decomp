@@ -12,7 +12,7 @@ matching data-owning unit is narrower than whole-image data reconstruction.
 | Image | Strict data-owning units | Source claims / loaded-data census | Native EXE | Exact retail-vs-candidate bytes |
 | --- | ---: | ---: | --- | ---: |
 | PSX.EXE | 0/1 | 73/1,555 (4.7%) | linked, 4,096 B | 277/4,096 differ (43 header; 234 load) |
-| GAME.EXE | 30/47 | 18,264/88,376 (20.7%) | unresolved data symbols | unavailable |
+| GAME.EXE | 30/52 | 20,983/88,376 (23.7%) | unresolved data symbols | unavailable |
 | OPEN.EXE | 3/9 | 84/111,252 (0.1%) | linked, 186,368 B | 125,832/186,368 differ (46 header; 125,786 load) |
 | END.EXE | 2/8 | 56/107,104 (0.1%) | linked, 172,032 B | 140,791/174,080 differ (46 header; 140,745 load) |
 
@@ -21,10 +21,11 @@ The GAME strict count incorporates the separately verified
 `game.return_stub_18764` artifact rebuild. The source-claim fractions are
 coverage of the loaded-data census, which also includes SDK data and unresolved
 gaps; they do not measure reachable data or overall correctness. The current
-strict gate has 30 divergent data-owning units: PSX `main`, 17 GAME units,
+strict gate has 35 divergent data-owning units: PSX `main`, 22 GAME units,
 six OPEN units, and six END units. New source-backed BSS owners increased the
-denominator to 65 units; the lower exact fraction does not undo exact function
+denominator to 70 units; the lower exact fraction does not undo exact function
 listings. The GAME check reports zero missing artifacts.
+
 The PSX `.data` referent now matches after load-data carving passes its owning
 module's RODATA range to the delinker. The sole PSX data residue is
 `overlay_header`: retail target storage is 60-byte `.bss`, while the pinned
@@ -42,6 +43,23 @@ COMMON request for the retail 676-byte BSS object. The neighboring
 `cd_stream_work_buffer` stays undefined: its four-byte candidate identity is
 only a first-word marker, while source proves at least `0xfa04` readable
 bytes and does not establish its complete extent.
+The display source now defines the complete two-buffer primitive memory
+(`0x32000` bytes) and typed graphics runtime (`0x17cf0` bytes). The event
+counter source defines its startup-cleared `0x78` byte array, and the resource
+transition request source defines the seven-word callback state. Their
+function listings retain the prior verdicts: display 10/10 identical, event
+counter 3/3 identical, and transition request 71.6% WIP. Strict data reports
+COMMON allocation for all four BSS objects; it also reports incompatible
+section bases for the three nonadjacent display claims. These are source-backed
+owners, not strict-data closures. The original event-counter and transition
+request TU boundaries remain unproven; the current modules are WIP owners
+supported by their central update roles and complete retail extents.
+Two adjacent loaded menu arrays now have typed initializers in the window
+drawing source: 20 six-halfword sprite descriptors (`0xf0` bytes) and eight
+window layouts containing signed glyph indices and `-1` row terminators
+(`0x9a0` bytes). The whole `0xa90`-byte `.data` unit is strict-data exact.
+Its one function retains the pre-existing 83.5% stack-frame residue, so the
+data result does not imply code closure or original TU-boundary proof.
 
 The OPEN/END globals use the curated widths, storage classes, names, and
 owners in their loader, audio, display, and shared movie-stream sources.
@@ -88,14 +106,21 @@ symbol pass without altering source objects.
 
 | Image | Current native linker diagnostics | Distinct unresolved names | Largest repeated unresolved names |
 | --- | ---: | ---: | --- |
-| GAME.EXE | 2,780 | 39 | `game_graphics_runtime`, `state_8017d118`, and 37 other curated data names |
+| GAME.EXE | 936 | 28 | `current_poly_ft4`, `map_object_state`, `effect_state` |
 | OPEN.EXE | 0 | 0 | Native link completes with ten C units |
 | END.EXE | 0 | 0 | Native link completes with eight C units |
 
 Every distinct unresolved GAME name has a row in
 `config/retail/data_identities.tsv`; no unresolved function name remains.
 The GAME diagnostic count includes repeated references and does not count
-missing definitions. OPEN and END passed through intermediate states with
+missing definitions. The preceding 2,780/39 GAME snapshot fell to 936/28
+as the player equipment's exact 20-byte loaded table, the complete graphics,
+counter, callback, audio, actor, event, and memory-card BSS objects, and the
+two exact menu arrays were defined. `current_poly_ft4` remains unresolved
+because its defining owner is not supported yet. The card-buffer pointer
+`memory_card_buffer` also remains unresolved after a tentative definition
+changed an exact retail relocation and was reverted. OPEN and END passed
+through intermediate states with
 20/17, then 13/5, then zero unresolved names as their source-backed data
 owners were added. A small `DATA_AT()` claim form mirrors `ADDRESS_AT()` so
 one shared movie/display/audio source can retain image-qualified retail data

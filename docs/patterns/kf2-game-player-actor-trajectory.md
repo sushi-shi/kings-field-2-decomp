@@ -1518,3 +1518,47 @@ effect dispatcher `80025a18` remains WIP. The pinned compiler emits the
 new tentative globals as COMMON, while the current retail target carves
 fixed `.bss` ranges. This data-class residue is unresolved and does not
 change the exact function verdicts.
+
+The remaining player loaded-data referent `DAT_800667e8` is now one
+initialized `KfPlayerMagicIdSequence` in `player_state_equipment.c`, directly
+after its two effect-vector arrays. Its twelve effect bytes are
+`39,40,60,66,84,86` repeated twice; its four little-endian attack masks
+are `0x20,0x10,0x80,0xffff`. The retail payload and three validated
+references in the magic dispatcher/input controller support the global
+identity. The source is non-const because the pinned compiler otherwise
+puts the table into `.rodata` and shifts the exact equipment switch-table
+referent; the retail data is contiguous with the two initialized player
+effect arrays. A target-only GAME refresh and focused direct objdiff show
+the new datum at 100%, the three-array `.data` extent at 100% (`0x5c` bytes),
+all 15 previously exact equipment functions still at 100%, and the effect
+dispatcher `80025a18` still WIP. Exact magic/input consumer
+listings remain unchanged.
+
+The `80025a18` switch table also proves the physical order of its short
+rotation cases: retail case 10 targets `.text+0x1070`, immediately before
+case 6 at `+0x1078`. The prior C case order emitted case 6 first. Swapping
+these adjacent cases restores that order without changing semantics; both
+candidate targets now sit 24 bytes before retail, the same upstream offset
+as nearby cases. Direct strict `80025a18` rises from 95.54467% to
+95.54811%; the 15 exact equipment siblings remain at 100%. The upstream
+24-byte difference remains unexplained.
+
+The consolidated native GAME link no longer lists `DAT_800667e8` among its
+unresolved names. A scratch placement of `va_start` only in cases 39/49/50
+removed the early named-argument home store and lowered focused similarity;
+the tracked dispatcher retains the original top-level `va_start`.
+
+## Actor runtime BSS link owner
+
+`actor_pool_clear.c` now defines the current `actor_state` BSS owner at
+`8016b600`. Retail `game_main_loop` passes exactly `0x24f3` words to the
+startup clear, bounding `0x93cc` bytes. The actor pool has 200 records at
+`0x7c` bytes each, the target groups begin at `+0x60e0`, and the reviewed
+runtime trailer ends at `+0x93cc`. The original translation-unit boundary
+remains WIP. Focused comparison keeps `actor_pool_clear` at strict 100%.
+The pinned compile/assemble chain emits this tentative definition as a
+37,840-byte COMMON symbol (`st_size=0x93d0`); the retail target currently
+carves 37,836 fixed `.bss` bytes (`0x93cc`). The four-byte difference equals
+the unclaimed gap before `map_object_state` at `801749d0`, but no retail
+access proves that gap belonged to the actor allocation. The source can
+resolve the native symbol but is not an exact data-allocation match.

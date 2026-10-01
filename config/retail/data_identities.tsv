@@ -453,10 +453,10 @@ GAME.EXE	0x80065950	0x2d0	menu_item_mask_pages	global	load	u8[6][120]	menu_glyph
 GAME.EXE	0x80065c20	0x5a0	menu_item_code_primary	global	load	u16[6][120]	menu_item_code_primary	supported	retail bytes;func_8001d340 lookup	six 240-byte menu code pages
 GAME.EXE	0x800661c0	0x4b0	menu_item_code_secondary	global	load	u16[5][120]	menu_item_code_secondary	supported	retail bytes;func_8001d654 lookup	five 240-byte numeric menu code pages; byte-pattern strings are false positives
 GAME.EXE	0x80066670	0x10	memory_card_file_prefix	global	load	char[16]	memory_card_format	supported	retail bytes;card-file xrefs	shared save-file prefix and NUL padding
-GAME.EXE	0x80066680	0x120	DAT_80066680	global	load	KfCardAssets	memory_card_write	supported	retail bytes;card-writer strcpy and indexed 32-byte icon CLUT selection	Shift-JIS card title followed by seven 16-color icon palettes
+GAME.EXE	0x80066680	0x120	memory_card_assets	global	load	KfCardAssets	memory_card_write	supported	retail bytes;card-writer strcpy and indexed 32-byte icon CLUT selection	Shift-JIS card title followed by seven 16-color icon palettes
 GAME.EXE	0x800667a0	0x28	DAT_800667a0	unknown	load	s16[5][4]		address-only	asm;five eight-byte records;func_80025a18 copy loop;lh +6	complete initialized XYZ-plus-parameter records; C type, defining TU and linkage unresolved
 GAME.EXE	0x800667c8	0x20	DAT_800667c8	unknown	load	SVECTOR[4]		address-only	asm;four eight-byte records;func_80025a18 copy loop	complete initialized vector array; defining TU and linkage unresolved
-GAME.EXE	0x800667e8	0x14	DAT_800667e8	unknown	load	KfPlayerMagicIdSequence		address-only	asm;func_80026498;func_80028998;retail bytes	12 indexed effect IDs and four attack masks; source owner unresolved
+GAME.EXE	0x800667e8	0x14	DAT_800667e8	global	load	KfPlayerMagicIdSequence	player	supported	retail bytes;three validated xrefs;exact player magic/input consumers	12 indexed effect IDs and four attack masks; current C owner player_state_equipment, original TU remains WIP
 GAME.EXE	0x800667fc	0xa	collision_default_cell	global	load	KfMapOccupancyCell	collision_grid_sample	supported	retail bytes;func_8002a988 fallback pointer	two default five-byte map layers
 GAME.EXE	0x80066808	0x7e	notification_quads	global	load	KfNotificationQuad[7]	notify_enqueue	supported	retail rows;renderer xrefs;kind writes	six notification quads and a sentinel
 GAME.EXE	0x80066888	0x21c	render_model_rows	global	load	KfRenderModelRow[15]	render_map_cell_object	supported	retail bytes;func_80031024 scan;func_800335a0 writes	14 active render rows and a full-width sentinel
@@ -703,24 +703,24 @@ GAME.EXE	0x8006da80	0x1	DAT_8006da80	unknown	load	undefined1		address-only	data.
 GAME.EXE	0x8006da81	0x1	DAT_8006da81	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006da88	0x1	DAT_8006da88	unknown	load	undefined1		address-only	data.tsv:ghidra-defined;LIBCD/BIOS getintr xrefs	all curated direct references are in exact Psy-Q 3.0 LIBCD/BIOS getintr text; original data owner and extent unresolved
 GAME.EXE	0x8006da90	0x1	DAT_8006da90	unknown	load	undefined1		address-only	data.tsv:ghidra-defined;LIBCD/BIOS getintr xrefs	all curated direct references are in exact Psy-Q 3.0 LIBCD/BIOS getintr text; original data owner and extent unresolved
-GAME.EXE	0x8006da98	0x4	DAT_8006da98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006daa0	0x4	DAT_8006daa0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006daa8	0x1	DAT_8006daa8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dab0	0x1	DAT_8006dab0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dab8	0x4	DAT_8006dab8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dac0	0x4	DAT_8006dac0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dac8	0x4	DAT_8006dac8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dad0	0x4	DAT_8006dad0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dad8	0x4	DAT_8006dad8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dae0	0x4	DAT_8006dae0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006daf0	0x4	DAT_8006daf0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006daf8	0x4	DAT_8006daf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db00	0x4	DAT_8006db00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db10	0x4	DAT_8006db10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db18	0x4	DAT_8006db18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db20	0x4	DAT_8006db20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db28	0x4	DAT_8006db28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db30	0x4	DAT_8006db30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006da98	0x4	DAT_8006da98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daa0	0x4	DAT_8006daa0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daa8	0x1	DAT_8006daa8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dab0	0x1	DAT_8006dab0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dab8	0x4	DAT_8006dab8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dac0	0x4	DAT_8006dac0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/ISO9660 .text xrefs	all curated direct references lie in the exact LIBCD/ISO9660 text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dac8	0x4	DAT_8006dac8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dad0	0x4	DAT_8006dad0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dad8	0x4	DAT_8006dad8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dae0	0x4	DAT_8006dae0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daf0	0x4	DAT_8006daf0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daf8	0x4	DAT_8006daf8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db00	0x4	DAT_8006db00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db10	0x4	DAT_8006db10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db18	0x4	DAT_8006db18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db20	0x4	DAT_8006db20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db28	0x4	DAT_8006db28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db30	0x4	DAT_8006db30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db40	0x4	DAT_8006db40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db48	0x2	DAT_8006db48	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db50	0x4	DAT_8006db50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

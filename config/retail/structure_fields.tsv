@@ -54,7 +54,8 @@ KfActor	0x6a	0x2	unknown_6a	s16	opaque	GAME 0x8003b520;0x80015bc8	trajectory res
 KfActor	0x6c	0x2	unknown_6c	s16	opaque	GAME 0x8003b520 sh	trajectory setup parameter
 KfActor	0x6e	0x2	unknown_6e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x70	0x2	unknown_70	s16	candidate	game/actor.h;retail GAME 0x80038f7c	Signed halfword condition before actor callback; meaning unresolved
-KfActor	0x72	0xa	unknown_72	u8[10]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
+KfActor	0x72	0x2	unknown_72	s16	supported	GAME 0x8003ef8c;0x8003efd4;0x8003efdc	Signed halfword passed to 0x8003bd40, stored from its result, then checked against -1
+KfActor	0x74	0x8	unknown_74	u8[8]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
 KfActorHalfword4a	0x0	0x2	value	u16	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4a	0x0	0x2	bytes	KfActorHalfword4aBytes	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4aBytes	0x0	0x1	low	u8	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a

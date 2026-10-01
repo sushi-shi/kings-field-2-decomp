@@ -2,6 +2,9 @@
 #include <kf/lib/null.h>
 #include <kf/game/actor.h>
 
+DATA(0x8016b600, 0x93cc)
+KfActorStateGame actor_state;
+
 ADDRESS(0x80039080, 0x50)
 void actor_pool_clear(void)
 {

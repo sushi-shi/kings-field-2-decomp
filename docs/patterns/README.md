@@ -7,6 +7,12 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-open-audio-voice-frame.md](kf2-open-audio-voice-frame.md): the lone OPEN
+  WIP voice wrapper, with a 64-byte retail versus 40-byte probe stack frame.
+- [kf2-game-event-restore-table.md](kf2-game-event-restore-table.md): reviewed
+  16-row restore switch table and the remaining decoder register residue.
+- [kf2-game-event-controller-followup.md](kf2-game-event-controller-followup.md):
+  two connected GAME event controller WIP verdicts and bounded control probes.
 - [psyq30-macro-audit.md](psyq30-macro-audit.md): complete pinned Psy-Q 3.0
   macro definition and source census, per-site SDK macro trials, retained exact
   forms, and explicit rejection boundaries.

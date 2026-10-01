@@ -2,7 +2,6 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/menu.h>
 
-extern s32 DAT_8006d694;
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
 

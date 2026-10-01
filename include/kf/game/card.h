@@ -57,7 +57,7 @@ extern s32 input_idle_counter;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */
 extern u8 *memory_card_buffer;
-extern u8 memory_card_buffer_storage[];
+extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
 

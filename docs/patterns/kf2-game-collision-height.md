@@ -125,7 +125,7 @@ certification is pending.
 | `0x8002b874` | WIP, 85.8% focused listing | Player/actor/map-object snapshot is modeled, but the actor/object radius and interaction-height load order and common-tail schedule differ. |
 | `0x8002b9d4` | Prior strict WIP, 89.4% | Grid, actor, map-object, and player call set was modeled; the prior actor-scan successor difference is corrected in the focused pass below, while result lifetime remains unresolved. |
 | `0x8002bfd4` | Prior strict WIP, 54.155340% | Both mask-segment axes are modeled; the focused branch correction below has not been recertified strictly. |
-| `0x8002c170` | WIP, 89.8% | Eleven-block mask-row scan and bounds agree; pointer and state registers differ. |
+| `0x8002c170` | WIP, 67.9% focused listing | Eleven-block mask-row scan, unsigned 24-cell bound, byte comparison, and signed step agree; pointer and state register lifetimes differ. |
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
@@ -431,9 +431,11 @@ The later `0x8002c670` source now selects its center through the typed
 representation only for the runtime-selected layer lighting byte; a layout
 check ties the lighting offset to `KfMapOccupancyCell`. The focused listing
 improved from 75.8% to 76.4% and remains WIP. Its remaining first lighting
-referent differs in address formation (`bss_801c7540+4` in retail versus a
-cell-base add and byte load at +4 in the probe); no relocation identity was
-changed to conceal that difference.
+referent differs in address formation: retail computes
+`bss_801c7540+4 + map_z*800 + map_x*10 + selected_layer`, whereas the
+probe forms a typed cell base before loading its +4 lighting field. The two
+forms address the same byte. No relocation identity was changed to conceal
+the different field-base provenance.
 
 A focused current-source data-owner audit compared each initialized ELF
 section, relocation row, and claimed placement against its GAME target.
@@ -449,3 +451,24 @@ pointer addend is four bytes later in the compiled text. The 196-byte
 matching offsets, types, and referents; its case-pointer addends differ
 with the WIP function layout, including the 37 default rows at -228 bytes.
 Neither WIP table is a strict data match.
+
+Fifteen direct `jal` sites in six collision wrappers with identical focused
+listings were reviewed against their reachable retail CFG blocks, delay slots,
+source calls, and decoded targets. `0x8002b7f8` calls `0x8002a988` and
+`0x8002aaa4` at `0x8002b834/84c`; `0x8002bd3c` calls
+`matrix_rotate_quarter_turns` at `0x8002bd70/80/90`. The `0x8002bdbc`
+wrapper calls `0x800158b4` at `0x8002bdf4/be10` and `0x8001584c` at
+`0x8002be2c/be40/be54/be74`. The `0x8002be9c` wrapper calls `0x8002bdbc`
+at `0x8002bee8`; `0x8002bf38` calls `0x8002be9c` at `0x8002bf94`; and
+`0x8002c1d4` calls `0x8002c170` at `0x8002c218/230`. Separate safe
+one-function carves admitted all fifteen direct rows as `R_MIPS_26`, with
+none withheld. A focused wrapper rebuild retains 10/17 identical
+listings, including these six callers; the seven existing WIP siblings retain
+their prior verdicts. This review does not establish an indirect or
+switch-table target.
+The identical focused `0x8002c290` mask helper has three separately reviewed
+internal `j` sites at `0x8002c37c`, `0x8002c3c4`, and `0x8002c404`, targeting
+its own blocks at `0x8002c3cc`, `0x8002c41c`, and `0x8002c3a8`. Retail CFG,
+source labels, and delay slots agree. A safe one-function carve emitted three
+local-section `R_MIPS_26` rows with no withholding; the wrapper unit remained
+10/17 identical focused listings afterward.

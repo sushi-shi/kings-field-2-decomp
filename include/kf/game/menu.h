@@ -174,6 +174,8 @@ extern s32 menu_cursor_animation_direction;
 extern u_long *menu_frame_upload_pixels;
 extern RECT menu_frame_upload_rect;
 extern s32 menu_item_model_allocation_pending;
+/* Shared item quantity; original containing data object is unresolved. */
+extern s32 DAT_8006d694;
 extern SVECTOR menu_item_preview_translation;
 extern SVECTOR menu_item_preview_rotation;
 extern s32 menu_item_preview_rotation_step;

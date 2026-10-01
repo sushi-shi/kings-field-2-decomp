@@ -7,6 +7,9 @@
 
 extern void func_800335a0(s32, s32);
 
+DATA(0x8009a5e8, 0x78)
+u8 game_counter_bytes[0x78];
+
 ADDRESS(0x800473e0, 0x54)
 s32 func_800473e0(s32 index)
 {

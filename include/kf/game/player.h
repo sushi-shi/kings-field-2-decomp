@@ -383,7 +383,7 @@ typedef char kf_player_movement_step_limit_offset[
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;
-extern const KfPlayerMagicIdSequence DAT_800667e8;
+extern KfPlayerMagicIdSequence DAT_800667e8;
 extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 

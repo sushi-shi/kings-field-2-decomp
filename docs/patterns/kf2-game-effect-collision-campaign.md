@@ -1603,11 +1603,99 @@ source-backed path; the local VECTOR pad is unused by the target helper in
 the visible call contract. The aggregate focused comparison compiles at
 8.7% WIP, up from 8.4%.
 
+Kind six now has its complete phase-zero path in C. Retail's five-entry phase
+table selects 0x80044f8c at phase zero; that path loops eight times,
+constructing kind-107 children with the parent's position, direction, and
+rotation. It stores the current effect index at each child +0x40 and the
+loop ordinal at +0x41, uses render ID 0x17 for child zero and 0x18 for
+child seven, then sets the parent phase to one. The first variadic pointer
+is the rotation, matching the current constructor case-107 reader. The
+phase-one signed update-count test is also in C: a count below three sets
+phase three, count -1, and tail +0x45 to 24. Phase three increments the
++0x44 frame modulo 24; while the +0x45 byte is nonzero
+it decrements that byte, otherwise it clears bit 0x800 on the actor indexed
+by +0x46 and frees the effect. Phase four calls `func_80041e94` 32 times
+with the observed argument slots, then performs the same actor-bit clear and
+free. These paths are now in C. The other phase-one branch and phase two
+remain absent; the table
+`jr` and its pointer-word relocations remain candidate-tier. Focused
+similarity is 13.3% after phases zero, three and four, compared with 13.6%
+before kind six; this is a source-backed WIP with no exact claim.
+
+Kind eight's apparent 0x801abd28 referent was a signed-low arithmetic
+mistake: `lui 0x801a; addiu -17112` resolves to 0x8019bd28, exactly
+`effect_state.records` after its 0x680-byte magic-record prefix. Its
+72-byte index stride and constructor kind-eight +0x40 parent-index write
+confirm the linked-record view; no new global is needed. Phase zero is now
+in C: it integrates direction into a local position, makes the two
+`func_8003fa68` collision probes, transitions to a parent-linked orbit when
+`func_80041e0c` returns zero, or decrements the parent's tail counter and
+frees the child. The ordinary movement path copies XYZ back, sets the
+cache-layer-dependent byte, advances the rotation, and calls `func_80041e94`.
+Phase one is also in C: it builds a forward X/Z pair from direction +0x34,
+positions the effect relative to the linked record, interpolates direction
++0x38, advances scale +0x30, and queries the collision helper after the
+signed threshold at +0x32. Its zero/nonzero collision result may call
+`func_8003fdd0`; reaching scale 4096 frees the child and decrements the
+linked record's +0x40 counter. A random branch emits the 14-argument
+`func_80041e94` motion. Phase-zero-only focused similarity was 13.5%,
+and the complete phase-zero/one arm reaches 15.2% WIP. The source follows
+the corrected retail referent and call paths without claiming exactness.
+
+Kind 10 enters 0x80044c7c. Phase one calls `func_80041cd0` with
+0x4000/0x800/75/0x400/0x8000 and advances rotation Y by 64; phase five
+resets the render ID, scale, update count, and type bits before taking that
+path. Phase zero checks `func_80042298(250, 0x80000000, 0)` and remaining
+updates. A collision or fewer than two updates emits a scattered kind-10
+child with null direction and the current rotation as its first variadic
+angle pointer, sets the child's phase to two, plays sound 0x17, and resets
+the parent. Otherwise rotation Z advances by 128 modulo 4096. An active
+tail +0x41 countdown derives an origin through `func_800401b4`, selects
+the actor at tail +0x40, computes an 800-unit direction to that actor's
+height-adjusted position, emits kind seven, and decrements the countdown.
+With no countdown, a 1/16 random branch seeks an actor within 25000 via
+`func_8003a778` and stores its pool index/countdown. A separate 1/32
+branch seeks an actor within 30000 and, if found, emits two
+`func_80041d7c` modes. Other phases increment phase. The caller-side
+constructor argument count is limited to the raw stores; later variadic
+reads in the WIP constructor remain unresolved. This source-backed arm
+compiles at 13.6% aggregate focused similarity, up from 8.7%, and is WIP.
+
+Kinds 103 and 121 share the 0x80043700 handler. Their phase-two path now
+subtracts 128 from the unsigned scale halfword at +0x2c, mirrors the result
+to +0x2e, and frees the effect when the signed result is nonpositive.
+The remaining phases include constructor inputs from a stack local whose
+initialization is not established on each entry; those arms remain absent
+from C. Aggregate focused similarity is 13.2% WIP after the shared phase-two
+path. This lower score is retained for the exact retail width and branch
+behavior, without an exactness claim.
+
+Kinds 104 and 122 share 0x800439a8. Their phases three and later now have
+the raw-backed path in C: animation clip receives `(phase & 1) - 128`,
+phases below nine compute the distance from the effect to the player camera,
+and distances below 32001 drive `func_8002bf38` with the observed sine
+attenuation and RGB/distance arguments. Each such phase advances afterward.
+The earlier phases still pass a local spawn vector whose initialization is
+not proved on every entry, so they remain absent. Aggregate focused
+similarity rises from 13.2% to 13.8% and remains WIP.
+
+Kind 100 now has the decoded 0x80043e2c control path in C. For phases 4–70
+it calls `func_8004195c` with the observed eight operands; a nonnegative
+result advances the effect position, rotation Z and motion. Other phases
+below 100 raise direction Y by ten, call `func_80042298(100,0,0)`, and on a
+zero result advance position. The failure/phase-100 path constructs kind 20,
+plays sound 0x18, frees the record and increments phase. Retail passes
+`sp+88` as the constructor's direction pointer on that path but has no
+visible write to the local on this function entry; C retains a stack
+SVECTOR without inventing its value. The constructor reads its three
+halfwords, so the origin of those values remains a real WIP uncertainty.
+Focused aggregate similarity is 15.1%, compared with 15.2% before this arm.
+
 The raw 123-word kind table has 55 entries that jump straight to the common
-return and 68 active entries; the current C names 60 of those 68 active
-kinds. The remaining eight are 6, 8, 10, 100, 103, 104, 121, and 122;
-they are still WIP, regardless of the
-aggregate fuzzy score. A focused comparison with flow enabled also reports
+return and 68 active entries; the current C names all 68 active kinds,
+with kinds 6, 103/121, and 104/122 limited to proven phases. Kind 100's
+constructor direction has an unproved stack value. The dispatcher remains
+WIP regardless of the aggregate fuzzy score. A focused comparison with flow enabled also reports
 CFG comparison unavailable: retail direct J/JAL rows remain candidate-tier
 and the compiled kind switch has an unresolved indirect jump. Neither
 warning promotes an indirect target or gives a strict control-flow verdict.

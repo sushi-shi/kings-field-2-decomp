@@ -29,6 +29,12 @@ SVECTOR DAT_800667c8[4] = {
     {400, 400, 200, 0}
 };
 
+DATA(0x800667e8, 0x14)
+KfPlayerMagicIdSequence DAT_800667e8 = {
+    {39, 40, 60, 66, 84, 86, 39, 40, 60, 66, 84, 86},
+    {0x20, 0x10, 0x80, 0xffff}
+};
+
 enum { PLAYER_CAMERA_HEIGHT_OFFSET = 1600 };
 
 ADDRESS(0x80024ed4, 0x78)
@@ -528,11 +534,11 @@ select_actor_effect:
         func_80040308(10, 0x12, 0x6a, &position, &direction,
                        &player_state.camera_rotation);
         break;
-    case 6:
-        rotation_scale = 250;
-        goto probe_rotation_effect;
     case 10:
         rotation_scale = 300;
+        goto probe_rotation_effect;
+    case 6:
+        rotation_scale = 250;
         goto probe_rotation_effect;
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];

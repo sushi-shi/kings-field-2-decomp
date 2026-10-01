@@ -184,3 +184,20 @@ negative control.
 A corrected scan including a return whose delay slot ends at the data-row
 boundary now finds no `jr $ra` word in the remaining pre-library GAME data
 rows.
+
+GAME `0x8003c614` adds actor and rotated offsets with raw `addu` instructions
+before passing the resulting position to its effect cases. Its kind-`0x28`
+path likewise adds three direction components with `addu`. Casting those
+operands to `u32` before each addition now defines the observed 32-bit wrap
+in C. The focused `game.actor_group_effects` rebuild is byte-identical to the
+pre-correction object at 55.3% listing similarity: 45/45 CFG blocks and 15/15
+branches, but a variadic-frame/scratch-layout residue remains. This source
+correction does not add an exact function claim.
+
+The `game.actor_fixed_curve` recipient at `0x80039c94` remains a source WIP:
+the focused unit has 72 retail versus 71 compiled CFG blocks, 46/46
+branches, and an exact `0x80039c14` sibling. Its linked-actor gate at
+`0x8003a2cc` branches over the later `li v0,0x10`, but that same instruction
+is the branch delay slot. Both paths therefore write status `0x10`; an
+otherwise plausible source branch assigning status `3` would be wrong. That
+trial produced 73 compiled CFG blocks and was reverted.

@@ -77,7 +77,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_0d = 0;
     }
 
-    switch (kind) {
+    switch (record->kind) {
     case 7:
     case 49:
         effect_pool_initialize_scaled(record, 0x2d, 0x1800);

@@ -121,3 +121,68 @@ retail bytes, 9472 candidate bytes). The 0x3c4-byte RODATA extent still has
 remain WIP. The neighboring `actor_spatial_sound` functions are both SAME;
 in `actor_fixup_group_targets`, `func_8003f610` and `func_8003f860` remain
 SAME and the separate 93.8% WIP remains WIP.
+
+Action 26's group halfword at `+0x32` is loaded once at retail
+`0x8003ecb4` and written to actor `+0x4c`, `+0x4a`, then `+0x48`; its
+initial zero stores use that same descending order. The source now reads the
+group value once and follows both store orders. Actions 28 and 30 likewise
+clear motion halfwords `+0x54`, `+0x52`, then `+0x50`. Action 30 checks a
+zero collision result before testing bit `0x80`, then shares the position
+update after an optional impact call. That structure explains the retail
+branch order at `0x8003f2c0..0x8003f368` better than the previous pair of
+independent conditions. Focused similarity is now 78.9%; the compiled CFG
+has 413 blocks and 216 branches against retail's 410 and 213. Isolated
+strict `.text` is 95.584435% (9356 retail bytes, 9440 candidate) against a
+fresh safe-delinked target that includes 31 newly curated GAME BSS
+HI16/LO16 pairs. All 31 pairs passed the safe-delink check with zero withheld
+rows; the `.rodata` extent and 241 table pointers remain unchanged.
+
+The target-group byte view starts with `unknown_00` at offset 0, so
+`unknown_01[2]` is byte `+3`. Retail action 19 reads that byte at
+`0x8003ef00`; its former `[3]` index read byte `+4`. Actions 0 and 25
+already use `[2]` for the same byte. Retail's 241-row table places action
+22's entry at `+0x1848`, before action 21 at `+0x1870`; moving the C arms
+into that order preserves the shared action-19 clamp path and raises
+strict `.text` to 96.79991% (9408 candidate bytes). The focused listing
+is 79.4%, with CFG 410/411 blocks and 213/215 branches.
+
+Action 14 loads `actor_state.other_actor` once at `0x8003e6cc..0x8003e6d0`,
+then repeatedly reads its signed halfword `+0x58` through the same pointer.
+Caching that pointer in the C action matches the load pattern across its four
+state comparisons. The focused listing is 79.9%, and fresh isolated strict
+`.text` reaches 97.208206% (9356 retail bytes, 9376 candidate bytes) against
+the target with the 31 curated BSS pairs. The table remains 0x3c4 bytes with
+241 rows; strict `.rodata` is 38.018673% because handler offsets remain WIP.
+
+In action 11, retail state 0, 2, and 3 paths enter the common collision call
+at `0x8003e590`; state 1 and unknown states go directly to the turn block at
+`0x8003e598`. The prior C retested the original stage after the switch and
+emitted another five-instruction branch chain. Moving the choice into the
+switch exits follows the retail paths. Focused listing similarity rises to
+82.1%; the compiled CFG now has 409 blocks and 213 branches against retail's
+410 and 213. Isolated strict `.text` is 97.507484%, and candidate and retail
+are both 9356 bytes; `.rodata` is 38.537346% with the same 241-row table.
+
+Action 5 had a source behavior error after motion testing. Retail
+`0x8003da40..0x8003da98` clears the high state byte when bit `0x100` is
+absent, sets it and exits when the random check succeeds, and otherwise
+falls through to toggle the low byte for any nonzero motion result. The old C
+skipped that last toggle when bit `0x100` was present and the random check
+failed. The corrected flow raises focused similarity to 84.6% and aligns the
+CFG census at 410/410 blocks and 213/213 branches. Isolated strict `.text`
+reaches 97.59085% (9356 retail, 9360 candidate bytes), and strict `.rodata`
+rises to 95.07262%; the remaining table-row differences track handler
+offsets. The first differing CFG successor is now at block 380, in the
+common exit path.
+
+Retail action 30 branches on the zero collision result at `0x8003f2c0`,
+falls through into one position-copy block at `0x8003f2c8`, and jumps back
+to that same block after the impact call at `0x8003f354`. Explicitly sharing
+that source block yields matching known CFG successor lists by block order,
+though the unresolved indirect jump still makes the CFG incomplete. Strict
+`.text` improves to 98.327065% (9368 candidate bytes versus 9356 retail).
+Strict `.rodata` falls to 39.834026% because the default handler address is
+now displaced by eight bytes; this is an offset-sensitive table effect, not
+a change to the 241 pointer rows or their identities. The focused display
+is 82.5%. Keep the raw-backed shared position path while locating the
+remaining upstream instruction count and footer differences.

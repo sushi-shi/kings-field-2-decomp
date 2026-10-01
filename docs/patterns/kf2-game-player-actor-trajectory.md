@@ -1787,3 +1787,28 @@ pointer rows now. Retail bounds the equipment slot to `0..6` at
 accepted these pointer-shaped rows. All 15 exact siblings remain SAME,
 `func_80025a18` remains WIP, and isolated objdiff confirms the seven ordered
 RODATA relocation entries match. This review changes evidence status only.
+
+### Seven-player focused recheck
+
+Current source was rebuilt for seven distinct GAME WIPs, including the small
+interval predicate `8002897c`; the adjacent `80028998` is already strict
+exact and was kept only as a control. These are focused listing similarities,
+not strict closure scores:
+
+| VA | Focused verdict | Remaining evidence boundary |
+| --- | --- | --- |
+| `80025a18` | DIFF 83.2% | The 53-entry switch has matching ordered pointer relocations; shared case destinations and three CFG blocks still differ. Fourteen siblings remain SAME. |
+| `8002665c` | DIFF 91.1% | Equipped-ID register assignment and later attack-phase base lifetime differ; exact `80026498` remains SAME. |
+| `800274ec` | DIFF 61.9% | Retail forms separate player camera-field address pairs, while the probe retains a base. Raw CFG has 35 blocks versus 33, but the 20 branches and eleven ordered calls agree. |
+| `800279cc` | DIFF 78.1% | Two player-state address pairs are absent from the probe; retail and candidate have 70 CFG blocks. Exact landing helpers remain SAME. |
+| `80027f78` | DIFF 80.5% | Four additional player-state address pairs in the probe; both have 27 CFG blocks. |
+| `8002897c` | DIFF 28.6% | Both use signed inclusive 71–80 bounds; retail and probe allocate `v0`/`v1` differently. Adjacent `80028998` remains SAME. |
+| `8002985c` | DIFF 91.3% | Clamp-register and subtraction scheduling residue; both have 142 known CFG blocks and sixteen exact siblings remain SAME. |
+
+The horizontal-movement raw pass confirmed three proven calls from its
+player caller, eleven ordered outgoing calls, and signed-low references to
+the reviewed player state and collision cache. The first divergence is the
+player-state address form after the initial sine/cosine calls. Existing
+direct strict verdicts remain those recorded above; none of these listing
+percentages is a newly banked match. No independently supported source fact
+justified changing the existing C in this pass.

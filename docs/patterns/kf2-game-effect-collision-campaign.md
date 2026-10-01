@@ -1049,6 +1049,13 @@ still merged them and lowered the focused listing to 53.6%, so it was
 discarded. The original call separation is source/compiler attribution still
 to resolve; no artificial side effects were added.
 
+A fresh raw audit locates the four proven calls at `0x8003faf8`,
+`0x8003fb1c`, `0x8003fb40`, and `0x8003fb64`. Quick off-tree compiles of
+unchanged source with GCC 2.5.7 `-O2` and GCC 2.6.0 `-O1` still emit only one
+`jal` to `func_8002b9d4`. Neither simple compiler-version nor optimization
+level change closes the 14-retail/15-candidate-block CFG difference. The
+function remains WIP; no source edit is supported by these probes.
+
 For masked effect type 0, retail reaches the common return with `$v0=1`;
 types 5..7 reach it with `$v0=4`. Those values are leftover switch-comparison
 immediates, not explicit return assignments. No proved caller reaches those
@@ -2105,7 +2112,8 @@ distinct classes in the 123-row main kind table. Each reordered group ends
 in a `break` or an explicit transfer; the shared kind-118/119, kind-53/33,
 and kind-20 paths retain their explicit `goto` joins. Focused listing
 similarity is now 47.4% (13.0% before these moves), and direct strict text
-is 74.016360% (13,936 retail bytes versus 13,924 candidate bytes). An earlier four-case
+was 74.016360% against the prior target object (13,936 retail bytes versus
+13,924 candidate bytes). An earlier four-case
 move temporarily lowered strict text from 20.613089% to 17.417624% despite
 aligning the preceding target order. The function remains WIP. Both 516-byte
 `.rodata` sections contain 128 `R_MIPS_32` pointer rows. Canonicalizing their
@@ -2115,20 +2123,21 @@ is now 24.902723% (14.883268% before the case moves): body-offset changes
 lower this byte metric,
 with no evidence for a missing table entry. Retail allocates 224 stack bytes
 and saves five `$s` registers, while this probe allocates 192 bytes and saves
-seven. Later case groups still diverge. No additional live stack object is
+seven. Individual case bodies and CFG still diverge. No additional live stack object is
 established by the frame difference.
 
-Retail has 27 direct calls to `func_80040308`; the compiled body has 26.
-The source contains 27 constructor call expressions. For kind 114, retail
-keeps a separate kind-3 call at body offset `+13208`. The compiled arm sets
+Retail and the current compiled body each have 27 direct calls to
+`func_80040308`; the source contains 27 constructor call expressions. In an
+earlier case order, the compiler emitted only 26 calls: for kind 114, retail
+kept a separate kind-3 call at body offset `+13208`, while that candidate set
 `a2 = 3` in the delay slot at `+12664` of a jump to `+13412`, sharing the
-constructor call at `+13416` with a later dynamic-kind path. The source
-already represents both calls and their argument values; this is call-site
-coalescing, with no supported missing C arm. A fresh direct strict comparison
+constructor call at `+13416` with a later dynamic-kind path. Moving kind 114
+to its raw-supported physical position restored the separate compiled call.
+A fresh direct strict comparison
 keeps all ten `game.effect_update` functions and all three `game.effect_reset`
 functions, including sole caller `effect_pool_sweep`, at 100%. The ballistic,
-growth, and fifteen independent case-group moves are the only retained updater
-source edits; no call arm or pointer table was changed. Other off-tree
+growth, and retail case-order moves retain their call arms and pointer table.
+Other off-tree
 phase-case ordering probes were discarded because their source-level joins
 are not yet established.
 
@@ -2138,10 +2147,75 @@ discarded. Repeating those moves from the repaired outer switch keeps all
 128 pointer rows and the 74.016360% text / 24.902723% data WIP verdict
 above. Each of the 64 target equivalence classes is preserved across all
 128 pointer indices, including the five secondary phase-table rows. The
-retail body still has 27 constructor calls to `func_80040308` while the
-compiler emits 26, as detailed above. Fresh focused rebuilds leave all ten
-`game.effect_update` and three `game.effect_reset` helper listings identical
-to retail; the dispatcher itself remains WIP.
+retail and current compiled bodies each have 27 constructor calls to
+`func_80040308`, as detailed above. Fresh focused compilation and isolated
+strict comparison leave all ten `game.effect_update` and three
+`game.effect_reset` helper function bodies at 100% text; the reset unit's BSS
+remains a separate data WIP. The dispatcher itself remains WIP.
+
+The kind-23 actor update passes a player-space origin to
+`func_8003c3e0`. Retail `0x80042abc/0x80042ac0` forms `0x801985a8`, or
+`player_state + 0xd8`, immediately before that call. The former source used
+an incompatible `VECTOR` cast of `player_state.unknown_e8` at `+0xe8`.
+It now passes the typed `player_state.camera_position` at the observed
+`+0xd8`; the focused body still compiles. On the same refreshed narrow
+target object, isolated strict text changes from 74.044780% before this
+source correction to 74.047646% after it. This is a referent correction,
+not a codegen experiment. The target was refreshed with 66 independently
+decoded BSS HI16/LO16 pairs and the phase-table base pair, all admitted by
+the safe delinker with zero withheld rows. The raw kind-6 phase-table selector at
+`0x80044f60..0x80044f88` bounds its unsigned phase to 0..4, loads one of
+five rows at `0x8001287c..0x8001288c`, and jumps to five addresses inside
+the dispatcher. The table identities now name the dispatcher's RODATA owner;
+the bounded base pair was promoted from candidate to reviewed evidence.
+
+Kinds 103/121 previously excluded phase values above two before the collision
+probe. Retail starts at `0x80043700` by checking only for phase two: that
+phase takes the fade path, while every other phase reaches the collision
+call at `0x8004373c`. Phase zero then takes the timer path, phase one may
+take the direction update, and values above two continue to the random-child
+loop. The C now uses that early phase-two exit and restricts direction updates
+to phase one, preserving the raw phase-three-plus path. On the same refreshed
+target, isolated strict text rises from 74.047646% to 74.537600%; the
+candidate body shrinks from 13,924 to 13,916 bytes. The 516-byte RODATA
+still has 128 pointer rows and all 64 target classes in the same physical
+order; raw RODATA similarity rises to 25.389105%. Focused listing remains
+47.4%, with 446/459 retail/candidate CFG blocks and 217/222 branches, so
+the function remains WIP.
+
+Kind 9 has two distinct retail collision-result branches: the actor/player
+path checks the `func_80041b14` result at `0x800444d8`, and the special
+`0xff` path checks `func_80042298` at `0x8004459c`. Both choose the shared
+impact or non-impact arms without re-reading the actor index. The former C
+combined those results in one predicate after the calls. Moving each check
+immediately after its call follows the raw control flow and keeps the impact
+and non-impact behavior. The kind-9 group now has five conditional branches
+and six direct calls on both sides. Isolated strict text rises from 74.537600%
+to 74.726460%, with a 13,888-byte candidate body; RODATA similarity rises
+from 25.389105% to 29.863813%. Focused listing is 47.5%, CFG blocks are
+446/456 and branches 217/221, and all 128 pointer rows still preserve the
+64 retail target classes. The function remains WIP.
+
+In kind 105, retail `0x800443a0..0x800443bc` loads four words from the local
+`VECTOR` at stack `+88..+100` and stores all four to the record position at
+`+20..+32`. The prior C copied only X/Y/Z, omitting the fourth pad word.
+Assigning the complete `VECTOR` reproduces that four-word copy in the
+focused compiler; no defining write to the local pad is visible on this
+path, so its source value remains unresolved. Isolated strict text improves
+from 74.726460% to 74.813150% with the same 13,888-byte candidate and
+29.863813% RODATA result. The global CFG and all 128 pointer classes remain
+as above; exact closure is not claimed.
+
+Two off-tree shared-join spellings were discarded. Replacing kind 12's
+`reset` branch with an explicit label gave 74.324340% strict text versus
+74.537600% on the same then-current base, and six candidate conditional
+branches in that group versus seven in retail;
+source syntax for that join remains unproved. Replacing the kind-103/121
+transition state with direct labels gave 74.535880% strict text versus
+74.726460% on the same current base and did not establish the original
+source form. Both
+trials kept the table rows, but the retained C better preserves the available
+source evidence and direct text result.
 
 ## Kind-102 audio parameter identity
 
@@ -2203,3 +2277,12 @@ the candidate grew to 5,100 bytes. Moving the cursor assignment after the
 pool find fell to 88.296936% and 5,104 bytes. Both retained the wrong
 saved-register allocation. These probes were discarded; the cursor shape is
 not established by the stack address alone.
+
+The constructor's switch now reads `record->kind` after assigning it. Raw
+retail loads the discriminant with `lbu v1,1(record)` at that point, and the
+focused compiler emits the same load. On the same existing target, this
+source-backed change moves focused listing from 39.6% to 39.8% and RODATA
+from 6.707317% to 28.760162%; isolated strict text moves from 70.829540%
+to 70.502750%, with 116/116 CFG blocks and 22/22 branches unchanged.
+The lower intermediate text score does not falsify the raw discriminant
+evidence; the constructor remains WIP.

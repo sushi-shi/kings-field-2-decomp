@@ -37,6 +37,22 @@ notes that list `0x80045f20` as WIP predate its typed reconstruction.
 | `0x80048554` | Exact | Saves the selected event, actor, and map-object stream records. |
 | `0x800489ac` | WIP, 98.82883% strict | Restores the stream through typed actor, target-group, and map-object records; initial sentinel/base register assignment differs. |
 
+A focused raw-first recheck of the four adjacent event functions kept their
+individual WIP verdicts. `0x800460a0` has 6/6 CFG blocks and 2/2 branches;
+its even step and half-step occupy exchanged saved registers. `0x800461a0`
+has 14/14 blocks and 5/5 branches; the record and marker cursors use exchanged
+argument registers and marker loads use equivalent offsets. `0x800462bc` has
+46/46 blocks and 21/21 branches; retail loads the actor's phase before its
+saved state at `0x80046524`, while the current probe reverses those independent
+loads and inserts one load-delay `nop`. The resulting four-byte shift changes
+only the jump-table pointer at row `+0x0c` from retail text addend `0x2c0` to
+candidate `0x2c4`; the 64-byte table and other ordered referents are intact.
+`0x80047c98` has 85/85 blocks and 55/55 branches; its rotation pointer and
+constant-one saved registers are exchanged, and one commutative `addu` reverses
+operands. Existing source-order trials do not establish a different source
+fact, so no C or table edit was retained. Each recheck used a focused quick
+build; no repository tests or broad build were run.
+
 A fresh direct strict comparison of the event-state/save/restore family found
 13 exact functions and three WIPs (`0x800475d8`, `0x80047c98`, and
 `0x800489ac`). In `0x80047c98`, initializing the map-object scan index before

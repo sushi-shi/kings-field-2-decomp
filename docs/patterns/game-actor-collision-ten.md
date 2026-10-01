@@ -145,3 +145,28 @@ The position-mode `-2` interpolation scales each signed coordinate delta by
 overflows, without changing the focused 55.3% listing. The remaining first
 divergence is still the 192-byte retail frame versus the 184-byte probe frame;
 the shared constructor join and switch-label offsets remain WIP.
+
+## Ten-function actor motion and collision recheck (2026-10-01)
+
+Focused rebuilds and GAME raw queries rechecked the ten WIPs below. The
+stored strict report is stale; these percentages describe focused listings,
+not exact closure. All exact siblings in the touched units remain `SAME`.
+
+| GAME address | Focused | Current evidence boundary |
+| --- | ---: | --- |
+| `0x80039108` | 35.4% | The 131 jump-table row classes match retail, but the probe shares the case-9 angle calls with another case. Retail has a separate call pair. |
+| `0x80039c94` | 62.1% | Eight fixed-curve calls and the indirect callback are present; the final linked-actor guard contributes one CFG-block layout difference. |
+| `0x8003a318` | 97.5% | Radial attenuation, calls, and branches agree; two incoming stack-argument registers are exchanged. |
+| `0x8003a614` | 81.2% | Damage gate and four direct calls agree; retail uses separate camera address loads where the probe reuses a base. |
+| `0x8003ae50` | 99.2% | Collision paths and calls agree; only the obstacle-angle temporary and mask schedule differ. Six neighboring animation helpers are `SAME`. |
+| `0x8003b5d0` | 68.2% | Retail dispatch tests state `0x20` first and shares a rise step. Moving all C switch cases to retail physical order fell to 39.1% focused and was reverted; three preceding motion helpers are `SAME`. |
+| `0x8003bd40` | 68.2% | Signed X/Z magnitude, tolerance gate, and three calls agree; independent coordinate loads and saved-register assignment differ. Six motion siblings are `SAME`. |
+| `0x8003c3e0` | 95.4% | Movement calls and typed yaw error agree; the yaw fraction and shifted numerator occupy different registers. Three adjacent group-position helpers are `SAME`. |
+| `0x8003f7ec` | 93.8% | The 40-by-16 target walk agrees; sentinel setup and pointer-add operand order differ, with both neighboring helpers `SAME`. |
+| `0x8003fa68` | 57.5% | Retail has four separate collision calls for effect types 1–4; the compiler merges the same source call paths. No proven caller reaches the uninitialized default-result cases. |
+
+The `0x8003b5d0` case-order trial changed physical layout without recovering
+the one-block CFG gap; preserving the supported state semantics and exact
+siblings is preferable. None of the ten newly reached exact, and no source
+change from this recheck was retained. Only focused builds and retail queries
+were run.

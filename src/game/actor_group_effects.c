@@ -72,9 +72,9 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         func_8003c000(current, position_mode, &offset);
     }
 
-    position.vx = current->position.vx + offset.vx;
-    position.vy = current->position.vy + offset.vy;
-    position.vz = current->position.vz + offset.vz;
+    position.vx = (s32)((u32)current->position.vx + (u32)offset.vx);
+    position.vy = (s32)((u32)current->position.vy + (u32)offset.vy);
+    position.vz = (s32)((u32)current->position.vz + (u32)offset.vz);
 
     switch (kind) {
     case 0x7b:
@@ -113,9 +113,9 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                       &angles);
         pitch_yaw_to_forward_vector(&angles, &direction);
         vector3s_scale_shift12(1000, &direction);
-        position.vx += direction.vx;
-        position.vy += direction.vy;
-        position.vz += direction.vz;
+        position.vx = (s32)((u32)position.vx + (u32)direction.vx);
+        position.vy = (s32)((u32)position.vy + (u32)direction.vy);
+        position.vz = (s32)((u32)position.vz + (u32)direction.vz);
         func_80040308(effect_id, 0x23, kind, &position, &direction, &angles);
         break;
     case 9:

@@ -1386,3 +1386,19 @@ an equivalent `while` emitted the identical 91.8% focused listing; it was
 reverted. The prior 94.87342% strict WIP verdict and 15 exact sibling
 functions remain unchanged. No independently evidenced source local explains
 the saved-register choice.
+
+### Audio/startup focused recheck
+
+Three live GAME WIPs were rebuilt from the current source with focused
+`kf try` comparisons; the existing strict verdicts remain open.
+
+| VA | Focused verdict | First supported obstacle |
+| --- | --- | --- |
+| `800139c4` | DIFF 64.0% | Four sequence/VAB workspace pointers still have no complete BSS owners. Retail uses signed-low relocated addresses; C literals emit `lui/ori`. Fifteen sibling functions remain SAME. |
+| `80015d58` | DIFF 87.1% | The resource arena and three archive-copy destinations remain unowned; their address constructors differ while the ordered archive/copy calls agree. |
+| `80015fd4` | DIFF 96.1% | The transition TMD workspace at `0x8012da68` remains unowned. Retail's signed-low relocated pointer differs from the literal constructor; the CD loop and indirect callback agree. |
+
+Raw CFG, call, and address-reference review of the first and third rows
+confirmed the relevant constructor sites. Address containment in a broad RAM
+arena is not sufficient to define these objects, so this pass made no source
+or metadata edit and claims no new exact match.

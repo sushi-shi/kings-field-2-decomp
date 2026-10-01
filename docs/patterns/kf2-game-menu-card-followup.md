@@ -302,3 +302,32 @@ slot-digit array, including its `atoi` casts, left all five directory
 listings unchanged and was discarded. The seed-byte identities and their
 original defining TU remain unresolved. No source or configuration change
 was retained from this batch; no repository tests or linked build were run.
+
+## Ten-WIP source-shape check (2026-10-01)
+
+Fresh focused rebuilds rechecked ten non-exact GAME menu/card functions. The
+stored strict percentages remain stale while source and owner work continues;
+the focused results below are listing comparisons, not exact closure.
+
+| Address | Focused | Bounded verdict |
+| --- | ---: | --- |
+| `0x8001a4f0` | 96.0% | Initializer index/constant registers differ; 22-block CFG remains supported. |
+| `0x8001b554` | 84.6% | Retail copies the card probe result from `v0` to `a0` before its two guards; source retains the same branches and call set. |
+| `0x8001bf68` | 87.7% | Probe status and dialog constants use other registers; exact `0x8001c12c` remains `SAME`. |
+| `0x8001f8b8` | 84.8% | Retail places the wait-and-return arm before the input loop; a natural post-draw loop probe worsened the listing to 80.8% and was reverted. |
+| `0x8001fb8c` | 83.5% | Retail reserves 48 stack bytes versus the probe's 40; no further live object is supported. |
+| `0x8001fc94` | 99.9% | Two independent lower-panel color/Y setup instructions are reversed; referents and later listing align. |
+| `0x8002083c` | 73.1% | Retail reserves 64 bytes beyond four live `MATRIX` locals; two-option and heading siblings remain `SAME`. |
+| `0x80022058` | 78.5% | Retail's extra eight frame bytes move the fifth O32 argument load; digit/style operations align. |
+| `0x800228c8` | 67.6% | Retail uses signed title-byte loads and a two-byte offset walk. A semantically equivalent offset-walk probe fell to 66.9% and was reverted. |
+| `0x800349bc` | 44.8% | Retail spills the pad state, whereas the probe retains it in a saved register; the four quad paths and calls agree, and both transition siblings remain `SAME`. |
+
+The reader's `0x8006d6a4/5` seed identities still have no proved defining TU.
+None of these source-equivalent trials justified a retained edit, and none of
+the ten reached exact. Only focused builds and retail queries were used.
+
+The provisional `memory_card_buffer_storage` extent covers raw SDK-private
+addresses used by exact vendored `CD_readm`, `CD_readsync`, `CdSearchFile`, and
+`CD_cachefile` bodies. Their seventeen reviewed load pairs cannot be assigned
+to the game card buffer from address containment alone; those referents remain
+unattributed pending an owner boundary.

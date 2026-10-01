@@ -36,8 +36,12 @@
 - [kf2-game-map-object-reset.md](kf2-game-map-object-reset.md): exact map-object
   reset with typed rotation and scale fields.
 - [game-map-object-fourteen.md](game-map-object-fourteen.md): fourteen GAME
-  map-object placement and motion verdicts, twelve exact functions, and the
-  two bounded reset/placement WIPs.
+  map-object placement and motion verdicts, thirteen exact functions, and the
+  remaining placement WIP.
+- [game-map-render-ten.md](game-map-render-ten.md): ten GAME map-object and
+  rendering verdicts, one newly exact cell-marker helper, and nine bounded WIPs.
+- [game-kf1-map-menu-ten.md](game-kf1-map-menu-ten.md): ten KF1-led GAME map,
+  actor, card, and menu follow-ups with bounded WIP verdicts.
 - [kf2-game-actor-targets.md](kf2-game-actor-targets.md): GAME actor, animation,
   map, rendering, and menu matching verdicts with strict exact and WIP
   boundaries recorded by function.

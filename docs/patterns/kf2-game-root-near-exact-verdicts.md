@@ -201,3 +201,35 @@ branches, and an exact `0x80039c14` sibling. Its linked-actor gate at
 is the branch delay slot. Both paths therefore write status `0x10`; an
 otherwise plausible source branch assigning status `3` would be wrong. That
 trial produced 73 compiled CFG blocks and was reverted.
+
+In GAME `0x80039108`, the pinned object merges type-9's angle/direction
+calculation into the identical type-11 block at compiled offset `+0x328`:
+after its random gate, type 9 jumps there from `+0x160`. Retail keeps the
+type-9 calculation at `+0x15c` and a separate type-11 calculation at
+`+0x35c`, both with the same two direct calls and arguments. The source
+already spells both paths independently. The focused unit remains 59/58 CFG
+blocks and 37/36 branches; the 131-row switch keeps the same ten target
+classes. No different source meaning is established by this layout residue.
+
+The GAME shape dispatcher at `0x8002aaa4` forms its vertical lower bound
+with `subu s0,t9,s7` at retail `0x8002ab98`, after masking the height word.
+The C expression now casts operands to `u32` before subtraction, defining
+the observed 32-bit wrap if the signed mathematical difference exceeds the
+range of `s32`. Its focused `game.collision_shape_dispatch` listing is
+byte-identical to the prior candidate: 174/165 CFG blocks and 99/97
+branches remain WIP; the 49-row switch and its 13 target classes are
+unaffected.
+
+GAME `map_cell_layer_mask_radius` at `0x800320b0` uses raw `sll` to double
+the radius. Its C expression now casts to `u32` before shifting, defining
+the observed 32-bit wrap without changing the focused listing or its four
+exact `game.resource_runtime` siblings. A source-order probe computing the
+row address before the independent X bound improved focused similarity from
+26.9% to 40.4%, but lowered strict text from 73.95918% to 67.85714%; it was
+reverted because retail scheduling alone does not prove that source order.
+The function remains WIP. The adjacent
+`resource_vab_update_range` still computes the same VAB state transitions
+as retail, but the probe keeps an eight-byte slot-offset induction value
+and a 56-byte frame where retail recomputes the slot index in a 48-byte
+frame. There is no supported new storage owner or source-level state to
+force that allocation, so its C body is unchanged.

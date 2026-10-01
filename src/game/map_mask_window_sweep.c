@@ -38,7 +38,7 @@ void func_8002c670(void)
     u16 layer;
     u8 *first_lighting;
     u8 *mask;
-    KfMapOccupancyCell *center_cell;
+    s32 lighting_offset;
 
     pitch_weight = 0x1000 - rcos(game_graphics_runtime.render_state.view_rotation.vx);
     pair = DAT_80067874;
@@ -106,11 +106,13 @@ void func_8002c670(void)
                   render_mask_scan_state.first_layer_mask | 0x20);
     func_8002c1d4(render_mask_scan_state.first_layer_mask | 0x20);
 
-    center_cell = &bss_801c7540.map_cells[render_mask_scan_state.map_z]
-        [render_mask_scan_state.map_x];
-    /* The cached offset selects either layer's lighting byte (0 or 5). */
-    first_lighting = (u8 *)&center_cell->layer[0].lighting_index +
+    lighting_offset = render_mask_scan_state.map_z * sizeof(bss_801c7540.map_cells[0]) +
+        render_mask_scan_state.map_x * sizeof(bss_801c7540.map_cells[0][0]) +
         render_mask_scan_state.first_layer_byte_offset;
+    /* The cache stores a byte offset (0 or 5) into the two-layer cell;
+     * address it from the complete grid using the typed field offset. */
+    first_lighting = (u8 *)&bss_801c7540.map_cells + lighting_offset +
+        (u32)&((KfMapOccupancyCell *)0)->layer[0].lighting_index;
     if (*first_lighting & 0x80) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {

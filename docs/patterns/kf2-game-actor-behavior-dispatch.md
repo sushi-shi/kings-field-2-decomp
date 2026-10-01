@@ -186,3 +186,90 @@ now displaced by eight bytes; this is an offset-sensitive table effect, not
 a change to the 241 pointer rows or their identities. The focused display
 is 82.5%. Keep the raw-backed shared position path while locating the
 remaining upstream instruction count and footer differences.
+
+Action 26's direct state-1 path joins state 0 at `0x8003ecd4`; that jump
+clears actor byte `+0x0d` in its delay slot before the shared vertical-motion
+tail at `0x8003f10c`. The prior C cleared the byte only in state 0. Moving
+the store into the shared state-1 fall-through fixes the behavior and raises
+focused similarity to 86.4%. The known CFG successor lists still agree;
+strict `.text` is 98.35699% (9368 candidate bytes), while `.rodata` remains
+39.834026% from the displaced default-handler offset.
+
+In the same action, reading group fields `+0x12` and `+0x14` before changing
+vertical position gives the compiler the retail load/store interleave at
+`0x8003ec94..0x8003ecb0`. The focused listing reaches 86.6%, and isolated
+strict `.text` reaches 98.55366%; candidate size and table contents do not
+change.
+
+Retail action 26's state-1 jump at `0x8003ecd4` enters `0x8003f10c`, the
+same vertical-motion and timer tail reached by action 29. Sharing that tail
+in C removes the candidate's separate action-26 copy and places the
+`+0x0d` zero store in the jump delay slot. Focused similarity reaches 89.3%;
+isolated strict `.text` is 98.92133% (9360 candidate bytes versus 9356
+retail), and strict `.rodata` recovers to 95.591286% because the default
+handler offset is nearly aligned again. The known CFG successor lists still
+agree by block order, with 410/410 blocks and 213/213 branches.
+
+Action 25's `0x8002` stream form advances its persisted word index after
+each of three operands: `index+2` at `0x8003ee04`, `index+3` at
+`0x8003ee14`, and `index+4` at `0x8003ee20`. The C previously persisted
+only the final index. Spelling all three stores matches that raw behavior.
+The decoded 16-bit opcode is used as a promoted 32-bit value; keeping it
+as `s32` in C removes a redundant candidate zero-extension. Focused
+similarity is 87.4%, and isolated strict `.text` is 99.32193% (9376
+candidate bytes versus 9356 retail). The action-25 changes shift the
+default handler to `+16` versus retail, so strict `.rodata` is 39.834026%
+despite the same 0x3c4-byte, 241-row table. The known CFG successor lists
+remain aligned; the remaining count residue should be resolved from raw
+instructions rather than by changing the table.
+
+The stream base in action 25 is the existing target pointer in retail
+(`$s4` at `0x8003ed80` and `0x8003eda4`). Removing a duplicate C `script`
+pointer local lets the candidate use that pointer directly and removes an
+extra `move s2,s4`. Isolated strict `.text` reaches 99.36896% (9372
+candidate bytes); focused similarity is 87.5%, and the known CFG remains
+aligned. The table offset effect remains while other count residues remain.
+
+In the common linked-actor exit, retail loads actor slot byte `+0` once at
+`0x8003f3e4` and reuses it when comparing the other actor's target type at
+`0x8003f418`. Caching that byte in the source removes a later candidate
+reload while preserving the snapshot semantics. Focused similarity is 87.7%;
+strict `.text` is 99.4224% (9368 candidate bytes), with the same aligned
+known CFG. The RODATA default-handler offset is still `+12`.
+
+The shared action-26/29 motion tail first loads position `+0x30` and timer
+`+0x72`, then subtracts 256 and 1 respectively at `0x8003f10c..0x8003f128`.
+Keeping both next values live before the stores and treating the arithmetic
+timer as a promoted `s32` reproduces the retail interleave, `addiu -1`, and
+left-shift zero test. The candidate now has one extra instruction overall:
+strict `.text` is 99.567764% (9360 versus 9356 retail bytes), focused
+similarity is 87.9%, and the known CFG remains aligned. The 241-row table
+still has a displaced default handler, so strict `.rodata` remains 39.834026%.
+
+Action 21's state-2 timer is likewise read as `lhu` and decremented as a
+promoted `s32` before storing the halfword at retail `0x8003ebb4..0x8003ebcc`.
+The prior unsigned postfix decrement made GCC materialize `0xffff`, add a
+register, then materialize `-1` again for the signed `-1` comparison. A
+promoted next-value local emits the retail `addiu -1` and eliminates that
+extra instruction. Focused similarity rises to 92.6%; candidate and retail
+`.text` are both 9356 bytes, with isolated strict `.text` at 99.66182% and
+strict `.rodata` at 96.62863%. The default-handler and action 25-30 table
+addends now match exactly; the remaining differing handler addends are
+`-4` on rows 0, 1, 4, 5, 9-13, 16, 17, 23, and 24. The full known CFG
+successor lists remain aligned.
+
+The first remaining raw instruction-selection difference is before the main
+table: retail loads target halfword `+0x0a` twice at `0x8003d1f8` and
+`0x8003d1fc`, while the pinned probe common-subexpresses the two source
+uses into one load and schedules a `nop`. Repeating the field access in C
+produced the same candidate listing, so this is an unattributed codegen
+residue. Action 3's zero-state branch has a similar residue: retail places
+`move a0,v1` in its `0x8003d424` delay slot and loads comparison constant
+99 only at `0x8003d558`; the candidate hoists that constant into the delay
+slot and uses `$v1` directly for the state increment, leaving subsequent
+handler offsets four bytes early. Hoisting the current-state C local did
+not change the candidate listing. The retail frame is 144 bytes versus the
+candidate's 128, with corresponding local stack-slot differences. None of
+these differences justifies fake locals, volatile accesses, or assembly.
+This dispatcher remains WIP at strict 99.66182% `.text` and 96.62863%
+`.rodata`, not an exact or bankable match.

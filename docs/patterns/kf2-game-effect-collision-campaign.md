@@ -2217,6 +2217,85 @@ source form. Both
 trials kept the table rows, but the retained C better preserves the available
 source evidence and direct text result.
 
+Kind 24's constructor call passes a pointer in stack argument five. Retail
+forms `record + 0x34` at `0x80045b3c`, which is the record's `direction`;
+the C previously passed `rotation` at `+0x24`. Correcting the referent makes
+the focused compiler use `addiu ...,record,52` in the same call arm. On the
+same curated target, strict text moves from 74.813150% to 74.813430%; the
+13,888-byte candidate and 29.863813% RODATA result remain unchanged.
+
+Kind 120's retail control flow at `0x80045be0..0x80045c24` branches from
+the first random check directly to the spawn arm, or saves the collision
+result in `$s0` and tests both zero and masked flags before joining the
+rotation tail. The prior C kept a `finish` Boolean, which made the candidate
+retain the random result in `$s0` and collapse the collision tests. A direct
+early exit to the rotation label preserves the same effects and produces the
+retail two-branch collision topology, including the `move s0,v0` and
+`andi v0,s0,5` delay-slot sequence. Isolated strict text rises from
+74.813430% to 75.147250% on the same 13,888-byte candidate; RODATA stays
+29.863813%. Focused similarity is 47.8%, with CFG blocks 446/456 and
+branches 217/221. All 128 pointer relocation rows remain at the same offsets
+and retain the 64 retail pairwise target classes. The updater remains WIP.
+
+Kind 6's phase-three timer expiry and phase-four emission loop converge on
+one retail actor cleanup block at `0x80045474`: it indexes the actor, clears
+bit `0x800` in `unknown_28`, then frees the effect. The C had duplicated that
+cleanup in both phase arms, causing four candidate `actor_state+0x28`
+relocation pairs where retail uses one `actor_state` base pair for the shared
+tail. Routing both arms to a common cleanup label reproduces the shared
+control flow and the base-plus-field access. Candidate actor-state HI16/LO16
+pair count falls from 15 to the retail 12. Against the same target, isolated
+strict text rises from 75.147250% to 75.994545%, and candidate text shrinks
+from 13,888 to 13,804 bytes. RODATA similarity falls from 29.863813% to
+20.719845% as the code addresses move, but all 128 rows still preserve the
+64 retail target equivalence classes. This remains a WIP match.
+
+The two kind-105 collision outcomes decrement a linked effect record, not
+the actor's rotation. Retail `0x80044300..0x80044334` and
+`0x80044364..0x8004439c` each index `effect_state.records` with the byte at
+`record+0x40`, then test and decrement the signed halfword at linked-record
+`+0x42`. The previous C used `actor->rotation.y` in both arms. Each arm now
+forms its own typed effect-record pointer before accessing the WIP tail
+halfword. This restores both missing `effect_state+0x680` relocation pairs
+and their field offsets. Strict text rises from 75.994545% to 76.364810%,
+candidate text grows from 13,804 to 13,868 bytes, and RODATA rises from
+20.719845% to 27.918287%. The actor's role in the earlier position helper
+calls remains unchanged.
+
+In kind 5, retail forms the actor-record base pointer at `0x80044104..0x80044110`
+before checking the nonzero effect count, then passes its position field to
+`func_80039c94`. The prior C formed `&actor_state.actors[index].position`
+only inside that call, giving an extra `actor_state+0x2c` relocation rather
+than the retail base relocation and a different branch schedule. Keeping a
+typed actor pointer across the count check reproduces the base addend and
+raises strict text from 76.364810% to 76.560850%; candidate text is 13,872
+bytes and RODATA remains 27.918287%. The current candidate and retail now
+have identical multisets of named direct-call targets and named data
+HI16/LO16 low addends. At this checkpoint candidate `.rel.text` has 467 rows
+against retail 470, with the three-row difference confined to internal jump
+relocations. The 128 pointer rows and 64 target equivalence classes remain
+unchanged.
+
+Kind 6 phase three increments its frame byte at retail `0x800453c0`, stores
+the incremented byte at `0x800453cc`, then checks the truncated value against
+24 and resets it to zero only on wrap. The former C selected the stored value
+with a conditional expression, delaying the first store and adding a jump.
+Using an increment followed by a wrap check makes the focused compiler emit
+the retail local instruction sequence, including the initial store and no
+extra jump. Isolated strict text falls from 76.560850% to 76.418200% because
+the shortened arm shifts later code; RODATA remains 27.918287%, candidate
+text becomes 13,868 bytes, and named referents stay identical. The current
+candidate has 466 `.rel.text` rows versus retail 470, all four missing rows
+being internal jump relocations. The source-backed local correction is kept;
+the updater remains WIP.
+
+The kind-6 phase-four 32-iteration loop compares its decremented index to
+`-1` in retail at `0x80045464..0x80045470`; the C used a nonnegative test,
+which emitted `bgez`. Spelling the finite loop's `index != -1` condition
+emits the retail `li -1; bne` and delay-slot constant, with unchanged loop
+behavior. Strict text rises from 76.418200% to 76.855340% on the same target;
+candidate text is 13,872 bytes and RODATA remains 27.918287%.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

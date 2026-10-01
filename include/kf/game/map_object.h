@@ -55,6 +55,14 @@ typedef char kf_map_object_template_pose_depth_offset[
 typedef char kf_map_object_template_pose_unknown_10_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->unknown_10 == 0x10 ? 1 : -1];
 
+/* The placement's final two words copy together into the object tail. */
+typedef struct KfMapObjectTailCopyWords {
+    u32 first;
+    u32 second;
+} KfMapObjectTailCopyWords;
+typedef char kf_map_object_tail_copy_words_size[
+    sizeof(KfMapObjectTailCopyWords) == 8 ? 1 : -1];
+
 /* Map resource placements consumed in 24-byte rows by func_80035894. */
 typedef struct KfMapObjectPlacement {
     u8 layer;
@@ -67,14 +75,15 @@ typedef struct KfMapObjectPlacement {
     s16 local_x;
     s16 height;
     u16 unknown_0e;
-    u32 tail_10;
-    u32 tail_14;
+    KfMapObjectTailCopyWords tail_words;
 } KfMapObjectPlacement;
 
 typedef char kf_map_object_placement_size[
     sizeof(KfMapObjectPlacement) == 24 ? 1 : -1];
 typedef char kf_map_object_placement_height_offset[
     (u32)&((KfMapObjectPlacement *)0)->height == 12 ? 1 : -1];
+typedef char kf_map_object_placement_tail_words_offset[
+    (u32)&((KfMapObjectPlacement *)0)->tail_words == 16 ? 1 : -1];
 
 typedef struct KfMapObjectTailHalfwordBytes {
     u8 low;
@@ -126,6 +135,10 @@ typedef union KfMapObjectTail {
     KfMapObjectTailPair38View pair_38;
     KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
+    struct {
+        u32 unknown_34;
+        KfMapObjectTailCopyWords copy_words;
+    } placement;
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 

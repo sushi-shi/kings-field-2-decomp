@@ -473,7 +473,7 @@ update_reaction_view:
         }
         goto after_reaction;
     case 5:
-        step = ++player_state.reaction.position.unknown_01[0];
+        step = ++player_state.reaction.position.mode;
         fraction = step << 8;
         player_state.camera_position.vx = func_8001584c(
             player_state.camera_position.vx,

@@ -303,6 +303,31 @@ listings unchanged and was discarded. The seed-byte identities and their
 original defining TU remain unresolved. No source or configuration change
 was retained from this batch; no repository tests or linked build were run.
 
+## Ten-function menu/card strict recheck (2026-10-02)
+
+All ten assigned GAME functions were rebuilt as isolated candidate objects and
+compared with `objdiff-cli` against their delinked retail objects. The strict
+percentages below are current, not cached report values. Focused `kf try`
+listing comparisons and retail blocks/calls were also checked. None reached
+strict exact; no source or ownership change was retained.
+
+| Function | Strict | Focused | Bounded verdict |
+| --- | ---: | ---: | --- |
+| `0x8001b554` card browser | 98.478264% | 84.6% | Probe result stays in `v0` in the candidate where retail copies it to `a0`; later CFG and calls agree. |
+| `0x8001930c` map preview | 98.263630% | 80.2% | Retail's 64-byte frame and independent map-index addition differ from the 56-byte candidate frame and reassociation. Reordering the source expression worsened focused similarity to 79.6%, so it was reverted. |
+| `0x8001a4f0` item/magic controller | 99.743590% | 96.0% | Initial 74-entry loop uses `s0` for the index in retail and `a3` in the candidate; widths, constants, and loop effect agree. |
+| `0x8002083c` two-option item preview | 99.658820% | 73.1% | Retail reserves 64 more stack bytes; four live matrix objects and the exact adjacent helpers do not justify padding. |
+| `0x8001bf68` card format flow | 97.123890% | 87.7% | Probe-status and dialog-constant registers differ; adjacent `0x8001c12c` remains strict exact. |
+| `0x8001f8b8` preview choice | 94.364640% | 84.8% | Retail positions the wait/return arm before the input loop; the natural post-draw loop trial previously regressed and was reverted. |
+| `0x80022ca0` card writer | 95.896774% | 96.7% | Retail initializes the path, then reads signed slot-seed bytes before clearing the digit tail; candidate schedules the independent clear earlier. The card-write call path and 24-block/14-branch CFG agree. |
+| `0x800226ec` card directory | 93.605040% | 88.6% | Retail signed byte loads and first `memset` setup differ; the 13-block/7-branch CFG agrees. |
+| `0x80022b74` card reader | 93.666664% | 84.2% | Retail's frame is 80 bytes versus the candidate's 72; the 9-block/4-branch CFG agrees, with no supported additional live object. |
+| `0x80023178` title digit writer | 93.529410% | 45.1% | Quotient/header register lifetimes differ; the adjacent payload sum, wait, and clear-event helpers remain focused `SAME`. |
+
+The directory unit's six-byte `.rodata` and initialized bytes still match in
+content; its data-placement ownership conflict is being audited separately.
+No repository tests, lint, full build, or broad match were run.
+
 ## Ten-WIP source-shape check (2026-10-01)
 
 Fresh focused rebuilds rechecked ten non-exact GAME menu/card functions. The
@@ -331,3 +356,24 @@ addresses used by exact vendored `CD_readm`, `CD_readsync`, `CdSearchFile`, and
 `CD_cachefile` bodies. Their seventeen reviewed load pairs cannot be assigned
 to the game card buffer from address containment alone; those referents remain
 unattributed pending an owner boundary.
+
+## Six remaining disjoint menu/card WIPs (2026-10-02)
+
+The current strict inventory shows the proposed card-choice and item-controller
+alternates already exact, so this follow-up used the six live disjoint WIPs
+below. Each was rebuilt as an isolated candidate object, checked with strict
+`objdiff-cli`, and compared with a focused listing. No additional source edit
+was retained.
+
+| Function | Strict | Focused | Verdict |
+| --- | ---: | ---: | --- |
+| `0x8001fb8c` window drawer | 99.787880% | 83.5% | Only an unexplained eight-byte frame increase remains; complete layout data and sprite definitions are exact. |
+| `0x80021c8c` display-state enter | 99.956985% | 97.2% | Only frame size and saved `ra` offset differ; display-state exit remains exact. |
+| `0x80022058` number formatter | 97.390000% | 78.5% | Retail reserves eight stack bytes, moving the fifth O32 argument load; style and digit operations align. |
+| `0x800228c8` card reader | 85.156250% | 67.6% | Retail uses signed byte loads for two-byte encoded title glyphs and a byte-offset walk. Explicit signed-byte lvalue casts produced an identical focused listing and were reverted. |
+| `0x8001876c` location menu | 96.366460% | 90.8% | Two sentinel constants use swapped saved registers; retail reloads the result from its stack slot on the exit path. Exact `0x800189f0` remains unchanged. |
+| `0x800210ac` glyph drawer | 99.669040% | 90.4% | Retail reserves eight extra stack bytes and allocates the glyph arithmetic to the opposite volatile registers; call and referent sets agree. |
+
+The source evidence does not justify artificial stack padding or register
+carriers for these residues. No tests, lint, full build, broad match, or README
+edit was run.

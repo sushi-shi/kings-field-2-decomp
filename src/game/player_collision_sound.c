@@ -126,9 +126,11 @@ landing:
         if (player_state.unknown_138 > 0) {
             player_state.unknown_138 += player_state.unknown_13a >> 2;
         }
+        bob = player_state.unknown_110[0];
         player_state.unknown_13a -= 100;
-        if (player_state.unknown_110[0] > 0) {
-            player_state.unknown_110[0] += player_state.unknown_13a > 0 ? 10 : -30;
+        if (bob > 0) {
+            player_state.unknown_110[0] =
+                bob + (player_state.unknown_13a > 0 ? 10 : -30);
         }
         if (player_state.unknown_138 <= 0
             && player_state.unknown_110[0] <= 0) {

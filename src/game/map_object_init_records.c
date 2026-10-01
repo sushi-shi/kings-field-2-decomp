@@ -61,9 +61,9 @@ void func_80035894(const KfMapObjectPlacement *placements)
         object->scale.vx = 0x1000;
         object->unknown_00 = placements->layer;
         object->collision_flags = template->unknown_02[1];
+        object->unknown_0e = template->unknown_0a;
         object->unknown_05 = 0xff;
         object->unknown_10 = 0;
-        object->unknown_0e = template->unknown_0a;
         if (object->collision_flags & 0x20) {
             object->unknown_02 = 0x80;
         }
@@ -77,8 +77,7 @@ void func_80035894(const KfMapObjectPlacement *placements)
             layer++;
         }
         object->position.vy = placements->height - ((s32)layer->elevation << 7);
-        object->tail.reset_words[1] = placements->tail_10;
-        object->tail.reset_words[2] = placements->tail_14;
+        object->tail.placement.copy_words = placements->tail_words;
         memset(&object->extra_40, 0xff, sizeof object->extra_40);
 
         if (template->collision_radius != 0) {

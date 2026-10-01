@@ -727,16 +727,17 @@ and incomplete known-reference ownership. The raw-backed dispatcher tables
 above do not resolve those unrelated edge gaps, and no cache boundary was
 guessed from the overlapping views.
 
-The later `0x8002c670` source now selects its center through the typed
+At that pass, the `0x8002c670` source selected its center through the typed
 `map_cells[row][column]` grid. It uses the enclosing cell's byte
 representation only for the runtime-selected layer lighting byte; a layout
 check ties the lighting offset to `KfMapOccupancyCell`. The focused listing
 improved from 75.8% to 76.4% and remains WIP. Its remaining first lighting
 referent differs in address formation: retail computes
 `bss_801c7540+4 + map_z*800 + map_x*10 + selected_layer`, whereas the
-probe forms a typed cell base before loading its +4 lighting field. The two
+probe formed a typed cell base before loading its +4 lighting field. The two
 forms address the same byte. No relocation identity was changed to conceal
-the different field-base provenance.
+the different field-base provenance. A later field-base correction is recorded
+below.
 
 A focused current-source data-owner audit compared each initialized ELF
 section, relocation row, and claimed placement against its GAME target.
@@ -896,7 +897,7 @@ The eight remaining strict verdicts are:
 | `0x8002b9d4` | WIP, 92.744830% | Collision-channel result lifetime after the supported calls and branches. |
 | `0x8002bfd4` | WIP, 73.912620% | Two-axis mask-rasterizer induction and frame layout. |
 | `0x8002c424` | WIP, 98.299320% | Indexed cursor and direct cell lookup are retained; saved-register assignment remains. |
-| `0x8002c670` | WIP, 90.127270% | The typed center lighting byte has a different base-add schedule; its 28-byte shape table matches exactly. |
+| `0x8002c670` | WIP, 91.624245% | A whole-grid byte view with typed row and cell sizes emits the retail `bss_801c7540+4` lighting-field referent; later mask-state schedules remain different. Its 28-byte shape table matches exactly. |
 | `0x8002ce68` | WIP, 65.851850% | Retail reloads late O32 arguments after free-slot acquisition; the probe retains them in saved registers. |
 
 Fresh focused `game.floor_item_find_free` reconstruction confirms the two
@@ -916,3 +917,17 @@ All calls, decoded referents, and exact sibling controls used for these
 verdicts remain intact. No source or inventory change was justified by this
 pass; the earlier focused-listing percentages in this document describe
 their own probes, while this table records the current direct strict results.
+
+The later isolated `game.map_mask_window_sweep` control confirmed this
+field-base correction. Retail computes its center lighting address from
+`bss_801c7540+4`, an 800-byte row stride, a 10-byte cell stride, and a
+runtime layer offset of zero or five. The source now uses the complete
+`map_cells` array as its byte view and derives both strides and the lighting
+field offset from the typed cell layout. The collision dispatcher at
+`0x8002aaa4` also toggles the shared cache layer through `& 5` and applies
+it as a byte offset into a cell, supporting that representation. The focused
+listing rose from 76.4% to 79.7% with all 11 blocks and four branches
+preserved. The strict single-unit text result rose from 90.127270% to
+91.624245%; the 28-byte initialized shape table remains exact. The first
+residual is the interpolation `addu` destination, then scan-state flag
+stores and traversal scheduling. No exact function was banked.

@@ -51,7 +51,7 @@ u32 map_cell_layer_mask(const VECTOR *position)
 ADDRESS(0x800320b0, 0xc4)
 u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
 {
-    s32 span = radius * 2;
+    s32 span = (s32)((u32)radius << 1);
     u8 mask = 0;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;

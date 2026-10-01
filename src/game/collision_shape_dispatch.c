@@ -64,7 +64,7 @@ LAB_8002ab5c:
   shape_offset = ((KfCollisionShapeOffsetTable *)shape_bank)
       ->offsets[selected_layer->unknown_03];
   shape = (KfCollisionShapeHeader *)(shape_bank + shape_offset);
-  bottom_y = y - height;
+  bottom_y = (s32)((u32)y - (u32)height);
   records_left = shape->command_count + -1;
   radius = radius * shape->radius_scale >> 0xc;
   if (records_left == -1) {

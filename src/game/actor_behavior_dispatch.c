@@ -829,11 +829,13 @@ case3_motion:
             break;
         case 2: {
             s32 saved_flags = actor_state.unknown_93a4;
+            s32 next_timer;
             actor_state.unknown_93a4 &= ~0x20;
             func_8003bcd0(actor->unknown_64,
                            target->word_0e.value, 0, 0xff, 0, 5);
-            actor->tail_72.unsigned_state--;
-            if ((s16)actor->tail_72.unsigned_state == -1) {
+            next_timer = actor->tail_72.unsigned_state - 1;
+            actor->tail_72.unsigned_state = next_timer;
+            if ((s16)next_timer == -1) {
                 actor_reset_target_and_reselect();
             }
             actor_state.unknown_93a4 = saved_flags;
@@ -863,28 +865,21 @@ case3_motion:
             actor->state_70.signed_state = 1;
             actor->tail_72.signed_state = 8;
             actor->unknown_1c = group->unknown_12;
-            actor->position.vy += 2048;
             actor->unknown_1e = group->unknown_14;
+            actor->position.vy += 2048;
             group_height = group->unknown_32;
             actor->unknown_4c = group_height;
             actor->unknown_4a.value = group_height;
             actor->unknown_48 = group_height;
             actor->rotation.y = object->rotation.vy;
-            actor->unknown_0d = 0;
         }
             /* fall through */
         case 1:
-            actor->position.vy -= 256;
-            actor->tail_72.unsigned_state--;
-            if ((s16)actor->tail_72.unsigned_state == 0) {
-                actor_reset_target_and_reselect();
-            }
-            break;
+            actor->unknown_0d = 0;
+            goto case29_shared_motion;
         }
         break;
     case 25: {
-        const KfTargetCandidateAction25 *script =
-            (const KfTargetCandidateAction25 *)target;
         const u16 *cursor;
         s32 repeat;
 
@@ -907,14 +902,15 @@ case3_motion:
             if (target->word_10.value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;
             }
-            cursor = script->stream + (s16)actor->tail_72.script.word_index;
+            cursor = ((const KfTargetCandidateAction25 *)target)->stream +
+                (s16)actor->tail_72.script.word_index;
             for (;;) {
-                u16 opcode = *cursor++;
+                s32 opcode = *cursor++;
                 u16 index = actor->tail_72.script.word_index;
                 actor->tail_72.script.word_index = index + 1;
 
                 if (opcode == 0x8000) {
-                    cursor = script->stream;
+                    cursor = ((const KfTargetCandidateAction25 *)target)->stream;
                     actor->tail_72.script.word_index = 0;
                     continue;
                 } else if (opcode == 0x8001) {
@@ -926,9 +922,15 @@ case3_motion:
                     cursor += skip + 1;
                     continue;
                 } else if (opcode == 0x8002) {
-                    s16 x = *cursor++;
-                    s16 y = *cursor++;
-                    s16 z = *cursor++;
+                    s16 x;
+                    s16 y;
+                    s16 z;
+
+                    x = *cursor++;
+                    actor->tail_72.script.word_index = index + 2;
+                    y = *cursor++;
+                    actor->tail_72.script.word_index = index + 3;
+                    z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, -1, x, y, z, cursor);
@@ -1023,12 +1025,17 @@ case3_motion:
         }
         actor->rotation.x += 128;
         actor->rotation.y += 64;
-        actor->position.vy -= 256;
-        actor->tail_72.unsigned_state--;
-        if ((s16)actor->tail_72.unsigned_state == 0) {
+    case29_shared_motion: {
+        s32 next_y = actor->position.vy - 256;
+        s32 next_timer = actor->tail_72.unsigned_state - 1;
+
+        actor->position.vy = next_y;
+        actor->tail_72.unsigned_state = next_timer;
+        if ((s16)next_timer == 0) {
             actor_reset_target_and_reselect();
         }
         break;
+    }
     case 28: {
         s32 collision;
 
@@ -1112,14 +1119,15 @@ case3_motion:
 
     if (actor->unknown_28 & 0x10) {
         KfActor *other = actor_state.other_actor;
+        u8 slot_state = actor->slot_state;
 
-        if (actor->slot_state == 3) {
+        if (slot_state == 3) {
             actor->unknown_03 = 0;
             if (other->lifecycle != 1) {
                 actor->lifecycle = 0;
                 goto behavior_done;
             }
-            if (other->target_type == actor->slot_state) {
+            if (other->target_type == slot_state) {
                 actor->target_type = 3;
                 actor->unknown_0f = 0xf0;
                 actor->state_70.signed_state = 99;

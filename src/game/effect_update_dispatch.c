@@ -878,6 +878,8 @@ void effect_update_dispatch(void)
             }
             record->phase = 1;
         } else if (initial_phase == 1) {
+            const KfActor *actor;
+
             if (record->updates_remaining >= 2 &&
                 *(s16 *)&record->unknown_3c[6] != 0) {
                 break;
@@ -898,6 +900,7 @@ void effect_update_dispatch(void)
                     child->phase = 2;
                 }
             }
+            actor = &actor_state.actors[actor_index];
             if (record->unknown_3c[4] != 0) {
                 step = effect_magic_power(record);
                 func_80039c94(actor_index, step,
@@ -907,7 +910,7 @@ void effect_update_dispatch(void)
                               magic->unknown_12, magic->unknown_14,
                               (matches << 12) / record->unknown_3c[4],
                               (record->type & 0x30) | 2,
-                              &actor_state.actors[actor_index].position);
+                              &actor->position);
             }
             record->type = KF_EFFECT_SLOT_FREE;
         }
@@ -939,15 +942,23 @@ void effect_update_dispatch(void)
                 collision = func_80041b14(&next_position, 300, 50,
                                            500, 150, 10, 0);
                 if (collision == -2) {
-                    if (actor->rotation.y != 0) {
-                        actor->rotation.y--;
+                    KfEffectRecord *linked =
+                        &effect_state.records[record->unknown_3c[4]];
+                    s16 *linked_count = (s16 *)&linked->unknown_3c[6];
+
+                    if (*linked_count != 0) {
+                        --*linked_count;
                     }
                     record->phase = 1;
                 } else {
                     if (collision == -1 &&
                         (KF_COLLISION_CACHE_FLAGS & 0xf) != 0) {
-                        if (actor->rotation.y != 0) {
-                            actor->rotation.y--;
+                        KfEffectRecord *linked =
+                            &effect_state.records[record->unknown_3c[4]];
+                        s16 *linked_count = (s16 *)&linked->unknown_3c[6];
+
+                        if (*linked_count != 0) {
+                            --*linked_count;
                         }
                         record->type = KF_EFFECT_SLOT_FREE;
                     }
@@ -1376,31 +1387,36 @@ void effect_update_dispatch(void)
             break;
         }
         case 3: {
-            u8 frame = record->unknown_3c[8] + 1;
+            u8 frame = ++record->unknown_3c[8];
 
-            record->unknown_3c[8] = frame < 24 ? frame : 0;
+            if (frame >= 24) {
+                record->unknown_3c[8] = 0;
+            }
             if (record->unknown_3c[9] != 0) {
                 record->unknown_3c[9]--;
                 break;
             }
-            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
-            record->type = KF_EFFECT_SLOT_FREE;
-            break;
+            goto kind6_release_actor;
         }
         case 4: {
             s32 index;
 
-            for (index = 31; index >= 0; index--) {
+            for (index = 31; index != -1; index--) {
                 func_80041e94(record, -1, -2, 0xc00, -90,
                                16, 14, 5, 0x200, -256, 0x200,
                                -320, 0x200, -256);
             }
-            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
-            record->type = KF_EFFECT_SLOT_FREE;
-            break;
+            goto kind6_release_actor;
         }
         }
         break;
+    kind6_release_actor: {
+        KfActor *actor = &actor_state.actors[record->unknown_3c[10]];
+
+        actor->unknown_28 &= ~0x800;
+        record->type = KF_EFFECT_SLOT_FREE;
+        break;
+    }
     }
     case 107: {
         KfEffectRecord *selected =
@@ -1582,7 +1598,7 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         } else if (rand() < 16384) {
             func_80040308(10, 0, 0x6d, &record->position,
-                           &record->rotation, effect_state.current_index);
+                           &record->direction, effect_state.current_index);
         }
         break;
     }
@@ -1592,8 +1608,6 @@ void effect_update_dispatch(void)
             500, 15, -1, 0, 0, -1);
         break;
     case 120: {
-        s32 finish;
-
         record->direction.vy = (u16)record->direction.vy + 20;
         if ((s16)record->scale_x < 0x1000) {
             step = (u16)record->scale_z + 0x200;
@@ -1601,24 +1615,22 @@ void effect_update_dispatch(void)
             record->scale_y = step;
             record->scale_x = step;
         }
-        finish = rand() < 400;
-        if (!finish) {
+        if (rand() >= 400) {
             collision = func_80042298(180, 0, -300);
-            if ((collision & 5) != 0) {
-                record->position.vy = KF_COLLISION_CACHE_RESULT;
-                finish = 1;
+            if (collision == 0 || (collision & 5) == 0) {
+                goto kind120_rotate;
             }
+            record->position.vy = KF_COLLISION_CACHE_RESULT;
         }
-        if (finish) {
-            if (rand() < 8192) {
-                func_80040308(10, record->type | 3, 0x2a,
-                               &record->position, 0, 0);
-                func_80040308(10, record->type | 3, 0x2a,
-                               &record->position, 0, 1);
-                effect_play_spatial_sound(record, 0x18);
-            }
-            record->type = KF_EFFECT_SLOT_FREE;
+        if (rand() < 8192) {
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 0);
+            func_80040308(10, record->type | 3, 0x2a,
+                           &record->position, 0, 1);
+            effect_play_spatial_sound(record, 0x18);
         }
+        record->type = KF_EFFECT_SLOT_FREE;
+    kind120_rotate:
         record->rotation.vz += 2700;
         break;
     }

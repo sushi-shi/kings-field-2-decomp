@@ -52,6 +52,11 @@
  */
 #define DATA(va, size)
 
+/* Per-image address for one global defined by a shared source. Stack one
+ * DATA_AT() per image immediately before the single C definition, as with
+ * ADDRESS_AT() for shared functions. */
+#define DATA_AT(image, va, size)
+
 /*
  * Read-only contribution claim, at most one per translation unit: the retail
  * address range that holds this unit's switch jump tables and string

@@ -1,6 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/lib/display.h>
 
+DATA_AT("OPEN", 0x800ac5d8, 0x4)
+DATA_AT("END", 0x800a93b8, 0x4)
+POLY_FT4 *current_poly_ft4;
+
 ADDRESS_AT("OPEN", 0x800131c8, 0x64)
 ADDRESS_AT("END", 0x80011dac, 0x60)
 void display_begin_frame(void)

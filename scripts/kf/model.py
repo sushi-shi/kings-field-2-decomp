@@ -2,7 +2,8 @@
 
 Each unit source annotates every function it reconstructs with
 ``ADDRESS(0xVA, size)`` on the line before the definition, and every global it
-owns with ``DATA(0xVA, size)`` on the line before the definition. This module
+owns with ``DATA(0xVA, size)`` on the line before the definition. Shared
+sources use image-qualified ``ADDRESS_AT`` and ``DATA_AT`` claims. This module
 extracts those claims; the manifest loader checks them against the admitted
 retail census and the curated identities, enforces address-order
 incrementalism inside a source, and writes ``build/gen/bindings.tsv`` for
@@ -28,6 +29,10 @@ ADDRESS_AT_RE = re.compile(
     r'^\s*ADDRESS_AT\(\s*"([A-Z]+)"\s*,\s*(0x[0-9A-Fa-f]+)\s*,\s*'
     r"(0x[0-9A-Fa-f]+|[0-9]+)\s*\)\s*(?:/\*.*\*/\s*)?$"
 )
+DATA_AT_RE = re.compile(
+    r'^\s*DATA_AT\(\s*"([A-Z]+)"\s*,\s*(0x[0-9A-Fa-f]+)\s*,\s*'
+    r'(0x[0-9A-Fa-f]+|[0-9]+)\s*\)\s*(?:/\*.*\*/\s*)?$'
+)
 IDENTIFIER_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 FUNCTION_POINTER_RE = re.compile(r"\(\s*\*\s*([A-Za-z_][A-Za-z0-9_]*)")
 BINDING_FIELDS = ("image", "va", "kind", "name", "unit", "source", "line", "ordinal")
@@ -52,6 +57,7 @@ class DataClaim:
     size: int
     name: str
     line: int
+    image: str | None = None
 
 
 @dataclass(frozen=True)
@@ -102,9 +108,9 @@ def _definition_after(lines: list[str], index: int) -> str:
         stripped = following.strip()
         if not stripped or stripped.startswith(("/*", "//", "*")):
             continue
-        # A shared function stacks several ADDRESS_AT()/ADDRESS() claims before
-        # its definition; skip sibling claims to reach the declarator.
-        if CLAIM_RE.match(following) or ADDRESS_AT_RE.match(following):
+        # Shared definitions stack image-qualified claims before the one
+        # declarator; skip sibling claims to reach it.
+        if CLAIM_RE.match(following) or ADDRESS_AT_RE.match(following) or DATA_AT_RE.match(following):
             continue
         return stripped
     return ""
@@ -147,12 +153,14 @@ def _function_name(definition: str) -> str | None:
 
 
 def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]:
-    """Return the ADDRESS()/ADDRESS_AT() and DATA() claims in file order.
+    """Return function and data claims in file order.
 
     Function claims may stack (one ADDRESS_AT() per image before a shared
     definition); a run of consecutive function-claim lines shares the one
     definition that follows it. Each ADDRESS_AT() claim carries its image; a
     plain ADDRESS() claim carries ``image=None`` and binds to its unit's image.
+    DATA_AT() provides the corresponding per-image address for one shared
+    global definition.
     """
     located = list(source_lines(source))
     lines = [text for text, _path, _line in located]
@@ -167,20 +175,33 @@ def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]
                              'shared fragments must not own rodata')
         plain = CLAIM_RE.match(text)
         at = ADDRESS_AT_RE.match(text)
-        if plain is not None and plain.group(1) == "DATA":
-            va = int(plain.group(2), 16)
-            size = int(plain.group(3), 0)
-            name = _data_name(_definition_after(lines, index))
+        if at is None and (DATA_AT_RE.match(text) is not None
+                           or (plain is not None and plain.group(1) == "DATA")):
+            run: list[tuple[str | None, int, int, int]] = []
+            first_line = index + 1
+            while index < total:
+                line_at = DATA_AT_RE.match(lines[index])
+                line_plain = CLAIM_RE.match(lines[index])
+                if line_at is not None:
+                    run.append((line_at.group(1), int(line_at.group(2), 16),
+                                int(line_at.group(3), 0), index + 1))
+                elif line_plain is not None and line_plain.group(1) == "DATA":
+                    run.append((None, int(line_plain.group(2), 16),
+                                int(line_plain.group(3), 0), index + 1))
+                else:
+                    break
+                index += 1
+            name = _data_name(_definition_after(lines, index - 1))
             if name is None:
                 raise ValueError(
-                    f"{source}:{index + 1}: DATA({va:#x}) is not followed by a "
+                    f"{source}:{first_line}: DATA claim is not followed by a "
                     "global definition"
                 )
-            _text, owner, owner_line = located[index]
-            if owner != source:
-                raise ValueError(f'{owner}:{owner_line}: shared fragments must not own data')
-            data_claims.append(DataClaim(va, size, name, owner_line))
-            index += 1
+            for image, va, size, line in run:
+                _text, owner, owner_line = located[line - 1]
+                if owner != source:
+                    raise ValueError(f'{owner}:{owner_line}: shared fragments must not own data')
+                data_claims.append(DataClaim(va, size, name, owner_line, image))
             continue
         if at is None and plain is None:
             index += 1

@@ -440,6 +440,10 @@ def load(
         claims, data_claims = scan_source(source_path)
         rodata_claims = scan_rodata_claims(source_path)
         image_token = image.removesuffix(".EXE")
+        data_claims = tuple(
+            claim for claim in data_claims
+            if claim.image is None or claim.image == image_token
+        )
         if any(claim.image is not None for claim in claims):
             # A shared source spells every image's addresses with ADDRESS_AT();
             # this unit keeps only the claims for its own image. Plain ADDRESS()

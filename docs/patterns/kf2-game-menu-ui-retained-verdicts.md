@@ -176,12 +176,16 @@ these residues.
 
 The related fade transition at `0x800349bc` draws four `POLY_FT4` rectangles.
 The pinned Psy-Q 3.0 `setXYWH` and `setUVWH` macros replace eight equivalent
-field-write groups in its source. A normal focused probe retains DIFF 43.2%,
+field-write groups in its source. A current focused probe retains DIFF 44.8%,
 with 14/14 CFG blocks and 8/8 branches; adjacent `tim_upload_images`
 (`0x8003494c`) and `func_80034e10` remain SAME. Retail spills the fade state
 on a 72-byte frame, while the current 64-byte probe keeps it in a saved
 register. The macro substitution changes source expression without claiming
 an exact-match gain.
+GCC 2.6.0 raises the fade body's focused similarity to 75.9% with either
+`-mcpu=r2000` or `-mcpu=r3000`, but changes both exact sibling listings;
+GCC 2.5.7 without its current CPU flag also changes the exact `0x34e10`
+sibling. No profile change is supported for this contiguous unit.
 
 ## Connected item, list, and display pass
 
@@ -307,6 +311,15 @@ For `0x8001876c`, the first difference swaps the two saved registers used
 for `-1` and `-99`; later the source probe carries a result across the exit
 condition where retail reloads it, leaving the same direct call set but a
 different branch schedule. No source-backed state or ABI change was retained.
+
+A later focused rebuild of the inclusive `0x8001876c`–`0x8001a898` band
+confirmed its 19 claims: sixteen SAME and the same three DIFF results above.
+Source-identical compiler probes in temporary objects found that GCC 2.5.7
+with `-mcpu=r3000` kept the WIP focused scores at 90.8%, 80.2%, and 96.0%
+for `0x1876c`, `0x1930c`, and `0x1a4f0`; GCC 2.6.0 reduced them to 83.0%,
+59.2%, and 74.4%. The exact `0x189f0` sibling also fell to 53.0% under
+GCC 2.6.0. No profile change was retained. A typed `u8` preview-page local
+left `0x1930c` at 80.2% and was discarded.
 
 A bounded audit rebuilt focused-SAME objects in `/tmp` with their pinned unit
 profiles and compared each to its carved retail module through isolated
@@ -488,3 +501,40 @@ The main row loop remains in its prior source form.
 Spelling the card-column predicate as `render_mode == 8 || render_mode == 9`
 left the retained 98.6% listing unchanged, so that source-only probe was
 discarded too.
+
+Source-identical alternate-profile probes on six further UI units produced
+no strict closure. GCC 2.5.7 with `-mcpu=r3000` reproduced the current
+focused listings and preserved exact siblings. GCC 2.6.0 reduced the window,
+list, option-preview, display-entry, and glyph-string listing similarities;
+it also changed exact siblings in the option and display-state units. Its
+fade-transition body improved from 44.8% to 75.9% focused similarity, but
+both exact neighboring functions regressed. These are compiler probes, not
+evidence to split a source unit or change its profile.
+
+## Bounded relocation and data audit
+
+The existing carved GAME targets and source objects rebuilt in `/tmp` were
+compared without regenerating the shared target registry. The six WIP units
+below have identical ordered relocation types and symbol names. Relocation
+site offsets differ only where the instruction stream already differs; the
+two rows marked `sites SAME` have byte-identical ordered relocation rows.
+The only initialized side section in these units is the 28-byte root-menu
+switch table, which also matches byte for byte.
+
+| GAME function | Target/source relocations | Site offsets | Initialized side data |
+| --- | ---: | --- | --- |
+| `0x8001876c` | 55/55 | DIFF after controller schedule | `.rodata` 28/28 SAME |
+| `0x8001930c` | 69/69 | DIFF from first graphics-state address | none |
+| `0x8001a4f0` | 28/28 | SAME | none |
+| `0x800311b0` | 7/7 | DIFF from first graphics-state address | none |
+| `0x800349bc` | 96/96 | DIFF after fade prologue | none |
+| `0x80036e24` | 5/5 | SAME | none |
+
+No missing relocation or initialized datum explains these six non-exact
+functions. The separate resource transition `0x80016820` still references
+unowned RAM workspaces at `0x8019e138` and `0x8012da68`; their known uses do
+not establish complete extents or a source allocation mechanism, so no data
+claim was added.
+The frame-service `0x36e24` remains DIFF 87.8% in a fresh focused listing:
+its five calls and two branches agree, while the mode, endpoint, and step
+arguments occupy cyclically different saved registers.

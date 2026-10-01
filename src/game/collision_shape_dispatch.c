@@ -1,9 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/collision_cache.h>
 
-/* Interior cache words and runtime shape bank remain WIP ownership views. */
-#define COLLISION_CACHE_HEIGHT_LIMIT (*(s32 *)((u8 *)&bss_801c7540 + 0x11814))
-#define COLLISION_CACHE_UPPER_BOUND (*(s32 *)((u8 *)&bss_801c7540 + 0x1181c))
+/* The runtime shape bank remains a WIP ownership view. */
 
 RODATA(0x8001134c, 0xc4)
 
@@ -44,8 +42,8 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   visited_second_layer = 0;
   KF_COLLISION_CACHE_RESULT = 100000;
   KF_COLLISION_CACHE_LOWER_BOUND = 100000;
-  COLLISION_CACHE_UPPER_BOUND = 100000;
-  COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
+  KF_COLLISION_CACHE_UPPER_BOUND = 100000;
+  KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
   KF_COLLISION_CACHE_SHAPE = (u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER;
   selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
   height_flags = (u32)height & 0xf0000000;
@@ -73,7 +71,7 @@ LAB_8002ab5c:
   do {
     operand = record + 1;
     next_record = operand;
-    saved_height_limit = COLLISION_CACHE_HEIGHT_LIMIT;
+    saved_height_limit = KF_COLLISION_CACHE_HEIGHT_LIMIT;
     switch ((s16)*record) {
     case 0x10:
       next_record = record + 2;
@@ -91,8 +89,8 @@ LAB_8002b3b8:
       break;
     case 0x11:
       next_record = record + 3;
-      COLLISION_CACHE_HEIGHT_LIMIT = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      if (bottom_y < COLLISION_CACHE_HEIGHT_LIMIT) {
+      KF_COLLISION_CACHE_HEIGHT_LIMIT = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
+      if (bottom_y < KF_COLLISION_CACHE_HEIGHT_LIMIT) {
         saved_height_limit = (s16)record[2] + KF_COLLISION_CACHE_HEIGHT;
         if (saved_height_limit < bottom_y) {
           result_flags = result_flags | 8;
@@ -101,7 +99,7 @@ LAB_8002b3b8:
           if (saved_height_limit < KF_COLLISION_CACHE_RESULT) {
             KF_COLLISION_CACHE_RESULT = saved_height_limit;
           }
-          COLLISION_CACHE_HEIGHT_LIMIT = -100000;
+          KF_COLLISION_CACHE_HEIGHT_LIMIT = -100000;
         }
       }
       goto LAB_8002b5c8;
@@ -118,7 +116,7 @@ LAB_8002b3b8:
       break;
     case 0x19:
       next_record = record + 2;
-      COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
+      KF_COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
       break;
     case 0x20:
       next_record = record + 5;
@@ -185,7 +183,7 @@ LAB_8002ada4:
       candidate_height = (s16)record[3] + KF_COLLISION_CACHE_HEIGHT;
       saved_height_limit = (s16)record[2] + KF_COLLISION_CACHE_HEIGHT;
       if (((bottom_y < (s16)record[2] + KF_COLLISION_CACHE_HEIGHT) &&
-          (saved_height_limit = COLLISION_CACHE_HEIGHT_LIMIT, candidate_height < KF_COLLISION_CACHE_RESULT)) && (KF_COLLISION_CACHE_RESULT = candidate_height, candidate_height < y))
+          (saved_height_limit = KF_COLLISION_CACHE_HEIGHT_LIMIT, candidate_height < KF_COLLISION_CACHE_RESULT)) && (KF_COLLISION_CACHE_RESULT = candidate_height, candidate_height < y))
       {
         result_flags = result_flags | case_value;
       }
@@ -337,7 +335,7 @@ LAB_8002b38c:
     case 0x40:
       goto scan_second_layer;
     }
-    COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
+    KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
 LAB_8002b5c8:
     records_left = records_left + -1;
     record = next_record;

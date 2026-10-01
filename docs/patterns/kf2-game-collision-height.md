@@ -128,8 +128,8 @@ certification is pending.
 | `0x8002c170` | WIP, 89.8% | Eleven-block mask-row scan and bounds agree; pointer and state registers differ. |
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
-| `0x8002c670` | WIP, 75.8% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4; the first-lighting access uses the retail BSS+4 field-base referent. Mask-byte addressing and traversal scheduling remain different. |
-| `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte no-argument map-object dispatcher has three bounded indirect jumps. Their raw pointer-table extents and in-function targets are established; case reachability and callback targets remain unresolved. |
+| `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
+| `0x80036ed4` | WIP, 27.7% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present, while case-pointer addends and text layout differ; indirect callback targets remain unresolved. |
 
 The current 27-function focused cohort comprises the 17 collision-height
 wrappers, two map-cell pattern helpers, six map-object reset helpers, the
@@ -153,6 +153,10 @@ Its focused listing improves from 16.0% to 18.3%, with target/compiled CFG
 moving from 22/21 to 22/22 blocks and known successors agreeing by block
 order. The 10/17 SAME sibling listings remain unchanged; the rasterizer's
 coordinate and grid-address schedule is still WIP.
+
+The later source-backed truncation of both grid subscripts to `u16` and the
+retail-shaped positive Z-step assignment raise the current focused listing
+to 35.5%, still DIFF. A fresh focused build keeps 10/17 SAME siblings.
 
 Retail `0x8002c670` forms a saved pointer to the scan state's +0x0c field
 and uses it for several relative stores. An isolated C probe that changed
@@ -198,9 +202,10 @@ No aligned `j/jal` or 32-bit pointer word in GAME.EXE targets `0x80036944`,
 and no matching low-immediate address constructor was found. The entry's
 caller ABI and return use remain unproved. The contiguous `0x74`-byte
 function boundary and address-derived `func_80036944` identity are curated;
-the three overlapping false data/string seeds were removed. Its tentative
-`u8` parameter and `void` return remain candidate, and no source claims the
-function. The preceding `0x800368b4` returns at `0x8003693c` with its
+the three overlapping false data/string seeds were removed. A later source
+claim emits 116/116 identical function bytes in isolated direct objdiff; its
+`u8` parameter and `void` return remain candidate without an incoming
+caller. The preceding `0x800368b4` returns at `0x8003693c` with its
 `0x80036940` delay slot; the following claimed function starts exactly at
 `0x800369b8`. A safe GAME one-VA carve admits the complete target with no
 withheld function, but withholds its direct `jal` at `0x80036980` as
@@ -298,12 +303,17 @@ The primary table has nondefault opcode entries at `0x02`–`0x05`, `0x08`,
 `0x59`, `0x60`–`0x62`, `0xe0`, and `0xe1`.
 All 24 unique first-table, six unique second-table, and five third-table
 targets are block heads, with none in a delay slot. These bounds establish
-table extents without proving every case reachable or the source owner.
+table extents without proving every case reachable or the original TU owner.
 The direct `lui`/`addiu` base pairs at `0x80036f84/88`, `0x80037a04/08`,
 and `0x80037cc8/cc` are reviewed; their indirect case-pointer
 rows remain candidate relocations.
-The three tables have distinct curated data identities of 224, nine, and
-five pointer words; these data extents do not assert a common source owner.
+The retail data census retains separate 224-, nine-, and five-pointer rows,
+while the current source claims one contiguous `0x3bc`-byte RODATA owner for
+the tables and their intervening zero word. A focused current-source object
+emits a 956-byte `.rodata` section and 238/238 relocation rows at the same
+offsets, with identical types and `.text` referents. Pointer addends still
+differ at 236/238 rows because the compiled case blocks have different text
+offsets (205 of those deltas are -8); this is not a strict data match.
 The nine secondary targets in index order are `0x80037a20`, `0x80037a88`,
 `0x80037b10`, `0x80037b34`, four copies of `0x80038c78`, and
 `0x80037b58`. The five tertiary targets are `0x80037ce4`,
@@ -358,7 +368,7 @@ datum at `0x8006d6e4`, now typed as SDK `SVECTOR[4]`. Japanese retail bytes
 decode to `(0,-1424,0,0)`, `(0,-912,0,0)`, `(0,-100,300,0)`, and
 `(0,0,64,0)`; the next curated row begins at `0x8006d704`. The defining TU and
 original linkage remain unproved, so its identity stays address-derived and
-the giant dispatcher remains unclaimed.
+the giant dispatcher's original TU owner remains WIP.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
@@ -424,3 +434,18 @@ improved from 75.8% to 76.4% and remains WIP. Its remaining first lighting
 referent differs in address formation (`bss_801c7540+4` in retail versus a
 cell-base add and byte load at +4 in the probe); no relocation identity was
 changed to conceal that difference.
+
+A focused current-source data-owner audit compared each initialized ELF
+section, relocation row, and claimed placement against its GAME target.
+`game.collision_height_wrappers` has matching `.data` of 3,520 bytes;
+`game.map_mask_window_sweep` has matching `.data` of 28 bytes;
+`game.map_object_init_records` has matching `.data` of 270 bytes and
+`.rodata` of 1,016 bytes; and `game.map_object_spawn_scatter` has matching
+`.rodata` of 84 bytes. All four have no placement issue in this focused
+check. The 68-byte `game.map_object` table has all 17 relocation rows at
+the correct offsets, with matching types and referents, but every case
+pointer addend is four bytes later in the compiled text. The 196-byte
+`game.collision_shape_dispatch` table also has all 49 relocation rows at
+matching offsets, types, and referents; its case-pointer addends differ
+with the WIP function layout, including the 37 default rows at -228 bytes.
+Neither WIP table is a strict data match.

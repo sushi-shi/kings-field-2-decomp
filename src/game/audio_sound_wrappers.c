@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/audio.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/player.h>
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
@@ -26,7 +27,6 @@ s32 func_80045e5c(const VECTOR *position, const struct KfEulerAngles *angles)
     u8 *shape;
 
     func_8002b604(x, position->vy, z, 800, 1700);
-    /* This pointer is inside the startup-cleared BSS; its target is WIP. */
-    shape = *(u8 **)((u8 *)&bss_801c7540 + 0x11804);
+    shape = KF_COLLISION_CACHE_SHAPE;
     return *shape == 0x20;
 }

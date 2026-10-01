@@ -7,6 +7,10 @@ listing identity is stated separately. The `0x801d8d40..68` collision-cache
 bytes still overlap the provisional end of the equipment record view, so no
 new overlapping global was defined.
 
+The earlier tables and progress notes below are chronological snapshots.
+The final twenty-function player call-graph table gives the current strict
+verdicts for that subset.
+
 | GAME VA | Verdict | Evidence or remaining question |
 | --- | --- | --- |
 | `800158b4` | WIP, existing source | Focused 72.0% local with matching 3/3 CFG blocks; only the loop counter and start-pointer register assignment differs. The source retains the signed 16-bit interpolation behavior. |
@@ -1430,3 +1434,87 @@ retail-versus-current-scratch objdiff of `player_reaction.c` now reports
 unit lists it `SAME`; only `8002985c` remains non-exact in that unit.
 This correction records the current source state rather than attributing
 the match to the declaration cleanup above.
+
+### Twenty-function player call-graph comparison
+
+Fresh direct retail-versus-current-scratch comparisons cover nine non-exact
+player bodies and eleven related exact caller/callee controls. The control
+set anchors the collision, damage, equipment, magic, and reaction paths;
+all addresses below belong to GAME.EXE. No row was closed by loose display
+similarity.
+
+| VA | Strict verdict | First remaining difference or control role |
+| --- | --- | --- |
+| `80023384` | 76.23256% WIP | Separate retail player-height address pairs versus a candidate base pointer; 5/5 CFG blocks. |
+| `80023430` | 100% exact | Distance-margin caller control. |
+| `80024498` | 100% exact | Damage reaction callee control. |
+| `800248a8` | 100% exact | Twelve-argument damage dispatcher control. |
+| `80024ca4` | 100% exact | Radial-damage caller control. |
+| `80025878` | 100% exact | Effect target-selector callee control. |
+| `80025a18` | 95.54467% WIP | Eleven switch rows differ in destination offset; the retail shared selector is earlier, while call and referent sets agree. |
+| `80026498` | 100% exact | Magic dispatcher caller control. |
+| `8002665c` | 98.67857% WIP | First difference is equipped-ID register assignment; later candidate reuses an attack-phase base across a call. |
+| `8002722c` | 99.09091% WIP | Retail has an otherwise-unused eight-byte leaf frame; switch groups and 82 ordered relocations agree. |
+| `800274ec` | 88.631% WIP | Candidate hoists player-position base; 33 CFG blocks versus retail's 35, with 20/20 branches and 11 ordered calls. |
+| `80027928` | 100% exact | Collision/death threshold callee control. |
+| `80027988` | 100% exact | Landing sound callee control. |
+| `800279cc` | 97.09642% WIP | Two fewer player-state address pairs; 70/70 CFG blocks and 12 ordered calls agree. |
+| `80027f78` | 95.91228% WIP | Four extra player-state address pairs; 27/27 CFG blocks and six ordered calls agree. |
+| `8002897c` | 88.57143% WIP | Seven-instruction interval predicate keeps retail signed conditions but assigns `v0`/`v1` differently. |
+| `80028998` | 100% exact | Charge and attack caller control. |
+| `800291ec` | 100% exact | Reaction object helper control. |
+| `80029624` | 100% exact | Phase/ramp helper; older WIP records are stale. |
+| `8002985c` | 97.582344% WIP | First difference is clamp register assignment, then immediate-subtraction schedule; 142/142 known CFG blocks agree. |
+
+The only current referent-count differences in this set repeat the same
+reviewed player-state target at different instruction sites. The call sets
+are complete where compared. Existing C types, branch meanings, and data
+owners are supported by retail and caller evidence; no source change is
+justified solely by these register, frame, and address-materialization
+residues.
+
+The effect dispatcher also homes `a0`-`a3` on both sides. Retail reloads
+`effect_id` from that home slot before the switch and allocates a `0x70`
+frame, while the candidate keeps `a0` live and allocates `0x68`. Retail's
+selector distance addresses are `sp+0x50/+0x54`, eight bytes above the
+candidate's `sp+0x48/+0x4c` slots. No observed stack access identifies a
+real omitted local in the gap, so no artificial storage was added.
+
+An isolated source probe gave the reaction update's `4096` clamp a distinct
+`s16` local instead of reusing the prior phase result. That natural spelling
+kept exact `800291ec` and `80029624` at 100% but lowered `8002985c` from
+97.582344% to 97.482254%; it was not retained.
+
+A second scratch probe moved only effect-dispatch cases 6 and 10 ahead of
+cases 51/52/4, where retail places their shared selector. It preserved
+exact `80025878` and `player_begin_weapon_attack` but lowered strict
+`80025a18` from 95.54467% to 94.40206%. Its switch layout is therefore
+not explained by that case order alone; the tracked source was unchanged.
+
+## Player BSS source owners
+
+The native GAME link had unresolved player-family globals even though their
+retail addresses and consumers were curated. `player_core_run.c` now defines
+`player_level_growth_table` at `800758f0` (100 twelve-byte rows, `0x4b0`)
+and `player_state` at `801984d0` (`0x160`). The resource startup copy and
+experience/initialization functions address the growth rows. Retail
+`game_main_loop` clears `player_state` with exactly `0x58` word stores,
+ending at `80198630`, whose next word still has no proved owner.
+
+`player_state_equipment.c` now defines `player_weapon_records` at
+`801c7078` (18 records of `0x44` bytes) and `bss_801c7540` at `801c7540`
+(`0x11844` bytes). The first range ends exactly at the second; retail
+magic dispatch bounds the weapon ID below 18, and resource startup copies
+records into its base. Retail `game_main_loop` clears the second range with
+`0x4611` word stores. Their original translation-unit boundary and some
+interior field meanings remain WIP; the definitions do not assert those.
+The session weapon asset buffer was already defined in the equipment unit;
+its `0xc000` extent remains a candidate inferred from the KF1 counterpart.
+
+Focused `kf try` retained all ten `player_core_run` listings and all 15
+previously exact `player_state_equipment` listings. Direct strict comparison
+of the core unit retained 10/10 function scores at 100%; the equipment
+effect dispatcher `80025a18` remains WIP. The pinned compiler emits the
+new tentative globals as COMMON, while the current retail target carves
+fixed `.bss` ranges. This data-class residue is unresolved and does not
+change the exact function verdicts.

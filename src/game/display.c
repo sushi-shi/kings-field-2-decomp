@@ -19,6 +19,9 @@ enum {
 #define GRAPHICS game_graphics_runtime
 #define DISPLAY game_graphics_runtime.display_state
 
+DATA(0x801d9610, 0x4)
+s32 display_frame_cleared_word;
+
 ADDRESS(0x8002d0a4, 0x30)
 void fog_set_near(s32 distance)
 {

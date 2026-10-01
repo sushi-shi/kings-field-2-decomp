@@ -1518,9 +1518,95 @@ position and direction. This first-pass C compiles at 7.8% aggregate
 similarity, still WIP because the dispatcher has incomplete arms and an
 earlier prologue/table mismatch; no new actor field ownership was asserted.
 
+Kind 5 enters 0x80043f44. Phase zero chooses a child count from
+`asset_vertex_count(actor->unknown_01 + 128, actor->unknown_0c)` using the
+unsigned actor index at effect tail +0x41; sentinel 0xff or a zero vertex
+count instead yields 16 children, zero progress step, and one remaining
+update. Counts above 32 clamp to 32 and derive a fractional step from the
+original vertex count. The constructor loop emits kind 105, passing the
+effect's rotation, `effect_state.current_index`, actor index, and accumulated
+fraction as distinct O32 operands; it then enters phase one. Phase one
+waits while updates remain and tail halfword +0x42 is nonzero, then scans
+all 128 effect records for active kind-105 children whose tail +0x40 byte
+matches `current_index`. It sets phase-one children's update count to one
+and counts them, or advances other matching children to phase two. A
+nonzero parent child-count byte invokes `effect_magic_power` and passes the
+typed current-magic halfwords +6..+0x14, scaled child count, effect flags,
+and indexed actor position to `func_80039c94`; the parent is then freed.
+Both the pool scan and magic-record owner are established by existing
+complete objects. This source-backed first pass compiles at 7.0% focused
+aggregate similarity, down from 7.7% while the overall switch remains
+incomplete; it is WIP, not a match.
+
+Kind 23 enters 0x80042934. Phase nine uses the signed tail halfword +0x40
+as an actor index, requires actor lifecycle 1 and target type 25, and obtains
+a vertex offset at the signed tail +0x42 index through `func_8003c000`.
+It adds that offset to the actor's resolved position, grows all three scales
+by 512 up to 0x1800, derives direction halfwords from the old and new
+position words, and invokes `func_80041e94` with the decoded mode and
+motion operands. Once actor animation phase reaches the unsigned tail
+halfword +0x44, it calls `func_8003c3e0` with the existing player-state
++0xe8 origin view, resets phase to zero, and sets 50 remaining updates.
+Other phases first invoke `func_80041e94` with mode 0x100 and then enter
+the same collision/growth path as kinds 7/49. No new player or actor owner
+was asserted. This complete raw-backed path compiles at 8.4% focused
+aggregate similarity, up from 7.0%, and remains WIP.
+
+Kind 105 enters 0x800441cc. It advances rotation Z by 800. Phase two
+decreases the X/Y scales by 128, increases direction Y by 5, and uses
+`func_80042298(100, 0, 0)` to free the slot when the low collision-result
+nibble is set. Earlier phases use tail byte +0x41 as an actor index, with
+0xff taking that collision path. For a valid actor, the signed tail
+halfword +0x42 selects `func_8003c000`'s vertex offset; the source combines
+that with `func_8003c10c`'s actor position. Phase zero probes it through
+`func_80041b14(300, 50, 500, 150, 10, 0)`. A -2 result enters phase one
+and decrements actor halfword +0x42 if nonzero; a -1 result with the
+provisional collision-cache FLAGS low nibble set also decrements that
+halfword and frees the child. Otherwise it waits. Phase one copies the
+three meaningful position words and, when fewer than two updates remain,
+enters phase two, chooses a random lifetime, and halves the vertex-offset
+components into direction. Retail additionally copies the fourth local
+VECTOR word, but this path has no defining store for that word; its source
+value remains unresolved and the C leaves the destination pad unchanged.
+The focused aggregate comparison compiles at 8.2% WIP, down from 8.4%;
+the raw calls, branch conditions, and typed pool references are retained.
+
+Kind 12 enters 0x80043cd0 and branches on phase. Phase 101 increments to
+102. Phase 100 constructs another kind-12 record, sets its phase to 101,
+then joins phase 102 in resetting the parent's render ID, scales, type bits,
+and phase to 110. Phase 110 invokes `func_80041cd0` with the decoded
+0x3800/0x31f/0x46/0x400/0x8000 arguments and advances rotation Y by 64.
+Other phases play sound 0x29 on their first update, increment phase, and
+call `func_8004195c` with the four signed tail halfwords +0x40..+0x46,
+zero, 6000, that last halfword again, and 0x800. A -1 result plays sound
+0x18 and takes the same child/reset path; otherwise the record moves through
+`func_80041e0c`, increases rotation Z by 128, and calls `func_80041e94`
+with the decoded mode operands. The direct child call supplies a null fixed
+direction parameter and `&record->rotation` as its first variadic angle
+pointer; constructor reads of later variadic slots have no visible writer
+at this call site, so their values remain unresolved. This first-pass arm
+compiles at 8.4% aggregate focused similarity, up from 8.2%, and is WIP.
+
+Kind 9 enters 0x8004441c. Tail byte +0x40 selects a target: 0xfe builds
+a local point from `player_state.camera_position` with Y lowered by 1600;
+0xff increases direction Y by 10 and uses `func_80042298(10, 0x80000000,
+0)`; other values index the actor pool, subtract half of actor halfword
++0x1e from actor position Y, and call `func_80041b14` with the decoded
+600/50/0/0/10/0x80000000 arguments. The player point uses
+400/60/3000/0/10/0x80000000. A nonzero collision result for sentinel
+0xff, or a -1 motion result for the other targets, reports the provisional
+collision-cache FLAGS word through `func_8003feb0`, emits twelve identical
+`func_80041e94` spread calls, emits one `func_8004212c` scatter, and frees
+the slot. Otherwise it calls `func_80041e94` with the decoded -1/-3 mode
+and -80/6/8/0/0x400 operands. All branch outcomes and direct calls have a
+source-backed path; the local VECTOR pad is unused by the target helper in
+the visible call contract. The aggregate focused comparison compiles at
+8.7% WIP, up from 8.4%.
+
 The raw 123-word kind table has 55 entries that jump straight to the common
-return and 68 active entries; the current C names 55 of those 68 active
-kinds. The remaining 13 active entries are still WIP, regardless of the
+return and 68 active entries; the current C names 60 of those 68 active
+kinds. The remaining eight are 6, 8, 10, 100, 103, 104, 121, and 122;
+they are still WIP, regardless of the
 aggregate fuzzy score. A focused comparison with flow enabled also reports
 CFG comparison unavailable: retail direct J/JAL rows remain candidate-tier
 and the compiled kind switch has an unresolved indirect jump. Neither

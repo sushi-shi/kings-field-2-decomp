@@ -12,35 +12,63 @@ matching data-owning unit is narrower than whole-image data reconstruction.
 | Image | Strict data-owning units | Source claims / loaded-data census | Native EXE | Exact retail-vs-candidate bytes |
 | --- | ---: | ---: | --- | ---: |
 | PSX.EXE | 0/1 | 73/1,555 (4.7%) | linked, 4,096 B | 277/4,096 differ (43 header; 234 load) |
-| GAME.EXE | 31/44 | 18,264/88,376 (20.7%) | unresolved data symbols | unavailable |
-| OPEN.EXE | 4/4 | 76/111,252 (0.1%) | unresolved data symbols | unavailable |
-| END.EXE | 2/4 | 48/107,104 (0.0%) | unresolved data symbols | unavailable |
+| GAME.EXE | 30/47 | 18,264/88,376 (20.7%) | unresolved data symbols | unavailable |
+| OPEN.EXE | 3/9 | 84/111,252 (0.1%) | linked, 186,368 B | 125,832/186,368 differ (46 header; 125,786 load) |
+| END.EXE | 2/8 | 56/107,104 (0.1%) | linked, 172,032 B | 140,791/174,080 differ (46 header; 140,745 load) |
 
 The GAME strict count incorporates the separately verified
 `game.resource_startup` literal extent correction and targeted
 `game.return_stub_18764` artifact rebuild. The source-claim fractions are
 coverage of the loaded-data census, which also includes SDK data and unresolved
-gaps; they do not measure reachable data or overall correctness. The remaining
-16 divergent data-owning units are PSX `main`, 13 GAME units, and two END units.
-The PSX unit
-differs in one `.data` relocation referent and in `overlay_header` storage:
-the retail target carries a 60-byte `.bss` allocation, while the current
-compiler emits a 64-byte COMMON request. This is an allocation-model issue;
-changing the source to force a score without proving the original declaration
-would lose that evidence. GAME's remaining divergences are chiefly switch-table
-`.text` addends and section extents; `audio_runtime` BSS and
-`map_object_action_update` read-only ownership remain open. Five newly
-defined END globals in `end.main` and `end.audio` preserve all three focused
-function listings, but the compiler emits 8-byte COMMON requests for their
-retail 2- or 4-byte BSS identities. Their strict data mismatch remains WIP;
-four audio identities also occupy widely separated retail addresses and do
-not have one defensible contiguous source-section base.
+gaps; they do not measure reachable data or overall correctness. The current
+strict gate has 30 divergent data-owning units: PSX `main`, 17 GAME units,
+six OPEN units, and six END units. New source-backed BSS owners increased the
+denominator to 65 units; the lower exact fraction does not undo exact function
+listings. The GAME check reports zero missing artifacts.
+The PSX `.data` referent now matches after load-data carving passes its owning
+module's RODATA range to the delinker. The sole PSX data residue is
+`overlay_header`: retail target storage is 60-byte `.bss`, while the pinned
+compiler emits a 64-byte COMMON request for the authentic 60-byte SDK
+`struct EXEC`. Controlled `= {0}` and `-fno-common` probes both moved it into
+`.data`, growing that section from 12 to 72 bytes, so neither change was kept.
+GAME's remaining divergences are chiefly switch-table `.text` addends and
+section extents; `audio_runtime` and the newly defined CD-state BSS, plus
+`map_object_action_update` read-only ownership, remain open. The CD source
+defines the complete `cd_state` and eight-record `cd_archives` objects at
+their curated addresses and sizes. Its focused comparison retains 56 of 57
+identical function listings, with the same pre-existing allocation-register
+residue in the other function. The compiler emits `cd_state` as a 680-byte
+COMMON request for the retail 676-byte BSS object. The neighboring
+`cd_stream_work_buffer` stays undefined: its four-byte candidate identity is
+only a first-word marker, while source proves at least `0xfa04` readable
+bytes and does not establish its complete extent.
+
+The OPEN/END globals use the curated widths, storage classes, names, and
+owners in their loader, audio, display, and shared movie-stream sources.
+Focused comparisons retained every function listing in those changed units.
+The strict gate correctly leaves their BSS as WIP: GCC emits tentative
+definitions as COMMON requests instead of fixed `.bss`, often rounding a
+2- or 4-byte symbol to eight bytes. The two zero-loaded movie flags also
+have a four-byte unclassified retail gap between them, whereas C emits them
+contiguously in one `.data` section. Neither padding nor individual linker
+placements were introduced to hide those differences.
+
+This COMMON residue is not resolved by a general source-independent compiler
+switch found in this audit. The native compiler emits `.comm` requests for
+truthful tentative definitions, and the ELF reader intentionally preserves
+them as unplaced `SHN_COMMON`; the native linker allocates the final BSS
+segment only when forming the EXE. The existing `-fno-common` and explicit
+zero-initializer PSX controls moved the 60-byte `struct EXEC` into `.data`,
+while the established G8 profile changes small-data instruction selection.
+No per-symbol section attribute or forced initializer was retained.
 
 The current native PSX candidate has the same 4,096-byte file extent as
 retail. Its first differing file byte is at offset 8 in the header; its first
 load-payload difference is at offset `0x84c`, VA `0x8001004c`. Of the 2,048
-load bytes, 234 differ. No current native GAME, OPEN, or END candidate EXE
-exists, so no exact byte-difference count can be stated for those images.
+load bytes, 234 differ. OPEN has the same file extent as retail, with its first
+load difference at `0x80011020`. END is 2,048 bytes shorter than retail and
+also first differs in its load at `0x80011020`. No current native GAME
+candidate EXE exists, so an exact GAME byte-difference count is unavailable.
 An aligned-island heuristic or the retail-target round trip is not a candidate
 EXE comparison.
 
@@ -60,27 +88,22 @@ symbol pass without altering source objects.
 
 | Image | Current native linker diagnostics | Distinct unresolved names | Largest repeated unresolved names |
 | --- | ---: | ---: | --- |
-| GAME.EXE | 5,762 | 46 | `player_state` (2,590), `game_graphics_runtime` (624), `state_8017d118` (352) |
-| OPEN.EXE | 462 | 20 | `current_poly_ft4` (198), `dec` (68), `display_buffers` (64) |
-| END.EXE | 150 | 12 | `dec` (68), `display_buffers` (34), `display_current` (22) |
+| GAME.EXE | 2,780 | 39 | `game_graphics_runtime`, `state_8017d118`, and 37 other curated data names |
+| OPEN.EXE | 0 | 0 | Native link completes with ten C units |
+| END.EXE | 0 | 0 | Native link completes with eight C units |
 
-Every distinct unresolved name has a row in
-`config/retail/data_identities.tsv`; there is no unresolved function name in
-these transcripts. They remain undefined in source because the owning module,
-initialized bytes or BSS reservation, and whole-image allocation placement
-must be reconstructed. The diagnostic counts include repeated references to
-the same names and are not counts of missing source definitions.
-
-The END source pass defined `ending_data` in its loader unit and the four
-audio pointers/IDs in the unit that assigns them, with retail-backed widths,
-storage, and identity names. It reduced END's distinct unresolved names from
-17 to 12, and its diagnostics from 188 to 150. The strict END data gate moved
-from 3/3 to 2/4 because current compiler COMMON requests do not prove fixed
-retail BSS placement. No attributes, padding, or linker equates were added to
-manufacture a data match.
+Every distinct unresolved GAME name has a row in
+`config/retail/data_identities.tsv`; no unresolved function name remains.
+The GAME diagnostic count includes repeated references and does not count
+missing definitions. OPEN and END passed through intermediate states with
+20/17, then 13/5, then zero unresolved names as their source-backed data
+owners were added. A small `DATA_AT()` claim form mirrors `ADDRESS_AT()` so
+one shared movie/display/audio source can retain image-qualified retail data
+addresses without duplicating definitions. Its parser, manifest filter, and
+compiler size probe all select the claims for the current image.
 
 The local evidence files are ignored build products:
-`build/link/{psx,game,open,end}/build.json` and each failed overlay's
-`LINK.TXT`. This note does not claim historical linker option attribution;
+`build/link/{psx,game,open,end}/build.json` and each overlay's `LINK.TXT`.
+This note does not claim historical linker option attribution;
 `/n1024` only raises the pinned linker's module table for the current
 reconstruction.

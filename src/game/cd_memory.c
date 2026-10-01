@@ -42,6 +42,11 @@ char cd_path_prefix[5] = "\\CD\\";
 DATA(0x8006d688, 0x3)
 char cd_version_suffix[3] = ";1";
 
+DATA(0x801b5d60, 0x2a4)
+KfCdState cd_state;
+DATA(0x801b6004, 0x60)
+KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
+
 ADDRESS(0x80016ed4, 0xc)
 void cd_stream_mark_complete(KfCdRequest *request)
 {

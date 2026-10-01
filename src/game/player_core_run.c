@@ -8,6 +8,12 @@
 #include <kf/game/player.h>
 #include <kf/game/resources.h>
 
+DATA(0x800758f0, 0x4b0)
+KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
+
+DATA(0x801984d0, 0x160)
+KfPlayerState player_state;
+
 ADDRESS(0x80023570, 0x9c)
 void player_restore_equipment_effects(void)
 {

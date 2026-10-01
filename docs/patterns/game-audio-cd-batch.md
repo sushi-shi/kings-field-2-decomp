@@ -1140,6 +1140,18 @@ matches. No other curated GAME identity overlaps `0x8009a6a0..0x8009a7f8`;
 whether the original allocation reserved more than the SDK-required extent
 remains open. The 15 exact audio siblings still have identical focused listings.
 
+A fresh direct audio-runtime object comparison finds the candidate target's
+344-byte `.bss` symbol, while the pinned GCC probe emits a 344-byte exported
+COMMON symbol (four-byte alignment) from the tentative C definition. Both
+retain the named `audio_sequence_table` referent in the `SsSetTableSize` call.
+Pinned Psy-Q 3.0 `LIBSND.H` defines `SS_SEQ_TABSIZ` as 172 and declares
+`SsSetTableSize(char*, short, short)`. The carved target `.bss` is the current
+data-owner model, not retail
+evidence that the original C had an explicit zero initializer or that the
+whole-program COMMON allocator used this section. Keep the tentative source
+definition and the allocation-class/data-comparison residue open; exported
+COMMON placement is independently unresolved in `data-repair-campaign.md`.
+
 ### Related resource-runtime audit
 
 GAME `0x80032274` updates a range of VAB slots from a byte flag stream. Its

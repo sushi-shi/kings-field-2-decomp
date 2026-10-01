@@ -37,6 +37,11 @@ u8 *overlay_next_request = (u8 *)0x800102f0;
 DATA(0x8003db8c, 0x5)
 char opening_data_file[5] = "OP.D";
 
+DATA(0x800a6410, 0x4)
+u8 *opening_data;
+DATA(0x800ac540, 0x1)
+u8 display_fade_level;
+
 ADDRESS(0x80011ac0, 0x4dc)
 void main(void)
 {

@@ -69,6 +69,12 @@ void player_reset_status(void)
 DATA(0x80075da0, 0xc000)
 static KfWeaponAssetBuffer player_weapon_asset_buffer;
 
+DATA(0x801c7078, 0x4c8)
+KfWeaponRecordGame player_weapon_records[18];
+
+DATA(0x801c7540, 0x11844)
+KfBss801c7540 bss_801c7540;
+
 enum {
     PLAYER_INITIAL_LEVEL = 1,
     PLAYER_INITIAL_CAMERA_PITCH = 2500,

@@ -155,6 +155,16 @@ source call sets and identified data referents remain aligned with retail:
 | `0x80022ca0` | retail orders the slot-seed loads, zero fill, and saved-register setup differently |
 | `0x80023178` | retail and current object have the same signed decimal divisions and loop exits, with different argument and temporary registers |
 
+An isolated 14-unit rebuild after the shared header changes retained all
+23/30 strict exact card functions, 9,604/13,720 exact code bytes, and
+337/337 initialized data bytes. Bounded GCC 2.5.7 plain, R3000, and
+no-scheduling controls on the four WIP units produced no new exact function;
+plain and no-scheduling also lost the exact `0x8001c12c` sibling. GCC 2.6.0
+lost every exact sibling in those four units. An alternate typed header-base
+offset loop for `0x800228c8` decreased its strict comparison score and was not
+retained. These results limit the current probes without proving the original
+compiler or treating a fuzzy score as source truth.
+
 The payload pair has one proven external caller each: writer `0x80022ca0`
 calls serializer `0x80048d24` at `0x80023020`, and reader `0x80022b74`
 calls deserializer `0x800492dc` at `0x80022c5c`. The other xrefs to each

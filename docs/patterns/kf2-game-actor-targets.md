@@ -20,6 +20,8 @@ not reconstructed game functions.
 | `80038e38` | exact | Initializes actor fields, calls group copy, `rand`, and placement helper `8002b73c`. |
 | `80038f20` | exact | Scans 200 actors and calls unresolved callback-table slot 19 through `state_8017d118.active_table`, then sets the home position. The source-backed listing was certified strict `208/208`; the indirect destination remains unresolved. |
 | `80038ff0` | exact | Resets placement fields, calls home-position and group initializers. |
+| `80039048` | exact, 100% direct | Newly recognized actor-index wrapper calls `38ff0`; the contiguous two-function unit and ordered relocations match. |
+| `80039080` | exact, 100% direct | Clears the actor pool; isolated object comparison matches 80/80 text bytes and all ordered relocations. |
 | `800390d0` | exact | Sets a target pointer and current/previous target-type bytes. |
 | `80039108` | WIP | Candidate scorer: 0x4c0 bytes, computed dispatch and unresolved indirect control, with many outgoing references. Candidate kind and dispatch-table ownership need recovery. |
 | `800395c8` | exact | Scans sixteen candidates, retains the highest signed score and calls the target setter when needed. |
@@ -1570,13 +1572,13 @@ listing values are not closure claims; `366fc` alone has a fresh direct
 | --- | --- | --- |
 | `356ac` | WIP, 55.9% listing | Five reset siblings stay SAME; two map-cell row/column address schedules differ. |
 | `35894` | WIP, 92.7% listing | Typed low-byte tail probe left the listing unchanged; the first store schedule and region-index arithmetic still differ. |
-| `36190` | WIP, 82.9% listing | Outer-guard source-only probe fell to 82.6% and was discarded; initial bound exit and retry joins still differ. |
-| `36464` | WIP, 92.8% listing | Spawn register/store scheduling differs; the preceding `36190` length still shifts this unit's switch-table addend. |
+| `36190` | WIP, 89.78417% direct (82.9% focused listing) | All 15 CFG blocks and 8 branches exist, but the first bound check takes the final `-1` exit in retail and enters the body in the probe. Off-tree removal of the explicit guard (82.6%) and a guarded `do` loop (81.6%) changed the return joins and were discarded; exact `363bc`/`363dc` siblings remain 100% direct. |
+| `36464` | WIP, 95.32258% direct (92.8% focused listing) | Spawn register/store scheduling differs; the preceding `36190` length still shifts this unit's switch-table addend. |
 | `366fc` | Exact, 100% direct | Typed spawn high-byte access gives all four scatter-unit listings SAME, 992/992 text and 84/84 RODATA bytes, with identical ordered relocations. |
 | `36ed4` | WIP, 27.7% listing | All 23 primary action IDs have C paths; the dispatch body and some subactions remain structurally different. |
 | `39108` | WIP, 35.1% listing | The proved byte/halfword view at candidate +0x0e preserves the current listing; one CFG block and one branch remain unmatched. |
-| `3983c` | WIP, 87.0% listing | Actor pointer and sentinel saved-register assignments differ; the new adjacent claim preserves its listing. |
-| `39b58` | WIP, 79.2% listing | New actor-group wrapper has 9/9 CFG blocks, 4/4 branches, and ordered referents; saved `s4` sentinel differs. |
+| `3983c` | WIP, 99.19598% direct (87.0% focused listing) | Actor pointer and sentinel saved-register assignments differ. Direct comparison covers 796 retail bytes; relocation sites shift with the generated text. |
+| `39b58` | WIP, 90.95744% direct (79.2% focused listing) | The wrapper has 9/9 CFG blocks and 4/4 branches, but retail keeps the `0xff` sentinel in saved `s4`; direct comparison covers 188 retail bytes. |
 | `39c94` | WIP, 62.1% listing | Exact `39c14` sibling preserved; stack-argument schedule and callback path register lifetimes differ. |
 
 ### Actor motion and map-boundary follow-up
@@ -1595,6 +1597,15 @@ discarded; the source remains unchanged.
 An early `if (state == 0x20)` `/tmp` probe instead reached 68.0% with the
 same block and branch counts, but emitted a `bne` to the wrong B4 successor
 where retail has `beq`. That source-shape trial was also discarded.
+An isolated pinned GCC 2.5.7 compile of `game.actor_animation` directly
+confirms all six exact sibling functions at 100% and identical ordered
+relocations. Its `3ae50` function is 99.31746% direct over 1260 retail bytes;
+the independent angle-wrap mask moves across the square-root call in the
+probe. No source fact supports forcing that schedule.
+An isolated compile of `game.actor_group_position` likewise directly confirms
+its three preceding functions at 100% (268, 276, and 448 bytes), identical
+ordered relocations, and `3c3e0` at 99.64539% over 564 retail bytes. Its
+remaining yaw-error register assignment has no proved source correction.
 
 | GAME VA | Final verdict | Evidence limit |
 | --- | --- | --- |
@@ -1603,10 +1614,10 @@ where retail has `beq`. That source-shape trial was also discarded.
 | `36ad8` | Exact, 100% direct | Rectangle/height predicate uses `player_state.camera_position`; both contiguous functions and ordered relocations match. |
 | `3a318` | WIP, 97.5% focused listing | Two incoming O32 stack-argument loads exchange temporary registers; exact `3a778` remains SAME. |
 | `3a614` | WIP, 81.2% focused listing | Retail separately reloads player camera fields where GCC reuses a base; calls and return paths agree. |
-| `3ae50` | WIP, 99.2% focused listing | Five instructions around the angle-wrap mask are scheduled differently; six animation siblings remain SAME. |
+| `3ae50` | WIP, 99.31746% direct | Angle-wrap masking is scheduled after `SquareRoot0` in the probe and before it in retail; six contiguous siblings are 100% direct and ordered relocations agree. |
 | `3b5d0` | WIP, 66.5% focused listing | Both versions have 40 CFG blocks and 21 branches, but B4 tests vertical state `0x20` first in retail and `0x10` first in the probe; three preceding siblings remain SAME. |
 | `3bd40` | WIP, 68.2% focused listing | Actor-state load and angle-temporary lifetimes differ; six actor-motion siblings remain SAME. |
-| `3c3e0` | WIP, 95.4% focused listing | Yaw-error and scaled-yaw temporaries exchange registers; three group-position siblings remain SAME. |
+| `3c3e0` | WIP, 99.64539% direct | Yaw-error and scaled-yaw temporaries exchange registers; three group-position siblings are 100% direct with identical ordered relocations. |
 | `3f7ec` | WIP, 93.8% focused listing | Sentinel initialization order and commutative pointer addition differ; exact `3f610` and `3f860` remain SAME. |
 
 The connected lifecycle unit was rechecked after this table: `3983c` remains
@@ -1614,6 +1625,9 @@ The connected lifecycle unit was rechecked after this table: `3983c` remains
 79.2% with 9/9 blocks and 4/4 branches. Both ordered successor lists agree.
 The former exchanges saved actor-pointer and constant registers; the latter
 holds the `0xff` sentinel in retail saved `s4` but materializes an immediate
-in the probe. No external direct caller of `39b58` is established by the
+in the probe. Retail `39b58` also advances two 124-byte cursors, one at the
+actor base and one anchored at actor `+9`; the latter reads group index at
+`-7` and lifecycle at `0`. These are two views of the same typed actor record,
+not evidence of another allocation. No external direct caller of `39b58` is established by the
 current xref inventory. Neither difference supports an invented C local or
 an overlapping owner, so both source claims remain WIP and unchanged.

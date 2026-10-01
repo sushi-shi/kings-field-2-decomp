@@ -13,6 +13,9 @@ s32 menu_cursor_animation_frame = 0;
 DATA(0x8006d69c, 0x4)
 s32 menu_cursor_animation_direction = 0;
 
+DATA(0x8006d9e0, 0x4)
+POLY_FT4 *current_poly_ft4;
+
 ADDRESS(0x80021a60, 0x8)
 void func_80021a60(void)
 {

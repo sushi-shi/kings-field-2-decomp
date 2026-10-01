@@ -75,7 +75,7 @@ that moved instructions away from retail were reverted.
 | `8003a318` actor damage | 99.86911% | WIP. Its first focused difference swaps the registers chosen for two incoming stack arguments; no signature, call, CFG, or referent correction was supported. |
 | `8003c3e0` actor group position | 99.64539% | WIP. Retail and probe compute the same masked yaw error and signed division; only the yaw-error and shifted-numerator registers exchange roles. |
 | `800461a0` marker stream | 99.12676% | WIP. Retail keeps the scan and marker pointers in the opposite argument registers, with marker-relative byte loads. Pointer-base rewrites introduced extra instructions and were reverted. Retail's non-marker retry does not advance the cursor; source records that stream constraint. |
-| `8001369c` main loop | 99.67553% | WIP. The only focused text difference is the fixed arena base `8009b0a0`: retail forms it with carry-adjusted `lui/addiu`, while the literal pointer uses `lui/ori`. No arena object owner or original address mechanism is proved; adjacent `main` remains exact. |
+| `8001369c` main loop | 99.569145% | WIP. The only focused listing difference is the fixed arena base `8009b0a0`: retail forms it with carry-adjusted `lui/addiu`, while the literal pointer uses `lui/ori`. The adjacent `main` remains strict exact. |
 | `8001a4f0` item/magic controller | 99.74359% | WIP. Focused listing differs only in the initializer loop's count and constant registers; the loop stores, calls, branches, and data references agree. No source fact supports changing the live locals. |
 | `8001fb8c` menu window | 99.78788% | WIP. All body instructions, calls, and referents align; the only focused differences are a 48-byte retail frame versus a 40-byte probe frame and their saved-register offsets. No live source object accounts for the extra eight bytes. |
 | `8001f8b8` preview choice | 94.36464% | WIP. The label glyph writes and call set agree, but the probe assigns the three retained arguments to different saved registers and places the input-release exit after the input loop. A source-equivalent `while` form worsened the CFG and was reverted. |
@@ -96,6 +96,21 @@ that moved instructions away from retail were reverted.
 | `8002c424` mask-line scan | 89.65306% | WIP, 73.5% focused. The eight proven calls from the map-mask sweep supply the six-argument step/stride pattern, and retail/source read the same scan-state, mask, and occupancy objects. CFG is 23/22 blocks with 14/14 branches; the probe assigns the second input to a saved register where retail first copies it to `$t5`, changing cursor-pointer lifetimes. Later mask-case joins differ by one block. No data-owner or control change is yet supported. |
 | `8002ce68` floor-item capture | 65.85185% | WIP, 55.7% focused. All five proven call sites are in `game_main_loop`, whose source passes seven arguments. Retail and source store the same item fields, call free-slot search, allocate pixels only for kind 1, then call `StoreImage` and `DrawSync`. CFG is 5/5 blocks and 2/2 branches, with exact free-slot and update siblings. Retail reloads the three stack arguments after free-slot search, while the probe saves them in `$s` registers before the call and grows the frame from 40 to 56 bytes. No signature or field correction supports forcing those lifetimes. |
 | `8002c670` map-mask sweep | 90.048485% | WIP, 76.4% focused. Retail doubles view X/Z with `sll`; the source now casts to `u32` before shifting so the same 32-bit wrap is defined. The four line draws, eight line scans, mask-cell referents, and shape table remain source-owned; CFG is 11/11 blocks and 4/4 branches. The first residual is an independent addition destination register; later state-byte stores and map-cell base scheduling differ, so no exact claim follows from this source correction. |
+
+The main loop's word at `0x80198630` is now a bounded four-byte candidate
+`DAT_80198630` defined in `main.c`, replacing two raw pointer literals. Retail
+stores zero through `lui/sw` at `0x800138c4/0x800138c8` and loads the same word
+through `lui/lw` at `0x8001394c/0x80013950` before comparing it with one.
+The startup clear of `player_state` ends exactly at `0x80198630`; the next
+surveyed LIBSND byte references start at `0x80198638`. No direct reference
+occupies the intervening four bytes, but the original allocation/TU boundary
+and any indirect writer remain unproved. A focused safe carve of the two
+`game.main` function claims admitted both reviewed relocation pairs with zero
+withheld rows. The focused listing now differs only at the unrelated fixed
+arena literal; direct objdiff keeps `main` at 100% and the loop at 99.569145%.
+The earlier 99.67553% score used a target without these two BSS relocations
+and is not a comparable exactness verdict. No full build or repository tests
+were run.
 
 A follow-up focused pass tested three bounded control/dataflow spellings and kept
 the established source. Enclosing the `80036190` object scan in the initial

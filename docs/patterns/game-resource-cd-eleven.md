@@ -100,3 +100,40 @@ callbacks and three asset-registry functions each retained all matching
 listings. No new source owner can yet be justified for the fixed RAM
 destinations, so no source/config edit was retained in this recheck. No
 repository tests, lint, broad match, or full linked build ran.
+
+## Resource-runtime eight-function recheck
+
+A fresh single-unit compile and isolated direct objdiff retained four exact
+functions: registry getter `0x80031fa0`, TMD read completion `0x80032008`,
+single-cell mask `0x80032040`, and TMD range update `0x80032364`. The four
+WIPs remain `0x800320b0` **73.95918%**, `0x80032174` **93.6%**,
+`0x800321d8` **98.4359%**, and `0x80032274` **90.933334%** strict. Focused
+listings are respectively 26.9%, 37.9%, 95.8%, and 43.6%.
+
+Retail `0x800320b0` computes Z then X before its 24-wide row offset, tests
+signed row/column bounds, and returns the OR mask narrowed to a byte. The
+current source preserves those values and loop exits; its different induction
+registers remain unattributed. Retail `0x80032174` uses the same signed view
+cell comparisons and five-block return path as the source, with a result
+register difference. At `0x80032274`, retail recomputes the eight-byte VAB
+slot offset each iteration and uses a 48-byte frame; the probe retains an
+offset induction register and a 56-byte frame while preserving the slot state
+transitions and sole audio call. Recasting the VAB `while` as a `for` loop
+with the same entry/slot increments compiled byte-identically, so it was
+discarded. The arena address at `0x8009b0a0` still lacks an original source
+owner, and no literal or storage trick was added for `0x800321d8`.
+
+## Transition request and step focused control
+
+Fresh isolated objects give GAME `0x80016260` **98.790085% strict**
+(71.6% focused listing) and `0x80016820` **99.193474% strict**
+(98.4% focused). The request keeps the eight byte-valued arguments,
+six direct callers, sentinel choices, critical-section wait, and CD-yield
+path; its first difference assigns the seventh and eighth stack-byte values
+to different saved registers, followed by branch-layout residue. The step's
+seven-phase dispatch, direct calls, and callback table remain in place.
+Its focused differences are the address constructors for RAM workspaces
+`0x8019e138` and `0x8012da68`: retail uses reviewed signed-low relocation
+pairs, while the provisional C uses literal `lui/ori` addresses. Neither
+workspace has a proved complete source object, so no definition or source
+change was added. The five adjacent phase callbacks remain exact controls.

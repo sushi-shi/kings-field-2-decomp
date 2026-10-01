@@ -127,3 +127,23 @@ listing remains identical. No repository tests, banking, or commit were run
 for this batch. A later full `kf match` is required after concurrent source
 merges settle; the last global exit was blocked by a transient stale Ninja
 source dependency and the existing known-reference data closure.
+
+The GAME `0x80012960..0x80012bf3` event-save table now has the conservative
+`func_80048554_rodata` identity and `0x80048554` owner. Retail at `0x800486a8`
+bounds an unsigned record kind to `0..0xa4`, multiplies it by four, and jumps
+through that exact 165-word range. Every curated word equals its retail
+little-endian value and targets one of five labels inside the serializer;
+the 165 relocation rows were promoted from range-only candidates to reviewed
+pointers without changing any address or target. A safe one-VA delink has zero
+withheld relocations and the focused save-stream listing remains 1/1 SAME.
+Its existing strict exact verdict is preserved, with no broad match rerun.
+
+The paired GAME `0x80012bf8..0x80012c37` restore table is owned by
+`func_800489ac`: retail bounds opcodes to `0xf0..0xff`, indexes 16 words, and
+jumps through the loaded pointer. All 16 reviewed rows equal their raw retail
+words and land in eight labels inside the restore body. The existing source
+claims that complete 0x40-byte RODATA range. The owner identity was narrowed
+without changing the table or relocation targets; safe one-VA delink reports
+zero withheld relocations. Focused restore remains 95.1% listing DIFF, with
+the first difference in sentinel/base register allocation; its prior strict
+98.82883% WIP verdict is unchanged pending a direct strict rerun.

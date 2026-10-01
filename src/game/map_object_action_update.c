@@ -288,7 +288,7 @@ void func_80036ed4(void)
                 break;
             case 1:
                 if (object->tail.fields.unknown_38 == 0xfe) {
-                    object->extra_40.halfwords[0] = (u16)-16;
+                    object->extra_40.signed_halfwords[0] = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->unknown_00);
@@ -297,14 +297,14 @@ void func_80036ed4(void)
                 break;
             case 2: {
                 s32 velocity = angle_velocity_step(0xa00, object->rotation.vx,
-                                                    (s16)object->extra_40.halfwords[0], 8, 4);
+                                                    object->extra_40.signed_halfwords[0], 8, 4);
                 s32 angle = ((u16)object->rotation.vx + velocity) & 0xfff;
-                object->extra_40.halfwords[0] = velocity;
+                object->extra_40.signed_halfwords[0] = velocity;
                 object->rotation.vx = angle;
                 if (angle < 0xc00) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                 }
-                if ((s16)object->extra_40.halfwords[0] == 0 && object->rotation.vx == 0xa00) {
+                if (object->extra_40.signed_halfwords[0] == 0 && object->rotation.vx == 0xa00) {
                     object->action_timer = 3;
                 }
                 break;
@@ -344,8 +344,7 @@ void func_80036ed4(void)
                 vector2i_scale_shift11(10, &displacement);
                 object->position.vx += displacement.x;
                 object->position.vz += displacement.z;
-                object->extra_40.halfwords[0]--;
-                if (object->extra_40.halfwords[0] == 0) {
+                if (--object->extra_40.halfwords[0] == 0) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                     object->action_timer = 3;
                 }

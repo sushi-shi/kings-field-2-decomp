@@ -48,10 +48,16 @@ The adjacent event family was reviewed with focused unit comparisons:
 | `0x8004678c` | Exact command controller. The five-case, decay-join, command `0x52` state-one, and branch-local magic-record write corrections reproduce retail text, data, rodata, and ordered relocations. |
 | `0x800473e0`, `0x80047434`, `0x800474c4` | Previously verified strict exact counter and transition callees. |
 | `0x800475d8` | Focused DIFF, 89.4% listing; retail keeps the selected map template in `$s1`, probe in `$s0`, affecting the pose-loop saved-register lifetimes. |
-| `0x80047c98` | Focused DIFF, 86.3% listing; retail keeps the rotation argument in `$s4`, probe in `$s5`. The linked-object notify branch is ordered differently; calls and typed referents remain present. |
+| `0x80047c98` | Focused DIFF, 97.1% listing; 85/85 CFG blocks and 55/55 branches now agree. Retail keeps the rotation argument in `$s4` and constant one in `$s5`; the probe exchanges them. Calls and typed referents remain present. |
 | `0x800482f8`, `0x800483a8`, `0x800483d8`, `0x80048428`, `0x80048498`, `0x800484e4` | Focused 6/6 identical listings in the event-state unit. |
 | `0x80048554` | Focused identical listing in the event-save unit. |
 | `0x800489ac` | WIP, 98.82883% previously recorded strict and 95.1% current focused listing; retail puts the actor-state base in `$a1` and the `0xff` sentinel in `$a2`, while the probe exchanges them. Calls, referents, and branches remain present. |
+
+The current source has closed the earlier linked-object notify CFG gap. A
+fresh focused comparison has matching known successor lists and only the
+saved-register assignments plus one commutative `addu` operand order in its
+listing differences. The prior isolated strict result was 97.37745%; no new
+strict claim or source edit follows from this register schedule.
 
 For `0x80047c98`, retail `0x80048150..0x80048190` has one
 `notify_enqueue(6)` block reached when the linked index is `0xffff` or the

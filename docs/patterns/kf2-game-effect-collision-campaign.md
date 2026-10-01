@@ -2060,27 +2060,36 @@ all six. Along with the ten exact `effect_update` functions above, this
 
 A fresh focused rebuild of `game.effect_update_dispatch` leaves GAME
 `0x80042650` WIP: retail text is 13,936 bytes and the compiled body is
-13,852 bytes. Moving the self-contained ballistic cases 29/31/48 and
+13,860 bytes. Moving the self-contained ballistic cases 29/31/48 and
 30/47 to the switch start follows the first retail table targets: their
 retail offsets are `+96` and `+104`, versus `+104` and `+112` in the probe,
 an eight-byte difference after the probe's two extra saved-register stores.
-Focused listing similarity rose from 13.0% to 14.5%, and direct strict text
-from 0% to 11.941159%; the function remains far from exact. Both 516-byte
+Retail then enters kinds 7/49 at `+520`, 13/32 at `+612`, and kind 23 at
+`+740`. The kind-23 non-phase-nine arm at `+1168` calls `func_80041e94`
+and explicitly jumps back to the kind-7 shared path at `+520`. The source
+now puts these cases in the same order and spells the shared jump directly,
+preserving the existing behavior and argument values. The next retail
+targets are kind 4 at `+1220`, kinds 34/35 at `+1344`, and kind 25 at
+`+1352`; their self-contained C groups now follow kind 23 in that order.
+Retail next enters kind 42 at `+1452`, kind 115 at `+1504`, and kind 113 at
+`+1732`; these three independent groups were moved next, with their bodies
+and calls unchanged. Kinds 46, 45, 116, and 117 then follow retail at
+`+1912`, `+2232`, `+2256`, and `+2488`. Their independent C arms now appear
+in that order too. The first 16 distinct jump targets have the same ordered
+kind classes in retail and the compiled object, with different body offsets.
+Focused listing similarity is 21.3% (13.0% before these moves). Direct strict
+text is 17.417624%, below the preceding 20.613089% probe; this intermediate
+drop does not contradict the independently decoded target order, and the
+function remains WIP. Both 516-byte
 `.rodata` sections contain 128 `R_MIPS_32` pointer rows. Canonicalizing their
 in-body target addends by first-occurrence class gives the same class at all
 128 indices, with 64 distinct classes on each side. Raw `.rodata` similarity
-is now 7.976654%
-(14.883268% before the move): body-offset changes lower this byte metric,
+is now 18.677042% (14.883268% before the case moves): body-offset changes
+lower this byte metric,
 with no evidence for a missing table entry. Retail allocates 224 stack bytes
 and saves five `$s` registers, while this probe allocates 192 bytes and saves
-seven. The first case entries now follow retail order, but later case groups
-still diverge. In particular, retail enters kinds 7/49 at `+520`, 13/32 at
-`+612`, and kind 23 at `+740`. The current C places kind 23 before the 7/49
-growth path so it can fall through into their common update. An off-tree
-split with an explicit shared label improves the fuzzy listing, but the
-original source form of this join is unproved; a score-only rewrite was
-discarded. No additional live stack object is established by the frame
-difference.
+seven. Later case groups still diverge. No additional live stack object is
+established by the frame difference.
 
 Retail has 27 direct calls to `func_80040308`; the compiled body has 26.
 The source contains 27 constructor call expressions. For kind 114, retail
@@ -2090,12 +2099,11 @@ constructor call at `+13416` with a later dynamic-kind path. The source
 already represents both calls and their argument values; this is call-site
 coalescing, with no supported missing C arm. A fresh direct strict comparison
 keeps all ten `game.effect_update` functions and all three `game.effect_reset`
-functions, including sole caller `effect_pool_sweep`, at 100%. The ballistic
-case move is the only retained updater source edit; no call arm or pointer
-table was changed. Off-tree probes also placed the growth and phase case
-groups earlier, reaching 15.8% focused similarity, but their shared-growth
-join needs a new cross-case `goto` whose source form is not yet established;
-those probes were discarded.
+functions, including sole caller `effect_pool_sweep`, at 100%. The ballistic,
+growth, and nine independent case-group moves are the only retained updater
+source edits; no call arm or pointer table was changed. Other off-tree
+phase-case ordering probes were discarded because their source-level joins
+are not yet established.
 
 ## Kind-102 audio parameter identity
 
@@ -2142,3 +2150,18 @@ text and switch table have 157 and 123 relocation rows respectively; all
 123 switch entries preserve the retail pairwise target equivalence across 62
 distinct classes. The constructor remains WIP because instruction order and
 other source-shape differences persist; exact closure is not claimed.
+
+A later source-order pass put all 62 constructor switch target classes in the
+same sorted physical order as retail. It moved the self-contained case groups
+51/52, 53/33, 121/103, 122/104, 54/11, 16/14/19, 48/47/30/29/31, and
+117/34/35; the kind-4 raw path also proved and restored a missing
+`unknown_3c[4] = 0` store. Focused similarity is now 39.6%, and direct strict
+text is 88.789474% (5,076 candidate versus 5,092 retail bytes), up from
+83.979576%. It remains WIP.
+
+An off-tree KF1-style `s32 *` varargs cursor at `&direction` placed the probe
+cursor at retail stack offset `+88`, but strict text fell to 88.48154% and
+the candidate grew to 5,100 bytes. Moving the cursor assignment after the
+pool find fell to 88.296936% and 5,104 bytes. Both retained the wrong
+saved-register allocation. These probes were discarded; the cursor shape is
+not established by the stack address alone.

@@ -16,7 +16,7 @@ supported Sony/Psy-Q archive attribution.
 | `0x8003ae50` | The 0x4ec-byte actor collision response calls the five-channel dispatcher, height probe, collision snapshot, angle, sine/cosine, and square root helpers. | **WIP, source claimed, 99.31746% recorded strict**; 58/58 CFG blocks and all direct calls agree. The 99.2% focused listing differs at obstacle-angle register assignment and mask timing; six neighboring functions remain exact. |
 | `0x8003b5d0` | Drives actor vertical motion through floor, rising, falling, and trajectory cases with collision and damage calls. | **WIP, 87.95102% strict**; all direct calls agree, while switch order, one CFG block, and return-frontier layout differ. |
 | `0x8003c3e0` | Repeatedly steers actor pitch/yaw toward a target Y offset of 1600 and advances a position vector. | **WIP, 99.64539% strict**; 23/23 CFG blocks and direct calls agree; only yaw-error and shifted-numerator registers differ in the focused listing. |
-| `0x8003c614` | The 0xa70-byte actor/effect dispatcher calls vector, animation, spatial sound, and effect helpers and contains an indirect jump. | **WIP, source claimed, 23.0% focused**; its candidate table `DAT_80011ee8` and complete dispatch behavior remain unresolved. |
+| `0x8003c614` | The 0xa70-byte actor/effect dispatcher calls vector, animation, spatial sound, and effect helpers and contains an indirect jump. | **WIP, source claimed, 55.3% focused / 79.86976% strict**; the 123 switch rows group cases correctly, while its frame and shared constructor path remain unresolved. |
 | `0x8003d084` | Clamps a signed actor byte at +`0x4b` to ±12 and adds a scaled `rand` result to its note offset. | **Exact, 100% strict**; the centered random pitch jitter matches the retail listing and ordered relocation, and a fresh focused build keeps both this leaf and its `0x3d0e8` caller `SAME`. |
 
 The two exact actor scans retain typed `VECTOR` paths. Their C source places
@@ -130,3 +130,10 @@ discarded. A separate branch-local direction pointer meant to merge kind
 unconsumed by constructor kind `0x78`, so it was discarded too. Raw kind
 `0x16` writes `-1` to outgoing `20(sp)` at
 `0x8003ca98`; it is not a five-argument-only exception to that shared call.
+An isolated compile with the normalized Psy-Q 3.0 `STDARG.H` produced the
+same instruction stream and 79.86976% strict score as the retained header;
+the macro spelling does not explain this function's cursor or frame residue
+under the pinned compiler.
+The retail and compiled 123-word switch tables each partition their case
+indices into the same 19 destinations; the table's low strict data score
+comes from differing code-target offsets, not a missing or merged case arm.

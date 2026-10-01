@@ -172,13 +172,17 @@ address and is now a reviewed direct pair. The focused listing remains
 The adjacent map-object focused controls remain stable: `0x80036078`,
 `0x800363bc`, `0x800363dc`, `0x800365d8`, `0x800366fc`, `0x800368b4`,
 `0x800369b8`, `0x80036ad8`, and `0x80036b68` all have identical focused
-listings. `0x80036190` remains WIP at 82.9% focused similarity: its
-return/loop successor layout and index lifetime differ. Removing its
-separate entry guard in an isolated source probe produced 82.6% and moved
-the loop farther from retail, so the source was retained. `0x80036464`
-remains WIP at 92.8%, with saved-register and initial-store scheduling
-differences. These focused verdicts are listing checks, not strict objdiff
-closure.
+listings. A refreshed focused build puts `0x80036190` at 99.3% listing
+and direct strict objdiff at 98.56115% (556/556 bytes): its only remaining
+instruction difference is the order of the stack-argument load and result
+move before `angle_within_tolerance`. The earlier guard-removal probe had
+regressed its then-current 82.9% listing and remains reverted.
+`0x80036464` is 92.8% focused and 95.32258% direct strict (372/372
+bytes), with saved-register and reset-call delay-slot scheduling residue.
+The `0x800363bc`/`0x800363dc` siblings and 68-byte switch table are direct
+strict 100%. KF1's analogous map-object source and GCC257 pattern ledger
+support the sequence-pointer/source shape but leave the KF2 residues
+unattributed; no source edit was retained.
 
 The two branches of `map_object_set_cell_marker` each load the object's Z
 and X coordinates before forming the map-cell address in retail. A temporary
@@ -531,9 +535,23 @@ Action 83's completion block reads its state byte once and branches through
 state 1, signed `<2`, state 0, then signed `<4` before the state-1 sound
 block. A four-state switch reproduces this branch sequence; a literal
 1-first `if` ladder instead placed the sound block too early. The current
-direct strict result is 96.20709% code (7,676 probe bytes versus 7,668
-retail), 32/32 exact `.data`, and 39.989517% `.rodata`; the focused listing
-is 82.4% DIFF. Later code placement and switch pointer addends remain WIP.
+direct strict result after the signed velocity and predecrement corrections
+is 96.54460% code (7,676 probe bytes versus 7,668 retail), 32/32 exact
+`.data`, and 39.989517% `.rodata`; the focused listing is 82.6% DIFF.
+Later code placement and switch pointer addends remain WIP.
+
+Action 8 stores `-16` into the extra word's first halfword at retail
+`0x80037694..98`, then reloads it with signed `lh` at `0x800376c4`
+for `angle_velocity_step`. A layout-identical signed-halfword union view
+models that velocity without a cast and changes the probe's `ori 0xfff0`
+to retail's `addiu -16`. The map-object unit's two exact helpers and all
+four exact spawn-scatter listings remain SAME on focused rebuild.
+
+Action 22 decrements the extra halfword and immediately tests its truncated
+result. Retail `0x80037858..78` keeps the decremented value in `v0`, masks
+it to 16 bits, and branches with the Z-position store in the delay slot.
+Spelling this as `if (--object->extra_40.halfwords[0] == 0)` rather than a
+separate decrement and reload reproduces that entire local schedule.
 
 The adjacent map-cell pattern pair remains WIP on a fresh focused check:
 `0x80034f90` is 92.5% listing and `0x80035194` is 58.8% listing.

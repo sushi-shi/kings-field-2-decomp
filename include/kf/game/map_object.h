@@ -139,6 +139,7 @@ typedef union KfMapObjectExtra40 {
     u8 bytes[4];
     u16 object_index;
     u16 halfwords[2];
+    s16 signed_halfwords[2];
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];

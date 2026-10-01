@@ -2110,5 +2110,15 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3bf74` | SAME | `3c000` | SAME |
 | `3c10c` | SAME | `3c220` | SAME |
 | `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
-| `3d184` | WIP 41.5% | `3f610` | SAME |
+| `3d184` | WIP 44.8% | `3f610` | SAME |
 | `3f7ec` | WIP 93.8% | `3f860` | SAME |
+
+The existing `0x800120d8..0x8001249b` 241-word switch table now names
+`func_8003d184` as its data owner instead of the generic actor family.
+Retail bounds selectors to `0..240` before the indirect jump; all 241
+reviewed raw words target labels inside that function, the next datum starts
+at `0x8001249c`, and its source claims the whole 0x3c4-byte RODATA span.
+The identity change leaves the reviewed relocation rows and source unchanged.
+A safe one-VA delink reports zero withheld relocations, while focused
+`game.actor_behavior_dispatch` remains 44.8% DIFF because its source body is
+still incomplete. This owner correction makes no new exactness claim.

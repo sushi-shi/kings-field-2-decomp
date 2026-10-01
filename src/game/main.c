@@ -17,6 +17,9 @@
 #include <psyq/kernel.h>
 #include <psyq/pad.h>
 
+DATA(0x80198630, 0x4)
+u32 DAT_80198630;
+
 /*
  * GCC inserts the `__main` hook call for a function named main; the SDK
  * start routine tail-calls here. The heap runs from the end of .bss to the
@@ -99,11 +102,11 @@ void game_main_loop(void)
     func_8002ce68(0x150, 0x140, 0, 2, 1, 0x40, 0x40);
     func_8002ce68(0x150, 0x100, 0, 4, 1, 0x40, 0x40);
 
-    /* The fixed arena base and post-player word have no proved object owner. */
+    /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
     func_80036e24(0x82, 0x1000, 0, -128);
-    *(u32 *)0x80198630 = 0;
+    DAT_80198630 = 0;
 
     do {
         func_8002bc18();
@@ -120,7 +123,7 @@ void game_main_loop(void)
         cd_request_service_stream();
         cd_request_service_vab();
         func_800335a0(&camera_position, &camera_rotation);
-    } while (*(u32 *)0x80198630 != 1);
+    } while (DAT_80198630 != 1);
 
     game_shutdown();
     /* PSX.EXE owns the fixed next-overlay mailbox. */

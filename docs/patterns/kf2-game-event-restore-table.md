@@ -15,6 +15,12 @@ functions. `kf sema --confirmed-only` reports all 16 incoming table pointers
 as validated. This proves the table's local switch role, not any target for an
 unrelated indirect callback.
 
+The curated data identity now names `func_800489ac` as owner of the complete
+0x40-byte table. A fresh raw check found all 16 words equal their reviewed
+targets, spanning eight in-body labels; the source has the matching
+`RODATA(0x80012bf8, 0x40)` claim. This owner-only refinement changes no
+pointer value or relocation row. One-VA delink still withholds nothing.
+
 The function remains WIP (current strict report 98.82883%). The focused
 source rebuild preserves the call set, table referent, switch structure and
 saved-stream behavior. Its first difference assigns the actor base and

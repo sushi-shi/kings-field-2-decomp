@@ -37,12 +37,19 @@ Both `0x8002f194` and `0x8002f808` now use the existing
 `KfTmdPacketHeader` word/byte view: its mode byte selects FT3/FT4 cases and
 its input-length byte advances the packet cursor in four-byte words. Focused
 builds produced the same listings as the former shift/mask forms, including
-the exact `0x8002f194` sibling. A compile-time size check keeps this packet
-header at the four-byte on-disc width. A temporary application of that union to
+the exact `0x8002f194` sibling. Compile-time checks fix the packet header at
+four bytes, with input length at byte 1 and mode at byte 3. A temporary
+application of that union to
 the three large TMD packet walkers enlarged their stack frames and moved
 branches; it was discarded. Swapping the FT3/FT4 source cases in the map
 emitter similarly worsened its focused listing and was discarded. Neither
 experiment identifies a source-level reason for the remaining differences.
+
+The clipped-vertex color at result offset `+0x1c` is now a `CVECTOR` in the
+shared record, matching the `DpqColor` output parameter and the typed GT3
+packet color destination. The final four-byte packet copies remain explicit
+word copies, as retail emits `lw`/`sw` there. This layout-identical change
+retains the exact map emitter and both WIP focused listing verdicts.
 
 ## Display, panel, frame, and TIM transfer callers
 
@@ -71,7 +78,7 @@ ownership is still incomplete.
 | `0x80031414` | Exact, 100% | Color-byte screen quad draw. |
 | `0x800314d4` | Exact, 100% | Color-byte screen quad setter. |
 | `0x800314fc` | Exact, 100% | Collision overlay draw, owned by the collision family. Its signed halfword reads coexist with unsigned halfword accumulation at `0x80031634`. |
-| `0x8003247c` | Unclaimed WIP | Frame resource/actor dispatcher visits 200 typed `KfActor` and 128 typed `KfMapPlacedEntry` records. Its first loop tests `actor.lifecycle == 1` at `+0x09`, then actor flag word `+0x28` against `0x2000` and `0x80000`; the middle resource state lacks a full owner. |
+| `0x8003247c` | Unclaimed WIP | Frame resource/actor dispatcher visits 200 typed `KfActor` and 128 typed `KfMapPlacedEntry` records. Its first loop tests `actor.lifecycle == 1` at `+0x09`, then actor flag word `+0x28` against `0x2000` and `0x80000`. The first TMD range update consumes 128 flag bytes from `sp+88`; the second consumes 320 after a full clear at the same base. Its last loop skips `id == 0xffff`, checks `layer`, draws with `position`, and advances `frame_index` modulo `frame_count` when the frame counter is divisible by `frame_period`; the middle resource state lacks a full owner. |
 | `0x800335a0` | Exact, 100% | Frame driver calls the panel, TMD, resource, and display helpers. |
 | `0x8003494c` | Exact, 100% | TIM iterator uploads CLUT and pixel rectangles. |
 | `0x800349bc` | WIP, 92.34296% | Four fade quads and pad polling agree; retail spills return state in a 72-byte frame, while the current C uses 64 bytes without a proved extra local. |
@@ -82,3 +89,18 @@ The graphics-runtime `+0x14cc6/+0x14cc8/+0x14cca` values are accumulated with
 `0x800314fc`. The current unsigned storage with signed read views reflects
 both instruction families; a global signed-field change would overstate the
 evidence.
+
+The prepared-TMD builder's decoded entry selects source object `index * 0x1c`
+and places the destination object at output `+0x0c`, with packets starting at
+output `+0x28`. These object/payload offsets now have compile-time checks in
+`KfTmdPreparedAsset`; the focused map-cell unit retains its three exact
+siblings. The builder accepts both opaque and semitransparent FT4 modes
+(`0x2c/0x2e`) and FT3 modes (`0x24/0x26`). Four-way FT4 expansion advances
+the packet output by `0x80` bytes and appends five midpoint vertices; FT3
+advances by `0x60` bytes and appends three. The sole caller invokes this
+builder only when the source has fewer than 16 primitives, bounding its
+midpoint list to at most 75 entries inside the 128-entry stack workspace.
+Its `0xffff00ff` mask retains
+the non-interpolated bits of packed UV words. This establishes
+the packet and midpoint extents but not enough ordering/detail for a humane
+complete source claim.

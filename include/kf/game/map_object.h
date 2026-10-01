@@ -36,6 +36,22 @@ typedef char kf_map_object_template_interaction_height_offset[
 typedef char kf_map_object_template_unknown_0a_offset[
     (u32)&((KfMapObjectTemplate *)0)->unknown_0a == 0x0a ? 1 : -1];
 
+/* The scene pose path reads two signed offsets through the same template bytes
+ * used by marker actions. Keep both interpretations of the 24-byte record. */
+typedef struct KfMapObjectTemplatePoseView {
+    u8 unknown_00[0x0c];
+    s16 height_offset;
+    s16 depth_offset;
+    u8 unknown_10[8];
+} KfMapObjectTemplatePoseView;
+
+typedef char kf_map_object_template_pose_size[
+    sizeof(KfMapObjectTemplatePoseView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
+typedef char kf_map_object_template_pose_height_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->height_offset == 0x0c ? 1 : -1];
+typedef char kf_map_object_template_pose_depth_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
+
 /* Map resource placements consumed in 24-byte rows by func_80035894. */
 typedef struct KfMapObjectPlacement {
     u8 layer;

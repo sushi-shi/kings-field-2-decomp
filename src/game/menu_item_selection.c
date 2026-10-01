@@ -8,7 +8,7 @@ extern s32 func_8001f8b8(void *list_state, s32 label_kind,
 extern void func_8001e484(KfItemMenuList *list_state, const u8 *indices,
     s32 *selection, s32 *result);
 extern void func_8001fc94(KfItemMenuList *list_state, s32 render_mode);
-extern void func_8001930c(u8 item_id);
+extern void func_8001930c(s32 item_id);
 
 ADDRESS(0x80018ac8, 0x240)
 s32 func_80018ac8(void)

@@ -319,7 +319,7 @@ KfMapClippedVertex	0x00	0x10	unknown_00	u8[16]	opaque	asm;func_8002f5b0	SDK clip
 KfMapClippedVertex	0x10	0x04	sz	s32	supported	asm;func_8002f5b0	depth used in clipped triangle ordering
 KfMapClippedVertex	0x14	0x04	p2	s32	supported	asm;func_8002f5b0	perspective value passed to DpqColor
 KfMapClippedVertex	0x18	0x04	xy	long	supported	asm;func_8002f5b0	packed screen coordinates used by NormalClip and GT3
-KfMapClippedVertex	0x1c	0x04	color_word	u32	supported	asm;func_8002f5b0	shaded vertex color copied to GT3
+KfMapClippedVertex	0x1c	0x04	color	CVECTOR	supported	asm;func_8002f5b0;DpqColor output	shaded vertex color copied as a packed word to GT3
 KfMapClippedVertex	0x20	0x02	uv	u16	supported	asm;func_8002f5b0	textured vertex UV copied to GT3
 KfMapObject	0x00	0x01	unknown_00	u8	opaque	asm;func_80035590	cleared by map-object reset
 KfMapObject	0x01	0x01	unknown_01	u8	opaque	asm;func_80035590	set to 0x80 by map-object reset
@@ -372,6 +372,10 @@ KfMapObjectTemplate	0x0a	0x02	unknown_0a	u8[2]	opaque	asm;func_800357a0	unresolv
 KfMapObjectTemplate	0x0c	0x01	marker_action_05	u8	candidate	asm;func_800357a0	cell marker for action 5
 KfMapObjectTemplate	0x0d	0x0a	unknown_0d	u8[10]	opaque	asm;func_800357a0	unresolved
 KfMapObjectTemplate	0x17	0x01	marker_action_51	u8	candidate	asm;func_800357a0	cell marker for action 0x51
+KfMapObjectTemplatePoseView	0x00	0x0c	unknown_00	u8[12]	opaque	asm;func_800475d8	shared template prefix
+KfMapObjectTemplatePoseView	0x0c	0x02	height_offset	s16	candidate	asm;func_800475d8	first signed pose offset passed to func_80045f20
+KfMapObjectTemplatePoseView	0x0e	0x02	depth_offset	s16	candidate	asm;func_800475d8	second signed pose offset passed to func_80045f20
+KfMapObjectTemplatePoseView	0x10	0x08	unknown_10	u8[8]	opaque	asm;func_800475d8	shared template tail
 KfMapOccupancyCell	0x00	0x0a	layer	KfMapOccupancyLayer[2]	supported	asm;render_map_cell_object;map_object_set_cell_marker	two render/collision layers
 KfMapOccupancyLayer	0x00	0x01	object_index	u8	supported	asm;render_map_cell_object;map_object_set_cell_marker	TMD object index or reserved marker
 KfMapOccupancyLayer	0x01	0x01	elevation	u8	supported	asm;render_map_cell_grid	map height multiplied by 128

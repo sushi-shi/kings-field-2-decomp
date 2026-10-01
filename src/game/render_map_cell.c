@@ -57,7 +57,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
     if (flags & KF_MAP_CELL_OBJECT_SPECIAL) {
         if (flags & KF_MAP_CELL_OBJECT_PREPARE) {
             if (tmd_get_object(object_index)->primitive_count < KF_MAP_CELL_PREPARED_LIMIT) {
-    KfTmdPreparedAsset prepared_asset;
+                KfTmdPreparedAsset prepared_asset;
 
                 func_8002ff5c(game_graphics_runtime.tmd_state.current_asset,
                               object_index, &prepared_asset);

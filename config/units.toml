@@ -188,6 +188,12 @@ source = "src/game/menu_player_clamps.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_map_preview"
+image = "GAME.EXE"
+source = "src/game/menu_map_preview.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_selection_rows"
 image = "GAME.EXE"
 source = "src/game/menu_selection_rows.c"
@@ -1103,6 +1109,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_counter"
 image = "GAME.EXE"
 source = "src/game/event_counter.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_map_object_controller"
+image = "GAME.EXE"
+source = "src/game/event_map_object_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

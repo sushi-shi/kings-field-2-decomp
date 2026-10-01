@@ -228,30 +228,30 @@ s16 func_80029624(u16 *phase, u16 *secondary, s32 duration, s32 scale)
 {
     s16 current = *phase;
     s16 other = 0;
-    s32 result;
+    s16 result;
 
     if (secondary != NULL) {
         other = *secondary;
     }
-    if (current == 0 && other == 0) {
-        return -1;
+    if (current != 0 || other != 0) {
+        if (current < other) {
+            current++;
+        } else {
+            other = 0;
+            current--;
+        }
+        if (current < duration) {
+            result = current * scale / duration;
+        } else {
+            result = scale;
+        }
+        *phase = current;
+        if (secondary != NULL) {
+            *secondary = other;
+        }
+        return (s16)result;
     }
-    if (current < other) {
-        current++;
-    } else {
-        other = 0;
-        current--;
-    }
-    if (current < duration) {
-        result = current * scale / duration;
-    } else {
-        result = scale;
-    }
-    *phase = current;
-    if (secondary != NULL) {
-        *secondary = other;
-    }
-    return (s16)result;
+    return -1;
 }
 
 ADDRESS(0x800296e8, 0x74)

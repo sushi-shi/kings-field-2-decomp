@@ -40,6 +40,10 @@ typedef union KfTmdPacketHeader {
 
 typedef char kf_tmd_packet_header_size[
     sizeof(KfTmdPacketHeader) == KF_TMD_PACKET_HEADER_BYTES ? 1 : -1];
+typedef char kf_tmd_packet_input_length_offset[
+    (u32)&((KfTmdPacketHeader *)0)->bytes.input_length == 1 ? 1 : -1];
+typedef char kf_tmd_packet_mode_offset[
+    (u32)&((KfTmdPacketHeader *)0)->bytes.mode == 3 ? 1 : -1];
 
 /* The cell renderer supplies a complete temporary TMD to its packet helper. */
 typedef struct KfTmdPreparedAsset {
@@ -50,6 +54,10 @@ typedef struct KfTmdPreparedAsset {
 
 typedef char kf_tmd_prepared_asset_size[
     sizeof(KfTmdPreparedAsset) == KF_MAP_CELL_PREPARED_BYTES ? 1 : -1];
+typedef char kf_tmd_prepared_object_offset[
+    (u32)&((KfTmdPreparedAsset *)0)->object == KF_TMD_HEADER_BYTES ? 1 : -1];
+typedef char kf_tmd_prepared_payload_offset[
+    (u32)&((KfTmdPreparedAsset *)0)->payload == 0x28 ? 1 : -1];
 
 typedef struct KfTmdFt3 {
     u16 uv0;

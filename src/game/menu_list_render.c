@@ -28,7 +28,7 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
     number_values += list->scroll_offset;
     byte_values += list->scroll_offset;
 
-    if (list->visible_rows > 0) {
+    {
         const s32 card_columns = (u32)(render_mode - 8) < 2;
         for (row = 0; row < list->visible_rows && row < list->entry_count; row++) {
             text.position.x = list->list_x + 5;

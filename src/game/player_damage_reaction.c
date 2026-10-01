@@ -28,7 +28,7 @@ void func_80024498(const VECTOR *origin, s32 damage, s32 reaction_flags)
     s32 remaining;
     s32 intensity;
     s32 magnitude;
-    s32 duration;
+    s16 duration;
     s32 direction_index;
     s32 origin_height;
 

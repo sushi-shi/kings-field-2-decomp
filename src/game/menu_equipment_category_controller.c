@@ -56,12 +56,12 @@ void func_80019ed4(s32 category)
         break;
     case 7:
     case 8:
-        equipped_id = category == 7 ? player_state.equipped_accessory_id
-                                    : player_state.equipped_extra_id;
+        equipped_id = category == 7 ? player_state.equipped_extra_id
+                                    : player_state.equipped_accessory_id;
         first = 53;
-        last = 59;
         if (equipped_id != 0xff)
             game_counter_bytes[equipped_id]--;
+        last = 59;
         break;
     }
 

@@ -18,7 +18,7 @@ not reconstructed game functions.
 | --- | --- | --- |
 | `80038dc4` | exact | Copies group-indexed fields into an actor; no calls. |
 | `80038e38` | exact | Initializes actor fields, calls group copy, `rand`, and placement helper `8002b73c`. |
-| `80038f20` | WIP | Scans 200 actors and calls unresolved callback-table slot 19 through `state_8017d118.active_table`, then sets the home position. The predicate word-loads the four state bytes at actor `+0x0c`; a shared typed word/byte view is needed before C reconstruction. |
+| `80038f20` | exact | Scans 200 actors and calls unresolved callback-table slot 19 through `state_8017d118.active_table`, then sets the home position. The source-backed listing was certified strict `208/208`; the indirect destination remains unresolved. |
 | `80038ff0` | exact | Resets placement fields, calls home-position and group initializers. |
 | `800390d0` | exact | Sets a target pointer and current/previous target-type bytes. |
 | `80039108` | WIP | Candidate scorer: 0x4c0 bytes, computed dispatch and unresolved indirect control, with many outgoing references. Candidate kind and dispatch-table ownership need recovery. |
@@ -32,7 +32,7 @@ not reconstructed game functions.
 | `8003983c` | WIP | 0x31c-byte actor lifecycle update with collision/distance, random choice, and target-selection branches. Shared group flag and geometry field meanings remain open. |
 | `80039c14` | exact | Fixed-point quadratic helper called eight times by `80039c94`; parameter meanings remain unresolved. |
 | `80039c94` | WIP | 0x684 bytes/72 blocks, actor update with eight curve calls, target selection, player training, vector math, and one unresolved `jalr`. Needs a callback and movement-state model. |
-| `8003a318` | WIP, strict `73.591620000%` | Typed 200-actor magic scan calls distance helpers and `80039c94`; unsigned attenuation now matches retail shifts, while the retail/compiled CFG remains 26/25 blocks. |
+| `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan calls distance helpers and `80039c94`. Retail halfword loads prove `falloff` and `effect_flags` are `u16`; delaying amount extraction and actor-base setup until after the flag branch yields 26/26 CFG blocks and 13/13 branches. Only a two-register argument-load swap remains. |
 | `8003a614` | WIP | 0x164 bytes, distance/angle tests and `800248a8`; caller and geometry types need recovery. |
 | `8003a778` | exact | Scans active actors for the best target by distance and angular score; strict `100.000000000%`. |
 | `8003a9f4` | WIP | 0x168 bytes/13 blocks, vector-distance based probe; return and height/radius domain need recovery. |
@@ -588,7 +588,7 @@ Indirect branch targets below remain unresolved.
 | `80039108` | WIP, no source | Actor candidate scorer called by `39640`; 59 CFG blocks and two indirect jumps require dispatch-table and candidate-record ownership. |
 | `8003983c` | WIP, historical strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers align. A later focused carve reviewed twelve actor/player BSS relocation pairs and corrected the byte read from player-state +0x10a to retail-proven +0x0a. The focused listing still swaps the actor pointer and constant-one saved registers; current strict score has not been refreshed. |
 | `80039c94` | WIP, no source | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block body includes an unresolved indirect call. |
-| `8003a318` | WIP, strict `73.591620000%` | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls; unsigned attenuation matches retail shifts. Retail has 26 CFG blocks versus 25 compiled; the sentinel branch is folded. |
+| `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls. Retail `lhu` at stack arguments 5 and 16 establishes `u16` falloff/effect flags; the source now computes amount and actor base after the flag branch. Focused CFG is 26/26 blocks and 13/13 branches; only the two argument temporary registers differ. |
 | `8003a778` | exact, strict `100.000000000%` | Typed best-target scan retains retail angle wrapping, range test, random variation, and loop schedule; five confirmed callers include player and effect paths. |
 | `8003ae50` | WIP, source-backed, 99.2% focused | Actor movement helper called by the matched motion family; typed terrain, angle, `SquareRoot0`, and sine/cosine paths span 58 matching CFG blocks. Six adjacent actor-animation listings remain SAME. |
 | `8003c3e0` | WIP, strict `96.361700000%` | Typed actor movement loop is called eleven times by `3c614`; 23 CFG blocks, 11 branches, and direct call set agree, with stack/arithmetic codegen residue. |

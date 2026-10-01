@@ -57,6 +57,7 @@ KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-by
 KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
 KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
+KfMapObjectTemplatePoseView	0x18	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes in the 24-byte template
 KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
 KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
 KfMapPlacedEntry	0x18	supported	asm;func_80034818;map resource caller	128 runtime rows at graphics runtime +0x170f0

@@ -806,7 +806,8 @@ horizontal scale: retail keeps one pointer to the reaction vector in `s0`
 and loads both components through it, while the probe materializes the Z
 component as a separate global address. A pointer-lifetime source trial
 produced a larger frame and 78.3%; a shared blocked-return trial produced
-79.6%. Neither was retained. The collision-cache field is still an interior
+79.6%. A containing-reaction pointer trial fell to 75.3%. None was retained.
+The collision-cache field is still an interior
 view of a provisionally bounded BSS object, and this listing is not exact.
 
 The adjacent `800279cc` remains unclaimed after a full retail CFG, call, and
@@ -833,3 +834,75 @@ independent coordinates. Focused similarity rises from 34.6% to **46.4% WIP**;
 retail/probe CFG still differs at 35/38 blocks and 20/23 branches. The
 cache boundary and retry semantics remain provisional, so the listing is not
 exact and no score-driven locals were introduced.
+
+GAME `80024498` now compiles to a **focused SAME** 0x34c-byte listing in
+`game.player_damage_reaction`. Retail carries its derived reaction duration
+through signed halfword stores and arguments. Changing the source-local
+`duration` from `s32` to `s16` removes the sole four-byte instruction gap and
+its downstream branch-address shifts without changing the damage algorithm,
+eight-way switch, or source/data referents. No strict objdiff pass was run
+under the focused-only constraint, so it is not yet banked exact.
+
+The same width discipline resolves GAME `80029624`: its computed phase-ramp
+result is a signed halfword, and retail's invalid-phase `-1` sits after the
+main calculation path. Typing the local `result` as `s16` and using a positive
+guard for the main path yields **focused SAME** for all 0xc4 bytes. The
+complete `game.player_reaction` unit now reports 16/16 SAME focused listings;
+strict objdiff certification remains pending under the current constraint.
+
+### Current player combat and collision graph verdicts
+
+This 27-function related graph follows equipment-derived combat stats through
+damage, action selection, movement, and collision response. “Strict exact”
+identifies earlier verified objdiff results; “focused SAME” is only a listing
+result from the present quick-build pass. The remaining members retain their
+WIP or unclaimed status.
+
+| GAME VA | Current verdict | Distinguishing evidence |
+| --- | --- | --- |
+| `80023384` | WIP source | Two collision-cache vertical margins; provisional cache extent. |
+| `80023814` | strict exact | Rank-scaled player value. |
+| `80023868` | strict exact | Nine equipment bonus components. |
+| `80023984` | strict exact | Derived combat stats and equipment calls. |
+| `80024034` | strict exact | Physical training accumulator. |
+| `800240cc` | strict exact | Magic training accumulator. |
+| `80024164` | strict exact | Experience and level growth. |
+| `80024384` | strict exact | Scaled damage component. |
+| `80024448` | strict exact | Signed HP delta and death threshold. |
+| `80024498` | focused SAME | Signed halfword reaction duration; eight-way switch. |
+| `800247e4` | strict exact | Status cap helper. |
+| `800248a8` | focused SAME | Eight damage-component calls and seven-way switch. |
+| `80024ca4` | strict exact | Sixteen-argument radial damage wrapper. |
+| `80025a18` | unclaimed WIP | Large weapon/effect dispatcher and candidate table owner. |
+| `8002665c` | unclaimed WIP | Weapon/magic updater with 114 retail CFG blocks. |
+| `8002722c` | unclaimed WIP | Two bounded internal tables; indirect control unresolved. |
+| `800274ec` | WIP source | Trial VECTOR and collision retry, 46.4% focused. |
+| `80027928` | strict exact | Collision-depth death check. |
+| `80027988` | strict exact | Collision impact sound magnitude. |
+| `800279cc` | unclaimed WIP | Five-mode collision dispatcher; cache extent provisional. |
+| `80027f78` | WIP source | Three collision probes, 80.0% focused. |
+| `80028224` | strict exact | Signed camera rotation update. |
+| `8002851c` | strict exact | Forward/strafe player movement. |
+| `8002897c` | WIP source | Inclusive 71..80 predicate; register-lifetime residue. |
+| `80028998` | focused SAME | Timed attacks and halfword mask sequence. |
+| `80029624` | focused SAME | Signed phase-ramp return; reaction unit 16/16 SAME. |
+| `8002985c` | unclaimed WIP | Two retail fragments; complete CFG still unavailable. |
+
+The `80025a18` ABI needs more than one caller to describe. Retail homes
+`a0` through `a3` before allocating its frame, then reads the incoming `a0`
+as an unsigned effect selector bounded by 52. The exact `80026498` caller
+passes the selector alone on some paths and passes a second position pointer
+on others; `80028998` passes only the selector. No observed callee path reads
+the extra incoming argument, so the curated identity records a first `s32`
+argument and an unresolved variable tail. Its `DAT_80011188` jump table and
+case reachability remain candidate evidence; no source body is claimed.
+
+The current `80027f78` focused diff starts after the two successful world
+probes. Both retail and C request the same fixed X/Z length and use the same
+collision-cache referent, but retail retains a single reaction-vector base in
+`s0` for both component loads and stores; this C probe rematerializes the Z
+field's global address. That also swaps the threshold/vector saved registers
+and shifts the common return tail by one block. A typed containing-reaction
+pointer probe lowered similarity to 75.3% and enlarged the frame, so it was
+discarded. This is an unresolved source/codegen residue, not evidence for an
+overlapping collision-cache global or a different call target.

@@ -122,7 +122,7 @@ Large unclaimed functions are WIP triage verdicts, not speculative C claims.
 | 0x80045f20 | WIP | 0xb4-byte vector rotation/translation reads unresolved 0x801a position state. |
 | 0x800462bc | WIP, focused 89.9% | Provisional typed actor-target bytecode interpreter has matching CFG and bounded 16-entry table; offset algebra and one load-delay schedule differ. |
 | 0x800474c4 | Exact | Seven-argument three-channel transition, 276/276 code bytes at 100%; nine direct call relocations reviewed. |
-| 0x800475d8 | WIP, unclaimed | Two-argument map-object controller signature and template/tail/player owners are supported; pose/CD/pad branches lack a full source model. |
+| 0x800475d8 | Focused WIP, 41.2% | First-pass C now covers map-object spawn, pose/pad loops, reward counters, and return motion; 55/52 CFG blocks and a prologue/stack-layout divergence remain. |
 | 0x80047c98 | WIP | 0x660-byte interaction dispatcher calls actor probe, map-object selector and channel transition; unproven data/indirect owner. |
 
 At 0x801d8d40..0x801d8d68, direct users establish a collision pointer,
@@ -692,7 +692,7 @@ strict report predates the retained source correction below.
 | 0x80040308 | WIP, unclaimed | The 0x13e4-byte constructor has a bounded 123-word table with all entries inside its body, now curated as one datum. The indirect edges remain candidate and no source-owned RODATA or complete collision-cache model exists. |
 | 0x80042650 | WIP, unclaimed | The 0x3670-byte dispatcher has two decoded indirect switches, but the in-body pointer-table relocations and collision-cache owner remain provisional. |
 | 0x8004678c | WIP, unclaimed | The 0xc54-byte event controller has two indirect transfers and mixed CD, spatial-audio, actor, and event-state branches. |
-| 0x800475d8 | WIP, unclaimed | The 0x6c0-byte controller's four-argument event state and pose/CD branches remain incomplete. |
+| 0x800475d8 | Focused WIP, 41.2% | The two-argument map-object controller has a first-pass C claim and reviewed address pairs; its prologue/stack layout and three CFG blocks remain different. |
 | 0x80047c98 | WIP, unclaimed | The 0x660-byte paired controller has an unresolved indirect callback and incomplete event-record ownership. |
 | 0x80048554 | Focused WIP, 72.9% | A source claim now models the 3,072-byte stack payload, three record scans, 165-entry switch, and arena calls. The table's in-body pointer edges remain candidate. |
 | 0x800489ac | Focused WIP, 95.1% | A source claim now models the sentinel-delimited actor/group streams and 16-entry map opcode switch. The table's in-body pointer edges remain candidate. |
@@ -790,11 +790,17 @@ reads at 0x801984fc and 0x801985c0 belong to `player_state` +0x2c and +0xf0.
 These references identify existing owners but do not yet explain the full
 pose/CD/pad branch family in the 0x6c0-byte body.
 All 38 in-body direct `j`/`jal` words were checked against retail opcode and
-target and promoted to reviewed control-flow relocations. Six signed-low
-HI16/LO16 pairs for the map-object tail/templates and player-state words were
-checked against raw instructions and curated to their existing BSS owners.
-A focused one-VA safe delink admitted the rows without withheld relocations;
-the function still has no C claim or exact verdict.
+target and promoted to reviewed control-flow relocations. The original six
+signed-low HI16/LO16 pairs for map-object/player-state addresses and six more
+raw-decoded player-rotation/game-counter pairs now point to their existing BSS
+owners. A focused one-VA safe delink admitted every row without withheld
+relocations. The new separate C claim is a truthful 41.2% focused WIP with
+55 retail versus 52 compiled CFG blocks and 29/29 branches. The first mismatch
+is the retail argument-home stores and 120-byte frame versus the compiled
+136-byte frame. A varargs-only source probe restored three argument stores but
+did not explain the first argument store, so it was not retained. The pose
+offsets at template +0xc/+0xe use a shared layout-identical signed view;
+existing map-object exact controls remain focused SAME.
 
 The paired 0x80047c98 dispatcher has a direct call from 0x80029014 with
 `&player_state.camera_position` and

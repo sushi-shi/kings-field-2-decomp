@@ -4,6 +4,7 @@
 #include <psyq/libc.h>
 #include <CONVERT.H>
 #include <psyq/sdk.h>
+#include <sys/fcntl.h>
 
 RODATA(0x80011120, 0x6)
 
@@ -103,7 +104,7 @@ s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
         return 1;
     }
     strcat(path, filename);
-    handle = open(path, 1);
+    handle = open(path, FREAD);
     if (handle == -1 || read(handle, header, sizeof(header)) != sizeof(header)) {
         return 1;
     }
@@ -159,7 +160,7 @@ s32 func_80022b74(s32 slot)
         strcat(path, memory_card_file_prefix);
         path[17] = slot + '0';
         path[18] = 0;
-        handle = open(path, 1);
+        handle = open(path, FREAD);
         if (handle == -1 || read(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES)
                 != KF_CARD_BLOCK_BYTES) {
             status = 1;
@@ -251,12 +252,12 @@ s32 func_80022ca0(s32 slot)
     memcpy(memory_card_buffer, header, sizeof(header));
 
     if (!present) {
-        handle = open(path, 0x20200);
+        handle = open(path, FCREAT | (2 << 16));
         if (handle == -1)
             return 1;
         close(handle);
     }
-    handle = open(path, 2);
+    handle = open(path, FWRITE);
     if (handle == -1)
         return 1;
     if (write(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES)

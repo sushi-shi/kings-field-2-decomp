@@ -36,22 +36,22 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   s32 neg_x_minus_z;
   s32 x_plus_cell;
   s32 z_plus_cell;
-  int selected_layer_address;
+  u8 *selected_layer;
   u8 *shape_bank = (u8 *)&bss_801c7540 + 0x10000;
 
   result_flags = 0;
   special_floor_found = 0;
   visited_second_layer = 0;
-  height_flags = (u32)height & 0xf0000000;
-  height &= 0x0fffffff;
   KF_COLLISION_CACHE_RESULT = 100000;
   KF_COLLISION_CACHE_LOWER_BOUND = 100000;
   COLLISION_CACHE_UPPER_BOUND = 100000;
   COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
-  KF_COLLISION_CACHE_SHAPE = (u8 *)((u32)KF_COLLISION_CACHE_LAYER + (u32)KF_COLLISION_CACHE_CELL);
-  selected_layer_address = (u32)KF_COLLISION_CACHE_SHAPE;
+  KF_COLLISION_CACHE_SHAPE = (u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER;
+  selected_layer = KF_COLLISION_CACHE_SHAPE;
+  height_flags = (u32)height & 0xf0000000;
+  height &= 0x0fffffff;
 LAB_8002ab5c:
-  record_value = *(u16 *)(shape_bank + (u32)*(u8 *)(selected_layer_address + 3) * 2);
+  record_value = *(u16 *)(shape_bank + (u32)selected_layer[3] * 2);
   bottom_y = y - height;
   records_left = *(s16 *)((shape_bank + 2) + record_value) + -1;
   radius = radius * *(s16 *)(shape_bank + record_value) >> 0xc;
@@ -122,7 +122,7 @@ LAB_8002b3b8:
       break;
     case 0x20:
       next_record = record + 5;
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       case_value = 5;
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
@@ -150,7 +150,7 @@ LAB_8002afc4:
       goto LAB_8002b5c8;
     case 0x21:
       next_record = record + 5;
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       case_value = 5;
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
@@ -192,7 +192,7 @@ LAB_8002ada4:
       break;
     case 0x22:
       next_record = record + 5;
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
         if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;
@@ -214,7 +214,7 @@ LAB_8002ada4:
       break;
     case 0x23:
       next_record = record + 5;
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       case_value = 6;
       if (record_value == 1) {
         candidate_height = (int)(s16)*operand + radius + -0x1000;
@@ -237,7 +237,7 @@ LAB_8002ada4:
       if (saved_height_limit <= candidate_height) goto LAB_8002ada4;
       goto LAB_8002b5c8;
     case 0x30:
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       next_record = record + 7;
       if (record_value == 1) {
         if (((int)z_fraction <= (radius + 0x800) - (int)(s16)record[2]) &&
@@ -279,7 +279,7 @@ LAB_8002b168:
     case 0x31:
       if ((result_flags & 1) != 0) {
         next_record = record + 6;
-        record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[5] & 3;
+        record_value = (u16)selected_layer[2] + record[5] & 3;
         case_value = x_fraction;
         if (record_value != 1) {
           if (record_value < 2) {
@@ -307,7 +307,7 @@ LAB_8002b450:
       }
       break;
     case 0x32:
-      record_value = (u16)*(u8 *)(selected_layer_address + 2) + record[4] & 3;
+      record_value = (u16)selected_layer[2] + record[4] & 3;
       next_record = record + 7;
       if (record_value == 1) {
         candidate_height = x_plus_z;
@@ -350,8 +350,8 @@ scan_second_layer:
     return result_flags;
   }
   KF_COLLISION_CACHE_LAYER = -(u16)(KF_COLLISION_CACHE_LAYER == 0) & 5;
-  selected_layer_address = (u32)KF_COLLISION_CACHE_LAYER + (u32)KF_COLLISION_CACHE_CELL;
-  KF_COLLISION_CACHE_HEIGHT = (u32)*(u8 *)(selected_layer_address + 1) * -0x80;
+  selected_layer = (u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER;
+  KF_COLLISION_CACHE_HEIGHT = (u32)selected_layer[1] * -0x80;
   visited_second_layer = 1;
   goto LAB_8002ab5c;
 }

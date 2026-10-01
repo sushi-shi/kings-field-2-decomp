@@ -68,7 +68,7 @@ typedef struct KfMapClippedVertex {
     s32 sz;
     s32 p2;
     long xy;
-    u32 color_word;
+    CVECTOR color;
     u16 uv;
 } KfMapClippedVertex;
 
@@ -228,9 +228,10 @@ typedef char kf_map_clipped_depth_offset[
 typedef char kf_map_clipped_perspective_offset[
     (u32)&((KfMapClippedVertex *)0)->p2 == 20 ? 1 : -1];
 typedef char kf_map_clipped_color_offset[
-    (u32)&((KfMapClippedVertex *)0)->color_word == 28 ? 1 : -1];
+    (u32)&((KfMapClippedVertex *)0)->color == 28 ? 1 : -1];
 typedef char kf_map_clipped_uv_offset[
     (u32)&((KfMapClippedVertex *)0)->uv == 32 ? 1 : -1];
+typedef char kf_map_clipped_vertex_size[sizeof(KfMapClippedVertex) == 0x24 ? 1 : -1];
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
 extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];

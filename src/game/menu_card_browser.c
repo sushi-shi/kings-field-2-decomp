@@ -76,14 +76,14 @@ no_file:
 
         func_800223cc();
         buttons = input_read_mark_active();
-        if ((buttons & 0x1000) || (buttons & 0x4000)) {
+        if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = 0;
             func_80022300(16);
             if (cursor == 0)
                 cursor = 1;
             else
                 cursor = 0;
-        } else if (buttons & 0x20) {
+        } else if (buttons & PADRright) {
             func_80022300(17);
             confirmed = 1;
             selection = cursor;

@@ -139,7 +139,7 @@ void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
     KfMapClippedVertex *second;
     KfMapClippedVertex *third;
     CVECTOR shade;
-    u32 first_color_word;
+    CVECTOR first_color;
     u32 packet_code;
     EVECTOR **next;
     s32 triangle_count;
@@ -153,9 +153,9 @@ void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
     next = game_graphics_runtime.clip_result_vertices;
     first = (KfMapClippedVertex *)*next++;
     packet_code = mode | 0x34;
-    DpqColor(&shade, first->p2 >> 1, (CVECTOR *)&first_color_word);
+    DpqColor(&shade, first->p2 >> 1, &first_color);
     second = (KfMapClippedVertex *)*next++;
-    DpqColor(&shade, second->p2 >> 1, (CVECTOR *)&second->color_word);
+    DpqColor(&shade, second->p2 >> 1, &second->color);
 
     triangle_count = vertex_count - 2;
     goto loop_test;
@@ -164,7 +164,7 @@ loop_body: {
         s32 depth;
 
         third = (KfMapClippedVertex *)*next++;
-        DpqColor(&shade, third->p2 >> 1, (CVECTOR *)&third->color_word);
+        DpqColor(&shade, third->p2 >> 1, &third->color);
         packet = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
         game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
         if (game_graphics_runtime.display_state.primitive_buffer->cursor >
@@ -179,9 +179,9 @@ loop_body: {
         packet->packed.uv0 = first->uv;
         packet->packed.uv1 = second->uv;
         packet->packed.uv2 = third->uv;
-        *(u32 *)&packet->packed.color0 = first_color_word;
-        *(u32 *)&packet->packed.color1 = second->color_word;
-        *(u32 *)&packet->packed.color2 = third->color_word;
+        *(u32 *)&packet->packed.color0 = *(u32 *)&first_color;
+        *(u32 *)&packet->packed.color1 = *(u32 *)&second->color;
+        *(u32 *)&packet->packed.color2 = *(u32 *)&third->color;
         ((u8 *)&packet->sdk.tag)[3] = 9;
         packet->sdk.code = packet_code;
         depth = (first->sz + second->sz + third->sz) / 12 + depth_bias;

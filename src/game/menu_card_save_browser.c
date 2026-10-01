@@ -9,9 +9,6 @@ extern void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
-extern u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
-    s32 *selection, s32 *result);
-extern void func_8001fc94(void *list_state, s32 render_mode);
 extern void func_8001bf68(s32 slot);
 
 ADDRESS(0x8001bcfc, 0x26c)

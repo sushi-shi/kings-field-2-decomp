@@ -183,6 +183,10 @@ extern u16 menu_item_code_primary[6][120];
 extern u16 menu_item_code_secondary[5][120];
 
 void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
+u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
+    s32 *selection, s32 *result);
+/* Menu modes reinterpret the four payload words after the common list prefix. */
+void func_8001fc94(const void *list_state, s32 render_mode);
 void menu_blit_sprite(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_fixed_clut(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_translucent(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);

@@ -78,8 +78,9 @@ comparable squared-difference curve and training/experience sequence. They
 support the source shape, but do not identify the KF2 callback or original TU.
 Retail `0x8003a170` loads byte +2 from the selected target group for the
 unlinked motion divisor; the linked branch instead loads the linked actor's
-group index. The C source now preserves that distinction.
-Focused comparison is **WIP, 50.0% listing**: retail/source have 72/71 CFG
+group index. Retail compares the zero-extended byte using signed `slti`, so
+the C source holds the loaded value in an `s32` motion divisor.
+Focused comparison is **WIP, 50.3% listing**: retail/source have 72/71 CFG
 blocks, 46/46 branches, and the same seven incoming return edges. The first
 real structural residue is one block, followed by broad register and stack
 allocation differences. The exact `80039c14` sibling remains SAME. The

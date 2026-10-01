@@ -29,8 +29,8 @@ references define the campaign; the address range is not a TU claim.
 | `0x8002083c` | item-model preview | WIP: 99.65882%, frame extent |
 | `0x80020990` | numeric heading | **exact**, existing source |
 | `0x80020b50` | translucent sprite packet | **exact**, existing source |
-| `0x80020d20` | cursor sprite packet | WIP: 99.44068%, X computation order |
-| `0x80020ef8` | fixed-CLUT sprite packet | WIP: 99.39449%, X computation order |
+| `0x80020d20` | cursor sprite packet | **exact, 472/472 code bytes** in current direct objdiff |
+| `0x80020ef8` | fixed-CLUT sprite packet | **exact, 436/436 code bytes** in current direct objdiff |
 | `0x800210ac` | glyph-string packets | WIP: 99.66904%, frame/register choice |
 | `0x80021510` | number-glyph packets | WIP: 98.61957%, atlas-U load/order |
 

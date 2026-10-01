@@ -14,8 +14,8 @@ for the surrounding controllers.
 | `0x8001ddd0` | first item-list controller calls the primary translator, item preview, and shared list renderer | WIP, unclaimed; complete list-state record is unresolved |
 | `0x8001e0a8` | paired item-list controller calls the secondary translator and the same preview/render helpers | WIP, unclaimed; list-state record is unresolved |
 | `0x8001e484` | input/model controller with many incoming calls and preview rotation/translation state | WIP, unclaimed; model/input state is unresolved |
-| `0x8001e94c` | numeric text renderer references ten 20-byte suffix rows at `0x80064a00` | WIP, unclaimed; renderer record and table's source-file owner are unresolved |
-| `0x8001f008` | paired numeric text renderer references the remaining two suffix rows | WIP, unclaimed; renderer record and table's source-file owner are unresolved |
+| `0x8001e94c` | numeric text renderer references ten 20-byte suffix rows at `0x80064a00` | **exact code** in the later source claim; table source-file owner remains unresolved |
+| `0x8001f008` | paired numeric text renderer references the remaining two suffix rows | **exact, 1,936/1,936 code bytes** in current direct objdiff; table source-file owner remains unresolved |
 | `0x8001f8b8` | preview controller calls the menu renderer, two-option widget, and input helpers | WIP, unclaimed; preview/list record is unresolved |
 | `0x8001fb8c` | window title and highlighted row renderer | **WIP, 99.78788% strict**; retail uses a 48-byte frame, current C emits 40 bytes |
 | `0x8001fc94` | shared numeric/list renderer calls the exact primitive-buffer pair and menu draw helpers | WIP, unclaimed; large list/graphics record is unresolved |

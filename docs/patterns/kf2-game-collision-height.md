@@ -42,7 +42,8 @@ calls from `0x8002c670`. It reads the existing scan-state bytes at
 source models the two occupancy-layer checks, 24-by-24 window bounds, 80-by-80
 map bounds, cursor update, and final state writes. The BSS allocation owner
 of the shared `0x801b5a70` state is still unresolved, and `0x8002c670`
-remains unclaimed. The new rasterizer is WIP at 48.9932% strict objdiff;
+has a separate WIP source claim. The new rasterizer was initially WIP at
+48.9932% strict objdiff;
 focused comparison reports 23/19 CFG blocks and 14/12 branches, with the
 first control difference at the pre-loop count check. Its direct BSS
 HI16/LO16 pairs and internal jumps have been reviewed. Retail carries two
@@ -127,7 +128,7 @@ certification is pending.
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 75.8% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4; the first-lighting access uses the retail BSS+4 field-base referent. Mask-byte addressing and traversal scheduling remain different. |
-| `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte map-object dispatcher has two bounded indirect jumps. Their raw pointer-table extents and in-function targets are established, but case reachability and complete callback/data ownership remain unresolved. |
+| `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte no-argument map-object dispatcher has three bounded indirect jumps. Their raw pointer-table extents and in-function targets are established; case reachability and callback targets remain unresolved. |
 
 At `0x80036f70`, the dispatcher subtracts two from its opcode and rejects
 values above `0xdf`; its `jr` at `0x80036f98` indexes the 224 pointer words
@@ -135,14 +136,42 @@ from `0x8001191c` through `0x80011c98`. Every Japanese retail pointer lands
 inside `0x80036ed4`–`0x80038cc7`; 201 point to the default block at
 `0x80038c5c`. A second `jr` at `0x80037a18` subtracts one from a subaction,
 rejects values above eight, and indexes nine adjacent pointer words from
-`0x80011c9c` through `0x80011cbc`. All nine also target dispatcher blocks.
+`0x80011c9c` through `0x80011cbc`. The primary opcode `0x53` enters this
+secondary switch. All nine pointers target dispatcher blocks. The primary
+opcode `0x59` enters a third `jr` at `0x80037cdc`; it subtracts one from
+another subaction,
+rejects values above four, and indexes five pointers at `0x80011cc4`
+through `0x80011cd4`. All five target dispatcher block heads. The zero
+word at `0x80011cc0` separates the latter two tables, and the distinct
+actor table begins at `0x80011cd8`.
 The primary table has nondefault opcode entries at `0x02`–`0x05`, `0x08`,
 `0x09`, `0x0f`–`0x13`, `0x16`, `0x22`, `0x51`, `0x53`, `0x54`, `0x58`,
 `0x59`, `0x60`–`0x62`, `0xe0`, and `0xe1`.
-All 24 unique first-table and six unique second-table targets are block heads,
-with none in a delay slot. The following word at `0x80011cc0` is zero. These
-bounds establish table extents without proving every case reachable or the
-source owner.
+All 24 unique first-table, six unique second-table, and five third-table
+targets are block heads, with none in a delay slot. These bounds establish
+table extents without proving every case reachable or the source owner.
+The direct `lui`/`addiu` base pairs at `0x80036f84/88`, `0x80037a04/08`,
+and `0x80037cc8/cc` are reviewed; their indirect case-pointer
+rows remain candidate relocations.
+
+The sole proven direct caller is `game_main_loop` at `0x800138d8`; it sets no
+arguments for this call and ignores its result. The dispatcher reads no
+incoming argument register and prepares no return value, supporting a `void`
+no-argument identity. The default case at `0x80038c5c` loads
+`state_8017d118.active_table` at BSS `0x8017d124`, then calls table entry
+`+0x24` (index 9) through `jalr`. Another case at `0x80038a9c` reads the
+same active table, then calls entry `+0x0c` (index 3) with the current map
+object pointer. Both direct BSS address pairs are reviewed. The callback
+table's storage owner is resolved, but the selected function pointers remain
+indirect and have no proved callee identities.
+
+Two other dispatcher cases pass ordered start/end motion offsets to the exact
+`func_80036b68` helper. Four direct address pairs cover one 0x20-byte load
+datum at `0x8006d6e4`, now typed as SDK `SVECTOR[4]`. Japanese retail bytes
+decode to `(0,-1424,0,0)`, `(0,-912,0,0)`, `(0,-100,300,0)`, and
+`(0,0,64,0)`; the next curated row begins at `0x8006d704`. The defining TU and
+original linkage remain unproved, so its identity stays address-derived and
+the giant dispatcher remains unclaimed.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.

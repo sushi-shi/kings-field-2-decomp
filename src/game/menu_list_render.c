@@ -3,8 +3,9 @@
 #include <kf/game/menu.h>
 
 ADDRESS(0x8001fc94, 0xab4)
-void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
+void func_8001fc94(const void *list_state, s32 render_mode)
 {
+    const KfMenuRenderList *view = list_state;
     const KfMenuList *list = &view->list;
     const KfMenuSpriteDef *sprite;
     const s16 *row_glyphs = view->row_glyphs;

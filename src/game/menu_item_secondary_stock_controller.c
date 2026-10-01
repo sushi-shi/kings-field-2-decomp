@@ -6,9 +6,6 @@
 extern s32 DAT_8006d694;
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
-extern u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
-    s32 *selection, s32 *result);
-extern void func_8001fc94(const KfItemMenuList *list, s32 render_mode);
 
 ADDRESS(0x8001e0a8, 0x2d0)
 void func_8001e0a8(void)

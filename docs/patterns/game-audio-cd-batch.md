@@ -130,7 +130,7 @@ yet reconstructed; none is counted as an exact match.
 | GAME VA | WIP evidence and missing model |
 | --- | --- |
 | `0x80015d58` | Opens seven `.T` archives, starts a map stream and VAB stream, then copies startup assets; the source data and session-state owners remain incomplete. |
-| `0x80015fd4` | Starts the callback-state transition, pumps `cd_request_yield` and `func_80016820`, and installs a TMD; the object at fixed RAM `0x8013da68` lacks an owner and source mechanism. |
+| `0x80015fd4` | Starts the callback-state transition, pumps `cd_request_yield` and `func_80016820`, and installs a TMD; the object at fixed RAM `0x8012da68` lacks an owner and source mechanism. |
 | `0x800160e8` | Rebases three coordinates across actor, map-object, and placed-resource arrays; their shared extents and member layouts need stronger ownership evidence. |
 | `0x80016260` | Dispatches map/session transitions, including `audio_start_sequence`, `cd_request_yield`, and the save serializer; its large state machine remains unmodelled. |
 | `0x80016820` | Uses a seven-entry jump table for the transition phase, queues CD archive reads, and calls the five exact phase callbacks; its resource state and switch ownership remain open. |
@@ -408,7 +408,7 @@ call family. Exact rows owned by other units are observations, not new claims.
 | `0x800167e4` | Exact | Sets transition phase 2. |
 | `0x800167f8` | Exact | Sets transition phase 4. |
 | `0x8001680c` | Exact | Sets transition phase 6. |
-| `0x80016820` | WIP, unclaimed | 0x6b4-byte controller with an unresolved indirect jump/call, map and actor fixups, CD queues, sound sequence changes, and VAB queuing. |
+| `0x80016820` | WIP, unclaimed | 0x6b4-byte controller with a reviewed seven-entry indirect switch and a later unresolved indirect callback, map and actor fixups, CD queues, sound sequence changes, and VAB queuing. |
 | `0x80016ee0` | Exact | Queues the map stream read. |
 | `0x800171c8` | Exact | Copies resource words to the destinations set by the loader. |
 | `0x8001777c` | Exact | Releases a memory block during transition. |
@@ -634,6 +634,34 @@ references, adjacent claims, and match state were checked for each.
 | `0x800321d8` | WIP, 98.4359% | Queues a TMD read. Its fixed arena literal emits `lui/ori`, while retail uses signed-low `lui/addiu`; the arena's original source mechanism is unresolved. |
 | `0x80032274` | WIP, 90.933334% | Updates flagged VAB slots. The probe retains an extra induction register and larger frame, while retail recomputes slot offsets per iteration. |
 
+GAME `0x800139c4` passes `0x8009a6a0` to `SsSetTableSize` with two sequences
+and one track. Exact OPEN and END audio initializers use the same call shape
+with curated 0x158-byte `audio_sequence_table` workspaces, and KF1 defines a
+static table of that size. This supports a 0x158-byte minimum for GAME's
+workspace, not its original definition, linkage, or complete extent.
+The same startup routine stores `0x80198640` as the sequence-buffer pointer,
+0x10 bytes beyond `player_state`. KF1 uses a 0x3000-byte sequence buffer; that
+size would leave 0x68 bytes before GAME's `effect_state`, but GAME's buffer
+extent and defining source remain candidates. The resource controller later
+queues archive slot 4, entry `320 + (values_10[4] % 100)`, into this pointer;
+slot 4 was opened as VAB.T, and its entry size is unavailable here.
+
+The startup copy at `0x80015d58` uses signed-low address construction for two
+unowned destinations: `lui 0x801e; addiu -29304` resolves to `0x801d8d88`,
+four bytes beyond the curated `bss_801c7540` extent, and
+`lui 0x8010; addiu -24368` resolves to `0x800fa0d0`, 0x30 bytes beyond the
+arena policy end `0x8009b0a0 + 0x5f000`. Neither address has a proved source
+definition or complete extent. The latter receives an embedded TMD archive
+from FDAT.T slot 5, entry 0x30, then feeds two
+`asset_registry_load_tmd_archive` calls (first asset IDs 0 and 0x28). It is
+0x1988 bytes before `display_primitive_memory`, so it is not a member of that
+object.
+
+The `0x80015fd4` TMD pointer `0x8012da68` is the destination of a later
+RTMD.T archive-slot-1 read in `0x80016820`. It lies 0x10 bytes beyond the
+complete `display_primitive_memory` end `0x8012da58`; the workspace's size
+and source definition remain unproved.
+
 The new `world_translate.c` uses the complete player, effect, map-object, and
 actor state types. Retail's X/Z/Y update order and independent unsigned
 countdowns for the three pools are reflected directly in source; a single
@@ -654,7 +682,7 @@ adjacent-boundary, and match-state review.
 | GAME VA | Final verdict | Evidence or remaining issue |
 | --- | --- | --- |
 | `0x80016260` | WIP, unclaimed | Resource transition controller calls `audio_start_sequence`, `cd_request_yield`, and `func_80016820`. Its 0x55c-byte body and eight-argument transition API still need a supported shared state model. |
-| `0x80016820` | WIP, unclaimed | Queues CD archive and VAB reads, copies resources, translates world positions, and starts sound sequences. Its 0x6b4-byte body has unresolved indirect jump and call targets. |
+| `0x80016820` | WIP, unclaimed | Queues CD archive and VAB reads, copies resources, translates world positions, and starts sound sequences. Its seven switch targets are reviewed; the later indirect callback target remains unresolved. |
 | `0x80047c98` | WIP, unclaimed | Event controller calls notification, collision, event, and resource restore routines, including `func_800475d8` and `func_80048554`. The event-object state and large control flow remain under study. |
 | `0x800482f8` | WIP, 90.38636% | Clears the typed event control/arena and initializes its memory blocks and saved offsets. CFG and referents match; the probe anchors a shared address at control +0x34 where retail anchors it at +0x2c. A typed pointer experiment worsened the listing and was reverted. |
 | `0x800483d8` | **New exact, 100%** | Restores ten event pointers from saved halfword offsets, with `0xffff` meaning absent. |
@@ -663,6 +691,26 @@ adjacent-boundary, and match-state review.
 | `0x800489ac` | WIP, unclaimed | Called by the resource controller; decodes event script commands and calls the exact offset restore routine. Its indirect table at `0x80012bf8` likewise has only candidate single-word ownership. |
 | `0x80048d24` | WIP, unclaimed | Serializes runtime state into a large caller-provided buffer; the many offset-specific fields and payload extent need a complete typed owner. |
 | `0x800492dc` | WIP, unclaimed | Restores that runtime state from the paired buffer; its disjoint byte/halfword/word fields and payload schema are still unresolved. |
+
+`0x80016260` has six proven direct callsites with eight scalar arguments. It
+masks each register argument with 0xff as needed and loads the four caller-stack
+arguments using `lbu` at caller offsets +16/+20/+24/+28. The candidate
+`void(u8 × 8)` identity replaces a false four-pointer seed; the exact player
+caller retains its existing `s32` declaration until caller and callee source
+types can be checked together.
+
+Retail phases in `0x80016820` constrain the resource layout without proving
+the loaded buffers' definitions. Phase zero queues archive slot 5, entry
+`3 * index`, into `cd_stream_work_buffer`. Phase one selects the initialized
+32-pointer default callback table, queues entry `3 * index + 2` into unbound
+`0x8019e138`, and copies 0x3e80 words to `bss_801c7540` followed by 0x600
+words to the same object's +0x10000 interior. Phase two queues entry
+`3 * index + 1` into the stream buffer and selects the loaded callback table
+at `0x8019e138`. The first source range proves at least 0xfa04 readable bytes
+from `cd_stream_work_buffer` (four-byte header plus 0xfa00 copied bytes).
+The second source starts after an embedded length, so its total bound remains
+unknown. Both destination ranges fit the curated 0x11844-byte object; the
+callback table and stream buffer still lack complete extents and source owners.
 
 `func_800483d8` and `func_80048498` now reference
 `event_state.arena.bytes` directly in their offset expressions. This preserves

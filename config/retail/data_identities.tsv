@@ -877,6 +877,7 @@ GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	undefined1		address-only	data.
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
 GAME.EXE	0x8006d6d4	0x4	render_model_yaw_smoothing_accumulator	global	load	s32	func_800335a0	supported	retail zero word;four direct read-write xrefs;angle_shortest_delta	Yaw-delta accumulator used to ease the first render-model row; original linkage WIP
 GAME.EXE	0x8006d6dc	0x8	menu_transition_rect	global	load	RECT		supported	asm;StoreImage;MoveImage;LoadImage;initialized bytes	320 by 240 VRAM transfer rectangle; defining TU remains unresolved
+GAME.EXE	0x8006d6e4	0x20	DAT_8006d6e4	unknown	load	SVECTOR[4]		supported	retail bytes;four func_80036ed4 direct pointers;func_80036b68 SVECTOR arguments	four ordered start/end motion offsets; defining TU and linkage remain unresolved
 GAME.EXE	0x8006d704	0x4	DAT_8006d704	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d708	0x8	effect_zero_direction	static	load	SVECTOR	effect_spawn_zero_direction	supported	asm;single xref;retail zero bytes;constructor argument	zero vector passed as initial direction by func_80041d7c
 GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

@@ -7,9 +7,6 @@
 #include <kf/game/tmd.h>
 #include <kf/game/tmd_packets.h>
 
-extern void func_8002e4dc(s32 object_index, s32 depth_bias);
-extern void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode);
-
 ADDRESS(0x80031850, 0x53c)
 void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,

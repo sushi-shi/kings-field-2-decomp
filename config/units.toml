@@ -1124,6 +1124,12 @@ source = "src/game/event_map_object_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.event_world_dispatch"
+image = "GAME.EXE"
+source = "src/game/event_world_dispatch.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"

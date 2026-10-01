@@ -235,10 +235,7 @@ s32 func_80022ca0(s32 slot)
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
     memcpy(header + 96, DAT_80066680.icon_palette[slot - 1], 32);
 
-    icon_rect.x = 800;
-    icon_rect.y = 240 + slot * 16;
-    icon_rect.w = 4;
-    icon_rect.h = 16;
+    setRECT(&icon_rect, 800, 240 + slot * 16, 4, 16);
     StoreImage(&icon_rect, (u_long *)(header + 128));
     icon_rect.x = 804;
     StoreImage(&icon_rect, (u_long *)(header + 256));

@@ -5,9 +5,6 @@
 
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
-extern void func_8001e484(KfItemMenuList *list_state, const u8 *indices,
-    s32 *selection, s32 *result);
-extern void func_8001fc94(KfItemMenuList *list_state, s32 render_mode);
 
 ADDRESS(0x8001a898, 0x204)
 void func_8001a898(void)
@@ -48,7 +45,7 @@ void func_8001a898(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu, indices, &mode, &result);
+        func_8001e484(&menu.list, indices, &mode, &result);
         selected_item = indices[menu.list.selected_index];
         if (mode == 1)
             func_80022300(17);

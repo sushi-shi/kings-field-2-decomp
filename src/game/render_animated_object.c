@@ -3,8 +3,7 @@
 #include <kf/game/graphics.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
-
-extern void func_8002ebe0(u16 object_index, s32 blend_mode, s16 depth);
+#include <kf/game/tmd_packets.h>
 
 ADDRESS(0x80031d8c, 0x214)
 void func_80031d8c(s32 asset_index, const struct KfEulerAngles *rotation,

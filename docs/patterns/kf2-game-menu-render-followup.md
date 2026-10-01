@@ -22,12 +22,12 @@ campaign; adjacency alone does not establish a translation-unit boundary.
 | `0x8002083c` | menu model preview | WIP: 99.65882%, frame extent |
 | `0x80020990` | numeric heading | **exact**, existing source |
 | `0x80020b50` | translucent sprite packet | **exact**, existing source |
-| `0x80020d20` | cursor sprite packet | WIP: 99.44068%, X calculation schedule |
-| `0x80020ef8` | fixed-CLUT sprite packet | WIP: 99.39449%, X calculation schedule |
+| `0x80020d20` | cursor sprite packet | **exact, 472/472 code bytes** in current direct objdiff |
+| `0x80020ef8` | fixed-CLUT sprite packet | **exact, 436/436 code bytes** in current direct objdiff |
 | `0x800210ac` | glyph-string packets | WIP: 99.66904%, frame/register choice |
 | `0x80021510` | number-glyph packets | WIP: 98.61957%, atlas-U load/order |
 | `0x800217f0` | nine-slice panel | **exact**, existing source |
-| `0x80021a60` | eight-byte return stub | WIP: game/library attribution |
+| `0x80021a60` | eight-byte return stub | **exact**, source-owned with adjacent frame-begin function |
 | `0x80021a68` | frame begin | **exact**, existing source |
 | `0x80021be0` | frame present | **exact**, existing source |
 | `0x80021c8c` | display state entry | WIP: 99.956985%, frame extent |
@@ -47,10 +47,11 @@ one exact function and 288/288 code bytes.
 
 The existing window, preview, and display-state frame differences have no
 proven source extent; no padding was added. The two cursor blitters retain the
-shared signed point type used by the exact translucent sibling. The eight-byte
-`0x80021a60` stub has one incoming call but no evidence for a source owner or
-vendored attribution, so it remains unclaimed. The larger item-list and text
-renderers remain unclaimed until their data and record extents are supported.
+shared signed point type used by the exact translucent sibling, and fresh
+focused builds plus direct objdiff confirm both blitters exact. The eight-byte
+`0x80021a60` stub and adjacent frame-begin body now form one source unit;
+fresh focused comparison reports both listings identical. The larger
+item-list and text renderers have separate later source claims and verdicts.
 
 The strict run verified 152/152 GAME target relinks. It exited at incomplete
 known-reference data ownership and two unrelated map-object `.rodata` addend

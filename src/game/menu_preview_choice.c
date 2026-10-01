@@ -3,7 +3,6 @@
 #include <kf/game/menu.h>
 #include <psyq/pad.h>
 
-extern void func_8001fc94(void *list_state, s32 render_mode);
 
 ADDRESS(0x8001f8b8, 0x2d4)
 s32 func_8001f8b8(void *list_state, s32 label_kind,

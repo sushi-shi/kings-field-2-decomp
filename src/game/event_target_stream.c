@@ -48,7 +48,7 @@ void func_800462bc(KfActor *actor)
         while (*cursor++ != 0xf0) {
         }
         cursor++;
-        candidate->fallback_offset = (cursor + 0xec) - (u8 *)candidate;
+        candidate->fallback_offset = cursor - candidate->bytes;
         candidate->marker_state = 0;
     }
 

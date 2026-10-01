@@ -17,9 +17,6 @@ enum {
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
-extern void func_8002ff5c(KfTmdHeader *asset, u16 object_index,
-                           KfTmdPreparedAsset *prepared_asset);
-
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                             u32 flags)
@@ -159,8 +156,6 @@ enum {
     KF_RENDER_MODEL_END = 0xff,
     KF_RENDER_MODEL_ACTIVE = 1
 };
-
-extern void func_8002e4dc(s32 object_index, s32 depth_bias);
 
 DATA(0x80066888, 0x21c)
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {

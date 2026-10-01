@@ -14,7 +14,7 @@ shared with GAME II.
 | `0x8001d030` | A C claim reconstructs its 40 glyph rows, 40 byte values, 40 word codes, 40 indices, primary translator, preview/input calls, and item purchase path. The indexed page and byte at `0x80065aeb` belong to one initialized six-page, 120-byte-per-page table; the mutable multiplier at `0x8006d694` still lacks whole-object ownership. Twenty-four direct control-flow and eight BSS relocation rows were checked against retail, leaving zero withheld rows in a focused carve. Counter and code pointers, selected-item lifetime, word-width quantity arithmetic, and the combined purchase rejection branch now explain the frame, referents, and CFG. The remaining listing difference is price/quantity load order and temporary register assignment in one purchase expression. | **WIP, 96.6% focused listing** |
 | `0x8001d3b4` | Source claims the 3,720-byte frame: 120 glyph rows, 120 byte values, 120 word codes, and 120 indices after a 52-byte list. It calls the secondary translator, checks stock against the shared `0x8006d694` quantity, and credits player gold on sale. Retail reloads the list's stored entry count before preview setup; expressing that field access yielded an identical focused 0x2a0-byte listing. Direct objdiff now confirms all 672 code bytes. Twenty direct rows and three signed-low BSS pairs were decoded against raw retail; the one-VA safe carve withheld none. The multiplier's owning datum remains unresolved. | **Exact, 100% direct objdiff** |
 | `0x8001d6a8` | Appended to the adjacent secondary-code unit. The 3,232-byte frame, 120 rows/byte values/indices, 14 direct calls, selected-item byte width, and the `game_counter_bytes` HI/LO referent are confirmed by retail. A source-only `u8` probe made its listing identical; strict comparison retained it. | **Exact, 100%** |
-| `0x8001d8d0` | Source claims its 1,328-byte frame, 40-row list, two-frame opening, item trade checks, special item `0x75` tenfold quantity, and menu sequence transition. Its indexed page at `0x80065b30` belongs to `menu_item_mask_pages[4]`; the mutable `0x8006d694` multiplier still lacks a complete owner. Thirty-two direct rows plus the signed-low counter pair were decoded against retail, and its one-VA safe carve withheld none. Focused compilation emitted an identical 0x394-byte listing. | **Focused SAME, 1/1** |
+| `0x8001d8d0` | Source claims its 1,328-byte frame, 40-row list, two-frame opening, item trade checks, special item `0x75` tenfold quantity, and menu sequence transition. Its indexed page at `0x80065b30` belongs to `menu_item_mask_pages[4]`; the mutable `0x8006d694` multiplier still lacks a complete owner. Thirty-two direct rows plus the signed-low counter pair were decoded against retail, and its one-VA safe carve withheld none. Focused compilation and direct objdiff confirm all 916 code bytes. | **Exact, 100% direct objdiff** |
 | `0x8001ddd0` | Source claims the 1,328-byte item-list controller with the primary translator, preview/input path, purchase checks, and page `menu_item_mask_pages[5]` at `0x80065ba8`. Twenty-one direct rows and three signed-low BSS pairs were checked against raw retail; its one-VA safe carve withheld none. The 0x2d8-byte focused listing has 22/22 CFG blocks and 12/12 branches, with only the price/quantity load and temporary-register order divergent. The mutable multiplier still lacks a complete owner. | **WIP, 96.2% focused listing** |
 | `0x8001e0a8` | Source claims its 1,320-byte frame, 40-row list, secondary code translator, item-model/input calls, and two-frame redraw. Twenty direct rows and three signed-low BSS pairs were checked against raw retail; its one-VA safe carve withheld none. The focused listing has 22/22 CFG blocks and 12/12 branches, with the same price/quantity load and temporary-register residue as `0x8001ddd0`. The mutable multiplier still lacks a complete owner. | **WIP, 96.2% focused listing** |
 | `0x8001e484` | Common 48-byte-frame input service has at least 16 direct callers. It receives a list, a separate byte-index array, and two word outputs; it updates cursor fields `+0x1e..+0x22`, model preview state, and sound cues. A focused build and direct objdiff agree on all 1,224 code bytes; a one-VA safe delink withheld zero relocations. The shared multiplier at `0x8006d694` still lacks complete data ownership. | **Exact, 100% direct objdiff** |
@@ -28,13 +28,22 @@ a word-code pointer at `+0x30`. This is supported by direct stack stores in
 pointers. The unrelated `KfMagicMenuList` retains its signed-word values at
 `+0x30`. `0x8001e484` receives the index array in `a1`, distinct from the
 byte-value pointer stored in the list at `+0x2c`.
+The menu services now have one declaration in `menu.h`: the input service
+receives the embedded `KfMenuList` prefix, and the renderer receives the
+complete mode-dependent 52-byte record through a generic pointer before
+applying its typed render view. All 16 source calls to the input service pass
+`&menu.list`; focused builds preserve the exact menu controls. This removes
+incompatible per-file declarations without claiming that the differently
+named payload fields were one original C struct.
 
 A follow-up on the shared choice/input helper `0x8001f8b8` found a focused
 84.8% WIP listing with 42/42 CFG blocks and 18/18 branches. Its 15 proven
 callers and outgoing call/data references agree with source. The first control
 difference is the loop exit and `input_wait_release` block placement; two
 source-equivalent exit rewrites lowered the focused score and changed the CFG,
-so neither was retained. Register allocation and local initialization order
+and an explicit top-of-loop `break` followed by a common release/return
+similarly lowered it to 81.2% with 40/42 blocks and 19/18 branches. None was
+retained. Register allocation and local initialization order
 remain unattributed residues. Its four pad-bit checks now spell the pinned
 `PADLup`, `PADLdown`, `PADRright`, and `PADRdown` macros; the focused listing
 and CFG are unchanged at 84.8%.

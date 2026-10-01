@@ -12,6 +12,7 @@ remain the criteria for retaining changes.
 | `0x8001876c` | `func_8001876c` | DIFF 90.8%; result-stack and return-path instruction residue |
 | `0x800189f0` | `func_800189f0` | SAME |
 | `0x80018ac8` | `func_80018ac8` | SAME |
+| `0x80018ac8` | `func_80018ac8` | SAME |
 | `0x80018d08` | `func_80018d08` | SAME |
 | `0x80018dec` | `func_80018dec` | SAME |
 | `0x80018f8c` | `func_80018f8c` | SAME |
@@ -23,6 +24,8 @@ remain the criteria for retaining changes.
 | `0x80019ac4` | `func_80019ac4` | SAME |
 | `0x80019ce4` | `func_80019ce4` | SAME |
 | `0x80019ed4` | `func_80019ed4` | SAME |
+| `0x8001a4f0` | `func_8001a4f0` | DIFF 96.0%; initializer-loop register choice only |
+| `0x8001a898` | `func_8001a898` | SAME |
 | `0x8001e378` | `func_8001e378` | SAME |
 | `0x8001e484` | `func_8001e484` | SAME |
 | `0x8001e94c` | `func_8001e94c` | SAME |
@@ -44,6 +47,7 @@ remain the criteria for retaining changes.
 | `0x800331d0` | `notify_enqueue` | SAME |
 | `0x80033274` | `notification_digit_set_v` | SAME |
 | `0x80033284` | `func_80033284` | SAME |
+| `0x80033994` | `func_80033994` | SAME |
 
 A fresh 30-function focused menu, frame, and notification sweep after the
 `menu_sprite_defs` inventory identity sync gave 27 SAME listings and the three
@@ -58,6 +62,31 @@ typed byte local reduced the focused listing to 86.0%; reversing its
 commutative addition left the 93.1% listing unchanged. Both trial expressions
 were reverted. Its remaining two U/width load-order differences and one
 prologue move position lack a source-level correction from current evidence.
+A later `s32` second-column-U local likewise hoisted the U value and reduced
+the focused result to 86.2%; that probe was reverted too.
+
+A later focused 28-function sweep of the glyph-row, input, status,
+notification, and transition family gave 25 SAME listings and three retained
+DIFF results: `0x8001876c` 90.8%, `0x8001930c` 80.2%, and `0x800349bc`
+43.2%. The two additional exact controls in that sweep were
+`menu_magic_list` `0x8001a2f4` and `menu_simple_loop` `0x8001a7fc`;
+`tim_upload_images` and `func_80034e10` stayed SAME in the transition unit.
+No new C source change was retained from this sweep. These are focused
+listings, not strict closure.
+The adjacent menu-model render helper `0x80033994` also rebuilt SAME in a
+separate focused probe; its calls select the menu item TMD and draw object
+zero through the shared model path.
+The [inline-helper probe ledger](kf2-game-inline-helper-probes.md) records
+the controlled macro and out-of-line spelling comparisons for the exact
+status, attribute, and notification functions and the WIP glyph renderer.
+
+The early item selector `0x80018ac8` and equipment selector `0x8001a898`
+remain SAME after the shared list-input prototype cleanup. The mixed
+item/magic controller `0x8001a4f0` remains DIFF 96.0%: its 22 CFG blocks and
+12 branches agree, and the only displayed differences are register choices
+for the fixed-count initializer's index and constants. A natural `do/while`
+spelling emitted the same 96.0% listing as the retained `for` loop, so the
+source stayed with the simpler form.
 
 The separate archive-image preview at `0x8001930c` remains DIFF 80.2% in a
 normal focused `kf try`. SDK `setXYWH` and `setUVWH` macros express the two
@@ -65,8 +94,10 @@ rectangles without changing the listing. Its calls, referents, 47 CFG blocks,
 and 27 branches align; the remaining observable differences start with a
 64-byte versus 56-byte frame and the archive-entry arithmetic schedule.
 The arithmetic expression has been restored after a left-associative probe
-failed to improve the instruction order. No compiler mechanism is inferred
-from these residues.
+failed to improve the instruction order. A separate archive-base local
+lowered the focused listing to 79.6% by changing the initial registers;
+that expression was also reverted. No compiler mechanism is inferred from
+these residues.
 
 The related fade transition at `0x800349bc` draws four `POLY_FT4` rectangles.
 The pinned Psy-Q 3.0 `setXYWH` and `setUVWH` macros replace eight equivalent

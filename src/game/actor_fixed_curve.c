@@ -47,7 +47,7 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
     s32 kind;
     s32 remaining_slots;
     KfTargetReference *target_slot;
-    u8 motion_divisor;
+    s32 motion_divisor;
 
     if (actor->slot_state == 3) {
         actor = &actor_state.actors[actor->unknown_22];
@@ -153,6 +153,7 @@ update_motion:
         linked = &actor_state.actors[actor->unknown_22];
         motion_divisor = linked->group_index;
     } else {
+        /* This divisor is a group field, distinct from actor->group_index. */
         motion_divisor = group->unknown_01[1];
     }
     if (position != 0 && motion_divisor < 0xf0) {

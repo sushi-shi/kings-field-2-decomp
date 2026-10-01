@@ -7,9 +7,6 @@
 extern s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
-extern u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
-    s32 *selection, s32 *result);
-extern void func_8001fc94(void *list_state, s32 render_mode);
 extern void func_8001cad4(KfMenuGlyphString *rows);
 extern void func_8001cb44(KfMenuGlyphString *rows, s32 kind);
 

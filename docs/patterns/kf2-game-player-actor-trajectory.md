@@ -971,3 +971,34 @@ datum of size `0xd4`, with raw-reviewed pointer rows and the directly decoded
 HI/LO base pair. A focused one-VA delink accepted that base pair, and `kf sema`
 reports the complete table extent. Indirect case reachability and the C body
 remain candidate/unclaimed; this data curation does not establish a TU owner.
+
+The next player-controller call audit separates decoded direct calls from
+fragmented caller reachability. In `8002665c`, 19 previously candidate `jal`
+rows were checked against the retail instruction words and their exact target
+addresses; its `8002714c` combat-stat call was already reviewed. The same
+check reviewed twelve direct `jal` rows inside `800279cc`. Focused one-VA
+delinks materialized these named `R_MIPS_26` calls. All fifteen internal `j`
+rows inside the single-fragment `800279cc` body also have proven CFG edges;
+raw-word review admitted them as local-section `R_MIPS_26` relocations, and a
+second one-VA delink withheld none. Its two calls from fragmented `8002985c`
+remain candidate, as does the one call from that fragment to `8002665c`.
+Separately, the main-loop word at `800138e0`
+decodes a direct `jal 8002985c` with a `nop` delay slot; its reviewed row
+passed a one-VA delink of `8001369c`. None of these edges proves the three
+large controllers' complete C bodies or callee signatures. Focused listings
+for the adjacent `26498`, `27928`, `27988`, and `24498` sources remain SAME.
+The contiguous `80028ec0..8002985c` reaction source retains 16/16 focused
+SAME listings, including the damage and death helpers called by this graph.
+The `800279cc` entry overwrites `a0` through `a3` with player-position words
+and a fixed collision radius before its first call, never reads caller stack
+arguments, and returns after calling the void bounds helper without setting
+`v0`; its identity therefore records an address-derived `void (void)` ABI.
+Its player-state byte at `+0xd0` dispatches 0, `0x10`, `0x20`, `0x40`, and
+`0x50`. The first three values match KF1's grounded/falling/step-up vertical
+state numbering, but KF2's extra two states and collision-cache coupling
+remain to be reconstructed before renaming the shared field.
+In `8002665c`, retail reaches the `0x10`/`0x11` weapon-mode fork only after
+checking `16 <= player_state+0x9b < 18`. Both alternatives assign the effect
+ID and count-byte index before use. Ghidra's apparent incoming third argument
+and `t0` live-in on the fallback edge are artifacts of its unpruned fork;
+the complete function ABI remains unclaimed pending the other paths.

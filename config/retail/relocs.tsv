@@ -7305,6 +7305,7 @@ GAME.EXE	0x80037c78	0x27478		mips26	instruction-word	0x80038c7c	load		j		range-f
 GAME.EXE	0x80037ca4	0x274a4		mips26	instruction-word	0x80038a00	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037cc8	0x274c8	0x80037ccc	mips_hi16_lo16	instruction-word	0x80011cc4	load	DAT_80011cc4	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_tertiary_switch_table
 GAME.EXE	0x80037cf8	0x274f8		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037d48	0x27548	0x80037d4c	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_action89_first_cell_base_raw_pair
 GAME.EXE	0x80037d78	0x27578		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037d80	0x27580		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037db0	0x275b0		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -8290,7 +8291,14 @@ GAME.EXE	0x800411c0	0x309c0		mips26	control-flow	0x8003fa2c	load	effect_play_spa
 GAME.EXE	0x800411c8	0x309c8		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x800411d8	0x309d8		mips26	control-flow	0x80040264	load	effect_pool_initialize_scaled	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x800411fc	0x309fc		mips26	control-flow	0x800416c4	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
+GAME.EXE	0x80041240	0x30a40	0x80041244	mips_hi16_lo16	instruction-word	0x8009a5a8	bss	DAT_8009a5a8	lui+lw	v0	paired-reviewed	reviewed	manual:func_80040308 kind102 raw signed-low cooldown load
+GAME.EXE	0x80041248	0x30a48	0x8004124c	mips_hi16_lo16	instruction-word	0x801b5d68	bss	cd_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_80040308 kind102 raw CD frame-count load
+GAME.EXE	0x80041298	0x30a98	0x8004129c	mips_hi16_lo16	instruction-word	0x8009a5a8	bss	DAT_8009a5a8	lui+sw	at	paired-reviewed	reviewed	manual:func_80040308 kind102 raw signed-low cooldown store
+GAME.EXE	0x800412b0	0x30ab0	0x800412b4	mips_hi16_lo16	instruction-word	0x801983cc	bss	audio_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_80040308 kind102 audio params 236 VAB index
+GAME.EXE	0x800412c4	0x30ac4	0x800412c8	mips_hi16_lo16	instruction-word	0x8019765c	bss	audio_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_80040308 kind102 VAB slots base
 GAME.EXE	0x800412f0	0x30af0		mips26	control-flow	0x8004133c	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
+GAME.EXE	0x800412f8	0x30af8	0x800412fc	mips_hi16_lo16	instruction-word	0x801983ea	bss	audio_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_80040308 kind102 audio params 239 VAB index
+GAME.EXE	0x8004130c	0x30b0c	0x80041310	mips_hi16_lo16	instruction-word	0x8019765c	bss	audio_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_80040308 kind102 VAB slots base
 GAME.EXE	0x80041340	0x30b40		mips26	control-flow	0x80013f84	load	audio_play_spatial_range	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x80041348	0x30b48		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80041354	0x30b54		mips26	control-flow	0x800402a4	load	effect_pool_initialize_fixed	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call

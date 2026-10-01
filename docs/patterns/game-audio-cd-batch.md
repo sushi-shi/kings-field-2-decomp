@@ -1357,3 +1357,22 @@ retail uses carry-adjusted `lui/addiu`, while the source's explicit fixed
 boundary emits `lui/ori`. The five floor-item calls and the connected audio
 and resource calls are byte exact. The boundary's original defining source
 is still unproved, so no global owner was invented to erase this residue.
+
+### Complete sound-parameter span
+
+GAME kind-102 retail loads resolve through signed-low `lui/lh` pairs to
+`audio_state+0xd9c` and `+0xdba`. With the proven parameter base at `+0x464`
+and ten-byte `KfAudioVoiceParams` stride, these are the signed
+`vab_slot_index` fields of sound IDs 236 and 239. The audio key-on/off paths
+already use a `u8` sound index, while resource startup loads words beginning
+at parameter entry zero. A 256-entry array ends at `+0xe64`, the checked
+start of `vab_stream_slots`; the old ten-entry array and opaque tail did not
+represent this complete object family. `audio.h` now uses the full array and
+checks both retail-read offsets without changing the overall `0xe9c` state
+size. Original sound labels and loaded bytes remain unknown.
+
+Focused rebuilds of audio runtime, startup, transition phase, and transition
+step after the type correction retained their prior strict verdicts: 15
+audio-runtime functions and five phase callbacks exact, with the two audio,
+two startup, and one transition-step WIPs unchanged. The related effect
+dispatcher also rebuilt with its established WIP verdict.

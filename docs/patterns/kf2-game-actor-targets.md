@@ -1804,6 +1804,47 @@ waits for action timer at least 2 and rotation X strictly between 0 and
 +0x0d. The shared state-1 tail lowers world Y by 256 per update and resets
 the target when the counter reaches zero. Its focused incomplete listing
 rises from 16.9% to 18.2% WIP; no pool stride or global was invented.
+The retail shared tail at `8003f10c` loads actor +0x72 with `lhu`, subtracts
+one, stores a halfword, shifts left 16, and branches on zero. The selector-26
+source now uses the already typed unsigned halfword view for that decrement;
+its focused unit remains an honest 41.4% WIP after the later selector work.
+Selector 29 owns the physically adjacent tail at `8003f0f4` with the same
+`lhu`/subtract/`sh`/`sll` sequence, so its decrement now uses the same
+unsigned storage view. After the concurrent effect-constructor data identity
+was synchronized, the focused dispatcher listing rose from 41.4% to 43.5%
+WIP. The compiled tail now uses the same `lhu` and shift/zero branch, but
+retail uses one `addiu -1` where this probe emits `li -1; addu`; the whole
+dispatcher remains far from exact.
+
+The retail prologue loads `actor_state.active_group` once from +0x93a8 into
+saved `s5` before any selector call. The source now takes that snapshot once
+and uses it through the selector body. This matters if a callee changes the
+global pointer while the current actor action runs. The focused compiler now
+saves `s5` as retail does and the incomplete listing rises from 43.5% to
+44.8%; the retail 144-byte frame and the rest of the dispatcher remain WIP.
+Focused flow comparison still has 410 retail versus 359 compiled blocks and
+213 versus 179 branches; the indirect switch is not a closure claim.
+A source-only probe reading candidate +0x0a separately for the interval and
+switch mask compiled to the same 44.8% listing as the retained local trigger;
+retail's adjacent two `lhu` instructions do not establish a different C
+condition, so the tracked source keeps the clearer single field snapshot.
+The selector-25 `0x8003` skip advances the stream pointer by one count word
+plus that many halfwords, exactly as the current C does. Its `0x8002` arm
+stores intermediate script indices after three successive payload reads,
+where C stores the same final index once; no call or branch observes the
+intermediate values, so no dead stores were added to the source.
+Selector 9 (`8003dc3c`) was checked against its entire four-state retail
+body: the initial `3bae4` movement result gates wrapped animation and the
+XZ-distance test, state one passes five live arguments to `3b520`, state
+two either starts the last animation or turns yaw, and state three resets
+the target at phase 4095. The current C follows those calls, constants,
+field widths, and branches; this pass found no separate source correction.
+Selector 10's raw motion path performs three independent `rand` calls, using
+the 2048 and 4096 cutoffs to add or subtract candidate +0x10 on actor
+motion X, Z, then Y. Each halfword is stored before signed clamp tests
+against candidate +0x0c, followed by the `3b33c` motion call and wrapped
+animation. The current C models that order and those bounds; no new field
+owner or source edit was inferred from the unsigned raw loads.
 
 Selector 27 starts at `8003ef14` and has three directly decoded states. It
 initializes actor +0x70 to zero and the signed +0x72 value to -1, then in

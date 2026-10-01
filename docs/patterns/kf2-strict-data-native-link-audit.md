@@ -32,6 +32,19 @@ module's RODATA range to the delinker. The sole PSX data residue is
 compiler emits a 64-byte COMMON request for the authentic 60-byte SDK
 `struct EXEC`. Controlled `= {0}` and `-fno-common` probes both moved it into
 `.data`, growing that section from 12 to 72 bytes, so neither change was kept.
+Fresh isolated object review gives the precise PSX unit verdict: the 224-byte
+`main` text, 12-byte `.data`, 53-byte `.rodata`, and 8-byte `.sdata` match the
+retail target, as do the ordered 24 text and three data relocation entries.
+The only strict-data difference is the `overlay_header` symbol at
+`0x8001026c`: the target object allocates 60 bytes in `.bss`, whereas the
+source object requests 64 bytes of `SHN_COMMON` storage. The raw `Load` call
+uses its base, and the later stack-field writes use +0x20/+0x24 before `Exec`;
+both address pairs are validated and the function remains exact in a focused
+`psx.main` rebuild. Pinned `KERNEL.H` defines `struct EXEC` as fifteen 32-bit
+words, so its source type and 60-byte logical extent are supported. No byte,
+relocation, or source-type correction explains the compiler's COMMON request;
+the PSX module remains strict-data WIP without changing the authentic SDK
+declaration.
 GAME's remaining divergences are chiefly switch-table `.text` addends and
 section extents; `audio_runtime` and the newly defined CD-state BSS, plus
 `map_object_action_update` read-only ownership, remain open. The CD source

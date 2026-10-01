@@ -10,6 +10,9 @@ extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 DATA(0x8006d704, 0x4)
 u32 DAT_8006d704 = 0;
 
+DATA(0x8009a5a8, 0x4)
+s32 DAT_8009a5a8;
+
 DATA(0x801d9628, 0x900)
 KfEffectTrailRow DAT_801d9628[4][24];
 
@@ -287,9 +290,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x22);
         break;
     }
-    case 102:
-        /* The timer and sequence owners remain unresolved. */
-        break;
     case 107: {
         const SVECTOR *angles;
 
@@ -612,6 +612,43 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         *(u16 *)&record->unknown_3c[6] = second_value;
         break;
     }
+    case 102: {
+        u16 scale;
+        s32 volume;
+        s16 slot;
+
+        record->unknown_08 = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0xc;
+        record->render_id = 0xc;
+        record->scale_y = 0;
+        scale = va_arg(arguments, s32);
+        record->scale_z = scale;
+        record->scale_x = scale;
+        *(s16 *)&record->unknown_3c[4] = va_arg(arguments, s32);
+        if ((s32)(DAT_8009a5a8 - cd_state.frame_count) >= 0) {
+            break;
+        }
+        volume = *(s16 *)&record->unknown_3c[4] / 90;
+        DAT_8009a5a8 = cd_state.frame_count + 30;
+        if (volume >= 128) {
+            volume = 127;
+        }
+        slot = audio_state.voices.params[236].vab_slot_index;
+        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
+            audio_state.vab_slots[slot].vab_id != 0xfe) {
+            audio_play_spatial_range(0xec, &record->position, volume, 28000,
+                                     0x7148, 0);
+            break;
+        }
+        slot = audio_state.voices.params[239].vab_slot_index;
+        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
+            audio_state.vab_slots[slot].vab_id != 0xfe) {
+            audio_play_spatial_range(0xef, &record->position, volume, 28000,
+                                     0x7148, 0);
+        }
+        break;
+    }
     case 15:
         effect_pool_initialize_fixed(record, 0x19);
         break;
@@ -651,8 +688,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x1f);
         break;
     case 114: {
-        s32 x;
-        s32 z;
+        VECTOR candidate_position;
 
         record->unknown_08 = 1;
         record->animation_clip = 0x80;
@@ -660,15 +696,16 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->render_id = 0x26;
         record->updates_remaining = 45;
         *(s32 *)&record->unknown_3c[8] = record->position.vy;
-        x = record->position.vx + (rand() >> 5) - 512;
-        z = record->position.vz + (rand() >> 5) - 512;
-        if (func_8002b7f8(x, record->position.vy, z, 10, 10) != 0) {
-            x = record->position.vx;
-            z = record->position.vz;
+        candidate_position.vx = record->position.vx + (rand() >> 5) - 512;
+        candidate_position.vz = record->position.vz + (rand() >> 5) - 512;
+        if (func_8002b7f8(candidate_position.vx, record->position.vy,
+                          candidate_position.vz, 10, 10) != 0) {
+            candidate_position.vx = record->position.vx;
+            candidate_position.vz = record->position.vz;
         }
-        record->position.vx = x - 2730;
+        record->position.vx = candidate_position.vx - 2730;
         record->position.vy -= 16384;
-        record->position.vz = z - 2730;
+        record->position.vz = candidate_position.vz - 2730;
         record->rotation.vx = 100;
         record->rotation.vy = 600;
         record->rotation.vz = 100;

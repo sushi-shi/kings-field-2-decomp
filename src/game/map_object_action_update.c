@@ -427,13 +427,18 @@ void func_80036ed4(void)
                 object->unknown_0a = 0xfff;
             action83_complete:
                 func_800366fc(object->tail.fields.unknown_39);
-                if (object->tail.fields.unknown_38 == 0) {
+                switch (object->tail.fields.unknown_38) {
+                case 0:
                     object->action_timer = 99;
-                } else if (object->tail.fields.unknown_38 == 1) {
+                    break;
+                case 1:
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                     object->action_timer = 4;
-                } else if (object->tail.fields.unknown_38 < 4) {
+                    break;
+                case 2:
+                case 3:
                     object->action_timer = 0;
+                    break;
                 }
                 break;
             case 3:
@@ -518,8 +523,12 @@ void func_80036ed4(void)
                     KfMapOccupancyCell *cell =
                         &bss_801c7540.map_cells[object->position.vz >> 11]
                                                   [object->position.vx >> 11];
+                    KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->action_timer = 3;
-                    cell->layer[object->unknown_00 == 1 ? 0 : 1].unknown_03 = 0x74;
+                    if (object->unknown_00 != 1) {
+                        layer = &cell->layer[1];
+                    }
+                    layer->unknown_03 = 0x74;
                     map_object_play_spatial_sound(object, 0xe3);
                 }
                 break;

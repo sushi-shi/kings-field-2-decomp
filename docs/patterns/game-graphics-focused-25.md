@@ -182,7 +182,7 @@ needed or retained.
 | `game.graphics_sliding_panels` | 2/2 exact |
 | `game.graphics_color_bytes_draw` | 1/1 exact |
 | `game.graphics_color_bytes_set` | 1/1 exact |
-| `game.render_world_model` | `0x80031850` WIP, 98.92538% |
+| `game.render_world_model` | `0x80031850` WIP, 99.29851% |
 | `game.render_animated_object` | `0x80031d8c` WIP, 94.65414% |
 | `game.render_frame` | 2/2 exact |
 | `game.animation_sparse_vertices` | 3/3 exact |
@@ -282,6 +282,18 @@ Retail/source still have 40/40 CFG blocks and 16/16 branches. The remaining
 first difference is saved-register assignment. A separate typed row/cell
 pointer probe scored 87.3% focused and was discarded.
 
+The selected TMD object index now receives zero inside the `clip < 0x80`
+branch, while the high-clip branch assigns its masked index. Retail clears the
+selected index in the branch delay slot before either path runs; the previous
+source initialized it before the condition and moved that instruction much
+earlier. The branch-local source preserves the value in both paths and, after
+a targeted one-unit rebuild, improves focused similarity from **93.8% to
+94.5%** and isolated direct strict objdiff from **98.92538% to 99.29851%**.
+The 40 CFG blocks, 16 branches, and 68 ordered relocation rows remain aligned.
+Focused exact controls `game.player_weapon_render` (1/1) and
+`game.render_frame` (2/2) remain SAME. Saved-register and independent
+instruction-order differences still prevent exact matching.
+
 A focused dispatcher relocation census appears to differ at the player camera
 position (`player_state +0xdc` in retail versus `+0xe0` in the probe), but the
 actual loads are equivalent. `camera_position` starts at `+0xd8`: retail
@@ -291,3 +303,18 @@ materializes `+0xe0` separately for `vz`. All three component referents are
 correct. Apart from this address-reuse choice and local branch targets, the
 external relocation counts, types, symbols, and addends agree. This is not a
 missing field or identity claim, so no source or relocation edit is warranted.
+
+A fresh targeted `game.render_resource_dispatch` object comparison measures
+**92.00273% direct strict** and 71.0% focused listing. Both objects still have
+96 CFG blocks, 54 branches, and 82 ordered relocation rows. The first reported
+effect-loop successor difference sends both versions to the same next-record
+step (`s0 += 72`); the block numbers differ because their compiled block order
+differs. Two off-tree camera-pointer lifetime probes each raised the focused
+listing to 72.6%, but neither reproduced retail's early saved `+0xd8` base and
+separate `+0xdc` Y address. They were discarded: the three component accesses
+already have the right meaning, and a register-lifetime preference alone does
+not justify a source change.
+Reordering the independent actor-loop cursor increments regressed focused
+listing from 71.0% to 70.9% and reassigned their saved registers; moving the
+actor count setup ahead of the position cursor kept the 71.0% verdict without
+recovering retail's full setup order. Neither source-only probe was retained.

@@ -75,6 +75,61 @@ void effect_update_dispatch(void)
     s32 shared_growth_phase;
 
     switch (initial_kind) {
+    case 29:
+    case 31:
+    case 48: {
+        VECTOR projected;
+        VECTOR midpoint;
+        s32 age;
+        s32 prior_y;
+        s32 acceleration;
+
+        acceleration = 10;
+        goto ballistic_update;
+    case 30:
+    case 47:
+        acceleration = 5;
+    ballistic_update:
+        if (initial_phase != 0) {
+            break;
+        }
+        /* These kinds overlay the record tail with a Y origin and age. */
+        if ((s16)*(u16 *)&record->unknown_3c[6] == 0) {
+            audio_play_spatial_range(5, &record->position, 110,
+                                     28000, 29000, 0);
+        }
+        age = *(u16 *)&record->unknown_3c[6] + 1;
+        *(u16 *)&record->unknown_3c[6] = age;
+        age = (s16)age;
+        projected.vx = record->position.vx + record->direction.vx;
+        prior_y = record->position.vy;
+        projected.vy = (s16)*(u16 *)&record->unknown_3c[4] +
+                       record->direction.vy * age +
+                       ((acceleration * age * age) >> 1);
+        projected.vz = record->position.vz + record->direction.vz;
+        collision = func_8003fa68(&projected, 20, 20);
+        if (collision == 0) {
+            midpoint.vx = (projected.vx + record->position.vx) >> 1;
+            midpoint.vy = (projected.vy + record->position.vy) >> 1;
+            midpoint.vz = (projected.vz + record->position.vz) >> 1;
+            collision = func_8003fa68(&midpoint, 20, 20);
+        }
+        record->position.vx = projected.vx;
+        record->position.vy = projected.vy;
+        record->position.vz = projected.vz;
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        if (collision != 0) {
+            func_8003feb0(collision | 0x20000);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            record->unknown_0a = KF_COLLISION_CACHE_LAYER ? 2 : 1;
+            func_800154fc(record->direction.vx,
+                          record->position.vy - prior_y,
+                          record->direction.vz,
+                          (struct KfEulerAngles *)&record->rotation);
+        }
+        break;
+    }
     case 0:
         record->direction.vz += 20;
         if ((s16)record->scale_x < 0xc00) {
@@ -942,61 +997,6 @@ void effect_update_dispatch(void)
             }
         }
         break;
-    case 29:
-    case 31:
-    case 48: {
-        VECTOR projected;
-        VECTOR midpoint;
-        s32 age;
-        s32 prior_y;
-        s32 acceleration;
-
-        acceleration = 10;
-        goto ballistic_update;
-    case 30:
-    case 47:
-        acceleration = 5;
-    ballistic_update:
-        if (initial_phase != 0) {
-            break;
-        }
-        /* These kinds overlay the record tail with a Y origin and age. */
-        if ((s16)*(u16 *)&record->unknown_3c[6] == 0) {
-            audio_play_spatial_range(5, &record->position, 110,
-                                     28000, 29000, 0);
-        }
-        age = *(u16 *)&record->unknown_3c[6] + 1;
-        *(u16 *)&record->unknown_3c[6] = age;
-        age = (s16)age;
-        projected.vx = record->position.vx + record->direction.vx;
-        prior_y = record->position.vy;
-        projected.vy = (s16)*(u16 *)&record->unknown_3c[4] +
-                       record->direction.vy * age +
-                       ((acceleration * age * age) >> 1);
-        projected.vz = record->position.vz + record->direction.vz;
-        collision = func_8003fa68(&projected, 20, 20);
-        if (collision == 0) {
-            midpoint.vx = (projected.vx + record->position.vx) >> 1;
-            midpoint.vy = (projected.vy + record->position.vy) >> 1;
-            midpoint.vz = (projected.vz + record->position.vz) >> 1;
-            collision = func_8003fa68(&midpoint, 20, 20);
-        }
-        record->position.vx = projected.vx;
-        record->position.vy = projected.vy;
-        record->position.vz = projected.vz;
-        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-        if (collision != 0) {
-            func_8003feb0(collision | 0x20000);
-            record->type = KF_EFFECT_SLOT_FREE;
-        } else {
-            record->unknown_0a = KF_COLLISION_CACHE_LAYER ? 2 : 1;
-            func_800154fc(record->direction.vx,
-                          record->position.vy - prior_y,
-                          record->direction.vz,
-                          (struct KfEulerAngles *)&record->rotation);
-        }
-        break;
-    }
     case 53: {
         VECTOR target;
         s32 motion_scale;

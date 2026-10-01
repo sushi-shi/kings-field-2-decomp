@@ -30,6 +30,7 @@ KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collisi
 KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
 KfCollisionRotation	0x14	supported	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
 KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collision row
+KfCollisionShapeOffsetTable	0x200	supported	game/collision_cache.h;GAME 0x2ab5c..0x2ab80	256 halfword offsets at the start of the loaded collision-shape bank; record layout unresolved
 KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header

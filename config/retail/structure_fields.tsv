@@ -160,6 +160,7 @@ KfCollisionRotation	0x12	0x2	pad	s16	opaque	game/graphics.h;asm;collision rows	3
 KfCollisionRow	0x0	0x50	rotations	KfCollisionRotation[4]	supported	game/graphics.h;asm;collision rows	104-byte collision row
 KfCollisionRow	0x50	0x12	motion	KfCollisionMotion	supported	game/graphics.h;asm;collision rows	104-byte collision row
 KfCollisionRow	0x62	0x6	filter	KfCollisionTail	supported	game/graphics.h;asm;collision rows	104-byte collision row
+KfCollisionShapeOffsetTable	0x0	0x200	offsets	u16[256]	supported	game/collision_cache.h;GAME 0x2ab5c..0x2ab80	unsigned byte index doubled before an unsigned halfword offset load
 KfCollisionTail	0x0	0x4	kinds	KfCollisionKinds	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfCollisionTail	0x4	0x2	angle	s16	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x00	0x01	buffer_index	u8	supported	game headers;asm;xrefs	member used by reconstructed code

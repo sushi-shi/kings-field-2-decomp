@@ -47,7 +47,7 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   s32 z_plus_cell;
   KfMapOccupancyLayer *selected_layer;
   KfCollisionShapeHeader *shape;
-  u8 *shape_bank = (u8 *)&bss_801c7540 + 0x10000;
+  u8 *shape_bank = KF_COLLISION_SHAPE_BANK;
 
   result_flags = 0;
   special_floor_found = 0;
@@ -61,7 +61,8 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   height_flags = (u32)height & 0xf0000000;
   height &= 0x0fffffff;
 LAB_8002ab5c:
-  shape_offset = ((u16 *)shape_bank)[selected_layer->unknown_03];
+  shape_offset = ((KfCollisionShapeOffsetTable *)shape_bank)
+      ->offsets[selected_layer->unknown_03];
   shape = (KfCollisionShapeHeader *)(shape_bank + shape_offset);
   bottom_y = y - height;
   records_left = shape->command_count + -1;

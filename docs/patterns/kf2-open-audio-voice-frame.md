@@ -24,3 +24,15 @@ not account for retail's 64-byte frame. No source-backed local or alternate
 prototype explains the 24-byte extra reservation. The current source stays
 unchanged; this is an unattributed frame-layout residue, not a reason to add
 padding, dead locals, or an assembly wrapper.
+
+Fresh image-qualified retail review confirms the two `opening_poll_pad` calls
+at `0x80013028` and `0x80013074`: each passes signed `audio_vab_id`, program
+10, tone zero, note 60, and two stack volume arguments of 64. The wrapper
+loads those volumes with `lhu` from its incoming stack slots, sign-extends
+them before `SsUtKeyOn`, and has no data or string referent. Its only outgoing
+relocation is the direct `jal` at `0x800134c0` to `SsUtKeyOn`; the raw call is
+proven, while the curated relocation row remains candidate. A fresh focused
+`open.resources` comparison again gives `tim_upload_images` SAME and the
+voice wrapper DIFF only at the five frame-dependent immediates (64 versus 40
+bytes). The prior strict 99.82353% verdict remains WIP; no source or
+relocation edit is supported by this pass.

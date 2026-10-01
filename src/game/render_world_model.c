@@ -134,8 +134,8 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&model);
 
     asset_registry_select(asset_index);
-    object_index = 0;
     if (clip < 0x80) {
+        object_index = 0;
         object = tmd_get_object(0);
         if (func_80034070(cache, asset_index, clip, phase,
                           object->vertex_count) == 0) {

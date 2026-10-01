@@ -1697,3 +1697,13 @@ unchanged. The adjacent `game.actor_player_damage` focused control is
 `8003a778` SAME; `8003a318` differs in argument-register assignment, while
 `8003a614` retains the correct call/branch set but reuses the camera-position
 base where retail rematerializes the Z-field address.
+
+A fresh focused revisit of `800274ec` still reports 61.9% listing similarity,
+35 retail versus 33 compiled CFG blocks, 20/20 branches, three return-frontier
+edges, and the same eleven ordered calls. Retail forms separate absolute
+player camera-field addresses in the main loop and builds a camera-position
+pointer inside the slide loop; the probe keeps one camera base live across
+both. A source-only typed pointer scoped to the slide loop changed the
+register and retry-join layout without closing the block gap, so it was
+discarded. The existing collision, retry, and signed-halfword output model
+remains WIP at the prior 88.631% direct strict verdict.

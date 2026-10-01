@@ -2055,3 +2055,90 @@ A related focused GAME effect-motion pass then rebuilt
 (`0x80041d7c`, `0x80041e0c`). Direct strict comparison reports 100% for
 all six. Along with the ten exact `effect_update` functions above, this
 16-function connected control batch required no source edits.
+
+## Effect updater call and table audit
+
+A fresh focused rebuild of `game.effect_update_dispatch` leaves GAME
+`0x80042650` WIP: retail text is 13,936 bytes and the compiled body is
+13,852 bytes. Moving the self-contained ballistic cases 29/31/48 and
+30/47 to the switch start follows the first retail table targets: their
+retail offsets are `+96` and `+104`, versus `+104` and `+112` in the probe,
+an eight-byte difference after the probe's two extra saved-register stores.
+Focused listing similarity rose from 13.0% to 14.5%, and direct strict text
+from 0% to 11.941159%; the function remains far from exact. Both 516-byte
+`.rodata` sections contain 128 `R_MIPS_32` pointer rows. Canonicalizing their
+in-body target addends by first-occurrence class gives the same class at all
+128 indices, with 64 distinct classes on each side. Raw `.rodata` similarity
+is now 7.976654%
+(14.883268% before the move): body-offset changes lower this byte metric,
+with no evidence for a missing table entry. Retail allocates 224 stack bytes
+and saves five `$s` registers, while this probe allocates 192 bytes and saves
+seven. The first case entries now follow retail order, but later case groups
+still diverge. In particular, retail enters kinds 7/49 at `+520`, 13/32 at
+`+612`, and kind 23 at `+740`. The current C places kind 23 before the 7/49
+growth path so it can fall through into their common update. An off-tree
+split with an explicit shared label improves the fuzzy listing, but the
+original source form of this join is unproved; a score-only rewrite was
+discarded. No additional live stack object is established by the frame
+difference.
+
+Retail has 27 direct calls to `func_80040308`; the compiled body has 26.
+The source contains 27 constructor call expressions. For kind 114, retail
+keeps a separate kind-3 call at body offset `+13208`. The compiled arm sets
+`a2 = 3` in the delay slot at `+12664` of a jump to `+13412`, sharing the
+constructor call at `+13416` with a later dynamic-kind path. The source
+already represents both calls and their argument values; this is call-site
+coalescing, with no supported missing C arm. A fresh direct strict comparison
+keeps all ten `game.effect_update` functions and all three `game.effect_reset`
+functions, including sole caller `effect_pool_sweep`, at 100%. The ballistic
+case move is the only retained updater source edit; no call arm or pointer
+table was changed. Off-tree probes also placed the growth and phase case
+groups earlier, reaching 15.8% focused similarity, but their shared-growth
+join needs a new cross-case `goto` whose source form is not yet established;
+those probes were discarded.
+
+## Kind-102 audio parameter identity
+
+The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`
+with negative immediates. Carry-adjusted resolution gives GAME
+`0x801983cc` and `0x801983ea`, not addresses in the `0x801a83xx`
+range. Both lie inside the owned `audio_state` BSS object, at offsets
+`+0xd9c` and `+0xdba`. Its sound parameter array starts at `+0x464`,
+and each `KfAudioVoiceParams` record is ten bytes: those loads are the
+signed `vab_slot_index` halfwords of entries 236 and 239. Existing audio
+callers index this array with a `u8` sound ID, and resource startup copies
+loaded words into its first entry. A complete 256-record array ends at
+`+0xe64`, exactly where the independently checked VAB stream slots begin.
+The shared `audio.h` view now models that full extent instead of a ten-entry
+prefix and opaque tail. The original source spelling and meaning of these
+two sound IDs remain unknown; no separate global was created.
+
+Focused rebuilds after the layout correction retain all 15 exact
+`game.audio_runtime` functions, all five exact transition-phase callbacks,
+and the prior WIP strict verdicts for the two audio-runtime, two startup,
+and one transition-step functions. No address constructor or body was
+changed to protect a score.
+
+## Constructor kind-102 and stack-object follow-up
+
+The constructor now has a distinct kind-102 arm after kind 101, following
+the retail switch target order. Its two signed audio halfword reads use the
+typed parameter entries above. The separate `0x8009a5a8` cooldown word has
+exactly two surveyed direct raw references: the constructor loads it at
+`0x80041240`, compares it as signed against `cd_state.frame_count`, then
+stores the frame count plus 30 at `0x80041298`. Seven relocations were
+reviewed, with no overlapping direct access found in the surveyed map. Its
+defining source mechanism remains candidate because the address sits in a
+mixed Sony/CD BSS neighborhood. The source keeps an address-derived identity
+rather than claiming a new audio-state member.
+
+For kind 114, retail stores random X and Z coordinates at stack offsets
+`+24` and `+32`, leaving `+28` between them. This supports one 16-byte
+`VECTOR` local, now used in source instead of scalar X/Z locals. Focused
+similarity rises from 35.3% to 37.8%, and direct strict text from 82.501175%
+to 83.979576% (5,092 retail bytes versus 5,072 compiled). Both bodies now
+use 72-byte frames, 116 CFG blocks, 22 branches, and 69 direct calls. The
+text and switch table have 157 and 123 relocation rows respectively; all
+123 switch entries preserve the retail pairwise target equivalence across 62
+distinct classes. The constructor remains WIP because instruction order and
+other source-shape differences persist; exact closure is not claimed.

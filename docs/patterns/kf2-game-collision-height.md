@@ -519,6 +519,29 @@ focused listing, 94.6771% strict code (7,672 probe bytes versus 7,668
 retail), exact 32-byte `.data`, and 39.989517% strict `.rodata`; the
 dispatcher remains WIP. The focused fuzzy score dipped from 81.5% after
 the action-96 switch, while direct strict code and the local raw CFG improved.
+Action 89's second and fifth timer phases each select one of two five-byte
+occupancy layers with a retail branch and an optional `+5` before storing
+markers `0x74` and `0x75`. The previous conditional array indexes compiled
+branchless mask arithmetic; typed `KfMapOccupancyLayer *` selections restore
+the retail branch shapes. The retail `lui 0x801c; addiu 0x7540` pairs at
+`0x80037d48/4c` and `0x80037e3c/40` each directly form the already owned
+`bss_801c7540` base. Two reviewed HI/LO rows make those referents explicit;
+the safe one-VA carve admits both with no withheld rows.
+Action 83's completion block reads its state byte once and branches through
+state 1, signed `<2`, state 0, then signed `<4` before the state-1 sound
+block. A four-state switch reproduces this branch sequence; a literal
+1-first `if` ladder instead placed the sound block too early. The current
+direct strict result is 96.20709% code (7,676 probe bytes versus 7,668
+retail), 32/32 exact `.data`, and 39.989517% `.rodata`; the focused listing
+is 82.4% DIFF. Later code placement and switch pointer addends remain WIP.
+
+The adjacent map-cell pattern pair remains WIP on a fresh focused check:
+`0x80034f90` is 92.5% listing and `0x80035194` is 58.8% listing.
+Retail `0x80034fe8..0x80035004` computes complementary byte offsets
+`0` and `5` for the two five-byte occupancy layers. Replacing those
+source offsets with typed array indexes kept the same fields but lowered
+the first listing to 76.7%; the trial was reverted. The rectangle copier
+still has all 51 retail CFG blocks, with frame and mask scheduling residue.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.

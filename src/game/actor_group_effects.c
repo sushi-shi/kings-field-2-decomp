@@ -55,10 +55,10 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
     } else if (position_mode == -2) {
         first = va_arg(arguments, s32);
-        second = va_arg(arguments, s32);
-        third = va_arg(arguments, s32);
         func_8003c000(current, first, &target);
+        second = va_arg(arguments, s32);
         func_8003c000(current, second, &offset);
+        third = va_arg(arguments, s32);
         predicted.vx = func_8001584c(player->vx,
             ((offset.vx - target.vx) << 8) + current->position.vx, third);
         predicted.vy = func_8001584c(player->vy,

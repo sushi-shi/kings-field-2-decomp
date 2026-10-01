@@ -105,3 +105,28 @@ difference is in the earlier motion-state dispatch: retail tests `0x20`
 first, while the probe tests `0x10` first. The three preceding functions
 `0x8003b33c`, `0x8003b520`, and `0x8003b5bc` remain focused SAME and
 isolated strict 100%. No exactness claim is made for the rising-state body.
+
+A later raw-first source-only probe made the state dispatch explicit in
+retail order (`0x20`, `<33`, `0`, `0x10`, then `0x30`), and another shared the
+state-reset label used by the rising and falling paths. Both retained the
+40/39 block gap and added an extra saved register; the focused listings were
+68.9% and 68.4% versus the retained 68.2%. They were discarded. The gap is
+currently attributable to dispatch layout, not evidence of a missing case.
+
+The adjacent actor-group effect dispatcher `0x8003c614` remains WIP. In its
+position-mode `-2` arm, retail loads the first script word at `0x8003c6a8`
+before the first vertex call, the second at `0x8003c6b8` before the second
+vertex call, and the third at `0x8003c6d8` after both calls. The C now
+consumes each variadic word at that use site, preserving the caller's order
+and removing the probe's eager three-word register retention. A focused
+one-unit build improves the listing from 51.1% to 55.3%; direct strict
+objdiff is 79.86976% (2,672 retail bytes versus 2,700 compiled). The
+source remains WIP: its 192-byte retail frame versus the probe's 184 bytes,
+kind-`0x79` constructor join, and switch-table target offsets still differ.
+Off-tree probes that merely moved the common constructor label or duplicated
+its calls did not reproduce retail's shared call at `0x8003ccc8` and were
+discarded. A separate branch-local direction pointer meant to merge kind
+`0x78` into that call fell to 51.0% focused and added outgoing arguments
+unconsumed by constructor kind `0x78`, so it was discarded too. Raw kind
+`0x16` writes `-1` to outgoing `20(sp)` at
+`0x8003ca98`; it is not a five-argument-only exception to that shared call.

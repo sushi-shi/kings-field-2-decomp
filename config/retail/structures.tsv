@@ -95,6 +95,11 @@ KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-p
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfTargetCandidate	0x1c	candidate	game/actor.h;GAME 0x80039108;actor sound and event-bytecode helpers	minimum observed view through halfword +0x1a; full extent and stride unknown
+KfTargetCandidateWord10	0x2	supported	GAME 0x800391ac lhu candidate+0x10;event byte consumers	overlapping halfword and byte views at candidate +0x10
+KfTargetCandidateWord10Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x10 and +0x11
+KfTargetCandidateWord12	0x2	supported	GAME 0x80039108 lhu candidate+0x12;event byte consumers	overlapping halfword and byte views at candidate +0x12
+KfTargetCandidateWord12Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x12 and +0x13
+KfTargetCandidateWord14	0x2	supported	GAME 0x800393f4 lhu candidate+0x14;event byte stream	overlapping halfword and two-byte stream prefix; complete stream extent unresolved
 KfTargetGroup	0x78	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfTargetReference	0x4	supported	game/actor.h;asm;actor target fixup	relative offset and target pointer share one slot
 KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat triangle primitive body

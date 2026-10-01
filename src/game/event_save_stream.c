@@ -40,8 +40,8 @@ void func_80048554(s32 save_slot)
         candidate = group->targets[0].pointer;
         if (candidate != 0 && candidate->type == 0x70) {
             *write++ = index;
-            *write++ = candidate->fallback_offset;
-            *write++ = candidate->marker_state;
+            *write++ = candidate->word_10.bytes.fallback_offset;
+            *write++ = candidate->word_12.bytes.marker_state;
         }
     }
     *write++ = 0xff;

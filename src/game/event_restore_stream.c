@@ -40,8 +40,8 @@ void func_800489ac(s32 save_slot)
             break;
         }
         candidate = groups[group_index].targets[0].pointer;
-        candidate->fallback_offset = *stream++;
-        candidate->marker_state = *stream++;
+        candidate->word_10.bytes.fallback_offset = *stream++;
+        candidate->word_12.bytes.marker_state = *stream++;
     }
 
     object = map_object_state.objects;

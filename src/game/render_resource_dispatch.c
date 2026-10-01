@@ -48,9 +48,11 @@ void func_8003247c(void)
          remaining != -1; remaining--, actor++) {
         u32 layer;
         KfTargetGroup *group;
+        const VECTOR *actor_position_ptr;
         const VECTOR *position;
         MATRIX *world_matrix;
 
+        actor_position_ptr = &actor->position;
         if (actor->lifecycle != 1) {
             continue;
         }
@@ -60,7 +62,7 @@ void func_8003247c(void)
             layer = actor->unknown_03;
         }
         if (actor->unknown_28 & 0x80000) goto actor_radius_check;
-        if ((map_cell_layer_mask(&actor->position) & layer) == 0) continue;
+        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) continue;
 actor_visible:
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
             position = func_8003c10c(actor, &actor_position);
@@ -68,7 +70,7 @@ actor_visible:
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
-                position = &actor->position;
+                position = actor_position_ptr;
                 world_matrix = &render_world_identity_matrix;
             } else {
                 rotation.x = actor->rotation.x;
@@ -89,7 +91,7 @@ actor_visible:
         tmd_flags[actor->unknown_01] = 1;
         continue;
 actor_radius_check:
-        if (map_cell_layer_mask_radius(&actor->position, 3) &
+        if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
             actor->unknown_03) goto actor_visible;
     }
     resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);

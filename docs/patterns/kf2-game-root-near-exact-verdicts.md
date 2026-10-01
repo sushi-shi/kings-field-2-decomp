@@ -97,6 +97,16 @@ that moved instructions away from retail were reverted.
 | `8002ce68` floor-item capture | 65.85185% | WIP, 55.7% focused. All five proven call sites are in `game_main_loop`, whose source passes seven arguments. Retail and source store the same item fields, call free-slot search, allocate pixels only for kind 1, then call `StoreImage` and `DrawSync`. CFG is 5/5 blocks and 2/2 branches, with exact free-slot and update siblings. Retail reloads the three stack arguments after free-slot search, while the probe saves them in `$s` registers before the call and grows the frame from 40 to 56 bytes. No signature or field correction supports forcing those lifetimes. |
 | `8002c670` map-mask sweep | 90.048485% | WIP, 76.4% focused. Retail doubles view X/Z with `sll`; the source now casts to `u32` before shifting so the same 32-bit wrap is defined. The four line draws, eight line scans, mask-cell referents, and shape table remain source-owned; CFG is 11/11 blocks and 4/4 branches. The first residual is an independent addition destination register; later state-byte stores and map-cell base scheduling differ, so no exact claim follows from this source correction. |
 
+A follow-up focused pass tested three bounded control/dataflow spellings and kept
+the established source. Enclosing the `80036190` object scan in the initial
+range guard reduced its CFG from 15 to 14 blocks and its focused similarity
+from 82.9% to 82.6%. Precomputing the first-layer selector in `80035194`
+reduced focused similarity from 58.8% to 55.5% and added a saved-register
+dependency at entry. Separating the rasterizer's start-coordinate loads in
+`8002bfd4` and expressing `8002c424`'s second-layer sentinel as an explicit
+early branch both emitted the prior focused listings. All four probes were
+reverted; no new exact result or source-supported correction followed.
+
 The shared `map_cell.h` prototypes now carry the retail-supported byte-width
 layer input and void occupancy-update return. The previously inconsistent
 actor initializer declaration was removed, and its exact listing stayed

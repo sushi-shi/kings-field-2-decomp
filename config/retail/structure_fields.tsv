@@ -667,14 +667,22 @@ KfTargetCandidate	0x8	0x2	unknown_08	u16	supported	GAME 0x800462bc retail lhu at
 KfTargetCandidate	0xa	0x2	unknown_0a	u16	supported	GAME 0x8003d184 lhu at target+0x0a	unsigned halfword control value; meaning unresolved
 KfTargetCandidate	0xc	0x2	unknown_0c	u16	supported	GAME 0x800462bc retail lhu at +0xc	base entry added to event byte before archive call
 KfTargetCandidate	0xe	0x2	unknown_0e	u16	supported	GAME 0x800462bc retail lhu at +0xe	phase-step operand for restored actor state
-KfTargetCandidate	0x10	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
-KfTargetCandidate	0x11	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at +0x11	actor state restored after event action
-KfTargetCandidate	0x12	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
-KfTargetCandidate	0x13	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
-KfTargetCandidate	0x14	0x2	bytes	u8[2]	candidate	game/actor.h;message marker scan;GAME 0x800462bc	start of variable byte stream; complete extent unresolved
+KfTargetCandidate	0x10	0x2	word_10	KfTargetCandidateWord10	supported	GAME 0x800391ac lhu at +0x10;GAME event lbu at +0x10/+0x11	shared word and byte view
+KfTargetCandidate	0x12	0x2	word_12	KfTargetCandidateWord12	supported	GAME 0x80039108 lhu at +0x12;GAME event lbu at +0x12/+0x13	shared word and byte view
+KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x800393f4 lhu at +0x14;GAME event byte stream	shared word and byte-stream prefix view
 KfTargetCandidate	0x16	0x2	unknown_16	u16	supported	GAME 0x80039108 lhu target+0x16	candidate distance bound; meaning unresolved
 KfTargetCandidate	0x18	0x2	unknown_18	u8[2]	opaque	game/actor.h	intervening bytes before candidate distance bound
 KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
+KfTargetCandidateWord10	0x0	0x2	value	u16	supported	GAME 0x800391ac lhu candidate+0x10	unsigned candidate distance bound
+KfTargetCandidateWord10	0x0	0x2	bytes	KfTargetCandidateWord10Bytes	supported	GAME event save/restore;message marker scan	byte-addressable view of the same halfword
+KfTargetCandidateWord10Bytes	0x0	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
+KfTargetCandidateWord10Bytes	0x1	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at +0x11	actor state restored after event action
+KfTargetCandidateWord12	0x0	0x2	value	u16	supported	GAME 0x80039108 lhu candidate+0x12	unsigned candidate distance bound
+KfTargetCandidateWord12	0x0	0x2	bytes	KfTargetCandidateWord12Bytes	supported	GAME event save/restore;message marker scan	byte-addressable view of the same halfword
+KfTargetCandidateWord12Bytes	0x0	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
+KfTargetCandidateWord12Bytes	0x1	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
+KfTargetCandidateWord14	0x0	0x2	value	u16	supported	GAME 0x800393f4 lhu candidate+0x14	unsigned candidate distance bound
+KfTargetCandidateWord14	0x0	0x2	bytes	u8[2]	candidate	GAME message marker scan;event target stream	start of variable byte stream; full extent unresolved
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
 KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step

@@ -1258,3 +1258,68 @@ enter phase 1, and reset direction Z/X/Y to 0/0/-100. The continuing path
 calls `func_80041e0c` on the record position with `(0x4000, 0x4000, 500)`.
 These direct edges and stores compile at 3.2% focused WIP versus the prior
 3.3%; the small aggregate decline does not override the retail-backed arm.
+
+Kind 14 enters 0x80045700. At update count 12 it clears the signed player
+halfword at +0x54. It builds a stack VECTOR from two `rand` calls (X is
+`rand() >> 5` minus 512, Y is `rand() >> 8` plus 200, Z is 0x400) and a zero
+SVECTOR, then calls the proved constructor with type 0, kind 101 and the five
+O32 payload words `(700, -30, 10, 14, -10)`. Retail immediately writes bytes
+3 and 14 at the returned record's +0x0a and +0x08, then calls
+`func_8002bf38(160, 180, 220, 18000, rsin(updates_remaining << 7))`.
+The bounded arm compiles and raises the focused dispatcher verdict from 3.2%
+to 5.1% WIP. Kind 19 enters 0x800457c4. At count 12 it adds 150 to the
+player's current HP, caps at maximum HP, and calls
+`player_cap_status_components(7)`; it then spawns three kind-101 records
+with the same random position and zero direction pattern, but render ID 18,
+and calls `func_8002bf38(240, 240, 160, 18000,
+rsin(updates_remaining << 7))`. The count loop, five constructor payload
+words, returned-record byte writes, and direct call are decoded in retail.
+The focused dispatcher result rises to 6.9% WIP. The remaining kinds and
+both indirect switches are still open.
+
+Kind 116 enters 0x80042f20. Retail forms a midpoint by adding signed
+half-distance from each direction halfword to the current position, then
+advances the record position by the full signed direction. It calls the
+directly identified `func_8002b7f8` at the midpoint and, only if clear, at
+the advanced endpoint with radius 5 and height 10. A nonzero result from
+either probe frees the slot, after which retail reloads the possibly changed
+record type and calls the constructor for kind 0x2d with the advanced
+position and payload 0x1a4. The new C emits the observed `lhu; sll 16; sra
+17` midpoint pattern and both direct calls in the focused listing. The
+whole-function fuzzy result moves from 6.9% to 6.6% WIP because switch
+layout and most other arms remain incomplete; the decoded source is retained.
+
+Kinds 11 and 54 share entry 0x80043af8. They pass the signed halfword at
+record +0x40 to `func_80041cd0(0x3800, value, 0x80, 0x400, 0x8000)`, then
+build a random SVECTOR in retail X/Z/Y store order from three `rand` calls.
+The arm constructs kind 101 at the current position with payload
+`(0xc00, -128, 15, 18, 10)` and adds 64 to rotation Z at the shared tail
+0x80044f38. Focused compilation raises the full dispatcher to 7.6% WIP;
+its switch tables and omitted arms remain the first large divergences.
+
+Kinds 26 and 27 share entry 0x80043460. Retail writes effect type 0x21,
+adds 100 to rotation Z, and calls `func_8003ff18` with the current position,
+zero start, signed scale X, 0x8000, 0x400, and 0x1000. It then writes type
+0x24 and branches on the signed byte at record +0x40: zero probes
+`func_80042298(100, 200, 0)` and clears all three direction halfwords on
+collision; one subtracts 512 from scale Z and frees the slot when the signed
+result is nonpositive. Other byte values leave it active. This direct arm
+compiles at the same 7.6% aggregate focused WIP score; the instruction
+pattern and call order are retained from retail evidence.
+
+Kinds 25, 34, and 35 enter a shared collision arm at 0x80042b98 or
+0x80042b90. Kind 25 probes `func_80042298(250, 100, -30)`; 34/35 use the
+same call with a zero third argument. On nonzero collision, low four result
+bits free the slot, while a zero +0x40 phase byte is set to one and reports
+the collision once through `func_8003feb0`. No collision clears that byte.
+Every path calls `func_80041e0c(&position, 0x2000, 0x2000, 500)` at the
+shared tail 0x80043450. This direct arm compiles; the aggregate focused
+result moves from 7.6% to 7.4% WIP as the still-incomplete switch layout
+changes.
+
+Kinds 118 and 119 enter 0x80043bd4 and 0x80043bdc, selecting constructor
+kind 0x33 or 0x34 before a shared collision check. Retail probes
+`func_80042298(140, 0, -200)` and, on a nonzero result, calls the kind
+selector with type `record->type | 3`, current position and a null direction,
+then frees the original record. Their source compiles at 7.4% aggregate WIP;
+the indirect outer dispatch is still provisional.

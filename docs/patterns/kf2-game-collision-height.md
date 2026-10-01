@@ -365,6 +365,12 @@ the unsigned record opcode, sign-extends it, and rejects values above
 target blocks inside `0x8002aaa4`; 13 targets are distinct and 37 rows
 select the default block `0x8002b5c4`. Pointer rows remain candidate
 indirect edges despite this raw block-head check.
+The focused compiled and retail `.rodata` sections both contain exactly 49
+`R_MIPS_32` pointer rows, and their complete row-by-row target-equivalence
+grouping is identical (13 groups, no differing rows). Their raw pointer
+values still differ because the 0xb60-byte retail body and current compiled
+body place the case blocks at different offsets; the low `.rodata` fuzzy
+score is not evidence of a missing case or changed table grouping.
 The opcode `0x11` row at `0x80011350` points to `0x8002acb0`. That entry
 clears `$s7` at `0x8002acb4`, then branches on `$s7` at `0x8002acb8`;
 the branch is false along this table entry. No row in this bounded switch

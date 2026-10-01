@@ -194,3 +194,17 @@ the same header fields and digit values but compiled farther from retail
 slot-seed bytes at `0x8006d6a4/5` and unexplained frame space remain WIP, not
 grounds for fake data owners or stack locals. No repository tests or full build
 were run for this focused recheck.
+
+A fourth probe initialized the first slot buffer from the C literal `" "`.
+It emitted retail-style `lb` instructions, but its relocations targeted new
+unit `.rodata` instead of the two reviewed `0x8006d6a4/5` data identities. It
+also shifted the existing `bu00:` literal and made exact `memory_card_format`
+non-exact. The literal probe was reverted; matching opcode shape alone does
+not establish the original data owner.
+
+A signed `s8` view of the already-typed card title in `0x800228c8` did not
+recover retail's `lb` copies: the probe still emitted `lbu`, introduced an
+extra saved register, and dropped from 67.6% to 62.5% focused. Moving the
+card-column predicate into the row loop in `0x8001fc94` dropped its focused
+listing from 98.6% to 92.4% and removed the retail-sized frame. Both probes
+were reverted; `memory_card_format` remained an exact listing control.

@@ -63,7 +63,7 @@ void func_8003d184(void)
                                   target->unknown_0c, target->unknown_0e,
                                   actor_state.active_group->unknown_01[2],
                                   actor_state.active_group->unknown_01[3], 5) != 0 ||
-                   (rand() >> 5) < target->fallback_offset) {
+                   (rand() >> 5) < target->word_10.bytes.fallback_offset) {
             *(s16 *)actor->unknown_64 = rand() >> 3;
         }
         actor_advance_animation_wrapped(actor, target->unknown_08);

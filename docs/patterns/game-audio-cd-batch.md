@@ -1210,3 +1210,17 @@ none is an exact closure without `100%`.
 | `0x80032364` | **Exact, 100% strict** | The TMD range sibling remains `SAME` with its resource calls and registry referent. |
 | `0x8003ae50` | WIP, 99.2%; 99.31746% recorded strict | The 58-block collision response has all direct calls and six exact siblings; obstacle-angle mask timing and temporary register differ. |
 | `0x8003c3e0` | WIP, 95.4%; 99.64539% recorded strict | The 23-block group-position solver keeps its calls and three exact siblings; yaw-error and shifted-numerator registers are exchanged. |
+
+In the adjacent radius-mask helper `0x800320b0`, retail forms the Z row offset
+and row pointer before computing the X start cell. Moving the source's X start
+calculation below the row pointer reflects that order and improves
+the focused listing from 26.9% to 40.4%. All four exact siblings in
+`game.resource_runtime` remain `SAME`; `map_cell_visible`, the TMD queue, and
+the VAB range updater retain their prior WIP listings. The remaining radius
+difference begins with accumulator/span register assignment and address-load
+scheduling, so no source-only register carrier was added. The previous
+73.95918% strict radius score is a stale checkpoint, not a new closure claim.
+For `map_cell_visible` at `0x80032174`, direct early returns preserve the
+boolean result but add a jump absent from retail and lower the focused listing
+from 37.9% to 26.7%; that probe was reverted. Its shared-tail source and
+93.6% stale strict verdict remain WIP.

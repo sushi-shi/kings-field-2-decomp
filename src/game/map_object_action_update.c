@@ -36,13 +36,14 @@ extern void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
                           u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
                           u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                           u16 magic_12, u16 magic_14, const VECTOR *position);
-DATA(0x8006d6e4, 0x20)
-SVECTOR DAT_8006d6e4[4] = {
-    {0, -1424, 0, 0},
-    {0, -912, 0, 0},
-    {0, -100, 300, 0},
-    {0, 0, 64, 0}
-};
+DATA(0x8006d6e4, 0x8)
+SVECTOR DAT_8006d6e4 = {0, -1424, 0, 0};
+DATA(0x8006d6ec, 0x8)
+SVECTOR DAT_8006d6ec = {0, -912, 0, 0};
+DATA(0x8006d6f4, 0x8)
+SVECTOR DAT_8006d6f4 = {0, -100, 300, 0};
+DATA(0x8006d6fc, 0x8)
+SVECTOR DAT_8006d6fc = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
@@ -180,7 +181,7 @@ void func_80036ed4(void)
 
         case 4:
             if (object->action_timer != 0) {
-                KfMapObject *linked = 0;
+                KfMapObject *linked;
                 u16 previous;
                 if (object->collision_flags & 0x80) {
                     s32 bearing = vector_xz_to_angle(
@@ -204,6 +205,8 @@ void func_80036ed4(void)
                             linked->unknown_0e = -200;
                         }
                     }
+                } else {
+                    linked = 0;
                 }
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
@@ -761,7 +764,7 @@ void func_80036ed4(void)
                 object->tail.fields.unknown_38 = 0xff;
                 object->action_timer = 0;
             }
-            func_80036b68(object, target, &DAT_8006d6e4[0], &DAT_8006d6e4[1], 1, 32);
+            func_80036b68(object, target, &DAT_8006d6e4, &DAT_8006d6ec, 1, 32);
             break;
         }
 
@@ -774,8 +777,8 @@ void func_80036ed4(void)
                 object->action_timer = 0;
                 linked->tail.fields.unknown_38 &= ~marker_mask;
             }
-            if (func_80036b68(object, target, &DAT_8006d6e4[2],
-                              &DAT_8006d6e4[3], 0, 20)) {
+            if (func_80036b68(object, target, &DAT_8006d6f4,
+                              &DAT_8006d6fc, 0, 20)) {
                 linked->tail.fields.unknown_38 |= marker_mask;
             }
             break;

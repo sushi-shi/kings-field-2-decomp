@@ -18,7 +18,7 @@ void func_80038f20(void)
     do {
         if (actor->slot_state == 1 && actor->lifecycle == 1 &&
             ((*(u32 *)&actor->unknown_0c & 0xffff0000) == 0xf0030000) &&
-            (actor->unknown_70 != 0 || actor->animation_phase > 2048)) {
+            (actor->state_70.signed_state != 0 || actor->animation_phase > 2048)) {
             state_8017d118.active_table[19](actor);
             actor_set_lifecycle_and_home_position(actor);
         }

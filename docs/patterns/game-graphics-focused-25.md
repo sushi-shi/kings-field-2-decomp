@@ -182,16 +182,15 @@ needed or retained.
 | `game.graphics_sliding_panels` | 2/2 exact |
 | `game.graphics_color_bytes_draw` | 1/1 exact |
 | `game.graphics_color_bytes_set` | 1/1 exact |
-| `game.render_world_model` | `0x80031850` WIP, 95.32836% |
+| `game.render_world_model` | `0x80031850` WIP, 97.11642% |
 | `game.render_animated_object` | `0x80031d8c` WIP, 94.65414% |
 | `game.render_frame` | 2/2 exact |
 | `game.animation_sparse_vertices` | 3/3 exact |
 
 The retained world-model source has the raw-backed branch-local collision
-row and typed byte-offset null-path expression. A fresh focused listing
-first diverges at the scale-pointer/blend saved-register assignment, then
-in the null-path coordinate schedule; its branch and call structure remains
-as previously documented. The animated renderer first diverges in the
+row and a typed null-path map-cell lookup. A fresh focused listing first
+diverges at the scale-pointer/blend saved-register assignment; its branch
+and call structure remains as previously documented. The animated renderer first diverges in the
 saved-argument allocation and one extra retail `s7` save, while its calls
 and packet path agree. The textured quad retains its packet-code delay-slot
 and saved-register residue. No compiler-register steering was added to any
@@ -249,9 +248,28 @@ conversion. A focused off-tree source probe improved the listing from 84.2%
 to 87.1%; the retained source improves fresh direct strict objdiff from
 **95.0% to 95.32836%**. The same 12-unit graphics/TMD control remains
 **24/27 exact**, with its other two WIPs unchanged. The remaining
-world-model register and instruction-order differences are unresolved. A
-fresh target/base relocation extraction confirms all **68/68 ordered**
-relocation type, symbol, and addend rows match after this width correction.
+world-model register and instruction-order differences are unresolved. That
+earlier source had all **68/68 ordered** relocation type/symbol rows aligned.
+
+The null-world-matrix path now indexes the complete typed occupancy grid by
+the camera's Z row and X column, forms its lighting-index address, then applies
+the player's cached layer offset. Retail computes the Z row before the X
+column; the former byte-offset expression led the candidate to compute X
+first. The typed source raises focused listing similarity from 87.1% to
+92.3% and direct strict objdiff from **95.32836% to 97.11642%** after a
+targeted one-unit rebuild. The **68 relocation types and symbol names**
+remain present, but the candidate now forms the BSS map base before loading
+the player-state layer offset, reversing two HI16/LO16 pairs relative to
+retail. It also forms the base of the cell and reads its `+4` field, whereas
+retail materializes the lighting-byte address with the `+4` addend before
+the load. Both address forms read the same byte; the source remains WIP, and
+the original expression spelling is unproved. An off-tree row-pointer
+variant preserved the `+4` base addend but moved its address formation even
+earlier and scored 95.77612% strict, so it was discarded. Focused flow still
+has 40/40 blocks, 16/16 branches, and matching known successors; the first
+control difference is a register assignment at branch 10. The exact weapon
+renderer reads this same lighting byte through the cached player offset;
+collision-shape dispatch updates that offset between zero and five.
 
 A focused dispatcher relocation census appears to differ at the player camera
 position (`player_state +0xdc` in retail versus `+0xe0` in the probe), but the

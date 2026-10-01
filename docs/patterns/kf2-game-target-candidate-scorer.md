@@ -226,16 +226,39 @@ similarity from 26.7% to 41.1%, and the compiled `0x7b` entry still
 directly loads the second script word before the audio/common path. Retail
 sets its effective kind register to `0x20` in the delay slot of the
 `0x7b` guard branch at `0x8003c7d4`. Modeling that as a local `kind = 0x20`
-before the guard, instead of a ternary at the later effect call, raises the
-retained focused listing to **41.2%** and narrows retail/compiled CFG counts
-to 45/46 blocks and 15/16 branches. It remains WIP: the first CFG divergence
-is still in the dispatch prelude; frame and register assignments also differ.
-The neighboring exact actor helpers in the table above were unaffected by
-this source-only change. An isolated current object comparison reports
-80.967064% strict `.text` similarity (`2672` retail bytes versus `2792`
-compiled) and 7.9268293% `.rodata` similarity (`492` bytes on each side);
-the matching `.rel.text` and `.rel.rodata` section sizes alone do not prove
-ordered relocation equality.
+before the guard, instead of a ternary at the later effect call, raised the
+focused listing to 41.2% and narrowed retail/compiled CFG counts to 45/46
+blocks and 15/16 branches. The final six-iteration trajectory loop at
+`0x8003cf54..0x8003cfdc` decrements its counter in the delay slot of the
+trajectory-result branch, then skips prediction when the decremented count
+is zero. Expressing that order as a `do` loop with an explicit decrement
+after the solver preserves six iterations and removes the probe's extra
+branch. It first raised focused listing to 54.8% and aligned CFG at 45/45
+blocks and 15/15 branches.
+
+Retail kind `0x79` at `0x8003c8ec` and kind `4` at `0x8003c928` both jump
+to the common constructor call at `0x8003ccc8`, after setting direction and
+the extra stack words. A shared C call now gives kind `4` the retail `-1`,
+`0x400`, and `1` varargs and kind `0x79` its computed nonnegative travel
+time, `0x400`, and `1`. Raw kinds `9`/`0x21`, `0x18`, `0x16`, `1`/`0x1c`,
+and `0x1a`/`0x1b` also jump to that same constructor block after writing
+their direction and stack words; they now share the same C call, with the
+retail `0xfe` duration for kinds `9`/`0x21` and `-1` for the others. This
+preserves 45/45 blocks and 15/15 branches. The two spawn arms at
+`0x8003cd88..0x8003cdb0` and `0x8003ceac..0x8003ced8` store only actor
+position X/Y/Z at offsets `+44`/`+48`/`+52`. The source now copies those
+three words individually instead of copying the full 16-byte `VECTOR`,
+which would also write the unobserved fourth word. Focused listing is
+**49.4%**; isolated direct objdiff reports **80.99701%** strict `.text`
+(`2672` retail versus `2744` compiled bytes) and **37.80488%** `.rodata`
+(`492` bytes on each side), up from 7.9268293% before the shared call.
+The lower fuzzy text score than the pre-shared-call probe is outweighed by
+seven proved jumps to one retail call, a closer switch table, and the
+three-word spawn-position stores. The first remaining CFG successor difference is the
+kind-`0x79` nonnegative travel-time branch target; frame and register
+assignments also differ. `.rel.text` sizes are 728/704 bytes and ordered
+relocation equality is unproved. This function remains WIP; exact
+neighboring actor helpers were unaffected.
 
 The connected 22-function actor-group call/control pass used ten quick,
 focused GAME unit builds. `SAME` below means current listing equality, not
@@ -264,7 +287,7 @@ similarities; the group-effect strict object result is given above.
 | `0x8003c10c` | Adjacent position control | SAME |
 | `0x8003c220` | Adjacent position control | SAME |
 | `0x8003c3e0` | Direction solver callee | WIP, 95.4% |
-| `0x8003c614` | Group-effect switch | WIP, 41.2% |
+| `0x8003c614` | Group-effect switch | WIP, 49.4% |
 | `0x80040308` | Effect constructor callee | WIP, 28.0% |
 
 The direction solver `0x8003c3e0` has the retail call set, typed

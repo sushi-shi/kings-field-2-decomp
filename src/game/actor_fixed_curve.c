@@ -57,10 +57,10 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
     if (actor->target_type == 0x15) {
-        if (actor->unknown_70 != 0) {
+        if (actor->state_70.signed_state != 0) {
             return;
         }
-        actor->unknown_70 = 1;
+        actor->state_70.signed_state = 1;
         return;
     }
     if (actor->target_type == 0x1a) {
@@ -101,7 +101,7 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
         }
     }
     if (mode == 1) {
-        if (actor->target_type == 0x13 && actor->unknown_70 == 0x10) {
+        if (actor->target_type == 0x13 && actor->state_70.signed_state == 0x10) {
             goto update_motion;
         }
     } else if (mode == 2) {

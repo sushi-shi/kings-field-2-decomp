@@ -198,6 +198,29 @@ typedef char kf_target_candidate_word_26_offset[(u32)&((KfTargetCandidate *)0)->
 typedef char kf_target_candidate_unknown_28_offset[(u32)&((KfTargetCandidate *)0)->unknown_28 == 0x28 ? 1 : -1];
 typedef char kf_target_candidate_unknown_2a_offset[(u32)&((KfTargetCandidate *)0)->unknown_2a == 0x2a ? 1 : -1];
 
+/* Type 25 reads a variable halfword stream after this proved prefix. Its
+ * complete allocation and record stride are not established. */
+typedef struct KfTargetCandidateAction25 {
+    u8 type;
+    u8 unknown_01[3];
+    u8 unknown_04;
+    u8 unknown_05[3];
+    u16 unknown_08;
+    u16 unknown_0a;
+    KfTargetCandidateWord0c word_0c;
+    KfTargetCandidateWord0e word_0e;
+    KfTargetCandidateWord10 word_10;
+    KfTargetCandidateWord12 word_12;
+    KfTargetCandidateWord14 word_14;
+    KfTargetCandidateWord16 word_16;
+    KfTargetCandidateWord18 word_18;
+    u16 stream[1]; /* first word of a variable-length archive payload */
+} KfTargetCandidateAction25;
+typedef char kf_target_candidate_action25_prefix_size[
+    sizeof(KfTargetCandidateAction25) == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_action25_stream_offset[
+    (u32)&((KfTargetCandidateAction25 *)0)->stream == 0x1a ? 1 : -1];
+
 /* Group slots hold byte offsets until actor_fixup_group_targets runs. */
 typedef union KfTargetReference {
     s32 relative_offset;
@@ -249,6 +272,19 @@ typedef union KfActorHalfword4a {
     KfActorHalfword4aBytes bytes;
 } KfActorHalfword4a;
 typedef char kf_actor_halfword_4a_size[sizeof(KfActorHalfword4a) == 2 ? 1 : -1];
+
+typedef struct KfActorState70Bytes {
+    u8 low;
+    u8 high;
+} KfActorState70Bytes;
+typedef char kf_actor_state_70_bytes_size[
+    sizeof(KfActorState70Bytes) == 2 ? 1 : -1];
+
+typedef union KfActorState70 {
+    s16 signed_state;
+    KfActorState70Bytes bytes;
+} KfActorState70;
+typedef char kf_actor_state_70_size[sizeof(KfActorState70) == 2 ? 1 : -1];
 
 typedef struct KfActorTail72Motion {
     struct KfEulerAngles angles;
@@ -317,13 +353,13 @@ typedef struct KfActor {
     u8 unknown_5a[2];
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
-    u8 unknown_64[2];
+    s16 unknown_64;
     s16 animation_step;
     s16 unknown_68;
     s16 unknown_6a;
     s16 unknown_6c;
     u8 unknown_6e[2];
-    s16 unknown_70;
+    KfActorState70 state_70;
     KfActorTail72 tail_72;
     u8 unknown_7a[2];
 } KfActor;
@@ -338,11 +374,13 @@ typedef char kf_actor_motion_x_offset[(u32)&((KfActor *)0)->unknown_50 == 0x50 ?
 typedef char kf_actor_motion_z_offset[(u32)&((KfActor *)0)->unknown_54 == 0x54 ? 1 : -1];
 typedef char kf_actor_cache_offset[(u32)&((KfActor *)0)->animation_cache == 0x5c ? 1 : -1];
 typedef char kf_actor_target_offset[(u32)&((KfActor *)0)->target == 0x60 ? 1 : -1];
+typedef char kf_actor_unknown_64_offset[(u32)&((KfActor *)0)->unknown_64 == 0x64 ? 1 : -1];
 typedef char kf_actor_step_offset[(u32)&((KfActor *)0)->animation_step == 0x66 ? 1 : -1];
 typedef char kf_actor_motion_result_68_offset[(u32)&((KfActor *)0)->unknown_68 == 0x68 ? 1 : -1];
 typedef char kf_actor_motion_result_6a_offset[(u32)&((KfActor *)0)->unknown_6a == 0x6a ? 1 : -1];
 typedef char kf_actor_motion_result_6c_offset[(u32)&((KfActor *)0)->unknown_6c == 0x6c ? 1 : -1];
-typedef char kf_actor_unknown_70_offset[(u32)&((KfActor *)0)->unknown_70 == 0x70 ? 1 : -1];
+typedef char kf_actor_state_70_offset[(u32)&((KfActor *)0)->state_70 == 0x70 ? 1 : -1];
+typedef char kf_actor_state_71_offset[(u32)&((KfActor *)0)->state_70.bytes.high == 0x71 ? 1 : -1];
 typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed_state == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];

@@ -155,7 +155,7 @@ typedef struct KfMapObject {
     u16 action_timer;
     u16 unknown_0a;
     u16 collision_height;
-    u16 unknown_0e;
+    s16 unknown_0e;
     u16 unknown_10;
     u8 unknown_12[2];
     VECTOR position;

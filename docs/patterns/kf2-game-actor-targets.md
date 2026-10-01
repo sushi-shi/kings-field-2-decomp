@@ -1932,22 +1932,51 @@ signed positive/negative candidate +0x0c bound. The arm then checks motion
 collision, advances wrapped animation, and updates heading via `3bba0` using
 candidate +0x0e and the active group's byte +4. Focused dispatcher listing
 reaches 27.8% WIP with this C arm; exact actor-animation and group-position
-controls remain SAME. Selectors 5 and 25 remain unsourced, and candidate
+controls remain SAME. Selector 25 remains unsourced, and candidate
 stride is unresolved.
 KF1 `actor_apply_random_movement` in `src/game/actor_behavior.c` offers the
 same X/Z/Y component order and add/subtract clamp shape as a source lead;
 KF2's raw `<2048`/`<4096` thresholds, no-change branch, and final calls
 independently determine this arm.
 
-The remaining selector 5 body at `8003d8c8` has a distinct byte-state view:
+Selector 5 at `8003d8c8` has a distinct byte-state view:
 retail writes actor +0x70/+0x71 with `sb`, while other selectors use +0x70
 as a signed halfword. Its initialization chooses byte +0x70 from actor type
 4, 18, or 23/24, clears +0x71, and starts animation. The running path uses
 one `rand < 6000` player-distance gate, candidate +0x14/+0x16 thresholds,
 player-relative yaw, either `3bcd0` or `3bae4`, then candidate +0x18 to
 toggle byte +0x71 and a motion-result flag to toggle +0x70. A shared typed
-two-byte/halfword actor view and complete edge reconstruction are needed
-before retaining C for this case; no default byte-state behavior is inferred.
+two-byte/halfword actor view now expresses the observed low/high byte accesses
+without changing the signed-halfword consumers. Its C path follows those raw
+branches and calls. Focused dispatcher listing rises from 27.8% to 29.1% WIP;
+the first compiled divergence remains in the prologue and early selector
+dispatch. The exact fixed-curve and home-wrapper controls remain SAME. No
+default byte-state behavior is inferred.
+The same dispatcher reads actor +0x64 with `lh` at `3d6c0`, `3e81c`,
+`3eb5c`, and `3eb98`, and writes it with `sh` at `3d710`, `3d9cc`, and
+`3e2d0`. A signed-halfword declaration replaces the prior byte-array casts;
+the focused dispatcher score remains 29.1% and exact `39c14` remains SAME.
+All 267 existing direct `j`/`jal` candidate rows within `3d184` were then
+checked against their raw GAME opcodes and decoded targets. The 18 earlier
+reachable-code rows and 249 instruction-word rows now have reviewed control
+evidence; external targets are curated function starts. A safe one-VA carve
+admits all relocations with zero withholding. With the same C source, focused
+listing rises to 37.7% WIP, and CFG comparison reaches 410 retail versus 334
+compiled blocks and 213 versus 170 branches. The retail indirect switch at
+`3d364` remains unresolved in the CFG; selector 25's variable halfword stream
+still lacks a sourced body and full record extent at this comparison point.
+Selector 25 at `3ecdc` now uses a separate typed archive view through
+candidate +0x18 with a variable halfword stream beginning at +0x1a. Its
+initial phase setup, `0x8000` rewind, `0x8001` repeat count, `0x8003` skip,
+`0x8002` signed-coordinate effect call, `0x8004` unsigned-index effect call,
+and default pointer-form effect call follow the raw opcode and O32 argument
+paths. The three control opcodes jump back to the command head without
+decrementing the repeat count; effect calls decrement it. The one-word
+trailing array states a minimum observed prefix, not a
+fixed script length or candidate stride. Focused listing rises 37.7% to
+41.5% WIP with the C path; CFG is 410/358 retail/compiled blocks and
+213/179 branches, with the indirect switch still unresolved. Six exact
+animation listings and the two exact group-fixup siblings remain SAME.
 
 Selectors 28 and 30 have bounded source paths from the retail control flow.
 Selector 28 at `8003f138` starts animation and motion state, plays spatial
@@ -1984,6 +2013,18 @@ omitted table index. The first focused differences are stack-frame and
 register choices around O32 variable arguments; these do not by themselves
 support changing a referent or adding a synthetic local.
 
+In both actor-spawn arms of `3c614` (kinds `0x6e` and `0x70`), retail loads
+the current actor's unsigned byte at `+0x06` and stores it to the new actor
+at `+0x03`: `lbu 6(s2)` followed by `sb 3(s0)` at `8003cd50/8003cd6c`
+and `8003ce74/8003ce90`. The source previously wrote `unknown_06` on the
+new actor; both arms now write `unknown_03` while retaining the `unknown_06`
+source. This corrects a real object-field mismatch without moving the
+49.4% focused or 80.99701% direct strict scores. Retail also forms one
+target-group record base and reads its `+0x34`, `+0x09`, and (in the second
+arm) `+0x14` fields. Using one typed `KfTargetGroup *` for these accesses
+restores that shared base and improves the focused listing to 51.1% and
+isolated strict text to 83.452095%; both arms remain WIP.
+
 The current 30-function actor call-graph control was rebuilt with focused
 `kf try --context 0 --no-flow` after the candidate +0x20 prefix and actor
 +0x72 tail-view corrections. After the later candidate +0x2c observed-prefix
@@ -2010,5 +2051,5 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3bf74` | SAME | `3c000` | SAME |
 | `3c10c` | SAME | `3c220` | SAME |
 | `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
-| `3d184` | WIP 27.8% | `3f610` | SAME |
+| `3d184` | WIP 41.5% | `3f610` | SAME |
 | `3f7ec` | WIP 93.8% | `3f860` | SAME |

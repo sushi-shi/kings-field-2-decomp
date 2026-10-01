@@ -345,7 +345,10 @@ GAME.EXE	0x8006d6b0	0x20	player_status_texture_rows	static	load	RECT[4]	player_r
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
 GAME.EXE	0x8006d6d4	0x4	render_model_yaw_smoothing_accumulator	global	load	s32	func_800335a0	supported	retail zero word;four direct read-write xrefs;angle_shortest_delta	Yaw-delta accumulator used to ease the first render-model row; original linkage WIP
 GAME.EXE	0x8006d6dc	0x8	menu_transition_rect	global	load	RECT		supported	asm;StoreImage;MoveImage;LoadImage;initialized bytes	320 by 240 VRAM transfer rectangle; defining TU remains unresolved
-GAME.EXE	0x8006d6e4	0x20	DAT_8006d6e4	global	load	SVECTOR[4]	map_object	supported	retail bytes;four func_80036ed4 direct pointers;func_80036b68 SVECTOR arguments	four ordered start/end motion offsets; current C owner map_object_action_update, original TU and linkage remain WIP
+GAME.EXE	0x8006d6e4	0x8	DAT_8006d6e4	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x800384ec/0x800384f0;func_80036b68 start offset	first of four adjacent motion offsets; original linkage WIP
+GAME.EXE	0x8006d6ec	0x8	DAT_8006d6ec	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x800384f4/0x800384f8;func_80036b68 end offset	second of four adjacent motion offsets; original linkage WIP
+GAME.EXE	0x8006d6f4	0x8	DAT_8006d6f4	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x80038584/0x80038588;func_80036b68 start offset	third of four adjacent motion offsets; original linkage WIP
+GAME.EXE	0x8006d6fc	0x8	DAT_8006d6fc	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x8003858c/0x80038590;func_80036b68 end offset	fourth of four adjacent motion offsets; original linkage WIP
 GAME.EXE	0x8006d704	0x4	DAT_8006d704	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d708	0x8	effect_zero_direction	static	load	SVECTOR	effect_spawn_zero_direction	supported	asm;single xref;retail zero bytes;constructor argument	zero vector passed as initial direction by func_80041d7c
 GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

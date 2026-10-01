@@ -47,19 +47,23 @@ KfActor	0x58	0x2	unknown_58	u16	opaque	game/actor.h;retail GAME actor chain	offs
 KfActor	0x5a	0x2	unknown_5a	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x5c	0x4	animation_cache	KfPoolRecord *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x60	0x4	target	KfTargetCandidate *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
-KfActor	0x64	0x2	unknown_64	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x64	0x2	unknown_64	s16	supported	GAME 0x8003d6c0 lh;GAME 0x8003d710 sh;GAME 0x8003d9cc sh	Signed actor angle/state halfword; semantic name unresolved
 KfActor	0x66	0x2	animation_step	s16	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x68	0x2	unknown_68	s16	opaque	GAME 0x8003b520;0x80015bc8	trajectory result X
 KfActor	0x6a	0x2	unknown_6a	s16	opaque	GAME 0x8003b520;0x80015bc8	trajectory result Z
 KfActor	0x6c	0x2	unknown_6c	s16	opaque	GAME 0x8003b520 sh	trajectory setup parameter
 KfActor	0x6e	0x2	unknown_6e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x70	0x2	unknown_70	s16	candidate	game/actor.h;retail GAME 0x80038f7c	Signed halfword condition before actor callback; meaning unresolved
+KfActor	0x70	0x2	state_70	KfActorState70	supported	GAME 0x8003d8f0-0x8003da98;GAME 0x80038f7c	Signed halfword and byte state views overlap at actor +0x70
 KfActor	0x72	0x8	tail_72	KfActorTail72	supported	GAME 0x8003e414-0x8003e468;0x8003d784	SVECTOR output/copy and actor height baseline share action-specific tail
 KfActor	0x7a	0x2	unknown_7a	u8[2]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
 KfActorHalfword4a	0x0	0x2	value	u16	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4a	0x0	0x2	bytes	KfActorHalfword4aBytes	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4aBytes	0x0	0x1	low	u8	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
 KfActorHalfword4aBytes	0x1	0x1	high	s8	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
+KfActorState70	0x0	0x2	signed_state	s16	supported	GAME 0x80038f7c lh;GAME 0x8003e354 lh	Signed action-state halfword view
+KfActorState70	0x0	0x2	bytes	KfActorState70Bytes	supported	GAME 0x8003d8f0-0x8003da98	Action-specific low and high byte state view
+KfActorState70Bytes	0x0	0x1	low	u8	supported	GAME 0x8003d8f0 sb;GAME 0x8003d9e4 lbu	Low actor action-state byte
+KfActorState70Bytes	0x1	0x1	high	u8	supported	GAME 0x8003d934 sb;GAME 0x8003da4c lbu	High actor action-state byte
 KfActorStateGame	0x0	0x60e0	actors	KfActor[200]	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x60e0	0x12c0	target_groups	KfTargetGroup[40]	supported	game/actor.h;retail GAME actor chain;8003f7ec 40-group loop	member used by reconstructed actor code
 KfActorStateGame	0x73a0	0x2000	unknown_73a0	u8[8192]	opaque	game/actor.h;GAME 0x80016820 archive copy;0x8003f7ec fixup	0x32c0-byte copy covers 40 groups then this opaque tail; candidate stride unresolved
@@ -690,6 +694,7 @@ KfTargetCandidate	0x24	0x2	word_24	KfTargetCandidateWord24	supported	GAME 0x8003
 KfTargetCandidate	0x26	0x2	word_26	KfTargetCandidateWord26	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh	unsigned bound and signed motion parameter; meaning unresolved
 KfTargetCandidate	0x28	0x2	unknown_28	u16	supported	GAME 0x8003e140 lhu candidate+0x28	state increment; meaning unresolved
 KfTargetCandidate	0x2a	0x2	unknown_2a	u16	supported	GAME 0x8003e1ac lhu candidate+0x2a	optional phase threshold; meaning unresolved
+KfTargetCandidateAction25	0x1a	0x2	stream	u16[1]	supported	GAME 0x8003ed78-0x8003eecc lhu at candidate+0x1a and cursor increments	First word of variable-length type-25 halfword script; full extent and stride unresolved
 KfTargetCandidateWord0c	0x0	0x2	value	u16	supported	GAME 0x800462bc lhu candidate+0x0c	halfword view
 KfTargetCandidateWord0c	0x0	0x2	bytes	KfTargetCandidateWord0cBytes	supported	GAME 0x8003e648 lbu candidate+0x0d	byte view
 KfTargetCandidateWord0cBytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x0c

@@ -321,10 +321,10 @@ magic_action: {
             }
             magic_record = &effect_state.magic_records[magic_id];
             if (magic_record->menu_available == 0) {
+                magic_record->menu_available = 1;
                 break;
             }
         }
-        magic_record->menu_available = 1;
         object = map_object_effect_pool_acquire(
             0x15e, 10, map_object_state.unknown_873e);
         map_object_reset(object);

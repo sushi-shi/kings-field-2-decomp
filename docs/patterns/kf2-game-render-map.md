@@ -102,3 +102,41 @@ and 35/34 branches. The retail frame is 168 bytes versus the probe's 112,
 and the packet-count and header live-value schedules diverge before polygon
 handling. These are observable residues, not an attributed compiler cause.
 The neighboring `render_enqueue_map` remains strict 100% in the merged unit.
+
+## Connected map-emitter focused recheck (2026-10-01)
+
+This 16-function GAME pass follows the map packet emitter through its clipped
+helper, cell caller, textured-quad writer, world/animated renderers, and their
+exact controls. Fresh `kf try --context 0 --no-flow` rebuilds gave **10 `SAME`
+listings and six WIPs**. `SAME` is a focused listing verdict; the prior direct
+strict reports establish the exact controls. No source/config edit was
+retained from this pass.
+
+| Address | Focused verdict | First remaining difference or control |
+| --- | --- | --- |
+| `0x8002d5dc` | SAME | TMD primitive-index preparation control. |
+| `0x8002f194` | SAME | Byte-exact map packet emitter control. |
+| `0x8002f5b0` | DIFF, 82.6% | 13/13 CFG blocks and 7/7 branches; saved-register assignments and one UV/color store schedule differ. |
+| `0x8002f808` | DIFF, 58.9% | 51/51 CFG blocks and 35/35 branches; retail frame is 168 bytes, current probe 120. |
+| `0x80030c18` | DIFF, 98.7% | Retail loads the quarter-turn byte after forming the view-matrix address; the probe schedules that load earlier. |
+| `0x80030de4` | SAME | Two-layer map-cell caller. |
+| `0x80030f5c` | SAME | Map-cell mask control. |
+| `0x80031024` | SAME | Render-grid walker control. |
+| `0x800311b0` | DIFF, 57.5% | Retail saves one more register and schedules the SDK polygon code-byte store in a branch delay slot. |
+| `0x800312f4` | SAME | Sliding-panel caller control. |
+| `0x80031384` | SAME | Paired sliding-panel caller control. |
+| `0x80031414` | SAME | Color-byte overlay caller control. |
+| `0x800314d4` | SAME | Color-byte setter control. |
+| `0x80031850` | DIFF, 87.1% | World-model cell-offset computation and saved-register choices differ while its caller ABI and TMD calls remain. |
+| `0x80031d8c` | DIFF, 79.5% | Animated-object frame/register allocation differs from retail. |
+| `0x800335a0` | SAME | Frame-driver control; its neighboring buffer-index function is also `SAME`. |
+
+The raw `0x8002f808` frame accesses outgoing arguments at `sp+16..32`,
+the local color through `sp+80`, and other live slots at `+88/+96/+104/+112/+120`.
+No raw instruction accesses or constructs an address within `sp+36..79`, so
+that 44-byte gap does not justify an artificial local or padding. A temporary
+typed view-matrix pointer in `0x80030c18` moved its focused listing from
+98.7% to 79.0%; it was discarded, and its three exact unit siblings stayed
+`SAME`. The map helper and alternate emitter retain matching known successor
+lists and return frontiers, but those CFG counts alone do not prove exact C
+structure. No repository tests, lint, broad match, or full linked build ran.

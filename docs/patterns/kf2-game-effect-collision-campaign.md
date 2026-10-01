@@ -1999,3 +1999,36 @@ four ring slots at `0x801d9628`, using the `DAT_8006d704` counter; the
 complete storage owner and kind-102 Sony-runtime-adjacent timer owner remain
 unproved. The constructor stays WIP, and this handoff leaves its source with
 the actor-group worker.
+
+## Effect constructor switch-entry follow-up
+
+A later isolated GAME `game.effect_constructor` rebuild and direct strict
+comparison puts `0x80040308` at 70.960724% `.text` (5,092 retail bytes),
+with a 27.8% focused listing, still WIP. The raw 123-word switch table has
+62 distinct in-body targets.
+The previous C merged separate retail entries for kinds 11/54, 14/16/19,
+27/51/52, 29/30/31/47/48, 33/53, 34/35/117, 103/121, and 104/122.
+Raw case-entry instructions show the distinct immediate assignments,
+initializer calls, and joins; the source now spells those entry-local paths
+before their common tails. Its compiled table has 61 distinct targets, and
+all 123 entries preserve the retail target-equivalence relation except the
+pair 6/102. Those two source arms still share an unresolved no-op body while
+retail enters separate buffer-copy and timer paths. The `0x801d9628`
+workspace, `DAT_8006d704` index, and `0x8009a5a8` timer remain unowned; no
+source storage claim or table-entry workaround was added.
+Retail has 69 direct `jal` instructions in this body versus 67 compiled:
+the unmatched target counts are one `audio_play_spatial_range` and one
+`effect_play_spatial_sound`. The first direct instruction difference remains
+the 72-byte retail frame versus the 56-byte compiled frame; prior
+manual-cursor probes did not establish a safe source correction for it.
+The adjacent `game.effect_update` unit was rebuilt as a focused control;
+all ten functions, including both pool initializers, remain direct strict
+100%.
+
+A related focused GAME effect-motion pass then rebuilt
+`effect_rotate_scale_offset_y` (`0x800416ec`), `effect_move_probe`
+(`0x8004177c`), `effect_aim_and_move` (`0x8004195c`), `effect_target_motion`
+(`0x80041b14`), and both functions in `effect_spawn_zero_direction`
+(`0x80041d7c`, `0x80041e0c`). Direct strict comparison reports 100% for
+all six. Along with the ten exact `effect_update` functions above, this
+16-function connected control batch required no source edits.

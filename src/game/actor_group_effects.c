@@ -41,6 +41,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     s32 distance;
     s32 count;
     u16 group_index;
+    KfTargetGroup *group;
 
     va_start(arguments, position_mode);
     if (position_mode == -1) {
@@ -94,12 +95,13 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                                         position.vz - player->vz);
         travel_time = (distance - 2000) / 600;
         if (travel_time < 0) travel_time = 0;
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      travel_time);
-        break;
+        goto simple_direction_effect;
     case 4:
         func_8003c3e0(current, player, 800, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        travel_time = -1;
+    simple_direction_effect:
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      travel_time, 0x400, 1);
         break;
     case 0x28:
         func_800154fc(player->vx - position.vx,
@@ -116,20 +118,20 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     case 9:
     case 0x21:
         func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction, 0xfe);
-        break;
+        travel_time = 0xfe;
+        goto simple_direction_effect;
     case 0x18:
         func_8003c3e0(current, player, 250, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
+        travel_time = -1;
+        goto simple_direction_effect;
     case 2:
         func_80040308(effect_id, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
     case 0x16:
         func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
+        travel_time = -1;
+        goto simple_direction_effect;
     case 0x17:
         parameters = va_arg(arguments, const u16 *);
         func_80040308(effect_id, 0x23, kind, &position, 0,
@@ -144,13 +146,13 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     case 1:
     case 0x1c:
         func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
+        travel_time = -1;
+        goto simple_direction_effect;
     case 0x1a:
     case 0x1b:
         func_8003c3e0(current, player, 300, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
+        travel_time = -1;
+        goto simple_direction_effect;
     case 0xc:
         func_800154fc(predicted.vx - position.vx,
                       predicted.vy - position.vy,
@@ -179,11 +181,14 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->unknown_05 = 0;
-            spawned->unknown_06 = current->unknown_06;
+            spawned->unknown_03 = current->unknown_06;
             spawned->lifecycle = 1;
-            spawned->unknown_28 = actor_state.target_groups[group_index].unknown_34;
-            spawned->unknown_15 = actor_state.target_groups[group_index].unknown_09;
-            spawned->position = position;
+            group = &actor_state.target_groups[group_index];
+            spawned->unknown_28 = group->unknown_34;
+            spawned->unknown_15 = group->unknown_09;
+            spawned->position.vx = position.vx;
+            spawned->position.vy = position.vy;
+            spawned->position.vz = position.vz;
             spawned->position.vy += 4096;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
@@ -202,12 +207,15 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->unknown_05 = 0;
-            spawned->unknown_06 = current->unknown_06;
+            spawned->unknown_03 = current->unknown_06;
             spawned->lifecycle = 1;
-            spawned->unknown_28 = actor_state.target_groups[group_index].unknown_34;
-            spawned->unknown_15 = actor_state.target_groups[group_index].unknown_09;
-            spawned->position = position;
-            spawned->position.vy += actor_state.target_groups[group_index].unknown_14 >> 1;
+            group = &actor_state.target_groups[group_index];
+            spawned->unknown_28 = group->unknown_34;
+            spawned->unknown_15 = group->unknown_09;
+            spawned->position.vx = position.vx;
+            spawned->position.vy = position.vy;
+            spawned->position.vz = position.vz;
+            spawned->position.vy += group->unknown_14 >> 1;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
@@ -217,7 +225,8 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     case 0x1d:
     case 0x1f:
         target = *player;
-        for (count = 6; count != 0; count--) {
+        count = 6;
+        do {
             distance = fixed_vector2_length(target.vx - position.vx,
                                             target.vz - position.vz);
             if (func_80015918(0, distance,
@@ -225,11 +234,12 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                     &travel_time, &trajectory_angle) != 0) {
                 trajectory_angle = 0x100;
             }
-            if (count != 1) {
+            count--;
+            if (count != 0) {
                 func_80015ce0(player, (SVECTOR *)&player_state.unknown_e8,
                               travel_time >> 6, &target);
             }
-        }
+        } while (count != 0);
         motion.vx = trajectory_angle;
         motion.vy = func_8003c3e0(current, &target, 800, &position,
                                   &direction, trajectory_angle, 0xc00, 1);

@@ -55,18 +55,14 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
         lighting = &game_graphics_runtime.collision_rows[
             lighting_layer->lighting_index & 0x3f];
     } else {
-        s32 cell_offset;
-
         model.t[0] = position->vx;
         model.t[1] = position->vy;
         model.t[2] = position->vz;
-        cell_offset = (game_graphics_runtime.render_state.view_position.vz >> 11) *
-                      sizeof(bss_801c7540.map_cells[0]);
-        cell_offset += (game_graphics_runtime.render_state.view_position.vx >> 11) *
-                       sizeof(KfMapOccupancyCell);
-        cell_offset += player_state.unknown_128;
-        cell_lighting = &bss_801c7540.map_cells[0][0].layer[0].lighting_index;
-        cell_lighting += cell_offset;
+        cell_lighting = &bss_801c7540.map_cells[
+            game_graphics_runtime.render_state.view_position.vz >> 11][
+            game_graphics_runtime.render_state.view_position.vx >> 11]
+            .layer[0].lighting_index;
+        cell_lighting += player_state.unknown_128;
         lighting = &game_graphics_runtime.collision_rows[*cell_lighting & 0x3f];
     }
 

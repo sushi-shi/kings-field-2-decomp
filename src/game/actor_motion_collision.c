@@ -109,6 +109,7 @@ void func_8003b5d0(void)
                                       ((actor->unknown_28 & 0xc000) << 16),
                                   actor_state.unknown_93a4);
         if (collision == 0) {
+        advance_rise:
             actor->position.vy = next_y;
             actor->unknown_52 += group->unknown_05;
             return;
@@ -117,26 +118,18 @@ void func_8003b5d0(void)
             func_800248a8(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
-        if ((collision & 4) == 0) {
+        if (collision & 4) {
             if (actor->unknown_28 & 0x400) {
-                actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_05;
+                if (actor->position.vy < KF_COLLISION_CACHE_HEIGHT) goto advance_rise;
+                actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
             } else {
-                actor->unknown_0d = 0;
+                actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
+            actor->unknown_52 = 0;
+            actor->unknown_0d = 0;
             return;
         }
-        if (actor->unknown_28 & 0x400) {
-            if (actor->position.vy < KF_COLLISION_CACHE_HEIGHT) {
-                actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_05;
-                return;
-            }
-            actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
-        } else {
-            actor->position.vy = KF_COLLISION_CACHE_RESULT;
-        }
-        actor->unknown_52 = 0;
+        if (actor->unknown_28 & 0x400) goto advance_rise;
         actor->unknown_0d = 0;
         return;
 

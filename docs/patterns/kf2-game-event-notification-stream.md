@@ -20,9 +20,9 @@ notes that list `0x80045f20` as WIP predate its typed reconstruction.
 | `0x800460a0` | WIP, 99.268295% strict | Animation phase helper has matching call graph but interchanged saved registers for step and half-step. |
 | `0x80046144` | Exact | Finds an `f2` marker in a candidate byte stream. |
 | `0x800461a0` | WIP, 99.12676% strict | Typed actor-group and event-state stream scan has 14/14 CFG blocks and 5/5 branches; two record-cursor registers and a final increment schedule remain exchanged. |
-| `0x800462bc` | WIP | Script-type dispatcher has a jump table and incomplete event-record ownership. |
+| `0x800462bc` | WIP, 98.68132% strict text | Script stream calls, CFG, and referents agree; one extra probe load-delay `nop` shifts two jump-table addends. |
 | `0x80046700` | Exact | Spawns a map object for an event slot. |
-| `0x8004678c` | WIP | Scene controller has two indirect transfers and incomplete event-object extent. |
+| `0x8004678c` | Exact | Scene controller's typed magic-record update, command branches, text, data, rodata, and ordered relocations now match strictly. |
 | `0x800473e0` | Exact | Decrements a nonzero event-counter byte. |
 | `0x80047434` | Exact | Increments a counter through 99 and enqueues a notification. |
 | `0x800474c4` | Exact | Seven-argument collision-channel transition. |
@@ -51,6 +51,24 @@ instruction-identical `98.05147%` object, so the source retains that form.
 The controller and restore-stream differences begin with saved-register
 assignments; their existing typed calls, fields, and exact adjacent
 event-state functions provide no source-backed correction yet.
+
+A later focused pass rebuilt the twelve-function event stream subset under the
+current shared headers. The six event-state helpers, event save stream
+`0x80048554`, and both pose helpers `0x80045f20`/`0x80045fd4` remain identical
+listings. Direct strict comparison puts `0x800462bc` at 98.68132% text and
+92.1875% rodata: retail loads actor animation phase (`lhu` at `0x80046524`)
+before its saved state byte (`lbu` at `0x80046528`), filling the load delay.
+The probe reverses those loads and inserts one `nop`; its two differing
+jump-table pointer addends are exactly four bytes later as a consequence.
+Swapping the two ordinary C assignments in an off-tree probe emitted the same
+listing, so the source remains unchanged. Direct strict `0x80047c98` is
+98.05147% text; retail shares `notify_enqueue(6)` at `0x80048160` before the
+linked-object lookup and branches back to it when the linked ID is `0xff`.
+The current source expresses that behavior, but its probe places the call
+after the lookup. Direct strict `0x800489ac` remains 98.82883% text with
+100% rodata; the actor-state base and `0xff` sentinel use the opposite
+argument registers. None of these residues establishes a different C field,
+call, or source operation.
 
 The five callers of `0x80045f20` establish its eight O32 arguments: three
 local coordinates, pitch, yaw, vertical and depth offsets, and a `VECTOR *`

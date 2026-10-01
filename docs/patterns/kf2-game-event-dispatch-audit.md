@@ -32,8 +32,9 @@ outcome branches to the shared state store with `li v0,1` in the branch
 delay slot at `0x800471e8`; its zero outcome calls `notify_enqueue(0x16)`
 and `func_800473e0(0x52)`, then jumps to the same store with `li v0,1` at
 `0x80047200`. The source now states the literal-one write explicitly.
-These source-backed dispatcher corrections reached 98.56781% strict text
-similarity in an isolated comparison; the remaining residue is WIP.
+These source-backed dispatcher corrections first reached 98.56781% strict
+text similarity in an isolated comparison. The final branch-local record
+write described below closes the remaining residue.
 
 The adjacent event family was reviewed with focused unit comparisons:
 
@@ -44,7 +45,7 @@ The adjacent event family was reviewed with focused unit comparisons:
 | `0x800461a0` | Previously verified WIP, 99.12676% strict; cursor-register/increment order. |
 | `0x800462bc` | Focused DIFF, 90.5% listing; the script execution gate loads actor +24 halfword and candidate +12 byte in the opposite order, with one extra candidate load-delay `nop`. No width mismatch is proved. |
 | `0x80046700` | Previously verified exact event-object spawn callee. |
-| `0x8004678c` | WIP command controller; direct five-case, decay-join, and command `0x52` state-one corrections retained. Latest isolated strict text comparison: 98.56781%. |
+| `0x8004678c` | Exact command controller. The five-case, decay-join, command `0x52` state-one, and branch-local magic-record write corrections reproduce retail text, data, rodata, and ordered relocations. |
 | `0x800473e0`, `0x80047434`, `0x800474c4` | Previously verified strict exact counter and transition callees. |
 | `0x800475d8` | Focused DIFF, 89.4% listing; retail keeps the selected map template in `$s1`, probe in `$s0`, affecting the pose-loop saved-register lifetimes. |
 | `0x80047c98` | Focused DIFF, 86.3% listing; retail keeps the rotation argument in `$s4`, probe in `$s5`. The linked-object notify branch is ordered differently; calls and typed referents remain present. |
@@ -68,3 +69,23 @@ the addresses, list values, record stride, call sites, and CFG claims above
 come from KF2 retail bytes and focused comparisons. No source edit in the
 neighboring event units follows from the remaining register and scheduling
 residues.
+
+## Exact dispatcher closure
+
+The last mismatch was the write to `magic_record->menu_available` in the
+eight-entry magic-ID scan. Retail `0x80046f80..0x80046f90` loads that byte,
+branches back when it is already set, and writes one only on the available
+record path before acquiring the map-object effect. Placing the write inside
+the `menu_available == 0` branch expresses that control flow directly. The
+earlier write after the loop preserved the game-level result but placed the
+store on a different compiler path and left one instruction absent from the
+retail schedule. KF1's related `map_scripts.c` loop was a source-shape lead;
+the decisive branch and store order comes from KF2's own instructions.
+
+With the reviewed one-function GAME carve and the pinned GCC 2.5.7 probe,
+strict objdiff now reports `100.0%` for `func_8004678c`: 3,156/3,156 text
+bytes, 40/40 data bytes, 140/140 rodata bytes, and 218/218 ordered
+relocation sites. The 789 decoded instructions and all 35 jump-table rows
+agree. A focused `kf try --unit game.event_command_dispatch --context 0
+--no-flow` also reports `SAME`. This is an isolated object verdict; it does
+not by itself claim the original compiler provenance or a full linked image.

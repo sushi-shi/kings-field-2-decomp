@@ -14,7 +14,7 @@ supported Sony/Psy-Q archive attribution.
 | `0x8003a9f4` | Scans 200 actors, excludes inactive/target type 3/current/masked actors, and tests an alternate Y position for flagged actors. | **Exact, 360/360 bytes strict**; branch-local distance queries reproduce retail's shared call setup. |
 | `0x8003ab5c` | Companion scan omits the target-type-3 exclusion but keeps the alternate-position collision query. | **Exact, 344/344 bytes strict**; the same branch-local source form matches. |
 | `0x8003ae50` | The 0x4ec-byte actor collision response calls the five-channel dispatcher, height probe, collision snapshot, angle, sine/cosine, and square root helpers. | **WIP, source claimed, 99.31746% recorded strict**; 58/58 CFG blocks and all direct calls agree. The 99.2% focused listing differs at obstacle-angle register assignment and mask timing; six neighboring functions remain exact. |
-| `0x8003b5d0` | Drives actor vertical motion through floor, rising, falling, and trajectory cases with collision and damage calls. | **WIP, 75.66939% strict**; call set and 40/40 CFG blocks agree, while switch order, branch joins, and cache-field scheduling differ. |
+| `0x8003b5d0` | Drives actor vertical motion through floor, rising, falling, and trajectory cases with collision and damage calls. | **WIP, 87.95102% strict**; all direct calls agree, while switch order, one CFG block, and return-frontier layout differ. |
 | `0x8003c3e0` | Repeatedly steers actor pitch/yaw toward a target Y offset of 1600 and advances a position vector. | **WIP, 99.64539% strict**; 23/23 CFG blocks and direct calls agree; only yaw-error and shifted-numerator registers differ in the focused listing. |
 | `0x8003c614` | The 0xa70-byte actor/effect dispatcher calls vector, animation, spatial sound, and effect helpers and contains an indirect jump. | **WIP, source claimed, 23.0% focused**; its candidate table `DAT_80011ee8` and complete dispatch behavior remain unresolved. |
 | `0x8003d084` | Clamps a signed actor byte at +`0x4b` to ±12 and adds a scaled `rand` result to its note offset. | **Exact, 100% strict**; the centered random pitch jitter matches the retail listing and ordered relocation, and a fresh focused build keeps both this leaf and its `0x3d0e8` caller `SAME`. |
@@ -41,7 +41,7 @@ one vertical-step block across three collision outcomes. A temporary explicit
 `if` dispatch lowered listing similarity to 62.3%. A temporary shared-step
 label aligned the `bnez` after the collision call, but compiled only 39 CFG
 blocks with an extra return frontier (67.1% listing). Both experiments were
-discarded; the current switch preserves the stronger CFG agreement.
+initially discarded pending a direct strict comparison.
 
 The later `0x80039c94` focused comparison keeps its eight direct curve calls,
 the unresolved slot-18 callback, and exact `0x80039c14` sibling. Retail loads
@@ -66,3 +66,42 @@ absolute `player_state` pairs, while this source reuses a saved base for Z.
 Exact `0x800396c4` uses the same typed `player_state.camera_position` fields
 and emits separate pairs, so this difference does not justify splitting the
 complete player-state owner into overlapping globals.
+
+A later focused four-object rebuild and direct strict objdiff covered the
+22-function actor animation/motion/position run after the shared actor
+layout update. Eighteen functions are exact: `0x8003a9f4`, `0x8003ab5c`,
+`0x8003acb4`, `0x8003ad90`, `0x8003adc4`, `0x8003ae20`,
+`0x8003b33c`, `0x8003b520`, `0x8003b5bc`, `0x8003b9a4`,
+`0x8003bae4`, `0x8003bba0`, `0x8003bcd0`, `0x8003be38`,
+`0x8003bf74`, `0x8003c000`, `0x8003c10c`, and `0x8003c220`.
+
+| GAME address | Current direct strict verdict | Residue |
+| --- | ---: | --- |
+| `0x8003ae50` | WIP, 99.31746% | Obstacle-angle mask and temporary register schedule. |
+| `0x8003b5d0` | WIP, 87.95102% | Vertical-state dispatch and joined collision paths. |
+| `0x8003bd40` | WIP, 86.53226% | Independent coordinate loads and angle/limit register assignment. |
+| `0x8003c3e0` | WIP, 99.64539% | Yaw-error fraction registers. |
+
+The selected retail disassembly confirms `0x8003b5d0` tests motion state
+`0x20` before `0x30`, `0`, and `0x10`. The existing switch models those
+states and the case bodies; prior `if`/shared-label probes lost CFG blocks.
+KF1 actor movement uses a different state/record layout, so it supplies a
+lead but no source transplant. The later direct comparison below supersedes
+the earlier decision about the shared label.
+
+The retail rising-state path at `0x8003b73c` is reached when the collision
+result is zero, when the collision mask lacks bit 4 and actor flag `0x400` is
+set, and when the flagged actor is below the collision height. All three
+paths store the same next Y and increment the same signed speed halfword.
+The source now expresses this proved common path once. At `0x8003b7b8`,
+retail branches when collision bit 4 is clear, so the retained C lays out
+the bit-set collision path before the clear-bit actor-flag check. Isolated
+source probes moved strict `0x8003b5d0` `.text` from **76.17551%** (`980`
+retail / `984` compiled bytes) to **84.25714%** for the common rise path,
+then **87.95102%** (`980` retail / `988` compiled bytes) with the bit-4
+branch layout. The retained focused quick build reports 68.2% WIP, 40/39 CFG blocks,
+21/21 branches, and 10/11 return-frontier edges. Its first CFG successor
+difference is in the earlier motion-state dispatch: retail tests `0x20`
+first, while the probe tests `0x10` first. The three preceding functions
+`0x8003b33c`, `0x8003b520`, and `0x8003b5bc` remain focused SAME and
+isolated strict 100%. No exactness claim is made for the rising-state body.

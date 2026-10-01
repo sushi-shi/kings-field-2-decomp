@@ -130,7 +130,7 @@ certification is pending.
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
-| `0x80036ed4` | WIP, 89.75535% direct strict code; 75.4% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
+| `0x80036ed4` | WIP, 90.466354% direct strict code; 76.5% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section has all 238 reviewed pointer rows; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
 
 The current 27-function focused cohort comprises the 17 collision-height
 wrappers, two map-cell pattern helpers, six map-object reset helpers, the
@@ -440,6 +440,48 @@ shared 24-byte pose view now types that field as `u16`, with an offset check;
 the other pose-view consumer retains its 89.4% focused WIP result. This final
 width correction raises direct strict code to 89.75535%, while focused listing
 settles at 75.4%.
+Retail action 4 branches on the linked index sentinel to a local null-pointer
+assignment at `+0x568`; its linked-object stores occupy the two preceding
+jump delay slots. Moving `linked = 0` from its declaration into an explicit
+`else` reproduces that CFG segment through the timer reload at `+0x56c`.
+Focused listing rises to 75.9%, and direct strict code to 89.953575% with
+7,644 candidate bytes against 7,668 retail bytes. The 32-byte data section
+remains exact. Jump-table pointer addends move with the case bodies, so the
+956-byte rodata section is only 17.295597% strict at this point. Retail
+stores negative values to object +0x0e using signed `addiu` immediates. The
+field is now `s16`; an isolated signed-header probe changed only the three
+negative literal instructions in this dispatcher, to match retail, raising
+strict code to 90.35316% and focused listing to 76.1%. Isolated probes of
+all four other field consumers (`map_object_reset`, `map_object_init_records`,
+`event_map_object_controller`, and `render_resource_dispatch`) changed only
+debug type annotations, preserving their emitted code. Focused checks after
+the header edit preserved five exact reset siblings; the other three units
+remain WIP at their preceding focused results. Retail's `lhu` reads in
+unsigned contexts therefore coexist with this signed field declaration.
+At action 225, raw `lui v0,0x8017` and `addiu v0,v0,0x67d0` at
+`0x80038b58/5c` form `0x801767d0`, the supported start of
+`map_object_state.objects` (`map_object_state +0x1e00`). The source already
+references that array. The previously absent reviewed HI/LO row is now
+accepted by focused safe delinking with addend `0x1e00` and no withholding;
+the direct strict code score rises from 90.35316% to 90.3542%, and the
+focused listing rises from 76.1% to 76.2%. The remaining source/text and
+jump-table addend differences keep the function WIP.
+An explicit action-225 failure label did not reproduce retail's local
+`+0x1c24` failure block: the probe merged the zero store with an earlier
+action's zero store at `+0x1480`, lowering direct strict code to 90.2097%.
+That source-shape trial was reverted.
+The four retail `SVECTOR` start/end offsets at `0x8006d6e4`–`0x8006d703`
+each have their own `lui`/`addiu` pointer construction: source sites
+`0x800384ec/f4` and `0x80038584/8c` independently form all four addresses.
+The earlier one-array C definition let GCC derive each second pointer as
+`a3 = a2 + 8`, leaving two of those retail HI/LO pairs absent. Four adjacent
+initialized globals preserve all 32 retail data bytes exactly and emit the
+four separate pointer pairs. Their identities remain address-derived because
+original linkage is unproved; the following `0x8006d704` datum is unchanged.
+The focused safe carve accepts all four renamed referents with zero addends
+and no withheld rows. Direct strict code is now 90.466354%, the focused
+listing is 76.5%, and the 32-byte `.data` remains 100%; the 956-byte
+`.rodata` pointer-addend result is still WIP at 17.033543%.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.

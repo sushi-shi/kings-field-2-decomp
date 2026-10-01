@@ -1506,7 +1506,9 @@ selection setter: it clears charge, stores the chosen ID, and chooses or
 clears the record pointer. KF2 `8002722c` is a 0x2c0-byte magic-action gate
 with two switches, MP checks, and action-vector stores. The shared subject
 does not make the KF1 source an expression or stack-frame template for the
-KF2 leaf-frame residue.
+KF2 leaf-frame residue. KF2's tail stores the already computed record pointer
+from `a2` directly to `player_state+0x7c` at `800274dc`; it does not reload
+the newly stored magic ID as the KF1 setter does.
 KF2 raw `80027684`–`800276b0` loads unsigned X/Z halfwords from the
 collision cache and player state, subtracts cache minus player on both
 axes, stores signed halves, and passes them to `vector_xz_to_angle`.
@@ -1534,6 +1536,11 @@ The optional position argument is correct on both sides despite different
 cursor displacements: retail anchors `s0` at its `sp+112` first-argument
 home and loads `4(s0)`; the candidate anchors `s0` at its `sp+108`
 second-argument home and loads `0(s0)`. Both read caller register `a1`.
+A source-only probe replacing the repository's `stdarg.h` with the pinned
+Psy-Q 3.0 `STDARG.H` kept the same `0x68` frame, `a1`-home cursor, and
+83.2% focused listing, with all 15 exact equipment siblings unchanged.
+The different macro expansions are canonicalized by this compiler here;
+they do not explain the retail frame or switch placement.
 An isolated GCC 2.6.0 `-O2 -mcpu=r2000` compile of this unit likewise
 homes `a0`-`a3`, but keeps a `0x68` frame, omits the
 retail reload, and scores `80025a18` only 56.620274% strict. It also

@@ -1281,3 +1281,43 @@ instead of claiming those five unreferenced bytes as source literals. A focused
 GAME delink and compile leave both resource-startup function listings WIP but
 unchanged. The strict GAME data verifier improves from 30/44 to 31/44
 data-owning units exact, with 13 genuine divergences remaining.
+
+### Fresh focused CD-arena allocator control
+
+A targeted rebuild of `game.cd_memory`, followed by one-unit direct strict
+objdiff, still gives **56/57 exact functions**. The sole WIP is
+`memory_arena_allocate_block` at `0x80017608`, **99.78261%**. Its retail
+eight-block CFG, two proven callers, `memory_arena_find_block` retry,
+`memory_arena_compact` call, 12-byte header arithmetic, 2060-byte split
+threshold, owner write, and return form agree with the retained typed source.
+At `0x80017660`, retail computes `available - 12` in `v0` before subtracting
+the request size into `a0`; the current compiler uses `a0` for both steps.
+This is a two-instruction temporary-register residue with no independent
+source fact requiring a change. KF1's resource allocator has a different
+cursor-based representation and does not settle the KF2 source spelling.
+
+The same direct report matches the unit's 11 initialized `.data` and 33
+`.rodata` bytes exactly. Its 772-byte target `.bss` allocation still differs
+from native COMMON placement; that data classification is independent of the
+allocator's code residue. The focused `kf try` lists the other 56 functions
+`SAME`. No allocator source/config edit or broad build was made.
+
+### Fresh resource-transition request and workspace review
+
+GAME `0x80016260` still has a 71.6% focused listing and a 98.790085%
+isolated strict baseline. Retail and source agree on the eight byte-valued
+arguments, six proven callers, critical-section wait, CD yield, and direct
+call set. Retail places all five sentinel choices before the alternate
+all-first initializer. An isolated C probe spelled that block order with
+explicit labels while preserving its state updates; direct strict similarity
+remained exactly 98.790085%, so the tracked source was not changed.
+
+The connected `0x80016820` step remains 99.193474% strict and 98.4%
+focused. Its only focused differences are the signed-low relocatable address
+constructors for RAM workspaces `0x8019e138` and `0x8012da68`; the current
+source uses fixed address literals. The first address is four bytes after the
+curated `effect_state` extent, which does not establish common ownership.
+The configured retail folder contains the executables but no `CD/COM/FDAT.T`,
+so the archive entry loaded into the first workspace cannot yet constrain its
+complete size. Both literals and their reviewed relocation candidates remain
+unchanged rather than manufacturing BSS owners from adjacency or codegen.

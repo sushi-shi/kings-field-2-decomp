@@ -32,3 +32,24 @@ adjacent to the collision WIPs, both exact floor-item neighbors, and the
 3,520/3,520 initialized collision-default bytes remain exact. Global
 edge-check still reports the three existing unrelated TMD/map-object
 `.rodata` addend mismatches. No repository tests, bank, or commit were run.
+
+### Fresh floor-item capture check
+
+A targeted `game.floor_item_find_free` rebuild and direct one-unit objdiff
+confirm `0x8002ce2c` and `0x8002cf40` **strict exact**. `0x8002ce68`
+remains **65.85185%**: retail has a 40-byte frame, saves `s0`–`s4`, and
+loads the three stack arguments only after the free-item call and null
+check. Current source emits a 56-byte frame, saves `s0`–`s8`, and hoists
+those arguments before the call. Both versions use the same four proven
+calls, the same five incoming main-loop calls, five retail CFG blocks, and
+the same field widths: `lbu` for the kind byte, `lw` for the full-width kind
+comparison, `lw` for width, and `lhu` for height. The two exact siblings
+remain focused `SAME`.
+
+An off-tree variant calculating allocation bytes before storing height
+changed the late multiply/store schedule but reduced focused similarity
+from 55.7% to 52.0%; an equivalent early-return spelling emitted the
+same baseline listing. Both were discarded. Narrowing the fifth parameter
+to `u8` is unsupported: retail compares its full 32-bit stack value with
+one after storing its low byte in the item. No stack carrier or unrelated
+local was added to force deferred argument loads.

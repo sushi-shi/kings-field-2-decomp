@@ -10,7 +10,7 @@ listing residues and exact controls.
 
 | VA | Function or role | Verdict and decisive evidence |
 | --- | --- | --- |
-| `0x8002d5dc` | `tmd_prepare_primitive_indices` | **WIP, 96.132600% fresh direct strict; 38.6% focused listing**. The eight typed packet-mode cases match the retail field offsets, with 17/17 CFG blocks and 4/4 branches. The probe retains the input asset in `t2` and adds one prologue instruction; retail keeps it in `a0`, shifting the switch table and branches by four bytes. Temporary zero-guard/do-loop variants adapted from the KF1 counterpart and a packet-base pointer variant changed frame or register order without resolving the prologue, so the source was left unchanged. |
+| `0x8002d5dc` | `tmd_prepare_primitive_indices` | **Exact, fresh direct strict 100%; focused SAME**. A single typed `KfTmdPrimitive *` now carries the packet-body address both into the eight index-update cases and into the next-packet calculation. This removes the redundant byte-pointer view that made the compiler copy the input asset from `a0` to `t2`. The 724-byte `.text`, 116-byte switch `.rodata`, and all 39 ordered relocation rows match retail. |
 | `0x8002d8b0` | `tmd_register` | **Exact, 100%**; regression control in the contiguous TMD unit. |
 | `0x8002d8f0` | `tmd_set_slot` | **Exact, 100%**; regression control. |
 | `0x8002d910` | `tmd_release_slot` | **Exact, 100%**; regression control. |
@@ -50,20 +50,23 @@ keeps the blend word in a saved register and hoists the equivalent depth-range
 flag. The sole source caller passes a signed depth; the raw callee truncation
 at the tail does not establish whether the original formal was `s16` or `s32`.
 No source change is justified by those codegen differences alone.
+An isolated positive-depth spelling probe put the FT3 and GT3 insertion bodies
+inside `if (depth > 0)` in both textured walkers, preserving their packet
+semantics. The compiled direct strict scores remained exactly 97.347160% and
+97.278400%, respectively; GCC still folded the same two branches. The
+retained source therefore remains unchanged.
 
-The connected `0x8002d5dc` index converter remains WIP at focused 38.6% and
-direct strict 96.132600%; target/source `.text` sizes are 724/728 bytes.
-Retail loads the TMD object count directly through `a0`, then decrements and
-guards it before the eight-byte frame's first body instruction. The probe
-first copies `a0` to `t2`. Both objects have ten ordered `.text` relocation
-types and 29 ordered switch-table pointer relocations; every compiled pointer
-addend is exactly four bytes after its retail counterpart, following that
-extra entry instruction. The 116-byte `.rodata` section is therefore only
-27.586206% strict despite the same 29-row table shape. A temporary signed
-`s32` spelling for both count locals compiled to the identical focused
-listing; it was discarded. Word-width count loads, the eight typed
-halfword-index cases, caller set, and candidate status of indirect table
-targets remain unchanged.
+The connected `0x8002d5dc` index converter is now direct strict 100% for its
+724-byte `.text` and 116-byte switch `.rodata`; focused `kf try` reports
+`SAME`. Its ten `.text` and 29 `.rodata` relocation rows agree in site, type,
+and referent order. The original two-pointer source made the compiler move
+the input asset from `a0` to `t2`, adding four bytes and shifting all 29
+switch-table pointer addends. Reusing the typed primitive pointer for both
+packet mutation and packet advance removes that unnecessary live byte
+pointer while preserving the eight retail packet-mode field writes. Earlier
+count-width and zero-guard probes did not solve this residue; the indirect
+switch targets retain their curated candidate status despite the exact
+object.
 
 The connected clipped fan `0x8002f5b0` still has a supported packet model and
 95.833336% fresh isolated strict score. Its `render_enqueue_map` sibling and
@@ -111,6 +114,19 @@ word member had no source use and would only steer allocation. Computing the
 two UV components through that word instead dropped focused similarity to
 10.2%. Both probes were discarded; the retained builder remains 12.0%
 focused and 51.506750% direct strict.
+For the alternate renderer, a loop-local 32-bit mode value derived from the
+header's top byte raised focused similarity to 62.2%, but lowered isolated
+strict matching from 91.176970% to 90.720680%. Retail's separate mode spill
+supports the value's lifetime, not a particular C declaration, so the probe
+was discarded. Reusing the clipped fan's `vertex_count` formal as its loop
+counter compiled to the identical 82.6% focused listing and was also
+discarded.
+Moving the builder's output-packet pointer setup after source-object reads
+produced only 12.1% focused and 51.455215% strict; delaying just its
+28-byte increment likewise gave 12.1% focused and 50.895706% strict. The
+retail entry forms the output object pointer early, but neither source order
+reproduced its caller-saved register and scratch layout, so both remained
+temporary.
 
 Moving the dispatcher's mode-12 effect call below its normal draw call raised
 focused listing similarity from 63.1% to 64.5%, but the compiler still merged

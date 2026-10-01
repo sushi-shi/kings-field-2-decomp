@@ -41,8 +41,9 @@ The `0x6f..0x71` transition path is also now modeled from the distinct
 waits for two resource transitions, moves the player to a map object's pose,
 and queues asset-registry slot `0x181` if absent. That slot is the typed
 `game_graphics_runtime.asset_registry_entries[0x181]`, whose offset is
-`0x10720`, matching the retail load. After this arm the C emits 3140 bytes
-against the 3156-byte retail body. Reordering the case groups into the raw
+`0x10720`, matching the retail load. After this arm the C emitted 3140 bytes;
+the later switch-status form emits 3172 bytes against 3156 retail. Reordering
+the case groups into the raw
 retail body sequence raises focused listing similarity from **28.5% to 61.9%**
 without changing behavior. Spelling the shared object-action status as a
 `switch` instead of an if-chain then raises it to **66.0%**; isolated strict
@@ -63,3 +64,37 @@ are now reviewed: map-object, player, and event-state bases at raw sites
 the one-VA safe carve emits all fourteen pairs with zero withheld rows. These
 curations restore real source referents in the target object rather than
 removing the C references to accommodate an incomplete delink.
+
+The object-action status switch now spells `case 0` explicitly. Retail tests
+status 1, then `status < 2`, then 3 and 4; the GCC 2.5.7 probe emits that
+same ordered test only with the explicit zero case. The focused listing rises
+from 66.0% to 66.1%, and isolated strict `.text` from 82.368820% to
+83.257286% (3156 retail bytes, 3172 candidate bytes); the 40-byte `.data`
+claim remains exact. A separate `status < 2` guard produced only 81.665400%
+strict `.text`, and moving the common state write into three result arms
+produced 78.095055%; neither source form was retained. The surviving residue
+starts with one saved-register/frame difference, then body placement and
+shared state-write placement; this is still WIP.
+
+In the `0x72..0x74` map-object arm, retail subtracts the map-object array
+base from the selected object pointer and divides by the 68-byte record
+stride before storing a halfword object index. The previous C stored the
+search result directly, which is equivalent for a valid array element but
+does not explain the retail signed `div`/`mflo` or its exception checks. A
+natural pointer difference reproduces that instruction sequence and raises
+isolated strict `.text` to 85.107735% (3220 candidate bytes); `.data` stays
+40/40 exact. `.rodata` target addends shift further while later body placement
+remains WIP, so this is source-structure progress, not closure.
+
+The retail jump table enters three short stubs for commands `0x72..0x74`,
+which set control offsets `0x28/0x2c/0x30` and join one object-action body.
+The same pattern occurs at `0x6f..0x71` before the resource-transition body.
+Spelling the six assignments and shared joins in C reproduces both sets of
+constant-load stubs. KF1's matched `source-shapes-gcc257.md` records the
+same GCC 2.5.7 case-body ordering and shared-label shape; the KF2 table
+targets and raw constant loads independently establish these six arms.
+With the pointer difference and explicit status zero
+case retained, isolated strict `.text` reaches 86.069710% (3248 candidate
+bytes versus 3156 retail), and the focused listing reaches 69.9%.
+The candidate's 35 table addends still differ as
+body placement shifts, so `.rodata` is 2.5% and this is not exact closure.

@@ -80,10 +80,10 @@ game audio API; no body in this wave is classified as vendored.
 | `8003c10c` | WIP | Vector rotation helper called by effect dispatch and `8003247c`; actor/effect ownership remains unresolved. |
 | `8003c220` | WIP | Animation phase and state transition code calls the three matched animation/byte helpers; state meaning remains open. |
 | `8003c3e0` | WIP | Actor vector/distance helper called repeatedly by `8003c614`; geometry and return contract remain open. |
-| `8003c614` | WIP | `0xa70`-byte actor behavior body with confirmed pool and initializer calls, and an unresolved jump table/indirect jump. |
+| `8003c614` | WIP, 25.2% focused | `0xa70`-byte source-backed actor group/effect dispatcher; its 123-entry RODATA table is owned, while case paths and indirect control remain incomplete. |
 | `8003d084` | WIP, 91.600000000% strict | Actor signed byte `+0x4b` controls a clamped random sound note offset; CFG and calls agree, but GCC reassociates the final `-2` across the shift (`kf try`: 92.6% listing similarity). |
 | `8003d0e8` | exact | Actor target byte `+4` selects range/default spatial sound calls; both paths use `8003d084`. |
-| `8003d184` | WIP | `0x248c`-byte actor behavior dispatch calls movement, target, animation, sound, and terrain helpers; two `jalr` sites and jump tables remain unresolved. |
+| `8003d184` | WIP, 12.3% focused | `0x248c`-byte source-backed actor behavior dispatch owns its 241-entry RODATA table; selectors 0/1/2/4/6–8/15/18–20/22/29/240 are partly or fully modeled, while other paths and two indirect callbacks remain incomplete. |
 | `8003f610` | exact | Iterates 200 actor records, binds each, updates active actors, and follows flagged groups to map-object positions; strict 100%. |
 | `8003f7ec` | WIP, 85.862070000% strict | Fixes up sixteen signed byte-offset target references in each of at most forty groups; CFG and referents agree, with two instruction-order residues (`kf try`: 93.8% listing similarity). |
 | `8003f860` | WIP | Loads sixteen-byte actor entries into the 200-slot actor pool, copies group defaults, and sets home position; source record layout and caller contract remain open. |
@@ -1519,8 +1519,9 @@ retain scorer DIFF 35.1%, exact marker scan `46144` SAME, exact event save
 angle-tolerance call sites, while the probe has four of each: the identical
 case-9/case-11 angle suffix is merged in compiled assembly at its case-11
 label. This is an observed call-site layout difference, not a missing C call.
-`KfTargetCandidate` therefore describes an observed 0x1c-byte prefix only;
-neither these reads nor the switch table prove the allocation stride. For
+`KfTargetCandidate` now describes an observed 0x20-byte prefix: selector 18
+also reads halfwords at +0x1c and +0x1e. Neither these reads nor the switch
+table prove the allocation stride. For
 `36ed4`, the retail first loop has 24 unique primary dispatch targets, of
 which 201 table entries select the fallback callback. All 23 concrete action
 IDs now have C paths, while subaction semantics and the compiled table layout
@@ -1692,7 +1693,7 @@ The 241-word switch table at `800120d8` sends selectors 6–8 and 31–239
 selectors above 240 there. That block loads
 `state_8017d118.active_table[17]` and calls it through `jalr` without a new
 argument setup. The retained C spells that callback for exactly those paths;
-selectors 3, 5, and 9–30 still require separate arms. A focused compile
+selectors 3, 5, 9–14, 16–17, 21, 23–28, and 30 still require separate arms. A focused compile
 improved the incomplete body from 3.6% to 4.7% listing similarity, with the
 0x248c-byte retail function still WIP. The table-target grouping and callback
 come from raw control flow; the score is only a comparison of this partial C.
@@ -1722,8 +1723,67 @@ with `lhu`; `KfTargetCandidate.unknown_18` and its inventory row are now
 rejection. Selector 240 is a direct `3b5bc` call: raw table word 240 points
 to `3f39c`, which calls that exact actor-motion helper before the common
 tail. Adding the arm leaves the incomplete dispatcher at 4.2% focused WIP.
+Selector 15 starts at table target `8003e7fc` and has a complete short path:
+initialize animation `0xf0` when needed, call `3bcd0` with signed actor
+`+0x64`, target halfwords `+0x0c/+0x0e`, group bytes `+3/+4`, and constant 5,
+advance animation by target `+0x08`, then reset at phase 4095. The raw path
+joins the common tail at `3f3c8`; the sourced arm raises focused similarity
+from 4.2% to 4.5% but remains WIP with the other selector arms incomplete.
 Focused actor-animation and actor-group-position controls retain 6/6 and 3/3
 SAME listings, respectively.
+
+Selector 18 follows raw `8003e5c4..8003e6c4`: it initializes animation
+`0xf0`, forms the player-camera-to-actor vector with Y reduced by 1600,
+calls `fixed_vector3_length`, writes Euler angles at actor +0x72 through
+`func_800154fc`, and passes that six-byte view to exact `3bf74` with
+candidate halfwords +0x1c/+0x1e. Its phase crossing calls `3a614` with
+candidate bytes +0x0e/+0x0f/+0x10/+0x11 and halfwords +0x12/+0x14/+0x16;
+phase 4095 resets the animation. The mixed `lhu` at candidate +0x0c and
+`lbu` at +0x0d now have a shared two-byte union view. The actor +0x72
+signed-halfword sentinel and Euler-angle write likewise share an asserted
+six-byte tail view. These views preserve the 0x7c actor layout and extend
+only the observed candidate prefix to 0x20 bytes; candidate stride remains
+unproved. The focused incomplete dispatcher rose from 4.5% to 8.4% and
+remains WIP. Exact actor-animation, group-position, motion, collision,
+damage, and fixup siblings stayed SAME in the focused controls.
+Selector 22 is the short raw `8003e9cc` path: it initializes animation
+`0xf0` with `397d8` if unset, advances the clamped phase, resets the target
+at phase 4095, then calls `3b9a4` with active-group byte +3 and target 10.
+It shares retail tails at `3e918`, `3eee4`, and `3ef00` with other selectors;
+the current C retains the complete semantic path and raises the incomplete
+focused listing from 8.4% to 8.6%. The dispatcher remains WIP.
+Selector 19 is the raw `8003e870` three-state path. On first entry it sets
+actor +0x0f to `0xf0`, clears the signed halfword at actor +0x70, and calls
+`39804`. State 0 advances clamped animation until its phase reaches
+candidate halfword +0x10, then sets state 16. State 16 waits for signed
+`player_state.weapon_attack_phase` at +0x90 to become -1 before setting
+state 32. State 32 advances clamped animation and resets the target at phase
+4095. All states reach the `3b9a4` group-byte +3, target-10 tail. The
+source follows those raw branches and raises the incomplete focused listing
+from 8.6% to 9.6%; the unresolved selector paths keep the function WIP.
+Selector 20 follows raw `8003e92c..8003e9c8`: first entry loads candidate
+halfword +0x12 into the signed actor +0x70 counter and starts animation
+`0xf0`. Each update calls exact `3bae4` with actor yaw plus 2048, candidate
+halfword +0x10, speed step 1000, and target 5; a nonzero result sets the
+counter to one. Wrapped animation advances by candidate +0x08. At phase
+`4095 - step`, it decrements the counter and only the zero transition sets
+phase 4095 and resets the target. The raw path goes directly to the common
+post-action tail without the `3b9a4` motion call. Its focused incomplete
+listing rises from 9.6% to 11.5%, still WIP.
+Selector 29 is the short raw `8003f0c4..8003f134` path. First entry starts
+animation `0xf0`, calls exact `3b5bc`, and sets the signed actor +0x72
+counter to 16. Each update increments actor rotation X/Y by 128/64,
+decreases world Y by 256, and resets the target when that counter reaches
+zero. The focused partial listing rises from 11.5% to 12.3% WIP; no other
+selector behavior was inferred from its adjacency.
+The next unsourced selector 21 is not blocked by an unknown pool base:
+`8003ea6c..8003ea88` indexes the complete
+`map_object_state.objects[actor->unknown_20]` array with its 68-byte stride.
+Its first state reads that object's `action_timer` at +0x08 and signed
+rotation X at +0x24 before advancing the actor state. Later states at
+`8003eaac..8003ebe8` combine phase interpolation, map-object rotation,
+motion calls, and a temporary change to shared actor flags. The full edge
+order and callback effects remain open, so no C arm was added yet.
 
 The connected `3c614` actor-group effect dispatcher has a proved correction
 for kind `0x79` (switch word 120 at `800120c8`). After the 600-step direction
@@ -1735,9 +1795,17 @@ focused incomplete-body listing from 22.7% to 25.2%; the function remains
 WIP with 45 retail versus 53 compiled CFG blocks and 15 versus 20 branches.
 The indirect switch leaves reachability incomplete, so further case-by-case
 raw review is needed before attributing the remaining control differences.
+The 123 raw table words have 23 non-default selector indices: 1, 2, 4, 7,
+9, 12, 22–24, 26–29, 31–33, 40, 108, 110, 112, and 120–121, 123.
+Each has a C `case` in the current source, so the current CFG residue is
+within the case bodies, shared tails, or variadic setup rather than an
+omitted table index. The first focused differences are stack-frame and
+register choices around O32 variable arguments; these do not by themselves
+support changing a referent or adding a synthetic local.
 
 The current 30-function actor call-graph control was rebuilt with focused
-`kf try --context 0 --no-flow` after the candidate +0x18 field correction.
+`kf try --context 0 --no-flow` after the candidate +0x20 prefix and actor
++0x72 tail-view corrections.
 `SAME` below means an identical focused listing; no broad strict match was
 run for this checkpoint. The actor-motion, animation, damage, collision,
 group-position, and fixup units are connected by calls from `3d184` and
@@ -1758,5 +1826,5 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3bf74` | SAME | `3c000` | SAME |
 | `3c10c` | SAME | `3c220` | SAME |
 | `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
-| `3d184` | WIP 4.2% | `3f610` | SAME |
+| `3d184` | WIP 12.3% | `3f610` | SAME |
 | `3f7ec` | WIP 93.8% | `3f860` | SAME |

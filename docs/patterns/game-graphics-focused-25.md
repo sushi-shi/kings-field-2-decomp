@@ -153,3 +153,11 @@ edits preserved their focused listing results: `0x800311b0` 57.5%,
 `0x80031850` 80.5%, `0x80031d8c` 79.5%, and `0x8003247c` 67.7%. The
 dispatcher still reports 96/96 CFG blocks, 54/54 branches, and the same first
 known successor discrepancy at B62 in effect handling.
+
+For the two textured packet walkers, a temporary source-only probe changed
+the FT3 and GT3 post-divide `if (depth <= 0) break` into an equivalent
+positive-depth block. The complete focused `game.tmd_pipeline` comparison was
+byte-for-byte identical to the retained source's listing (eight SAME, three
+unchanged WIPs). The retail's two separate positive-depth exits therefore
+remain unexplained by this ordinary branch spelling; no source change was
+retained.

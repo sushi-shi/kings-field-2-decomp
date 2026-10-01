@@ -391,14 +391,51 @@ the unsigned record opcode, sign-extends it, and rejects values above
 target blocks inside `0x8002aaa4`; 13 targets are distinct and 37 rows
 select the default block `0x8002b5c4`. Pointer rows remain candidate
 indirect edges despite this raw block-head check.
+At `0x8002ab5c`–`0x8002ab80`, the selected occupancy layer's byte at
+`+0x03` indexes unsigned 16-bit offsets at the loaded shape-bank base.
+Spelling that read as an indexed `u16` table access preserves the complete
+17.8% focused dispatcher listing. This establishes the access width and
+selector relationship, not the bank's internal record extent or a separate
+global owner.
+The subsequent signed halfword at record `+0` scales the input radius by
+`>> 12`, the signed halfword at `+2` gives the command count, and commands
+begin at `+4`. These raw reads now use one four-byte typed record header
+with layout checks; the variable-length command body remains a separate
+pointer. That focused listing was 17.2% WIP, lower because the compiler
+retained the header pointer differently. The visible CFG then had
+162 blocks and 97 branches against retail's 174 and 99; the typed layout
+is retained because its offsets and signed loads are independently proved.
+The table's opcode `0x18` and `0x19` rows enter `0x8002b534` and
+`0x8002b5a4`. The first stores a signed record operand plus cached height
+as the lower bound. With the sign flag it also stores that lower bound as
+the result, then records a floor hit only if it is below Y. With bit
+`0x40000000` it stores the lower bound as the height limit before testing
+`bottom_y <= lower_bound` for bit 8. Opcode `0x19` stores the analogous
+upper bound. Both paths advance the command stream directly; neither uses
+the generic old-height-limit restoration. Source now expresses those direct
+stores and joins without comma expressions. Focused comparison is 17.3%
+WIP, with 161 compiled CFG blocks and 97 branches against retail's 174 and
+99; the bounded indirect switch still limits CFG certainty.
+Opcode `0x10` enters `0x8002ac70`. Retail updates the result cache only
+when the signed operand plus cached height is lower than its old value,
+then reloads the cached result for the Y comparison. The `0x30`/`0x32`
+height path at `0x8002b38c` reaches the same flag-setting join only after
+its candidate wins; it stores that candidate and compares the local value
+with Y in the branch delay slot. The source now preserves the conditional
+store and the distinct comparison values at this shared join. Focused
+similarity falls to 15.6% while compiled CFG returns to 162 blocks and 97
+branches. The lower score is retained because the cache writes and reads
+are separately proved by raw instructions, and the indirect-switch layout
+still dominates the difference.
 The focused compiled and retail `.rodata` sections both contain exactly 49
 `R_MIPS_32` pointer rows, and their complete row-by-row target-equivalence
 grouping is identical (13 groups, no differing rows). Their raw pointer
 values still differ because the 0xb60-byte retail body and current compiled
 body place the case blocks at different offsets; the low `.rodata` fuzzy
 score is not evidence of a missing case or changed table grouping.
-The current focused C body is 0xaf0 bytes, 0x70 shorter than retail; its
-visible CFG is 162 blocks and 97 branches against 174 and 99 in retail.
+Before the typed header and case refinements, the focused C body was 0xaf0
+bytes, 0x70 shorter than retail, with 162 blocks and 97 branches against
+174 and 99 in retail.
 The pointer-group result narrows the remaining work to the case bodies,
 control joins, and instruction schedule rather than the opcode-to-case map.
 The opcode `0x11` row at `0x80011350` points to `0x8002acb0`. That entry
@@ -407,6 +444,39 @@ the branch is false along this table entry. No row in this bounded switch
 enters at `0x8002acb8`, and the decoded direct edges do not target it.
 This apparent dead branch is an unattributed CFG residue, not evidence
 for adding a fabricated source flag or changing the shape-record opcode.
+The live opcode `0x11` path keeps its first signed height candidate in a
+register through both comparisons. If `bottom_y` is below that candidate,
+the second signed height candidate is tested; a second candidate below
+`bottom_y` sets bit 8, whereas the other arm conditionally updates the
+result cache and stores `-100000` as the height limit. The first candidate
+is written to the height-limit cache only at the `0x8002ad24` join, reached
+when the second candidate sets bit 8 or the first comparison fails. The
+source now follows those store paths instead of writing the first candidate
+before the comparisons. The focused listing improves from 15.6% to 16.2%
+but remains WIP; this change is retained for the raw-proven store timing.
+Opcode `0x32` clamps its diagonal coordinate between signed record operands
+at `+4` and `+6`: retail `0x8002b31c` moves the lower endpoint into the
+coordinate when it is too small, and `0x8002b330` moves the upper endpoint
+when it is too large. The prior C condition erroneously used the upper
+endpoint for both cases. The corrected two-arm clamp is source-backed;
+focused listing remains 16.2% WIP.
+The shared `0x8002ada4` path for the `0x20`–`0x23` geometry cases also
+has two exclusive cache effects. Retail writes the first signed height
+candidate to the height limit when `bottom_y` is at or above it; when
+`bottom_y` is below it, retail may instead lower the result cache with
+the second candidate and set the case flags if that result is below Y.
+The source now spells these paths directly and advances the record without
+a temporary old-limit restoration expression. Focused similarity is 16.1%
+WIP, with the raw store targets and conditional order retained.
+The old loop also loaded and rewrote the height limit around every command,
+including the default path. Retail has only six height-limit stores in
+this function: initialization at `0x8002ab38`, opcode `0x11` at
+`0x8002ad20/28`, the shared geometry join at `0x8002adec`, opcode `0x31`
+at `0x8002b4ac`, and opcode `0x18` at `0x8002b590`. The loop-wide restore
+has therefore been removed, with opcode `0x31` writing its own limit after
+its result update. Focused similarity falls to 14.0% because this changes
+the compiler's whole-function lifetime and schedule; the source keeps the
+raw-proven cache write sites. The large body remains WIP.
 Retail transition phase one at `0x80016820` copies `0x3e80` words
 (`0xfa00` bytes, exactly 80×80×10 map-cell bytes) to the BSS base, then
 copies `0x600` words (`0x1800` bytes) to its +0x10000 interior. The
@@ -561,3 +631,15 @@ Isolated flat-cell and direct typed-field spellings both compiled to the
 same 76.4% focused listing as the retained source; neither resolved the
 different base-add schedule. The known whole-object owner and lighting
 field therefore remain unchanged.
+
+The GAME `0x8002c170` mask-row scanner is now **100% strict** (100/100 code
+bytes). Retail forms a pointer `v1 = row + index` while retaining the row
+parameter in `a0`, then advances `v1` and the index by the signed step.
+Expressing the read as `row[index]` lets the pinned compiler derive that
+induction pointer. The prior explicit `cell = row + index; *cell; cell +=
+step` source reused `a0` for the pointer and scored 89.8% strict. The
+indexed source preserves the unsigned 24-cell guard, matching-run state,
+return value, and two exact calls from `0x8002c1d4`. A focused rebuild
+reports 11/17 identical listings; direct native objdiff confirms the new
+scanner and all ten earlier exact siblings at 100%, with the 3,520-byte
+`collision_default_rows` datum unchanged at 100%.

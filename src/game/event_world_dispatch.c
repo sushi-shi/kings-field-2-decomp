@@ -49,7 +49,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
     object_index = 0;
     objects = map_object_state.objects;
     templates = map_object_state.templates;
-    for (;;) {
+    for (;; object_index++) {
         KfMapObject *object;
         u16 object_id;
         s32 kind;
@@ -200,7 +200,6 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             func_8001bcfc();
             break;
         }
-        object_index++;
     }
 
 invoke_callback:

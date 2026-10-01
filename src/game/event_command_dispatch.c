@@ -63,6 +63,8 @@ void func_8004678c(const VECTOR *position,
                    const KfPlayerViewRotation *rotation, s32 command)
 {
     s32 index;
+    s32 object_control_offset;
+    s32 transition_control_offset;
 
     event_state.state_word = 0;
     switch (command) {
@@ -97,6 +99,7 @@ void func_8004678c(const VECTOR *position,
             case 4:
                 notify_enqueue(4);
                 break;
+            case 0:
             default:
                 index++;
                 continue;
@@ -106,8 +109,14 @@ void func_8004678c(const VECTOR *position,
         }
         break;
     case 0x72:
+        object_control_offset = 0x28;
+        goto object_control_action;
     case 0x73:
+        object_control_offset = 0x2c;
+        goto object_control_action;
     case 0x74:
+        object_control_offset = 0x30;
+object_control_action:
         index = func_80036190(0, position, 800, 1700,
                                rotation->angles[1], 512);
         if (index != -1) {
@@ -119,10 +128,10 @@ void func_8004678c(const VECTOR *position,
                 }
                 object->tail.fields.unknown_38 = command;
                 object->action_timer = 0;
-                *(u16 *)&event_state.control.bytes[0x28 +
-                    4 * (command - 0x72)] = index;
-                event_state.control.bytes[0x2a +
-                    4 * (command - 0x72)] = state_8017d118.values_04[0];
+                *(u16 *)&event_state.control.bytes[object_control_offset] =
+                    object - map_object_state.objects;
+                event_state.control.bytes[object_control_offset + 2] =
+                    state_8017d118.values_04[0];
                 event_state.state_word = 1;
                 func_800473e0(command);
                 object->extra_40.bytes[0] = 0;
@@ -134,9 +143,14 @@ void func_8004678c(const VECTOR *position,
         }
         break;
     case 0x6f:
+        transition_control_offset = 0x28;
+        goto transition_action;
     case 0x70:
-    case 0x71: {
-        s32 control_offset = 0x28 + 4 * (command - 0x6f);
+        transition_control_offset = 0x2c;
+        goto transition_action;
+    case 0x71:
+        transition_control_offset = 0x30;
+transition_action: {
         u8 previous_value;
         KfMapObject *object;
         struct KfVecXZi forward;
@@ -144,14 +158,14 @@ void func_8004678c(const VECTOR *position,
         s16 yaw;
 
         if (state_8017d118.values_04[0] == 7 ||
-            event_state.control.bytes[control_offset] == 0xff ||
+            event_state.control.bytes[transition_control_offset] == 0xff ||
             player_state.attack_charge_current < 10) {
             break;
         }
         player_state.attack_charge_current -= 10;
         func_80036e24(1, 0, 4096, 256);
         func_80038f20();
-        previous_value = event_state.control.bytes[control_offset + 2];
+        previous_value = event_state.control.bytes[transition_control_offset + 2];
         do {
             cd_request_yield();
             func_80016820();
@@ -169,7 +183,7 @@ void func_8004678c(const VECTOR *position,
         } while (state_8017d118.transition_active != 0);
         cd_request_wait_idle();
 
-        object_index = *(u16 *)&event_state.control.bytes[control_offset];
+        object_index = *(u16 *)&event_state.control.bytes[transition_control_offset];
         object = &map_object_state.objects[object_index];
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);

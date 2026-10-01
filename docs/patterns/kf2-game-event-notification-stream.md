@@ -45,8 +45,11 @@ the retail branch delay slot and raises the strict result from `97.37745%` to
 `98.05147%`. Retail still keeps the rotation argument and the constant one in
 different saved registers, and two instructions of control layout remain
 unattributed. A separate actor-index local lowered the result and was
-reverted. The controller and restore-stream differences begin with saved
-register assignments; their existing typed calls, fields, and exact adjacent
+reverted. The exact KF1 `map_interaction_dispatch` uses a `for` header for the
+analogous object-search increment. Spelling KF2's loop the same way emits an
+instruction-identical `98.05147%` object, so the source retains that form.
+The controller and restore-stream differences begin with saved-register
+assignments; their existing typed calls, fields, and exact adjacent
 event-state functions provide no source-backed correction yet.
 
 The five callers of `0x80045f20` establish its eight O32 arguments: three

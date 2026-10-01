@@ -40,9 +40,11 @@ table. `data.tsv` and `data_identities.tsv` now represent the two complete
 ranges as one pointer table each instead of 128 isolated Ghidra four-byte
 objects. The table pointer words in `relocs.tsv` remain candidate relocation
 rows: their decoded values and use are proven, but no source-owned RODATA
-object has yet validated the target object's relocation shape. A future
-dispatcher TU should make one RODATA claim spanning `0x8001268c..0x80012890`
-(`0x204` bytes, including the zero separator), without separate table globals.
+object has yet validated the target object's relocation shape. The current
+dispatcher C claim has no RODATA claim. Its generated object contains the
+123-word kind table but not the five-word phase table. A complete source
+model should claim `0x8001268c..0x80012890` as one RODATA range (`0x204`
+bytes, including the zero separator), without separate table globals.
 
 The kind table's occupied handler entries are:
 
@@ -95,14 +97,17 @@ the table bases above. The Ghidra decompiler proposal removes ten purported
 unreachable blocks and supplies incorrect speculative arguments to `rand` and
 other calls; it is a guide to inspect, not trustworthy C source.
 
-No dispatcher source claim or strict objdiff verdict exists yet. A meaningful
-comparison requires the complete kind/phase control flow, call arguments and
-owned referents. The collision-cache words around `0x801d8d40..0x801d8d5c`
-are still provisional because the current equipment record extent overlaps
-them; several dispatcher arms read those words. Do not create overlapping
-globals or collapse those arms to make a probe compile. Retail validation and
-`kf inventory check` pass after the table curation. The first source-vs-retail
-divergence is therefore not yet defined.
+The current `src/game/effect_update_dispatch.c` claims the full retail body
+at `0x80042650 / 0x3670` and models many kind and phase arms. A fresh focused
+rebuild emits 14,012 text bytes against 13,936 retail bytes; direct strict
+objdiff reports 0.0%, so this is a substantive WIP, not an exact function.
+The first compiled instructions already differ in frame size and saved-register
+setup. The generated kind table is 492 bytes, while the retail table range
+also contains the separate five-entry phase dispatch. The collision-cache
+words around `0x801d8d40..0x801d8d5c` remain provisional because the
+current equipment record extent overlaps them; several dispatcher arms read
+those words. Do not create overlapping globals or collapse those arms to
+improve the metric.
 
 The subsequent primary-target pass checked the retail body and all incoming
 and outgoing xrefs again. The first kind handler, at `0x80043624`, increments

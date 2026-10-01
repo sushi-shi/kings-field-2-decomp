@@ -1804,3 +1804,77 @@ source-owner claim removes the unresolved `effect_state` native-link name
 but the probe emits a 0x2a90 COMMON allocation for the retail 0x2a8c BSS
 extent. The four-byte allocation residue is unresolved; no field or padding
 was changed to mask it, and strict data/link closure is not claimed.
+
+## Focused effect-graph continuation
+
+This disjoint 25-function pass recompiled each listed unit after the shared
+effect-record and BSS refinements. `SAME` here is a focused listing verdict;
+it does not replace a direct strict objdiff check. The exact controls retain
+their earlier strict evidence where recorded above. No source correction was
+retained in the collision probe or constructor during this pass.
+
+| GAME VA | Current focused verdict |
+| --- | --- |
+| 0x8003fa2c | SAME; strict certification not repeated here |
+| 0x8003fa68 | WIP, 57.5%; four retail collision calls compile as one |
+| 0x8003fb94 | SAME; prior strict exact |
+| 0x8003fdac | SAME; prior strict exact |
+| 0x8003fdd0 | SAME; prior strict exact |
+| 0x8003feb0 | SAME; prior strict exact |
+| 0x8003ff18 | SAME; prior strict exact |
+| 0x800400c0 | SAME; prior strict exact |
+| 0x800401b4 | SAME; prior strict exact |
+| 0x80040220 | SAME; prior strict exact |
+| 0x80040264 | SAME; prior strict exact |
+| 0x800402a4 | SAME; prior strict exact |
+| 0x80040308 | WIP, 11.4%; retail 72-byte frame versus probe 56-byte frame |
+| 0x800416ec | SAME; prior strict exact |
+| 0x8004177c | SAME; prior strict exact |
+| 0x8004195c | SAME; prior strict exact |
+| 0x80041b14 | SAME; prior strict exact |
+| 0x80041cd0 | SAME; prior strict exact |
+| 0x80041d7c | SAME; prior strict exact |
+| 0x80041e0c | SAME; prior strict exact |
+| 0x80041e94 | SAME; prior direct strict exact |
+| 0x8004212c | SAME; prior direct strict exact |
+| 0x80042298 | SAME; prior direct strict exact in the three-function scatter unit |
+| 0x80042424 | SAME; prior direct strict exact in the three-function scatter unit |
+| 0x800424f0 | SAME; prior direct strict exact in the three-function scatter unit |
+
+Retail `0x80040308` constructs an optional-argument cursor at the fifth
+named argument's stack slot, matching a source-shape lead from KF1. An
+isolated manual-cursor source trial moved the probe cursor to that slot but
+left focused similarity at 11.4%; moving the assignment after pool allocation
+lowered it to 10.5%. Both trials stayed in temporary files. Changing the
+null-allocation return from literal zero to the known-null record pointer
+also emitted the same 11.4% listing and was reverted. The first retained
+constructor divergence remains the frame and saved-register allocation.
+
+Kind 102's word at 0x8009a5a8 has only two direct GAME references, its load
+and frame-count-plus-30 store inside the constructor. Other words from
+0x8009a5a0 through 0x8009a5e0 are used by identified Sony malloc and
+Psy-Q CD code, immediately before `game_counter_bytes` at 0x8009a5e8.
+That mixed neighborhood does not prove an enclosing game object or a source
+definition for the timer, so its owner remains unresolved.
+
+## Render and sparse-animation follow-up
+
+This ten-function call-connected batch supersedes older render and sparse-morph
+scores above. Each source was rebuilt against its current GAME carve. The five
+former WIPs below have isolated direct objdiff verdicts; the five adjacent
+controls were also checked with focused `kf try`. In particular, the two
+previously reported frame/sparse WIPs now compare exactly without a source
+change in this pass.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| 0x800311b0 | WIP, direct objdiff 92.14815% (324 bytes); retail saves an additional argument register and orders polygon setup stores differently. |
+| 0x80031850 | WIP, direct objdiff 95.0% (1340 bytes); retaining a typed row pointer before the column index reproduces retail's row-first address calculation. Entry register assignment and later branch scheduling still differ. |
+| 0x80031d8c | WIP, direct objdiff 94.65414% (532 bytes); retail saves the final render-data argument in `s7`, while the probe reloads it from the caller stack. |
+| 0x800335a0 | Exact, direct objdiff 100% (1012 bytes); frame-render sibling 0x80033584 is also exact. |
+| 0x80033afc | Focused SAME; earlier strict exact asset-registry control. |
+| 0x80033b34 | Focused SAME; earlier strict exact keyframe control. |
+| 0x80033bfc | Exact, direct objdiff 100% (196 bytes). |
+| 0x80033cc0 | Exact, direct objdiff 100% (124 bytes). |
+| 0x80033d3c | Exact, direct objdiff 100% (696 bytes); its three `ScaleMatrix` calls and loop tail now match the current retail carve. |
+| 0x80033ff4 | Focused SAME; earlier strict exact sparse-find control. |

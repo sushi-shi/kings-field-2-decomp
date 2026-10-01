@@ -16,6 +16,22 @@ enum {
     KF_ACTOR_LIFECYCLE_DORMANT = 0
 };
 
+typedef struct KfTargetCandidateWord0cBytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord0cBytes;
+typedef char kf_target_candidate_word0c_bytes_size[
+    sizeof(KfTargetCandidateWord0cBytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord0c {
+    u16 value;
+    KfTargetCandidateWord0cBytes bytes;
+} KfTargetCandidateWord0c;
+typedef char kf_target_candidate_word0c_size[
+    sizeof(KfTargetCandidateWord0c) == 2 ? 1 : -1];
+typedef char kf_target_candidate_word0c_high_offset[
+    (u32)&((KfTargetCandidateWord0c *)0)->bytes.high == 1 ? 1 : -1];
+
 typedef struct KfTargetCandidateWord0eBytes {
     u8 low;
     u8 high;
@@ -81,8 +97,10 @@ typedef struct KfTargetCandidate {
     u16 unknown_16;
     u16 unknown_18;
     u16 unknown_1a;
+    u16 unknown_1c;
+    u16 unknown_1e;
 } KfTargetCandidate;
-typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x20 ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
 typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
@@ -98,6 +116,8 @@ typedef char kf_target_candidate_marker_state_total_offset[(u32)&((KfTargetCandi
 typedef char kf_target_candidate_word_14_offset[(u32)&((KfTargetCandidate *)0)->word_14 == 0x14 ? 1 : -1];
 typedef char kf_target_candidate_stream_bytes_offset[(u32)&((KfTargetCandidate *)0)->word_14.bytes == 0x14 ? 1 : -1];
 typedef char kf_target_candidate_unknown_18_offset[(u32)&((KfTargetCandidate *)0)->unknown_18 == 0x18 ? 1 : -1];
+typedef char kf_target_candidate_unknown_1c_offset[(u32)&((KfTargetCandidate *)0)->unknown_1c == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_unknown_1e_offset[(u32)&((KfTargetCandidate *)0)->unknown_1e == 0x1e ? 1 : -1];
 
 /* Group slots hold byte offsets until actor_fixup_group_targets runs. */
 typedef union KfTargetReference {
@@ -150,6 +170,13 @@ typedef union KfActorHalfword4a {
     KfActorHalfword4aBytes bytes;
 } KfActorHalfword4a;
 typedef char kf_actor_halfword_4a_size[sizeof(KfActorHalfword4a) == 2 ? 1 : -1];
+
+/* Action-specific tail storage is also a signed state halfword. */
+typedef union KfActorTail72 {
+    s16 signed_state;
+    struct KfEulerAngles angles;
+} KfActorTail72;
+typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 6 ? 1 : -1];
 
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
@@ -207,8 +234,8 @@ typedef struct KfActor {
     s16 unknown_6c;
     u8 unknown_6e[2];
     s16 unknown_70;
-    s16 unknown_72;
-    u8 unknown_74[0x08];
+    KfActorTail72 tail_72;
+    u8 unknown_78[0x04];
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
@@ -226,8 +253,10 @@ typedef char kf_actor_motion_result_68_offset[(u32)&((KfActor *)0)->unknown_68 =
 typedef char kf_actor_motion_result_6a_offset[(u32)&((KfActor *)0)->unknown_6a == 0x6a ? 1 : -1];
 typedef char kf_actor_motion_result_6c_offset[(u32)&((KfActor *)0)->unknown_6c == 0x6c ? 1 : -1];
 typedef char kf_actor_unknown_70_offset[(u32)&((KfActor *)0)->unknown_70 == 0x70 ? 1 : -1];
-typedef char kf_actor_unknown_72_offset[(u32)&((KfActor *)0)->unknown_72 == 0x72 ? 1 : -1];
-typedef char kf_actor_unknown_74_offset[(u32)&((KfActor *)0)->unknown_74 == 0x74 ? 1 : -1];
+typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed_state == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
+typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->unknown_78 == 0x78 ? 1 : -1];
 
 /* The startup clear bounds this runtime; the two trailer writes and actor
  * array are fixed by actor_pool_clear. */

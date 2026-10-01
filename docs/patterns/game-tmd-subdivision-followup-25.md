@@ -11,7 +11,7 @@ prepared-object builder.
 | Function | Verdict | Connection or unresolved evidence |
 | --- | --- | --- |
 | `0x8002d4f4` | Exact control | Updates the view matrices and map-cell coordinates read by the renderer. |
-| `0x8002d5dc` | WIP, focused 38.6% | Converts eight packet-mode index families; one entry move shifts the register allocation and jump-table destinations. |
+| `0x8002d5dc` | Exact, direct strict 100%; focused SAME | One typed packet-body pointer handles both eight-mode index conversion and next-packet advance; `.text`, switch `.rodata`, and all 39 relocation rows match retail. |
 | `0x8002d918` | Exact control | Projects TMD vertices with fog-dependent depth. |
 | `0x8002da94` | Exact control | Projects alternate vertices for the prepared-object renderer. |
 | `0x8002dd28` | Exact control | Converts TMD vertices into the shared projected-vertex array. |

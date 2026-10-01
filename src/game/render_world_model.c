@@ -35,6 +35,7 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     if (world_matrix != 0) {
         KfMapOccupancyCell *cell;
+        KfMapOccupancyCell *row;
         KfMapOccupancyLayer *lighting_layer;
 
         relative.vx = (s16)position->vx -
@@ -44,7 +45,8 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
         relative.vz = (s16)position->vz -
                       (s16)game_graphics_runtime.render_state.view_position.vz;
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
-        cell = &bss_801c7540.map_cells[position->vz >> 11][position->vx >> 11];
+        row = bss_801c7540.map_cells[position->vz >> 11];
+        cell = &row[position->vx >> 11];
         if (map_layer != 1) {
             lighting_layer = &cell->layer[1];
         } else {

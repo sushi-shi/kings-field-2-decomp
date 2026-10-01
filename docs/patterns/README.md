@@ -46,6 +46,8 @@
   twelve exact CD request functions, and the same-unit direct-call relocation.
 - [game-card-directory-ten.md](game-card-directory-ten.md): ten GAME card/menu
   caller verdicts, two sourced directory/header readers, and the card data boundary.
+- [game-card-io-17.md](game-card-io-17.md): seventeen focused GAME card I/O
+  verdicts, twelve exact functions, exact initialized data, and five bounded WIPs.
 - [game-card-menu-controller-ten.md](game-card-menu-controller-ten.md): ten GAME
   card/list verdicts and a newly exact 1,060-byte format dialog.
 - [game-menu-render-controller-ten.md](game-menu-render-controller-ten.md): ten

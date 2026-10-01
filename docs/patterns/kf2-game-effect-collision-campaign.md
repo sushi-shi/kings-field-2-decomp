@@ -844,11 +844,19 @@ used by kinds 8 and 0x16, and successful kind-3 checks exit immediately;
 these retail-backed corrections align 85/85 CFG blocks and 55/55 branches.
 The same direct call set and two return frontiers remain. The first divergence is rotation
 pointer and sentinel saved-register assignment, followed by case-dispatch
-ordering. The CD-loaded active-table slot remains an indirect call, with no
+ordering. Retail 0x80047f58..0x80047f7c confirms kinds 0xa5 and 0xff
+converge on the same guarded notification handler, so their combined C cases
+remain semantically correct despite the differing decision-tree layout. The
+CD-loaded active-table slot remains an indirect call, with no
 invented callback owner. The kind-0x20 path treats the +0x40 record pointer as
 an unresolved byte view and accesses only its retail-proven byte +1; it does
 not assert that the pointed object is a full map-object record. Retail loads
 that pointer after calling 0x800293d4, so the source preserves the same order.
+The kinds 0x0d/0x14 use a named, layout-identical halfword view of tail bytes
++0x38/+0x39 for their retail `lhu`; existing byte paths and the twelve-byte
+tail remain unchanged. Focused 0x47c98 stays at 57.1%; map-object reset
+preserves five exact listings, while its separate cell-marker and init-record
+functions retain their prior WIP verdicts.
 Both calls to the WIP varargs 0x800475d8 callee pass a non-null map-object
 pointer in `a0`: the kind-0x40 path sets it in the `jal` delay slot, and the
 linked-object path sets it on its preceding branch delay slot. Neither call
@@ -861,16 +869,45 @@ and 0x80029108. Both supply `&player_state.camera_position`,
 loads `state_8017d118.active_table[2]` and forwards those same three
 arguments through `jalr` at 0x80047388. This supports the typed function
 inventory signature; the loaded slot's concrete target remains unresolved.
-Five candidate HI16/LO16 pairs at 0x80046f00/10/20/30/40 choose consecutive
+Five raw HI16/LO16 pairs at 0x80046f00/10/20/30/40 choose consecutive
 eight-byte initialized lists at 0x800679a0..0x800679c7. Raw words show
 `0xff`-terminated byte IDs. The shared loop at 0x80046f58 multiplies each ID
 by 26, indexes `effect_state.magic_records` at 0x8019b6a8, tests
-`menu_available` at record +0, and sets it to one if clear. The next distinct
+`menu_available` at record +0, and sets it to one if clear. Its signed-low
+0x80046f4c/0x80046f50 address pair now validates against the existing
+`effect_state` BSS owner. The next distinct
 candidate datum begins at 0x800679c8. This supports a bounded five-list
-magic-unlock family. Raw words in the existing 35-entry command table at
+magic-unlock family. On the first newly enabled ID, the path calls
+`map_object_effect_pool_acquire(0x15e, 10, ...)`, resets that object, stores
+the current scene command as its object ID, and enters the shared pose/update
+loop; already enabled IDs continue scanning until the `0xff` terminator.
+The acquire call's third argument is the previously established
+`map_object_state` +0x873e pool sequence; its 0x80046f9c/0x80046fa0
+signed-low pair is reviewed without changing the BSS owner.
+Raw words in the existing 35-entry command table at
 0x800128d0 map command values 0x5a..0x5e to those five handler blocks; the
-table-pointer reachability tier and original data TU remain candidate, so no
-initialized source datum is claimed yet.
+five lists partition IDs 0..19 exactly once, in four-ID groups
+`[7,8,9,10]`, `[14,15,0,13]`, `[16,1,2,3]`, `[4,17,5,6]`, and
+`[18,19,11,12]`; each has a `0xff` terminator. The
+five eight-byte extents are now curated in `data.tsv` and
+`data_identities.tsv`, with a nonoverlapping gap starting at 0x800679c8.
+The five literal `lui`/`addiu` pairs are individually reviewed in
+`relocs.tsv` and appear as validated address references after a safe
+one-VA delink; the command jump and terminal callback remain indirect.
+The table-pointer reachability tier and original data TU remain candidate, so
+no initialized source datum is claimed yet.
+
+The remaining raw table words bound commands 0x52..0x74: 0x52..0x59 have
+distinct handlers, 0x5f..0x63 and 0x6a/0x6f point to the common exit at
+0x80047370, 0x64..0x67 and 0x69/0x6b..0x6e point to 0x800467f8,
+0x68 points to 0x80046cb8, and 0x70..0x74 point to the five short setup
+blocks at 0x800469fc/46a04/46a0c/468d4/468dc. This is a raw pointer
+inventory, not a promotion of the `jr` successors.
+The table-base `lui`/`addiu` at 0x800467dc/0x800467e0 is reviewed against
+the bounded 0x800128d0 owner and passes a safe one-VA delink. Its 35 pointer
+rows remain candidate indirect edges. Four decoded direct `j` instructions
+at 0x80046f08/18/28/38 converge at 0x80046f4c and are separately reviewed;
+the fifth selector falls through. They do not resolve the command-table `jr`.
 
 The following save-offset pair, 0x80048554 and 0x800489ac, each uses its
 first argument as a four-word stack-table index. The former receives a byte

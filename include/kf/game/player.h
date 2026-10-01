@@ -150,6 +150,14 @@ typedef char kf_player_reaction_damage_motion_offset[
 typedef char kf_player_reaction_position_offset[
     (u32)&((KfPlayerReactionOverlay *)0)->position.position == 4 ? 1 : -1];
 
+typedef union KfPlayerMovementSpeed {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfPlayerMovementSpeed;
+
+typedef char kf_player_movement_speed_size[
+    sizeof(KfPlayerMovementSpeed) == 2 ? 1 : -1];
+
 typedef char kf_weapon_record_game_size[sizeof(KfWeaponRecordGame) == 0x44 ? 1 : -1];
 typedef char kf_weapon_record_game_attacks_offset[
     (u32)&((KfWeaponRecordGame *)0)->attack_components == 6 ? 1 : -1];
@@ -307,7 +315,7 @@ typedef struct KfPlayerState {
     u16 unknown_106;
     u16 unknown_108[3];
     u8 unknown_10e[2];
-    u16 unknown_110[3];
+    s16 unknown_110[3];
     u8 unknown_116[2];
     SVECTOR unknown_118;
     s32 unknown_120;
@@ -315,7 +323,7 @@ typedef struct KfPlayerState {
     u16 unknown_128;
     s16 strafe_velocity;
     s16 forward_velocity;
-    u16 movement_speed;
+    KfPlayerMovementSpeed movement_speed;
     s16 yaw_step;
     s16 pitch_step;
     s16 unknown_134;
@@ -347,6 +355,8 @@ typedef char kf_player_death_state_offset[
     (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
+typedef char kf_player_movement_speed_offset[
+    (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
 typedef char kf_player_flags140_offset[
     (u32)&((KfPlayerState *)0)->flags_140 == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[

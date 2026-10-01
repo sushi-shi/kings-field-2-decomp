@@ -4,6 +4,8 @@
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
+struct DIRENTRY;
+
 enum {
     KF_MENU_GLYPHS_PER_ROW = 12,
     KF_MENU_WINDOW_ROW_CAPACITY = 10,
@@ -211,7 +213,7 @@ s32 func_800199d0(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
 void func_8001d340(const u8 *source, u8 *decoded, u32 *codes,
     const u8 *indices, s32 first, s32 last, s32 group);
-s32 func_8001af30(const u8 *card_entries, s16 *glyph_rows,
+s32 func_8001af30(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);
 void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,

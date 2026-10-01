@@ -1,6 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
+#include <psyq/libc.h>
 
 extern void func_8001d030(s32 kind);
 extern void func_8001d3b4(s32 kind);
@@ -30,11 +31,13 @@ void func_8001c550(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[0];
+    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+        sizeof menu_label_suffixes[0]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[1];
+    memcpy(row->glyphs.codes, menu_label_suffixes[1].codes,
+        sizeof menu_label_suffixes[1]);
     row->glyphs.codes[10] = -1;
 }
 
@@ -43,15 +46,18 @@ void func_8001c62c(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[2];
+    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+        sizeof menu_label_suffixes[2]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[3];
+    memcpy(row->glyphs.codes, menu_label_suffixes[3].codes,
+        sizeof menu_label_suffixes[3]);
     row++;
     row->position.x = 90;
     row->position.y = 135;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[4];
+    memcpy(row->glyphs.codes, menu_label_suffixes[4].codes,
+        sizeof menu_label_suffixes[4]);
     row->glyphs.codes[10] = -1;
 }
 
@@ -60,15 +66,18 @@ void func_8001c770(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[6];
+    memcpy(row->glyphs.codes, menu_label_suffixes[6].codes,
+        sizeof menu_label_suffixes[6]);
     row++;
     row->position.x = 174;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[9];
+    memcpy(row->glyphs.codes, menu_label_suffixes[9].codes,
+        sizeof menu_label_suffixes[9]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[2];
+    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+        sizeof menu_label_suffixes[2]);
 }
 
 ADDRESS(0x8001c8b0, 0x144)
@@ -76,15 +85,18 @@ void func_8001c8b0(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[2];
+    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+        sizeof menu_label_suffixes[2]);
     row++;
     row->position.x = 102;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[0];
+    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+        sizeof menu_label_suffixes[0]);
     row++;
     row->position.x = 102;
     row->position.y = 135;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[12];
+    memcpy(row->glyphs.codes, menu_label_suffixes[12].codes,
+        sizeof menu_label_suffixes[12]);
     row->glyphs.codes[10] = -1;
 }
 
@@ -93,12 +105,14 @@ void func_8001c9f4(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[0];
+    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+        sizeof menu_label_suffixes[0]);
     row->glyphs.codes[7] = 85;
     row++;
     row->position.x = 102;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[11];
+    memcpy(row->glyphs.codes, menu_label_suffixes[11].codes,
+        sizeof menu_label_suffixes[11]);
 }
 
 ADDRESS(0x8001cad4, 0x70)
@@ -106,7 +120,8 @@ void func_8001cad4(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 112;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[13];
+    memcpy(row->glyphs.codes, menu_label_suffixes[13].codes,
+        sizeof menu_label_suffixes[13]);
 }
 
 ADDRESS(0x8001cb44, 0x190)
@@ -115,7 +130,8 @@ void func_8001cb44(KfMenuGlyphString *row, s32 kind)
     row->position.x = 90;
     row->position.y = 105;
     if (kind == 1) {
-        *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[10];
+        memcpy(row->glyphs.codes, menu_label_suffixes[10].codes,
+            sizeof menu_label_suffixes[10]);
     } else {
         row->glyphs.codes[0] = 0x1012;
         row->glyphs.codes[1] = 45;
@@ -128,11 +144,13 @@ void func_8001cb44(KfMenuGlyphString *row, s32 kind)
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[3];
+    memcpy(row->glyphs.codes, menu_label_suffixes[3].codes,
+        sizeof menu_label_suffixes[3]);
     row++;
     row->position.x = 90;
     row->position.y = 135;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[4];
+    memcpy(row->glyphs.codes, menu_label_suffixes[4].codes,
+        sizeof menu_label_suffixes[4]);
     row->glyphs.codes[10] = -1;
 }
 
@@ -141,11 +159,13 @@ void func_8001ccd4(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[14];
+    memcpy(row->glyphs.codes, menu_label_suffixes[14].codes,
+        sizeof menu_label_suffixes[14]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[15];
+    memcpy(row->glyphs.codes, menu_label_suffixes[15].codes,
+        sizeof menu_label_suffixes[15]);
     row->glyphs.codes[10] = -1;
 }
 

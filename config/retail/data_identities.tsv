@@ -49,20 +49,8 @@ GAME.EXE	0x80011484	0x3f8	func_80035894_rodata	unknown	load	pointer[254]	map_obj
 GAME.EXE	0x8001187c	0x44	map_object_effect_jump_table	unknown	load	pointer[17]	map_object	supported	asm;raw pointer targets	17 template-kind switch cases in map_object_spawn_effect; owned by its RODATA claim
 GAME.EXE	0x800118c4	0x54	map_object_action_jump_table	unknown	load	pointer[21]	map_object	supported	asm;raw pointer targets	21-case action switch in func_800368b4; owned by its RODATA claim
 GAME.EXE	0x8001191c	0x380	func_80036ed4_rodata	unknown	load	pointer[224]		supported	asm;opcode-2 bound 0xdf;224 retail pointers	map-object event dispatcher switch table; prospective RODATA claim, source unclaimed
-GAME.EXE	0x80011c9c	0x4	DAT_80011c9c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011ca0	0x4	DAT_80011ca0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011ca4	0x4	DAT_80011ca4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011ca8	0x4	DAT_80011ca8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cac	0x4	DAT_80011cac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cb0	0x4	DAT_80011cb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cb4	0x4	DAT_80011cb4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cb8	0x4	DAT_80011cb8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cbc	0x4	DAT_80011cbc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cc4	0x4	DAT_80011cc4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cc8	0x4	DAT_80011cc8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011ccc	0x4	DAT_80011ccc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cd0	0x4	DAT_80011cd0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011cd4	0x4	DAT_80011cd4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80011c9c	0x24	DAT_80011c9c	unknown	load	pointer[9]		supported	asm;bounded secondary jr table;retail pointer words	nine map-object dispatcher case pointers; source owner unresolved
+GAME.EXE	0x80011cc4	0x14	DAT_80011cc4	unknown	load	pointer[5]		supported	asm;bounded tertiary jr table;retail pointer words	five map-object dispatcher case pointers; source owner unresolved
 GAME.EXE	0x80011cd8	0x4	DAT_80011cd8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011cdc	0x4	DAT_80011cdc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011ce0	0x4	DAT_80011ce0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -756,12 +744,11 @@ GAME.EXE	0x80066888	0x21c	render_model_rows	global	load	KfRenderModelRow[15]	ren
 GAME.EXE	0x80066ab4	0xdc0	collision_default_rows	global	load	KfCollisionDefaultRow[80]	collision_height_wrappers	supported	retail bytes;func_8002bc18 row copy;startup archive write	80 mutable 44-byte defaults for collision rows
 GAME.EXE	0x80067874	0x1c	DAT_80067874	global	load	KfMapMaskShapePair[7]	map_mask_window_sweep	address-only	asm;func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
 GAME.EXE	0x80067890	0x10e	map_object_cell_patterns	global	load	KfMapCellPattern[9][3]	map_object_init_records	supported	asm;func_80035894 calls;func_80034f90 pattern format;retail bytes	nine groups of three cell patterns
-GAME.EXE	0x800679a0	0x1	DAT_800679a0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800679a8	0x1	DAT_800679a8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800679b0	0x1	DAT_800679b0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800679b8	0x1	DAT_800679b8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800679c0	0x1	DAT_800679c0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x800679c1	0x1	DAT_800679c1	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x800679a0	0x8	DAT_800679a0	unknown	load	u8[8]		address-only	asm;func_8004678c 0x46f00;retail bytes	four magic IDs then 0xff terminator; data TU unresolved
+GAME.EXE	0x800679a8	0x8	DAT_800679a8	unknown	load	u8[8]		address-only	asm;func_8004678c 0x46f10;retail bytes	four magic IDs then 0xff terminator; data TU unresolved
+GAME.EXE	0x800679b0	0x8	DAT_800679b0	unknown	load	u8[8]		address-only	asm;func_8004678c 0x46f20;retail bytes	four magic IDs then 0xff terminator; data TU unresolved
+GAME.EXE	0x800679b8	0x8	DAT_800679b8	unknown	load	u8[8]		address-only	asm;func_8004678c 0x46f30;retail bytes	four magic IDs then 0xff terminator; data TU unresolved
+GAME.EXE	0x800679c0	0x8	DAT_800679c0	unknown	load	u8[8]		address-only	asm;func_8004678c 0x46f40;retail bytes	four magic IDs then 0xff terminator; data TU unresolved
 GAME.EXE	0x80067a48	0x4	DAT_80067a48	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80067a4c	0x4	DAT_80067a4c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80067a50	0x4	DAT_80067a50	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

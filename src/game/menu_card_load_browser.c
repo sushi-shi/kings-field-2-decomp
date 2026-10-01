@@ -32,7 +32,7 @@ s32 func_8001ac80(void)
     func_8001b030(4, dialog_rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
     func_800226ec(entries, &matching_count);
-    count = func_8001af30((const u8 *)entries, glyph_rows[0].codes,
+    count = func_8001af30(entries, glyph_rows[0].codes,
         experience_values, levels, slot_ids);
     menu_list_init(&menu.list, 1, 0);
     menu.list.visible_rows = 6;

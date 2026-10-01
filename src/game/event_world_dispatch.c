@@ -144,8 +144,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
         }
         case 0x0d:
         case 0x14:
-            func_80034e10(6,
-                *(u16 *)&object->tail.fields.unknown_38 + 0x78);
+            func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
             break;
         case 0x0e:
             func_80048554(state_8017d118.values_04[0]);

@@ -159,7 +159,7 @@ void func_8002851c(void)
         }
     }
 
-    player_state.movement_speed = SquareRoot0(strafe * strafe + forward * forward);
+    player_state.movement_speed.unsigned_value = SquareRoot0(strafe * strafe + forward * forward);
     if (forward >= 0) {
         player_move_horizontal((s16)player_state.camera_rotation_target.angles[1], forward);
     } else {

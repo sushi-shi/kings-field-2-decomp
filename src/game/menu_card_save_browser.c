@@ -33,7 +33,7 @@ void func_8001bcfc(void)
     memory_card_start();
     memory_card_probe_temporary_file();
     func_800226ec(entries, &matching_count);
-    count = func_8001af30((const u8 *)entries, glyph_rows[0].codes,
+    count = func_8001af30(entries, glyph_rows[0].codes,
         experience_values, levels, slot_ids);
     glyph_rows[count].codes[0] = 0xe0;
     glyph_rows[count].codes[1] = 0xe1;

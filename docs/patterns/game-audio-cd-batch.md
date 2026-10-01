@@ -645,22 +645,37 @@ size would leave 0x68 bytes before GAME's `effect_state`, but GAME's buffer
 extent and defining source remain candidates. The resource controller later
 queues archive slot 4, entry `320 + (values_10[4] % 100)`, into this pointer;
 slot 4 was opened as VAB.T, and its entry size is unavailable here.
+Five unbound relocation pairs preserve the direct constructors for the sound
+table (`0x800139e0/e4`), sequence buffer (`0x80013a28/2c`), initial VAB
+buffer (`0x80013a90/94`), and final slot-5/slot-6 overrides
+(`0x80013ab4/b8`, `0x80013ac4/c8`). The intermediate VAB slot values are
+transient; these pairs do not establish object extents or source owners.
 
 The startup copy at `0x80015d58` uses signed-low address construction for two
 unowned destinations: `lui 0x801e; addiu -29304` resolves to `0x801d8d88`,
 four bytes beyond the curated `bss_801c7540` extent, and
 `lui 0x8010; addiu -24368` resolves to `0x800fa0d0`, 0x30 bytes beyond the
 arena policy end `0x8009b0a0 + 0x5f000`. Neither address has a proved source
-definition or complete extent. The latter receives an embedded TMD archive
-from FDAT.T slot 5, entry 0x30, then feeds two
-`asset_registry_load_tmd_archive` calls (first asset IDs 0 and 0x28). It is
-0x1988 bytes before `display_primitive_memory`, so it is not a member of that
-object.
+definition or complete extent. The latter receives the first embedded TMD
+archive from FDAT.T slot 5, entry 0x30, and feeds
+`asset_registry_load_tmd_archive` with asset ID 0. A later embedded archive
+is copied to `0x800855a0` and loaded with asset ID 0x28. The first destination
+is 0x1988 bytes before `display_primitive_memory`, so it is not a member of
+that object. Reviewed relocation pairs preserve the signed-low constructors at
+`0x80015ea4/a8`, `0x80015f58/5c`, and `0x80015f80/84` without assigning
+either workspace a symbol or source definition. The later copy and TMD loader
+input pair use the third unbound destination at `0x800855a0`
+(`0x80015f94/98`, `0x80015fac/b0`). The earlier `0x80015e80/84` copy targets
+the candidate `player_weapon_records` base `0x801c7078`; its row likewise
+leaves the symbol blank pending owner work.
 
 The `0x80015fd4` TMD pointer `0x8012da68` is the destination of a later
 RTMD.T archive-slot-1 read in `0x80016820`. It lies 0x10 bytes beyond the
 complete `display_primitive_memory` end `0x8012da58`; the workspace's size
-and source definition remain unproved.
+and source definition remain unproved. Both constructors use `lui 0x8013`
+followed by signed `addiu -9624`: `0x800160ac/b0` passes the address to
+`tmd_set_slot`, and `0x80016a4c/50` passes it to `cd_archive_queue_read`.
+Their reviewed relocation rows leave the symbol unbound.
 
 The new `world_translate.c` uses the complete player, effect, map-object, and
 actor state types. Retail's X/Z/Y update order and independent unsigned
@@ -711,6 +726,12 @@ from `cd_stream_work_buffer` (four-byte header plus 0xfa00 copied bytes).
 The second source starts after an embedded length, so its total bound remains
 unknown. Both destination ranges fit the curated 0x11844-byte object; the
 callback table and stream buffer still lack complete extents and source owners.
+Reviewed pairs at `0x8001694c/50` and `0x80016960/64` bind the two copy
+destinations to `bss_801c7540` and its +0x10000 interior, respectively.
+Four reviewed, blank-symbol relocation pairs at `0x800168d0/d4`,
+`0x800168fc/900`, `0x800169ec/f0`, and `0x80016a7c/80` preserve the
+`0x801b6064` stream-buffer base across these read, copy, and parse phases;
+the existing 4-byte data identity remains only a candidate anchor.
 
 `func_800483d8` and `func_80048498` now reference
 `event_state.arena.bytes` directly in their offset expressions. This preserves

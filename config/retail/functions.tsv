@@ -540,12 +540,15 @@ GAME.EXE	0x80049bb0	0x393b0	0x234	0x234	1	function	ghidra-analysis			Ghidra-12.0
 GAME.EXE	0x80049de4	0x395e4	0x14	0x14	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049df8	0x395f8	0x90	0x90	1	function	sdk-object-label			psyq-signature:MALLOC.OBJ	realloc label of the complete MALLOC.OBJ signature match
 GAME.EXE	0x80049e88	0x39688	0x58	0x58	1	function	sdk-object-label			psyq-signature:MALLOC.OBJ	calloc label of the complete MALLOC.OBJ signature match
+GAME.EXE	0x80049ee0	0x396e0	0x34	0x34	1	function	sdk-object-label	_card_clear		psyq-sdk30:CARD.OBJ	pinned CARD.OBJ/CLEAR.C XDEF and 46/52 fixed bytes; two SDK XREF calls
 GAME.EXE	0x80049f14	0x39714	0xc	0xc	1	function	ghidra-analysis	_card_info		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049f24	0x39724	0xc	0xc	1	function	ghidra-analysis	_card_write		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049f34	0x39734	0xc	0xc	1	function	ghidra-analysis	InitCARD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049f44	0x39744	0xc	0xc	1	function	ghidra-analysis	StopCARD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049f54	0x39754	0xc	0xc	1	function	ghidra-analysis	StartCARD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049f64	0x39764	0xc	0xc	1	function	ghidra-analysis	_new_card		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80049f74	0x39774	0x20	0x20	1	function	sdk-object-label	CdReset		psyq-sdk30:LIBCD.LIB/SYS.OBJ	XDEF offset 0x0 in exact 0x660-byte .text section
+GAME.EXE	0x80049f94	0x39794	0x20	0x20	1	function	sdk-object-label	CdSync		psyq-sdk30:LIBCD.LIB/SYS.OBJ	XDEF offset 0x20 in exact 0x660-byte .text section
 GAME.EXE	0x80049fb4	0x397b4	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049fd4	0x397d4	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a07c	0x3987c	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

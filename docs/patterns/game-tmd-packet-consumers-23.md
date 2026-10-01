@@ -10,14 +10,14 @@ The existing strict exacts are retained as controls.
 | --- | --- | --- |
 | `0x8002d5dc` | WIP; focused 38.6% | Eight packet-mode cases are typed; its entry packet-base move still differs. |
 | `0x8002dd28` | Exact control; focused SAME | Projects the typed TMD vertex array used by the walkers. |
-| `0x8002ddb4` | WIP; focused 93.6% | Textured walker has two retail depth-tail branches absent from the probe. |
-| `0x8002e4dc` | WIP; focused 92.0% | Signed promoted packet mode recovers retail `srl`/`slti`; depth-tail branches and stack-slot choice remain. |
-| `0x8002ebe0` | WIP; focused 88.7% | G3/G4 color is the SDK `CVECTOR`; retail shares one `AddPrim` tail, but the source-only shared-tail trial fell to 70.4% and was discarded. |
+| `0x8002ddb4` | WIP; focused 93.6% | Textured walker has 44 retail CFG blocks and 28 branches versus probe 42/26; two depth checks are folded into a compiled shared tail. |
+| `0x8002e4dc` | WIP; focused 92.0% | Signed promoted packet mode recovers retail `srl`/`slti`; retail has 44 CFG blocks and 28 branches versus probe 42/26, with two FT3/GT3 depth checks moved into the compiled shared tail. |
+| `0x8002ebe0` | WIP; focused 88.7% | G3/G4 color is the SDK `CVECTOR`; retail has 26 CFG blocks/17 branches versus probe 25/16. A source-only shared-tail trial fell to 70.4% and was discarded. |
 | `0x8002f194` | Exact control; focused SAME | Map packet emitter consumes the shared four-byte `CVECTOR`. |
-| `0x8002f5b0` | WIP; focused 82.6% | Clipped fan uses the complete SDK `EVECTOR`; remaining saved-register and UV/color store order differs. |
-| `0x8002f808` | WIP; focused 50.5% | Prepared-asset FT3/FT4 renderer has 51/51 focused CFG blocks; the retail 168-byte frame versus 112-byte probe lacks a proved extra object. |
+| `0x8002f5b0` | WIP; focused 82.6% | Clipped fan uses the complete SDK `EVECTOR`; CFG agrees at 13 blocks/7 branches, while saved-register and UV/color store order differs. |
+| `0x8002f808` | WIP; focused 50.5% | Prepared-asset FT3/FT4 renderer has 51/51 CFG blocks and 35/35 branches; the retail 168-byte frame versus 112-byte probe lacks a proved extra object. |
 | `0x8002ff5c` | Unclaimed WIP | Sole caller supplies a 4096-byte `KfTmdPreparedAsset`; 1248-byte retail frame, 128-entry `SVECTOR` midpoint workspace, and 14 `resource_copy_words` calls are proved. Complete child-packet writes remain unresolved. |
-| `0x80030c18` | WIP; focused 98.7% | Caller limits source primitive count below 16 before subdivision. Its only listing difference is the order of the `shape+2` byte load and the third-argument move. |
+| `0x80030c18` | WIP; focused 98.7% | Caller limits source primitive count below 16 before subdivision. CFG agrees at 11 blocks/6 branches; its only listing difference is the order of the `shape+2` byte load and the third-argument move. |
 | `0x80030de4` | Exact control; focused SAME | Map-cell layer renderer calls `0x80030c18`. |
 | `0x80030f5c` | Exact control; focused SAME | Scans the map-cell render mask after TMD selection. |
 | `0x80031024` | Exact control; focused SAME | Render-grid walker calls the cell object path. |
@@ -26,8 +26,8 @@ The existing strict exacts are retained as controls.
 | `0x80031384` | Exact control; focused SAME | Paired sliding panel calls the same writer. |
 | `0x80031414` | Exact control; focused SAME | Color-byte overlay calls the FT4 writer. |
 | `0x800314d4` | Exact control; focused SAME | Stores the control and three color bytes consumed by `0x80031414`. |
-| `0x80031850` | WIP; focused 68.9% | World-model renderer calls the textured TMD walkers through the typed packet state. |
-| `0x80031d8c` | WIP; focused 79.5% | Animated-object renderer calls `0x8002ebe0` with its depth sign-extended at the call site. |
+| `0x80031850` | WIP; focused 68.9% | World-model renderer calls the textured TMD walkers through the typed packet state; target and probe both have 40 CFG blocks and 16 branches, but their early successor order differs. |
+| `0x80031d8c` | WIP; focused 79.5% | Animated-object renderer calls `0x8002ebe0` with its depth sign-extended at the call site; CFG agrees at seven blocks and two branches, while frame/register allocation differs. |
 | `0x800321d8` | WIP; focused 95.8% | Resource TMD queue read has an unresolved `0x8009b0a0` address-form origin; leave the literal unchanged pending a proved owner. |
 | `0x8003247c` | Unclaimed WIP | Frame child reaches the TMD/resource update and world-model paths; the complete workspace/record owner is not established. |
 | `0x800335a0` | Exact control; focused SAME | Frame driver calls the render/resource children and preserves the packet-consumer chain. |
@@ -41,6 +41,26 @@ the builder copies original vertices, then midpoints, then normals. Retail
 does not store the output object's `scale` word. This evidence supports the
 typed `KfTmdPreparedAsset *` contract now declared in `tmd_packets.h`, but
 not yet a complete C claim for the child-packet UV/index writes.
+
+The 14 static `resource_copy_words` sites split into five FT4 calls, five FT3
+calls, one generic-packet call, and three final array copies. Each textured
+arm copies its first output packet, copies three or four source texture words
+into a stack record, then copies the other three output packets explicitly.
+The FT4 sites are at function offsets `+0xf0`, `+0x35c`, `+0x4f4`, `+0x590`,
+and `+0x62c`; FT3 uses `+0x718`, `+0x8b4`, `+0x9c8`, `+0xa34`, and `+0xa94`.
+A temporary C probe with those 14 call sites still had 12 CFG blocks against
+retail's 11, despite six branches on each side; its 1232-byte frame also
+missed the retail 1248-byte extent. Its packet field writes remain different,
+so it was not admitted as source. The signed integer object index, rather
+than a callee-masked halfword, is supported by the retail entry instructions.
+Retail writes generated FT4 UV components as individual bytes at packet
+offsets `+8..9`, `+12..13`, and `+16..17`, then stores paired vertex indices
+as words at `+24` and `+28`. A halfword-only face view is valid for reading
+the source packet, but it does not yet express these output writes naturally.
+The source vertex offsets in this builder are read with signed `lh`; the
+other TMD walkers read their prepared indices with `lhu`. Keep that
+consumer-specific signedness distinction until the original packet type is
+resolved.
 The three packet-walker declarations also live there with one caller-visible
 signature each; focused TMD, world-model, animated-object, and cell-renderer
 listings stayed at their prior verdicts after the declaration consolidation.

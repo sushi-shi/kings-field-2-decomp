@@ -1,6 +1,6 @@
 # GAME collision height wrappers
 
-The contiguous GAME run `0x8002b604`–`0x8002c670` now has one C owner,
+The contiguous GAME run `0x8002b604`–`0x8002c66f` now has one C owner,
 `game.collision_height_wrappers`. The first helper preserves five arguments,
 samples the map at Y minus 1280 through `0x8002a988`, calls the five-argument
 collision dispatcher `0x8002aaa4`, and returns the signed result at
@@ -47,10 +47,11 @@ has a separate WIP source claim. The new rasterizer was initially WIP at
 focused comparison reports 23/19 CFG blocks and 14/12 branches, with the
 first control difference at the pre-loop count check. Its direct BSS
 HI16/LO16 pairs and internal jumps have been reviewed. Retail carries two
-neighbor-mask cursors independently and skips advancing the second cursor
-when a valid second layer has neither requested bit. The initial source
-advanced both cursors unconditionally. The revised source keeps that
-conditional update and tests the two mask bytes separately; focused CFG
+neighbor-mask cursors independently. When a valid second layer has neither
+requested bit, the branch-delay slot advances the second cursor once before
+bypassing the shared increment; the first cursor advances at the common tail.
+The revised source uses a separate jump for that path and tests the two mask
+bytes separately; focused CFG
 improves from 23/19 blocks and 14/12 branches to 23/22 and 14/14. Strict
 objdiff improves from 48.9932% to 55.789116%; all nine exact neighbors are
 preserved. A direct-global spelling raised the focused listing from 30.5% to
@@ -153,6 +154,28 @@ table extents without proving every case reachable or the source owner.
 The direct `lui`/`addiu` base pairs at `0x80036f84/88`, `0x80037a04/08`,
 and `0x80037cc8/cc` are reviewed; their indirect case-pointer
 rows remain candidate relocations.
+The three tables have distinct curated data identities of 224, nine, and
+five pointer words; these data extents do not assert a common source owner.
+The nine secondary targets in index order are `0x80037a20`, `0x80037a88`,
+`0x80037b10`, `0x80037b34`, four copies of `0x80038c78`, and
+`0x80037b58`. The five tertiary targets are `0x80037ce4`,
+`0x80037d00`, `0x80037d88`, `0x80037db8`, and `0x80037de4`.
+All 180 curated direct `j/jal` words in the dispatcher, from `0x80036fc0`
+through `0x80038c54`, have been decoded against the Japanese retail bytes:
+all opcode classes and encoded targets agree with their curated rows. Their
+internal jump targets are dispatcher block heads, so those direct rows are
+reviewed; table-pointer rows and the two `jalr` targets remain unresolved.
+Six additional HI16/LO16 pairs were checked against the retail words and
+signed lows: the outer-loop object array at `0x80036f00/04`, camera position
+at `0x80036f18/1c`, current-object store at `0x80036f38/3c`, template
+array at `0x80036f54/58`, current-template store at `0x80036f60/64`, and
+current-object reset at `0x80038c90/94`. The dispatcher indexes a 24-byte
+template with the current object's halfword ID before storing that pointer
+at `map_object_state+0x8734`. The existing 0x8744-byte state layout now
+types that slot as `KfMapObjectTemplate *`; no new datum is claimed. The
+object pointer lives in the adjacent `+0x8738` slot. Both pointers have
+reviewed direct address pairs, while their dynamic uses remain separate
+control-flow questions.
 
 The sole proven direct caller is `game_main_loop` at `0x800138d8`; it sets no
 arguments for this call and ignores its result. The dispatcher reads no
@@ -164,6 +187,11 @@ same active table, then calls entry `+0x0c` (index 3) with the current map
 object pointer. Both direct BSS address pairs are reviewed. The callback
 table's storage owner is resolved, but the selected function pointers remain
 indirect and have no proved callee identities.
+The transition driver at `0x80016820` installs either the initialized
+32-entry default table at `0x80063e00` or the CD-populated table at
+`0x8019e138`. Default slots 3 and 9 both contain the no-op stub
+`0x80015d50`; the alternate table's contents are not fixed by the retail
+image, so neither indirect call can be promoted to that stub.
 
 Two other dispatcher cases pass ordered start/end motion offsets to the exact
 `func_80036b68` helper. Four direct address pairs cover one 0x20-byte load

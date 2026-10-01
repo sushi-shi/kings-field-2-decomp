@@ -1,6 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
+#include <psyq/libc.h>
 #include <psyq/pad.h>
 
 extern s32 func_8001c12c(s32 kind);
@@ -81,19 +82,19 @@ s32 func_8001c12c(s32 kind)
     if (kind == 1) {
         labels[2].position.x = 90;
         labels[2].position.y = 110;
-        *(KfMenuLabelSuffix *)labels[2].glyphs.codes = menu_label_suffixes[5];
+        memcpy(labels[2].glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
         labels[3].position.x = 90;
         labels[3].position.y = 125;
-        *(KfMenuLabelSuffix *)labels[3].glyphs.codes = menu_label_suffixes[6];
+        memcpy(labels[3].glyphs.codes, menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
         labels[4].position.x = 174;
         labels[4].position.y = 125;
-        *(KfMenuLabelSuffix *)labels[4].glyphs.codes = menu_label_suffixes[7];
+        memcpy(labels[4].glyphs.codes, menu_label_suffixes[7].codes, sizeof(KfMenuLabelSuffix));
         labels[5].position.x = 90;
         labels[5].position.y = 140;
-        *(KfMenuLabelSuffix *)labels[5].glyphs.codes = menu_label_suffixes[6];
+        memcpy(labels[5].glyphs.codes, menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
         labels[6].position.x = 174;
         labels[6].position.y = 140;
-        *(KfMenuLabelSuffix *)labels[6].glyphs.codes = menu_label_suffixes[8];
+        memcpy(labels[6].glyphs.codes, menu_label_suffixes[8].codes, sizeof(KfMenuLabelSuffix));
     }
 
     for (;;) {

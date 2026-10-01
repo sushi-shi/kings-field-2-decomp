@@ -23,7 +23,7 @@ typedef struct KfTargetCandidate {
     u8 unknown_04;
     u8 unknown_05[3];
     u16 unknown_08;
-    u8 unknown_0a[2];
+    u16 unknown_0a;
     u16 unknown_0c;
     u16 unknown_0e;
     u8 fallback_offset;
@@ -35,6 +35,7 @@ typedef struct KfTargetCandidate {
 typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x16 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidate *)0)->fallback_offset == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
+typedef char kf_target_candidate_unknown_0a_offset[(u32)&((KfTargetCandidate *)0)->unknown_0a == 0x0a ? 1 : -1];
 typedef char kf_target_candidate_unknown_0c_offset[(u32)&((KfTargetCandidate *)0)->unknown_0c == 0x0c ? 1 : -1];
 typedef char kf_target_candidate_unknown_0e_offset[(u32)&((KfTargetCandidate *)0)->unknown_0e == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidate *)0)->unknown_11 == 0x11 ? 1 : -1];
@@ -169,6 +170,8 @@ typedef char kf_actor_unknown_70_offset[(u32)&((KfActor *)0)->unknown_70 == 0x70
 typedef struct KfActorStateGame {
     KfActor actors[KF_ACTOR_CAPACITY];
     KfTargetGroup target_groups[40];
+    /* 0x16820 loads the groups and this opaque tail as one 0x32c0-byte span;
+     * 0x3f7ec fixes group target offsets after the copy. */
     u8 unknown_73a0[0x2000];
     u8 unknown_93a0;
     u8 unknown_93a1[3];

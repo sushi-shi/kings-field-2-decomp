@@ -36,7 +36,7 @@ not reconstructed game functions.
 | `8003a614` | WIP | 0x164 bytes, distance/angle tests and `800248a8`; caller and geometry types need recovery. |
 | `8003a778` | exact | Scans active actors for the best target by distance and angular score; strict `100.000000000%`. |
 | `8003a9f4` | exact | 0x168-byte actor-distance scan with the target-type filter; `kf sema addr` reports strict `100.000000000%` in the typed contiguous unit. |
-| `8003ab5c` | focused SAME, strict pending | 0x158-byte sibling scan without that filter; the typed contiguous source now has an identical focused listing. |
+| `8003ab5c` | exact | 0x158-byte sibling scan without that filter; `kf sema match` reports strict `100.000000000%`, and the current focused listing remains SAME. |
 | `8003acb4` | exact | Binds active actor/group and optional linked actor/group; clears all five state fields for null actor. |
 | `8003ae50` | WIP | 0x4ec bytes/58 blocks, terrain queries, angle math, square roots and trigonometry; actor motion fields remain open. |
 | `8003b33c` | exact, player owner | Terrain-linked actor motion with four calls to `8002b9d4`; strict `100.000000000%` in the consolidated actor-motion collision unit. |
@@ -1101,3 +1101,136 @@ ultimate callees: `39108+0x45c` loads `state_8017d118.active_table[16]` and
 passes its candidate and distance in `a0/a1`; `3d184+0x45c` loads slot 19
 with the actor in `a0`; `3d184+0x223c` loads slot 17. These are callback
 table indices, not resolved target identities.
+The three direct `3d184` call sites to `3c614` at `3ee54`, `3ee9c`, and
+`3eec0` show a wider ABI than the old four-live-register seed: `a0` is a
+zero-extended byte from `actor->target` +0x0c, `a1` is a zero-extended
+halfword from that target +0x18, and `a2` is a mode value (`-1` or `-2` on
+two paths). The first
+two calls also write O32 stack arguments at `sp+0x10` and `sp+0x14`.
+The target pointer remains in `s4` throughout `3d184`; its furthest direct
+read is `lhu` at +0x2a (`3e1ac`). The pointed record therefore covers at
+least 0x2c bytes, beyond the current 0x16-byte common-prefix
+`KfTargetCandidate` view, but its stride and complete extent remain unproved.
+The meaning of `a3` and the stack values varies by script path and remains
+unresolved; no source signature or identity was promoted from this alone.
+Another `3d184` case at `3e0c0` calls the source-backed actor-to-player
+damage gate `3a614` after `actor_animation_crossed_phase`. Its four register
+arguments are `0`, then target bytes +0x0e, +0x0f, and +0x10; O32 arguments
+5–8 are target halfwords +0x12, +0x14, +0x16, then byte +0x11. Retail
+`3a614` loads all four later arguments with `lhu`, so the byte is promoted
+for the call. This links a compact target-record parameter group to an
+observed damage action without establishing the whole target record layout.
+At `16820+0x358`, `resource_copy_words` copies 0xcb0 words to
+`actor_state.target_groups` and then calls `3f7ec`. Its 0x32c0-byte copy
+covers 40 group records (0x12c0 bytes) and the following 0x2000-byte
+`actor_state.unknown_73a0` tail exactly. This establishes one archive-loaded
+owner span and the fixup order, while leaving candidate stride and the tail's
+internal layout unresolved.
+
+## Actor animation and group control pass after e75f424
+
+This 29-function focused pass follows the actor animation, movement, damage,
+group-position, and target-state calls. `SAME` means an identical focused
+listing in the current source; no new broad strict report was run. The only
+source-only probe in this pass expressed the group-fixup pointer addition with
+the operands reversed, then as an integer base plus relative offset; GCC
+emitted the same two-instruction residue for both, so the tracked source was
+left unchanged.
+
+| GAME VA | Focused verdict | Evidence boundary |
+| --- | --- | --- |
+| `8003983c` | WIP 87.0% | Actor pointer and constant-one saved registers swap; calls and branch targets align. |
+| `80039c14` | SAME | Exact curve leaf remains the control for `39c94`. |
+| `80039c94` | WIP 50.3% | Retail-backed signed motion divisor retained; callback slot 18 and one CFG block remain open. |
+| `8003a318` | WIP 97.5% | Two O32 argument-load temporaries differ. |
+| `8003a614` | WIP 81.2% | Player camera references compile through one reused base, unlike retail's repeated pairs. |
+| `8003a778` | SAME | Actor target scan stays identical. |
+| `8003a9f4` | SAME; prior strict 100% | Filtered actor-distance scan stays identical. |
+| `8003ab5c` | SAME; prior strict 100% | Unfiltered actor-distance scan stays identical; the available strict report predates the later `3ae50` append. |
+| `8003acb4` | SAME | Current-actor binding stays identical. |
+| `8003ad90` | SAME | Wrapped animation advance stays identical. |
+| `8003adc4` | SAME | Clamped animation advance stays identical. |
+| `8003ae20` | SAME | Crossed-phase test stays identical. |
+| `8003ae50` | WIP 99.2% | 58/58 CFG blocks; angle result temporary and mask scheduling differ. |
+| `8003b9a4` | SAME | Motion step helper stays identical. |
+| `8003bae4` | SAME | Forward-vector movement stays identical. |
+| `8003bba0` | SAME | Actor turn helper stays identical. |
+| `8003bcd0` | SAME | Motion wrapper stays identical. |
+| `8003bd40` | WIP 68.2% | Identical direct call family; setup and arithmetic registers differ. |
+| `8003be38` | SAME | Vertical-motion helper stays identical. |
+| `8003bf74` | SAME | Motion-angle wrapper stays identical. |
+| `8003c000` | SAME | Group-position sibling stays identical. |
+| `8003c10c` | SAME | Group-position sibling stays identical. |
+| `8003c220` | SAME | Group-position sibling stays identical. |
+| `8003c3e0` | WIP 95.4% | Yaw-error and scaled-yaw temporaries differ; CFG and calls align. |
+| `8003d084` | WIP 92.6% | GCC reassociates the final sound-note `-2` around scaled random. |
+| `8003d0e8` | SAME | Actor spatial-sound caller stays identical. |
+| `8003f610` | SAME | Actor-frame scan stays identical. |
+| `8003f7ec` | WIP 93.8% | Sentinel load order and commutative pointer addition differ. |
+| `8003f860` | SAME | Actor-record loader stays identical. |
+
+The `8003b5d0` vertical-motion sibling was also inspected as an adjacent
+control-flow lead but is outside this 29-function count. Its focused listing
+is WIP 65.1% with 40/40 CFG blocks and 21/21 branches; retail and C choose
+different switch paths, and the current collision-cache view is still a
+provisional interior of `bss_801c7540`. No source change was retained.
+
+Two source-only arithmetic probes for `8003d084` left its residue unresolved.
+Swapping the final addends still compiled at 92.6%; subtracting two from the
+clamped offset before `rand()` fell to 90.6% because GCC filled the call delay
+slot that retail leaves empty. The exact `8003d0e8` caller stayed identical,
+and the tracked C source was not changed.
+
+## Archive-loaded target record consumer pass
+
+This 27-function pass follows the `16820` group-payload copy into the
+`3f7ec` fixup, actor target selection, animation dispatch, and event
+save/restore. Verdicts are current focused listings where source exists;
+`WIP, unclaimed` means the retail function has no C body. Existing exact
+sources were used as controls, not changed.
+
+| GAME VA | Verdict | Target-record evidence |
+| --- | --- | --- |
+| `16820` | WIP, unclaimed | Copies 0xcb0 words to target groups, fixes pointers, loads actors, then restores saved state. |
+| `38dc4` | SAME | Copies group defaults into actor fields. |
+| `390d0` | SAME | Assigns actor target pointer and type. |
+| `39108` | WIP, unclaimed | Scores candidate types through a bounded 131-word switch table; calls unresolved callback slot 16 on one path. |
+| `395c8` | SAME | Scores up to 16 group target references. |
+| `39710` | SAME | Searches the same 16 pointer slots by candidate type. |
+| `39758` | SAME | Selects a typed target in the actor's group. |
+| `397a8` | SAME | Clears actor target and reselects. |
+| `3983c` | WIP 87.0% | Lifecycle path reads selected target; saved actor and sentinel registers differ. |
+| `39c14` | SAME | Curve leaf called by actor target effects. |
+| `39c94` | WIP 50.3% | Reads group curve halfwords and selected candidate; callback remains indirect. |
+| `3c000` | SAME | Group-position control. |
+| `3c10c` | SAME | Group-position control. |
+| `3c220` | SAME | Group-position control. |
+| `3c3e0` | WIP 95.4% | Group-position yaw temporaries differ. |
+| `3c614` | WIP, unclaimed | Receives candidate-derived mode and position operands from three `3d184` calls; bounded 123-word switch table remains unowned. |
+| `3d084` | WIP 92.6% | Target sound note arithmetic associates differently. |
+| `3d0e8` | SAME | Reads selected target sound byte and calls `3d084`. |
+| `3d184` | WIP, unclaimed | Actor dispatcher reads candidate through +0x2a; full record extent and indirect callback targets remain open. |
+| `3f610` | SAME | Actor frame scan calls `3d184`. |
+| `3f7ec` | WIP 93.8% | Fixes 16 relative target offsets per active group against the tail base. |
+| `3f860` | SAME | Loads actor records and group defaults after fixup. |
+| `46144` | SAME | Searches candidate byte stream for a marker. |
+| `461a0` | WIP 86.6% | Byte-stream cursor registers differ; candidate stride remains unproved. |
+| `462bc` | WIP 90.5% | Dispatches candidate event opcodes, preserving indirect callbacks. |
+| `48554` | SAME | Saves type-0x70 candidate bytes +0x10/+0x13. |
+| `489ac` | WIP 95.1% | Restores those two candidate bytes; sentinel/base registers differ. |
+
+The save/restore pair confirms two mutable bytes in the candidate prefix,
+but never indexes candidates by a record stride. `3d184` proves a minimum
+pointed extent of 0x2c, while the 0x2000-byte archive tail proves only the
+owner boundary. Neither observation supports a full candidate structure
+size or count.
+Two `lhu` reads at `3d184+0x74` and `+0x78` use candidate +0x0a as one
+unsigned halfword, so the common-prefix view now types that field as `u16`;
+its meaning remains unknown.
+The same dispatcher reads candidate +0x0c and +0x16 both as `lhu` and as
+`lbu` on different cases. Those overlaps are deliberate byte views of packed
+halfwords in retail, not evidence for separate records. The current prefix
+fields remain provisional until their per-case meanings are known.
+One extended case also uses signed `lh` at +0x24 and +0x26 (`3e298` and
+`3e274`), while other cases read those offsets unsigned. The tail therefore
+needs case-aware signed and unsigned views before a complete C type is safe.

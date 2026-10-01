@@ -48,11 +48,11 @@ ADDRESS(0x800279cc, 0x5ac)
 void func_800279cc(void)
 {
     s32 next_y;
-    s32 previous_y;
     s32 height_difference;
     s32 collision_flags;
     s32 impact;
     s32 bob;
+    s16 movement_speed;
 
     func_8002b604(player_state.camera_position.vx,
                   player_state.camera_position.vy,
@@ -76,11 +76,11 @@ void func_800279cc(void)
 
     case 0x20:
         func_80027928();
-        previous_y = player_state.camera_position.vy;
         player_state.camera_position.vy += player_state.unknown_13a;
         if (player_state.camera_position.vy <= KF_COLLISION_CACHE_RESULT
             || player_state.unknown_13a >= 0) {
-            if (KF_COLLISION_CACHE_RESULT < previous_y) {
+            if (KF_COLLISION_CACHE_RESULT
+                < player_state.camera_position.vy - player_state.unknown_13a) {
                 player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             }
             player_state.unknown_d0 = 0;
@@ -132,11 +132,11 @@ landing:
             player_state.unknown_138 += player_state.unknown_13a >> 2;
         }
         player_state.unknown_13a -= 100;
-        if ((s16)player_state.unknown_110[0] > 0) {
+        if (player_state.unknown_110[0] > 0) {
             player_state.unknown_110[0] += player_state.unknown_13a > 0 ? 10 : -30;
         }
         if (player_state.unknown_138 <= 0
-            && (s16)player_state.unknown_110[0] <= 0) {
+            && player_state.unknown_110[0] <= 0) {
             player_state.unknown_d0 = 0;
             player_state.unknown_13a = 0;
             player_state.unknown_138 = 0;
@@ -150,52 +150,60 @@ landing:
 
     height_difference = KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy;
     if (height_difference < 0) {
-        if (height_difference > -257) {
-            player_state.camera_position.vy -= 128;
-            if (height_difference > -129) {
-                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
-            }
-        } else if (height_difference > -513) {
-            player_state.camera_position.vy -= 256;
-        } else {
-            player_state.unknown_d0 = 0x20;
-            player_state.unknown_13a =
-                player_state.movement_speed > 200 ? -300 : -150;
-            player_state.unknown_138 = 0;
-            player_state.unknown_110[0] = 0;
-        }
-    } else if (height_difference > 0
-               && func_8002b9d4(player_state.camera_position.vx,
-                                  player_state.camera_position.vy + 1,
-                                  player_state.camera_position.vz, 800, 1700, 0x31) == 0) {
-        if (height_difference < 257) {
-            if (height_difference < 129) {
-                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+        if (height_difference >= -256) {
+            if (height_difference < -128) {
+                player_state.camera_position.vy -= 128;
             } else {
-                player_state.camera_position.vy += 128;
+                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             }
-        } else if (height_difference < 513) {
-            player_state.camera_position.vy += 256;
-        } else {
-            player_state.unknown_d0 = height_difference > 1024 ? 0x40 : 0x10;
-            player_state.unknown_13a = 40;
-            player_state.unknown_138 = 0;
-            player_state.unknown_110[0] = 0;
+            goto finish;
         }
+        if (height_difference >= -512) {
+            player_state.camera_position.vy -= 256;
+            goto finish;
+        }
+        movement_speed = player_state.movement_speed.signed_value;
+        player_state.unknown_d0 = 0x20;
+        player_state.unknown_13a = movement_speed > 200 ? -300 : -150;
+    } else {
+        if (height_difference <= 0) {
+            goto finish;
+        }
+        if (func_8002b9d4(player_state.camera_position.vx,
+                           player_state.camera_position.vy + 1,
+                           player_state.camera_position.vz, 800, 1700, 0x31) != 0) {
+            goto finish;
+        }
+        if (height_difference <= 256) {
+            if (height_difference >= 129) {
+                player_state.camera_position.vy += 128;
+            } else {
+                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+            }
+            goto finish;
+        }
+        if (height_difference <= 512) {
+            player_state.camera_position.vy += 256;
+            goto finish;
+        }
+        player_state.unknown_d0 = height_difference > 1024 ? 0x40 : 0x10;
+        player_state.unknown_13a = 40;
     }
+    player_state.unknown_138 = 0;
+    player_state.unknown_110[0] = 0;
 
 finish:
     if (player_state.unknown_d0 == 0) {
-        if (player_state.unknown_c9[3] == 0) {
-            player_state.unknown_134 = 0;
-        } else {
+        if (player_state.unknown_c9[3] != 0) {
             player_state.unknown_136 =
-                (player_state.unknown_136 + player_state.movement_speed) & 0xfff;
+                (player_state.unknown_136 + player_state.movement_speed.unsigned_value) & 0xfff;
             bob = rsin(player_state.unknown_136) >> 5;
             if (bob < 0) {
                 bob = -bob;
             }
             player_state.unknown_134 = bob - (bob >> 2);
+        } else {
+            player_state.unknown_134 = 0;
         }
     }
     func_80023384();

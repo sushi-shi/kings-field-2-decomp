@@ -810,7 +810,7 @@ produced a larger frame and 78.3%; a shared blocked-return trial produced
 The collision-cache field is still an interior
 view of a provisionally bounded BSS object, and this listing is not exact.
 
-The adjacent `800279cc` remains unclaimed after a full retail CFG, call, and
+At this stage, the adjacent `800279cc` remained unclaimed after a full retail CFG, call, and
 data pass: its 70-block mode dispatch uses modes 0, 16, 32, 64, and 80, with
 collision probes, sound, damage, and death effects sharing the provisional
 cache. A complete source model would need the mode-specific state contract;
@@ -879,7 +879,7 @@ WIP or unclaimed status.
 | `800274ec` | WIP source | VECTOR trial position and signed SVECTOR deflection, 61.9% focused; retail branch meaning restored. |
 | `80027928` | strict exact | Collision-depth death check. |
 | `80027988` | strict exact | Collision impact sound magnitude. |
-| `800279cc` | unclaimed WIP | Five-mode collision dispatcher; cache extent provisional. |
+| `800279cc` | WIP source, 77.8% focused | Five-mode collision dispatcher with matched CFG; cache extent and codegen residue remain provisional. |
 | `80027f78` | WIP source | Three collision probes, 80.0% focused. |
 | `80028224` | strict exact | Signed camera rotation update. |
 | `8002851c` | strict exact | Forward/strafe player movement. |
@@ -1002,3 +1002,36 @@ checking `16 <= player_state+0x9b < 18`. Both alternatives assign the effect
 ID and count-byte index before use. Ghidra's apparent incoming third argument
 and `t0` live-in on the fallback edge are artifacts of its unpruned fork;
 the complete function ABI remains unclaimed pending the other paths.
+The full 0xbd0-byte body has 114 retail CFG blocks and twenty proven calls,
+including two to the exact magic selector, three vector rotations, and the
+combat-stat helper. Its only surveyed external caller is a candidate in fragmented
+`8002985c`, so neither function has a complete source-backed control-flow
+contract yet.
+
+GAME `800279cc` now has a first-pass source claim in the contiguous
+`game.player_collision_sound` unit. Its 52 direct `lui`/signed-low references
+to `player_state` and provisional collision-cache interiors were checked
+against the retail GAME.EXE words and added in site order. The three-function
+focused carve withholds no relocations. The source models the five observed
+vertical modes, collision probes, landing damage, height adjustment, and view
+bob; modes `0x10`, `0x20`, and early `0x40` paths go straight to the shared
+finish, whereas grounded mode and the `0x50` landing response enter height
+adjustment. Retail uses signed `lh` for player +`0x110` landing motion and
+signed +`0x12e` movement-speed threshold. The `+0x110` field family is now
+`s16[3]` without changing layout; its other source consumers only clear it.
+The same `+0x12e` halfword is also read unsigned for view-bob phase, so the
+shared field has a single layout-checked union with signed and unsigned views.
+KF1 `player_update_vertical_motion` independently casts its movement speed to
+`s16` at the step threshold; this is source-shape support, while the KF2 `lh`
+and `lhu` instructions establish the two KF2 views.
+The step-up test compares the new Y against Y minus vertical speed. Signed
+speed capture before the falling-mode store, the signed zero-height guard,
+and the retail short-rise branch orientation bring
+the focused listing to **77.8% WIP** with 70/70 CFG blocks, 37/37 branches,
+and 1/1 returns. The 0x48-byte retail frame, early camera-base register
+assignment, and later schedule still differ; no exact claim is made.
+Neighboring `80027928`/`80027988` remain SAME, as do all 16 reaction listings
+and `player_reset_view` after the signed-field refinement. The two camera-turn
+and fifteen player-state/equipment listings also remain SAME after the speed
+union. Collision-cache
+ownership at `bss_801c7540+0x11800` remains provisional.

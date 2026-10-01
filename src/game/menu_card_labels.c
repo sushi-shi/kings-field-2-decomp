@@ -1,12 +1,13 @@
 #include <kf/lib/address.h>
 #include <kf/game/menu.h>
+#include <psyq/libc.h>
 
 ADDRESS(0x8001ba80, 0x114)
 void func_8001ba80(KfMenuGlyphString *row)
 {
     row->position.x = 70;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[5];
+    memcpy(row->glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
     row->glyphs.codes[8] = 84;
     row->glyphs.codes[9] = 65;
     row->glyphs.codes[10] = 83;
@@ -39,7 +40,7 @@ void func_8001bb94(KfMenuGlyphString *row)
 {
     row->position.x = 104;
     row->position.y = 105;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[5];
+    memcpy(row->glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
     row++;
     row->position.x = 104;
     row->position.y = 120;
@@ -64,5 +65,5 @@ void func_8001bb94(KfMenuGlyphString *row)
     row++;
     row->position.x = 104;
     row->position.y = 150;
-    *(KfMenuLabelSuffix *)row->glyphs.codes = menu_label_suffixes[2];
+    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes, sizeof(KfMenuLabelSuffix));
 }

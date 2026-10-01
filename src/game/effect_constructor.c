@@ -5,6 +5,8 @@
 #include <psyq/libc.h>
 #include <stdarg.h>
 
+extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
+
 RODATA(0x8001249c, 0x1ec)
 
 ADDRESS(0x80040308, 0x13e4)
@@ -12,10 +14,15 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
                               const VECTOR *position,
                               const SVECTOR *direction, ...)
 {
-    KfEffectRecord *record = effect_pool_find_free();
+    KfEffectRecord *record;
     s32 length_squared;
+    va_list arguments;
+
+    va_start(arguments, direction);
+    record = effect_pool_find_free();
 
     if (record == 0) {
+        va_end(arguments);
         return 0;
     }
     record->type = type;
@@ -24,12 +31,12 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->position = *position;
     }
     record->unknown_0a = 3;
-    if (direction == 0) {
+    if (direction != 0) {
+        record->direction = *direction;
+    } else {
         record->direction.vx = 0;
         record->direction.vy = 0;
         record->direction.vz = 0;
-    } else {
-        record->direction = *direction;
     }
     record->phase = 0;
     record->unknown_06 = id;
@@ -85,8 +92,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x1b);
         break;
     case 2: {
-        va_list arguments;
-
         record->unknown_08 = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 9;
@@ -95,11 +100,9 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_10 = 0x1000;
         record->scale_x = 0;
         record->scale_z = 0;
-        va_start(arguments, direction);
         *(u16 *)&record->unknown_3c[4] = va_arg(arguments, s32);
         *(u16 *)&record->unknown_3c[6] = va_arg(arguments, s32);
         *(u16 *)&record->unknown_3c[8] = va_arg(arguments, s32);
-        va_end(arguments);
         effect_play_spatial_sound(record, 0x1e);
         break;
     }
@@ -131,13 +134,9 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x20);
         break;
     case 5: {
-        va_list arguments;
-
         record->unknown_08 = 0;
         record->updates_remaining = 70;
-        va_start(arguments, direction);
         record->unknown_3c[5] = va_arg(arguments, s32);
-        va_end(arguments);
         effect_play_spatial_sound(record, 0x21);
         break;
     }
@@ -149,33 +148,24 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x23);
         break;
     case 8: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, 8, 0x1000);
-        va_start(arguments, direction);
         record->unknown_3c[4] = va_arg(arguments, s32);
         *(u16 *)&record->unknown_3c[6] = va_arg(arguments, s32);
-        va_end(arguments);
         record->updates_remaining = 50;
         break;
     }
     case 9: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, 8, 0x1000);
         record->direction.vx += (rand() >> 8) - 64;
         record->direction.vy += (rand() >> 8) - 64;
         record->direction.vz += (rand() >> 8) - 64;
         record->updates_remaining = 100;
         record->cooldown = 3;
-        va_start(arguments, direction);
         record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         effect_play_spatial_sound(record, 0x26);
         break;
     }
     case 10: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -188,9 +178,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_x = 3000;
         record->scale_y = 3000;
         record->scale_z = 3000;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->unknown_3c[5] = 0;
         record->updates_remaining = 150;
@@ -199,7 +187,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     }
     case 11:
     case 54: {
-        va_list arguments;
         s32 value;
         s32 render_id = kind == 54 ? 0x30 : 0x11;
 
@@ -213,14 +200,11 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_x = 0;
         record->scale_y = 0;
         record->scale_z = 0;
-        va_start(arguments, direction);
         value = va_arg(arguments, s32);
-        va_end(arguments);
         *(u16 *)&record->unknown_3c[4] = value / 4;
         break;
     }
     case 12: {
-        va_list arguments;
         const SVECTOR *angles;
         u16 first_parameter;
         u16 second_parameter;
@@ -235,14 +219,12 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->render_id = 0x22;
         record->unknown_0c = 0x49;
         record->unknown_10 = 0x1000;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
         first_parameter = va_arg(arguments, s32);
         second_parameter = va_arg(arguments, s32);
         third_parameter = va_arg(arguments, s32);
         fourth_parameter = va_arg(arguments, s32);
         duration = va_arg(arguments, s32);
-        va_end(arguments);
         record->rotation = *angles;
         record->scale_x = 30000;
         record->scale_y = 30000;
@@ -293,16 +275,13 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->direction.vz += (rand() >> 9) - 32;
         break;
     case 23: {
-        va_list arguments;
         u16 first_parameter;
         u16 second_parameter;
         u16 third_parameter;
 
-        va_start(arguments, direction);
         first_parameter = va_arg(arguments, s32);
         second_parameter = va_arg(arguments, s32);
         third_parameter = va_arg(arguments, s32);
-        va_end(arguments);
         effect_pool_initialize_scaled(record, 8, 0x400);
         record->direction.vx = 0;
         record->direction.vy = 0;
@@ -319,7 +298,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->updates_remaining = 70;
         break;
     case 25: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -330,9 +308,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
         record->updates_remaining = 45;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->rotation.vz = rand() >> 3;
         record->unknown_3c[4] = 0;
@@ -369,7 +345,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     case 31:
     case 47:
     case 48: {
-        va_list arguments;
         const SVECTOR *angles;
         s32 render_id;
 
@@ -387,9 +362,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->animation_clip = 0x80;
         record->unknown_0c = 0xff;
         record->render_id = record->base_render_id;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->rotation.vz = 0;
         *(u16 *)&record->unknown_3c[6] = 0;
@@ -414,7 +387,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x18);
         break;
     case 100: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -423,9 +395,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->render_id = 0x22;
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->rotation.vy += (rand() >> 7) - 128;
         record->rotation.vz = 0;
@@ -434,20 +404,17 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         break;
     }
     case 101: {
-        va_list arguments;
         s32 scale;
         s32 first_value;
         s32 lifetime;
         s32 render_id;
         s32 second_value;
 
-        va_start(arguments, direction);
         scale = va_arg(arguments, s32);
         first_value = va_arg(arguments, s32);
         lifetime = va_arg(arguments, s32);
         render_id = va_arg(arguments, s32);
         second_value = va_arg(arguments, s32);
-        va_end(arguments);
         effect_pool_initialize_scaled(record, render_id, scale);
         *(u16 *)&record->unknown_3c[4] = first_value;
         record->updates_remaining = lifetime;
@@ -456,26 +423,18 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     }
     case 103:
     case 121: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, kind == 121 ? 0x2e : 0xf,
                                       0x1000);
         record->updates_remaining = 100;
-        va_start(arguments, direction);
         *(u16 *)&record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         effect_play_spatial_sound(record, 0x28);
         break;
     }
     case 104:
     case 122: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, kind == 122 ? 0x2f : 0x10,
                                       0x1000);
-        va_start(arguments, direction);
         record->scale_y = va_arg(arguments, s32);
-        va_end(arguments);
         record->updates_remaining = 15;
         break;
     }
@@ -493,7 +452,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     case 34:
     case 35:
     case 117: {
-        va_list arguments;
         const SVECTOR *angles;
         s32 render_id = kind == 117 ? 0x31 : kind == 34 ? 0x28 : 0x29;
 
@@ -505,9 +463,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
         record->updates_remaining = kind == 117 ? 50 : 45;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->unknown_3c[4] = 0;
         effect_play_spatial_sound(record, 0x20);
@@ -515,7 +471,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     }
     case 38:
     case 39: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -523,9 +478,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->base_render_id = 0x2c;
         record->render_id = 0x2c;
         record->updates_remaining = 50;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->rotation.vy += (rand() >> 6) - 256;
         record->rotation.vz = 0;
@@ -538,7 +491,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         break;
     }
     case 40: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->base_render_id = 0xa;
@@ -549,16 +501,12 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
         record->updates_remaining = 50;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         effect_play_spatial_sound(record, 0x32);
         break;
     }
     case 42: {
-        va_list arguments;
-
         record->unknown_08 = 1;
         record->animation_clip = 0x80;
         record->unknown_09 = 1;
@@ -569,14 +517,10 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_x = 0;
         record->scale_y = 0;
         record->scale_z = 0;
-        va_start(arguments, direction);
         record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         break;
     }
     case 45: {
-        va_list arguments;
-
         record->unknown_08 = 1;
         record->animation_clip = 0x80;
         record->unknown_09 = 1;
@@ -588,36 +532,26 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_y = 0;
         record->scale_z = 0;
         effect_play_spatial_sound(record, 0x17);
-        va_start(arguments, direction);
         *(u16 *)&record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         break;
     }
     case 46: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, 0x10, 0x1000);
         record->scale_y = 0;
         record->unknown_3c[4] = 0;
         record->direction.vy = 0;
-        va_start(arguments, direction);
         record->unknown_3c[5] = va_arg(arguments, s32);
-        va_end(arguments);
         break;
     }
     case 105: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, 0xe, 0x1000);
         record->rotation.vz = rand();
         record->direction.vx += (rand() >> 9) - 32;
         record->direction.vy += (rand() >> 9) - 32;
         record->direction.vz += (rand() >> 9) - 32;
-        va_start(arguments, direction);
         record->unknown_3c[4] = va_arg(arguments, s32);
         record->unknown_3c[5] = va_arg(arguments, s32);
         *(u16 *)&record->unknown_3c[6] = va_arg(arguments, s32);
-        va_end(arguments);
         record->updates_remaining = 70;
         break;
     }
@@ -628,7 +562,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->updates_remaining = 100;
         break;
     case 107: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -641,39 +574,28 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->scale_x = 0x1000;
         record->scale_y = 0x1000;
         record->scale_z = 0x1000;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         break;
     }
     case 109: {
-        va_list arguments;
-
         effect_pool_initialize_scaled(record, 0xe, 0x400);
         record->updates_remaining = 20;
-        va_start(arguments, direction);
         record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         record->direction.vx += (rand() >> 8) - 64;
         record->direction.vy += (rand() >> 8) - 64;
         record->direction.vz += (rand() >> 8) - 64;
         break;
     }
     case 111: {
-        va_list arguments;
-
-        va_start(arguments, direction);
         record->unknown_08 = 0;
         record->updates_remaining = 50;
         *(u16 *)&record->unknown_3c[4] = va_arg(arguments, s32);
-        va_end(arguments);
         effect_play_spatial_sound(record, 0x21);
         break;
     }
     case 113:
     case 115: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -684,14 +606,39 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
         record->updates_remaining = 45;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         record->scale_x = 5000;
         record->scale_y = 5000;
         record->scale_z = 5000;
         effect_play_spatial_sound(record, 0x29);
+        break;
+    }
+    case 114: {
+        s32 x;
+        s32 z;
+
+        record->unknown_08 = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x26;
+        record->render_id = 0x26;
+        record->updates_remaining = 45;
+        *(s32 *)&record->unknown_3c[8] = record->position.vy;
+        x = record->position.vx + (rand() >> 5) - 512;
+        z = record->position.vz + (rand() >> 5) - 512;
+        if (func_8002b7f8(x, record->position.vy, z, 10, 10) != 0) {
+            x = record->position.vx;
+            z = record->position.vz;
+        }
+        record->position.vx = x - 2730;
+        record->position.vy -= 16384;
+        record->position.vz = z - 2730;
+        record->rotation.vx = 100;
+        record->rotation.vy = 600;
+        record->rotation.vz = 100;
+        record->scale_x = 0x4000;
+        record->scale_y = 0x4000;
+        record->scale_z = 0x4000;
         break;
     }
     case 116:
@@ -700,7 +647,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         break;
     case 118:
     case 119: {
-        va_list arguments;
         const SVECTOR *angles;
 
         record->unknown_08 = 1;
@@ -708,9 +654,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->base_render_id = 0x13;
         record->render_id = 0x13;
         record->updates_remaining = 0x23;
-        va_start(arguments, direction);
         angles = va_arg(arguments, const SVECTOR *);
-        va_end(arguments);
         record->rotation = *angles;
         effect_play_spatial_sound(record, 0x20);
         break;
@@ -726,5 +670,6 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
      * reconstructed. The 123-word table and its indirect dispatch remain
      * distinct from proven direct calls. */
     }
+    va_end(arguments);
     return record;
 }

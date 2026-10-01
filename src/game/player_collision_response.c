@@ -50,7 +50,7 @@ s32 func_80027f78(void)
             if (length <= minimum_length) {
                 motion->vz = 0;
                 motion->vx = 0;
-                return 1;
+                goto exhausted;
             }
             motion->vx = (motion->vx * remaining) / length;
             motion->vz = (motion->vz * remaining) / length;
@@ -67,6 +67,9 @@ s32 func_80027f78(void)
     next.vy = KF_COLLISION_CACHE_RESULT;
     minimum_length = 56;
     goto scale_motion;
+
+exhausted:
+    return 1;
 
 accepted:
     func_80023384();

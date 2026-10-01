@@ -488,7 +488,6 @@ void func_80025a18(s32 effect_id, ...)
     case 4:
 simple_effect:
         rotation_scale = 700;
-        goto probe_rotation_effect;
 probe_rotation_effect:
         func_80025878(rotation_scale, &position, &direction, &distance);
         goto emit_rotation_effect;
@@ -522,8 +521,10 @@ probe_rotation_effect:
                        &player_state.camera_rotation);
         break;
     case 6:
+        rotation_scale = 250;
+        goto probe_rotation_effect;
     case 10:
-        rotation_scale = effect_id == 6 ? 250 : 300;
+        rotation_scale = 300;
         goto probe_rotation_effect;
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];

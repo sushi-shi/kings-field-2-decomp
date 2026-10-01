@@ -4,6 +4,8 @@
 #include <kf/lib/types.h>
 #include <kf/game/memory.h>
 
+enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
+
 /* The startup clear and the event initializer bound one BSS object. The
  * control bytes are still mostly unclassified; the arena and saved offset
  * table are used together by the save/restore routines. */
@@ -42,7 +44,7 @@ typedef struct KfEventState {
     u32 state_word;
     KfEventControl control;
     KfEventArena arena;
-    u16 saved_offsets[10];
+    u16 saved_offsets[KF_EVENT_SAVED_SLOT_COUNT];
 } KfEventState;
 
 typedef char kf_event_state_size[sizeof(KfEventState) == 0x3918 ? 1 : -1];

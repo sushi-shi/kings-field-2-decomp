@@ -64,17 +64,17 @@ void func_8003247c(void)
 actor_visible:
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
             position = func_8003c10c(actor, &actor_position);
-            world_matrix = &game_graphics_runtime.render_state.view_matrix;
             if (actor->unknown_28 & 0x20) {
-                rotation.x = 0;
-                rotation.y = 0;
                 rotation.z = 0;
+                rotation.y = 0;
+                rotation.x = 0;
                 position = &actor->position;
                 world_matrix = &render_world_identity_matrix;
             } else {
                 rotation.x = actor->rotation.x;
                 rotation.y = actor->rotation.y + 0x800;
                 rotation.z = actor->rotation.z;
+                world_matrix = &game_graphics_runtime.render_state.view_matrix;
             }
             func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
                            position, &rotation, (SVECTOR *)&actor->unknown_48,
@@ -156,7 +156,9 @@ map_sound_action: {
                 distance = object->tail.fields.unknown_39 * 0x400 - distance;
                 if (distance < volume) volume = distance;
                 radius = object->tail.spawn_bytes.spawn_sequence.low << 11;
-                if (volume < radius) {
+                if (volume >= radius) {
+                    volume = object->tail.fields.unknown_3a.bytes.high;
+                } else {
                     if (radius == 0) continue;
                     volume = object->tail.fields.unknown_3a.bytes.high * volume / radius;
                 }
@@ -177,21 +179,23 @@ map_sound_outside:
         }
 map_ordinary_object: {
             u8 render_mode;
+            KfMapObjectTemplate *object_template;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->unknown_00) == 0) continue;
+            object_template = &map_object_state.templates[object->object_id];
 map_ordinary_visible:
             object_index = object->object_id;
             tmd_flags[object_index] = 1;
-            vab_flags[map_object_state.templates[object_index].unknown_02[0]] = 1;
+            vab_flags[object_template->unknown_02[0]] = 1;
             if (resource_registry_get(object_index + 0x100) != 0) {
+                rotation.x = object->rotation.vx;
+                rotation.y = object->rotation.vy + 0x800;
+                rotation.z = object->rotation.vz;
                 render_mode = object->unknown_02;
                 if (object->collision_flags & 1) {
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
-                rotation.x = object->rotation.vx;
-                rotation.y = object->rotation.vy + 0x800;
-                rotation.z = object->rotation.vz;
                 func_80031850(object->unknown_00, object_index + 0x100,
                                &object->position, &rotation, &object->scale,
                                (KfPoolRecord **)&object->tail,
@@ -204,8 +208,9 @@ map_ordinary_visible:
             }
             continue;
 map_radius_check:
+            object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
-                map_object_state.templates[object->object_id].marker_action_05);
+                object_template->marker_action_05);
             if (visibility & object->unknown_00) goto map_ordinary_visible;
         }
     }
@@ -259,9 +264,9 @@ map_radius_check:
                        effect->unknown_09, -60);
     }
 
-    rotation.x = 0;
-    rotation.y = 0;
     rotation.z = 0;
+    rotation.y = 0;
+    rotation.x = 0;
     placed = game_graphics_runtime.map_placed_entries;
     for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
          remaining != -1; remaining--, placed++) {

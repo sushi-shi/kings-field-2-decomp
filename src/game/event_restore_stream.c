@@ -10,7 +10,7 @@ RODATA(0x80012bf8, 0x40)
 ADDRESS(0x800489ac, 0x378)
 void func_800489ac(s32 save_slot)
 {
-    u8 *saved[10];
+    u8 *saved[KF_EVENT_SAVED_SLOT_COUNT];
     u8 *stream;
     s32 index;
     KfActor *actors;

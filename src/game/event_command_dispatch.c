@@ -7,6 +7,7 @@
 #include <kf/game/map_object.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
+#include <kf/lib/math.h>
 
 extern s32 func_80045e5c(const VECTOR *position,
                          const struct KfEulerAngles *rotation);
@@ -75,6 +76,41 @@ void func_8004678c(const VECTOR *position,
         }
         audio_play_sound_at_volume_100(8);
         break;
+    case 0x59: {
+        KfMapObject *nearest = 0;
+        s32 nearest_distance = 999999;
+        s32 object_index;
+
+        for (object_index = 0; object_index < KF_MAP_OBJECT_CAPACITY;
+             object_index++) {
+            KfMapObject *object = &map_object_state.objects[object_index];
+            s32 object_id = object->object_id;
+            s32 distance;
+
+            if (object_id != 82 && object_id != 83 &&
+                (object_id < 90 || object_id >= 97)) {
+                continue;
+            }
+            distance = func_80015698(&object->position, 25000,
+                                     &player_state.camera_position, 0, 0);
+            if (distance >= 0 && distance < nearest_distance) {
+                nearest = object;
+                nearest_distance = distance;
+            }
+        }
+        if (nearest != 0) {
+            VECTOR sound_position;
+
+            sound_position.vx = nearest->position.vx;
+            sound_position.vy = nearest->position.vy +
+                4 * (nearest->position.vy - audio_state.listener_position.vy);
+            sound_position.vz = nearest->position.vz;
+            audio_play_spatial_range(0x8009, &sound_position, 0x6e,
+                                     25000, 29000, 0);
+            event_state.state_word = 1;
+        }
+        break;
+    }
     case 0x63:
     case 0x64:
     case 0x65:

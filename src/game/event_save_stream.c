@@ -8,7 +8,7 @@ RODATA(0x80012960, 0x294)
 ADDRESS(0x80048554, 0x458)
 void func_80048554(s32 save_slot)
 {
-    u8 *saved[10];
+    u8 *saved[KF_EVENT_SAVED_SLOT_COUNT];
     u8 payload[3072];
     u8 *write = payload;
     KfActor *actor = actor_state.actors;

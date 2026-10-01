@@ -14,6 +14,11 @@ extern void func_8003ff18(VECTOR *position, s32 start, s32 end,
 extern s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
                          s32 scale_x, s32 scale_z, s32 variation);
 extern void func_80042424(void);
+extern void func_8002bf38(u8 first, u8 second, u8 third,
+                         s32 angle, u16 value);
+extern s32 func_80041b14(const VECTOR *target, s32 max_length, s32 scale,
+                         s32 settle_distance, s32 min_distance,
+                         s32 probe_radius, s32 probe_angle);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -136,11 +141,35 @@ void effect_update_dispatch(void)
         }
         record->rotation.vy += 128;
         break;
+    case 16:
+        if (record->updates_remaining == 4) {
+            player_state.vitals.current_hp += 60;
+            if (player_state.vitals.current_hp >
+                player_state.vitals.maximum_hp) {
+                player_state.vitals.current_hp =
+                    player_state.vitals.maximum_hp;
+            }
+        }
+        func_8002bf38(0xe6, 0xc8, 0xa0, 0x59d8,
+                       rsin(record->updates_remaining << 8));
+        break;
     case 17:
         if (player_state.unknown_64 == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         record->rotation.vy -= 128;
+        break;
+    case 20:
+        func_80041cd0(0x4000, 0x100, 0x20, 0x400, 0x8000);
+        record->rotation.vz += 64;
+        break;
+    case 22:
+        record->rotation.vy = (u16)record->rotation.vy + 10;
+        collision = func_80042298(100, (s32)0x80000000, -300);
+        if (collision != 0) {
+            func_8003feb0(collision);
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
         break;
     case 101:
         record->direction.vy = (u16)record->direction.vy +
@@ -160,6 +189,11 @@ void effect_update_dispatch(void)
         if (record->phase >= 8) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
+        break;
+    case 109:
+        func_80041b14(
+            &effect_state.records[record->unknown_3c[4]].position,
+            500, 15, -1, 0, 0, -1);
         break;
     /* The remaining effect kinds, including two indirect switch dispatches,
      * are not yet reconstructed. Their callback and BSS owners remain open. */

@@ -899,13 +899,15 @@ case reachability remain candidate evidence; no source body is claimed.
 
 The current `80027f78` focused diff starts after the two successful world
 probes. Both retail and C request the same fixed X/Z length and use the same
-collision-cache referent, but retail retains a single reaction-vector base in
-`s0` for both component loads and stores; this C probe rematerializes the Z
-field's global address. That also swaps the threshold/vector saved registers
-and shifts the common return tail by one block. A typed containing-reaction
-pointer probe lowered similarity to 75.3% and enlarged the frame, so it was
-discarded. This is an unresolved source/codegen residue, not evidence for an
-overlapping collision-cache global or a different call target.
+collision-cache referent. Retail routes the exhausted-length path through a
+short return block after the scaling loop; an explicit C label now gives the
+same 27/27 CFG blocks, 14/14 branches, and 4/4 return-frontier edges, raising
+similarity to **80.5% WIP**. Retail retains one reaction-vector base in `s0`
+for both component loads and stores, while this compiler rematerializes the
+Z field's global address and swaps the threshold/vector saved registers. A
+typed containing-reaction pointer probe lowered similarity to 75.3% and
+enlarged the frame, so it was discarded. The remaining mismatch is not
+evidence for an overlapping collision-cache global or a different call target.
 
 In `800274ec`, retail stores two signed halfword deltas at stack `+40/+44`
 before `vector_xz_to_angle`, then overwrites the same slots with the
@@ -1122,17 +1124,17 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | DIFF, 72.9% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 now share their source probe as retail does, though the probe compiler still duplicates two calls. Nineteen reviewed address pairs resolve its direct referents. |
+| `80025a18` | DIFF, 72.8% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 share one probe with distinct retail scales; focused call counts match retail (16 target-selector, 11 effect-constructor). The compiler places that shared probe after the case-11 call, while retail places it before; case-4 fallthrough is explicit in C. CFG remains 99/95 blocks with one unresolved switch jump on each side. Nineteen reviewed address pairs resolve its direct referents. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | DIFF, 91.1% | Weapon/magic update follows retail's field widths, phase-store order, configured-shot call argument, damage branch, countdown, and vector reuse; its 208-byte probe frame matches retail. The equipped ID is widened to signed `s32` for retail `slti`; keeping it as `u8` instead emits `sltiu`. Ninety-two reviewed address pairs resolve its direct referents. |
+| `8002665c` | DIFF, 91.1% | Weapon/magic update follows retail's field widths, phase-store order, configured-shot call argument, damage branch, countdown, and vector reuse; its 208-byte probe frame matches retail. The ordered 20-call sequence and 114/114 CFG blocks with 68/68 branches agree in the focused object. The equipped ID is widened to signed `s32` for retail `slti`; keeping it as `u8` instead emits `sltiu`. Ninety-two reviewed address pairs resolve its direct referents. |
 | `8002722c` | DIFF, 89.3% | Both bounded switches and player/magic state are modeled; action case 10 now falls through to retail's shared action-byte stores. Its unexplained retail leaf frame and original TU remain WIP. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
 | `80027988` | SAME | Landing-sound helper control. |
 | `800279cc` | DIFF, 78.1% | 70/70 CFG blocks; promoted signed movement speed now emits retail's direct `lh`, while frame and load-schedule residue remain. |
-| `80027f78` | DIFF, 80.0% | Reaction-motion scaling rematerializes one proven halfword view. |
+| `80027f78` | DIFF, 80.5% | Exhausted-length return now follows retail's extra join block; 27/27 CFG blocks and 14/14 branches, with reaction-motion field rematerialization remaining. |
 | `80028224` | SAME | Camera-turn control. |
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
 | `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
@@ -1156,8 +1158,11 @@ its last two bytes, as proved by paired unaligned word loads and stores; the
 shared player-state union preserves all earlier component accesses and the
 separate `player_reset_view` listing stays SAME. Case 0 and case 16 converge
 on the observed pose tail, while the live reaction states converge on the
-single view-update call. The current compiler frame and several block shapes
-still diverge from retail, so this is a started claim, not an exact match.
+single view-update call. The ordered 94 direct calls agree with retail.
+Focused CFG comparison has 142 retail versus 141 compiled blocks and 79
+branches on each side; both views retain one unresolved switch jump. The
+current compiler frame and several block shapes still diverge
+from retail, so this is a started claim, not an exact match.
 The death state reads a signed `unknown_106` counter and uses the reaction
 overlay's motion halfword at `+0x154`; the case-16 flag is its rotation
 halfword at `+0x14e`. The height update compares the old `+0x134` value

@@ -57,7 +57,8 @@ void func_80036ed4(void)
 
             switch (object->action) {
         case 2:
-            if (object->action_timer == 1) {
+            switch (object->action_timer) {
+            case 1:
                 if (object->unknown_0a == 0) {
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
@@ -71,7 +72,8 @@ void func_80036ed4(void)
                     object->unknown_0a = 0xfff;
                     object->action_timer = 2;
                 }
-            } else if (object->action_timer == 20) {
+                break;
+            case 20:
                 if (func_8002b9d4(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
                     func_80034f90(object->unknown_00, object->position.vx,
@@ -80,26 +82,39 @@ void func_80036ed4(void)
                     object->action_timer = 21;
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
-            } else if (object->action_timer == 21) {
+                break;
+            case 21:
                 object->unknown_0a -= 72;
                 if ((s16)object->unknown_0a <= 0) {
                     object->unknown_0a = 0;
                     object->action_timer = 0;
                 }
-            } else if (object->action_timer != 0) {
+                break;
+            case 0:
+                break;
+            default:
                 object->action_timer++;
+                break;
             }
             break;
 
         case 3:
-            if (object->action_timer == 1) {
+            switch (object->action_timer) {
+            case 0: {
+                u8 phase_byte = object->tail.fields.unknown_38;
+                if ((u8)(phase_byte + 0x6a) < 0x31 && (phase_byte & 1)) {
+                    object->action_timer = 1;
+                }
+                break;
+            }
+            case 1:
                 if (object->unknown_0a == 0) {
                     func_80035194(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
-                                  (s8)object->tail.fields.spawn_sequence,
+                                  object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
-                                  (s8)object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
                                   template->unknown_0d[1], object->rotation.pad, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
@@ -108,9 +123,9 @@ void func_80036ed4(void)
                 if (object->unknown_0a == 0xc18) {
                     func_80035194(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high,
-                                  (s8)object->tail.fields.spawn_sequence,
+                                  object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
-                                  (s8)object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
                                   template->unknown_0d[1], object->rotation.pad, 0x2d);
                 }
@@ -118,12 +133,8 @@ void func_80036ed4(void)
                     object->unknown_0a = 0xfff;
                     object->action_timer = 2;
                 }
-            } else if (object->action_timer == 0) {
-                u8 phase_byte = object->tail.fields.unknown_38;
-                if ((u8)(phase_byte + 0x6a) < 0x31 && (phase_byte & 1)) {
-                    object->action_timer = 1;
-                }
-            } else if (object->action_timer == 20) {
+                break;
+            case 20: {
                 u8 phase_byte = object->tail.fields.unknown_38;
                 if (((u8)(phase_byte + 0x6a) > 0x30 || !(phase_byte & 1)) &&
                     func_8002b9d4(object->position.vx, object->position.vy,
@@ -132,14 +143,16 @@ void func_80036ed4(void)
                     func_80035194(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
-                                  (s8)object->tail.fields.spawn_sequence,
+                                  object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
-                                  (s8)object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
                                   template->unknown_0d[1], object->rotation.pad, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
-            } else if (object->action_timer == 21) {
+                break;
+            }
+            case 21:
                 object->unknown_0a -= 72;
                 if ((s16)object->unknown_0a <= 0) {
                     object->unknown_0a = 0;
@@ -147,14 +160,16 @@ void func_80036ed4(void)
                     func_80035194(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0] * 2,
-                                  (s8)object->tail.fields.spawn_sequence,
+                                  object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
-                                  (s8)object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
                                   template->unknown_0d[1], object->rotation.pad, 0x2d);
                 }
-            } else {
+                break;
+            default:
                 object->action_timer++;
+                break;
             }
             break;
 
@@ -167,17 +182,17 @@ void func_80036ed4(void)
                         player_state.camera_position.vx - object->position.vx,
                         player_state.camera_position.vz - object->position.vz);
                     object->unknown_0e =
-                        ((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800
+                        (u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800
                             ? -200 : 0xf0;
                 }
-                if ((u8)(object->tail.fields.spawn_sequence >> 8) != 0xff) {
-                    linked = &map_object_state.objects[(u8)(object->tail.fields.spawn_sequence >> 8)];
+                if (object->tail.spawn_bytes.spawn_sequence.high != 0xff) {
+                    linked = &map_object_state.objects[object->tail.spawn_bytes.spawn_sequence.high];
                     if (linked->collision_flags & 0x80) {
                         s32 bearing = vector_xz_to_angle(
                             player_state.camera_position.vx - linked->position.vx,
                             player_state.camera_position.vz - linked->position.vz);
                         linked->unknown_0e =
-                            ((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800
+                            (u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800
                                 ? 0xf0 : -200;
                     }
                 }
@@ -197,7 +212,7 @@ void func_80036ed4(void)
                     if (previous == 24) {
                         func_80035194(object->unknown_00,
                                       object->tail.fields.unknown_3a.bytes.high,
-                                      (u8)object->tail.fields.spawn_sequence,
+                                      object->tail.spawn_bytes.spawn_sequence.low,
                                       object->tail.fields.unknown_39,
                                       object->tail.fields.unknown_3a.bytes.low,
                                       2, 2, 0, 0x2d);
@@ -224,7 +239,7 @@ void func_80036ed4(void)
                             }
                             func_80035194(object->unknown_00,
                                           object->tail.fields.unknown_3a.bytes.high + 2,
-                                          (u8)object->tail.fields.spawn_sequence,
+                                          object->tail.spawn_bytes.spawn_sequence.low,
                                           object->tail.fields.unknown_39,
                                           object->tail.fields.unknown_3a.bytes.low,
                                           2, 2, 0, 0x2d);
@@ -484,9 +499,9 @@ void func_80036ed4(void)
                 func_8002b73c(player_state.camera_position.vx,
                                player_state.camera_position.vz, 800, -1);
                 player_state.camera_position.vx =
-                    (u8)object->tail.fields.spawn_sequence * 0x800 + 0x400;
+                    object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
                 player_state.camera_position.vz =
-                    (u8)(object->tail.fields.spawn_sequence >> 8) * 0x800 + 0x400;
+                    object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
                 player_state.unknown_128 =
                     object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
                 player_state.camera_rotation_target.angles[1] =
@@ -519,7 +534,7 @@ void func_80036ed4(void)
                             func_80036ad8(object->position.vx >> 11,
                                             object->position.vz >> 11,
                                             boundary,
-                                            (u8)object->tail.fields.spawn_sequence,
+                                            object->tail.spawn_bytes.spawn_sequence.low,
                                             object->position.vy))) {
                     object->action_timer = 1;
                     object->unknown_0a = 0;
@@ -653,10 +668,10 @@ void func_80036ed4(void)
         case 84:
             if (object->action_timer == 0) {
                 s32 width = object->tail.fields.unknown_3a.bytes.low;
-                s32 height = (u8)object->tail.fields.spawn_sequence;
+                s32 height = object->tail.spawn_bytes.spawn_sequence.low;
                 s32 source_x = object->tail.fields.unknown_39 - ((width - 1) >> 1);
                 s32 source_z = object->tail.fields.unknown_3a.bytes.high - ((height - 1) >> 1);
-                s32 depth = -((s32)(u8)(object->tail.fields.spawn_sequence >> 8) * 128);
+                s32 depth = -((s32)object->tail.spawn_bytes.spawn_sequence.high * 128);
                 if (func_80036ad8(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
                     s32 pattern_index = template->unknown_0d[1] * 2 +
@@ -713,9 +728,9 @@ void func_80036ed4(void)
                     map_object_play_spatial_sound(object, 0x44);
                 }
                 func_80035194(object->unknown_00,
-                              (u8)object->tail.fields.spawn_sequence +
+                              object->tail.spawn_bytes.spawn_sequence.low +
                                   object->tail.fields.unknown_3e.bytes.low,
-                              (u8)(object->tail.fields.spawn_sequence >> 8),
+                              object->tail.spawn_bytes.spawn_sequence.high,
                               object->tail.fields.unknown_3a.bytes.low,
                               object->tail.fields.unknown_3a.bytes.high,
                               object->tail.fields.unknown_3e.bytes.low,
@@ -727,8 +742,8 @@ void func_80036ed4(void)
                     object->unknown_0a = 0;
                     object->action_timer = 99;
                     func_80035194(object->unknown_00,
-                                  (u8)object->tail.fields.spawn_sequence,
-                                  (u8)(object->tail.fields.spawn_sequence >> 8),
+                                  object->tail.spawn_bytes.spawn_sequence.low,
+                                  object->tail.spawn_bytes.spawn_sequence.high,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   object->tail.fields.unknown_3a.bytes.high,
                                   object->tail.fields.unknown_3e.bytes.low,
@@ -878,8 +893,8 @@ void func_80036ed4(void)
                                object->position.vy)) {
                 func_80016260(object->tail.fields.unknown_3a.bytes.low,
                               object->tail.fields.unknown_3a.bytes.high,
-                              (u8)object->tail.fields.spawn_sequence,
-                              (u8)(object->tail.fields.spawn_sequence >> 8),
+                              object->tail.spawn_bytes.spawn_sequence.low,
+                              object->tail.spawn_bytes.spawn_sequence.high,
                               object->tail.fields.unknown_3e.bytes.low,
                               (s8)object->extra_40.bytes[0],
                               (s8)object->extra_40.bytes[1],
@@ -907,7 +922,7 @@ void func_80036ed4(void)
                     break;
                 case 2:
                     event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
-                        (u8)object->tail.fields.spawn_sequence;
+                        object->tail.spawn_bytes.spawn_sequence.low;
                     break;
                 }
             }

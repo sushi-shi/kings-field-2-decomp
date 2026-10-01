@@ -18,7 +18,7 @@ void func_800482f8(void)
     sentinels->unknown_00 = 0xffff;
     memory_arena_initialize_blocks(&event_state.arena.first_block, 0x3800);
     offset = event_state.saved_offsets;
-    for (index = 9; index != -1; index--) {
+    for (index = KF_EVENT_SAVED_SLOT_COUNT - 1; index != -1; index--) {
         *offset++ = 0xffff;
     }
     repeat_store_word((u32 *)game_counter_bytes, 0, 0x1e);
@@ -35,7 +35,7 @@ ADDRESS(0x800483d8, 0x50)
 void func_800483d8(u8 **pointers)
 {
     u16 *offset = event_state.saved_offsets;
-    s32 index = 9;
+    s32 index = KF_EVENT_SAVED_SLOT_COUNT - 1;
     u16 absent = 0xffff;
 
     for (; index != -1; index--) {
@@ -75,7 +75,7 @@ void func_80048498(u8 **pointers)
     u16 *offset = event_state.saved_offsets;
     s32 index;
 
-    for (index = 9; index != -1; index--) {
+    for (index = KF_EVENT_SAVED_SLOT_COUNT - 1; index != -1; index--) {
         u8 *value = *pointers;
         pointers++;
         if (value == 0) {

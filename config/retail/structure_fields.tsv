@@ -347,6 +347,7 @@ KfMapObjectStateGame	0x8740	0x02	unknown_8740	u16	candidate	asm;map_object_pool_
 KfMapObjectStateGame	0x8742	0x02	unknown_8742	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
 KfMapObjectTail	0x0	0xc	fields	KfMapObjectTailFields	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;func_8003247c	byte view of the packed spawn sequence
 KfMapObjectTail	0x0	0xc	reset_words	u32[3]	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTailFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
@@ -354,6 +355,12 @@ KfMapObjectTailFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm;map obj
 KfMapObjectTailFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x8	0x2	spawn_sequence	u16	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;func_80036464;func_800365d8	signed spawn parameter initialized to zero or -120
+KfMapObjectTailSpawnByteFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
+KfMapObjectTailSpawnByteFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm	preceding tail byte
+KfMapObjectTailSpawnByteFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm	preceding tail byte
+KfMapObjectTailSpawnByteFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	preceding tail halfword
+KfMapObjectTailSpawnByteFields	0x8	0x2	spawn_sequence	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;func_8003247c	retail reads both sequence bytes separately
+KfMapObjectTailSpawnByteFields	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	following tail halfword
 KfMapObjectTailHalfword	0x0	0x2	value	u16	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfword	0x0	0x2	bytes	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x0	0x1	low	u8	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword

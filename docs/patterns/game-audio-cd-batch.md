@@ -1168,3 +1168,12 @@ The `0x80016260` identity now distinguishes five unsigned byte controls from
 three signed byte offsets. Its map-object caller casts the offsets to `s8`,
 and retail sign-extends the first offset before comparing it with 127. The
 source already used those types; the focused listing remains WIP at 71.6%.
+
+The partial VAB transfer service at `0x800144b8` retains 11/11 CFG blocks,
+5/5 branches, the same known successor order, and 4/4 return-frontier edges
+in a flow-aware focused comparison. Its first control difference is retail's
+`bne v1,v0` against the probe's `bne v1,s3`: retail keeps state value 1 in
+`s3`, while the probe keeps retry sentinel -1 there. Spelling the retry as a
+direct `while ((result = SsVabTransBodyPartly(...)) == -1)` loop emitted an
+identical object and was reverted. The function remains WIP at 91.8% focused
+listing similarity, with no source-backed constant or ABI correction pending.

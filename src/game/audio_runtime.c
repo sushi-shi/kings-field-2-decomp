@@ -31,6 +31,7 @@ void func_800139c4(void)
     SsUtReverbOn();
     SsUtSetReverbDepth(0x28, 0x28);
 
+    /* Sequence-data buffer owner and extent remain unresolved. */
     audio_state.sequence_buffer = (u_long *)0x80198640;
     audio_state.sequence_active = 0;
     audio_state.sequence_ready = 0;

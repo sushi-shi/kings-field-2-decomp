@@ -59,16 +59,9 @@ void func_8003247c(void)
         } else {
             layer = actor->unknown_03;
         }
-        if (actor->unknown_28 & 0x80000) {
-            if ((map_cell_layer_mask_radius(&actor->position, 3) &
-                 actor->unknown_03) == 0) {
-                continue;
-            }
-        } else {
-            if ((map_cell_layer_mask(&actor->position) & layer) == 0) {
-                continue;
-            }
-        }
+        if (actor->unknown_28 & 0x80000) goto actor_radius_check;
+        if ((map_cell_layer_mask(&actor->position) & layer) == 0) continue;
+actor_visible:
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
             position = func_8003c10c(actor, &actor_position);
             world_matrix = &game_graphics_runtime.render_state.view_matrix;
@@ -94,6 +87,10 @@ void func_8003247c(void)
         vab_flags[group->unknown_07[0]] = 1;
         vab_flags[group->unknown_07[1]] = 1;
         tmd_flags[actor->unknown_01] = 1;
+        continue;
+actor_radius_check:
+        if (map_cell_layer_mask_radius(&actor->position, 3) &
+            actor->unknown_03) goto actor_visible;
     }
     resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);
     resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
@@ -111,7 +108,26 @@ void func_8003247c(void)
             continue;
         }
         object->collision_flags &= 0x7f;
-        if ((s8)object->action == 0x1f) {
+        if (object->action == 0x1f) goto map_sound_action;
+        if (object->action != 0xf0) goto map_ordinary_object;
+        if (map_cell_visible(&object->position,
+                             object->tail.fields.unknown_38,
+                             object->tail.fields.unknown_39) != 0 &&
+            (object->unknown_00 & render_mask_scan_state.first_layer_mask)) {
+            if (resource_registry_get(object->object_id + 0x100) != 0) {
+                func_80031d8c(object->object_id + 0x100,
+                               (const struct KfEulerAngles *)&object->rotation,
+                               (KfPoolRecord **)&object->tail,
+                               object->unknown_01, object->unknown_0a,
+                               (u8)object->tail.fields.spawn_sequence,
+                               object->tail.fields.unknown_3a.bytes.high,
+                               0x1fff - object->tail.fields.unknown_3a.bytes.low);
+                object->collision_flags |= 0x80;
+            }
+            tmd_flags[object->object_id] = 1;
+        }
+        continue;
+map_sound_action: {
             s32 sound;
             s32 distance;
             s32 radius;
@@ -119,12 +135,9 @@ void func_8003247c(void)
 
             if (func_80036ad8(object->position.vx >> 11,
                               object->position.vz >> 11,
-                              (s8)object->tail.fields.unknown_38,
-                              object->tail.fields.unknown_39, 0x8000) == 0) {
-                object->extra_40.raw = frame +
-                    object->tail.fields.unknown_3e.value * 6;
-                continue;
-            }
+                              object->tail.fields.unknown_38,
+                              object->tail.fields.unknown_39, 0x8000) == 0)
+                goto map_sound_outside;
             sound = object->tail.fields.unknown_3a.bytes.low;
             if ((u16)(audio_state.voices.params[sound].vab_slot_index - 0x42) < 0x40) {
                 /* This update starts at VAB slot 0x42. */
@@ -142,12 +155,12 @@ void func_8003247c(void)
                 if (distance < 0) distance = -distance;
                 distance = object->tail.fields.unknown_39 * 0x400 - distance;
                 if (distance < volume) volume = distance;
-                radius = (u8)object->tail.fields.spawn_sequence << 11;
+                radius = object->tail.spawn_bytes.spawn_sequence.low << 11;
                 if (volume < radius) {
                     if (radius == 0) continue;
                     volume = object->tail.fields.unknown_3a.bytes.high * volume / radius;
                 }
-                if (object->tail.fields.spawn_sequence & 0x100) {
+                if (object->tail.spawn_bytes.spawn_sequence.high & 1) {
                     distance = player_state.camera_position.vy - object->position.vy;
                     if (distance < 0) distance = -distance;
                     volume -= object->tail.fields.unknown_3a.bytes.high * distance >> 13;
@@ -156,32 +169,18 @@ void func_8003247c(void)
                     audio_play_sound(sound, volume);
                 }
             }
-        } else if ((s8)object->action == -16) {
-            if (map_cell_visible(&object->position,
-                                 object->tail.fields.unknown_38,
-                                 object->tail.fields.unknown_39) != 0 &&
-                (object->unknown_00 & render_mask_scan_state.first_layer_mask)) {
-                if (resource_registry_get(object->object_id + 0x100) != 0) {
-                    func_80031d8c(object->object_id + 0x100,
-                                   (const struct KfEulerAngles *)&object->rotation,
-                                   (KfPoolRecord **)&object->tail,
-                                   object->unknown_01, object->unknown_0a,
-                                   (u8)object->tail.fields.spawn_sequence,
-                                   object->tail.fields.unknown_3a.bytes.high,
-                                   0x1fff - object->tail.fields.unknown_3a.bytes.low);
-                    object->collision_flags |= 0x80;
-                }
-                tmd_flags[object->object_id] = 1;
-            }
-        } else {
+            continue;
+map_sound_outside:
+            object->extra_40.raw = frame +
+                object->tail.fields.unknown_3e.value * 6;
+            continue;
+        }
+map_ordinary_object: {
             u8 render_mode;
-            if (object->collision_flags & 2) {
-                visibility = map_cell_layer_mask_radius(&object->position,
-                    map_object_state.templates[object->object_id].marker_action_05);
-            } else {
-                visibility = map_cell_layer_mask(&object->position);
-            }
+            if (object->collision_flags & 2) goto map_radius_check;
+            visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->unknown_00) == 0) continue;
+map_ordinary_visible:
             object_index = object->object_id;
             tmd_flags[object_index] = 1;
             vab_flags[map_object_state.templates[object_index].unknown_02[0]] = 1;
@@ -203,6 +202,11 @@ void func_8003247c(void)
                                (s16)object->unknown_0e);
                 object->collision_flags |= 0x80;
             }
+            continue;
+map_radius_check:
+            visibility = map_cell_layer_mask_radius(&object->position,
+                map_object_state.templates[object->object_id].marker_action_05);
+            if (visibility & object->unknown_00) goto map_ordinary_visible;
         }
     }
     resource_tmd_update_range(0, 0x80, 0x100, 0x140, tmd_flags);

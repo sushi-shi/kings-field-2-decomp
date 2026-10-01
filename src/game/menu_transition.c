@@ -82,7 +82,7 @@ present:
         DrawSync(0);
         display_present_frame();
         level += step;
-        if ((u32)(level - 1) >= 119u) {
+        if (((u32)level - 1u) >= 119u) {
             DrawSync(0);
             return state;
         }

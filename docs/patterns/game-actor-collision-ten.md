@@ -10,7 +10,7 @@ supported Sony/Psy-Q archive attribution.
 | --- | --- | --- |
 | `0x8002aaa4` | The 0xb60-byte collision dispatcher is called by the height wrappers and branches indirectly through candidate table `DAT_8001134c`. | **WIP, unclaimed**; the table owner and indirect targets remain unproved. |
 | `0x80039108` | The 0x4c0-byte actor scorer calls geometry, angle, random, and target helpers and branches through candidate table `DAT_80011cd8`. | **WIP, unclaimed**; its scorer cases and table owner remain unresolved. |
-| `0x80039c94` | The 0x684-byte player/actor combat helper calls `func_80039c14` repeatedly, then training, target, and angle helpers. | **WIP, unclaimed**; its damage/state field family is incomplete. |
+| `0x80039c94` | The 0x684-byte player/actor combat helper calls `func_80039c14` eight times, an unresolved slot-18 callback, then training, target, and angle helpers. | **WIP, source claimed, 91.85132% recorded strict**; the focused listing still differs first in stack-argument load/save order and saved-register assignment. |
 | `0x8003a9f4` | Scans 200 actors, excludes inactive/target type 3/current/masked actors, and tests an alternate Y position for flagged actors. | **Exact, 360/360 bytes strict**; branch-local distance queries reproduce retail's shared call setup. |
 | `0x8003ab5c` | Companion scan omits the target-type-3 exclusion but keeps the alternate-position collision query. | **Exact, 344/344 bytes strict**; the same branch-local source form matches. |
 | `0x8003ae50` | The 0x4ec-byte actor collision response calls the five-channel dispatcher, height probe, collision snapshot, angle, sine/cosine, and square root helpers. | **WIP, unclaimed**; complete actor response state and branch joins need source evidence. |
@@ -33,3 +33,12 @@ edge-check still stops on the three existing unrelated TMD/map-object
 `.rodata` addend mismatches. The full `kf build` built PSX; GAME, OPEN, and END
 retain the pre-existing unresolved first symbols `InitCARD`, `malloc`, and
 `display_buffers`. No repository tests, bank, or commit were run.
+
+A later focused revisit of `0x8003b5d0` kept the source at 66.5% listing
+similarity with 40/40 CFG blocks, 21/21 branches, and all three preceding
+motion helpers identical. Retail tests motion state `0x20` first and shares
+one vertical-step block across three collision outcomes. A temporary explicit
+`if` dispatch lowered listing similarity to 62.3%. A temporary shared-step
+label aligned the `bnez` after the collision call, but compiled only 39 CFG
+blocks with an extra return frontier (67.1% listing). Both experiments were
+discarded; the current switch preserves the stronger CFG agreement.

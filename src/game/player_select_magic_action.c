@@ -81,9 +81,7 @@ charge_gate:
         player_state.unknown_118.vx = 0;
         player_state.unknown_118.vy = -512;
         player_state.unknown_118.vz = 2000;
-        player_state.unknown_d1[1] = 1;
-        player_state.unknown_d1[2] = 1;
-        break;
+        /* Retail falls through to the shared action-byte stores. */
     case 1:
     case 4:
     case 5:

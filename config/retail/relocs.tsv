@@ -8177,6 +8177,7 @@ GAME.EXE	0x80040220	0x2fa20	0x80040224	mips_hi16_lo16	reachable-code	0x8019bd28	
 GAME.EXE	0x80040250	0x2fa50		mips26	reachable-code	0x8004025c	load		j		control-flow	reviewed	manual:effect
 GAME.EXE	0x80040338	0x2fb38		mips26	control-flow	0x80040220	load	effect_pool_find_free	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x800403b0	0x2fbb0		mips26	control-flow	0x800403c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
+GAME.EXE	0x80040404	0x2fc04	0x80040408	mips_hi16_lo16	reachable-code	0x8019859d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_80040308 raw lui 0x801a/lbu -31331; player_state+0xcd
 GAME.EXE	0x80040418	0x2fc18		mips26	control-flow	0x80040424	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80040498	0x2fc98		mips26	control-flow	0x800404a4	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x800404bc	0x2fcbc	0x800404c0	mips_hi16_lo16	instruction-word	0x8001249c	load	effect_spawn_kind_jump_table	lui+addiu	at	paired-reviewed	reviewed	manual:func_80040308 raw lui/addiu table base; 123 bounded entries; indirect jr unresolved

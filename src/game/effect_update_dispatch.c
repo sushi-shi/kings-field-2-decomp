@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/effect.h>
+#include <kf/game/player.h>
 #include <psyq/libc.h>
 
 extern s32 func_80042298(s32 radius, s32 angle, s32 step);
@@ -129,6 +130,37 @@ void effect_update_dispatch(void)
         record->phase++;
         break;
     }
+    case 15:
+        if (player_state.unknown_62 == 0) {
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        record->rotation.vy += 128;
+        break;
+    case 17:
+        if (player_state.unknown_64 == 0) {
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        record->rotation.vy -= 128;
+        break;
+    case 101:
+        record->direction.vy = (u16)record->direction.vy +
+                               *(u16 *)&record->unknown_3c[6];
+        record->position.vx += record->direction.vx;
+        record->position.vz += record->direction.vz;
+        step = record->scale_x + *(u16 *)&record->unknown_3c[4];
+        record->scale_x = step;
+        record->scale_y = step;
+        record->scale_z = step;
+        record->position.vy += record->direction.vy;
+        break;
+    case 102:
+        record->phase++;
+        record->scale_y = (rsin(record->phase << 8) *
+                           (s16)*(u16 *)&record->unknown_3c[4]) >> 12;
+        if (record->phase >= 8) {
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        break;
     /* The remaining effect kinds, including two indirect switch dispatches,
      * are not yet reconstructed. Their callback and BSS owners remain open. */
     }

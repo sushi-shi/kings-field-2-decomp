@@ -52,7 +52,7 @@ void func_800279cc(void)
     s32 collision_flags;
     s32 impact;
     s32 bob;
-    s16 movement_speed;
+    s32 movement_speed;
 
     func_8002b604(player_state.camera_position.vx,
                   player_state.camera_position.vy,

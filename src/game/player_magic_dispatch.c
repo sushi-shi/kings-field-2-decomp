@@ -80,14 +80,11 @@ void func_8002665c(void)
     s32 sound_step;
     s32 hit_step;
     SVECTOR initial_vertex;
-    SVECTOR final_vertex;
     struct KfEulerAngles rotation;
-    struct KfEulerAngles direction_angles;
-    SVECTOR direction;
     VECTOR world_position;
-    VECTOR last_world;
-    VECTOR damage_position;
     VECTOR step;
+    VECTOR damage_position;
+    VECTOR last_world;
     KfEffectRecord *effect;
     const VECTOR *damage_origin;
     s32 damage_amount;
@@ -141,10 +138,10 @@ special_mode_zero: {
                 }
                 if (game_counter_bytes[counter] != 0) {
                     game_counter_bytes[counter]--;
-                    effect = func_80040308(
+                    player_state.weapon_effect = func_80040308(
                         10, 0x12, effect_kind, &player_state.camera_position,
                         0, &player_state.camera_rotation);
-                    player_state.weapon_effect = effect;
+                    effect = player_state.weapon_effect;
                     if (effect != 0) {
                         effect->phase = 99;
                     }
@@ -188,11 +185,11 @@ special_mode_zero: {
 
                 func_80034344(32, player_state.weapon_attack_mode,
                                player_state.weapon_attack_phase,
-                               weapon->final_vertex_index, &final_vertex);
-                final_vertex.vx -= weapon->position_offset_x;
-                final_vertex.vy += weapon->position_offset_y;
-                final_vertex.vz -= weapon->position_offset_z;
-                vector_rotate_yxz(&rotation, &final_vertex, &last_world);
+                               weapon->final_vertex_index, &initial_vertex);
+                initial_vertex.vx -= weapon->position_offset_x;
+                initial_vertex.vy += weapon->position_offset_y;
+                initial_vertex.vz -= weapon->position_offset_z;
+                vector_rotate_yxz(&rotation, &initial_vertex, &last_world);
                 func_800154fc(world_position.vx - last_world.vx,
                               world_position.vy - last_world.vy,
                               world_position.vz - last_world.vz,
@@ -216,8 +213,9 @@ special_mode_zero: {
             return;
         }
 special_mode_one: {
-            player_state.weapon_attack_phase += 400;
-            if (player_state.weapon_attack_phase >= 4095) {
+            phase += 400;
+            player_state.weapon_attack_phase = phase;
+            if (phase >= 4095) {
                 player_state.weapon_attack_phase = -1;
                 player_state.attack_charge_current = 0;
             }
@@ -261,7 +259,7 @@ regular_weapon:
             if (player_state.weapon_magic_shots_configured != 0) {
                 func_80026498(weapon->initial_effect_id,
                                player_state.weapon_magic_shots_configured == weapon->magic_shots,
-                               0);
+                               player_state.weapon_magic_shots_configured);
                 player_state.weapon_magic_shots_configured--;
             }
         } else {
@@ -302,12 +300,12 @@ regular_weapon:
         if (player_state.weapon_attack_phase >= phase_end) {
             player_state.weapon_attack_window = 5000;
             player_state.weapon_charge_delay = 10;
+            damage_amount = player_state.attack_charge_committed;
+            damage_origin = &damage_position;
             player_state.attack_charge_current = 0;
             damage_position.vx = player_state.camera_position.vx;
-            damage_position.vy = player_state.camera_position.vy - 1000;
             damage_position.vz = player_state.camera_position.vz;
-            damage_origin = &damage_position;
-            damage_amount = player_state.attack_charge_committed;
+            damage_position.vy = player_state.camera_position.vy - 1000;
         } else {
             player_state.weapon_attack_window += hit_step;
             damage_origin = 0;
@@ -321,8 +319,9 @@ regular_weapon:
         rotation.y = player_state.camera_rotation_target.angles[1];
         rotation.z = 0;
         vector_rotate_yxz(&rotation, &initial_vertex, &step);
+        step.vy = ((3600 - weapon->attack_angle) * step.vy) / 1800;
         step.vx /= 4;
-        step.vy = ((3600 - weapon->attack_angle) * step.vy / 1800) / 4;
+        step.vy /= 4;
         step.vz /= 4;
         world_position.vx = player_state.camera_position.vx;
         world_position.vy = player_state.camera_position.vy - 800;

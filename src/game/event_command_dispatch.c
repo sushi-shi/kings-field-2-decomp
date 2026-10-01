@@ -40,18 +40,23 @@ void func_8004678c(const VECTOR *position,
                 goto invoke_callback;
             }
         }
-        if (func_80047434(0x4d) == 0) {
+        index = func_80047434(0x4d);
+        if (index == 0) {
             notify_enqueue(0x16);
             func_800473e0(0x52);
+            index = 1;
         }
+        event_state.state_word = index;
         break;
     case 0x54:
         player_state.unknown_6a = 1200;
         func_800473e0(0x54);
+        event_state.state_word = 1;
         break;
     case 0x56:
         func_800473e0(0x56);
         player_state.unknown_6c = 900;
+        event_state.state_word = 1;
         break;
     case 0x57:
         func_800473e0(0x57);
@@ -119,6 +124,34 @@ void func_8004678c(const VECTOR *position,
                     func_800473e0(command);
                     func_80046700((KfEventObjectView *)object, command);
                 }
+            } else if (func_800368b4(object, command) == 3) {
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+                event_state.state_word = 1;
+            }
+        }
+        break;
+    case 0x72:
+    case 0x73:
+    case 0x74:
+        index = func_80036190(0, position, 800, 1700,
+                               rotation->angles[1], 512);
+        if (index != -1) {
+            KfMapObject *object = &map_object_state.objects[index];
+
+            if (object->object_id == 0xbd) {
+                if (object->tail.fields.unknown_38 != 0xff) {
+                    break;
+                }
+                object->tail.fields.unknown_38 = command;
+                object->action_timer = 0;
+                *(u16 *)&event_state.control.bytes[0x28 +
+                    4 * (command - 0x72)] = index;
+                event_state.control.bytes[0x2a +
+                    4 * (command - 0x72)] = state_8017d118.values_04[0];
+                event_state.state_word = 1;
+                func_800473e0(command);
+                object->extra_40.bytes[0] = 0;
+                func_80046700((KfEventObjectView *)object, command);
             } else if (func_800368b4(object, command) == 3) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
                 event_state.state_word = 1;

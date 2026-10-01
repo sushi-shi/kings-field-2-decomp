@@ -422,6 +422,7 @@ void func_80025a18(s32 effect_id, ...)
     KfEffectRecord *effect;
     s32 i;
     s32 kind;
+    s32 rotation_scale;
     va_list arguments;
     const VECTOR *override_position;
 
@@ -447,14 +448,20 @@ void func_80025a18(s32 effect_id, ...)
             position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
             position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
             if (func_8002b7f8(position.vx, position.vy, position.vz, 10, 10)) {
-                position = actor->position;
+                position.vx = actor->position.vx;
+                position.vy = actor->position.vy;
+                position.vz = actor->position.vz;
             }
         }
         func_80040308(10, 0x12, 0x72, &position, 0);
         break;
     case 0:
         actor = func_80025878(5000, &position, &direction, &distance);
-        kind = actor == 0 ? 255 : actor - actor_state.actors;
+        if (actor == 0) {
+            kind = 255;
+        } else {
+            kind = actor - actor_state.actors;
+        }
         position.vx += direction.vx;
         position.vz += direction.vz;
         func_80040308(10, 0x12, 0x6f, &position, 0, kind);
@@ -480,9 +487,11 @@ void func_80025a18(s32 effect_id, ...)
         goto simple_effect;
     case 4:
 simple_effect:
-        func_80025878(700, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
+        rotation_scale = 700;
+        goto probe_rotation_effect;
+probe_rotation_effect:
+        func_80025878(rotation_scale, &position, &direction, &distance);
+        goto emit_rotation_effect;
     case 11:
         func_80025878(600, &position, &direction, &adjusted_distance);
         if (adjusted_distance != -1) {
@@ -500,7 +509,11 @@ simple_effect:
     case 9:
         actor = func_80025878(effect_id == 5 ? 200 : 500,
                               &position, &direction, &distance);
-        kind = actor == 0 ? 255 : actor - actor_state.actors;
+        if (actor == 0) {
+            kind = 255;
+        } else {
+            kind = actor - actor_state.actors;
+        }
         func_80040308(10, 0x12, effect_id, &position, &direction, kind);
         break;
     case 8:
@@ -510,10 +523,8 @@ simple_effect:
         break;
     case 6:
     case 10:
-        func_80025878(effect_id == 6 ? 250 : 300,
-                       &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
+        rotation_scale = effect_id == 6 ? 250 : 300;
+        goto probe_rotation_effect;
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];
         player_state.camera_rotation.angles[1] -=
@@ -561,10 +572,10 @@ sequence_effect: {
         effect_id = 0x74;
         goto regular_weapon_effect;
     case 40:
-        func_80025878(1000, &position, &direction, &distance);
+        rotation_scale = 1000;
+        goto probe_rotation_effect;
 regular_weapon_effect:
-        func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
+        goto emit_rotation_effect;
     case 39:
         func_80025878(50, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
@@ -589,25 +600,33 @@ regular_weapon_effect:
     case 35:
     case 38:
         func_80025878(900, &position, &direction, &distance);
+        goto emit_rotation_effect;
+emit_rotation_effect:
         func_80040308(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
     case 15:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+        func_80040308(10, 0x10, 15, &player_state.camera_position,
                        &direction);
         player_state.unknown_62 = 900;
         player_recalculate_combat_stats();
         break;
     case 17:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+        func_80040308(10, 0x10, 17, &player_state.camera_position,
                        &direction);
         player_state.unknown_64 = 900;
         player_recalculate_combat_stats();
         break;
     case 14:
+        kind = 14;
+        goto status_effect;
     case 16:
+        kind = 16;
+        goto status_effect;
     case 19:
-        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+        kind = 19;
+status_effect:
+        func_80040308(10, 0x10, kind, &player_state.camera_position,
                        &direction);
         break;
     default:

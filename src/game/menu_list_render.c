@@ -30,7 +30,7 @@ void func_8001fc94(const void *list_state, s32 render_mode)
     byte_values += list->scroll_offset;
 
     {
-        const s32 card_columns = (u32)(render_mode - 8) < 2;
+        const s32 card_columns = ((u32)render_mode - 8u) < 2u;
         for (row = 0; row < list->visible_rows && row < list->entry_count; row++) {
             text.position.x = list->list_x + 5;
             text.position.y = list->list_y + 5 + row * 14;
@@ -48,7 +48,7 @@ void func_8001fc94(const void *list_state, s32 render_mode)
                 menu_draw_string(&menu_sprite_defs[1], &text);
             }
     
-            if ((u32)(render_mode - 10) < 6 && render_mode != 12) {
+            if (((u32)render_mode - 10u) < 6u && render_mode != 12) {
                 value = *number_values;
                 text.position.x += 140;
                 if (render_mode == 15)
@@ -155,10 +155,10 @@ void func_8001fc94(const void *list_state, s32 render_mode)
     SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
-    if ((u32)(render_mode - 10) < 2 || (u32)(render_mode - 13) < 2)
+    if (((u32)render_mode - 10u) < 2u || ((u32)render_mode - 13u) < 2u)
         func_80020990(1);
     else if (render_mode == 15)
         func_80020990(3);
-    if ((u32)(render_mode - 8) < 2)
+    if (((u32)render_mode - 8u) < 2u)
         func_80021a60();
 }

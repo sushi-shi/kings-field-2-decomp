@@ -512,15 +512,15 @@ The listed percentages are strict objdiff scores, not `--loose` scores.
 
 | GAME VA | Verdict | Evidence and first unresolved difference |
 | --- | --- | --- |
-| 0x800158b4 | WIP, 98.00000% | The nine-halfword interpolation has exact loads, widths, arithmetic, and 3/3 CFG blocks. Pointer/index temporary assignment and the two independent pointer increments are ordered differently. An explicit-increment source experiment changed retail `lhu`/extension selection and was reverted; two adjacent math functions remain exact. |
-| 0x80015918 | WIP, 95.49419% | The trajectory solver keeps 41/41 CFG blocks, 24 branches, `SquareRoot0`, signed divisions, and exact adjacent 0x15bc8/15ce0. Ordering its mode-zero branch like retail improved the focused listing from 76.3% to 85.2%; strict score moved from 95.75581% to 95.49419%. The first remaining mismatch is the discriminant result register, followed by midpoint/time register assignment. The independently evidenced branch structure was retained. |
-| 0x8003a318 | WIP, 73.59162% | The 16-argument radial actor-damage caller has its unsigned attenuation correction and matching direct calls, but retail uses a 200-byte frame and 26 CFG blocks versus the probe's 192-byte frame and 25 blocks. Exact neighbor 0x3a778 remains untouched. |
+| 0x800158b4 | **Exact, 100% strict** | Separate source, target, and destination pointers with source-before-target evaluation emit the retail nine-halfword load and increment schedule. The later [trajectory campaign](kf2-game-player-actor-trajectory.md) records strict 100/100 closure; a fresh focused build keeps this and the two preceding leaves `SAME`. |
+| 0x80015918 | WIP, 95.49419% | The trajectory solver keeps 41/41 CFG blocks, 24 branches, `SquareRoot0`, signed divisions, and exact adjacent 0x15bc8/15ce0. Ordering its mode-zero branch like retail improved the focused listing from 76.3% to 85.2%; strict score moved from 95.75581% to 95.49419%. The first remaining mismatch is the discriminant result register, followed by midpoint/time register assignment. An explicit in-place discriminant accumulation changed earlier multiplication/save scheduling and reduced the focused listing to 67.2%, so it was reverted. The independently evidenced branch structure was retained. |
+| 0x8003a318 | WIP, 99.86911% strict | The 16-argument radial actor-damage caller now has the supported unsigned attenuation, matching calls, and 26/26 CFG blocks. The recorded strict report leaves two incoming stack-argument temporary registers exchanged; the [near-exact audit](kf2-game-root-near-exact-verdicts.md) found no supported signature, call, CFG, or referent correction. Exact neighbor 0x3a778 remains untouched. |
 | 0x8003a614 | WIP, 96.91011% | Actor-to-player damage gate has 6/6 blocks and matching distance, angle, and damage calls. Retail forms some camera fields from separate absolute loads; the probe reuses a saved player-state base and assigns scale temporaries to different saved registers. |
-| 0x8003a9f4 | WIP, 89.04444% | Actor proximity scan has matching call/field set but 13 retail versus 12 compiled blocks; the alternate-position arm and stack-argument lifetime differ. Four following animation helpers stay exact. |
-| 0x8003ab5c | WIP, 88.53488% | Sibling proximity scan omits the target-type exclusion as retail does, but has 12 retail versus 11 compiled blocks and the same alternate-position/register-lifetime residue. |
+| 0x8003a9f4 | Exact, 100% | Branch-local distance queries now reproduce the shared retail call setup; 360/360 strict text bytes match, as detailed in `game-actor-collision-ten.md`. The older WIP rows above are historical. |
+| 0x8003ab5c | Exact, 100% | The companion scan omits the target-type exclusion and matches 344/344 strict text bytes; see `game-actor-collision-ten.md`. The older WIP rows above are historical. |
 | 0x8003bd40 | WIP, 86.53226% | Actor horizontal steering has 9/9 blocks and five branches; first differences are independent actor-coordinate load/subtract order and angle/limit saved-register assignments. Six adjacent motion helpers remain exact. |
 | 0x8003f7ec | WIP, 85.86207% | Group-target pointer fixup has 9/9 blocks and correct 40×16 offset walk. The two listing residues are sentinel constant setup order and `addu` operand order; reversing the C pointer addition did not change the object and was reverted. Adjacent scan/load functions remain exact. |
-| 0x8003fb94 | WIP, 87.791046% | Fifteen-argument effect precursor has 11/11 CFG blocks, six branches, and the expected effect/actor calls; the first difference is prologue saves and argument/mask scheduling. Its nine contiguous update helpers remain exact. |
+| 0x8003fb94 | Exact, 100% | Updating `kind` in place after extracting option bits matches the retail prologue and mask schedule; direct objdiff confirms 536/536 text bytes and matching ordered relocations. The older WIP row above is historical. |
 | 0x80041e94 | **Exact, 100% direct objdiff** | A fresh isolated pinned compile matches all 664 function bytes; the contiguous 0x4212c sibling also remains exact. The whole 1,028-byte `.text` and all 22 ordered relocations match the safe retail module. The earlier 92.650604% report was stale. |
 
 No data or relocation owner was changed for this batch. The source changes
@@ -1076,3 +1076,31 @@ where noted):
 | 0x800484e4 | Exact, reviewed strict event-state unit; current focused SAME. |
 | 0x80048554 | Exact, direct 1112/1112 text and 660/660 rodata; current focused SAME. |
 | 0x800489ac | WIP, focused 95.1%; actor/group sentinel-loop register assignments. |
+
+The source-backed first pass of the GAME 0x80040308 constructor now handles
+additional switch arms while remaining WIP. Kinds 2 and 23 each store three
+unsigned halfwords at effect-record +0x40, +0x42, and +0x44 from their
+trailing O32 arguments. Other kinds access +0x40 and +0x41 as separate bytes,
+so these writes are retained through the provisional `unknown_3c` tail view.
+The complete variant-specific field family and record-tail semantics are not
+yet proved; the three halfwords do not justify a shared named field layout.
+The table entry for kind 12 points to 0x80040d20. That arm copies the caller's
+SVECTOR, sets all three scales to 30000, writes four `u16` tail values at
++0x40/+0x42/+0x44/+0x46, and takes the update count from the next trailing
+argument. This source-backed arm compiles, but the constructor remains focused
+9.2% WIP because most of the 123-way switch is still absent; the lower score
+was retained because the added reads and writes are directly decoded.
+The adjacent actor-group source calls this kind with an angle pointer, four
+halfword-sized values, and an update-count value in that same order; that
+caller is itself WIP and is supporting context rather than ABI proof alone.
+
+Draft PR #3 five-function continuation, GAME focused verdicts (none are
+strict exact):
+
+| Address | Verdict | Remaining evidence gap |
+| --- | --- | --- |
+| 0x8003c614 | 23.0% WIP | Actor-group script variants and frame/local lifetime remain incomplete. |
+| 0x8003d184 | 3.6% WIP | Large actor-state switch and indirect dispatch remain incomplete. |
+| 0x80040308 | 9.2% WIP | Most constructor kinds are still absent; DAT_8006d704 and its destination have no proved source owner. |
+| 0x80042650 | 1.3% WIP | Most update kinds and two indirect dispatches remain unresolved. |
+| 0x8004678c | 12.1% WIP | Several event commands and the terminal callback value chain remain unresolved. |

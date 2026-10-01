@@ -1086,9 +1086,10 @@ KF1 `player_update_vertical_motion` independently casts its movement speed to
 `s16` at the step threshold; this is source-shape support, while the KF2 `lh`
 and `lhu` instructions establish the two KF2 views.
 The step-up test compares the new Y against Y minus vertical speed. Signed
-speed capture before the falling-mode store, the signed zero-height guard,
-and the retail short-rise branch orientation bring
-the focused listing to **77.8% WIP** with 70/70 CFG blocks, 37/37 branches,
+speed capture in a promoted `s32` local before the falling-mode store emits
+retail's direct `lh` at `80027df4`, rather than `lhu` with explicit sign
+extension. The signed zero-height guard and retail short-rise branch
+orientation bring the focused listing to **78.1% WIP** with 70/70 CFG blocks, 37/37 branches,
 and 1/1 returns. The 0x48-byte retail frame, early camera-base register
 assignment, and later schedule still differ; no exact claim is made.
 Neighboring `80027928`/`80027988` remain SAME, as do all 16 reaction listings
@@ -1121,16 +1122,16 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | DIFF, 67.0% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, and effect-ID assignments now follow reviewed retail call sites. Nineteen reviewed address pairs resolve its direct referents. |
+| `80025a18` | DIFF, 72.9% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 now share their source probe as retail does, though the probe compiler still duplicates two calls. Nineteen reviewed address pairs resolve its direct referents. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | DIFF, 74.2% | Weapon/magic update now follows retail's field-width, phase-store, damage-branch, and countdown order; 92 reviewed address pairs resolve its direct referents. The 224-byte probe frame still differs from retail's 208 bytes. |
-| `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
+| `8002665c` | DIFF, 91.1% | Weapon/magic update follows retail's field widths, phase-store order, configured-shot call argument, damage branch, countdown, and vector reuse; its 208-byte probe frame matches retail. The equipped ID is widened to signed `s32` for retail `slti`; keeping it as `u8` instead emits `sltiu`. Ninety-two reviewed address pairs resolve its direct referents. |
+| `8002722c` | DIFF, 89.3% | Both bounded switches and player/magic state are modeled; action case 10 now falls through to retail's shared action-byte stores. Its unexplained retail leaf frame and original TU remain WIP. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
 | `80027988` | SAME | Landing-sound helper control. |
-| `800279cc` | DIFF, 77.8% | 70/70 CFG blocks; frame and load-schedule residue. |
+| `800279cc` | DIFF, 78.1% | 70/70 CFG blocks; promoted signed movement speed now emits retail's direct `lh`, while frame and load-schedule residue remain. |
 | `80027f78` | DIFF, 80.0% | Reaction-motion scaling rematerializes one proven halfword view. |
 | `80028224` | SAME | Camera-turn control. |
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
@@ -1173,7 +1174,7 @@ two tables occupy one `RODATA(80011298, 0x64)` claim. Thirty-five direct
 `lui`/signed-low pairs were checked against raw GAME words: 34 target
 interior fields of the complete `player_state` object and one addresses
 `effect_state.magic_records`. A two-VA safe carve with `8002722c` and
-`800274ec` withholds zero relocations. Focused `kf try` reports **88.0%
+`800274ec` withholds zero relocations. Focused `kf try` reports **89.3%
 WIP** for the action selector and preserves the horizontal mover's **61.9%
 WIP** listing. The selector's 26-byte magic-row stride, unsigned MP cost,
 signed equipment restrictions, six preliminary cases, nineteen action
@@ -1190,7 +1191,11 @@ case 12 jumps from `80027460` to the common byte store at `800274c8`,
 but its `li v0,5` delay slot at `80027464` sets the first action byte;
 the resulting action pair is `(5,2)`, distinct from case 3's `(6,2)`.
 That delay slot must be included when interpreting the apparent shared tail.
-Retail and C still differ at the initial stack frame and several case joins; CFG is
-33/34 blocks with 16/16 branches. The raw table pointers prove
+Retail case 10 also falls through from `80027420` to the action-byte stores at
+`80027440`, shared with cases 1, 4–8, 11, and 18. Expressing that fallthrough
+in C removes a duplicate compiled block and raises focused similarity from
+88.0% to 89.3%, while the neighboring horizontal-movement listing stays at
+61.9%. Retail and C still differ at the unexplained eight-byte leaf frame and
+several branch offsets. The raw table pointers prove
 bounded destinations, but semantic indirect edges and the original C/TU
 form remain candidate.

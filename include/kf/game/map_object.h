@@ -105,9 +105,23 @@ typedef char kf_map_object_tail_pair38_size[
 typedef char kf_map_object_tail_pair38_offset[
     (u32)&((KfMapObjectTailPair38View *)0)->value_38 == 4 ? 1 : -1];
 
+typedef struct KfMapObjectTailSpawnByteFields {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    KfMapObjectTailHalfword unknown_3a;
+    KfMapObjectTailHalfwordBytes spawn_sequence;
+    KfMapObjectTailHalfword unknown_3e;
+} KfMapObjectTailSpawnByteFields;
+typedef char kf_map_object_tail_spawn_byte_fields_size[
+    sizeof(KfMapObjectTailSpawnByteFields) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_spawn_bytes_offset[
+    (u32)&((KfMapObjectTailSpawnByteFields *)0)->spawn_sequence == 8 ? 1 : -1];
+
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailPair38View pair_38;
+    KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];

@@ -35,6 +35,29 @@ remain the criteria for retaining changes.
 | `0x80020ef8` | `menu_blit_sprite_fixed_clut` | SAME |
 | `0x800210ac` | `menu_draw_string` | DIFF 90.4%; target 56-byte versus probe 48-byte frame and glyph UV register choice |
 | `0x80021510` | `menu_draw_number` | DIFF 93.1%; font width/height load order in two UV paths |
+| `0x800217f0` | `func_800217f0` | SAME |
+| `0x80021a60` | `func_80021a60` | SAME |
+| `0x80021a68` | `menu_frame_begin` | SAME |
+| `0x80021be0` | `menu_present_frame` | SAME |
+| `0x80032fec` | `notification_draw_quad` | SAME |
+| `0x80033140` | `notification_draw` | SAME |
+| `0x800331d0` | `notify_enqueue` | SAME |
+| `0x80033274` | `notification_digit_set_v` | SAME |
+| `0x80033284` | `func_80033284` | SAME |
+
+A fresh 30-function focused menu, frame, and notification sweep after the
+`menu_sprite_defs` inventory identity sync gave 27 SAME listings and the three
+retained WIP results above: `menu_draw_window` 83.5%, `menu_draw_string`
+90.4%, and `menu_draw_number` 93.1%. This is a listing probe, not strict
+closure. The notification quad's two rectangle groups were also trialed with
+the pinned Psy-Q `setXYWH` and `setUVWH` macros; the exact drawing helper
+fell to 74.0% and both substitutions were reverted. The retail store order
+supports the existing chained assignments, not those macro spellings.
+For `menu_draw_number`, hoisting the second atlas-column U value into a
+typed byte local reduced the focused listing to 86.0%; reversing its
+commutative addition left the 93.1% listing unchanged. Both trial expressions
+were reverted. Its remaining two U/width load-order differences and one
+prologue move position lack a source-level correction from current evidence.
 
 The separate archive-image preview at `0x8001930c` remains DIFF 80.2% in a
 normal focused `kf try`. SDK `setXYWH` and `setUVWH` macros express the two

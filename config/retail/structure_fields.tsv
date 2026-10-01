@@ -714,14 +714,14 @@ KfTmdFt4	0x14	0x02	vertex1	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;r
 KfTmdFt4	0x16	0x02	vertex2	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfTmdFt4	0x18	0x02	vertex3	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfTmdFt4	0x1a	0x02	pad2	u16	opaque	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	layout byte range; meaning unresolved
-KfTmdG3	0x0	0x4	color	u8[4]	opaque	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	packet prefix or padding
+KfTmdG3	0x0	0x4	color	CVECTOR	supported	game/tmd_packets.h;GAME 0x8002ebe0 NormalColorCol3 argument	four-byte packet color input
 KfTmdG3	0x4	0x2	normal0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0x6	0x2	vertex0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0x8	0x2	normal1	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0xa	0x2	vertex1	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0xc	0x2	normal2	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0xe	0x2	vertex2	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
-KfTmdG4	0x0	0x4	color	u8[4]	opaque	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	packet prefix or padding
+KfTmdG4	0x0	0x4	color	CVECTOR	supported	game/tmd_packets.h;GAME 0x8002ebe0 NormalColorCol3/NormalColorCol arguments	four-byte packet color input
 KfTmdG4	0x4	0x2	normal0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG4	0x6	0x2	vertex0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG4	0x8	0x2	normal1	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail

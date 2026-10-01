@@ -35,7 +35,7 @@ void func_80048554(s32 save_slot)
     for (index = 0; index < 40; group++, index++) {
         KfTargetCandidate *candidate;
         if (group->unknown_00 == 0xff) {
-            continue;
+            break;
         }
         candidate = group->targets[0].pointer;
         if (candidate != 0 && candidate->type == 0x70) {
@@ -55,12 +55,13 @@ void func_80048554(s32 save_slot)
             continue;
         }
         kind = map_object_state.templates[object_id].collision_kind;
+        /* Save packets carry the low byte of the 16-bit template ID. */
         switch (kind) {
         case 64:
             switch (object->action) {
             case 0x60:
                 *write++ = 0xf0;
-                *write++ = object_id;
+                *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -71,7 +72,7 @@ void func_80048554(s32 save_slot)
                 break;
             case 0x61:
                 *write++ = 0xf1;
-                *write++ = object_id;
+                *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -81,7 +82,7 @@ void func_80048554(s32 save_slot)
                 break;
             case 0x62:
                 *write++ = 0xf2;
-                *write++ = object_id;
+                *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -92,7 +93,7 @@ void func_80048554(s32 save_slot)
                 break;
             case 0x70:
                 *write++ = 0xf3;
-                *write++ = object_id;
+                *write++ = *(const u8 *)&object->object_id;
                 *write++ = object->tail.fields.unknown_38;
                 break;
             default:
@@ -138,8 +139,9 @@ void func_80048554(s32 save_slot)
 
     func_800483d8(saved);
     func_80048428((s32)saved);
-    if (saved[save_slot] != 0) {
-        memory_block_release(saved[save_slot]);
+    block = saved[save_slot];
+    if (block != 0) {
+        memory_block_release(block);
     }
     size = (write - payload + 3) & ~3;
     block = memory_arena_allocate_block(&event_state.arena.first_block,

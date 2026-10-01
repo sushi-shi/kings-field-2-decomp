@@ -9,7 +9,7 @@ references define the campaign; the address range is not a TU claim.
 | GAME address | Role or decisive remaining question | Verdict |
 | --- | --- | --- |
 | `0x8001d030` | item-list controller calling the primary translator | WIP: list state and `0x80065950` data |
-| `0x8001d340` | primary byte/code translator | WIP: 93.10345% strict code; 1440/1440 data exact |
+| `0x8001d340` | primary byte/code translator | **exact: 116/116 code and 1440/1440 data bytes** |
 | `0x8001d3b4` | paired item-list controller | WIP: list state and second lookup owner |
 | `0x8001d654` | secondary indexed halfword lookup | WIP: see the later [menu list and numeric pages](kf2-game-menu-list-pages-ten.md) audit |
 | `0x8001d6a8` | item-list/model renderer | WIP: model and row state |
@@ -39,10 +39,9 @@ to fetch a halfword code. The next distinct table base at `0x800661c0`
 bounds six 240-byte pages beginning at `0x80065c20`. The source owns this
 entire `u16[6][120]` initialized object; strict objdiff confirms all 1,440
 data bytes. The function's loop, widths, CFG, and referent agree with retail.
-Its first code divergence is the final page-offset shift emitted immediately
-before the table-base load rather than immediately after it. A base-pointer
-expression experiment moved the load before the function's entry guard and
-lost more correspondence, so the natural indexed source is retained WIP.
+The earlier source had a page-offset shift before the table-base load rather
+than after it. The current source emits the complete retail listing in a
+fresh focused build; direct objdiff reports 100% for both code and data.
 
 The secondary translator at `0x8001d654` uses the next table base and the
 same 240-byte page stride. A later [byte and reference audit](kf2-game-menu-list-pages-ten.md)
@@ -50,8 +49,7 @@ established its five-page, 1,200-byte extent, replaced the false Ghidra string
 fragments with one initialized table, and reconstructed the translator as
 90.47619% strict WIP. No surveyed function was attributed to vendored code.
 
-Retail census validation, GAME target regeneration, and focused compilation
-passed. Strict objdiff scored the primary function at 93.10345% and its data
-at 100%; the GAME target relink verified 156/156 units. The global strict
-command still exits at known-reference closure and two unrelated map-object
-`.rodata` addend divergences.
+The initial pass verified 156/156 GAME target relinks and stopped global
+strict comparison at known-reference closure and two unrelated map-object
+`.rodata` addend divergences. The later primary-translator check above used
+only a focused build and direct objdiff.

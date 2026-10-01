@@ -27,7 +27,7 @@ as vendored code.
 | `0x8001cb44` | conditional first label and two fixed labels | **exact, 400/400 bytes** |
 | `0x8001ccd4` | two glyph rows from suffix entries 14 and 15 | **exact, 220/220 bytes** |
 | `0x8001cdb0` | two-frame title and variable-row renderer | **exact, 264/264 bytes** |
-| `0x8001ceb8` | display entry, window, input, and item-list controller | WIP: caller state and menu lifecycle |
+| `0x8001ceb8` | display entry, window, input, and item-list controller | **exact, 376/376 bytes** |
 | `0x8001d030` | item list, model load, input, and code translator | WIP: record and table owner |
 | `0x8001d340` | indexed code/name translator | WIP: `0x80065c20` 240-byte row table extent |
 | `0x8001d3b4` | second item-list controller | WIP: record and table owner |
@@ -46,9 +46,10 @@ glyph-row table referenced by earlier list selectors. The new
 four-byte Ghidra seed fragments were replaced by one supported data owner,
 and each used interior HI16/LO16 pair was reviewed.
 
-The eight contiguous label builders and adjacent `0x8001cdb0` renderer are
-one `game.menu_label_templates` unit. Focused `kf try` reported 9/9 SAME;
-strict objdiff reports 2408/2408 code bytes and 320/320 data bytes. The two
+The eight contiguous label builders and adjacent `0x8001cdb0` renderer and
+`0x8001ceb8` controller are one `game.menu_label_templates` unit. A fresh
+focused `kf try` reported 10/10 SAME; direct objdiff reports 2784/2784
+code bytes and 320/320 data bytes. The two
 contiguous card-label builders form `game.menu_card_labels`, with 2/2 SAME
 and strict 636/636 code bytes. The most recent strict run verified 152/152
 GAME target relinks. Its global exit remains at incomplete known-reference

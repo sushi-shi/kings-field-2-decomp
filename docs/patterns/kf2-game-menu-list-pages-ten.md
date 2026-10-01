@@ -9,8 +9,8 @@ for the surrounding controllers.
 
 | GAME address | Retail evidence | Final verdict |
 | --- | --- | --- |
-| `0x8001d340` | first indexed halfword translator, 240-byte page stride | **WIP, 93.10345% strict**; page-offset shift order differs, 1,440/1,440 table bytes exact |
-| `0x8001d654` | second indexed halfword translator, same stride and unsigned-byte index | **WIP, 90.47619% strict**; page-offset shift order differs, 1,200/1,200 table bytes exact |
+| `0x8001d340` | first indexed halfword translator, 240-byte page stride | **exact: 116/116 code and 1,440/1,440 data bytes** in current direct objdiff |
+| `0x8001d654` | second indexed halfword translator, same stride and unsigned-byte index | **exact: 636/636 unit code and 1,200/1,200 data bytes** in current direct objdiff; the unit also owns `0x8001d6a8` |
 | `0x8001ddd0` | first item-list controller calls the primary translator, item preview, and shared list renderer | WIP, unclaimed; complete list-state record is unresolved |
 | `0x8001e0a8` | paired item-list controller calls the secondary translator and the same preview/render helpers | WIP, unclaimed; list-state record is unresolved |
 | `0x8001e484` | input/model controller with many incoming calls and preview rotation/translation state | WIP, unclaimed; model/input state is unresolved |
@@ -27,10 +27,10 @@ starts the separately owned card-file prefix. The former Ghidra fragments
 inside this range included false string classifications. A complete retail
 byte audit, the 240-byte addressing stride, and the boundary support the
 single initialized table. The source loop has the retail guard, unsigned
-byte index, halfword load, increment, and return shape. Its first instruction
-order difference is the final page-offset shift emitted before the table
-base load, while retail puts the shift after the base load. The natural
-two-dimensional array expression is retained without codegen steering.
+byte index, halfword load, increment, and return shape. A previous source
+revision differed in page-offset shift order. The current natural
+two-dimensional array expression emits the complete retail listing in a
+focused build, and direct objdiff confirms the code and data sections exact.
 
 The 240 bytes at `0x80064a00–0x80064af0` decode as twelve consecutive
 `KfMenuLabelSuffix` records. The renderer at `0x8001e94c` references rows
@@ -47,8 +47,8 @@ differ. No local with a supported lifetime explains the extra eight bytes,
 so its source remains unchanged. None of the ten has a supported Psy-Q or
 other vendored attribution.
 
-The strict GAME report confirmed the two code percentages and both table
-data sections at 100%, with 141/141 target units relinked. Retail census
-validation and `git diff --check` passed. The global strict command still
-stops at known-reference closure and unrelated TMD/map `.rodata` addends.
-No repository tests, banking, or commit were performed.
+The initial strict GAME report found the two earlier code differences, both
+table data sections at 100%, and 141/141 target units relinked. Its global
+command stopped at known-reference closure and unrelated TMD/map `.rodata`
+addends. The later translator checks above used focused builds and direct
+objdiff only; no repository tests or banking were performed.

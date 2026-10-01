@@ -102,7 +102,7 @@ excluded from game reconstruction.
 | `0x8002c290` | WIP | Mask-fill control and cursor scheduling differ. |
 | `0x8002c424` | WIP, 55.789116% | Neighbor-mask cursors now follow retail; 23/22 CFG blocks and 14/14 branches. |
 
-## Collision-cache and mask continuation: ten-function verdict
+## Collision-cache and mask continuation
 
 A fresh GAME retail pass covered `0x8002a988`, the eight non-exact bodies in
 the contiguous collision-height unit, and the map-object dispatcher at
@@ -111,8 +111,11 @@ exact. The height unit's nine exact neighboring functions and its 3520-byte
 default table remain exact. All ten bodies are game-specific map/collision
 operations; the selected retail bodies contain no string references or
 vendored-library signature.
+The first WIP percentages below are retained from that strict report;
+the later mask-scan rows state focused listing results because full-image
+certification is pending.
 
-| GAME address | Final verdict | Evidence or first unresolved residue |
+| GAME address | Retained verdict | Evidence or first unresolved residue |
 | --- | --- | --- |
 | `0x8002a988` | Exact, 100% (284/284) | Retail's backward alternate-layer branch and shared write blocks now match; fallback data remains 10/10. |
 | `0x8002b67c` | WIP, 94.895836% | Correct four-block CFG and referents; retail reloads cached height as call argument after storing it, while compiled C carries the elevation value. |
@@ -121,11 +124,36 @@ vendored-library signature.
 | `0x8002b9d4` | WIP, 89.4% | Grid, actor, map-object, and player call set is modeled; 23-block CFG has a differing actor-scan successor and result lifetime. |
 | `0x8002bfd4` | WIP, 54.155340% | Both mask-segment axes are modeled; coordinate and render-grid address scheduling diverges before the raster loops. |
 | `0x8002c170` | WIP, 89.8% | Eleven-block mask-row scan and bounds agree; pointer and state registers differ. |
-| `0x8002c290` | WIP, 71.326740% | Fifteen-block layer-mask update uses the validated render-mask and grid referents; control and cursor scheduling remain different. |
-| `0x8002c424` | WIP, 55.789116% | Twenty-three retail blocks versus twenty-two compiled blocks; the first pre-loop count check and neighbor-cursor schedule remain unresolved. |
-| `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte, 329-block map-object dispatcher has two unresolved indirect jumps through candidate tables at `0x8001191c` and `0x80011c9c`; its complete callback/data ownership is not established. |
+| `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
+| `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
+| `0x8002c670` | WIP, 75.8% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4; the first-lighting access uses the retail BSS+4 field-base referent. Mask-byte addressing and traversal scheduling remain different. |
+| `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte map-object dispatcher has two bounded indirect jumps. Their raw pointer-table extents and in-function targets are established, but case reachability and complete callback/data ownership remain unresolved. |
+
+At `0x80036f70`, the dispatcher subtracts two from its opcode and rejects
+values above `0xdf`; its `jr` at `0x80036f98` indexes the 224 pointer words
+from `0x8001191c` through `0x80011c98`. Every Japanese retail pointer lands
+inside `0x80036ed4`–`0x80038cc7`; 201 point to the default block at
+`0x80038c5c`. A second `jr` at `0x80037a18` subtracts one from a subaction,
+rejects values above eight, and indexes nine adjacent pointer words from
+`0x80011c9c` through `0x80011cbc`. All nine also target dispatcher blocks.
+The primary table has nondefault opcode entries at `0x02`–`0x05`, `0x08`,
+`0x09`, `0x0f`–`0x13`, `0x16`, `0x22`, `0x51`, `0x53`, `0x54`, `0x58`,
+`0x59`, `0x60`–`0x62`, `0xe0`, and `0xe1`.
+All 24 unique first-table and six unique second-table targets are block heads,
+with none in a delay slot. The following word at `0x80011cc0` is zero. These
+bounds establish table extents without proving every case reachable or the
+source owner.
+
+The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
+`0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
+This overlap does not yet prove that the map grid has only 80 rows:
+`0x80035894` passes an unguarded byte-valued source row to `0x80035194`,
+and `0x80036ed4` has additional rectangle-copy calls. Rows beyond 79 may
+share or repurpose the region. Keep the grid extent and shape-bank owner WIP
+until those coordinate ranges and all consumers are established.
 
 The strict `game.collision_grid_sample` report relinked 142/142 GAME target
 units. Overall edge-check remains open on three unrelated `.rodata` addends
-and incomplete known-reference ownership. No guessed cache boundary or
-address-derived switch table was introduced to close those gaps.
+and incomplete known-reference ownership. The raw-backed dispatcher tables
+above do not resolve those unrelated edge gaps, and no cache boundary was
+guessed from the overlapping views.

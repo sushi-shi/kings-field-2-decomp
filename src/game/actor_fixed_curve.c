@@ -47,13 +47,12 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
     s32 kind;
     s32 remaining_slots;
     KfTargetReference *target_slot;
-    u8 group_index;
+    u8 motion_divisor;
 
     if (actor->slot_state == 3) {
         actor = &actor_state.actors[actor->unknown_22];
     }
-    group_index = actor->group_index;
-    group = &actor_state.target_groups[group_index];
+    group = &actor_state.target_groups[actor->group_index];
     if (actor->target_type == 3 && actor->animation_phase >= 1548) {
         return;
     }
@@ -152,9 +151,11 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
 update_motion:
     if (actor->unknown_28 & 0x10) {
         linked = &actor_state.actors[actor->unknown_22];
-        group_index = linked->group_index;
+        motion_divisor = linked->group_index;
+    } else {
+        motion_divisor = group->unknown_01[1];
     }
-    if (position != 0 && group_index < 0xf0) {
+    if (position != 0 && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
         SVECTOR *motion = (SVECTOR *)&actor->unknown_50;
         s32 speed;
@@ -164,7 +165,7 @@ update_motion:
                       actor->position.vz - position->vz, &angles);
         pitch_yaw_to_forward_vector(&angles, motion);
         speed = SquareRoot0(SquareRoot0(applied << 11));
-        speed = (((speed << 10) / group_index) << 5) / group_index;
+        speed = (((speed << 10) / motion_divisor) << 5) / motion_divisor;
         if (speed > 512) {
             speed = 512;
         }

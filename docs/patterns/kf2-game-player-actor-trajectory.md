@@ -949,3 +949,25 @@ those arithmetic steps in C raises focused similarity from 42.7% to
 remaining divergence is the probe's saved `player_state+0x134` base pointer
 versus retail's separate address loads; the cache's complete extent remains
 provisional.
+
+GAME `8002722c` has three proven direct calls: the menu result path at
+`800189bc` and two action-controller calls at `800289f0/80028a30`. Each
+supplies one ID in `a0` and ignores the result. Retail immediately copies
+`a0` to `a1`, rejects `0xff`, indexes 26-byte magic records, and compares
+the record's unsigned MP cost; no incoming second argument is read. Its
+address-derived identity now records `void func_8002722c(s32 magic_id)` as a
+supported ABI. The six- and nineteen-entry internal switch tables remain
+reviewed pointer data with candidate indirect reachability, so the body is
+still unclaimed WIP. The focused `game.player_interval_71_80` caller remains
+SAME at `80028998`; the `8002897c` predicate remains WIP.
+
+The weapon/effect dispatcher at `80025a18` checks `effect_id <= 0x34`
+unsigned before indexing the word table at `80011188`. All 53 consecutive
+retail words from file offset `0x988` point to aligned addresses inside its
+`0x918`-byte body; the following word is zero padding. They name 31 distinct
+targets: 21 entries share `80026314`, and three share `80026204`. The former 53
+single-word Ghidra candidates are now one address-derived `pointer[53]`
+datum of size `0xd4`, with raw-reviewed pointer rows and the directly decoded
+HI/LO base pair. A focused one-VA delink accepted that base pair, and `kf sema`
+reports the complete table extent. Indirect case reachability and the C body
+remain candidate/unclaimed; this data curation does not establish a TU owner.

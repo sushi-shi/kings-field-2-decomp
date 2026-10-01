@@ -100,7 +100,7 @@ typedef struct KfTmdF3 {
 } KfTmdF3;
 
 typedef struct KfTmdG3 {
-    u8 color[4];
+    CVECTOR color;
     u16 normal0;
     u16 vertex0;
     u16 normal1;
@@ -120,7 +120,7 @@ typedef struct KfTmdF4 {
 } KfTmdF4;
 
 typedef struct KfTmdG4 {
-    u8 color[4];
+    CVECTOR color;
     u16 normal0;
     u16 vertex0;
     u16 normal1;

@@ -1,6 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
+#include <psyq/pad.h>
 
 extern void func_8001fc94(void *list_state, s32 render_mode);
 
@@ -88,18 +89,18 @@ s32 func_8001f8b8(void *list_state, s32 label_kind,
         func_800223cc();
         buttons = input_read_mark_active();
         confirmed = 0;
-        if ((buttons & 0x1000) || (buttons & 0x4000)) {
+        if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = 0;
             func_80022300(16);
             if (choice != 0)
                 choice = 0;
             else
                 choice = 1;
-        } else if (buttons & 0x20) {
+        } else if (buttons & PADRright) {
             func_80022300(17);
             confirmed = 1;
             result = -choice;
-        } else if (buttons & 0x40) {
+        } else if (buttons & PADRdown) {
             func_80022300(18);
             result = -1;
         }

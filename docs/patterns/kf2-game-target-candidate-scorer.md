@@ -12,7 +12,9 @@ proves 131 indexed words at `0x80011cd8..0x80011ee0` (0x20c bytes). Reading
 every retail word yields ten unique instruction targets, all inside this
 function; 114 rows select the default block at `0x8003953c`. The indexed
 extent and decoded targets are proven retail facts. The table's original source
-owner and its candidate relocation rows remain unvalidated. The current
+owner and its candidate relocation rows remain unvalidated. The following
+word at `0x80011ee4` is zero before the next dispatch table at `0x80011ee8`;
+its padding owner is unproved. The current
 `data.tsv` and identity inventories still split the words into address-derived
 pointer rows; a source reconstruction needs one unit RODATA claim after
 ownership and delinker validation.
@@ -71,7 +73,13 @@ award player training or experience, and build motion toward a supplied
 position. A contiguous source claim now follows the exact curve helper in
 `actor_fixed_curve.c`; its direct call set and three reviewed BSS relocation
 pairs are represented, while the decompiler candidate remains only a guide.
-Focused comparison is **WIP, 44.4% listing**: retail/source have 72/71 CFG
+KF1's `combat_calculate_damage_component` and `actor_apply_damage` show a
+comparable squared-difference curve and training/experience sequence. They
+support the source shape, but do not identify the KF2 callback or original TU.
+Retail `0x8003a170` loads byte +2 from the selected target group for the
+unlinked motion divisor; the linked branch instead loads the linked actor's
+group index. The C source now preserves that distinction.
+Focused comparison is **WIP, 50.0% listing**: retail/source have 72/71 CFG
 blocks, 46/46 branches, and the same seven incoming return edges. The first
 real structural residue is one block, followed by broad register and stack
 allocation differences. The exact `80039c14` sibling remains SAME. The
@@ -83,15 +91,20 @@ The behavior controller `func_8003c614` tests unsigned `mode - 1 <= 0x7a`
 before indexing `0x80011ee8`. This proves 123 indexed words through
 `0x800120d0` (0x1ec bytes). The retail words name 19 distinct internal
 targets between `0x8003c7c8` and `0x8003d060`; 100 select the common tail
-at `0x8003d060`. `0x800120d4` is outside this indexed extent, before the next
-table. Only 23 mode values select nondefault targets, from the sparse set
+at `0x8003d060`. `0x800120d4` is a zero word outside this indexed extent,
+before the next table at `0x800120d8`; its source-level padding owner is
+unproved. Only 23 mode values select nondefault targets, from the sparse set
 `0x01`, `0x02`, `0x04`, `0x07`, `0x09`, `0x0c`, `0x16..0x18`, `0x1a..0x1d`,
 `0x1f..0x21`, `0x28`, `0x6c`, `0x6e`, `0x70`, and `0x78`, `0x79`, `0x7b`.
 The controller remains unclaimed because its complete mode and record contract
 is unresolved.
 
-Focused one-VA carving withholds 68 control relocations after the indirect
-switch in `8003c614`, and 249 after the larger switch in `8003d184`.
+Each table base has one decoded incoming address reference, from its owning
+dispatcher. The three `lui/addiu` pairs at `80039158`, `8003c7ac`, and
+`8003d350` are reviewed target references, but the indexed words remain
+candidate table data without a source claim. Focused one-VA carving withholds
+67 control relocations after the indirect switch in `8003c614`, and 249 after
+the larger switch in `8003d184`.
 These counts are an evidence gap in the current curated model, not evidence
 that the case bodies are dead code.
 

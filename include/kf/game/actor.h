@@ -52,7 +52,10 @@ typedef char kf_target_reference_size[sizeof(KfTargetReference) == 4 ? 1 : -1];
 
 typedef struct KfTargetGroup {
     u8 unknown_00;
-    u8 unknown_01[8];
+    u8 unknown_01[4];
+    u8 unknown_05;
+    u8 unknown_06;
+    u8 unknown_07[2];
     u8 unknown_09;
     u8 unknown_0a[2];
     s16 unknown_0c;
@@ -72,6 +75,8 @@ typedef struct KfTargetGroup {
     KfTargetReference targets[16];
 } KfTargetGroup;
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
+typedef char kf_target_group_byte_05_offset[(u32)&((KfTargetGroup *)0)->unknown_05 == 0x05 ? 1 : -1];
+typedef char kf_target_group_byte_06_offset[(u32)&((KfTargetGroup *)0)->unknown_06 == 0x06 ? 1 : -1];
 typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
 typedef char kf_target_group_curve_offset[

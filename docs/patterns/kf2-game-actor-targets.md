@@ -1234,3 +1234,69 @@ fields remain provisional until their per-case meanings are known.
 One extended case also uses signed `lh` at +0x24 and +0x26 (`3e298` and
 `3e274`), while other cases read those offsets unsigned. The tail therefore
 needs case-aware signed and unsigned views before a complete C type is safe.
+
+## Actor dispatcher callee pass after a169114
+
+This 28-function pass follows the direct actor-control calls in `3d184` and
+the group target fixup that prepares its candidate pointers. The retained
+motion correction is the equivalent collision-layer comparison in `3b5d0`:
+`layer == 0 ? 1 : 2` emits retail's initial `bnez` branch and raises its
+focused listing from 65.1% to 66.5%. All three contiguous exact siblings
+remain `SAME`. Moving the independent switch cases in a source-only probe
+did not improve that function and was discarded.
+Retail also branches back to the same successful vertical-step block from two
+collision responses. Two equivalent source-only `goto` probes shared that
+block and improved the listing to 67.1%, but changed the switch layout from
+40/40 to 40/39 CFG blocks and added a saved register. Both probes were
+discarded; the retained 66.5% source preserves the retail CFG count.
+The KF1 `actor_behavior.c` vertical-state switch likewise shares `fall` and
+`land` labels, a source-shape analogy only: its collision and gravity paths
+are different and do not identify the KF2 function's original source.
+
+| GAME VA | Focused verdict | Dispatcher connection |
+| --- | --- | --- |
+| `38d04` | SAME | Home-position setter reached through lifecycle setup. |
+| `38efc` | SAME | Sets lifecycle and home position. |
+| `38f20` | SAME | Scans lifecycle-one actor records. |
+| `39710` | SAME | Finds a candidate by type. |
+| `39758` | SAME | Selects the actor's own-group target. |
+| `397a8` | SAME | Clears and reselects target. |
+| `397d8` | SAME | Sets actor animation byte +0x0c. |
+| `39804` | SAME | Sets that byte only when changed. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Detects a crossed animation phase. |
+| `3ae50` | WIP 99.2% | Actor motion/collision callee; angle mask scheduling differs. |
+| `3b33c` | SAME | Actor motion collision helper. |
+| `3b520` | SAME | Actor trajectory helper. |
+| `3b5bc` | SAME | Sets current actor movement state. |
+| `3b5d0` | WIP 66.5% | Dispatcher calls it at `3f5c0`; branch direction now agrees, but switch and register lifetimes differ. |
+| `3b9a4` | SAME | Decays and applies actor motion. |
+| `3bae4` | SAME | Approaches forward-vector motion. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Current-actor motion wrapper. |
+| `3bd40` | WIP 68.2% | Target geometry and motion dispatch remain open. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Group-relative position helper. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c614` | WIP, unclaimed | Three direct `3d184` calls use candidate-derived arguments and O32 stack values. |
+| `3d184` | WIP, unclaimed | Main actor action switch consumes packed target records. |
+| `3f7ec` | WIP 93.8% | Converts archive-relative target offsets to pointers before actor dispatch. |
+
+The caller, CFG, data-reference, relocation, adjacency, and source-history
+review for `3b5d0` is in `/tmp/actor_b5d0_*` for this local pass; its only
+external proven caller is `3d184+0x243c`. Retail reads the collision layer
+at `bss_801c7540+0x1180a`; the complete cache object boundary is still
+provisional, so no new overlapping global was introduced.
+The same retail body uses `lbu 5(s2)` for the group's post-step increment
+and `lbu 6(s2)` for the second argument to `248a8`. The complete 0x78-byte
+group extent was already proved, so its opaque +0x01..+0x08 span is now
+split narrowly around those two byte fields; no semantic field names were
+inferred. Exact group-copy, curve-leaf, and actor-loader controls remain
+identical in focused comparison.
+With the archive copy boundary proved, `3f7ec` now takes its byte-pointer
+base directly from `actor_state.unknown_73a0`, the beginning of that loaded
+tail. This is the same address as `target_groups + 40`; focused comparison
+still reports 93.8% with only sentinel scheduling and commutative `addu`
+operand order different, while `3f610` and `3f860` remain `SAME`.

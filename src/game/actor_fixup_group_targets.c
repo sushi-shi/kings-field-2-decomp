@@ -70,7 +70,7 @@ void actor_fixup_group_targets(void)
 
     group_index = 0;
     empty_offset = -1;
-    base = (KfTargetCandidate *)(actor_state.target_groups + 40);
+    base = (KfTargetCandidate *)actor_state.unknown_73a0;
     while (group_index < 40) {
         if (group->unknown_00 == 0xff) {
             break;

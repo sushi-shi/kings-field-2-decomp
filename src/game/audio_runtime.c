@@ -10,7 +10,7 @@
 ADDRESS(0x80013ae4, 0x98)
 void audio_start_sequence(void)
 {
-    if (player_state.audio_music_enabled != 0 && audio_state.sequence_data != 0) {
+    if (player_state.audio_music_enabled != 0 && audio_state.sequence_ready != 0) {
         audio_state.sequence_id = SsSeqOpen(
             audio_state.sequence_buffer, audio_state.vab_slots[1].vab_id);
         SsSeqSetVol(audio_state.sequence_id, 0x3c, 0x3c);

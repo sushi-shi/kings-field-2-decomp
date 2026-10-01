@@ -732,6 +732,10 @@ Four reviewed, blank-symbol relocation pairs at `0x800168d0/d4`,
 `0x800168fc/900`, `0x800169ec/f0`, and `0x80016a7c/80` preserve the
 `0x801b6064` stream-buffer base across these read, copy, and parse phases;
 the existing 4-byte data identity remains only a candidate anchor.
+The next curated BSS anchor is `0x801c7068`, leaving a loose `0x11004`-byte
+interval from that base. Generated xrefs identify only the base and its +4
+interior in the interval; this does not establish that one buffer occupies
+all of it or prove the source definition.
 
 `func_800483d8` and `func_80048498` now reference
 `event_state.arena.bytes` directly in their offset expressions. This preserves
@@ -740,3 +744,94 @@ comparison is 5/6 identical listings in `game.event_state`, and strict objdiff
 confirms both new functions at 100%; the unit's three previous exacts remain
 exact. GAME target relink verified 141/141 units. The global edge-check still
 reports only the three pre-existing, unrelated RODATA addends.
+
+## VAB queue and CD callback follow-up
+
+This 30-function GAME call family follows the VAB queue from the resource
+transition and map-resource callers through its stream callback, CD request
+service, and phase setters. The exact rows below retain earlier strict 100%
+results and were identical in the current focused listing checks; no broad
+match was run for this follow-up.
+
+| GAME VA | Verdict | Retail role |
+| --- | --- | --- |
+| `0x80013ae4` | Exact | Starts the selected sequence. |
+| `0x80013b7c` | Exact | Stops the active sequence. |
+| `0x80013bd4` | Exact | Closes sequence and loaded VABs. |
+| `0x80013c8c` | Exact | Spatial sound attenuation and panning. |
+| `0x80013f50` | Exact | Spatial sound with default range. |
+| `0x80013f84` | Exact | Spatial sound with caller range. |
+| `0x80013fb8` | Exact | Keys off a tracked voice. |
+| `0x80014030` | Exact | Updates listener position and rotation. |
+| `0x800140dc` | Exact | Plays a sound at equal left/right volume. |
+| `0x80014100` | Exact | Refreshes voice-handle activity. |
+| `0x80014164` | Exact | Allocates or reclaims a voice handle. |
+| `0x80014278` | Exact | Keys on a sound using the loaded VAB. |
+| `0x80014394` | Exact | Completes the queued VAB stream header. |
+| `0x800144b8` | WIP | Services the partial VAB transfer; retail retains constant 1 in s3 while the probe retains -1. |
+| `0x800145f4` | Exact | Finds or reclaims a VAB stream slot. |
+| `0x800146d0` | Exact | Queues a VAB stream read with the callback at 0x14394. |
+| `0x800167bc` | Exact | Selects resource phase 1. |
+| `0x800167d0` | Exact | Selects resource phase 3. |
+| `0x800167e4` | Exact | Selects resource phase 2. |
+| `0x800167f8` | Exact | Selects resource phase 4. |
+| `0x8001680c` | Exact | Selects resource phase 6. |
+| `0x80016ed4` | Exact | Marks the CD stream complete. |
+| `0x80016ee0` | Exact | Queues a map stream read. |
+| `0x80016f10` | Exact | Caps a stream chunk at sixteen sectors. |
+| `0x80016f4c` | Exact | Services the image-stream CD request. |
+| `0x80017f9c` | Exact | Queues a kind-0x30 archive stream read. |
+| `0x80015d58` | WIP, unclaimed | Opens archives and loads startup resources; copy destinations lack source owners. |
+| `0x80016820` | WIP, unclaimed | Dispatches resource phases; loaded callback table and later indirect target remain unresolved. |
+| `0x80032274` | WIP | Updates VAB stream states for a flagged range; current source retains an extra saved register and an induction offset. |
+| `0x8003247c` | WIP, unclaimed | Builds resource flags and calls 0x32274 twice; the 0xb70-byte map/render controller has no reconstructed unit. |
+
+At `0x80032728`, the large controller passes archive 4, entry 0x20, VAB slot
+2, count 0x40, and a stack flag array to `resource_vab_update_range`. Its
+second call at `0x80032c30` passes archive 4, entry 0x60, VAB slot 0x42,
+count 0x40, and a second stack flag array. The updater's retail loop uses a
+48-byte frame, s0-s6, and a fresh `sll v0,s1,3` each iteration; the current
+source produces a 56-byte frame, s0-s7, and retains the shifted offset.
+Its call, branches, halfword state accesses, and five-argument ABI agree. A
+direct-member source probe worsened the listing and was discarded; no source
+change was retained. `game.audio_runtime` is 15/16 SAME, the five phase
+setters are 5/5 SAME, and the selected CD controls remain SAME in the focused
+`game.cd_memory` run.
+
+The queue, callback, request handlers, and phase setters manipulate GAME
+audio/CD state. Their direct SDK callees are separate vendored bodies:
+`SsVabTransBodyPartly` is an exact Psy-Q 3.0 `LIBSND.LIB` object-section
+match; `CdControl`, `CdGetSector`, `CdRead`, and `CdRead2` are exact Psy-Q 3.0
+`LIBCD.LIB` section matches. Event primitives have their own `LIBAPI.LIB`
+attributions. The large 0x3247c caller is a map/render owner with VAB calls,
+not evidence that the adjacent resource and audio functions share its TU.
+The pinned `LIBSND.H` declares `SsVabTransBodyPartly` returning `short`, and
+retail sign-extends that result before its -1 and -2 tests. The current `s16`
+result in the GAME service wrapper is therefore supported; its saved-register
+constant choice remains unattributed codegen residue.
+
+The resource controller at 0x16820 selects the initialized no-op callback
+table at 0x80063e00 before queuing the loaded table into 0x8019e138. The
+event controller at 0x4678c later calls `active_table[2]` indirectly, but
+neither that slot's destination nor the loaded table's full extent is proved.
+Retail 0x38f20 also loads `active_table[19]` at 0x38fac and calls it through
+`jalr` at 0x38fb4. This proves a 0x50-byte table view for the active callback
+interface; it does not prove the CD-loaded object's complete extent or the
+indirect target.
+The configured hash-identical retail directory has the four executables but
+no `CD/COM/FDAT.T`, so the archive-entry size cannot be checked from the
+current local media. No BSS or indirect-call identity was added from this
+candidate chain.
+
+Nine more reviewed 0x16820 pairs target the complete `audio_state` at
+`0x80016d5c/60` (+0xc), `0x80016d64/68` (+0x8), `0x80016da8/ac` (+0x4),
+`0x80016dc8/cc` (+0x4), `0x80016dd8/dc` (+0x4), `0x80016dec/f0`
+(+0x34), `0x80016e00/04` (+0x38), `0x80016e5c/60` (base), and
+`0x80016e98/9c` (+0xc). They clear and later set +0xc to literal 0 and 1,
+read the sequence ID at +4, clear VAB slot 1's stream pointer at +0x38, and
+queue a read to the sequence-buffer pointer stored at the base. Thus +0xc is
+a readiness flag, not a sequence-data pointer;
+`KfGameAudioState.sequence_ready` now models its word-sized storage. Its
+signedness is not directly observable, so `s32` follows the adjacent
+`sequence_active` flag's convention. The focused audio unit retains 15/16
+identical listings, with only the pre-existing VAB-service WIP.

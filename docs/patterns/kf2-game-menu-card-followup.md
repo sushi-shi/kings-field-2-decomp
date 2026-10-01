@@ -23,12 +23,12 @@ address span is a survey boundary; it is not evidence of a single original TU.
 | `0x800225b0` | starts card services | already exact |
 | `0x800225d8` | stops card services and restores pad | already exact |
 | `0x80022600` | probes and removes stale card file with event waits | already exact |
-| `0x800226ec` | enumerates card directory, parses save names and slot numbers | unclaimed; card-entry record and directory extent WIP |
-| `0x800228c8` | reads card files and checks header/name fields | unclaimed; card record and failure-state model WIP |
+| `0x800226ec` | enumerates card directory, parses save names and slot numbers | WIP; 40-byte SDK `DIRENTRY` input is modeled, but byte-load and initialization order differ |
+| `0x800228c8` | reads card files and decodes header title digits | WIP; typed 0x280-byte header and CFG agree, but byte-load and digit-loop schedule differ |
 | `0x80022b48` | calls SDK card format wrapper | already exact |
-| `0x80022b74` | reads a card save and checks payload checksum | unclaimed; header and buffer ownership WIP |
-| `0x80022ca0` | creates/writes card save; draws icon and fills card metadata | unclaimed; card layout and large state flow WIP |
-| `0x80023178` | writes Shift-JIS player experience and level digits into card label | WIP, **93.529410%**; CFG and signed divisions agree, register/order residue remains |
+| `0x80022b74` | reads a card save and checks payload checksum | WIP; typed header checksum and buffer owner agree, but frame/register residue remains |
+| `0x80022ca0` | creates/writes card save; draws icon and fills card metadata | WIP; typed header fields and seven-palette asset agree, but initialization order differs |
+| `0x80023178` | writes Shift-JIS player experience and level digits into the card title | WIP, **93.529410%** in the prior strict run; CFG and signed divisions agree, register/order residue remains |
 | `0x80023288` | sums card payload bytes | already exact |
 | `0x800232ac` | waits for one of four card events | already exact |
 | `0x8002332c` | clears card event states | already exact |
@@ -58,8 +58,24 @@ zero/overflow checks. The current object still differs in register selection
 and some scheduling; the source is WIP, not an exact claim. No function in
 this batch was attributed to vendored code.
 
+A later pass established the card file's 0x280-byte header prefix. Its
+magic begins at zero, title at +4, icon palette at +0x60, three 0x80-byte
+icon frames at +0x80, and payload checksum at +0x200. The writer zeroes the
+0x400-byte block header before copying this prefix. A shared typed view with
+static size/offset checks now serves the header reader, checksum reader,
+title-digit writer, and file writer;
+the focused listing retains the exact `memory_card_format` control and the
+four WIP verdicts above. The distinct `DIRENTRY` entry type comes from the
+pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
+The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
+retail NUL terminator; its source owner is still unresolved.
+The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
+Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
+`0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
+all three xref pairs, but the original object boundary and source owner remain
+unproved, so their address-derived identities stay separate.
+
 Focused `kf match` verified the new item-model function at strict 100% and
 reported the card-label probe at 93.529410%, with GAME target relink 163/163.
 The command exits at the repository-wide known-reference data-ownership
-closure. The parent campaign owner will run the full build and repository
-tests.
+closure. No full build or repository tests were run in this focused pass.

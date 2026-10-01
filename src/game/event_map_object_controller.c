@@ -36,7 +36,6 @@ void func_800475d8(KfMapObject *object, ...)
     s32 target_yaw;
     u16 first_pitch;
     s16 target_pitch;
-    s32 negative_depth;
     s32 fraction;
     u32 previous_buttons;
     u32 buttons;
@@ -94,11 +93,7 @@ void func_800475d8(KfMapObject *object, ...)
         target_yaw = 0xf00;
     }
     previous_buttons = PadRead(1);
-    negative_depth = -pose->depth_offset;
-    if (negative_depth < 0) {
-        negative_depth += 3;
-    }
-    target_pitch = (negative_depth >> 2) - 200;
+    target_pitch = (-pose->depth_offset) / 4 - 200;
 
     if (spawned_id != -1) {
         func_80045f20(0, 500, 1500, target_yaw,

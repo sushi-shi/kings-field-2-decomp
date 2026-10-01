@@ -1,0 +1,108 @@
+# GAME prepared-TMD subdivision and render controls
+
+This 25-function set follows the confirmed `0x80030c18 -> 0x8002ff5c`
+prepared-object call, the TMD packet walkers, and the renderer that consumes
+their packet and projection state. Addresses are GAME.EXE identities. Exact
+controls were certified in earlier strict reports and remained focused `SAME`
+at the last source check; percentages below are focused listing comparisons,
+which do not establish strict closure. No source claim was added for the
+prepared-object builder.
+
+| Function | Verdict | Connection or unresolved evidence |
+| --- | --- | --- |
+| `0x8002d4f4` | Exact control | Updates the view matrices and map-cell coordinates read by the renderer. |
+| `0x8002d5dc` | WIP, focused 38.6% | Converts eight packet-mode index families; one entry move shifts the register allocation and jump-table destinations. |
+| `0x8002d918` | Exact control | Projects TMD vertices with fog-dependent depth. |
+| `0x8002da94` | Exact control | Projects alternate vertices for the prepared-object renderer. |
+| `0x8002dd28` | Exact control | Converts TMD vertices into the shared projected-vertex array. |
+| `0x8002ddb4` | WIP, focused 93.6% | Textured packet walker: retail/probe CFG 44/42 blocks and 28/26 branches. |
+| `0x8002e4dc` | WIP, focused 92.0% | Paired textured walker has the same two depth-check branch gap. |
+| `0x8002ebe0` | WIP, focused 88.7% | Lit packet walker has one depth-tail block not reproduced by the source. |
+| `0x8002f194` | Exact control | Enqueues prepared FT3/FT4 packets through typed GT3/GT4 GPU views. |
+| `0x8002f5b0` | WIP, focused 82.6% | Clipped fan uses the complete SDK `EVECTOR`; UV/color store order differs. |
+| `0x8002f808` | WIP, focused 50.5% | Prepared-asset renderer has 51/51 CFG blocks and 35/35 branches, but the retail frame is 168 bytes against 112. |
+| `0x8002ff5c` | Unclaimed WIP | Four-packet FT4/FT3 subdivision has 14 retail copy calls and an unresolved packet-field/local-record model. |
+| `0x80030c18` | WIP, focused 98.7% | Sole prepared-builder caller has matching 11/11 blocks and 6/6 branches; independent byte load and argument move swap order. |
+| `0x80030de4` | Exact control | Selects the map-cell layers that call the prepared-object path. |
+| `0x80030f5c` | Exact control | Scans the render mask after the TMD selection. |
+| `0x80031024` | Exact control | Walks the render grid and calls the map-cell layers. |
+| `0x800311b0` | WIP, focused 57.5% | Builds an FT4 screen quad; the semitrans/code store and saved-register schedule differ. |
+| `0x800312f4` | Exact control | First textured sliding-panel caller of the quad writer. |
+| `0x80031384` | Exact control | Paired sliding-panel caller of the quad writer. |
+| `0x80031414` | Exact control | Color-byte overlay caller of the quad writer. |
+| `0x800314d4` | Exact control | Supplies the overlay's four graphics control/color bytes. |
+| `0x80031850` | WIP, focused 68.9% | World-model renderer has 40/40 blocks and 16/16 branches, with different early successor order. |
+| `0x80031d8c` | WIP, focused 79.5% | Animated-object renderer has 7/7 blocks and 2/2 branches; frame and register allocation differ. |
+| `0x8003247c` | Unclaimed WIP | Frame child reaches both TMD/resource updaters and repeated world-model draws; the mixed workspace remains incomplete. |
+| `0x800335a0` | Exact control | Per-frame driver calls the render/resource child. |
+
+The focused one-function object for `0x8002ff5c` is `0xcbc` bytes with an
+11-block, six-branch CFG and a 1248-byte frame. Entry multiplies the unmasked
+32-bit object-index argument by the 28-byte object stride; the current `s32`
+formal does not add a callee-side halfword truncation. It copies the first
+FT4 child packet for eight words, a four-word texture record, and then the
+other three children for eight words each. FT3 uses a six-word packet and a
+three-word texture record. A generic packet copy and three final vertex,
+midpoint, and normal copies bring the static `resource_copy_words` call count
+to 14. FT4 appends five midpoint `SVECTOR`s and 128 packet bytes; FT3 appends
+three midpoint vectors and 96 packet bytes. The caller limits source
+primitive count below 16, bounding generated midpoints at 75 and generated
+packet bytes at 1920. The full 4096-byte fit also depends on source vertex
+and normal counts, which this call-site check alone does not prove.
+
+A temporary C probe reproduces all 14 call sites and six branches, but emits
+12 CFG blocks, a 1232-byte frame, and only 10.2% normalized listing
+similarity. The extra block is on the FT3-to-common-tail path. Reordering
+entry assignments, deriving packet pointers through the object records, and
+spelling the loop as a precheck plus bottom decrement did not recover retail
+control or frame placement. A byte-UV-pair probe compiled to 12 blocks and
+9.1% similarity. A source-only packed-word write for the first FT4 child’s
+two generated indices reproduced one retail store width but left the same
+12-block CFG and reached only 10.4%. These probes remained in `/tmp`; no
+game source was changed.
+At retail loop entry `+0xa0` and `+0xac`, the header word is loaded twice
+from the same source pointer and stored twice to the same four-byte stack
+view before its mode byte is read. There is no intervening call or store to
+the packet. The C spelling or alias relationship behind this duplication is
+not established, and a forced duplicate read would be unsupported.
+
+The first retail FT4 child writes generated UV components individually with
+`sb` at packet offsets `+8..9`, `+12..13`, and `+16..17`, then writes packed
+index pairs with `sw` at `+24` and `+28`. Later children again copy the source
+packet before overwriting selected UV and index bytes. The temporary source
+still emits halfword index stores and has no demonstrated local view that
+explains the mixed byte/word writes. The existing `KfTmdFt3`/`KfTmdFt4`
+read views and `KfTmdPreparedAsset` output extent remain supported, while
+the builder's child-packet write type and 16-byte frame difference remain WIP.
+
+The common loop tail derives the next source-packet address from the packet
+header's byte at offset `+1`: it adds one, shifts by two, and advances the
+source pointer by that word count. The unrecognized-mode arm copies exactly
+that many words and advances the output pointer by the same byte count. Each
+split arm advances its output pointer by its four-child extent before joining
+the same source-pointer tail. The final three copies then append original
+vertices, generated midpoint vertices, and normals in that order. These
+pointer relationships are supported by the retail instruction sequence;
+they do not establish the original C union or packet write type.
+
+The builder reads source vertex offsets with `lh`; downstream prepared-packet
+walkers read their remapped indices with `lhu`. A future raw-source view must
+keep that consumer-specific signedness without changing the exact prepared
+walker types.
+The pinned Psy-Q `LIBGPU.H` describes `TMD_PRIM` as a decoded multipurpose
+record with byte UV fields and separate vertex/normal arrays; it does not
+have this copied on-disk packet layout, so using it as the builder's packet
+type would not explain the retail offsets.
+
+For the paired walker at `0x8002e4dc`, a source-only nested positive-depth
+condition in the FT3/GT3 arms compiled to the same focused listing as the
+existing early-break form. Its eight exact TMD-pipeline siblings stayed
+`SAME`; the two missing retail branch blocks are still unattributed.
+
+The clipped fan at `0x8002f5b0` also has a typed-copy boundary. Replacing its
+three aligned four-byte color copies with direct `CVECTOR` struct assignments
+made the pinned compiler emit `lwl/lwr` and `swl/swr` for the byte-aligned SDK
+type, while retail uses `lw/sw`. That source-only trial fell from 82.6% to
+72.3% focused and preserved the exact `0x8002f194` sibling. The retained
+four-byte views reflect the actual aligned stack, `EVECTOR`, and GPU packet
+locations; no struct-assignment rewrite was kept.

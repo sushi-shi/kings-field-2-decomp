@@ -86,7 +86,7 @@ remain the criteria for retaining changes.
 | `0x800473e0` | `func_800473e0` | SAME |
 | `0x80047434` | `func_80047434` | SAME |
 | `0x800474c4` | `func_800474c4` | SAME |
-| `0x800475d8` | `func_800475d8` | DIFF 88.3%; existing event-controller CFG and register residue |
+| `0x800475d8` | `func_800475d8` | DIFF 89.4%; effect-campaign source correction retained, still WIP |
 
 A fresh 30-function focused menu, frame, and notification sweep after the
 `menu_sprite_defs` inventory identity sync gave 27 SAME listings and the three
@@ -115,13 +115,22 @@ A subsequent 26-function graphics and notification call-family sweep gave
 textured-quad callers and its color setter stayed SAME, as did the five
 notification functions, render-frame caller, ten player-core functions, and
 three event-counter functions. The textured-quad helper's packet fields,
-referents, call set, and 8/8 CFG blocks agree with retail. Its focused
-listing is DIFF 57.5%, while the earlier strict report recorded 92.14815%;
+referents, call set, and 8/8 CFG blocks, 5/5 branches, and 1/1 returns agree
+with retail. The focused listing is DIFF 57.5%, while the earlier strict report
+recorded 92.14815%;
 these metrics use different comparisons. Replacing conditional
 `setSemiTrans` with the equivalent direct `quad->code = 0x2e` in a source-only
-probe left the focused listing unchanged, so it was discarded. The event
-map-object controller remains focused DIFF 88.3% and is owned by its separate
-campaign; no source edit was made in either family.
+probe left the focused listing unchanged, so it was discarded. The pinned
+Psy-Q 3.0 `setPolyFT4` macro expands to length 9 and code `0x2c` stores;
+`setSemiTrans` ORs `0x02` into the code, giving the conditional `0x2e` store
+seen in retail. Splitting `setPolyFT4` into separate authentic `setlen` and
+`setcode` calls also left the listing unchanged. Retail first saves an extra `s2` and
+moves the coordinate arguments into saved registers earlier; later it places
+the base-code store in a branch delay slot. Those differences have no
+supported source correction at present. The event
+map-object controller is now focused DIFF 89.4% after its separate
+effect-campaign source correction and is owned by that campaign; no source
+edit was made in the textured-quad family.
 
 For `menu_draw_number`, hoisting the second atlas-column U value into a
 typed byte local reduced the focused listing to 86.0%; reversing its
@@ -173,3 +182,87 @@ with 14/14 CFG blocks and 8/8 branches; adjacent `tim_upload_images`
 on a 72-byte frame, while the current 64-byte probe keeps it in a saved
 register. The macro substitution changes source expression without claiming
 an exact-match gain.
+
+## Connected item, list, and display pass
+
+A focused GAME pass followed confirmed menu-list calls and shared sprite,
+primitive-buffer, and display state through 25 functions from `0x8001d030`
+to `0x80021fb0`. Fifteen listings were SAME and ten remained DIFF. These
+are focused `kf try --no-flow` verdicts, not strict banking claims; the
+frame unit's adjacent `0x80021a60` also rebuilt SAME but is outside this
+25-function count.
+
+| Address | Function or role | Focused verdict |
+| --- | --- | --- |
+| `0x8001d030` | primary item controller | DIFF 96.6% |
+| `0x8001ddd0` | stock item list | DIFF 96.2% |
+| `0x8001e0a8` | secondary stock item list | DIFF 96.2% |
+| `0x8001e484` | list input | SAME |
+| `0x8001e94c` | status values | SAME |
+| `0x8001f798` | paired row helper | SAME |
+| `0x8001f8b8` | preview choice | DIFF 84.8% |
+| `0x8001fb8c` | window drawing | DIFF 83.5% |
+| `0x8001fc94` | list renderer | DIFF 97.7% |
+| `0x80020748` | two-option drawing | SAME |
+| `0x8002083c` | item-model preview | DIFF 73.1% |
+| `0x80020990` | value heading | SAME |
+| `0x80020b50` | translucent sprite | SAME |
+| `0x80020d20` | sprite | SAME |
+| `0x80020ef8` | fixed-CLUT sprite | SAME |
+| `0x800210ac` | glyph string | DIFF 90.4% |
+| `0x80021510` | numeric glyph string | DIFF 93.1% |
+| `0x800217f0` | nine-slice panel | SAME |
+| `0x80021a68` | frame begin | SAME |
+| `0x80021be0` | frame present | SAME |
+| `0x80021c8c` | display entry | DIFF 97.2% |
+| `0x80021e00` | display exit | SAME |
+| `0x80021f10` | primitive begin | SAME |
+| `0x80021f60` | primitive commit | SAME |
+| `0x80021fb0` | list initialization | SAME |
+
+For the list renderer, retail and source agree on the 19 direct incoming
+calls, menu sprite and primitive referents, numeric formatting calls, and
+mode-dependent row widths. The first focused difference is register and
+placement order for the scroll offset and card-column condition; subsequent
+differences include a row-counter register and one branch delay slot. The
+previous normal focused comparison agreed on 55/55 CFG blocks and 33/33
+branches. Moving the card-column expression into the row loop had already
+reduced similarity and was discarded. The two-option unit's preview body
+has a 64-byte retail frame surplus over its four live `MATRIX` locals;
+despite its lower focused listing score, direct objdiff previously gave
+99.65882%. The display-entry function similarly has an unexplained 32-byte
+retail frame versus a 24-byte source frame. There is no supported source
+object for those unused frame bytes, so this pass retained the current C
+and did not disturb the exact siblings.
+
+Ten further direct callers and helpers also retained focused SAME listings:
+`0x8001cdb0`, `0x8001ceb8`, `0x8001d340`, `0x8001d3b4`, `0x8001d654`,
+`0x8001d6a8`, `0x8001d8d0`, `0x8001dc64`, `0x8001e378`, and `0x8001f008`.
+The first displayed difference in the primary item controller at
+`0x8001d030` is the order of loading the selected price and current gold
+and their temporary registers; the price multiplication, unsigned funds
+comparison, and subsequent quantity condition still agree. Neither that
+ordering nor the exact helper controls supports changing the represented
+table, signedness, or purchase semantics.
+
+Focused first-difference checks across the ten WIPs show the three purchase
+controllers sharing the same price/gold load-order and register residue.
+`menu_draw_window` and display entry differ only in stack frame size and
+saved offsets. The item-model preview likewise differs only by a 64-byte
+stack displacement, which affects each live matrix slot. The glyph renderer
+has an eight-byte frame surplus in retail plus glyph-index register order;
+the numeric glyph renderer differs at its initial font-pointer move and the
+two second-column U/width loads. Preview choice first changes saved-register
+assignment and schedules four window-layout loads around its result sentinel.
+The renderer's first difference remains the scroll/card-mode calculation
+described above. Calls, referents, and retail-visible types provide no new
+source-backed correction for these residues.
+
+A further ten direct callees remained focused SAME: glyph-row builders
+`0x80018d08`, `0x80018dec`, `0x80018f8c`; model load/release
+`0x800221e8`, `0x800222bc`; menu cue and pad helpers `0x80022300`,
+`0x80022394`, `0x800223cc`; and input release/event initialization
+`0x80022438`, `0x80022468`. The other three functions in the shared
+memory-card event unit also rebuilt SAME as adjacent controls. This
+rules out a newly broken direct callee as the cause of the ten renderer
+and controller differences above.

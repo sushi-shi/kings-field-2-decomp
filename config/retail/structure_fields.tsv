@@ -665,7 +665,10 @@ KfTargetCandidate	0x12	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at
 KfTargetCandidate	0x13	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
 KfTargetCandidate	0x14	0x2	bytes	u8[2]	candidate	game/actor.h;message marker scan;GAME 0x800462bc	start of variable byte stream; complete extent unresolved
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfTargetGroup	0x1	0x8	unknown_01	u8[8]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
+KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step
+KfTargetGroup	0x6	0x1	unknown_06	u8	supported	GAME 0x8003b5d0 lbu at group+6	passed as second argument to func_800248a8 on collision
+KfTargetGroup	0x7	0x2	unknown_07	u8[2]	opaque	game/actor.h	remaining unresolved bytes before +0x09
 KfTargetGroup	0x9	0x1	unknown_09	u8	supported	asm;actor record loader	animation selector copied into actor +0x0c
 KfTargetGroup	0xa	0x2	unknown_0a	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0xc	0x2	unknown_0c	s16	supported	asm;game/actor.h;effect dispatch	signed group-space X used with actor position

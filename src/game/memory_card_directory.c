@@ -43,7 +43,7 @@ KfCardAssets DAT_80066680 = {
 
 extern s8 DAT_8006d6a4;
 extern s8 DAT_8006d6a5;
-extern char DAT_8006d6a8[6];
+extern char DAT_8006d6a8[7];
 extern void func_800492dc(const u8 *payload);
 extern void func_80048d24(u8 *payload);
 
@@ -90,7 +90,7 @@ ADDRESS(0x800228c8, 0x280)
 s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
     s32 *slot)
 {
-    u8 header[0x280];
+    KfCardHeader header;
     char path[40] = "bu00:";
     char slot_digit[2];
     s16 encoded;
@@ -105,7 +105,7 @@ s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
     }
     strcat(path, filename);
     handle = open(path, FREAD);
-    if (handle == -1 || read(handle, header, sizeof(header)) != sizeof(header)) {
+    if (handle == -1 || read(handle, &header, sizeof(header)) != sizeof(header)) {
         return 1;
     }
     close(handle);
@@ -113,8 +113,8 @@ s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
     *experience = 0;
     weight = 100000;
     for (i = 0; i < 6; ++i) {
-        ((u8 *)&encoded)[0] = header[0x2c + i * 2];
-        ((u8 *)&encoded)[1] = header[0x2d + i * 2];
+        ((u8 *)&encoded)[0] = header.title[0x28 + i * 2];
+        ((u8 *)&encoded)[1] = header.title[0x29 + i * 2];
         if (encoded != 0x4081) {
             encoded = ((s32)encoded >> 8) - 79;
             *experience += encoded * weight;
@@ -125,8 +125,8 @@ s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
     *level = 0;
     weight = 10;
     for (i = 0; i < 2; ++i) {
-        ((u8 *)&encoded)[0] = header[0x3e + i * 2];
-        ((u8 *)&encoded)[1] = header[0x3f + i * 2];
+        ((u8 *)&encoded)[0] = header.title[0x3a + i * 2];
+        ((u8 *)&encoded)[1] = header.title[0x3b + i * 2];
         if (encoded != 0x4081) {
             encoded = ((s32)encoded >> 8) - 79;
             *level += encoded * weight;
@@ -168,7 +168,7 @@ s32 func_80022b74(s32 slot)
             close(handle);
             buffer = memory_card_buffer;
             checksum = memory_card_payload_byte_sum(buffer + KF_CARD_HEADER_BYTES);
-            if (*(u32 *)(buffer + 0x200) == checksum) {
+            if (((KfCardHeader *)buffer)->payload_checksum == checksum) {
                 func_800492dc(memory_card_buffer + KF_CARD_HEADER_BYTES);
                 memory_card_loaded_slot = slot;
                 return 0;
@@ -183,7 +183,7 @@ ADDRESS(0x80022ca0, 0x4d8)
 s32 func_80022ca0(s32 slot)
 {
     struct DIRENTRY entries[15];
-    u8 header[0x280];
+    KfCardHeader header;
     char path[40] = "bu00:";
     s32 occupied[15];
     RECT icon_rect;
@@ -226,27 +226,28 @@ s32 func_80022ca0(s32 slot)
     strcat(path, memory_card_file_prefix);
     path[17] = slot + '0';
     path[18] = 0;
-    header[0] = 'S';
-    header[1] = 'C';
-    header[2] = 0x13;
-    header[3] = 2;
-    strcpy((char *)header + 4, DAT_80066680.title);
-    func_80023178(header, slot);
+    header.magic[0] = 'S';
+    header.magic[1] = 'C';
+    header.magic[2] = 0x13;
+    header.magic[3] = 2;
+    strcpy(header.title, DAT_80066680.title);
+    func_80023178(&header, slot);
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
-    memcpy(header + 96, DAT_80066680.icon_palette[slot - 1], 32);
+    memcpy(header.icon_palette, DAT_80066680.icon_palette[slot - 1],
+        sizeof(header.icon_palette));
 
     setRECT(&icon_rect, 800, 240 + slot * 16, 4, 16);
-    StoreImage(&icon_rect, (u_long *)(header + 128));
+    StoreImage(&icon_rect, (u_long *)header.icon_frames[0]);
     icon_rect.x = 804;
-    StoreImage(&icon_rect, (u_long *)(header + 256));
+    StoreImage(&icon_rect, (u_long *)header.icon_frames[1]);
     icon_rect.x = 808;
-    StoreImage(&icon_rect, (u_long *)(header + 384));
+    StoreImage(&icon_rect, (u_long *)header.icon_frames[2]);
 
     memset(memory_card_buffer, 0, KF_CARD_BLOCK_BYTES);
     func_80048d24(memory_card_buffer + KF_CARD_HEADER_BYTES);
-    *(u32 *)(header + 512) = memory_card_payload_byte_sum(
+    header.payload_checksum = memory_card_payload_byte_sum(
         memory_card_buffer + KF_CARD_HEADER_BYTES);
-    memcpy(memory_card_buffer, header, sizeof(header));
+    memcpy(memory_card_buffer, &header, sizeof(header));
 
     if (!present) {
         handle = open(path, FCREAT | (2 << 16));

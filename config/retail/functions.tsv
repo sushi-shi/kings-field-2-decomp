@@ -301,7 +301,7 @@ GAME.EXE	0x80029624	0x18e24	0xc4	0xc4	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x800296e8	0x18ee8	0x74	0x74	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8002975c	0x18f5c	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800297b4	0x18fb4	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8002985c	0x1905c	0x112c	0x9dc	2	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8002985c	0x1905c	0x112c	0x112c	1	function	asm;direct control;shared epilogue			retail GAME 0x8002a204->0x8002a238;0x8002a980 jr ra	contiguous code through next function at 0x8002a988
 GAME.EXE	0x8002a988	0x1a188	0x11c	0x11c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8002aaa4	0x1a2a4	0xb60	0xb60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8002b604	0x1ae04	0x78	0x78	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

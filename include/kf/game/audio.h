@@ -62,7 +62,7 @@ typedef struct {
     s16 sequence_id;
     u8 unknown_06[2];
     s32 sequence_active;
-    u_long *sequence_data;
+    s32 sequence_ready;
     VECTOR listener_position;
     u16 listener_layer;
     SVECTOR listener_rotation;

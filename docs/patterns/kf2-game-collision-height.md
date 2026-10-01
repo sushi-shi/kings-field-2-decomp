@@ -131,6 +131,63 @@ certification is pending.
 | `0x8002c670` | WIP, 75.8% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4; the first-lighting access uses the retail BSS+4 field-base referent. Mask-byte addressing and traversal scheduling remain different. |
 | `0x80036ed4` | WIP, unclaimed | The 0x1df4-byte no-argument map-object dispatcher has three bounded indirect jumps. Their raw pointer-table extents and in-function targets are established; case reachability and callback targets remain unresolved. |
 
+Retail `0x8002c670` forms a saved pointer to the scan state's +0x0c field
+and uses it for several relative stores. An isolated C probe that changed
+all state accesses to one local `KfRenderMaskScanState *` produced a larger
+frame and 46.3% focused similarity; it was discarded. Relative retail
+addressing alone does not establish the original C pointer spelling.
+Its seven-pair pitch interpolation uses the source-owned
+`DAT_80067874` table; raw `0x8002c6a8/6ac` constructs that exact load
+address and is now a reviewed direct pair. The focused listing remains
+75.8% with identical diff output after this relocation correction.
+
+The adjacent map-object focused controls remain stable: `0x80036078`,
+`0x800363bc`, `0x800363dc`, `0x800365d8`, `0x800366fc`, `0x800368b4`,
+`0x800369b8`, `0x80036ad8`, and `0x80036b68` all have identical focused
+listings. `0x80036190` remains WIP at 82.9% focused similarity: its
+return/loop successor layout and index lifetime differ. Removing its
+separate entry guard in an isolated source probe produced 82.6% and moved
+the loop farther from retail, so the source was retained. `0x80036464`
+remains WIP at 92.8%, with saved-register and initial-store scheduling
+differences. These focused verdicts are listing checks, not strict objdiff
+closure.
+
+The map-placed expansion at `0x80034818` is also focused-listing SAME. It
+expands 128 typed 24-byte destination records, sampling elevation through
+the existing `0x8002b67c` collision helper; its source and layout were not
+changed in this pass.
+
+The 0x74-byte gap `0x80036944`–`0x800369b7` is executable code, not the
+seeded unclassified data/string split. Raw words show a 40-byte frame,
+saved `$ra` and `$s0`–`$s3`, one return at `0x800369b0`, and a 396-object
+loop that passes each 68-byte object and the low input byte to
+`0x800368b4` at `0x80036980`. Input byte `0xff` skips the loop. The
+four-byte string seed at `0x8003697b` intersects the little-endian bytes
+of `move a0,s1` and the following `jal`; it is a false string detection.
+No aligned `j/jal` or 32-bit pointer word in GAME.EXE targets `0x80036944`,
+and no matching low-immediate address constructor was found. The entry's
+caller ABI and return use remain unproved, so this is boundary evidence,
+not yet a source/identity claim; its direct `jal` row stays candidate.
+The related map-object band `0x80034f90`–`0x80036ed3` had 17 remaining
+candidate direct `j/jal` rows. All 17 retail words encode their curated
+opcode class and target. Sixteen are in identified reachable functions;
+their internal jumps land on CFG block heads and their external calls name
+the decoded callees, so those rows are now reviewed. The seventeenth is
+the `0x80036980` call in the unresolved `0x80036944` gap and remains
+candidate. Focused controls after the review retain 5/6 identical listings
+in `game.map_object_reset`, 1/1 in `game.map_object_collision_query`, and
+2/2 in `game.map_object_vertex_world`; the sole reset-unit WIP is the
+historical `map_object_set_cell_marker` at 55.9% focused similarity.
+
+The placement helpers also retain their focused WIP verdicts:
+`0x80034f90` is 92.5% with equivalent 10-byte pattern writes but a
+different saved-register assignment; `0x80035194` is 58.8% with a 40-byte
+retail frame versus a 32-byte compiled frame and unresolved register
+lifetimes across the rotated rectangle copy; and `0x80035894` is 92.7%
+with matching record initialization but different early store and
+80-column address arithmetic schedules. No ownership or width correction
+was supported by these differences.
+
 At `0x80036f70`, the dispatcher subtracts two from its opcode and rejects
 values above `0xdf`; its `jr` at `0x80036f98` indexes the 224 pointer words
 from `0x8001191c` through `0x80011c98`. Every Japanese retail pointer lands
@@ -176,6 +233,17 @@ types that slot as `KfMapObjectTemplate *`; no new datum is claimed. The
 object pointer lives in the adjacent `+0x8738` slot. Both pointers have
 reviewed direct address pairs, while their dynamic uses remain separate
 control-flow questions.
+One dispatcher case supplies `KfMapObjectTemplate` +0x0c as an unsigned
+halfword vertex index to `0x800369b8`, then supplies +0x0e and +0x10 as
+unsigned halfword collision radius and height to `0x8002b9d4` in mode
+`0x90` (`0x80038324`–`0x80038354`). Other proven consumers read the same
++0x0c/+0x0e bytes as signed pose offsets or individual marker bytes, so
+the collision interpretation is a variant-specific view; the shared
+template layout has not been globally changed.
+In the same action branch, unsigned template byte +0x16 is passed to
+`map_object_play_spatial_sound`, while byte +0x17 is passed to
+`map_object_set_cell_marker`. The latter agrees with the existing
+`marker_action_51` field; +0x16 remains an evidence-only sound selector.
 
 The sole proven direct caller is `game_main_loop` at `0x800138d8`; it sets no
 arguments for this call and ignores its result. The dispatcher reads no
@@ -203,6 +271,27 @@ the giant dispatcher remains unclaimed.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
+Its cached selected-layer pointer is now typed as `KfMapOccupancyLayer *`:
+retail byte loads at layer +1/+2/+3 correspond to elevation,
+quarter-turns, and the shape selector. This field-spelling correction
+produced an identical focused object for the WIP function (17.8% listing)
+and changes no shared layout.
+The source-owned 49-word shape-opcode switch has one reviewed direct base
+pair at `0x8002ac54/58`: raw `lui at,0x8001; addiu at,at,0x134c` resolves
+to `func_8002aaa4_rodata`. Retail `0x8002ac34` subtracts `0x10` from
+the unsigned record opcode, sign-extends it, and rejects values above
+`0x30`, bounding the table to opcodes `0x10`–`0x40`. All 49 retail words
+target blocks inside `0x8002aaa4`; 13 targets are distinct and 37 rows
+select the default block `0x8002b5c4`. Pointer rows remain candidate
+indirect edges despite this raw block-head check.
+Retail transition phase one at `0x80016820` copies `0x3e80` words
+(`0xfa00` bytes, exactly 80×80×10 map-cell bytes) to the BSS base, then
+copies `0x600` words (`0x1800` bytes) to its +0x10000 interior. The
+second loaded region ends at +0x11800, just before the collision-cache tail.
+This establishes two distinct copy destinations and a loaded extent, not
+the internal extent of the variable-length shape records. The provisional
+equipment-record view beginning at +0x115a8 also falls inside that second
+copy, so its simultaneous storage ownership needs a separate audit.
 This overlap does not yet prove that the map grid has only 80 rows:
 `0x80035894` passes an unguarded byte-valued source row to `0x80035194`,
 and `0x80036ed4` has additional rectangle-copy calls. Rows beyond 79 may

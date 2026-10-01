@@ -4,20 +4,20 @@
 #include <psyq/kernel.h>
 
 ADDRESS(0x80023178, 0x110)
-void func_80023178(u8 *label, s32 slot_glyph)
+void func_80023178(KfCardHeader *header, s32 slot_glyph)
 {
     s32 experience = player_state.experience;
     s32 level = player_state.level;
     s32 digit;
     s32 index;
 
-    label[34] = 0x82;
-    label[35] = slot_glyph + 0x4f;
+    header->title[30] = 0x82;
+    header->title[31] = slot_glyph + 0x4f;
     for (index = 0; index < 6; index++) {
         digit = experience % 10;
         experience /= 10;
-        label[4 + (25 - index) * 2] = 0x82;
-        label[5 + (25 - index) * 2] = digit + 0x4f;
+        header->title[(25 - index) * 2] = 0x82;
+        header->title[1 + (25 - index) * 2] = digit + 0x4f;
         if (experience == 0)
             index = 6;
     }
@@ -25,8 +25,8 @@ void func_80023178(u8 *label, s32 slot_glyph)
     for (index = 0; index < 2; index++) {
         digit = level % 10;
         level /= 10;
-        label[4 + (30 - index) * 2] = 0x82;
-        label[5 + (30 - index) * 2] = digit + 0x4f;
+        header->title[(30 - index) * 2] = 0x82;
+        header->title[1 + (30 - index) * 2] = digit + 0x4f;
         if (level == 0)
             index = 2;
     }

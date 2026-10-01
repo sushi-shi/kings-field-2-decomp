@@ -886,7 +886,7 @@ WIP or unclaimed status.
 | `8002897c` | WIP source | Inclusive 71..80 predicate; register-lifetime residue. |
 | `80028998` | focused SAME | Timed attacks and halfword mask sequence. |
 | `80029624` | focused SAME | Signed phase-ramp return; reaction unit 16/16 SAME. |
-| `8002985c` | unclaimed WIP | Two retail fragments; complete CFG still unavailable. |
+| `8002985c` | unclaimed WIP | One retail 0x112c-byte body, 142 CFG blocks; indirect jump reachability remains unresolved. |
 
 The `80025a18` ABI needs more than one caller to describe. Retail homes
 `a0` through `a3` before allocating its frame, then reads the incoming `a0`
@@ -980,8 +980,9 @@ check reviewed twelve direct `jal` rows inside `800279cc`. Focused one-VA
 delinks materialized these named `R_MIPS_26` calls. All fifteen internal `j`
 rows inside the single-fragment `800279cc` body also have proven CFG edges;
 raw-word review admitted them as local-section `R_MIPS_26` relocations, and a
-second one-VA delink withheld none. Its two calls from fragmented `8002985c`
-remain candidate, as does the one call from that fragment to `8002665c`.
+second one-VA delink withheld none. The two calls from `8002985c` to
+`800279cc` and its one call to `8002665c` were later reviewed after the
+caller extent and bounded case table were established below.
 Separately, the main-loop word at `800138e0`
 decodes a direct `jal 8002985c` with a `nop` delay slot; its reviewed row
 passed a one-VA delink of `8001369c`. None of these edges proves the three
@@ -1004,9 +1005,50 @@ and `t0` live-in on the fallback edge are artifacts of its unpruned fork;
 the complete function ABI remains unclaimed pending the other paths.
 The full 0xbd0-byte body has 114 retail CFG blocks and twenty proven calls,
 including two to the exact magic selector, three vector rotations, and the
-combat-stat helper. Its only surveyed external caller is a candidate in fragmented
-`8002985c`, so neither function has a complete source-backed control-flow
-contract yet.
+combat-stat helper. Its only surveyed external caller is a proven direct call
+in the large `8002985c`, so neither function has a complete source-backed
+control-flow contract yet.
+At that caller, `8002a728` is `jal 8002665c` with a `nop` delay slot, and the
+callee immediately overwrites `a0` from player state and reads no incoming
+stack arguments. The caller ignores `v0`; this supports a no-argument void
+candidate but does not establish all register live-ins across 114 blocks, so
+the address-derived identity keeps its ABI unresolved.
+The safe one-VA carve for `8002665c` also withholds zero relocations and
+functions. That closes its current target-object references, not the
+114-block source semantics or call-site ABI.
+The separate `80025a18` effect dispatcher still withholds 66 relocation
+rows in a safe one-VA carve. Its 53 pointer words are bounded, but the
+indirect case paths and source owner remain candidate; those withheld
+J/JAL and HI/LO rows were not promoted by analogy with `8002985c`.
+Focused controls in the same player/equipment graph remain 15/15 SAME for
+`game.player_state_equipment`, 2/2 SAME for weapon transform/power, and
+1/1 SAME for the magic selector. The sourced horizontal mover `800274ec`
+remains 61.9% WIP; its wider register/stack schedule residue supplies no
+new source-backed correction.
+The separate `8002722c` action selector still withholds eight relocation
+rows in a safe one-VA carve. Its two bounded pointer tables remain reviewed
+data, but the indirect case edges and C control flow remain unresolved.
+
+The GAME `8002985c` seed understated its body as `0x9dc` bytes and two
+fragments. Raw code continues directly at `8002a238`: nine encoded branches
+from the first part enter the tail, including `8002a204 -> 8002a238`, and
+the tail restores the entry frame's saved `ra`/`s0`–`s2` before returning at
+`8002a980`. The next function starts at `8002a988`. The curated body is now
+one contiguous `0x112c`-byte extent, giving `kf sema cfg` 142 blocks and 315
+edges. The first safe one-VA carve withheld 63 direct-control candidates
+because the indirect jump at `80029c08` leaves automatic reachability
+unresolved; no C source follows from the corrected extent.
+That jump indexes `DAT_80011300` only for unsigned values 0 through 18. The
+nineteen raw pointer words at `80011300..80011348` are aligned, all point into
+this body, and end before the separate `8001134c` collision-dispatch table.
+They are now one `0x4c`-byte address-derived table with reviewed pointer rows;
+the raw `lui`/`addiu` base pair at `80029bf4/80029bf8` is also reviewed.
+A CFG walk from the ten unique table targets reaches every one of the 63
+withheld J/JAL sites. Each retail word decodes to its recorded target, and
+the conservative delinker accepted the rows when reviewed: the focused
+`0x112c` carve now withholds **zero** relocations. The indirect jump remains
+an unresolved control-flow edge in `kf sema`; this review does not establish
+the original C switch form or source TU owner.
 
 GAME `800279cc` now has a first-pass source claim in the contiguous
 `game.player_collision_sound` unit. Its 52 direct `lui`/signed-low references
@@ -1033,5 +1075,7 @@ assignment, and later schedule still differ; no exact claim is made.
 Neighboring `80027928`/`80027988` remain SAME, as do all 16 reaction listings
 and `player_reset_view` after the signed-field refinement. The two camera-turn
 and fifteen player-state/equipment listings also remain SAME after the speed
-union. Collision-cache
-ownership at `bss_801c7540+0x11800` remains provisional.
+union. Collision-cache ownership at `bss_801c7540+0x11800` remains
+provisional. The separate map campaign observed a `0x1800`-byte shape-bank
+copy ending there, which supports a boundary but does not establish the cache
+or equipment extents on either side.

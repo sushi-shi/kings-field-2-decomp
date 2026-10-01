@@ -121,21 +121,25 @@ void func_8001fc94(const void *list_state, s32 render_mode)
     SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
-    y = 0;
-    for (row = 0; row < list->visible_rows; row++) {
-        sprite = row == list->cursor_row ? &menu_sprite_defs[10]
-            : &menu_sprite_defs[8];
-        primitive_buffer_begin_poly_ft4();
-        setRGB0(current_poly_ft4, 255, 255, 255);
-        current_poly_ft4->tpage = sprite->tpage;
-        current_poly_ft4->clut = sprite->clut;
-        setXYWH(current_poly_ft4, list->list_x, list->list_y + y + 5,
-            sprite->width, sprite->height);
-        setUVWH(current_poly_ft4, sprite->u, sprite->v,
-            sprite->width, sprite->height);
-        SetSemiTrans((void *)current_poly_ft4, 1);
-        primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
-        y += 14;
+    row = 0;
+    if (row < list->visible_rows) {
+        y = 0;
+        do {
+            sprite = row == list->cursor_row ? &menu_sprite_defs[10]
+                : &menu_sprite_defs[8];
+            row++;
+            primitive_buffer_begin_poly_ft4();
+            setRGB0(current_poly_ft4, 255, 255, 255);
+            current_poly_ft4->tpage = sprite->tpage;
+            current_poly_ft4->clut = sprite->clut;
+            setXYWH(current_poly_ft4, list->list_x, list->list_y + y + 5,
+                sprite->width, sprite->height);
+            setUVWH(current_poly_ft4, sprite->u, sprite->v,
+                sprite->width, sprite->height);
+            SetSemiTrans((void *)current_poly_ft4, 1);
+            primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
+            y += 14;
+        } while (row < list->visible_rows);
     }
 
     sprite = &menu_sprite_defs[9];

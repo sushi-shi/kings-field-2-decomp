@@ -161,6 +161,17 @@ still 1280 bytes against retail's 1248, and the packed UV union ownership and
 many instruction-order differences remain unresolved. The body is not a
 defensible production claim yet.
 
+The FT4 and FT3 arms both derive midpoint UV pairs inside one packet loop.
+Hoisting the temporary four-byte UV scratch views to that loop scope, so the
+mutually exclusive arms share their AB/AC storage, improved direct objdiff
+from 62.844173% to 68.00982%. Reusing FT4's fifth scratch slot for FT3's BC
+pair reached 69.36073%. Both objects retained the 0xcbc-byte body and 14
+copy calls; the frame shrank from 1280 to 1272 bytes, still 24 bytes larger
+than retail. Hoisting the integer midpoint indices as well regressed to
+62.53129%, so that narrower source shape is discarded. These temp-only
+results support shared UV scratch lifetimes but do not prove the original
+union declaration or the remaining frame/storage layout.
+
 Retail spills `t5`, `t8`, and `t9` around the first packet copy before their
 first visible assignments. The low UV bytes later read from those words have
 their prior bits masked out before they are stored, so this does not establish
@@ -180,6 +191,22 @@ For the paired walker at `0x8002e4dc`, a source-only nested positive-depth
 condition in the FT3/GT3 arms compiled to the same focused listing as the
 existing early-break form. Its eight exact TMD-pipeline siblings stayed
 `SAME`; the two missing retail branch blocks are still unattributed.
+
+Retail `0x8002ebe0` routes all four packet kinds through one shared tail at
+`+0x534`: it writes the packet code byte, sign-extends the depth from a
+shifted word, checks positive depth and the 8192-entry table bound with two
+branches, and enqueues the packet. A temporary source-only common-tail probe
+raised its focused listing from 88.7% to 89.2%, but still emitted 25 rather
+than 26 blocks and 16 rather than 17 branches. A further temporary 32-bit
+third-argument view with a 16-bit cast at the tail reached 89.5%; writing the
+two depth exits separately recovered the retail `blez` shape but kept the same
+89.5% listing. The caller passes an O32 word derived from its signed depth;
+these probes do not prove the callee's original formal width. Retail stores
+the blend word at `sp+32` before `tmd_get_object`, then shifts it after the
+call, while both probes instead preserve it in a saved register. Retail also
+uses a 96-byte frame against the retained source's 104-byte frame. No shared
+header or production walker was changed for these incomplete probes; eight
+exact siblings stayed `SAME` in each focused build.
 
 The clipped fan at `0x8002f5b0` also has a typed-copy boundary. Replacing its
 three aligned four-byte color copies with direct `CVECTOR` struct assignments

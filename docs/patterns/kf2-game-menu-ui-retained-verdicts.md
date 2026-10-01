@@ -406,7 +406,7 @@ reference.
 | --- | --- | --- |
 | `0x8001f798` | paired menu rows | SAME |
 | `0x8001fb8c` | window drawing | DIFF 83.5% |
-| `0x8001fc94` | item/card list renderer | DIFF 97.7% |
+| `0x8001fc94` | item/card list renderer | DIFF 98.6% |
 | `0x80020748` | two-option drawing | SAME |
 | `0x8002083c` | item-model preview | DIFF 73.1% |
 | `0x80020990` | value heading | SAME |
@@ -456,3 +456,35 @@ supported source object for the surplus frame bytes, so these five sources
 were left unchanged. A `u16` glyph-index local left the string renderer's
 focused listing at 90.4%, and swapping independent scroll-pointer updates
 left the list renderer at 97.7%; both source-only probes were discarded.
+An explicit prechecked `do` loop moved the card-mode calculation behind
+the retail bounds checks but changed other loop instructions, reducing the
+renderer to 92.2%; it was discarded. Explicit byte casts on the glyph
+renderer UV coordinates left its 90.4% listing unchanged and were also
+discarded.
+Two lower-panel row-initialization probes, one with an explicit positive-row
+guard and `do` loop and one retaining the `for` loop, reduced the list
+renderer to 95.9% and shrank its otherwise correct 128-byte frame to 120
+bytes. A guard around the existing `for` loop retained the frame but reduced
+the listing to 97.4%. None of these forms was retained.
+
+Fresh five-unit isolated native objdiff confirms current strict per-function
+scores of 99.78788% (`0x8001fb8c`), 98.44964% (`0x8001fc94`),
+99.65882% (`0x8002083c`), 99.66904% (`0x800210ac`), and 99.956985%
+(`0x80021c8c`). The two-option and display-exit siblings remain 100%.
+All five units now have identical raw ordered relocation listings. The list
+renderer previously had all 201 relocation types and symbols in the same
+order, with downstream offsets shifted by four bytes after a body
+instruction gap; its retained lower-panel loop removed that gap. The loop
+increments the row counter before starting each tile packet, as retail does
+in the call delay slot and as the KF1 sibling's source expresses. Normal
+focused similarity improves from 97.7% to 98.6% and the correct 128-byte
+frame remains. Isolated objdiff's fuzzy percentage moves slightly downward
+from 98.581024% to 98.44964%; the source-backed loop is retained because
+its instruction order and relocation sites are closer to retail.
+Applying the KF1-style prechecked `do` loop to the main text rows was a
+separate source-only probe: it repurposed the retail sentinel register,
+shrunk the frame to 120 bytes, and reduced the focused listing to 92.4%.
+The main row loop remains in its prior source form.
+Spelling the card-column predicate as `render_mode == 8 || render_mode == 9`
+left the retained 98.6% listing unchanged, so that source-only probe was
+discarded too.

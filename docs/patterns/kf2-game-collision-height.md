@@ -124,7 +124,7 @@ certification is pending.
 | `0x8002b73c` | WIP, 98.404260% | Correct eight-block footprint loop, four branches, and map-grid reference; row pointer and loop-index registers differ. |
 | `0x8002b874` | WIP, 85.8% focused listing | Player/actor/map-object snapshot is modeled, but the actor/object radius and interaction-height load order and common-tail schedule differ. |
 | `0x8002b9d4` | Prior strict WIP, 89.4% | Grid, actor, map-object, and player call set was modeled; the prior actor-scan successor difference is corrected in the focused pass below, while result lifetime remains unresolved. |
-| `0x8002bfd4` | WIP, 54.155340% | Both mask-segment axes are modeled; coordinate and render-grid address scheduling diverges before the raster loops. |
+| `0x8002bfd4` | Prior strict WIP, 54.155340% | Both mask-segment axes are modeled; the focused branch correction below has not been recertified strictly. |
 | `0x8002c170` | WIP, 89.8% | Eleven-block mask-row scan and bounds agree; pointer and state registers differ. |
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
@@ -145,6 +145,14 @@ known successor lists agree by block order. The shared focused build keeps
 `0x8002b9d4` remain non-exact. The earlier strict report row above is
 historical and has not been recertified under the user's focused-build-only
 constraint.
+
+In the mask-segment rasterizer `0x8002bfd4`, retail assigns the positive X
+step in the nonnegative-delta arm and jumps over it from the negative arm.
+The source now uses that explicit `else` after setting the negative step.
+Its focused listing improves from 16.0% to 18.3%, with target/compiled CFG
+moving from 22/21 to 22/22 blocks and known successors agreeing by block
+order. The 10/17 SAME sibling listings remain unchanged; the rasterizer's
+coordinate and grid-address schedule is still WIP.
 
 Retail `0x8002c670` forms a saved pointer to the scan state's +0x0c field
 and uses it for several relative stores. An isolated C probe that changed
@@ -357,6 +365,12 @@ the unsigned record opcode, sign-extends it, and rejects values above
 target blocks inside `0x8002aaa4`; 13 targets are distinct and 37 rows
 select the default block `0x8002b5c4`. Pointer rows remain candidate
 indirect edges despite this raw block-head check.
+The opcode `0x11` row at `0x80011350` points to `0x8002acb0`. That entry
+clears `$s7` at `0x8002acb4`, then branches on `$s7` at `0x8002acb8`;
+the branch is false along this table entry. No row in this bounded switch
+enters at `0x8002acb8`, and the decoded direct edges do not target it.
+This apparent dead branch is an unattributed CFG residue, not evidence
+for adding a fabricated source flag or changing the shape-record opcode.
 Retail transition phase one at `0x80016820` copies `0x3e80` words
 (`0xfa00` bytes, exactly 80×80×10 map-cell bytes) to the BSS base, then
 copies `0x600` words (`0x1800` bytes) to its +0x10000 interior. The

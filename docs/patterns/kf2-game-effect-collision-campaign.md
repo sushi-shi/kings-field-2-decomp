@@ -13,7 +13,7 @@ the KF2 80-row collision structures.
 | GAME VA | Verdict | Evidence or residue |
 | --- | --- | --- |
 | 0x8003fa68 | WIP | Effect collision probe, 70.73% semantic first pass; call/CFG differences. |
-| 0x8003fb94 | WIP | Damage path and ownership still unresolved. |
+| 0x8003fb94 | Exact | Fresh isolated direct objdiff confirms 536/536 code bytes and matching ordered relocations inside the ten-function effect-update unit. |
 | 0x8003fdac | Exact | `effect_magic_power`, 0x24 bytes. |
 | 0x8003fdd0 | Exact | Effect magic spawn, 0xe0 bytes. |
 | 0x8003feb0 | Exact | Effect offset spawn, 0x68 bytes. |
@@ -123,7 +123,7 @@ Large unclaimed functions are WIP triage verdicts, not speculative C claims.
 | 0x800462bc | WIP, focused 90.5% | Provisional typed actor-target bytecode interpreter has matching CFG and bounded 16-entry table; action-handler load-delay schedule differs. |
 | 0x800474c4 | Exact | Seven-argument three-channel transition, 276/276 code bytes at 100%; nine direct call relocations reviewed. |
 | 0x800475d8 | Focused WIP, 89.4% | Source-backed variadic ABI, signed quarter-depth, flag lifetime, and shared outbound/return pose buffers reproduce the 120-byte frame; one CFG block and register residues remain. |
-| 0x80047c98 | WIP | 0x660-byte interaction dispatcher calls actor probe, map-object selector and channel transition; unproven data/indirect owner. |
+| 0x80047c98 | WIP, focused 85.7% | The 0x660-byte interaction dispatcher now sends proven template kinds 3 and 4 to one handler; it calls actor probe, map-object selector and channel transition, while its callback remains indirect. |
 
 At 0x801d8d40..0x801d8d68, direct users establish a collision pointer,
 vertical bounds, and result words. That address range overlaps the provisional
@@ -688,7 +688,7 @@ strict report predates the retained source correction below.
 | GAME VA | Current verdict | Decisive evidence or residue |
 | --- | --- | --- |
 | 0x8003fa68 | WIP, last strict 70.73333% | Four separate retail collision calls are folded into one shared call in the source probe. `if`/`else if` and reordered-case probes did not restore those call sites; both were discarded. |
-| 0x8003fb94 | Focused `SAME` (strict refresh pending) | Updating `kind` in place after extracting option bits matches the retail prologue and mask schedule; all ten listings in `game.effect_update` are identical. |
+| 0x8003fb94 | Exact, 100% direct objdiff | Updating `kind` in place after extracting option bits matches the retail prologue and mask schedule. All ten functions in `game.effect_update` are 100%; the whole unit is 1908/1908 `.text` bytes with 36/36 ordered relocations identical. |
 | 0x80040308 | WIP, unclaimed | The 0x13e4-byte constructor has a bounded 123-word table with all entries inside its body, now curated as one datum. The indirect edges remain candidate and no source-owned RODATA or complete collision-cache model exists. |
 | 0x80042650 | WIP, unclaimed | The 0x3670-byte dispatcher has two decoded indirect switches, but the in-body pointer-table relocations and collision-cache owner remain provisional. |
 | 0x8004678c | WIP, unclaimed | Both direct callers pass the player camera position, a rotation view, and an integer command; the 0xc54-byte controller ends by forwarding those to active callback slot two. Its 35-way command switch and callback targets remain indirect. |
@@ -999,3 +999,80 @@ The five new BSS pairs and both function bodies passed focused one-VA safe
 delinking with zero withheld relocations. The table pointers still have only
 candidate indirect-edge status; the decoder remains WIP despite its high fuzzy
 score, while the serializer's code and table bytes now match exactly.
+
+The constructor at 0x80040308 now has 133 raw-reviewed direct-control rows:
+69 `jal` calls and 64 in-body `j` words. Its bounded 123-entry switch table
+at 0x8001249c is constructed by the reviewed `lui/addiu` pair at
+0x800404bc/0x800404c0. A safe one-VA carve admits 135 relocations with two
+withheld candidate pairs and no withheld functions. The two remaining pairs
+load and store DAT_8006d704, an initialized-zero index used modulo four to
+select 576-byte-spaced destinations from 0x801d9628. Only this constructor
+references the datum in the current xref inventory, and the destination has
+no admitted binding. Both source owners remain WIP; the switch `jr` remains
+indirect. A read-only raw constructor scan through GAME code finds one
+`lui/addiu` pair for 0x801d9628, at 0x80040a50/0x80040a54. This confirms
+the constructor is the only direct base reference found in that code span;
+it does not establish the buffer's allocation or complete extent.
+
+A direct branch audit of 0x80047c98 found that template collision kinds 3
+and 4 enter the same state handler in retail. The C source had omitted kind
+4; sharing the case label preserves that behavior and raises its focused
+listing from 85.1% to 85.7%. The compiled CFG remains 83 versus 85 retail
+blocks, with 55/55 branches. Its first remaining divergence is the
+object-index zero assignment in the angle-test branch delay slot; the nested
+linked-object case also differs in branch layout. A source-only nested
+conditional probe for that latter case produced the same listing and was
+discarded. No callback target was inferred from the terminal `jalr`.
+
+The raw 0x8004678c command table was re-read directly from GAME.EXE at file
+offset 0x20d0. Command bytes 0x52..0x74 map to 35 in-body labels. The
+0x63..0x6e band mostly shares 0x800467f8, except 0x67 enters 0x80046cb8
+and 0x69/0x6e enter the common exit at 0x80047370. Commands 0x6f..0x74
+enter six adjacent labels at 0x800469fc, 0x80046a04, 0x80046a0c,
+0x800468d4, 0x800468dc, and 0x800468e4. These are retail pointer values,
+not promoted indirect CFG edges; the 0x800467f0 `jr` and later callback
+`jalr` remain unresolved.
+
+The 0x8003fa68 effect collision probe remains focused 57.5% WIP. Retail has
+four separate direct 0x8002b9d4 call sites, one per effect type 1..4; the
+current C keeps those four case-specific calls but the probe compiler merges
+their common argument setup and call. A temporary direct-return spelling
+still merged them and lowered the focused listing to 53.6%, so it was
+discarded. The original call separation is source/compiler attribution still
+to resolve; no artificial side effects were added.
+
+Current 29-function effect/event checkpoint verdicts (strict means direct
+objdiff or previously reviewed strict report, with current focused controls
+where noted):
+
+| GAME address | Verdict |
+| --- | --- |
+| 0x8003fa68 | WIP, focused 57.5%; four retail collision calls merge in compiled source. |
+| 0x8003fb94 | Exact, direct 536/536 bytes. |
+| 0x8003fdac | Exact, direct effect-update unit. |
+| 0x8003fdd0 | Exact, direct effect-update unit. |
+| 0x8003feb0 | Exact, direct effect-update unit. |
+| 0x8003ff18 | Exact, direct effect-update unit. |
+| 0x800400c0 | Exact, direct effect-update unit. |
+| 0x800401b4 | Exact, direct effect-update unit. |
+| 0x80040220 | Exact, direct effect-update unit. |
+| 0x80040264 | Exact, direct effect-update unit. |
+| 0x800402a4 | Exact, direct effect-update unit. |
+| 0x80040308 | WIP, source unclaimed; two constructor data pairs withheld. |
+| 0x80041e94 | Exact, direct 664/664 bytes. |
+| 0x8004212c | Exact, direct 364/364 bytes. |
+| 0x800462bc | WIP, focused 90.5%; action load/branch ordering. |
+| 0x8004678c | WIP, source unclaimed; command-table `jr` and callback `jalr` indirect. |
+| 0x800473e0 | Exact, reviewed strict event-counter unit. |
+| 0x80047434 | Exact, reviewed strict event-counter unit. |
+| 0x800474c4 | Exact, reviewed strict event-counter unit. |
+| 0x800475d8 | WIP, focused 89.4%; one CFG block and register-order residue. |
+| 0x80047c98 | WIP, focused 85.7%; 85/83 CFG blocks after kind-4 correction. |
+| 0x800482f8 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x800483a8 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x800483d8 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x80048428 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x80048498 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x800484e4 | Exact, reviewed strict event-state unit; current focused SAME. |
+| 0x80048554 | Exact, direct 1112/1112 text and 660/660 rodata; current focused SAME. |
+| 0x800489ac | WIP, focused 95.1%; actor/group sentinel-loop register assignments. |

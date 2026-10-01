@@ -71,7 +71,9 @@ comes from the pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
 The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
 retail NUL terminator. Its reviewed `0x80022744` `lui`/`addiu` pair computes
 that address immediately before the direct `firstfile` call; the string's
-source owner is still unresolved.
+source owner is still unresolved. Its exact bytes do not occur in the supplied
+Psy-Q 3.0 library archives or card sample sources, which narrows but does not
+prove ownership.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
 Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
@@ -81,9 +83,12 @@ unproved, so their address-derived identities stay separate.
 The carved directory module's initialized sections contain its 0x130-byte
 file-prefix/card-asset data and six-byte path literal; neither section owns
 `0x8006d6a4` or `0x8006d6a5`. A pooled local `" "` initializer is compatible
-with the two bytes and three callers, but this object evidence does not prove
-that source spelling or the defining TU. The focused source therefore keeps
-the two external byte identities pending a source-backed ownership claim.
+with the two bytes and three callers, but the pinned GCC 2.5.7 probe places
+that initializer's padded four bytes in this unit's `.rodata`, ahead of its
+six-byte `bu00:` literal. The retail target instead has only the six-byte
+literal in this unit and keeps the seed at a separate late data address.
+That probe does not prove the historical compiler or the seed's defining TU;
+the focused source keeps the two external byte identities pending an owner.
 
 The first four header fields follow the KF1 `KfPsxSaveHeader` layout, while
 KF2's own `SC 13 02` retail stores, three icon frames, and two-block `FCREAT`
@@ -134,6 +139,20 @@ The newly verified exact `0x8001aa9c` has 484/484 code bytes and 17/17
 ordered relocations. The earlier browser, label, event, and payload exact
 controls remain exact. No repository tests, full build, or banking accompanied
 this isolated comparison.
+
+The seven WIPs have these first unresolved instruction differences; their
+source call sets and identified data referents remain aligned with retail:
+
+| Address | First unresolved difference |
+| --- | --- |
+| `0x8001b554` | retail copies the probe result to `a0` before two delayed branches; the current object branches on `v0` |
+| `0x8001bf68` | retail keeps the probe status in `v1`; the current object saves it in `s0` and uses a different constant register |
+| `0x800226ec` | retail loads the slot-seed bytes with `lb` and places the initialization around `memset` differently |
+| `0x800228c8` | retail loads the slot seed earlier, uses `lb` for title bytes, and advances a byte offset through the two digit loops |
+| `0x80022b74` | retail uses an 80-byte frame and preserves the slot in `s3` before copying it to `s2`; the current object uses a 72-byte frame |
+| `0x80022ca0` | retail orders the slot-seed loads, zero fill, and saved-register setup differently |
+| `0x80023178` | retail and current object have the same signed decimal divisions and loop exits, with different argument and temporary registers |
+
 The payload pair has one proven external caller each: writer `0x80022ca0`
 calls serializer `0x80048d24` at `0x80023020`, and reader `0x80022b74`
 calls deserializer `0x800492dc` at `0x80022c5c`. The other xrefs to each

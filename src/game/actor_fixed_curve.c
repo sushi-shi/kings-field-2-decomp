@@ -132,28 +132,28 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
         target_slot = group->targets;
         remaining_slots = 15;
         do {
-            candidate = target_slot->pointer;
+            candidate = (target_slot++)->pointer;
             if (candidate == 0) {
                 break;
             }
-            if (candidate->type == 2 && candidate->unknown_0c <= applied &&
-                (candidate->unknown_01[1] == 0xff ||
-                 (rand() >> 7) < candidate->unknown_01[1])) {
-                actor_set_target(actor, candidate);
-                actor->unknown_1a = remaining;
-                goto update_motion;
+            if (candidate->type == 2 && candidate->unknown_0c <= applied) {
+                u8 chance = candidate->unknown_01[1];
+                if (chance == 0xff || (rand() >> 7) < chance) {
+                    actor_set_target(actor, candidate);
+                    actor->unknown_1a = remaining;
+                    goto update_motion;
+                }
             }
-            target_slot++;
-        } while (remaining_slots-- != 0);
+        } while (--remaining_slots != -1);
         actor->unknown_1a = remaining;
     }
 
 update_motion:
     if (actor->unknown_28 & 0x10) {
         linked = &actor_state.actors[actor->unknown_22];
-        motion_divisor = linked->group_index;
+        motion_divisor =
+            actor_state.target_groups[linked->group_index].unknown_01[1];
     } else {
-        /* This divisor is a group field, distinct from actor->group_index. */
         motion_divisor = group->unknown_01[1];
     }
     if (position != 0 && motion_divisor < 0xf0) {

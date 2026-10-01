@@ -396,7 +396,7 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
     s32 z = ((u32)start->z >> 12) + origin_z;
     s32 dx = (((u32)end->x >> 12) + origin_x) - x;
     s32 dz = (((u32)end->z >> 12) + origin_z) - z;
-    s32 step_x = 1;
+    s32 step_x;
     s32 step_z = 1;
     s32 count;
     s32 error;
@@ -404,6 +404,8 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
     if ((s16)dx < 0) {
         dx = -dx;
         step_x = -1;
+    } else {
+        step_x = 1;
     }
     if ((s16)dz < 0) {
         dz = -dz;

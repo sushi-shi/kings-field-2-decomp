@@ -115,6 +115,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             }
             break;
         case 3:
+        case 4:
             if (object->action_timer == 0) {
                 if (object->tail.fields.unknown_38 >= 0xfc) {
                     if ((object->tail.fields.unknown_38 & 1) &&

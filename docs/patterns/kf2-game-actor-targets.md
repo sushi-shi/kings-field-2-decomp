@@ -1450,3 +1450,36 @@ For `3ae50`, fusing the obstacle-angle choice and wrap into one C assignment
 emits the `andi` at retail's earlier point but adds an extra register move;
 the source-only listing falls from 99.2% to 91.7%. The retained two-step C
 spelling preserves the exact neighboring animation claims.
+
+## Actor fixed-curve and target-scan continuation
+
+The preceding 30-function verdict table remains current for unchanged actor
+units. The connected fixed-curve pair has these focused verdicts:
+
+| GAME VA | Verdict | Retail evidence and remaining difference |
+| --- | --- | --- |
+| `39c14` | SAME | Eight direct calls from `39c94`; exact curve-leaf control remains intact. |
+| `39c94` | WIP 62.1% | The candidate scan now snapshots byte +2 before `rand`, advances the reference pointer in the null-test path, and checks its 16-entry count against `-1`. The linked-actor path reads target-group byte +2 as the motion divisor. Retail and C still have 72/71 CFG blocks and 46/46 branches; callback slot 18 remains unresolved. |
+
+The retail scan loads candidate byte +2 once into a saved register before
+calling `rand`; the earlier C expression read it again after the call. Retail
+also advances the reference pointer in the null-test branch delay slot and
+decrements its 15-based counter before comparing with `-1`. These source
+corrections raise the focused listing from 50.3% to 59.2%. At
+`39c94+0x498` through `+0x4d0`, retail uses the linked actor's group index
+to select a 120-byte target group and loads its byte +2. The earlier C used
+the group index itself as the divisor; correcting that lookup raises the
+focused listing to 62.1%. The exact `39c14` sibling stays SAME. A source-only
+`if/else` spelling of `3ae50`'s obstacle angle fell to 90.7%, so the
+retained 99.2% source and its six exact animation neighbors remain unchanged.
+The direct retail and pinned-compiler objects both contain 417 instructions
+for `39c94`; equal body length does not resolve its 72/71 CFG split or the
+remaining register and stack-allocation differences.
+The KF1 `actor_apply_damage` counterpart accumulates component damage before
+health and player-credit handling, which supports the broad source shape;
+its five-component record does not establish KF2's eight-component field
+names or callback identity.
+Effect-owned `3fb94`, a direct caller of `39c94`, has since been certified
+strict exact by isolated direct objdiff: 536/536 function bytes and all 36
+ordered relocations in its complete unit match. Its older WIP rows above
+record earlier checkpoints, not the current verdict.

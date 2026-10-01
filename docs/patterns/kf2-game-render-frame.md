@@ -144,3 +144,29 @@ temporary result into `v0` in the return slot, whereas retail calculates the
 fallback predicate directly in `v0` and returns with a `nop` slot. The older
 strict report gives 93.6%. A source-only early-return spelling lowered the
 focused comparison to 26.7% and introduced an extra jump; it was discarded.
+
+## Placed-object traversal actor base
+
+The unclaimed `0x8003247c` frame child has one proven external caller in the
+exact frame driver. Its entry clears 32 and 16 words of local resource flags,
+then forms `0x8016b600` with `lui s2,0x8017` and signed
+`addiu s2,s2,-18944` at `0x800324c8`/`0x800324cc`. This is the existing
+`actor_state` base, corroborated by its 124-byte actor stride and other
+reviewed actor references. The pair now has a reviewed relocation row.
+All 40 candidate direct-control rows in this body were checked against their
+raw MIPS26 opcodes and targets: 27 direct calls and 13 in-body jumps match,
+and each is now marked reviewed. No indirect `jalr` or non-return `jr`
+appears in this body. A safe one-VA GAME carve succeeds with 62
+relocations and none withheld. The 96-block body still mixes actor, map,
+resource, and render state, so the complete function remains unclaimed.
+
+The adjacent eight-function resource unit was checked separately. All 19
+recorded direct-control words decode to their listed MIPS26 targets; 17
+previously candidate rows are now reviewed, alongside the two already
+reviewed rows. An eight-VA GAME safe carve succeeds with 82 relocations and
+none withheld. Focused compilation still has four identical listings and
+four WIP listings: the radius mask, visibility query, TMD queue, and VAB
+range updater. The queue's callback address at `0x80032248`/`0x8003224c`
+is also a raw-verified signed-low pair to `resource_tmd_read_complete`, passed
+as `$a3` to `cd_archive_queue_read`; its one-VA safe carve has nine
+relocations and none withheld. No C body changed from this relocation review.

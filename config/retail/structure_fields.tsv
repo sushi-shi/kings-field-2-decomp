@@ -648,7 +648,8 @@ KfState8017d118	0x04	0x05	values_04	u8[5]	supported	asm;func_80015fd4	five bytes
 KfState8017d118	0x09	0x03	unknown_09	u8[3]	opaque	asm;game_main_loop startup clear	purpose not yet modelled
 KfState8017d118	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table
 KfState8017d118	0x10	0x05	values_10	u8[5]	supported	asm;func_80015fd4	prior values copied from +0x04 through +0x08
-KfState8017d118	0x15	0x02	unknown_15	u8[2]	opaque	asm;game_main_loop startup clear	purpose not yet modelled
+KfState8017d118	0x15	0x01	unknown_15	u8	opaque	asm;game_main_loop startup clear	purpose not yet modelled
+KfState8017d118	0x16	0x01	flag_16	u8	supported	GAME 0x80016510/16524 sb;0x80016c50 sb;0x80030d14 lbu	transition setter writes 0/1, loop clears it, and map-cell renderer reads it; exact purpose unresolved
 KfState8017d118	0x17	0x03	values_17	s8[3]	supported	asm;func_80016820 signed lb;func_80015fd4 stores	three signed bytes set to 127 during transition setup
 KfState8017d118	0x1a	0x02	unknown_1a	u16	opaque	asm;func_80016820 sh and address use	two-byte transition field; purpose not yet modelled
 KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code

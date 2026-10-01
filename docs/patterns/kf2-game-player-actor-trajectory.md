@@ -1125,7 +1125,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | Unclaimed WIP | 114 CFG blocks; zero withheld relocations; full weapon/effect semantics unresolved. |
+| `8002665c` | Unclaimed WIP | Candidate `void()` ABI: sole proven caller `8002a728` has no argument setup and discards `v0`; entry replaces `a0` from player state. 114 CFG blocks and zero withheld relocations; other live-ins and full weapon/effect semantics remain unresolved. |
 | `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
@@ -1136,6 +1136,13 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
 | `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
 | `80028998` | SAME | Attack/action controller and magic selector caller. |
+
+The adjacent `8002985c` update body has one proven external call from
+`game_main_loop` at `800138e0`; the other incoming pointers are its bounded
+internal switch targets. That caller does not prepare arguments or consume
+`v0`, and the callee initializes `a0`–`a3` before using them. Its identity
+therefore records candidate `void func_8002985c(void)` while the full
+control flow and source ownership remain unresolved.
 
 The first-pass `8002722c` source now owns the contiguous run through
 `800274ec` in `game.player_select_magic_action`, reducing one module. Its
@@ -1156,7 +1163,11 @@ lifetime. Ordering the second switch's case bodies by their retail block
 sequence and clearing its three vector halfwords in retail store order
 improves the listing while keeping the same case results. A shared
 `repeat_count` local lowered similarity to 72.8% and was discarded. Retail
-and C still differ at the initial stack frame and several case joins; CFG is
+case 12 jumps from `80027460` to the common byte store at `800274c8`,
+but its `li v0,5` delay slot at `80027464` sets the first action byte;
+the resulting action pair is `(5,2)`, distinct from case 3's `(6,2)`.
+That delay slot must be included when interpreting the apparent shared tail.
+Retail and C still differ at the initial stack frame and several case joins; CFG is
 33/34 blocks with 16/16 branches. The raw table pointers prove
 bounded destinations, but semantic indirect edges and the original C/TU
 form remain candidate.

@@ -17,7 +17,7 @@ campaign; adjacency alone does not establish a translation-unit boundary.
 | `0x8001f798` | paired, six-row menu labels | **exact, 288/288 bytes**, newly resolved |
 | `0x8001f8b8` | menu model/preview controller | WIP: 94.36464% direct objdiff, 84.8% focused; 42/42 blocks and 18/18 branches |
 | `0x8001fb8c` | window title and highlighted rows | WIP: 99.78788% direct objdiff; 48-byte retail versus 40-byte source frame |
-| `0x8001fc94` | numeric/list renderer | WIP: 98.581024% direct objdiff, 97.7% focused; 55/55 blocks and 33/33 branches |
+| `0x8001fc94` | numeric/list renderer | WIP: 98.44964% isolated objdiff, 98.6% focused; 55/55 blocks and 33/33 branches |
 | `0x80020748` | two-option widget | **exact**, existing source |
 | `0x8002083c` | menu model preview | WIP: 99.65882% direct objdiff; 224-byte retail versus 160-byte source frame |
 | `0x80020990` | numeric heading | **exact**, existing source |
@@ -93,3 +93,11 @@ restores the first argument-save placement. Normal focused listings and
 isolated native objdiff are exact for these three; their raw ordered
 relocation listings match the carved retail objects. The earlier failed
 typed-temporary probe above remains a historical source-shape control.
+
+The later list-renderer lower-panel loop now increments its row counter
+before beginning each tile packet, matching retail's call delay slot and
+the KF1 sibling shape. Focused similarity improves to 98.6% and all 201
+ordered relocation sites match the retail object. Isolated objdiff reports
+98.44964% fuzzy similarity, slightly lower than its earlier 98.581024%
+score; the evidenced instruction and relocation alignment support keeping
+the loop while the earlier card-mode calculation residue remains WIP.

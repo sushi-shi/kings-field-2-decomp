@@ -50,6 +50,41 @@ void effect_update_dispatch(void)
         func_80041e0c(&record->position, 0x400, 0x400, 500);
         record->rotation.vz += 2700;
         break;
+    case 1:
+    case 28: {
+        s32 radius = record->kind == 28 ? 250 : 500;
+        u8 phase = record->unknown_3c[4];
+
+        if (phase == 2) {
+            record->unknown_10 += 256;
+            if (record->unknown_10 >= 4096) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+            break;
+        }
+        if (phase == 1) {
+            record->direction.vy += 13;
+        }
+        record->rotation.vx += 200;
+        collision = func_80042298(radius, radius * 2, 250);
+        if (collision != 0) {
+            func_8003feb0(collision);
+            if (phase == 1) {
+                record->unknown_3c[4] = 2;
+                record->unknown_09 = 1;
+                record->unknown_0c = 0x42;
+                record->unknown_10 = 0x400;
+                break;
+            }
+            func_80042424();
+            record->unknown_3c[4] = 1;
+            record->direction.vz = 0;
+            record->direction.vx = 0;
+            record->direction.vy = -100;
+        }
+        func_80041e0c(&record->position, 0x4000, 0x4000, 500);
+        break;
+    }
     case 2:
         step = (s16)record->scale_x + (s16)*(u16 *)&record->unknown_3c[6];
         record->scale_x = step;

@@ -29,9 +29,7 @@ GAME.EXE	0x80011410	0x74	tmd_prepare_primitive_indices_rodata	unknown	load	point
 GAME.EXE	0x80011484	0x3f8	func_80035894_rodata	unknown	load	pointer[254]	map_object_init_records	supported	asm;254 jump-table targets;retail words	object-record opcode switch table owned by unit RODATA claim
 GAME.EXE	0x8001187c	0x44	map_object_effect_jump_table	unknown	load	pointer[17]	map_object	supported	asm;raw pointer targets	17 template-kind switch cases in map_object_spawn_effect; owned by its RODATA claim
 GAME.EXE	0x800118c4	0x54	map_object_action_jump_table	unknown	load	pointer[21]	map_object	supported	asm;raw pointer targets	21-case action switch in func_800368b4; owned by its RODATA claim
-GAME.EXE	0x8001191c	0x380	func_80036ed4_rodata	unknown	load	pointer[224]		supported	asm;opcode-2 bound 0xdf;224 retail pointers	map-object event dispatcher switch table; prospective RODATA claim, source unclaimed
-GAME.EXE	0x80011c9c	0x24	DAT_80011c9c	unknown	load	pointer[9]		supported	asm;bounded secondary jr table;retail pointer words	nine map-object dispatcher case pointers; source owner unresolved
-GAME.EXE	0x80011cc4	0x14	DAT_80011cc4	unknown	load	pointer[5]		supported	asm;bounded tertiary jr table;retail pointer words	five map-object dispatcher case pointers; source owner unresolved
+GAME.EXE	0x8001191c	0x3bc	func_80036ed4_rodata	unknown	load	pointer[238]+pad[1]	func_80036ed4	supported	asm;three bounded jr tables;238 raw pointer relocations;one zero pad word	one owned RODATA span: 224 primary pointers, 9 secondary pointers, 5 tertiary pointers, and one zero word (239 words total)
 GAME.EXE	0x80011cd8	0x20c	func_80039108_rodata	unknown	load	pointer[131]	func_80039108	supported	asm;bounded jr;131 decoded retail pointer words	compiler switch table within actor candidate scorer unit
 GAME.EXE	0x80011ee8	0x1ec	DAT_80011ee8	unknown	load	pointer[123]		address-only	asm;bounded jr index;raw pointer targets	123 in-function case targets; source switch table; indirect jr target remains candidate
 GAME.EXE	0x800120d8	0x4	DAT_800120d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

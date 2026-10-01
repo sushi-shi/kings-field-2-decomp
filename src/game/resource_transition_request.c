@@ -3,6 +3,7 @@
 #include <kf/game/callback.h>
 #include <kf/game/cd.h>
 #include <kf/game/event_state.h>
+#include <kf/game/resources.h>
 #include <psyq/kernel.h>
 
 extern void func_80048554(s32 save_slot);

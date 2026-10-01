@@ -68,7 +68,8 @@ void func_8002c670(void)
     game_graphics_runtime.render_grid.map_scan_start_x =
         -game_graphics_runtime.render_state.cell_origin_x;
     render_mask_scan_state.window_x = x;
-    center_x = game_graphics_runtime.render_state.view_position.vx * 2;
+    center_x = (s32)((u32)game_graphics_runtime.render_state.view_position.vx
+                     << 1);
     z = (u8)((((-cosine) * shape[0]) >> 20) + 12);
     game_graphics_runtime.render_state.cell_origin_z = z - render_mask_scan_state.map_z;
     game_graphics_runtime.render_grid.map_scan_start_z =
@@ -77,7 +78,8 @@ void func_8002c670(void)
     mask = &game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
     render_mask_scan_state.mask_cursor = mask;
 
-    center_z = game_graphics_runtime.render_state.view_position.vz * 2;
+    center_z = (s32)((u32)game_graphics_runtime.render_state.view_position.vz
+                     << 1);
     func_8002a988(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
     layer = KF_COLLISION_CACHE_LAYER;

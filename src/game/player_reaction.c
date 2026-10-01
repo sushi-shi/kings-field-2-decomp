@@ -494,7 +494,9 @@ update_reaction_view:
             func_80029168();
         }
         goto update_reaction_view;
-    case 4:
+    case 4: {
+        u16 angle_phase;
+
         func_80028998();
         func_80028224();
         func_8002851c();
@@ -503,13 +505,14 @@ update_reaction_view:
         player_state.unknown_134 += -256
                                    + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
         player_state.unknown_108.components[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
-        player_state.reaction.angle_phase =
-            (player_state.reaction.angle_phase + 128) & 0xfff;
-        if (player_state.reaction.angle_phase == 0) {
+        angle_phase = (player_state.reaction.angle_phase + 128) & 0xfff;
+        player_state.reaction.angle_phase = angle_phase;
+        if (angle_phase == 0) {
             player_state.unknown_108.components[2] = 0;
             func_80029168();
         }
         goto update_reaction_view;
+    }
     case 16:
         func_80028998();
         func_80028224();
@@ -676,6 +679,7 @@ after_reaction:
             && player_state.equipment_effect_ticks % weapon->unknown_16 == 0) {
             player_adjust_hp(1);
         }
+        weapon = player_state.equipped_weapon_record;
         if (weapon->unknown_18 != 0
             && player_state.equipment_effect_ticks % weapon->unknown_18 == 0) {
             player_adjust_mp(1);

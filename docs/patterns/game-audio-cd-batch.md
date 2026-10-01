@@ -650,6 +650,13 @@ table (`0x800139e0/e4`), sequence buffer (`0x80013a28/2c`), initial VAB
 buffer (`0x80013a90/94`), and final slot-5/slot-6 overrides
 (`0x80013ab4/b8`, `0x80013ac4/c8`). The intermediate VAB slot values are
 transient; these pairs do not establish object extents or source owners.
+The slot-6 override `0x80164a68` is exactly one `0x1000` chunk before the
+loop seed `0x80165a68`. The five loop pointers retained for slots 0..4 end
+at `0x8016aa68`, before the curated `actor_state` base `0x8016b600`;
+slots 5 and 6 are replaced immediately. The slot-5 override `0x80194e30`
+equals the end of curated `game_graphics_runtime`. These boundaries suggest
+separate stream workspaces, but do not prove their allocations or complete
+extents, so the source keeps the unbound addresses.
 
 The startup copy at `0x80015d58` uses signed-low address construction for two
 unowned destinations: `lui 0x801e; addiu -29304` resolves to `0x801d8d88`,
@@ -1103,7 +1110,7 @@ The seven-phase controller owns the reviewed 0x1c-byte switch-table range at
 | GAME VA | Focused verdict | First material residue |
 | --- | --- | --- |
 | `0x800139c4` | WIP, 64.0% listing similarity | The SDK sequence-table base is now a typed 0x158-byte BSS claim with matching HI16/LO16 relocations. Sequence and VAB stream-buffer workspaces remain unbound and compile as literal `lui/ori`; their later register effects remain WIP. |
-| `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and two copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
+| `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and three copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
 | `0x80015fd4` | WIP, 96.1% listing similarity | The TMD slot pointer at `0x8012da68` has no proved owner; retail uses a relocation and signed-low address construction. State writes, CD/controller loop, and indirect callback align. |
 | `0x80016260` | WIP, 71.6% listing similarity | Five unsigned byte controls and three signed byte offsets, early returns, critical-section wait, state updates, and direct calls are modeled. The shared state-update path precedes the active wait path with a backward jump, and the conflict wait precedes the critical-section wait, matching retail's block order. Sentinel-value registers and some later branches remain WIP. |
 | `0x80016820` | WIP, 98.4% listing similarity | Seven-phase switch, CD loads, actor/map cleanup, callback-table swap, sequence fade, and VAB queue are modeled. The switch has one range check, phase-specific buffer lifetimes and in-place cursor advances match retail, and the fade timer is a signed halfword. The remaining differences are the unbound fixed-address workspaces at `0x8019e138` and `0x8012da68`. |
@@ -1168,6 +1175,12 @@ The `0x80016260` identity now distinguishes five unsigned byte controls from
 three signed byte offsets. Its map-object caller casts the offsets to `s8`,
 and retail sign-extends the first offset before comparing it with 127. The
 source already used those types; the focused listing remains WIP at 71.6%.
+The exact `0x8002360c` player caller has three direct calls at `0x80023698`,
+`0x80023714`, and `0x800237e8`. Changing its stale all-`s32` declaration to
+the shared five-`u8`/three-`s8` resource API leaves all ten functions in
+`game.player_core_run` `SAME`; the transition callee also retains its 71.6%
+focused listing. This establishes a consistent source declaration without
+claiming a different call-site schedule.
 
 The partial VAB transfer service at `0x800144b8` retains 11/11 CFG blocks,
 5/5 branches, the same known successor order, and 4/4 return-frontier edges
@@ -1177,3 +1190,23 @@ in a flow-aware focused comparison. Its first control difference is retail's
 direct `while ((result = SsVabTransBodyPartly(...)) == -1)` loop emitted an
 identical object and was reverted. The function remains WIP at 91.8% focused
 listing similarity, with no source-backed constant or ABI correction pending.
+
+### Ten-function resource and audio follow-up
+
+Each selected GAME function was checked against its retail CFG, caller and
+callee references, strings, source claim, and focused pinned listing. The
+percentages below are focused listing similarities unless labelled strict;
+none is an exact closure without `100%`.
+
+| GAME VA | Verdict | First unresolved evidence |
+| --- | --- | --- |
+| `0x800139c4` | WIP, 64.0% | Four unowned sequence/VAB workspace addresses emit literal `lui/ori` rather than the retail symbol relocations; 15 audio neighbors remain `SAME`. |
+| `0x80015fd4` | WIP, 96.1% | The TMD destination `0x8012da68` lacks a complete object owner; its literal address pair differs while the transition loop and callback agree. |
+| `0x80016260` | WIP, 71.6% | The five control and three signed-offset values agree; saved stack-byte registers and sentinel branch layout differ. The exact player caller retains all ten `SAME` listings with the shared typed declaration. |
+| `0x80016820` | WIP, 98.4% | The seven switch offsets and callback-table entries agree; only the unowned `0x8019e138` and `0x8012da68` workspace constructors and dependent scheduling differ. |
+| `0x80032174` | WIP, 37.9%; 93.6% recorded strict | Both view-cell referents and five CFG blocks agree; the probe uses a different comparison/result register and adds a final move. |
+| `0x800321d8` | WIP, 95.8%; 98.4359% recorded strict | The arena boundary `0x8009b0a0` emits literal `lui/ori` instead of retail carry-adjusted `lui/addiu`; calls and three CFG blocks agree. |
+| `0x80032274` | WIP, 43.6%; 90.933334% recorded strict | The probe retains an extra saved register and increments the slot address; retail recomputes the eight-byte slot offset per iteration. The audio-state referent and call agree. |
+| `0x80032364` | **Exact, 100% strict** | The TMD range sibling remains `SAME` with its resource calls and registry referent. |
+| `0x8003ae50` | WIP, 99.2%; 99.31746% recorded strict | The 58-block collision response has all direct calls and six exact siblings; obstacle-angle mask timing and temporary register differ. |
+| `0x8003c3e0` | WIP, 95.4%; 99.64539% recorded strict | The 23-block group-position solver keeps its calls and three exact siblings; yaw-error and shifted-numerator registers are exchanged. |

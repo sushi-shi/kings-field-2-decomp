@@ -10,6 +10,7 @@
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
+#include <kf/game/resources.h>
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
@@ -22,8 +23,6 @@ extern void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
                           s32 height, s32 rotation, u32 field_mask);
 extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
-extern void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
-                           u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y);
 extern s32 func_80036b68(KfMapObject *source, KfMapObject *target,
                           SVECTOR *start_offset, SVECTOR *end_offset,
                           s32 brighten, s32 duration);
@@ -181,9 +180,11 @@ void func_80036ed4(void)
                     s32 bearing = vector_xz_to_angle(
                         player_state.camera_position.vx - object->position.vx,
                         player_state.camera_position.vz - object->position.vz);
-                    object->unknown_0e =
-                        (u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800
-                            ? -200 : 0xf0;
+                    if ((u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800) {
+                        object->unknown_0e = -200;
+                    } else {
+                        object->unknown_0e = 0xf0;
+                    }
                 }
                 if (object->tail.spawn_bytes.spawn_sequence.high != 0xff) {
                     linked = &map_object_state.objects[object->tail.spawn_bytes.spawn_sequence.high];
@@ -398,10 +399,7 @@ void func_80036ed4(void)
                     s16 scale;
                     linked->rotation = object->rotation;
                     if (object->tail.fields.unknown_38 == 0xff) {
-                        linked->tail.fields.unknown_38 = 0xff;
-                        map_object_start_action_if_idle(linked, 0x62);
-                        object->action_timer = 2;
-                        break;
+                        goto start_action_19;
                     }
                     linked->object_id = 0x4c;
                     linked->action = KF_MAP_OBJECT_ACTION_NONE;
@@ -423,16 +421,19 @@ void func_80036ed4(void)
                     linked->scale.vz = scale;
                     object->tail.fields.unknown_38 = (u16)linked->scale.vz >> 5;
                     if (linked->scale.vx >= 0x1000) {
-                        object->tail.fields.unknown_38 = 0xff;
-                        linked->tail.fields.unknown_38 = 0xff;
-                        map_object_start_action_if_idle(linked, 0x62);
-                        object->action_timer = 2;
+                        goto start_action_19;
                     }
                 }
             } else if (object->action_timer == 2 &&
                        linked->object_id == KF_MAP_OBJECT_ID_NONE) {
                 object->tail.fields.unknown_38 = 0;
             }
+            break;
+        start_action_19:
+            object->tail.fields.unknown_38 = 0xff;
+            linked->tail.fields.unknown_38 = 0xff;
+            map_object_start_action_if_idle(linked, 0x62);
+            object->action_timer = 2;
             break;
         }
 

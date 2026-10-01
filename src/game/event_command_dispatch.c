@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/game/actor.h>
 #include <kf/game/audio.h>
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
@@ -14,6 +15,11 @@ extern s32 func_80045e5c(const VECTOR *position,
 extern void func_800366fc(u8 identifier);
 extern s32 func_800368b4(KfMapObject *object, s32 command);
 extern void func_80046700(KfEventObjectView *event, s32 object_id);
+extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
+                              s32 max_distance, s32 yaw_limit, s32 pitch_limit,
+                              s32 *distance, s32 variation);
+extern void func_80034e10(u16 archive_slot, u16 archive_entry);
+extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
 
 typedef void (*KfEventCommandCallback)(const VECTOR *position,
                                        const KfPlayerViewRotation *rotation,
@@ -54,6 +60,36 @@ void func_8004678c(const VECTOR *position,
         func_800473e0(0x54);
         event_state.state_word = 1;
         break;
+    case 0x55: {
+        s32 side = player_state.unknown_128 == 0 ? 1 : 2;
+        s32 actor_distance;
+        KfActor *actor = func_8003a778(position, rotation->angles[1],
+                                       rotation->angles[0], 8000, 500, 500,
+                                       &actor_distance, -1);
+
+        if (actor != 0 && actor->unknown_03 == side) {
+            func_80034e10(6, actor->unknown_01 + 240);
+            event_state.state_word = 1;
+            break;
+        }
+        for (index = 0; index < KF_MAP_OBJECT_CAPACITY; index++) {
+            KfMapObject *object = &map_object_state.objects[index];
+
+            if (object->object_id != 0xe2 ||
+                object->extra_40.bytes[0] != side) {
+                continue;
+            }
+            if (func_80036ad8(object->position.vx >> 11,
+                              object->position.vz >> 11,
+                              object->tail.fields.unknown_38,
+                              object->tail.fields.unknown_39, 0x8000)) {
+                func_80034e10(6, object->tail.fields.unknown_3a.value + 510);
+                event_state.state_word = 1;
+                break;
+            }
+        }
+        break;
+    }
     case 0x56:
         func_800473e0(0x56);
         player_state.unknown_6c = 900;

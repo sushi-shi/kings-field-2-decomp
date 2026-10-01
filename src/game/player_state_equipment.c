@@ -423,6 +423,7 @@ void func_80025a18(s32 effect_id, ...)
     s32 i;
     s32 kind;
     s32 rotation_scale;
+    s32 target_scale;
     va_list arguments;
     const VECTOR *override_position;
 
@@ -505,9 +506,9 @@ probe_rotation_effect:
         func_80040308(10, 0x12, 0x67, &position, &direction, adjusted_distance);
         break;
     case 5:
-    case 9:
-        actor = func_80025878(effect_id == 5 ? 200 : 500,
-                              &position, &direction, &distance);
+        target_scale = 200;
+select_actor_effect:
+        actor = func_80025878(target_scale, &position, &direction, &distance);
         if (actor == 0) {
             kind = 255;
         } else {
@@ -515,6 +516,9 @@ probe_rotation_effect:
         }
         func_80040308(10, 0x12, effect_id, &position, &direction, kind);
         break;
+    case 9:
+        target_scale = 500;
+        goto select_actor_effect;
     case 8:
         func_80025878(700, &position, &direction, &distance);
         func_80040308(10, 0x12, 0x6a, &position, &direction,
@@ -581,22 +585,16 @@ regular_weapon_effect:
         func_80025878(50, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
-        func_80040308(10, 0x12, effect_id, &position, &direction,
-                       &player_state.camera_rotation);
-        break;
+        goto emit_rotation_effect;
     case 49:
         func_80025878(550, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
-        func_80040308(10, 0x12, effect_id, &position, &direction,
-                       &player_state.camera_rotation);
-        break;
+        goto emit_rotation_effect;
     case 50:
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
-        func_80040308(10, 0x12, effect_id, &position, &direction,
-                       &player_state.camera_rotation);
-        break;
+        goto emit_rotation_effect;
     case 34:
     case 35:
     case 38:

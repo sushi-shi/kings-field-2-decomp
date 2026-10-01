@@ -34,43 +34,45 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     if (direction != 0) {
         record->direction = *direction;
     } else {
-        record->direction.vx = 0;
-        record->direction.vy = 0;
         record->direction.vz = 0;
+        record->direction.vy = 0;
+        record->direction.vx = 0;
     }
     record->phase = 0;
     record->unknown_06 = id;
-    record->scale_x = 0x1000;
-    record->scale_y = 0x1000;
     record->scale_z = 0x1000;
-    record->rotation.vx = 0;
-    record->rotation.vy = 0;
+    record->scale_y = 0x1000;
+    record->scale_x = 0x1000;
     record->rotation.vz = 0;
-    record->unknown_08 = 1;
+    record->rotation.vy = 0;
+    record->rotation.vx = 0;
+    record->unknown_12 = 0;
     record->unknown_05 = 0;
-    record->cooldown = 1;
-    if ((type & KF_EFFECT_USE_PLAYER_MAGIC) != 0 &&
+    record->unknown_08 = 1;
+    if ((record->type & KF_EFFECT_USE_PLAYER_MAGIC) != 0 &&
         player_state.death_state == 1) {
         record->cooldown = 8;
+    } else {
+        record->cooldown = 1;
     }
-    record->unknown_10 = 0;
     record->unknown_0c = 0xff;
     record->unknown_09 = 0xff;
     record->updates_remaining = -1;
     length_squared = (s32)record->direction.vx * record->direction.vx +
         (s32)record->direction.vy * record->direction.vy +
         (s32)record->direction.vz * record->direction.vz;
-    record->unknown_0d = length_squared >= 810001;
-
-    if (kind > 122 || kind == 18 || kind == 21 || kind == 36 ||
-        kind == 37 || kind == 41 || kind == 43 || kind == 44 ||
-        (kind >= 55 && kind <= 99) || kind == 108 || kind == 110 ||
-        kind == 112) {
-        record->type = KF_EFFECT_SLOT_FREE;
-        return record;
+    record->unknown_10 = 0;
+    if (length_squared >= 810001) {
+        record->unknown_0d = 1;
+    } else {
+        record->unknown_0d = 0;
     }
 
     switch (kind) {
+    case 6:
+    case 102:
+        /* Their buffer and timer owners remain unresolved. */
+        break;
     case 0:
         effect_pool_initialize_scaled(record, 0xe, 0x200);
         record->updates_remaining = 50;
@@ -666,9 +668,11 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
             effect_play_spatial_sound(record, 0x21);
         }
         break;
-    /* The remaining kinds and their O32 trailing operands are not yet
-     * reconstructed. The 123-word table and its indirect dispatch remain
-     * distinct from proven direct calls. */
+    /* The remaining kinds reach the retail table's free-slot sentinel.
+     * The table dispatch itself remains indirect. */
+    default:
+        record->type = KF_EFFECT_SLOT_FREE;
+        break;
     }
     va_end(arguments);
     return record;

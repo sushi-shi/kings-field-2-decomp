@@ -164,3 +164,33 @@ same 137 relocation count, but the `0x800228c8` compiled reader places the
 card-prefix `.data` pair before the two slot-seed pairs; retail orders the
 slot seeds first. This is a reference-order difference, not evidence for a
 new data identity.
+
+## Focused ten-function recheck (2026-10-01)
+
+The ten GAME addresses below were rechecked against their retail block
+disassembly, incoming and outgoing references, strings, source claims, and
+focused rebuilt unit listings. The strict percentages are the prior checkpoint
+reported by `kf sema match`; that report currently marks itself stale, so the
+fresh focused listing is the current comparison evidence. All ten remain WIP.
+
+| Address | Prior strict | Fresh focused | First remaining difference |
+| --- | ---: | ---: | --- |
+| `0x8001b554` | 98.478264% | 84.6% | Probe result remains in `v0` rather than retail's `a0`; subsequent branches shift by two instructions. |
+| `0x8001bf68` | 97.123890% | 87.7% | Probe status and dialog constants occupy different registers; exact `0x8001c12c` stays unchanged. |
+| `0x8001f8b8` | 94.364640% | 84.8% | Saved argument registers and the input-release exit block differ after otherwise matching glyph and input calls. |
+| `0x8001fc94` | 98.449640% | 98.6% | Row-width register and card-column test scheduling differ; the lower-panel zero initialization swaps with a neighboring load. |
+| `0x8002083c` | 99.658820% | 73.1% | Retail reserves 64 more stack bytes than the four live MATRIX locals explain; both exact siblings stay unchanged. |
+| `0x80021c8c` | 99.956985% | 97.2% | Only the eight-byte frame and saved-`ra` slot delta remains; exact `0x80021e00` stays unchanged. |
+| `0x800226ec` | 93.605040% | 88.6% | Signed slot-seed loads and the first `memset` setup/delay slot differ. |
+| `0x800228c8` | 85.156250% | 67.6% | Slot-seed initialization and signed title-byte loads precede two offset-driven digit loops in retail. |
+| `0x80022b74` | 93.666664% | 84.2% | Retail saves the slot in another register and reserves an 80-byte rather than 72-byte frame; exact `memory_card_format` stays unchanged. |
+| `0x80022ca0` | 95.896774% | 96.7% | Slot-seed loads, zero-fill setup, and saved-register selection differ before the same card-write call path. |
+
+The browser's nested probe-guard spelling compiled identically to its existing
+compound guard. An explicit title-byte offset in `0x800228c8` also retained
+the same header fields and digit values but compiled farther from retail
+(67.6% to 66.1% focused). A signed-byte view of the decoded halfword left the
+67.6% listing unchanged. All three probes were reverted. The unowned adjacent
+slot-seed bytes at `0x8006d6a4/5` and unexplained frame space remain WIP, not
+grounds for fake data owners or stack locals. No repository tests or full build
+were run for this focused recheck.

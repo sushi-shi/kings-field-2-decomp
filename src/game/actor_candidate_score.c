@@ -53,10 +53,10 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (!angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
-            goto done;
+        if (angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
+            break;
         }
-        break;
+        goto done;
 
     case 4:
     case 18:
@@ -98,11 +98,11 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (!angle_within_tolerance(actor->rotation.y, angle,
-                                    (target->unknown_0c >> 8) << 4)) {
-            goto done;
+        if (angle_within_tolerance(actor->rotation.y, angle,
+                                   (target->unknown_0c >> 8) << 4)) {
+            break;
         }
-        break;
+        goto done;
 
     case 11:
         if (target->unknown_1a < player_distance) {
@@ -110,10 +110,10 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (!angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
-            goto done;
+        if (angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
+            break;
         }
-        break;
+        goto done;
 
     case 19:
     case 20:
@@ -122,11 +122,11 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (!angle_within_tolerance(actor->rotation.y, angle,
-                                    (u8)target->unknown_0c << 5)) {
-            goto done;
+        if (angle_within_tolerance(actor->rotation.y, angle,
+                                   (u8)target->unknown_0c << 5)) {
+            break;
         }
-        break;
+        goto done;
 
     case 112:
         score = -1;

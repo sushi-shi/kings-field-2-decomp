@@ -43,19 +43,19 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     u16 group_index;
 
     va_start(arguments, position_mode);
-    first = va_arg(arguments, s32);
     if (position_mode == -1) {
-        second = va_arg(arguments, s32);
-        third = va_arg(arguments, s32);
-        parameters = va_arg(arguments, const u16 *);
-        rotated.vx = first;
-        rotated.vy = second;
-        rotated.vz = third;
+        /* Each coordinate occupies an O32 word slot but is read as u16. */
+        rotated.vx = *(const u16 *)arguments;
+        (void)va_arg(arguments, s32);
+        rotated.vy = *(const u16 *)arguments;
+        (void)va_arg(arguments, s32);
+        rotated.vz = *(const u16 *)arguments;
+        (void)va_arg(arguments, s32);
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
     } else if (position_mode == -2) {
+        first = va_arg(arguments, s32);
         second = va_arg(arguments, s32);
         third = va_arg(arguments, s32);
-        parameters = va_arg(arguments, const u16 *);
         func_8003c000(current, first, &target);
         func_8003c000(current, second, &offset);
         predicted.vx = func_8001584c(player->vx,
@@ -65,7 +65,6 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         predicted.vz = func_8001584c(player->vz,
             ((offset.vz - target.vz) << 8) + current->position.vz, third);
     } else {
-        parameters = (const u16 *)first;
         func_8003c000(current, position_mode, &offset);
     }
 
@@ -92,7 +91,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
         /* fall through */
     case 0x7b:
-        if (kind == 0x7b && second == 0) {
+        if (kind == 0x7b && ((const s32 *)arguments)[1] == 0) {
             audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
         }
         func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
@@ -117,6 +116,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                       &angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case 0x17:
+        parameters = va_arg(arguments, const u16 *);
         func_80040308(effect_id, 0x23, kind, &position, 0,
                       actor_state.unknown_93b8, position_mode, parameters[2]);
         break;
@@ -176,6 +176,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         break;
     case 0x6e:
     case 0x70:
+        parameters = va_arg(arguments, const u16 *);
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {

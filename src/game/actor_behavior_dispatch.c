@@ -4,6 +4,8 @@
 
 extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 extern void func_8003d0e8(KfActor *actor);
+extern s32 func_8003bcd0(s16 angle, s32 speed, s32 range, s32 step,
+                         s32 mode, s32 target);
 extern void actor_reset_target_and_reselect(void);
 
 ADDRESS(0x8003d184, 0x248c)
@@ -57,7 +59,14 @@ void func_8003d184(void)
             actor->unknown_0f = 0xf1;
             func_80039804(target->unknown_01[0]);
             *(s16 *)actor->unknown_64 = rand() >> 3;
+        } else if (func_8003bcd0(*(s16 *)actor->unknown_64,
+                                  target->unknown_0c, target->unknown_0e,
+                                  actor_state.active_group->unknown_01[2],
+                                  actor_state.active_group->unknown_01[3], 5) != 0 ||
+                   (rand() >> 5) < target->fallback_offset) {
+            *(s16 *)actor->unknown_64 = rand() >> 3;
         }
+        actor_advance_animation_wrapped(actor, target->unknown_08);
         break;
     case 2:
         if (actor->unknown_0f == 0) {

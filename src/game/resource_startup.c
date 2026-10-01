@@ -38,7 +38,7 @@ void func_80015d58(void)
     cd_archive_open(1, "COM\\RTMD.T");
     cd_archive_open(6, "COM\\ITEM.T");
 
-    /* The read arena and two copy destinations still lack full source owners. */
+    /* The read arena and three copy destinations still lack full source owners. */
     cd_archive_read(5, 0x30, (u_long *)source);
     cd_map_stream_read(5, 0x2f);
     audio_queue_vab_stream(4, 0, 0);

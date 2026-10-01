@@ -1113,11 +1113,58 @@ strict exact):
 
 | Address | Verdict | Remaining evidence gap |
 | --- | --- | --- |
-| 0x8003c614 | 23.0% WIP | Actor-group script variants and frame/local lifetime remain incomplete. |
-| 0x8003d184 | 3.6% WIP | Large actor-state switch and indirect dispatch remain incomplete. |
-| 0x80040308 | 10.1% WIP | Only kinds 6 and 102 lack source arms; their buffers are unowned, and the broader source/code shape still diverges. |
-| 0x80042650 | 3.3% WIP | Most update kinds and two indirect dispatches remain unresolved. |
-| 0x8004678c | 14.8% WIP | Several event commands and the terminal callback value chain remain unresolved. |
+| 0x8003c614 | 22.7% WIP | Branch-local script argument reads now use retail halfword/word widths; frame and local lifetime still diverge. |
+| 0x8003d184 | 3.6% WIP | Target-state 1 continuation now has its active-group probe, timer refresh, and animation call; the large indirect switch remains incomplete. |
+| 0x80040308 | 11.4% WIP | Only kinds 6 and 102 lack source arms; their buffers are unowned, and the broader source/code shape still diverges. |
+| 0x80042650 | 3.2% WIP | Kinds 1/28 now share their decoded two-phase motion arm; most other kinds and two indirect dispatches remain unresolved. |
+| 0x8004678c | 16.4% WIP | Command 0x55 now has the direct actor/map-object search path; other commands and the terminal callback value chain remain unresolved. |
+
+For 0x8003c614, retail's argument-slot cursor starts at sp+200 (the saved
+position mode) and advances to sp+212 only for modes -1/-2. The mode -1 arm
+reads the three following caller slots with `lhu`; mode -2 reads full words.
+The default position mode calls 0x8003c000 without eagerly loading a
+variadic value. Kind 0x17 and the actor-spawn kinds load their pointer from
+the next caller slot only when reached, while kind 0x7b reads the following
+word at cursor+8. Moving the C reads into these branches corrects their
+meaning and compiles at 22.7% focused WIP, versus the earlier 23.0% probe.
+Reading each mode -1 value as `u16` from its 32-bit O32 slot restores the
+three retail `lhu` opcodes at the corresponding absolute caller slots. The
+focused score stays 22.7% WIP because the compiler still uses a 184-byte
+frame versus retail's 192-byte frame and retains different local lifetimes;
+neither residue justifies a synthetic local.
+
+In 0x8003d184, target-state 1 at 0x8003d694 first sets phase 0xf1 and
+selects the target byte when the actor's phase flag is clear. Otherwise it
+calls the direct 0x8003bcd0 helper with the signed actor halfword at +0x64,
+target halfwords +0x0c/+0x0e, active-group bytes +3/+4, and constant 5.
+A nonzero result, or a zero result followed by `(rand() >> 5)` below the
+target's +0x10 byte, refreshes the signed +0x64 halfword from
+`rand() >> 3`. The arm then calls `actor_advance_animation_wrapped` with
+target +0x08. These raw-backed additions compile and retain 3.6% focused
+WIP; most other target states remain unmodeled.
+
+Event command 0x55 enters 0x80047204. It selects side 1 or 2 from the
+player halfword at +0x128, then calls 0x8003a778 with the event position,
+rotation halfwords +2/+0, bounds `(8000, 500, 500)`, a distance output, and
+-1. A returned actor whose byte +3 matches the side loads archive slot 6
+and entry `actor+1+240`. Otherwise retail scans all 396 map objects in
+0x44-byte steps, requiring object ID 0xe2 and extra byte +0x40 equal to the
+side. Its direct 0x80036ad8 probe uses position X/Z shifted by 11, tail
+bytes +0x38/+0x39, and 0x8000; a nonzero result loads slot 6 and entry
+`tail halfword +0x3a + 510`. Either path sets `event_state.state_word=1`.
+These typed, raw-backed calls raise focused 0x8004678c similarity from
+14.8% to 16.4% WIP. Focused CFG grows from 52 to 64 compiled blocks against
+108 retail blocks, and from 26 to 33 compiled branches against 51 retail
+branches. The final `active_table[2]` call remains indirect.
+
+Commands 0x5a..0x5e load five separate address-derived eight-byte lists at
+0x800679a0, a8, b0, b8, and c0. Their raw bytes are respectively
+`07 08 09 0a ff 00 00 00`, `0e 0f 00 0d ff 00 00 00`,
+`10 01 02 03 ff 00 00 00`, `04 11 05 06 ff 00 00 00`, and
+`12 13 0b 0c ff ff ff ff`. The shared loop stops at 0xff and indexes the
+26-byte magic-record stride. The distinct final padding and absent source
+definition keep all five DATA owners unresolved; no source arm or overlapping
+global was claimed from these lists.
 
 Command 0x59 in the GAME 0x8004678c switch points to 0x80046e14. It scans the
 396 `map_object_state.objects` records at their proved 0x44-byte stride,
@@ -1156,6 +1203,21 @@ the store ends exactly at its boundary. A shared union field-path change would
 touch existing exact consumers of `unknown_3c`, so this remains a localized
 variant view until a complete tail family is recovered.
 
+The constructor entry's decoded stores initialize direction Z/Y/X,
+scale Z/Y/X, and rotation Z/Y/X in that order. Retail clears the record's
+halfword +0x12 before the magic-type cooldown decision, then clears +0x10
+during the direction-length calculation; the earlier source had cleared
++0x10 twice and omitted +0x12. Its type gate also reloads the stored record
+byte. The corrected C uses those fields and a single cooldown assignment.
+The 123-entry kind table sends 55 kinds to the free-slot sentinel, so the
+source now represents that with a switch `default`; kinds 6 and 102 remain
+explicit WIP arms because their source-owned buffers are unproved. Focused
+similarity rises from 10.1% to 11.1% while preserving the provisional
+indirect table edge. Retail branches to distinct stores of 1 or 0 at record
++0x0d after comparing the signed squared direction length against 810001;
+spelling those two outcomes explicitly raises the retained focused result
+to 11.4% WIP.
+
 GAME update kind 16 enters 0x80045680 in the bounded kind table. When the
 effect's signed update count is four, it adds 60 to
 `player_state.vitals.current_hp` and caps the result at `maximum_hp`. Every
@@ -1184,3 +1246,15 @@ halfword at record +0x26 (`rotation.vz`). The raw table pointer, direct call,
 stack fifth argument, and halfword store support this C arm. Focused
 comparison remains 3.3% WIP because most of the 0x3670-byte body is still
 unreconstructed; no exact control regressed.
+
+Kinds 1 and 28 enter 0x80043374 and 0x8004336c, selecting radii 500 and
+250 before a shared arm. The byte at record +0x40 is its phase: phase 2
+increments signed halfword +0x10 by 256 and frees the slot at 4096; phase 1
+first adds 13 to direction Y. The arm adds 200 to rotation X, probes
+`func_80042298(radius, radius * 2, 250)`, and on a nonzero result reports
+the collision. Phase 1 then advances to phase 2 with the decoded +0x09,
++0x0c, and +0x10 values; other nonzero collisions call `func_80042424`,
+enter phase 1, and reset direction Z/X/Y to 0/0/-100. The continuing path
+calls `func_80041e0c` on the record position with `(0x4000, 0x4000, 500)`.
+These direct edges and stores compile at 3.2% focused WIP versus the prior
+3.3%; the small aggregate decline does not override the retail-backed arm.

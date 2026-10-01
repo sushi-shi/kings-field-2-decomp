@@ -84,7 +84,7 @@ void func_8003b5d0(void)
     func_8002b604(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->unknown_1c,
                    actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
-    actor->unknown_03 = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
+    actor->unknown_03 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
     if (actor->unknown_28 & 0x400) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
@@ -110,17 +110,17 @@ void func_8003b5d0(void)
                                   actor_state.unknown_93a4);
         if (collision == 0) {
             actor->position.vy = next_y;
-            actor->unknown_52 += group->unknown_01[4];
+            actor->unknown_52 += group->unknown_05;
             return;
         }
         if (collision == 0x80 && actor->unknown_52 > 40) {
-            func_800248a8(0, group->unknown_01[5], 0, 0, 0, 0, 0, 0, 0,
+            func_800248a8(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
         if ((collision & 4) == 0) {
             if (actor->unknown_28 & 0x400) {
                 actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_01[4];
+                actor->unknown_52 += group->unknown_05;
             } else {
                 actor->unknown_0d = 0;
             }
@@ -129,7 +129,7 @@ void func_8003b5d0(void)
         if (actor->unknown_28 & 0x400) {
             if (actor->position.vy < KF_COLLISION_CACHE_HEIGHT) {
                 actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_01[4];
+                actor->unknown_52 += group->unknown_05;
                 return;
             }
             actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
@@ -163,11 +163,11 @@ void func_8003b5d0(void)
         if (collision == 0) {
             actor->position.vy = next_y;
             actor->unknown_52++;
-            actor->unknown_03 = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
+            actor->unknown_03 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
             return;
         }
         if (collision == 0x80) {
-            func_800248a8(0, group->unknown_01[5], 0, 0, 0, 0, 0, 0, 0,
+            func_800248a8(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
         actor->unknown_0d = 0x10;

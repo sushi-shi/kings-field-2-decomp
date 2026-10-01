@@ -13,7 +13,7 @@ s32 func_8003d084(KfActor *actor)
     } else if (offset < -12) {
         offset = -12;
     }
-    return ((rand() * 5) >> 15) + (offset - 2);
+    return offset + (((rand() * 5) >> 15) - 2);
 }
 
 ADDRESS(0x8003d0e8, 0x9c)

@@ -146,6 +146,12 @@ source = "src/game/actor_trajectory_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.callback_default_noop"
+image = "GAME.EXE"
+source = "src/game/callback_default_noop.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.world_translate"
 image = "GAME.EXE"
 source = "src/game/world_translate.c"
@@ -188,6 +194,12 @@ source = "src/game/menu_player_clamps.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_map_preview"
+image = "GAME.EXE"
+source = "src/game/menu_map_preview.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_selection_rows"
 image = "GAME.EXE"
 source = "src/game/menu_selection_rows.c"
@@ -206,9 +218,21 @@ source = "src/game/menu_glyph_selection_rows.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_equipment_category_controller"
+image = "GAME.EXE"
+source = "src/game/menu_equipment_category_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_magic_list"
 image = "GAME.EXE"
 source = "src/game/menu_magic_list.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_magic_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_magic_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -230,6 +254,12 @@ source = "src/game/menu_card_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_card_load_browser"
+image = "GAME.EXE"
+source = "src/game/menu_card_load_browser.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_card_rows"
 image = "GAME.EXE"
 source = "src/game/menu_card_rows.c"
@@ -242,9 +272,27 @@ source = "src/game/menu_card_panel.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_card_browser"
+image = "GAME.EXE"
+source = "src/game/menu_card_browser.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_slot_browser"
+image = "GAME.EXE"
+source = "src/game/menu_card_slot_browser.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_card_labels"
 image = "GAME.EXE"
 source = "src/game/menu_card_labels.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_card_save_browser"
+image = "GAME.EXE"
+source = "src/game/menu_card_save_browser.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -260,9 +308,21 @@ source = "src/game/menu_label_templates.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_primary_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_primary_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_item_code_primary"
 image = "GAME.EXE"
 source = "src/game/menu_item_code_primary.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_sell_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_sell_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -272,15 +332,51 @@ source = "src/game/menu_item_code_secondary.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_trade_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_trade_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_list_choice_controller"
 image = "GAME.EXE"
 source = "src/game/menu_list_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.menu_item_stock_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_stock_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_item_secondary_stock_controller"
+image = "GAME.EXE"
+source = "src/game/menu_item_secondary_stock_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.menu_input_poll"
 image = "GAME.EXE"
 source = "src/game/menu_input_poll.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_list_input_controller"
+image = "GAME.EXE"
+source = "src/game/menu_list_input_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_status_render"
+image = "GAME.EXE"
+source = "src/game/menu_status_render.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_attribute_render"
+image = "GAME.EXE"
+source = "src/game/menu_attribute_render.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -299,6 +395,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_draw_window"
 image = "GAME.EXE"
 source = "src/game/menu_draw_window.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.menu_list_render"
+image = "GAME.EXE"
+source = "src/game/menu_list_render.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -434,9 +536,21 @@ source = "src/game/player_core_run.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.player_damage_reaction"
+image = "GAME.EXE"
+source = "src/game/player_damage_reaction.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.player_status_cap"
 image = "GAME.EXE"
 source = "src/game/player_status_cap.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_apply_damage"
+image = "GAME.EXE"
+source = "src/game/player_apply_damage.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -464,9 +578,21 @@ source = "src/game/player_magic_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.player_select_magic_action"
+image = "GAME.EXE"
+source = "src/game/player_select_magic_action.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.player_collision_sound"
 image = "GAME.EXE"
 source = "src/game/player_collision_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.player_collision_response"
+image = "GAME.EXE"
+source = "src/game/player_collision_response.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -494,9 +620,21 @@ source = "src/game/collision_grid_sample.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.collision_shape_dispatch"
+image = "GAME.EXE"
+source = "src/game/collision_shape_dispatch.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.collision_height_wrappers"
 image = "GAME.EXE"
 source = "src/game/collision_height_wrappers.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_mask_window_sweep"
+image = "GAME.EXE"
+source = "src/game/map_mask_window_sweep.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -677,6 +815,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.map_object_reset"
 image = "GAME.EXE"
 source = "src/game/map_object_reset.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.map_object_init_records"
+image = "GAME.EXE"
+source = "src/game/map_object_init_records.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -956,6 +1100,12 @@ source = "src/game/message_stream_find_marker.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.event_target_stream"
+image = "GAME.EXE"
+source = "src/game/event_target_stream.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.event_map_object_spawn"
 image = "GAME.EXE"
 source = "src/game/event_map_object_spawn.c"
@@ -968,9 +1118,39 @@ source = "src/game/event_counter.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.event_map_object_controller"
+image = "GAME.EXE"
+source = "src/game/event_map_object_controller.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_world_dispatch"
+image = "GAME.EXE"
+source = "src/game/event_world_dispatch.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_save_stream"
+image = "GAME.EXE"
+source = "src/game/event_save_stream.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_restore_stream"
+image = "GAME.EXE"
+source = "src/game/event_restore_stream.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_payload"
+image = "GAME.EXE"
+source = "src/game/memory_card_payload.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

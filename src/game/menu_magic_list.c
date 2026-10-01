@@ -6,8 +6,6 @@
 
 extern s32 func_8001f8b8(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
-extern void func_8001e484(void *list_state, s32 mode, s32 *selection, s32 *result);
-extern void func_8001fc94(void *list_state, s32 mode);
 
 extern s16 menu_row_prefix_649ec[4];
 
@@ -52,7 +50,7 @@ void func_8001a2f4(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu, 0, &mode, &result);
+        func_8001e484(&menu.list, 0, &mode, &result);
         if (mode == 1)
             func_80022300(17);
         for (frame = 0; frame < 2; frame++) {

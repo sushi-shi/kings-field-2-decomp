@@ -18,7 +18,7 @@ not reconstructed game functions.
 | --- | --- | --- |
 | `80038dc4` | exact | Copies group-indexed fields into an actor; no calls. |
 | `80038e38` | exact | Initializes actor fields, calls group copy, `rand`, and placement helper `8002b73c`. |
-| `80038f20` | WIP | Scans 200 actors and calls unresolved callback-table slot 19 through `state_8017d118.active_table`, then sets the home position. The predicate word-loads the four state bytes at actor `+0x0c`; a shared typed word/byte view is needed before C reconstruction. |
+| `80038f20` | exact | Scans 200 actors and calls unresolved callback-table slot 19 through `state_8017d118.active_table`, then sets the home position. The source-backed listing was certified strict `208/208`; the indirect destination remains unresolved. |
 | `80038ff0` | exact | Resets placement fields, calls home-position and group initializers. |
 | `800390d0` | exact | Sets a target pointer and current/previous target-type bytes. |
 | `80039108` | WIP | Candidate scorer: 0x4c0 bytes, computed dispatch and unresolved indirect control, with many outgoing references. Candidate kind and dispatch-table ownership need recovery. |
@@ -31,12 +31,12 @@ not reconstructed game functions.
 | `80039804` | exact | Same byte/phase update only when the value changes; byte meaning remains unresolved. |
 | `8003983c` | WIP | 0x31c-byte actor lifecycle update with collision/distance, random choice, and target-selection branches. Shared group flag and geometry field meanings remain open. |
 | `80039c14` | exact | Fixed-point quadratic helper called eight times by `80039c94`; parameter meanings remain unresolved. |
-| `80039c94` | WIP | 0x684 bytes/72 blocks, actor update with eight curve calls, target selection, player training, vector math, and one unresolved `jalr`. Needs a callback and movement-state model. |
-| `8003a318` | WIP, strict `73.591620000%` | Typed 200-actor magic scan calls distance helpers and `80039c94`; unsigned attenuation now matches retail shifts, while the retail/compiled CFG remains 26/25 blocks. |
+| `80039c94` | WIP, source-backed, 50.3% focused | 0x684 bytes/72 retail blocks; typed actor/group curves, target selection, player training, vector math, and one unresolved `jalr`. Retail uses target-group byte +2 as the unlinked motion divisor; current C has 71 blocks and 46/46 branches. |
+| `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan calls distance helpers and `80039c94`. Retail halfword loads prove `falloff` and `effect_flags` are `u16`; delaying amount extraction and actor-base setup until after the flag branch yields 26/26 CFG blocks and 13/13 branches. Only a two-register argument-load swap remains. |
 | `8003a614` | WIP | 0x164 bytes, distance/angle tests and `800248a8`; caller and geometry types need recovery. |
 | `8003a778` | exact | Scans active actors for the best target by distance and angular score; strict `100.000000000%`. |
-| `8003a9f4` | WIP | 0x168 bytes/13 blocks, vector-distance based probe; return and height/radius domain need recovery. |
-| `8003ab5c` | WIP | 0x158 bytes/12 blocks, sibling distance probe; distinguish its caller contract from `8003a9f4`. |
+| `8003a9f4` | exact | 0x168-byte actor-distance scan with the target-type filter; `kf sema addr` reports strict `100.000000000%` in the typed contiguous unit. |
+| `8003ab5c` | exact | 0x158-byte sibling scan without that filter; `kf sema match` reports strict `100.000000000%`, and the current focused listing remains SAME. |
 | `8003acb4` | exact | Binds active actor/group and optional linked actor/group; clears all five state fields for null actor. |
 | `8003ae50` | WIP | 0x4ec bytes/58 blocks, terrain queries, angle math, square roots and trigonometry; actor motion fields remain open. |
 | `8003b33c` | exact, player owner | Terrain-linked actor motion with four calls to `8002b9d4`; strict `100.000000000%` in the consolidated actor-motion collision unit. |
@@ -494,7 +494,7 @@ GAME.EXE and uses the strict objdiff result when source exists.
 | `80015318` | exact | Actor magic dispatch and the frame actor scan call the exact XZ angle helper. |
 | `800157f8` | exact | `4212c` uses the exact randomized fixed scalar before scaling the spawn direction. |
 | `800248a8` | WIP, no source | `3fb94` forwards mode `0x80` damage values to this player helper. |
-| `80039c94` | WIP, no source | `3fb94` forwards mode `0x10` actor magic values here after its angle gate. |
+| `80039c94` | WIP, source-backed | `3fb94` forwards mode `0x10` actor magic values here after its angle gate; the contiguous actor curve unit now owns its body. |
 | `8003f610` | exact | Main-loop actor scan binds and updates the pool, reads `player_state.camera_position` at `801985a8`, and copies typed map-object positions; strict 100%. |
 | `8003fa68` | WIP, source-backed | Both collision probes in `42298` call this effect helper; strict `70.733330000%`. |
 | `8003fb94` | WIP, source-backed | Typed two-mode actor/player magic dispatch, strict `87.791046000%`; 11/11 CFG blocks and 6/6 branches match. The record-type flag transform now matches retail; entry register allocation and mode-mask scheduling differ. |
@@ -586,11 +586,11 @@ Indirect branch targets below remain unresolved.
 | GAME VA | Final verdict | Confirmed connection or residue |
 | --- | --- | --- |
 | `80039108` | WIP, no source | Actor candidate scorer called by `39640`; 59 CFG blocks and two indirect jumps require dispatch-table and candidate-record ownership. |
-| `8003983c` | WIP, strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers now align. Source-level slot-state gating was corrected from retail. The player-state +0x10a byte meaning and residual saved-register choices remain open. |
-| `80039c94` | WIP, no source | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block body includes an unresolved indirect call. |
-| `8003a318` | WIP, strict `73.591620000%` | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls; unsigned attenuation matches retail shifts. Retail has 26 CFG blocks versus 25 compiled; the sentinel branch is folded. |
+| `8003983c` | WIP, historical strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers align. A later focused carve reviewed twelve actor/player BSS relocation pairs and corrected the byte read from player-state +0x10a to retail-proven +0x0a. The focused listing still swaps the actor pointer and constant-one saved registers; current strict score has not been refreshed. |
+| `80039c94` | WIP, source-backed, 50.3% focused | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block retail body includes an unresolved indirect call. |
+| `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls. Retail `lhu` at stack arguments 5 and 16 establishes `u16` falloff/effect flags; the source now computes amount and actor base after the flag branch. Focused CFG is 26/26 blocks and 13/13 branches; only the two argument temporary registers differ. |
 | `8003a778` | exact, strict `100.000000000%` | Typed best-target scan retains retail angle wrapping, range test, random variation, and loop schedule; five confirmed callers include player and effect paths. |
-| `8003ae50` | WIP, no source | Actor movement helper called by the matched motion family; terrain, angle, `SquareRoot0`, and sine/cosine paths span 58 CFG blocks. |
+| `8003ae50` | WIP, source-backed, 99.2% focused | Actor movement helper called by the matched motion family; typed terrain, angle, `SquareRoot0`, and sine/cosine paths span 58 matching CFG blocks. Six adjacent actor-animation listings remain SAME. |
 | `8003c3e0` | WIP, strict `96.361700000%` | Typed actor movement loop is called eleven times by `3c614`; 23 CFG blocks, 11 branches, and direct call set agree, with stack/arithmetic codegen residue. |
 | `8003c614` | WIP, no source | Actor behavior dispatcher calls `3c3e0` eleven times; its 45-block CFG has an unresolved indirect jump. |
 | `8003d184` | WIP, no source | Higher actor behavior dispatcher calls animation, collision, and movement helpers; 410 blocks and three indirect jumps require dispatch ownership. |
@@ -616,7 +616,7 @@ branches and candidate table references, so neither has a C claim.
 | `80036464` | WIP, strict `95.322580000%` | Typed map-object effect spawn calls pool acquire, reset, and `rand`; function register scheduling differs, and the contiguous unit's switch-table text addend remains four bytes off because preceding `36190` is WIP. |
 | `800366fc` | WIP, strict `37.336365000%` | Updates marker/action fields across 396 map objects; proven calls from `36ed4` twice and event controller `4678c`. Retail/compiled CFG is 37/38 blocks with switch-arm order differences. |
 | `80036ed4` | WIP, no source | Placed-object/actor controller directly calls `14a08`, `366fc`, map-cell placement, audio, and collision helpers; its 329-block CFG has indirect control and candidate data-table references. |
-| `8003a614` | WIP, strict `96.910110000%` | Actor-to-player radial damage gate called five times by `3d184`; distance, angle, and damage call set agrees, while player-state load/register scheduling differs. |
+| `8003a614` | WIP, historical strict `96.910110000%`; current focused `81.2%` | Actor-to-player radial damage gate called five times by `3d184`; distance, angle, and damage call set agrees, while player-state load/register scheduling differs. The historical strict score predates the current source comparison. |
 | `8003d084` | WIP, strict `91.600000000%` | Clamps the signed actor sound offset, then combines it with `rand`; five CFG blocks and both branches agree. GCC reassociates the final `-2` around the shift. |
 | `800460a0` | WIP, strict `99.268295000%` | Actor animation phase seek called three times by event dispatcher `462bc`; six CFG blocks, two branches, calls, and referents agree, with only step/half-step saved-register assignment different. |
 
@@ -929,8 +929,8 @@ PSX.EXE; the overlays retain their known unresolved link symbols.
 | `80016820` | WIP, unclaimed | The 62-block main-loop phase controller calls map, actor, and resource setup. Its indirect phase jump and candidate table at `80011058` do not yet establish a source-owned dispatch table. |
 | `8002ff5c` | WIP, unclaimed | The exact map-cell renderer calls this 0xcbc-byte prepared-TMD packet builder. It has an 11-block CFG, a 1248-byte frame, and fourteen `resource_copy_words` calls; the packed packet schema and complete argument contract remain unproved. |
 | `80039108` | WIP, unclaimed | Actor candidate scorer is called by target selection. Its 59 blocks use a 131-row candidate jump table at `80011cd8` with ten unique in-function targets; the indirect callback and table owner remain unresolved. |
-| `80039c94` | WIP, unclaimed | The 72-block combat helper is reached by actor, player, and effect paths and repeatedly calls `39c14`. An indirect callback and the complete shared record model remain unresolved. |
-| `8003ae50` | WIP, unclaimed | Motion/collision helper called by exact actor-motion routines takes a halfword motion vector and target. KF1 has a comparable blocked/sliding move, but KF2 adds retry paths and its 58-block flow has not been reconstructed. |
+| `80039c94` | WIP, source-backed, 50.3% focused | The 72-block combat helper is reached by actor, player, and effect paths and repeatedly calls `39c14`. Callback slot 18 remains unresolved; current C has 71 blocks and 46/46 branches. |
+| `8003ae50` | WIP, source-backed, 99.2% focused | Motion/collision helper called by exact actor-motion routines takes a halfword motion vector and flags. Its C body models KF2 retry paths; the 58/58 blocks and 34/34 branches agree, with angle-register and mask-scheduling residue. |
 | `8003c614` | WIP, unclaimed | The 45-block behavior dispatcher is called by `3d184`, calls exact actor-position siblings and `3c3e0`, and branches through an unresolved candidate switch table at `80011ee8`. |
 
 ## Card reader, map renderer, and animation follow-up
@@ -960,3 +960,526 @@ preserved.
 | `800349bc` | WIP, strict `92.342960000%` | Menu transition has 14/14 blocks and 8/8 branches; retail's frame is 72 bytes versus current C's 64, with different register and constant lifetimes. Adjacent TIM upload and `34e10` remain exact. |
 | `80035194` | WIP, strict `89.595450000%` | Rotated occupancy rectangle copier has 51/51 blocks and 26/26 branches. Retail saves eight registers in a 40-byte frame; compiled C uses fewer in a 32-byte frame and differs in field-mask and row/column register lifetimes. Its map-pattern sibling remains WIP. |
 | `800460a0` | WIP, strict `99.268295000%` | Animation phase seeker has 6/6 blocks, 2/2 branches, and matching calls/referents. Only the saved-register assignment of the even step and half-step remains; no independently supported source correction was found. |
+
+## Actor animation and target continuation after merge
+
+This ten-function GAME.EXE batch is confined to actor animation, target,
+group-position, and their proven motion/behavior calls. Current retail CFG,
+call and referent evidence was checked against the merged source. Focused
+`kf try` comparisons kept exact siblings exact. Moving a common yaw-scale
+assignment, duplicating sparse-morph reset assignments, reversing a target
+pointer addition, and reordering phase-seeker local declarations either
+worsened or did not change the focused listing; all trials were reverted.
+No source or configuration edit was retained.
+
+| GAME VA | Final verdict | Evidence and remaining boundary |
+| --- | --- | --- |
+| `80015918` | WIP, strict `95.494190000%` | Fixed-point trajectory solver has 41/41 blocks and 24/24 branches; the arithmetic result register differs from the first discriminant subtraction onward. Exact adjacent trajectory caller `15bc8` and vector helper `15ce0` remain intact. |
+| `80033d3c` | WIP, strict `95.218390000%` | Sparse morph accumulator has 17/17 blocks, 10/10 branches and three `ScaleMatrix` calls. The pending-flush skip branches to a different common tail; an explicit per-branch reset trial reduced the compiled CFG to 16 blocks and was reverted. Both preceding sparse-animation claims remain exact. |
+| `80039108` | WIP, unclaimed | Actor candidate scorer is called by the target selector. Its 59-block body uses a 131-row candidate jump table at `80011cd8` with ten unique internal targets; the indirect callback and table owner remain unresolved. |
+| `80039c94` | WIP, source-backed, 50.3% focused | Actor combat/magic recipient has 72 retail blocks and eight calls to exact `39c14`; current C has 71 blocks and 46/46 branches. Its indirect callback remains unresolved. |
+| `8003ae50` | WIP, source-backed, 99.2% focused | Motion/collision helper reached by exact actor-motion functions has 58/58 CFG blocks and 34/34 branches, with matching terrain, trigonometric, angle, and `SquareRoot0` calls. Only angle-register assignment and mask scheduling differ in the focused listing. |
+| `8003c3e0` | WIP, strict `99.645390000%` | Group-position solver has 23/23 blocks, 11/11 branches, matching calls and referents, and three exact siblings. Only the yaw-error and scaled-yaw register assignments differ; consolidating the scale assignment lowered focused similarity and was reverted. |
+| `8003c614` | WIP, unclaimed | Actor behavior dispatcher is called by `3d184` and calls group-position helper `3c3e0` eleven times. Its 45-block switch retains an unresolved indirect jump and candidate table at `80011ee8`. |
+| `8003d184` | WIP, unclaimed | Higher actor behavior dispatcher reaches animation, collision, movement, and sound helpers. Its 0x248c-byte body has multiple indirect control sites and lacks a proved complete dispatch-table/source owner. |
+| `8003f7ec` | WIP, strict `85.862070000%` | Target-group fixup has 9/9 blocks and 4/4 branches with typed group ownership. Focused listing differs only in one constant initialization order and commutative pointer addition; reversing the C addition emitted identical bytes. Exact adjacent `3f610` and `3f860` remain intact. |
+| `800460a0` | WIP, strict `99.268295000%` | Animation phase seeker has 6/6 blocks and 2/2 branches, with only even-step versus half-step saved registers swapped. Reordering the two local declarations emitted identical bytes. |
+
+The remaining disjoint actor-owned source WIPs in this neighborhood were
+checked as a small follow-up. `8003983c` is strict `99.075380000%`: its 37/37
+blocks, 24/24 branches, calls, and referents agree, while saved-register
+assignment differs from the first actor-state load. `8003bd40` is strict
+`86.532260000%`: 9/9 blocks and 5/5 branches agree, but actor-position load
+order and angle/reference register lifetimes differ; six neighboring motion
+functions remain exact. `8003b5d0` is strict `75.669390000%`: 40/40 blocks and
+21/21 branches agree, but state-dispatch and collision-return paths use a
+different layout. An explicit layer-selection branch changed the first branch
+shape but lowered focused similarity and was reverted. The source bodies in
+other nearby non-exact units belong to the player, effect, or audio campaigns.
+
+The actor-side damage pair was checked against retail calls, CFG, and focused
+listings after the player attenuation correction. `8003a318` remains strict
+`77.020940000%` WIP: its 26 blocks and 13 branches now match retail, but its
+16-argument loop uses a 192-byte frame against retail's 200 bytes, with
+different stack-argument scheduling. `8003a614` remains strict
+`96.910110000%` WIP: its 6 blocks, 3 branches, and direct calls match, while
+retail independently forms the later player-camera Z address and the compiler
+reuses an earlier base. Exact `8003a778` was SAME in the focused comparison.
+No source correction supported by independent evidence was retained.
+
+For `8003b5d0`, reversing both equivalent collision-layer ternaries matched
+retail's initial branch direction and raised focused listing similarity from
+65.1% to 66.5%, but did not resolve the state-dispatch topology. The change
+was reverted because it only steered code generation. Moving state `0x20`
+ahead of state `0` in the C switch was also reverted without comparison when
+the focused target object became unavailable during concurrent target work.
+The three contiguous preceding functions remain exact in the last completed
+focused comparison.
+
+The later sparse-morph control-flow correction reached focused SAME for all
+three claims in `game.animation_sparse_vertices`. Retail's skip with no
+pending vertices preserves the already-reset delta pointer and jumps to the
+shared group tail. A real flush or completed three-vertex batch resets that
+pointer; a partial batch only increments its pending count. Expressing these
+paths in C removed the earlier skip-tail and partial-batch branch differences.
+`80033d3c` has a byte-identical focused listing, with `80033bfc` and
+`80033cc0` still SAME. Broad strict matching was not run under the current
+quick-build constraint, so this is a focused exact verdict pending strict
+certification.
+
+The contiguous `8003ae50` actor X/Z motion helper is now source-owned after
+retail review of its three actor-motion callers, collision/floor callees,
+cache references, and 58-block control flow. The C body models proposed
+motion as a local `VECTOR`, the two floor probes, obstacle-angle steering,
+axis and diagonal retries, and optional halfword motion writeback. Retail
+evidence corrected the floor-height comparison, fixed-point negation before
+the right shift, and the unscaled second-axis retry. A seven-function focused
+carve and `kf try` preserve the six preceding actor-animation listings as
+SAME; `8003ae50` remains WIP at 99.2% listing similarity. Its remaining
+printed difference is the angle adjustment temporary (`a1` versus retail
+`v0`) and the independent angle-mask scheduling before the length products.
+No broad strict report was run under the quick-build constraint.
+
+## Target-group dispatch and connected helpers
+
+This 30-function GAME campaign follows the target-group lookup, actor magic,
+motion, and trajectory calls. `kf try --no-flow` supplies focused listing
+verdicts; SAME rows retain their previously established exact source, but no
+new broad strict certification was run. Three decoded dispatcher table-base
+HI16/LO16 pairs are reviewed. The indexed case words and original table/TU
+ownership remain candidates; one-VA carves still withhold case-path relocs.
+
+| GAME VA | Final focused verdict | Remaining evidence boundary |
+| --- | --- | --- |
+| `80039108` | WIP, unclaimed | 131-row switch; 28 case-path relocs withheld. |
+| `8003983c` | WIP, 87.0% | Actor pointer and constant/chance use swapped saved registers; call and field model retained. |
+| `80039c94` | WIP, 50.3% | Source-backed 72/71 CFG blocks, 46/46 branches; retail motion divisor is target-group byte +2 unless a linked actor supplies its group index. Its signed `< 240` gate is now reflected in a widened local; callback slot 18 remains unresolved. |
+| `8003c614` | WIP, unclaimed | 123-row switch; 67 case-path relocs withheld. |
+| `8003d184` | WIP, unclaimed | 241-row switch; 249 case-path relocs withheld. |
+| `80015918` | WIP, 85.2% | Arithmetic-result registers differ in the trajectory discriminant. |
+| `80015bc8` | SAME | Trajectory caller retains exact listing. |
+| `80015ce0` | SAME | Scaled-vector helper retains exact listing. |
+| `8003a318` | WIP, 97.5% | Two O32 argument temporaries differ. |
+| `8003a614` | WIP, 81.2% | Player camera loads reuse a base register instead of retail's repeated pairs; no overlapping global was introduced. |
+| `8003a778` | SAME | Actor target scan retains exact listing. |
+| `8003a9f4` | SAME | Actor-distance collision scan retains exact listing. |
+| `8003ab5c` | SAME | Sibling actor-distance scan retains exact listing. |
+| `8003ae50` | WIP, 99.2% | Steering-angle temporary and independent angle-mask scheduling differ; six preceding claims remain SAME. |
+| `800157ac` | SAME | Random-scalar helper retains exact listing. |
+| `800157f8` | SAME | Adjacent random-scalar helper retains exact listing. |
+| `8003b9a4` | SAME | Actor motion helper retains exact listing. |
+| `8003bae4` | SAME | Actor motion helper retains exact listing. |
+| `8003bba0` | SAME | Actor turn helper retains exact listing. |
+| `8003bcd0` | SAME | Actor motion wrapper retains exact listing. |
+| `8003bd40` | WIP, 68.2% | Entry setup and arithmetic registers differ, with identical direct call family. |
+| `8003be38` | SAME | Actor vertical-motion helper retains exact listing. |
+| `8003bf74` | SAME | Actor angle wrapper retains exact listing. |
+| `800395c8` | SAME | Best-target selector retains exact listing. |
+| `800396c4` | SAME | Player-distance target selector retains exact listing. |
+| `80039710` | SAME | Group target-type search retains exact listing. |
+| `80039758` | SAME | Own-group target selector retains exact listing. |
+| `800390d0` | SAME | Target setter retains exact listing. |
+| `800397a8` | SAME | Target reset/reselection retains exact listing. |
+| `8003f7ec` | WIP, 93.8% | Group-pointer fixup has two scheduling/commutative instruction differences; adjacent update/loader claims remain SAME. |
+
+The retail guards constrain the three switch spans without proving their
+source owner: `39108` indexes `(type - 2) <= 0x82`, `3c614` indexes
+`(selector - 1) <= 0x7a`, and `3d184` indexes `type <= 0xf0`. At `80011cd8`,
+131 consecutive words contain ten distinct
+in-function targets of `80039108`; the next word at `80011ee4` is zero. At
+`80011ee8`, 123 words contain 19 distinct targets of `8003c614`, followed by
+a zero word at `800120d4`. At `800120d8`, 241 words contain 28 distinct
+targets of `8003d184`; the next word at `8001249c` is `80040698`. These are
+decoded value ranges, not yet source-owned `RODATA` claims or promoted case
+relocations.
+The dominant default targets occupy 114, 100, and 212 entries respectively;
+the remaining indexed cases include type `132` in `39108`, selector `123` in
+`3c614`, and type `240` in `3d184`. The last case in each range therefore
+matters even though most high entries share the default target.
+The separate `jalr` sites also have traceable pointer chains without known
+ultimate callees: `39108+0x45c` loads `state_8017d118.active_table[16]` and
+passes its candidate and distance in `a0/a1`; `3d184+0x45c` loads slot 19
+with the actor in `a0`; `3d184+0x223c` loads slot 17. These are callback
+table indices, not resolved target identities.
+The three direct `3d184` call sites to `3c614` at `3ee54`, `3ee9c`, and
+`3eec0` show a wider ABI than the old four-live-register seed: `a0` is a
+zero-extended byte from `actor->target` +0x0c, `a1` is a zero-extended
+halfword from that target +0x18, and `a2` is a mode value (`-1` or `-2` on
+two paths). The first
+two calls also write O32 stack arguments at `sp+0x10` and `sp+0x14`.
+At `3ee54`, the stream halfwords passed in `a3`, `sp+0x10`, and
+`sp+0x14` are explicitly sign-extended, with a stream pointer in
+`sp+0x18`. At `3ee9c`, `a3` and both stack halfwords remain zero-extended.
+The `3eec0` path instead forms `a3` from the stream cursor and writes a
+signed actor halfword to `sp+0x10`. These are distinct observed call forms,
+not a single proved high-level parameter type.
+The target pointer remains in `s4` throughout `3d184`; its furthest direct
+read is `lhu` at +0x2a (`3e1ac`). The pointed record therefore covers at
+least 0x2c bytes, beyond the current 0x16-byte common-prefix
+`KfTargetCandidate` view, but its stride and complete extent remain unproved.
+The meaning of `a3` and the stack values varies by script path and remains
+unresolved; no source signature or identity was promoted from this alone.
+Another `3d184` case at `3e0c0` calls the source-backed actor-to-player
+damage gate `3a614` after `actor_animation_crossed_phase`. Its four register
+arguments are `0`, then target bytes +0x0e, +0x0f, and +0x10; O32 arguments
+5–8 are target halfwords +0x12, +0x14, +0x16, then byte +0x11. Retail
+`3a614` loads all four later arguments with `lhu`, so the byte is promoted
+for the call. This links a compact target-record parameter group to an
+observed damage action without establishing the whole target record layout.
+The first group is reused at `3e1a4`, `3e344`, and `3e6b8`; `3e1a4` ORs
+`0x80` into its final byte argument. The `3e200` call uses a parallel
+group at target offsets +0x1c..+0x25, with byte arguments at +0x1c..+0x1f
+and three halfwords at +0x20/+0x22/+0x24. These direct reads prove two
+packed damage-parameter spans, but not the enclosing record stride.
+At `16820+0x358`, `resource_copy_words` copies 0xcb0 words to
+`actor_state.target_groups` and then calls `3f7ec`. Its 0x32c0-byte copy
+covers 40 group records (0x12c0 bytes) and the following 0x2000-byte
+`actor_state.unknown_73a0` tail exactly. This establishes one archive-loaded
+owner span and the fixup order, while leaving candidate stride and the tail's
+internal layout unresolved.
+
+## Actor animation and group control pass after e75f424
+
+This 29-function focused pass follows the actor animation, movement, damage,
+group-position, and target-state calls. `SAME` means an identical focused
+listing in the current source; no new broad strict report was run. The only
+source-only probe in this pass expressed the group-fixup pointer addition with
+the operands reversed, then as an integer base plus relative offset; GCC
+emitted the same two-instruction residue for both, so the tracked source was
+left unchanged.
+
+| GAME VA | Focused verdict | Evidence boundary |
+| --- | --- | --- |
+| `8003983c` | WIP 87.0% | Actor pointer and constant-one saved registers swap; calls and branch targets align. |
+| `80039c14` | SAME | Exact curve leaf remains the control for `39c94`. |
+| `80039c94` | WIP 50.3% | Retail-backed signed motion divisor retained; callback slot 18 and one CFG block remain open. |
+| `8003a318` | WIP 97.5% | Two O32 argument-load temporaries differ. |
+| `8003a614` | WIP 81.2% | Player camera references compile through one reused base, unlike retail's repeated pairs. |
+| `8003a778` | SAME | Actor target scan stays identical. |
+| `8003a9f4` | SAME; prior strict 100% | Filtered actor-distance scan stays identical. |
+| `8003ab5c` | SAME; prior strict 100% | Unfiltered actor-distance scan stays identical; the available strict report predates the later `3ae50` append. |
+| `8003acb4` | SAME | Current-actor binding stays identical. |
+| `8003ad90` | SAME | Wrapped animation advance stays identical. |
+| `8003adc4` | SAME | Clamped animation advance stays identical. |
+| `8003ae20` | SAME | Crossed-phase test stays identical. |
+| `8003ae50` | WIP 99.2% | 58/58 CFG blocks; angle result temporary and mask scheduling differ. |
+| `8003b9a4` | SAME | Motion step helper stays identical. |
+| `8003bae4` | SAME | Forward-vector movement stays identical. |
+| `8003bba0` | SAME | Actor turn helper stays identical. |
+| `8003bcd0` | SAME | Motion wrapper stays identical. |
+| `8003bd40` | WIP 68.2% | Identical direct call family; setup and arithmetic registers differ. |
+| `8003be38` | SAME | Vertical-motion helper stays identical. |
+| `8003bf74` | SAME | Motion-angle wrapper stays identical. |
+| `8003c000` | SAME | Group-position sibling stays identical. |
+| `8003c10c` | SAME | Group-position sibling stays identical. |
+| `8003c220` | SAME | Group-position sibling stays identical. |
+| `8003c3e0` | WIP 95.4% | Yaw-error and scaled-yaw temporaries differ; CFG and calls align. |
+| `8003d084` | WIP 92.6% | GCC reassociates the final sound-note `-2` around scaled random. |
+| `8003d0e8` | SAME | Actor spatial-sound caller stays identical. |
+| `8003f610` | SAME | Actor-frame scan stays identical. |
+| `8003f7ec` | WIP 93.8% | Sentinel load order and commutative pointer addition differ. |
+| `8003f860` | SAME | Actor-record loader stays identical. |
+
+The `8003b5d0` vertical-motion sibling was also inspected as an adjacent
+control-flow lead but is outside this 29-function count. Its focused listing
+is WIP 65.1% with 40/40 CFG blocks and 21/21 branches; retail and C choose
+different switch paths, and the current collision-cache view is still a
+provisional interior of `bss_801c7540`. No source change was retained.
+
+Two source-only arithmetic probes for `8003d084` left its residue unresolved.
+Swapping the final addends still compiled at 92.6%; subtracting two from the
+clamped offset before `rand()` fell to 90.6% because GCC filled the call delay
+slot that retail leaves empty. The exact `8003d0e8` caller stayed identical,
+and the tracked C source was not changed.
+
+## Archive-loaded target record consumer pass
+
+This 27-function pass follows the `16820` group-payload copy into the
+`3f7ec` fixup, actor target selection, animation dispatch, and event
+save/restore. Verdicts are current focused listings where source exists;
+`WIP, unclaimed` means the retail function has no C body. Existing exact
+sources were used as controls, not changed.
+
+| GAME VA | Verdict | Target-record evidence |
+| --- | --- | --- |
+| `16820` | WIP, unclaimed | Copies 0xcb0 words to target groups, fixes pointers, loads actors, then restores saved state. |
+| `38dc4` | SAME | Copies group defaults into actor fields. |
+| `390d0` | SAME | Assigns actor target pointer and type. |
+| `39108` | WIP, unclaimed | Scores candidate types through a bounded 131-word switch table; calls unresolved callback slot 16 on one path. |
+| `395c8` | SAME | Scores up to 16 group target references. |
+| `39710` | SAME | Searches the same 16 pointer slots by candidate type. |
+| `39758` | SAME | Selects a typed target in the actor's group. |
+| `397a8` | SAME | Clears actor target and reselects. |
+| `3983c` | WIP 87.0% | Lifecycle path reads selected target; saved actor and sentinel registers differ. |
+| `39c14` | SAME | Curve leaf called by actor target effects. |
+| `39c94` | WIP 50.3% | Reads group curve halfwords and selected candidate; callback remains indirect. |
+| `3c000` | SAME | Group-position control. |
+| `3c10c` | SAME | Group-position control. |
+| `3c220` | SAME | Group-position control. |
+| `3c3e0` | WIP 95.4% | Group-position yaw temporaries differ. |
+| `3c614` | WIP, unclaimed | Receives candidate-derived mode and position operands from three `3d184` calls; bounded 123-word switch table remains unowned. |
+| `3d084` | WIP 92.6% | Target sound note arithmetic associates differently. |
+| `3d0e8` | SAME | Reads selected target sound byte and calls `3d084`. |
+| `3d184` | WIP, unclaimed | Actor dispatcher reads candidate through +0x2a; full record extent and indirect callback targets remain open. |
+| `3f610` | SAME | Actor frame scan calls `3d184`. |
+| `3f7ec` | WIP 93.8% | Fixes 16 relative target offsets per active group against the tail base. |
+| `3f860` | SAME | Loads actor records and group defaults after fixup. |
+| `46144` | SAME | Searches candidate byte stream for a marker. |
+| `461a0` | WIP 86.6% | Byte-stream cursor registers differ; candidate stride remains unproved. |
+| `462bc` | WIP 90.5% | Dispatches candidate event opcodes, preserving indirect callbacks. |
+| `48554` | SAME | Saves type-0x70 candidate bytes +0x10/+0x13. |
+| `489ac` | WIP 95.1% | Restores those two candidate bytes; sentinel/base registers differ. |
+
+The save/restore pair confirms two mutable bytes in the candidate prefix,
+but never indexes candidates by a record stride. `3d184` proves a minimum
+pointed extent of 0x2c, while the 0x2000-byte archive tail proves only the
+owner boundary. Neither observation supports a full candidate structure
+size or count.
+Two `lhu` reads at `3d184+0x74` and `+0x78` use candidate +0x0a as one
+unsigned halfword, so the common-prefix view now types that field as `u16`;
+its meaning remains unknown.
+The same dispatcher reads candidate +0x0c and +0x16 both as `lhu` and as
+`lbu` on different cases. Those overlaps are deliberate byte views of packed
+halfwords in retail, not evidence for separate records. The current prefix
+fields remain provisional until their per-case meanings are known.
+One extended case also uses signed `lh` at +0x24 and +0x26 (`3e298` and
+`3e274`), while other cases read those offsets unsigned. The tail therefore
+needs case-aware signed and unsigned views before a complete C type is safe.
+
+## Actor dispatcher callee pass after a169114
+
+This 28-function pass follows the direct actor-control calls in `3d184` and
+the group target fixup that prepares its candidate pointers. The retained
+motion correction is the equivalent collision-layer comparison in `3b5d0`:
+`layer == 0 ? 1 : 2` emits retail's initial `bnez` branch and raises its
+focused listing from 65.1% to 66.5%. All three contiguous exact siblings
+remain `SAME`. Moving the independent switch cases in a source-only probe
+did not improve that function and was discarded.
+Retail also branches back to the same successful vertical-step block from two
+collision responses. Two equivalent source-only `goto` probes shared that
+block and improved the listing to 67.1%, but changed the switch layout from
+40/40 to 40/39 CFG blocks and added a saved register. Both probes were
+discarded; the retained 66.5% source preserves the retail CFG count.
+The KF1 `actor_behavior.c` vertical-state switch likewise shares `fall` and
+`land` labels, a source-shape analogy only: its collision and gravity paths
+are different and do not identify the KF2 function's original source.
+
+| GAME VA | Focused verdict | Dispatcher connection |
+| --- | --- | --- |
+| `38d04` | SAME | Home-position setter reached through lifecycle setup. |
+| `38efc` | SAME | Sets lifecycle and home position. |
+| `38f20` | SAME | Scans lifecycle-one actor records. |
+| `39710` | SAME | Finds a candidate by type. |
+| `39758` | SAME | Selects the actor's own-group target. |
+| `397a8` | SAME | Clears and reselects target. |
+| `397d8` | SAME | Sets actor animation byte +0x0c. |
+| `39804` | SAME | Sets that byte only when changed. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Detects a crossed animation phase. |
+| `3ae50` | WIP 99.2% | Actor motion/collision callee; angle mask scheduling differs. |
+| `3b33c` | SAME | Actor motion collision helper. |
+| `3b520` | SAME | Actor trajectory helper. |
+| `3b5bc` | SAME | Sets current actor movement state. |
+| `3b5d0` | WIP 66.5% | Dispatcher calls it at `3f5c0`; branch direction now agrees, but switch and register lifetimes differ. |
+| `3b9a4` | SAME | Decays and applies actor motion. |
+| `3bae4` | SAME | Approaches forward-vector motion. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Current-actor motion wrapper. |
+| `3bd40` | WIP 68.2% | Target geometry and motion dispatch remain open. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Group-relative position helper. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c614` | WIP, unclaimed | Three direct `3d184` calls use candidate-derived arguments and O32 stack values. |
+| `3d184` | WIP, unclaimed | Main actor action switch consumes packed target records. |
+| `3f7ec` | WIP 93.8% | Converts archive-relative target offsets to pointers before actor dispatch. |
+
+The caller, CFG, data-reference, relocation, adjacency, and source-history
+review for `3b5d0` is in `/tmp/actor_b5d0_*` for this local pass; its only
+external proven caller is `3d184+0x243c`. Retail reads the collision layer
+at `bss_801c7540+0x1180a`; the complete cache object boundary is still
+provisional, so no new overlapping global was introduced.
+The same retail body uses `lbu 5(s2)` for the group's post-step increment
+and `lbu 6(s2)` for the second argument to `248a8`. The complete 0x78-byte
+group extent was already proved, so its opaque +0x01..+0x08 span is now
+split narrowly around those two byte fields; no semantic field names were
+inferred. Exact group-copy, curve-leaf, and actor-loader controls remain
+identical in focused comparison.
+With the archive copy boundary proved, `3f7ec` now takes its byte-pointer
+base directly from `actor_state.unknown_73a0`, the beginning of that loaded
+tail. This is the same address as `target_groups + 40`; focused comparison
+still reports 93.8% with only sentinel scheduling and commutative `addu`
+operand order different, while `3f610` and `3f860` remain `SAME`.
+
+## Actor target and motion focused pass after 39dd6fd
+
+This 28-function pass follows the target-selection, animation, movement,
+group-position, and group-fixup calls into actor dispatch. Each verdict is a
+current focused listing; `SAME` is an identical listing, not a new broad
+strict certification. No source-only trial below was retained.
+
+| GAME VA | Verdict | First unresolved difference or control role |
+| --- | --- | --- |
+| `3983c` | WIP 87.0% | Actor, sentinel, and chance saved registers exchange roles; call and branch targets agree. |
+| `39c14` | SAME | Fixed-curve leaf control for `39c94`. |
+| `39c94` | WIP 50.3% | Initial stack argument schedule and register lifetimes differ; recipient callback remains indirect. |
+| `3a9f4` | SAME | Filtered actor-distance scan. |
+| `3ab5c` | SAME | Unfiltered actor-distance scan. |
+| `3acb4` | SAME | Current-actor binding. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Animation phase crossing. |
+| `3ae50` | WIP 99.2% | Angle mask and temporary schedule differ in two listing regions. |
+| `3b33c` | SAME | Collision motion helper. |
+| `3b520` | SAME | Trajectory setup. |
+| `3b5bc` | SAME | Movement-state setter. |
+| `3b5d0` | WIP 66.5% | Vertical-state dispatch differs after the same initial collision setup. |
+| `3b9a4` | SAME | Actor motion step. |
+| `3bae4` | SAME | Forward-motion approach. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Motion wrapper. |
+| `3bd40` | WIP 68.2% | Current-actor position load order and argument register lifetimes differ. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Actor group-space position control. |
+| `3c10c` | SAME | Actor group-position mode control. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c3e0` | WIP 95.4% | Yaw-error temporary uses `v1` rather than retail `a2`. |
+| `3f610` | SAME | Actor frame scan and dispatcher caller. |
+| `3f7ec` | WIP 93.8% | Sentinel load timing and commutative pointer addition remain. |
+| `3f860` | SAME | Actor record loader after group fixup. |
+
+Retail `3b5d0` checks vertical state `0x20` first, whereas the current
+compiler orders the switch around `0x10`. A source-only special-case check
+for `0x20` improved its listing to 68.0% and retained 40/40 CFG blocks, but
+the branch landed one block later than retail. A plain if-chain lost two CFG
+blocks; adding the shared collision-success tail lost one. These trials did
+not prove the original source shape and were discarded. A source-only
+`3c3e0` rewrite that computed the yaw shift once fell from 95.4% to 90.4%:
+retail does execute the shift in both branch arms. Promoting `3bd40`'s angle
+parameter to `s32` with an explicit `s16` use compiled identically at 68.2%,
+so its existing narrower source signature was preserved.
+Changing `3c3e0`'s masked yaw error to `u16` fell to 84.1% and selected
+unsigned halfword loads and `sltiu`, unlike retail's `lh` and `slti`.
+Using `s16` for that temporary also fell to 84.1% because of extra
+extension, so the retained `s32` expression remains the closest truthful
+model of the observed operations.
+Changing `3ae50`'s obstacle-angle temporary to `u16` fell from 99.2% to
+72.9%; the retained signed integer temporary is supported by the listing.
+Default focused comparison keeps `3bd40` at 9/9 CFG blocks and 5/5 branches
+despite its 68.2% register and instruction-order residue.
+
+## Actor damage and behavior focused pass after 39dd6fd
+
+This 30-function pass follows actor radial damage and behavior calls through
+animation, motion, group position, and target fixup. Source-backed verdicts
+are current focused listings. The `3c614` and `3d184` bodies remain unclaimed:
+their retail indirect switches and candidate table ownership do not yet
+support a complete C translation. No source-only probe in this pass was kept.
+Default focused flow shows `39c94` at 72 retail versus 71 compiled CFG
+blocks, with the same 46 branches and seven incoming return edges; its first
+listed successor difference is the shared return block's renumbering.
+
+| GAME VA | Verdict | Connection or residue |
+| --- | --- | --- |
+| `3a318` | WIP 97.5% | Actor radial-damage loop; two entry stack-argument temporaries exchange registers. |
+| `3a614` | WIP 81.2% | Actor-to-player damage gate; compiler reuses a camera-position base where retail reloads two HI16/LO16 pairs. |
+| `3a778` | SAME | Actor target scan and damage caller control. |
+| `3a9f4` | SAME | Filtered actor-distance scan. |
+| `3ab5c` | SAME | Unfiltered actor-distance scan. |
+| `3acb4` | SAME | Current-actor binding. |
+| `3ad90` | SAME | Wrapped animation advance. |
+| `3adc4` | SAME | Clamped animation advance. |
+| `3ae20` | SAME | Crossed-phase test. |
+| `3ae50` | WIP 99.2% | Motion collision retry; angle mask schedule remains. |
+| `3b33c` | SAME | Collision motion helper. |
+| `3b520` | SAME | Trajectory setup. |
+| `3b5bc` | SAME | Vertical-motion state setter. |
+| `3b5d0` | WIP 66.5% | Vertical-state collision body retains retail 40/40 CFG blocks and 21/21 branches. |
+| `3b9a4` | SAME | Motion step. |
+| `3bae4` | SAME | Forward-motion approach. |
+| `3bba0` | SAME | Bounded yaw turn. |
+| `3bcd0` | SAME | Motion wrapper. |
+| `3bd40` | WIP 68.2% | Motion-to-point caller; position-load schedule and argument registers differ. |
+| `3be38` | SAME | Vertical-motion helper. |
+| `3bf74` | SAME | Motion-angle wrapper. |
+| `3c000` | SAME | Actor group-space position helper. |
+| `3c10c` | SAME | Group-position mode helper. |
+| `3c220` | SAME | Animation event group dispatcher. |
+| `3c3e0` | WIP 95.4% | Yaw-error temporary register differs. |
+| `3c614` | WIP, unclaimed | Three direct `3d184` calls; 123-word candidate switch at `80011ee8` and unresolved indirect jump at `3c7c0`. |
+| `3d084` | Exact 100% | Centered random pitch jitter now matches the retail instruction and relocation listing. |
+| `3d0e8` | SAME | Actor target sound wrapper. |
+| `3d184` | WIP, unclaimed | Behavior dispatcher calls damage, movement, and group-position helpers; complete table and target-record layout unproved. |
+| `3f7ec` | WIP 93.8% | Archive-loaded group target fixup; two instruction-order differences remain. |
+
+Retail `3c614` has three proven direct calls from `3d184` and a 45-block
+reachable CFG with an unresolved indirect jump. The 123 candidate pointer
+rows at `80011ee8` do not promote the switch owner or the indirect branch to
+proven control flow. Its complete source claim remains deferred. In `3a318`,
+retail and C both load the halfword falloff and word amount/flags from their
+O32 stack slots; only the selected `a0`/`v1` temporaries differ. `3a614`'s
+extra retail camera-position relocations cannot be modeled as overlapping
+interior globals. The exact `3a778` sibling was preserved.
+Default focused comparison reports matching 26/26 CFG blocks and 13/13
+branches for `3a318`, and 6/6 blocks and 3/3 branches for `3a614`.
+Removing redundant `u16` falloff casts or spelling the amount/flags formal
+as `u32` left `3a318` at the same 97.5% listing, so neither probe was kept.
+Moving the masked amount initialization ahead of the damage-position flag
+check fell to 84.6%; retail supports the existing source order.
+For `3d084`, retail calls `rand`, multiplies by five, computes the clamped
+offset minus two, then shifts the random product and adds. Expressing the
+random term as centered pitch jitter, `offset + (scaled_random - 2)`, retains
+the same range and emits the retail order. Focused comparison is 2/2 SAME
+for `3d084` and its `3d0e8` neighbor; isolated direct objdiff reports 100%
+for both (100/100 and 156/156 bytes), and all seven ordered `.text`
+relocations agree. The `3d0e8` wrapper is called directly by the behavior
+dispatcher at `3d184+0x1b0`; the pair remains in that actor call graph.
+Moving the offset subtraction into a post-`rand` local
+statement instead filled retail's empty call delay slot and fell to 90.6%.
+Retail `3b5d0` reads the vertical-motion halfword unsigned on its successful
+increment path, while other actor consumers read the same storage signed.
+An explicit `(u16)` view on its three increments compiled identically at
+66.5%; the shared signed field and existing source were left intact.
+The only proven external direct caller of `3a318` is effect dispatcher
+`3ff18+0x174`: it forwards falloff and packed amount/flags from its fifth
+and sixth arguments, preserving the callee's
+observed halfword and word loads without a new parameter identity.
+For `3ae50`, fusing the obstacle-angle choice and wrap into one C assignment
+emits the `andi` at retail's earlier point but adds an extra register move;
+the source-only listing falls from 99.2% to 91.7%. The retained two-step C
+spelling preserves the exact neighboring animation claims.
+
+## Actor fixed-curve and target-scan continuation
+
+The preceding 30-function verdict table remains current for unchanged actor
+units. The connected fixed-curve pair has these focused verdicts:
+
+| GAME VA | Verdict | Retail evidence and remaining difference |
+| --- | --- | --- |
+| `39c14` | SAME | Eight direct calls from `39c94`; exact curve-leaf control remains intact. |
+| `39c94` | WIP 62.1% | The candidate scan now snapshots byte +2 before `rand`, advances the reference pointer in the null-test path, and checks its 16-entry count against `-1`. The linked-actor path reads target-group byte +2 as the motion divisor. Retail and C still have 72/71 CFG blocks and 46/46 branches; callback slot 18 remains unresolved. |
+
+The retail scan loads candidate byte +2 once into a saved register before
+calling `rand`; the earlier C expression read it again after the call. Retail
+also advances the reference pointer in the null-test branch delay slot and
+decrements its 15-based counter before comparing with `-1`. These source
+corrections raise the focused listing from 50.3% to 59.2%. At
+`39c94+0x498` through `+0x4d0`, retail uses the linked actor's group index
+to select a 120-byte target group and loads its byte +2. The earlier C used
+the group index itself as the divisor; correcting that lookup raises the
+focused listing to 62.1%. The exact `39c14` sibling stays SAME. A source-only
+`if/else` spelling of `3ae50`'s obstacle angle fell to 90.7%, so the
+retained 99.2% source and its six exact animation neighbors remain unchanged.
+The direct retail and pinned-compiler objects both contain 417 instructions
+for `39c94`; equal body length does not resolve its 72/71 CFG split or the
+remaining register and stack-allocation differences.
+The KF1 `actor_apply_damage` counterpart accumulates component damage before
+health and player-credit handling, which supports the broad source shape;
+its five-component record does not establish KF2's eight-component field
+names or callback identity.
+Effect-owned `3fb94`, a direct caller of `39c94`, has since been certified
+strict exact by isolated direct objdiff: 536/536 function bytes and all 36
+ordered relocations in its complete unit match. Its older WIP rows above
+record earlier checkpoints, not the current verdict.

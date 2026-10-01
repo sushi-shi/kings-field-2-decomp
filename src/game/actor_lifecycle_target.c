@@ -40,7 +40,7 @@ void func_8003983c(void)
             }
         } else {
             if (distance < (group->unknown_0a[0] << KF_FIXED11_BITS) &&
-                ((u8 *)&player_state.unknown_108[1])[0] == 0) {
+                player_state.unknown_09[1] == 0) {
                 goto set_dormant;
             }
             if (slot_state == 1) {

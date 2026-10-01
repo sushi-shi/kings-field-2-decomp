@@ -86,8 +86,10 @@ void func_80033d3c(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction)
                     group_start->vz += *scaled++;
                     group_start++;
                 }
+                pending = 0;
+                delta_write = &deltas.m[0][0];
             }
-            pending = 0;
+            group_start = cursor;
         } else {
             *delta_write++ = value - cursor->vx;
             *delta_write++ = *encoded++ - cursor->vy;
@@ -95,24 +97,28 @@ void func_80033d3c(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction)
             cursor++;
 
             if (pending != 2) {
-                ++pending;
-                continue;
-            } else {
-                ScaleMatrix(&deltas, &scale);
-                group_start[0].vx += deltas.m[0][0];
-                group_start[0].vy += deltas.m[0][1];
-                group_start[0].vz += deltas.m[0][2];
-                group_start[1].vx += deltas.m[1][0];
-                group_start[1].vy += deltas.m[1][1];
-                group_start[1].vz += deltas.m[1][2];
-                group_start[2].vx += deltas.m[2][0];
-                group_start[2].vy += deltas.m[2][1];
-                group_start[2].vz += deltas.m[2][2];
-                pending = 0;
+                goto increment_pending;
             }
+            ScaleMatrix(&deltas, &scale);
+            group_start[0].vx += deltas.m[0][0];
+            group_start[0].vy += deltas.m[0][1];
+            group_start[0].vz += deltas.m[0][2];
+            group_start[1].vx += deltas.m[1][0];
+            group_start[1].vy += deltas.m[1][1];
+            group_start[1].vz += deltas.m[1][2];
+            group_start[2].vx += deltas.m[2][0];
+            pending = 0;
+            group_start[2].vy += deltas.m[2][1];
+            group_start[2].vz += deltas.m[2][2];
+            delta_write = &deltas.m[0][0];
+            group_start = cursor;
+            goto next_vertex;
+
+        increment_pending:
+            ++pending;
         }
-        group_start = cursor;
-        delta_write = &deltas.m[0][0];
+    next_vertex:
+        ;
     }
 
     if (pending != 0) {

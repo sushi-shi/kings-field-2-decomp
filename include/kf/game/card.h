@@ -16,6 +16,38 @@ enum {
     KF_CARD_PAYLOAD_BYTES = KF_CARD_BLOCK_BYTES - KF_CARD_HEADER_BYTES
 };
 
+enum {
+    KF_CARD_ICON_TYPE_THREE_FRAMES = 0x13,
+    KF_CARD_FILE_BLOCKS = 2
+};
+
+/* The file header copies this 0x280-byte prefix; the rest of the 0x400-byte
+ * block header remains zero in memory_card_buffer. */
+typedef struct KfCardHeader {
+    u8 magic[2];
+    u8 icon_type;
+    u8 block_count;
+    char title[0x40];
+    u8 reserved_44[0x1c];
+    u16 icon_palette[16];
+    u8 icon_frames[3][0x80];
+    u32 payload_checksum;
+    u8 reserved_204[0x7c];
+} KfCardHeader;
+typedef char kf_card_header_size[sizeof(KfCardHeader) == 0x280 ? 1 : -1];
+typedef char kf_card_header_icon_type_offset[
+    (u32)&((KfCardHeader *)0)->icon_type == 2 ? 1 : -1];
+typedef char kf_card_header_block_count_offset[
+    (u32)&((KfCardHeader *)0)->block_count == 3 ? 1 : -1];
+typedef char kf_card_header_title_offset[
+    (u32)&((KfCardHeader *)0)->title == 4 ? 1 : -1];
+typedef char kf_card_header_palette_offset[
+    (u32)&((KfCardHeader *)0)->icon_palette == 0x60 ? 1 : -1];
+typedef char kf_card_header_frames_offset[
+    (u32)&((KfCardHeader *)0)->icon_frames == 0x80 ? 1 : -1];
+typedef char kf_card_header_checksum_offset[
+    (u32)&((KfCardHeader *)0)->payload_checksum == 0x200 ? 1 : -1];
+
 extern long memory_card_io_end_event;
 extern long memory_card_timeout_event;
 extern long memory_card_new_device_event;
@@ -38,7 +70,7 @@ void memory_card_stop(void);
 s32 memory_card_probe_temporary_file(void);
 s32 memory_card_format(void);
 s32 func_80022b74(s32 slot);
-void func_80023178(u8 *label, s32 slot_glyph);
+void func_80023178(KfCardHeader *header, s32 slot_glyph);
 u32 memory_card_payload_byte_sum(const u8 *payload);
 s32 memory_card_wait_event(void);
 void memory_card_clear_events(void);

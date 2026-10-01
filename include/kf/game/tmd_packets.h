@@ -38,6 +38,13 @@ typedef union KfTmdPacketHeader {
     } bytes;
 } KfTmdPacketHeader;
 
+typedef char kf_tmd_packet_header_size[
+    sizeof(KfTmdPacketHeader) == KF_TMD_PACKET_HEADER_BYTES ? 1 : -1];
+typedef char kf_tmd_packet_input_length_offset[
+    (u32)&((KfTmdPacketHeader *)0)->bytes.input_length == 1 ? 1 : -1];
+typedef char kf_tmd_packet_mode_offset[
+    (u32)&((KfTmdPacketHeader *)0)->bytes.mode == 3 ? 1 : -1];
+
 /* The cell renderer supplies a complete temporary TMD to its packet helper. */
 typedef struct KfTmdPreparedAsset {
     KfTmdHeader header;
@@ -47,6 +54,10 @@ typedef struct KfTmdPreparedAsset {
 
 typedef char kf_tmd_prepared_asset_size[
     sizeof(KfTmdPreparedAsset) == KF_MAP_CELL_PREPARED_BYTES ? 1 : -1];
+typedef char kf_tmd_prepared_object_offset[
+    (u32)&((KfTmdPreparedAsset *)0)->object == KF_TMD_HEADER_BYTES ? 1 : -1];
+typedef char kf_tmd_prepared_payload_offset[
+    (u32)&((KfTmdPreparedAsset *)0)->payload == 0x28 ? 1 : -1];
 
 typedef struct KfTmdFt3 {
     u16 uv0;
@@ -89,7 +100,7 @@ typedef struct KfTmdF3 {
 } KfTmdF3;
 
 typedef struct KfTmdG3 {
-    u8 color[4];
+    CVECTOR color;
     u16 normal0;
     u16 vertex0;
     u16 normal1;
@@ -109,7 +120,7 @@ typedef struct KfTmdF4 {
 } KfTmdF4;
 
 typedef struct KfTmdG4 {
-    u8 color[4];
+    CVECTOR color;
     u16 normal0;
     u16 vertex0;
     u16 normal1;
@@ -248,10 +259,15 @@ typedef char kf_gpu_gt4_last_uv_offset[
     (u32)&((KfGpuGT4 *)0)->packed.uv3 == 48 ? 1 : -1];
 
 extern CVECTOR map_textured_primitive_color;
+void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode);
+void func_8002e4dc(u16 object_index, s32 depth_bias);
+void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth);
 void render_enqueue_map(u16 object_index);
 void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
                    u32 mode, s32 depth_bias);
 void func_8002f808(u16 object_index, s32 depth_bias,
+                   KfTmdPreparedAsset *prepared_asset);
+void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
                    KfTmdPreparedAsset *prepared_asset);
 
 #endif

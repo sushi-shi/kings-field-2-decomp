@@ -130,7 +130,7 @@ yet reconstructed; none is counted as an exact match.
 | GAME VA | WIP evidence and missing model |
 | --- | --- |
 | `0x80015d58` | Opens seven `.T` archives, starts a map stream and VAB stream, then copies startup assets; the source data and session-state owners remain incomplete. |
-| `0x80015fd4` | Starts the callback-state transition, pumps `cd_request_yield` and `func_80016820`, and installs a TMD; the object at fixed RAM `0x8013da68` lacks an owner and source mechanism. |
+| `0x80015fd4` | Starts the callback-state transition, pumps `cd_request_yield` and `func_80016820`, and installs a TMD; the object at fixed RAM `0x8012da68` lacks an owner and source mechanism. |
 | `0x800160e8` | Rebases three coordinates across actor, map-object, and placed-resource arrays; their shared extents and member layouts need stronger ownership evidence. |
 | `0x80016260` | Dispatches map/session transitions, including `audio_start_sequence`, `cd_request_yield`, and the save serializer; its large state machine remains unmodelled. |
 | `0x80016820` | Uses a seven-entry jump table for the transition phase, queues CD archive reads, and calls the five exact phase callbacks; its resource state and switch ownership remain open. |
@@ -408,7 +408,7 @@ call family. Exact rows owned by other units are observations, not new claims.
 | `0x800167e4` | Exact | Sets transition phase 2. |
 | `0x800167f8` | Exact | Sets transition phase 4. |
 | `0x8001680c` | Exact | Sets transition phase 6. |
-| `0x80016820` | WIP, unclaimed | 0x6b4-byte controller with an unresolved indirect jump/call, map and actor fixups, CD queues, sound sequence changes, and VAB queuing. |
+| `0x80016820` | WIP, unclaimed | 0x6b4-byte controller with a reviewed seven-entry indirect switch and a later unresolved indirect callback, map and actor fixups, CD queues, sound sequence changes, and VAB queuing. |
 | `0x80016ee0` | Exact | Queues the map stream read. |
 | `0x800171c8` | Exact | Copies resource words to the destinations set by the loader. |
 | `0x8001777c` | Exact | Releases a memory block during transition. |
@@ -634,6 +634,49 @@ references, adjacent claims, and match state were checked for each.
 | `0x800321d8` | WIP, 98.4359% | Queues a TMD read. Its fixed arena literal emits `lui/ori`, while retail uses signed-low `lui/addiu`; the arena's original source mechanism is unresolved. |
 | `0x80032274` | WIP, 90.933334% | Updates flagged VAB slots. The probe retains an extra induction register and larger frame, while retail recomputes slot offsets per iteration. |
 
+GAME `0x800139c4` passes `0x8009a6a0` to `SsSetTableSize` with two sequences
+and one track. Exact OPEN and END audio initializers use the same call shape
+with curated 0x158-byte `audio_sequence_table` workspaces, and KF1 defines a
+static table of that size. This supports a 0x158-byte minimum for GAME's
+workspace, not its original definition, linkage, or complete extent.
+The same startup routine stores `0x80198640` as the sequence-buffer pointer,
+0x10 bytes beyond `player_state`. KF1 uses a 0x3000-byte sequence buffer; that
+size would leave 0x68 bytes before GAME's `effect_state`, but GAME's buffer
+extent and defining source remain candidates. The resource controller later
+queues archive slot 4, entry `320 + (values_10[4] % 100)`, into this pointer;
+slot 4 was opened as VAB.T, and its entry size is unavailable here.
+Five unbound relocation pairs preserve the direct constructors for the sound
+table (`0x800139e0/e4`), sequence buffer (`0x80013a28/2c`), initial VAB
+buffer (`0x80013a90/94`), and final slot-5/slot-6 overrides
+(`0x80013ab4/b8`, `0x80013ac4/c8`). The intermediate VAB slot values are
+transient; these pairs do not establish object extents or source owners.
+
+The startup copy at `0x80015d58` uses signed-low address construction for two
+unowned destinations: `lui 0x801e; addiu -29304` resolves to `0x801d8d88`,
+four bytes beyond the curated `bss_801c7540` extent, and
+`lui 0x8010; addiu -24368` resolves to `0x800fa0d0`, 0x30 bytes beyond the
+arena policy end `0x8009b0a0 + 0x5f000`. Neither address has a proved source
+definition or complete extent. The latter receives the first embedded TMD
+archive from FDAT.T slot 5, entry 0x30, and feeds
+`asset_registry_load_tmd_archive` with asset ID 0. A later embedded archive
+is copied to `0x800855a0` and loaded with asset ID 0x28. The first destination
+is 0x1988 bytes before `display_primitive_memory`, so it is not a member of
+that object. Reviewed relocation pairs preserve the signed-low constructors at
+`0x80015ea4/a8`, `0x80015f58/5c`, and `0x80015f80/84` without assigning
+either workspace a symbol or source definition. The later copy and TMD loader
+input pair use the third unbound destination at `0x800855a0`
+(`0x80015f94/98`, `0x80015fac/b0`). The earlier `0x80015e80/84` copy targets
+the candidate `player_weapon_records` base `0x801c7078`; its row likewise
+leaves the symbol blank pending owner work.
+
+The `0x80015fd4` TMD pointer `0x8012da68` is the destination of a later
+RTMD.T archive-slot-1 read in `0x80016820`. It lies 0x10 bytes beyond the
+complete `display_primitive_memory` end `0x8012da58`; the workspace's size
+and source definition remain unproved. Both constructors use `lui 0x8013`
+followed by signed `addiu -9624`: `0x800160ac/b0` passes the address to
+`tmd_set_slot`, and `0x80016a4c/50` passes it to `cd_archive_queue_read`.
+Their reviewed relocation rows leave the symbol unbound.
+
 The new `world_translate.c` uses the complete player, effect, map-object, and
 actor state types. Retail's X/Z/Y update order and independent unsigned
 countdowns for the three pools are reflected directly in source; a single
@@ -654,7 +697,7 @@ adjacent-boundary, and match-state review.
 | GAME VA | Final verdict | Evidence or remaining issue |
 | --- | --- | --- |
 | `0x80016260` | WIP, unclaimed | Resource transition controller calls `audio_start_sequence`, `cd_request_yield`, and `func_80016820`. Its 0x55c-byte body and eight-argument transition API still need a supported shared state model. |
-| `0x80016820` | WIP, unclaimed | Queues CD archive and VAB reads, copies resources, translates world positions, and starts sound sequences. Its 0x6b4-byte body has unresolved indirect jump and call targets. |
+| `0x80016820` | WIP, unclaimed | Queues CD archive and VAB reads, copies resources, translates world positions, and starts sound sequences. Its seven switch targets are reviewed; the later indirect callback target remains unresolved. |
 | `0x80047c98` | WIP, unclaimed | Event controller calls notification, collision, event, and resource restore routines, including `func_800475d8` and `func_80048554`. The event-object state and large control flow remain under study. |
 | `0x800482f8` | WIP, 90.38636% | Clears the typed event control/arena and initializes its memory blocks and saved offsets. CFG and referents match; the probe anchors a shared address at control +0x34 where retail anchors it at +0x2c. A typed pointer experiment worsened the listing and was reverted. |
 | `0x800483d8` | **New exact, 100%** | Restores ten event pointers from saved halfword offsets, with `0xffff` meaning absent. |
@@ -664,6 +707,36 @@ adjacent-boundary, and match-state review.
 | `0x80048d24` | WIP, unclaimed | Serializes runtime state into a large caller-provided buffer; the many offset-specific fields and payload extent need a complete typed owner. |
 | `0x800492dc` | WIP, unclaimed | Restores that runtime state from the paired buffer; its disjoint byte/halfword/word fields and payload schema are still unresolved. |
 
+`0x80016260` has six proven direct callsites with eight scalar arguments. It
+masks each register argument with 0xff as needed and loads the four caller-stack
+arguments using `lbu` at caller offsets +16/+20/+24/+28. The candidate
+`void(u8 × 8)` identity replaces a false four-pointer seed; the exact player
+caller retains its existing `s32` declaration until caller and callee source
+types can be checked together.
+
+Retail phases in `0x80016820` constrain the resource layout without proving
+the loaded buffers' definitions. Phase zero queues archive slot 5, entry
+`3 * index`, into `cd_stream_work_buffer`. Phase one selects the initialized
+32-pointer default callback table, queues entry `3 * index + 2` into unbound
+`0x8019e138`, and copies 0x3e80 words to `bss_801c7540` followed by 0x600
+words to the same object's +0x10000 interior. Phase two queues entry
+`3 * index + 1` into the stream buffer and selects the loaded callback table
+at `0x8019e138`. The first source range proves at least 0xfa04 readable bytes
+from `cd_stream_work_buffer` (four-byte header plus 0xfa00 copied bytes).
+The second source starts after an embedded length, so its total bound remains
+unknown. Both destination ranges fit the curated 0x11844-byte object; the
+callback table and stream buffer still lack complete extents and source owners.
+Reviewed pairs at `0x8001694c/50` and `0x80016960/64` bind the two copy
+destinations to `bss_801c7540` and its +0x10000 interior, respectively.
+Four reviewed, blank-symbol relocation pairs at `0x800168d0/d4`,
+`0x800168fc/900`, `0x800169ec/f0`, and `0x80016a7c/80` preserve the
+`0x801b6064` stream-buffer base across these read, copy, and parse phases;
+the existing 4-byte data identity remains only a candidate anchor.
+The next curated BSS anchor is `0x801c7068`, leaving a loose `0x11004`-byte
+interval from that base. Generated xrefs identify only the base and its +4
+interior in the interval; this does not establish that one buffer occupies
+all of it or prove the source definition.
+
 `func_800483d8` and `func_80048498` now reference
 `event_state.arena.bytes` directly in their offset expressions. This preserves
 the complete BSS owner and removes a redundant local base pointer. Focused
@@ -671,3 +744,348 @@ comparison is 5/6 identical listings in `game.event_state`, and strict objdiff
 confirms both new functions at 100%; the unit's three previous exacts remain
 exact. GAME target relink verified 141/141 units. The global edge-check still
 reports only the three pre-existing, unrelated RODATA addends.
+
+## VAB queue and CD callback follow-up
+
+This 30-function GAME call family follows the VAB queue from the resource
+transition and map-resource callers through its stream callback, CD request
+service, and phase setters. The exact rows below retain earlier strict 100%
+results and were identical in the current focused listing checks; no broad
+match was run for this follow-up.
+
+| GAME VA | Verdict | Retail role |
+| --- | --- | --- |
+| `0x80013ae4` | Exact | Starts the selected sequence. |
+| `0x80013b7c` | Exact | Stops the active sequence. |
+| `0x80013bd4` | Exact | Closes sequence and loaded VABs. |
+| `0x80013c8c` | Exact | Spatial sound attenuation and panning. |
+| `0x80013f50` | Exact | Spatial sound with default range. |
+| `0x80013f84` | Exact | Spatial sound with caller range. |
+| `0x80013fb8` | Exact | Keys off a tracked voice. |
+| `0x80014030` | Exact | Updates listener position and rotation. |
+| `0x800140dc` | Exact | Plays a sound at equal left/right volume. |
+| `0x80014100` | Exact | Refreshes voice-handle activity. |
+| `0x80014164` | Exact | Allocates or reclaims a voice handle. |
+| `0x80014278` | Exact | Keys on a sound using the loaded VAB. |
+| `0x80014394` | Exact | Completes the queued VAB stream header. |
+| `0x800144b8` | WIP | Services the partial VAB transfer; retail retains constant 1 in s3 while the probe retains -1. |
+| `0x800145f4` | Exact | Finds or reclaims a VAB stream slot. |
+| `0x800146d0` | Exact | Queues a VAB stream read with the callback at 0x14394. |
+| `0x800167bc` | Exact | Selects resource phase 1. |
+| `0x800167d0` | Exact | Selects resource phase 3. |
+| `0x800167e4` | Exact | Selects resource phase 2. |
+| `0x800167f8` | Exact | Selects resource phase 4. |
+| `0x8001680c` | Exact | Selects resource phase 6. |
+| `0x80016ed4` | Exact | Marks the CD stream complete. |
+| `0x80016ee0` | Exact | Queues a map stream read. |
+| `0x80016f10` | Exact | Caps a stream chunk at sixteen sectors. |
+| `0x80016f4c` | Exact | Services the image-stream CD request. |
+| `0x80017f9c` | Exact | Queues a kind-0x30 archive stream read. |
+| `0x80015d58` | WIP, unclaimed | Opens archives and loads startup resources; copy destinations lack source owners. |
+| `0x80016820` | WIP, unclaimed | Dispatches resource phases; loaded callback table and later indirect target remain unresolved. |
+| `0x80032274` | WIP | Updates VAB stream states for a flagged range; current source retains an extra saved register and an induction offset. |
+| `0x8003247c` | WIP, unclaimed | Builds resource flags and calls 0x32274 twice; the 0xb70-byte map/render controller has no reconstructed unit. |
+
+At `0x80032728`, the large controller passes archive 4, entry 0x20, VAB slot
+2, count 0x40, and a stack flag array to `resource_vab_update_range`. Its
+second call at `0x80032c30` passes archive 4, entry 0x60, VAB slot 0x42,
+count 0x40, and a second stack flag array. The updater's retail loop uses a
+48-byte frame, s0-s6, and a fresh `sll v0,s1,3` each iteration; the current
+source produces a 56-byte frame, s0-s7, and retains the shifted offset.
+Its call, branches, halfword state accesses, and five-argument ABI agree. A
+direct-member source probe worsened the listing and was discarded; no source
+change was retained. `game.audio_runtime` is 15/16 SAME, the five phase
+setters are 5/5 SAME, and the selected CD controls remain SAME in the focused
+`game.cd_memory` run.
+
+The queue, callback, request handlers, and phase setters manipulate GAME
+audio/CD state. Their direct SDK callees are separate vendored bodies:
+`SsVabTransBodyPartly` is an exact Psy-Q 3.0 `LIBSND.LIB` object-section
+match; `CdControl`, `CdGetSector`, `CdRead`, and `CdRead2` are exact Psy-Q 3.0
+`LIBCD.LIB` section matches. Event primitives have their own `LIBAPI.LIB`
+attributions. The large 0x3247c caller is a map/render owner with VAB calls,
+not evidence that the adjacent resource and audio functions share its TU.
+The pinned `LIBSND.H` declares `SsVabTransBodyPartly` returning `short`, and
+retail sign-extends that result before its -1 and -2 tests. The current `s16`
+result in the GAME service wrapper is therefore supported; its saved-register
+constant choice remains unattributed codegen residue.
+
+The resource controller at 0x16820 selects the initialized no-op callback
+table at 0x80063e00 before queuing the loaded table into 0x8019e138. The
+event controller at 0x4678c later calls `active_table[2]` indirectly, but
+neither that slot's destination nor the loaded table's full extent is proved.
+Retail 0x38f20 also loads `active_table[19]` at 0x38fac and calls it through
+`jalr` at 0x38fb4. This proves a 0x50-byte table view for the active callback
+interface; it does not prove the CD-loaded object's complete extent or the
+indirect target.
+The configured hash-identical retail directory has the four executables but
+no `CD/COM/FDAT.T`, so the archive-entry size cannot be checked from the
+current local media. No BSS or indirect-call identity was added from this
+candidate chain.
+
+Nine more reviewed 0x16820 pairs target the complete `audio_state` at
+`0x80016d5c/60` (+0xc), `0x80016d64/68` (+0x8), `0x80016da8/ac` (+0x4),
+`0x80016dc8/cc` (+0x4), `0x80016dd8/dc` (+0x4), `0x80016dec/f0`
+(+0x34), `0x80016e00/04` (+0x38), `0x80016e5c/60` (base), and
+`0x80016e98/9c` (+0xc). They clear and later set +0xc to literal 0 and 1,
+read the sequence ID at +4, clear VAB slot 1's stream pointer at +0x38, and
+queue a read to the sequence-buffer pointer stored at the base. Thus +0xc is
+a readiness flag, not a sequence-data pointer;
+`KfGameAudioState.sequence_ready` now models its word-sized storage. Its
+signedness is not directly observable, so `s32` follows the adjacent
+`sequence_active` flag's convention. The focused audio unit retains 15/16
+identical listings, with only the pre-existing VAB-service WIP.
+
+## GAME VAB/CD controller referents after checkpoint 39dd6fd
+
+The controller at `0x80016820` constructs eight more addresses inside already
+complete objects. Retail `lui`/signed-low pairs and the safe GAME delinker
+validate `map_object_state.objects` at `0x168a8/0x168ac` (+0x1e00) and
+`0x16acc/0x16ad0` (+0x1e06), `actor_state.actors` at
+`0x16a84/0x16a88`, and `actor_state.target_groups` at
+`0x16b78/0x16b7c` (+0x60e0). The loops use the documented 0x44-byte map
+object and 0x7c-byte actor strides, while the target-group copy spans
+0x32c0 bytes to the proved actor-state tail. Another four pairs construct
+`bss_801c7540+7` at `0x16b30/34`, `player_state.camera_position` at
+`0x16b60/64` (+0xd8) and `0x16b68/6c` (+0xe0), and a byte of the same
+complete player object at `0x16c0c/10` (+0xa). The byte's meaning remains
+unresolved. All eight rows retain their true interior addends; no overlapping
+global was introduced. Safe GAME delinking passed, and semantic disassembly
+annotates the reviewed owner/addend at each pair.
+
+This connected 30-function control set has 25 earlier strict exact results
+and five honest WIPs. Fresh focused probes preserve 15/16 identical
+`game.audio_runtime` listings, 5/5 phase setters, and 56/57 in
+`game.cd_memory`. `0x17608` still differs only in the register holding the
+intermediate `available - 12` value; its source was left unchanged.
+
+| GAME address | Verdict |
+| --- | --- |
+| `0x80013ae4` | Exact: sequence start. |
+| `0x80013b7c` | Exact: sequence stop. |
+| `0x80013bd4` | Exact: audio shutdown. |
+| `0x80013c8c` | Exact: spatial playback. |
+| `0x80013f50` | Exact: spatial playback default range. |
+| `0x80013f84` | Exact: spatial playback caller range. |
+| `0x80013fb8` | Exact: tracked voice key-off. |
+| `0x80014030` | Exact: listener update. |
+| `0x800140dc` | Exact: equal-volume playback. |
+| `0x80014100` | Exact: voice-handle refresh. |
+| `0x80014164` | Exact: voice-handle allocation. |
+| `0x80014278` | Exact: voice key-on. |
+| `0x80014394` | Exact: VAB stream callback. |
+| `0x800144b8` | WIP: shared 1/-1 register choice; calls, CFG, ABI and referents align. |
+| `0x800145f4` | Exact: VAB stream-slot acquisition. |
+| `0x800146d0` | Exact: VAB queue wrapper. |
+| `0x80015d58` | WIP, unclaimed: startup CD copy destinations and arena source are unproved. |
+| `0x80015fd4` | WIP, unclaimed: loaded TMD destination at 0x8012da68 has no owner. |
+| `0x800167bc` | Exact: resource phase 1. |
+| `0x800167d0` | Exact: resource phase 3. |
+| `0x800167e4` | Exact: resource phase 2. |
+| `0x800167f8` | Exact: resource phase 4. |
+| `0x8001680c` | Exact: resource phase 6. |
+| `0x80016820` | WIP, unclaimed: seven phases proved; CD-loaded callback extent and indirect call remain open. |
+| `0x80016ed4` | Exact: CD stream completion callback. |
+| `0x80016ee0` | Exact: map-stream read wrapper. |
+| `0x80016f10` | Exact: stream chunk limiter. |
+| `0x80016f4c` | Exact: image-stream CD service. |
+| `0x80017608` | WIP: allocator has one two-instruction temporary-register residue. |
+| `0x80017f9c` | Exact: kind-0x30 archive stream read. |
+
+The pinned Psy-Q 3.0 `LIBSND.H` specifies the signed short return of
+`SsVabTransBodyPartly`; its matching `LIBSND.LIB` body and the CD/Event SDK
+callees are vendored boundaries. The GAME wrappers and allocator in this set
+are game-owned. No literal workspace owner was inferred from a matching byte
+sequence or a nearby BSS boundary.
+
+Adjacent GAME `0x80016260` remains an unclaimed WIP controller with a
+candidate eight-byte-valued-argument ABI. Its retail body has 58 reviewed
+consecutive HI16/LO16 pairs: 56 read or write the complete
+`state_8017d118` at offsets 0 through 0x19, one loads
+`audio_state.sequence_active` at +8, and one constructs
+`event_state.control` +4. All raw low opcodes (`lbu`, `lh`, `sb`, `sh`,
+`lw`, or `addiu`) and signed addends were checked before curation. The safe
+GAME delinker accepts all 58 and semantic disassembly annotates both
+instructions of each pair. This resolves their referents without claiming a
+source body, changing the six caller declarations, or inventing storage for
+the separate startup and callback workspaces.
+
+The six direct callers are three sites in `0x8002360c`, one in `0x80036ed4`,
+and two in `0x8004678c`. They all populate eight scalar slots. The
+`0x80036ed4` caller loads the first four with `lbu` and the final three with
+`lb`; `0x80016260` itself reads all four stack arguments with `lbu` and
+masks the register arguments with `andi 0xff` where used. Those facts prove
+byte-valued behavior but do not prove the original C widths of the register
+arguments. Nineteen direct `j`/`jal` words inside `0x80016260` were decoded
+against their target addresses and promoted to reviewed control flow; a safe
+one-function GAME delink accepted 135 relocations with none withheld. The
+body and its candidate signature remain WIP.
+
+The parameter flow is more constrained than the candidate signature alone:
+`$a0`–`$a3` are controls 1–4, and caller-stack slots +16/+20/+24/+28
+are controls 5–8. Control 5 equal to `0xc8` takes the sequence-start path
+and returns. On a new transition, retail writes controls 1–5 into
+`state_8017d118.values_10[0..4]`, controls 6–8 into the three bytes at
++0x17..+0x19, sets `transition_active` to one and `transition_phase` to
+zero, and writes a +0x16 flag according to whether control 2 is `0xff`.
+The five current values at +0x04..+0x08 are consulted separately before a
+new transition is queued. This proves two five-byte state groups and three
+tail controls, while leaving their game-specific meaning and original C
+parameter spellings open.
+
+The source-owned VAB service `0x800144b8` and arena allocator `0x80017608`
+also had candidate direct-control rows despite their near-complete C bodies.
+Raw GAME words verify all 14 and four `j`/`jal` targets respectively. Their
+reviewed rows pass separate safe one-function delinks with 18 and four
+relocations, neither withholding any function or relocation. The VAB service
+still differs in its shared `1`/`-1` register choice, and the allocator in one
+two-instruction temporary assignment; no source-level correction is proved.
+Focused listings after the relocation review remain 15/16 identical in
+`game.audio_runtime` and 56/57 in `game.cd_memory`; the two noted WIPs are the
+only listing differences. This quick comparison is not a new strict match.
+
+The allocator `0x80017608` has two proven external callers: resource TMD
+queueing at `0x80032218` passes the asset-registry pointer slot as its third
+argument, while the event save walker at `0x80048964` passes a saved-block
+pointer slot. Both use the returned payload pointer. This supports the
+`u8 **owner` contract and leaves the allocator's first two divergent
+instructions (`addiu` temporary register before the size subtraction) as
+codegen residue rather than an ABI or ownership gap.
+
+The contiguous 29-function CD/memory run from `0x80016ed4` through
+`0x80017864` has 28 identical focused listings and the existing
+`0x80017608` allocator WIP. Its 36 remaining candidate direct-control rows
+were decoded from hash-identical GAME.EXE words: each `j`/`jal` opcode and
+encoded target agrees with the curated row. Calls into Psy-Q `LIBAPI.LIB`,
+`LIBGPU.LIB`, and `LIBCD.LIB` are vendor boundaries; the functions in this run
+are game-owned. This review confirms control flow, not historical linker
+relocation records or a source-level fix for the allocator residue.
+Safe GAME delinking of the ten affected functions produced ten objects with
+44 relocations and zero withheld relocations or functions. Direct objdiff
+against the refreshed focused objects reports 100% for each of those ten;
+the separate `0x800144b8` and `0x80017608` WIPs remain 94.87342% and
+99.78261% respectively.
+
+The band retains these individual verdicts after the focused recheck. “Exact”
+means a prior strict objdiff result with an identical current listing; the ten
+functions affected by this relocation review were also directly rechecked at
+100% against their freshly carved targets.
+
+| GAME VA | Verdict |
+| --- | --- |
+| `0x80016ed4` | Exact |
+| `0x80016ee0` | Exact |
+| `0x80016f10` | Exact |
+| `0x80016f4c` | Exact |
+| `0x800171c8` | Exact |
+| `0x800171f8` | Exact |
+| `0x80017228` | Exact |
+| `0x8001724c` | Exact |
+| `0x80017270` | Exact |
+| `0x800172f4` | Exact |
+| `0x80017314` | Exact |
+| `0x8001746c` | Exact |
+| `0x80017504` | Exact |
+| `0x800175e8` | Exact |
+| `0x80017608` | WIP: temporary-register residue |
+| `0x800176c0` | Exact |
+| `0x800176e0` | Exact |
+| `0x800176e8` | Exact |
+| `0x800176f4` | Exact |
+| `0x800176fc` | Exact |
+| `0x80017708` | Exact |
+| `0x80017710` | Exact |
+| `0x8001771c` | Exact |
+| `0x80017754` | Exact |
+| `0x8001777c` | Exact |
+| `0x8001779c` | Exact |
+| `0x800177d4` | Exact |
+| `0x80017804` | Exact |
+| `0x80017864` | Exact |
+
+The callback-state byte at `state_8017d118+0x16` now has its own neutral
+`flag_16` field. The reviewed direct access set contains two writes in
+`0x80016260` (zero when the second control is `0xff`, one otherwise), one
+clear in `0x80016820`, and one map-cell-renderer read at `0x80030d14`;
+startup clears the enclosing 0x1c-byte state. The split preserves layout and
+does not assign the flag a broader meaning. Focused builds of its two sourced
+consumers preserved their prior verdicts: `game.main` has `main` SAME and the
+known arena-address WIP in `game_main_loop`; `game.render_map_cell` has three
+SAME listings and the existing two-instruction entry-order WIP at `0x80030c18`.
+The five adjacent phase setters in `game.resource_transition_phase` also remain
+SAME after the shared-header change.
+
+### Audio state dispatcher and direct-caller cohort
+
+This GAME-only cohort follows the contiguous audio/VAB runtime through its
+callback, then the shared transition state and all six proven calls to
+`0x80016260`. The six calls occur at `0x80023698`, `0x80023714`,
+`0x800237e8`, `0x800380f4`, `0x80046b04`, and `0x80046ca8` in three caller
+functions. Each supplies four register arguments and four caller-stack words.
+After its 64-byte prologue, the callee reads the latter with `lbu` at
+`sp+80/+84/+88/+92`. The map-script caller loads controls 1–5 with `lbu`
+and controls 6–8 with `lb`; the event caller supplies `0xff`/`0x7f`
+sentinels and masks its dynamic fifth control to a byte. This supports
+eight byte-valued controls, but not one proven source-level signedness for
+every caller argument. The exact player caller therefore retains its current
+local declaration until a source-owned callee can be compared with all sites.
+The callee's decoded direct call set is `EnterCriticalSection`,
+`ExitCriticalSection`, `audio_start_sequence`, `cd_request_yield`,
+`func_80016820`, and event-save helper `func_80048554`. Its callers ignore
+the return register, supporting the current void candidate without proving
+the original declaration.
+
+The callee's fifth control `0xc8` selects `audio_start_sequence` if a
+sequence is not already active. Other controls compare against the five
+current and five pending bytes in the complete `state_8017d118` owner;
+new transitions set `transition_active`, reset `transition_phase`, and write
+the three signed tail controls. Its +0x16 flag is now a separately typed
+byte, with the four direct accesses listed above. The large callee body
+remains unclaimed because its original C control structure is not proved;
+neighboring startup and resource-transition workspaces also remain open.
+`0x80016820` still has a seven-way
+indirect phase jump at `0x80016884` and a later `jalr` at `0x80016c00` through
+`state_8017d118.active_table[5]`. The scene controller uses slot two and
+another effect consumer uses slot 19, proving at least 20 pointer slots but
+not the table's full extent or any loaded slot target. Neither indirect target
+is inferred from a neighboring address. Pinned Psy-Q audio/CD calls are vendor
+boundaries; none of these GAME-owned wrapper bodies is banked as a library
+routine.
+
+The per-function verdicts below carry earlier strict exact results for the
+exact controls. Current focused checks reconfirmed 15/16 audio-runtime
+listings and all five phase setters; no broad match or new source claim was
+made in this read-only caller pass.
+
+| GAME VA | Verdict | Evidence boundary |
+| --- | --- | --- |
+| `0x80013ae4` | Exact | Sequence start; Psy-Q calls. |
+| `0x80013b7c` | Exact | Sequence stop. |
+| `0x80013bd4` | Exact | Audio shutdown. |
+| `0x80013c8c` | Exact | Spatial attenuation and key-on. |
+| `0x80013f50` | Exact | Default-range wrapper. |
+| `0x80013f84` | Exact | Explicit-range wrapper. |
+| `0x80013fb8` | Exact | Tracked voice key-off. |
+| `0x80014030` | Exact | Listener pose and sampled layer. |
+| `0x800140dc` | Exact | Equal-volume sound playback. |
+| `0x80014100` | Exact | Voice-handle refresh. |
+| `0x80014164` | Exact | Voice-handle allocation. |
+| `0x80014278` | Exact | SPU voice key-on. |
+| `0x80014394` | Exact | VAB stream callback. |
+| `0x800144b8` | WIP, 94.87342% strict | Retail holds phase value 1 in `s3`; source compiler holds retry sentinel -1 there. |
+| `0x800145f4` | Exact | VAB stream-slot acquisition. |
+| `0x800146d0` | Exact | VAB archive queue. |
+| `0x80015d50` | Exact | Initialized callback table's default no-op. |
+| `0x80015d58` | WIP, unclaimed | Startup archive copies; destination owner/extent open. |
+| `0x80015fd4` | WIP, unclaimed | Transition setup; TMD workspace owner open. |
+| `0x800160e8` | Exact | Three-coordinate translation over four typed object pools. |
+| `0x80016260` | WIP, unclaimed | Eight byte-valued controls; original C and workspace mechanism open. |
+| `0x800167bc` | Exact | Selects phase 1. |
+| `0x800167d0` | Exact | Selects phase 3. |
+| `0x800167e4` | Exact | Selects phase 2. |
+| `0x800167f8` | Exact | Selects phase 4. |
+| `0x8001680c` | Exact | Selects phase 6. |
+| `0x80016820` | WIP, unclaimed | CD/VAB transition; indirect jump and callback remain unresolved. |
+| `0x8002360c` | Exact | Three direct calls to the eight-control dispatcher. |
+| `0x80036ed4` | WIP, unclaimed | Script-record byte loads and one direct dispatcher call. |
+| `0x8004678c` | WIP, unclaimed | Two direct dispatcher calls; command switch and callback unresolved. |

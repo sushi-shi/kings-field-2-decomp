@@ -75,7 +75,7 @@ selection_result:
             buttons = PadRead(1);
             for (frame = 0; frame < 2; frame++) {
                 menu_frame_begin();
-                if ((buttons & 8) != 0 && (buttons & 4) != 0)
+                if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
                     func_800189f0();
                 func_8001e94c();
                 menu_draw_window(0, 8, cursor, confirmed);

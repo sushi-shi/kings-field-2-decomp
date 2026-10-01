@@ -1,0 +1,267 @@
+#include <kf/lib/address.h>
+#include <kf/lib/math.h>
+#include <kf/game/collision_cache.h>
+#include <kf/game/effect.h>
+#include <kf/game/player.h>
+#include <psyq/sdk.h>
+
+RODATA(0x80011298, 0x64)
+
+ADDRESS(0x8002722c, 0x2c0)
+void func_8002722c(s32 magic_id)
+{
+    KfMagicRecord *record;
+    u16 mp_cost;
+
+    if (player_state.unknown_d1[0] != 0xff || magic_id == 0xff) {
+        return;
+    }
+
+    record = &effect_state.magic_records[magic_id];
+    if (player_state.vitals.current_mp < record->mp_cost) {
+        return;
+    }
+
+    if (player_state.equipped_weapon_id == 12 && magic_id < 11) {
+        if (magic_id >= 7) {
+            return;
+        }
+    }
+    if (player_state.equipped_body_id == 31 && magic_id >= 11) {
+        if (magic_id < 13) {
+            return;
+        }
+        if (magic_id < 20) {
+            if (magic_id >= 18) {
+                return;
+            }
+        }
+    }
+
+    switch (magic_id - 14) {
+    case 0:
+    case 2:
+    case 5:
+        break;
+    case 1:
+        if (player_state.unknown_62 != 0) {
+            return;
+        }
+        break;
+    case 3:
+        if (player_state.unknown_64 != 0) {
+            return;
+        }
+        break;
+    case 4:
+        player_state.unknown_68 = 900;
+        player_state.vitals.current_mp -= record->mp_cost;
+        return;
+    default:
+        goto charge_gate;
+    }
+    player_state.unknown_d1[1] = 1;
+    player_state.unknown_d1[2] = 1;
+
+charge_gate:
+    if (player_state.magic_charge < 5000) {
+        return;
+    }
+    player_state.magic_charge = 0;
+    mp_cost = record->mp_cost;
+    player_state.unknown_d1[0] = magic_id;
+    player_state.unknown_118.vx = -200;
+    player_state.unknown_118.vy = 200;
+    player_state.unknown_118.vz = 400;
+    player_state.unknown_d1[3] = 1;
+    player_state.vitals.current_mp -= mp_cost;
+
+    switch (magic_id) {
+    case 10:
+        player_state.unknown_118.vx = 0;
+        player_state.unknown_118.vy = -512;
+        player_state.unknown_118.vz = 2000;
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 1:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 11:
+    case 18:
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 12:
+        player_state.unknown_118.vx = -200;
+        player_state.unknown_d1[1] = 5;
+        player_state.unknown_d1[2] = 2;
+        break;
+    case 9:
+        player_state.unknown_d1[1] = 6;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 0:
+    case 2:
+        player_state.unknown_d1[1] = 1;
+        player_state.unknown_d1[2] = 1;
+        player_state.unknown_118.vz = 0;
+        player_state.unknown_118.vy = 0;
+        player_state.unknown_118.vx = 0;
+        break;
+    case 13:
+        player_state.unknown_d1[1] = 7;
+        player_state.unknown_d1[2] = 1;
+        break;
+    case 3:
+        player_state.unknown_d1[1] = 6;
+        player_state.unknown_d1[2] = 2;
+        break;
+    }
+
+    player_state.selected_magic_record = record;
+}
+
+extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
+extern void func_8002b874(void);
+
+enum {
+    PLAYER_MOVE_RADIUS = 800,
+    PLAYER_MOVE_HEIGHT = 1700,
+    PLAYER_MOVE_COLLISION_MODE = 49,
+    PLAYER_MOVE_SLIDE_RADIUS = 880,
+    PLAYER_MOVE_DEFLECTION_ANGLE = 32,
+    PLAYER_MOVE_STEP = 22
+};
+
+ADDRESS(0x800274ec, 0x43c)
+s32 player_move_horizontal(s32 heading, s32 distance)
+{
+    s32 dx = (-rsin(heading) * distance) >> 12;
+    s32 dz = (rcos(heading) * distance) >> 12;
+    s32 initial_dx = dx;
+    s32 initial_dz = dz;
+    VECTOR next;
+    s32 flags;
+    s32 angle;
+    s32 radius;
+    s32 slide_distance;
+    s32 result = 0;
+    s32 collision_retry = 0;
+    s32 slide_attempted = 0;
+    s32 diagonal_retry = 0;
+    s32 high_collision;
+    SVECTOR delta;
+    s32 diagonal_kind;
+
+    for (;;) {
+        next.vx = player_state.camera_position.vx + dx;
+        next.vz = player_state.camera_position.vz + dz;
+        flags = func_8002b9d4(next.vx, player_state.camera_position.vy, next.vz,
+                              PLAYER_MOVE_RADIUS, PLAYER_MOVE_HEIGHT,
+                              PLAYER_MOVE_COLLISION_MODE);
+        if (flags == 0) {
+        accept_position:
+            player_state.camera_position.vx = next.vx;
+            player_state.camera_position.vz = next.vz;
+            player_state.unknown_128 = KF_COLLISION_CACHE_LAYER;
+            result = 1;
+            break;
+        }
+
+        high_collision = 0;
+        if ((flags & -6) == 0) {
+            s32 collision_height = KF_COLLISION_CACHE_RESULT;
+            high_collision = 1;
+            /* The cache/equipment boundary remains provisional. */
+            if (collision_height + 1280 >= player_state.camera_position.vy
+                && player_state.death_state == 0
+                && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
+                    - collision_height) < -PLAYER_MOVE_HEIGHT) {
+                goto accept_position;
+            }
+        }
+
+        if (flags & 0x30) {
+            collision_retry++;
+            if (collision_retry == 2) {
+                break;
+            }
+            func_8002b874();
+            delta.vx = (u16)KF_COLLISION_CACHE_POSITION.vx
+                     - (u16)player_state.camera_position.vx;
+            delta.vz = (u16)KF_COLLISION_CACHE_POSITION.vz
+                     - (u16)player_state.camera_position.vz;
+            angle = vector_xz_to_angle(delta.vx, delta.vz);
+            angle = angle_mod_delta_le_half_turn(heading, angle)
+                ? angle + (KF_ANGLE_HALF_TURN - PLAYER_MOVE_DEFLECTION_ANGLE)
+                : angle + (KF_ANGLE_HALF_TURN + PLAYER_MOVE_DEFLECTION_ANGLE);
+            angle &= KF_ANGLE_WRAP_MASK;
+            radius = KF_COLLISION_CACHE_RADIUS + PLAYER_MOVE_SLIDE_RADIUS;
+            delta.vx = (-rsin(angle) * radius) >> 12;
+            delta.vz = (rcos(angle) * radius) >> 12;
+            next.vx = KF_COLLISION_CACHE_POSITION.vx + delta.vx;
+            next.vz = KF_COLLISION_CACHE_POSITION.vz + delta.vz;
+            dx = next.vx - player_state.camera_position.vx;
+            dz = next.vz - player_state.camera_position.vz;
+            continue;
+        }
+
+        if (!slide_attempted) {
+            slide_distance = distance - PLAYER_MOVE_STEP;
+            if (slide_distance >= 0) {
+                do {
+                    next.vx = player_state.camera_position.vx
+                           + ((-rsin(heading) * slide_distance) >> 12);
+                    next.vz = player_state.camera_position.vz
+                           + ((rcos(heading) * slide_distance) >> 12);
+                    if (func_8002b9d4(next.vx, player_state.camera_position.vy,
+                                       next.vz, PLAYER_MOVE_RADIUS,
+                                       PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
+                        player_state.camera_position.vx = next.vx;
+                        player_state.camera_position.vz = next.vz;
+                        break;
+                    }
+                    slide_distance -= PLAYER_MOVE_STEP;
+                } while (slide_distance >= 0);
+            }
+            slide_attempted = 1;
+        }
+
+        if (high_collision || (flags & 1)) {
+        axis_retry:
+            if (dx != 0) {
+                dx = 0;
+                continue;
+            }
+            if (dz != 0) {
+                dz = 0;
+                dx = initial_dx;
+                continue;
+            }
+        }
+        if (flags & 2) {
+            if (diagonal_retry) {
+                goto axis_retry;
+            } else {
+                diagonal_retry = 1;
+                diagonal_kind = KF_COLLISION_CACHE_SHAPE[2] & 3;
+                if (diagonal_kind == 0 || diagonal_kind == 2) {
+                    dx = (initial_dx + initial_dz) >> 1;
+                    dz = dx;
+                } else {
+                    dx = (initial_dx - initial_dz) >> 1;
+                    dz = -dx;
+                }
+                continue;
+            }
+        }
+        break;
+    }
+    player_state.unknown_e8 = dx;
+    player_state.unknown_ec = dz;
+    return result;
+}

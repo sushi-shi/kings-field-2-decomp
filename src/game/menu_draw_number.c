@@ -8,10 +8,10 @@ void menu_draw_number(const KfMenuSpriteDef *font, const KfMenuGlyphString *stri
     const s16 *code;
     s32 x_offset;
 
-    if (string->glyphs.codes[0] == KF_MENU_TEXT_END) {
+    code = string->glyphs.codes;
+    if (*code == KF_MENU_TEXT_END) {
         return;
     }
-    code = string->glyphs.codes;
     x_offset = 0;
     do {
         primitive_buffer_begin_poly_ft4();
@@ -26,7 +26,7 @@ void menu_draw_number(const KfMenuSpriteDef *font, const KfMenuGlyphString *stri
                 font->width, font->height);
         } else {
             setUVWH(current_poly_ft4,
-                font->u + KF_MENU_NUMBER_COLUMN_WIDTH,
+                (u8)(font->u + KF_MENU_NUMBER_COLUMN_WIDTH),
                 (*code - KF_MENU_NUMBER_COLUMN_ROWS) * KF_MENU_FONT_CELL_HEIGHT,
                 font->width, font->height);
         }

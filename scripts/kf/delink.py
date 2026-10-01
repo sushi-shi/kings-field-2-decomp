@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import bisect
+import fcntl
 import re
 import struct
 from collections import Counter, defaultdict
@@ -1132,9 +1133,10 @@ def delink(
             data_blobs[datum.va] = (bytes(blob), datum_relocations)
 
         live_objects = {Path(str(row["object"])).name for row in object_rows}
-        for old_object in object_output.glob("*.o"):
-            if old_object.name not in live_objects:
-                old_object.unlink()
+        if not selected_vas:
+            for old_object in object_output.glob("*.o"):
+                if old_object.name not in live_objects:
+                    old_object.unlink()
 
         # Manifested units are carved again as one contiguous section each, so
         # objdiff compares a translation unit against the retail run it claims.
@@ -1209,26 +1211,54 @@ def delink(
                 if old_object.name not in live_data:
                     old_object.unlink()
 
+        focused_rows = list(object_rows)
+        report_output = image_output
+        if selected_vas:
+            report_output = image_output / "focused" / "_".join(
+                f"{va:08x}" for va in sorted(selected_vas)
+            )
+            report_output.mkdir(parents=True, exist_ok=True)
+            write_tsv(
+                report_output / "objects.tsv", OBJECT_FIELDS, focused_rows,
+                _comments("Targets selected by this focused carve.", policy),
+            )
+
+        # A focused carve adds or replaces only its selected rows.  Keep the
+        # registry of other module targets so concurrent kf try sessions can
+        # continue to resolve them.  Serialize read/modify/write with other
+        # focused carves of this image.
+        object_manifest = image_output / "objects.tsv"
+        with (image_output / ".objects.lock").open("w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            if selected_vas and object_manifest.is_file():
+                _, previous_rows = read_tsv(object_manifest)
+                replaced = {(row["scope"], row["va"]) for row in object_rows}
+                object_rows = [
+                    row for row in previous_rows
+                    if (row["scope"], row["va"]) not in replaced
+                    and (image_output / row["object"]).is_file()
+                ] + object_rows
+                object_rows.sort(key=lambda row: (parse_int(row["va"]), row["scope"]))
+            write_tsv(
+                object_manifest,
+                OBJECT_FIELDS,
+                object_rows,
+                _comments("One target MIPS ELF object per admitted contiguous function.", policy),
+            )
         write_tsv(
-            image_output / "objects.tsv",
-            OBJECT_FIELDS,
-            object_rows,
-            _comments("One target MIPS ELF object per admitted contiguous function.", policy),
-        )
-        write_tsv(
-            image_output / "relocations_used.tsv",
+            report_output / "relocations_used.tsv",
             USED_RELOCATION_FIELDS,
             used_rows,
             _comments("Relocations materialized in target objects.", policy),
         )
         write_tsv(
-            image_output / "relocations_withheld.tsv",
+            report_output / "relocations_withheld.tsv",
             WITHHELD_RELOCATION_FIELDS,
             withheld_rows,
             _comments("Candidates intentionally not materialized, with a reason.", policy),
         )
         write_tsv(
-            image_output / "functions_withheld.tsv",
+            report_output / "functions_withheld.tsv",
             WITHHELD_FUNCTION_FIELDS,
             withheld_functions,
             _comments("Functions not carved into target objects.", policy),

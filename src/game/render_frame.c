@@ -19,6 +19,13 @@ extern void func_80031024(void);
 
 extern s32 render_model_yaw_smoothing_accumulator;
 
+ADDRESS(0x80033584, 0x1c)
+void display_toggle_buffer_index(void)
+{
+    game_graphics_runtime.display_state.buffer_index =
+        game_graphics_runtime.display_state.buffer_index == 0;
+}
+
 ADDRESS(0x800335a0, 0x3f4)
 void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
 {

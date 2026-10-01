@@ -23,6 +23,11 @@ typedef char kf_render_mask_scan_state_size[
 typedef char kf_render_mask_scan_cursor_offset[
     (u32)&((KfRenderMaskScanState *)0)->mask_cursor == 0x1c ? 1 : -1];
 
+typedef struct KfCollisionMaskPoint {
+    s32 x;
+    s32 z;
+} KfCollisionMaskPoint;
+
 extern KfRenderMaskScanState render_mask_scan_state;
 
 #endif

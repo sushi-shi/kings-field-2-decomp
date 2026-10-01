@@ -2,6 +2,7 @@
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
+#include <psyq/pad.h>
 
 extern void func_800217f0(s32 arg0, s32 arg1, s32 arg2, s32 arg3,
     s32 arg4, s32 arg5);
@@ -102,6 +103,7 @@ void func_8001b2dc(void)
     KfMenuGlyphString labels[2];
     s32 choice = 0;
     s32 result = KF_MENU_OPTION_PENDING;
+    s32 last_row = KF_MENU_OPTION_COUNT;
     s32 confirmed;
     s32 frame;
     u32 buttons;
@@ -134,32 +136,32 @@ void func_8001b2dc(void)
         func_800223cc();
         buttons = input_read_mark_active();
         confirmed = 0;
-        if (buttons & 0x1000) {
+        if (buttons & PADLup) {
             menu_cursor_animation_direction = 0;
             func_80022300(16);
             if (choice != 0)
                 choice--;
             else
-                choice = KF_MENU_OPTION_CANCEL_ROW;
-        } else if (buttons & 0x4000) {
+                choice = last_row;
+        } else if (buttons & PADLdown) {
             menu_cursor_animation_direction = 0;
             func_80022300(16);
-            if (choice != KF_MENU_OPTION_CANCEL_ROW)
+            if (choice != last_row)
                 choice++;
             else
                 choice = 0;
-        } else if ((buttons & 0x20) || (buttons & 0x2000)
-            || (buttons & 0x8000)) {
-            if (choice < KF_MENU_OPTION_COUNT) {
+        } else if ((buttons & PADRright) || (buttons & PADLright)
+            || (buttons & PADLleft)) {
+            if (choice < last_row) {
                 func_80022300(17);
                 confirmed = 1;
                 selected[choice] = selected[choice] == 0;
-            } else if (buttons & 0x20) {
+            } else if (buttons & PADRright) {
                 func_80022300(17);
                 result = -1;
                 confirmed = 1;
             }
-        } else if (buttons & 0x40) {
+        } else if (buttons & PADRdown) {
             func_80022300(18);
             result = -1;
         }

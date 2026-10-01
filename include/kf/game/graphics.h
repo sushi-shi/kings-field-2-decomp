@@ -61,17 +61,6 @@ typedef struct KfScreenVertex {
     s16 p2;
 } KfScreenVertex;
 
-/* Game-side view of the records returned through the SDK clip pointer table.
- * The SDK call still receives EVECTOR **; these are the fields GAME reads. */
-typedef struct KfMapClippedVertex {
-    u8 unknown_00[16];
-    s32 sz;
-    s32 p2;
-    long xy;
-    u32 color_word;
-    u16 uv;
-} KfMapClippedVertex;
-
 typedef struct KfNotificationControl {
     u8 queue_tail;
     u8 queue_head;
@@ -221,16 +210,18 @@ typedef char kf_collision_control_offset[
 typedef char kf_graphics_runtime_size[sizeof(KfGraphicsRuntimeGame) == 0x17cf0 ? 1 : -1];
 typedef char kf_clip_result_vertices_offset[
     (u32)&((KfGraphicsRuntimeGame *)0)->clip_result_vertices == 0x14994 ? 1 : -1];
-typedef char kf_map_clipped_xy_offset[
-    (u32)&((KfMapClippedVertex *)0)->xy == 24 ? 1 : -1];
-typedef char kf_map_clipped_depth_offset[
-    (u32)&((KfMapClippedVertex *)0)->sz == 16 ? 1 : -1];
-typedef char kf_map_clipped_perspective_offset[
-    (u32)&((KfMapClippedVertex *)0)->p2 == 20 ? 1 : -1];
-typedef char kf_map_clipped_color_offset[
-    (u32)&((KfMapClippedVertex *)0)->color_word == 28 ? 1 : -1];
-typedef char kf_map_clipped_uv_offset[
-    (u32)&((KfMapClippedVertex *)0)->uv == 32 ? 1 : -1];
+/* The SDK clip result is a complete EVECTOR, including its trailing window fields. */
+typedef char kf_clip_evector_size[sizeof(EVECTOR) == 0x2c ? 1 : -1];
+typedef char kf_clip_evector_depth_offset[
+    (u32)&((EVECTOR *)0)->sxyz.vz == 16 ? 1 : -1];
+typedef char kf_clip_evector_perspective_offset[
+    (u32)&((EVECTOR *)0)->sxyz.pad == 20 ? 1 : -1];
+typedef char kf_clip_evector_xy_offset[
+    (u32)&((EVECTOR *)0)->sxy == 24 ? 1 : -1];
+typedef char kf_clip_evector_color_offset[
+    (u32)&((EVECTOR *)0)->rgb == 28 ? 1 : -1];
+typedef char kf_clip_evector_uv_offset[
+    (u32)&((EVECTOR *)0)->txuv == 32 ? 1 : -1];
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
 extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];

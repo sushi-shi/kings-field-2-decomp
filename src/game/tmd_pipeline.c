@@ -382,7 +382,7 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
         u32 header = *(u32 *)packet;
-        u8 mode = header >> 24;
+        s32 mode = header >> 24;
         KfTmdPrimitive *face;
         KfScreenVertex *va;
         KfScreenVertex *vb;
@@ -673,7 +673,7 @@ void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth)
             NormalColorCol3((SVECTOR *)(normals + face->g3.normal0),
                             (SVECTOR *)(normals + face->g3.normal1),
                             (SVECTOR *)(normals + face->g3.normal2),
-                            (CVECTOR *)face->g3.color,
+                            &face->g3.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
             ((u8 *)&prim->tag)[3] = 6;
@@ -704,11 +704,11 @@ void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth)
             NormalColorCol3((SVECTOR *)(normals + face->g4.normal0),
                             (SVECTOR *)(normals + face->g4.normal1),
                             (SVECTOR *)(normals + face->g4.normal2),
-                            (CVECTOR *)face->g4.color,
+                            &face->g4.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
             NormalColorCol((SVECTOR *)(normals + face->g4.normal3),
-                           (CVECTOR *)face->g4.color,
+                           &face->g4.color,
                            (CVECTOR *)&prim->r3);
             ((u8 *)&prim->tag)[3] = 8;
             prim->code = 0x38;

@@ -16,19 +16,21 @@ extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
 
 ADDRESS(0x8003a318, 0x2fc)
 void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
-                   s32 mode, s32 falloff, u16 power, u16 magic_06,
+                   s32 mode, u16 falloff, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
                    u16 magic_10, u16 magic_12, u16 magic_14,
-                   s32 amount_and_flags, s32 effect_flags)
+                   s32 amount_and_flags, u16 effect_flags)
 {
-    KfActor *actor = actor_state.actors;
+    KfActor *actor;
     s16 index;
     const VECTOR *damage_position = position;
-    u32 amount = (u32)amount_and_flags & 0x7fff;
+    u32 amount;
 
     if ((amount_and_flags & 0x8000) != 0) {
         damage_position = 0;
     }
+    amount = (u32)amount_and_flags & 0x7fff;
+    actor = actor_state.actors;
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         s32 distance;
         u32 scaled_amount;

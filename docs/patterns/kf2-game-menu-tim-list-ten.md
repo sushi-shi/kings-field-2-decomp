@@ -11,7 +11,7 @@ The address span is a survey boundary, not a claim of original TU ownership.
 | `0x80019240` | player/menu clamp caller of the adjacent two leaves | strict exact, 100% |
 | `0x800192ac` | clamp leaf called by `0x80018f8c` and `0x80019240` | strict exact, 100% |
 | `0x800192dc` | related clamp leaf with the same callers | strict exact, 100% |
-| `0x8001930c` | menu code selects archive 6 entry, uploads TIM, emits textured quads, waits for pad input, frees buffer | WIP, unclaimed; outside-load render state and packet/frame schedule need source ownership |
+| `0x8001930c` | menu code selects archive 6 entry, uploads TIM, emits textured quads, waits for pad input, frees buffer | Source claimed; focused WIP at 80.2% listing similarity, with aligned calls, referents, and CFG |
 | `0x80019834` | filters list records, runs input/dialog loop, redraws through `0x8001fc94` | WIP, unclaimed; 688-byte stack record and list output layout |
 | `0x800199d0` | exact 26-byte selection-record filter used by three list controllers | strict exact, 100% |
 | `0x80019ac4` | list controller calls row builder and three selection branches | WIP, unclaimed; `0x80064910` record/table identity unresolved |
@@ -19,17 +19,18 @@ The address span is a survey boundary, not a claim of original TU ownership.
 | `0x80019ed4` | menu selection controller with direct calls and indirect dispatch | WIP, unclaimed; dispatch value chain and state layout unresolved |
 | `0x8001a2f4` | list controller calls exact `0x800199d0` row selector | WIP, unclaimed; copied-row and controller record ownership |
 
-The sole proven caller of `0x8001930c` is `0x80018ac8`, which zero-extends
-the selected byte before the call. The callee reads only `a0`, subtracts 67,
-and uses the low byte to index eight-byte archive entries. Its curated
-signature is therefore `void func_8001930c(u8 menu_code)`, replacing a
-four-unknown-argument heuristic. The direct call chain is archive entry
-extent, allocation, archive read, TIM upload, frame/primitive helpers,
-two-frame panel draw, pad wait, and free. Its absolute references at
-`0x8018d121` and `0x801a85a8` are outside the initialized GAME load image;
-their complete object boundaries and maintenance mechanism remain unproven.
-No fixed-address source carrier or fragmented global was introduced to
-manufacture a match.
+The sole proven caller of `0x8001930c` is `0x80018ac8`, which passes a
+zero-extended selected byte. The callee reads `a0`, subtracts 67, and masks
+the result to a byte when selecting eight-byte archive entries. The current
+source and curated signature use `void func_8001930c(s32 menu_code)` to model
+the observed O32 argument; the historical formal type is still unproved. The
+direct call chain is archive entry extent, allocation, archive read, TIM upload,
+frame/primitive helpers, two-frame panel draw, pad wait, and free. Its
+carry-adjusted HI16/LO16 pairs identify `state_8017d118+9` and
+`player_state+0xd8`, both supported BSS object views rather than independent
+absolute-address globals. Focused `kf try` reaches 80.2% listing similarity;
+the remaining frame, saved-register, and archive-arithmetic schedule residue
+is not attributed to a compiler mechanism or treated as strict closure.
 
 The `0x80019ce4` row builder uses the already exact 120-row and 20-row
 initialized glyph tables, but also reads a cluster of player-state selection

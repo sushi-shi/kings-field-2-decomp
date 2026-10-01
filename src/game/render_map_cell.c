@@ -17,9 +17,6 @@ enum {
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
-extern void func_8002ff5c(KfTmdHeader *asset, u16 object_index,
-                           KfTmdPreparedAsset *prepared_asset);
-
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                             u32 flags)
@@ -49,7 +46,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                  lighting->filter.kinds.types[2]);
 
     object_index = shape->object_index;
-    if (state_8017d118.transition_active == 1 && state_8017d118.unknown_15[1] &&
+    if (state_8017d118.transition_active == 1 && state_8017d118.flag_16 &&
         object_index >= game_graphics_runtime.tmd_state.current_asset->flags) {
         return;
     }
@@ -57,7 +54,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
     if (flags & KF_MAP_CELL_OBJECT_SPECIAL) {
         if (flags & KF_MAP_CELL_OBJECT_PREPARE) {
             if (tmd_get_object(object_index)->primitive_count < KF_MAP_CELL_PREPARED_LIMIT) {
-    KfTmdPreparedAsset prepared_asset;
+                KfTmdPreparedAsset prepared_asset;
 
                 func_8002ff5c(game_graphics_runtime.tmd_state.current_asset,
                               object_index, &prepared_asset);
@@ -91,11 +88,11 @@ void func_80030de4(s32 x, s32 z, u8 flags)
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                       (u16)game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
+        position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
+                      (u16)game_graphics_runtime.render_state.view_position.vy;
         position.vz = z * KF_MAP_GRID_CELL_LENGTH -
                       (u16)game_graphics_runtime.render_state.view_position.vz +
                       KF_MAP_GRID_CELL_MIDPOINT;
-        position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vy;
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
@@ -110,11 +107,11 @@ void func_80030de4(s32 x, s32 z, u8 flags)
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
+            position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
+                          (u16)game_graphics_runtime.render_state.view_position.vy;
             position.vz = z * KF_MAP_GRID_CELL_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vz +
                           KF_MAP_GRID_CELL_MIDPOINT;
-            position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     }
@@ -159,8 +156,6 @@ enum {
     KF_RENDER_MODEL_END = 0xff,
     KF_RENDER_MODEL_ACTIVE = 1
 };
-
-extern void func_8002e4dc(s32 object_index, s32 depth_bias);
 
 DATA(0x80066888, 0x21c)
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {

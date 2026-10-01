@@ -1,8 +1,54 @@
 # OPEN.EXE: source shapes and one open residue (SLPS-00069)
 
-OPEN.EXE's 25 game functions were reconstructed under
-`probe-gcc257-o2-plain`. 24 match exactly. These source facts decided the
-last differences.
+OPEN.EXE's 25 source-claimed functions were reconstructed under
+`probe-gcc257-o2-plain`. The existing strict baseline has 24 exact functions;
+a fresh focused build of all ten units preserved 24 SAME listings and the
+one WIP below. These source facts decided the last differences.
+
+| OPEN address | Function | Focused verdict |
+| --- | --- | --- |
+| `0x80011ac0` | `main` | SAME |
+| `0x80011f9c` | `opening_fade_out` | SAME |
+| `0x80012060` | `opening_load_data` | SAME |
+| `0x800120c8` | `display_initialize` | SAME |
+| `0x80012204` | `audio_initialize` | SAME |
+| `0x80012270` | `opening_open_audio` | SAME |
+| `0x80012560` | `opening_draw_title` | SAME |
+| `0x80012b7c` | `opening_draw_banner` | SAME |
+| `0x80012d7c` | `opening_draw_prompt` | SAME |
+| `0x80012f3c` | `opening_poll_pad` | SAME |
+| `0x800130ac` | `primitive_buffer_begin_poly_ft4` | SAME |
+| `0x800130fc` | `primitive_buffer_commit_poly_ft4` | SAME |
+| `0x800131c8` | `display_begin_frame` | SAME |
+| `0x8001322c` | `display_present_frame` | SAME |
+| `0x80013284` | `cd_file_load_into` | SAME |
+| `0x800133e0` | `tim_upload_images` | SAME |
+| `0x80013450` | `audio_play_voice` | DIFF 82.9% focused; 99.82353% prior strict, frame only |
+| `0x800134f0` | `opening_play_movie` | SAME |
+| `0x8001383c` | `strSetDefDecEnv` | SAME |
+| `0x800138f8` | `strInit` | SAME |
+| `0x8001396c` | `strCallback` | SAME |
+| `0x80013a78` | `strNextVlc` | SAME |
+| `0x80013b0c` | `strNext` | SAME |
+| `0x80013bbc` | `strSync` | SAME |
+| `0x80013c30` | `strKickCD` | SAME |
+
+The main loop calls the title, banner, prompt, input, display-frame, and movie
+functions directly. The title builders call both primitive-buffer helpers;
+the movie path calls both frame helpers and the streaming routines. These
+decoded calls, together with the shared display and title-state globals,
+define this image-qualified batch.
+
+The seven `str*` streaming routines follow Sony's pinned Psy-Q 3.0
+`SAMPLE/MOVIE/ANIM/MAIN.C` tutorial, but their bodies are adapted here.
+The decoder environment is global and fixed to 320 by 240 pixels; `strInit`
+binds the callback and stream flags internally; `strNext` checks sector
+header words and frame count instead of the tutorial's resolution-change
+path; `strSync` drops the tutorial print and volatile counter; and
+`strKickCD` uses `CdSeekL` and another stream-mode bit. A raw name search of
+the pinned library archives found none of these distinctive `str*` names;
+that absence alone does not prove body ownership. Their provenance remains
+tutorial-derived, game-adapted WIP rather than an archive-vendored attribution.
 
 ## Shapes that decided the match
 

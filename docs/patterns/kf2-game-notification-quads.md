@@ -15,5 +15,14 @@ one `DATA` claim in `game.notify_enqueue`, whose adjacent notification state
 code updates each record's kind and digit texture position. The drawing unit
 uses the table as an external global, matching the named cross-unit
 relocation; its earlier same-unit placement emitted a `.data` section
-referent instead. Both drawing functions and both enqueue functions are
-strict exact, and the global report verifies all 7/7 data-owning units.
+referent instead. Both drawing functions and all three functions in
+`game.notify_enqueue` are strict exact, and the global report verifies all
+7/7 data-owning units.
+
+The pinned Psy-Q 3.0 `setXYWH` and `setUVWH` macros were tested for the
+source-coordinate and texture-coordinate groups in `notification_draw_quad`.
+Their argument expansion repeats source loads and changes the retail store
+order; the focused listing fell to 74.0% with both substitutions. The exact
+chained assignments were restored, and focused `game.notification_quad`
+returned SAME 2/2. This rejects those two macro spellings for this function,
+without claiming that the original source lacked other inline helpers.

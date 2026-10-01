@@ -33,7 +33,8 @@ These structural similarities do not establish original KF2 TU boundaries.
 | `0x800331d0` | enqueues a notification and optional payload | existing exact |
 | `0x80033274` | sets a notification digit's texture V | existing exact |
 | `0x80033284` | advances notification phase and dequeues groups | **new exact, 768/768 bytes** |
-| `0x800335a0` | orchestrates view, map, panel, and notification rendering | unclaimed; 0x3f4-byte frame driver |
+| `0x80033584` | flips the display-buffer index after the notification updater | exact, 28/28 bytes; no known direct caller |
+| `0x800335a0` | orchestrates view, map, panel, and notification rendering | exact, 1,012/1,012 bytes after target refresh |
 | `0x80033994` | renders menu model preview | existing exact |
 | `0x800339fc` | loads TMD archive through resource registry | existing exact |
 
@@ -54,7 +55,7 @@ the four phases: prepare, brighten, hold, and darken. The strict report
 matches all three functions (948/948 code bytes) and the owned 126-byte quad
 table. No separate interior global was introduced.
 
-The six unclaimed functions above are larger render paths with direct calls
+The five unclaimed functions above are larger render paths with direct calls
 and shared graphics data but incomplete object/model ownership. In particular,
 the `0x8003247c` traversal feeds `0x80031850` and `0x80031d8c`; the
 `0x800335a0` frame driver reaches the exact panel and notification helpers.
@@ -98,3 +99,74 @@ All ten have no string references. The existing exact panel, map-mask,
 notification, and frame-driver listings were preserved. No source, data,
 identity, or relocation claim was added from a candidate table or an
 instruction-order residue.
+
+## Display-buffer leaf at 0x80033584
+
+The 0x1c-byte gap between the exact notification updater and the frame driver
+is a return-delimited leaf, not padding. Retail loads the graphics runtime's
+display-buffer byte at `0x8017d140`, compares it with zero, and stores the
+result in the return delay slot. The HI16/LO16 pair uses the signed low half
+`0xd140`; no direct caller or string reference is known. Its source claim in
+`render_frame.c` preserves the existing typed field and is contiguous with the
+frame-driver claim. This grouping establishes a valid unit run, not an
+original TU boundary.
+
+After an image-specific target refresh, a focused build reported both
+functions identical. Isolated objdiff gave the two-function unit 1,040/1,040
+`.text` bytes and 4/4 `.data` bytes, with the leaf 28/28 and frame driver
+1,012/1,012. Raw section bytes and ordered `readelf -r` relocations match the
+carved target exactly. The earlier frame-driver WIP score was stale under this
+target; no frame-driver C was changed to obtain this verdict.
+
+## Floor-item constructor ABI check
+
+The adjacent floor-item unit has two identical focused controls,
+`0x8002ce2c` and `0x8002cf40`, while constructor `0x8002ce68` remains
+**55.7% focused WIP** (65.85185% in the older strict report's different
+metric). Its five proven call sites are all in `game_main_loop` and pass seven
+arguments. Retail uses a
+40-byte frame, keeps the first four arguments in `s3`, `s4`, `s1`, and `s2`,
+then reads the fifth stack slot both as `lbu` for `item->kind` and as `lw`
+for the `kind == 1` test. It reads width as a word and height as an unsigned
+halfword only on that branch, before `memory_allocate`; its `StoreImage` and
+`DrawSync` calls agree with C. The current probe saves all three stack
+arguments into extra saved registers at entry and allocates 56 bytes. A
+controlled GCC 2.6.0 compile of the same source also chose a 56-byte frame,
+so merely switching that compiler does not explain the retail ABI schedule.
+No source change was retained without evidence for a different signature or
+evaluation order.
+
+The resource unit's nearby `map_cell_visible` at `0x80032174` is also WIP:
+retail and source agree on the single caller at `0x800327b4`, both render-grid
+referents, and the four return paths. Its current focused listing is 37.9%
+similar because the probe uses `v0` for the position arithmetic and moves a
+temporary result into `v0` in the return slot, whereas retail calculates the
+fallback predicate directly in `v0` and returns with a `nop` slot. The older
+strict report gives 93.6%. A source-only early-return spelling lowered the
+focused comparison to 26.7% and introduced an extra jump; it was discarded.
+
+## Placed-object traversal actor base
+
+The unclaimed `0x8003247c` frame child has one proven external caller in the
+exact frame driver. Its entry clears 32 and 16 words of local resource flags,
+then forms `0x8016b600` with `lui s2,0x8017` and signed
+`addiu s2,s2,-18944` at `0x800324c8`/`0x800324cc`. This is the existing
+`actor_state` base, corroborated by its 124-byte actor stride and other
+reviewed actor references. The pair now has a reviewed relocation row.
+All 40 candidate direct-control rows in this body were checked against their
+raw MIPS26 opcodes and targets: 27 direct calls and 13 in-body jumps match,
+and each is now marked reviewed. No indirect `jalr` or non-return `jr`
+appears in this body. A safe one-VA GAME carve succeeds with 62
+relocations and none withheld. The 96-block body still mixes actor, map,
+resource, and render state, so the complete function remains unclaimed.
+
+The adjacent eight-function resource unit was checked separately. All 19
+recorded direct-control words decode to their listed MIPS26 targets; 17
+previously candidate rows are now reviewed, alongside the two already
+reviewed rows. An eight-VA GAME safe carve succeeds with 82 relocations and
+none withheld. Focused compilation still has four identical listings and
+four WIP listings: the radius mask, visibility query, TMD queue, and VAB
+range updater. The queue's callback address at `0x80032248`/`0x8003224c`
+is also a raw-verified signed-low pair to `resource_tmd_read_complete`, passed
+as `$a3` to `cd_archive_queue_read`; its one-VA safe carve has nine
+relocations and none withheld. No C body changed from this relocation review.

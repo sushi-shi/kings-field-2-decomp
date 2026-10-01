@@ -119,7 +119,7 @@ void player_clear_motion(void)
 {
     player_state.yaw_step = 0;
     player_state.pitch_step = 0;
-    player_state.movement_speed = 0;
+    player_state.movement_speed.unsigned_value = 0;
     player_state.forward_velocity = 0;
     player_state.strafe_velocity = 0;
     player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;

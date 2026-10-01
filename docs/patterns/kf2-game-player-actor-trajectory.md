@@ -690,3 +690,484 @@ verified 149/149 units. Global edge check still stops at three unrelated
 RODATA addends. The full `kf build` built PSX; GAME, OPEN, and END retain the
 known first unresolved `InitCARD`, `malloc`, and `display_buffers` links with
 no module-cap failure. No repository tests, banking, or commit were run.
+
+## Merged-master player damage and movement pass
+
+This ten-function GAME pass rechecked retail blocks, incoming and outgoing
+references, strings, current source ownership, and the available KF1 source.
+The percentages below are the existing strict objdiff baselines; this pass
+used focused `kf try` only, as requested. No source or inventory edit was
+retained.
+
+| GAME VA | Verdict | Evidence or remaining constraint |
+| --- | --- | --- |
+| `80023384` | WIP, source, 50.744186% baseline | Both collision-cache margins and two death calls are modeled; focused 5/5 CFG differs in address formation and arithmetic scheduling. Cache extent at BSS `+0x11818/+0x1181c` remains provisional. |
+| `80024498` | WIP, unclaimed | The 0x34c-byte damage path has an eight-entry internal switch at `80011128`, but complete case control flow and source ownership remain unresolved. |
+| `800248a8` | WIP, unclaimed | The 0x3fc-byte damage dispatcher calls the exact component helper eight times and has a seven-entry internal switch at `80011148`; its twelve-argument body remains incomplete. |
+| `80025a18` | WIP, unclaimed | The 0x918-byte weapon/effect dispatcher calls the exact target selector and effect constructor; the indirect table and state contract remain provisional. |
+| `8002665c` | WIP, unclaimed | The 0xbd0-byte weapon/magic updater mixes two weapon-effect calls with animation, rotation, and collision paths; no complete C body is established. |
+| `8002722c` | WIP, unclaimed | Two bounded jump tables at `80011298/800112b0` are reviewed, but indirect control flow and the full action-state model remain unresolved. |
+| `800279cc` | WIP, unclaimed | The 0x5ac-byte main collision branch calls the provisional cache probes, damage reaction, and death helpers; cache ownership remains open. |
+| `80027f78` | WIP, unclaimed | The 0x2ac-byte sibling collision branch makes three collision probes and invokes distance and death handling; its complete probe result contract remains open. |
+| `8002897c` | WIP, source, 88.571430% baseline | Retail checks signed `<81`, then `<71`, and returns the inverse lower check. Five source-only semantic forms were probed; none matched the 0x1c-byte listing, so the original 3/3 CFG source was kept. |
+| `80029624` | WIP, source, 62.448980% baseline | The phase/ramp helper still has 20/20 CFG blocks and 9/9 branches. A positive-guard return trial lost a CFG block; widening its signed phase local changed retail's halfword load and reduced listing similarity. Both were discarded, preserving fifteen exact neighbors. |
+
+The next player-owned gaps examined read-only are `800274ec`, `80028998`,
+and `8002985c`. The first has a KF1 movement analogue but a different KF2
+collision call graph; the second depends on the unresolved action selector and
+effect-ID table; the third is fragmented and has no curated CFG yet. These
+are not a second completed ten-function batch.
+
+### Focused damage-source continuation
+
+`src/game/player_apply_damage.c` now claims GAME `800248a8` and its seven-word
+switch table at `80011148`. The twelve-argument source models the eight
+component calls, status application, and final signed damage forwarded to
+`80024498`. Twenty-nine direct player-state HI16/LO16 relocations and ten
+direct internal branch/call rows were checked against raw retail opcodes and
+targets. Focused `kf try` reports **1/1 SAME** for the 0x3fc-byte listing;
+no strict objdiff run was performed under the current focused-only constraint.
+
+`src/game/player_damage_reaction.c` now claims GAME `80024498` and its
+eight-word switch table at `80011128`. The source preserves the caller-backed
+three-argument ABI, HP subtraction, origin-relative knockback, death path,
+and 8-way reaction. Ten direct player-state HI16/LO16 pairs and seven internal
+jumps were raw-checked and curated. A full-word reaction-flags parameter,
+explicit origin-height intermediate, reverse-order null vector stores,
+signed-halfword duration arguments, and explicit case 7 improved the focused
+listing from 79.6% to **88.5% WIP**. The remaining difference is localized to
+duration arithmetic register allocation and a four-byte body-size gap; the
+direct calls, referents, switch bound, and 53/53 CFG blocks with 22/22 branches
+now agree. No strict exact claim is
+made.
+
+Retail `lh` at `8001e94c` supports `KfPlayerState.unknown_54` as `s16`.
+The layout-identical header and structure row refinement preserves focused
+`game.player_state_equipment` 15/15 SAME,
+`game.player_status_cap` 1/1 SAME, and
+`game.player_apply_damage` 1/1 SAME. The menu owner's focused
+`game.menu_status_render` probe confirms the signed `lh` now matches retail;
+that unit remains 97.8% WIP for unrelated row-step register scheduling.
+
+`src/game/player_move_horizontal.c` now claims GAME `800274ec` as a first-pass
+movement/collision source. Retail and KF1 both support heading-derived X/Z
+motion, collision sliding, an alternate diagonal retry, and final motion-state
+halfwords; KF2's two collision probes and cache layout remain distinct. The
+focused target initially withheld 18 candidate direct calls/jumps. All 18
+were validated against encoded retail instruction targets, and 24 player/cache
+HI16/LO16 pairs were separately validated against raw opcodes, base registers,
+and signed low addends before curation. A second focused carve reports zero
+withheld relocations. A subsequent shared accept-position join follows the
+retail backward edge and reduces the compiled CFG from 40 to 39 blocks, though
+focused similarity moves from 36.8% to 35.7%. The retail `0x27624` branch
+sets its retry flag in the delay slot on both outcomes, so the source now does
+the same. This reduces the compiled CFG again, to 38 blocks, while focused
+similarity moves to **34.6% WIP**. Retail has 35 blocks and 20 branches versus
+38 and 23 in the current probe. GCC reuses a player-state
+base register across accesses that retail materializes separately; collision
+cache ownership at BSS `+0x11800` is still provisional. No strict exact claim
+is made.
+
+GAME `80028998` is now sourced beside the existing `8002897c` interval leaf
+in `player_interval_71_80.c`. Retail and the KF1 analogue support queued item
+actions, timed magic shots, charge recovery, and a halfword mask sequence for
+weapon attacks. Its 18 direct J/JAL sites and 62 adjacent HI16/LO16 address
+pairs were checked against raw retail words; the focused carve now withholds
+zero relocations. The source needed separate charge additions on the null and
+nonnull magic-record paths, and a shared cancel path for failed charged
+attacks. A checked high-halfword flag view reproduces retail's independent
+`lhu player_state+0x142`. Focused `kf try` reports **SAME** for all 0x528
+bytes of `80028998`; no strict objdiff pass was run under the focused-only
+constraint. Adjacent `8002897c` remains WIP (28.6% focused) with its prior
+source unchanged.
+
+Retail `80028998` writes `DAT_800667e8+0xc` to `player_state+0x78`, then reads
+and advances through halfwords. Bytes at `800667e8..800667fb` resolve the
+formerly split datum: twelve indexed effect IDs (`27 28 3c 42 54 56`, twice)
+followed by four aligned masks `0x20, 0x10, 0x80, 0xffff`. The complete
+0x14-byte `KfPlayerMagicIdSequence` layout and checked player pointer at
++0x78 are curated, while the data's original TU owner remains unresolved.
+Focused `game.player_magic_dispatch` stays 1/1 SAME after the typed table read.
+`8002985c` still has two retail fragments and no complete CFG; its 113
+outgoing xrefs remain candidate until the ranges are curated.
+
+### Collision response and reaction follow-up
+
+`src/game/player_collision_response.c` claims GAME `80027f78` as a
+first-pass collision response. Eleven direct control relocations and twenty
+player/cache HI16/LO16 pairs were checked against raw retail words; its
+focused carve withholds none. Retail's three world probes, accepted camera
+position, death check, horizontal motion scaling, and signed cache-height
+fallback are represented. Moving the accepted-position and scaling joins to
+the retail backward-edge order raised the focused listing from 46.2% to
+**80.0% WIP**. The probe has 26 versus retail's 27 CFG blocks, with 14/14
+branches and 1/1 returns. The first substantive residue starts at the
+horizontal scale: retail keeps one pointer to the reaction vector in `s0`
+and loads both components through it, while the probe materializes the Z
+component as a separate global address. A pointer-lifetime source trial
+produced a larger frame and 78.3%; a shared blocked-return trial produced
+79.6%. A containing-reaction pointer trial fell to 75.3%. None was retained.
+The collision-cache field is still an interior
+view of a provisionally bounded BSS object, and this listing is not exact.
+
+At this stage, the adjacent `800279cc` remained unclaimed after a full retail CFG, call, and
+data pass: its 70-block mode dispatch uses modes 0, 16, 32, 64, and 80, with
+collision probes, sound, damage, and death effects sharing the provisional
+cache. A complete source model would need the mode-specific state contract;
+the adjacency alone does not establish a common translation unit.
+
+Two small player WIPs were probed without retained source changes.
+`8002897c` still has its exact `80028998` sibling; a direct early-return
+form changed its focused listing to 50.0% but inverted the retail branch
+direction and added an internal jump. `80029624` still has fifteen exact
+reaction siblings; preserving the raw unsigned phase halfword in a local
+gave 55.4% and moving the invalid-phase return to a trailing branch gave
+54.0%, both below the current focused 57.4%. Retail explicitly loads raw
+halfwords before signed comparisons, so the signed interpretation remains
+part of its supported semantics despite the codegen residue.
+
+The existing `player_move_horizontal` WIP at `800274ec` now keeps its trial
+destination as a `VECTOR`. Retail repeatedly stores X and Z at stack offsets
+24 and 32, consistent with that field stride; the original local declaration
+is not proved. The view models one trial world position rather than two
+independent coordinates. Focused similarity rises from 34.6% to **46.4% WIP**;
+retail/probe CFG still differs at 35/38 blocks and 20/23 branches. The
+cache boundary and retry semantics remain provisional, so the listing is not
+exact and no score-driven locals were introduced.
+
+GAME `80024498` now compiles to a **focused SAME** 0x34c-byte listing in
+`game.player_damage_reaction`. Retail carries its derived reaction duration
+through signed halfword stores and arguments. Changing the source-local
+`duration` from `s32` to `s16` removes the sole four-byte instruction gap and
+its downstream branch-address shifts without changing the damage algorithm,
+eight-way switch, or source/data referents. No strict objdiff pass was run
+under the focused-only constraint, so it is not yet banked exact.
+
+The same width discipline resolves GAME `80029624`: its computed phase-ramp
+result is a signed halfword, and retail's invalid-phase `-1` sits after the
+main calculation path. Typing the local `result` as `s16` and using a positive
+guard for the main path yields **focused SAME** for all 0xc4 bytes. The
+complete `game.player_reaction` unit now reports 16/16 SAME focused listings;
+strict objdiff certification remains pending under the current constraint.
+
+### Current player combat and collision graph verdicts
+
+This 27-function related graph follows equipment-derived combat stats through
+damage, action selection, movement, and collision response. “Strict exact”
+identifies earlier verified objdiff results; “focused SAME” is only a listing
+result from the present quick-build pass. The remaining members retain their
+WIP or unclaimed status.
+
+| GAME VA | Current verdict | Distinguishing evidence |
+| --- | --- | --- |
+| `80023384` | WIP source | Two collision-cache vertical margins; 63.2% focused after arithmetic-order correction, provisional cache extent. |
+| `80023814` | strict exact | Rank-scaled player value. |
+| `80023868` | strict exact | Nine equipment bonus components. |
+| `80023984` | strict exact | Derived combat stats and equipment calls. |
+| `80024034` | strict exact | Physical training accumulator. |
+| `800240cc` | strict exact | Magic training accumulator. |
+| `80024164` | strict exact | Experience and level growth. |
+| `80024384` | strict exact | Scaled damage component. |
+| `80024448` | strict exact | Signed HP delta and death threshold. |
+| `80024498` | focused SAME | Signed halfword reaction duration; eight-way switch. |
+| `800247e4` | strict exact | Status cap helper. |
+| `800248a8` | focused SAME | Eight damage-component calls and seven-way switch. |
+| `80024ca4` | strict exact | Sixteen-argument radial damage wrapper. |
+| `80025a18` | unclaimed WIP | Large weapon/effect dispatcher and candidate table owner. |
+| `8002665c` | unclaimed WIP | Weapon/magic updater with 114 retail CFG blocks. |
+| `8002722c` | unclaimed WIP | Two bounded internal tables; indirect control unresolved. |
+| `800274ec` | WIP source | VECTOR trial position and signed SVECTOR deflection, 61.9% focused; retail branch meaning restored. |
+| `80027928` | strict exact | Collision-depth death check. |
+| `80027988` | strict exact | Collision impact sound magnitude. |
+| `800279cc` | WIP source, 77.8% focused | Five-mode collision dispatcher with matched CFG; cache extent and codegen residue remain provisional. |
+| `80027f78` | WIP source | Three collision probes, 80.0% focused. |
+| `80028224` | strict exact | Signed camera rotation update. |
+| `8002851c` | strict exact | Forward/strafe player movement. |
+| `8002897c` | WIP source | Inclusive 71..80 predicate; register-lifetime residue. |
+| `80028998` | focused SAME | Timed attacks and halfword mask sequence. |
+| `80029624` | focused SAME | Signed phase-ramp return; reaction unit 16/16 SAME. |
+| `8002985c` | unclaimed WIP | One retail 0x112c-byte body, 142 CFG blocks; indirect jump reachability remains unresolved. |
+
+The `80025a18` ABI needs more than one caller to describe. Retail homes
+`a0` through `a3` before allocating its frame, then reads the incoming `a0`
+as an unsigned effect selector bounded by 52. The exact `80026498` caller
+passes the selector alone on some paths and passes a second position pointer
+on others; `80028998` passes only the selector. No observed callee path reads
+the extra incoming argument, so the curated identity records a first `s32`
+argument and an unresolved variable tail. Its `DAT_80011188` jump table and
+case reachability remain candidate evidence; no source body is claimed.
+
+The current `80027f78` focused diff starts after the two successful world
+probes. Both retail and C request the same fixed X/Z length and use the same
+collision-cache referent, but retail retains a single reaction-vector base in
+`s0` for both component loads and stores; this C probe rematerializes the Z
+field's global address. That also swaps the threshold/vector saved registers
+and shifts the common return tail by one block. A typed containing-reaction
+pointer probe lowered similarity to 75.3% and enlarged the frame, so it was
+discarded. This is an unresolved source/codegen residue, not evidence for an
+overlapping collision-cache global or a different call target.
+
+In `800274ec`, retail stores two signed halfword deltas at stack `+40/+44`
+before `vector_xz_to_angle`, then overwrites the same slots with the
+`rsin`/`rcos` slide offsets. KF1 `player_move_horizontal` uses an `SVECTOR`
+for this deflection. Replacing separate scalar deltas with a single `SVECTOR`
+for both stages preserves that width and lifetime and raises focused
+similarity from 46.4% to **60.2% WIP**. The compiled frame now matches the
+retail 128 bytes. Retail still has 35 versus 38 compiled CFG blocks and 20
+versus 23 branches; collision-cache ownership remains provisional.
+The raw branch at `80027604` skips the special height test when
+`flags & -6` is nonzero. The prior C condition had this arm reversed;
+correcting it leaves the focused percentage unchanged but restores the
+retail branch meaning. At `80027840`, retail enters the axis retry if that
+height-test flag is set, or otherwise if collision flag bit 0 is set. The
+prior negated flag test was also reversed; the corrected `flag || bit` guard
+raises the focused listing slightly to 60.4%. Retail's diagonal-retry branch
+at `8002787c` jumps back to the same axis-retry block used by that guard.
+Sharing that branch in C removes the duplicate axis checks: focused similarity
+reached 64.5% with 35/35 CFG blocks and 20/21 branches. KF1 uses a ternary
+for the same angle deflection and retail selects between `+2016` and `+2080`
+without an intervening jump. The corresponding C ternary raises the focused
+listing to **65.7% WIP** and removes that extra jump, though the compiled CFG
+now has 34 versus retail's 35 blocks and still 21 versus 20 branches. The
+remaining first mismatch is in saved-register lifetime and the early
+player-state base; the cache extent is unresolved. Retail at `80027638`
+checks `death_state` and calculates `flags & 0x30` only in that branch's delay
+slot; it does not gate the subsequent height comparison on those flags.
+Removing the extra C condition restores that behavior and brings branch
+counts to 20/20. Focused similarity falls to **61.9% WIP** and CFG blocks
+are now 35/33; the semantic correction is retained despite the lower score.
+The wall-deflection bearing loads both cached X/Z and player X/Z with `lhu`
+before subtracting into signed 16-bit `SVECTOR` components. Explicit `u16`
+source views now reproduce those four load widths; the focused score remains
+**61.9% WIP**. This narrows an instruction-selection difference without
+resolving the separate saved-register and CFG residue.
+
+For the two-bound player death helper at `80023384`, retail forms each cached
+bound plus 1600 before subtracting the three player-height terms. Splitting
+those arithmetic steps in C raises focused similarity from 42.7% to
+**63.2% WIP**, while preserving its 5/5 CFG blocks and 2/2 branches. The
+remaining divergence is the probe's saved `player_state+0x134` base pointer
+versus retail's separate address loads; the cache's complete extent remains
+provisional.
+
+GAME `8002722c` has three proven direct calls: the menu result path at
+`800189bc` and two action-controller calls at `800289f0/80028a30`. Each
+supplies one ID in `a0` and ignores the result. Retail immediately copies
+`a0` to `a1`, rejects `0xff`, indexes 26-byte magic records, and compares
+the record's unsigned MP cost; no incoming second argument is read. Its
+address-derived identity now records `void func_8002722c(s32 magic_id)` as a
+supported ABI. The six- and nineteen-entry internal switch tables remain
+reviewed pointer data with candidate indirect reachability, so the body is
+still unclaimed WIP. The focused `game.player_interval_71_80` caller remains
+SAME at `80028998`; the `8002897c` predicate remains WIP.
+
+The weapon/effect dispatcher at `80025a18` checks `effect_id <= 0x34`
+unsigned before indexing the word table at `80011188`. All 53 consecutive
+retail words from file offset `0x988` point to aligned addresses inside its
+`0x918`-byte body; the following word is zero padding. They name 31 distinct
+targets: 21 entries share `80026314`, and three share `80026204`. The former 53
+single-word Ghidra candidates are now one address-derived `pointer[53]`
+datum of size `0xd4`, with raw-reviewed pointer rows and the directly decoded
+HI/LO base pair. A focused one-VA delink accepted that base pair, and `kf sema`
+reports the complete table extent. Indirect case reachability and the C body
+remain candidate/unclaimed; this data curation does not establish a TU owner.
+
+The next player-controller call audit separates decoded direct calls from
+fragmented caller reachability. In `8002665c`, 19 previously candidate `jal`
+rows were checked against the retail instruction words and their exact target
+addresses; its `8002714c` combat-stat call was already reviewed. The same
+check reviewed twelve direct `jal` rows inside `800279cc`. Focused one-VA
+delinks materialized these named `R_MIPS_26` calls. All fifteen internal `j`
+rows inside the single-fragment `800279cc` body also have proven CFG edges;
+raw-word review admitted them as local-section `R_MIPS_26` relocations, and a
+second one-VA delink withheld none. The two calls from `8002985c` to
+`800279cc` and its one call to `8002665c` were later reviewed after the
+caller extent and bounded case table were established below.
+Separately, the main-loop word at `800138e0`
+decodes a direct `jal 8002985c` with a `nop` delay slot; its reviewed row
+passed a one-VA delink of `8001369c`. None of these edges proves the three
+large controllers' complete C bodies or callee signatures. Focused listings
+for the adjacent `26498`, `27928`, `27988`, and `24498` sources remain SAME.
+The contiguous `80028ec0..8002985c` reaction source retains 16/16 focused
+SAME listings, including the damage and death helpers called by this graph.
+The `800279cc` entry overwrites `a0` through `a3` with player-position words
+and a fixed collision radius before its first call, never reads caller stack
+arguments, and returns after calling the void bounds helper without setting
+`v0`; its identity therefore records an address-derived `void (void)` ABI.
+Its player-state byte at `+0xd0` dispatches 0, `0x10`, `0x20`, `0x40`, and
+`0x50`. The first three values match KF1's grounded/falling/step-up vertical
+state numbering, but KF2's extra two states and collision-cache coupling
+remain to be reconstructed before renaming the shared field.
+In `8002665c`, retail reaches the `0x10`/`0x11` weapon-mode fork only after
+checking `16 <= player_state+0x9b < 18`. Both alternatives assign the effect
+ID and count-byte index before use. Ghidra's apparent incoming third argument
+and `t0` live-in on the fallback edge are artifacts of its unpruned fork;
+the complete function ABI remains unclaimed pending the other paths.
+The full 0xbd0-byte body has 114 retail CFG blocks and twenty proven calls,
+including two to the exact magic selector, three vector rotations, and the
+combat-stat helper. Its only surveyed external caller is a proven direct call
+in the large `8002985c`, so neither function has a complete source-backed
+control-flow contract yet.
+At that caller, `8002a728` is `jal 8002665c` with a `nop` delay slot, and the
+callee immediately overwrites `a0` from player state and reads no incoming
+stack arguments. The caller ignores `v0`; this supports a no-argument void
+candidate but does not establish all register live-ins across 114 blocks, so
+the address-derived identity keeps its ABI unresolved.
+The safe one-VA carve for `8002665c` also withholds zero relocations and
+functions. That closes its current target-object references, not the
+114-block source semantics or call-site ABI.
+The separate `80025a18` effect dispatcher has 53 bounded pointer words
+to 31 in-body case targets. A CFG walk from those entries reaches all 64
+previously withheld J/JAL sites; every raw word decodes to its recorded
+destination. The conservative one-VA delinker accepted their reviewed rows.
+The remaining HI/LO pairs at `80025cf4` and `8002600c` point at adjacent
+initialized templates: four `SVECTOR` records at `800667c8` and five
+four-halfword records at `800667a0`. The first array's fourth halfword is
+also read separately as a signed effect parameter, so its original C type
+is unresolved. The retail loops copy each eight-byte record with `lwl/lwr`
+and advance by eight; the arrays exactly fill the two spans between the
+card assets and the magic-ID sequence. Their bounded data identities and
+raw-checked HI/LO pairs also passed the conservative carve, reducing the
+dispatcher from 66 to **zero** withheld relocations. The indirect jump's
+original C form and defining TU remain candidate.
+Focused controls in the same player/equipment graph remain 15/15 SAME for
+`game.player_state_equipment`, 2/2 SAME for weapon transform/power, and
+1/1 SAME for the magic selector. The sourced horizontal mover `800274ec`
+remains 61.9% WIP; its wider register/stack schedule residue supplies no
+new source-backed correction.
+The separate `8002722c` action selector initially withheld eight direct-J
+rows. Its two bounded tables contain 25 raw pointers to twelve unique
+in-body targets, and a CFG walk from those targets reaches all eight sites.
+Every raw instruction decodes to its recorded in-body destination; the
+conservative one-VA delinker accepted the eight reviewed rows and now
+withholds zero relocations. The indirect case edges, C control flow, and
+source owner remain unresolved.
+KF1 `player_select_magic` in `../kings-field/src/game/player_death.c`
+only clears charge and stores the selected magic record. KF2 `8002722c`
+adds an unsigned MP-cost gate, status restrictions, two bounded switches,
+and a charged-action state transition. The KF1 function supports the family
+relationship but is not a source-equivalent body.
+
+The GAME `8002985c` seed understated its body as `0x9dc` bytes and two
+fragments. Raw code continues directly at `8002a238`: nine encoded branches
+from the first part enter the tail, including `8002a204 -> 8002a238`, and
+the tail restores the entry frame's saved `ra`/`s0`–`s2` before returning at
+`8002a980`. The next function starts at `8002a988`. The curated body is now
+one contiguous `0x112c`-byte extent, giving `kf sema cfg` 142 blocks and 315
+edges. The first safe one-VA carve withheld 63 direct-control candidates
+because the indirect jump at `80029c08` leaves automatic reachability
+unresolved; no C source follows from the corrected extent.
+That jump indexes `DAT_80011300` only for unsigned values 0 through 18. The
+nineteen raw pointer words at `80011300..80011348` are aligned, all point into
+this body, and end before the separate `8001134c` collision-dispatch table.
+They are now one `0x4c`-byte address-derived table with reviewed pointer rows;
+the raw `lui`/`addiu` base pair at `80029bf4/80029bf8` is also reviewed.
+A CFG walk from the ten unique table targets reaches every one of the 63
+withheld J/JAL sites. Each retail word decodes to its recorded target, and
+the conservative delinker accepted the rows when reviewed: the focused
+`0x112c` carve now withholds **zero** relocations. The indirect jump remains
+an unresolved control-flow edge in `kf sema`; this review does not establish
+the original C switch form or source TU owner.
+
+GAME `800279cc` now has a first-pass source claim in the contiguous
+`game.player_collision_sound` unit. Its 52 direct `lui`/signed-low references
+to `player_state` and provisional collision-cache interiors were checked
+against the retail GAME.EXE words and added in site order. The three-function
+focused carve withholds no relocations. The source models the five observed
+vertical modes, collision probes, landing damage, height adjustment, and view
+bob; modes `0x10`, `0x20`, and early `0x40` paths go straight to the shared
+finish, whereas grounded mode and the `0x50` landing response enter height
+adjustment. Retail uses signed `lh` for player +`0x110` landing motion and
+signed +`0x12e` movement-speed threshold. The `+0x110` field family is now
+`s16[3]` without changing layout; its other source consumers only clear it.
+The same `+0x12e` halfword is also read unsigned for view-bob phase, so the
+shared field has a single layout-checked union with signed and unsigned views.
+KF1 `player_update_vertical_motion` independently casts its movement speed to
+`s16` at the step threshold; this is source-shape support, while the KF2 `lh`
+and `lhu` instructions establish the two KF2 views.
+The step-up test compares the new Y against Y minus vertical speed. Signed
+speed capture before the falling-mode store, the signed zero-height guard,
+and the retail short-rise branch orientation bring
+the focused listing to **77.8% WIP** with 70/70 CFG blocks, 37/37 branches,
+and 1/1 returns. The 0x48-byte retail frame, early camera-base register
+assignment, and later schedule still differ; no exact claim is made.
+Neighboring `80027928`/`80027988` remain SAME, as do all 16 reaction listings
+and `player_reset_view` after the signed-field refinement. The two camera-turn
+and fifteen player-state/equipment listings also remain SAME after the speed
+union. Collision-cache ownership at `bss_801c7540+0x11800` remains
+provisional. The separate map campaign observed a `0x1800`-byte shape-bank
+copy ending there, which supports a boundary but does not establish the cache
+or equipment extents on either side.
+
+### Current player and weapon call-graph verdicts
+
+This 30-function pass used focused listing comparisons; `SAME` below does
+not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
+
+| GAME VA | Verdict | Current evidence |
+| --- | --- | --- |
+| `80024ed4` | SAME | Player pose control in the 15-function equipment unit. |
+| `80024f4c` | SAME | Player reset control in the same unit. |
+| `80025004` | SAME | Player initialization control. |
+| `80025184` | SAME | Session initialization control. |
+| `800251f0` | SAME | Motion clear control. |
+| `80025234` | SAME | Map-position sync control. |
+| `800252e4` | SAME | Point-cone distance control. |
+| `800253ac` | SAME | Point distance control. |
+| `800253fc` | SAME | Player byte setter. |
+| `8002540c` | SAME | Player byte setter. |
+| `80025434` | SAME | Player byte setter. |
+| `8002545c` | SAME | Equipment slot control. |
+| `8002569c` | SAME | Weapon equip control. |
+| `80025754` | SAME | Attack begin control. |
+| `80025878` | SAME | Actor-target selector control. |
+| `80025a18` | Unclaimed WIP | 53 bounded case pointers; 66 to zero withheld relocations; indirect C form unresolved. |
+| `80026330` | SAME | Weapon transform control. |
+| `80026464` | SAME | Power/magic threshold control. |
+| `80026498` | SAME | Magic selector control. |
+| `8002665c` | Unclaimed WIP | Candidate `void()` ABI: sole proven caller `8002a728` has no argument setup and discards `v0`; entry replaces `a0` from player state. 114 CFG blocks and zero withheld relocations; other live-ins and full weapon/effect semantics remain unresolved. |
+| `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
+| `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
+| `80027928` | SAME | Collision-depth death helper control. |
+| `80027988` | SAME | Landing-sound helper control. |
+| `800279cc` | DIFF, 77.8% | 70/70 CFG blocks; frame and load-schedule residue. |
+| `80027f78` | DIFF, 80.0% | Reaction-motion scaling rematerializes one proven halfword view. |
+| `80028224` | SAME | Camera-turn control. |
+| `8002851c` | SAME | Camera update control and horizontal-mover caller. |
+| `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
+| `80028998` | SAME | Attack/action controller and magic selector caller. |
+
+The adjacent `8002985c` update body has one proven external call from
+`game_main_loop` at `800138e0`; the other incoming pointers are its bounded
+internal switch targets. That caller does not prepare arguments or consume
+`v0`, and the callee initializes `a0`–`a3` before using them. Its identity
+therefore records candidate `void func_8002985c(void)` while the full
+control flow and source ownership remain unresolved.
+
+The first-pass `8002722c` source now owns the contiguous run through
+`800274ec` in `game.player_select_magic_action`, reducing one module. Its
+two tables occupy one `RODATA(80011298, 0x64)` claim. Thirty-five direct
+`lui`/signed-low pairs were checked against raw GAME words: 34 target
+interior fields of the complete `player_state` object and one addresses
+`effect_state.magic_records`. A two-VA safe carve with `8002722c` and
+`800274ec` withholds zero relocations. Focused `kf try` reports **88.0%
+WIP** for the action selector and preserves the horizontal mover's **61.9%
+WIP** listing. The selector's 26-byte magic-row stride, unsigned MP cost,
+signed equipment restrictions, six preliminary cases, nineteen action
+cases, and final selected-record pointer are modeled in C. The retail
+`+0x1e` charge gate reads and clears `magic_charge`; an initial source pass
+incorrectly used `+0x1c` `attack_charge_committed` until the focused listing
+exposed the field difference. Loading the unsigned MP cost before the
+action-state stores reproduces retail's `a1` magic ID and `a2` record
+lifetime. Ordering the second switch's case bodies by their retail block
+sequence and clearing its three vector halfwords in retail store order
+improves the listing while keeping the same case results. A shared
+`repeat_count` local lowered similarity to 72.8% and was discarded. Retail
+case 12 jumps from `80027460` to the common byte store at `800274c8`,
+but its `li v0,5` delay slot at `80027464` sets the first action byte;
+the resulting action pair is `(5,2)`, distinct from case 3's `(6,2)`.
+That delay slot must be included when interpreting the apparent shared tail.
+Retail and C still differ at the initial stack frame and several case joins; CFG is
+33/34 blocks with 16/16 branches. The raw table pointers prove
+bounded destinations, but semantic indirect edges and the original C/TU
+form remain candidate.

@@ -23,8 +23,6 @@ from scripts.kf import compile as compiler
 from scripts.kf.manifest import load as load_manifest
 from scripts.kf.parser_machine import _ObjectFile, _load_object
 from scripts.kf.paths import BUILD, REPO
-from scripts.kf.sema.index import index
-from scripts.kf.trial_flow import compare_flow, object_flow
 
 INSTRUCTION_RE = re.compile(r"^\s*([0-9a-f]+):\s+[0-9a-f]{8}\s+(.*)$")
 RELOCATION_RE = re.compile(r"^\s*([0-9a-f]+):\s+(R_MIPS\S+)\s+(.*)$")
@@ -76,7 +74,8 @@ def listing(path: Path, obj: _ObjectFile | None = None) -> dict[str, list[str]]:
     return functions
 
 
-def compare(unit_name: str, source: Path | None, context: int) -> int:
+def compare(unit_name: str, source: Path | None, context: int,
+            *, flow: bool = True) -> int:
     manifest = load_manifest()
     unit = manifest.by_name().get(unit_name)
     if unit is None:
@@ -86,7 +85,7 @@ def compare(unit_name: str, source: Path | None, context: int) -> int:
     if not target.is_file():
         raise ValueError(f"{target}: module target is missing; run `kf analyze` first")
     includes = [REPO / "include", REPO / "vendor/include"]
-    idx = index(unit.image)
+    idx = None
     if os.environ.get("PSYQ_INCLUDE"):
         includes.append(Path(os.environ["PSYQ_INCLUDE"]))
     with tempfile.TemporaryDirectory(prefix="kf-try-") as directory:
@@ -121,11 +120,17 @@ def compare(unit_name: str, source: Path | None, context: int) -> int:
             continue
         ratio = difflib.SequenceMatcher(None, want, have).ratio() * 100
         print(f"DIFF    {function.symbol} ({ratio:.1f}% similar; < target, > compiled)")
-        binding = idx.function(function.va)
-        if binding is not None:
-            for clue in compare_flow(object_flow(target_object, binding, idx),
-                                     object_flow(base_object, binding, idx)):
-                print("    " + clue)
+        if flow:
+            from scripts.kf.sema.index import index
+            from scripts.kf.trial_flow import compare_flow, object_flow
+
+            if idx is None:
+                idx = index(unit.image)
+            binding = idx.function(function.va)
+            if binding is not None:
+                for clue in compare_flow(object_flow(target_object, binding, idx),
+                                         object_flow(base_object, binding, idx)):
+                    print("    " + clue)
         for line in difflib.unified_diff(want, have, "target", "compiled", n=context, lineterm=""):
             if line.startswith(("---", "+++")):
                 continue
@@ -140,8 +145,10 @@ def main() -> int:
     parser.add_argument("--unit", required=True)
     parser.add_argument("--source", type=Path, help="alternative source with the same claims")
     parser.add_argument("--context", type=int, default=2)
+    parser.add_argument("--no-flow", action="store_true",
+                        help="skip CFG/flow clues for faster iterative listing comparisons")
     args = parser.parse_args()
-    return compare(args.unit, args.source, args.context)
+    return compare(args.unit, args.source, args.context, flow=not args.no_flow)
 
 
 if __name__ == "__main__":

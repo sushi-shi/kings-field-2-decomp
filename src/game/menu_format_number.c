@@ -14,7 +14,7 @@ enum {
 ADDRESS(0x80022058, 0x190)
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out)
 {
-    s32 i = 0;
+    s32 i;
     s16 blank;
     s16 *cursor;
 
@@ -27,6 +27,7 @@ void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *
         count += 3;
     }
 
+    i = 0;
     blank = padding_mode == 0 ? KF_MENU_FORMAT_BLANK : 0;
     if (count > 0) {
         cursor = out;

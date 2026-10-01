@@ -20,7 +20,7 @@ typedef struct KfMapObjectTemplate {
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
-    u8 unknown_0a[2];
+    u16 unknown_0a;
     u8 marker_action_05;
     u8 unknown_0d[10];
     u8 marker_action_51;
@@ -33,6 +33,45 @@ typedef char kf_map_object_template_interaction_radius_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_radius == 6 ? 1 : -1];
 typedef char kf_map_object_template_interaction_height_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_height == 8 ? 1 : -1];
+typedef char kf_map_object_template_unknown_0a_offset[
+    (u32)&((KfMapObjectTemplate *)0)->unknown_0a == 0x0a ? 1 : -1];
+
+/* The scene pose path reads two signed offsets through the same template bytes
+ * used by marker actions. Keep both interpretations of the 24-byte record. */
+typedef struct KfMapObjectTemplatePoseView {
+    u8 unknown_00[0x0c];
+    s16 height_offset;
+    s16 depth_offset;
+    u8 unknown_10[8];
+} KfMapObjectTemplatePoseView;
+
+typedef char kf_map_object_template_pose_size[
+    sizeof(KfMapObjectTemplatePoseView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
+typedef char kf_map_object_template_pose_height_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->height_offset == 0x0c ? 1 : -1];
+typedef char kf_map_object_template_pose_depth_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
+
+/* Map resource placements consumed in 24-byte rows by func_80035894. */
+typedef struct KfMapObjectPlacement {
+    u8 layer;
+    u8 region_z;
+    u8 region_x;
+    u8 unknown_03;
+    u16 object_id;
+    s16 rotation_y;
+    s16 local_z;
+    s16 local_x;
+    s16 height;
+    u16 unknown_0e;
+    u32 tail_10;
+    u32 tail_14;
+} KfMapObjectPlacement;
+
+typedef char kf_map_object_placement_size[
+    sizeof(KfMapObjectPlacement) == 24 ? 1 : -1];
+typedef char kf_map_object_placement_height_offset[
+    (u32)&((KfMapObjectPlacement *)0)->height == 12 ? 1 : -1];
 
 typedef struct KfMapObjectTailHalfwordBytes {
     u8 low;
@@ -41,6 +80,7 @@ typedef struct KfMapObjectTailHalfwordBytes {
 
 typedef union KfMapObjectTailHalfword {
     u16 value;
+    s16 signed_value;
     KfMapObjectTailHalfwordBytes bytes;
 } KfMapObjectTailHalfword;
 
@@ -50,13 +90,27 @@ typedef struct KfMapObjectTailFields {
     u8 unknown_39;
     KfMapObjectTailHalfword unknown_3a;
     u16 spawn_sequence;
-    s16 unknown_3e;
+    KfMapObjectTailHalfword unknown_3e;
 } KfMapObjectTailFields;
+
+/* Event archive commands read the two state bytes at +0x38 as one halfword. */
+typedef struct KfMapObjectTailPair38View {
+    u32 unknown_34;
+    u16 value_38;
+    u8 unknown_3a[6];
+} KfMapObjectTailPair38View;
+
+typedef char kf_map_object_tail_pair38_size[
+    sizeof(KfMapObjectTailPair38View) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_pair38_offset[
+    (u32)&((KfMapObjectTailPair38View *)0)->value_38 == 4 ? 1 : -1];
 
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
+    KfMapObjectTailPair38View pair_38;
     u32 reset_words[3];
 } KfMapObjectTail;
+typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 
 /* The +0x40 word is a pointer in the player reaction path and byte state in
  * map-object motion. The pointed object's complete extent is unresolved. */
@@ -64,8 +118,10 @@ typedef struct KfMapObjectRecord40 KfMapObjectRecord40;
 
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
+    u32 raw;
     u8 bytes[4];
     u16 object_index;
+    u16 halfwords[2];
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];
@@ -110,7 +166,8 @@ typedef char kf_map_object_record40_offset[
 typedef struct KfMapObjectStateGame {
     KfMapObjectTemplate templates[KF_MAP_OBJECT_TEMPLATE_CAPACITY];
     KfMapObject objects[KF_MAP_OBJECT_CAPACITY];
-    u8 unknown_8730[8];
+    u8 unknown_8730[4];
+    KfMapObjectTemplate *current_template;
     KfMapObject *current_collision_object;
     u8 unknown_873c[2];
     u16 unknown_873e;
@@ -120,6 +177,8 @@ typedef struct KfMapObjectStateGame {
 
 typedef char kf_map_object_state_size[sizeof(KfMapObjectStateGame) == 0x8744 ? 1 : -1];
 typedef char kf_map_object_state_objects_offset[(u32)&((KfMapObjectStateGame *)0)->objects == 0x1e00 ? 1 : -1];
+typedef char kf_map_object_state_current_template_offset[
+    (u32)&((KfMapObjectStateGame *)0)->current_template == 0x8734 ? 1 : -1];
 typedef char kf_map_object_state_current_collision_offset[
     (u32)&((KfMapObjectStateGame *)0)->current_collision_object == 0x8738 ? 1 : -1];
 typedef char kf_map_object_state_counter_873e_offset[

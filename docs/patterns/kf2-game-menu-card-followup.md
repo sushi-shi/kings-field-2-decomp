@@ -23,12 +23,12 @@ address span is a survey boundary; it is not evidence of a single original TU.
 | `0x800225b0` | starts card services | already exact |
 | `0x800225d8` | stops card services and restores pad | already exact |
 | `0x80022600` | probes and removes stale card file with event waits | already exact |
-| `0x800226ec` | enumerates card directory, parses save names and slot numbers | unclaimed; card-entry record and directory extent WIP |
-| `0x800228c8` | reads card files and checks header/name fields | unclaimed; card record and failure-state model WIP |
+| `0x800226ec` | enumerates card directory, parses save names and slot numbers | WIP; 40-byte SDK `DIRENTRY` input is modeled, but byte-load and initialization order differ |
+| `0x800228c8` | reads card files and decodes header title digits | WIP; typed 0x280-byte header and CFG agree, but byte-load and digit-loop schedule differ |
 | `0x80022b48` | calls SDK card format wrapper | already exact |
-| `0x80022b74` | reads a card save and checks payload checksum | unclaimed; header and buffer ownership WIP |
-| `0x80022ca0` | creates/writes card save; draws icon and fills card metadata | unclaimed; card layout and large state flow WIP |
-| `0x80023178` | writes Shift-JIS player experience and level digits into card label | WIP, **93.529410%**; CFG and signed divisions agree, register/order residue remains |
+| `0x80022b74` | reads a card save and checks payload checksum | WIP; typed header checksum and buffer owner agree, but frame/register residue remains |
+| `0x80022ca0` | creates/writes card save; draws icon and fills card metadata | WIP; typed header fields and seven-palette asset agree, but initialization order differs |
+| `0x80023178` | writes Shift-JIS player experience and level digits into the card title | WIP, **93.529410%** in the prior strict run; CFG and signed divisions agree, register/order residue remains |
 | `0x80023288` | sums card payload bytes | already exact |
 | `0x800232ac` | waits for one of four card events | already exact |
 | `0x8002332c` | clears card event states | already exact |
@@ -58,8 +58,109 @@ zero/overflow checks. The current object still differs in register selection
 and some scheduling; the source is WIP, not an exact claim. No function in
 this batch was attributed to vendored code.
 
+A later pass established the card file's 0x280-byte header prefix. Its
+two-byte `SC` magic begins at zero, icon type `0x13` is at +2, two-block
+count at +3, title at +4, icon palette at +0x60, three 0x80-byte
+icon frames at +0x80, and payload checksum at +0x200. The writer zeroes the
+0x400-byte block header before copying this prefix. A shared typed view with
+static size/offset checks now serves the header reader, checksum reader,
+title-digit writer, and file writer;
+the focused listing retains the exact `memory_card_format` control and the
+four directory-unit WIP verdicts above. The distinct `DIRENTRY` entry type
+comes from the pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
+The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
+retail NUL terminator. Its reviewed `0x80022744` `lui`/`addiu` pair computes
+that address immediately before the direct `firstfile` call; the string's
+source owner is still unresolved. Its exact bytes do not occur in the supplied
+Psy-Q 3.0 library archives or card sample sources, which narrows but does not
+prove ownership.
+The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
+Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
+`0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
+all three xref pairs, but the original object boundary and source owner remain
+unproved, so their address-derived identities stay separate.
+
+The carved directory module's initialized sections contain its 0x130-byte
+file-prefix/card-asset data and six-byte path literal; neither section owns
+`0x8006d6a4` or `0x8006d6a5`. A pooled local `" "` initializer is compatible
+with the two bytes and three callers, but the pinned GCC 2.5.7 probe places
+that initializer's padded four bytes in this unit's `.rodata`, ahead of its
+six-byte `bu00:` literal. The retail target instead has only the six-byte
+literal in this unit and keeps the seed at a separate late data address.
+That probe does not prove the historical compiler or the seed's defining TU;
+the focused source keeps the two external byte identities pending an owner.
+
+The first four header fields follow the KF1 `KfPsxSaveHeader` layout, while
+KF2's own `SC 13 02` retail stores, three icon frames, and two-block `FCREAT`
+argument support each field independently. Focused directory, wait, payload,
+events, and probe comparisons retained all prior exact controls after the
+layout-identical field split. The writer now uses the same two-block constant
+for its header byte and `FCREAT` argument; the focused directory and probe
+listings remain at their baseline.
+
+In a later focused card-choice check, `0x8001aa9c` became **strict exact**
+without a source edit. A fresh isolated compile and one-unit objdiff comparison
+match all 484 `.text` bytes and all 17 ordered relocations in the carved
+retail module; the unit owns no `.data` or `.rodata` claims. The older
+97.305786% report is stale and does not describe this object pair.
+The adjacent `game.menu_card_panel` unit is likewise **strict exact** in a
+fresh isolated comparison: 1,316/1,316 `.text` bytes and 75/75 ordered
+relocations match, with no owned data sections. Its `0x8001b030` (284 bytes)
+and `0x8001b14c` (400 bytes) controls remain exact, and `0x8001b2dc`
+(632 bytes) is newly exact despite its older 95.601265% report.
+
 Focused `kf match` verified the new item-model function at strict 100% and
 reported the card-label probe at 93.529410%, with GAME target relink 163/163.
 The command exits at the repository-wide known-reference data-ownership
-closure. The parent campaign owner will run the full build and repository
-tests.
+closure. No full build or repository tests were run in this focused pass.
+
+## Fresh card graph verdicts
+
+A separate isolated 14-unit comparison compiled only the 30 GAME card
+functions below against their current carved retail modules. Direct objdiff
+reports **23/30 strict exact**, 9,604/13,720 exact code bytes, and 337/337
+data bytes. The seven remaining functions are WIP; their percentages are
+fuzzy comparison scores, not closure.
+
+| Function addresses | Final strict verdict |
+| --- | --- |
+| `0x8001aa9c`, `0x8001ac80`, `0x8001af30` | all exact |
+| `0x8001b030`, `0x8001b14c`, `0x8001b2dc` | all exact; panel unit 1,316/1,316 code bytes and 75/75 ordered relocations |
+| `0x8001b554` | WIP, 98.478264%; probe-branch register and delay-slot order differ |
+| `0x8001b834`, `0x8001ba80`, `0x8001bb94`, `0x8001bcfc` | all exact |
+| `0x8001bf68`, `0x8001c12c` | WIP 97.123890%; exact, respectively |
+| `0x80022438`, `0x80022468`, `0x80022550`, `0x800225b0`, `0x800225d8` | all exact; event unit's one initialized data byte also matches |
+| `0x80022600` | exact; 26/26 claimed `.rodata` bytes match |
+| `0x800226ec`, `0x800228c8`, `0x80022b48`, `0x80022b74`, `0x80022ca0` | WIP 93.605040%; WIP 85.156250%; exact; WIP 93.666664%; WIP 95.896774%, respectively; directory unit's 310/310 initialized data and `.rodata` bytes match |
+| `0x80023178`, `0x80023288`, `0x800232ac`, `0x8002332c` | WIP 93.529410%; three exact wait/checksum helpers |
+| `0x80048d24`, `0x800492dc` | both exact; payload unit 2,968/2,968 code bytes and 226/226 ordered relocations |
+
+The newly verified exact `0x8001aa9c` has 484/484 code bytes and 17/17
+ordered relocations. The earlier browser, label, event, and payload exact
+controls remain exact. No repository tests, full build, or banking accompanied
+this isolated comparison.
+
+The seven WIPs have these first unresolved instruction differences; their
+source call sets and identified data referents remain aligned with retail:
+
+| Address | First unresolved difference |
+| --- | --- |
+| `0x8001b554` | retail copies the probe result to `a0` before two delayed branches; the current object branches on `v0` |
+| `0x8001bf68` | retail keeps the probe status in `v1`; the current object saves it in `s0` and uses a different constant register |
+| `0x800226ec` | retail loads the slot-seed bytes with `lb` and places the initialization around `memset` differently |
+| `0x800228c8` | retail loads the slot seed earlier, uses `lb` for title bytes, and advances a byte offset through the two digit loops |
+| `0x80022b74` | retail uses an 80-byte frame and preserves the slot in `s3` before copying it to `s2`; the current object uses a 72-byte frame |
+| `0x80022ca0` | retail orders the slot-seed loads, zero fill, and saved-register setup differently |
+| `0x80023178` | retail and current object have the same signed decimal divisions and loop exits, with different argument and temporary registers |
+
+The payload pair has one proven external caller each: writer `0x80022ca0`
+calls serializer `0x80048d24` at `0x80023020`, and reader `0x80022b74`
+calls deserializer `0x800492dc` at `0x80022c5c`. The other xrefs to each
+payload body are internal validated branches, so this pair adds no unresolved
+neighboring game call to the card graph.
+The browser, format-flow, and wait WIP units retain the same ordered
+relocation kinds and target identities as retail. The directory unit has the
+same 137 relocation count, but the `0x800228c8` compiled reader places the
+card-prefix `.data` pair before the two slot-seed pairs; retail orders the
+slot seeds first. This is a reference-order difference, not evidence for a
+new data identity.

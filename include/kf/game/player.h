@@ -72,7 +72,8 @@ typedef struct KfWeaponRecordGame {
     u16 attack_components[8];
     u8 unknown_16[8];
     u16 unknown_1e;
-    u8 unknown_20[6];
+    u8 unknown_20[4];
+    u16 unknown_24;
     u16 unknown_26;
     u8 unknown_28[4];
     u16 unknown_2c;
@@ -117,11 +118,21 @@ typedef struct KfPlayerPositionReaction {
     VECTOR position;
 } KfPlayerPositionReaction;
 
+typedef struct KfPlayerFlags140Halves {
+    u16 low;
+    u16 high;
+} KfPlayerFlags140Halves;
+
 typedef union KfPlayerFlags140 {
     u32 word;
     u16 low;
+    KfPlayerFlags140Halves halves;
 } KfPlayerFlags140;
 
+typedef char kf_player_flags140_halves_size[
+    sizeof(KfPlayerFlags140Halves) == 4 ? 1 : -1];
+typedef char kf_player_flags140_high_offset[
+    (u32)&((KfPlayerFlags140 *)0)->halves.high == 2 ? 1 : -1];
 typedef char kf_player_flags140_size[sizeof(KfPlayerFlags140) == 4 ? 1 : -1];
 
 typedef union KfPlayerReactionOverlay {
@@ -139,9 +150,29 @@ typedef char kf_player_reaction_damage_motion_offset[
 typedef char kf_player_reaction_position_offset[
     (u32)&((KfPlayerReactionOverlay *)0)->position.position == 4 ? 1 : -1];
 
+typedef union KfPlayerMovementSpeed {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfPlayerMovementSpeed;
+
+typedef char kf_player_movement_speed_size[
+    sizeof(KfPlayerMovementSpeed) == 2 ? 1 : -1];
+
 typedef char kf_weapon_record_game_size[sizeof(KfWeaponRecordGame) == 0x44 ? 1 : -1];
 typedef char kf_weapon_record_game_attacks_offset[
     (u32)&((KfWeaponRecordGame *)0)->attack_components == 6 ? 1 : -1];
+typedef char kf_weapon_record_game_unknown_24_offset[
+    (u32)&((KfWeaponRecordGame *)0)->unknown_24 == 0x24 ? 1 : -1];
+
+typedef struct KfPlayerMagicIdSequence {
+    u8 effect_ids[12];
+    u16 attack_masks[4];
+} KfPlayerMagicIdSequence;
+
+typedef char kf_player_magic_id_sequence_size[
+    sizeof(KfPlayerMagicIdSequence) == 0x14 ? 1 : -1];
+typedef char kf_player_magic_attack_masks_offset[
+    (u32)&((KfPlayerMagicIdSequence *)0)->attack_masks == 0x0c ? 1 : -1];
 
 typedef struct KfMapOccupancyLayer {
     u8 object_index;
@@ -216,7 +247,7 @@ typedef struct KfPlayerState {
     u16 attack_components[8];
     u16 unknown_40;
     u16 combat_components[9];
-    u16 unknown_54;
+    s16 unknown_54;
     s16 curse_strength;
     u16 unknown_58;
     s16 unknown_5a;
@@ -232,7 +263,7 @@ typedef struct KfPlayerState {
     s16 unknown_6e;
     u8 unknown_70[4];
     u32 equipment_effect_ticks;
-    u8 unknown_78[4];
+    const u16 *unknown_78;
     struct KfMagicRecord *selected_magic_record;
     KfWeaponRecordGame *equipped_weapon_record;
     struct KfAssetHeader *weapon_asset_buffer;
@@ -284,7 +315,7 @@ typedef struct KfPlayerState {
     u16 unknown_106;
     u16 unknown_108[3];
     u8 unknown_10e[2];
-    u16 unknown_110[3];
+    s16 unknown_110[3];
     u8 unknown_116[2];
     SVECTOR unknown_118;
     s32 unknown_120;
@@ -292,7 +323,7 @@ typedef struct KfPlayerState {
     u16 unknown_128;
     s16 strafe_velocity;
     s16 forward_velocity;
-    u16 movement_speed;
+    KfPlayerMovementSpeed movement_speed;
     s16 yaw_step;
     s16 pitch_step;
     s16 unknown_134;
@@ -312,6 +343,8 @@ typedef char kf_player_unknown_97_offset[
     (u32)&((KfPlayerState *)0)->unknown_97 == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
     (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
+typedef char kf_player_unknown_78_offset[
+    (u32)&((KfPlayerState *)0)->unknown_78 == 0x78 ? 1 : -1];
 typedef char kf_player_selected_magic_record_offset[
     (u32)&((KfPlayerState *)0)->selected_magic_record == 0x7c ? 1 : -1];
 typedef char kf_player_equipped_head_record_offset[
@@ -322,6 +355,8 @@ typedef char kf_player_death_state_offset[
     (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
+typedef char kf_player_movement_speed_offset[
+    (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
 typedef char kf_player_flags140_offset[
     (u32)&((KfPlayerState *)0)->flags_140 == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[
@@ -331,6 +366,7 @@ typedef char kf_player_movement_step_limit_offset[
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;
+extern const KfPlayerMagicIdSequence DAT_800667e8;
 extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 

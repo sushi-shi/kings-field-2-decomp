@@ -3,9 +3,14 @@
 #include <kf/game/cd.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/player.h>
+#include <kf/lib/audio.h>
 #include <kf/lib/math.h>
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
+
+/* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
+DATA(0x8009a6a0, 0x158)
+char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_TRACKS_PER_SEQUENCE];
 
 ADDRESS(0x800139c4, 0x120)
 void func_800139c4(void)
@@ -18,9 +23,8 @@ void func_800139c4(void)
 
     SsInit();
     SsSetMVol(0, 0);
-    /* The SDK work table and stream buffers have fixed retail addresses;
-     * their source owners and complete extents remain unresolved. */
-    SsSetTableSize((char *)0x8009a6a0, 2, 1);
+    SsSetTableSize(audio_sequence_table, KF_AUDIO_SEQUENCE_CAPACITY,
+        KF_AUDIO_TRACKS_PER_SEQUENCE);
     SsSetTickMode(1);
     SsStart2();
     SsUtSetReverbType(4);
@@ -47,6 +51,7 @@ void func_800139c4(void)
         index--;
     } while (index != -1);
 
+    /* Stream-buffer owners and complete extents remain unresolved. */
     stream_slot = audio_state.vab_stream_slots;
     stream_buffer = (u8 *)0x80165a68;
     for (index = 0; index < 7; index++) {

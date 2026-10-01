@@ -58,3 +58,33 @@ path, retry a shorter move in 22-unit steps, or fall back to one axis. The
 return is initialized to zero and set to one on the unobstructed path. These
 KF2-specific branches and cache fields are why the larger KF1 body remains a
 shape reference, not source to copy wholesale.
+
+## Later GAME source-polish verdicts
+
+The 2026-10-01 strict report is a checkpoint, not a closure criterion for the
+WIP rows below. Each row was checked against the selected GAME retail CFG,
+calls, referents, strings, and a rebuilt focused listing. Source-only changes
+that moved instructions away from retail were reverted.
+
+| Function | Strict checkpoint | Verdict |
+| --- | ---: | --- |
+| `8001930c` map preview | 98.26363% | WIP. The archive-entry calculation has the correct inputs and call set; retail uses a 64-byte frame and keeps the image in `$s6`, while the probe uses 56 bytes and `$s0`. Reordering the addition worsened the first divergence. |
+| `8001b554` card browser | 98.478264% | WIP. The first difference follows the temporary-file probe: retail moves its result to `$a0`, while the probe keeps `$v0` and schedules the row pointer in the branch slot. |
+| `8001bf68` card format flow | 97.12389% | WIP. Retail and probe branch on the same probe statuses; rewriting the guards in retail order moved the default branch and frame, so the existing source remains. |
+| `8002b73c` occupancy update | 98.40426% | WIP. The cell rectangle, unsigned bounds, and byte updates agree; row/column register allocation differs. Callers pass both `1` and `-1`, so the scaled update now shifts an unsigned value without signed-shift undefined behavior. The exact `8002b7f8` sibling retains its raw `sll`/`srl` pair with the cast before the shift. |
+| `8003a318` actor damage | 99.86911% | WIP. Its first focused difference swaps the registers chosen for two incoming stack arguments; no signature, call, CFG, or referent correction was supported. |
+| `8003c3e0` actor group position | 99.64539% | WIP. Retail and probe compute the same masked yaw error and signed division; only the yaw-error and shifted-numerator registers exchange roles. |
+| `800461a0` marker stream | 99.12676% | WIP. Retail keeps the scan and marker pointers in the opposite argument registers, with marker-relative byte loads. Pointer-base rewrites introduced extra instructions and were reverted. Retail's non-marker retry does not advance the cursor; source records that stream constraint. |
+| `8001369c` main loop | 99.67553% | WIP. The only focused text difference is the fixed arena base `8009b0a0`: retail forms it with carry-adjusted `lui/addiu`, while the literal pointer uses `lui/ori`. No arena object owner or original address mechanism is proved; adjacent `main` remains exact. |
+| `8001a4f0` item/magic controller | 99.74359% | WIP. Focused listing differs only in the initializer loop's count and constant registers; the loop stores, calls, branches, and data references agree. No source fact supports changing the live locals. |
+| `8001fb8c` menu window | 99.78788% | WIP. All body instructions, calls, and referents align; the only focused differences are a 48-byte retail frame versus a 40-byte probe frame and their saved-register offsets. No live source object accounts for the extra eight bytes. |
+| `8001f8b8` preview choice | 94.36464% | WIP. The label glyph writes and call set agree, but the probe assigns the three retained arguments to different saved registers and places the input-release exit after the input loop. A source-equivalent `while` form worsened the CFG and was reverted. |
+| `80022058` decimal formatter | 97.39% | WIP. Retail reserves an eight-byte leaf frame and loads its fifth argument at stack `+24`; the probe eliminates that frame and loads at `+16`. The remaining branch displacements follow this one-word offset, and no live local explains a frame. |
+| `800226ec` card-directory scan | 93.60504% | WIP. Retail reads the two slot defaults with `lb`; the probe uses `lbu` because their signed values are immediately narrowed into a byte array. The rest of the focused residue is register choice and one downstream instruction shift. The source keeps the supported `s8` global declarations without adding artificial sign-dependent work. |
+
+The shared `map_cell.h` prototypes now carry the retail-supported byte-width
+layer input and void occupancy-update return. The previously inconsistent
+actor initializer declaration was removed, and its exact listing stayed
+identical. Exact actor-home and map-placement callers retained their strict
+100% status after adopting the shared signature; actor-home also uses the
+common collision-cache height view instead of a duplicate raw offset.

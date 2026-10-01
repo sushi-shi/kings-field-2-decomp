@@ -1106,7 +1106,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 
 | GAME VA | Verdict | Current evidence |
 | --- | --- | --- |
-| `80024ed4` | SAME | Player pose control in the 15-function equipment unit. |
+| `80024ed4` | SAME | Player pose control in the 16-function equipment unit. |
 | `80024f4c` | SAME | Player reset control in the same unit. |
 | `80025004` | SAME | Player initialization control. |
 | `80025184` | SAME | Session initialization control. |
@@ -1121,11 +1121,11 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | DIFF, 52.1% | Variadic effect dispatcher covers the 53-entry switch; retail case order and 19 newly reviewed direct address pairs improve the focused listing. |
+| `80025a18` | DIFF, 67.0% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, and effect-ID assignments now follow reviewed retail call sites. Nineteen reviewed address pairs resolve its direct referents. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | DIFF, 39.0% | Weapon/magic update covers the observed direct call set; the entry range check and 92 newly reviewed address pairs follow retail. |
+| `8002665c` | DIFF, 74.2% | Weapon/magic update now follows retail's field-width, phase-store, damage-branch, and countdown order; 92 reviewed address pairs resolve its direct referents. The 224-byte probe frame still differs from retail's 208 bytes. |
 | `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |

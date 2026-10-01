@@ -1102,7 +1102,7 @@ The seven-phase controller owns the reviewed 0x1c-byte switch-table range at
 
 | GAME VA | Focused verdict | First material residue |
 | --- | --- | --- |
-| `0x800139c4` | WIP, 60.6% listing similarity | Unbound SDK table and stream/sequence workspaces compile as literal `lui/ori`, while retail constructs signed-low addresses with relocations. The calls and audio-state loops are present. |
+| `0x800139c4` | WIP, 64.0% listing similarity | The SDK sequence-table base is now a typed 0x158-byte BSS claim with matching HI16/LO16 relocations. Sequence and VAB stream-buffer workspaces remain unbound and compile as literal `lui/ori`; their later register effects remain WIP. |
 | `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and two copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
 | `0x80015fd4` | WIP, 96.1% listing similarity | The TMD slot pointer at `0x8012da68` has no proved owner; retail uses a relocation and signed-low address construction. State writes, CD/controller loop, and indirect callback align. |
 | `0x80016260` | WIP, 71.6% listing similarity | Eight byte-valued request controls, early returns, critical-section wait, state updates, and direct calls are modeled. The shared state-update path precedes the active wait path with a backward jump, and the conflict wait precedes the critical-section wait, matching retail's block order. Sentinel-value registers and some later branches remain WIP. |
@@ -1121,3 +1121,50 @@ The startup unit's seven archive literals match the retail `.rodata` prefix
 byte for byte through `0x53`; retail's claimed `0x58`-byte range ends with five
 zero bytes beyond the compiled literal extent. Their source or section-padding
 mechanism remains unresolved.
+
+GAME's `SsSetTableSize(audio_sequence_table, 2, 1)` now uses a candidate
+`DATA(0x8009a6a0, 0x158)` owner. Psy-Q 3.0 defines `SS_SEQ_TABSIZ` as 172,
+so the SDK-required 2-by-1 workspace is 344 bytes; OPEN and END use the same
+0x158-byte identity. The focused source object emits a 344-byte COMMON symbol;
+the refreshed delinker carves a 0x158-byte BSS section from the candidate
+identity, so that target section size is not independent proof of retail
+allocation extent. The ordered HI16/LO16 pair at GAME `0x800139e0/e4` now
+matches. No other curated GAME identity overlaps `0x8009a6a0..0x8009a7f8`;
+whether the original allocation reserved more than the SDK-required extent
+remains open. The 15 exact audio siblings still have identical focused listings.
+
+### Related resource-runtime audit
+
+GAME `0x80032274` updates a range of VAB slots from a byte flag stream. Its
+two proven callers in `0x8003247c` pass five O32 arguments; the sole proven
+callee is `audio_queue_vab_stream`. The current C uses the validated
+`audio_state+0x30` slot array, an `s16` stream state, and the retail's three
+state paths: queue an absent flagged slot, mark a flagged state 2 as 1, or
+mark an unflagged state 1 as 2. The focused listing is WIP at 43.6% similarity.
+The first divergence is a 56-byte compiled frame with an extra saved index
+register versus retail's 48-byte frame and per-iteration slot-index shift;
+later branch layout differs. Moving the slot load into both flag branches,
+as in the exact TMD range sibling, worsened the listing and was reverted.
+No referent, call, width, or control-flow evidence supports a replacement
+source claim yet. The four exact neighbors in `game.resource_runtime` remained
+`SAME` throughout focused probes.
+
+The adjacent `0x800320b0` map-radius and `0x80032174` map-visibility helpers
+have validated references to `game_graphics_runtime`. Their direct callers,
+constants, and signed bounds match the current source. Declaration-order and
+early-return probes changed register selection or branch layout without
+establishing an original source fact, so both were reverted. Their focused
+listings remain WIP at 26.9% and 37.9% similarity, respectively.
+
+Four proven `0x8003247c` calls consume `map_cell_layer_mask`'s return register
+directly, without a caller-side byte mask. The exact callee itself returns zero
+or a zero-extended byte load, so its value range did not establish the source
+ABI width. Both map-mask declarations now return `u32`; the exact callee and
+three other exact resource-runtime neighbors remain `SAME` after that shared
+type correction. The radius helper's callers also consume the full register;
+its source still bounds the OR result to a byte.
+
+The `0x80016260` identity now distinguishes five unsigned byte controls from
+three signed byte offsets. Its map-object caller casts the offsets to `s8`,
+and retail sign-extends the first offset before comparing it with 127. The
+source already used those types; the focused listing remains WIP at 71.6%.

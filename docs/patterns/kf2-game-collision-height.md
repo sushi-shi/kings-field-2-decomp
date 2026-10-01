@@ -395,3 +395,12 @@ units. Overall edge-check remains open on three unrelated `.rodata` addends
 and incomplete known-reference ownership. The raw-backed dispatcher tables
 above do not resolve those unrelated edge gaps, and no cache boundary was
 guessed from the overlapping views.
+
+The later `0x8002c670` source now selects its center through the typed
+`map_cells[row][column]` grid. It uses the enclosing cell's byte
+representation only for the runtime-selected layer lighting byte; a layout
+check ties the lighting offset to `KfMapOccupancyCell`. The focused listing
+improved from 75.8% to 76.4% and remains WIP. Its remaining first lighting
+referent differs in address formation (`bss_801c7540+4` in retail versus a
+cell-base add and byte load at +4 in the probe); no relocation identity was
+changed to conceal that difference.

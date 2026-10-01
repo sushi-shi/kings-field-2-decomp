@@ -459,45 +459,54 @@ void func_80025a18(s32 effect_id, ...)
         position.vz += direction.vz;
         func_80040308(10, 0x12, 0x6f, &position, 0, kind);
         break;
-    case 13:
-        for (i = 0; i < 4; i++) {
-            player_state.unknown_118 = DAT_800667c8[i];
+    case 13: {
+        const SVECTOR *sequence = DAT_800667c8;
+        for (i = 3; i != -1; i--) {
+            player_state.unknown_118 = *sequence;
             func_80025878(800, &position, &direction, &distance);
+            sequence++;
             direction.vx += -32 + (rand() >> 9);
             direction.vy += -32 + (rand() >> 9);
             direction.vz += -32 + (rand() >> 9);
             func_80040308(10, 0x12, effect_id, &position, &direction);
         }
         break;
-    case 4:
+    }
     case 51:
+        effect_id = 0x76;
+        goto simple_effect;
     case 52:
+        effect_id = 0x77;
+        goto simple_effect;
+    case 4:
+simple_effect:
         func_80025878(700, &position, &direction, &distance);
-        func_80040308(10, 0x12,
-                       effect_id == 51 ? 0x76 : effect_id == 52 ? 0x77 : effect_id,
-                       &position, &direction);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
     case 11:
         func_80025878(600, &position, &direction, &adjusted_distance);
-        if (adjusted_distance == -1) {
-            adjusted_distance = 10;
-        } else {
+        if (adjusted_distance != -1) {
             adjusted_distance = adjusted_distance / 600 - 8;
             if (adjusted_distance < 2) {
                 adjusted_distance = 2;
             }
+        } else {
+            adjusted_distance = 10;
         }
         direction.vy = 0;
         func_80040308(10, 0x12, 0x67, &position, &direction, adjusted_distance);
         break;
     case 5:
     case 9:
-        func_80025878(effect_id == 5 ? 200 : 500, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction);
+        actor = func_80025878(effect_id == 5 ? 200 : 500,
+                              &position, &direction, &distance);
+        kind = actor == 0 ? 255 : actor - actor_state.actors;
+        func_80040308(10, 0x12, effect_id, &position, &direction, kind);
         break;
     case 8:
         func_80025878(700, &position, &direction, &distance);
-        func_80040308(10, 0x12, 0x6a, &position, &direction);
+        func_80040308(10, 0x12, 0x6a, &position, &direction,
+                       &player_state.camera_rotation);
         break;
     case 6:
     case 10:
@@ -507,7 +516,8 @@ void func_80025a18(s32 effect_id, ...)
         break;
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];
-        player_state.camera_rotation.angles[1] -= player_state.unknown_118.vx * 2;
+        player_state.camera_rotation.angles[1] -=
+            (u16)player_state.unknown_118.vx * 2;
         func_80025878(150, &position, &direction, &distance);
         player_state.unknown_118.vx += 100;
         player_state.camera_rotation.angles[1] = old_yaw;
@@ -519,31 +529,40 @@ void func_80025a18(s32 effect_id, ...)
         func_80025878(500, &position, &direction, &distance);
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
+    case 43:
+        effect_id = 0x73;
+        goto sequence_effect;
     case 42:
-    case 43: {
+        effect_id = 0x71;
+sequence_effect: {
         const SVECTOR *record = DAT_800667a0;
-        player_state.unknown_118 = record[0];
+        player_state.unknown_118 = *record;
         func_80025878(600, &position, &direction, &distance);
-        effect = func_80040308(10, 0x12, effect_id == 42 ? 0x71 : 0x73,
+        effect = func_80040308(10, 0x12, effect_id,
                                &position, &direction, &player_state.camera_rotation);
         if (effect != 0) {
             s32 index = effect - effect_state.records;
-            for (i = 1; i < 5; i++) {
-                player_state.unknown_118 = record[i];
+            record++;
+            for (i = 3; i != -1; i--) {
+                player_state.unknown_118 = *record;
                 func_80025878(600, &position, &direction, &distance);
-                func_80040308(10, 0x12, record[i].pad, &position, &direction, index);
+                func_80040308(10, 0x12, record->pad, &position, &direction, index);
+                record++;
             }
         }
         break;
     }
     case 44:
+        func_80025878(1000, &position, &direction, &distance);
+        effect_id = 0x75;
+        goto regular_weapon_effect;
     case 45:
         func_80025878(1000, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id == 44 ? 0x75 : 0x74,
-                       &position, &direction, &player_state.camera_rotation);
-        break;
+        effect_id = 0x74;
+        goto regular_weapon_effect;
     case 40:
         func_80025878(1000, &position, &direction, &distance);
+regular_weapon_effect:
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
     case 39:

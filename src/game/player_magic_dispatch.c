@@ -71,7 +71,7 @@ void func_80026498(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 ADDRESS(0x8002665c, 0xbd0)
 void func_8002665c(void)
 {
-    u8 weapon_id = player_state.equipped_weapon_id;
+    s32 weapon_id = player_state.equipped_weapon_id;
     KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
     s16 phase;
     s32 phase_step;
@@ -84,28 +84,56 @@ void func_8002665c(void)
     struct KfEulerAngles rotation;
     struct KfEulerAngles direction_angles;
     SVECTOR direction;
-    VECTOR first_world;
+    VECTOR world_position;
     VECTOR last_world;
     VECTOR damage_position;
-    VECTOR current;
     VECTOR step;
-    VECTOR separation;
     KfEffectRecord *effect;
     const VECTOR *damage_origin;
+    s32 damage_amount;
     s32 index;
     s32 i;
 
-    if (weapon_id >= 16 && weapon_id < 18) {
+    if (weapon_id < 16) {
+        goto regular_weapon;
+    }
+    if (weapon_id < 18) {
+        goto special_weapon;
+    }
+    if (weapon_id == 0xff) {
+        return;
+    }
+    goto regular_weapon;
+
+special_weapon: {
+        s32 mode;
         phase = player_state.weapon_attack_phase;
         if (phase == -1) {
-            player_state.weapon_charge_delay = 0;
-            player_state.attack_charge_current = 0;
-            return;
+            goto special_idle;
         }
-        if (player_state.weapon_attack_mode == 0) {
+        mode = player_state.weapon_attack_mode;
+        if (mode == 0) {
+            goto special_mode_zero;
+        }
+        if (mode == 1) {
+            goto special_mode_one;
+        }
+        return;
+special_mode_zero: {
             if (phase == 0) {
-                s32 effect_kind = player_state.equipped_weapon_id == 16 ? 31 : 30;
-                s32 counter = player_state.equipped_weapon_id == 16 ? 0x75 : 0x76;
+                s32 effect_kind;
+                s32 counter;
+
+                switch (weapon_id) {
+                case 16:
+                    effect_kind = 31;
+                    counter = 0x75;
+                    break;
+                case 17:
+                    effect_kind = 30;
+                    counter = 0x76;
+                    break;
+                }
 
                 if (player_state.equipped_accessory_id == 59
                     || player_state.equipped_extra_id == 59) {
@@ -113,31 +141,32 @@ void func_8002665c(void)
                 }
                 if (game_counter_bytes[counter] != 0) {
                     game_counter_bytes[counter]--;
-                    player_state.weapon_effect = func_80040308(
+                    effect = func_80040308(
                         10, 0x12, effect_kind, &player_state.camera_position,
                         0, &player_state.camera_rotation);
-                    if (player_state.weapon_effect != 0) {
-                        player_state.weapon_effect->phase = 99;
+                    player_state.weapon_effect = effect;
+                    if (effect != 0) {
+                        effect->phase = 99;
                     }
                 } else {
                     player_state.weapon_effect = 0;
                 }
             }
 
-            phase += weapon->attack_phase_step;
-            if (phase > 4094) {
-                phase = 4095;
+            player_state.weapon_attack_phase += weapon->attack_phase_step;
+            if (player_state.weapon_attack_phase >= 4095) {
+                player_state.weapon_attack_phase = 4095;
             }
-            player_state.weapon_attack_phase = phase;
-            if (phase < weapon->unknown_1e) {
-                player_state.attack_charge_current = 0;
-            } else {
+            if (player_state.weapon_attack_phase >= weapon->unknown_1e) {
                 if (player_state.attack_charge_current == 0
                     && player_state.equipped_weapon_id == 16) {
                     audio_play_sound(3, 110);
                 }
                 player_state.attack_charge_current =
-                    ((phase - weapon->unknown_1e) * 5000) / (4095 - weapon->unknown_1e);
+                    ((player_state.weapon_attack_phase - weapon->unknown_1e) * 5000)
+                    / (4095 - weapon->unknown_1e);
+            } else {
+                player_state.attack_charge_current = 0;
             }
 
             effect = player_state.weapon_effect;
@@ -145,26 +174,28 @@ void func_8002665c(void)
                 rotation.x = player_state.camera_rotation.angles[0] - weapon->rotation_offset_x;
                 rotation.y = player_state.camera_rotation.angles[1] - weapon->rotation_offset_y;
                 rotation.z = player_state.camera_rotation.angles[2] + weapon->rotation_offset_z;
-                func_80034344(32, player_state.weapon_attack_mode, phase,
+                func_80034344(32, player_state.weapon_attack_mode,
+                               player_state.weapon_attack_phase,
                                weapon->initial_vertex_index, &initial_vertex);
                 initial_vertex.vx -= weapon->position_offset_x;
                 initial_vertex.vy += weapon->position_offset_y;
                 initial_vertex.vz -= weapon->position_offset_z;
-                vector_rotate_yxz(&rotation, &initial_vertex, &first_world);
-                effect->position.vx = player_state.camera_position.vx + first_world.vx;
-                effect->position.vy = player_state.camera_position.vy + first_world.vy
+                vector_rotate_yxz(&rotation, &initial_vertex, &world_position);
+                effect->position.vx = player_state.camera_position.vx + world_position.vx;
+                effect->position.vz = player_state.camera_position.vz + world_position.vz;
+                effect->position.vy = player_state.camera_position.vy + world_position.vy
                                     + player_state.unknown_134 + player_state.unknown_138 - 1600;
-                effect->position.vz = player_state.camera_position.vz + first_world.vz;
 
-                func_80034344(32, player_state.weapon_attack_mode, phase,
+                func_80034344(32, player_state.weapon_attack_mode,
+                               player_state.weapon_attack_phase,
                                weapon->final_vertex_index, &final_vertex);
                 final_vertex.vx -= weapon->position_offset_x;
                 final_vertex.vy += weapon->position_offset_y;
                 final_vertex.vz -= weapon->position_offset_z;
                 vector_rotate_yxz(&rotation, &final_vertex, &last_world);
-                func_800154fc(first_world.vx - last_world.vx,
-                              first_world.vy - last_world.vy,
-                              first_world.vz - last_world.vz,
+                func_800154fc(world_position.vx - last_world.vx,
+                              world_position.vy - last_world.vy,
+                              world_position.vz - last_world.vz,
                               (struct KfEulerAngles *)&effect->rotation);
             }
             if ((player_state.flags_140.low & 0x10) != 0) {
@@ -178,52 +209,31 @@ void func_8002665c(void)
                 vector3s_scale_shift12((player_state.attack_charge_current * 900) / 5000,
                                        &effect->direction);
                 effect->updates_remaining = 50;
-                effect->unknown_12 = effect->position.vy;
+                *(u16 *)&effect->unknown_3c[4] = effect->position.vy;
             }
-            player_state.weapon_attack_phase = 0;
             player_state.weapon_attack_mode = 1;
+            player_state.weapon_attack_phase = 0;
             return;
         }
-        if (player_state.weapon_attack_mode == 1) {
-            phase += 400;
-            if (phase < 4095) {
-                player_state.weapon_attack_phase = phase;
-            } else {
-                player_state.attack_charge_current = 0;
+special_mode_one: {
+            player_state.weapon_attack_phase += 400;
+            if (player_state.weapon_attack_phase >= 4095) {
                 player_state.weapon_attack_phase = -1;
+                player_state.attack_charge_current = 0;
             }
         }
         return;
-    }
-
-    if (weapon_id == 0xff) {
+special_idle:
+        player_state.attack_charge_current = 0;
+        player_state.weapon_charge_delay = 0;
         return;
     }
 
+regular_weapon:
     phase = player_state.weapon_attack_phase;
 
     if (phase == -1) {
-        if ((player_state.flags_140.low & 0x10) == 0) {
-            if (player_state.weapon_charge_delay == 0) {
-                s32 gain = func_80023814(player_state.physical_power,
-                                          weapon->charge_rank) * 2;
-                if (player_state.equipped_leg_id == 44) {
-                    gain >>= 1;
-                }
-                if ((player_state.equipped_accessory_id == 57
-                     || player_state.equipped_extra_id == 57)
-                    && player_state.equipped_weapon_id == 13) {
-                    gain *= 2;
-                }
-                player_state.attack_charge_current += gain;
-                if (player_state.attack_charge_current > 5000) {
-                    player_state.attack_charge_current = 5000;
-                }
-            } else {
-                player_state.weapon_charge_delay--;
-            }
-        }
-        return;
+        goto regular_idle;
     }
 
     if (player_state.weapon_attack_mode == 0) {
@@ -240,26 +250,28 @@ void func_8002665c(void)
         hit_step = weapon->magic_phase_step;
     }
     player_state.weapon_attack_phase += phase_step;
-    phase = player_state.weapon_attack_phase;
 
     if (player_state.weapon_attack_mode == 0
         && weapon->initial_effect_id != 0xff
-        && player_state.weapon_magic_shots_configured != 0
+        && player_state.weapon_attack_fully_charged != 0
         && player_has_power_and_magic_60() != 0
         && (player_state.flags_140.low & 0x80) != 0) {
-        if (phase < weapon->magic_window_start
-            || phase > weapon->magic_window_end) {
+        if (player_state.weapon_attack_phase >= weapon->magic_window_start
+            && player_state.weapon_attack_phase <= weapon->magic_window_end) {
+            if (player_state.weapon_magic_shots_configured != 0) {
+                func_80026498(weapon->initial_effect_id,
+                               player_state.weapon_magic_shots_configured == weapon->magic_shots,
+                               0);
+                player_state.weapon_magic_shots_configured--;
+            }
+        } else {
             player_state.weapon_magic_shots_configured = 0;
-        } else if (player_state.weapon_magic_shots_configured != 0) {
-            func_80026498(weapon->initial_effect_id,
-                           player_state.weapon_magic_shots_configured == weapon->magic_shots,
-                           0);
-            player_state.weapon_magic_shots_configured--;
         }
     }
 
-    if (player_state.weapon_attack_recovery <= phase
-        && phase < player_state.weapon_attack_recovery + phase_step) {
+    if (player_state.weapon_attack_recovery <= player_state.weapon_attack_phase
+        && player_state.weapon_attack_phase
+             < player_state.weapon_attack_recovery + phase_step) {
         audio_play_sound(weapon->sound_id, 80);
         if (player_state.weapon_attack_recovery >= sound_end) {
             player_state.weapon_attack_recovery = 5000;
@@ -287,10 +299,7 @@ void func_8002665c(void)
             }
         }
 
-        if (player_state.weapon_attack_phase < phase_end) {
-            player_state.weapon_attack_window += hit_step;
-            damage_origin = 0;
-        } else {
+        if (player_state.weapon_attack_phase >= phase_end) {
             player_state.weapon_attack_window = 5000;
             player_state.weapon_charge_delay = 10;
             player_state.attack_charge_current = 0;
@@ -298,26 +307,32 @@ void func_8002665c(void)
             damage_position.vy = player_state.camera_position.vy - 1000;
             damage_position.vz = player_state.camera_position.vz;
             damage_origin = &damage_position;
+            damage_amount = player_state.attack_charge_committed;
+        } else {
+            player_state.weapon_attack_window += hit_step;
+            damage_origin = 0;
+            damage_amount = player_state.attack_charge_committed >> 2;
         }
 
         initial_vertex.vx = 0;
         initial_vertex.vy = 0;
         initial_vertex.vz = weapon->attack_angle;
-        rotation.x = -player_state.camera_rotation.angles[0];
-        rotation.y = player_state.camera_rotation.angles[1];
+        rotation.x = -player_state.camera_rotation_target.angles[0];
+        rotation.y = player_state.camera_rotation_target.angles[1];
         rotation.z = 0;
-        vector_rotate_yxz(&rotation, &initial_vertex, &separation);
-        step.vx = separation.vx / 4;
-        step.vy = ((3600 - (u16)weapon->attack_angle) * separation.vy / 1800) / 4;
-        step.vz = separation.vz / 4;
-        current.vx = player_state.camera_position.vx;
-        current.vy = player_state.camera_position.vy - 800;
-        current.vz = player_state.camera_position.vz;
-        for (i = 0; i < 4; i++) {
-            current.vx += step.vx;
-            current.vy += step.vy;
-            current.vz += step.vz;
-            index = func_8003a9f4(current.vx, current.vy, current.vz, 400, 600);
+        vector_rotate_yxz(&rotation, &initial_vertex, &step);
+        step.vx /= 4;
+        step.vy = ((3600 - weapon->attack_angle) * step.vy / 1800) / 4;
+        step.vz /= 4;
+        world_position.vx = player_state.camera_position.vx;
+        world_position.vy = player_state.camera_position.vy - 800;
+        world_position.vz = player_state.camera_position.vz;
+        for (i = 3; i != -1; i--) {
+            world_position.vx += step.vx;
+            world_position.vy += step.vy;
+            world_position.vz += step.vz;
+            index = func_8003a9f4(world_position.vx, world_position.vy,
+                                   world_position.vz, 400, 600);
             if (index != -1) {
                 KfActor *actor = &actor_state.actors[index];
                 KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
@@ -336,9 +351,7 @@ void func_8002665c(void)
                                    player_state.attack_components[5],
                                    player_state.attack_components[6],
                                    player_state.attack_components[7],
-                                   damage_origin == 0
-                                       ? player_state.attack_charge_committed >> 2
-                                       : player_state.attack_charge_committed,
+                                   damage_amount,
                                    0x11, damage_origin);
                     break;
                 }
@@ -349,5 +362,28 @@ void func_8002665c(void)
     if (player_state.weapon_attack_phase > 4095) {
         player_state.weapon_attack_phase = -1;
         player_state.weapon_magic_shots_configured = 0;
+    }
+    return;
+
+regular_idle:
+    if ((player_state.flags_140.low & 0x10) == 0) {
+        if (player_state.weapon_charge_delay == 0) {
+            s32 gain = func_80023814(player_state.physical_power,
+                                      weapon->charge_rank) * 2;
+            if (player_state.equipped_leg_id == 44) {
+                gain >>= 1;
+            }
+            if ((player_state.equipped_accessory_id == 57
+                 || player_state.equipped_extra_id == 57)
+                && player_state.equipped_weapon_id == 13) {
+                gain *= 2;
+            }
+            player_state.attack_charge_current += gain;
+            if (player_state.attack_charge_current > 5000) {
+                player_state.attack_charge_current = 5000;
+            }
+        } else {
+            player_state.weapon_charge_delay--;
+        }
     }
 }

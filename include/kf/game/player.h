@@ -77,8 +77,8 @@ typedef struct KfWeaponRecordGame {
     u16 attack_components[8];
     u16 unknown_16;
     u16 unknown_18;
-    s16 attack_angle;
-    s16 attack_phase_step;
+    u16 attack_angle;
+    u16 attack_phase_step;
     u16 unknown_1e;
     u16 magic_window_start;
     u16 magic_window_end;
@@ -89,7 +89,7 @@ typedef struct KfWeaponRecordGame {
     u16 unknown_2c;
     u16 unknown_2e;
     u16 unknown_30;
-    s16 release_phase_step;
+    u16 release_phase_step;
     u16 position_offset_x;
     u16 position_offset_y;
     u16 position_offset_z;
@@ -288,8 +288,8 @@ typedef struct KfPlayerState {
     struct KfPoolRecord *weapon_animation_cache;
     struct KfEffectRecord *weapon_effect;
     s16 weapon_attack_phase;
-    u16 weapon_attack_window;
-    u16 weapon_attack_recovery;
+    s16 weapon_attack_window;
+    s16 weapon_attack_recovery;
     u8 weapon_magic_shots_remaining;
     u8 unknown_97;
     u8 unknown_98;

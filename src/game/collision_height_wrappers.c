@@ -84,7 +84,7 @@ void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
 ADDRESS(0x8002b7f8, 0x7c)
 s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
-    func_8002a988(x, y - ((u32)(height << 4) >> 5), z);
+    func_8002a988(x, y - (((u32)height << 4) >> 5), z);
     return func_8002aaa4(x, y, z, radius, height);
 }
 

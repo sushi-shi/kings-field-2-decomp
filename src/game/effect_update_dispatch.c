@@ -10,6 +10,9 @@ extern void func_80041cd0(s32 multiplier, s32 limit, s32 increment,
                           s32 arg3, s32 arg5);
 extern void func_8003ff18(VECTOR *position, s32 start, s32 end,
                           s32 arg3, s32 arg4, s32 arg5);
+extern s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
+                         s32 scale_x, s32 scale_z, s32 variation);
+extern void func_80042424(void);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -76,6 +79,56 @@ void effect_update_dispatch(void)
         record->rotation.vz += 750;
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         break;
+    case 7:
+    case 49: {
+        s32 prior_phase = record->phase;
+
+        if (prior_phase == 0) {
+            collision = func_80042298(180, (s32)0x80000000, -300);
+            if (collision == 0) {
+                break;
+            }
+            func_8004212c(&record->position, 3, 400, 0x2000, 0x2000, 0x400);
+            func_80042424();
+            func_8003feb0(collision);
+            record->phase = 1;
+        } else if (prior_phase >= 3) {
+            record->type = KF_EFFECT_SLOT_FREE;
+            break;
+        }
+        record->animation_clip = prior_phase - 128;
+        step = record->scale_x + 2048;
+        record->scale_x = step;
+        record->scale_y = step;
+        record->scale_z = step;
+        record->phase++;
+        break;
+    }
+    case 13:
+    case 32: {
+        s32 prior_phase = record->phase;
+
+        if (prior_phase == 0) {
+            collision = func_80042298(180, 0, -300);
+            if (collision == 0) {
+                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+                break;
+            }
+            func_80042424();
+            func_8003feb0(collision);
+            record->phase = 1;
+        } else if (prior_phase >= 3) {
+            record->type = KF_EFFECT_SLOT_FREE;
+            break;
+        }
+        record->animation_clip = prior_phase - 128;
+        step = record->scale_x + 2048;
+        record->scale_x = step;
+        record->scale_y = step;
+        record->scale_z = step;
+        record->phase++;
+        break;
+    }
     /* The remaining effect kinds, including two indirect switch dispatches,
      * are not yet reconstructed. Their callback and BSS owners remain open. */
     }

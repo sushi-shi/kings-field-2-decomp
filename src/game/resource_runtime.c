@@ -33,7 +33,7 @@ void resource_tmd_read_complete(u8 *data)
 }
 
 ADDRESS(0x80032040, 0x70)
-u8 map_cell_layer_mask(const VECTOR *position)
+u32 map_cell_layer_mask(const VECTOR *position)
 {
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
     s32 x;
@@ -49,7 +49,7 @@ u8 map_cell_layer_mask(const VECTOR *position)
 }
 
 ADDRESS(0x800320b0, 0xc4)
-u8 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
+u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
 {
     s32 span = radius * 2;
     u8 mask = 0;

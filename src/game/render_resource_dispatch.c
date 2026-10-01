@@ -46,7 +46,7 @@ void func_8003247c(void)
     actor = actor_state.actors;
     for (remaining = KF_ACTOR_CAPACITY - 1;
          remaining != -1; remaining--, actor++) {
-        u8 layer;
+        u32 layer;
         KfTargetGroup *group;
         const VECTOR *position;
         MATRIX *world_matrix;
@@ -104,7 +104,7 @@ void func_8003247c(void)
     object = map_object_state.objects;
     for (remaining = KF_MAP_OBJECT_CAPACITY - 1;
          remaining != -1; remaining--, object++) {
-        u8 visibility;
+        u32 visibility;
         s32 object_index;
 
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
@@ -261,7 +261,7 @@ void func_8003247c(void)
     placed = game_graphics_runtime.map_placed_entries;
     for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
          remaining != -1; remaining--, placed++) {
-        u8 visibility;
+        u32 visibility;
         if (placed->id == 0xffff) continue;
         visibility = map_cell_layer_mask(&placed->position);
         if (visibility & placed->layer) {

@@ -174,11 +174,10 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if ((flags & -6) == 0) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
             high_collision = 1;
-            /* The cache/equipment boundary remains provisional. */
             if (collision_height + 1280 >= player_state.camera_position.vy
                 && player_state.death_state == 0
-                && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
-                    - collision_height) < -PLAYER_MOVE_HEIGHT) {
+                && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
+                       < -PLAYER_MOVE_HEIGHT) {
                 goto accept_position;
             }
         }

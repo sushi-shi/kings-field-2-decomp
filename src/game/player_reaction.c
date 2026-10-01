@@ -8,6 +8,7 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
@@ -22,14 +23,12 @@ void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation,
 void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation);
 void func_8002360c(s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 sixth);
 void func_800291ec(KfMapObject *object);
-void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 void func_8002bf38(u8 first, u8 second, u8 third, s32 angle, u16 value);
 void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
 s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void func_80038f20(void);
 void func_80048554(s32 save_slot);
 void func_8002665c(void);
-void func_80025a18();
 s32 func_80027f78(void);
 void func_80028224(void);
 void func_8002851c(void);

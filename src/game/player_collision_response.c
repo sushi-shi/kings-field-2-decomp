@@ -5,7 +5,6 @@
 #include <kf/game/player.h>
 
 extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
-extern void func_80023384(void);
 
 ADDRESS(0x80027f78, 0x2ac)
 s32 func_80027f78(void)

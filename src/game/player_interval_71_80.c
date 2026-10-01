@@ -7,7 +7,6 @@
 #include <kf/game/player.h>
 
 void func_8002722c(s32 value);
-extern void func_80025a18();
 void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation, s32 value);
 
 ADDRESS(0x8002897c, 0x1c)

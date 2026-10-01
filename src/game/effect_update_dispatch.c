@@ -32,6 +32,10 @@ extern void func_800424f0(s32 count, s32 radius, s32 vertical_angle,
 extern void func_80026330(s32 mode, VECTOR *output);
 extern KfActor *func_80025878(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
+extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
+                          s32 height, s32 mode);
+extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
+extern s32 func_8001584c(s32 start, s32 end, s32 fraction);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -286,6 +290,28 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
+    case 24: {
+        VECTOR target;
+        s32 result;
+        s32 count;
+
+        target.vx = player_state.camera_position.vx;
+        target.vy = player_state.camera_position.vy - 1600;
+        target.vz = player_state.camera_position.vz;
+        result = func_80041b14(&target, 300, 40, 2000, 0, 10, 0);
+        if (result == -1) {
+            func_8003feb0(KF_COLLISION_CACHE_FLAGS);
+            for (count = 11; count >= 0; count--) {
+                func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
+                               0x200, -256, 0x200, -256, 0x200, -256);
+            }
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else if (rand() < 16384) {
+            func_80040308(10, 0, 0x6d, &record->position,
+                           &record->rotation, effect_state.current_index);
+        }
+        break;
+    }
     case 25:
     case 34:
     case 35:
@@ -375,6 +401,30 @@ void effect_update_dispatch(void)
         }
         break;
     }
+    case 33:
+    case 53: {
+        VECTOR target;
+        s32 motion_scale = record->kind == 33 ? 3800 : 7600;
+        s32 result;
+        s32 count;
+
+        target.vx = player_state.camera_position.vx;
+        target.vy = player_state.camera_position.vy - 1600;
+        target.vz = player_state.camera_position.vz;
+        result = func_80041b14(&target, 400, 60, 3000, 0, 10, 0);
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        if (result == -1) {
+            func_8003feb0(KF_COLLISION_CACHE_FLAGS);
+            for (count = 11; count >= 0; count--) {
+                func_80041e94(record, -1, -2, 0xc00, -90, 16, 33, 5,
+                               0x200, -256, 0x200, -256, 0x200, -256);
+            }
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        func_80041e94(record, -1, -3, motion_scale,
+                       -motion_scale / 48, 6, 33, 0, 0x400);
+        break;
+    }
     case 38:
     case 39: {
         s32 trigger;
@@ -431,6 +481,41 @@ void effect_update_dispatch(void)
         func_80041cd0(0x4000, (s16)*(u16 *)&record->unknown_3c[4],
                        0x46, 0x800, 0x8000);
         break;
+    case 46: {
+        KfEffectRecord *selected =
+            &effect_state.records[(s8)record->unknown_3c[5]];
+        s32 height;
+        s32 age;
+
+        record->position.vx += record->direction.vx;
+        record->position.vz += record->direction.vz;
+        if ((s8)record->unknown_3c[4] == 0) {
+            collision = func_8002b9d4(record->position.vx, record->position.vy,
+                                      record->position.vz, 10,
+                                      (s16)record->scale_y, 0x30);
+            func_8003feb0(collision);
+            func_8002b604(record->position.vx, selected->position.vy,
+                          record->position.vz, 0, 0);
+            record->position.vy = KF_COLLISION_CACHE_RESULT;
+            height = record->position.vy - KF_COLLISION_CACHE_HEIGHT_LIMIT;
+            record->scale_y = height > 32767 ? 32767 : height;
+            if (selected->type == KF_EFFECT_SLOT_FREE) {
+                record->unknown_3c[4] = 1;
+                *(u16 *)&record->unknown_3c[6] = 0;
+                *(u16 *)&record->unknown_32[0] = record->scale_y;
+            }
+        } else if ((s8)record->unknown_3c[4] == 1) {
+            record->scale_y = func_8001584c(
+                (s16)*(u16 *)&record->unknown_32[0], 0,
+                (s16)*(u16 *)&record->unknown_3c[6]);
+            age = *(u16 *)&record->unknown_3c[6] + 512;
+            *(u16 *)&record->unknown_3c[6] = age;
+            if ((s16)age >= 4096) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+        }
+        break;
+    }
     case 50: {
         s32 distance;
 
@@ -513,11 +598,69 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
+    case 107: {
+        KfEffectRecord *selected =
+            &effect_state.records[record->unknown_3c[4]];
+        const u8 *snapshots;
+        const u8 *snapshot;
+        s32 frame_index;
+
+        if (record->phase == 0 && selected->phase >= 3) {
+            record->phase = 1;
+            record->updates_remaining = record->unknown_3c[5] * 3;
+        }
+        if (selected->phase == 4) {
+            record->type = KF_EFFECT_SLOT_FREE;
+            break;
+        }
+        frame_index = selected->unknown_3c[8] -
+                      record->unknown_3c[5] * 3;
+        if (frame_index < 0) {
+            frame_index += 24;
+        }
+        /* The selected variant's +0x40 word points to 24-byte snapshots;
+         * its allocation and complete tail layout are not yet owned. */
+        snapshots = *(const u8 *const *)&selected->unknown_3c[4];
+        snapshot = snapshots + frame_index * 24;
+        record->position = *(const VECTOR *)snapshot;
+        record->rotation = *(const SVECTOR *)(snapshot + 16);
+        break;
+    }
     case 109:
         func_80041b14(
             &effect_state.records[record->unknown_3c[4]].position,
             500, 15, -1, 0, 0, -1);
         break;
+    case 111: {
+        VECTOR spawn_position;
+        SVECTOR spawn_direction;
+        s32 spread;
+
+        if ((s16)*(u16 *)&record->unknown_3c[4] == 0xff) {
+            spawn_position.vx = record->position.vx;
+            spawn_position.vy = record->position.vy;
+            spawn_position.vz = record->position.vz;
+            spawn_direction.vx = 0;
+            spawn_direction.vy = 0;
+            spawn_direction.vz = 0;
+            spread = 1000;
+        } else {
+            const KfActor *actor =
+                &actor_state.actors[(s16)*(u16 *)&record->unknown_3c[4]];
+
+            spawn_position.vx = actor->position.vx;
+            spawn_position.vy = actor->position.vy;
+            spawn_position.vz = actor->position.vz;
+            spawn_direction = *(const SVECTOR *)&actor->unknown_50;
+            spread = actor->unknown_1c;
+        }
+        spawn_position.vx += ((rand() * spread) >> 14) - spread;
+        spawn_position.vy -= 2000;
+        spawn_position.vz += ((rand() * spread) >> 14) - spread;
+        func_80040308(10, record->type | 3, 0,
+                       &spawn_position, &spawn_direction);
+        break;
+    }
     case 113:
         collision = func_80042298(180, 360, 0);
         if (collision != 0 || record->updates_remaining < 2) {
@@ -533,6 +676,33 @@ void effect_update_dispatch(void)
             func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         }
         break;
+    case 114: {
+        s32 count;
+
+        record->position.vx += record->direction.vx;
+        record->position.vy += record->direction.vy;
+        record->position.vz += record->direction.vz;
+        collision = func_8002b9d4(record->position.vx, record->position.vy,
+                                  record->position.vz, 10, 176, 10);
+        if (collision == 0) {
+            /* The kind-114 constructor saves its original Y at +0x44.
+             * Other effect kinds use this tail differently. */
+            func_8002b604(record->position.vx,
+                          *(s32 *)&record->unknown_3c[8],
+                          record->position.vz, 0, 0);
+            if (record->position.vy < KF_COLLISION_CACHE_RESULT) {
+                for (count = 0; count < 2; count++) {
+                    func_80041e94(record, (rand() * 20) >> 15,
+                                   -3, 6000, -200, 5, 39, 0, 0x100);
+                }
+                break;
+            }
+            record->position.vy = KF_COLLISION_CACHE_RESULT;
+        }
+        func_80040308(10, record->type | 3, 3, &record->position, 0, 0);
+        record->type = KF_EFFECT_SLOT_FREE;
+        break;
+    }
     case 115:
         collision = func_8004195c(0x258, 0x28, 0x24, 0xb4,
                                   0x168, 0x1000, 0x104, 0x800);

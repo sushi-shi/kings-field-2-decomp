@@ -52,7 +52,7 @@ extern long memory_card_io_end_event;
 extern long memory_card_timeout_event;
 extern long memory_card_new_device_event;
 extern long memory_card_error_event;
-/* Reset by any pad input; its increment site is not yet reviewed. */
+/* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
 extern s32 input_idle_counter;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */

@@ -1257,3 +1257,15 @@ The same focused resource-runtime unit keeps `resource_registry_get`,
 `resource_tmd_read_complete`, and `map_cell_layer_mask` exact. The audio
 runtime's other fifteen functions also remain strict exact. No source edit,
 linked build, repository test, or banking was done for this strict recheck.
+
+### Resource-startup string extent
+
+The seven retail archive paths in `game.resource_startup` occupy 83 bytes at
+`0x80011000..0x80011052`, including the last string's terminator. Its compiled
+`.rodata` is byte-identical for those 83 bytes. Retail has five further zero
+bytes before the next unit's switch table at `0x80011058`; no archive-path
+reference addresses that tail. The `RODATA` claim now ends at `0x80011053`
+instead of claiming those five unreferenced bytes as source literals. A focused
+GAME delink and compile leave both resource-startup function listings WIP but
+unchanged. The strict GAME data verifier improves from 30/44 to 31/44
+data-owning units exact, with 13 genuine divergences remaining.

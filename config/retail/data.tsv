@@ -41,7 +41,7 @@ GAME.EXE	0x8001103a	0x83a	0x2	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x8001103c	0x83c	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: COM\\RTMD.T
 GAME.EXE	0x80011046	0x846	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011048	0x848	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: COM\\ITEM.T
-GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	final archive-path NUL followed by five unreferenced zero bytes before the next switch table; only the NUL is source-claimed
 GAME.EXE	0x80011058	0x858	0x1c	pointer	manual:resource-transition-switch		pointer[7]	retail words;func_80016820 bounded jr table	seven consecutive phase case pointers within resource transition controller
 GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
 GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1189,15 +1189,15 @@ GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68b	0x5ce8b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d690	0x5ce90	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d694	0x5ce94	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d698	0x5ce98	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d6a0	0x5cea0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	manual:menu item model flag		s32	retail zero word;3 validated xrefs in menu_load_item_model and menu_release_item_model	allocation pending flag; original containing object and TU unproved
+GAME.EXE	0x8006d690	0x5ce90	0x4	defined	manual:input active latch		s32	retail zero word;16 validated xrefs;input_read_mark_active writes 1 after nonzero PadRead	input active latch cleared by release/menu handlers; original containing object and TU unproved
+GAME.EXE	0x8006d694	0x5ce94	0x4	defined	manual:menu item quantity		s32	retail initialized word 1;24 validated xrefs;0x8001e484 full-word bounded increment/decrement	menu quantity scalar view; original containing object and TU remain unproved
+GAME.EXE	0x8006d698	0x5ce98	0x4	defined	manual:menu cursor frame		s32	retail zero word;12 validated xrefs;menu_frame_begin bounds frame at 0..7	cursor animation frame; original containing object and TU unproved
+GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	manual:menu cursor direction		s32	retail zero word;9 validated xrefs;menu_frame_begin stores 1 or -1 on bounds	cursor animation direction; original containing object and TU unproved
+GAME.EXE	0x8006d6a0	0x5cea0	0x1	defined	manual:card loaded slot		u8	retail zero byte;2 validated card reader/writer stores;source DATA owner in memory_card_events	last successful card slot byte
 GAME.EXE	0x8006d6a1	0x5cea1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	manual:card slot seed		s8	retail 0x20;three reviewed lui+lb pairs in card directory/header/writer	first signed-byte view of adjacent slot seed; original object extent and TU unproved
+GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	manual:card slot seed		s8	retail 0x00;three reviewed lui+lb pairs in card directory/header/writer	second signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a6	0x5cea6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard		char[7]	retail bytes;firstfile argument at 0x80022744	bu00:* plus NUL terminator
 GAME.EXE	0x8006d6af	0x5ceaf	0x1	unclassified	coverage-gap			payload-complement	zero alignment before player texture row rectangles
@@ -1377,15 +1377,15 @@ GAME.EXE	0x8006da00	0x5d200	0x8	defined	reviewed	menu_item_preview_translation	S
 GAME.EXE	0x8006da08	0x5d208	0x8	defined	reviewed	menu_item_preview_rotation	SVECTOR	manual:menu-item-model	three signed 16-bit rotation coordinates and SDK vector pad; initialized zeros
 GAME.EXE	0x8006da10	0x5d210	0x4	defined	reviewed	menu_item_preview_rotation_step	s32	manual:menu-item-model	rotation increment used by preview renderer; initialized zero
 GAME.EXE	0x8006da14	0x5d214	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da18	0x5d218	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da18	0x5d218	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	IO-end event handle; original defining TU unproved
 GAME.EXE	0x8006da1c	0x5d21c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da20	0x5d220	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da20	0x5d220	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	timeout event handle; original defining TU unproved
 GAME.EXE	0x8006da24	0x5d224	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da28	0x5d228	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da28	0x5d228	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	new-device event handle; original defining TU unproved
 GAME.EXE	0x8006da2c	0x5d22c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da30	0x5d230	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da30	0x5d230	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	error event handle; original defining TU unproved
 GAME.EXE	0x8006da34	0x5d234	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da58	0x5d258	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da58	0x5d258	0x4	defined	manual:card I/O buffer pointer		u8 *	retail zero word;reviewed initializer store and card reader/writer loads	pointer assigned to memory_card_buffer_storage at initialization; original defining TU unproved
 GAME.EXE	0x8006da5c	0x5d25c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da60	0x5d260	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006da64	0x5d264	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

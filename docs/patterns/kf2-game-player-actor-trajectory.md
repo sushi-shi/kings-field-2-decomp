@@ -1369,3 +1369,64 @@ signed `[71,80]` predicate differs only in `v0`/`v1` assignment and its
 return delay slot; a natural nested-if scratch spelling emitted the same
 candidate instructions as the current source and left exact neighbor
 `80028998` unchanged. No tracked source correction was retained.
+
+### Transfer review of merged KF1 source cleanup
+
+The KF1 `master` history, rather than its dirty working tree, is the source
+for this review. Commit `40cf67ca` replaced fallbacks that did no work before
+return with direct returns; `ee562ab6` kept required joins while structuring
+player fallback paths. Commit `a977131b` replaced fabricated object-owner
+casts and manual variadic handling with supported typed views and APIs,
+respectively. The broad goto-removal commit `d2c9b27c` is not an ancestor of
+KF1 `master`, so it is not a merged precedent.
+
+KF2's player gotos here enter shared landing, movement, effect, reaction,
+or weapon-attack tails. In particular, `80027f78` needs the `exhausted`
+return join, `800279cc` needs the common `finish` tail, and `80025a18`
+shares switch-case selector and emission paths. These are not the simple
+return-only fallbacks changed in KF1; deleting the joins would make the
+retail CFG less faithful.
+
+Two duplicate collision-cache views were removed instead. `80027928` now
+uses the shared result word at BSS `+0x11810`; direct strict comparison keeps
+`80027928` and `80027988` at 100%, and leaves `800279cc` at 97.09642%.
+The height-limit word at BSS `+0x11814` has a reviewed retail load in
+`800274ec` and stores in the collision dispatcher, so the player mover now
+uses a shared view. Its direct strict score remains 88.631%, and adjacent
+`8002722c` remains 99.09091%. The complete cache/equipment object boundary
+is still provisional.
+
+`80025a18` already has the supported `s32 effect_id, ...` definition: callers
+pass one or two arguments, and the retail identity records the variadic ABI.
+Three player callers now include its shared prototype instead of private
+old-style declarations. Focused builds and direct strict comparisons kept
+the exact caller controls `80026498`, `80028998`, and `800291ec` at 100%; the
+dispatcher and neighboring WIPs retain their previous scores.
+
+The exact damage core `800248a8` also has a complete 12-argument signature
+backed by its definition, callers, and identity row. Its radial-damage caller
+now uses that shared prototype instead of a generic local declaration.
+Fresh direct strict comparisons keep both `800248a8` and caller `80024ca4`
+at 100%.
+The neighboring exact damage reaction `80024498` likewise has a shared
+three-argument prototype now used by its damage and landing callers. Direct
+strict comparisons keep `80024498`, `800248a8`, `80027928`, and `80027988`
+at 100%; the landing WIP remains 97.09642%.
+The collision-bounds helper `80023384` is now declared once in `player.h`
+for its equipment and collision-response callers. Focused listings and
+direct strict comparisons are unchanged: the helper is 76.23256% WIP,
+the response `80027f78` is 95.91228% WIP, and the adjacent equipment and
+landing controls remain exact.
+The equipment and reaction units also use the existing shared map-cell
+declaration of `func_8002b73c` rather than private duplicate prototypes;
+direct strict comparisons keep `80025878` and `800291ec` exact and leave
+`80025a18` and `8002985c` at their recorded WIP scores.
+
+### Fresh reaction phase-helper correction
+
+The older `80029624` WIP rows above are stale. A direct
+retail-versus-current-scratch objdiff of `player_reaction.c` now reports
+**100% strict**, with all 49 instructions identical. The focused reaction
+unit lists it `SAME`; only `8002985c` remains non-exact in that unit.
+This correction records the current source state rather than attributing
+the match to the declaration cleanup above.

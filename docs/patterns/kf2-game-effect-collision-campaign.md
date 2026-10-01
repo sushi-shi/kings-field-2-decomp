@@ -1445,18 +1445,86 @@ is kept separate because those calls may change the cache. Focused
 aggregate listing rises from 7.7% to 7.9% WIP after these two paths;
 the cache's complete BSS layout remains provisional.
 
-Kind 107 remains unsourced WIP. Its 0x800454a8 path uses the tail byte at
-+0x40 to index the proved 72-byte effect-record pool. The selected
-record's +0x40 word points to 24-byte snapshots; retail derives a wrapped
-index from its +0x44 byte and the current record's +0x41 byte, then copies
-one 24-byte snapshot into current record +0x24..+0x3b (rotation, scale,
-and direction). The pointed allocation and variant-specific tail layout
-are not yet proved, so the source does not assert a shared pointer field.
+Kind 107 enters 0x800454a8 and uses the unsigned tail byte at +0x40 to
+index the proved 72-byte effect-record pool. When current phase is zero and
+the selected record's phase is at least three, it sets phase one and stores
+three times current tail byte +0x41 as the update count. Selected phase four
+frees the slot. Otherwise selected tail byte +0x44 minus three times current
+tail byte +0x41, adjusted upward by 24 when negative, indexes 24-byte
+snapshots through the selected record's +0x40 pointer. Retail copies the
+snapshot's 16-byte VECTOR and eight-byte SVECTOR into current position and
+rotation. A temporary tail-pointer view keeps the source honest while the
+pointed allocation and complete variant layout remain unproved. Focused
+aggregate similarity is 7.7% WIP; no global owner was asserted.
+
+Kinds 33 and 53 enter the shared path at 0x800445e8/0x800445e0 with motion
+scales 3800 and 7600. Retail copies three camera-position words to a local
+target, subtracts 1600 from Y, calls `func_80041b14` with seven arguments,
+then calls `func_80041e0c` on the effect position. A `-1` result reports
+the provisional collision-cache flags, emits twelve identical 14-argument
+`func_80041e94` calls, and frees the effect slot. Both result paths finish
+with a nine-argument `func_80041e94`; its fifth argument is the signed
+quotient of the negated motion scale divided by 48. The source uses only
+the three camera-position components retail loads and leaves the cache's
+complete owner provisional. Focused comparison compiles at 8.0% similarity;
+the whole dispatcher remains WIP, with an earlier prologue and incomplete
+switch-table divergence.
+
+Kind 24 enters 0x80045a58. It copies the three camera-position words into a
+local target with Y reduced by 1600, then calls `func_80041b14` with
+`(300, 40, 2000, 0, 10, 0)`. A `-1` result reports the provisional cache
+flags, emits twelve 14-argument `func_80041e94` calls with the same fixed
+range operands and kind 14, then frees the slot. Otherwise a random value
+below 16384 creates kind 0x6d at the record position, passing the rotation
+pointer and `effect_state.current_index` as distinct O32 stack arguments.
+This raw-backed path compiles; focused aggregate similarity is 8.2% WIP.
+
+Kind 114 enters 0x8004593c and advances the three position words by the
+signed direction halfwords. It tests the new position through
+`func_8002b9d4(x, y, z, 10, 176, 10)`. A nonzero result spawns kind 3 and
+frees the current slot. The kind-114 constructor directly writes its original
+position Y to the +0x44 tail word; `func_8002b604` probes with that saved Y.
+The subsequent cache-result comparison either
+clamps position Y and takes the same spawn/free path, or emits two
+`func_80041e94` calls with a random angular operand and leaves the slot
+active. The complete +0x44 tail family and collision-cache owner are still
+provisional. This source-backed arm compiles at 8.0% aggregate focused
+similarity, down from 8.2%; the lower whole-function score does not disprove
+its decoded calls, widths, or control paths.
+
+Kind 46 enters 0x80042dc8. It advances position X/Z by signed direction
+halfwords and uses signed tail bytes +0x40/+0x41 as phase and selected
+effect-record index. In phase zero, retail calls `func_8002b9d4` with the
+current position, radius 10, signed scale Y, and mode 0x30; it reports that
+result, probes floor height at the selected record's Y, then sets position Y
+from the provisional cache result. The scale-Y halfword becomes the signed
+difference from the provisional cache height limit, capped at 32767. If the
+selected record is free, it enters phase one, clears tail age +0x42, and
+saves the scale in the record's +0x32 halfword. Phase one interpolates that
+saved scale toward zero with `func_8001584c`, advances age by 512, and frees
+the slot at signed age 4096. The source keeps byte-array casts for the
+variant-specific tail until a complete shared layout is supported. Focused
+aggregate similarity is 7.9% WIP; the earlier whole-function score fell by
+0.1 point while the decoded control and call paths were retained.
+
+Kind 111 enters 0x80043508. The signed halfword at effect tail +0x40 is an
+actor index except for sentinel 0xff. The sentinel takes the current effect
+position, zeroes the first three direction halfwords, and uses spread 1000;
+otherwise retail indexes the 124-byte actor pool and copies actor position,
+the eight-byte motion view at actor +0x50, and unsigned halfword spread at
+actor +0x1c. Two `rand` calls perturb X/Z by `(rand * spread >> 14) - spread`,
+Y drops by 2000, and `func_80040308` creates kind zero with the local
+position and direction. This first-pass C compiles at 7.8% aggregate
+similarity, still WIP because the dispatcher has incomplete arms and an
+earlier prologue/table mismatch; no new actor field ownership was asserted.
 
 The raw 123-word kind table has 55 entries that jump straight to the common
-return and 68 active entries; the current C names 48 of those 68 active
-kinds. The remaining 20 active entries are still WIP, regardless of the
-aggregate fuzzy score.
+return and 68 active entries; the current C names 55 of those 68 active
+kinds. The remaining 13 active entries are still WIP, regardless of the
+aggregate fuzzy score. A focused comparison with flow enabled also reports
+CFG comparison unavailable: retail direct J/JAL rows remain candidate-tier
+and the compiled kind switch has an unresolved indirect jump. Neither
+warning promotes an indirect target or gives a strict control-flow verdict.
 
 A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.
 Its first divergence is the prologue: retail reserves 72 stack bytes and

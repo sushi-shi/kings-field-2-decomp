@@ -573,13 +573,13 @@ GAME.EXE	0x8006d658	0x4	DAT_8006d658	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix
 GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1
 GAME.EXE	0x8006d68c	0x4	menu_item_model_allocation_pending	global	load	s32	menu_item_model	supported	asm;read-write xrefs;KF1 counterpart	loaded allocation flag; defining TU remains unresolved
-GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	memory_card	supported	asm;cleared on every pad input by func_8001e484 and input_wait_release	counter reset by any input; increment site not yet reviewed
-GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	memory_card	supported	asm;xrefs;input_read_mark_active writes 1 after nonzero PadRead;func_800223cc and input_wait_release clear it	one-bit input-active latch; original defining TU remains unresolved
+GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	s32		candidate	retail word 1;24 validated GAME xrefs;menu input increments and decrements within 1..99;item controllers multiply prices and update stock	menu item quantity word; complete original object and defining TU unresolved
 GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32		supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; TU owner unresolved
 GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32		supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; TU owner unresolved
 GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
-GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	s8		candidate	retail byte 0x20;three reviewed GAME lui+lb references;card slot-digit seed	first signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
+GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	s8		candidate	retail byte 0x00;three reviewed GAME lui+lb references;card slot-digit seed	second signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
 GAME.EXE	0x8006d6a8	0x7	DAT_8006d6a8	unknown	load	char[7]		candidate	retail bytes;firstfile argument at 0x80022744;reviewed HI16/LO16 pair	seven-byte bu00:* NUL wildcard; defining TU and original extent beyond NUL unresolved
 GAME.EXE	0x8006d6b0	0x20	player_status_texture_rows	static	load	RECT[4]	player_reaction	supported	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM copy rows
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol

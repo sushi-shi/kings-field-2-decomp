@@ -15,11 +15,11 @@ from .sdk_compat import library_input
 LIBRARIES = {
     'PSX.EXE': ('LIBSN', 'LIBAPI'),
     'GAME.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                 'LIBETC', 'LIBAPI', 'LIBPRESS'),
+                 'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBCARD', 'LIBC'),
     'OPEN.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                 'LIBETC', 'LIBAPI', 'LIBPRESS'),
+                 'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBC'),
     'END.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                'LIBETC', 'LIBAPI', 'LIBPRESS'),
+                'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBC'),
 }
 ENTRY = '__SN_ENTRY_POINT'
 OVERLAY_STARTUP = 'NONE2.OBJ'
@@ -108,7 +108,11 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
                     *(['\tsection .bss_end,bssdata'] if report['startup'] else []),
                     f'\tregs pc={ENTRY}']
         (root / 'LINK.LNK').write_bytes(('\r\n'.join(commands) + '\r\n').encode('ascii'))
-        report['linker_command'] = f'psylink /c @LINK.LNK,{stem}.CPE,{stem}.SYM,{stem}.MAP > LINK.TXT'
+        # The overlay source units plus SDK members exceed PSYLINK 1.29's
+        # default object-module table. /n raises only that table limit.
+        module_limit = '' if name == 'PSX.EXE' else ' /n1024'
+        report['linker_command'] = (
+            f'psylink /c{module_limit} @LINK.LNK,{stem}.CPE,{stem}.SYM,{stem}.MAP > LINK.TXT')
         dos_run(root, [report['linker_command']], 'link')
         tool_succeeded(root, 'LINK.TXT', stem + '.CPE', b'CPE\x01')
         report['phase'] = 'convert'

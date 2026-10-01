@@ -147,9 +147,6 @@ void player_clear_motion(void)
     player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;
 }
 
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 mode);
-extern void func_80023384(void);
-
 enum {
     PLAYER_MAP_PROBE_RADIUS = 800,
     PLAYER_MAP_PROBE_HEIGHT = 1700

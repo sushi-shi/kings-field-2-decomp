@@ -115,7 +115,7 @@ claimed. An indirect `jr` or `jalr` below remains unresolved.
 | `800363dc` | exact, map owner | Acquires from the map-object effect pool; strict `100.000000000%` in `game.map_object`. |
 | `80036464` | WIP, map owner | Uses pool acquire, object reset, `rand`, and action start; has an unresolved jump-table dispatch. |
 | `800365d8` | WIP, map owner | Uses pool acquire and reset, `rand`, `rsin`, `rcos`, and action start; placement argument meanings remain open. |
-| `800366fc` | WIP, map owner | Scans map-object state at `8017`; effect ownership and object fields need review. |
+| `800366fc` | exact, 100% direct | Scans map-object state; the typed spawn high-byte view resolves its former WIP listing. |
 | `80040308` | WIP, effect owner | `0x13e4`-byte effect dispatch uses pool, sound, `rand`, and collision probe `8002b7f8`; jump table unresolved. |
 | `800483d8` | WIP | Expands ten `u16` offsets from `801b5a44` into caller pointer slots, with `0xffff` as null and base `801b2244`. BSS object extent is unbound. |
 | `80048428` | WIP | Adds a base pointer to field `+8` of selected variable-length records at `801b2244`; record bounds and BSS owner remain open. |
@@ -198,7 +198,7 @@ table at `800aa5e8` still lack a proven owner and extent.
 | `800335a0` | WIP | `0x3f4`-byte frame/update callee of `460a0` and scene controllers; four-argument signature and ownership remain open. |
 | `80034e10` | WIP, menu owner | TIM transition loader called by `462bc`; source-backed strict result is `99.114586000%`. |
 | `80036190` | WIP, map owner | Typed map-object proximity/facing search called by `4678c`; source-backed strict result is below exact. |
-| `800368b4` | WIP, map owner | Dispatches map-object action through a 21-entry jump table and may clear byte `+0x38`; indirect target set remains unresolved. |
+| `800368b4` | exact, 100% direct | Dispatches map-object action through a 21-entry jump table and may clear byte `+0x38`; the complete scatter unit now matches. |
 | `8005dda4` | vendored | `rsin` is an exact Psy-Q 3.0 `LIBGTE.LIB` archive match; called by `45e5c`. |
 | `8005deac` | vendored | `rcos` is an exact Psy-Q 3.0 `LIBGTE.LIB` archive match; called by `45e5c`. |
 
@@ -208,8 +208,8 @@ This sixth set follows confirmed direct calls from `462bc`, `4678c`, `475d8`,
 and `47c98` into the game-owned frame, menu, player, audio, CD, resource, and
 math functions they drive. All 25 rows have a current verdict. The four-byte
 graphics setter is a new strict exact reconstruction. The event controller's
-menu choices are still large unclaimed bodies, and the scene-coordinate BSS
-read by `36ad8` is still unbound.
+menu choices are still large unclaimed bodies. The scene-coordinate reads in
+`36ad8` now resolve to the complete `player_state.camera_position` owner.
 
 | GAME VA | Verdict | Retail evidence and open issue |
 | --- | --- | --- |
@@ -234,7 +234,7 @@ read by `36ad8` is still unbound.
 | `800293d4` | exact, player owner | Enters reaction state from `47c98`; strict `100.000000000%`. |
 | `800314d4` | exact | Sets graphics runtime bytes `+0x14cc1` through `+0x14cc4`; four confirmed callers include `4678c`, and reviewed BSS relocs yield strict `100.000000000%`. |
 | `800321d8` | WIP, resource owner | Queues TMD read from `4678c`; source-backed strict result `98.435900000%` with unresolved resource allocation boundary. |
-| `80036ad8` | WIP | Checks whether `player_state.camera_position` at `801985a8` falls in a caller-provided rectangle. |
+| `80036ad8` | exact, 100% direct | Checks whether `player_state.camera_position` at `801985a8` falls in a caller-provided rectangle; the contiguous unit and ordered relocations match. |
 | `80036e24` | WIP, audio owner | Frame loop squares phase for RGB, services VAB/CD, and renders camera pose; source-backed strict result `98.863640000%`, saved-register assignment residue. |
 | `80045e18` | exact, audio owner | Fixed sound `0x40` wrapper called by `4678c`; strict `100.000000000%`. |
 | `80045e3c` | exact, audio owner | Sound-at-volume-100 wrapper called by `4678c`; strict `100.000000000%`. |
@@ -424,10 +424,10 @@ four and twenty bytes longer than retail, respectively.
 | `800363dc` | exact | Reuses a free or oldest map-object slot for `36464` and `365d8`; strict `100.000000000%`. |
 | `80036464` | WIP, source-backed | Typed effect spawn calls pool acquire, reset, `rand`, and idle-action setter through a 17-entry template-kind switch. Strict `95.322580000%`; the switch table's first text addend differs by four bytes because preceding `36190` remains WIP in the contiguous unit. |
 | `800365d8` | exact | Scatters an object by a 600-unit `rsin`/`rcos` radius, advances pool counter at `+0x873e`, then starts action `0x62`; strict `100.000000000%`. |
-| `800366fc` | WIP, source-backed | 396-object action-byte and timer update called twice by `36ed4` and once by `4678c`; strict `37.336365000%`, 37/38 CFG blocks. |
-| `800368b4` | exact function, WIP unit data | Event controller calls a five-outcome map-object action/marker query. Its 21-entry switch table at `800118c4` is owned by the contiguous scatter unit; strict function score is `100.000000000%`, while the table's text addend differs by twenty bytes because preceding `366fc` remains WIP. |
+| `800366fc` | exact, 100% direct | 396-object action-byte and timer update called twice by `36ed4` and once by `4678c`; the typed spawn high-byte view matches retail. |
+| `800368b4` | exact, 100% direct | Event controller calls a five-outcome map-object action/marker query; its 21-entry switch table at `800118c4` and ordered relocations match with the complete scatter unit. |
 | `800369b8` | exact | Object animation vertex-to-world helper called twice by `36ed4`; strict `100.000000000%`. |
-| `80036ad8` | WIP, source-backed by another owner | `3247c`, `36ed4`, and `4678c` call a map-boundary predicate now modeled with `player_state.camera_position`; source is in the contiguous vertex-world unit. |
+| `80036ad8` | exact, 100% direct | `3247c`, `36ed4`, and `4678c` call the map-boundary predicate modeled with `player_state.camera_position`; the contiguous vertex-world unit matches byte-for-byte. |
 | `80036b68` | exact | Two `36ed4` calls pass pairs of 8-byte offsets from unclassified `8006d6e4` rows. Typed source interpolates a target map object's rotated position and action progress; strict `100.000000000%`. The loaded row owner remains open. |
 | `80036e24` | WIP, audio owner | CD/frame service called twice by `36ed4`; strict `98.863640000%`, with saved-register assignment residue. |
 | `80036ed4` | WIP, later sourced | Large 0x1df4-byte controller calls the placement/copy helpers, object pool helpers, audio, collision, and frame color setter; see the latest dispatcher verdict below. |
@@ -441,8 +441,8 @@ map-object actions, camera pose, event counters, and save-state conversion.
 The exact `45e5c` terrain probe joins the two adjacent audio wrappers in one
 unit and uses the existing startup-cleared BSS view for its collision-cache
 pointer. The pointer's target record remains unresolved. The strict verdicts
-below are per function; `368b4` is exact even though its containing unit has
-a switch-table addend residue from preceding WIP `366fc`.
+below are per function. The former switch-table addend residue in the
+`365d8`–`36944` scatter unit was later resolved with exact `366fc`.
 
 | GAME VA | Verdict | Call-connected evidence or remaining boundary |
 | --- | --- | --- |
@@ -453,7 +453,7 @@ a switch-table addend residue from preceding WIP `366fc`.
 | `8002a988` | WIP, no source | `489ac` queries map-cell height; collision-cache and fallback row owner remain open. |
 | `8002b604` | exact | `45e5c` invokes the five-argument collision wrapper; strict 100%. |
 | `80036464` | WIP, source-backed | Map-object effect spawn is 95.32258% strict; its 17-entry switch table has a prior-function text addend residue. |
-| `800368b4` | exact function, WIP unit data | `4678c` calls the action/marker query three times; strict function score 100%, table addend differs by 0x14. |
+| `800368b4` | exact, 100% direct | `4678c` calls the action/marker query three times; its containing switch-table addend now matches. |
 | `80045e5c` | exact | `4678c` and `47c98` call the 800-unit terrain probe; strict 100% with existing collision-cache BSS view. |
 | `80045f20` | exact | `475d8` projects event pose into world coordinates; strict 100%. |
 | `80045fd4` | exact | `475d8` interpolates scene pose; strict 100%. |
@@ -614,7 +614,7 @@ branches and candidate table references, so neither has a C claim.
 | `80030de4` | WIP, strict `89.521280000%` | Draws either or both occupancy-cell layers for exact caller `30f5c`; ten CFG blocks and six branches agree, while byte-load and position arithmetic scheduling differs. |
 | `80035894` | WIP, no source | Map placement controller calls `34f90` and `35194` twice each; 64 CFG blocks, two indirect jumps, and the loaded `8006787c` pattern-band owner remain open. |
 | `80036464` | WIP, strict `95.322580000%` | Typed map-object effect spawn calls pool acquire, reset, and `rand`; function register scheduling differs, and the contiguous unit's switch-table text addend remains four bytes off because preceding `36190` is WIP. |
-| `800366fc` | WIP, strict `37.336365000%` | Updates marker/action fields across 396 map objects; proven calls from `36ed4` twice and event controller `4678c`. Retail/compiled CFG is 37/38 blocks with switch-arm order differences. |
+| `800366fc` | exact, 100% direct | Updates marker/action fields across 396 map objects; the prior 37.3% WIP was resolved by the typed spawn high-byte view. |
 | `80036ed4` | WIP, later sourced | Placed-object/actor controller directly calls `14a08`, `366fc`, map-cell placement, audio, and collision helpers; its 329-block CFG has indirect control. See the latest dispatcher verdict below. |
 | `8003a614` | WIP, historical strict `96.910110000%`; current focused `81.2%` | Actor-to-player radial damage gate called five times by `3d184`; distance, angle, and damage call set agrees, while player-state load/register scheduling differs. The historical strict score predates the current source comparison. |
 | `8003d084` | WIP, strict `91.600000000%` | Clamps the signed actor sound offset, then combines it with `rand`; five CFG blocks and both branches agree. GCC reassociates the final `-2` around the shift. |
@@ -770,7 +770,7 @@ residues below. Scores are strict objdiff values from the shared report.
 | `80034f90` | WIP, strict `97.868220000%` | Map-cell pattern placer rotates ten-byte occupancy records using `rcos`/`rsin`. Its 14/14 CFG blocks, 7/7 branches, calls, and referents agree; saved-register assignment and one address calculation order differ. Adjacent `35194` remains WIP with its prior source. |
 | `800356ac` | WIP, strict `75.573770000%` | Map-object cell marker writes one of two five-byte occupancy layers and resets object scale. The 9/9 CFG blocks and 4/4 branches agree, while row/column address multiplication schedules differ; five adjacent map-object helpers remain exact. |
 | `80036464` | WIP, strict `95.322580000%` | Map-object effect spawn preserves typed pool/reset calls; argument saved-register and halfword-store order differ. The containing map-object switch table still has the previously known text-addend divergence. |
-| `800366fc` | WIP, strict `37.336365000%` | Dispatcher scans 396 map objects and handles action-specific marker changes. Focused source and retail differ in branch/field-update layout; exact `365d8` and `368b4` bodies are preserved, while the containing switch-table addend remains WIP. |
+| `800366fc` | exact, 100% direct | Dispatcher scans 396 map objects; the typed spawn high-byte view preserves exact `365d8`/`368b4` and matches the containing switch-table addend. |
 | `800460a0` | WIP, strict `99.268295000%` | Actor animation phase seek has matching 6/6 CFG blocks, 2/2 branches, calls, and referents. Only the saved-register assignment of the even step versus half-step differs; no supported semantic correction was found. |
 
 ## Menu list and card flow continuation
@@ -1549,7 +1549,7 @@ through the overlapping halfword emits the retail instruction sequence. Focused 
 for all four functions in `game.map_object_spawn_scatter`. Fresh direct objdiff
 reports 992/992 `.text` bytes and 84/84 `.rodata` bytes at 100%, with ordered
 text and switch-table relocations identical. Exact `365d8`, `368b4`, and
-`36944` remain unchanged; the historical `366fc` WIP rows above are superseded.
+`36944` remain unchanged; earlier `366fc` WIP measurements are superseded.
 
 Raw GAME `39048..3907f`, formerly one unclassified 56-byte data gap, is a
 complete actor-index wrapper with a stack frame, `jal` to the adjacent exact
@@ -1578,3 +1578,42 @@ listing values are not closure claims; `366fc` alone has a fresh direct
 | `3983c` | WIP, 87.0% listing | Actor pointer and sentinel saved-register assignments differ; the new adjacent claim preserves its listing. |
 | `39b58` | WIP, 79.2% listing | New actor-group wrapper has 9/9 CFG blocks, 4/4 branches, and ordered referents; saved `s4` sentinel differs. |
 | `39c94` | WIP, 62.1% listing | Exact `39c14` sibling preserved; stack-argument schedule and callback path register lifetimes differ. |
+
+### Actor motion and map-boundary follow-up
+
+The next ten functions were selected through map-object boundary calls and the
+actor damage, animation, motion, and target-group data graph. A fresh focused
+probe found that `36ad8` was already SAME in its contiguous two-function unit.
+An isolated pinned GCC 2.5.7 compile and direct objdiff certify both functions
+at 100%: 432/432 `.text` bytes, including all 144 bytes of `36ad8`, and
+identical ordered `.rel.text` entries. Its earlier WIP label is superseded.
+No source change was justified for the other nine functions in this pass.
+For `3b5d0`, a `/tmp`-only probe moving just case `0x20` ahead of cases 0
+and `0x10` retained the 66.5% listing and the compiler's first `0x10`
+comparison. Its return-frontier order also diverged further, so it was
+discarded; the source remains unchanged.
+An early `if (state == 0x20)` `/tmp` probe instead reached 68.0% with the
+same block and branch counts, but emitted a `bne` to the wrong B4 successor
+where retail has `beq`. That source-shape trial was also discarded.
+
+| GAME VA | Final verdict | Evidence limit |
+| --- | --- | --- |
+| `34f90` | WIP, 92.5% focused listing | All 14 CFG blocks, seven branches, and ordered successor lists agree; register and independent instruction schedules differ. |
+| `35194` | WIP, 58.8% focused listing | All 51 CFG blocks, 26 branches, and ordered successor lists agree; retail's 40-byte frame versus the probe's 32-byte frame changes argument/register lifetimes. |
+| `36ad8` | Exact, 100% direct | Rectangle/height predicate uses `player_state.camera_position`; both contiguous functions and ordered relocations match. |
+| `3a318` | WIP, 97.5% focused listing | Two incoming O32 stack-argument loads exchange temporary registers; exact `3a778` remains SAME. |
+| `3a614` | WIP, 81.2% focused listing | Retail separately reloads player camera fields where GCC reuses a base; calls and return paths agree. |
+| `3ae50` | WIP, 99.2% focused listing | Five instructions around the angle-wrap mask are scheduled differently; six animation siblings remain SAME. |
+| `3b5d0` | WIP, 66.5% focused listing | Both versions have 40 CFG blocks and 21 branches, but B4 tests vertical state `0x20` first in retail and `0x10` first in the probe; three preceding siblings remain SAME. |
+| `3bd40` | WIP, 68.2% focused listing | Actor-state load and angle-temporary lifetimes differ; six actor-motion siblings remain SAME. |
+| `3c3e0` | WIP, 95.4% focused listing | Yaw-error and scaled-yaw temporaries exchange registers; three group-position siblings remain SAME. |
+| `3f7ec` | WIP, 93.8% focused listing | Sentinel initialization order and commutative pointer addition differ; exact `3f610` and `3f860` remain SAME. |
+
+The connected lifecycle unit was rechecked after this table: `3983c` remains
+87.0% focused with 37/37 CFG blocks and 24/24 branches, and `39b58` remains
+79.2% with 9/9 blocks and 4/4 branches. Both ordered successor lists agree.
+The former exchanges saved actor-pointer and constant registers; the latter
+holds the `0xff` sentinel in retail saved `s4` but materializes an immediate
+in the probe. No external direct caller of `39b58` is established by the
+current xref inventory. Neither difference supports an invented C local or
+an overlapping owner, so both source claims remain WIP and unchanged.

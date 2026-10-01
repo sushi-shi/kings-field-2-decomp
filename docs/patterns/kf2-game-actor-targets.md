@@ -31,7 +31,7 @@ not reconstructed game functions.
 | `80039804` | exact | Same byte/phase update only when the value changes; byte meaning remains unresolved. |
 | `8003983c` | WIP | 0x31c-byte actor lifecycle update with collision/distance, random choice, and target-selection branches. Shared group flag and geometry field meanings remain open. |
 | `80039c14` | exact | Fixed-point quadratic helper called eight times by `80039c94`; parameter meanings remain unresolved. |
-| `80039c94` | WIP | 0x684 bytes/72 blocks, actor update with eight curve calls, target selection, player training, vector math, and one unresolved `jalr`. Needs a callback and movement-state model. |
+| `80039c94` | WIP, source-backed, 44.4% focused | 0x684 bytes/72 retail blocks; typed actor/group curves, target selection, player training, vector math, and one unresolved `jalr`. Current C has 71 blocks and 46/46 branches. |
 | `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan calls distance helpers and `80039c94`. Retail halfword loads prove `falloff` and `effect_flags` are `u16`; delaying amount extraction and actor-base setup until after the flag branch yields 26/26 CFG blocks and 13/13 branches. Only a two-register argument-load swap remains. |
 | `8003a614` | WIP | 0x164 bytes, distance/angle tests and `800248a8`; caller and geometry types need recovery. |
 | `8003a778` | exact | Scans active actors for the best target by distance and angular score; strict `100.000000000%`. |
@@ -494,7 +494,7 @@ GAME.EXE and uses the strict objdiff result when source exists.
 | `80015318` | exact | Actor magic dispatch and the frame actor scan call the exact XZ angle helper. |
 | `800157f8` | exact | `4212c` uses the exact randomized fixed scalar before scaling the spawn direction. |
 | `800248a8` | WIP, no source | `3fb94` forwards mode `0x80` damage values to this player helper. |
-| `80039c94` | WIP, no source | `3fb94` forwards mode `0x10` actor magic values here after its angle gate. |
+| `80039c94` | WIP, source-backed | `3fb94` forwards mode `0x10` actor magic values here after its angle gate; the contiguous actor curve unit now owns its body. |
 | `8003f610` | exact | Main-loop actor scan binds and updates the pool, reads `player_state.camera_position` at `801985a8`, and copies typed map-object positions; strict 100%. |
 | `8003fa68` | WIP, source-backed | Both collision probes in `42298` call this effect helper; strict `70.733330000%`. |
 | `8003fb94` | WIP, source-backed | Typed two-mode actor/player magic dispatch, strict `87.791046000%`; 11/11 CFG blocks and 6/6 branches match. The record-type flag transform now matches retail; entry register allocation and mode-mask scheduling differ. |
@@ -587,7 +587,7 @@ Indirect branch targets below remain unresolved.
 | --- | --- | --- |
 | `80039108` | WIP, no source | Actor candidate scorer called by `39640`; 59 CFG blocks and two indirect jumps require dispatch-table and candidate-record ownership. |
 | `8003983c` | WIP, historical strict `99.075380000%` fuzzy | Typed lifecycle update called by `3f610`; the direct call set, player/actor referents, 37 CFG blocks, 24 branches, and 13 return frontiers align. A later focused carve reviewed twelve actor/player BSS relocation pairs and corrected the byte read from player-state +0x10a to retail-proven +0x0a. The focused listing still swaps the actor pointer and constant-one saved registers; current strict score has not been refreshed. |
-| `80039c94` | WIP, no source | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block body includes an unresolved indirect call. |
+| `80039c94` | WIP, source-backed, 44.4% focused | Actor magic recipient called by `3a318`, `3fb94`, player damage, and effect dispatch; its 72-block retail body includes an unresolved indirect call. |
 | `8003a318` | WIP, `97.5%` focused listing; strict pending | Typed 200-actor magic scan matches the observed distance-helper and `39c94` calls. Retail `lhu` at stack arguments 5 and 16 establishes `u16` falloff/effect flags; the source now computes amount and actor base after the flag branch. Focused CFG is 26/26 blocks and 13/13 branches; only the two argument temporary registers differ. |
 | `8003a778` | exact, strict `100.000000000%` | Typed best-target scan retains retail angle wrapping, range test, random variation, and loop schedule; five confirmed callers include player and effect paths. |
 | `8003ae50` | WIP, source-backed, 99.2% focused | Actor movement helper called by the matched motion family; typed terrain, angle, `SquareRoot0`, and sine/cosine paths span 58 matching CFG blocks. Six adjacent actor-animation listings remain SAME. |
@@ -929,7 +929,7 @@ PSX.EXE; the overlays retain their known unresolved link symbols.
 | `80016820` | WIP, unclaimed | The 62-block main-loop phase controller calls map, actor, and resource setup. Its indirect phase jump and candidate table at `80011058` do not yet establish a source-owned dispatch table. |
 | `8002ff5c` | WIP, unclaimed | The exact map-cell renderer calls this 0xcbc-byte prepared-TMD packet builder. It has an 11-block CFG, a 1248-byte frame, and fourteen `resource_copy_words` calls; the packed packet schema and complete argument contract remain unproved. |
 | `80039108` | WIP, unclaimed | Actor candidate scorer is called by target selection. Its 59 blocks use a 131-row candidate jump table at `80011cd8` with ten unique in-function targets; the indirect callback and table owner remain unresolved. |
-| `80039c94` | WIP, unclaimed | The 72-block combat helper is reached by actor, player, and effect paths and repeatedly calls `39c14`. An indirect callback and the complete shared record model remain unresolved. |
+| `80039c94` | WIP, source-backed, 44.4% focused | The 72-block combat helper is reached by actor, player, and effect paths and repeatedly calls `39c14`. Callback slot 18 remains unresolved; current C has 71 blocks and 46/46 branches. |
 | `8003ae50` | WIP, source-backed, 99.2% focused | Motion/collision helper called by exact actor-motion routines takes a halfword motion vector and flags. Its C body models KF2 retry paths; the 58/58 blocks and 34/34 branches agree, with angle-register and mask-scheduling residue. |
 | `8003c614` | WIP, unclaimed | The 45-block behavior dispatcher is called by `3d184`, calls exact actor-position siblings and `3c3e0`, and branches through an unresolved candidate switch table at `80011ee8`. |
 
@@ -977,7 +977,7 @@ No source or configuration edit was retained.
 | `80015918` | WIP, strict `95.494190000%` | Fixed-point trajectory solver has 41/41 blocks and 24/24 branches; the arithmetic result register differs from the first discriminant subtraction onward. Exact adjacent trajectory caller `15bc8` and vector helper `15ce0` remain intact. |
 | `80033d3c` | WIP, strict `95.218390000%` | Sparse morph accumulator has 17/17 blocks, 10/10 branches and three `ScaleMatrix` calls. The pending-flush skip branches to a different common tail; an explicit per-branch reset trial reduced the compiled CFG to 16 blocks and was reverted. Both preceding sparse-animation claims remain exact. |
 | `80039108` | WIP, unclaimed | Actor candidate scorer is called by the target selector. Its 59-block body uses a 131-row candidate jump table at `80011cd8` with ten unique internal targets; the indirect callback and table owner remain unresolved. |
-| `80039c94` | WIP, unclaimed | Actor combat/magic recipient has 72 blocks, repeated calls to `39c14`, and an unresolved indirect callback. Its shared actor/player/effect record contract remains incomplete. |
+| `80039c94` | WIP, source-backed, 44.4% focused | Actor combat/magic recipient has 72 retail blocks and eight calls to exact `39c14`; current C has 71 blocks and 46/46 branches. Its indirect callback remains unresolved. |
 | `8003ae50` | WIP, source-backed, 99.2% focused | Motion/collision helper reached by exact actor-motion functions has 58/58 CFG blocks and 34/34 branches, with matching terrain, trigonometric, angle, and `SquareRoot0` calls. Only angle-register assignment and mask scheduling differ in the focused listing. |
 | `8003c3e0` | WIP, strict `99.645390000%` | Group-position solver has 23/23 blocks, 11/11 branches, matching calls and referents, and three exact siblings. Only the yaw-error and scaled-yaw register assignments differ; consolidating the scale assignment lowered focused similarity and was reverted. |
 | `8003c614` | WIP, unclaimed | Actor behavior dispatcher is called by `3d184` and calls group-position helper `3c3e0` eleven times. Its 45-block switch retains an unresolved indirect jump and candidate table at `80011ee8`. |

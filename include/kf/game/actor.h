@@ -63,7 +63,9 @@ typedef struct KfTargetGroup {
     u16 unknown_18;
     u16 unknown_1a;
     u16 unknown_1c;
-    u8 unknown_1e[0x14];
+    u16 unknown_1e;
+    u16 unknown_20[8];
+    u8 unknown_30[2];
     u16 unknown_32;
     u32 unknown_34;
     KfTargetReference targets[16];
@@ -71,6 +73,8 @@ typedef struct KfTargetGroup {
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
 typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
+typedef char kf_target_group_curve_offset[
+    (u32)&((KfTargetGroup *)0)->unknown_20 == 0x20 ? 1 : -1];
 
 typedef struct KfActorHalfword4aBytes {
     u8 low;

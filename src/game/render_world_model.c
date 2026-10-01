@@ -17,6 +17,7 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
                    u16 phase, u8 lighting_override, s16 lighting_blend,
                    u8 render_mode, s32 depth)
 {
+    /* Retail reads vy after a null world_matrix path without initializing it. */
     SVECTOR relative;
     VECTOR scale_vector;
     MATRIX model;

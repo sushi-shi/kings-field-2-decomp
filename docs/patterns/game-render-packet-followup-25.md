@@ -1,5 +1,10 @@
 # GAME TMD and render packet follow-up
 
+The connected frame-driver sweep continues in
+[game-render-frame-chain-26.md](game-render-frame-chain-26.md).
+The contiguous display/TMD packet pass is recorded in
+[game-tmd-display-adjacency-26.md](game-tmd-display-adjacency-26.md).
+
 This 25-function pass follows the TMD object, prepared-packet, and map-cell
 render call graph. The percentages below are from the last strict GAME report;
 focused probes are called out separately. Exact neighbors are regression
@@ -45,11 +50,12 @@ branches; it was discarded. Swapping the FT3/FT4 source cases in the map
 emitter similarly worsened its focused listing and was discarded. Neither
 experiment identifies a source-level reason for the remaining differences.
 
-The clipped-vertex color at result offset `+0x1c` is now a `CVECTOR` in the
-shared record, matching the `DpqColor` output parameter and the typed GT3
+The clipped-vertex color at result offset `+0x1c` is `EVECTOR.rgb`, the SDK's
+`CVECTOR` member, matching the `DpqColor` output parameter and the typed GT3
 packet color destination. The final four-byte packet copies remain explicit
-word copies, as retail emits `lw`/`sw` there. This layout-identical change
-retains the exact map emitter and both WIP focused listing verdicts.
+word copies, as retail emits `lw`/`sw` there. Replacing the partial custom
+view with the complete Psy-Q `EVECTOR` preserves the exact map emitter and
+both WIP focused listing verdicts.
 
 ## Display, panel, frame, and TIM transfer callers
 

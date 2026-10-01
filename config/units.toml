@@ -146,6 +146,12 @@ source = "src/game/actor_trajectory_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.callback_default_noop"
+image = "GAME.EXE"
+source = "src/game/callback_default_noop.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.world_translate"
 image = "GAME.EXE"
 source = "src/game/world_translate.c"

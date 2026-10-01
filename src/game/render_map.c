@@ -127,35 +127,36 @@ void render_enqueue_map(u16 object_index)
     }
 }
 
-/* The clipping SDK returns vertices through the graphics pointer table. */
+/* The clipping SDK returns EVECTOR pointers; NormalClip takes packed screen XY. */
 #define CLIPPED_MAP_VERTEX(index) \
-    ((KfMapClippedVertex *)game_graphics_runtime.clip_result_vertices[index])
+    (game_graphics_runtime.clip_result_vertices[index])
+#define CLIPPED_MAP_XY(vertex) (*(long *)&(vertex)->sxy)
 
 ADDRESS(0x8002f5b0, 0x258)
 void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
                    u32 mode, s32 depth_bias)
 {
-    KfMapClippedVertex *first;
-    KfMapClippedVertex *second;
-    KfMapClippedVertex *third;
+    EVECTOR *first;
+    EVECTOR *second;
+    EVECTOR *third;
     CVECTOR shade;
     CVECTOR first_color;
     u32 packet_code;
     EVECTOR **next;
     s32 triangle_count;
 
-    if (NormalClip(CLIPPED_MAP_VERTEX(0)->xy,
-                   CLIPPED_MAP_VERTEX(1)->xy,
-                   CLIPPED_MAP_VERTEX(2)->xy) <= 0) {
+    if (NormalClip(CLIPPED_MAP_XY(CLIPPED_MAP_VERTEX(0)),
+                   CLIPPED_MAP_XY(CLIPPED_MAP_VERTEX(1)),
+                   CLIPPED_MAP_XY(CLIPPED_MAP_VERTEX(2))) <= 0) {
         return;
     }
     NormalColorCol(normal, &map_textured_primitive_color, &shade);
     next = game_graphics_runtime.clip_result_vertices;
-    first = (KfMapClippedVertex *)*next++;
+    first = *next++;
     packet_code = mode | 0x34;
-    DpqColor(&shade, first->p2 >> 1, &first_color);
-    second = (KfMapClippedVertex *)*next++;
-    DpqColor(&shade, second->p2 >> 1, &second->color);
+    DpqColor(&shade, first->sxyz.pad >> 1, &first_color);
+    second = *next++;
+    DpqColor(&shade, second->sxyz.pad >> 1, &second->rgb);
 
     triangle_count = vertex_count - 2;
     goto loop_test;
@@ -163,8 +164,8 @@ loop_body: {
         KfGpuGT3 *packet;
         s32 depth;
 
-        third = (KfMapClippedVertex *)*next++;
-        DpqColor(&shade, third->p2 >> 1, &third->color);
+        third = *next++;
+        DpqColor(&shade, third->sxyz.pad >> 1, &third->rgb);
         packet = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
         game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
         if (game_graphics_runtime.display_state.primitive_buffer->cursor >
@@ -173,18 +174,19 @@ loop_body: {
         }
         packet->packed.clut = clut;
         packet->packed.tpage = tpage;
-        packet->packed.xy0 = first->xy;
-        packet->packed.xy1 = second->xy;
-        packet->packed.xy2 = third->xy;
-        packet->packed.uv0 = first->uv;
-        packet->packed.uv1 = second->uv;
-        packet->packed.uv2 = third->uv;
+        packet->packed.xy0 = CLIPPED_MAP_XY(first);
+        packet->packed.xy1 = CLIPPED_MAP_XY(second);
+        packet->packed.xy2 = CLIPPED_MAP_XY(third);
+        packet->packed.uv0 = first->txuv;
+        packet->packed.uv1 = second->txuv;
+        packet->packed.uv2 = third->txuv;
         *(u32 *)&packet->packed.color0 = *(u32 *)&first_color;
-        *(u32 *)&packet->packed.color1 = *(u32 *)&second->color;
-        *(u32 *)&packet->packed.color2 = *(u32 *)&third->color;
+        *(u32 *)&packet->packed.color1 = *(u32 *)&second->rgb;
+        *(u32 *)&packet->packed.color2 = *(u32 *)&third->rgb;
         ((u8 *)&packet->sdk.tag)[3] = 9;
         packet->sdk.code = packet_code;
-        depth = (first->sz + second->sz + third->sz) / 12 + depth_bias;
+        depth = (first->sxyz.vz + second->sxyz.vz + third->sxyz.vz) / 12
+              + depth_bias;
         if (depth < 16) {
             depth = 16;
         }

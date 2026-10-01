@@ -315,12 +315,6 @@ KfMapCellPatternVariant	0x00	0x01	first_unknown_03	u8	supported	asm;func_80034f9
 KfMapCellPatternVariant	0x01	0x01	second_unknown_03	u8	supported	asm;func_80034f90;callers	placement pattern field
 KfMapCellPatternVariant	0x02	0x01	first_object_index	u8	supported	asm;func_80034f90;callers	placement pattern field
 KfMapCellPatternVariant	0x03	0x01	second_object_index	u8	supported	asm;func_80034f90;callers	placement pattern field
-KfMapClippedVertex	0x00	0x10	unknown_00	u8[16]	opaque	asm;func_8002f5b0	SDK clip-result header consumed only through later fields
-KfMapClippedVertex	0x10	0x04	sz	s32	supported	asm;func_8002f5b0	depth used in clipped triangle ordering
-KfMapClippedVertex	0x14	0x04	p2	s32	supported	asm;func_8002f5b0	perspective value passed to DpqColor
-KfMapClippedVertex	0x18	0x04	xy	long	supported	asm;func_8002f5b0	packed screen coordinates used by NormalClip and GT3
-KfMapClippedVertex	0x1c	0x04	color	CVECTOR	supported	asm;func_8002f5b0;DpqColor output	shaded vertex color copied as a packed word to GT3
-KfMapClippedVertex	0x20	0x02	uv	u16	supported	asm;func_8002f5b0	textured vertex UV copied to GT3
 KfMapObject	0x00	0x01	unknown_00	u8	opaque	asm;func_80035590	cleared by map-object reset
 KfMapObject	0x01	0x01	unknown_01	u8	opaque	asm;func_80035590	set to 0x80 by map-object reset
 KfMapObject	0x02	0x01	unknown_02	u8	opaque	asm;func_80035590	set to 0xff by map-object reset
@@ -676,7 +670,9 @@ KfTargetGroup	0x16	0x2	unknown_16	u8[2]	opaque	game/actor.h;retail GAME actor ch
 KfTargetGroup	0x18	0x2	unknown_18	u16	supported	game/actor.h;retail GAME 0x8003fb94	angle tolerance loaded with lhu before angle_within_tolerance
 KfTargetGroup	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1c	0x2	unknown_1c	u16	supported	asm;actor record loader	fallback signed actor vertical offset when load record has sentinel -1
-KfTargetGroup	0x1e	0x14	unknown_1e	u8[20]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfTargetGroup	0x1e	0x2	unknown_1e	u16	supported	asm;GAME 0x80039c94 lhu at 0x8003a070	unsigned player experience argument
+KfTargetGroup	0x20	0x10	unknown_20	u16[8]	supported	asm;GAME 0x80039c94 eight lhu reads	passed to func_80039c14 as eight curve divisors
+KfTargetGroup	0x30	0x2	unknown_30	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x32	0x2	unknown_32	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x34	0x4	unknown_34	u32	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x38	0x40	targets	KfTargetReference[16]	supported	game/actor.h;retail GAME actor chain;8003f7ec offset fixup	encoded relative offsets become candidate pointers

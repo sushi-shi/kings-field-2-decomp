@@ -12,6 +12,7 @@ enum {
     PLAYER_MOVE_HEIGHT = 1700,
     PLAYER_MOVE_COLLISION_MODE = 49,
     PLAYER_MOVE_SLIDE_RADIUS = 880,
+    PLAYER_MOVE_DEFLECTION_ANGLE = 32,
     PLAYER_MOVE_STEP = 22
 };
 
@@ -32,8 +33,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 slide_attempted = 0;
     s32 diagonal_retry = 0;
     s32 high_collision;
-    s32 delta_x;
-    s32 delta_z;
+    SVECTOR delta;
     s32 diagonal_kind;
 
     for (;;) {
@@ -52,14 +52,14 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         }
 
         high_collision = 0;
-        if (flags & -6) {
+        if ((flags & -6) == 0) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
             high_collision = 1;
+            /* The cache/equipment boundary remains provisional. */
             if (collision_height + 1280 >= player_state.camera_position.vy
-                && player_state.death_state == 0 && (flags & 0x30) == 0
-                       /* The cache/equipment boundary remains provisional. */
-                       && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
-                           - collision_height) < -PLAYER_MOVE_HEIGHT) {
+                && player_state.death_state == 0
+                && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
+                    - collision_height) < -PLAYER_MOVE_HEIGHT) {
                 goto accept_position;
             }
         }
@@ -70,18 +70,20 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                 break;
             }
             func_8002b874();
-            delta_x = (s16)(KF_COLLISION_CACHE_POSITION.vx - player_state.camera_position.vx);
-            delta_z = (s16)(KF_COLLISION_CACHE_POSITION.vz - player_state.camera_position.vz);
-            angle = vector_xz_to_angle(delta_x, delta_z);
-            if (angle_mod_delta_le_half_turn(heading, angle)) {
-                angle += 2016;
-            } else {
-                angle += 2080;
-            }
+            delta.vx = (u16)KF_COLLISION_CACHE_POSITION.vx
+                     - (u16)player_state.camera_position.vx;
+            delta.vz = (u16)KF_COLLISION_CACHE_POSITION.vz
+                     - (u16)player_state.camera_position.vz;
+            angle = vector_xz_to_angle(delta.vx, delta.vz);
+            angle = angle_mod_delta_le_half_turn(heading, angle)
+                ? angle + (KF_ANGLE_HALF_TURN - PLAYER_MOVE_DEFLECTION_ANGLE)
+                : angle + (KF_ANGLE_HALF_TURN + PLAYER_MOVE_DEFLECTION_ANGLE);
             angle &= KF_ANGLE_WRAP_MASK;
             radius = KF_COLLISION_CACHE_RADIUS + PLAYER_MOVE_SLIDE_RADIUS;
-            next.vx = KF_COLLISION_CACHE_POSITION.vx + ((-rsin(angle) * radius) >> 12);
-            next.vz = KF_COLLISION_CACHE_POSITION.vz + ((rcos(angle) * radius) >> 12);
+            delta.vx = (-rsin(angle) * radius) >> 12;
+            delta.vz = (rcos(angle) * radius) >> 12;
+            next.vx = KF_COLLISION_CACHE_POSITION.vx + delta.vx;
+            next.vz = KF_COLLISION_CACHE_POSITION.vz + delta.vz;
             dx = next.vx - player_state.camera_position.vx;
             dz = next.vz - player_state.camera_position.vz;
             continue;
@@ -108,7 +110,8 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             slide_attempted = 1;
         }
 
-        if (!high_collision && (flags & 1)) {
+        if (high_collision || (flags & 1)) {
+        axis_retry:
             if (dx != 0) {
                 dx = 0;
                 continue;
@@ -121,15 +124,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         }
         if (flags & 2) {
             if (diagonal_retry) {
-                if (dx != 0) {
-                    dx = 0;
-                    continue;
-                }
-                if (dz != 0) {
-                    dz = 0;
-                    dx = initial_dx;
-                    continue;
-                }
+                goto axis_retry;
             } else {
                 diagonal_retry = 1;
                 diagonal_kind = KF_COLLISION_CACHE_SHAPE[2] & 3;

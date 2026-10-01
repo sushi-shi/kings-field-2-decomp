@@ -17,18 +17,18 @@ void func_80023384(void)
 
     /* The collision-cache words overlap a provisionally sized equipment span. */
     lower = *(s32 *)((u8 *)&bss_801c7540 + COLLISION_CACHE_LOWER_OFFSET)
-          + COLLISION_CACHE_BIAS
-          - (player_state.unknown_134 + player_state.camera_position.vy
-             + player_state.unknown_138);
+          + COLLISION_CACHE_BIAS;
+    lower -= player_state.unknown_134 + player_state.camera_position.vy
+           + player_state.unknown_138;
     player_state.unknown_120 = lower;
     if (lower < COLLISION_LOWER_DEATH_LIMIT) {
         player_death_begin(NULL);
     }
 
     upper = *(s32 *)((u8 *)&bss_801c7540 + COLLISION_CACHE_UPPER_OFFSET)
-          + COLLISION_CACHE_BIAS
-          - (player_state.unknown_134 + player_state.camera_position.vy
-             + player_state.unknown_138);
+          + COLLISION_CACHE_BIAS;
+    upper -= player_state.unknown_134 + player_state.camera_position.vy
+           + player_state.unknown_138;
     player_state.unknown_124 = upper;
     if (upper <= 0) {
         player_death_begin(NULL);

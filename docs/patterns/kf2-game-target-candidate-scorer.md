@@ -50,6 +50,33 @@ The next concrete ownership step is validation of the switch table's source
 owner and a typed candidate-record model. The indirect branch's row values
 are decoded, while the callback's destination is still unknown.
 
+A one-VA focused carve of `80039108` uses only five curated relocation rows
+and withholds 28 case-path MIPS26 calls and jumps after the indirect switch;
+the delinker marks them `non-reachable-code-channel`. Source matching requires
+the switch table and those case edges to be curated together. This does not
+promote the indirect callback destination to a known function.
+
+The adjacent magic recipient `80039c94` is a more tractable source pilot:
+its focused carve withholds no relocations and its two sourced callers pass
+thirteen arguments. Retail masks the actor index to sixteen bits, selects an
+actor from the 200-entry pool, and may follow signed actor `+0x22` when the
+slot state is three. It then loads the actor's group and reads eight unsigned
+halfwords at group `+0x20..+0x2f`, passing each in order to the exact curve
+helper `80039c14`. The shared group type now models that span as
+`unknown_20[8]` without assigning an unsupported gameplay name. The summed
+curve result is capped at `0x68db7`, scaled by a caller halfword and 5000,
+then passed to active callback-table slot 18 with ten observed arguments.
+That callback target remains unresolved. Later paths select actor targets,
+award player training or experience, and build motion toward a supplied
+position. A contiguous source claim now follows the exact curve helper in
+`actor_fixed_curve.c`; its direct call set and three reviewed BSS relocation
+pairs are represented, while the decompiler candidate remains only a guide.
+Focused comparison is **WIP, 44.4% listing**: retail/source have 72/71 CFG
+blocks, 46/46 branches, and the same seven incoming return edges. The first
+real structural residue is one block, followed by broad register and stack
+allocation differences. The exact `80039c14` sibling remains SAME. The
+slot-18 callback target and several actor field meanings remain unresolved.
+
 ## Connected actor-behavior dispatch tables
 
 The behavior controller `func_8003c614` tests unsigned `mode - 1 <= 0x7a`
@@ -62,6 +89,11 @@ table. Only 23 mode values select nondefault targets, from the sparse set
 `0x1f..0x21`, `0x28`, `0x6c`, `0x6e`, `0x70`, and `0x78`, `0x79`, `0x7b`.
 The controller remains unclaimed because its complete mode and record contract
 is unresolved.
+
+Focused one-VA carving withholds 68 control relocations after the indirect
+switch in `8003c614`, and 249 after the larger switch in `8003d184`.
+These counts are an evidence gap in the current curated model, not evidence
+that the case bodies are dead code.
 
 The larger actor update dispatcher `func_8003d184` reads actor byte `+0x0e`,
 accepts values through `0xf0`, and indexes 241 words at

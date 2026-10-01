@@ -1,3 +1,5 @@
+#include <stdarg.h>
+
 #include <kf/game/cd.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_stream.h>
@@ -18,28 +20,32 @@ extern void func_80045fd4(KfScenePoseView *destination,
 extern void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 
 ADDRESS(0x800475d8, 0x6c0)
-void func_800475d8(KfMapObject *object, s32 spawn_object_id)
+void func_800475d8(KfMapObject *object, ...)
 {
+    va_list arguments;
+    s32 spawn_object_id;
     s32 spawned_id = -1;
     const KfMapObjectTemplate *template;
     const KfMapObjectTemplatePoseView *pose;
-    VECTOR first_position;
-    VECTOR next_position;
-    SVECTOR first_angles;
     SVECTOR next_angles;
+    SVECTOR first_angles;
+    VECTOR next_position;
+    VECTOR first_position;
     s32 first_yaw;
     s32 current_yaw;
     s32 target_yaw;
     u16 first_pitch;
-    s32 target_pitch;
-    s32 end_pitch;
+    s16 target_pitch;
     s32 negative_depth;
     s32 fraction;
     u32 previous_buttons;
     u32 buttons;
-    s32 remove_object = 0;
+    s32 remove_object;
 
     if (object == 0) {
+        va_start(arguments, object);
+        spawn_object_id = va_arg(arguments, s32);
+        va_end(arguments);
         spawned_id = spawn_object_id;
         object = map_object_effect_pool_acquire(
             0x15e, 10, map_object_state.unknown_873e);
@@ -47,9 +53,9 @@ void func_800475d8(KfMapObject *object, s32 spawn_object_id)
         object->object_id = spawn_object_id;
         object->unknown_00 = 3;
         object->action = 0xff;
-        object->rotation.vx = 0;
-        object->rotation.vy = 0;
         object->rotation.vz = 0;
+        object->rotation.vy = 0;
+        object->rotation.vx = 0;
         object->tail.fields.unknown_38 = 0xff;
     }
 
@@ -94,15 +100,20 @@ void func_800475d8(KfMapObject *object, s32 spawn_object_id)
     }
     target_pitch = (negative_depth >> 2) - 200;
 
-    if (spawned_id == -1) {
-        first_position = object->position;
+    if (spawned_id != -1) {
+        func_80045f20(0, 500, 1500, target_yaw,
+                      player_state.camera_rotation.angles[1],
+                      pose->height_offset, pose->depth_offset,
+                      &object->position);
+    } else {
         first_angles = object->rotation;
+        first_position = object->position;
         func_80045f20(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
                       pose->height_offset, pose->depth_offset,
                       &next_position);
-        next_angles.vx = 0;
         next_angles.vz = 0;
+        next_angles.vx = 0;
         for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
             buttons = PadRead(1);
             if (previous_buttons == 0 && buttons != 0) {
@@ -120,11 +131,6 @@ void func_800475d8(KfMapObject *object, s32 spawn_object_id)
             func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
             previous_buttons = buttons;
         }
-    } else {
-        func_80045f20(0, 500, 1500, target_yaw,
-                      player_state.camera_rotation.angles[1],
-                      pose->height_offset, pose->depth_offset,
-                      &object->position);
     }
     object->unknown_0e = target_pitch;
 
@@ -145,26 +151,30 @@ button_pressed:
         goto return_pose;
     }
     if (func_80047434(object->object_id) == 0) {
-        if (object->object_id == 0x75) {
+        switch (object->object_id) {
+        case 0x75: {
             s32 amount = ((rand() * 6) >> 15) + 4;
             if (game_counter_bytes[0x75] < 99 - amount) {
                 game_counter_bytes[0x75] += amount;
             } else {
                 game_counter_bytes[0x75] = 99;
             }
-        } else if (object->object_id == 0x76) {
+            break;
+        }
+        case 0x76:
             if (game_counter_bytes[0x76] < 95) {
                 game_counter_bytes[0x76] += 4;
             } else {
                 game_counter_bytes[0x76] = 99;
             }
+            break;
         }
         remove_object = 1;
         func_80045f20(-500, 500, 0, target_yaw,
                       player_state.camera_rotation.angles[1], 0, 0,
-                      &next_position);
-        next_angles = object->rotation;
-        end_pitch = 0;
+                      &first_position);
+        first_angles = object->rotation;
+        first_pitch = 0;
         goto interpolate_back;
     }
     if (spawned_id != -1) {
@@ -173,28 +183,26 @@ button_pressed:
     }
 
 return_pose:
+    remove_object = 0;
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
         object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
         func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
     }
     object->rotation.vy = first_angles.vy;
-    next_position = first_position;
-    next_angles = first_angles;
-    end_pitch = (s16)first_pitch;
 
 interpolate_back:
-    first_position = object->position;
-    first_angles = object->rotation;
+    next_angles = object->rotation;
+    next_position = object->position;
     current_yaw = player_state.camera_rotation.angles[0];
     for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
-        func_80045fd4((KfScenePoseView *)object, &first_position,
-                      &next_position, &first_angles, &next_angles,
+        func_80045fd4((KfScenePoseView *)object, &next_position,
+                      &first_position, &next_angles, &first_angles,
                       fraction);
         player_state.camera_rotation.angles[0] = func_8001586c(
             current_yaw, first_yaw, fraction);
         object->unknown_0e = value_approach(
-            target_pitch, end_pitch, fraction);
+            target_pitch, (s16)first_pitch, fraction);
         func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
     }
     if (remove_object) {

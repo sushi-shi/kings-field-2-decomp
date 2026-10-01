@@ -119,10 +119,10 @@ Large unclaimed functions are WIP triage verdicts, not speculative C claims.
 | 0x8003be38 | WIP | 0x13c-byte collision-dispatcher caller; argument/state model still incomplete. |
 | 0x8003d184 | WIP | 0x248c-byte gameplay dispatcher calls occupancy writer and collision dispatcher; indirect/data ownership unresolved. |
 | 0x80045e5c | WIP | 0xb4-byte effect-orientation probe calls 0x8002b604 and reads provisional collision state at 0x801d8d44. |
-| 0x80045f20 | WIP | 0xb4-byte vector rotation/translation reads unresolved 0x801a position state. |
+| 0x80045f20 | Focused `SAME` (strict refresh pending) | Shared scene-pose helper has an identical focused listing; paired 0x80045fd4 is also focused `SAME`. |
 | 0x800462bc | WIP, focused 89.9% | Provisional typed actor-target bytecode interpreter has matching CFG and bounded 16-entry table; offset algebra and one load-delay schedule differ. |
 | 0x800474c4 | Exact | Seven-argument three-channel transition, 276/276 code bytes at 100%; nine direct call relocations reviewed. |
-| 0x800475d8 | Focused WIP, 41.2% | First-pass C now covers map-object spawn, pose/pad loops, reward counters, and return motion; 55/52 CFG blocks and a prologue/stack-layout divergence remain. |
+| 0x800475d8 | Focused WIP, 88.3% | Source-backed variadic ABI, signed pitch, flag lifetime, and shared outbound/return pose buffers reproduce the 120-byte frame; 55/54 CFG blocks and register/load-delay residues remain. |
 | 0x80047c98 | WIP | 0x660-byte interaction dispatcher calls actor probe, map-object selector and channel transition; unproven data/indirect owner. |
 
 At 0x801d8d40..0x801d8d68, direct users establish a collision pointer,
@@ -438,7 +438,7 @@ from the refreshed GAME objdiff report; unclaimed bodies have no score.
 | 0x80042650 | WIP, unclaimed | The 0x3670-byte effect dispatcher has many directly decoded calls but its indirect dispatch/data-table owner and several record views remain unresolved; no body was claimed. |
 | 0x800462bc | WIP, unclaimed | Event bytecode interpreter has a candidate 16-entry jump table at 0x80012890, an unresolved callback, and proven menu/map/frame calls. Table and callback ownership are not proved. |
 | 0x8004678c | WIP, unclaimed | Event controller calls exact map-object, effect, audio, and frame helpers; the candidate jump table at 0x800128d0 and a later indirect callback remain unresolved. |
-| 0x800475d8 | WIP, unclaimed | Paired controller calls `PadRead`, CD services, pose helpers, and the frame driver; its event-state and branch families still lack a complete source model. |
+| 0x800475d8 | Focused WIP, 88.3% | Source models the variadic spawn ID, paired pose transitions, `PadRead`, CD services, and frame draws; one CFG block and instruction-order residues remain. |
 
 The map-pattern source remains one contiguous two-function unit. A proposed
 early row-pointer increment preserved semantics but gave a worse focused
@@ -571,7 +571,7 @@ strict GAME report, after the layout-identical effect phase-field refinement.
 | 0x80036190 | WIP, 89.78417% | The map-object interaction query has 15/15 blocks, eight branches, and matching GTE/distance/angle calls. The first divergence is the initial bound branch and return frontier; natural shared-return, single-loop-bound, and signed-halfword-index probes lowered focused similarity and were reverted. Two following map-object helpers remain exact. |
 | 0x80036e24 | WIP, 98.86364% | Five-block frame/CD service loop has all five direct calls, two branches, and exact referents. Only the three saved assignments for mode, endpoint, and step are cyclically exchanged; no artificial local was introduced to force registers. |
 | 0x8004678c | WIP, unclaimed | The 0xc54-byte scene/effect controller reaches the exact CD, sound, map-object, and effect helpers, but its command switch, later indirect call, and shared event-state ownership remain incomplete. |
-| 0x800475d8 | WIP, unclaimed | The 0x6c0-byte paired event controller services CD/VAB requests, pose transitions, frame draws, and pad input; a complete four-argument and event-record model is still needed. |
+| 0x800475d8 | Focused WIP, 88.3% | The 0x6c0-byte controller has one fixed map-object argument and a variadic spawn ID, a 120-byte frame, and source-backed pose-buffer reuse; one CFG block differs. |
 | 0x80048d24 | WIP, unclaimed | The 0x5b8-byte serializer has no decoded direct calls; it writes a large runtime payload whose disjoint field extents lack a complete owner. |
 | 0x800492dc | WIP, unclaimed | The paired 0x5e0-byte deserializer has three data references but no direct calls; its payload schema and exact source field widths remain open. |
 
@@ -692,7 +692,7 @@ strict report predates the retained source correction below.
 | 0x80040308 | WIP, unclaimed | The 0x13e4-byte constructor has a bounded 123-word table with all entries inside its body, now curated as one datum. The indirect edges remain candidate and no source-owned RODATA or complete collision-cache model exists. |
 | 0x80042650 | WIP, unclaimed | The 0x3670-byte dispatcher has two decoded indirect switches, but the in-body pointer-table relocations and collision-cache owner remain provisional. |
 | 0x8004678c | WIP, unclaimed | The 0xc54-byte event controller has two indirect transfers and mixed CD, spatial-audio, actor, and event-state branches. |
-| 0x800475d8 | Focused WIP, 41.2% | The two-argument map-object controller has a first-pass C claim and reviewed address pairs; its prologue/stack layout and three CFG blocks remain different. |
+| 0x800475d8 | Focused WIP, 88.3% | One fixed `KfMapObject *` plus a variadic spawned ID reproduces the four argument homes and duplicate first-argument store. The two interpolation phases reuse position/angle buffers; one CFG block remains different. |
 | 0x80047c98 | WIP, unclaimed | The 0x660-byte paired controller has an unresolved indirect callback and incomplete event-record ownership. |
 | 0x80048554 | Focused WIP, 72.9% | A source claim now models the 3,072-byte stack payload, three record scans, 165-entry switch, and arena calls. The table's in-body pointer edges remain candidate. |
 | 0x800489ac | Focused WIP, 95.1% | A source claim now models the sentinel-delimited actor/group streams and 16-entry map opcode switch. The table's in-body pointer edges remain candidate. |
@@ -781,9 +781,9 @@ The two decoded direct calls from 0x80047c98 pass existing map-object records.
 Retail 0x800475d8 uses its first argument as a `KfMapObject *`; when null, it
 acquires one from the effect pool, resets it, and writes the second argument
 to the object's +6 halfword. The third and fourth O32 arguments have no body
-uses. Its supported WIP signature is therefore
-`void func_800475d8(KfMapObject *, s32 spawn_object_id)`; no source body is
-claimed yet. The acquire call reads its sequence from
+uses. The first C pass used a two-argument signature, but an exact variadic
+control and a focused ABI probe support one fixed `KfMapObject *` plus a
+variadic spawned ID. The acquire call reads its sequence from
 `map_object_state.unknown_873e` at 0x8017d10e, and the later 24-byte template
 walk starts at `map_object_state.templates` at 0x801749d0. Two camera-relative
 reads at 0x801984fc and 0x801985c0 belong to `player_state` +0x2c and +0xf0.
@@ -794,11 +794,16 @@ target and promoted to reviewed control-flow relocations. The original six
 signed-low HI16/LO16 pairs for map-object/player-state addresses and six more
 raw-decoded player-rotation/game-counter pairs now point to their existing BSS
 owners. A focused one-VA safe delink admitted every row without withheld
-relocations. The new separate C claim is a truthful 41.2% focused WIP with
-55 retail versus 52 compiled CFG blocks and 29/29 branches. The first mismatch
-is the retail argument-home stores and 120-byte frame versus the compiled
-136-byte frame. A varargs-only source probe restored three argument stores but
-did not explain the first argument store, so it was not retained. The pose
+relocations. The separate C claim is a truthful 88.3% focused WIP with
+55 retail versus 54 compiled CFG blocks, 29/29 branches, and 1/1 returns.
+One-fixed-argument `va_arg` access reproduces all four pre-frame argument-home
+stores and the repeated first-argument store. Restricting the reward flag to
+the return phase yields the retail 120-byte frame; a signed 16-bit pitch and
+swapping the source/destination roles of two pose-buffer pairs eliminate
+larger call and copy divergences. The first remaining difference is the
+template pointer's saved-register assignment (`s1` retail versus `s0`
+compiled), followed by a signed-depth load-delay schedule and one return-path
+block caused by flag scheduling. No unsupported register steering was kept. The pose
 offsets at template +0xc/+0xe use a shared layout-identical signed view;
 existing map-object exact controls remain focused SAME.
 
@@ -810,6 +815,13 @@ view's signed +2 halfword. This supports
 `void func_80047c98(const VECTOR *, const KfPlayerViewRotation *)` in the
 function inventory. The tail calls active callback-table slot zero with the
 temporary position and rotation pointer; the runtime callee remains indirect.
+Retail 0x800482b0–0x800482c8 loads that slot through
+`state_8017d118.active_table` at BSS +0x0c and passes the stack `VECTOR`
+at sp+0x20 in a0 and the rotation pointer in a1. The resource-transition
+driver assigns either the 32-row initialized no-op table at 0x80063e00 or
+an outside-load address 0x801ae138 to the active pointer. The latter has no
+curated object binding or complete extent, so neither assignment resolves
+the indirect callback to a particular callee.
 Its 48 direct `j`/`jal` words were checked against raw retail opcode/target and
 promoted to reviewed control-flow rows. Two raw signed-low pairs identify the
 `event_state` control clear and `state_8017d118.active_table` load. Focused

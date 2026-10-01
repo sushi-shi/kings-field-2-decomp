@@ -561,71 +561,75 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
     s32 map_x = render_mask_scan_state.map_x;
     s32 map_z = render_mask_scan_state.map_z;
     u8 *cursor = render_mask_scan_state.mask_cursor;
-    u8 *first_cursor = cursor + first_offset;
-    u8 *second_cursor = cursor + second_offset;
-    const u8 *first_layer_mask = &render_mask_scan_state.first_layer_mask;
-    const u8 *second_layer_mask = &render_mask_scan_state.second_layer_mask;
-    KfMapOccupancyCell (*map_cells)[80] = bss_801c7540.map_cells;
 
     count--;
-    if (count != -1) do {
-        if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != 0) {
-            if ((u32)map_x < 80 && (u32)map_z < 80) {
-                u8 first = *first_cursor;
-                u8 second = *second_cursor;
-                KfMapOccupancyCell *cell;
-                KfMapOccupancyLayer *first_layer;
-                KfMapOccupancyLayer *second_layer;
+    if (count != -1) {
+        u8 *first_cursor = cursor + first_offset;
+        u8 *second_cursor = cursor + second_offset;
+        const u8 *first_layer_mask = &render_mask_scan_state.first_layer_mask;
+        const u8 *second_layer_mask = &render_mask_scan_state.second_layer_mask;
+        KfMapOccupancyCell (*map_cells)[80] = bss_801c7540.map_cells;
 
-                if (first & *first_layer_mask) {
-                    goto check_first_layer;
-                }
-                if (second & *first_layer_mask) {
-                    goto check_first_layer;
-                }
-                cell = &map_cells[map_z][map_x];
-clear_first_layer:
-                *cursor &= ~*first_layer_mask;
-                goto check_second_layer;
-check_first_layer:
-                cell = &map_cells[map_z][map_x];
-                first_layer = (KfMapOccupancyLayer *)((u8 *)cell +
-                              render_mask_scan_state.first_layer_byte_offset);
-                if (first_layer->object_index == 0xff) {
-                    goto clear_first_layer;
-                }
-                if (first_layer->lighting_index & 0x80) {
-                    goto set_second_layer;
-                }
-check_second_layer:
-                second_layer = (KfMapOccupancyLayer *)((u8 *)cell +
-                               render_mask_scan_state.second_layer_byte_offset);
-                if (second_layer->object_index != 0xff) {
-                    if ((first & *second_layer_mask) ||
-                        (second & *second_layer_mask)) {
-                        goto set_second_layer;
-                    } else {
-                        goto advance_without_second;
+        do {
+            if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != 0) {
+                if ((u32)map_x < 80 && (u32)map_z < 80) {
+                    u8 first = *first_cursor;
+                    u8 second = *second_cursor;
+                    KfMapOccupancyCell *cell;
+                    KfMapOccupancyLayer *first_layer;
+                    KfMapOccupancyLayer *second_layer;
+
+                    if (first & *first_layer_mask) {
+                        goto check_first_layer;
                     }
+                    if (second & *first_layer_mask) {
+                        goto check_first_layer;
+                    }
+                    cell = &map_cells[map_z][map_x];
+    clear_first_layer:
+                    *cursor &= ~*first_layer_mask;
+                    goto check_second_layer;
+    check_first_layer:
+                    cell = &map_cells[map_z][map_x];
+                    first_layer = (KfMapOccupancyLayer *)((u8 *)cell +
+                                  render_mask_scan_state.first_layer_byte_offset);
+                    if (first_layer->object_index == 0xff) {
+                        goto clear_first_layer;
+                    }
+                    if (!(first_layer->lighting_index & 0x80)) {
+                        goto check_second_layer;
+                    }
+    set_second_layer:
+                    *cursor |= *second_layer_mask;
+                    goto advance_second;
+    check_second_layer:
+                    second_layer = (KfMapOccupancyLayer *)((u8 *)cell +
+                                   render_mask_scan_state.second_layer_byte_offset);
+                    if (second_layer->object_index != 0xff) {
+                        if ((first & *second_layer_mask) ||
+                            (second & *second_layer_mask)) {
+                            goto set_second_layer;
+                        } else {
+                            second_cursor += mask_stride;
+                            goto advance_remaining;
+                        }
+                    }
+                } else {
+                    *cursor = 0;
                 }
-            } else {
-                *cursor = 0;
             }
-        }
-        goto advance_second;
-set_second_layer:
-        *cursor |= *second_layer_mask;
-advance_second:
-        second_cursor += mask_stride;
-advance_without_second:
-        first_cursor += mask_stride;
-        cursor += mask_stride;
-        window_x += map_step;
-        window_z += window_step;
-        map_x += map_step;
-        map_z += window_step;
-        count--;
-    } while (count != -1);
+    advance_second:
+            second_cursor += mask_stride;
+    advance_remaining:
+            first_cursor += mask_stride;
+            cursor += mask_stride;
+            window_x += map_step;
+            window_z += window_step;
+            map_x += map_step;
+            map_z += window_step;
+            count--;
+        } while (count != -1);
+    }
 
     render_mask_scan_state.window_x = window_x;
     render_mask_scan_state.window_z = window_z;

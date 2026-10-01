@@ -37,6 +37,7 @@ void func_8002c670(void)
     s32 index;
     u16 layer;
     KfMapOccupancyCell *cell;
+    KfMapOccupancyLayer *first_layer;
     u8 *mask;
 
     pitch_weight = 0x1000 - rcos(game_graphics_runtime.render_state.view_rotation.vx);
@@ -58,18 +59,20 @@ void func_8002c670(void)
     render_mask_scan_state.map_x = game_graphics_runtime.render_state.view_cell_x;
     render_mask_scan_state.map_z = game_graphics_runtime.render_state.view_cell_z;
     x = (u8)(((sine * shape[0]) >> 20) + 12);
-    z = (u8)((((-cosine) * shape[0]) >> 20) + 12);
-    render_mask_scan_state.window_x = x;
-    render_mask_scan_state.window_z = z;
     game_graphics_runtime.render_state.cell_origin_x = x - render_mask_scan_state.map_x;
     game_graphics_runtime.render_grid.map_scan_start_x =
         -game_graphics_runtime.render_state.cell_origin_x;
+    render_mask_scan_state.window_x = x;
+    center_x = game_graphics_runtime.render_state.view_position.vx * 2;
+    z = (u8)((((-cosine) * shape[0]) >> 20) + 12);
     game_graphics_runtime.render_state.cell_origin_z = z - render_mask_scan_state.map_z;
     game_graphics_runtime.render_grid.map_scan_start_z =
         -game_graphics_runtime.render_state.cell_origin_z;
+    render_mask_scan_state.window_z = z;
     mask = &game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
     render_mask_scan_state.mask_cursor = mask;
 
+    center_z = game_graphics_runtime.render_state.view_position.vz * 2;
     func_8002a988(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
     layer = KF_COLLISION_CACHE_LAYER;
@@ -82,29 +85,29 @@ void func_8002c670(void)
         render_mask_scan_state.first_layer_mask = 2;
         render_mask_scan_state.second_layer_mask = 1;
     }
-    center_x = game_graphics_runtime.render_state.view_position.vx * 2;
-    center_z = game_graphics_runtime.render_state.view_position.vz * 2;
     corners[0].x = ((shape[1] * cosine - shape[3] * sine) >> 8) + center_x;
     corners[0].z = ((shape[1] * sine + shape[3] * cosine) >> 8) + center_z;
     corners[1].x = ((shape[2] * cosine - shape[3] * sine) >> 8) + center_x;
     corners[1].z = ((shape[2] * sine + shape[3] * cosine) >> 8) + center_z;
-    corners[2].x = ((shape[5] * cosine - shape[6] * sine) >> 8) + center_x;
-    corners[2].z = ((shape[5] * sine + shape[6] * cosine) >> 8) + center_z;
-    corners[3].x = ((shape[4] * cosine - shape[6] * sine) >> 8) + center_x;
-    corners[3].z = ((shape[4] * sine + shape[6] * cosine) >> 8) + center_z;
+    corners[2].x = ((shape[4] * cosine - shape[6] * sine) >> 8) + center_x;
+    corners[2].z = ((shape[4] * sine + shape[6] * cosine) >> 8) + center_z;
+    corners[3].x = ((shape[5] * cosine - shape[6] * sine) >> 8) + center_x;
+    corners[3].z = ((shape[5] * sine + shape[6] * cosine) >> 8) + center_z;
 
     func_8002bfd4(&corners[0], &corners[1],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[1], &corners[2],
+    func_8002bfd4(&corners[1], &corners[3],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[2], &corners[3],
+    func_8002bfd4(&corners[3], &corners[2],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[3], &corners[0],
+    func_8002bfd4(&corners[2], &corners[0],
                   render_mask_scan_state.first_layer_mask | 0x20);
     func_8002c1d4(render_mask_scan_state.first_layer_mask | 0x20);
 
     cell = &bss_801c7540.map_cells[render_mask_scan_state.map_z][render_mask_scan_state.map_x];
-    if (cell->layer[0].lighting_index & 0x80) {
+    first_layer = (KfMapOccupancyLayer *)((u8 *)cell +
+                   render_mask_scan_state.first_layer_byte_offset);
+    if (first_layer->lighting_index & 0x80) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {
         *render_mask_scan_state.mask_cursor = render_mask_scan_state.first_layer_mask;

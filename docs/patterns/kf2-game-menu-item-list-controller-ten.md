@@ -17,9 +17,9 @@ shared with GAME II.
 | `0x8001d8d0` | Source claims its 1,328-byte frame, 40-row list, two-frame opening, item trade checks, special item `0x75` tenfold quantity, and menu sequence transition. Its indexed page at `0x80065b30` belongs to `menu_item_mask_pages[4]`; the mutable `0x8006d694` multiplier still lacks a complete owner. Thirty-two direct rows plus the signed-low counter pair were decoded against retail, and its one-VA safe carve withheld none. Focused compilation emitted an identical 0x394-byte listing. | **Focused SAME, 1/1** |
 | `0x8001ddd0` | Source claims the 1,328-byte item-list controller with the primary translator, preview/input path, purchase checks, and page `menu_item_mask_pages[5]` at `0x80065ba8`. Twenty-one direct rows and three signed-low BSS pairs were checked against raw retail; its one-VA safe carve withheld none. The 0x2d8-byte focused listing has 22/22 CFG blocks and 12/12 branches, with only the price/quantity load and temporary-register order divergent. The mutable multiplier still lacks a complete owner. | **WIP, 96.2% focused listing** |
 | `0x8001e0a8` | Source claims its 1,320-byte frame, 40-row list, secondary code translator, item-model/input calls, and two-frame redraw. Twenty direct rows and three signed-low BSS pairs were checked against raw retail; its one-VA safe carve withheld none. The focused listing has 22/22 CFG blocks and 12/12 branches, with the same price/quantity load and temporary-register residue as `0x8001ddd0`. The mutable multiplier still lacks a complete owner. | **WIP, 96.2% focused listing** |
-| `0x8001e484` | Common 48-byte-frame input service has at least 16 direct callers. It receives a list, a separate byte-index array, and two word outputs; it updates cursor fields `+0x1e..+0x22`, model preview state, and sound cues. The existing C claim emits an identical 0x4c8-byte focused listing. The shared multiplier at `0x8006d694` still lacks complete data ownership. | **Focused SAME, 1/1** |
+| `0x8001e484` | Common 48-byte-frame input service has at least 16 direct callers. It receives a list, a separate byte-index array, and two word outputs; it updates cursor fields `+0x1e..+0x22`, model preview state, and sound cues. The existing C claim emits an identical 0x4c8-byte focused listing; a one-VA safe delink with the current inventories withheld zero relocations. The shared multiplier at `0x8006d694` still lacks complete data ownership. | **Focused SAME, 1/1** |
 | `0x8001e94c` | Repeated number/glyph renderer uses `menu_sprite_defs`, 20-byte label suffixes at `0x80064a00..0x80064adc`, player values, and `menu_format_number`. Its source now emits an identical focused listing; label ownership remains a separate data-model question. | **Exact, 100% focused** |
-| `0x8001fc94` | The C claim covers the 55-block list renderer, its row/value/code pointers, sprite descriptors, primitive-buffer calls, and mode-specific number and glyph paths. Removing a redundant outer positive-row guard leaves the loop's own bound check to handle zero rows, as retail does. A fresh focused build improves 90.2% to 92.9%, recovers 33/33 branch count and 55/55 blocks; saved-pointer assignment, early mode-check schedule, and an eight-byte frame difference remain. The KF1 renderer confirms only a related loop shape. | **WIP, 92.9% focused listing** |
+| `0x8001fc94` | The C claim covers the 55-block list renderer, its row/value/code pointers, sprite descriptors, primitive-buffer calls, and mode-specific number and glyph paths. Removing a redundant outer positive-row guard leaves the loop's own bound check to handle zero rows, as retail does. Retail advances the detail glyph pointer after each halfword and the number pointer after drawing; expressing both traversals directly improves the focused listing from 92.9% to 97.7%. Its 128-byte frame, 33/33 branches, and 55/55 blocks agree; a one-VA safe carve withheld zero relocations. Early mode-check scheduling and a few pointer/loop instruction choices remain different. The KF1 renderer confirms only a related loop shape. | **WIP, 97.7% focused listing** |
 
 `KfItemMenuList` is a distinct 52-byte list view: the common `KfMenuList`
 prefix, a glyph-row pointer at `+0x24`, a byte-value pointer at `+0x2c`, and
@@ -29,18 +29,28 @@ pointers. The unrelated `KfMagicMenuList` retains its signed-word values at
 `+0x30`. `0x8001e484` receives the index array in `a1`, distinct from the
 byte-value pointer stored in the list at `+0x2c`.
 
-The focused 0x8001d6a8 listing and subsequent strict GAME report are exact;
-the adjacent 0x8001d654 translator remains WIP at 95.7% focused similarity
-because its final stride shift sits on the other side of table-base setup.
+A follow-up on the shared choice/input helper `0x8001f8b8` found a focused
+84.8% WIP listing with 42/42 CFG blocks and 18/18 branches. Its 15 proven
+callers and outgoing call/data references agree with source. The first control
+difference is the loop exit and `input_wait_release` block placement; two
+source-equivalent exit rewrites lowered the focused score and changed the CFG,
+so neither was retained. Register allocation and local initialization order
+remain unattributed residues.
+
+The focused 0x8001d6a8 listing and subsequent strict GAME report are exact.
+A fresh focused comparison also emits identical listings for the adjacent
+0x8001d654 translator and 0x8001d6a8 controller (2/2); the older 95.7%
+translator result was stale. Strict status for that translator has not been
+rechecked.
 In the three purchase controllers, reversing the commutative price/multiplier
 expression changed the emitted `mult` operand order but moved the earlier
 loads farther from retail, lowering focused similarity from 96.6% to 95.7%
 at `0x8001d030` and from 96.2% to 95.3%/95.2% at `0x8001ddd0`/`0x8001e0a8`.
 No source or referent evidence distinguishes those two C spellings, so that
 probe was discarded; the shared residue remains unattributed.
-The final GAME report relinked 149/149 units and had 391 exact of 461 scored.
-Global edge closure still stops at three established unrelated `.rodata`
-addends in TMD/map-object units. The required full `kf build` built PSX;
-GAME, OPEN, and END retained their established first unresolved link symbols
-`InitCARD`, `malloc`, and `display_buffers`. No repository tests, banking, or
-commit were performed.
+The earlier campaign report relinked 149/149 units and had 391 exact of 461
+scored. Global edge closure stopped at three unrelated `.rodata` addends in
+TMD/map-object units. An earlier full `kf build` built PSX; GAME, OPEN, and END
+retained their first unresolved link symbols `InitCARD`, `malloc`, and
+`display_buffers`. The current continuation used focused builds and one-VA
+safe delinks only; no repository tests or banking were performed.

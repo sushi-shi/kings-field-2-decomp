@@ -10,7 +10,7 @@ listing residues and exact controls.
 
 | VA | Function or role | Verdict and decisive evidence |
 | --- | --- | --- |
-| `0x8002d5dc` | `tmd_prepare_primitive_indices` | **WIP, 96.132600%**. The eight typed packet-mode cases match the retail field offsets. The probe retains the input asset in `t2` and adds one prologue instruction; retail keeps it in `a0`, shifting the switch table and branches by four bytes. Temporary zero-guard/do-loop variants adapted from the KF1 counterpart changed frame and branch order without resolving the prologue, so the source was left unchanged. |
+| `0x8002d5dc` | `tmd_prepare_primitive_indices` | **WIP, 96.132600%**. The eight typed packet-mode cases match the retail field offsets. The probe retains the input asset in `t2` and adds one prologue instruction; retail keeps it in `a0`, shifting the switch table and branches by four bytes. Temporary zero-guard/do-loop variants adapted from the KF1 counterpart and a packet-base pointer variant changed frame or register order without resolving the prologue, so the source was left unchanged. |
 | `0x8002d8b0` | `tmd_register` | **Exact, 100%**; regression control in the contiguous TMD unit. |
 | `0x8002d8f0` | `tmd_set_slot` | **Exact, 100%**; regression control. |
 | `0x8002d910` | `tmd_release_slot` | **Exact, 100%**; regression control. |

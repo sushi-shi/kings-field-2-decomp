@@ -64,11 +64,11 @@ divided by 12 plus the caller bias, clamped to a minimum slot of 16.
 
 The SDK clip calls receive the graphics runtime's `EVECTOR **` result table.
 GAME reads the pointed records at offsets +16/+20/+24/+28/+32 as depth,
-perspective term, packed XY, color, and UV. These offsets differ from the
-published `EVECTOR` member offsets; `KfMapClippedVertex` is therefore an
-explicit game-side view, not a replacement SDK ABI. Its pointer-table start
-at graphics runtime +0x14994 and consumed field offsets have layout checks.
-The reason for the header/runtime displacement remains unresolved.
+perspective term, packed XY, color, and UV. Psy-Q 3.0's `LIBGTE.H` places
+`EVECTOR.sxyz.vz`, `sxyz.pad`, `sxy`, `rgb`, and `txuv` at exactly those offsets.
+The source now uses that complete 44-byte SDK record rather than a partial
+game-side view. Its pointer-table start at graphics runtime +0x14994 and the
+consumed SDK offsets have layout checks.
 
 The helper follows `render_enqueue_map` contiguously in the GAME image and
 shares its packet color datum, so both claims now live in one `game.render_map`

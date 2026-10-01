@@ -860,7 +860,7 @@ WIP or unclaimed status.
 
 | GAME VA | Current verdict | Distinguishing evidence |
 | --- | --- | --- |
-| `80023384` | WIP source | Two collision-cache vertical margins; provisional cache extent. |
+| `80023384` | WIP source | Two collision-cache vertical margins; 63.2% focused after arithmetic-order correction, provisional cache extent. |
 | `80023814` | strict exact | Rank-scaled player value. |
 | `80023868` | strict exact | Nine equipment bonus components. |
 | `80023984` | strict exact | Derived combat stats and equipment calls. |
@@ -876,7 +876,7 @@ WIP or unclaimed status.
 | `80025a18` | unclaimed WIP | Large weapon/effect dispatcher and candidate table owner. |
 | `8002665c` | unclaimed WIP | Weapon/magic updater with 114 retail CFG blocks. |
 | `8002722c` | unclaimed WIP | Two bounded internal tables; indirect control unresolved. |
-| `800274ec` | WIP source | Trial VECTOR and collision retry, 46.4% focused. |
+| `800274ec` | WIP source | VECTOR trial position and signed SVECTOR deflection, 61.9% focused; retail branch meaning restored. |
 | `80027928` | strict exact | Collision-depth death check. |
 | `80027988` | strict exact | Collision impact sound magnitude. |
 | `800279cc` | unclaimed WIP | Five-mode collision dispatcher; cache extent provisional. |
@@ -906,3 +906,46 @@ and shifts the common return tail by one block. A typed containing-reaction
 pointer probe lowered similarity to 75.3% and enlarged the frame, so it was
 discarded. This is an unresolved source/codegen residue, not evidence for an
 overlapping collision-cache global or a different call target.
+
+In `800274ec`, retail stores two signed halfword deltas at stack `+40/+44`
+before `vector_xz_to_angle`, then overwrites the same slots with the
+`rsin`/`rcos` slide offsets. KF1 `player_move_horizontal` uses an `SVECTOR`
+for this deflection. Replacing separate scalar deltas with a single `SVECTOR`
+for both stages preserves that width and lifetime and raises focused
+similarity from 46.4% to **60.2% WIP**. The compiled frame now matches the
+retail 128 bytes. Retail still has 35 versus 38 compiled CFG blocks and 20
+versus 23 branches; collision-cache ownership remains provisional.
+The raw branch at `80027604` skips the special height test when
+`flags & -6` is nonzero. The prior C condition had this arm reversed;
+correcting it leaves the focused percentage unchanged but restores the
+retail branch meaning. At `80027840`, retail enters the axis retry if that
+height-test flag is set, or otherwise if collision flag bit 0 is set. The
+prior negated flag test was also reversed; the corrected `flag || bit` guard
+raises the focused listing slightly to 60.4%. Retail's diagonal-retry branch
+at `8002787c` jumps back to the same axis-retry block used by that guard.
+Sharing that branch in C removes the duplicate axis checks: focused similarity
+reached 64.5% with 35/35 CFG blocks and 20/21 branches. KF1 uses a ternary
+for the same angle deflection and retail selects between `+2016` and `+2080`
+without an intervening jump. The corresponding C ternary raises the focused
+listing to **65.7% WIP** and removes that extra jump, though the compiled CFG
+now has 34 versus retail's 35 blocks and still 21 versus 20 branches. The
+remaining first mismatch is in saved-register lifetime and the early
+player-state base; the cache extent is unresolved. Retail at `80027638`
+checks `death_state` and calculates `flags & 0x30` only in that branch's delay
+slot; it does not gate the subsequent height comparison on those flags.
+Removing the extra C condition restores that behavior and brings branch
+counts to 20/20. Focused similarity falls to **61.9% WIP** and CFG blocks
+are now 35/33; the semantic correction is retained despite the lower score.
+The wall-deflection bearing loads both cached X/Z and player X/Z with `lhu`
+before subtracting into signed 16-bit `SVECTOR` components. Explicit `u16`
+source views now reproduce those four load widths; the focused score remains
+**61.9% WIP**. This narrows an instruction-selection difference without
+resolving the separate saved-register and CFG residue.
+
+For the two-bound player death helper at `80023384`, retail forms each cached
+bound plus 1600 before subtracting the three player-height terms. Splitting
+those arithmetic steps in C raises focused similarity from 42.7% to
+**63.2% WIP**, while preserving its 5/5 CFG blocks and 2/2 branches. The
+remaining divergence is the probe's saved `player_state+0x134` base pointer
+versus retail's separate address loads; the cache's complete extent remains
+provisional.

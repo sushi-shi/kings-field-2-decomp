@@ -17,7 +17,6 @@ void func_8001930c(s32 menu_code)
     s32 frame;
     s32 facing_tile;
     s32 u0;
-    s32 u1;
 
     entry = (((menu_code - 0x43) & 0xff) * 8)
         + (state_8017d118.unknown_09[0] + 480);
@@ -33,22 +32,8 @@ void func_8001930c(s32 menu_code)
         SetSemiTrans((void *)current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1f;
         current_poly_ft4->clut = 0x7fe4;
-        current_poly_ft4->x0 = 0x3c;
-        current_poly_ft4->y0 = 0x14;
-        current_poly_ft4->x1 = 0x104;
-        current_poly_ft4->y1 = 0x14;
-        current_poly_ft4->x2 = 0x3c;
-        current_poly_ft4->y2 = 0xdc;
-        current_poly_ft4->x3 = 0x104;
-        current_poly_ft4->y3 = 0xdc;
-        current_poly_ft4->u0 = 0;
-        current_poly_ft4->v0 = 0;
-        current_poly_ft4->u1 = 200;
-        current_poly_ft4->v1 = 0;
-        current_poly_ft4->u2 = 0;
-        current_poly_ft4->v2 = 200;
-        current_poly_ft4->u3 = 200;
-        current_poly_ft4->v3 = 200;
+        setXYWH(current_poly_ft4, 0x3c, 0x14, 200, 200);
+        setUVWH(current_poly_ft4, 0, 0, 200, 200);
         primitive_buffer_commit_poly_ft4(10);
 
         primitive_buffer_begin_poly_ft4();
@@ -56,28 +41,16 @@ void func_8001930c(s32 menu_code)
         SetSemiTrans((void *)current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1c;
         current_poly_ft4->clut = 0x7d25;
-        current_poly_ft4->x0 = player_state.camera_position.vx / 819 + 52;
-        current_poly_ft4->y0 = 212 - player_state.camera_position.vz / 819;
-        current_poly_ft4->x1 = player_state.camera_position.vx / 819 + 67;
-        current_poly_ft4->y1 = 212 - player_state.camera_position.vz / 819;
-        current_poly_ft4->x2 = player_state.camera_position.vx / 819 + 52;
-        current_poly_ft4->y2 = 227 - player_state.camera_position.vz / 819;
-        current_poly_ft4->x3 = player_state.camera_position.vx / 819 + 67;
-        current_poly_ft4->y3 = 227 - player_state.camera_position.vz / 819;
+        setXYWH(current_poly_ft4,
+            player_state.camera_position.vx / 819 + 52,
+            212 - player_state.camera_position.vz / 819,
+            15, 15);
 
         facing_tile = ((player_state.camera_rotation.angles[1] & 0xfff) + 256) >> 9;
         if (facing_tile == 8)
             facing_tile = 0;
         u0 = facing_tile * 16 - 128;
-        u1 = facing_tile * 16 - 113;
-        current_poly_ft4->u0 = u0;
-        current_poly_ft4->v0 = 0x90;
-        current_poly_ft4->u1 = u1;
-        current_poly_ft4->v1 = 0x90;
-        current_poly_ft4->u2 = u0;
-        current_poly_ft4->v2 = 0x9f;
-        current_poly_ft4->u3 = u1;
-        current_poly_ft4->v3 = 0x9f;
+        setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
         primitive_buffer_commit_poly_ft4(9);
 
         func_800217f0(0x36, 0xe, 0xd4, 0xd4, 2, 2);

@@ -8,7 +8,7 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
     const KfMenuList *list = &view->list;
     const KfMenuSpriteDef *sprite;
     const s16 *row_glyphs = view->row_glyphs;
-    const KfMenuLabelSuffix *detail_rows = view->detail_rows;
+    const s16 *detail_codes = (const s16 *)view->detail_rows;
     const s32 *number_values = view->number_values;
     const u8 *byte_values = view->byte_values;
     KfMenuGlyphString text;
@@ -23,7 +23,7 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
         menu_draw_string(&menu_sprite_defs[1], &list->title);
     }
 
-    detail_rows += list->scroll_offset;
+    detail_codes += list->scroll_offset * 10;
     row_glyphs += list->scroll_offset * list->glyphs_per_entry;
     number_values += list->scroll_offset;
     byte_values += list->scroll_offset;
@@ -42,9 +42,8 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
                 text.position.x += 84;
                 out_codes = text.glyphs.codes;
                 for (code = 0; code < 10; code++)
-                    *out_codes++ = detail_rows->codes[code];
+                    *out_codes++ = *detail_codes++;
                 *out_codes = -1;
-                detail_rows++;
                 menu_draw_string(&menu_sprite_defs[1], &text);
             }
     
@@ -55,8 +54,8 @@ void func_8001fc94(const KfMenuRenderList *view, s32 render_mode)
                     menu_format_number(value, 6, 0, 6, text.glyphs.codes);
                 else
                     menu_format_number(value, 6, 0, 2, text.glyphs.codes);
-                number_values++;
                 menu_draw_number(&menu_sprite_defs[0], &text);
+                number_values++;
             }
     
             if (render_mode == 2 || render_mode == 4) {

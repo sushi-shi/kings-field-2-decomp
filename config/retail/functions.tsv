@@ -73,6 +73,7 @@ GAME.EXE	0x800158b4	0x50b4	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/
 GAME.EXE	0x80015918	0x5118	0x2b0	0x2b0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80015bc8	0x53c8	0x118	0x118	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80015ce0	0x54e0	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80015d50	0x5550	0x8	0x8	1	function	mips-control-flow			manual:callback table 32 rows	jr ra plus delay-slot nop; only target of initialized callback table
 GAME.EXE	0x80015d58	0x5558	0x27c	0x27c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80015fd4	0x57d4	0x114	0x114	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800160e8	0x58e8	0x178	0x178	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

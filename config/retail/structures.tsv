@@ -48,7 +48,6 @@ KfMagicMenuList	0x34	supported	game/menu.h;func_80019834;func_8001a2f4	menu list
 KfMagicRecord	0x1a	supported	game/effect.h;asm;magic_load_records	26-byte archive magic record
 KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants and signed cell offsets
 KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant
-KfMapClippedVertex	0x24	candidate	asm;func_8002f5b0;SDK Clip3FTP/Clip4FTP result table	game-side read view of SDK clip-result vertices; header displacement unresolved
 KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	layout from the reconstructed header
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;func_80036b68	pointer and byte views of map-object +0x40
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header

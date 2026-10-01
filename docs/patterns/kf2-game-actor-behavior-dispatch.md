@@ -33,7 +33,8 @@ offsets and does not by itself dispute the main table ownership.
 The first major source-model gap begins at retail case 3, `0x8003d3e4`.
 The raw entry immediately reads actor byte `+0x0f` and signed halfword
 `+0x70`; the current C case 3 does not read the latter. Retail clears actor
-state `+0x70` on initialization, clears the `0x20000` flag, and then follows
+state `+0x70` on initialization, clears the `0x10000` flag with mask
+`0xfffeffff`, and then follows
 a state-dependent path through `0x8003d634` before the shared motion tail at
 `0x8003dd7c`. Its zero-state path calls
 `actor_advance_animation_clamped`,

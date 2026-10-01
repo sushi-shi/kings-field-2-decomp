@@ -36,7 +36,13 @@ extern void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
                           u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
                           u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                           u16 magic_12, u16 magic_14, const VECTOR *position);
-extern SVECTOR DAT_8006d6e4[4];
+DATA(0x8006d6e4, 0x20)
+SVECTOR DAT_8006d6e4[4] = {
+    {0, -1424, 0, 0},
+    {0, -912, 0, 0},
+    {0, -100, 300, 0},
+    {0, 0, 64, 0}
+};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)

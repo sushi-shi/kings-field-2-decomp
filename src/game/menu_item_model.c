@@ -6,6 +6,17 @@
 #include <kf/game/player.h>
 #include <kf/game/tmd.h>
 
+DATA(0x8006d68c, 0x4)
+s32 menu_item_model_allocation_pending = 0;
+
+DATA(0x8006da00, 0x8)
+SVECTOR menu_item_preview_translation = {0};
+
+DATA(0x8006da08, 0x8)
+SVECTOR menu_item_preview_rotation = {0};
+
+DATA(0x8006da10, 0x4)
+s32 menu_item_preview_rotation_step = 0;
 
 ADDRESS(0x800221e8, 0xd4)
 s32 menu_load_item_model(u8 item_id)

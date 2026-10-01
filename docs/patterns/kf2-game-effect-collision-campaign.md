@@ -1013,6 +1013,14 @@ indirect. A read-only raw constructor scan through GAME code finds one
 `lui/addiu` pair for 0x801d9628, at 0x80040a50/0x80040a54. This confirms
 the constructor is the only direct base reference found in that code span;
 it does not establish the buffer's allocation or complete extent.
+The constructor advances its ring index with `& 3`, scales each destination
+by 576 bytes, and copies 24 rows of 24 bytes each. The updater indexes the
+stored slot pointer by a modulo-24 frame and writes 24-byte row fields. This
+bounds the accessed region to a candidate 4 × 24 × 24 = 0x900 bytes through
+0x801d9f28. `display_frame_cleared_word` ends at 0x801d9614, leaving an
+unclaimed 0x14-byte gap before the effect buffer base. Neither that gap nor
+the buffer's original defining TU is proved, so no overlapping BSS datum or
+source definition has been added for it.
 
 A direct branch audit of 0x80047c98 found that template collision kinds 3
 and 4 enter the same state handler in retail. The C source had omitted kind
@@ -1616,11 +1624,21 @@ phase three, count -1, and tail +0x45 to 24. Phase three increments the
 it decrements that byte, otherwise it clears bit 0x800 on the actor indexed
 by +0x46 and frees the effect. Phase four calls `func_80041e94` 32 times
 with the observed argument slots, then performs the same actor-bit clear and
-free. These paths are now in C. The other phase-one branch and phase two
-remain absent; the table
-`jr` and its pointer-word relocations remain candidate-tier. Focused
-similarity is 13.3% after phases zero, three and four, compared with 13.6%
-before kind six; this is a source-backed WIP with no exact claim.
+free. The remaining phase-one branch now makes the decoded eight-operand
+`func_8004195c(250,25,32,200,0,0x400,100,0x800)` probe. A -1 result
+sets the signed update count to -1. When cache flags are 0x10, it calls
+`func_8003fdd0`, reads the low byte of the cache actor index, and for actor
+target type two or three selects phase two, render ID 22, and a yaw toward
+that actor. Other results select phase three with the 24-tick tail timer.
+The phase-two body runs immediately after a successful actor handoff in
+retail. Its proved prefix now also runs in C: set actor flag 0x800, advance
+the 24-frame counter, copy the position returned by `func_8003c10c`,
+subtract half the actor +0x1e halfword, and select phase four once the
+tail +0x45 count reaches 60. The remaining phase-two trail writes and
+the phase-one nonnegative-probe trail outcome remain absent;
+the table `jr` and pointer-word relocations remain candidate-tier. Focused
+similarity is 14.6% in the current aggregate; this is source-backed WIP
+with no exact claim.
 
 Kind eight's apparent 0x801abd28 referent was a signed-low arithmetic
 mistake: `lui 0x801a; addiu -17112` resolves to 0x8019bd28, exactly
@@ -1664,11 +1682,20 @@ compiles at 13.6% aggregate focused similarity, up from 8.7%, and is WIP.
 Kinds 103 and 121 share the 0x80043700 handler. Their phase-two path now
 subtracts 128 from the unsigned scale halfword at +0x2c, mirrors the result
 to +0x2e, and frees the effect when the signed result is nonpositive.
-The remaining phases include constructor inputs from a stack local whose
-initialization is not established on each entry; those arms remain absent
-from C. Aggregate focused similarity is 13.2% WIP after the shared phase-two
-path. This lower score is retained for the exact retail width and branch
-behavior, without an exactness claim.
+Their phase-zero path calls `func_80042298(50,0x80000000,-300)`, handles a
+nonzero low collision nibble by clearing X/Z motion, decrements the signed
+tail +0x40 countdown, and emits four kind-101 children with three independently
+randomized direction halfwords. Retail stores all three halfwords of that
+child direction before each constructor call. Phase one now retains its
+collision call, the nonzero low-nibble `func_80042424`/`func_8002b604`
+pair, signed direction smoothing, 70-unit vertical decrement, and the
+four-child branch when the lesser of two provisional collision-cache words
+minus the record Y is below 7000. Other phase-one branches pass separate
+stack position and direction vectors to constructors; their complete
+argument value chain is not established, so those transitions remain
+partial. Focused aggregate similarity is 14.8% WIP after these two phases,
+versus 15.1% before them. The lower score is retained for the directly
+decoded branch, width, and call behavior.
 
 Kinds 104 and 122 share 0x800439a8. Their phases three and later now have
 the raw-backed path in C: animation clip receives `(phase & 1) - 128`,
@@ -1695,10 +1722,20 @@ The raw 123-word kind table has 55 entries that jump straight to the common
 return and 68 active entries; the current C names all 68 active kinds,
 with kinds 6, 103/121, and 104/122 limited to proven phases. Kind 100's
 constructor direction has an unproved stack value. The dispatcher remains
-WIP regardless of the aggregate fuzzy score. A focused comparison with flow enabled also reports
-CFG comparison unavailable: retail direct J/JAL rows remain candidate-tier
-and the compiled kind switch has an unresolved indirect jump. Neither
-warning promotes an indirect target or gives a strict control-flow verdict.
+WIP at 14.6% aggregate focused similarity. A comparison with flow enabled
+also reports CFG comparison unavailable: retail direct J/JAL rows remain
+candidate-tier and the compiled kind switch has an unresolved indirect jump.
+Neither warning promotes an indirect target or gives a strict control-flow
+verdict.
+
+Kind 6 phase two now follows the raw 0x80045254–0x800452bc scale branch:
+for tail byte +0x45 below 17, two `func_8001584c` calls interpolate from
+zero to actor halfword +0x1e with fractions `counter << 9` and
+`counter * 350`, storing effect scale X/Z and Y respectively. At 60 or
+more, phase becomes four. The following 24-byte trail-row writes remain
+partial because the four-bank buffer at 0x801d9628 has no proved source
+definition. Focused dispatcher similarity remains 14.6% WIP; the added
+halfword stores and two calls are directly decoded retail behavior.
 
 A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.
 Its first divergence is the prologue: retail reserves 72 stack bytes and
@@ -1709,3 +1746,15 @@ same load/store widths and order, albeit different saved registers. The
 missing kind-6 and kind-102 storage owners prevent treating the frame
 residue as an attributable compiler problem; no frame-padding source was
 added.
+
+The complete `effect_state` object at 0x8019b6a8 now has its single source
+definition in `effect_reset.c` (`KfEffectState`, 0x2a8c bytes). The object
+extent is bounded by the startup 0xaa3-word clear and the 128-record,
+72-byte pool scan after its 0x680-byte magic-record prefix. Focused
+`game.effect_reset` comparison keeps `effect_pool_reset`,
+`magic_load_records`, and `effect_pool_sweep` 3/3 listing-SAME. This
+source-owner claim removes the unresolved `effect_state` native-link name
+(GAME diagnostics 644/14 distinct names to 556/13 in the shared link audit),
+but the probe emits a 0x2a90 COMMON allocation for the retail 0x2a8c BSS
+extent. The four-byte allocation residue is unresolved; no field or padding
+was changed to mask it, and strict data/link closure is not claimed.

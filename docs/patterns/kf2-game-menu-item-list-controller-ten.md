@@ -19,7 +19,7 @@ shared with GAME II.
 | `0x8001e0a8` | Source claims its 1,320-byte frame, 40-row list, secondary code translator, item-model/input calls, and two-frame redraw. Twenty direct rows and three signed-low BSS pairs were checked against raw retail; its one-VA safe carve withheld none. The focused listing has 22/22 CFG blocks and 12/12 branches. The same purchase-expression refinement closes its 720/720 text bytes with matching ordered relocations; the mutable multiplier still lacks a complete owner. | **Exact, 100% direct objdiff** |
 | `0x8001e484` | Common 48-byte-frame input service has at least 16 direct callers. It receives a list, a separate byte-index array, and two word outputs; it updates cursor fields `+0x1e..+0x22`, model preview state, and sound cues. A focused build and direct objdiff agree on all 1,224 code bytes; a one-VA safe delink withheld zero relocations. The shared multiplier at `0x8006d694` still lacks complete data ownership. | **Exact, 100% direct objdiff** |
 | `0x8001e94c` | Repeated number/glyph renderer uses `menu_sprite_defs`, 20-byte label suffixes at `0x80064a00..0x80064adc`, player values, and `menu_format_number`. Its source now emits an identical focused listing; label ownership remains a separate data-model question. | **Exact, 100% focused** |
-| `0x8001fc94` | The C claim covers the 55-block list renderer, its row/value/code pointers, sprite descriptors, primitive-buffer calls, and mode-specific number and glyph paths. Removing a redundant outer positive-row guard leaves the loop's own bound check to handle zero rows, as retail does. Retail advances the detail glyph pointer after each halfword and the number pointer after drawing; expressing both traversals directly improves the focused listing from 92.9% to 97.7%. Its 128-byte frame, 33/33 branches, and 55/55 blocks agree; a one-VA safe carve withheld zero relocations. Early mode-check scheduling and a few pointer/loop instruction choices remain different. The KF1 renderer confirms only a related loop shape. | **WIP, 98.6% focused listing after later lower-panel loop correction** |
+| `0x8001fc94` | The C claim covers the 55-block list renderer, its row/value/code pointers, sprite descriptors, primitive-buffer calls, and mode-specific number and glyph paths. Removing a redundant outer positive-row guard leaves the loop's own bound check to handle zero rows, as retail does. Retail advances the detail glyph pointer after each halfword and the number pointer after drawing. The 128-byte frame, 33/33 branches, 55/55 blocks, and ordered referents agree. Retail computes the card-column mode check inside the row path at `0x8001fd5c..0x8001fd68` and again after the loop at `0x80020700..0x80020704`; spelling the condition at its C use sites removes an early cached calculation. Only a lower-panel constant/index instruction order remains different. The KF1 renderer confirms only a related loop shape. | **WIP, 99.70803% direct strict objdiff** |
 
 `KfItemMenuList` is a distinct 52-byte list view: the common `KfMenuList`
 prefix, a glyph-row pointer at `+0x24`, a byte-value pointer at `+0x2c`, and
@@ -92,4 +92,14 @@ from 97.7% to 98.6% with its 128-byte frame intact. Isolated objdiff now
 reports 98.44964% fuzzy similarity, slightly below its earlier 98.581024%
 metric, while all 201 raw ordered relocation sites match the retail target.
 The loop is retained for its direct instruction and referent evidence; the
-early scroll/card-mode register and calculation placement remains WIP.
+early scroll/card-mode register and calculation placement remained WIP at that
+checkpoint.
+
+A later direct retail recheck showed the card-column predicate is computed
+inside the row path and independently after the loop. The C source had cached
+that predicate before entering the loop. Removing the cache preserved the
+condition and all calls/referents while moving its calculation to the retail
+position; a focused rebuild and direct strict objdiff improved `0x8001fc94`
+from 98.44964% to 99.70803%. The only remaining difference is the order of
+`s6 = 0xff` and `s3 = 0` before the lower-panel row loop. No source-backed
+reason for that order has been established, so the function remains WIP.

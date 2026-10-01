@@ -6,6 +6,9 @@
 #include <psyq/pad.h>
 #include <psyq/sdk.h>
 
+DATA(0x8006d6dc, 0x8)
+RECT menu_transition_rect = {320, 0, 320, 240};
+
 ADDRESS(0x8003494c, 0x70)
 void tim_upload_images(u8 *tim_data)
 {

@@ -7,6 +7,8 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-event-command-table.md](kf2-game-event-command-table.md): reviewed
+  35-entry scene-command switch table and its remaining source-body boundary.
 - [kf2-open-audio-voice-frame.md](kf2-open-audio-voice-frame.md): the lone OPEN
   WIP voice wrapper, with a 64-byte retail versus 40-byte probe stack frame.
 - [kf2-game-event-restore-table.md](kf2-game-event-restore-table.md): reviewed

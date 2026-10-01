@@ -4,8 +4,8 @@
 #include <kf/game/effect.h>
 #include <psyq/libc.h>
 
-/* Referenced by both helpers; its BSS allocation owner remains unresolved. */
-extern SVECTOR DAT_801c7068;
+DATA(0x801c7068, 0x8)
+SVECTOR DAT_801c7068;
 
 ADDRESS(0x80042298, 0x18c)
 s32 func_80042298(s32 radius, s32 angle, s32 step)

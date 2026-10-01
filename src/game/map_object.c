@@ -20,7 +20,7 @@ s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
     object = &map_object_state.objects[first_index];
     index = first_index;
     if ((s16)first_index >= KF_MAP_OBJECT_CAPACITY) {
-        return -1;
+        goto not_found;
     }
 
     for (; (s16)index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
@@ -63,6 +63,7 @@ s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
             return (s16)index;
         }
     }
+not_found:
     return -1;
 }
 

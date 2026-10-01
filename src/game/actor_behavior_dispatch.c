@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/actor.h>
+#include <kf/game/callback.h>
 #include <psyq/libc.h>
 
 extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
@@ -81,7 +82,16 @@ void func_8003d184(void)
             actor_reset_target_and_reselect();
         }
         break;
-    /* Further actor target states are WIP. The in-body indirect dispatch
-     * remains a candidate edge until its value chain is proved. */
+    case 6:
+    case 7:
+    case 8:
+        state_8017d118.active_table[17]();
+        break;
+    /* Selectors 3–5, 9–30, and 240 have separate WIP paths. */
+    default:
+        if (actor->target_type >= 31 && actor->target_type != 240) {
+            state_8017d118.active_table[17]();
+        }
+        break;
     }
 }

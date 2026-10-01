@@ -12,7 +12,7 @@ matching data-owning unit is narrower than whole-image data reconstruction.
 | Image | Strict data-owning units | Source claims / loaded-data census | Native EXE | Exact retail-vs-candidate bytes |
 | --- | ---: | ---: | --- | ---: |
 | PSX.EXE | 0/1 | 73/1,555 (4.7%) | linked, 4,096 B | 277/4,096 differ (43 header; 234 load) |
-| GAME.EXE | 30/52 | 20,983/88,376 (23.7%) | unresolved data symbols | unavailable |
+| GAME.EXE | 32/59 | 21,055/88,376 (23.8%) | unresolved data symbols | unavailable |
 | OPEN.EXE | 3/9 | 84/111,252 (0.1%) | linked, 186,368 B | 125,832/186,368 differ (46 header; 125,786 load) |
 | END.EXE | 2/8 | 56/107,104 (0.1%) | linked, 172,032 B | 140,791/174,080 differ (46 header; 140,745 load) |
 
@@ -21,9 +21,9 @@ The GAME strict count incorporates the separately verified
 `game.return_stub_18764` artifact rebuild. The source-claim fractions are
 coverage of the loaded-data census, which also includes SDK data and unresolved
 gaps; they do not measure reachable data or overall correctness. The current
-strict gate has 35 divergent data-owning units: PSX `main`, 22 GAME units,
+strict gate has 40 divergent data-owning units: PSX `main`, 27 GAME units,
 six OPEN units, and six END units. New source-backed BSS owners increased the
-denominator to 70 units; the lower exact fraction does not undo exact function
+denominator to 77 units; the lower exact fraction does not undo exact function
 listings. The GAME check reports zero missing artifacts.
 
 The PSX `.data` referent now matches after load-data carving passes its owning
@@ -60,6 +60,35 @@ window layouts containing signed glyph indices and `-1` row terminators
 (`0x9a0` bytes). The whole `0xa90`-byte `.data` unit is strict-data exact.
 Its one function retains the pre-existing 83.5% stack-frame residue, so the
 data result does not imply code closure or original TU-boundary proof.
+Four supported menu display-state globals are now defined where the menu
+setup/restore functions use them: the saved music byte, frame upload pointer
+and rectangle, and two saved primitive-buffer records. One of the two
+functions remains exact; the other retains its previously documented 97.2%
+stack-frame residue. Their retail BSS addresses are noncontiguous, and the
+compiler emits COMMON requests, rounding the one-byte and four-byte objects
+to eight bytes. The concurrent complete map-object state owner also remains
+a strict BSS placement WIP.
+The item-model loader owns three adjacent zero-loaded preview controls: two
+SDK `SVECTOR` values and their signed rotation step. The retail 20-byte span
+is all zero, and explicit source initializers produce a strict-exact `.data`
+unit while both loader functions retain identical listings. A supported
+eight-byte effect-scatter motion vector was also defined in its central
+source; its target BSS placement remains open under COMMON allocation.
+The two cursor animation words are zero-loaded, and their central frame
+updater now owns an exact eight-byte `.data` section with both functions
+unchanged. The item-model allocation flag is also a zero-loaded word owned by
+its exact loader/releaser; adding it preserves the full 24-byte `.data`
+contents but makes that unit a strict placement WIP because the flag and
+preview vectors have noncontiguous retail addresses. A separate 32-byte
+motion table in the map-object action source matches retail loaded data.
+The menu transition source now owns the only referenced transfer `RECT`:
+retail halfwords decode as `{320, 0, 320, 240}`. Its eight initialized bytes
+match strictly; two of the unit's three functions remain identical while the
+unchanged fade renderer remains a 44.8% WIP.
+The central effect-reset source now defines the complete startup-cleared
+`0x2a8c`-byte effect state. Its three function listings remain identical, and
+the native symbol resolves, but GCC requests `0x2a90` bytes of COMMON rather
+than the retail fixed BSS extent.
 
 The OPEN/END globals use the curated widths, storage classes, names, and
 owners in their loader, audio, display, and shared movie-stream sources.
@@ -106,17 +135,17 @@ symbol pass without altering source objects.
 
 | Image | Current native linker diagnostics | Distinct unresolved names | Largest repeated unresolved names |
 | --- | ---: | ---: | --- |
-| GAME.EXE | 936 | 28 | `current_poly_ft4`, `map_object_state`, `effect_state` |
+| GAME.EXE | 556 | 13 | `current_poly_ft4`, `render_mask_scan_state`, `DAT_8006d694` |
 | OPEN.EXE | 0 | 0 | Native link completes with ten C units |
 | END.EXE | 0 | 0 | Native link completes with eight C units |
 
 Every distinct unresolved GAME name has a row in
 `config/retail/data_identities.tsv`; no unresolved function name remains.
 The GAME diagnostic count includes repeated references and does not count
-missing definitions. The preceding 2,780/39 GAME snapshot fell to 936/28
+missing definitions. The preceding 2,780/39 GAME snapshot fell to 556/13
 as the player equipment's exact 20-byte loaded table, the complete graphics,
-counter, callback, audio, actor, event, and memory-card BSS objects, and the
-two exact menu arrays were defined. `current_poly_ft4` remains unresolved
+counter, callback, audio, actor, event, map-object, memory-card and menu BSS
+objects, and the exact loaded menu and preview arrays were defined. `current_poly_ft4` remains unresolved
 because its defining owner is not supported yet. The card-buffer pointer
 `memory_card_buffer` also remains unresolved after a tentative definition
 changed an exact retail relocation and was reverted. OPEN and END passed
@@ -126,6 +155,14 @@ owners were added. A small `DATA_AT()` claim form mirrors `ADDRESS_AT()` so
 one shared movie/display/audio source can retain image-qualified retail data
 addresses without duplicating definitions. Its parser, manifest filter, and
 compiler size probe all select the claims for the current image.
+
+The four 32-bit memory-card event handles are proven at zero-loaded retail
+addresses separated by four-byte gaps, but the containing object and gap
+ownership remain unresolved. A probe defining them individually in the
+card-event unit failed target delinking because its claims did not describe
+the physical gap after that unit's earlier loaded-slot byte. The probe was
+fully reverted; their linker names remain unresolved until the containing
+source/data layout is proved.
 
 The local evidence files are ignored build products:
 `build/link/{psx,game,open,end}/build.json` and each overlay's `LINK.TXT`.

@@ -209,10 +209,13 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         break;
     case 0x79:
         func_8003c3e0(current, player, 600, &position, &direction, -1, 0x400, 1);
-        fixed_vector3_length(position.vx - player->vx,
-                             position.vy - player->vy,
-                             position.vz - player->vz);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        distance = fixed_vector3_length(position.vx - player->vx,
+                                        position.vy - player->vy,
+                                        position.vz - player->vz);
+        travel_time = (distance - 2000) / 600;
+        if (travel_time < 0) travel_time = 0;
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      travel_time);
         break;
     }
     va_end(arguments);

@@ -229,7 +229,9 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 6:
+    case 6: {
+        s32 process_phase_two = record->phase == 2;
+
         if (record->phase == 0) {
             s32 index;
 
@@ -252,6 +254,36 @@ void effect_update_dispatch(void)
             record->phase = 3;
             record->updates_remaining = -1;
             record->unknown_3c[9] = 24;
+        } else if (record->phase == 1) {
+            if (func_8004195c(250, 25, 32, 200,
+                              0, 0x400, 100, 0x800) == -1) {
+                record->updates_remaining = -1;
+                if (KF_COLLISION_CACHE_FLAGS == 0x10) {
+                    u8 actor_index;
+                    KfActor *actor;
+
+                    func_8003fdd0(0x10010, 5000, 0);
+                    actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
+                    record->unknown_3c[10] = actor_index;
+                    actor = &actor_state.actors[actor_index];
+                    if (actor->target_type == 2 || actor->target_type == 3) {
+                        record->unknown_08 = 1;
+                        record->render_id = 22;
+                        record->phase = 2;
+                        record->unknown_3c[9] = 0;
+                        record->rotation.vz = 0;
+                        record->rotation.vx = 0;
+                        record->rotation.vy = -vector_xz_to_angle(
+                            record->position.vx - actor->position.vx,
+                            record->position.vz - actor->position.vz);
+                        process_phase_two = 1;
+                    }
+                }
+                if (!process_phase_two) {
+                    record->phase = 3;
+                    record->unknown_3c[9] = 24;
+                }
+            }
         } else if (record->phase == 3) {
             u8 frame = record->unknown_3c[8] + 1;
 
@@ -273,8 +305,33 @@ void effect_update_dispatch(void)
             actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
             record->type = KF_EFFECT_SLOT_FREE;
         }
-        /* The other phase-one branch and phase two remain unresolved. */
+        if (process_phase_two) {
+            KfActor *actor = &actor_state.actors[record->unknown_3c[10]];
+            VECTOR scratch;
+            VECTOR *position;
+            u8 frame = record->unknown_3c[8] + 1;
+
+            actor->unknown_28 |= 0x800;
+            record->unknown_3c[8] = frame < 24 ? frame : 0;
+            position = func_8003c10c(actor, &scratch);
+            record->position = *position;
+            record->position.vy -= actor->unknown_1e >> 1;
+            if (record->unknown_3c[9] < 17) {
+                s32 scale = func_8001584c(
+                    0, actor->unknown_1e, record->unknown_3c[9] << 9);
+
+                record->scale_x = scale;
+                record->scale_z = scale;
+                record->scale_y = func_8001584c(
+                    0, actor->unknown_1e, record->unknown_3c[9] * 350);
+            } else if (record->unknown_3c[9] >= 60) {
+                record->phase = 4;
+            }
+            /* The remaining phase-two trail positions are unresolved. */
+        }
+        /* Phase one's nonnegative probe/trail path remains partial. */
         break;
+    }
     case 23:
         if (record->phase == 9) {
             KfActor *actor = &actor_state.actors[*(s16 *)&record->unknown_3c[4]];
@@ -1066,8 +1123,64 @@ void effect_update_dispatch(void)
         }
         break;
     case 103:
-    case 121:
-        if (record->phase == 2) {
+    case 121: {
+        s32 prior_phase = record->phase;
+
+        if (prior_phase == 0 || prior_phase == 1) {
+            s32 index;
+
+            collision = func_80042298(50, (s32)0x80000000, -300);
+            if (collision != 0) {
+                if (collision & 0xf) {
+                    func_80042424();
+                    if (prior_phase == 0) {
+                        record->direction.vz = 0;
+                        record->direction.vx = 0;
+                    } else {
+                        func_8002b604(record->position.vx,
+                                      record->position.vy,
+                                      record->position.vz, 50, 0);
+                        /* The next constructor uses an unresolved local
+                         * direction vector on this transition. */
+                        break;
+                    }
+                }
+                record->phase = 1;
+            }
+            if (prior_phase == 0) {
+                if ((s16)*(u16 *)&record->unknown_3c[4] <= 0) {
+                    record->phase = 1;
+                }
+                *(u16 *)&record->unknown_3c[4] -= 1;
+            } else {
+                s32 lower_bound;
+
+                record->direction.vy =
+                    (u16)record->direction.vy - 70;
+                record->direction.vx = func_8001584c(
+                    0, (s16)record->direction.vx, 3000);
+                record->direction.vz = func_8001584c(
+                    0, (s16)record->direction.vz, 3000);
+                lower_bound = KF_COLLISION_CACHE_RESULT <
+                                      KF_COLLISION_CACHE_LOWER_BOUND
+                                  ? KF_COLLISION_CACHE_RESULT
+                                  : KF_COLLISION_CACHE_LOWER_BOUND;
+                if (lower_bound - record->position.vy >= 7000) {
+                    /* This branch also passes an unresolved local direction
+                     * vector to two effect constructors. */
+                    break;
+                }
+            }
+            for (index = 3; index >= 0; index--) {
+                SVECTOR random_direction;
+
+                random_direction.vx = (rand() >> 7) - 128;
+                random_direction.vy = (rand() >> 7) - 128;
+                random_direction.vz = (rand() >> 7) - 128;
+                func_80040308(10, 0, 101, &record->position,
+                               &random_direction, 0x800, -128, 5, 18, 0);
+            }
+        } else if (prior_phase == 2) {
             s16 scale = (u16)record->scale_x - 128;
 
             record->scale_x = scale;
@@ -1078,6 +1191,7 @@ void effect_update_dispatch(void)
         }
         /* Other phases use an unresolved local spawn input. */
         break;
+    }
     case 104:
     case 122:
         if (record->phase >= 3) {
@@ -1382,7 +1496,5 @@ void effect_update_dispatch(void)
         record->rotation.vz += 2700;
         break;
     }
-    /* The remaining effect kinds, including two indirect switch dispatches,
-     * are not yet reconstructed. Their callback and BSS owners remain open. */
     }
 }

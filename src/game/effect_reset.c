@@ -1,6 +1,9 @@
 #include <kf/lib/address.h>
 #include <kf/game/effect.h>
 
+DATA(0x8019b6a8, 0x2a8c)
+KfEffectState effect_state;
+
 ADDRESS(0x80045cc0, 0x30)
 void effect_pool_reset(void)
 {

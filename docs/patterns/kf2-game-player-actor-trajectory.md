@@ -1451,7 +1451,7 @@ similarity.
 | `800248a8` | 100% exact | Twelve-argument damage dispatcher control. |
 | `80024ca4` | 100% exact | Radial-damage caller control. |
 | `80025878` | 100% exact | Effect target-selector callee control. |
-| `80025a18` | 95.54467% WIP | Eleven switch rows differ in destination offset; the retail shared selector is earlier, while call and referent sets agree. |
+| `80025a18` | 95.54811% WIP | The reviewed case 10/6 order is restored; eleven switch rows still differ in destination offset because retail's shared selector is earlier. Call and referent sets agree. |
 | `80026498` | 100% exact | Magic dispatcher caller control. |
 | `8002665c` | 98.67857% WIP | First difference is equipped-ID register assignment; later candidate reuses an attack-phase base across a call. |
 | `8002722c` | 99.09091% WIP | Retail has an otherwise-unused eight-byte leaf frame; switch groups and 82 ordered relocations agree. |
@@ -1472,6 +1472,22 @@ are complete where compared. Existing C types, branch meanings, and data
 owners are supported by retail and caller evidence; no source change is
 justified solely by these register, frame, and address-materialization
 residues.
+
+The `8002897c` interval predicate remains WIP: retail tests signed `<81`,
+returns zero on failure, then inverts signed `<71`; two proven callers pass
+item identifiers. A direct-return spelling of those same bounds introduced
+an extra branch and jump absent from retail, despite a higher display-only
+listing similarity; exact caller `80028998` stayed identical. The experiment
+was discarded, and the original seven-instruction candidate was restored.
+
+The matched KF1 `player_move_horizontal`, `player_update_vertical_motion`,
+and `magic_cast` sources confirm broad horizontal-motion, falling-state,
+and effect-dispatch roles, but their map-grid collision path and smaller
+magic set differ from KF2 retail. They do not supply a source form for the
+KF2 register/address-materialization residues. Fresh focused KF2 controls
+keep `80027928`/`80027988` at 100%, all sixteen exact reaction siblings
+unchanged, and the WIP functions `80023384`, `8002722c`, `800274ec`,
+`800279cc`, `80027f78`, and `8002985c` at their existing verdicts.
 
 The effect dispatcher also homes `a0`-`a3` on both sides. Retail reloads
 `effect_id` from that home slot before the switch and allocates a `0x70`
@@ -1562,3 +1578,23 @@ carves 37,836 fixed `.bss` bytes (`0x93cc`). The four-byte difference equals
 the unclaimed gap before `map_object_state` at `801749d0`, but no retail
 access proves that gap belonged to the actor allocation. The source can
 resolve the native symbol but is not an exact data-allocation match.
+The saved compiler assembly itself describes the struct as 37,836 bytes in
+its debug `.def` and then emits `.comm actor_state,37840`; this allocation
+rounding occurs before ASPSX and does not justify changing the C type.
+
+## Effect motion vector beside player weapon records
+
+The remaining BSS name `DAT_801c7068` has eight validated incoming
+references, all from `func_80042298` and `func_80042424`. Retail reads and
+writes signed halfwords at `+0`, `+2`, and `+4`; it also passes the base to
+`copyVector`. A provisional eight-byte `SVECTOR` definition now lives with
+those consumers in `effect_scatter.c`. The next curated allocation,
+`player_weapon_records`, begins at `801c7078`, leaving eight bytes after
+the vector with no identified consumer. The current source does not claim
+that intervening space or an original TU boundary.
+
+Focused `kf try` kept all three effect-scatter listings identical; direct
+strict objdiff reports 100% for `80042298`, `80042424`, and `800424f0`.
+The candidate symbol is an eight-byte COMMON allocation, so its final
+placement and the retail BSS class remain open even if the native link
+resolves the name.

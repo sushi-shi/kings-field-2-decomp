@@ -4,6 +4,9 @@
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 
+DATA(0x801749d0, 0x8744)
+KfMapObjectStateGame map_object_state;
+
 ADDRESS(0x80035504, 0x30)
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound)
 {

@@ -368,7 +368,12 @@ datum at `0x8006d6e4`, now typed as SDK `SVECTOR[4]`. Japanese retail bytes
 decode to `(0,-1424,0,0)`, `(0,-912,0,0)`, `(0,-100,300,0)`, and
 `(0,0,64,0)`; the next curated row begins at `0x8006d704`. The defining TU and
 original linkage remain unproved, so its identity stays address-derived and
-the giant dispatcher's original TU owner remains WIP.
+the giant dispatcher's original TU owner remains WIP. The current
+`map_object_action_update.c` now defines the four-vector initialized table.
+After a GAME target-only refresh, direct strict objdiff gives the datum and
+its 0x20-byte `.data` section 100%; `func_80036ed4` remains WIP at
+7.0693793%. The source claim establishes the current link owner without
+proving the historical TU boundary.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
@@ -472,3 +477,38 @@ its own blocks at `0x8002c3cc`, `0x8002c41c`, and `0x8002c3a8`. Retail CFG,
 source labels, and delay slots agree. A safe one-function carve emitted three
 local-section `R_MIPS_26` rows with no withholding; the wrapper unit remained
 10/17 identical focused listings afterward.
+
+The WIP `0x8002c424` line scanner has three raw-decoded internal `j` sites:
+`0x8002c534→0x8002c59c` clears the first-layer mask, `0x8002c594→0x8002c5e4`
+sets the second-layer mask, and `0x8002c5d8→0x8002c5e8` advances past the
+ordinary secondary-cursor increment. Each target is a reachable block in
+the same function; the source labels and delay slots agree. A safe one-VA
+carve emitted all three local-section `R_MIPS_26` relocations with no
+withholding. The focused wrapper unit remains 10/17 SAME listings, while
+`0x8002c424` remains WIP at 73.5%; relocation promotion does not explain
+its instruction-order residue.
+
+The preceding WIP run scanner at `0x8002c170` also has three proven internal
+`j` edges: `0x8002c1a0→0x8002c1c4` advances an unhandled state,
+`0x8002c1b0→0x8002c1c0` advances after entering the matching run, and
+`0x8002c1c4→0x8002c180` repeats the 24-cell scan. Retail CFG and delay
+slots match the source's state transitions. A safe one-VA carve emitted
+all three as local-section `R_MIPS_26` with no withholding. Focused
+`0x8002c170` stays WIP at 67.9% and the wrapper unit stays 10/17 SAME;
+its unresolved pointer/register lifetime is separate from relocation
+identity.
+
+The WIP `0x8002bfd4` line rasterizer has two direct internal `j` sites
+that were separately reviewed: `0x8002c038→0x8002c044` joins the signed
+step setup, and `0x8002c0ec→0x8002c168` exits the first major-axis loop.
+Both words decode to reachable local blocks and their delay slots match
+the source paths. A safe one-VA carve emitted local-section `R_MIPS_26`
+for both without withholding. The rasterizer's low focused similarity is
+unchanged; these rows establish control referents, not codegen identity.
+
+The `0x8002c670` mask-window builder has two reviewed internal joins:
+`0x8002c828→0x8002c83c` after choosing the layer masks and
+`0x8002ca6c→0x8002ca88` after choosing the center mask byte. Retail words,
+reachable blocks, source branches, and delay slots agree. Its safe one-VA
+carve emitted both local-section `R_MIPS_26` rows with no withholding;
+the focused window-sweep listing remains WIP at 76.4%.

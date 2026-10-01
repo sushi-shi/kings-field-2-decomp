@@ -1569,41 +1569,41 @@ GAME.EXE	0x800128c0	0x20c0		mips32_candidate	raw-word	0x8004650c	load		.word		ta
 GAME.EXE	0x800128c4	0x20c4		mips32_candidate	raw-word	0x8004650c	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked
 GAME.EXE	0x800128c8	0x20c8		mips32_candidate	raw-word	0x8004650c	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked
 GAME.EXE	0x800128cc	0x20cc		mips32_candidate	raw-word	0x80046598	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked
-GAME.EXE	0x800128d0	0x20d0		mips32_candidate	raw-word	0x80047174	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128d4	0x20d4		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128d8	0x20d8		mips32_candidate	raw-word	0x80046d78	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128dc	0x20dc		mips32_candidate	raw-word	0x80047204	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128e0	0x20e0		mips32_candidate	raw-word	0x8004730c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128e4	0x20e4		mips32_candidate	raw-word	0x80047348	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128e8	0x20e8		mips32_candidate	raw-word	0x80046d94	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128ec	0x20ec		mips32_candidate	raw-word	0x80046e14	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128f0	0x20f0		mips32_candidate	raw-word	0x80046f00	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128f4	0x20f4		mips32_candidate	raw-word	0x80046f10	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128f8	0x20f8		mips32_candidate	raw-word	0x80046f20	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800128fc	0x20fc		mips32_candidate	raw-word	0x80046f30	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012900	0x2100		mips32_candidate	raw-word	0x80046f40	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012904	0x2104		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012908	0x2108		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001290c	0x210c		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012910	0x2110		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012914	0x2114		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012918	0x2118		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001291c	0x211c		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012920	0x2120		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012924	0x2124		mips32_candidate	raw-word	0x80046cb8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012928	0x2128		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001292c	0x212c		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012930	0x2130		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012934	0x2134		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012938	0x2138		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001293c	0x213c		mips32_candidate	raw-word	0x800467f8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012940	0x2140		mips32_candidate	raw-word	0x80047370	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012944	0x2144		mips32_candidate	raw-word	0x800469fc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012948	0x2148		mips32_candidate	raw-word	0x80046a04	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001294c	0x214c		mips32_candidate	raw-word	0x80046a0c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012950	0x2150		mips32_candidate	raw-word	0x800468d4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012954	0x2154		mips32_candidate	raw-word	0x800468dc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012958	0x2158		mips32_candidate	raw-word	0x800468e4	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x800128d0	0x20d0		mips32_candidate	raw-word	0x80047174	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128d4	0x20d4		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128d8	0x20d8		mips32_candidate	raw-word	0x80046d78	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128dc	0x20dc		mips32_candidate	raw-word	0x80047204	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128e0	0x20e0		mips32_candidate	raw-word	0x8004730c	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128e4	0x20e4		mips32_candidate	raw-word	0x80047348	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128e8	0x20e8		mips32_candidate	raw-word	0x80046d94	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128ec	0x20ec		mips32_candidate	raw-word	0x80046e14	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128f0	0x20f0		mips32_candidate	raw-word	0x80046f00	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128f4	0x20f4		mips32_candidate	raw-word	0x80046f10	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128f8	0x20f8		mips32_candidate	raw-word	0x80046f20	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x800128fc	0x20fc		mips32_candidate	raw-word	0x80046f30	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012900	0x2100		mips32_candidate	raw-word	0x80046f40	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012904	0x2104		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012908	0x2108		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x8001290c	0x210c		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012910	0x2110		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012914	0x2114		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012918	0x2118		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x8001291c	0x211c		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012920	0x2120		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012924	0x2124		mips32_candidate	raw-word	0x80046cb8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012928	0x2128		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x8001292c	0x212c		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012930	0x2130		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012934	0x2134		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012938	0x2138		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x8001293c	0x213c		mips32_candidate	raw-word	0x800467f8	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012940	0x2140		mips32_candidate	raw-word	0x80047370	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012944	0x2144		mips32_candidate	raw-word	0x800469fc	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012948	0x2148		mips32_candidate	raw-word	0x80046a04	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x8001294c	0x214c		mips32_candidate	raw-word	0x80046a0c	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012950	0x2150		mips32_candidate	raw-word	0x800468d4	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012954	0x2154		mips32_candidate	raw-word	0x800468dc	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
+GAME.EXE	0x80012958	0x2158		mips32_candidate	raw-word	0x800468e4	load		.word		table-reviewed	reviewed	manual:retail bounded 0x52..0x74 command jump table; raw word and in-body block target checked
 GAME.EXE	0x80012960	0x2160		mips32_candidate	raw-word	0x800488c4	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80012964	0x2164		mips32_candidate	raw-word	0x800488f4	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80012968	0x2168		mips32_candidate	raw-word	0x800488c4	load		.word		range-only	candidate	investigation:relocs.tsv
@@ -6116,13 +6116,13 @@ GAME.EXE	0x8002bf94	0x1b794		mips26	reachable-code	0x8002be9c	load		jal		control
 GAME.EXE	0x8002bfac	0x1b7ac	0x8002bfb0	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bfd8	0x1b7d8	0x8002bfdc	mips_hi16_lo16	reachable-code	0x80191f54	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bfe4	0x1b7e4	0x8002bfe8	mips_hi16_lo16	reachable-code	0x80191f58	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c038	0x1b838		mips26	reachable-code	0x8002c044	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c038	0x1b838		mips26	reachable-code	0x8002c044	load		j		control-flow	reviewed	manual:func_8002bfd4 negative-step join; raw MIPS26 and safe carve
 GAME.EXE	0x8002c07c	0x1b87c	0x8002c080	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c0ec	0x1b8ec		mips26	reachable-code	0x8002c168	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c0ec	0x1b8ec		mips26	reachable-code	0x8002c168	load		j		control-flow	reviewed	manual:func_8002bfd4 first-axis exit; raw MIPS26 and safe carve
 GAME.EXE	0x8002c0f8	0x1b8f8	0x8002c0fc	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c1a0	0x1b9a0		mips26	reachable-code	0x8002c1c4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002c1b0	0x1b9b0		mips26	reachable-code	0x8002c1c0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002c1c4	0x1b9c4		mips26	reachable-code	0x8002c180	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c1a0	0x1b9a0		mips26	reachable-code	0x8002c1c4	load		j		control-flow	reviewed	manual:func_8002c170 unmatched-state advance; raw MIPS26 and safe carve
+GAME.EXE	0x8002c1b0	0x1b9b0		mips26	reachable-code	0x8002c1c0	load		j		control-flow	reviewed	manual:func_8002c170 state-one advance; raw MIPS26 and safe carve
+GAME.EXE	0x8002c1c4	0x1b9c4		mips26	reachable-code	0x8002c180	load		j		control-flow	reviewed	manual:func_8002c170 scan loop; raw MIPS26 and safe carve
 GAME.EXE	0x8002c1f8	0x1b9f8	0x8002c1fc	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c218	0x1ba18		mips26	reachable-code	0x8002c170	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002c230	0x1ba30		mips26	reachable-code	0x8002c170	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
@@ -6150,11 +6150,11 @@ GAME.EXE	0x8002c464	0x1bc64	0x8002c468	mips_hi16_lo16	reachable-code	0x801b5a7c	
 GAME.EXE	0x8002c46c	0x1bc6c	0x8002c470	mips_hi16_lo16	reachable-code	0x801b5a80	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c474	0x1bc74	0x8002c478	mips_hi16_lo16	reachable-code	0x801b5a8c	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c490	0x1bc90	0x8002c494	mips_hi16_lo16	reachable-code	0x801c7540	bss	bss_801c7540	lui+addiu		paired-reviewed	reviewed	manual:render-mask-line
-GAME.EXE	0x8002c534	0x1bd34		mips26	reachable-code	0x8002c59c	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c534	0x1bd34		mips26	reachable-code	0x8002c59c	load		j		control-flow	reviewed	manual:func_8002c424 clear-first branch; raw MIPS26 and safe carve
 GAME.EXE	0x8002c550	0x1bd50	0x8002c554	mips_hi16_lo16	reachable-code	0x801b5a70	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-line
-GAME.EXE	0x8002c594	0x1bd94		mips26	reachable-code	0x8002c5e4	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c594	0x1bd94		mips26	reachable-code	0x8002c5e4	load		j		control-flow	reviewed	manual:func_8002c424 set-second branch; raw MIPS26 and safe carve
 GAME.EXE	0x8002c59c	0x1bd9c	0x8002c5a0	mips_hi16_lo16	reachable-code	0x801b5a74	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-line
-GAME.EXE	0x8002c5d8	0x1bdd8		mips26	reachable-code	0x8002c5e8	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c5d8	0x1bdd8		mips26	reachable-code	0x8002c5e8	load		j		control-flow	reviewed	manual:func_8002c424 secondary cursor branch; raw MIPS26 and safe carve
 GAME.EXE	0x8002c624	0x1be24	0x8002c628	mips_hi16_lo16	reachable-code	0x801b5a84	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c62c	0x1be2c	0x8002c630	mips_hi16_lo16	reachable-code	0x801b5a88	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c634	0x1be34	0x8002c638	mips_hi16_lo16	reachable-code	0x801b5a7c	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
@@ -6184,7 +6184,7 @@ GAME.EXE	0x8002c7f0	0x1bff0	0x8002c7f4	mips_hi16_lo16	reachable-code	0x801b5a8c	
 GAME.EXE	0x8002c7f8	0x1bff8		mips26	reachable-code	0x8002a988	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002c800	0x1c000	0x8002c804	mips_hi16_lo16	reachable-code	0x801d8d4a	bss	bss_801c7540	lui+lhu		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002c814	0x1c014	0x8002c818	mips_hi16_lo16	reachable-code	0x801b5a74	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-sweep
-GAME.EXE	0x8002c828	0x1c028		mips26	reachable-code	0x8002c83c	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002c828	0x1c028		mips26	reachable-code	0x8002c83c	load		j		control-flow	reviewed	manual:func_8002c670 layer-mask join; raw MIPS26 and safe carve
 GAME.EXE	0x8002c938	0x1c138	0x8002c93c	mips_hi16_lo16	reachable-code	0x801b5a78	bss	render_mask_scan_state	lui+addiu		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002c9ac	0x1c1ac		mips26	reachable-code	0x8002bfd4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002c9c4	0x1c1c4		mips26	reachable-code	0x8002bfd4	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -6196,7 +6196,7 @@ GAME.EXE	0x8002ca0c	0x1c20c	0x8002ca10	mips_hi16_lo16	reachable-code	0x801b5a7c	
 GAME.EXE	0x8002ca34	0x1c234	0x8002ca38	mips_hi16_lo16	reachable-code	0x801b5a70	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002ca44	0x1c244	0x8002ca48	mips_hi16_lo16	reachable-code	0x801c7544	bss	bss_801c7540	lui+addiu		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002ca64	0x1c264	0x8002ca68	mips_hi16_lo16	reachable-code	0x801b5a8c	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-sweep
-GAME.EXE	0x8002ca6c	0x1c26c		mips26	reachable-code	0x8002ca88	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002ca6c	0x1c26c		mips26	reachable-code	0x8002ca88	load		j		control-flow	reviewed	manual:func_8002c670 center-mask join; raw MIPS26 and safe carve
 GAME.EXE	0x8002ca74	0x1c274	0x8002ca78	mips_hi16_lo16	reachable-code	0x801b5a8c	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002ca8c	0x1c28c	0x8002ca90	mips_hi16_lo16	reachable-code	0x801b5a80	bss	render_mask_scan_state	lui+addiu		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002cac8	0x1c2c8		mips26	reachable-code	0x8002c290	load		jal		control-flow	candidate	investigation:relocs.tsv

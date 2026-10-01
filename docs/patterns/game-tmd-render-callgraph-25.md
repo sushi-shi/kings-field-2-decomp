@@ -36,6 +36,47 @@ listing residues and exact controls.
 | `0x800321d8` | `resource_tmd_queue_read` | **WIP, 98.435900%**. Calls, registry referents, and three CFG blocks agree. Retail forms the fixed arena `0x8009b0a0` with `lui/addiu`; the provisional C literal forms `lui/ori`. A temporary extern probe reproduces the opcode, but the arena symbol's binding and extent remain unproved, so the source literal stays unchanged. |
 | `0x8003247c` | Per-frame actor/placed-object resource dispatcher | **Claimed WIP; 90.637980% direct strict objdiff and 67.7% focused listing**. The C models the actor, animated map-object, sound-action, ordinary map-object, effect, and placed-object passes with typed records; retail/source CFGs have 96/96 blocks and 54/54 branches. Explicit common tails for the actor, map-object, effect, and placed-entry loops follow the raw retail increment and decrement paths. The actor visibility and radius checks share a typed position pointer distinct from the draw position returned by `func_8003c10c`, following raw value flow across that call. The actor radius check and ordinary map-object radius check sit at loop tails and branch back to shared render paths. The actor identity and nonidentity branches each prepare their draw arguments before the compiler merges them to one call, matching the retail branch-local setup; actor identity and placed-object rotation zero stores follow retail's z/y/x order. The ordinary visibility and radius paths each establish a typed template-row pointer before the shared draw block. The ordinary draw writes rotation before selecting render mode. Map-object action bodies follow the retail animated/sound/ordinary order, and the sound-outside frame reset follows its raw branch target. The sound-volume path clamps to its configured maximum when the computed distance volume reaches the radius, with the saturation branch before the scaling block. A typed camera-position pointer serves all three sound-distance coordinates. Retail `lbu` calls establish unsigned action and sound-radius arguments; signed `lh` reads establish actor/effect blend fields. Full-width map-layer-mask returns and local visibility masks remove caller-side truncation. A typed union view spells the low/high bytes of the packed spawn sequence without aliasing casts; focused map-object reset and 0x80036944 exact controls remain SAME. The 32-byte identity matrix is strict 100%. Retail/source frames are 768/760 bytes. The effect normal-draw path advances its record before jumping to the count tail, while mode 12 falls through its separate increment; the C now retains both effect draw calls, matching retail's five total `func_80031850` call sites. The first differing CFG successor is still in effect handling at B62, while the source and retail each have 82 relocation rows, including 13 local jumps. |
 
+The fresh isolated `game.tmd_pipeline` object is 97.388570% strict for its
+6,372-byte `.text` section and keeps all eight adjacent functions at direct
+strict 100%. Its three WIP walkers have ordered relocation
+type/referent agreement when each object's *own* symbol offsets are used:
+`0x8002ddb4` 44/44, `0x8002e4dc` 44/44, and `0x8002ebe0` 41/41. The two
+textured walkers' retail bodies are 32 bytes longer than the probe; each has
+two local positive-depth exits after the FT3 and GT3 divides that the probe
+folds into a common check. In the lit walker, retail stores the blend word at
+`sp+32` before `tmd_get_object`, shifts it after the call, then tests signed
+fixed depth at the shared packet tail (`0x8002f118`–`0x8002f130`). The probe
+keeps the blend word in a saved register and hoists the equivalent depth-range
+flag. The sole source caller passes a signed depth; the raw callee truncation
+at the tail does not establish whether the original formal was `s16` or `s32`.
+No source change is justified by those codegen differences alone.
+
+The connected `0x8002d5dc` index converter remains WIP at focused 38.6% and
+direct strict 96.132600%; target/source `.text` sizes are 724/728 bytes.
+Retail loads the TMD object count directly through `a0`, then decrements and
+guards it before the eight-byte frame's first body instruction. The probe
+first copies `a0` to `t2`. Both objects have ten ordered `.text` relocation
+types and 29 ordered switch-table pointer relocations; every compiled pointer
+addend is exactly four bytes after its retail counterpart, following that
+extra entry instruction. The 116-byte `.rodata` section is therefore only
+27.586206% strict despite the same 29-row table shape. A temporary signed
+`s32` spelling for both count locals compiled to the identical focused
+listing; it was discarded. Word-width count loads, the eight typed
+halfword-index cases, caller set, and candidate status of indirect table
+targets remain unchanged.
+
+The connected clipped fan `0x8002f5b0` still has a supported packet model and
+95.833336% fresh isolated strict score. Its `render_enqueue_map` sibling and
+the owned four-byte color datum both remain direct strict 100%. All 23
+ordered clipped-fan relocation type/referent pairs agree. Retail stores
+all three UV halfwords at packet
+offsets 12, 24, and 36 before the three color words; the current C spells
+that same order, but the probe schedules the final UV load/store later. A
+source-only local holding the third UV before the packet writes moved its load
+ahead of the buffer-bound check, reduced the focused listing from 82.6% to
+80.7%, and changed the two earlier UV schedules. It was discarded; the
+adjacent exact `render_enqueue_map` listing remained `SAME`.
+
 Moving the dispatcher's mode-12 effect call below its normal draw call raised
 focused listing similarity from 63.1% to 64.5%, but the compiler still merged
 the two source calls into one instruction. Direct strict fell from 87.46175%

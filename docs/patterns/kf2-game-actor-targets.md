@@ -1587,6 +1587,11 @@ in the case that needs it. The compiler collapsed retail's shared return
 joins: 55/59 blocks, 33/37 branches, and 22.9% focused listing versus the
 retained 35.1%. The probe was discarded; the current shared-result C remains
 closer to retail without a fabricated control edge.
+Moving the zero-score initialization just after the `type == 0xff` guard
+kept 59/58 blocks and 37/36 branches and gave a 35.4% focused listing, but
+left 22 compiled versus ten retail incoming return edges. It also left the
+target/distance saved-register assignments different, so this source-equivalent
+probe was not retained.
 
 ### Actor motion and map-boundary follow-up
 
@@ -1632,11 +1637,18 @@ actor-group-position probes preserve their six, six, and three exact
 listings, respectively. The same `3d184` caller uses both `lh` and `lhu` at
 actor +0x74 and copies two unaligned words across +0x72..+0x79; these accesses
 do not yet prove a complete nested record or the remaining fields' types.
+At 0x3e418 it passes actor +0x72 as the `SVECTOR *` output of
+`pitch_yaw_to_forward_vector`, then copies that eight-byte vector to two
+stack vectors and scales both. This establishes a mode-dependent vector view
+of +0x72..+0x79, not an always-active vector field or a target-record stride.
 An isolated pinned GCC 2.5.7 compile of `game.actor_animation` directly
 confirms all six exact sibling functions at 100% and identical ordered
 relocations. Its `3ae50` function is 99.31746% direct over 1260 retail bytes;
 the independent angle-wrap mask moves across the square-root call in the
 probe. No source fact supports forcing that schedule.
+Combining the branch choice and angle mask into one C assignment compiled to
+91.7% focused instead of the retained 99.2%, with all six exact siblings
+still SAME; this off-tree probe was discarded.
 An isolated compile of `game.actor_group_position` likewise directly confirms
 its three preceding functions at 100% (268, 276, and 448 bytes), identical
 ordered relocations, and `3c3e0` at 99.64539% over 564 retail bytes. Its
@@ -1655,6 +1667,13 @@ remaining yaw-error register assignment has no proved source correction.
 | `3c3e0` | WIP, 99.64539% direct | Yaw-error and scaled-yaw temporaries exchange registers; three group-position siblings are 100% direct with identical ordered relocations. |
 | `3f7ec` | WIP, 85.86207% direct (93.8% focused listing) | Sentinel initialization order and commutative pointer addition differ; `3f610` and `3f860` are 100% direct over 476 and 460 bytes. |
 
+Retail `3f7ec` derives its candidate base as the 40-group end, 4800 bytes
+after `target_groups[0]`. An off-tree C spelling using `group + 40`, with or
+without reversing the commutative offset addition, compiled identically to
+the retained opaque-tail address: 93.8% focused, with only sentinel timing
+and `addu` operand order different. Neither spelling proves the original C
+expression, and the exact adjacent functions remained SAME.
+
 The connected lifecycle unit was rechecked after this table: `3983c` remains
 87.0% focused with 37/37 CFG blocks and 24/24 branches, and `39b58` remains
 79.2% with 9/9 blocks and 4/4 branches. Both ordered successor lists agree.
@@ -1666,3 +1685,25 @@ actor base and one anchored at actor `+9`; the latter reads group index at
 not evidence of another allocation. No external direct caller of `39b58` is established by the
 current xref inventory. Neither difference supports an invented C local or
 an overlapping owner, so both source claims remain WIP and unchanged.
+
+The sourced `3d184` dispatcher now includes its shared fallback callback.
+The 241-word switch table at `800120d8` sends selectors 6–8 and 31–239
+(212 entries total) to retail `3f3ac`; the out-of-range branch also sends
+selectors above 240 there. That block loads
+`state_8017d118.active_table[17]` and calls it through `jalr` without a new
+argument setup. The retained C spells that callback for exactly those paths;
+selectors 3–5, 9–30, and 240 still require separate arms. A focused compile
+improved the incomplete body from 3.6% to 4.7% listing similarity, with the
+0x248c-byte retail function still WIP. The table-target grouping and callback
+come from raw control flow; the score is only a comparison of this partial C.
+
+The connected `3c614` actor-group effect dispatcher has a proved correction
+for kind `0x79` (switch word 120 at `800120c8`). After the 600-step direction
+call, retail computes a three-dimensional distance to the player, subtracts
+2000, divides by 600, clamps negative results to zero, and passes the result
+as the sixth O32 argument to `40308`. The previous source discarded that
+distance and omitted the argument. Retaining the complete path improved the
+focused incomplete-body listing from 22.7% to 25.2%; the function remains
+WIP with 45 retail versus 53 compiled CFG blocks and 15 versus 20 branches.
+The indirect switch leaves reachability incomplete, so further case-by-case
+raw review is needed before attributing the remaining control differences.

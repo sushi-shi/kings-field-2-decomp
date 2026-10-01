@@ -60,3 +60,27 @@ control relocations establish the pool, template, calls, and internal jumps.
 Focused comparison is about `82.9%` with 15/15 CFG blocks and 8/8 branches,
 but the return frontier and some delay-slot scheduling differ. No exact
 match is claimed.
+
+The raw entry guard at `0x800361f0` branches to the same `li v0,-1` at
+`0x80036388` reached when the scan exhausts the pool. The source now uses
+that common failure return. A focused rebuild stays WIP at 82.6% with
+15/14 CFG blocks and 8/8 branches; the two exact sibling listings in
+`game.map_object` remain SAME. The lower intermediate score does not
+disprove the retail-backed return edge.
+
+The reset unit now tentatively defines the complete `map_object_state` BSS
+owner at `0x801749d0`. Retail startup calls `repeat_store_word` with
+`0x21d1` words, exactly `0x8744` bytes, matching the typed 320-template,
+396-object, 20-byte-trailer layout; the pool reset mutates all objects and
+the three final counters. The typed extent ends at `0x8017d114`, four bytes
+before the curated callback state. The native GCC 2.5.7/ASPSX object emits
+the truthful tentative definition as COMMON with a `0x8748`-byte
+reservation, four bytes larger than `sizeof` and the retail clear. Focused
+data placement therefore reports an unsupported COMMON allocation and an
+owned-symbol size mismatch; no exact data-allocation claim is made. The
+extra four bytes fill the observed gap to the next callback owner; they
+could be allocation padding and do not establish another structure field.
+The current native GAME link no longer reports `map_object_state` as undefined,
+but still fails on other unresolved names, so its final BSS address is not
+known. Focused reset listings remain 5/6 SAME, with only the preexisting
+`0x800356ac` WIP difference; the placement initializer remains WIP at 92.7%.

@@ -538,3 +538,44 @@ claim was added.
 The frame-service `0x36e24` remains DIFF 87.8% in a fresh focused listing:
 its five calls and two branches agree, while the mode, endpoint, and step
 arguments occupy cyclically different saved registers.
+
+## Connected item/magic controller and direct-helper strict audit
+
+An isolated fresh compile and direct objdiff comparison of 22 GAME menu units
+covering 36 functions around `0x8001a4f0` and its direct helpers gives **30/36
+strict exact**. All initialized `.data` and `.rodata` sections owned by these
+units also compare at 100%. The six non-exact functions remain WIP:
+
+| Function | Strict objdiff | First unresolved difference |
+| --- | ---: | --- |
+| `0x8001876c` | 96.36646% | `-1`/`-99` saved-register choice and later result reload/branch schedule |
+| `0x8001930c` | 98.26363% | Retail 64-byte frame and saved `s7` versus probe 56-byte frame |
+| `0x8001a4f0` | 99.74359% | 74-row initializer index and constant registers |
+| `0x8001f8b8` | 94.36464% | Argument register retention and input-release exit-block placement |
+| `0x8001fc94` | 98.44964% | Card-mode row-width and lower-panel scheduling |
+| `0x8002083c` | 99.65882% | Retail reserves 64 more stack bytes than four live `MATRIX` locals explain |
+
+The strict-exact functions in this audit are `0x800189f0`, `0x80018ac8`,
+`0x80018d08`, `0x80018dec`, `0x80018f8c`, `0x80019240`, `0x800192ac`,
+`0x800192dc`, `0x80019834`, `0x800199d0`, `0x80019ac4`, `0x80019ce4`,
+`0x80019ed4`, `0x8001a2f4`, `0x8001a7fc`, `0x8001a898`, `0x8001e484`,
+`0x80020748`, `0x80020990`, `0x80021a60`, `0x80021a68`, `0x80021be0`,
+`0x80021f10`, `0x80021f60`, `0x80021fb0`, `0x800221e8`, `0x800222bc`,
+`0x80022300`, `0x80022394`, and `0x800223cc`. Reusing the row-count local
+for the `0x8001a4f0` initializer loop reduced its focused listing from 96.0%
+to 83.4% and shifted later saved-register roles; the probe was reverted.
+No source edit was retained from this audit.
+
+KF1 master `src/game/menu_runtime.c` (`5a3469b3`) supplies an analogous
+`menu_draw_window` with indexed `layout->rows[row]` access. That expression
+was tried in KF2 `0x8001fb8c`, but the focused listing fell from 83.5% to
+33.1%: the probe recomputed row offsets and changed the loop, while KF2
+retail increments a row pointer by 28 bytes in the branch delay slot. The
+KF2 pointer-walk source and the exact 0xa90-byte initialized menu table stay
+unchanged.
+
+KF1 `menu_draw_string` in the same `5a3469b3` source uses a signed glyph
+local. The corresponding KF2 signed-local probe fell from 90.4% to 68.9%
+focused similarity because GCC emitted signed remainder/division correction
+branches throughout the atlas packet writes. KF2 retail uses the unsigned
+mask/shift sequence, so the unsigned local remains.

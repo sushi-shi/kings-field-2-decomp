@@ -9,6 +9,9 @@
 DATA(0x8006d68c, 0x4)
 s32 menu_item_model_allocation_pending = 0;
 
+DATA(0x8006d694, 0x4)
+s32 DAT_8006d694 = 1;
+
 DATA(0x8006da00, 0x8)
 SVECTOR menu_item_preview_translation = {0};
 

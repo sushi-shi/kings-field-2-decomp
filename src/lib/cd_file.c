@@ -9,13 +9,16 @@ enum {
     KF_CD_SECTOR_SHIFT = 11
 };
 
-DATA(0x8003dbb0, 0x5)
+DATA_AT("OPEN", 0x8003dbb0, 0x5)
+DATA_AT("END", 0x8003aa40, 0x5)
 char cd_path_prefix[5] = "\\OP\\";
-DATA(0x8003dbb8, 0x3)
+DATA_AT("OPEN", 0x8003dbb8, 0x3)
+DATA_AT("END", 0x8003aa48, 0x3)
 char cd_version_suffix[3] = ";1";
 
 /* Reads \OP\<relative_path>;1 sector by sector into DESTINATION. */
-ADDRESS(0x80013284, 0x15c)
+ADDRESS_AT("OPEN", 0x80013284, 0x15c)
+ADDRESS_AT("END", 0x80011e64, 0x15c)
 int cd_file_load_into(u_long *destination, const char *relative_path)
 {
     char path[40];

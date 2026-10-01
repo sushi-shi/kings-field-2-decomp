@@ -147,3 +147,25 @@ without changing the table or relocation targets; safe one-VA delink reports
 zero withheld relocations. Focused restore remains 95.1% listing DIFF, with
 the first difference in sentinel/base register allocation; its prior strict
 98.82883% WIP verdict is unchanged pending a direct strict rerun.
+
+The GAME event opcode table at `0x80012890..0x800128cf` now names
+`func_800462bc` as its curated owner. Retail subtracts `0xf0`, bounds the
+unsigned index to `0..15` at `0x8004639c..0x800463a8`, and jumps through
+the selected word at `0x800463c4`. All 16 raw words are aligned pointers to
+11 labels inside `0x800462bc..0x800466ff`; the source claims exactly 0x40
+RODATA bytes. A safe one-VA delink reports 130 relocations and zero withheld
+functions or relocations. Focused comparison remains 90.5% listing DIFF with
+46/46 CFG blocks and 21/21 branches. This owner correction neither proves
+the original TU boundary nor adds an exact result.
+
+The adjacent command table at `0x800128d0..0x8001295b` now names
+`func_8004678c` as owner. Retail subtracts command `0x52`, bounds the
+unsigned index to `0..0x22`, and dispatches through the resulting 35 words.
+All raw words are aligned pointers to 21 labels inside the command handler
+`0x8004678c..0x800473df`, and its source claims the full 0x8c-byte range.
+Safe one-VA delinking reports 471 relocations and zero withheld functions or
+relocations. An isolated pinned compile and strict objdiff show 100% `.text`
+(3156 bytes), `.data` (40 bytes), and `.rodata` (140 bytes); the ordered
+218 `.rel.text` and 35 `.rel.rodata` entries are identical. The focused unit
+listing is also 1/1 SAME. This rechecks the existing exact verdict without
+changing the exact count; older analyzed scores are stale.

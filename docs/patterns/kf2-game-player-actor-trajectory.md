@@ -1707,3 +1707,43 @@ both. A source-only typed pointer scoped to the slide loop changed the
 register and retry-join layout without closing the block gap, so it was
 discarded. The existing collision, retry, and signed-halfword output model
 remains WIP at the prior 88.631% direct strict verdict.
+
+The two adjacent GAME player-damage switch tables now have function-specific
+curated identities. At `0x80011128`, retail `func_80024498` masks its selector
+with 7 and bounds it to eight entries before the indirect jump; all eight raw
+words are distinct aligned pointers inside that function. Its source claims
+the complete 0x20-byte RODATA range. At `0x80011148`, retail `func_800248a8`
+subtracts one, bounds the result to `0..6`, and jumps through seven distinct
+aligned words, all inside its body; its source claims the complete 0x1c-byte
+range. The identities are `func_80024498_rodata` and
+`func_800248a8_rodata`, respectively. These owners do not establish the
+original TU boundary.
+
+Both safe one-VA delinks withheld zero relocations or functions (98 and 169
+total relocations). Focused listings remain SAME. Isolated strict objdiff
+rechecks 100% text and RODATA for both: 844/32 bytes for `24498` and 1020/28
+bytes for `248a8`. Target and candidate relocation listings agree in order:
+45 text plus eight RODATA entries for the first unit, and 81 text plus seven
+RODATA entries for the second. This cleanup preserves the existing exact
+verdicts and does not change the match count.
+
+The `player_state_equipment` unit's `0x80011168..0x8001125b` RODATA is one
+0xf4-byte claim, so its inventory now has one `u32[61]` owner rather than
+separate identities for two interior tables. Raw words `0..6` are seven
+distinct aligned pointers into exact `player_set_equipment_slot`; word 7 is
+zero; words `8..60` are 53 aligned pointers to 31 labels inside
+`func_80025a18`. Retail bounds the latter selector to `0..0x34` at
+`0x80025a48..0x80025a70`. The second table begins at owner `+0x20`, and
+the source already claims the entire span. No function body or pointer
+target was changed.
+
+A focused full-unit safe carve reports 17 objects, 1044 relocations, and
+zero withholding. All 15 exact sibling listings remain SAME; `25a18`
+remains 83.2% focused DIFF with 99/96 retail/compiled CFG blocks and 31/31
+branches. The isolated complete-unit object has 100% `.data` (92 bytes),
+98.01535% `.text` (5212 retail bytes), and 87.6033% `.rodata` (244 bytes).
+The first 32 RODATA bytes, including the exact first table and zero
+separator, are identical. All 60 table-pointer relocations occur at the
+same ordered offsets in target and candidate; the remaining RODATA byte
+difference follows the WIP second switch's in-body label offsets. This
+ownership cleanup makes no new exact claim.

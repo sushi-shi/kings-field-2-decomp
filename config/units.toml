@@ -1342,7 +1342,6 @@ unit = "end.cd_file"
 image = "END.EXE"
 source = "src/lib/cd_file.c"
 profile = "probe-gcc257-o2-plain"
-bind = "name"
 defines = ["KF_END"]
 
 [[unit]]

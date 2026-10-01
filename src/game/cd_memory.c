@@ -334,8 +334,8 @@ ADDRESS(0x80017608, 0xb8)
 u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
 {
     KfMemoryBlock *block = memory_arena_find_block(arena, size);
-    s32 available;
-    s32 remainder;
+    u32 available;
+    u32 remainder;
     u8 *data;
 
     if (block == 0) {
@@ -347,8 +347,8 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
     }
     available = block->size;
     remainder = available - sizeof(KfMemoryBlock);
-    remainder -= (s32)size;
-    if (remainder >= 2060) {
+    remainder -= size;
+    if ((s32)remainder >= 2060) {
         KfMemoryBlock *payload_end = (KfMemoryBlock *)((u8 *)block + size);
         payload_end[1].kind = 0;
         payload_end[1].size = remainder;

@@ -611,3 +611,30 @@ similarity from 78.5% to 69.1%, added instructions, and changed delay-slot
 scheduling. That trial was reverted. KF1 `display_play_transition.c` is an
 image fade, but has a different packet/loop contract than KF2's four-quad
 menu transition, so no source shape was transferred. No C edit was retained.
+
+## Adjacent loaded menu scalars
+
+GAME `0x8006d690` is a four-byte initialized-zero input latch: 16 validated
+references include `input_read_mark_active` setting it after a nonzero pad
+read and `func_800223cc` clearing it before the release wait. GAME
+`0x8006d694` is a separate four-byte initialized-one menu quantity: 24
+validated references include `menu_load_item_model` resetting it and the
+bounded 1–99 list-input increment/decrement. The two nonoverlapping words now
+have `DATA` definitions in those respective current C units. Their original
+allocation and defining translation units remain unknown.
+
+After a focused safe carve admitted all five affected functions with no
+withheld relocations, fresh isolated GCC 2.5.7 objects directly compared at
+strict 100% for the two `menu_item_model` functions, three `menu_sound_cue`
+functions, and both units' `.data` sections (28 and 4 bytes). The individual
+four-byte symbols also compare at 100%.
+
+Three already-defined load objects had stale blank current-C owner fields:
+`menu_sprite_defs` (`0x80063e80`, 240 bytes) and `menu_window_layouts`
+(`0x80063f70`, 2464 bytes) are in `menu_draw_window.c`, and
+`menu_transition_rect` (`0x8006d6dc`, eight bytes) is in `menu_transition.c`.
+Their original translation-unit boundaries are still unknown. Focused safe
+carves had no withheld rows; isolated objdiff gives each symbol and both
+units' `.data` sections 100%. The window body remains at its prior
+99.78788% strict frame-size residue. Transition's two exact neighbors remain
+100%, while the fade body retains its prior 96.31408% WIP verdict.

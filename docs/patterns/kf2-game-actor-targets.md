@@ -2122,3 +2122,15 @@ The identity change leaves the reviewed relocation rows and source unchanged.
 A safe one-VA delink reports zero withheld relocations, while focused
 `game.actor_behavior_dispatch` remains 44.8% DIFF because its source body is
 still incomplete. This owner correction makes no new exactness claim.
+
+The actor-group effect switch table at GAME `0x80011ee8` now has the curated
+identity `func_8003c614_rodata` and owner `func_8003c614`. Retail bounds
+`kind - 1` to indices `0..122` at `0x8003c798..0x8003c7c0`, then loads a
+word from this table and jumps indirectly. All 123 retail words are aligned
+targets inside `0x8003c614..0x8003d083` (19 distinct targets), and the
+next datum begins at `0x800120d4`; the source claims exactly 0x1ec bytes.
+The owner remains a source-model claim, not proof of an original file boundary.
+Safe one-VA delinking of `0x8003c614` reports 305 relocations with zero
+withheld functions or relocations. Focused comparison remains 55.3% DIFF,
+45/45 CFG blocks and 15/15 branches; this identity cleanup does not add an
+exact match or resolve the dispatcher body.

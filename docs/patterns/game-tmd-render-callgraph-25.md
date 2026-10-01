@@ -53,7 +53,11 @@ halfword with `ad`, and `0x80030430` copies the word to packet +28 with `ac`
 still in the high halfword. The source's `vertex1_vertex2` and
 `vertex3_pad2` assignments express precisely those bytes. A fresh focused
 build remains 12.0% listing DIFF; the 1248/1360-byte frame and packet-local
-schedule remain unexplained, so this pass retains no source edit.
+schedule remain unexplained. Both retail and probe form the midpoint workspace
+at `sp+64`; retail stores FT4 corner words at `sp+16..47` and computes signed
+halfword midpoint averages with eight-byte output strides. The 112-byte frame
+gap therefore does not support shrinking the 128-entry midpoint array. This
+pass retains no source edit.
 
 The fresh isolated `game.tmd_pipeline` object is 97.388570% strict for its
 6,372-byte `.text` section and keeps all eight adjacent functions at direct
@@ -184,6 +188,15 @@ depth and ordering-table bound guards produced the retail's 26/26 blocks and
 1460 and yielded 0% direct strict. An unsigned bound variant further expanded
 the frame. None proved the original source form, so all were discarded and the
 focused TMD object was rebuilt from the retained source.
+
+A fresh raw review confirms that all four colored/textured cases converge on
+`0x8002f114`, which stores the packet code byte at primitive offset `+7` before
+the signed depth and `0x2000` bound checks. A second shared-tail C probe used
+that same byte offset but still yielded 25/26 blocks and 16/17 branches:
+91.934250% isolated strict, 89.2% focused, and 43 function relocations versus
+retail's 41 (two extra local jumps). All eight exact functions in the unit
+remained 100%. The probe was reverted; the packet-field and shared-tail facts
+are retained as retail evidence rather than a source-structure assertion.
 
 The three narrow GAME function-identity corrections at `0x8002ff5c`,
 `0x80030de4`, and `0x800311b0` now record the retail/caller-supported

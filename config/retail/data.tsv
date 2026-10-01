@@ -59,9 +59,7 @@ GAME.EXE	0x80011126	0x926	0x2	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x80011128	0x928	0x20	pointer	manual:player-damage-switch		pointer[8]	retail words;bounded indirect jr	8 direct case pointers within func_80024498
 GAME.EXE	0x80011148	0x948	0x1c	pointer	manual:player-damage-switch		pointer[7]	retail words;bounded indirect jr	7 direct case pointers within func_800248a8
 GAME.EXE	0x80011164	0x964	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011168	0x968	0x1c	pointer	manual:switch-table		pointer[7]	retail jump-table words	player_set_equipment_slot seven-case jump table
-GAME.EXE	0x80011184	0x984	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011188	0x988	0xd4	pointer	manual:player-effect-switch		pointer[53]	retail words;bounded unsigned index	53 raw case targets within func_80025a18; source owner unresolved
+GAME.EXE	0x80011168	0x968	0xf4	defined	manual:player-state-equipment-rodata		u32[61]	retail 7-pointer table;zero separator;53-pointer table;both bounded indirect jr;source RODATA claim	one unit RODATA span for player_set_equipment_slot and func_80025a18; all pointer targets in their respective bodies
 GAME.EXE	0x8001125c	0xa5c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011260	0xa60	0x34	pointer	manual:player-magic-switch		pointer[13]	retail words;func_80026498 jr table	13 rows indexed by magic ID minus 38, all targeting branches in func_80026498
 GAME.EXE	0x80011294	0xa94	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

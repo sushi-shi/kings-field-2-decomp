@@ -13,12 +13,14 @@ ADDRESS(0x80039108, 0x4c0)
 s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
 {
     KfActor *actor = actor_state.current;
-    s32 score = 0;
+    s32 score;
     s32 angle;
 
     if (target->type == 0xff) {
         return 0;
     }
+
+    score = 0;
 
     switch (target->type) {
     case 5:

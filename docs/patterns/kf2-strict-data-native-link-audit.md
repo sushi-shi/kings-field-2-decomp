@@ -45,6 +45,15 @@ words, so its source type and 60-byte logical extent are supported. No byte,
 relocation, or source-type correction explains the compiler's COMMON request;
 the PSX module remains strict-data WIP without changing the authentic SDK
 declaration.
+
+An isolated `static struct EXEC` trial gave the compiler a local `.bss`
+reservation, but its four HI16/LO16 references became section-relative
+`.bss` relocations rather than the retail `overlay_header` symbol references;
+the focused `main` listing fell from SAME to DIFF. The original global
+declaration was restored and rebuilt to SAME. A section-attribute spelling
+was rejected by the source-claim parser before compilation, so it provides
+no compiler or retail evidence and was also discarded.
+
 GAME's remaining divergences are chiefly switch-table `.text` addends and
 section extents; `audio_runtime` and the newly defined CD-state BSS, plus
 `map_object_action_update` read-only ownership, remain open. The CD source

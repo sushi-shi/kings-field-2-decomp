@@ -364,35 +364,84 @@ void effect_update_dispatch(void)
         func_80041e0c(&elevated, 0x2000, 0x7fff, 10000);
         break;
     }
-    case 0:
-        record->direction.vz += 20;
-        if ((s16)record->scale_x < 0xc00) {
-            step = (s16)record->scale_z + 0x100;
+    case 40:
+        collision = func_80042298(100, 200, 0);
+        if (collision != 0) {
+            func_8003feb0(collision);
+            record->type = KF_EFFECT_SLOT_FREE;
+        } else {
+            func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        }
+        break;
+    case 39: {
+        s32 trigger;
+        s32 count;
+        u32 flags;
+
+        if (record->updates_remaining < 45) {
+            trigger = func_8004195c(0x258, 0x28, 0x24, 0x32,
+                                    100, 0x1000, 0x104, 0x800) == -1;
+            goto kind38_response;
+        }
+        record->direction.vy = (u16)record->direction.vy + 10;
+    case 38:
+        trigger = func_80042298(100, 0, 0) != 0;
+    kind38_response:
+        if (trigger) {
+            flags = KF_COLLISION_CACHE_FLAGS;
+            if (flags & 0x10) {
+                if (record->unknown_3c[4] == 0) {
+                    func_8003feb0(flags);
+                }
+                record->unknown_3c[4] = 1;
+            } else {
+                record->unknown_3c[4] = 0;
+            }
+            for (count = 11; count >= 0; count--) {
+                func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
+                               0x200, -256, 0x200, -256, 0x200, -256);
+            }
+            if (KF_COLLISION_CACHE_FLAGS & 0xf) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+        }
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        break;
+    }
+    case 50: {
+        s32 distance;
+
+        switch ((s8)record->unknown_3c[4]) {
+        case 0:
+            step = (u16)record->scale_z + 64;
             record->scale_z = step;
             record->scale_y = step;
             record->scale_x = step;
-        }
-        collision = func_80042298(180, 0, -300);
-        if (collision != 0) {
-            if (record->unknown_3c[4] == 0 && rand() < 3000) {
-                func_8003feb0(collision);
-            }
-            if (collision & 0x10) {
+            func_80026330(0, &record->position);
+            if ((s16)record->scale_x >= 256) {
                 record->unknown_3c[4] = 1;
+                func_80025878(1000, 0, &record->direction, &distance);
             }
-            if (collision & 5) {
-                if (initial_phase == 1) {
-                    record->type = KF_EFFECT_SLOT_FREE;
-                } else {
-                    record->phase = 1;
-                    record->direction.vy = -200;
-                    record->position.vy = KF_COLLISION_CACHE_RESULT;
-                }
+            break;
+        case 1:
+            if (func_80042298(512, (s32)0x80000200, 0) != 0) {
+                record->unknown_3c[4] = 2;
+                func_8003ff18(&record->position, 0, 0x400,
+                               0x8000, 0x1000, 0x1000);
             }
+            break;
+        case 2:
+            if ((s16)record->scale_x >= 512) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+            step = (u16)record->scale_z + 64;
+            record->scale_z = step;
+            record->scale_y = step;
+            record->scale_x = step;
+            break;
         }
-        func_80041e0c(&record->position, 0x400, 0x400, 500);
-        record->rotation.vz += 2700;
         break;
+    }
     case 28: {
         s32 radius;
         u8 phase;
@@ -433,6 +482,85 @@ void effect_update_dispatch(void)
         func_80041e0c(&record->position, 0x4000, 0x4000, 500);
         break;
     }
+    case 26:
+    case 27:
+        record->type = 0x21;
+        record->rotation.vz += 100;
+        func_8003ff18(&record->position, 0, (s16)record->scale_x,
+                       0x8000, 0x400, 0x1000);
+        record->type = 0x24;
+        if ((s8)record->unknown_3c[4] == 0) {
+            if (func_80042298(100, 200, 0) != 0) {
+                record->direction.vz = 0;
+                record->direction.vy = 0;
+                record->direction.vx = 0;
+            }
+        } else if ((s8)record->unknown_3c[4] == 1) {
+            record->scale_z -= 512;
+            if ((s16)record->scale_z <= 0) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+        }
+        break;
+    case 111: {
+        VECTOR spawn_position;
+        SVECTOR spawn_direction;
+        s32 spread;
+
+        if ((s16)*(u16 *)&record->unknown_3c[4] == 0xff) {
+            spawn_position.vx = record->position.vx;
+            spawn_position.vy = record->position.vy;
+            spawn_position.vz = record->position.vz;
+            spawn_direction.vx = 0;
+            spawn_direction.vy = 0;
+            spawn_direction.vz = 0;
+            spread = 1000;
+        } else {
+            const KfActor *actor =
+                &actor_state.actors[(s16)*(u16 *)&record->unknown_3c[4]];
+
+            spawn_position.vx = actor->position.vx;
+            spawn_position.vy = actor->position.vy;
+            spawn_position.vz = actor->position.vz;
+            spawn_direction = *(const SVECTOR *)&actor->unknown_50;
+            spread = actor->unknown_1c;
+        }
+        spawn_position.vx += ((rand() * spread) >> 14) - spread;
+        spawn_position.vy -= 2000;
+        spawn_position.vz += ((rand() * spread) >> 14) - spread;
+        func_80040308(10, record->type | 3, 0,
+                       &spawn_position, &spawn_direction);
+        break;
+    }
+    case 0:
+        record->direction.vz += 20;
+        if ((s16)record->scale_x < 0xc00) {
+            step = (s16)record->scale_z + 0x100;
+            record->scale_z = step;
+            record->scale_y = step;
+            record->scale_x = step;
+        }
+        collision = func_80042298(180, 0, -300);
+        if (collision != 0) {
+            if (record->unknown_3c[4] == 0 && rand() < 3000) {
+                func_8003feb0(collision);
+            }
+            if (collision & 0x10) {
+                record->unknown_3c[4] = 1;
+            }
+            if (collision & 5) {
+                if (initial_phase == 1) {
+                    record->type = KF_EFFECT_SLOT_FREE;
+                } else {
+                    record->phase = 1;
+                    record->direction.vy = -200;
+                    record->position.vy = KF_COLLISION_CACHE_RESULT;
+                }
+            }
+        }
+        func_80041e0c(&record->position, 0x400, 0x400, 500);
+        record->rotation.vz += 2700;
+        break;
     case 2:
         step = (s16)record->scale_x + (s16)*(u16 *)&record->unknown_3c[6];
         record->scale_x = step;
@@ -1092,26 +1220,6 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 26:
-    case 27:
-        record->type = 0x21;
-        record->rotation.vz += 100;
-        func_8003ff18(&record->position, 0, (s16)record->scale_x,
-                       0x8000, 0x400, 0x1000);
-        record->type = 0x24;
-        if ((s8)record->unknown_3c[4] == 0) {
-            if (func_80042298(100, 200, 0) != 0) {
-                record->direction.vz = 0;
-                record->direction.vy = 0;
-                record->direction.vx = 0;
-            }
-        } else if ((s8)record->unknown_3c[4] == 1) {
-            record->scale_z -= 512;
-            if ((s16)record->scale_z <= 0) {
-                record->type = KF_EFFECT_SLOT_FREE;
-            }
-        }
-        break;
     case 53: {
         VECTOR target;
         s32 motion_scale;
@@ -1138,84 +1246,6 @@ void effect_update_dispatch(void)
         }
         func_80041e94(record, -1, -3, motion_scale,
                        -motion_scale / 48, 6, 33, 0, 0x400);
-        break;
-    }
-    case 39: {
-        s32 trigger;
-        s32 count;
-        u32 flags;
-
-        if (record->updates_remaining < 45) {
-            trigger = func_8004195c(0x258, 0x28, 0x24, 0x32,
-                                    100, 0x1000, 0x104, 0x800) == -1;
-            goto kind38_response;
-        }
-        record->direction.vy = (u16)record->direction.vy + 10;
-    case 38:
-        trigger = func_80042298(100, 0, 0) != 0;
-    kind38_response:
-        if (trigger) {
-            flags = KF_COLLISION_CACHE_FLAGS;
-            if (flags & 0x10) {
-                if (record->unknown_3c[4] == 0) {
-                    func_8003feb0(flags);
-                }
-                record->unknown_3c[4] = 1;
-            } else {
-                record->unknown_3c[4] = 0;
-            }
-            for (count = 11; count >= 0; count--) {
-                func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
-                               0x200, -256, 0x200, -256, 0x200, -256);
-            }
-            if (KF_COLLISION_CACHE_FLAGS & 0xf) {
-                record->type = KF_EFFECT_SLOT_FREE;
-            }
-        }
-        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-        break;
-    }
-    case 40:
-        collision = func_80042298(100, 200, 0);
-        if (collision != 0) {
-            func_8003feb0(collision);
-            record->type = KF_EFFECT_SLOT_FREE;
-        } else {
-            func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-        }
-        break;
-    case 50: {
-        s32 distance;
-
-        switch ((s8)record->unknown_3c[4]) {
-        case 0:
-            step = (u16)record->scale_z + 64;
-            record->scale_z = step;
-            record->scale_y = step;
-            record->scale_x = step;
-            func_80026330(0, &record->position);
-            if ((s16)record->scale_x >= 256) {
-                record->unknown_3c[4] = 1;
-                func_80025878(1000, 0, &record->direction, &distance);
-            }
-            break;
-        case 1:
-            if (func_80042298(512, (s32)0x80000200, 0) != 0) {
-                record->unknown_3c[4] = 2;
-                func_8003ff18(&record->position, 0, 0x400,
-                               0x8000, 0x1000, 0x1000);
-            }
-            break;
-        case 2:
-            if ((s16)record->scale_x >= 512) {
-                record->type = KF_EFFECT_SLOT_FREE;
-            }
-            step = (u16)record->scale_z + 64;
-            record->scale_z = step;
-            record->scale_y = step;
-            record->scale_x = step;
-            break;
-        }
         break;
     }
     case 51:
@@ -1516,36 +1546,6 @@ void effect_update_dispatch(void)
             &effect_state.records[record->unknown_3c[4]].position,
             500, 15, -1, 0, 0, -1);
         break;
-    case 111: {
-        VECTOR spawn_position;
-        SVECTOR spawn_direction;
-        s32 spread;
-
-        if ((s16)*(u16 *)&record->unknown_3c[4] == 0xff) {
-            spawn_position.vx = record->position.vx;
-            spawn_position.vy = record->position.vy;
-            spawn_position.vz = record->position.vz;
-            spawn_direction.vx = 0;
-            spawn_direction.vy = 0;
-            spawn_direction.vz = 0;
-            spread = 1000;
-        } else {
-            const KfActor *actor =
-                &actor_state.actors[(s16)*(u16 *)&record->unknown_3c[4]];
-
-            spawn_position.vx = actor->position.vx;
-            spawn_position.vy = actor->position.vy;
-            spawn_position.vz = actor->position.vz;
-            spawn_direction = *(const SVECTOR *)&actor->unknown_50;
-            spread = actor->unknown_1c;
-        }
-        spawn_position.vx += ((rand() * spread) >> 14) - spread;
-        spawn_position.vy -= 2000;
-        spawn_position.vz += ((rand() * spread) >> 14) - spread;
-        func_80040308(10, record->type | 3, 0,
-                       &spawn_position, &spawn_direction);
-        break;
-    }
     case 114: {
         s32 count;
 

@@ -2060,7 +2060,7 @@ all six. Along with the ten exact `effect_update` functions above, this
 
 A fresh focused rebuild of `game.effect_update_dispatch` leaves GAME
 `0x80042650` WIP: retail text is 13,936 bytes and the compiled body is
-13,860 bytes. Moving the self-contained ballistic cases 29/31/48 and
+13,908 bytes. Moving the self-contained ballistic cases 29/31/48 and
 30/47 to the switch start follows the first retail table targets: their
 retail offsets are `+96` and `+104`, versus `+104` and `+112` in the probe,
 an eight-byte difference after the probe's two extra saved-register stores.
@@ -2075,16 +2075,22 @@ Retail next enters kind 42 at `+1452`, kind 115 at `+1504`, and kind 113 at
 `+1732`; these three independent groups were moved next, with their bodies
 and calls unchanged. Kinds 46, 45, 116, and 117 then follow retail at
 `+1912`, `+2232`, `+2256`, and `+2488`. Their independent C arms now appear
-in that order too. The first 16 distinct jump targets have the same ordered
-kind classes in retail and the compiled object, with different body offsets.
-Focused listing similarity is 21.3% (13.0% before these moves). Direct strict
-text is 17.417624%, below the preceding 20.613089% probe; this intermediate
-drop does not contradict the independently decoded target order, and the
-function remains WIP. Both 516-byte
+in that order too. The following retail targets are kind 40 at `+2692`,
+kinds 39/38 at `+2748/+2784`, kind 50 at `+3092`, and kinds 28/1 at
+`+3356/+3364`. Those self-contained C groups now follow in that order.
+Kinds 26/27 at `+3600` and kind 111 at `+3768` then precede kind 0 at
+`+4052` in retail; their unchanged C arms now sit in the **outer kind
+switch** before kind 0. An earlier text move accidentally nested them in
+kind 50's phase switch and changed dispatch semantics; that probe was
+discarded despite compiling. The repaired compiler still physically places
+some later targets differently. Focused listing similarity is 28.4%
+(13.0% before these moves), and direct strict text is 29.039322%. An earlier four-case
+move temporarily lowered strict text from 20.613089% to 17.417624% despite
+aligning the preceding target order. The function remains WIP. Both 516-byte
 `.rodata` sections contain 128 `R_MIPS_32` pointer rows. Canonicalizing their
 in-body target addends by first-occurrence class gives the same class at all
 128 indices, with 64 distinct classes on each side. Raw `.rodata` similarity
-is now 18.677042% (14.883268% before the case moves): body-offset changes
+is now 8.754864% (14.883268% before the case moves): body-offset changes
 lower this byte metric,
 with no evidence for a missing table entry. Retail allocates 224 stack bytes
 and saves five `$s` registers, while this probe allocates 192 bytes and saves
@@ -2100,10 +2106,18 @@ already represents both calls and their argument values; this is call-site
 coalescing, with no supported missing C arm. A fresh direct strict comparison
 keeps all ten `game.effect_update` functions and all three `game.effect_reset`
 functions, including sole caller `effect_pool_sweep`, at 100%. The ballistic,
-growth, and nine independent case-group moves are the only retained updater
+growth, and fifteen independent case-group moves are the only retained updater
 source edits; no call arm or pointer table was changed. Other off-tree
 phase-case ordering probes were discarded because their source-level joins
 are not yet established.
+
+An additional off-tree move of kinds 103/121, 104/122, and 11/54 after kind
+0 raised text similarity in the semantically invalid nested-switch base, but
+it changed the compiler's `.rodata` from 516 to 508 bytes and its pointer
+relocations from 128 to 126. Those probes were discarded. The repaired outer
+switch has 128 pointer rows and the 29.039322% text / 8.754864% data WIP
+verdict above. Each of the 64 target equivalence classes is preserved across
+all 128 pointer indices, including the five secondary phase-table rows.
 
 ## Kind-102 audio parameter identity
 

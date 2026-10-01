@@ -39,6 +39,13 @@ the movie path calls both frame helpers and the streaming routines. These
 decoded calls, together with the shared display and title-state globals,
 define this image-qualified batch.
 
+The shared `src/lib/cd_file.c` loader now gives `cd_file_load_into` and its
+two initialized path fragments explicit `ADDRESS_AT`/`DATA_AT` claims for
+OPEN and END. This removes the last name-only END unit binding while keeping
+the independently curated addresses (`0x80013284`/`0x80011e64`) and the
+5/3-byte data extents. Focused rebuilds of `open.cd_file` and `end.cd_file`
+both report the loader listing SAME; no function or initializer bytes changed.
+
 The seven `str*` streaming routines follow Sony's pinned Psy-Q 3.0
 `SAMPLE/MOVIE/ANIM/MAIN.C` tutorial, but their bodies are adapted here.
 The decoder environment is global and fixed to 320 by 240 pixels; `strInit`

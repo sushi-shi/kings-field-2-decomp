@@ -24,6 +24,16 @@ clear, `0x8002b3ec` jumps straight to the common count decrement without
 the `t0 += 10` at `0x8002b3f4`. The C claim preserves this one-halfword
 advance on that path and the six-halfword advance when the flag is set.
 
+The cursor increments bound the recognized command records independently of
+the still-unknown on-disc table contents: `0x10`, `0x18`, and `0x19` consume
+two halfwords; `0x11` consumes three; `0x20`–`0x23` consume five; `0x30`
+and `0x32` consume seven. Opcodes outside the table's handled cases consume
+only the opcode halfword. Opcode `0x40` switches the selected map layer and
+restarts the shape lookup, rather than advancing this record cursor. These
+lengths include the common `+2` at `0x8002ac4c` plus the case-specific
+increments at `0x8002ac80`, `0x8002acbc`, `0x8002ad38`, `0x8002ae2c`,
+`0x8002af04`, `0x8002b004`, `0x8002b0cc`, and `0x8002b2d8`.
+
 The phase-one loader in `0x80016820` copies `0x600` words (`0x1800` bytes)
 to `bss_801c7540+0x10000`, the bank base used by this dispatcher. The copy
 ends at +`0x11800`, before the collision-cache tail. It bounds the loaded
@@ -45,15 +55,25 @@ reports zero withheld relocations and emits 49 `R_MIPS_32` entries in
 the module's `.rel.rodata`; the module has 144 total relocations, versus
 95 in the text-only carve. Both retail and source objects have a 196-byte
 `.rodata` table with 49 `R_MIPS_32` rows and the same 37-entry default
-grouping. The table's case
-offsets still differ because the WIP text layouts differ: direct objdiff
-reports 19.897959% `.rodata` and 31.652473% `.text` similarity, not
-exactness. A fresh focused build reports 14.0% listing similarity, with
-174/165 target/source CFG blocks and 99/97 branches. The C source now uses
-a named interior view and a layout-checked 256-halfword offset-table prefix
-for the proven loaded bank range. The focused listing remains 14.0% after
-the type change. This defines no second BSS object and makes no claim about
-the variable-length record layout.
+grouping. The source uses a named interior view and a layout-checked
+256-halfword offset-table prefix for the proven loaded bank range. This
+defines no second BSS object and makes no claim about the variable-length
+record layout.
+
+The raw table points to the `0x32` body at retail `+0x818`, before the
+`0x31` body at `+0x944`; `0x18`/`0x19` also lie after the `0x20`–`0x32`
+family. Moving those intact C cases into that retail-backed order preserves
+the decoded behavior and raises isolated direct objdiff `.text` from
+31.652473% to 47.447803%. `.rodata` improves from 19.897959% to
+26.275510%. Retail has 2912 text bytes; the retained C has 2800. Both
+objects still have all 49 `R_MIPS_32` table sites and the same opcode
+equivalence groups, including 37 default entries. Focused listing similarity
+is 14.8% (previously 14.0%); the 174/165 CFG blocks and 99/97 branches
+remain WIP. The adjacent collision-height unit retains 11/17 focused SAME
+listings, including all its previously exact siblings. The compiled `0x40`
+block still follows `0x18`/`0x19`; an off-tree attempt to inline its already
+modeled second-layer path lowered focused similarity to 12.7% and reduced the
+compiled CFG by one block, so it was discarded.
 
 An off-tree post-decrement spelling of the record-count loop preserved
 174/165 CFG blocks and 99/97 branches but lowered focused listing similarity
@@ -62,3 +82,10 @@ is still the initial count exit: retail decrements the signed count then
 compares it with `-1`, while the compiler recognizes the equivalent
 zero-count check before decrement. That difference alone does not establish
 an omitted command or a new source owner.
+
+An off-tree unsigned `switch (*record)` trial lowered focused listing similarity
+from 14.0% to 13.7% and was discarded. The retained signed switch already emits
+retail's `lhu` opcode load, subtracts `0x10`, then sign-extends before the
+unsigned range check. Thus the C cast does not account for the 174/165 CFG
+gap; command-width changes should be grounded in another consumer or record
+definition rather than the switch's load opcode alone.

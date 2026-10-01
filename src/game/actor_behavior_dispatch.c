@@ -43,10 +43,9 @@ void func_8003d184(void)
     KfTargetGroup *group = actor_state.active_group;
     KfTargetCandidate *target = actor->target;
     u16 trigger;
-    u16 interval;
-    s32 should_play_sound = 0;
+    s32 interval;
 
-    actor_state.unknown_93a4 = (actor->unknown_28 & 4) != 0 ? 3 : 0x93;
+    actor_state.unknown_93a4 = (actor->unknown_28 & 4) == 0 ? 0x93 : 3;
     func_8002b73c(actor->position.vx, actor->position.vz,
                    actor->unknown_1c, -1);
 
@@ -55,49 +54,31 @@ void func_8003d184(void)
         interval = trigger & 0x3fff;
         switch (trigger & 0xc000) {
         case 0:
-            should_play_sound = actor_animation_crossed_phase(actor, interval);
-            break;
-        case 0x4000:
-            should_play_sound =
-                (interval * actor_state.unknown_93b8 / 3) % interval ==
-                actor_state.unknown_93c4 % interval;
+            if (actor_animation_crossed_phase(actor, interval)) {
+                goto play_sound;
+            }
             break;
         case 0x8000:
-            should_play_sound = (rand() >> 3) < interval;
+            if ((rand() >> 3) < interval) {
+                goto play_sound;
+            }
+            break;
+        case 0x4000:
+            if ((interval * actor_state.unknown_93b8 / 3) % interval ==
+                (s32)actor_state.unknown_93c4 % interval) {
+                goto play_sound;
+            }
             break;
         }
-        if (should_play_sound) {
-            func_8003d0e8(actor);
-        }
     }
+    goto dispatch_action;
+
+play_sound:
+    func_8003d0e8(actor);
+
+dispatch_action:
 
     switch (actor->target_type) {
-    case 0:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
-        }
-        actor_advance_animation_wrapped(actor, target->unknown_08);
-        if (angle_within_tolerance(actor->animation_phase, 0,
-                                   target->unknown_08 - 1)) {
-            actor->unknown_0f = 0xf1;
-        }
-        func_8003b9a4(group->unknown_01[2], 10);
-        break;
-    case 1:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
-            func_80039804(target->unknown_01[0]);
-            actor->unknown_64 = rand() >> 3;
-        } else if (func_8003bcd0(actor->unknown_64,
-                                  target->word_0c.value, target->word_0e.value,
-                                  group->unknown_01[2],
-                                  group->unknown_01[3], 5) != 0 ||
-                   (rand() >> 5) < target->word_10.bytes.fallback_offset) {
-            actor->unknown_64 = rand() >> 3;
-        }
-        actor_advance_animation_wrapped(actor, target->unknown_08);
-        break;
     case 2:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
@@ -131,25 +112,84 @@ void func_8003d184(void)
         }
         func_8003b9a4(target->word_0c.bytes.high, 10);
         break;
-    case 4:
+    case 0:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            func_80039804(target->unknown_01[0]);
         }
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
-                           target->word_0e.bytes.high,
-                           target->word_10.bytes.fallback_offset,
-                           target->word_12.value, target->word_14.value,
-                           target->word_16.value,
-                           target->word_10.bytes.unknown_11);
+        actor_advance_animation_wrapped(actor, target->unknown_08);
+        if (angle_within_tolerance(actor->animation_phase, 0,
+                                   target->unknown_08 - 1)) {
+            actor->unknown_0f = 0xf1;
         }
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
-        }
-        func_8003b9a4(target->word_0c.bytes.high, 10);
+        func_8003b9a4(group->unknown_01[2], 10);
         break;
+    case 1:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf1;
+            func_80039804(target->unknown_01[0]);
+            actor->unknown_64 = rand() >> 3;
+        } else if (func_8003bcd0(actor->unknown_64,
+                                  target->word_0c.value, target->word_0e.value,
+                                  group->unknown_01[2],
+                                  group->unknown_01[3], 5) != 0 ||
+                   (rand() >> 5) < target->word_10.bytes.fallback_offset) {
+            actor->unknown_64 = rand() >> 3;
+        }
+        actor_advance_animation_wrapped(actor, target->unknown_08);
+        break;
+    case 12:
+    case 16: {
+        s32 motion_flags;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf1;
+            actor->tail_72.angles.x = 0;
+            actor->tail_72.angles.y = 0;
+            actor->tail_72.angles.z = 0;
+            actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
+                func_8002b67c(actor->unknown_06,
+                    actor->unknown_24 + (actor->unknown_07[1] << 11),
+                    actor->unknown_22 + (actor->unknown_07[0] << 11),
+                    actor->unknown_1c, actor->unknown_1e);
+            func_80039804(target->unknown_01[0]);
+            func_8003b5bc();
+            motion_flags = 3;
+        } else {
+            motion_flags = func_8003bf74(
+                &actor->tail_72.angles, target->word_0c.value,
+                target->word_0e.value,
+                group->unknown_01[2],
+                group->unknown_01[3], interval & 1);
+            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+                motion_flags |= 1;
+            }
+            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+                motion_flags |= 2;
+            }
+            if (actor->position.vy <
+                actor->tail_72.motion.baseline + target->word_10.value) {
+                actor->unknown_52 -= target->word_12.bytes.unknown_12;
+            } else if (actor->position.vy >
+                       actor->tail_72.motion.baseline - target->word_10.value) {
+                actor->unknown_52 += target->word_12.bytes.unknown_12;
+            }
+        }
+        if (motion_flags & 1) {
+            actor->tail_72.angles.y = rand() >> 3;
+        }
+        if (motion_flags & 2) {
+            actor->tail_72.angles.x = (rand() >> 5) - 512;
+        }
+        if (actor->target_type == 16) {
+            func_8003c220(target->unknown_01[0], target->word_14.bytes[0],
+                           target->word_14.bytes[1], target->word_16.bytes.low,
+                           target->word_16.bytes.high, target->unknown_08);
+        } else {
+            actor_advance_animation_wrapped(actor, target->unknown_08);
+        }
+        break;
+    }
     case 5: {
         s32 distance;
         s32 angle;
@@ -205,11 +245,59 @@ void func_8003d184(void)
         actor_advance_animation_wrapped(actor, target->unknown_08);
         break;
     }
-    case 6:
-    case 7:
-    case 8:
-        state_8017d118.active_table[17]();
+    case 13:
+    case 17: {
+        s32 delta_x;
+        s32 delta_y;
+        s32 delta_z;
+        s32 distance;
+        struct KfEulerAngles opposite;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_80039804(target->unknown_01[0]);
+            actor->state_70.signed_state = 0;
+        }
+        delta_x = player_state.camera_position.vx - actor->position.vx;
+        delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
+        delta_z = player_state.camera_position.vz - actor->position.vz;
+        distance = fixed_vector3_length(delta_x, delta_y, delta_z);
+        func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
+        if (actor->tail_72.angles.x >= 3585) {
+            actor->tail_72.angles.x = 3584;
+        } else if (actor->tail_72.angles.x <= 512) {
+            actor->tail_72.angles.x = 512;
+        }
+        if (distance >= target->word_16.value) {
+            actor->state_70.signed_state = 0;
+            actor->unknown_0f = 0xf1;
+        } else if (distance <= target->word_14.value) {
+            actor->state_70.signed_state = 1;
+            actor->unknown_0f = 0xf0;
+        }
+        if (actor->state_70.signed_state == 0) {
+            func_8003bf74(&actor->tail_72.angles, target->word_0c.value,
+                          target->word_0e.value,
+                          group->unknown_01[2],
+                          group->unknown_01[3], 17);
+        } else {
+            opposite.x = -512;
+            opposite.y = actor->tail_72.angles.y + 2048;
+            opposite.z = 0;
+            func_8003bf74(&opposite, target->word_0c.value,
+                          target->word_0e.value,
+                          group->unknown_01[2],
+                          group->unknown_01[3], 17);
+        }
+        if (actor->target_type == 17) {
+            func_8003c220(target->unknown_01[0], target->word_18.bytes.low,
+                           target->word_18.bytes.high, target->word_1a.bytes[0],
+                           target->word_1a.bytes[1], target->unknown_08);
+        } else {
+            actor_advance_animation_wrapped(actor, target->unknown_08);
+        }
         break;
+    }
     case 9:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
@@ -320,6 +408,96 @@ void func_8003d184(void)
                         group->unknown_01[3]);
         break;
     }
+    case 4:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_800397d8(target->unknown_01[0]);
+        }
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->word_16.value,
+                           target->word_10.bytes.unknown_11);
+        }
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
+        }
+        func_8003b9a4(target->word_0c.bytes.high, 10);
+        break;
+    case 23:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            actor->state_70.signed_state = target->word_18.value;
+            func_800397d8(target->unknown_01[0]);
+        }
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor_animation_crossed_phase(actor, actor->state_70.signed_state)) {
+            actor->state_70.signed_state = (u16)actor->state_70.signed_state + target->unknown_28;
+            if (target->word_26.unsigned_value < actor->state_70.signed_state) {
+                actor->state_70.signed_state = 0;
+            }
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->word_16.value,
+                           target->word_10.bytes.unknown_11 | 0x80);
+        }
+        if (target->unknown_2a != 0 &&
+            actor_animation_crossed_phase(actor, target->unknown_2a)) {
+            func_8003a614(0, target->word_1c.bytes[0],
+                           target->word_1c.bytes[1],
+                           target->word_1e.bytes[0], target->unknown_20,
+                           target->unknown_22, target->word_24.unsigned_value,
+                           target->word_1e.bytes[1]);
+        }
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
+        }
+        func_8003b9a4(target->word_0c.bytes.high, 10);
+        break;
+    case 24: {
+        s32 speed;
+        s32 step;
+        s32 angle;
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_800397d8(target->unknown_01[0]);
+        }
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor->animation_phase >= target->unknown_22) {
+            speed = 0;
+            step = target->word_26.signed_value;
+        } else if (actor->animation_phase >= target->unknown_20) {
+            speed = target->word_1c.value;
+            step = target->word_24.signed_value;
+        } else {
+            speed = target->word_1c.value;
+            step = target->word_0c.bytes.high;
+        }
+        angle = vector_xz_to_angle(
+            player_state.camera_position.vx - actor->position.vx,
+            player_state.camera_position.vz - actor->position.vz);
+        actor->unknown_64 = angle;
+        func_8003bcd0(actor->unknown_64, speed,
+                      target->word_1e.value, step,
+                      group->unknown_01[3], 4);
+        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->word_16.value,
+                           target->word_10.bytes.unknown_11);
+        }
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
+        }
+        break;
+    }
     case 11: {
         s32 collision;
         s32 stage;
@@ -396,108 +574,35 @@ void func_8003d184(void)
                         group->unknown_01[3]);
         break;
     }
-    case 12:
-    case 16: {
-        s32 motion_flags;
-
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
-            actor->tail_72.angles.x = 0;
-            actor->tail_72.angles.y = 0;
-            actor->tail_72.angles.z = 0;
-            actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
-                func_8002b67c(actor->unknown_06,
-                    actor->unknown_24 + (actor->unknown_07[1] << 11),
-                    actor->unknown_22 + (actor->unknown_07[0] << 11),
-                    actor->unknown_1c, actor->unknown_1e);
-            func_80039804(target->unknown_01[0]);
-            func_8003b5bc();
-            motion_flags = 3;
-        } else {
-            motion_flags = func_8003bf74(
-                &actor->tail_72.angles, target->word_0c.value,
-                target->word_0e.value,
-                group->unknown_01[2],
-                group->unknown_01[3], interval & 1);
-            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
-                motion_flags |= 1;
-            }
-            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
-                motion_flags |= 2;
-            }
-            if (actor->position.vy <
-                actor->tail_72.motion.baseline + target->word_10.value) {
-                actor->unknown_52 -= target->word_12.bytes.unknown_12;
-            } else if (actor->position.vy >
-                       actor->tail_72.motion.baseline - target->word_10.value) {
-                actor->unknown_52 += target->word_12.bytes.unknown_12;
-            }
-        }
-        if (motion_flags & 1) {
-            actor->tail_72.angles.y = rand() >> 3;
-        }
-        if (motion_flags & 2) {
-            actor->tail_72.angles.x = (rand() >> 5) - 512;
-        }
-        if (actor->target_type == 16) {
-            func_8003c220(target->unknown_01[0], target->word_14.bytes[0],
-                           target->word_14.bytes[1], target->word_16.bytes.low,
-                           target->word_16.bytes.high, target->unknown_08);
-        } else {
-            actor_advance_animation_wrapped(actor, target->unknown_08);
-        }
-        break;
-    }
-    case 13:
-    case 17: {
+    case 18: {
         s32 delta_x;
         s32 delta_y;
         s32 delta_z;
-        s32 distance;
-        struct KfEulerAngles opposite;
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_80039804(target->unknown_01[0]);
-            actor->state_70.signed_state = 0;
         }
         delta_x = player_state.camera_position.vx - actor->position.vx;
         delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
         delta_z = player_state.camera_position.vz - actor->position.vz;
-        distance = fixed_vector3_length(delta_x, delta_y, delta_z);
+        fixed_vector3_length(delta_x, delta_y, delta_z);
         func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
-        if (actor->tail_72.angles.x >= 3585) {
-            actor->tail_72.angles.x = 3584;
-        } else if (actor->tail_72.angles.x <= 512) {
-            actor->tail_72.angles.x = 512;
+        func_8003bf74(&actor->tail_72.angles, target->word_1c.value,
+                      target->word_1e.value,
+                      target->word_0c.bytes.high,
+                      group->unknown_01[3], 6);
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->word_16.value,
+                           target->word_10.bytes.unknown_11);
         }
-        if (distance >= target->word_16.value) {
-            actor->state_70.signed_state = 0;
-            actor->unknown_0f = 0xf1;
-        } else if (distance <= target->word_14.value) {
-            actor->state_70.signed_state = 1;
-            actor->unknown_0f = 0xf0;
-        }
-        if (actor->state_70.signed_state == 0) {
-            func_8003bf74(&actor->tail_72.angles, target->word_0c.value,
-                          target->word_0e.value,
-                          group->unknown_01[2],
-                          group->unknown_01[3], 17);
-        } else {
-            opposite.x = -512;
-            opposite.y = actor->tail_72.angles.y + 2048;
-            opposite.z = 0;
-            func_8003bf74(&opposite, target->word_0c.value,
-                          target->word_0e.value,
-                          group->unknown_01[2],
-                          group->unknown_01[3], 17);
-        }
-        if (actor->target_type == 17) {
-            func_8003c220(target->unknown_01[0], target->word_18.bytes.low,
-                           target->word_18.bytes.high, target->word_1a.bytes[0],
-                           target->word_1a.bytes[1], target->unknown_08);
-        } else {
-            actor_advance_animation_wrapped(actor, target->unknown_08);
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
         }
         break;
     }
@@ -552,38 +657,6 @@ void func_8003d184(void)
             actor_reset_target_and_reselect();
         }
         break;
-    case 18: {
-        s32 delta_x;
-        s32 delta_y;
-        s32 delta_z;
-
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
-        }
-        delta_x = player_state.camera_position.vx - actor->position.vx;
-        delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
-        delta_z = player_state.camera_position.vz - actor->position.vz;
-        fixed_vector3_length(delta_x, delta_y, delta_z);
-        func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
-        func_8003bf74(&actor->tail_72.angles, target->word_1c.value,
-                      target->word_1e.value,
-                      target->word_0c.bytes.high,
-                      group->unknown_01[3], 6);
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
-                           target->word_0e.bytes.high,
-                           target->word_10.bytes.fallback_offset,
-                           target->word_12.value, target->word_14.value,
-                           target->word_16.value,
-                           target->word_10.bytes.unknown_11);
-        }
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
-        }
-        break;
-    }
     case 19:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
@@ -693,77 +766,43 @@ void func_8003d184(void)
         }
         func_8003b9a4(group->unknown_01[3], 10);
         break;
-    case 23:
+    case 26:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            actor->state_70.signed_state = target->word_18.value;
+            actor->state_70.signed_state = 0;
             func_800397d8(target->unknown_01[0]);
+            actor->unknown_48 = 0;
+            actor->unknown_4a.value = 0;
+            actor->unknown_4c = 0;
         }
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor_animation_crossed_phase(actor, actor->state_70.signed_state)) {
-            actor->state_70.signed_state = (u16)actor->state_70.signed_state + target->unknown_28;
-            if (target->word_26.unsigned_value < actor->state_70.signed_state) {
-                actor->state_70.signed_state = 0;
+        switch (actor->state_70.signed_state) {
+        case 0: {
+            KfMapObject *object = &map_object_state.objects[actor->unknown_20];
+            if (object->action_timer < 2 || object->rotation.vx <= 0 ||
+                object->rotation.vx >= 3072) {
+                break;
             }
-            func_8003a614(0, target->word_0e.bytes.low,
-                           target->word_0e.bytes.high,
-                           target->word_10.bytes.fallback_offset,
-                           target->word_12.value, target->word_14.value,
-                           target->word_16.value,
-                           target->word_10.bytes.unknown_11 | 0x80);
+            actor->state_70.signed_state = 1;
+            actor->tail_72.signed_state = 8;
+            actor->unknown_1c = group->unknown_12;
+            actor->position.vy += 2048;
+            actor->unknown_1e = group->unknown_14;
+            actor->unknown_48 = group->unknown_32;
+            actor->unknown_4a.value = group->unknown_32;
+            actor->unknown_4c = group->unknown_32;
+            actor->rotation.y = object->rotation.vy;
+            actor->unknown_0d = 0;
         }
-        if (target->unknown_2a != 0 &&
-            actor_animation_crossed_phase(actor, target->unknown_2a)) {
-            func_8003a614(0, target->word_1c.bytes[0],
-                           target->word_1c.bytes[1],
-                           target->word_1e.bytes[0], target->unknown_20,
-                           target->unknown_22, target->word_24.unsigned_value,
-                           target->word_1e.bytes[1]);
-        }
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
-        }
-        func_8003b9a4(target->word_0c.bytes.high, 10);
-        break;
-    case 24: {
-        s32 speed;
-        s32 step;
-        s32 angle;
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
-        }
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor->animation_phase >= target->unknown_22) {
-            speed = 0;
-            step = target->word_26.signed_value;
-        } else if (actor->animation_phase >= target->unknown_20) {
-            speed = target->word_1c.value;
-            step = target->word_24.signed_value;
-        } else {
-            speed = target->word_1c.value;
-            step = target->word_0c.bytes.high;
-        }
-        angle = vector_xz_to_angle(
-            player_state.camera_position.vx - actor->position.vx,
-            player_state.camera_position.vz - actor->position.vz);
-        actor->unknown_64 = angle;
-        func_8003bcd0(actor->unknown_64, speed,
-                      target->word_1e.value, step,
-                      group->unknown_01[3], 4);
-        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
-                           target->word_0e.bytes.high,
-                           target->word_10.bytes.fallback_offset,
-                           target->word_12.value, target->word_14.value,
-                           target->word_16.value,
-                           target->word_10.bytes.unknown_11);
-        }
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
+            /* fall through */
+        case 1:
+            actor->position.vy -= 256;
+            actor->tail_72.unsigned_state--;
+            if ((s16)actor->tail_72.unsigned_state == 0) {
+                actor_reset_target_and_reselect();
+            }
+            break;
         }
         break;
-    }
     case 25: {
         const KfTargetCandidateAction25 *script =
             (const KfTargetCandidateAction25 *)target;
@@ -847,43 +886,6 @@ void func_8003d184(void)
         func_8003b9a4(group->unknown_01[2], 10);
         break;
     }
-    case 26:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
-            actor->state_70.signed_state = 0;
-            func_800397d8(target->unknown_01[0]);
-            actor->unknown_48 = 0;
-            actor->unknown_4a.value = 0;
-            actor->unknown_4c = 0;
-        }
-        switch (actor->state_70.signed_state) {
-        case 0: {
-            KfMapObject *object = &map_object_state.objects[actor->unknown_20];
-            if (object->action_timer < 2 || object->rotation.vx <= 0 ||
-                object->rotation.vx >= 3072) {
-                break;
-            }
-            actor->state_70.signed_state = 1;
-            actor->tail_72.signed_state = 8;
-            actor->unknown_1c = group->unknown_12;
-            actor->position.vy += 2048;
-            actor->unknown_1e = group->unknown_14;
-            actor->unknown_48 = group->unknown_32;
-            actor->unknown_4a.value = group->unknown_32;
-            actor->unknown_4c = group->unknown_32;
-            actor->rotation.y = object->rotation.vy;
-            actor->unknown_0d = 0;
-        }
-            /* fall through */
-        case 1:
-            actor->position.vy -= 256;
-            actor->tail_72.unsigned_state--;
-            if ((s16)actor->tail_72.unsigned_state == 0) {
-                actor_reset_target_and_reselect();
-            }
-            break;
-        }
-        break;
     case 27:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
@@ -940,6 +942,21 @@ void func_8003d184(void)
         }
         }
         break;
+    case 29:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_800397d8(target->unknown_01[0]);
+            func_8003b5bc();
+            actor->tail_72.signed_state = 16;
+        }
+        actor->rotation.x += 128;
+        actor->rotation.y += 64;
+        actor->position.vy -= 256;
+        actor->tail_72.unsigned_state--;
+        if ((s16)actor->tail_72.unsigned_state == 0) {
+            actor_reset_target_and_reselect();
+        }
+        break;
     case 28: {
         s32 collision;
 
@@ -968,21 +985,6 @@ void func_8003d184(void)
         }
         break;
     }
-    case 29:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
-            func_8003b5bc();
-            actor->tail_72.signed_state = 16;
-        }
-        actor->rotation.x += 128;
-        actor->rotation.y += 64;
-        actor->position.vy -= 256;
-        actor->tail_72.unsigned_state--;
-        if ((s16)actor->tail_72.unsigned_state == 0) {
-            actor_reset_target_and_reselect();
-        }
-        break;
     case 30: {
         VECTOR next;
         s32 collision;
@@ -1024,6 +1026,11 @@ void func_8003d184(void)
     }
     case 240:
         func_8003b5bc();
+        break;
+    case 6:
+    case 7:
+    case 8:
+        state_8017d118.active_table[17]();
         break;
     default:
         if (actor->target_type >= 31 && actor->target_type != 240) {

@@ -17,10 +17,9 @@ GAME.EXE	0x800110b8	0x24	menu_equipment_first_switch_rodata	unknown	load	pointer
 GAME.EXE	0x800110e0	0x24	menu_equipment_apply_switch_rodata	unknown	load	pointer[9]	func_80019ed4	supported	retail words;bounded jr;in-function case targets	compiler switch table within equipment category controller unit
 GAME.EXE	0x8001111d	0x1	DAT_8001111d	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011125	0x1	DAT_80011125	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80011128	0x20	DAT_80011128	unknown	load	pointer[8]		address-only	asm;bounded jr index;raw pointer targets	8 in-function case targets; address-derived table identity retained
-GAME.EXE	0x80011148	0x1c	DAT_80011148	unknown	load	pointer[7]		address-only	asm;bounded jr index;raw pointer targets	7 in-function case targets; address-derived table identity retained
-GAME.EXE	0x80011168	0x1c	player_equipment_jump_table	unknown	load	pointer[7]	player	supported	asm;raw pointer targets	seven switch cases in player_set_equipment_slot; owned by its RODATA claim
-GAME.EXE	0x80011188	0xd4	DAT_80011188	unknown	load	pointer[53]		address-only	asm;bounded jr index;53 raw pointer targets	53 in-function case targets; address-derived table identity retained
+GAME.EXE	0x80011128	0x20	func_80024498_rodata	unknown	load	pointer[8]	func_80024498	supported	asm;bounded selector 0..7 jr;8 raw pointer targets;source RODATA claim	player damage reaction switch table; original TU boundary WIP
+GAME.EXE	0x80011148	0x1c	func_800248a8_rodata	unknown	load	pointer[7]	func_800248a8	supported	asm;bounded selector 0..6 jr;7 raw pointer targets;source RODATA claim	player status damage switch table; original TU boundary WIP
+GAME.EXE	0x80011168	0xf4	player_state_equipment_rodata	unknown	load	u32[61]	player_state_equipment	supported	asm;7+53 raw pointer targets;zero separator;two bounded jr;source RODATA claim	one unit RODATA span: 7 equipment-slot pointers, one zero word, 53 player-effect pointers; original TU boundary WIP
 GAME.EXE	0x80011260	0x34	player_magic_dispatch_rodata	unknown	load	pointer[13]	func_80026498	supported	asm;13 retail pointer words;func_80026498 jr switch	13-entry magic-ID switch table owned by the player magic dispatch unit
 GAME.EXE	0x80011298	0x64	DAT_80011298	unknown	load	pointer[25]		address-only	asm;two bounded jr indices;raw pointer targets	One RODATA owner holds adjacent 6- and 19-pointer tables; internal base +0x18 remains address-derived
 GAME.EXE	0x80011300	0x4c	DAT_80011300	unknown	load	pointer[19]		address-only	asm;bounded jr index;19 raw pointer targets	19 in-function case targets; source owner remains unresolved
@@ -31,13 +30,13 @@ GAME.EXE	0x8001187c	0x44	map_object_effect_jump_table	unknown	load	pointer[17]	m
 GAME.EXE	0x800118c4	0x54	map_object_action_jump_table	unknown	load	pointer[21]	map_object	supported	asm;raw pointer targets	21-case action switch in func_800368b4; owned by its RODATA claim
 GAME.EXE	0x8001191c	0x3bc	func_80036ed4_rodata	unknown	load	u32[239]	func_80036ed4	supported	asm;three bounded jr tables;238 raw pointer relocations;zero separator at 0x80011cc0	one owned RODATA span: 224 primary pointers, 9 secondary pointers, one zero word, then 5 tertiary pointers (239 words total)
 GAME.EXE	0x80011cd8	0x20c	func_80039108_rodata	unknown	load	pointer[131]	func_80039108	supported	asm;bounded jr;131 decoded retail pointer words	compiler switch table within actor candidate scorer unit
-GAME.EXE	0x80011ee8	0x1ec	DAT_80011ee8	unknown	load	pointer[123]		address-only	asm;bounded jr index;raw pointer targets	123 in-function case targets; source switch table; indirect jr target remains candidate
+GAME.EXE	0x80011ee8	0x1ec	func_8003c614_rodata	unknown	load	pointer[123]	func_8003c614	supported	asm;bounded selector 0..122 jr;123 raw pointer targets;source RODATA claim	actor-group effect switch table; unit boundary WIP
 GAME.EXE	0x800120d8	0x3c4	actor_behavior_jump_table	unknown	load	pointer[241]	func_8003d184	supported	asm;bounded selector 0..240 jr;241 raw-verified reviewed in-body pointers;source RODATA claim	selector handlers and shared fallback in actor behavior dispatcher; unit boundary WIP
 GAME.EXE	0x8001249c	0x1ec	effect_spawn_kind_jump_table	unknown	load	pointer[123]	effect	supported	asm;raw pointer targets	kind 0..122 table indexed by func_80040308; TU boundary WIP
 GAME.EXE	0x8001268c	0x1ec	effect_update_kind_jump_table	unknown	load	pointer[123]	effect	supported	asm;raw pointer targets	effect kind 0..122 table indexed by effect_update_dispatch; TU boundary WIP
 GAME.EXE	0x8001287c	0x14	effect_update_phase_jump_table	unknown	load	pointer[5]	effect	supported	asm;raw pointer targets	effect phase 0..4 table indexed by effect_update_dispatch; TU boundary WIP
-GAME.EXE	0x80012890	0x40	event_opcode_jump_table	unknown	load	pointer[16]	event	supported	asm;raw pointer targets	opcode 0xf0..0xff table indexed by func_800462bc; TU boundary WIP
-GAME.EXE	0x800128d0	0x8c	event_scene_command_jump_table	unknown	load	pointer[35]	event	supported	asm;raw pointer targets	35 pointer rows to in-body labels, including shared handlers/exits; TU boundary WIP
+GAME.EXE	0x80012890	0x40	event_opcode_jump_table	unknown	load	pointer[16]	func_800462bc	supported	asm;bounded opcode 0xf0..0xff jr;16 raw pointer targets;source RODATA claim	opcode 0xf0..0xff table indexed by func_800462bc; TU boundary WIP
+GAME.EXE	0x800128d0	0x8c	event_scene_command_jump_table	unknown	load	pointer[35]	func_8004678c	supported	asm;bounded command 0x52..0x74 jr;35 raw pointer targets;source RODATA claim	35 in-body command handlers and exits; TU boundary WIP
 GAME.EXE	0x80012960	0x294	func_80048554_rodata	unknown	load	pointer[165]	func_80048554	supported	asm;bounded 0..0xa4 jr;165 raw-verified reviewed pointer words;exact source RODATA claim	Compiler switch table for the event serializer; complete record schema WIP
 GAME.EXE	0x80012bf8	0x40	event_restore_opcode_jump_table	unknown	load	pointer[16]	func_800489ac	supported	asm;bounded opcode 0xf0..0xff jr;16 raw-verified reviewed pointer words;source RODATA claim	16 entries to eight in-body event restore handlers; TU boundary WIP
 GAME.EXE	0x80012dd8	0x4	DAT_80012dd8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -201,8 +200,8 @@ GAME.EXE	0x80013370	0x4	DAT_80013370	unknown	load	undefined *		address-only	data
 GAME.EXE	0x80013374	0x4	DAT_80013374	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80063dcc	0x20	render_world_identity_matrix	global	load	MATRIX	func_8003247c	supported	retail bytes;two direct func_8003247c address references;SDK MATRIX layout	identity world matrix, original TU/static linkage unresolved
 GAME.EXE	0x80063e00	0x80	callback_default_table	unknown	load	KfCallback[32]	func_80016820	supported	retail words;func_80016820 table assignment	32 initialized no-op callbacks; original TU/static linkage unresolved
-GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]		supported	asm;xrefs;20 aligned 12-byte load records;KF1 counterpart	20 contiguous menu sprite descriptors through the nine-grid; TU owner unresolved
-GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]		supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; TU owner unresolved
+GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]	menu_draw_window	supported	asm;xrefs;20 aligned 12-byte load records;KF1 counterpart	20 contiguous menu sprite descriptors through the nine-grid; original TU owner unresolved
+GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]	menu_draw_window	supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; original TU owner unresolved
 GAME.EXE	0x80064910	0xc8	menu_equipment_labels_64910	global	load	KfMenuLabelSuffix[10]	func_80019ac4	supported	retail 200-byte copy at 0x80019af0;loaded glyph words	ten 20-byte menu label rows; original TU owner provisional
 GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	func_8001a2f4	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
 GAME.EXE	0x80064a00	0xf0	menu_header_labels	global	load	KfMenuLabelSuffix[12]	menu_status_render	supported	retail bytes;20-byte row stride;menu render xrefs	twelve menu header glyph suffix rows
@@ -214,14 +213,14 @@ GAME.EXE	0x80065c20	0x5a0	menu_item_code_primary	global	load	u16[6][120]	menu_it
 GAME.EXE	0x800661c0	0x4b0	menu_item_code_secondary	global	load	u16[5][120]	menu_item_code_secondary	supported	retail bytes;func_8001d654 lookup	five 240-byte numeric menu code pages; byte-pattern strings are false positives
 GAME.EXE	0x80066670	0x10	memory_card_file_prefix	global	load	char[16]	memory_card_format	supported	retail bytes;card-file xrefs	shared save-file prefix and NUL padding
 GAME.EXE	0x80066680	0x120	memory_card_assets	global	load	KfCardAssets	memory_card_write	supported	retail bytes;card-writer strcpy and indexed 32-byte icon CLUT selection	Shift-JIS card title followed by seven 16-color icon palettes
-GAME.EXE	0x800667a0	0x28	DAT_800667a0	unknown	load	s16[5][4]		address-only	asm;five eight-byte records;func_80025a18 copy loop;lh +6	complete initialized XYZ-plus-parameter records; C type, defining TU and linkage unresolved
-GAME.EXE	0x800667c8	0x20	DAT_800667c8	unknown	load	SVECTOR[4]		address-only	asm;four eight-byte records;func_80025a18 copy loop	complete initialized vector array; defining TU and linkage unresolved
+GAME.EXE	0x800667a0	0x28	DAT_800667a0	global	load	s16[5][4]	player_state_equipment	address-only	asm;five eight-byte records;func_80025a18 copy loop;lh +6	complete initialized XYZ-plus-parameter records; original C type and defining TU unresolved
+GAME.EXE	0x800667c8	0x20	DAT_800667c8	global	load	SVECTOR[4]	player_state_equipment	address-only	asm;four eight-byte records;func_80025a18 copy loop	complete initialized vector array; original defining TU unresolved
 GAME.EXE	0x800667e8	0x14	DAT_800667e8	global	load	KfPlayerMagicIdSequence	player	supported	retail bytes;three validated xrefs;exact player magic/input consumers	12 indexed effect IDs and four attack masks; current C owner player_state_equipment, original TU remains WIP
 GAME.EXE	0x800667fc	0xa	collision_default_cell	global	load	KfMapOccupancyCell	collision_grid_sample	supported	retail bytes;func_8002a988 fallback pointer	two default five-byte map layers
 GAME.EXE	0x80066808	0x7e	notification_quads	global	load	KfNotificationQuad[7]	notify_enqueue	supported	retail rows;renderer xrefs;kind writes	six notification quads and a sentinel
 GAME.EXE	0x80066888	0x21c	render_model_rows	global	load	KfRenderModelRow[15]	render_map_cell_object	supported	retail bytes;func_80031024 scan;func_800335a0 writes	14 active render rows and a full-width sentinel
 GAME.EXE	0x80066ab4	0xdc0	collision_default_rows	global	load	KfCollisionDefaultRow[80]	collision_height_wrappers	supported	retail bytes;func_8002bc18 row copy;startup archive write	80 mutable 44-byte defaults for collision rows
-GAME.EXE	0x80067874	0x1c	DAT_80067874	global	load	KfMapMaskShapePair[7]	map_mask_window_sweep	address-only	asm;func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
+GAME.EXE	0x80067874	0x1c	DAT_80067874	global	load	KfMapMaskShapePair[7]	map_mask_window_sweep	supported	asm;func_8002c670 bounded seven-pair walk;retail bytes;source DATA claim	seven s16 near/far pairs interpolated by view pitch; original defining TU unresolved
 GAME.EXE	0x80067890	0x10e	map_object_cell_patterns	global	load	KfMapCellPattern[9][3]	map_object_init_records	supported	asm;func_80035894 calls;func_80034f90 pattern format;retail bytes	nine groups of three cell patterns
 GAME.EXE	0x800679a0	0x8	DAT_800679a0	global	load	u8[8]	event_command_dispatch	supported	asm;func_8004678c 0x46f00;retail bytes	four magic IDs then 0xff terminator; original data TU unresolved
 GAME.EXE	0x800679a8	0x8	DAT_800679a8	global	load	u8[8]	event_command_dispatch	supported	asm;func_8004678c 0x46f10;retail bytes	four magic IDs then 0xff terminator; original data TU unresolved
@@ -333,10 +332,10 @@ GAME.EXE	0x8006d658	0x4	DAT_8006d658	unknown	load	undefined *		address-only	data
 GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix
 GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1
 GAME.EXE	0x8006d68c	0x4	menu_item_model_allocation_pending	global	load	s32	menu_item_model	supported	asm;read-write xrefs;KF1 counterpart	loaded allocation flag; defining TU remains unresolved
-GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	memory_card	supported	asm;xrefs;input_read_mark_active writes 1 after nonzero PadRead;func_800223cc and input_wait_release clear it	one-bit input-active latch; original defining TU remains unresolved
-GAME.EXE	0x8006d694	0x4	DAT_8006d694	unknown	load	s32		candidate	retail word 1;24 validated GAME xrefs;menu input increments and decrements within 1..99;item controllers multiply prices and update stock	menu item quantity word; complete original object and defining TU unresolved
-GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32		supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; TU owner unresolved
-GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32		supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; TU owner unresolved
+GAME.EXE	0x8006d690	0x4	input_idle_counter	global	load	s32	menu_sound_cue	supported	asm;xrefs;input_read_mark_active writes 1 after nonzero PadRead;func_800223cc and input_wait_release clear it	one-bit input-active latch; original defining TU remains unresolved
+GAME.EXE	0x8006d694	0x4	DAT_8006d694	global	load	s32	menu_item_model	supported	retail word 1;24 validated GAME xrefs;menu input increments and decrements within 1..99;item controllers multiply prices and update stock	menu item quantity scalar view; original containing object and defining TU unresolved
+GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32	menu_frame_begin	supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; original TU owner unresolved
+GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32	menu_frame_begin	supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; original TU owner unresolved
 GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
 GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	s8		candidate	retail byte 0x20;three reviewed GAME lui+lb references;card slot-digit seed	first signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
 GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	s8		candidate	retail byte 0x00;three reviewed GAME lui+lb references;card slot-digit seed	second signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
@@ -344,7 +343,7 @@ GAME.EXE	0x8006d6a8	0x7	DAT_8006d6a8	unknown	load	char[7]		candidate	retail byte
 GAME.EXE	0x8006d6b0	0x20	player_status_texture_rows	static	load	RECT[4]	player_reaction	supported	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM copy rows
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	render_map	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
 GAME.EXE	0x8006d6d4	0x4	render_model_yaw_smoothing_accumulator	global	load	s32	func_800335a0	supported	retail zero word;four direct read-write xrefs;angle_shortest_delta	Yaw-delta accumulator used to ease the first render-model row; original linkage WIP
-GAME.EXE	0x8006d6dc	0x8	menu_transition_rect	global	load	RECT		supported	asm;StoreImage;MoveImage;LoadImage;initialized bytes	320 by 240 VRAM transfer rectangle; defining TU remains unresolved
+GAME.EXE	0x8006d6dc	0x8	menu_transition_rect	global	load	RECT	menu_transition	supported	asm;StoreImage;MoveImage;LoadImage;initialized bytes	320 by 240 VRAM transfer rectangle; original defining TU remains unresolved
 GAME.EXE	0x8006d6e4	0x8	DAT_8006d6e4	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x800384ec/0x800384f0;func_80036b68 start offset	first of four adjacent motion offsets; original linkage WIP
 GAME.EXE	0x8006d6ec	0x8	DAT_8006d6ec	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x800384f4/0x800384f8;func_80036b68 end offset	second of four adjacent motion offsets; original linkage WIP
 GAME.EXE	0x8006d6f4	0x8	DAT_8006d6f4	global	load	SVECTOR	map_object	supported	retail bytes;independent HI/LO pair 0x80038584/0x80038588;func_80036b68 start offset	third of four adjacent motion offsets; original linkage WIP
@@ -448,11 +447,11 @@ GAME.EXE	0x8006d904	0x4	DAT_8006d904	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006d908	0x4	DAT_8006d908	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d9e0	0x4	current_poly_ft4	global	bss	POLY_FT4 *	menu_frame_begin	supported	asm;154 xrefs;KF1 static menu_runtime counterpart;menu_frame_begin and menu_two_option writers;CPE residue	current textured quad pointer; current C owner is central frame writer, original TU remains WIP; CPE residue occupies padded load page
 GAME.EXE	0x8006d9e8	0x1	menu_saved_music_enabled	global	bss	u8	menu	supported	asm;menu entry and exit;CPE zero tail	music enabled flag captured before the menu and compared on exit
-GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *		supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; TU owner unresolved
-GAME.EXE	0x8006d9f8	0x8	menu_frame_upload_rect	global	bss	RECT		supported	asm;LoadImage call;menu frame setup	8-byte GPU upload rectangle; TU owner unresolved
-GAME.EXE	0x8006da00	0x8	menu_item_preview_translation	global	load	SVECTOR		supported	asm;SDK vector layout;preview renderer	translation coordinates used by menu model preview; defining TU unresolved
-GAME.EXE	0x8006da08	0x8	menu_item_preview_rotation	global	load	SVECTOR		supported	asm;SDK vector layout;preview renderer	rotation coordinates used by menu model preview; defining TU unresolved
-GAME.EXE	0x8006da10	0x4	menu_item_preview_rotation_step	global	load	s32		supported	asm;preview renderer	rotation increment for menu model preview; defining TU unresolved
+GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *	menu_display_state	supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; original TU owner unresolved
+GAME.EXE	0x8006d9f8	0x8	menu_frame_upload_rect	global	bss	RECT	menu_display_state	supported	asm;LoadImage call;menu frame setup	8-byte GPU upload rectangle; original TU owner unresolved
+GAME.EXE	0x8006da00	0x8	menu_item_preview_translation	global	load	SVECTOR	menu_item_model	supported	asm;SDK vector layout;preview renderer	translation coordinates used by menu model preview; original defining TU unresolved
+GAME.EXE	0x8006da08	0x8	menu_item_preview_rotation	global	load	SVECTOR	menu_item_model	supported	asm;SDK vector layout;preview renderer	rotation coordinates used by menu model preview; original defining TU unresolved
+GAME.EXE	0x8006da10	0x4	menu_item_preview_rotation_step	global	load	s32	menu_item_model	supported	asm;preview renderer	rotation increment for menu model preview; original defining TU unresolved
 GAME.EXE	0x8006da18	0x4	memory_card_io_end_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpIOE event handle
 GAME.EXE	0x8006da20	0x4	memory_card_timeout_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpTIMOUT event handle
 GAME.EXE	0x8006da28	0x4	memory_card_new_device_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpNEW event handle
@@ -783,8 +782,8 @@ OPEN.EXE	0x8003dba0	0x4	banner_phase	global	load	s32	opening	supported	asm;xrefs
 OPEN.EXE	0x8003dba4	0x4	prompt_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	prompt pulse brightness
 OPEN.EXE	0x8003dba8	0x4	prompt_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the prompt brightens, 1 while it dims
 OPEN.EXE	0x8003dbac	0x4	pad_previous_buttons	global	load	u32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	PadRead result of the previous poll
-OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	display	supported	asm;xrefs;display_initialize/display_begin_frame	\\OP\\ CD directory prefix
-OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	display	supported	asm;xrefs;display_initialize/display_begin_frame	ISO9660 version suffix ;1
+OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	\\OP\\ CD directory prefix; original defining TU unresolved
+OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 OPEN.EXE	0x8003dbc4	0x4	DAT_8003dbc4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dbc8	0x4	DAT_8003dbc8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dbcc	0x4	DAT_8003dbcc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -1193,8 +1192,8 @@ END.EXE	0x8003a11c	0x4	DAT_8003a11c	unknown	load	pointer		address-only	data.tsv:
 END.EXE	0x8003a6cc	0x4	DAT_8003a6cc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aa34	0x4	overlay_next_request	global	load	u8 *	ending	supported	asm;xrefs;main	points at the PSX.EXE mailbox byte 0x800102f0
 END.EXE	0x8003aa38	0x5	ending_data_file	global	load	char[5]	ending	supported	asm;xrefs;main	ED.D resource file name
-END.EXE	0x8003aa40	0x5	cd_path_prefix	global	load	char[5]	display	supported	asm;xrefs;display_initialize/display_begin_frame	\\OP\\ CD directory prefix
-END.EXE	0x8003aa48	0x3	cd_version_suffix	global	load	char[3]	display	supported	asm;xrefs;display_initialize/display_begin_frame	ISO9660 version suffix ;1
+END.EXE	0x8003aa40	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	\\OP\\ CD directory prefix; original defining TU unresolved
+END.EXE	0x8003aa48	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 END.EXE	0x8003aa54	0x4	DAT_8003aa54	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aa58	0x4	DAT_8003aa58	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aa5c	0x4	DAT_8003aa5c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

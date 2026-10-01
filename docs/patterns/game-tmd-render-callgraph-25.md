@@ -24,7 +24,7 @@ listing residues and exact controls.
 | `0x8002ebe0` | Blended/lit packet walker | **WIP, 95.279450% fresh direct strict; 88.7% focused listing**. Four colored/textured modes and the full-width blend-bit contribution are modeled; external calls and address-referent counts agree. Retail/source CFGs have 26/25 blocks and 17/16 branches. Retail checks signed fixed depth and the `0x2000` ordering-table limit at the packet tail, while the probe computes the equivalent in-range flag at entry and reuses it. Splitting the two C conditions into nested guards moved the check back to the late tail and produced 26/26 blocks, 17/17 branches, and matching successor lists, but left the 104-byte probe frame versus retail's 96 bytes and lowered focused similarity to 80.1%. That syntax change added no independent source fact, so it was discarded; the original source mechanism remains unproved. |
 | `0x8002f194` | `render_enqueue_map` | **Exact, 100%**; regression control beside the map clipper. |
 | `0x8002f5b0` | Clipped GT3 fan builder | **WIP, 95.833336%**. The clipped-vertex and SDK call set agree; retail keeps a different saved-register assignment and orders one `lhu`/`sh` pair before the depth divide. |
-| `0x8002f808` | Alternate prepared TMD renderer | **WIP, 63.914710% direct strict objdiff**. FT3/FT4 clipping and packet fields are modeled. A retail-backed zero-count guard and postdecrement loop now give 51/51 CFG blocks, 35/35 branches, and 4/4 return frontiers in the focused probe, versus 51/51, 34/35, and 3/4 before. The focused listing rises only 50.3% to 50.5%; the first differing successor is B10, and retail's 168-byte frame versus the probe's 112-byte frame still needs a proven local-object model. All external call counts agree. Retail holds the projected-vertex base at `game_graphics_runtime+0x10b10` in `$s8` for both face paths and loads the ordering-table pointer with `-2796($s8)`; the probe reforms the projected base and emits a separate `game_graphics_runtime+0x10024` address pair. These extra pairs are address-reuse residue, not missing target referents. |
+| `0x8002f808` | Alternate prepared TMD renderer | **WIP, 91.176970% fresh direct strict objdiff; 58.9% focused listing**. FT3/FT4 clipping and packet fields are modeled. The retail-backed zero-count guard and postdecrement loop give 51/51 CFG blocks, 35/35 branches, 4/4 return frontiers, and matching known successor lists. Forming the projected-vertex base inside the packet loop removes two extra global address pairs. Placing each normal packet path before its clipping fallback follows the retail branch layout and raises strict similarity from 64.961624% to 91.176970%. The target and source each have 48 function relocation rows in the same type/referent order; all external call counts agree. The first differing control is #6, and retail's 168-byte frame versus the probe's 120-byte frame still needs a proven local-object model. |
 | `0x8002ff5c` | Prepared TMD object copier | **Claimed WIP; 51.506750% direct strict objdiff; 12.0% focused listing**. The sole caller passes asset, 16-bit object index, and a 4096-byte output object. The C claim models 14 copy calls, four-child FT4/FT3 subdivision, five or three midpoint vertices, packet counts, and final vertex/normal copies. All 14 external copy-call targets and counts agree. Retail and C have 11/11 CFG blocks, 6/6 branches, the same known successor lists, and 16 relocation rows each. Raw FT4 and FT3 paths copy respectively four and three packet words into a shared scratch record at `sp+48`; subsequent byte reads at offsets 48, 49, 52, 53, 56, and 57 prove the local texture-word view. Retail initializes its midpoint pointer at `sp+64` and later copies vertices from that address; the next stack record begins at `sp+1088`, supporting the 1024-byte, 128-`SVECTOR` workspace. The probe uses the same `sp+48` scratch and `sp+64` midpoint addresses, so retail's 1248-byte frame versus the probe's 1360-byte frame comes from the upper temporary/spill region, whose ownership remains unresolved. The first subdivided FT4 child writes two full words at packet offsets 24 and 28; a shared typed view now expresses both index pairs without an aliasing cast, preserving the adjacent halfword in the second pair. The retail local halfword scratch that feeds those words is not yet modeled. A typed `SVECTOR` aggregate-copy probe for four corner records expanded text 2816→2892 bytes and reduced strict matching to 44.068710%; the retained union view spells the raw two-word vertex copies. A shared `u8` packet-mode local compiled to a byte-identical object and was discarded. The pinned no-scheduler profile was a temporary 12.2% focused regression and was discarded. |
 | `0x80030c18` | `render_map_cell_object` | **WIP, 96.521736% direct strict objdiff; 98.7% focused listing**. Retail/source CFGs have 11/11 blocks and 6/6 branches; the call set and typed cell/lighting fields agree. Four prologue instructions are ordered differently before `SetRotMatrix`, after which the focused listing is SAME. Moving the object-index read earlier in a temporary source expanded the frame and was discarded. This is an unattributed codegen residue; all three sibling functions in the unit remain strict 100% controls. |
 | `0x80030de4` | Two-layer map-cell emitter | **Direct strict objdiff 100%; focused SAME**. Retail and source have 10/10 CFG blocks, two calls to `render_map_cell_object`, and the same 80-column grid stride. Computing each layer's vertical position before its depth position aligns the lower-layer load and x/z instruction schedule. This result is not banked. |
@@ -76,6 +76,41 @@ source-only local holding the third UV before the packet writes moved its load
 ahead of the buffer-bound check, reduced the focused listing from 82.6% to
 80.7%, and changed the two earlier UV schedules. It was discarded; the
 adjacent exact `render_enqueue_map` listing remained `SAME`.
+
+The KF1 GAME and OPEN map enqueue sources independently support the ordinary
+FT3/FT4 packet and normal-shading sequence used as a control here: typed TMD
+field reads, `NormalClip`, `NormalColorCol`, four or three `DpqColor` calls,
+then an ordering-table insertion. The searched KF1 sources do not contain a
+4096-byte prepared-object builder, midpoint subdivision, or a
+`Clip3FTP`/`Clip4FTP` fallback corresponding to KF2 `0x8002ff5c` and
+`0x8002f808`. Their loop syntax is therefore not evidence for those KF2
+bodies. Fresh KF2 focused checks leave the builder at 12.0% and the alternate
+renderer at 50.5%, with their previously reviewed call and referent sets.
+The exact `0x8002f194` enqueue sibling remains `SAME`. Moving the alternate
+renderer’s projected-vertex base assignment into its packet loop follows the
+retail address setup and KF1 control shape, removing two extra address pairs.
+The first source-only probe reached 64.961624% strict and 52.1% focused.
+Retail lays out the ordinary FT4 and FT3 draw bodies before their clipping
+fallbacks; reversing both C conditions to express those normal bodies first
+raised the retained source to 91.176970% strict and 58.9% focused. All 48
+relocation type/referent rows now agree in order. The exact sibling and
+unchanged clipped-fan listing remain controls, and the owned four-byte color
+datum remains direct strict 100%. In the caller,
+retail places the runtime address pair before `lbu s0,2(s2)` and
+`move s3,a2`, then masks orientation in the `SetRotMatrix` delay slot.
+Source-only variants placing the mask or the whole orientation read after
+that call each lowered the focused caller listing from 98.7% to 92.3% and
+removed that delay-slot mask. Neither was retained; the three exact caller
+siblings remain `SAME`.
+Moving the packet-header declaration into the same loop compiled to the
+identical focused listing, so it did not explain retail's stack spills and
+was discarded.
+For `0x8002ff5c`, merely widening the UV scratch union to four bytes raised a
+temporary probe to 20.4% focused and 54.321472% direct strict, but the added
+word member had no source use and would only steer allocation. Computing the
+two UV components through that word instead dropped focused similarity to
+10.2%. Both probes were discarded; the retained builder remains 12.0%
+focused and 51.506750% direct strict.
 
 Moving the dispatcher's mode-12 effect call below its normal draw call raised
 focused listing similarity from 63.1% to 64.5%, but the compiler still merged

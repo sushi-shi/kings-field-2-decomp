@@ -1479,22 +1479,67 @@ item identifiers. A direct-return spelling of those same bounds introduced
 an extra branch and jump absent from retail, despite a higher display-only
 listing similarity; exact caller `80028998` stayed identical. The experiment
 was discarded, and the original seven-instruction candidate was restored.
+A scratch GCC 2.6.0 compile leaves the predicate at the same 88.57143%
+strict score while regressing exact `80028998` to 95.36364%; it is not a
+closure for this contiguous unit.
+The same alternate profile leaves `8002722c` frameless rather than emitting
+retail's eight-byte frame; its strict score falls from 99.09091% to
+92.58523%, and adjacent horizontal movement falls to 74.38745%. This
+does not explain the selector's remaining frame residue.
 
-The matched KF1 `player_move_horizontal`, `player_update_vertical_motion`,
-and `magic_cast` sources confirm broad horizontal-motion, falling-state,
-and effect-dispatch roles, but their map-grid collision path and smaller
-magic set differ from KF2 retail. They do not supply a source form for the
-KF2 register/address-materialization residues. Fresh focused KF2 controls
-keep `80027928`/`80027988` at 100%, all sixteen exact reaction siblings
-unchanged, and the WIP functions `80023384`, `8002722c`, `800274ec`,
-`800279cc`, `80027f78`, and `8002985c` at their existing verdicts.
+KF1's exact `player_update_vertical_motion` and `magic_cast` sources
+confirm broad falling-state and effect-dispatch roles, but their map-grid
+collision path and smaller magic set differ from KF2 retail. KF1
+`player_move_horizontal` is itself a 96.56896% WIP with a heading-register
+and repeated-address-materialization residue, so it cannot establish an
+exact source form for the analogous KF2 residue. The KF1 matcher dossier
+reports that direct global accesses and several typed pointer placements
+all left that player-state anchor unresolved after
+the SDK `SVECTOR` and signed bearing facts were restored; KF2 already uses
+the corresponding supported vector and heading types.
+KF1's exact 0x264-byte weapon-attack updater has the same phase and charge
+role as KF2 `8002665c`, but KF2's 0xbd0-byte body adds special-weapon
+modes and effect-record motion; its opening equipped-ID `lbu` already has
+the right width and only a register-assignment residue.
+KF1's exact `player_select_magic` at `800167e4` is only a 0x64-byte
+selection setter: it clears charge, stores the chosen ID, and chooses or
+clears the record pointer. KF2 `8002722c` is a 0x2c0-byte magic-action gate
+with two switches, MP checks, and action-vector stores. The shared subject
+does not make the KF1 source an expression or stack-frame template for the
+KF2 leaf-frame residue.
+KF2 raw `80027684`–`800276b0` loads unsigned X/Z halfwords from the
+collision cache and player state, subtracts cache minus player on both
+axes, stores signed halves, and passes them to `vector_xz_to_angle`.
+KF1's analogous wall bearing subtracts Z in the opposite direction, so
+that exact-source expression must not be copied into KF2.
+The KF2 vertical path also uses both signed `lh` at `80027df4` and unsigned
+`lhu` at `80027f00` for the same movement-speed halfword at
+`player_state+0x12e`. Its current signed/unsigned union views preserve that
+retail distinction; KF1's exact vertical-motion source independently casts
+the corresponding speed to `s16` at its step threshold.
 
-The effect dispatcher also homes `a0`-`a3` on both sides. Retail reloads
-`effect_id` from that home slot before the switch and allocates a `0x70`
-frame, while the candidate keeps `a0` live and allocates `0x68`. Retail's
+Fresh focused KF2 controls keep `80027928`/`80027988` at 100%, all sixteen
+exact reaction siblings unchanged, and the WIP functions `80023384`,
+`8002722c`, `800274ec`, `800279cc`, `80027f78`, and `8002985c` at their
+existing verdicts.
+
+The retail effect dispatcher homes `a0`-`a3` before allocating its frame.
+It reloads `effect_id` from that home slot before the switch and uses a
+`0x70` frame. The GCC 2.5.7 candidate also homes those four registers but
+keeps `a0` live for the switch and uses `0x68`. Retail's
 selector distance addresses are `sp+0x50/+0x54`, eight bytes above the
 candidate's `sp+0x48/+0x4c` slots. No observed stack access identifies a
 real omitted local in the gap, so no artificial storage was added.
+The optional position argument is correct on both sides despite different
+cursor displacements: retail anchors `s0` at its `sp+112` first-argument
+home and loads `4(s0)`; the candidate anchors `s0` at its `sp+108`
+second-argument home and loads `0(s0)`. Both read caller register `a1`.
+An isolated GCC 2.6.0 `-O2 -mcpu=r2000` compile of this unit likewise
+homes `a0`-`a3`, but keeps a `0x68` frame, omits the
+retail reload, and scores `80025a18` only 56.620274% strict. It also
+retains only six of the fifteen exact equipment siblings. The established
+GCC 2.5.7 source/profile remains the better candidate; the mixed entry
+evidence does not establish a historical compiler or license a fake local.
 
 An isolated source probe gave the reaction update's `4096` clamp a distinct
 `s16` local instead of reusing the prior phase result. That natural spelling
@@ -1557,7 +1602,12 @@ these adjacent cases restores that order without changing semantics; both
 candidate targets now sit 24 bytes before retail, the same upstream offset
 as nearby cases. Direct strict `80025a18` rises from 95.54467% to
 95.54811%; the 15 exact equipment siblings remain at 100%. The upstream
-24-byte difference remains unexplained.
+24-byte difference remains unexplained. Retail's shared `func_80025878`
+call is at `80025dd8`; case 10 at `80025f44`, case 6 at `80025f4c`, and
+case 40 at `80026174` all jump back to its `80025dd0` argument setup.
+The current C already expresses those cases through one labelled call, so
+moving or duplicating it without an independently supported source shape
+would only steer the compiler's placement.
 
 The consolidated native GAME link no longer lists `DAT_800667e8` among its
 unresolved names. A scratch placement of `va_start` only in cases 39/49/50

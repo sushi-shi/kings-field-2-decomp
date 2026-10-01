@@ -29,6 +29,7 @@ KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtim
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
 KfEffectState	0x2a8c	supported	asm;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEffectTrailRow	0x18	supported	game/effect.h;GAME 0x80040a80-0x80040ac8;GAME 0x8004513c-0x800451bc	kind-6 position and rotation row copied into a four-bank provisional trail buffer
 KfEquipmentRecord	0x20	supported	asm;player_set_equipment_slot;game_main_loop startup clear	layout from the reconstructed header
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
 KfEventArena	0x3800	supported	game/event_state.h;func_800482f8;save pointer helpers	memory-block arena and word/byte clear views

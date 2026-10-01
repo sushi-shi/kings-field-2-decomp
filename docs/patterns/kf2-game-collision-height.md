@@ -40,9 +40,10 @@ the map step, a signed window step, mask stride, and count, as shown by eight
 calls from `0x8002c670`. It reads the existing scan-state bytes at
 `0x801b5a78/79`; the earlier `0x801b5a64/65` reading was incorrect. Its
 source models the two occupancy-layer checks, 24-by-24 window bounds, 80-by-80
-map bounds, cursor update, and final state writes. The BSS allocation owner
-of the shared `0x801b5a70` state is still unresolved, and `0x8002c670`
-has a separate WIP source claim. The new rasterizer was initially WIP at
+map bounds, cursor update, and final state writes. The original TU owner
+of the shared `0x801b5a70` state remains unresolved; a tentative source
+definition is described below. `0x8002c670` has a separate WIP source
+claim. The new rasterizer was initially WIP at
 48.9932% strict objdiff;
 focused comparison reports 23/19 CFG blocks and 14/12 branches, with the
 first control difference at the pre-loop count check. Its direct BSS
@@ -512,3 +513,51 @@ The `0x8002c670` mask-window builder has two reviewed internal joins:
 reachable blocks, source branches, and delay slots agree. Its safe one-VA
 carve emitted both local-section `R_MIPS_26` rows with no withholding;
 the focused window-sweep listing remains WIP at 76.4%.
+
+The same builder has 26 proven direct `jal` sites, all decoded in reachable
+retail blocks with their delay slots and mirrored by source calls: two
+`rcos`, one `rsin`, one mask clear, one grid sample, four segment raster
+calls, one row fill, and eight calls each to the mask-cell and line-scan
+helpers. All 26 were promoted to reviewed after the one-VA safe carve
+emitted them as `R_MIPS_26` with zero withheld. Its focused listing remains
+76.4% WIP; the already materialized calls do not resolve the typed
+lighting-byte address-formation difference.
+
+The mask-window TU now tentatively defines the complete 0x20-byte
+`render_mask_scan_state` BSS object at `0x801b5a70`. Its shared type covers
+the offsets used by the builder, both scan helpers, and the map renderer;
+the GAME xref inventory has 40 validated references to the base. The
+native GCC object emits `.comm render_mask_scan_state,32`, matching the
+typed extent. A direct native GAME link no longer lists the name as
+undefined, although the link still fails on other unresolved symbols.
+The defining TU is a source ownership model, not proof of the original
+file boundary or an independent startup clear. Focused mask and wrapper
+listings stay 76.4% WIP and 10/17 SAME, respectively.
+
+KF1's exact `collision_adjust_cell_occupancy` uses a row-local pointer and
+advances the next-row pointer from that local at the loop head. This is a
+useful shape analogue for KF2 `0x8002b73c`, but the games use different
+cell records, dimensions, and flag arithmetic. An isolated KF2 probe of
+`row = current_row + 80` compiled identically to the retained source;
+the KF2 function remains 75.5% focused WIP, so no source transplant was
+kept from the KF1 comparison.
+
+The `0x8002b874` retail snapshot stores the actor's unsigned halfword at
+`+0x1c` to the cached radius before loading its unsigned halfword at
+`+0x1e` for the common height store. Its map-object path likewise stores
+template `+0x04` before loading `+0x08`. The current C expresses these
+widths and fields, but the focused compiler schedules the height loads
+first and creates one additional CFG block; the listing stays 85.8% WIP.
+Isolated probes widening only the local height to `s32` and comparing the
+object index with the preceding actor-index sentinel both compiled
+identically to the retained source. The raw comparison supports the current
+shared field types but not a source-level change to force load order.
+
+At `0x8002ca14`–`0x8002ca50`, the mask builder calculates
+`map_z * 800 + map_x * 10 + first_layer_byte_offset` and adds the
+`bss_801c7540+0x4` lighting-field base before the byte load. This is the
+same address as the current typed 80-column `KfMapOccupancyCell` lookup.
+Isolated flat-cell and direct typed-field spellings both compiled to the
+same 76.4% focused listing as the retained source; neither resolved the
+different base-add schedule. The known whole-object owner and lighting
+field therefore remain unchanged.

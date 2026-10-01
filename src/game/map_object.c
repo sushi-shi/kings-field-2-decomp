@@ -14,16 +14,12 @@ s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
     SVECTOR forward;
     VECTOR rotated;
     MATRIX rotation;
-    s32 index;
+    s16 index;
     s32 direction;
 
     object = &map_object_state.objects[first_index];
     index = first_index;
-    if ((s16)first_index >= KF_MAP_OBJECT_CAPACITY) {
-        goto not_found;
-    }
-
-    for (; (s16)index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
+    for (; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
             continue;
         }
@@ -53,17 +49,16 @@ s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
                 continue;
             }
             if (object->collision_flags & 4) {
-                return (s16)index;
+                return index;
             }
             direction = vector_xz_to_angle(
                 object->position.vx - position->vx,
                 object->position.vz - position->vz);
         }
         if (angle_within_tolerance(angle, direction, tolerance)) {
-            return (s16)index;
+            return index;
         }
     }
-not_found:
     return -1;
 }
 

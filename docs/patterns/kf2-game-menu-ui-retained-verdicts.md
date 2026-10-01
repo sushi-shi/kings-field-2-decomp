@@ -579,3 +579,35 @@ local. The corresponding KF2 signed-local probe fell from 90.4% to 68.9%
 focused similarity because GCC emitted signed remainder/division correction
 branches throughout the atlas packet writes. KF2 retail uses the unsigned
 mask/shift sequence, so the unsigned local remains.
+
+## Text, list, and transition follow-up
+
+Fresh isolated compiles and direct objdiff compared ten connected GAME text,
+list, and transition functions. Three listings are strict exact; seven retain
+the following WIP verdicts. The transition's initialized `menu_transition_rect`
+and the window renderer's two initialized tables were preserved unchanged.
+
+| Function | Strict objdiff | Final verdict |
+| --- | ---: | --- |
+| `0x8001a4f0` item/magic controller | 99.74359% | Initializer-loop index and constant-register residue; 22/22 CFG blocks agree |
+| `0x8001f8b8` preview choice | 94.36464% | Argument register assignment and input-release block placement; 42/42 CFG blocks agree |
+| `0x8001fb8c` window draw | 99.78788% | Retail reserves 48 stack bytes versus 40 in the probe; row pointer walk remains supported |
+| `0x8001fc94` list renderer | 99.70803% | Retail loads RGB constant `0xff` before zeroing the row Y offset at `0x8002029c`/`0x800202a0`; probe reverses those two instructions, with all later listing and referents aligned |
+| `0x800210ac` string draw | 99.66904% | Retail reserves 56 stack bytes versus 48 and chooses the opposite glyph UV temporary register |
+| `0x80021510` number draw | **100%** | Exact 736-byte text-helper control |
+| `0x80022058` number formatter | 97.39% | Retail reserves eight stack bytes; the fifth argument consequently loads at `24(sp)` rather than `16(sp)`, while the digit and style operations otherwise align |
+| `0x8003494c` TIM upload | **100%** | Exact 112-byte transition control |
+| `0x800349bc` fade transition | 96.31408% | The mutable pad state spills to retail stack and quad constants occupy different saved registers; geometry, calls, and phase behavior agree |
+| `0x80034e10` transition loader | **100%** | Exact 384-byte transition control |
+
+KF1 master `src/game/menu_runtime.c` at `5a3469b3` has an exact
+`menu_list_render` with the same `row = 0; if (row < visible_rows) { yoff = 0;
+do { ... } }` row-loop structure used here. KF2 retail's sole remaining list
+difference is the order of the independent color and Y-offset setup; this
+cross-game source does not justify inserting a carrier local. KF1's number
+formatter has no KF2 style argument or style branches. A focused KF2 trial
+changing the blank-glyph temporary from `s16` to KF1's `s32` reduced listing
+similarity from 78.5% to 69.1%, added instructions, and changed delay-slot
+scheduling. That trial was reverted. KF1 `display_play_transition.c` is an
+image fade, but has a different packet/loop contract than KF2's four-quad
+menu transition, so no source shape was transferred. No C edit was retained.

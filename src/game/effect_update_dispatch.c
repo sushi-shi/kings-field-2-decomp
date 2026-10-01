@@ -50,6 +50,7 @@ extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
                               s32 *distance, s32 variation);
 extern void func_80041d7c(KfEffectRecord *record, s32 mode);
 extern void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position);
+extern long SquareRoot12(long value);
 
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
@@ -75,8 +76,15 @@ void effect_update_dispatch(void)
             if (collision & 0x10) {
                 record->unknown_3c[4] = 1;
             }
-            /* The vertical collision-cache word read on this branch has no
-             * proved owner; its state update remains WIP. */
+            if (collision & 5) {
+                if (record->phase == 1) {
+                    record->type = KF_EFFECT_SLOT_FREE;
+                } else {
+                    record->phase = 1;
+                    record->direction.vy = -200;
+                    record->position.vy = KF_COLLISION_CACHE_RESULT;
+                }
+            }
         }
         func_80041e0c(&record->position, 0x400, 0x400, 500);
         record->rotation.vz += 2700;
@@ -283,6 +291,22 @@ void effect_update_dispatch(void)
                     record->phase = 3;
                     record->unknown_3c[9] = 24;
                 }
+            } else {
+                KfEffectTrailRow *rows =
+                    *(KfEffectTrailRow **)&record->unknown_3c[4];
+                KfEffectTrailRow *row;
+                u8 frame = record->unknown_3c[8] + 1;
+                s32 angle = record->unknown_3c[9] << 4;
+
+                record->unknown_3c[8] = frame < 24 ? frame : 0;
+                row = &rows[record->unknown_3c[8]];
+                record->unknown_3c[9] += 8;
+                row->position.vx = record->position.vx;
+                row->position.vz = record->position.vz;
+                row->position.vy = record->position.vy + (rsin(angle) >> 3);
+                row->rotation.vy = record->rotation.vy;
+                row->rotation.vz = record->rotation.vz;
+                row->rotation.vx = record->rotation.vx + (rcos(angle) >> 4);
             }
         } else if (record->phase == 3) {
             u8 frame = record->unknown_3c[8] + 1;
@@ -327,9 +351,26 @@ void effect_update_dispatch(void)
             } else if (record->unknown_3c[9] >= 60) {
                 record->phase = 4;
             }
-            /* The remaining phase-two trail positions are unresolved. */
+            if (record->unknown_3c[9] < 60) {
+                KfEffectTrailRow *rows =
+                    *(KfEffectTrailRow **)&record->unknown_3c[4];
+                KfEffectTrailRow *row = &rows[record->unknown_3c[8]];
+                s32 radius = ((s32)actor->unknown_1c * 25 << 8) >> 12;
+                s16 angle = record->rotation.pad;
+
+                record->unknown_3c[9]++;
+                record->rotation.pad = angle + 100000 / actor->unknown_1c;
+                row->position.vx = record->position.vx +
+                                   ((rsin(angle) * radius) >> 12);
+                row->position.vz = record->position.vz +
+                                   ((rcos(angle) * radius) >> 12);
+                row->position.vy = record->position.vy +
+                                   (rsin(angle << 1) >> 4);
+                row->rotation.vy = -angle - 1024;
+                row->rotation.vz = 0;
+                row->rotation.vx = rcos(angle << 1) >> 4;
+            }
         }
-        /* Phase one's nonnegative probe/trail path remains partial. */
         break;
     }
     case 23:
@@ -1128,6 +1169,7 @@ void effect_update_dispatch(void)
 
         if (prior_phase == 0 || prior_phase == 1) {
             s32 index;
+            s32 transition = 0;
 
             collision = func_80042298(50, (s32)0x80000000, -300);
             if (collision != 0) {
@@ -1140,19 +1182,19 @@ void effect_update_dispatch(void)
                         func_8002b604(record->position.vx,
                                       record->position.vy,
                                       record->position.vz, 50, 0);
-                        /* The next constructor uses an unresolved local
-                         * direction vector on this transition. */
-                        break;
+                        transition = 1;
                     }
                 }
-                record->phase = 1;
+                if (!transition) {
+                    record->phase = 1;
+                }
             }
             if (prior_phase == 0) {
                 if ((s16)*(u16 *)&record->unknown_3c[4] <= 0) {
                     record->phase = 1;
                 }
                 *(u16 *)&record->unknown_3c[4] -= 1;
-            } else {
+            } else if (!transition) {
                 s32 lower_bound;
 
                 record->direction.vy =
@@ -1166,10 +1208,30 @@ void effect_update_dispatch(void)
                                   ? KF_COLLISION_CACHE_RESULT
                                   : KF_COLLISION_CACHE_LOWER_BOUND;
                 if (lower_bound - record->position.vy >= 7000) {
-                    /* This branch also passes an unresolved local direction
-                     * vector to two effect constructors. */
-                    break;
+                    transition = 1;
                 }
+            }
+            if (transition) {
+                VECTOR spawn_position;
+                SVECTOR spawn_direction;
+                s32 lower_bound = KF_COLLISION_CACHE_RESULT <
+                                          KF_COLLISION_CACHE_LOWER_BOUND
+                                      ? KF_COLLISION_CACHE_RESULT
+                                      : KF_COLLISION_CACHE_LOWER_BOUND;
+                s32 distance = lower_bound - record->position.vy;
+
+                spawn_position.vx = record->position.vx;
+                spawn_position.vy = lower_bound;
+                spawn_position.vz = record->position.vz;
+                record->phase = 2;
+                /* Retail has no visible write to this stack direction. */
+                func_80040308(10, record->type | 3,
+                               record->kind == 103 ? 104 : 122,
+                               &spawn_position, &spawn_direction, distance);
+                func_80040308(10, record->type, 2,
+                               &spawn_position, &spawn_direction,
+                               distance >> 1, distance >> 4, 0x800);
+                effect_play_spatial_sound(record, 0x17);
             }
             for (index = 3; index >= 0; index--) {
                 SVECTOR random_direction;
@@ -1189,12 +1251,24 @@ void effect_update_dispatch(void)
                 record->type = KF_EFFECT_SLOT_FREE;
             }
         }
-        /* Other phases use an unresolved local spawn input. */
+        /* Phase values outside 0..2 remain unmodelled. */
         break;
     }
     case 104:
     case 122:
-        if (record->phase >= 3) {
+        if (record->phase < 3) {
+            SVECTOR local_direction;
+            s32 scale = (s16)record->scale_y;
+            s32 root = SquareRoot12(scale * ((scale * scale) >> 12));
+
+            root = SquareRoot12(root);
+            /* Retail passes this stack vector without a visible write on
+             * this kind entry. */
+            func_80040308(10, record->type | 3,
+                           record->kind == 104 ? 11 : 54,
+                           &record->position, &local_direction, root >> 3);
+        }
+        {
             s32 distance;
 
             record->animation_clip = (record->phase & 1) - 128;
@@ -1212,7 +1286,6 @@ void effect_update_dispatch(void)
             }
             record->phase++;
         }
-        /* Earlier phases pass a local spawn input with unproved setup. */
         break;
     case 105: {
         u8 actor_index = record->unknown_3c[5];

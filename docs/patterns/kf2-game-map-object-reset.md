@@ -29,9 +29,15 @@ requires the carried low address. The helper indexes the startup-cleared
 the first or second five-byte layer receives the marker. The typed prefix
 models 88 rows by 80 cells, with that extent provisional. Reviewed
 HI16/LO16 pairs at `0x800356b4`, `0x800356f4`, and `0x8003575c` fix the
-target referents. Focused comparison has the same nine CFG blocks, four
-branches, and return frontiers, with remaining address-arithmetic register
-and instruction-order residue. No exact match is claimed.
+target referents. The source now extracts both signed tile coordinates before
+indexing the typed grid, consistent with retail's two position loads preceding
+the row and column arithmetic. Direct strict objdiff rises from `75.573770%`
+to `88.688520%`; all five adjacent functions remain `100%`. Both arms still
+use different address-arithmetic registers and base-addition order from
+retail, so no exact match is claimed. A two-step row-pointer variant was
+compared and reverted because it materialized the BSS base early and added
+two instructions. The KF1 map-object pool uses a different grid layout and
+has no direct source analogue for this helper.
 
 The next contiguous pool pass, `0x800357a0`, is strict objdiff
 `100.000000000%`. It visits all 396 objects, handling action `5` and
@@ -57,16 +63,16 @@ checking facing tolerance. Its six callers pass a position, added radius,
 point height, angle, and tolerance; the source preserves those widths and
 uses the shared object/template fields. Reviewed BSS and eight direct
 control relocations establish the pool, template, calls, and internal jumps.
-Focused comparison is about `82.9%` with 15/15 CFG blocks and 8/8 branches,
-but the return frontier and some delay-slot scheduling differ. No exact
-match is claimed.
-
-The raw entry guard at `0x800361f0` branches to the same `li v0,-1` at
-`0x80036388` reached when the scan exhausts the pool. The source now uses
-that common failure return. A focused rebuild stays WIP at 82.6% with
-15/14 CFG blocks and 8/8 branches; the two exact sibling listings in
-`game.map_object` remain SAME. The lower intermediate score does not
-disprove the retail-backed return edge.
+The reconstructed exact KF1 `map_object_pool_find_interaction_from`
+uses a signed 16-bit scan index in a `for` loop with one final failure
+return. KF2 retail likewise sign-extends its index at the entry guard and
+each loop test; the guard at `0x800361f0` joins the exhausted-pool
+failure return at `0x80036388`. Applying the corresponding source shape
+to KF2 improves its focused listing to 99.3%, with 15/15 CFG blocks,
+8/8 branches, and matching 2/2 return frontiers. The only listed
+instruction difference is the order of a stack argument load and an
+independent move before `angle_within_tolerance`; exactness remains open.
+The two exact sibling listings remain SAME.
 
 The reset unit now tentatively defines the complete `map_object_state` BSS
 owner at `0x801749d0`. Retail startup calls `repeat_store_word` with

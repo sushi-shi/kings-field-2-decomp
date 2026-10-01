@@ -79,7 +79,7 @@ typedef struct KfTargetCandidate {
     KfTargetCandidateWord12 word_12;
     KfTargetCandidateWord14 word_14;
     u16 unknown_16;
-    u8 unknown_18[2];
+    u16 unknown_18;
     u16 unknown_1a;
 } KfTargetCandidate;
 typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x1c ? 1 : -1];
@@ -97,6 +97,7 @@ typedef char kf_target_candidate_marker_state_offset[(u32)&((KfTargetCandidateWo
 typedef char kf_target_candidate_marker_state_total_offset[(u32)&((KfTargetCandidate *)0)->word_12.bytes.marker_state == 0x13 ? 1 : -1];
 typedef char kf_target_candidate_word_14_offset[(u32)&((KfTargetCandidate *)0)->word_14 == 0x14 ? 1 : -1];
 typedef char kf_target_candidate_stream_bytes_offset[(u32)&((KfTargetCandidate *)0)->word_14.bytes == 0x14 ? 1 : -1];
+typedef char kf_target_candidate_unknown_18_offset[(u32)&((KfTargetCandidate *)0)->unknown_18 == 0x18 ? 1 : -1];
 
 /* Group slots hold byte offsets until actor_fixup_group_targets runs. */
 typedef union KfTargetReference {

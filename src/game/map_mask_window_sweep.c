@@ -193,3 +193,6 @@ KfMapMaskShapePair DAT_80067874[7] = {
     {0x0120, 0x0520},
     {(s16)0xff80, (s16)0xfb80},
 };
+
+DATA(0x801b5a70, 0x20)
+KfRenderMaskScanState render_mask_scan_state;

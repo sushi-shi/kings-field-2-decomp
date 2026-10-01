@@ -185,6 +185,8 @@ KfEffectState	0x680	0x2400	records	KfEffectRecord[128]	supported	game/effect.h;a
 KfEffectState	0x2a80	0x4	current_magic	KfMagicRecord *	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectState	0x2a84	0x4	current_record	KfEffectRecord *	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectState	0x2a88	0x4	current_index	s32	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectTrailRow	0x00	0x10	position	VECTOR	supported	game/effect.h;GAME 0x80040a80-0x80040a9c	constructor copies all four words from effect position
+KfEffectTrailRow	0x10	0x08	rotation	SVECTOR	supported	game/effect.h;GAME 0x80040aa0-0x80040abc	constructor copies all eight bytes from effect rotation
 KfEquipmentRecord	0x00	0x02	unknown_00	u8[2]	opaque	asm;player_set_equipment_slot;game_main_loop startup clear	not yet modelled
 KfEquipmentRecord	0x02	0x12	bonus_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats	nine additive halfword components
 KfEquipmentRecord	0x14	0x02	hp_regen_interval	u16	supported	asm;func_800297b4;KF1 player_update	HP recovery interval in equipment effect ticks
@@ -672,7 +674,7 @@ KfTargetCandidate	0x10	0x2	word_10	KfTargetCandidateWord10	supported	GAME 0x8003
 KfTargetCandidate	0x12	0x2	word_12	KfTargetCandidateWord12	supported	GAME 0x80039108 lhu at +0x12;GAME event lbu at +0x12/+0x13	shared word and byte view
 KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x800393f4 lhu at +0x14;GAME event byte stream	shared word and byte-stream prefix view
 KfTargetCandidate	0x16	0x2	unknown_16	u16	supported	GAME 0x80039108 lhu target+0x16	candidate distance bound; meaning unresolved
-KfTargetCandidate	0x18	0x2	unknown_18	u8[2]	opaque	game/actor.h	intervening bytes before candidate distance bound
+KfTargetCandidate	0x18	0x2	unknown_18	u16	supported	GAME 0x8003e078 lhu candidate+0x18	unsigned animation phase threshold; exact meaning unresolved
 KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
 KfTargetCandidateWord0e	0x0	0x2	value	u16	supported	GAME 0x800394a8 lhu candidate+0x0e	unsigned phase-step operand
 KfTargetCandidateWord0e	0x0	0x2	bytes	KfTargetCandidateWord0eBytes	supported	GAME 0x800391d0/0x80039358 lbu	byte-addressable view of the same halfword

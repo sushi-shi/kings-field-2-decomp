@@ -1692,10 +1692,38 @@ The 241-word switch table at `800120d8` sends selectors 6–8 and 31–239
 selectors above 240 there. That block loads
 `state_8017d118.active_table[17]` and calls it through `jalr` without a new
 argument setup. The retained C spells that callback for exactly those paths;
-selectors 3–5, 9–30, and 240 still require separate arms. A focused compile
+selectors 3, 5, and 9–30 still require separate arms. A focused compile
 improved the incomplete body from 3.6% to 4.7% listing similarity, with the
 0x248c-byte retail function still WIP. The table-target grouping and callback
 come from raw control flow; the score is only a comparison of this partial C.
+The full table at `800120d8..8001249b` is one 241-pointer RODATA span:
+every raw word is aligned and points inside `3d184`, and the next datum
+begins exactly at `8001249c`. The curated data census now has one table row
+and identity instead of 241 Ghidra-sized pointer rows. A GAME one-VA safe
+delink accepts the consolidated range and emits a 0x3c4-byte module RODATA
+section with 271 total module relocations. All 241 pointer rows were then
+checked against raw retail words and promoted to reviewed. The safe delinker
+reports those rows as `site-outside-function` because it separately rebases
+in-module RODATA code pointers; the module output has the full table section.
+Selector 0 joins the shared tail at `3ef00`, which calls `3b9a4` with
+`actor_state.active_group->unknown_01[2]` and target 10. Selector 2 reaches
+the distinct tail at `3dd7c` after its animation phase check and optional
+target reset; that call uses twice the same group byte and target 10. The C
+claim now includes both calls. Focused similarity remains 4.7% because the
+other action arms dominate the large missing body.
+KF1's matched actor melee-phase shape suggested checking the corresponding
+KF2 action, but KF2 raw instructions determine selector 4: initial animation
+selection, clamped animation step, a phase-crossing check on candidate +0x18,
+the eight-argument radial-damage call, optional target reset at phase 4095,
+and a `3b9a4` motion tail using candidate byte +0x0d. Retail reads +0x18
+with `lhu`; `KfTargetCandidate.unknown_18` and its inventory row are now
+`u16` with the same extent. The focused incomplete dispatcher moved 4.7% to
+4.6% after this source-backed arm; that score change is not a semantic
+rejection. Selector 240 is a direct `3b5bc` call: raw table word 240 points
+to `3f39c`, which calls that exact actor-motion helper before the common
+tail. Adding the arm leaves the incomplete dispatcher at 4.2% focused WIP.
+Focused actor-animation and actor-group-position controls retain 6/6 and 3/3
+SAME listings, respectively.
 
 The connected `3c614` actor-group effect dispatcher has a proved correction
 for kind `0x79` (switch word 120 at `800120c8`). After the 600-step direction
@@ -1707,3 +1735,28 @@ focused incomplete-body listing from 22.7% to 25.2%; the function remains
 WIP with 45 retail versus 53 compiled CFG blocks and 15 versus 20 branches.
 The indirect switch leaves reachability incomplete, so further case-by-case
 raw review is needed before attributing the remaining control differences.
+
+The current 30-function actor call-graph control was rebuilt with focused
+`kf try --context 0 --no-flow` after the candidate +0x18 field correction.
+`SAME` below means an identical focused listing; no broad strict match was
+run for this checkpoint. The actor-motion, animation, damage, collision,
+group-position, and fixup units are connected by calls from `3d184` and
+`3c614`, or by their exact contiguous siblings.
+
+| GAME VA | Focused verdict | GAME VA | Focused verdict |
+| --- | --- | --- | --- |
+| `3a318` | WIP 97.5% | `3a614` | WIP 81.2% |
+| `3a778` | SAME | `3a9f4` | SAME |
+| `3ab5c` | SAME | `3acb4` | SAME |
+| `3ad90` | SAME | `3adc4` | SAME |
+| `3ae20` | SAME | `3ae50` | WIP 99.2% |
+| `3b33c` | SAME | `3b520` | SAME |
+| `3b5bc` | SAME | `3b5d0` | WIP 66.5% |
+| `3b9a4` | SAME | `3bae4` | SAME |
+| `3bba0` | SAME | `3bcd0` | SAME |
+| `3bd40` | WIP 68.2% | `3be38` | SAME |
+| `3bf74` | SAME | `3c000` | SAME |
+| `3c10c` | SAME | `3c220` | SAME |
+| `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
+| `3d184` | WIP 4.2% | `3f610` | SAME |
+| `3f7ec` | WIP 93.8% | `3f860` | SAME |

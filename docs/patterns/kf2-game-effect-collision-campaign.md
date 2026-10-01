@@ -1634,10 +1634,14 @@ The phase-two body runs immediately after a successful actor handoff in
 retail. Its proved prefix now also runs in C: set actor flag 0x800, advance
 the 24-frame counter, copy the position returned by `func_8003c10c`,
 subtract half the actor +0x1e halfword, and select phase four once the
-tail +0x45 count reaches 60. The remaining phase-two trail writes and
-the phase-one nonnegative-probe trail outcome remain absent;
+tail +0x45 count reaches 60. The nonnegative probe result advances the
+24-row index and writes position X/Z/Y and rotation X/Y/Z through the
+record's +0x40 trail pointer. The 24-byte row shape is proved by the
+constructor's full VECTOR/SVECTOR copy. Phase two now also writes the
+same row family, using the actor +0x1c width for its radial scale and
+angle increment while advancing the +0x45 byte;
 the table `jr` and pointer-word relocations remain candidate-tier. Focused
-similarity is 14.6% in the current aggregate; this is source-backed WIP
+similarity is 10.0% in the current aggregate; this is source-backed WIP
 with no exact claim.
 
 Kind eight's apparent 0x801abd28 referent was a signed-low arithmetic
@@ -1690,21 +1694,29 @@ child direction before each constructor call. Phase one now retains its
 collision call, the nonzero low-nibble `func_80042424`/`func_8002b604`
 pair, signed direction smoothing, 70-unit vertical decrement, and the
 four-child branch when the lesser of two provisional collision-cache words
-minus the record Y is below 7000. Other phase-one branches pass separate
-stack position and direction vectors to constructors; their complete
-argument value chain is not established, so those transitions remain
-partial. Focused aggregate similarity is 14.8% WIP after these two phases,
-versus 15.1% before them. The lower score is retained for the directly
-decoded branch, width, and call behavior.
+minus the record Y is below 7000. A nonzero low collision nibble or a
+height difference of at least 7000 instead builds a stack VECTOR with
+the record X/Z and selected cache Y, sets phase two, constructs kind
+104/122 and then kind two with the decoded type, distance and scale
+arguments, plays sound 0x17, and still emits the four kind-101 children.
+Retail has no visible write to the separate stack SVECTOR passed to both
+constructors on this entry; C leaves its contents unspecified. Other phases
+remain partial. Focused aggregate similarity is 9.8% WIP after this arm;
+the lower score retains directly decoded branches, widths and calls.
 
 Kinds 104 and 122 share 0x800439a8. Their phases three and later now have
 the raw-backed path in C: animation clip receives `(phase & 1) - 128`,
 phases below nine compute the distance from the effect to the player camera,
 and distances below 32001 drive `func_8002bf38` with the observed sine
 attenuation and RGB/distance arguments. Each such phase advances afterward.
-The earlier phases still pass a local spawn vector whose initialization is
-not proved on every entry, so they remain absent. Aggregate focused
-similarity rises from 13.2% to 13.8% and remains WIP.
+Phases below three now take the directly decoded pair of `SquareRoot12`
+calls on the scale-Y cubic expression, shift the result by three, and
+construct kind 11 for kind 104 or kind 54 for kind 122 before joining that
+same animation/distance path. Retail passes `sp+88` as the constructor's
+direction vector with no visible write on this entry; the C keeps a local
+SVECTOR without inventing its contents. This is a remaining value-origin
+uncertainty rather than a missing call. The aggregate focused
+similarity after this arm was 9.9% WIP.
 
 Kind 100 now has the decoded 0x80043e2c control path in C. For phases 4–70
 it calls `func_8004195c` with the observed eight operands; a nonnegative
@@ -1722,20 +1734,47 @@ The raw 123-word kind table has 55 entries that jump straight to the common
 return and 68 active entries; the current C names all 68 active kinds,
 with kinds 6, 103/121, and 104/122 limited to proven phases. Kind 100's
 constructor direction has an unproved stack value. The dispatcher remains
-WIP at 14.6% aggregate focused similarity. A comparison with flow enabled
-also reports CFG comparison unavailable: retail direct J/JAL rows remain
-candidate-tier and the compiled kind switch has an unresolved indirect jump.
-Neither warning promotes an indirect target or gives a strict control-flow
-verdict.
+WIP at 9.8% aggregate focused similarity. A comparison with flow enabled
+previously reported CFG comparison unavailable while retail direct J/JAL
+rows were still candidate-tier and the compiled kind switch had an unresolved
+indirect jump. A raw audit now confirms all 334 in-body direct J/JAL sites:
+their decoded opcodes and encoded targets match the curated rows. The 302
+remaining candidates were promoted to reviewed after the earlier 32. A
+safe one-VA carve admits all 334 unique direct `R_MIPS_26` rows; its two
+standalone/module objects report 672 relocations in aggregate. The sole
+withheld row is the table-base HI/LO candidate at 0x80044f70/74. Both
+table-base pairs retain candidate ownership,
+and indirect dispatch targets remain unresolved. No refreshed CFG or strict
+source verdict follows from the direct-edge promotion alone.
 
 Kind 6 phase two now follows the raw 0x80045254–0x800452bc scale branch:
 for tail byte +0x45 below 17, two `func_8001584c` calls interpolate from
 zero to actor halfword +0x1e with fractions `counter << 9` and
 `counter * 350`, storing effect scale X/Z and Y respectively. At 60 or
-more, phase becomes four. The following 24-byte trail-row writes remain
-partial because the four-bank buffer at 0x801d9628 has no proved source
-definition. Focused dispatcher similarity remains 14.6% WIP; the added
-halfword stores and two calls are directly decoded retail behavior.
+more, phase becomes four. While the counter is below 60, the same phase
+then advances the angle in record rotation padding by `100000 / actor
+width`, writes a sinusoidal XYZ position around the actor and a rotation
+into the row indexed by tail +0x44, and increments tail +0x45. Phase one's
+nonnegative-probe path also writes that proven VECTOR/SVECTOR row. These
+accesses use the saved +0x40 pointer; they do not define the four-bank
+buffer at 0x801d9628 or its candidate index global. Focused dispatcher
+similarity after the kind-six pass was 10.0% WIP; the lower score retained
+directly decoded field widths, row writes, and calls. Shared `game.effect_reset` and
+`game.effect_scatter` focused controls remain 3/3 listing-SAME each.
+KF1's exact ground-branch visual source also spells X/Z offsets as
+`rsin`/`rcos(angle)` times a radial distance shifted by 12, which is a
+useful source-shape comparison for the KF2 row calculation. The KF2 raw
+0x80045338–0x80045388 instructions independently establish that expression;
+KF1 has no corresponding four-bank trail allocation here.
+
+Kind zero's collision branch now uses the existing
+`KF_COLLISION_CACHE_RESULT` owner: raw `lw` at 0x800436d0 resolves to
+`bss_801c7540+0x11810` (0x801d8d50). When collision bits `& 5` are set,
+retail frees a phase-one record; otherwise it selects phase one, sets
+direction Y to -200, and copies that cache result to position Y. This
+replaces an obsolete owner-unknown comment without adding an overlapping
+BSS definition. The focused aggregate after that bounded edit was
+10.0% WIP; the current dispatcher verdict is 9.8%.
 
 A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.
 Its first divergence is the prologue: retail reserves 72 stack bytes and
@@ -1746,6 +1785,13 @@ same load/store widths and order, albeit different saved registers. The
 missing kind-6 and kind-102 storage owners prevent treating the frame
 residue as an attributable compiler problem; no frame-padding source was
 added.
+KF1's strict-exact constructor is a source-shape control: its five named
+arguments and `s32 *` variadic cursor put the cursor assignment in the
+pool-find call delay slot, as KF2 retail does with a frame 16 bytes larger.
+Moving the KF2 `va_start` after `effect_pool_find_free` alone lowered its
+focused score from 11.4% to 10.5% and changed the null branch; the trial
+was reverted. Neither the cursor origin nor the larger frame establishes a
+different ABI or an original source ordering by itself.
 
 The complete `effect_state` object at 0x8019b6a8 now has its single source
 definition in `effect_reset.c` (`KfEffectState`, 0x2a8c bytes). The object

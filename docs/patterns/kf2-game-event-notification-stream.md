@@ -1,9 +1,9 @@
 # GAME event, pose, and notification stream
 
-This 25-function batch follows the scene controllers' confirmed calls to the
+This 27-function family follows the scene controllers' confirmed calls to the
 pose projection and interpolation helpers, their notification counter and
 collision-channel calls, and the shared event-state arena. Verdicts are per
-function. The exact rows below are strict 100% source matches; the unclaimed
+function. The exact rows below are strict 100% source matches; the non-exact
 controllers remain WIP even where their callees are exact. Earlier campaign
 notes that list `0x80045f20` as WIP predate its typed reconstruction.
 
@@ -14,26 +14,40 @@ notes that list `0x80045f20` as WIP predate its typed reconstruction.
 | `0x80045d1c` | Exact | Sweeps live effect slots and dispatches updates. |
 | `0x80045e18` | Exact | Plays fixed sound `0x40`. |
 | `0x80045e3c` | Exact | Plays a requested sound at volume 100. |
-| `0x80045e5c` | WIP | Trigonometric terrain probe reads a collision-result pointer at `0x801d8d44`; its enclosing BSS owner overlaps an unresolved equipment view. |
+| `0x80045e5c` | Exact function | Trigonometric terrain probe reads the shared collision-result pointer; direct strict text is 100%, while the enclosing BSS ownership remains provisional. |
 | `0x80045f20` | **New exact** | Eight-argument camera-relative pose projection, 180/180 code bytes and four reviewed referents. |
 | `0x80045fd4` | Exact | Optional position and angle interpolation; preserved after the contiguous pose merge. |
-| `0x800460a0` | WIP | Animation phase helper has matching call graph but interchanged saved registers for step and half-step. |
+| `0x800460a0` | WIP, 99.268295% strict | Animation phase helper has matching call graph but interchanged saved registers for step and half-step. |
 | `0x80046144` | Exact | Finds an `f2` marker in a candidate byte stream. |
-| `0x800461a0` | WIP, 99.12676% strict | Typed actor-group and event-state stream scan has 14/14 CFG blocks and 5/5 branches; only two record-cursor registers remain exchanged. |
+| `0x800461a0` | WIP, 99.12676% strict | Typed actor-group and event-state stream scan has 14/14 CFG blocks and 5/5 branches; two record-cursor registers and a final increment schedule remain exchanged. |
 | `0x800462bc` | WIP | Script-type dispatcher has a jump table and incomplete event-record ownership. |
 | `0x80046700` | Exact | Spawns a map object for an event slot. |
 | `0x8004678c` | WIP | Scene controller has two indirect transfers and incomplete event-object extent. |
 | `0x800473e0` | Exact | Decrements a nonzero event-counter byte. |
 | `0x80047434` | Exact | Increments a counter through 99 and enqueues a notification. |
 | `0x800474c4` | Exact | Seven-argument collision-channel transition. |
-| `0x800475d8` | WIP | Scene interaction calls the pose projector, channel transition, and notification path; record owners remain open. |
-| `0x80047c98` | WIP | Event dispatcher calls the terrain probe, notification queue, and `0x80034e10` image transition; indirect/state ownership remains open. |
+| `0x800475d8` | WIP, 98.56481% strict | Scene interaction calls the pose projector, channel transition, and notification path; saved-register and instruction scheduling remain open. |
+| `0x80047c98` | WIP, 98.05147% strict | Event dispatcher calls the terrain probe, notification queue, and `0x80034e10` image transition; the early map-loop zero matches retail, with saved-register and control-layout residue. |
 | `0x800482f8` | Exact | Clears and initializes typed event-state control, sentinels, and arena regions; 100% strict. |
 | `0x800483a8` | Exact | Invokes the active callback with a zero argument. |
 | `0x800483d8` | Exact | Saves event-arena offsets through the typed pointer table; 100% strict. |
 | `0x80048428` | Exact | Rebases event-arena links by a signed delta. |
 | `0x80048498` | Exact | Restores the typed event-arena pointer table; 100% strict. |
 | `0x800484e4` | Exact | Rebases event-arena links for the reverse traversal. |
+| `0x80048554` | Exact | Saves the selected event, actor, and map-object stream records. |
+| `0x800489ac` | WIP, 98.82883% strict | Restores the stream through typed actor, target-group, and map-object records; initial sentinel/base register assignment differs. |
+
+A fresh direct strict comparison of the event-state/save/restore family found
+13 exact functions and three WIPs (`0x800475d8`, `0x80047c98`, and
+`0x800489ac`). In `0x80047c98`, initializing the map-object scan index before
+the two independent pool-pointer assignments moves the zero assignment into
+the retail branch delay slot and raises the strict result from `97.37745%` to
+`98.05147%`. Retail still keeps the rotation argument and the constant one in
+different saved registers, and two instructions of control layout remain
+unattributed. A separate actor-index local lowered the result and was
+reverted. The controller and restore-stream differences begin with saved
+register assignments; their existing typed calls, fields, and exact adjacent
+event-state functions provide no source-backed correction yet.
 
 The five callers of `0x80045f20` establish its eight O32 arguments: three
 local coordinates, pitch, yaw, vertical and depth offsets, and a `VECTOR *`
@@ -53,6 +67,12 @@ actor-group, event-state, helper-call, and four internal jump referents were
 decoded and curated. The current C expresses those observed fields and returns
 with the retail 14-block, five-branch control shape; only two cursor-register
 assignments remain exchanged. The preceding `0x80046144` remains identical.
+
+A focused probe initialized the independent marker pointer before the cursor.
+It changed only their register assignment and raised direct objdiff similarity
+to `99.23943%`, without bringing either pointer's retail register or increment
+order into agreement. The simpler cursor-derived pointer was restored and
+rebuilt; `0x80046144` remains strict exact.
 
 The menu preview at `0x8002083c` still has a 64-byte stack-frame extent gap.
 JP and US retail both use a 224-byte frame; EU retail also has a 224-byte

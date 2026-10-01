@@ -46,9 +46,9 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
         }
     }
 
+    object_index = 0;
     objects = map_object_state.objects;
     templates = map_object_state.templates;
-    object_index = 0;
     for (;;) {
         KfMapObject *object;
         u16 object_id;

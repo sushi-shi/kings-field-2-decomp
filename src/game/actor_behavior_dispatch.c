@@ -5,9 +5,16 @@
 
 extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 extern void func_8003d0e8(KfActor *actor);
+extern s32 func_8003b9a4(s32 decay, s32 target);
+extern void func_8003b5bc(void);
+extern s32 func_8003a614(s32 minimum_distance, s32 maximum_distance,
+                          s32 y_offset, s32 angle_tolerance, u16 damage0,
+                          u16 damage1, u16 damage2, u16 damage3);
 extern s32 func_8003bcd0(s16 angle, s32 speed, s32 range, s32 step,
                          s32 mode, s32 target);
 extern void actor_reset_target_and_reselect(void);
+
+RODATA(0x800120d8, 0x3c4)
 
 ADDRESS(0x8003d184, 0x248c)
 void func_8003d184(void)
@@ -54,6 +61,7 @@ void func_8003d184(void)
                                    target->unknown_08 - 1)) {
             actor->unknown_0f = 0xf1;
         }
+        func_8003b9a4(actor_state.active_group->unknown_01[2], 10);
         break;
     case 1:
         if (actor->unknown_0f == 0) {
@@ -81,13 +89,36 @@ void func_8003d184(void)
         if (actor->animation_phase > 0xffe) {
             actor_reset_target_and_reselect();
         }
+        func_8003b9a4(actor_state.active_group->unknown_01[2] * 2, 10);
+        break;
+    case 4:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_800397d8(target->unknown_01[0]);
+        }
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor_animation_crossed_phase(actor, target->unknown_18)) {
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->unknown_16,
+                           target->word_10.bytes.unknown_11);
+        }
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
+        }
+        func_8003b9a4(target->unknown_0c >> 8, 10);
         break;
     case 6:
     case 7:
     case 8:
         state_8017d118.active_table[17]();
         break;
-    /* Selectors 3–5, 9–30, and 240 have separate WIP paths. */
+    case 240:
+        func_8003b5bc();
+        break;
+    /* Selectors 3, 5, and 9–30 have separate WIP paths. */
     default:
         if (actor->target_type >= 31 && actor->target_type != 240) {
             state_8017d118.active_table[17]();

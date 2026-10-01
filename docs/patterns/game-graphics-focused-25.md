@@ -161,3 +161,52 @@ byte-for-byte identical to the retained source's listing (eight SAME, three
 unchanged WIPs). The retail's two separate positive-depth exits therefore
 remain unexplained by this ordinary branch spelling; no source change was
 retained.
+
+## Current 27-function graphics/TMD control refresh
+
+A targeted twelve-unit rebuild and direct strict objdiff, after the current
+GAME delink and shared-header changes, gives **24/27 exact functions**.
+`game.tmd_prepare_primitive_indices` is now strictly exact: its 724-byte
+body and 116-byte switch data both compare at 100%. Its prior 96.13260%
+aggregate score was stale relative to the current source and target; a focused
+`kf try` independently gives one identical listing. No new source edit was
+needed or retained.
+
+| Unit | Current direct strict verdict |
+| --- | --- |
+| `game.world_translate` | 1/1 exact |
+| `game.primitive_buffer` | 3/3 exact |
+| `game.display` | 10/10 exact |
+| `game.tmd_prepare_primitive_indices` | 1/1 exact; 116/116 `.rodata` bytes exact |
+| `game.graphics_textured_quad` | `0x800311b0` WIP, 92.14815% |
+| `game.graphics_sliding_panels` | 2/2 exact |
+| `game.graphics_color_bytes_draw` | 1/1 exact |
+| `game.graphics_color_bytes_set` | 1/1 exact |
+| `game.render_world_model` | `0x80031850` WIP, 95.0% |
+| `game.render_animated_object` | `0x80031d8c` WIP, 94.65414% |
+| `game.render_frame` | 2/2 exact |
+| `game.animation_sparse_vertices` | 3/3 exact |
+
+The retained world-model source has the raw-backed branch-local collision
+row and typed byte-offset null-path expression. A fresh focused listing
+first diverges at the scale-pointer/blend saved-register assignment, then
+in the null-path coordinate schedule; its branch and call structure remains
+as previously documented. The animated renderer first diverges in the
+saved-argument allocation and one extra retail `s7` save, while its calls
+and packet path agree. The textured quad retains its packet-code delay-slot
+and saved-register residue. No compiler-register steering was added to any
+of the three WIPs. This refresh used only targeted builds, direct per-unit
+objdiff, and focused `kf try`; it did not run repository tests, lint, a full
+linked build, broad matching, or banking.
+
+The adjacent large dispatcher `game.render_resource_dispatch` also received
+one raw-backed actor cursor correction. Retail keeps the actor's position
+pointer separate from the actor record pointer and advances both by the
+`sizeof(KfActor)` stride (124 bytes) at their common loop tail. Keeping a
+typed `VECTOR` member pointer live across the loop in C now emits that
+separate increment; the visibility checks continue to use this pointer,
+while the world-render call still uses its distinct draw-position result.
+Its direct strict score rises from 90.63798% to **90.69262%**. The body
+still has 96/96 CFG blocks and 54/54 branches, with the first successor
+discrepancy at effect-pass B62; the 32-byte identity matrix remains exact.
+No effect-pass source shape was inferred from the small score change.

@@ -52,6 +52,8 @@ extern void func_80041d7c(KfEffectRecord *record, s32 mode);
 extern void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position);
 extern long SquareRoot12(long value);
 
+RODATA(0x8001268c, 0x204)
+
 ADDRESS(0x80042650, 0x3670)
 void effect_update_dispatch(void)
 {
@@ -89,11 +91,16 @@ void effect_update_dispatch(void)
         func_80041e0c(&record->position, 0x400, 0x400, 500);
         record->rotation.vz += 2700;
         break;
-    case 1:
     case 28: {
-        s32 radius = record->kind == 28 ? 250 : 500;
-        u8 phase = record->unknown_3c[4];
+        s32 radius;
+        u8 phase;
 
+        radius = 250;
+        goto kind_one_update;
+    case 1:
+        radius = 500;
+    kind_one_update:
+        phase = record->unknown_3c[4];
         if (phase == 2) {
             record->unknown_10 += 256;
             if (record->unknown_10 >= 4096) {
@@ -238,9 +245,8 @@ void effect_update_dispatch(void)
         break;
     }
     case 6: {
-        s32 process_phase_two = record->phase == 2;
-
-        if (record->phase == 0) {
+        switch (record->phase) {
+        case 0: {
             s32 index;
 
             for (index = 0; index < 8; index++) {
@@ -258,11 +264,15 @@ void effect_update_dispatch(void)
                 }
             }
             record->phase = 1;
-        } else if (record->phase == 1 && record->updates_remaining < 3) {
-            record->phase = 3;
-            record->updates_remaining = -1;
-            record->unknown_3c[9] = 24;
-        } else if (record->phase == 1) {
+            break;
+        }
+        case 1:
+            if (record->updates_remaining < 3) {
+                record->phase = 3;
+                record->updates_remaining = -1;
+                record->unknown_3c[9] = 24;
+                break;
+            }
             if (func_8004195c(250, 25, 32, 200,
                               0, 0x400, 100, 0x800) == -1) {
                 record->updates_remaining = -1;
@@ -284,13 +294,11 @@ void effect_update_dispatch(void)
                         record->rotation.vy = -vector_xz_to_angle(
                             record->position.vx - actor->position.vx,
                             record->position.vz - actor->position.vz);
-                        process_phase_two = 1;
+                        goto phase_two;
                     }
                 }
-                if (!process_phase_two) {
-                    record->phase = 3;
-                    record->unknown_3c[9] = 24;
-                }
+                record->phase = 3;
+                record->unknown_3c[9] = 24;
             } else {
                 KfEffectTrailRow *rows =
                     *(KfEffectTrailRow **)&record->unknown_3c[4];
@@ -308,28 +316,9 @@ void effect_update_dispatch(void)
                 row->rotation.vz = record->rotation.vz;
                 row->rotation.vx = record->rotation.vx + (rcos(angle) >> 4);
             }
-        } else if (record->phase == 3) {
-            u8 frame = record->unknown_3c[8] + 1;
-
-            record->unknown_3c[8] = frame < 24 ? frame : 0;
-            if (record->unknown_3c[9] != 0) {
-                record->unknown_3c[9]--;
-                break;
-            }
-            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
-            record->type = KF_EFFECT_SLOT_FREE;
-        } else if (record->phase == 4) {
-            s32 index;
-
-            for (index = 31; index >= 0; index--) {
-                func_80041e94(record, -1, -2, 0xc00, -90,
-                               16, 14, 5, 0x200, -256, 0x200,
-                               -320, 0x200, -256);
-            }
-            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
-            record->type = KF_EFFECT_SLOT_FREE;
-        }
-        if (process_phase_two) {
+            break;
+        case 2:
+        phase_two: {
             KfActor *actor = &actor_state.actors[record->unknown_3c[10]];
             VECTOR scratch;
             VECTOR *position;
@@ -370,6 +359,32 @@ void effect_update_dispatch(void)
                 row->rotation.vz = 0;
                 row->rotation.vx = rcos(angle << 1) >> 4;
             }
+            break;
+        }
+        case 3: {
+            u8 frame = record->unknown_3c[8] + 1;
+
+            record->unknown_3c[8] = frame < 24 ? frame : 0;
+            if (record->unknown_3c[9] != 0) {
+                record->unknown_3c[9]--;
+                break;
+            }
+            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
+            record->type = KF_EFFECT_SLOT_FREE;
+            break;
+        }
+        case 4: {
+            s32 index;
+
+            for (index = 31; index >= 0; index--) {
+                func_80041e94(record, -1, -2, 0xc00, -90,
+                               16, 14, 5, 0x200, -256, 0x200,
+                               -320, 0x200, -256);
+            }
+            actor_state.actors[record->unknown_3c[10]].unknown_28 &= ~0x800;
+            record->type = KF_EFFECT_SLOT_FREE;
+            break;
+        }
         }
         break;
     }
@@ -837,7 +852,7 @@ void effect_update_dispatch(void)
     }
     case 20:
         func_80041cd0(0x4000, 0x100, 0x20, 0x400, 0x8000);
-        record->rotation.vz += 64;
+        record->rotation.vy += 64;
         break;
     case 22:
         record->rotation.vy = (u16)record->rotation.vy + 10;
@@ -869,10 +884,16 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 25:
     case 34:
-    case 35:
-        collision = func_80042298(250, 100, record->kind == 25 ? -30 : 0);
+    case 35: {
+        s32 vertical_step;
+
+        vertical_step = 0;
+        goto collision_kind25_update;
+    case 25:
+        vertical_step = -30;
+    collision_kind25_update:
+        collision = func_80042298(250, 100, vertical_step);
         if (collision != 0) {
             if (collision & 0xf) {
                 record->type = KF_EFFECT_SLOT_FREE;
@@ -886,6 +907,7 @@ void effect_update_dispatch(void)
         }
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         break;
+    }
     case 26:
     case 27:
         record->type = 0x21;
@@ -907,9 +929,7 @@ void effect_update_dispatch(void)
         }
         break;
     case 29:
-    case 30:
     case 31:
-    case 47:
     case 48: {
         VECTOR projected;
         VECTOR midpoint;
@@ -917,10 +937,15 @@ void effect_update_dispatch(void)
         s32 prior_y;
         s32 acceleration;
 
+        acceleration = 10;
+        goto ballistic_update;
+    case 30:
+    case 47:
+        acceleration = 5;
+    ballistic_update:
         if (record->phase != 0) {
             break;
         }
-        acceleration = record->kind == 30 || record->kind == 47 ? 5 : 10;
         /* These kinds overlay the record tail with a Y origin and age. */
         if ((s16)*(u16 *)&record->unknown_3c[6] == 0) {
             audio_play_spatial_range(5, &record->position, 110,
@@ -958,13 +983,17 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 33:
     case 53: {
         VECTOR target;
-        s32 motion_scale = record->kind == 33 ? 3800 : 7600;
+        s32 motion_scale;
         s32 result;
         s32 count;
 
+        motion_scale = 7600;
+        goto kind33_update;
+    case 33:
+        motion_scale = 3800;
+    kind33_update:
         target.vx = player_state.camera_position.vx;
         target.vy = player_state.camera_position.vy - 1600;
         target.vz = player_state.camera_position.vz;
@@ -982,21 +1011,20 @@ void effect_update_dispatch(void)
                        -motion_scale / 48, 6, 33, 0, 0x400);
         break;
     }
-    case 38:
     case 39: {
         s32 trigger;
         s32 count;
         u32 flags;
 
-        if (record->kind == 39 && record->updates_remaining < 45) {
+        if (record->updates_remaining < 45) {
             trigger = func_8004195c(0x258, 0x28, 0x24, 0x32,
                                     100, 0x1000, 0x104, 0x800) == -1;
-        } else {
-            if (record->kind == 39) {
-                record->direction.vy = (u16)record->direction.vy + 10;
-            }
-            trigger = func_80042298(100, 0, 0) != 0;
+            goto kind38_response;
         }
+        record->direction.vy = (u16)record->direction.vy + 10;
+    case 38:
+        trigger = func_80042298(100, 0, 0) != 0;
+    kind38_response:
         if (trigger) {
             flags = KF_COLLISION_CACHE_FLAGS;
             if (flags & 0x10) {
@@ -1529,15 +1557,22 @@ void effect_update_dispatch(void)
         func_80041e0c(&elevated, 0x2000, 0x7fff, 10000);
         break;
     }
-    case 118:
+    case 118: {
+        s32 child_kind;
+
+        child_kind = 0x33;
+        goto child_impact_update;
     case 119:
+        child_kind = 0x34;
+    child_impact_update:
         if (func_80042298(140, 0, -200) != 0) {
             func_80040308(10, record->type | 3,
-                           record->kind == 118 ? 0x33 : 0x34,
+                           child_kind,
                            &record->position, 0);
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
+    }
     case 120: {
         s32 finish;
 

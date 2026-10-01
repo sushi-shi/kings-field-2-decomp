@@ -35,6 +35,7 @@ void func_8003247c(void)
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
     u8 vab_flags[320];
     KfActor *actor;
+    const VECTOR *actor_position_ptr;
     KfMapObject *object;
     KfEffectRecord *effect;
     KfMapPlacedEntry *placed;
@@ -44,14 +45,13 @@ void func_8003247c(void)
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
+    actor_position_ptr = &actor->position;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
         u32 layer;
         KfTargetGroup *group;
-        const VECTOR *actor_position_ptr;
         const VECTOR *position;
 
-        actor_position_ptr = &actor->position;
         if (actor->lifecycle != 1) {
             goto actor_next;
         }
@@ -98,6 +98,8 @@ actor_radius_check:
         if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
             actor->unknown_03) goto actor_visible;
 actor_next:
+        actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
+                                               sizeof *actor);
         actor++;
         remaining--;
     }

@@ -569,244 +569,244 @@ GAME.EXE	0x80011908	0x1108		mips32_candidate	raw-word	0x80036938	load		.word		ra
 GAME.EXE	0x8001190c	0x110c		mips32_candidate	raw-word	0x80036938	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80011910	0x1110		mips32_candidate	raw-word	0x80036938	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80011914	0x1114		mips32_candidate	raw-word	0x80036900	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001191c	0x111c		mips32_candidate	raw-word	0x80036fa0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011920	0x1120		mips32_candidate	raw-word	0x80037100	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011924	0x1124		mips32_candidate	raw-word	0x80037354	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011928	0x1128		mips32_candidate	raw-word	0x800378bc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001192c	0x112c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011930	0x1130		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011934	0x1134		mips32_candidate	raw-word	0x80037630	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011938	0x1138		mips32_candidate	raw-word	0x80038104	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001193c	0x113c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011940	0x1140		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011944	0x1144		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011948	0x1148		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001194c	0x114c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011950	0x1150		mips32_candidate	raw-word	0x80038450	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011954	0x1154		mips32_candidate	raw-word	0x80037e70	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011958	0x1158		mips32_candidate	raw-word	0x8003850c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001195c	0x115c		mips32_candidate	raw-word	0x800385d8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011960	0x1160		mips32_candidate	raw-word	0x8003860c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011964	0x1164		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011968	0x1168		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001196c	0x116c		mips32_candidate	raw-word	0x8003772c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011970	0x1170		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011974	0x1174		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011978	0x1178		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001197c	0x117c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011980	0x1180		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011984	0x1184		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011988	0x1188		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001198c	0x118c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011990	0x1190		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011994	0x1194		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011998	0x1198		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001199c	0x119c		mips32_candidate	raw-word	0x80038b00	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119a0	0x11a0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119a4	0x11a4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119a8	0x11a8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119ac	0x11ac		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119b0	0x11b0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119b4	0x11b4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119b8	0x11b8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119bc	0x11bc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119c0	0x11c0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119c4	0x11c4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119c8	0x11c8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119cc	0x11cc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119d0	0x11d0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119d4	0x11d4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119d8	0x11d8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119dc	0x11dc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119e0	0x11e0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119e4	0x11e4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119e8	0x11e8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119ec	0x11ec		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119f0	0x11f0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119f4	0x11f4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119f8	0x11f8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800119fc	0x11fc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a00	0x1200		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a04	0x1204		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a08	0x1208		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a0c	0x120c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a10	0x1210		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a14	0x1214		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a18	0x1218		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a1c	0x121c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a20	0x1220		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a24	0x1224		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a28	0x1228		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a2c	0x122c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a30	0x1230		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a34	0x1234		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a38	0x1238		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a3c	0x123c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a40	0x1240		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a44	0x1244		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a48	0x1248		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a4c	0x124c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a50	0x1250		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a54	0x1254		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a58	0x1258		mips32_candidate	raw-word	0x80038148	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a5c	0x125c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a60	0x1260		mips32_candidate	raw-word	0x800379e8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a64	0x1264		mips32_candidate	raw-word	0x80037ea0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a68	0x1268		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a6c	0x126c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a70	0x1270		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a74	0x1274		mips32_candidate	raw-word	0x80037b70	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a78	0x1278		mips32_candidate	raw-word	0x80037cac	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a7c	0x127c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a80	0x1280		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a84	0x1284		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a88	0x1288		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a8c	0x128c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a90	0x1290		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a94	0x1294		mips32_candidate	raw-word	0x80038788	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a98	0x1298		mips32_candidate	raw-word	0x80038860	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011a9c	0x129c		mips32_candidate	raw-word	0x800388e0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011aa0	0x12a0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011aa4	0x12a4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011aa8	0x12a8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011aac	0x12ac		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ab0	0x12b0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ab4	0x12b4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ab8	0x12b8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011abc	0x12bc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ac0	0x12c0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ac4	0x12c4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ac8	0x12c8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011acc	0x12cc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ad0	0x12d0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ad4	0x12d4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ad8	0x12d8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011adc	0x12dc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ae0	0x12e0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ae4	0x12e4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ae8	0x12e8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011aec	0x12ec		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011af0	0x12f0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011af4	0x12f4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011af8	0x12f8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011afc	0x12fc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b00	0x1300		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b04	0x1304		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b08	0x1308		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b0c	0x130c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b10	0x1310		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b14	0x1314		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b18	0x1318		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b1c	0x131c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b20	0x1320		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b24	0x1324		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b28	0x1328		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b2c	0x132c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b30	0x1330		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b34	0x1334		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b38	0x1338		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b3c	0x133c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b40	0x1340		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b44	0x1344		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b48	0x1348		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b4c	0x134c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b50	0x1350		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b54	0x1354		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b58	0x1358		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b5c	0x135c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b60	0x1360		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b64	0x1364		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b68	0x1368		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b6c	0x136c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b70	0x1370		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b74	0x1374		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b78	0x1378		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b7c	0x137c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b80	0x1380		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b84	0x1384		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b88	0x1388		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b8c	0x138c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b90	0x1390		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b94	0x1394		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b98	0x1398		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011b9c	0x139c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ba0	0x13a0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ba4	0x13a4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ba8	0x13a8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bac	0x13ac		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bb0	0x13b0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bb4	0x13b4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bb8	0x13b8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bbc	0x13bc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bc0	0x13c0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bc4	0x13c4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bc8	0x13c8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bcc	0x13cc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bd0	0x13d0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bd4	0x13d4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bd8	0x13d8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bdc	0x13dc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011be0	0x13e0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011be4	0x13e4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011be8	0x13e8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bec	0x13ec		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bf0	0x13f0		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bf4	0x13f4		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bf8	0x13f8		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011bfc	0x13fc		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c00	0x1400		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c04	0x1404		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c08	0x1408		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c0c	0x140c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c10	0x1410		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c14	0x1414		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c18	0x1418		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c1c	0x141c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c20	0x1420		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c24	0x1424		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c28	0x1428		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c2c	0x142c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c30	0x1430		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c34	0x1434		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c38	0x1438		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c3c	0x143c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c40	0x1440		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c44	0x1444		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c48	0x1448		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c4c	0x144c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c50	0x1450		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c54	0x1454		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c58	0x1458		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c5c	0x145c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c60	0x1460		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c64	0x1464		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c68	0x1468		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c6c	0x146c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c70	0x1470		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c74	0x1474		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c78	0x1478		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c7c	0x147c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c80	0x1480		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c84	0x1484		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c88	0x1488		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c8c	0x148c		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c90	0x1490		mips32_candidate	raw-word	0x80038c5c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c94	0x1494		mips32_candidate	raw-word	0x80038090	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c98	0x1498		mips32_candidate	raw-word	0x80038a0c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011c9c	0x149c		mips32_candidate	raw-word	0x80037a20	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ca0	0x14a0		mips32_candidate	raw-word	0x80037a88	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ca4	0x14a4		mips32_candidate	raw-word	0x80037b10	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ca8	0x14a8		mips32_candidate	raw-word	0x80037b34	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cac	0x14ac		mips32_candidate	raw-word	0x80038c78	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cb0	0x14b0		mips32_candidate	raw-word	0x80038c78	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cb4	0x14b4		mips32_candidate	raw-word	0x80038c78	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cb8	0x14b8		mips32_candidate	raw-word	0x80038c78	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cbc	0x14bc		mips32_candidate	raw-word	0x80037b58	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cc4	0x14c4		mips32_candidate	raw-word	0x80037ce4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cc8	0x14c8		mips32_candidate	raw-word	0x80037d00	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011ccc	0x14cc		mips32_candidate	raw-word	0x80037d88	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cd0	0x14d0		mips32_candidate	raw-word	0x80037db8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80011cd4	0x14d4		mips32_candidate	raw-word	0x80037de4	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001191c	0x111c		mips32_candidate	raw-word	0x80036fa0	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011920	0x1120		mips32_candidate	raw-word	0x80037100	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011924	0x1124		mips32_candidate	raw-word	0x80037354	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011928	0x1128		mips32_candidate	raw-word	0x800378bc	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001192c	0x112c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011930	0x1130		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011934	0x1134		mips32_candidate	raw-word	0x80037630	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011938	0x1138		mips32_candidate	raw-word	0x80038104	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001193c	0x113c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011940	0x1140		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011944	0x1144		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011948	0x1148		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001194c	0x114c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011950	0x1150		mips32_candidate	raw-word	0x80038450	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011954	0x1154		mips32_candidate	raw-word	0x80037e70	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011958	0x1158		mips32_candidate	raw-word	0x8003850c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001195c	0x115c		mips32_candidate	raw-word	0x800385d8	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011960	0x1160		mips32_candidate	raw-word	0x8003860c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011964	0x1164		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011968	0x1168		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001196c	0x116c		mips32_candidate	raw-word	0x8003772c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011970	0x1170		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011974	0x1174		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011978	0x1178		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001197c	0x117c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011980	0x1180		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011984	0x1184		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011988	0x1188		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001198c	0x118c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011990	0x1190		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011994	0x1194		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011998	0x1198		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x8001199c	0x119c		mips32_candidate	raw-word	0x80038b00	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119a0	0x11a0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119a4	0x11a4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119a8	0x11a8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119ac	0x11ac		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119b0	0x11b0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119b4	0x11b4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119b8	0x11b8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119bc	0x11bc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119c0	0x11c0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119c4	0x11c4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119c8	0x11c8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119cc	0x11cc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119d0	0x11d0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119d4	0x11d4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119d8	0x11d8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119dc	0x11dc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119e0	0x11e0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119e4	0x11e4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119e8	0x11e8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119ec	0x11ec		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119f0	0x11f0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119f4	0x11f4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119f8	0x11f8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x800119fc	0x11fc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a00	0x1200		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a04	0x1204		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a08	0x1208		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a0c	0x120c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a10	0x1210		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a14	0x1214		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a18	0x1218		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a1c	0x121c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a20	0x1220		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a24	0x1224		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a28	0x1228		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a2c	0x122c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a30	0x1230		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a34	0x1234		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a38	0x1238		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a3c	0x123c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a40	0x1240		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a44	0x1244		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a48	0x1248		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a4c	0x124c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a50	0x1250		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a54	0x1254		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a58	0x1258		mips32_candidate	raw-word	0x80038148	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a5c	0x125c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a60	0x1260		mips32_candidate	raw-word	0x800379e8	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a64	0x1264		mips32_candidate	raw-word	0x80037ea0	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a68	0x1268		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a6c	0x126c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a70	0x1270		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a74	0x1274		mips32_candidate	raw-word	0x80037b70	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a78	0x1278		mips32_candidate	raw-word	0x80037cac	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a7c	0x127c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a80	0x1280		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a84	0x1284		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a88	0x1288		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a8c	0x128c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a90	0x1290		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a94	0x1294		mips32_candidate	raw-word	0x80038788	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a98	0x1298		mips32_candidate	raw-word	0x80038860	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011a9c	0x129c		mips32_candidate	raw-word	0x800388e0	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011aa0	0x12a0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011aa4	0x12a4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011aa8	0x12a8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011aac	0x12ac		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ab0	0x12b0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ab4	0x12b4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ab8	0x12b8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011abc	0x12bc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ac0	0x12c0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ac4	0x12c4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ac8	0x12c8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011acc	0x12cc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ad0	0x12d0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ad4	0x12d4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ad8	0x12d8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011adc	0x12dc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ae0	0x12e0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ae4	0x12e4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ae8	0x12e8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011aec	0x12ec		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011af0	0x12f0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011af4	0x12f4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011af8	0x12f8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011afc	0x12fc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b00	0x1300		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b04	0x1304		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b08	0x1308		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b0c	0x130c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b10	0x1310		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b14	0x1314		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b18	0x1318		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b1c	0x131c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b20	0x1320		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b24	0x1324		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b28	0x1328		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b2c	0x132c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b30	0x1330		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b34	0x1334		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b38	0x1338		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b3c	0x133c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b40	0x1340		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b44	0x1344		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b48	0x1348		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b4c	0x134c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b50	0x1350		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b54	0x1354		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b58	0x1358		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b5c	0x135c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b60	0x1360		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b64	0x1364		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b68	0x1368		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b6c	0x136c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b70	0x1370		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b74	0x1374		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b78	0x1378		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b7c	0x137c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b80	0x1380		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b84	0x1384		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b88	0x1388		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b8c	0x138c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b90	0x1390		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b94	0x1394		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b98	0x1398		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011b9c	0x139c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ba0	0x13a0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ba4	0x13a4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ba8	0x13a8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bac	0x13ac		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bb0	0x13b0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bb4	0x13b4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bb8	0x13b8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bbc	0x13bc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bc0	0x13c0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bc4	0x13c4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bc8	0x13c8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bcc	0x13cc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bd0	0x13d0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bd4	0x13d4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bd8	0x13d8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bdc	0x13dc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011be0	0x13e0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011be4	0x13e4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011be8	0x13e8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bec	0x13ec		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bf0	0x13f0		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bf4	0x13f4		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bf8	0x13f8		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011bfc	0x13fc		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c00	0x1400		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c04	0x1404		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c08	0x1408		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c0c	0x140c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c10	0x1410		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c14	0x1414		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c18	0x1418		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c1c	0x141c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c20	0x1420		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c24	0x1424		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c28	0x1428		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c2c	0x142c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c30	0x1430		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c34	0x1434		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c38	0x1438		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c3c	0x143c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c40	0x1440		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c44	0x1444		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c48	0x1448		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c4c	0x144c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c50	0x1450		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c54	0x1454		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c58	0x1458		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c5c	0x145c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c60	0x1460		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c64	0x1464		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c68	0x1468		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c6c	0x146c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c70	0x1470		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c74	0x1474		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c78	0x1478		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c7c	0x147c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c80	0x1480		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c84	0x1484		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c88	0x1488		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c8c	0x148c		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c90	0x1490		mips32_candidate	raw-word	0x80038c5c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c94	0x1494		mips32_candidate	raw-word	0x80038090	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c98	0x1498		mips32_candidate	raw-word	0x80038a0c	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011c9c	0x149c		mips32_candidate	raw-word	0x80037a20	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ca0	0x14a0		mips32_candidate	raw-word	0x80037a88	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ca4	0x14a4		mips32_candidate	raw-word	0x80037b10	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ca8	0x14a8		mips32_candidate	raw-word	0x80037b34	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cac	0x14ac		mips32_candidate	raw-word	0x80038c78	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cb0	0x14b0		mips32_candidate	raw-word	0x80038c78	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cb4	0x14b4		mips32_candidate	raw-word	0x80038c78	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cb8	0x14b8		mips32_candidate	raw-word	0x80038c78	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cbc	0x14bc		mips32_candidate	raw-word	0x80037b58	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cc4	0x14c4		mips32_candidate	raw-word	0x80037ce4	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cc8	0x14c8		mips32_candidate	raw-word	0x80037d00	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011ccc	0x14cc		mips32_candidate	raw-word	0x80037d88	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cd0	0x14d0		mips32_candidate	raw-word	0x80037db8	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
+GAME.EXE	0x80011cd4	0x14d4		mips32_candidate	raw-word	0x80037de4	load		.word		pointer-reviewed	reviewed	manual:bounded-action-switch-tables-224+9+5;raw-words-and-CFG-blocks-reviewed
 GAME.EXE	0x80011cd8	0x14d8		mips32_candidate	raw-word	0x80039534	load		.word		pointer-reviewed	reviewed	manual:func_80039108 bounded switch table; retail word target
 GAME.EXE	0x80011cdc	0x14dc		mips32_candidate	raw-word	0x80039534	load		.word		pointer-reviewed	reviewed	manual:func_80039108 bounded switch table; retail word target
 GAME.EXE	0x80011ce0	0x14e0		mips32_candidate	raw-word	0x800392a8	load		.word		pointer-reviewed	reviewed	manual:func_80039108 bounded switch table; retail word target
@@ -1425,134 +1425,134 @@ GAME.EXE	0x80012678	0x1e78		mips32_candidate	raw-word	0x80040c30	load		.word		ra
 GAME.EXE	0x8001267c	0x1e7c		mips32_candidate	raw-word	0x80041684	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80012680	0x1e80		mips32_candidate	raw-word	0x80040b5c	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80012684	0x1e84		mips32_candidate	raw-word	0x80040b9c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001268c	0x1e8c		mips32_candidate	raw-word	0x80043624	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012690	0x1e90		mips32_candidate	raw-word	0x80043374	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012694	0x1e94		mips32_candidate	raw-word	0x80043c18	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012698	0x1e98		mips32_candidate	raw-word	0x80045918	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001269c	0x1e9c		mips32_candidate	raw-word	0x80042b14	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126a0	0x1ea0		mips32_candidate	raw-word	0x80043f44	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126a4	0x1ea4		mips32_candidate	raw-word	0x80044f60	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126a8	0x1ea8		mips32_candidate	raw-word	0x80042858	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126ac	0x1eac		mips32_candidate	raw-word	0x80044868	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126b0	0x1eb0		mips32_candidate	raw-word	0x8004441c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126b4	0x1eb4		mips32_candidate	raw-word	0x80044c7c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126b8	0x1eb8		mips32_candidate	raw-word	0x80043af8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126bc	0x1ebc		mips32_candidate	raw-word	0x80043cd0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126c0	0x1ec0		mips32_candidate	raw-word	0x800428b4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126c4	0x1ec4		mips32_candidate	raw-word	0x80045700	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126c8	0x1ec8		mips32_candidate	raw-word	0x80045628	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126cc	0x1ecc		mips32_candidate	raw-word	0x80045680	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126d0	0x1ed0		mips32_candidate	raw-word	0x80045654	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126d4	0x1ed4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126d8	0x1ed8		mips32_candidate	raw-word	0x800457c4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126dc	0x1edc		mips32_candidate	raw-word	0x80043cb8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126e0	0x1ee0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126e4	0x1ee4		mips32_candidate	raw-word	0x800458e0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126e8	0x1ee8		mips32_candidate	raw-word	0x80042934	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126ec	0x1eec		mips32_candidate	raw-word	0x80045a58	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126f0	0x1ef0		mips32_candidate	raw-word	0x80042b98	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126f4	0x1ef4		mips32_candidate	raw-word	0x80043460	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126f8	0x1ef8		mips32_candidate	raw-word	0x80043460	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800126fc	0x1efc		mips32_candidate	raw-word	0x8004336c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012700	0x1f00		mips32_candidate	raw-word	0x800426b0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012704	0x1f04		mips32_candidate	raw-word	0x800426b8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012708	0x1f08		mips32_candidate	raw-word	0x800426b0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001270c	0x1f0c		mips32_candidate	raw-word	0x800428b4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012710	0x1f10		mips32_candidate	raw-word	0x800445e8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012714	0x1f14		mips32_candidate	raw-word	0x80042b90	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012718	0x1f18		mips32_candidate	raw-word	0x80042b90	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001271c	0x1f1c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012720	0x1f20		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012724	0x1f24		mips32_candidate	raw-word	0x80043130	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012728	0x1f28		mips32_candidate	raw-word	0x8004310c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001272c	0x1f2c		mips32_candidate	raw-word	0x800430d4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012730	0x1f30		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012734	0x1f34		mips32_candidate	raw-word	0x80042bfc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012738	0x1f38		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001273c	0x1f3c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012740	0x1f40		mips32_candidate	raw-word	0x80042f08	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012744	0x1f44		mips32_candidate	raw-word	0x80042dc8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012748	0x1f48		mips32_candidate	raw-word	0x800426b8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001274c	0x1f4c		mips32_candidate	raw-word	0x800426b0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012750	0x1f50		mips32_candidate	raw-word	0x80042858	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012754	0x1f54		mips32_candidate	raw-word	0x80043264	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012758	0x1f58		mips32_candidate	raw-word	0x80043b98	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001275c	0x1f5c		mips32_candidate	raw-word	0x80043bb0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012760	0x1f60		mips32_candidate	raw-word	0x800445e0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012764	0x1f64		mips32_candidate	raw-word	0x80043af8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012768	0x1f68		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001276c	0x1f6c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012770	0x1f70		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012774	0x1f74		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012778	0x1f78		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001277c	0x1f7c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012780	0x1f80		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012784	0x1f84		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012788	0x1f88		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001278c	0x1f8c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012790	0x1f90		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012794	0x1f94		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012798	0x1f98		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001279c	0x1f9c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127a0	0x1fa0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127a4	0x1fa4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127a8	0x1fa8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127ac	0x1fac		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127b0	0x1fb0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127b4	0x1fb4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127b8	0x1fb8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127bc	0x1fbc		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127c0	0x1fc0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127c4	0x1fc4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127c8	0x1fc8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127cc	0x1fcc		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127d0	0x1fd0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127d4	0x1fd4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127d8	0x1fd8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127dc	0x1fdc		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127e0	0x1fe0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127e4	0x1fe4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127e8	0x1fe8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127ec	0x1fec		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127f0	0x1ff0		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127f4	0x1ff4		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127f8	0x1ff8		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x800127fc	0x1ffc		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012800	0x2000		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012804	0x2004		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012808	0x2008		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001280c	0x200c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012810	0x2010		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012814	0x2014		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012818	0x2018		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001281c	0x201c		mips32_candidate	raw-word	0x80043e2c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012820	0x2020		mips32_candidate	raw-word	0x80045580	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012824	0x2024		mips32_candidate	raw-word	0x800455dc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012828	0x2028		mips32_candidate	raw-word	0x80043700	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001282c	0x202c		mips32_candidate	raw-word	0x800439a8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012830	0x2030		mips32_candidate	raw-word	0x800441cc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012834	0x2034		mips32_candidate	raw-word	0x80044748	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012838	0x2038		mips32_candidate	raw-word	0x800454a8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001283c	0x203c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012840	0x2040		mips32_candidate	raw-word	0x80045b6c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012844	0x2044		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012848	0x2048		mips32_candidate	raw-word	0x80043508	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001284c	0x204c		mips32_candidate	raw-word	0x80045ca0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012850	0x2050		mips32_candidate	raw-word	0x80042d14	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012854	0x2054		mips32_candidate	raw-word	0x8004593c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012858	0x2058		mips32_candidate	raw-word	0x80042c30	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001285c	0x205c		mips32_candidate	raw-word	0x80042f20	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012860	0x2060		mips32_candidate	raw-word	0x80043008	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012864	0x2064		mips32_candidate	raw-word	0x80043bd4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012868	0x2068		mips32_candidate	raw-word	0x80043bdc	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001286c	0x206c		mips32_candidate	raw-word	0x80045bb0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012870	0x2070		mips32_candidate	raw-word	0x80043700	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012874	0x2074		mips32_candidate	raw-word	0x800439a8	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001287c	0x207c		mips32_candidate	raw-word	0x80044f8c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012880	0x2080		mips32_candidate	raw-word	0x80044ff4	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012884	0x2084		mips32_candidate	raw-word	0x800451c0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80012888	0x2088		mips32_candidate	raw-word	0x800453c0	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001288c	0x208c		mips32_candidate	raw-word	0x80045408	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001268c	0x1e8c		mips32_candidate	raw-word	0x80043624	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012690	0x1e90		mips32_candidate	raw-word	0x80043374	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012694	0x1e94		mips32_candidate	raw-word	0x80043c18	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012698	0x1e98		mips32_candidate	raw-word	0x80045918	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001269c	0x1e9c		mips32_candidate	raw-word	0x80042b14	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126a0	0x1ea0		mips32_candidate	raw-word	0x80043f44	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126a4	0x1ea4		mips32_candidate	raw-word	0x80044f60	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126a8	0x1ea8		mips32_candidate	raw-word	0x80042858	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126ac	0x1eac		mips32_candidate	raw-word	0x80044868	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126b0	0x1eb0		mips32_candidate	raw-word	0x8004441c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126b4	0x1eb4		mips32_candidate	raw-word	0x80044c7c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126b8	0x1eb8		mips32_candidate	raw-word	0x80043af8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126bc	0x1ebc		mips32_candidate	raw-word	0x80043cd0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126c0	0x1ec0		mips32_candidate	raw-word	0x800428b4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126c4	0x1ec4		mips32_candidate	raw-word	0x80045700	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126c8	0x1ec8		mips32_candidate	raw-word	0x80045628	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126cc	0x1ecc		mips32_candidate	raw-word	0x80045680	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126d0	0x1ed0		mips32_candidate	raw-word	0x80045654	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126d4	0x1ed4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126d8	0x1ed8		mips32_candidate	raw-word	0x800457c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126dc	0x1edc		mips32_candidate	raw-word	0x80043cb8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126e0	0x1ee0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126e4	0x1ee4		mips32_candidate	raw-word	0x800458e0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126e8	0x1ee8		mips32_candidate	raw-word	0x80042934	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126ec	0x1eec		mips32_candidate	raw-word	0x80045a58	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126f0	0x1ef0		mips32_candidate	raw-word	0x80042b98	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126f4	0x1ef4		mips32_candidate	raw-word	0x80043460	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126f8	0x1ef8		mips32_candidate	raw-word	0x80043460	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800126fc	0x1efc		mips32_candidate	raw-word	0x8004336c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012700	0x1f00		mips32_candidate	raw-word	0x800426b0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012704	0x1f04		mips32_candidate	raw-word	0x800426b8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012708	0x1f08		mips32_candidate	raw-word	0x800426b0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001270c	0x1f0c		mips32_candidate	raw-word	0x800428b4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012710	0x1f10		mips32_candidate	raw-word	0x800445e8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012714	0x1f14		mips32_candidate	raw-word	0x80042b90	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012718	0x1f18		mips32_candidate	raw-word	0x80042b90	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001271c	0x1f1c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012720	0x1f20		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012724	0x1f24		mips32_candidate	raw-word	0x80043130	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012728	0x1f28		mips32_candidate	raw-word	0x8004310c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001272c	0x1f2c		mips32_candidate	raw-word	0x800430d4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012730	0x1f30		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012734	0x1f34		mips32_candidate	raw-word	0x80042bfc	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012738	0x1f38		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001273c	0x1f3c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012740	0x1f40		mips32_candidate	raw-word	0x80042f08	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012744	0x1f44		mips32_candidate	raw-word	0x80042dc8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012748	0x1f48		mips32_candidate	raw-word	0x800426b8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001274c	0x1f4c		mips32_candidate	raw-word	0x800426b0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012750	0x1f50		mips32_candidate	raw-word	0x80042858	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012754	0x1f54		mips32_candidate	raw-word	0x80043264	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012758	0x1f58		mips32_candidate	raw-word	0x80043b98	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001275c	0x1f5c		mips32_candidate	raw-word	0x80043bb0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012760	0x1f60		mips32_candidate	raw-word	0x800445e0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012764	0x1f64		mips32_candidate	raw-word	0x80043af8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012768	0x1f68		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001276c	0x1f6c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012770	0x1f70		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012774	0x1f74		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012778	0x1f78		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001277c	0x1f7c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012780	0x1f80		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012784	0x1f84		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012788	0x1f88		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001278c	0x1f8c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012790	0x1f90		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012794	0x1f94		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012798	0x1f98		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001279c	0x1f9c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127a0	0x1fa0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127a4	0x1fa4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127a8	0x1fa8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127ac	0x1fac		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127b0	0x1fb0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127b4	0x1fb4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127b8	0x1fb8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127bc	0x1fbc		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127c0	0x1fc0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127c4	0x1fc4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127c8	0x1fc8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127cc	0x1fcc		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127d0	0x1fd0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127d4	0x1fd4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127d8	0x1fd8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127dc	0x1fdc		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127e0	0x1fe0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127e4	0x1fe4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127e8	0x1fe8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127ec	0x1fec		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127f0	0x1ff0		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127f4	0x1ff4		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127f8	0x1ff8		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x800127fc	0x1ffc		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012800	0x2000		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012804	0x2004		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012808	0x2008		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001280c	0x200c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012810	0x2010		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012814	0x2014		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012818	0x2018		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001281c	0x201c		mips32_candidate	raw-word	0x80043e2c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012820	0x2020		mips32_candidate	raw-word	0x80045580	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012824	0x2024		mips32_candidate	raw-word	0x800455dc	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012828	0x2028		mips32_candidate	raw-word	0x80043700	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001282c	0x202c		mips32_candidate	raw-word	0x800439a8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012830	0x2030		mips32_candidate	raw-word	0x800441cc	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012834	0x2034		mips32_candidate	raw-word	0x80044748	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012838	0x2038		mips32_candidate	raw-word	0x800454a8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001283c	0x203c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012840	0x2040		mips32_candidate	raw-word	0x80045b6c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012844	0x2044		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012848	0x2048		mips32_candidate	raw-word	0x80043508	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001284c	0x204c		mips32_candidate	raw-word	0x80045ca0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012850	0x2050		mips32_candidate	raw-word	0x80042d14	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012854	0x2054		mips32_candidate	raw-word	0x8004593c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012858	0x2058		mips32_candidate	raw-word	0x80042c30	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001285c	0x205c		mips32_candidate	raw-word	0x80042f20	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012860	0x2060		mips32_candidate	raw-word	0x80043008	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012864	0x2064		mips32_candidate	raw-word	0x80043bd4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012868	0x2068		mips32_candidate	raw-word	0x80043bdc	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001286c	0x206c		mips32_candidate	raw-word	0x80045bb0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012870	0x2070		mips32_candidate	raw-word	0x80043700	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012874	0x2074		mips32_candidate	raw-word	0x800439a8	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001287c	0x207c		mips32_candidate	raw-word	0x80044f8c	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012880	0x2080		mips32_candidate	raw-word	0x80044ff4	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012884	0x2084		mips32_candidate	raw-word	0x800451c0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x80012888	0x2088		mips32_candidate	raw-word	0x800453c0	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
+GAME.EXE	0x8001288c	0x208c		mips32_candidate	raw-word	0x80045408	load		.word		pointer-reviewed	reviewed	manual:raw-verified effect kind/phase switch table; focused target R_MIPS_32 site/addend
 GAME.EXE	0x80012890	0x2090		mips32_candidate	raw-word	0x800463cc	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked
 GAME.EXE	0x80012894	0x2094		mips32_candidate	raw-word	0x8004650c	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked
 GAME.EXE	0x80012898	0x2098		mips32_candidate	raw-word	0x80046450	load		.word		table-reviewed	reviewed	manual:retail bounded 0xf0..0xff opcode jump table; raw word and in-body case target checked

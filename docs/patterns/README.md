@@ -9,6 +9,8 @@
 
 - [kf2-game-event-command-table.md](kf2-game-event-command-table.md): reviewed
   35-entry scene-command switch table and its remaining source-body boundary.
+- [kf2-game-event-dispatch-audit.md](kf2-game-event-dispatch-audit.md): retail
+  command-entry CFG and adjacent event-function verdicts.
 - [kf2-open-audio-voice-frame.md](kf2-open-audio-voice-frame.md): the lone OPEN
   WIP voice wrapper, with a 64-byte retail versus 40-byte probe stack frame.
 - [kf2-game-event-restore-table.md](kf2-game-event-restore-table.md): reviewed
@@ -33,6 +35,9 @@
   cross-unit table referent.
 - [kf2-game-map-object-reset.md](kf2-game-map-object-reset.md): exact map-object
   reset with typed rotation and scale fields.
+- [game-map-object-fourteen.md](game-map-object-fourteen.md): fourteen GAME
+  map-object placement and motion verdicts, twelve exact functions, and the
+  two bounded reset/placement WIPs.
 - [kf2-game-actor-targets.md](kf2-game-actor-targets.md): GAME actor, animation,
   map, rendering, and menu matching verdicts with strict exact and WIP
   boundaries recorded by function.
@@ -44,6 +49,9 @@
   and the remaining morph accumulator.
 - [game-audio-cd-batch.md](game-audio-cd-batch.md): 25 GAME audio/CD verdicts,
   twelve exact CD request functions, and the same-unit direct-call relocation.
+- [game-resource-cd-eleven.md](game-resource-cd-eleven.md): eleven GAME
+  startup, transition-phase, and CD control verdicts with eight exacts and
+  bounded RAM-workspace ownership gaps.
 - [game-card-directory-ten.md](game-card-directory-ten.md): ten GAME card/menu
   caller verdicts, two sourced directory/header readers, and the card data boundary.
 - [game-card-io-17.md](game-card-io-17.md): seventeen focused GAME card I/O
@@ -86,6 +94,9 @@
 - [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
   render-frame and notification verdicts, three new strict matches, and
   remaining model, map-grid, and resource boundaries.
+- [game-graphics-focused-25.md](game-graphics-focused-25.md): refreshed
+  27-function graphics/TMD strict controls, exact primitive-index switch
+  data, and the actor cursor correction in resource dispatch.
 - [kf2-game-menu-notify-transition.md](kf2-game-menu-notify-transition.md):
   27 menu, notification, resource, and display verdicts; a model-preview
   frame residue and two contiguous module consolidations.

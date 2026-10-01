@@ -670,20 +670,20 @@ KfTargetCandidate	0x4	0x1	unknown_04	u8	supported	game/actor.h;actor sound wrapp
 KfTargetCandidate	0x5	0x3	unknown_05	u8[3]	opaque	game/actor.h;message marker scan	intervening bytes before halfword fields
 KfTargetCandidate	0x8	0x2	unknown_08	u16	supported	GAME 0x800462bc retail lhu at +8	phase-step operand for event action
 KfTargetCandidate	0xa	0x2	unknown_0a	u16	supported	GAME 0x8003d184 lhu at target+0x0a	unsigned halfword control value; meaning unresolved
-KfTargetCandidate	0xc	0x2	unknown_0c	u16	supported	GAME 0x800462bc lhu;GAME 0x8003e648 lbu	base entry and byte-addressable view of same word
+KfTargetCandidate	0xc	0x2	word_0c	KfTargetCandidateWord0c	supported	GAME 0x800462bc lhu;GAME 0x80039108 lbu candidate+0x0d	shared unsigned halfword and high-byte view
 KfTargetCandidate	0xe	0x2	word_0e	KfTargetCandidateWord0e	supported	GAME 0x800391d0/0x80039358 lbu;0x800394a8 lhu	shared byte and halfword view
 KfTargetCandidate	0x10	0x2	word_10	KfTargetCandidateWord10	supported	GAME 0x800391ac lhu at +0x10;GAME event lbu at +0x10/+0x11	shared word and byte view
 KfTargetCandidate	0x12	0x2	word_12	KfTargetCandidateWord12	supported	GAME 0x80039108 lhu at +0x12;GAME event lbu at +0x12/+0x13	shared word and byte view
 KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x800393f4 lhu at +0x14;GAME event byte stream	shared word and byte-stream prefix view
-KfTargetCandidate	0x16	0x2	unknown_16	u16	supported	GAME 0x80039108 lhu target+0x16	candidate distance bound; meaning unresolved
-KfTargetCandidate	0x18	0x2	unknown_18	u16	supported	GAME 0x8003e078 lhu candidate+0x18	unsigned animation phase threshold; exact meaning unresolved
+KfTargetCandidate	0x16	0x2	word_16	KfTargetCandidateWord16	supported	GAME 0x80039108 lhu target+0x16;GAME 0x8003ef34/0x8003eff0 lbu	shared unsigned halfword and byte view; meaning unresolved
+KfTargetCandidate	0x18	0x2	word_18	KfTargetCandidateWord18	supported	GAME 0x8003e078 lhu candidate+0x18;GAME 0x8003ebe0 lbu candidate+0x19	shared unsigned halfword and high-byte view
 KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
 KfTargetCandidate	0x1c	0x2	unknown_1c	u16	supported	GAME 0x8003e640 lhu target+0x1c	motion-helper second argument; meaning unresolved
 KfTargetCandidate	0x1e	0x2	unknown_1e	u16	supported	GAME 0x8003e644 lhu target+0x1e	motion-helper third argument; meaning unresolved
 KfTargetCandidateWord0c	0x0	0x2	value	u16	supported	GAME 0x800462bc lhu candidate+0x0c	halfword view
 KfTargetCandidateWord0c	0x0	0x2	bytes	KfTargetCandidateWord0cBytes	supported	GAME 0x8003e648 lbu candidate+0x0d	byte view
 KfTargetCandidateWord0cBytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x0c
-KfTargetCandidateWord0cBytes	0x1	0x1	high	u8	supported	GAME 0x8003e648 lbu candidate+0x0d	high byte passed to actor motion helper
+KfTargetCandidateWord0cBytes	0x1	0x1	high	u8	supported	GAME 0x80039108+0x328 lbu candidate+0x0d;GAME 0x8003e648 lbu candidate+0x0d	high byte used for candidate angle tolerance and actor motion
 KfTargetCandidateWord0e	0x0	0x2	value	u16	supported	GAME 0x800394a8 lhu candidate+0x0e	unsigned phase-step operand
 KfTargetCandidateWord0e	0x0	0x2	bytes	KfTargetCandidateWord0eBytes	supported	GAME 0x800391d0/0x80039358 lbu	byte-addressable view of the same halfword
 KfTargetCandidateWord0eBytes	0x0	0x1	low	u8	supported	GAME 0x800391d0/0x80039358 lbu	low byte of candidate +0x0e
@@ -698,6 +698,14 @@ KfTargetCandidateWord12Bytes	0x0	0x1	unknown_12	u8	supported	GAME 0x800462bc ret
 KfTargetCandidateWord12Bytes	0x1	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
 KfTargetCandidateWord14	0x0	0x2	value	u16	supported	GAME 0x800393f4 lhu candidate+0x14	unsigned candidate distance bound
 KfTargetCandidateWord14	0x0	0x2	bytes	u8[2]	candidate	GAME message marker scan;event target stream	start of variable byte stream; full extent unresolved
+KfTargetCandidateWord16	0x0	0x2	value	u16	supported	GAME 0x80039108 lhu candidate+0x16	unsigned halfword view
+KfTargetCandidateWord16	0x0	0x2	bytes	KfTargetCandidateWord16Bytes	supported	GAME 0x8003ef34/0x8003eff0 lbu	byte view
+KfTargetCandidateWord16Bytes	0x0	0x1	low	u8	supported	GAME 0x8003ef34 lbu candidate+0x16	low byte passed to animation selector
+KfTargetCandidateWord16Bytes	0x1	0x1	high	u8	supported	GAME 0x8003eff0 lbu candidate+0x17	high byte passed as wrapped animation step
+KfTargetCandidateWord18	0x0	0x2	value	u16	supported	GAME 0x8003e078 lhu candidate+0x18	unsigned phase threshold or state value
+KfTargetCandidateWord18	0x0	0x2	bytes	KfTargetCandidateWord18Bytes	supported	GAME 0x8003ebe0 lbu candidate+0x19	byte view
+KfTargetCandidateWord18Bytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x18
+KfTargetCandidateWord18Bytes	0x1	0x1	high	u8	supported	GAME 0x8003ebe0 lbu candidate+0x19	high byte used as animation step
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
 KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step

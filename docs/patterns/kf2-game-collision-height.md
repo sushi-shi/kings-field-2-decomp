@@ -307,7 +307,15 @@ targets are block heads, with none in a delay slot. These bounds establish
 table extents without proving every case reachable or the original TU owner.
 The direct `lui`/`addiu` base pairs at `0x80036f84/88`, `0x80037a04/08`,
 and `0x80037cc8/cc` are reviewed; their indirect case-pointer
-rows remain candidate relocations.
+rows retain the `mips32_candidate` kind, with their raw pointer values now
+individually reviewed.
+The 224 + 9 + 5 table rows at `0x8001191c`–`0x80011cd4` match all 238 raw
+Japanese retail words at their file offsets. Every decoded pointer is aligned,
+lands within the dispatcher, and starts a retail CFG block; all three table
+bounds are independently enforced by the indexed `jr` paths above. These
+rows now have `pointer-reviewed/reviewed` evidence status, without claiming
+historical linker relocation records or resolved indirect callees. A focused
+one-VA safe carve withheld zero relocations and zero functions.
 The retail data census retains separate 224-, nine-, and five-pointer rows,
 while the current source claims one contiguous `0x3bc`-byte RODATA owner for
 the tables and their intervening zero word. A focused current-source object
@@ -375,6 +383,15 @@ After a GAME target-only refresh, direct strict objdiff gives the datum and
 its 0x20-byte `.data` section 100%; `func_80036ed4` remains WIP at
 7.0693793%. The source claim establishes the current link owner without
 proving the historical TU boundary.
+The dispatcher source now reads and updates `rotation.vy` at object +0x26
+in ten action 2/3/16/88 call and sine paths. Retail loads `lh 28(s1)` and
+`lhu/sh 28(s1)` with `s1 = object + 0x0a`; the prior `rotation.pad` accessed
++0x2a. Two action-98 target-angle uses still read +0x2a and remain `pad`.
+The corrected single-unit probe remains DIFF at 27.7% focused listing;
+its direct-call multiset is 79/79, but the case-block order and register
+schedule still differ. Reordering C case blocks to the physical retail label
+order raised the display score to 47.0% while leaving the probe call order
+unchanged, so that unsupported trial was reverted. No new exact claim follows.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
@@ -477,6 +494,13 @@ has therefore been removed, with opcode `0x31` writing its own limit after
 its result update. Focused similarity falls to 14.0% because this changes
 the compiler's whole-function lifetime and schedule; the source keeps the
 raw-proven cache write sites. The large body remains WIP.
+Opcode `0x22` has an explicit case flag value of 5: its retail entry at
+`0x8002af1c` loads `a2 = 5` in the branch delay slot before any path can
+reach the shared geometry flag update. The prior C case omitted this
+assignment and could reuse a prior command's value. The source now sets 5
+at entry; focused listing remains 14.0% WIP. The default focused CFG view
+has 165 compiled blocks and 97 branches against retail's 174 and 99; both
+views warn that the bounded switch remains an unresolved indirect jump.
 Retail transition phase one at `0x80016820` copies `0x3e80` words
 (`0xfa00` bytes, exactly 80×80×10 map-cell bytes) to the BSS base, then
 copies `0x600` words (`0x1800` bytes) to its +0x10000 interior. The
@@ -643,3 +667,14 @@ return value, and two exact calls from `0x8002c1d4`. A focused rebuild
 reports 11/17 identical listings; direct native objdiff confirms the new
 scanner and all ten earlier exact siblings at 100%, with the 3,520-byte
 `collision_default_rows` datum unchanged at 100%.
+
+The neighboring WIP `0x8002c424` line propagator now uses the indexed
+cursor form for both neighbor reads, then addresses the map cell directly
+through `bss_801c7540.map_cells[map_z][map_x]` in both control arms. Raw
+retail uses those indexed cursor and typed cell-address paths; the earlier
+maintained pointer and local map-cell base changed their instruction order.
+The focused listing is 94.3% and direct strict objdiff is 98.29932%; its
+remaining observed difference is saved-register assignment. All eleven
+exact wrapper siblings and the 3,520-byte datum remain 100%. A separate
+`0x8002b874` branch-local score probe was reverted after the full retail
+CFG showed a shared interaction-height store.

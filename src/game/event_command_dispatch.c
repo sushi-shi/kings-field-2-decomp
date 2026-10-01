@@ -65,6 +65,7 @@ void func_8004678c(const VECTOR *position,
     s32 index;
     s32 object_control_offset;
     s32 transition_control_offset;
+    const u8 *magic_ids;
 
     event_state.state_word = 0;
     switch (command) {
@@ -159,10 +160,10 @@ transition_action: {
 
         if (state_8017d118.values_04[0] == 7 ||
             event_state.control.bytes[transition_control_offset] == 0xff ||
-            player_state.attack_charge_current < 10) {
+            player_state.vitals.current_mp < 10) {
             break;
         }
-        player_state.attack_charge_current -= 10;
+        player_state.vitals.current_mp -= 10;
         func_80036e24(1, 0, 4096, 256);
         func_80038f20();
         previous_value = event_state.control.bytes[transition_control_offset + 2];
@@ -238,8 +239,10 @@ transition_action: {
         index = func_80036190(0, position, 800, 1700,
                                rotation->angles[1], 512);
         if (index != -1) {
-            if (map_object_state.objects[index].object_id == 0x9d) {
-                func_800366fc(map_object_state.objects[index].tail.fields.unknown_38);
+            KfMapObject *object = &map_object_state.objects[index];
+
+            if (object->object_id == 0x9d) {
+                func_800366fc(object->tail.fields.unknown_38);
             }
             event_state.state_word = 1;
         }
@@ -248,17 +251,26 @@ transition_action: {
     case 0x59: {
         KfMapObject *nearest = 0;
         s32 nearest_distance = 999999;
-        s32 object_index;
+        s32 remaining;
+        KfMapObject *scan;
 
-        for (object_index = 0; object_index < KF_MAP_OBJECT_CAPACITY;
-             object_index++) {
-            KfMapObject *object = &map_object_state.objects[object_index];
+        for (remaining = KF_MAP_OBJECT_CAPACITY - 1,
+             scan = map_object_state.objects;
+             remaining != -1; remaining--, scan++) {
+            KfMapObject *object = scan;
             s32 object_id = object->object_id;
             s32 distance;
 
-            if (object_id != 82 && object_id != 83 &&
-                (object_id < 90 || object_id >= 97)) {
+            if (object_id < 82) {
                 continue;
+            }
+            if (object_id >= 84) {
+                if (object_id >= 97) {
+                    continue;
+                }
+                if (object_id < 90) {
+                    continue;
+                }
             }
             distance = func_80015698(&object->position, 25000,
                                      &player_state.camera_position, 0, 0);
@@ -270,46 +282,51 @@ transition_action: {
         if (nearest != 0) {
             VECTOR sound_position;
 
+            /* Retail writes this adjusted vector, then passes the object position. */
             sound_position.vx = nearest->position.vx;
+            sound_position.vz = nearest->position.vz;
             sound_position.vy = nearest->position.vy +
                 4 * (nearest->position.vy - audio_state.listener_position.vy);
-            sound_position.vz = nearest->position.vz;
-            audio_play_spatial_range(0x8009, &sound_position, 0x6e,
+            audio_play_spatial_range(0x8009, &nearest->position, 0x6e,
                                      25000, 29000, 0);
             event_state.state_word = 1;
         }
         break;
     }
     case 0x5a:
+        magic_ids = DAT_800679a0;
+        goto magic_action;
     case 0x5b:
+        magic_ids = DAT_800679a8;
+        goto magic_action;
     case 0x5c:
+        magic_ids = DAT_800679b0;
+        goto magic_action;
     case 0x5d:
-    case 0x5e: {
-        const u8 *magic_ids;
+        magic_ids = DAT_800679b8;
+        goto magic_action;
+    case 0x5e:
+        magic_ids = DAT_800679c0;
+magic_action: {
         KfMapObject *object;
         VECTOR near_position;
         VECTOR far_position;
         s32 fraction;
         s32 spin;
-        u8 magic_id;
+        s32 magic_id;
+        KfMagicRecord *magic_record;
 
-        switch (command) {
-        case 0x5a: magic_ids = DAT_800679a0; break;
-        case 0x5b: magic_ids = DAT_800679a8; break;
-        case 0x5c: magic_ids = DAT_800679b0; break;
-        case 0x5d: magic_ids = DAT_800679b8; break;
-        default: magic_ids = DAT_800679c0; break;
-        }
         for (;;) {
             magic_id = *magic_ids++;
             if (magic_id == 0xff) {
                 goto invoke_callback;
             }
-            if (effect_state.magic_records[magic_id].menu_available == 0) {
+            magic_record = &effect_state.magic_records[magic_id];
+            if (magic_record->menu_available == 0) {
                 break;
             }
         }
-        effect_state.magic_records[magic_id].menu_available = 1;
+        magic_record->menu_available = 1;
         object = map_object_effect_pool_acquire(
             0x15e, 10, map_object_state.unknown_873e);
         map_object_reset(object);
@@ -400,20 +417,27 @@ transition_action: {
             event_state.state_word = 1;
             break;
         }
-        for (index = 0; index < KF_MAP_OBJECT_CAPACITY; index++) {
-            KfMapObject *object = &map_object_state.objects[index];
+        {
+            s32 remaining;
+            KfMapObject *scan;
 
-            if (object->object_id != 0xe2 ||
-                object->extra_40.bytes[0] != side) {
-                continue;
-            }
-            if (func_80036ad8(object->position.vx >> 11,
-                              object->position.vz >> 11,
-                              object->tail.fields.unknown_38,
-                              object->tail.fields.unknown_39, 0x8000)) {
-                func_80034e10(6, object->tail.fields.unknown_3a.value + 510);
-                event_state.state_word = 1;
-                break;
+            for (remaining = KF_MAP_OBJECT_CAPACITY - 1,
+                 scan = map_object_state.objects;
+                 remaining != -1; remaining--, scan++) {
+                KfMapObject *object = scan;
+
+                if (map_object_state.templates[object->object_id].collision_kind != 0xe2 ||
+                    object->extra_40.bytes[0] != side) {
+                    continue;
+                }
+                if (func_80036ad8(object->position.vx >> 11,
+                                  object->position.vz >> 11,
+                                  object->tail.fields.unknown_38,
+                                  object->tail.fields.unknown_39, 0x8000)) {
+                    func_80034e10(6, object->tail.fields.unknown_3a.value + 510);
+                    event_state.state_word = 1;
+                    break;
+                }
             }
         }
         break;

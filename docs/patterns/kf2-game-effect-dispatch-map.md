@@ -38,13 +38,14 @@ in-body pointers at `0x8001287c..0x80012890`:
 The next word at `0x80012890` targets `0x800463cc` and belongs to a different
 table. `data.tsv` and `data_identities.tsv` now represent the two complete
 ranges as one pointer table each instead of 128 isolated Ghidra four-byte
-objects. The table pointer words in `relocs.tsv` remain candidate relocation
-rows: their decoded values and use are proven, but no source-owned RODATA
-object has yet validated the target object's relocation shape. The current
-dispatcher C claim has no RODATA claim. Its generated object contains the
-123-word kind table but not the five-word phase table. A complete source
-model should claim `0x8001268c..0x80012890` as one RODATA range (`0x204`
-bytes, including the zero separator), without separate table globals.
+objects. All 128 table pointer rows in `relocs.tsv` are reviewed: each raw
+word matches its curated target, and the focused target emits the expected
+`R_MIPS_32` site and in-function addend. The current dispatcher source
+claims `0x8001268c..0x80012890` as one RODATA range (`0x204` bytes, including
+the zero separator), without separate table globals. Focused target and source
+objects each contain 516 bytes of RODATA and 128 ordered `R_MIPS_32` rows.
+The code-offset addends remain WIP; the table words' target-equivalence
+classes agree for all 123 kind entries and all five phase entries.
 
 The kind table's occupied handler entries are:
 
@@ -91,23 +92,37 @@ The static disassembly has 446 navigator blocks, two unresolved switch `jr`
 sites, one return, and 206 direct `jal` sites. The most frequent calls are
 `func_80040308` (27), `rand` (22), `func_80042298` (20), `func_80041e94`
 (14), `func_8003feb0` (13), and `func_80041e0c` (10). All 206 direct call
-targets are decoded, but the 336 current in-body relocation rows are still
-candidate rather than delinker-validated. The only two address-pair rows are
-the table bases above. The Ghidra decompiler proposal removes ten purported
+targets are decoded. Of 336 current in-body relocation rows, 334 `mips26`
+control transfers are reviewed and the two HI16/LO16 table-base pairs remain
+candidate. The Ghidra decompiler proposal removes ten purported
 unreachable blocks and supplies incorrect speculative arguments to `rand` and
 other calls; it is a guide to inspect, not trustworthy C source.
 
 The current `src/game/effect_update_dispatch.c` claims the full retail body
-at `0x80042650 / 0x3670` and models many kind and phase arms. A fresh focused
-rebuild emits 14,012 text bytes against 13,936 retail bytes; direct strict
+at `0x80042650 / 0x3670` and models many kind and phase arms. A focused
+rebuild emits 13,984 text bytes against 13,936 retail bytes; direct strict
 objdiff reports 0.0%, so this is a substantive WIP, not an exact function.
 The first compiled instructions already differ in frame size and saved-register
-setup. The generated kind table is 492 bytes, while the retail table range
-also contains the separate five-entry phase dispatch. The collision-cache
-words around `0x801d8d40..0x801d8d5c` remain provisional because the
-current equipment record extent overlaps them; several dispatcher arms read
-those words. Do not create overlapping globals or collapse those arms to
-improve the metric.
+setup. Retail kind 6 uses a five-entry phase jump table and its phase-1 path
+jumps directly to the phase-2 handler; the nested C switch and join now emit
+the second table. Five further case-entry splits restore distinct retail
+prefixes for kinds 28, 30/47, 34/35, 39, and 119. The 123-entry kind table
+now has the same 59 target-equivalence classes in the same order as retail,
+but their code offsets differ. The collision-cache words around
+`0x801d8d40..0x801d8d5c` remain provisional because the current equipment
+record extent overlaps them; several dispatcher arms read those words. Do not
+create overlapping globals or collapse those arms to improve the metric.
+
+The direct external-call multiset is still unequal: source has 209 `jal`
+sites against retail's 206. Relative to retail, source has one extra
+`func_8003feb0`, two extra `func_80041cd0`, one extra `func_80041e94`, and
+one fewer `func_80040308`. Retail kind 20 at `0x80043cb8` prepares
+`(0x4000, 0x100, 0x20)` and jumps into the shared `func_80041cd0` call at
+`0x80044f30`; the same join receives a kind-12 phase path. That call's
+continuation increments record halfword `+0x26`, which is rotation Y. The
+source's former kind-20 Z increment was corrected to Y; the focused object
+still compiles at 13.3% listing similarity. The remaining shared-call shape
+and other call-count differences need direct path-by-path reconstruction.
 
 The subsequent primary-target pass checked the retail body and all incoming
 and outgoing xrefs again. The first kind handler, at `0x80043624`, increments

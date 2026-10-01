@@ -119,7 +119,7 @@ execute:
             func_800460a0(actor, candidate->unknown_01[0], 0, 0xfff,
                           candidate->unknown_08);
         }
-        func_80034e10(3, candidate->unknown_0c + *cursor);
+        func_80034e10(3, candidate->word_0c.value + *cursor);
 
 advance:
         cursor++;

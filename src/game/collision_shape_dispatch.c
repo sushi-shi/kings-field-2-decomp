@@ -217,6 +217,7 @@ LAB_8002ada4:
     case 0x22:
       next_record = record + 5;
       record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
+      case_value = 5;
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
         if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;

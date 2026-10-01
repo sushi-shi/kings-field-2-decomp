@@ -70,7 +70,7 @@ void func_80036ed4(void)
                 object->unknown_0a += 72;
                 if (object->unknown_0a == 0xc18) {
                     func_80034f90(object->unknown_00, object->position.vx,
-                                  object->position.vz, object->rotation.pad,
+                                  object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 1, 0xff);
                 }
                 if (object->unknown_0a > 0xfff) {
@@ -82,7 +82,7 @@ void func_80036ed4(void)
                 if (func_8002b9d4(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
                     func_80034f90(object->unknown_00, object->position.vx,
-                                  object->position.vz, object->rotation.pad,
+                                  object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
@@ -121,7 +121,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 object->unknown_0a += 72;
@@ -132,7 +132,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                 }
                 if (object->unknown_0a > 0xfff) {
                     object->unknown_0a = 0xfff;
@@ -152,7 +152,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 break;
@@ -169,7 +169,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                 }
                 break;
             default:
@@ -381,9 +381,9 @@ void func_80036ed4(void)
         }
 
         case 16:
-            object->rotation.pad += 128;
+            object->rotation.vy += 128;
             object->position.vy = object->extra_40.raw +
-                                  (rsin((s16)object->rotation.pad) >> 6);
+                                  (rsin((s16)object->rotation.vy) >> 6);
             break;
 
         case 17: {
@@ -781,7 +781,7 @@ void func_80036ed4(void)
                               object->tail.fields.unknown_3a.bytes.high,
                               object->tail.fields.unknown_3e.bytes.low,
                               object->tail.fields.unknown_3e.bytes.high,
-                              object->rotation.pad, 0x2d);
+                              object->rotation.vy, 0x2d);
                 break;
             case 2:
                 object->unknown_0a -= 64;
@@ -795,7 +795,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_3a.bytes.high,
                                   object->tail.fields.unknown_3e.bytes.low,
                                   object->tail.fields.unknown_3e.bytes.high,
-                                  object->rotation.pad, 0x2d);
+                                  object->rotation.vy, 0x2d);
                 }
                 break;
             case 3:

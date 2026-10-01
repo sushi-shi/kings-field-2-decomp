@@ -175,12 +175,11 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         if (effect != 0) effect->cooldown = 5;
         break;
     case 0x6e:
-    case 0x70:
         parameters = va_arg(arguments, const u16 *);
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {
-            func_8003c3e0(current, player, kind == 0x6e ? 400 : 250,
+            func_8003c3e0(current, player, 400,
                           &position, &direction, -1, 0x400, 1);
             spawned->slot_state = 5;
             spawned->group_index = group_index;
@@ -191,13 +190,34 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             spawned->unknown_28 = actor_state.target_groups[group_index].unknown_34;
             spawned->unknown_15 = actor_state.target_groups[group_index].unknown_09;
             spawned->position = position;
-            spawned->position.vy += kind == 0x6e ? 4096 :
-                actor_state.target_groups[group_index].unknown_14 >> 1;
+            spawned->position.vy += 4096;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
-            actor_select_target_type_in_own_group(spawned,
-                                                   kind == 0x6e ? 0x1d : 0x1e);
+            actor_select_target_type_in_own_group(spawned, 0x1d);
+        }
+        break;
+    case 0x70:
+        parameters = va_arg(arguments, const u16 *);
+        group_index = parameters[2];
+        spawned = actor_pool_find_free();
+        if (spawned != 0) {
+            func_8003c3e0(current, player, 250,
+                          &position, &direction, -1, 0x400, 1);
+            spawned->slot_state = 5;
+            spawned->group_index = group_index;
+            spawned->unknown_04 = 0;
+            spawned->unknown_05 = 0;
+            spawned->unknown_06 = current->unknown_06;
+            spawned->lifecycle = 1;
+            spawned->unknown_28 = actor_state.target_groups[group_index].unknown_34;
+            spawned->unknown_15 = actor_state.target_groups[group_index].unknown_09;
+            spawned->position = position;
+            spawned->position.vy += actor_state.target_groups[group_index].unknown_14 >> 1;
+            actor_initialize_from_group(spawned);
+            *(SVECTOR *)&spawned->unknown_50 = direction;
+            *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
+            actor_select_target_type_in_own_group(spawned, 0x1e);
         }
         break;
     case 0x78:

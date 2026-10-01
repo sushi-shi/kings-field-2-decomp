@@ -136,7 +136,7 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
             if (candidate == 0) {
                 break;
             }
-            if (candidate->type == 2 && candidate->unknown_0c <= applied) {
+            if (candidate->type == 2 && candidate->word_0c.value <= applied) {
                 u8 chance = candidate->unknown_01[1];
                 if (chance == 0xff || (rand() >> 7) < chance) {
                     actor_set_target(actor, candidate);

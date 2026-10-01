@@ -1878,3 +1878,51 @@ change in this pass.
 | 0x80033cc0 | Exact, direct objdiff 100% (124 bytes). |
 | 0x80033d3c | Exact, direct objdiff 100% (696 bytes); its three `ScaleMatrix` calls and loop tail now match the current retail carve. |
 | 0x80033ff4 | Focused SAME; earlier strict exact sparse-find control. |
+
+## Frame-resource transition continuation
+
+This eleven-function batch follows the frame renderer through its map-cell,
+resource, and image-transition controls. Each verdict below comes from an
+isolated source compile and direct objdiff against the current GAME carve.
+The resource unit also contains `0x80032274`, an audio-owned WIP that was
+compiled but left untouched.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| 0x80030c18 | WIP, 96.521736% (460 bytes); an early orientation-byte load and flags move exchange order. |
+| 0x80030de4 | Exact, 100% (376 bytes); supersedes the old 89.52128% strict report. |
+| 0x80030f5c | Exact, 100% (200 bytes); grid-scan control. |
+| 0x80032040 | Exact, 100% (112 bytes); single-cell layer-mask control. |
+| 0x800320b0 | WIP, 73.95918% (196 bytes); row and column calculations and loop register allocation diverge. |
+| 0x80032174 | WIP, 93.6% (100 bytes); comparisons and branches align, but the result and scratch register assignments differ. |
+| 0x800321d8 | WIP, 98.4359% (156 bytes); the unowned `0x8009b0a0` arena literal still emits `lui/ori` rather than retail's relocatable `lui/addiu`. |
+| 0x80032364 | Exact, 100% (280 bytes); TMD range-update control. |
+| 0x8003494c | Exact, 100% (112 bytes); TIM upload control. |
+| 0x800349bc | WIP, 96.31408% (1108 bytes); retail spills its return state in a 72-byte frame, while the probe keeps it in a register in a 64-byte frame. |
+| 0x80034e10 | Exact, 100% (384 bytes); image-transition control. |
+
+A temporary, typed `0x800320b0` probe calculated the z-row pointer before
+the x-column expression, matching retail's broad arithmetic order. Focused
+listing similarity rose from 26.9% to 40.4%, but direct objdiff fell from
+73.95918% to 67.85714%. The declaration order alone does not establish the
+original source and no change was retained. KF1's map-cell renderer uses
+similar SDK matrix setup, but does not resolve the KF2 scratch-register
+residue at `0x80030c18`.
+
+## Clipped-map render follow-up
+
+The contiguous `render_map.c` unit was rebuilt after shared type and
+relocation refinements. Isolated direct objdiff gives `0x8002f194` 100%
+(1052 bytes), `0x8002f5b0` 95.833336% (600 bytes), and `0x8002f808`
+91.17697% (1876 bytes). The latter verdict supersedes an older 63.362473%
+report. The clipped-triangle path still differs where retail transfers the
+third vertex UV before subsequent color words, while the probe moves that
+independent transfer later. The alternate prepared path still allocates a
+168-byte retail frame versus the probe's 120-byte frame; no complete
+additional local object or source definition is proved. Focused CFG has
+13/13 blocks and 7/7 branches for the clipped-triangle path, and 51/51
+blocks and 35/35 branches for the alternate prepared path, with known
+successors aligned by block order. Its direct
+`NormalClip`, `NormalColorCol`, `DpqColor`, `Clip4FTP`, `Clip3FTP`, and
+clipped-triangle calls retain their reviewed referents. No source edit was
+retained for register or stack-placement differences alone.

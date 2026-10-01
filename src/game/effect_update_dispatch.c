@@ -187,7 +187,7 @@ void effect_update_dispatch(void)
         s32 index;
         u8 actor_index = record->unknown_3c[5];
 
-        if (record->phase == 0) {
+        if (initial_phase == 0) {
             progress = 0;
             if (actor_index == 0xff) {
                 count = 16;
@@ -219,7 +219,7 @@ void effect_update_dispatch(void)
                 progress += step_size;
             }
             record->phase = 1;
-        } else if (record->phase == 1) {
+        } else if (initial_phase == 1) {
             if (record->updates_remaining >= 2 &&
                 *(s16 *)&record->unknown_3c[6] != 0) {
                 break;
@@ -256,7 +256,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 6: {
-        switch (record->phase) {
+        switch (initial_phase) {
         case 0: {
             s32 index;
 
@@ -400,7 +400,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 23:
-        if (record->phase == 9) {
+        if (initial_phase == 9) {
             KfActor *actor = &actor_state.actors[*(s16 *)&record->unknown_3c[4]];
             VECTOR vertex_offset;
             VECTOR actor_position;
@@ -461,7 +461,7 @@ void effect_update_dispatch(void)
         goto shared_growth_update;
     }
     case 8:
-        if (record->phase == 0) {
+        if (initial_phase == 0) {
             VECTOR next;
             s32 first_collision;
 
@@ -523,7 +523,7 @@ void effect_update_dispatch(void)
             shared_motion_count = 2;
             shared_motion_layer = 8;
             goto shared_spawn_motion;
-        } else if (record->phase == 1) {
+        } else if (initial_phase == 1) {
             KfEffectRecord *parent =
                 &effect_state.records[record->unknown_3c[4]];
             struct KfVecXZi forward;
@@ -957,7 +957,7 @@ void effect_update_dispatch(void)
     case 47:
         acceleration = 5;
     ballistic_update:
-        if (record->phase != 0) {
+        if (initial_phase != 0) {
             break;
         }
         /* These kinds overlay the record tail with a Y origin and age. */
@@ -1157,7 +1157,7 @@ void effect_update_dispatch(void)
         break;
     case 100: {
         SVECTOR local_direction;
-        s32 phase = record->phase;
+        s32 phase = initial_phase;
 
         if (phase < 100) {
             if ((u32)(phase - 4) < 67) {
@@ -1299,7 +1299,7 @@ void effect_update_dispatch(void)
     }
     case 104:
     case 122:
-        if (record->phase < 3) {
+        if (initial_phase < 3) {
             SVECTOR local_direction;
             s32 scale = (s16)record->scale_y;
             s32 root = SquareRoot12(scale * ((scale * scale) >> 12));
@@ -1314,7 +1314,7 @@ void effect_update_dispatch(void)
         {
             s32 distance;
 
-            record->animation_clip = (record->phase & 1) - 128;
+            record->animation_clip = (initial_phase & 1) - 128;
             if (record->phase < 9) {
                 distance = fixed_vector3_length(
                     player_state.camera_position.vx - record->position.vx,
@@ -1334,7 +1334,7 @@ void effect_update_dispatch(void)
         u8 actor_index = record->unknown_3c[5];
 
         record->rotation.vz = (u16)record->rotation.vz + 800;
-        if (record->phase == 2) {
+        if (initial_phase == 2) {
             step = (u16)record->scale_x - 128;
             record->scale_x = step;
             record->scale_y = step;
@@ -1352,7 +1352,7 @@ void effect_update_dispatch(void)
             next_position.vx = vertex_offset.vx + position->vx;
             next_position.vy = vertex_offset.vy + position->vy;
             next_position.vz = vertex_offset.vz + position->vz;
-            if (record->phase == 0) {
+            if (initial_phase == 0) {
                 collision = func_80041b14(&next_position, 300, 50,
                                            500, 150, 10, 0);
                 if (collision == -2) {
@@ -1392,7 +1392,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 106:
-        if (record->phase == 0) {
+        if (initial_phase == 0) {
             record->direction.vy = (u16)record->direction.vy + 20;
             collision = func_80042298(140, (s32)0x80000000, -300);
             if (collision != 0) {
@@ -1410,7 +1410,7 @@ void effect_update_dispatch(void)
                 func_80041e94(record, -1, -3, 6000, -800,
                                6, 8, 0, -1024);
             }
-        } else if (record->phase == 1 && record->unknown_3c[4] == 0) {
+        } else if (initial_phase == 1 && record->unknown_3c[4] == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -1421,7 +1421,7 @@ void effect_update_dispatch(void)
         const u8 *snapshot;
         s32 frame_index;
 
-        if (record->phase == 0 && selected->phase >= 3) {
+        if (initial_phase == 0 && selected->phase >= 3) {
             record->phase = 1;
             record->updates_remaining = record->unknown_3c[5] * 3;
         }

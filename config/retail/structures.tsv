@@ -5,7 +5,8 @@ KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstr
 KfActorHalfword4a	0x2	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4aBytes	0x2	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
 KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
-KfActorTail72	0x6	supported	game/actor.h;GAME 0x8003e634-0x8003e660;GAME 0x8003ef8c	Euler output and signed state share actor +0x72
+KfActorTail72	0x8	supported	game/actor.h;GAME 0x8003e414-0x8003e468;GAME 0x8003d784;GAME 0x8003d804	SVECTOR output/copy overlaps signed actor +0x78 baseline and +0x72 state
+KfActorTail72Motion	0x8	supported	game/actor.h;GAME 0x8003d784;GAME 0x8003d804	Euler halfwords followed by signed actor +0x78 baseline
 KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset
@@ -110,6 +111,7 @@ KfTargetCandidateWord16	0x2	supported	GAME 0x80039108 lhu candidate+0x16;GAME 0x
 KfTargetCandidateWord16Bytes	0x2	supported	GAME 0x8003ef34/0x8003eff0 lbu	byte-addressable candidate +0x16 word view
 KfTargetCandidateWord18	0x2	supported	GAME 0x8003e078 lhu candidate+0x18;GAME 0x8003ebe0 lbu candidate+0x19	shared unsigned halfword and high-byte view
 KfTargetCandidateWord18Bytes	0x2	supported	GAME 0x8003ebe0 lbu candidate+0x19	byte-addressable candidate +0x18 word view
+KfTargetCandidateWord1a	0x2	supported	GAME 0x80039108 lhu candidate+0x1a;GAME 0x8003dc14 lbu candidate+0x1a	unsigned halfword and byte view
 KfTargetCandidateWord1c	0x2	supported	GAME 0x8003e294 lhu candidate+0x1c;GAME 0x8003e1d0/0x8003e1d4 lbu	unsigned halfword and byte view
 KfTargetCandidateWord1e	0x2	supported	GAME 0x8003e2d4 lhu candidate+0x1e;GAME 0x8003e1d8/0x8003e1f8 lbu	unsigned halfword and byte view
 KfTargetCandidateWord24	0x2	supported	GAME 0x8003e1ec lhu;GAME 0x8003e298 lh candidate+0x24	unsigned damage value and signed motion-step views

@@ -109,6 +109,13 @@ typedef union KfTargetCandidateWord18 {
 typedef char kf_target_candidate_word18_size[
     sizeof(KfTargetCandidateWord18) == 2 ? 1 : -1];
 
+typedef union KfTargetCandidateWord1a {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1a;
+typedef char kf_target_candidate_word1a_size[
+    sizeof(KfTargetCandidateWord1a) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord1c {
     u16 value;
     u8 bytes[2];
@@ -152,7 +159,7 @@ typedef struct KfTargetCandidate {
     KfTargetCandidateWord14 word_14;
     KfTargetCandidateWord16 word_16;
     KfTargetCandidateWord18 word_18;
-    u16 unknown_1a;
+    KfTargetCandidateWord1a word_1a;
     KfTargetCandidateWord1c word_1c;
     KfTargetCandidateWord1e word_1e;
     u16 unknown_20;
@@ -181,6 +188,7 @@ typedef char kf_target_candidate_word_16_offset[(u32)&((KfTargetCandidate *)0)->
 typedef char kf_target_candidate_word_16_high_offset[(u32)&((KfTargetCandidate *)0)->word_16.bytes.high == 0x17 ? 1 : -1];
 typedef char kf_target_candidate_word_18_offset[(u32)&((KfTargetCandidate *)0)->word_18 == 0x18 ? 1 : -1];
 typedef char kf_target_candidate_word_18_high_offset[(u32)&((KfTargetCandidate *)0)->word_18.bytes.high == 0x19 ? 1 : -1];
+typedef char kf_target_candidate_word_1a_offset[(u32)&((KfTargetCandidate *)0)->word_1a == 0x1a ? 1 : -1];
 typedef char kf_target_candidate_word_1c_offset[(u32)&((KfTargetCandidate *)0)->word_1c == 0x1c ? 1 : -1];
 typedef char kf_target_candidate_word_1e_offset[(u32)&((KfTargetCandidate *)0)->word_1e == 0x1e ? 1 : -1];
 typedef char kf_target_candidate_unknown_20_offset[(u32)&((KfTargetCandidate *)0)->unknown_20 == 0x20 ? 1 : -1];
@@ -242,12 +250,23 @@ typedef union KfActorHalfword4a {
 } KfActorHalfword4a;
 typedef char kf_actor_halfword_4a_size[sizeof(KfActorHalfword4a) == 2 ? 1 : -1];
 
-/* Action-specific tail storage is also a signed state halfword. */
+typedef struct KfActorTail72Motion {
+    struct KfEulerAngles angles;
+    s16 baseline;
+} KfActorTail72Motion;
+typedef char kf_actor_tail_72_motion_size[
+    sizeof(KfActorTail72Motion) == 8 ? 1 : -1];
+
+/* Action-specific tail storage overlaps a vector and a signed state. */
 typedef union KfActorTail72 {
     s16 signed_state;
     struct KfEulerAngles angles;
+    SVECTOR direction;
+    KfActorTail72Motion motion;
 } KfActorTail72;
-typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 6 ? 1 : -1];
+typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 8 ? 1 : -1];
+typedef char kf_actor_tail_72_baseline_offset[
+    (u32)&((KfActorTail72 *)0)->motion.baseline == 6 ? 1 : -1];
 
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
@@ -306,7 +325,7 @@ typedef struct KfActor {
     u8 unknown_6e[2];
     s16 unknown_70;
     KfActorTail72 tail_72;
-    u8 unknown_78[0x04];
+    u8 unknown_7a[2];
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
@@ -327,7 +346,8 @@ typedef char kf_actor_unknown_70_offset[(u32)&((KfActor *)0)->unknown_70 == 0x70
 typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed_state == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
-typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->unknown_78 == 0x78 ? 1 : -1];
+typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
+typedef char kf_actor_unknown_7a_offset[(u32)&((KfActor *)0)->unknown_7a == 0x7a ? 1 : -1];
 
 /* The startup clear bounds this runtime; the two trailer writes and actor
  * array are fixed by actor_pool_clear. */

@@ -63,7 +63,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
     case 23:
     case 24:
     case 132:
-        if ((actor->unknown_28 & 0x100) || target->unknown_1a < player_distance ||
+        if ((actor->unknown_28 & 0x100) || target->word_1a.value < player_distance ||
             !func_80015574(actor->position.vy, actor->unknown_1e,
                             player_state.camera_position.vy + 200, 0x834)) {
             goto done;
@@ -81,7 +81,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         score = target->unknown_01[1];
         {
             s32 near_distance = target->word_0e.bytes.low << 6;
-            s32 middle_distance = (near_distance + target->unknown_1a) >> 1;
+            s32 middle_distance = (near_distance + target->word_1a.value) >> 1;
             if (player_distance >= middle_distance) {
                 score -= score / 3;
             } else if (player_distance >= near_distance) {
@@ -105,7 +105,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         goto done;
 
     case 11:
-        if (target->unknown_1a < player_distance) {
+        if (target->word_1a.value < player_distance) {
             goto done;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,

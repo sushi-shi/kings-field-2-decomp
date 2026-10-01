@@ -1,6 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/graphics.h>
 #include <kf/game/tmd.h>
+#include <kf/game/tmd_packets.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -8,9 +9,6 @@ enum {
     KF_MENU_MODEL_GEOM_SCREEN = 200,
     KF_MENU_MODEL_FOG_NEAR = 0x59d8
 };
-
-extern void func_8002d918(s32 vertex_count);
-extern void func_8002e4dc(s32 object_index, s32 depth_bias);
 
 ADDRESS(0x80033994, 0x68)
 void func_80033994(void)

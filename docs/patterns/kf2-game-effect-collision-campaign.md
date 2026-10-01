@@ -33,8 +33,8 @@ the KF2 80-row collision structures.
 | 0x80041e0c | Exact | Height-window spawn is 136/136 strict exact, using the provisional startup-BSS collision lower-bound view without defining an overlapping global. |
 | 0x80041e94 | Exact | Fresh isolated direct objdiff confirms all 664 code bytes; the earlier 92.65% report is stale. |
 | 0x8004212c | Exact | Fresh isolated direct objdiff preserves all 364 code bytes while the signed BSS bound remains a provisional interior view. |
-| 0x80042298 | WIP | BSS halfwords 0x801c7068–0x801c706c need an owner. |
-| 0x80042424 | WIP | Same unresolved halfword group. |
+| 0x80042298 | Exact | Direct strict objdiff and fresh focused comparison confirm the first function in the three-function scatter unit; the provisional 0x801c7068 `SVECTOR` owner is now defined in that source. |
+| 0x80042424 | Exact | Direct strict objdiff and fresh focused comparison confirm the companion scatter function with the same provisional shared `SVECTOR` owner. |
 | 0x800424f0 | Exact | Scatter, 0x160 bytes. |
 | 0x80042650 | WIP | Large dispatcher with incomplete control/data model. |
 | 0x80045cc0 | Exact | Effect pool reset, 0x30 bytes. |

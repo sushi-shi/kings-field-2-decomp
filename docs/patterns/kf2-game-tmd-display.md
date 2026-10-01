@@ -65,3 +65,27 @@ Focused `kf match` marks every function in the consolidated `tmd_pipeline.c`
 unit strict exact: 8/8 functions, 1,284/1,284 code bytes. The global command
 still exits on repository-wide known-reference closure; its target relink
 check passed 183/183 units. The parent campaign owner handles repository tests.
+
+## Cross-game packet-renderer evidence (2026-10-01)
+
+An aligned 32-byte-window search between the current KF1 GAME linked object
+and KF2 retail GAME finds 181 matching windows for KF2 `8002ddb4`, 193 for
+`8002e4dc`, and 20 for `8002ebe0` inside KF1 `8001c7f8`
+`render_enqueue_tmd`. These are shared instruction fragments, not proof that
+the whole renderers, source files, or toolchains are identical. KF1's
+[`695d1ae6`](https://github.com/sushi-shi/kings-field-decomp/commit/695d1ae6)
+history and `game-enqueue-stack-order.md` demonstrate that declaration order
+of real packet-header/count scalars controls their spill slots in the pinned
+GCC probe. Its `6a56ebd7` history also records how a typed projected-vertex
+base recovered a renderer address chain; KF2 needs its own referent check
+before applying that source shape.
+
+KF2 `8002e4dc` initially stored the first loop scalar at `sp+40` where
+retail uses `sp+48`, then the second at `sp+48` where retail uses `sp+40`.
+Declaring the existing `header` before `remaining`, and assigning the header
+inside the loop, restores those retail spill slots without changing packet
+semantics or the eight exact sibling functions. Direct strict objdiff remains
+97.27840% for this 1796-byte WIP: branch extents and the positive-depth
+FT3/GT3 paths still differ. A source-equivalent positive-depth guard trial
+compiled identically and was reverted. KF1 therefore supplies a verified
+source-order clue here, not a closure claim.

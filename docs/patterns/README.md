@@ -97,6 +97,9 @@
 - [game-graphics-focused-25.md](game-graphics-focused-25.md): refreshed
   27-function graphics/TMD strict controls, exact primitive-index switch
   data, and the actor cursor correction in resource dispatch.
+- [game-menu-visual-fourteen.md](game-menu-visual-fourteen.md): current GAME
+  visual-menu direct comparison with eleven strict exact functions, three
+  bounded frame/codegen WIPs, and exact sprite/window data.
 - [kf2-game-menu-notify-transition.md](kf2-game-menu-notify-transition.md):
   27 menu, notification, resource, and display verdicts; a model-preview
   frame residue and two contiguous module consolidations.

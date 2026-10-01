@@ -130,7 +130,7 @@ certification is pending.
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
-| `0x80036ed4` | WIP, 86.53104% direct strict code; 47.4% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
+| `0x80036ed4` | WIP, 89.75535% direct strict code; 75.4% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
 
 The current 27-function focused cohort comprises the 17 collision-height
 wrappers, two map-cell pattern helpers, six map-object reset helpers, the
@@ -383,9 +383,9 @@ After a GAME target-only refresh, direct strict objdiff gives the datum and
 its 0x20-byte `.data` section 100%.
 Against the same target object, isolated direct comparisons put the prior
 numeric-case source at 7.0693793% strict code and 26.572327% strict
-`.rodata`; the reordered current source reaches 86.53104% strict code and
-37.997902% strict `.rodata`. The retail code section is 7,668 bytes (probe
-7,652 bytes), and pointer addends in the 956-byte jump-table section still
+`.rodata`; the reordered current source reaches 89.75535% strict code and
+36.740044% strict `.rodata`. The retail code section is 7,668 bytes (probe
+7,628 bytes), and pointer addends in the 956-byte jump-table section still
 follow the different case-block offsets.
 The source claim establishes the current link owner without
 proving the historical TU boundary.
@@ -399,8 +399,8 @@ previous numeric-order source matched only 22/79 direct-call positions in
 the retail sequence; the reordered source matches all 79/79 in order. This
 independently supports the physical source block order as well as the bounded
 table pointers, so the correction is retained. The focused listing improves
-from 27.7% to 47.4% but remains DIFF with register/text-layout differences;
-the current target/probe CFG has 329/320 blocks and 180/176 branches, so no
+from 27.7% to 75.4% but remains DIFF with register/text-layout differences;
+the current target/probe CFG has 329/319 blocks and 180/176 branches, so no
 strict exact claim follows.
 At action 8, timer 2, retail loads the previous angle with `lhu`, stores the
 step velocity at object +0x36 before the addition, masks the updated angle to
@@ -412,13 +412,34 @@ retail uses `lbu`/`sb` at `54(s1)` with `s1 = object + 0x0a`. The prior
 `extra_40.bytes[2]` source accessed +0x42; `bytes[0]` is now used for these
 state paths, while the independent +0x42 parameter uses remain unchanged.
 The field correction raises isolated strict code from 86.52322% to
-86.52582%; the focused listing remains 47.4%.
+86.52582%; the earlier focused listing was 47.4%.
 Actions 96 and 98 instead use a signed/unsigned halfword at object +0x3e:
 retail `lh`, `lhu`, and `sh` use `52(s1)`, while the prior source's
 `extra_40.halfwords[1]` addressed +0x42. Their velocity reads and writes now
 use the existing `tail.fields.unknown_3e` signed/value union views. The
 separate earlier +0x42 rotation uses remain as they were. Isolated strict code
-rises from 86.52582% to 86.53104%; focused listing is unchanged.
+rises from 86.52582% to 86.53104%; focused listing was unchanged at this step.
+For action 98, retail loads one signed angle, branches on the timer with the
+`-0xa0` alternative in the delay slot, applies `+0xa0` on the fallthrough,
+then masks and stores the result once. The retained shared `angle` assignment
+gives that branch shape and a single store. It raises direct strict code from
+86.53104% to 86.61241%, although the local focused listing falls from 47.4%
+to 47.2% amid remaining register/offset differences.
+In action 81, retail reloads the object +0x3b boundary byte at the entry and
+after intervening calls (`lbu` at `49(s1)`); the earlier source cached the byte
+in a saved local across all timer branches. Reading the shared object field at
+each use restores the byte-load referent and raises direct strict code from
+86.61241% to 87.818985% and focused listing from 47.2% to 49.0%.
+Jump-table `.rodata` is 36.740044% because case-block offsets remain WIP.
+Retail action 81 calls `func_800369b8` after loading the pose vertex index,
+then reads the template's reach and height halfwords. Moving the latter two
+source reads after that call releases their saved temporary lifetimes and
+raises direct strict code from 87.818985% to 89.70005%, with focused listing
+49.0% to 75.5%. The height at template +0x10 is a single `lhu 16(s3)`, so the
+shared 24-byte pose view now types that field as `u16`, with an offset check;
+the other pose-view consumer retains its 89.4% focused WIP result. This final
+width correction raises direct strict code to 89.75535%, while focused listing
+settles at 75.4%.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.
@@ -528,6 +549,21 @@ assignment and could reuse a prior command's value. The source now sets 5
 at entry; focused listing remains 14.0% WIP. The default focused CFG view
 has 165 compiled blocks and 97 branches against retail's 174 and 99; both
 views warn that the bounded switch remains an unresolved indirect jump.
+
+The related opcode `0x21` path at `0x8002ae28` preserves all four signed
+quarter-turn boundary tests before the shared geometry update. Opcode `0x30`
+at `0x8002b0b0` uses the corresponding rotated coordinate and divides it by
+the signed record halfword at `+0x0a` only after both inclusive bounds pass.
+Opcode `0x31` at `0x8002b3e8` advances only past the command word when result
+bit 0 is clear; when set, it also consumes the ten-byte record body before
+testing the rotated coordinate. Opcode `0x40` at `0x8002b4d8` toggles the
+unsigned cached layer between offsets 0 and 5, recalculates height from the
+new layer's elevation, and visits that layer once. All four paths agree with
+the retained source. A fresh focused build remains 14.0% listing similarity;
+direct strict objdiff is 33.42445% code and 19.642857% switch `.rodata`.
+The source, 49-word table owner, and unresolved indirect switch edges were
+left unchanged.
+
 Retail transition phase one at `0x80016820` copies `0x3e80` words
 (`0xfa00` bytes, exactly 80×80×10 map-cell bytes) to the BSS base, then
 copies `0x600` words (`0x1800` bytes) to its +0x10000 interior. The
@@ -705,3 +741,27 @@ remaining observed difference is saved-register assignment. All eleven
 exact wrapper siblings and the 3,520-byte datum remain 100%. A separate
 `0x8002b874` branch-local score probe was reverted after the full retail
 CFG showed a shared interaction-height store.
+
+The next focused collision-utility audit rebuilt six GAME objects and ran
+direct strict objdiff on their 24 function claims. Sixteen are exact:
+`0x8002a988`, `0x8002b604`, `0x8002b7f8`, `0x8002bc18`,
+`0x8002bd3c`, `0x8002bdbc`, `0x8002be9c`, `0x8002bf38`,
+`0x8002bfac`, `0x8002c170`, `0x8002c1d4`, `0x8002c290`,
+`0x8002ce2c`, `0x8002cf40`, `0x800314fc`, and `0x80031634`.
+The eight remaining strict verdicts are:
+
+| GAME address | Direct strict result | Current evidence limit |
+| --- | ---: | --- |
+| `0x8002b67c` | WIP, 94.895836% | Cached-height reload versus retained elevation value. |
+| `0x8002b73c` | WIP, 98.404260% | Row-pointer and loop-index registers; KF1's different grid is only a shape lead. |
+| `0x8002b874` | WIP, 91.5% | Radius/height load order and common-tail schedule. |
+| `0x8002b9d4` | WIP, 92.744830% | Collision-channel result lifetime after the supported calls and branches. |
+| `0x8002bfd4` | WIP, 73.912620% | Two-axis mask-rasterizer induction and frame layout. |
+| `0x8002c424` | WIP, 98.299320% | Indexed cursor and direct cell lookup are retained; saved-register assignment remains. |
+| `0x8002c670` | WIP, 90.127270% | The typed center lighting byte has a different base-add schedule; its 28-byte shape table matches exactly. |
+| `0x8002ce68` | WIP, 65.851850% | Retail reloads late O32 arguments after free-slot acquisition; the probe retains them in saved registers. |
+
+All calls, decoded referents, and exact sibling controls used for these
+verdicts remain intact. No source or inventory change was justified by this
+pass; the earlier focused-listing percentages in this document describe
+their own probes, while this table records the current direct strict results.

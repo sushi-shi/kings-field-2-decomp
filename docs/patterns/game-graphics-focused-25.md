@@ -249,4 +249,16 @@ conversion. A focused off-tree source probe improved the listing from 84.2%
 to 87.1%; the retained source improves fresh direct strict objdiff from
 **95.0% to 95.32836%**. The same 12-unit graphics/TMD control remains
 **24/27 exact**, with its other two WIPs unchanged. The remaining
-world-model register and instruction-order differences are unresolved.
+world-model register and instruction-order differences are unresolved. A
+fresh target/base relocation extraction confirms all **68/68 ordered**
+relocation type, symbol, and addend rows match after this width correction.
+
+A focused dispatcher relocation census appears to differ at the player camera
+position (`player_state +0xdc` in retail versus `+0xe0` in the probe), but the
+actual loads are equivalent. `camera_position` starts at `+0xd8`: retail
+loads `vx`/`vz` at `0`/`8` from one saved base and materializes `+0xdc`
+separately for `vy`; the probe loads `vx`/`vy` at `0`/`4` from one base and
+materializes `+0xe0` separately for `vz`. All three component referents are
+correct. Apart from this address-reuse choice and local branch targets, the
+external relocation counts, types, symbols, and addends agree. This is not a
+missing field or identity claim, so no source or relocation edit is warranted.

@@ -1880,8 +1880,74 @@ record extent or stride; the observed prefix established by selector 23 does
 not resolve this stream. No C path or exact verdict is claimed for selector 25.
 The reviewed actor switch pointers also show selectors 12 and 16 both enter
 `8003d720`, while 13 and 17 both enter `8003daa8`; those are two shared
-retail bodies, not four independently inferred behaviors. Their C paths remain
-unresolved.
+retail bodies, not four independently inferred behaviors. Selectors 13/17 now
+have a source-backed path: they calculate player-relative 3D length and angle
+at actor +0x72, clamp angle X to 512..3584, and use candidate +0x14/+0x16
+distance bounds to choose the forward or reverse `3bf74` motion view. Type 17
+calls exact `3c220` with candidate bytes +0x18..+0x1b; type 13 advances the
+wrapped animation instead. The +0x1a word/byte overlap is represented by a
+shared two-byte union without changing the 0x2c observed prefix or claiming
+record stride. Focused dispatcher listing rises 20.3% to 23.1% WIP; scorer
+remains 35.1% focused after its +0x1a field migration. Selectors 12/16 now
+share a source-backed body from retail `8003d720`: initialization derives a
+signed actor +0x78 height baseline from the map cell and actor +0x26, then
+enters motion. The running path uses actor angles, candidate +0x0c/+0x0e,
+group bytes +3/+4, and two random threshold tests on candidate +0x13 to
+choose yaw/pitch changes. Candidate +0x12 adjusts vertical motion against
+the +0x78 baseline and candidate +0x10. Type 16 calls exact `3c220` with
+candidate bytes +0x14..+0x17; type 12 advances wrapped animation. Retail
+`sh`/`lh` establish actor +0x78 as a signed halfword, without proving the
+following two bytes' meaning. The top-level sound gate initializes the
+interval used by this path; its bypass behavior remains unresolved. Focused
+dispatcher listing is 22.2% WIP after this case; the lower intermediate
+score does not negate the decoded call and field evidence.
+
+Selector 3 at `8003e04c` is now sourced from its complete retail arm. It
+initializes animation with `397d8`, advances clamped phase, invokes radial
+player damage `3a614` on the candidate +0x18 phase crossing using the exact
+eight observed arguments, resets the target at phase 4095, and passes
+candidate byte +0x0d to `3b9a4`. It resembles the existing selector-4 C
+path, but retail gives them distinct switch targets and selector 4 has a
+different raw call/CFG path; their source arms remain separate. Focused
+dispatcher listing is 25.0% WIP after selector 3.
+
+Selector 11 at `8003e354` is now a bounded four-stage source path. Stage 0
+advances animation, then computes player-relative angles and writes an
+eight-byte forward `SVECTOR` at actor +0x72. Stage 1 copies that vector,
+scales it by candidate +0x14/+0x18, approaches the three actor motion
+halfwords at +0x50/+0x52/+0x54, and checks collision; bit 0x80 invokes the
+12-argument player damage call before stage 2. Stages 2 and 3 rotate through
+the phase and reverse animation. Stages 0, 2, and 3 call the motion collision
+helper, while all states update heading through `3bba0`. This raw
+eight-byte output/copy establishes an overlapping `SVECTOR` view at actor
++0x72 alongside the earlier signed +0x78 baseline; the actor stride stays
+0x7c. Focused dispatcher listing is 23.1% WIP after selector 11, below the
+selector-3 intermediate score because the switch remains incomplete. Six
+exact actor-animation and three exact group-position listings remain SAME.
+Selector 10 at `8003de2c` now follows its complete raw case: after the
+initial animation/motion setup, three independent `rand` values adjust actor
+motion halfwords +0x50, +0x54, and +0x52. Each adds or subtracts candidate
++0x10 when the random value falls below 2048 or 4096 and clamps against the
+signed positive/negative candidate +0x0c bound. The arm then checks motion
+collision, advances wrapped animation, and updates heading via `3bba0` using
+candidate +0x0e and the active group's byte +4. Focused dispatcher listing
+reaches 27.8% WIP with this C arm; exact actor-animation and group-position
+controls remain SAME. Selectors 5 and 25 remain unsourced, and candidate
+stride is unresolved.
+KF1 `actor_apply_random_movement` in `src/game/actor_behavior.c` offers the
+same X/Z/Y component order and add/subtract clamp shape as a source lead;
+KF2's raw `<2048`/`<4096` thresholds, no-change branch, and final calls
+independently determine this arm.
+
+The remaining selector 5 body at `8003d8c8` has a distinct byte-state view:
+retail writes actor +0x70/+0x71 with `sb`, while other selectors use +0x70
+as a signed halfword. Its initialization chooses byte +0x70 from actor type
+4, 18, or 23/24, clears +0x71, and starts animation. The running path uses
+one `rand < 6000` player-distance gate, candidate +0x14/+0x16 thresholds,
+player-relative yaw, either `3bcd0` or `3bae4`, then candidate +0x18 to
+toggle byte +0x71 and a motion-result flag to toggle +0x70. A shared typed
+two-byte/halfword actor view and complete edge reconstruction are needed
+before retaining C for this case; no default byte-state behavior is inferred.
 
 Selectors 28 and 30 have bounded source paths from the retail control flow.
 Selector 28 at `8003f138` starts animation and motion state, plays spatial
@@ -1944,5 +2010,5 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3bf74` | SAME | `3c000` | SAME |
 | `3c10c` | SAME | `3c220` | SAME |
 | `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
-| `3d184` | WIP 20.3% | `3f610` | SAME |
+| `3d184` | WIP 27.8% | `3f610` | SAME |
 | `3f7ec` | WIP 93.8% | `3f860` | SAME |

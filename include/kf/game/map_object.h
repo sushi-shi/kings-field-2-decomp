@@ -42,7 +42,8 @@ typedef struct KfMapObjectTemplatePoseView {
     u8 unknown_00[0x0c];
     s16 height_offset;
     s16 depth_offset;
-    u8 unknown_10[8];
+    u16 unknown_10;
+    u8 unknown_12[6];
 } KfMapObjectTemplatePoseView;
 
 typedef char kf_map_object_template_pose_size[
@@ -51,6 +52,8 @@ typedef char kf_map_object_template_pose_height_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->height_offset == 0x0c ? 1 : -1];
 typedef char kf_map_object_template_pose_depth_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
+typedef char kf_map_object_template_pose_unknown_10_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->unknown_10 == 0x10 ? 1 : -1];
 
 /* Map resource placements consumed in 24-byte rows by func_80035894. */
 typedef struct KfMapObjectPlacement {

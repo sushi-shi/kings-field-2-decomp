@@ -647,7 +647,6 @@ void func_80036ed4(void)
 
         case 81: {
             s32 increment = object->tail.fields.unknown_3a.bytes.low * 4;
-            u8 boundary = object->tail.fields.unknown_3a.bytes.high;
             const KfMapObjectTemplatePoseView *pose_template =
                 (const KfMapObjectTemplatePoseView *)template;
 
@@ -657,11 +656,11 @@ void func_80036ed4(void)
                     object->action_timer = 2;
                     object->unknown_0a = 0xfff;
                     object->unknown_01 = 1;
-                } else if (boundary != 0xfe &&
-                           (boundary == 0xff ||
+                } else if (object->tail.fields.unknown_3a.bytes.high != 0xfe &&
+                           (object->tail.fields.unknown_3a.bytes.high == 0xff ||
                             func_80036ad8(object->position.vx >> 11,
                                             object->position.vz >> 11,
-                                            boundary,
+                                            object->tail.fields.unknown_3a.bytes.high,
                                             object->tail.spawn_bytes.spawn_sequence.low,
                                             object->position.vy))) {
                     object->action_timer = 1;
@@ -672,7 +671,7 @@ void func_80036ed4(void)
                 }
                 break;
             case 1:
-                if (boundary != 0xff) {
+                if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                     if (object->unknown_0a == 0) {
                         map_object_set_cell_marker(object, 1,
                                                    template->marker_action_51);
@@ -691,7 +690,7 @@ void func_80036ed4(void)
                 }
                 object->unknown_0a += increment;
                 if (object->unknown_0a >= 0xfff) {
-                    if (boundary != 0xff) {
+                    if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                         object->unknown_0a = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, 0,
@@ -704,11 +703,12 @@ void func_80036ed4(void)
                 {
                     VECTOR position;
                     u16 vertex_index = (u16)pose_template->height_offset;
-                    u16 reach = (u16)pose_template->depth_offset;
-                    u16 height = template->unknown_0d[3] |
-                                 ((u16)template->unknown_0d[4] << 8);
+                    u16 reach;
+                    u16 height;
                     s32 kind;
                     func_800369b8(object, vertex_index, &position);
+                    reach = (u16)pose_template->depth_offset;
+                    height = pose_template->unknown_10;
                     kind = func_8002b9d4(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {
@@ -887,10 +887,13 @@ void func_80036ed4(void)
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.fields.unknown_3e.signed_value;
                 func_80041e0c(&object->position, 0x1000, 6000, 300);
-                if (object->action_timer == 0) {
-                    object->rotation.vx = (object->rotation.vx + 0xa0) & 0xfff;
-                } else {
-                    object->rotation.vx = (object->rotation.vx - 0xa0) & 0xfff;
+                {
+                    s32 base_angle = object->rotation.vx;
+                    s32 angle = base_angle - 0xa0;
+                    if (object->action_timer == 0) {
+                        angle = base_angle + 0xa0;
+                    }
+                    object->rotation.vx = angle & 0xfff;
                 }
                 object->tail.fields.unknown_3e.value += 30;
                 velocity = object->tail.fields.unknown_3e.signed_value;

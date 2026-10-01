@@ -54,8 +54,8 @@ KfActor	0x6a	0x2	unknown_6a	s16	opaque	GAME 0x8003b520;0x80015bc8	trajectory res
 KfActor	0x6c	0x2	unknown_6c	s16	opaque	GAME 0x8003b520 sh	trajectory setup parameter
 KfActor	0x6e	0x2	unknown_6e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x70	0x2	unknown_70	s16	candidate	game/actor.h;retail GAME 0x80038f7c	Signed halfword condition before actor callback; meaning unresolved
-KfActor	0x72	0x6	tail_72	KfActorTail72	supported	GAME 0x8003e634-0x8003e660;0x8003ef8c	Euler output and signed state share actor +0x72
-KfActor	0x78	0x4	unknown_78	u8[4]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
+KfActor	0x72	0x8	tail_72	KfActorTail72	supported	GAME 0x8003e414-0x8003e468;0x8003d784	SVECTOR output/copy and actor height baseline share action-specific tail
+KfActor	0x7a	0x2	unknown_7a	u8[2]	opaque	game/actor.h;retail GAME actor chain	Remaining opaque actor tail
 KfActorHalfword4a	0x0	0x2	value	u16	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4a	0x0	0x2	bytes	KfActorHalfword4aBytes	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4aBytes	0x0	0x1	low	u8	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
@@ -77,6 +77,10 @@ KfActorStateGame	0x93c4	0x4	unknown_93c4	u32	opaque	game/actor.h;retail GAME act
 KfActorStateGame	0x93c8	0x4	actor_93c8	KfActor *	supported	game/actor.h;retail GAME 80025878	actor pointer written from 8003a778 result
 KfActorTail72	0x0	0x2	signed_state	s16	supported	GAME 0x8003ef8c;0x8003efd4;0x8003efdc	signed state halfword used by alternate action
 KfActorTail72	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x8003e660	Euler output at actor +0x72 consumed by func_8003bf74
+KfActorTail72	0x0	0x8	direction	SVECTOR	supported	GAME 0x8003e414-0x8003e468	Eight-byte vector output and copy at actor +0x72
+KfActorTail72	0x0	0x8	motion	KfActorTail72Motion	supported	GAME 0x8003d784;0x8003d804	Euler view with signed baseline at actor +0x78
+KfActorTail72Motion	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x8003e660	Action-specific Euler halfwords
+KfActorTail72Motion	0x6	0x2	baseline	s16	supported	GAME 0x8003d784 sh and 0x8003d804 lh	Signed actor height baseline for selectors 12/16
 KfAnimClip	0x00	0x02	keyframe_count	u16	supported	asm;animation_select_keyframe	frame count for the selected clip
 KfAnimClip	0x02	0x02	unknown_02	u16	opaque	game/animation.h;animation_select_keyframe	meaning unresolved
 KfAnimClip	0x04	0x04	keyframe_offsets	u32[1]	candidate	asm;animation_select_keyframe	first offset in variable-length keyframe table
@@ -677,7 +681,7 @@ KfTargetCandidate	0x12	0x2	word_12	KfTargetCandidateWord12	supported	GAME 0x8003
 KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x800393f4 lhu at +0x14;GAME event byte stream	shared word and byte-stream prefix view
 KfTargetCandidate	0x16	0x2	word_16	KfTargetCandidateWord16	supported	GAME 0x80039108 lhu target+0x16;GAME 0x8003ef34/0x8003eff0 lbu	shared unsigned halfword and byte view; meaning unresolved
 KfTargetCandidate	0x18	0x2	word_18	KfTargetCandidateWord18	supported	GAME 0x8003e078 lhu candidate+0x18;GAME 0x8003ebe0 lbu candidate+0x19	shared unsigned halfword and high-byte view
-KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
+KfTargetCandidate	0x1a	0x2	word_1a	KfTargetCandidateWord1a	supported	GAME 0x80039108 lhu;GAME 0x8003dc14 lbu	shared distance bound and byte view; meaning unresolved
 KfTargetCandidate	0x1c	0x2	word_1c	KfTargetCandidateWord1c	supported	GAME 0x8003e640 lhu;GAME 0x8003e1d0/0x8003e1d4 lbu	shared motion halfword and byte view; meaning unresolved
 KfTargetCandidate	0x1e	0x2	word_1e	KfTargetCandidateWord1e	supported	GAME 0x8003e644 lhu;GAME 0x8003e1d8/0x8003e1f8 lbu	shared motion halfword and byte view; meaning unresolved
 KfTargetCandidate	0x20	0x2	unknown_20	u16	supported	GAME 0x8003e280 lhu candidate+0x20	animation phase boundary; meaning unresolved
@@ -710,6 +714,8 @@ KfTargetCandidateWord16Bytes	0x0	0x1	low	u8	supported	GAME 0x8003ef34 lbu candid
 KfTargetCandidateWord16Bytes	0x1	0x1	high	u8	supported	GAME 0x8003eff0 lbu candidate+0x17	high byte passed as wrapped animation step
 KfTargetCandidateWord18	0x0	0x2	value	u16	supported	GAME 0x8003e078 lhu candidate+0x18	unsigned phase threshold or state value
 KfTargetCandidateWord18	0x0	0x2	bytes	KfTargetCandidateWord18Bytes	supported	GAME 0x8003ebe0 lbu candidate+0x19	byte view
+KfTargetCandidateWord1a	0x0	0x2	value	u16	supported	GAME 0x80039108 lhu candidate+0x1a	unsigned halfword view
+KfTargetCandidateWord1a	0x0	0x2	bytes	u8[2]	supported	GAME 0x8003dc14/0x8003dc04 lbu candidate+0x1a/+0x1b	byte view
 KfTargetCandidateWord1c	0x0	0x2	value	u16	supported	GAME 0x8003e294 lhu candidate+0x1c	unsigned halfword view
 KfTargetCandidateWord1c	0x0	0x2	bytes	u8[2]	supported	GAME 0x8003e1d0/0x8003e1d4 lbu candidate+0x1c/+0x1d	byte view
 KfTargetCandidateWord1e	0x0	0x2	value	u16	supported	GAME 0x8003e2d4 lhu candidate+0x1e	unsigned halfword view

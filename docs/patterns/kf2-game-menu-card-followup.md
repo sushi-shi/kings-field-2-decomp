@@ -259,3 +259,41 @@ and six-byte `.rodata` claims are also 100%. The wildcard identity at
 `0x8006d6a8` remains a seven-byte candidate without a DATA owner; the
 directory focused listing did not change when it entered the inventory.
 No linked build, repository tests, or banking were run for this recheck.
+
+## Card-browser and directory focused audit (2026-10-01)
+
+This 20-function GAME batch uses fresh `kf try --context 0 --no-flow`
+listings. `SAME` below means the focused listing matches; the previously
+recorded strict objdiff results remain the exactness evidence. The seven
+`DIFF` bodies retain their WIP status. The adjacent card-choice controller
+`0x8001aa9c` belongs to a separate batch and was excluded.
+
+| Address | Focused verdict | Remaining evidence |
+| --- | --- | --- |
+| `0x8001ac80` | SAME | Browser load. |
+| `0x8001af30` | SAME | Browser row helper. |
+| `0x8001b030` | SAME | Card panel sibling. |
+| `0x8001b14c` | SAME | Card panel sibling. |
+| `0x8001b2dc` | SAME | Card panel sibling. |
+| `0x8001b554` | DIFF, 84.6% | 33/33 CFG blocks and 16/16 branches agree; retail moves the probe result from `v0` to `a0`, while the compiled path retains `v0`. |
+| `0x8001b834` | SAME | Slot browser. |
+| `0x8001ba80` | SAME | Card label helper. |
+| `0x8001bb94` | SAME | Card label helper. |
+| `0x8001bcfc` | SAME | Save browser. |
+| `0x8001bf68` | DIFF, 87.7% | Probe-status and dialog-constant register assignments differ; retail CFG extraction is unavailable because a local jump overlaps the trial placement. |
+| `0x8001c12c` | SAME | Format-flow sibling. |
+| `0x800226ec` | DIFF, 88.6% | 13/13 CFG blocks and 7/7 branches agree; signed seed loads and first `memset` setup differ. |
+| `0x800228c8` | DIFF, 67.6% | 24/24 CFG blocks and 13/13 branches agree; signed title-byte loads and digit-loop scheduling differ. |
+| `0x80022b48` | SAME | Directory sibling. |
+| `0x80022b74` | DIFF, 84.2% | 9/9 CFG blocks and 4/4 branches agree; retail uses an 80-byte frame against the compiled 72-byte frame. |
+| `0x80022ca0` | DIFF, 96.7% | 24/24 CFG blocks and 14/14 branches agree; slot-seed and zero-fill setup differ. |
+| `0x80023178` | DIFF, 45.1% | Wait-controller register lifetimes differ; prior direct strict verdict was 93.52941%. |
+| `0x80023288` | SAME | Wait sibling. |
+| `0x800232ac` | SAME | Wait sibling. |
+
+The additional wait sibling `0x8002332c` also remained focused `SAME` as a
+regression control. A temporary `signed char` spelling for the directory
+slot-digit array, including its `atoi` casts, left all five directory
+listings unchanged and was discarded. The seed-byte identities and their
+original defining TU remain unresolved. No source or configuration change
+was retained from this batch; no repository tests or linked build were run.

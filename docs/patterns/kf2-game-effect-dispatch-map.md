@@ -100,7 +100,7 @@ other calls; it is a guide to inspect, not trustworthy C source.
 
 The current `src/game/effect_update_dispatch.c` claims the full retail body
 at `0x80042650 / 0x3670` and models many kind and phase arms. A focused
-rebuild emits 13,892 text bytes against retail's 13,936; direct strict
+rebuild emits 13,852 text bytes against retail's 13,936; direct strict
 objdiff reports 0.0%, so this is a substantive WIP, not an exact function.
 The first compiled instructions already differ in frame size and saved-register
 setup. Retail kind 6 uses a five-entry phase jump table and its phase-1 path
@@ -116,8 +116,12 @@ Retail entry loads `current_record`, `current_magic`, the unsigned kind byte,
 and the phase byte before dispatch. Kind zero compares that saved phase after
 several calls, and shared kind-103/104 handlers distinguish the saved kind.
 The source now captures those entry values before the switch instead of
-reloading them inside later arms; kinds 7/49, 10, 12, and 13/32 consume the
-saved phase where retail does. The focused prelude consequently loads and
+reloading them inside later arms. Raw branches in kinds 5, 6, 7/49, 8, 10,
+12, 13/32, 23, 29–31/47–48, 100, 104/122, and 105–107 consume the saved
+phase; the source now uses that entry byte at those sites. Kind 103/121
+instead loads the current phase field at its entry, while kind 104/122 later
+reloads that field for its sound calculation, so those reads stay fresh.
+The focused prelude consequently loads and
 keeps magic, kind, and phase before the table, though its frame and register
 allocation still differ from retail. KF1's smaller `effect_dispatch.c` also
 captures current record, magic, kind, and phase before its switch; this is a

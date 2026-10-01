@@ -1,6 +1,9 @@
 # GAME target-candidate scorer pilot
 
-`func_80039108` is an unclaimed 0x4c0-byte GAME function at `0x80039108`.
+At the initial pilot, `func_80039108` was an unclaimed 0x4c0-byte GAME
+function at `0x80039108`; it is now source-claimed and remains WIP.
+The source-ownership questions in this opening pilot section describe that
+earlier state; the current strict source verdict appears below.
 Its only proven direct caller is `actor_select_best_target`. The candidate
 signature is `s32 func_80039108(KfTargetCandidate *target, s32 player_distance)`;
 the first two arguments and signed result use are supported by that caller and
@@ -47,7 +50,8 @@ destination and its source-level signature remain unproved.
 No strings are referenced. The case paths perform distance checks, angle tests,
 random gating, and score selection, with a shared return at `0x800395ac`.
 
-Final verdict: **WIP, unclaimed**. There is no source object or strict score.
+Initial pilot verdict (historical): **WIP, unclaimed**. At that point there
+was no source object or strict score.
 The next concrete ownership step is validation of the switch table's source
 owner and a typed candidate-record model. The indirect branch's row values
 are decoded, while the callback's destination is still unknown.
@@ -316,3 +320,161 @@ proved complete owner. Kind `102` starts at `0x80041204` and reads/writes
 `0x8009a5a8`, a timer word within a mixed Sony malloc/Psy-Q CD neighborhood.
 The owner of that word is also unresolved. Neither raw address is replaced
 with an invented global or build placement.
+
+Kind `54` enters `0x80040bcc` with render ID `0x30`, jumps to shared stores
+at `0x80040bd8`, while kind `11` enters `0x80040bd4` with ID `0x11`. A
+temporary C shared-label rewrite of the current grouped ternary retained
+28.0% focused listing similarity but changed the compiled CFG from 22 to
+21 branches against retail's 22. Isolated `.text` increased only from
+69.49961% to 69.58601% while `.rodata` fell from 16.666668% to 9.857724%.
+The trial was discarded; the retained grouped source still models the two
+render IDs but does not yet reproduce their raw control layout.
+
+The analogous kind `16` versus `14`/`19` duration choice enters retail
+`0x80041378` versus `0x80041384`, with a shared sound path at
+`0x8004138c`. A temporary shared-duration label emitted only 21 compiled
+branches and 100 blocks against retail's 22 and 116, with no focused score
+change from 28.0%; it was also discarded.
+
+## Actor motion and collision follow-on
+
+A separate 11-function GAME actor-state/motion family was checked with two
+focused quick unit builds. `SAME` means current listing equality; no new
+strict exact claim is made from the focused control alone.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| `0x8003b33c` | SAME, collision motion sibling |
+| `0x8003b520` | SAME, trajectory motion sibling |
+| `0x8003b5bc` | SAME, state-step sibling |
+| `0x8003b5d0` | WIP, 66.5% |
+| `0x8003b9a4` | SAME, motion sibling |
+| `0x8003bae4` | SAME, motion sibling |
+| `0x8003bba0` | SAME, motion sibling |
+| `0x8003bcd0` | SAME, motion sibling |
+| `0x8003bd40` | WIP, 68.2% |
+| `0x8003be38` | SAME, motion sibling |
+| `0x8003bf74` | SAME, motion sibling |
+
+`0x8003b5d0` has matching retail/compiled CFG counts (40 blocks, 21
+branches), the same five direct calls and actor-state/collision-cache
+referents, but the switch dispatch first tests state `0x20` in retail and
+`0x10` in the probe. The current case bodies are already in retail body
+order; proximity alone does not justify reordering them to steer a compare.
+`0x8003bd40` has matching CFG counts (9 blocks, 5 branches) and the same
+three direct calls. Its first difference is the register/address-load order
+around the actor position and yaw calculation. Neither WIP received a
+source edit in this pass.
+
+## Actor target and damage helper follow-on
+
+An 18-function GAME helper pass followed the actor target/home call family
+through the player-damage sibling unit. `SAME` denotes a focused listing
+match, not a new isolated strict object claim.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| `0x800157ac` | SAME, random scalar helper |
+| `0x800157f8` | SAME, random scalar sibling |
+| `0x80038d04` | SAME, home-position setter |
+| `0x80038dc4` | SAME, actor group defaults |
+| `0x80038efc` | SAME, home wrapper |
+| `0x80038f20` | SAME, home wrapper sibling |
+| `0x80038ff0` | SAME, preparation helper |
+| `0x80039048` | SAME, preparation sibling |
+| `0x80039080` | SAME, actor pool clear |
+| `0x800390d0` | SAME, set target |
+| `0x800395c8` | SAME, target selector |
+| `0x800396c4` | SAME, target-distance helper |
+| `0x80039710` | SAME, target finder |
+| `0x8003a318` | WIP, 97.5% focused / 99.86911% strict |
+| `0x8003a614` | WIP, 81.2% focused / 96.91011% strict |
+| `0x8003a778` | strict 100%, damage-unit sibling |
+| `0x8003d084` | SAME, spatial sound helper |
+| `0x8003d0e8` | SAME, spatial sound sibling |
+
+The two WIP damage functions retain their retail call sets and ordered
+validated actor/player-state referents. At `0x8003a318`, retail and probe
+both have 26 CFG blocks and 13 branches; the first differing instructions
+load the `amount_and_flags` word and `falloff` halfword from stack into
+opposite temporary registers. The later use of those values follows that
+assignment. At `0x8003a614`, both have six blocks and three branches, but
+retail separately loads the `player_state.camera_position.vz` address through
+HI16/LO16 while the probe reuses a previously computed typed
+`player_state.camera_position` base. Its first difference also permutes
+three independent argument shifts and saved-register assignments. The source
+already expresses the correct fields, widths, calls, and branch conditions;
+no source-backed change was retained for either residue. The adjacent
+`0x8003a778` is 100.0% in an isolated direct native objdiff (636/636
+function bytes). The two WIPs have equal target/probe sizes of 764 and
+356 bytes; their direct strict values are listed above. The full unit's
+1,756-byte `.text` section reports 99.31663%.
+
+The linked seven-function actor animation/collision-motion unit adds six
+focused SAME controls and one WIP. It was checked with a quick focused GAME
+build after the source/history and retail call neighborhood review. Isolated
+direct native objdiff reports all six controls at 100.0% function similarity
+with equal target/probe sizes of 360, 344, 220, 52, 92, and 48 bytes,
+respectively. The `0x8003ae50` function remains 99.31746% strict by direct
+objdiff (1,260 bytes on both sides), and the whole 2,376-byte unit `.text`
+is 99.63805%; no exact claim is made for that WIP.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| `0x8003a9f4` | strict 100%, actor collision search |
+| `0x8003ab5c` | strict 100%, related collision search |
+| `0x8003acb4` | strict 100%, current-actor binder |
+| `0x8003ad90` | strict 100%, wrapped phase advance |
+| `0x8003adc4` | strict 100%, clamped phase advance |
+| `0x8003ae20` | strict 100%, phase crossing predicate |
+| `0x8003ae50` | WIP, 99.2% focused / 99.31746% strict |
+
+At `0x8003ae50`, the first visible difference is the masked collision angle
+at retail `0x8003b0fc..0x8003b10c`: the retail code computes the chosen
+`±1024` angle in `v0` and masks it into `s1` before an independent
+`mult s3,s3`; the probe computes the chosen angle in `a1` and schedules the
+mask after the multiply. Its source already masks before the sine/cosine
+uses. No independent source fact supports an instruction-order edit, and all
+six neighboring exact listings remain unchanged.
+
+The related KF1 player-collision code masks the whole conditional angle
+expression. A source-only KF2 probe using that spelling preserved the six
+exact controls but inserted an extra `move s1,a1` after the multiply and
+lowered focused similarity to 91.7%; it was discarded.
+
+The nearby two-function fixed-curve/damage unit remains one focused SAME
+(`0x80039c14`) and one WIP (`0x80039c94`, 62.1%). A temporary probe removing
+the `linked` pointer's zero initializer in the WIP shrank its frame from
+168 to 160 bytes and lowered the focused result to 58.2%; it was discarded.
+The retained source initializes the pointer and does not invent an actor
+record or a new global to account for the remaining register layout.
+
+## Current actor target/math strict controls
+
+After the shared actor `+0x72` field view was synchronized, eight focused
+GAME object rebuilds and direct strict per-unit comparisons covered 17 claims.
+Eleven are exact: `0x80015bc8`, `0x80015ce0`, `0x800396c4`,
+`0x800397a8`, `0x8003c000`, `0x8003c10c`, `0x8003c220`,
+`0x8003d084`, `0x8003d0e8`, `0x8003f610`, and `0x8003f860`.
+
+| GAME address | Direct strict verdict | Remaining evidence limit |
+| --- | ---: | --- |
+| `0x80015918` | WIP, 95.49419% | Discriminant and midpoint/time register assignment; 41-block trajectory CFG and calls agree. |
+| `0x80039108` | WIP, 89.06250% | Shared `word_1a.value` access is retained; the candidate scorer still has broad case-layout residue. |
+| `0x8003983c` | WIP, 99.19598% | Actor/current-chance register assignment with supported calls and referents. |
+| `0x80039b58` | WIP, 90.95744% | Actor base and actor-state field register lifetimes. |
+| `0x8003c3e0` | WIP, 99.64539% | Yaw-error fraction register assignment; three siblings remain exact. |
+| `0x8003f7ec` | WIP, 85.86207% | Sentinel setup and independent pointer-add operand order; neighboring scan/load bodies remain exact. |
+
+These are direct strict results, separate from the focused-listing percentages
+above. KF1 shapes and current retail control/referent checks supplied no new
+source fact for these residues, so this pass retained no actor source edit.
+
+For `0x80039108`, direct objdiff exposes 131 `R_MIPS_32` rows in the
+524-byte switch table on each side. Each table has ten distinct in-body
+targets, and canonicalizing target offsets by their first occurrence gives
+the same class at all 131 indices. The table's low byte-level similarity
+comes from changed body offsets, not a missing case label or a different
+case-to-body mapping. The source body remains 52 bytes shorter than retail
+(1,164 versus 1,216 bytes), so the text-layout cause is still open; no table
+row was rewritten to improve a score.

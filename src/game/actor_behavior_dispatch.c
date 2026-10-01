@@ -2,6 +2,7 @@
 #include <kf/game/actor.h>
 #include <kf/game/audio.h>
 #include <kf/game/callback.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
@@ -29,6 +30,8 @@ extern s32 func_8003bd40(s32 world_x, s32 world_z, s32 speed, s32 range,
 extern void func_8003bba0(KfActor *actor, s32 target_angle, s32 max_speed,
                           s32 acceleration);
 extern void actor_reset_target_and_reselect(void);
+extern void func_8003c220(s32 first, s32 reverse, s32 forward, s32 fast,
+                          s32 slow, s32 phase_step);
 
 RODATA(0x800120d8, 0x3c4)
 
@@ -106,6 +109,25 @@ void func_8003d184(void)
             actor_reset_target_and_reselect();
         }
         func_8003b9a4(actor_state.active_group->unknown_01[2] * 2, 10);
+        break;
+    case 3:
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_800397d8(target->unknown_01[0]);
+        }
+        actor_advance_animation_clamped(actor, target->unknown_08);
+        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
+            func_8003a614(0, target->word_0e.bytes.low,
+                           target->word_0e.bytes.high,
+                           target->word_10.bytes.fallback_offset,
+                           target->word_12.value, target->word_14.value,
+                           target->word_16.value,
+                           target->word_10.bytes.unknown_11);
+        }
+        if (actor->animation_phase >= 0xfff) {
+            actor_reset_target_and_reselect();
+        }
+        func_8003b9a4(target->word_0c.bytes.high, 10);
         break;
     case 4:
         if (actor->unknown_0f == 0) {
@@ -189,6 +211,239 @@ void func_8003d184(void)
             break;
         }
         break;
+    case 10: {
+        s32 random_value;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf1;
+            func_80039804(target->unknown_01[0]);
+            func_8003b5bc();
+        }
+        random_value = rand();
+        if (random_value < 2048) {
+            actor->unknown_50 += target->word_10.value;
+            if (actor->unknown_50 > target->word_0c.value) {
+                actor->unknown_50 = target->word_0c.value;
+            }
+        } else if (random_value < 4096) {
+            actor->unknown_50 -= target->word_10.value;
+            if (actor->unknown_50 < -(s32)target->word_0c.value) {
+                actor->unknown_50 = -target->word_0c.value;
+            }
+        }
+        random_value = rand();
+        if (random_value < 2048) {
+            actor->unknown_54 += target->word_10.value;
+            if (actor->unknown_54 > target->word_0c.value) {
+                actor->unknown_54 = target->word_0c.value;
+            }
+        } else if (random_value < 4096) {
+            actor->unknown_54 -= target->word_10.value;
+            if (actor->unknown_54 < -(s32)target->word_0c.value) {
+                actor->unknown_54 = -target->word_0c.value;
+            }
+        }
+        random_value = rand();
+        if (random_value < 2048) {
+            actor->unknown_52 += target->word_10.value;
+            if (actor->unknown_52 > target->word_0c.value) {
+                actor->unknown_52 = target->word_0c.value;
+            }
+        } else if (random_value < 4096) {
+            actor->unknown_52 -= target->word_10.value;
+            if (actor->unknown_52 < -(s32)target->word_0c.value) {
+                actor->unknown_52 = -target->word_0c.value;
+            }
+        }
+        func_8003b33c((SVECTOR *)&actor->unknown_50);
+        actor_advance_animation_wrapped(actor, target->unknown_08);
+        func_8003bba0(actor, vector_xz_to_angle(actor->unknown_50,
+                                                actor->unknown_54),
+                        target->word_0e.value,
+                        actor_state.active_group->unknown_01[3]);
+        break;
+    }
+    case 11: {
+        s32 collision;
+        s32 stage;
+        struct KfEulerAngles toward_player;
+        SVECTOR forward;
+        SVECTOR outer;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_80039804(target->unknown_01[0]);
+            func_8003b5bc();
+            actor->unknown_70 = 0;
+        }
+        stage = actor->unknown_70;
+        switch (stage) {
+        case 0:
+            actor_advance_animation_clamped(actor, target->unknown_08);
+            if (actor->animation_phase >= 0xfff) {
+                func_800154fc(
+                    player_state.camera_position.vx - actor->position.vx,
+                    player_state.camera_position.vy - actor->position.vy,
+                    player_state.camera_position.vz - actor->position.vz,
+                    &toward_player);
+                pitch_yaw_to_forward_vector(&toward_player,
+                                            &actor->tail_72.direction);
+                actor->unknown_70 = 1;
+            }
+            break;
+        case 1:
+            forward = actor->tail_72.direction;
+            outer = forward;
+            vector3s_scale_shift12(target->word_14.value, &forward);
+            vector3s_scale_shift12(target->word_18.value, &outer);
+            actor->unknown_50 = value_approach(actor->unknown_50,
+                                                forward.vx, outer.vx);
+            actor->unknown_52 = value_approach(actor->unknown_52,
+                                                forward.vy, outer.vy);
+            actor->unknown_54 = value_approach(actor->unknown_54,
+                                                forward.vz, outer.vz);
+            collision = func_8003b33c((SVECTOR *)&actor->unknown_50);
+            if (collision != 0) {
+                if (collision & 0x80) {
+                    func_800248a8(target->word_0e.value,
+                                   target->word_10.value,
+                                   target->word_12.value,
+                                   target->word_0c.bytes.high,
+                                   0, 0, 0, 0, 0, 0x1000, 10,
+                                   &actor->position);
+                }
+                actor->unknown_70 = 2;
+            }
+            actor->rotation.x = (actor->rotation.x + 256) & 0xfff;
+            break;
+        case 2:
+            actor->rotation.x = (actor->rotation.x + 256) & 0xfff;
+            if (actor->rotation.x < 256) {
+                actor->rotation.x = 0;
+                actor->unknown_70 = 3;
+            }
+            break;
+        case 3:
+            actor_advance_animation_clamped(actor, -target->unknown_08);
+            if (actor->animation_phase == 0) {
+                actor_reset_target_and_reselect();
+            }
+            break;
+        }
+        if (stage == 0 || stage == 2 || stage == 3) {
+            func_8003b33c((SVECTOR *)&actor->unknown_50);
+        }
+        func_8003bba0(actor, vector_xz_to_angle(actor->unknown_50,
+                                                actor->unknown_54),
+                        target->word_16.value,
+                        actor_state.active_group->unknown_01[3]);
+        break;
+    }
+    case 12:
+    case 16: {
+        s32 motion_flags;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf1;
+            actor->tail_72.angles.x = 0;
+            actor->tail_72.angles.y = 0;
+            actor->tail_72.angles.z = 0;
+            actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
+                func_8002b67c(actor->unknown_06,
+                    actor->unknown_24 + (actor->unknown_07[1] << 11),
+                    actor->unknown_22 + (actor->unknown_07[0] << 11),
+                    actor->unknown_1c, actor->unknown_1e);
+            func_80039804(target->unknown_01[0]);
+            func_8003b5bc();
+            motion_flags = 3;
+        } else {
+            motion_flags = func_8003bf74(
+                &actor->tail_72.angles, target->word_0c.value,
+                target->word_0e.value,
+                actor_state.active_group->unknown_01[2],
+                actor_state.active_group->unknown_01[3], interval & 1);
+            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+                motion_flags |= 1;
+            }
+            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+                motion_flags |= 2;
+            }
+            if (actor->position.vy <
+                actor->tail_72.motion.baseline + target->word_10.value) {
+                actor->unknown_52 -= target->word_12.bytes.unknown_12;
+            } else if (actor->position.vy >
+                       actor->tail_72.motion.baseline - target->word_10.value) {
+                actor->unknown_52 += target->word_12.bytes.unknown_12;
+            }
+        }
+        if (motion_flags & 1) {
+            actor->tail_72.angles.y = rand() >> 3;
+        }
+        if (motion_flags & 2) {
+            actor->tail_72.angles.x = (rand() >> 5) - 512;
+        }
+        if (actor->target_type == 16) {
+            func_8003c220(target->unknown_01[0], target->word_14.bytes[0],
+                           target->word_14.bytes[1], target->word_16.bytes.low,
+                           target->word_16.bytes.high, target->unknown_08);
+        } else {
+            actor_advance_animation_wrapped(actor, target->unknown_08);
+        }
+        break;
+    }
+    case 13:
+    case 17: {
+        s32 delta_x;
+        s32 delta_y;
+        s32 delta_z;
+        s32 distance;
+        struct KfEulerAngles opposite;
+
+        if (actor->unknown_0f == 0) {
+            actor->unknown_0f = 0xf0;
+            func_80039804(target->unknown_01[0]);
+            actor->unknown_70 = 0;
+        }
+        delta_x = player_state.camera_position.vx - actor->position.vx;
+        delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
+        delta_z = player_state.camera_position.vz - actor->position.vz;
+        distance = fixed_vector3_length(delta_x, delta_y, delta_z);
+        func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
+        if (actor->tail_72.angles.x >= 3585) {
+            actor->tail_72.angles.x = 3584;
+        } else if (actor->tail_72.angles.x <= 512) {
+            actor->tail_72.angles.x = 512;
+        }
+        if (distance >= target->word_16.value) {
+            actor->unknown_70 = 0;
+            actor->unknown_0f = 0xf1;
+        } else if (distance <= target->word_14.value) {
+            actor->unknown_70 = 1;
+            actor->unknown_0f = 0xf0;
+        }
+        if (actor->unknown_70 == 0) {
+            func_8003bf74(&actor->tail_72.angles, target->word_0c.value,
+                          target->word_0e.value,
+                          actor_state.active_group->unknown_01[2],
+                          actor_state.active_group->unknown_01[3], 17);
+        } else {
+            opposite.x = -512;
+            opposite.y = actor->tail_72.angles.y + 2048;
+            opposite.z = 0;
+            func_8003bf74(&opposite, target->word_0c.value,
+                          target->word_0e.value,
+                          actor_state.active_group->unknown_01[2],
+                          actor_state.active_group->unknown_01[3], 17);
+        }
+        if (actor->target_type == 17) {
+            func_8003c220(target->unknown_01[0], target->word_18.bytes.low,
+                           target->word_18.bytes.high, target->word_1a.bytes[0],
+                           target->word_1a.bytes[1], target->unknown_08);
+        } else {
+            actor_advance_animation_wrapped(actor, target->unknown_08);
+        }
+        break;
+    }
     case 14:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
@@ -562,7 +817,7 @@ void func_8003d184(void)
                 func_800248a8(target->word_0e.value, target->word_10.value,
                                target->word_12.value, target->word_0c.value,
                                target->word_14.value, target->word_16.value,
-                               target->word_18.value, target->unknown_1a,
+                               target->word_18.value, target->word_1a.value,
                                target->word_1c.value, 0x1000, 10, &actor->position);
             }
             actor_select_target_type_in_own_group(actor, 3);
@@ -608,7 +863,7 @@ void func_8003d184(void)
             func_800248a8(target->word_0e.value, target->word_10.value,
                            target->word_12.value, target->word_0c.value,
                            target->word_14.value, target->word_16.value,
-                           target->word_18.value, target->unknown_1a,
+                           target->word_18.value, target->word_1a.value,
                            target->word_1c.value, 0x1000, 10, &actor->position);
         }
         if (collision == 0 || (collision & 0x80)) {
@@ -630,7 +885,7 @@ void func_8003d184(void)
     case 240:
         func_8003b5bc();
         break;
-    /* Selectors 3, 5, 10–13, 16–17, and 25 have separate WIP paths. */
+    /* Selectors 5 and 25 still need separate paths. */
     default:
         if (actor->target_type >= 31 && actor->target_type != 240) {
             state_8017d118.active_table[17]();

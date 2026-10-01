@@ -1126,7 +1126,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
 | `8002665c` | Unclaimed WIP | 114 CFG blocks; zero withheld relocations; full weapon/effect semantics unresolved. |
-| `8002722c` | DIFF, 85.7% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
+| `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
 | `80027988` | SAME | Landing-sound helper control. |
@@ -1143,7 +1143,7 @@ two tables occupy one `RODATA(80011298, 0x64)` claim. Thirty-five direct
 `lui`/signed-low pairs were checked against raw GAME words: 34 target
 interior fields of the complete `player_state` object and one addresses
 `effect_state.magic_records`. A two-VA safe carve with `8002722c` and
-`800274ec` withholds zero relocations. Focused `kf try` reports **85.7%
+`800274ec` withholds zero relocations. Focused `kf try` reports **88.0%
 WIP** for the action selector and preserves the horizontal mover's **61.9%
 WIP** listing. The selector's 26-byte magic-row stride, unsigned MP cost,
 signed equipment restrictions, six preliminary cases, nineteen action

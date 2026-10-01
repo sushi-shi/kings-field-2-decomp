@@ -97,7 +97,9 @@ charge_gate:
         break;
     case 12:
         player_state.unknown_118.vx = -200;
-        goto action_six_two;
+        player_state.unknown_d1[1] = 5;
+        player_state.unknown_d1[2] = 2;
+        break;
     case 9:
         player_state.unknown_d1[1] = 6;
         player_state.unknown_d1[2] = 1;
@@ -115,7 +117,6 @@ charge_gate:
         player_state.unknown_d1[2] = 1;
         break;
     case 3:
-    action_six_two:
         player_state.unknown_d1[1] = 6;
         player_state.unknown_d1[2] = 2;
         break;

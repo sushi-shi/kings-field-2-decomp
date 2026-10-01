@@ -3,6 +3,7 @@
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/render_mask.h>
 
@@ -56,7 +57,7 @@ void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
     s32 first_z = (z - expanded) >> 11;
     s32 height = ((z + expanded) >> 11) - first_z;
     KfMapOccupancyCell *row = &bss_801c7540.map_cells[first_z][first_x];
-    s32 value = amount << 2;
+    u32 value = (u32)amount << 2;
 
     do {
         KfMapOccupancyCell *current_row = row;
@@ -83,7 +84,7 @@ void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
 ADDRESS(0x8002b7f8, 0x7c)
 s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
-    func_8002a988(x, y - ((u32)(height << 4) >> 5), z);
+    func_8002a988(x, y - (((u32)height << 4) >> 5), z);
     return func_8002aaa4(x, y, z, radius, height);
 }
 
@@ -389,7 +390,7 @@ ADDRESS(0x8002bfd4, 0x19c)
 void func_8002bfd4(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
-    /* The rasterizer reads the low half of each word-sized cell origin. */
+    /* The rasterizer uses 16-bit origins and truncates grid coordinates. */
     u16 origin_x = *(u16 *)&game_graphics_runtime.render_state.cell_origin_x;
     u16 origin_z = *(u16 *)&game_graphics_runtime.render_state.cell_origin_z;
     s32 x = ((u32)start->x >> 12) + origin_x;
@@ -397,7 +398,7 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
     s32 dx = (((u32)end->x >> 12) + origin_x) - x;
     s32 dz = (((u32)end->z >> 12) + origin_z) - z;
     s32 step_x;
-    s32 step_z = 1;
+    s32 step_z;
     s32 count;
     s32 error;
 
@@ -407,6 +408,7 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
     } else {
         step_x = 1;
     }
+    step_z = 1;
     if ((s16)dz < 0) {
         dz = -dz;
         step_z = -1;
@@ -418,7 +420,8 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
         do {
             if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
                 (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
+                game_graphics_runtime.render_grid
+                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
             }
             error -= dz;
             if ((s16)error <= 0) {
@@ -434,7 +437,8 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
         do {
             if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
                 (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
+                game_graphics_runtime.render_grid
+                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
             }
             error -= dx;
             if ((s16)error <= 0) {

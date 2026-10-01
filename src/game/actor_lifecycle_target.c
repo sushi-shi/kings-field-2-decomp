@@ -1,10 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/player.h>
 
 extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 
 ADDRESS(0x8003983c, 0x31c)
 void func_8003983c(void)
@@ -115,4 +115,23 @@ void func_8003983c(void)
         actor_set_home_position(actor);
         return;
     }
+}
+
+ADDRESS(0x80039b58, 0xbc)
+void func_80039b58(s32 group_index)
+{
+    KfActor *actor = actor_state.actors;
+    s16 remaining = KF_ACTOR_CAPACITY - 1;
+
+    do {
+        if (actor->slot_state != 0xff &&
+            actor->group_index == (u16)group_index) {
+            if (actor->lifecycle == 1) {
+                actor_select_target_type_in_own_group(actor, 3);
+            } else {
+                actor_set_lifecycle_and_home_position(actor);
+            }
+        }
+        actor++;
+    } while (--remaining != -1);
 }

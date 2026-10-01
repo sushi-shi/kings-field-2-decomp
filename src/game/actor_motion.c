@@ -96,17 +96,17 @@ s32 func_8003bd40(s32 world_x, s32 world_z, s32 speed, s32 range,
                   s16 reference_angle, s32 step, s32 mode, s32 target)
 {
     KfActor *actor = actor_state.current;
-    s32 dx = world_x - actor->position.vx;
-    s32 dz = world_z - actor->position.vz;
+    s32 dx = (s32)((u32)world_x - (u32)actor->position.vx);
+    s32 dz = (s32)((u32)world_z - (u32)actor->position.vz);
     s32 angle = vector_xz_to_angle(dx, dz);
 
     if (dx < 0) {
-        dx = -dx;
+        dx = (s32)(0u - (u32)dx);
     }
     if (dz < 0) {
-        dz = -dz;
+        dz = (s32)(0u - (u32)dz);
     }
-    if (reference_angle != -1 && dx + dz <= 600
+    if (reference_angle != -1 && (s32)((u32)dx + (u32)dz) <= 600
         && !angle_within_tolerance(angle, reference_angle, 0x320)) {
         return -1;
     }

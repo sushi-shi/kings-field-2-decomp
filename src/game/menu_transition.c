@@ -82,17 +82,18 @@ present:
         DrawSync(0);
         display_present_frame();
         level += step;
-        if ((u32)(level - 1) >= 119u) {
+        if (((u32)level - 1u) < 119u) {
+            buttons = PadRead(1);
+            if (state == -1) {
+                if (buttons == 0)
+                    state = -2;
+            } else if (buttons != 0) {
+                DrawSync(0);
+                return level;
+            }
+        } else {
             DrawSync(0);
             return state;
-        }
-        buttons = PadRead(1);
-        if (state == -1) {
-            if (buttons == 0)
-                state = -2;
-        } else if (buttons != 0) {
-            DrawSync(0);
-            return level;
         }
     }
 }

@@ -33,7 +33,7 @@ void resource_tmd_read_complete(u8 *data)
 }
 
 ADDRESS(0x80032040, 0x70)
-u8 map_cell_layer_mask(const VECTOR *position)
+u32 map_cell_layer_mask(const VECTOR *position)
 {
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
     s32 x;
@@ -49,7 +49,7 @@ u8 map_cell_layer_mask(const VECTOR *position)
 }
 
 ADDRESS(0x800320b0, 0xc4)
-u8 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
+u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
 {
     s32 span = radius * 2;
     u8 mask = 0;
@@ -112,8 +112,7 @@ void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
     u32 size = cd_archive_entry_size(archive_slot, entry);
     u8 *block;
 
-    /* The allocator's fixed arena boundary is evidenced; its source owner is unresolved. */
-    block = memory_arena_allocate_block((KfMemoryBlock *)0x8009b0a0, size,
+    block = memory_arena_allocate_block(KF_GAME_RESOURCE_ARENA_BASE, size,
         (u8 **)&game_graphics_runtime.asset_registry_entries[registry_index]);
     if (block != 0) {
         memory_block_set_kind(block, 3);

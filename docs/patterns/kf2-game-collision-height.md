@@ -260,6 +260,16 @@ angles 3072–4095, actually reading `0x80068c9c`–`0x8006949a`. Its base
 literal happens to fall within `collision_default_rows`; the dynamic reads
 do not, so it is not evidence to change that datum's owner.
 
+Fresh direct comparison keeps `0x8002b67c` WIP at 94.895836% (87.1%
+focused). Its five-argument kind/cell wrapper has the same 4/4 CFG blocks,
+single branch, occupancy-cell address, unsigned elevation loads, cache
+writes, and `0x8002aaa4` call. The first differences choose `$a1` instead
+of retail `$v0` for the elevation and omit a later cache-height reload and
+its HI16/LO16 pair after the preceding store. The shared C still references
+that cache field; no source-visible alias or intervening call supports
+forcing another memory read. Ten other functions in the focused
+seventeen-function collision unit remain exact.
+
 The placement helpers also retain their focused WIP verdicts:
 `0x80034f90` is 92.5% with equivalent 10-byte pattern writes but a
 different saved-register assignment; `0x80035194` is 58.8% with a 40-byte
@@ -365,6 +375,16 @@ the unsigned record opcode, sign-extends it, and rejects values above
 target blocks inside `0x8002aaa4`; 13 targets are distinct and 37 rows
 select the default block `0x8002b5c4`. Pointer rows remain candidate
 indirect edges despite this raw block-head check.
+The focused compiled and retail `.rodata` sections both contain exactly 49
+`R_MIPS_32` pointer rows, and their complete row-by-row target-equivalence
+grouping is identical (13 groups, no differing rows). Their raw pointer
+values still differ because the 0xb60-byte retail body and current compiled
+body place the case blocks at different offsets; the low `.rodata` fuzzy
+score is not evidence of a missing case or changed table grouping.
+The current focused C body is 0xaf0 bytes, 0x70 shorter than retail; its
+visible CFG is 162 blocks and 97 branches against 174 and 99 in retail.
+The pointer-group result narrows the remaining work to the case bodies,
+control joins, and instruction schedule rather than the opcode-to-case map.
 The opcode `0x11` row at `0x80011350` points to `0x8002acb0`. That entry
 clears `$s7` at `0x8002acb4`, then branches on `$s7` at `0x8002acb8`;
 the branch is false along this table entry. No row in this bounded switch
@@ -395,3 +415,12 @@ units. Overall edge-check remains open on three unrelated `.rodata` addends
 and incomplete known-reference ownership. The raw-backed dispatcher tables
 above do not resolve those unrelated edge gaps, and no cache boundary was
 guessed from the overlapping views.
+
+The later `0x8002c670` source now selects its center through the typed
+`map_cells[row][column]` grid. It uses the enclosing cell's byte
+representation only for the runtime-selected layer lighting byte; a layout
+check ties the lighting offset to `KfMapOccupancyCell`. The focused listing
+improved from 75.8% to 76.4% and remains WIP. Its remaining first lighting
+referent differs in address formation (`bss_801c7540+4` in retail versus a
+cell-base add and byte load at +4 in the probe); no relocation identity was
+changed to conceal that difference.

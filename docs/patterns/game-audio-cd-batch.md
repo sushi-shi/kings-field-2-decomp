@@ -650,6 +650,13 @@ table (`0x800139e0/e4`), sequence buffer (`0x80013a28/2c`), initial VAB
 buffer (`0x80013a90/94`), and final slot-5/slot-6 overrides
 (`0x80013ab4/b8`, `0x80013ac4/c8`). The intermediate VAB slot values are
 transient; these pairs do not establish object extents or source owners.
+The slot-6 override `0x80164a68` is exactly one `0x1000` chunk before the
+loop seed `0x80165a68`. The five loop pointers retained for slots 0..4 end
+at `0x8016aa68`, before the curated `actor_state` base `0x8016b600`;
+slots 5 and 6 are replaced immediately. The slot-5 override `0x80194e30`
+equals the end of curated `game_graphics_runtime`. These boundaries suggest
+separate stream workspaces, but do not prove their allocations or complete
+extents, so the source keeps the unbound addresses.
 
 The startup copy at `0x80015d58` uses signed-low address construction for two
 unowned destinations: `lui 0x801e; addiu -29304` resolves to `0x801d8d88`,
@@ -1089,3 +1096,138 @@ made in this read-only caller pass.
 | `0x8002360c` | Exact | Three direct calls to the eight-control dispatcher. |
 | `0x80036ed4` | WIP, unclaimed | Script-record byte loads and one direct dispatcher call. |
 | `0x8004678c` | WIP, unclaimed | Two direct dispatcher calls; command switch and callback unresolved. |
+
+### Five GAME startup and transition claims
+
+The previously unclaimed functions `0x800139c4`, `0x80015d58`, `0x80015fd4`,
+`0x80016260`, and `0x80016820` now have C `ADDRESS` claims. Each passed the
+required image-specific address, disassembly/CFG, xref, call, string, and
+match-state inspection before source. None is a vendored Psy-Q body; the
+startup function calls Psy-Q sound APIs but owns GAME audio state initialization.
+The seven-phase controller owns the reviewed 0x1c-byte switch-table range at
+`0x80011058` and the initialized 32-entry no-op callback table at `0x80063e00`.
+
+| GAME VA | Focused verdict | First material residue |
+| --- | --- | --- |
+| `0x800139c4` | WIP, 64.0% listing similarity | The SDK sequence-table base is now a typed 0x158-byte BSS claim with matching HI16/LO16 relocations. Sequence and VAB stream-buffer workspaces remain unbound and compile as literal `lui/ori`; their later register effects remain WIP. |
+| `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and three copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
+| `0x80015fd4` | WIP, 96.1% listing similarity | The TMD slot pointer at `0x8012da68` has no proved owner; retail uses a relocation and signed-low address construction. State writes, CD/controller loop, and indirect callback align. |
+| `0x80016260` | WIP, 71.6% listing similarity | Five unsigned byte controls and three signed byte offsets, early returns, critical-section wait, state updates, and direct calls are modeled. The shared state-update path precedes the active wait path with a backward jump, and the conflict wait precedes the critical-section wait, matching retail's block order. Sentinel-value registers and some later branches remain WIP. |
+| `0x80016820` | WIP, 98.4% listing similarity | Seven-phase switch, CD loads, actor/map cleanup, callback-table swap, sequence fade, and VAB queue are modeled. The switch has one range check, phase-specific buffer lifetimes and in-place cursor advances match retail, and the fade timer is a signed halfword. The remaining differences are the unbound fixed-address workspaces at `0x8019e138` and `0x8012da68`. |
+
+All new units compile under focused `kf try` with the pinned probe. The 15
+previously exact audio neighbors stayed `SAME` in the focused audio unit build;
+`cd_request_service_vab` remains its established WIP. No strict 100% result
+was claimed, and no bank or README write was made.
+
+The current `0x80016820` object also has the retail's seven switch-table
+offsets `0x6c`, `0xdc`, `0x1bc`, `0x20c`, `0x408`, `0x544`, and `0x660`, with
+seven ordered `R_MIPS_32 .text` relocations. Its 32-entry initialized default
+callback table has identical bytes and ordered function-pointer relocations.
+The startup unit's seven archive literals match the retail `.rodata` prefix
+byte for byte through `0x53`; retail's claimed `0x58`-byte range ends with five
+zero bytes beyond the compiled literal extent. Their source or section-padding
+mechanism remains unresolved.
+
+GAME's `SsSetTableSize(audio_sequence_table, 2, 1)` now uses a candidate
+`DATA(0x8009a6a0, 0x158)` owner. Psy-Q 3.0 defines `SS_SEQ_TABSIZ` as 172,
+so the SDK-required 2-by-1 workspace is 344 bytes; OPEN and END use the same
+0x158-byte identity. The focused source object emits a 344-byte COMMON symbol;
+the refreshed delinker carves a 0x158-byte BSS section from the candidate
+identity, so that target section size is not independent proof of retail
+allocation extent. The ordered HI16/LO16 pair at GAME `0x800139e0/e4` now
+matches. No other curated GAME identity overlaps `0x8009a6a0..0x8009a7f8`;
+whether the original allocation reserved more than the SDK-required extent
+remains open. The 15 exact audio siblings still have identical focused listings.
+
+### Related resource-runtime audit
+
+GAME `0x80032274` updates a range of VAB slots from a byte flag stream. Its
+two proven callers in `0x8003247c` pass five O32 arguments; the sole proven
+callee is `audio_queue_vab_stream`. The current C uses the validated
+`audio_state+0x30` slot array, an `s16` stream state, and the retail's three
+state paths: queue an absent flagged slot, mark a flagged state 2 as 1, or
+mark an unflagged state 1 as 2. The focused listing is WIP at 43.6% similarity.
+The first divergence is a 56-byte compiled frame with an extra saved index
+register versus retail's 48-byte frame and per-iteration slot-index shift;
+later branch layout differs. Moving the slot load into both flag branches,
+as in the exact TMD range sibling, worsened the listing and was reverted.
+No referent, call, width, or control-flow evidence supports a replacement
+source claim yet. The four exact neighbors in `game.resource_runtime` remained
+`SAME` throughout focused probes.
+
+The adjacent `0x800320b0` map-radius and `0x80032174` map-visibility helpers
+have validated references to `game_graphics_runtime`. Their direct callers,
+constants, and signed bounds match the current source. Declaration-order and
+early-return probes changed register selection or branch layout without
+establishing an original source fact, so both were reverted. Their focused
+listings remain WIP at 26.9% and 37.9% similarity, respectively.
+
+Four proven `0x8003247c` calls consume `map_cell_layer_mask`'s return register
+directly, without a caller-side byte mask. The exact callee itself returns zero
+or a zero-extended byte load, so its value range did not establish the source
+ABI width. Both map-mask declarations now return `u32`; the exact callee and
+three other exact resource-runtime neighbors remain `SAME` after that shared
+type correction. The radius helper's callers also consume the full register;
+its source still bounds the OR result to a byte.
+
+The `0x80016260` identity now distinguishes five unsigned byte controls from
+three signed byte offsets. Its map-object caller casts the offsets to `s8`,
+and retail sign-extends the first offset before comparing it with 127. The
+source already used those types; the focused listing remains WIP at 71.6%.
+The exact `0x8002360c` player caller has three direct calls at `0x80023698`,
+`0x80023714`, and `0x800237e8`. Changing its stale all-`s32` declaration to
+the shared five-`u8`/three-`s8` resource API leaves all ten functions in
+`game.player_core_run` `SAME`; the transition callee also retains its 71.6%
+focused listing. This establishes a consistent source declaration without
+claiming a different call-site schedule.
+
+The partial VAB transfer service at `0x800144b8` retains 11/11 CFG blocks,
+5/5 branches, the same known successor order, and 4/4 return-frontier edges
+in a flow-aware focused comparison. Its first control difference is retail's
+`bne v1,v0` against the probe's `bne v1,s3`: retail keeps state value 1 in
+`s3`, while the probe keeps retry sentinel -1 there. Spelling the retry as a
+direct `while ((result = SsVabTransBodyPartly(...)) == -1)` loop emitted an
+identical object and was reverted. The function remains WIP at 91.8% focused
+listing similarity, with no source-backed constant or ABI correction pending.
+
+### Ten-function resource and audio follow-up
+
+Each selected GAME function was checked against its retail CFG, caller and
+callee references, strings, source claim, and focused pinned listing. The
+percentages below are focused listing similarities unless labelled strict;
+none is an exact closure without `100%`.
+
+| GAME VA | Verdict | First unresolved evidence |
+| --- | --- | --- |
+| `0x800139c4` | WIP, 64.0% | Four unowned sequence/VAB workspace addresses emit literal `lui/ori` rather than the retail symbol relocations; 15 audio neighbors remain `SAME`. |
+| `0x80015fd4` | WIP, 96.1% | The TMD destination `0x8012da68` lacks a complete object owner; its literal address pair differs while the transition loop and callback agree. |
+| `0x80016260` | WIP, 71.6% | The five control and three signed-offset values agree; saved stack-byte registers and sentinel branch layout differ. The exact player caller retains all ten `SAME` listings with the shared typed declaration. |
+| `0x80016820` | WIP, 98.4% | The seven switch offsets and callback-table entries agree; only the unowned `0x8019e138` and `0x8012da68` workspace constructors and dependent scheduling differ. |
+| `0x80032174` | WIP, 37.9%; 93.6% recorded strict | Both view-cell referents and five CFG blocks agree; the probe uses a different comparison/result register and adds a final move. |
+| `0x800321d8` | WIP, 95.8%; 98.4359% recorded strict | The arena boundary `0x8009b0a0` emits literal `lui/ori` instead of retail carry-adjusted `lui/addiu`; calls and three CFG blocks agree. |
+| `0x80032274` | WIP, 43.6%; 90.933334% recorded strict | The probe retains an extra saved register and increments the slot address; retail recomputes the eight-byte slot offset per iteration. The audio-state referent and call agree. |
+| `0x80032364` | **Exact, 100% strict** | The TMD range sibling remains `SAME` with its resource calls and registry referent. |
+| `0x8003ae50` | WIP, 99.2%; 99.31746% recorded strict | The 58-block collision response has all direct calls and six exact siblings; obstacle-angle mask timing and temporary register differ. |
+| `0x8003c3e0` | WIP, 95.4%; 99.64539% recorded strict | The 23-block group-position solver keeps its calls and three exact siblings; yaw-error and shifted-numerator registers are exchanged. |
+
+In the adjacent radius-mask helper `0x800320b0`, raw GAME instructions
+complete the Z start coordinate, then the X start coordinate, and only then
+form the Z row offset and row pointer at `0x800320fc..0x80032108`. Moving the
+source's X calculation below the row pointer raised the focused fuzzy listing
+from 26.9% to 40.4%, but contradicted that instruction order. The source-order
+probe was reverted; the current 26.9% focused WIP retains the X calculation
+before row-pointer formation. All four exact siblings in
+`game.resource_runtime` remain `SAME`. The previous 73.95918% strict radius
+score is a stale checkpoint, not a new closure claim.
+For `map_cell_visible` at `0x80032174`, direct early returns preserve the
+boolean result but add a jump absent from retail and lower the focused listing
+from 37.9% to 26.7%; that probe was reverted. Its shared-tail source and
+93.6% stale strict verdict remain WIP.
+
+The older `0x80016f4c` stream-service WIP rows are historical. The recorded
+strict match state now gives `cd_request_service_stream` 100%, and a fresh
+focused `game.cd_memory` rebuild lists it `SAME` alongside 55 other functions.
+The strict report flags itself stale, so this pass did not create a new banking
+claim. `memory_arena_allocate_block` is the one remaining focused DIFF in that
+57-function unit, at 96.0% listing similarity.

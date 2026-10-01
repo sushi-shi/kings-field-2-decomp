@@ -7,8 +7,8 @@ address span is a survey boundary; it is not evidence of a single original TU.
 
 | GAME address | Retail role and decisive evidence | Verdict |
 | --- | --- | --- |
-| `0x8001876c` | top menu controller; enters display mode, draws windows, dispatches to item/card flows | unclaimed; dispatch state and indirect paths WIP |
-| `0x800189f0` | formats player values into a six-digit glyph row, then draws it | unclaimed; arithmetic source expression and player-state inputs WIP |
+| `0x8001876c` | top menu controller; enters display mode, draws windows, dispatches to item/card flows | WIP, **96.36646%** recorded strict; 34-block source claim, saved-register and return reload residue |
+| `0x800189f0` | formats player values into a six-digit glyph row, then draws it | **exact**, 216/216 bytes in later focused comparison |
 | `0x80018ac8` | item menu controller; list setup, item-model loading, frame and input calls | unclaimed; selection record and state flow WIP |
 | `0x80018d08` | filters a 24-byte glyph-row table using a caller byte mask and writes two output streams | unclaimed; table at `0x80064c30` has no reviewed extent/identity |
 | `0x80018dec` | related 24-byte glyph-row filter with player-dependent exclusions | **exact in later follow-up**; player-state equipped IDs establish the exclusion owner |
@@ -74,6 +74,8 @@ that address immediately before the direct `firstfile` call; the string's
 source owner is still unresolved. Its exact bytes do not occur in the supplied
 Psy-Q 3.0 library archives or card sample sources, which narrows but does not
 prove ownership.
+The identity inventory now records only the seven-byte candidate at that
+address; no module claims its DATA definition or padding beyond the NUL.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
 Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
@@ -164,3 +166,86 @@ same 137 relocation count, but the `0x800228c8` compiled reader places the
 card-prefix `.data` pair before the two slot-seed pairs; retail orders the
 slot seeds first. This is a reference-order difference, not evidence for a
 new data identity.
+
+## Focused ten-function recheck (2026-10-01)
+
+The ten GAME addresses below were rechecked against their retail block
+disassembly, incoming and outgoing references, strings, source claims, and
+focused rebuilt unit listings. The strict percentages are the prior checkpoint
+reported by `kf sema match`; that report currently marks itself stale, so the
+fresh focused listing is the current comparison evidence. All ten remain WIP.
+
+| Address | Prior strict | Fresh focused | First remaining difference |
+| --- | ---: | ---: | --- |
+| `0x8001b554` | 98.478264% | 84.6% | Probe result remains in `v0` rather than retail's `a0`; subsequent branches shift by two instructions. |
+| `0x8001bf68` | 97.123890% | 87.7% | Probe status and dialog constants occupy different registers; exact `0x8001c12c` stays unchanged. |
+| `0x8001f8b8` | 94.364640% | 84.8% | Saved argument registers and the input-release exit block differ after otherwise matching glyph and input calls. |
+| `0x8001fc94` | 98.449640% | 98.6% | Row-width register and card-column test scheduling differ; the lower-panel zero initialization swaps with a neighboring load. |
+| `0x8002083c` | 99.658820% | 73.1% | Retail reserves 64 more stack bytes than the four live MATRIX locals explain; both exact siblings stay unchanged. |
+| `0x80021c8c` | 99.956985% | 97.2% | Only the eight-byte frame and saved-`ra` slot delta remains; exact `0x80021e00` stays unchanged. |
+| `0x800226ec` | 93.605040% | 88.6% | Signed slot-seed loads and the first `memset` setup/delay slot differ. |
+| `0x800228c8` | 85.156250% | 67.6% | Slot-seed initialization and signed title-byte loads precede two offset-driven digit loops in retail. |
+| `0x80022b74` | 93.666664% | 84.2% | Retail saves the slot in another register and reserves an 80-byte rather than 72-byte frame; exact `memory_card_format` stays unchanged. |
+| `0x80022ca0` | 95.896774% | 96.7% | Slot-seed loads, zero-fill setup, and saved-register selection differ before the same card-write call path. |
+
+The browser's nested probe-guard spelling compiled identically to its existing
+compound guard. An explicit title-byte offset in `0x800228c8` also retained
+the same header fields and digit values but compiled farther from retail
+(67.6% to 66.1% focused). A signed-byte view of the decoded halfword left the
+67.6% listing unchanged. All three probes were reverted. The unowned adjacent
+slot-seed bytes at `0x8006d6a4/5` and unexplained frame space remain WIP, not
+grounds for fake data owners or stack locals. No repository tests or full build
+were run for this focused recheck.
+
+A fourth probe initialized the first slot buffer from the C literal `" "`.
+It emitted retail-style `lb` instructions, but its relocations targeted new
+unit `.rodata` instead of the two reviewed `0x8006d6a4/5` data identities. It
+also shifted the existing `bu00:` literal and made exact `memory_card_format`
+non-exact. The literal probe was reverted; matching opcode shape alone does
+not establish the original data owner.
+
+A signed `s8` view of the already-typed card title in `0x800228c8` did not
+recover retail's `lb` copies: the probe still emitted `lbu`, introduced an
+extra saved register, and dropped from 67.6% to 62.5% focused. Moving the
+card-column predicate into the row loop in `0x8001fc94` dropped its focused
+listing from 98.6% to 92.4% and removed the retail-sized frame. Both probes
+were reverted; `memory_card_format` remained an exact listing control.
+
+Moving the card writer's `present = 0` initialization to just after its
+directory scan left `0x80022ca0` at 96.7% focused and the exact format sibling
+`SAME`. Retail initializes the value after the scan, but the probe compiler
+still scheduled the zero before the slot-seed loads; the source-order probe
+was reverted because it established no new data or control fact.
+
+The KF1 sibling defines its `memory_card_root_path` as a load-image `char`
+array in `src/game/save_system.c`, consistent with the KF2 `bu00:*` bytes at
+`0x8006d6a8` being writable card data. It does not determine KF2's original
+TU boundary or the separate `0x8006d6a4/5` seed extent.
+
+## Current menu/card ten-function recheck
+
+Focused rebuilds and direct per-unit objdiff give **2/10 strict exact** in
+this disjoint controller/card set. Each WIP retains its source claim and was
+left unchanged where raw control flow, calls, and referents provide no
+independent correction.
+
+| GAME address | Current strict verdict | First supported residue |
+| --- | ---: | --- |
+| `0x8001a898` | **exact, 516/516 bytes** | Complete item/equipment controller. |
+| `0x8001a4f0` | WIP, 99.74359% | Initial 74-record clearing loop uses a different index and constant register; 22/22 CFG blocks agree. |
+| `0x8001b554` | WIP, 98.478264% | Probe result stays in `v0` rather than retail's `a0`. |
+| `0x8001bf68` | WIP, 97.12389% | Probe-status and dialog-constant registers differ. |
+| `0x8001d3b4` | **exact, 672/672 bytes** | Complete item-sale controller. |
+| `0x8002083c` | WIP, 99.65882% | Four live matrix locals explain the calls, but retail reserves 64 more stack bytes. |
+| `0x800226ec` | WIP, 93.60504% | Signed slot-seed loads and first `memset` scheduling differ. |
+| `0x800228c8` | WIP, 85.15625% | Signed title-byte loads and two digit-loop schedules differ. |
+| `0x80022b74` | WIP, 93.666664% | Retail keeps the slot in another saved register and uses an 80-byte frame. |
+| `0x80022ca0` | WIP, 95.896774% | Slot-seed and zero-fill setup order differs. |
+
+The `0x8001bf68` neighbor `0x8001c12c`, the two-option draw and heading
+helpers beside `0x8002083c`, and `memory_card_format` beside the four card
+WIPs remain strict exact controls. The card-directory unit's 304-byte `.data`
+and six-byte `.rodata` claims are also 100%. The wildcard identity at
+`0x8006d6a8` remains a seven-byte candidate without a DATA owner; the
+directory focused listing did not change when it entered the inventory.
+No linked build, repository tests, or banking were run for this recheck.

@@ -152,15 +152,33 @@ source = "src/game/callback_default_noop.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.resource_startup"
+image = "GAME.EXE"
+source = "src/game/resource_startup.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.world_translate"
 image = "GAME.EXE"
 source = "src/game/world_translate.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.resource_transition_request"
+image = "GAME.EXE"
+source = "src/game/resource_transition_request.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.resource_transition_phase"
 image = "GAME.EXE"
 source = "src/game/resource_transition_phase.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.resource_transition_step"
+image = "GAME.EXE"
+source = "src/game/resource_transition_step.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -668,6 +686,12 @@ source = "src/game/render_map.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.tmd_prepared_subdivide"
+image = "GAME.EXE"
+source = "src/game/tmd_prepared_subdivide.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.render_map_cell"
 image = "GAME.EXE"
 source = "src/game/render_map_cell.c"
@@ -731,6 +755,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.resource_runtime"
 image = "GAME.EXE"
 source = "src/game/resource_runtime.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.render_resource_dispatch"
+image = "GAME.EXE"
+source = "src/game/render_resource_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -860,6 +890,12 @@ source = "src/game/frame_step_cd_service.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.map_object_action_update"
+image = "GAME.EXE"
+source = "src/game/map_object_action_update.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.actor_pool_find"
 image = "GAME.EXE"
 source = "src/game/actor_pool_find.c"
@@ -905,6 +941,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.actor_set_target"
 image = "GAME.EXE"
 source = "src/game/actor_set_target.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_candidate_score"
+image = "GAME.EXE"
+source = "src/game/actor_candidate_score.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -992,9 +1034,21 @@ source = "src/game/actor_group_position.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.actor_group_effects"
+image = "GAME.EXE"
+source = "src/game/actor_group_effects.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.actor_spatial_sound"
 image = "GAME.EXE"
 source = "src/game/actor_spatial_sound.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.actor_behavior_dispatch"
+image = "GAME.EXE"
+source = "src/game/actor_behavior_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -1019,6 +1073,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.effect_update"
 image = "GAME.EXE"
 source = "src/game/effect_update.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.effect_constructor"
+image = "GAME.EXE"
+source = "src/game/effect_constructor.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -1070,6 +1130,12 @@ source = "src/game/effect_scatter.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.effect_update_dispatch"
+image = "GAME.EXE"
+source = "src/game/effect_update_dispatch.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "game.effect_reset"
 image = "GAME.EXE"
 source = "src/game/effect_reset.c"
@@ -1109,6 +1175,12 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_map_object_spawn"
 image = "GAME.EXE"
 source = "src/game/event_map_object_spawn.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.event_command_dispatch"
+image = "GAME.EXE"
+source = "src/game/event_command_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

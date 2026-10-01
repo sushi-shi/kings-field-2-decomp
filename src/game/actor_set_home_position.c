@@ -1,13 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/game/actor.h>
+#include <kf/game/collision_cache.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/player.h>
 
-extern s32 func_8002b67c(s32 layer, s32 x, s32 z, s32 radius, s32 height);
-
-enum {
-    ACTOR_HOME_CELL_SHIFT = 11,
-    ACTOR_COLLISION_CACHE_HEIGHT_OFFSET = 0x1180c
-};
+enum { ACTOR_HOME_CELL_SHIFT = 11 };
 
 ADDRESS(0x80038d04, 0xc0)
 void actor_set_home_position(KfActor *actor)
@@ -25,8 +22,7 @@ void actor_set_home_position(KfActor *actor)
         actor->position.vy = 0;
     }
     if (actor->unknown_28 & 0x400) {
-        actor->position.vy = *(s32 *)((u8 *)&bss_801c7540
-                                       + ACTOR_COLLISION_CACHE_HEIGHT_OFFSET);
+        actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
     if (!(actor->unknown_28 & 0x10)) {
         actor->position.vy += actor->unknown_26;

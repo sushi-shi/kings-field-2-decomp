@@ -12,7 +12,7 @@ respective campaigns and were not edited here.
 | --- | --- | --- |
 | `0x8002083c` | menu item-model preview; RotMatrix, light/color/rotation/translation matrices, TMD draw | unclaimed; exact stack matrix layout and owner WIP |
 | `0x80020990` | draws one or two numeric menu headings and counters with sprite, text and number helpers | **exact, 448/448 bytes** |
-| `0x80022300` | routes selection sounds 13 and 16–18 through audio/sequence and VSync calls | WIP, **89.972980%**; 7 retail versus 6 compiled CFG blocks |
+| `0x80022300` | routes selection sounds 13 and 16–18 through audio/sequence and VSync calls | **strict exact, 148/148 bytes** in the current focused unit |
 | `0x80022394` | reads pad and marks active input | already exact |
 | `0x800223cc` | waits through an idle-input release period | already exact |
 | `0x80022438` | waits until pad input is released | already exact |
@@ -47,11 +47,11 @@ guess was rejected by the delinker's `decoded-target-mismatch` check and was
 corrected before the 100% result. Two reviewed relocation pairs at
 `0x80020a5c` and `0x80020a84` complete the exact source comparison.
 
-`0x80022300` still has a structural CFG difference: retail branches away
-from cue 16 and uses a separate internal jump to the common sound block,
-while the current source compiles to one direct taken branch. An explicit
-label was tested and compiled identically to the current humane C, so the
-source retains the simpler shared behavior. The asset/animation helpers and
+Fresh focused `game.menu_sound_cue` compilation and direct one-unit objdiff
+now find `0x80022300` strict exact, 148/148 code bytes. Its adjacent
+`input_read_mark_active` and `0x800223cc` helpers are also strict exact
+(56/56 and 108/108 bytes). The older 89.972980% and CFG comparison above
+were historical and are superseded by these current objects. The asset/animation helpers and
 the card payload transforms are classified from confirmed calls and raw
 field copies; their unsourced record layouts are not inferred from proximity.
 

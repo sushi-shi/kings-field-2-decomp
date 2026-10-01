@@ -4,20 +4,20 @@ This batch covers exactly ten previously non-exact or unclaimed GAME functions
 connected by the root menu, its sprite and number renderers, and the display
 transition. Each received matcher address, block disassembly/CFG, incoming
 xref, callee, string, and match-state queries. None has supported vendored
-attribution. All percentages below are from the strict GAME report.
+attribution. Current percentages below are from direct focused objdiff.
 
 | GAME address | Retail evidence and final verdict |
 | --- | --- |
 | `0x8001876c` | Root controller dispatches seven menu choices through a pointer table and returns a result to `0x80029014`. **WIP, 96.36646%**; 34/34 known CFG blocks and 14/14 branches, but saved-register choice and result reload schedule differ. Its 28/28-byte switch table matches exactly. |
-| `0x80020d20` | Menu sprite quad, paired with `0x80020ef8`. **WIP, 99.44068%**; retail loads the position before the sprite width and subtracts the margin in a different instruction order. |
-| `0x80020ef8` | Sprite quad with fixed CLUT. **WIP, 99.39449%**; the same width/position arithmetic ordering remains. |
+| `0x80020d20` | Menu sprite quad, paired with `0x80020ef8`. **Strict exact, 472/472 bytes**. |
+| `0x80020ef8` | Sprite quad with fixed CLUT. **Strict exact, 436/436 bytes**. |
 | `0x800210ac` | Draws a positioned glyph string. **WIP, 99.66904%**; 8/8 CFG blocks, but the retail frame is 56 bytes versus 48 in C, with a glyph UV register difference. |
-| `0x80021510` | Draws fixed-width numeric glyphs from two atlas columns. **WIP, 98.61957%**; 7/7 CFG blocks, with entry and atlas-arithmetic instruction order differences. |
+| `0x80021510` | Draws fixed-width numeric glyphs from two atlas columns. **Strict exact, 736/736 bytes**. |
 | `0x80021c8c` | Enters the menu display mode. **WIP, 99.956985%**; retail allocates 32 stack bytes and C allocates 24. The adjacent display-exit function remains exact. |
-| `0x80022058` | Formats decimal glyphs and blank-fill output. **WIP, 95.74% in the last strict report; 78.5% current focused listing**. Initializing the fill index after style adjustment reproduces retail's repeated zeroing at the style branches; the remaining eight-byte frame and one branch delay-slot difference are unresolved. |
-| `0x80022300` | Menu sound-cue dispatch. **WIP, 89.97298%**; retail has seven CFG blocks versus six compiled. A natural switch experiment worsened the result and was reverted. |
-| `0x800349bc` | Draws four textured fade quads, reporting pad input or fade completion. **WIP, 92.34296%**; 14/14 CFG blocks, but retail uses a 72-byte frame versus 64 compiled and differs at the return join. |
-| `0x80034e10` | Archive TIM/VRAM transition. **WIP, 99.114586%**; 8/8 CFG blocks, with two scratch-register arithmetic differences. |
+| `0x80022058` | Formats decimal glyphs and blank-fill output. **WIP, 97.39% strict; 78.5% focused listing**. The remaining eight-byte frame and return delay-slot difference have no proved source owner. |
+| `0x80022300` | Menu sound-cue dispatch. **Strict exact, 148/148 bytes**; cues 13 and 16–18 follow the retail branch and call paths. |
+| `0x800349bc` | Draws four textured fade quads, reporting pad input or fade completion. **WIP, 92.34296% strict**; the boundary branch now has retail's successor map, while state placement and quad setup remain different. |
+| `0x80034e10` | Archive TIM/VRAM transition. **Strict exact, 384/384 bytes**. |
 
 The new `0x8001876c` source is contiguous with exact `0x800189f0` in
 `game.menu_location_number`. The seven linked case targets at
@@ -63,3 +63,12 @@ zero-index instructions on the style branches and chose a different fill
 cursor. The retained KF2 `do` loop remains the better-evidenced source.
 A controlled GCC 2.6.0 compile of the retained C also omitted the eight-byte
 frame, so that compiler switch alone does not explain the remaining residue.
+
+Fresh focused rebuilds and direct per-unit objdiff comparisons establish
+**5/10 strict exact** in this ten-function set. The five WIPs are `0x1876c`
+(96.36646%), `0x210ac` (99.66904%), `0x21c8c` (99.956985%), `0x22058`
+(97.39%), and `0x349bc` (92.34296%). The numeric glyph drawer, both sprite
+quad helpers, the sound-cue dispatcher, and the TIM/VRAM transition are exact.
+Adjacent `0x189f0`, `0x21e00`, and `tim_upload_images` remain strict exact
+controls. The earlier percentage and CFG statements for these exact functions
+are historical; no tests, linked build, or banking were run in this recheck.

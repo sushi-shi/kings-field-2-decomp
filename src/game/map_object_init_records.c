@@ -1,6 +1,7 @@
 #include <kf/lib/address.h>
 #include <kf/game/callback.h>
 #include <kf/game/cd.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
@@ -15,7 +16,6 @@ enum {
 extern KfMapCellPattern map_object_cell_patterns
     [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS];
 
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 mode);
 extern void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
                           const KfMapCellPattern *patterns, s32 variant_index,
                           s32 layer_flag);

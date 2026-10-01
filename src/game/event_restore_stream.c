@@ -10,7 +10,7 @@ RODATA(0x80012bf8, 0x40)
 ADDRESS(0x800489ac, 0x378)
 void func_800489ac(s32 save_slot)
 {
-    u8 *saved[10];
+    u8 *saved[KF_EVENT_SAVED_SLOT_COUNT];
     u8 *stream;
     s32 index;
     KfActor *actors;
@@ -40,8 +40,8 @@ void func_800489ac(s32 save_slot)
             break;
         }
         candidate = groups[group_index].targets[0].pointer;
-        candidate->fallback_offset = *stream++;
-        candidate->marker_state = *stream++;
+        candidate->word_10.bytes.fallback_offset = *stream++;
+        candidate->word_12.bytes.marker_state = *stream++;
     }
 
     object = map_object_state.objects;

@@ -20,6 +20,8 @@ s32 func_8002a988(s32 x, s32 y, s32 z);
 /* The cache's complete layout still overlaps the provisional equipment view. */
 #define KF_COLLISION_CACHE_LOWER_BOUND \
     (*(s32 *)((u8 *)&bss_801c7540 + 0x11818))
+#define KF_COLLISION_CACHE_UPPER_BOUND \
+    (*(s32 *)((u8 *)&bss_801c7540 + 0x1181c))
 #define KF_COLLISION_CACHE_FLAGS \
     (*(u32 *)((u8 *)&bss_801c7540 + 0x11820))
 #define KF_COLLISION_CACHE_ACTOR_INDEX \

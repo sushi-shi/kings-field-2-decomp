@@ -512,15 +512,15 @@ The listed percentages are strict objdiff scores, not `--loose` scores.
 
 | GAME VA | Verdict | Evidence and first unresolved difference |
 | --- | --- | --- |
-| 0x800158b4 | WIP, 98.00000% | The nine-halfword interpolation has exact loads, widths, arithmetic, and 3/3 CFG blocks. Pointer/index temporary assignment and the two independent pointer increments are ordered differently. An explicit-increment source experiment changed retail `lhu`/extension selection and was reverted; two adjacent math functions remain exact. |
-| 0x80015918 | WIP, 95.49419% | The trajectory solver keeps 41/41 CFG blocks, 24 branches, `SquareRoot0`, signed divisions, and exact adjacent 0x15bc8/15ce0. Ordering its mode-zero branch like retail improved the focused listing from 76.3% to 85.2%; strict score moved from 95.75581% to 95.49419%. The first remaining mismatch is the discriminant result register, followed by midpoint/time register assignment. The independently evidenced branch structure was retained. |
-| 0x8003a318 | WIP, 73.59162% | The 16-argument radial actor-damage caller has its unsigned attenuation correction and matching direct calls, but retail uses a 200-byte frame and 26 CFG blocks versus the probe's 192-byte frame and 25 blocks. Exact neighbor 0x3a778 remains untouched. |
+| 0x800158b4 | **Exact, 100% strict** | Separate source, target, and destination pointers with source-before-target evaluation emit the retail nine-halfword load and increment schedule. The later [trajectory campaign](kf2-game-player-actor-trajectory.md) records strict 100/100 closure; a fresh focused build keeps this and the two preceding leaves `SAME`. |
+| 0x80015918 | WIP, 95.49419% | The trajectory solver keeps 41/41 CFG blocks, 24 branches, `SquareRoot0`, signed divisions, and exact adjacent 0x15bc8/15ce0. Ordering its mode-zero branch like retail improved the focused listing from 76.3% to 85.2%; strict score moved from 95.75581% to 95.49419%. The first remaining mismatch is the discriminant result register, followed by midpoint/time register assignment. An explicit in-place discriminant accumulation changed earlier multiplication/save scheduling and reduced the focused listing to 67.2%, so it was reverted. The independently evidenced branch structure was retained. |
+| 0x8003a318 | WIP, 99.86911% strict | The 16-argument radial actor-damage caller now has the supported unsigned attenuation, matching calls, and 26/26 CFG blocks. The recorded strict report leaves two incoming stack-argument temporary registers exchanged; the [near-exact audit](kf2-game-root-near-exact-verdicts.md) found no supported signature, call, CFG, or referent correction. Exact neighbor 0x3a778 remains untouched. |
 | 0x8003a614 | WIP, 96.91011% | Actor-to-player damage gate has 6/6 blocks and matching distance, angle, and damage calls. Retail forms some camera fields from separate absolute loads; the probe reuses a saved player-state base and assigns scale temporaries to different saved registers. |
-| 0x8003a9f4 | WIP, 89.04444% | Actor proximity scan has matching call/field set but 13 retail versus 12 compiled blocks; the alternate-position arm and stack-argument lifetime differ. Four following animation helpers stay exact. |
-| 0x8003ab5c | WIP, 88.53488% | Sibling proximity scan omits the target-type exclusion as retail does, but has 12 retail versus 11 compiled blocks and the same alternate-position/register-lifetime residue. |
+| 0x8003a9f4 | Exact, 100% | Branch-local distance queries now reproduce the shared retail call setup; 360/360 strict text bytes match, as detailed in `game-actor-collision-ten.md`. The older WIP rows above are historical. |
+| 0x8003ab5c | Exact, 100% | The companion scan omits the target-type exclusion and matches 344/344 strict text bytes; see `game-actor-collision-ten.md`. The older WIP rows above are historical. |
 | 0x8003bd40 | WIP, 86.53226% | Actor horizontal steering has 9/9 blocks and five branches; first differences are independent actor-coordinate load/subtract order and angle/limit saved-register assignments. Six adjacent motion helpers remain exact. |
 | 0x8003f7ec | WIP, 85.86207% | Group-target pointer fixup has 9/9 blocks and correct 40×16 offset walk. The two listing residues are sentinel constant setup order and `addu` operand order; reversing the C pointer addition did not change the object and was reverted. Adjacent scan/load functions remain exact. |
-| 0x8003fb94 | WIP, 87.791046% | Fifteen-argument effect precursor has 11/11 CFG blocks, six branches, and the expected effect/actor calls; the first difference is prologue saves and argument/mask scheduling. Its nine contiguous update helpers remain exact. |
+| 0x8003fb94 | Exact, 100% | Updating `kind` in place after extracting option bits matches the retail prologue and mask schedule; direct objdiff confirms 536/536 text bytes and matching ordered relocations. The older WIP row above is historical. |
 | 0x80041e94 | **Exact, 100% direct objdiff** | A fresh isolated pinned compile matches all 664 function bytes; the contiguous 0x4212c sibling also remains exact. The whole 1,028-byte `.text` and all 22 ordered relocations match the safe retail module. The earlier 92.650604% report was stale. |
 
 No data or relocation owner was changed for this batch. The source changes
@@ -634,7 +634,7 @@ TMD width correction were retained; other speculative probes were reverted.
 | 0x8002ddb4 | WIP, 97.34716% | The TMD primitive renderer has matching packet/referent semantics, but retail has 44 blocks and 28 branches versus 42 and 26 in the probe; two depth/loop guards remain structurally different. Eight sibling TMD functions remain exact. |
 | 0x8002e4dc | WIP, 96.587975% | The sibling renderer has the same 44/42 block and 28/26 branch gap, with distinct stack and register lifetimes around its packet loop. The shared TMD exact siblings remain intact. |
 | 0x8002ebe0 | WIP, 95.27945% | Retail retains `blend_mode << 5` as a full word and stores it with `sw`; changing the C local from a prematurely truncated halfword to `u32` follows that evidence. The focused listing improves, but strict score falls slightly while one CFG block/branch gap remains. The truthful full-width source is retained. |
-| 0x80036464 | WIP, 95.32258% | Map-object effect spawn has 12/12 CFG blocks, three branches, and matching field/call semantics. The first remaining differences assign object ID and height offset to opposite saved registers and schedule one store/call delay differently. Its unit also has an independent switch-table `.rodata` addend issue. |
+| 0x80036464 | WIP, 95.32258% | Map-object effect spawn has 12/12 CFG blocks, three branches, and matching field/call semantics. The first remaining differences assign object ID and height offset to opposite saved registers and schedule one store/call delay differently. Its 17 switch-table R_MIPS_32 rows have identical case grouping but a uniform +4 addend shift caused by the preceding 0x80036190 body compiling 560 bytes versus retail's 556; this is an upstream size residue, not an independent table-owner issue. |
 | 0x800366fc | WIP, 37.336365% | Map-object scatter has 37 retail versus 38 probe blocks and 25 branches. The first substantial mismatch uses the object action byte through different base pointers, followed by case-arm joins; the unit's switch-table addend also differs. The exact 0x368b4 sibling remains untouched. |
 
 The strict target after the TMD correction relinked 145/145 GAME units. The
@@ -1041,6 +1041,14 @@ still merged them and lowered the focused listing to 53.6%, so it was
 discarded. The original call separation is source/compiler attribution still
 to resolve; no artificial side effects were added.
 
+For masked effect type 0, retail reaches the common return with `$v0=1`;
+types 5..7 reach it with `$v0=4`. Those values are leftover switch-comparison
+immediates, not explicit return assignments. No proved caller reaches those
+types in this probe: the known type-0 constructor paths for kinds 101 and
+0x66, and type-0x10 paths for kinds 15 and 17, do not call it. A temporary C
+trial assigning those values explicitly introduced a new jump table/RODATA
+and lowered focused similarity from 57.5% to 44.2%; it was discarded.
+
 Current 29-function effect/event checkpoint verdicts (strict means direct
 objdiff or previously reviewed strict report, with current focused controls
 where noted):
@@ -1076,3 +1084,308 @@ where noted):
 | 0x800484e4 | Exact, reviewed strict event-state unit; current focused SAME. |
 | 0x80048554 | Exact, direct 1112/1112 text and 660/660 rodata; current focused SAME. |
 | 0x800489ac | WIP, focused 95.1%; actor/group sentinel-loop register assignments. |
+
+The source-backed first pass of the GAME 0x80040308 constructor now handles
+additional switch arms while remaining WIP. Kinds 2 and 23 each store three
+unsigned halfwords at effect-record +0x40, +0x42, and +0x44 from their
+trailing O32 arguments. Other kinds access +0x40 and +0x41 as separate bytes,
+so these writes are retained through the provisional `unknown_3c` tail view.
+The complete variant-specific field family and record-tail semantics are not
+yet proved; the three halfwords do not justify a shared named field layout.
+The table entry for kind 12 points to 0x80040d20. That arm copies the caller's
+SVECTOR, sets all three scales to 30000, writes four `u16` tail values at
++0x40/+0x42/+0x44/+0x46, and takes the update count from the next trailing
+argument. This source-backed arm compiles, but the constructor remains focused
+9.2% WIP; the lower score was retained because the added reads and writes are
+directly decoded. A fresh comparison of all 123 raw table words against C
+case labels shows 55 entries route to the shared free-slot sentinel. Of the
+68 remaining kinds, 66 now have source arms. Kind 6 still depends on the
+unowned DAT_8006d704/0x801d9628 copy buffer, and kind 102 depends on the
+unowned 0x8009a5a8 timer. The low aggregate score cannot be attributed to
+missing case coverage alone; arm ordering, source structure, and referents
+still require first-divergence review.
+The adjacent actor-group source calls this kind with an angle pointer, four
+halfword-sized values, and an update-count value in that same order; that
+caller is itself WIP and is supporting context rather than ABI proof alone.
+
+Draft PR #3 five-function continuation, GAME focused verdicts (none are
+strict exact):
+
+| Address | Verdict | Remaining evidence gap |
+| --- | --- | --- |
+| 0x8003c614 | 22.7% WIP | Branch-local script argument reads now use retail halfword/word widths; frame and local lifetime still diverge. |
+| 0x8003d184 | 3.6% WIP | Target-state 1 continuation now has its active-group probe, timer refresh, and animation call; the large indirect switch remains incomplete. |
+| 0x80040308 | 11.4% WIP | Only kinds 6 and 102 lack source arms; their buffers are unowned, and the broader source/code shape still diverges. |
+| 0x80042650 | 8.0% focused WIP | Additional decoded motion, collision, scale, healing, and spawn arms are source-claimed; most of the 123-entry switch and two indirect dispatches remain unresolved. |
+| 0x8004678c | 16.4% WIP | Command 0x55 now has the direct actor/map-object search path; other commands and the terminal callback value chain remain unresolved. |
+
+For 0x8003c614, retail's argument-slot cursor starts at sp+200 (the saved
+position mode) and advances to sp+212 only for modes -1/-2. The mode -1 arm
+reads the three following caller slots with `lhu`; mode -2 reads full words.
+The default position mode calls 0x8003c000 without eagerly loading a
+variadic value. Kind 0x17 and the actor-spawn kinds load their pointer from
+the next caller slot only when reached, while kind 0x7b reads the following
+word at cursor+8. Moving the C reads into these branches corrects their
+meaning and compiles at 22.7% focused WIP, versus the earlier 23.0% probe.
+Reading each mode -1 value as `u16` from its 32-bit O32 slot restores the
+three retail `lhu` opcodes at the corresponding absolute caller slots. The
+focused score stays 22.7% WIP because the compiler still uses a 184-byte
+frame versus retail's 192-byte frame and retains different local lifetimes;
+neither residue justifies a synthetic local.
+
+In 0x8003d184, target-state 1 at 0x8003d694 first sets phase 0xf1 and
+selects the target byte when the actor's phase flag is clear. Otherwise it
+calls the direct 0x8003bcd0 helper with the signed actor halfword at +0x64,
+target halfwords +0x0c/+0x0e, active-group bytes +3/+4, and constant 5.
+A nonzero result, or a zero result followed by `(rand() >> 5)` below the
+target's +0x10 byte, refreshes the signed +0x64 halfword from
+`rand() >> 3`. The arm then calls `actor_advance_animation_wrapped` with
+target +0x08. These raw-backed additions compile and retain 3.6% focused
+WIP; most other target states remain unmodeled.
+
+Event command 0x55 enters 0x80047204. It selects side 1 or 2 from the
+player halfword at +0x128, then calls 0x8003a778 with the event position,
+rotation halfwords +2/+0, bounds `(8000, 500, 500)`, a distance output, and
+-1. A returned actor whose byte +3 matches the side loads archive slot 6
+and entry `actor+1+240`. Otherwise retail scans all 396 map objects in
+0x44-byte steps, requiring object ID 0xe2 and extra byte +0x40 equal to the
+side. Its direct 0x80036ad8 probe uses position X/Z shifted by 11, tail
+bytes +0x38/+0x39, and 0x8000; a nonzero result loads slot 6 and entry
+`tail halfword +0x3a + 510`. Either path sets `event_state.state_word=1`.
+These typed, raw-backed calls raise focused 0x8004678c similarity from
+14.8% to 16.4% WIP. Focused CFG grows from 52 to 64 compiled blocks against
+108 retail blocks, and from 26 to 33 compiled branches against 51 retail
+branches. The final `active_table[2]` call remains indirect.
+
+Commands 0x5a..0x5e load five separate address-derived eight-byte lists at
+0x800679a0, a8, b0, b8, and c0. Their raw bytes are respectively
+`07 08 09 0a ff 00 00 00`, `0e 0f 00 0d ff 00 00 00`,
+`10 01 02 03 ff 00 00 00`, `04 11 05 06 ff 00 00 00`, and
+`12 13 0b 0c ff ff ff ff`. The shared loop stops at 0xff and indexes the
+26-byte magic-record stride. The distinct final padding and absent source
+definition keep all five DATA owners unresolved; no source arm or overlapping
+global was claimed from these lists.
+
+Command 0x59 in the GAME 0x8004678c switch points to 0x80046e14. It scans the
+396 `map_object_state.objects` records at their proved 0x44-byte stride,
+accepts object IDs 82/83 and 90..96, and uses exact `func_80015698` to keep
+the closest nonnegative distance below 999999. If a record is found, retail
+copies its X/Z position, weights its Y by four times the difference from
+`audio_state.listener_position.vy`, and calls `audio_play_spatial_range`
+with sound 0x8009, volume 0x6e, reach 25000, attenuation 29000, and note 0.
+The typed C arm raises focused similarity to 14.8% WIP. The overall CFG still
+has 108 retail versus 52 compiled blocks and 51 versus 26 branches because
+other command arms remain unsourced. The terminal active-table callback stays
+indirect.
+
+The constructor's kind-114 table entry points to 0x80041458. It stores the
+original Y word at record +0x44, probes two randomized X/Z coordinates with
+the existing 0x8002b7f8 collision helper (radius and height 10), restores
+original X/Z on a nonzero collision result, then applies the decoded fixed
+position, rotation, and scale values. This word use overlaps the kind-12
+halfword view of +0x44/+0x46 and confirms that the tail needs variant-specific
+typing. The new arm compiles; focused similarity was 9.0% WIP, retained for
+the raw-backed behavior despite a lower interim score. Spelling the initial
+direction-present branch first then matches retail's `beqz`-to-zero path and
+raises the focused result to 9.1%; the first remaining divergence is still the
+72-byte retail versus 48-byte compiled frame and saved-register assignment.
+Retail keeps a single trailing-O32-argument pointer live from the constructor
+entry (`s1 = sp+88`) across switch arms. Replacing per-arm `va_start` calls
+with one function-wide `va_list`, balanced on both returns, is also the
+natural source model for this one call's variadic arguments. A temporary
+source-only probe raised focused similarity from 9.1% to 10.1%; the retained
+source reproduces that result. The compiled frame grows to 56 bytes and now
+saves six `s` registers, versus retail's 72 bytes and six `s` registers; its
+first remaining register assignment still differs.
+The word store is `lw v1,24(s0)` at 0x80041474 followed by `sw v1,68(s0)`
+at 0x80041484. Offset 68 is `unknown_3c[8]` in the 72-byte shared record;
+the store ends exactly at its boundary. A shared union field-path change would
+touch existing exact consumers of `unknown_3c`, so this remains a localized
+variant view until a complete tail family is recovered.
+
+The constructor entry's decoded stores initialize direction Z/Y/X,
+scale Z/Y/X, and rotation Z/Y/X in that order. Retail clears the record's
+halfword +0x12 before the magic-type cooldown decision, then clears +0x10
+during the direction-length calculation; the earlier source had cleared
++0x10 twice and omitted +0x12. Its type gate also reloads the stored record
+byte. The corrected C uses those fields and a single cooldown assignment.
+The 123-entry kind table sends 55 kinds to the free-slot sentinel, so the
+source now represents that with a switch `default`; kinds 6 and 102 remain
+explicit WIP arms because their source-owned buffers are unproved. Focused
+similarity rises from 10.1% to 11.1% while preserving the provisional
+indirect table edge. Retail branches to distinct stores of 1 or 0 at record
++0x0d after comparing the signed squared direction length against 810001;
+spelling those two outcomes explicitly raises the retained focused result
+to 11.4% WIP.
+
+GAME update kind 16 enters 0x80045680 in the bounded kind table. When the
+effect's signed update count is four, it adds 60 to
+`player_state.vitals.current_hp` and caps the result at `maximum_hp`. Every
+visit passes `rsin(updates_remaining << 8)` as arg5 to the existing
+`func_8002bf38(0xe6, 0xc8, 0xa0, 0x59d8, value)` helper. These widths,
+constants, and direct call are decoded in retail. The focused source raises
+0x80042650 from 1.3% to 2.6% WIP; the rest of the large dispatcher remains
+unresolved.
+
+Kind 22 enters 0x800458e0. Retail uses `lhu` at record rotation Y +0x36,
+adds 10, then calls `func_80042298(100, 0x80000000, -300)`; a nonzero result
+is sent to `func_8003feb0` before marking the effect slot free. The matching
+source uses an unsigned halfword read and raises focused similarity to 2.8%
+WIP. The table's indirect dispatch remains indirect.
+
+Kind 109 enters 0x80045b6c. Retail reads byte +0x40 of the current record,
+multiplies it by the proved 72-byte effect-record stride, and adds the
+`effect_state.records[0].position` base at 0x8019bd3c. It passes that typed
+target position to `func_80041b14` with the seven decoded arguments
+`(500, 15, -1, 0, 0, -1)`. This arm compiles and raises the focused update
+dispatcher to 3.3% WIP without creating a separate interior global.
+
+Kind 20 enters 0x80043cb8 and calls `func_80041cd0(0x4000, 0x100, 0x20,
+0x400, 0x8000)` through the shared 0x80044f30 tail, then adds 64 to the
+halfword at record +0x26 (`rotation.vz`). The raw table pointer, direct call,
+stack fifth argument, and halfword store support this C arm. Focused
+comparison remains 3.3% WIP because most of the 0x3670-byte body is still
+unreconstructed; no exact control regressed.
+
+Kinds 1 and 28 enter 0x80043374 and 0x8004336c, selecting radii 500 and
+250 before a shared arm. The byte at record +0x40 is its phase: phase 2
+increments signed halfword +0x10 by 256 and frees the slot at 4096; phase 1
+first adds 13 to direction Y. The arm adds 200 to rotation X, probes
+`func_80042298(radius, radius * 2, 250)`, and on a nonzero result reports
+the collision. Phase 1 then advances to phase 2 with the decoded +0x09,
++0x0c, and +0x10 values; other nonzero collisions call `func_80042424`,
+enter phase 1, and reset direction Z/X/Y to 0/0/-100. The continuing path
+calls `func_80041e0c` on the record position with `(0x4000, 0x4000, 500)`.
+These direct edges and stores compile at 3.2% focused WIP versus the prior
+3.3%; the small aggregate decline does not override the retail-backed arm.
+
+Kind 14 enters 0x80045700. At update count 12 it clears the signed player
+halfword at +0x54. It builds a stack VECTOR from two `rand` calls (X is
+`rand() >> 5` minus 512, Y is `rand() >> 8` plus 200, Z is 0x400) and a zero
+SVECTOR, then calls the proved constructor with type 0, kind 101 and the five
+O32 payload words `(700, -30, 10, 14, -10)`. Retail immediately writes bytes
+3 and 14 at the returned record's +0x0a and +0x08, then calls
+`func_8002bf38(160, 180, 220, 18000, rsin(updates_remaining << 7))`.
+The bounded arm compiles and raises the focused dispatcher verdict from 3.2%
+to 5.1% WIP. Kind 19 enters 0x800457c4. At count 12 it adds 150 to the
+player's current HP, caps at maximum HP, and calls
+`player_cap_status_components(7)`; it then spawns three kind-101 records
+with the same random position and zero direction pattern, but render ID 18,
+and calls `func_8002bf38(240, 240, 160, 18000,
+rsin(updates_remaining << 7))`. The count loop, five constructor payload
+words, returned-record byte writes, and direct call are decoded in retail.
+The focused dispatcher result rises to 6.9% WIP. The remaining kinds and
+both indirect switches are still open.
+
+Kind 116 enters 0x80042f20. Retail forms a midpoint by adding signed
+half-distance from each direction halfword to the current position, then
+advances the record position by the full signed direction. It calls the
+directly identified `func_8002b7f8` at the midpoint and, only if clear, at
+the advanced endpoint with radius 5 and height 10. A nonzero result from
+either probe frees the slot, after which retail reloads the possibly changed
+record type and calls the constructor for kind 0x2d with the advanced
+position and payload 0x1a4. The new C emits the observed `lhu; sll 16; sra
+17` midpoint pattern and both direct calls in the focused listing. The
+whole-function fuzzy result moves from 6.9% to 6.6% WIP because switch
+layout and most other arms remain incomplete; the decoded source is retained.
+
+Kinds 11 and 54 share entry 0x80043af8. They pass the signed halfword at
+record +0x40 to `func_80041cd0(0x3800, value, 0x80, 0x400, 0x8000)`, then
+build a random SVECTOR in retail X/Z/Y store order from three `rand` calls.
+The arm constructs kind 101 at the current position with payload
+`(0xc00, -128, 15, 18, 10)` and adds 64 to rotation Z at the shared tail
+0x80044f38. Focused compilation raises the full dispatcher to 7.6% WIP;
+its switch tables and omitted arms remain the first large divergences.
+
+Kinds 26 and 27 share entry 0x80043460. Retail writes effect type 0x21,
+adds 100 to rotation Z, and calls `func_8003ff18` with the current position,
+zero start, signed scale X, 0x8000, 0x400, and 0x1000. It then writes type
+0x24 and branches on the signed byte at record +0x40: zero probes
+`func_80042298(100, 200, 0)` and clears all three direction halfwords on
+collision; one subtracts 512 from scale Z and frees the slot when the signed
+result is nonpositive. Other byte values leave it active. This direct arm
+compiles at the same 7.6% aggregate focused WIP score; the instruction
+pattern and call order are retained from retail evidence.
+
+Kinds 25, 34, and 35 enter a shared collision arm at 0x80042b98 or
+0x80042b90. Kind 25 probes `func_80042298(250, 100, -30)`; 34/35 use the
+same call with a zero third argument. On nonzero collision, low four result
+bits free the slot, while a zero +0x40 phase byte is set to one and reports
+the collision once through `func_8003feb0`. No collision clears that byte.
+Every path calls `func_80041e0c(&position, 0x2000, 0x2000, 500)` at the
+shared tail 0x80043450. This direct arm compiles; the aggregate focused
+result moves from 7.6% to 7.4% WIP as the still-incomplete switch layout
+changes.
+
+Kinds 118 and 119 enter 0x80043bd4 and 0x80043bdc, selecting constructor
+kind 0x33 or 0x34 before a shared collision check. Retail probes
+`func_80042298(140, 0, -200)` and, on a nonzero result, calls the kind
+selector with type `record->type | 3`, current position and a null direction,
+then frees the original record. Their source compiles at 7.4% aggregate WIP;
+the indirect outer dispatch is still provisional.
+
+Kinds 51 and 52 enter 0x80043b98 and 0x80043bb0, respectively. Both call
+`func_80041cd0` with multiplier 0x1000, argument four 0x800 and final
+0x8000; kind 51 passes limit/increment 0x400/0x80, while kind 52 passes
+0x800/0x100. Kind 40 enters 0x800430d4 and probes
+`func_80042298(100, 200, 0)`. A collision reports its result and frees the
+slot; otherwise it calls `func_80041e0c(&position, 0x2000, 0x2000, 500)`.
+All three arms have decoded table entries and direct call targets. The
+focused dispatcher comparison remains WIP at 7.8%; the retail 224-byte
+frame and much of its 123-entry switch are still absent from this source.
+
+Kind 42 enters 0x80042bfc. Retail reads the signed phase byte at record
++0x40; zero calls `func_80041cd0(0x3800, 0x1f8, 0x46, 0x800, 0x8000)`,
+while a nonzero byte decrements in place. The direct table entry and byte
+width are decoded. Adding that branch lowers the aggregate focused score
+from 7.8% to 7.4% WIP as the incomplete outer switch changes layout; the
+source-backed behavior is retained.
+
+Kind 45 enters 0x80042f08 and calls that same scale helper with
+`(0x4000, (s16)record_tail_40, 0x46, 0x800, 0x8000)`. Retail uses `lh`
+for the +0x40 argument; the tail remains a provisional variant-specific
+view. The focused dispatcher still compiles at 7.4% WIP.
+
+Kind 115 enters 0x80042c30. Its direct aim call uses eight decoded O32
+arguments `(0x258, 0x28, 0x24, 0xb4, 0x168, 0x1000, 0x104, 0x800)`.
+When that call returns -1 or the signed update count is below 2, retail
+calls the effect-position helper, spawns three kind-0x2a effects at the
+current position with null direction and trailing values 0, 1, and 2,
+plays spatial sound 0x18, and frees the original slot. The other path
+calls `func_80041e0c(&position, 0x2000, 0x2000, 500)`. These are decoded
+direct edges, with no indirect target inferred. The new source compiles
+at 8.2% focused WIP; most outer-switch arms remain absent.
+Kind 113 enters 0x80042d14. Retail probes `func_80042298(180, 360, 0)`;
+a nonzero result or signed update count below 2 takes three kind-0x2a
+constructor calls with trailing values 0/1/2, plays spatial sound 0x17,
+then frees the original slot. Otherwise it calls
+`func_80041e0c(&position, 0x2000, 0x2000, 500)`. It does not call the
+position helper used by kind 115. This decoded arm compiles at 8.1% focused
+WIP, a small aggregate decline from 8.2% while the outer switch is
+incomplete.
+
+Kind 117 enters 0x80043008 and advances all three position components by
+their signed direction halfwords. Retail probes actors at that position
+with Y raised by 5000, radius 100, and height 10000 through
+`func_8003a9f4`. Its nonnegative result indexes the 0x7c-byte actor pool;
+the base `0x8016b62c` is `actor_state.actors[0].position`, so the
+constructor receives that actor position with trailing 0x4ec. Both paths
+then call `func_80041e0c` on the elevated local position with
+`(0x2000, 0x7fff, 10000)`. No new global or indirect target is inferred.
+Focused compilation is 8.0% WIP after this arm; the complete actor-pool
+referent is source-backed despite aggregate score movement.
+
+The raw 123-word kind table has 55 entries that jump straight to the common
+return and 68 active entries; the current C names 38 of those 68 active
+kinds. The remaining 30 active entries are still WIP, regardless of the
+aggregate fuzzy score.
+
+A fresh focused constructor comparison keeps GAME 0x80040308 at 11.4% WIP.
+Its first divergence is the prologue: retail reserves 72 stack bytes and
+sets the variadic cursor at sp+88 after calling `effect_pool_find_free`,
+while the current source reserves 56 bytes and sets its cursor at sp+76
+before that call. The following optional 16-byte position copy uses the
+same load/store widths and order, albeit different saved registers. The
+missing kind-6 and kind-102 storage owners prevent treating the frame
+residue as an attributable compiler problem; no frame-padding source was
+added.

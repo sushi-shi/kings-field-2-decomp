@@ -129,3 +129,19 @@ s32 func_800368b4(KfMapObject *object, s32 marker)
         return 0;
     }
 }
+
+ADDRESS(0x80036944, 0x74)
+void func_80036944(u8 marker)
+{
+    KfMapObject *object = map_object_state.objects;
+    u16 remaining;
+
+    if (marker == 0xff) {
+        return;
+    }
+    remaining = KF_MAP_OBJECT_CAPACITY - 1;
+    do {
+        func_800368b4(object, marker);
+        object++;
+    } while (remaining-- != 0);
+}

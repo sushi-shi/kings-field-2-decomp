@@ -12,12 +12,12 @@ The address span is a survey boundary, not a claim of original TU ownership.
 | `0x800192ac` | clamp leaf called by `0x80018f8c` and `0x80019240` | strict exact, 100% |
 | `0x800192dc` | related clamp leaf with the same callers | strict exact, 100% |
 | `0x8001930c` | menu code selects archive 6 entry, uploads TIM, emits textured quads, waits for pad input, frees buffer | Source claimed; focused WIP at 80.2% listing similarity, with aligned calls, referents, and CFG |
-| `0x80019834` | filters list records, runs input/dialog loop, redraws through `0x8001fc94` | WIP, unclaimed; 688-byte stack record and list output layout |
+| `0x80019834` | filters list records, runs input/dialog loop, redraws through `0x8001fc94` | **strict exact, 100%** in the current two-function unit |
 | `0x800199d0` | exact 26-byte selection-record filter used by three list controllers | strict exact, 100% |
-| `0x80019ac4` | list controller calls row builder and three selection branches | WIP, unclaimed; `0x80064910` record/table identity unresolved |
+| `0x80019ac4` | list controller copies the reviewed 200-byte `menu_equipment_labels_64910` table, then calls row builder and three selection branches | **strict exact, 100%** in the current focused unit |
 | `0x80019ce4` | builds ten 20-byte glyph rows from the two source tables | **exact in later follow-up**; selection bytes belong to typed player state |
-| `0x80019ed4` | menu selection controller with direct calls and indirect dispatch | WIP, unclaimed; dispatch value chain and state layout unresolved |
-| `0x8001a2f4` | list controller calls exact `0x800199d0` row selector | WIP, unclaimed; copied-row and controller record ownership |
+| `0x80019ed4` | menu selection controller with direct calls and indirect dispatch | **strict exact, 100%** in the current focused unit |
+| `0x8001a2f4` | list controller calls exact `0x800199d0` row selector | **strict exact, 100%** in the current focused unit |
 
 The sole proven caller of `0x8001930c` is `0x80018ac8`, which passes a
 zero-extended selected byte. The callee reads `a0`, subtracts 67, and masks
@@ -37,6 +37,18 @@ initialized glyph tables, but also reads a cluster of player-state selection
 bytes near `0x80198567`. The adjacent `0x80018dec` selector was later matched
 exactly using typed equipped item IDs; the later menu list pass made
 `0x80019ce4` strict exact as well. All
-four exacts in this batch
-were preserved; no new source function reached strict 100%. No surveyed
-function has verified SDK/vendor attribution. Repository tests were not run.
+four exact controls in the original survey were preserved at that checkpoint.
+No surveyed function has verified SDK/vendor attribution. Repository tests
+were not run.
+
+Fresh focused rebuilds and direct one-unit objdiff comparisons find **9/10
+strict exact** in this survey. The `0x80019834`/`0x800199d0` unit is 656/656
+code bytes at 100%; `0x80019ac4` is 544/544 code bytes and 200/200 owned
+data bytes, `0x80019ed4` is 1,056/1,056,
+and `0x8001a2f4` is 508/508. The three `0x80019240`–`0x800192dc` clamp
+functions and `0x80019ce4` also retain 100% strict scores. Only the TIM menu
+preview at `0x8001930c` remains WIP at 80.2% focused: its 47/47 blocks,
+27/27 branches, calls, and known successors agree, while the first arithmetic
+residue reassociates the archive-index `+480` and retains the image pointer
+in a different saved register. No source edit or linked build was needed for
+this verification.

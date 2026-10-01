@@ -899,13 +899,15 @@ case reachability remain candidate evidence; no source body is claimed.
 
 The current `80027f78` focused diff starts after the two successful world
 probes. Both retail and C request the same fixed X/Z length and use the same
-collision-cache referent, but retail retains a single reaction-vector base in
-`s0` for both component loads and stores; this C probe rematerializes the Z
-field's global address. That also swaps the threshold/vector saved registers
-and shifts the common return tail by one block. A typed containing-reaction
-pointer probe lowered similarity to 75.3% and enlarged the frame, so it was
-discarded. This is an unresolved source/codegen residue, not evidence for an
-overlapping collision-cache global or a different call target.
+collision-cache referent. Retail routes the exhausted-length path through a
+short return block after the scaling loop; an explicit C label now gives the
+same 27/27 CFG blocks, 14/14 branches, and 4/4 return-frontier edges, raising
+similarity to **80.5% WIP**. Retail retains one reaction-vector base in `s0`
+for both component loads and stores, while this compiler rematerializes the
+Z field's global address and swaps the threshold/vector saved registers. A
+typed containing-reaction pointer probe lowered similarity to 75.3% and
+enlarged the frame, so it was discarded. The remaining mismatch is not
+evidence for an overlapping collision-cache global or a different call target.
 
 In `800274ec`, retail stores two signed halfword deltas at stack `+40/+44`
 before `vector_xz_to_angle`, then overwrites the same slots with the
@@ -1086,9 +1088,10 @@ KF1 `player_update_vertical_motion` independently casts its movement speed to
 `s16` at the step threshold; this is source-shape support, while the KF2 `lh`
 and `lhu` instructions establish the two KF2 views.
 The step-up test compares the new Y against Y minus vertical speed. Signed
-speed capture before the falling-mode store, the signed zero-height guard,
-and the retail short-rise branch orientation bring
-the focused listing to **77.8% WIP** with 70/70 CFG blocks, 37/37 branches,
+speed capture in a promoted `s32` local before the falling-mode store emits
+retail's direct `lh` at `80027df4`, rather than `lhu` with explicit sign
+extension. The signed zero-height guard and retail short-rise branch
+orientation bring the focused listing to **78.1% WIP** with 70/70 CFG blocks, 37/37 branches,
 and 1/1 returns. The 0x48-byte retail frame, early camera-base register
 assignment, and later schedule still differ; no exact claim is made.
 Neighboring `80027928`/`80027988` remain SAME, as do all 16 reaction listings
@@ -1106,7 +1109,7 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 
 | GAME VA | Verdict | Current evidence |
 | --- | --- | --- |
-| `80024ed4` | SAME | Player pose control in the 15-function equipment unit. |
+| `80024ed4` | SAME | Player pose control in the 16-function equipment unit. |
 | `80024f4c` | SAME | Player reset control in the same unit. |
 | `80025004` | SAME | Player initialization control. |
 | `80025184` | SAME | Session initialization control. |
@@ -1121,28 +1124,73 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | Unclaimed WIP | 53 bounded case pointers; 66 to zero withheld relocations; indirect C form unresolved. |
+| `80025a18` | DIFF, 82.9% | Variadic effect dispatcher covers the 53-entry switch; pointer/countdown cases, actor-index and rotation varargs, three-component actor position copy, and constant status-effect kinds follow reviewed retail call sites. Cases 4/51/52, 6/10, and 40 share one probe with distinct retail scales. Cases 39/49/50 now follow retail's distinct constructor signatures: case 39 passes the camera rotation as argument six, while cases 49/50 join case 7's five-argument tail. Cases 14/16/19 spell their literal status kinds in separate constructor calls; the candidate now reproduces the retail argument-preparation tail at matching object offsets. Retail and candidate each have 16 selector sites, 11 constructor sites, 108 relocations with identical kind/referent counts, 31 local jumps, 31 branch instructions, and a 0x918-byte body. All 53 switch rows have the same 31 destination groups, with 42 target offsets already byte-identical. Relocation order and earlier code still differ: the candidate places the shared rotation probe after case 11, while retail places it before. CFG remains 99/95 blocks with one unresolved switch jump on each side; stack frames are 112/104 bytes. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | Unclaimed WIP | Candidate `void()` ABI: sole proven caller `8002a728` has no argument setup and discards `v0`; entry replaces `a0` from player state. 114 CFG blocks and zero withheld relocations; other live-ins and full weapon/effect semantics remain unresolved. |
-| `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
-| `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
+| `8002665c` | DIFF, 91.1% | Weapon/magic update follows retail's field widths, phase-store order, configured-shot call argument, damage branch, countdown, and vector reuse; its 208-byte probe frame matches retail. The ordered 20-call sequence and 114/114 CFG blocks with 68/68 branches agree in the focused object. The candidate retains a `player_state+0x94` base across the sound call where retail rematerializes the attack-phase load and store, leaving two fewer address pairs but no distinct missing referent. The equipped ID is widened to signed `s32` for retail `slti`; keeping it as `u8` instead emits `sltiu`. |
+| `8002722c` | DIFF, 89.3% | Both bounded switches and player/magic state are modeled; action case 10 falls through to retail's shared action-byte stores. CFG has 33/33 blocks and 16/16 branches. Both pointer tables have the same destination equivalence groups as retail (four in the six-entry table and eight in the nineteen-entry table), and all 82 function relocations agree in order. Its unexplained retail eight-byte leaf frame and original TU remain WIP. |
+| `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. CFG has 35/33 blocks and 20/20 branches; all 11 direct calls agree in order. The candidate hoists player-state bases across the routine, giving 42 versus retail's 66 relocations: exactly twelve fewer `player_state` HI/LO pairs, with no distinct referent omitted. |
 | `80027928` | SAME | Collision-depth death helper control. |
 | `80027988` | SAME | Landing-sound helper control. |
-| `800279cc` | DIFF, 77.8% | 70/70 CFG blocks; frame and load-schedule residue. |
-| `80027f78` | DIFF, 80.0% | Reaction-motion scaling rematerializes one proven halfword view. |
+| `800279cc` | DIFF, 78.1% | 70/70 CFG blocks and 37/37 branches; all 12 direct calls agree in order. Promoted signed movement speed emits retail's direct `lh`. The candidate uses an earlier player-state field base for the landing response's `+0x110` load/store, leaving 127 versus retail's 131 relocations: two fewer HI/LO pairs, with no distinct referent missing. Frame and load-schedule residue remain. |
+| `80027f78` | DIFF, 80.5% | Exhausted-length return follows retail's extra join block; 27/27 CFG blocks and 14/14 branches, with all six direct calls in retail order. The candidate rematerializes four extra `player_state` HI/LO pairs for reaction-motion fields, giving 59 versus retail's 51 relocations with no distinct referent missing. |
 | `80028224` | SAME | Camera-turn control. |
 | `8002851c` | SAME | Camera update control and horizontal-mover caller. |
-| `8002897c` | DIFF | Seven-instruction v0/v1 assignment residue; alternate expression probe rejected. |
+| `8002897c` | DIFF, 28.6% | Seven-instruction signed interval predicate has v0/v1 assignment residue. Equivalent early-return, ternary, and conjunction spellings either leave that residue or change the retail CFG; the conjunction folds to a two-instruction unsigned range test. Exact `80028998` remains unchanged. |
 | `80028998` | SAME | Attack/action controller and magic selector caller. |
+
+For `80025a18`, the override-pointer load uses retail `lw 4(s0)` after
+`s0 = sp + 112` and candidate `lw 0(s0)` after `s0 = sp + 108`. With the
+respective 112- and 104-byte frames, both address the saved `a1` argument
+slot at the entry stack pointer `+4`; the offset difference does not change ABI.
 
 The adjacent `8002985c` update body has one proven external call from
 `game_main_loop` at `800138e0`; the other incoming pointers are its bounded
 internal switch targets. That caller does not prepare arguments or consume
-`v0`, and the callee initializes `a0`–`a3` before using them. Its identity
-therefore records candidate `void func_8002985c(void)` while the full
-control flow and source ownership remain unresolved.
+`v0`, and the callee initializes `a0`–`a3` before using them. Its first-pass
+`void func_8002985c(void)` source now covers the bounded 19-entry switch,
+status timers, texture animation, and collision update, and focused `kf try`
+reports **91.3% WIP**. The four VRAM source rows at `8006d6b0` are one
+initialized `RECT[4]` owner; four raw-checked HI16/LO16 pairs identify its
+interior row addresses. Another 182 raw-audited HI16/LO16 pairs resolve into
+owned player, actor, map-object, callback, event, and effect state; two
+`lui`/`ori` low-memory constants remain literal values. The movement-limit
+source now follows the observed base-value stores, branch order, and the
+bounded switch table's physical case-body order. The
+case-1 reaction rotation copies the complete eight-byte `SVECTOR`, including
+its last two bytes, as proved by paired unaligned word loads and stores; the
+shared player-state union preserves all earlier component accesses and the
+separate `player_reset_view` listing stays SAME. Case 0 and case 16 converge
+on the observed pose tail, while the live reaction states converge on the
+single view-update call. Case 4 now keeps the post-`rsin` angle phase in a
+local for its store and zero check, following the retail register value chain.
+The equipment tick path re-reads the equipped weapon record after the
+possible HP-adjust call before testing its MP interval, as retail does.
+The ordered 94 direct calls and all 482 function relocations agree with
+retail. The 19-entry switch table has the same ten distinct destination
+groups on each side. Focused CFG comparison has 142 blocks and 79 branches
+on each side; both views retain one unresolved switch jump. The first remaining listing
+differences are register choices and immediate-subtraction schedules; an
+equivalent assignment spelling for the `-100` branch emitted the same
+candidate instructions. The 112-byte frame and saved-register prologue
+match retail, while several instruction schedules still diverge. This is a
+started claim, not an exact match.
+The `unknown_0e` reaction timer is correctly modeled as `u16`: retail uses
+unsigned halfword loads for both adjustment paths at player `+0x0e`, then
+signed comparisons after conversion. Its retail `-3300` store materializes
+the negative full-width immediate, whereas the candidate materializes the
+same low halfword as `0xf31c`; changing the field to signed would contradict
+the retail loads.
+The death state reads a signed `unknown_106` counter and uses the reaction
+overlay's motion halfword at `+0x154`; the case-16 flag is its rotation
+halfword at `+0x14e`. The height update compares the old `+0x134` value
+with 1500 before adding 500, as shown by the branch delay slot, rather than
+clamping the incremented value.
+The case-16/18 stop checks cover the three signed rotation-delta halfwords,
+without including the adjacent death counter. The effect-clear loop walks
+128 records by pointer while counting down, and the death continuation
+executes the teleport branch before the reset branch, matching the raw CFG.
 
 The first-pass `8002722c` source now owns the contiguous run through
 `800274ec` in `game.player_select_magic_action`, reducing one module. Its
@@ -1150,7 +1198,7 @@ two tables occupy one `RODATA(80011298, 0x64)` claim. Thirty-five direct
 `lui`/signed-low pairs were checked against raw GAME words: 34 target
 interior fields of the complete `player_state` object and one addresses
 `effect_state.magic_records`. A two-VA safe carve with `8002722c` and
-`800274ec` withholds zero relocations. Focused `kf try` reports **88.0%
+`800274ec` withholds zero relocations. Focused `kf try` reports **89.3%
 WIP** for the action selector and preserves the horizontal mover's **61.9%
 WIP** listing. The selector's 26-byte magic-row stride, unsigned MP cost,
 signed equipment restrictions, six preliminary cases, nineteen action
@@ -1167,7 +1215,60 @@ case 12 jumps from `80027460` to the common byte store at `800274c8`,
 but its `li v0,5` delay slot at `80027464` sets the first action byte;
 the resulting action pair is `(5,2)`, distinct from case 3's `(6,2)`.
 That delay slot must be included when interpreting the apparent shared tail.
-Retail and C still differ at the initial stack frame and several case joins; CFG is
-33/34 blocks with 16/16 branches. The raw table pointers prove
+Retail case 10 also falls through from `80027420` to the action-byte stores at
+`80027440`, shared with cases 1, 4–8, 11, and 18. Expressing that fallthrough
+in C removes a duplicate compiled block and raises focused similarity from
+88.0% to 89.3%, while the neighboring horizontal-movement listing stays at
+61.9%. Retail and C still differ at the unexplained eight-byte leaf frame and
+several branch offsets. The raw table pointers prove
 bounded destinations, but semantic indirect edges and the original C/TU
 form remain candidate.
+
+### Player reaction helper and update slice
+
+The next related ten-function slice is `80029428`, `80029464`, `800294f8`,
+`80029570`, `800295f8`, `80029624`, `800296e8`, `8002975c`, `800297b4`,
+and `8002985c`. These adjacent reaction-state setters, phase ramp, vital
+adjusters, equipment tick helper, and main update share proven player-state
+references; the main update directly calls the phase ramp, vital helpers, and
+equipment helper. A fresh focused `kf try --unit game.player_reaction`
+reports `SAME` for the first nine and **91.3% listing similarity** for
+`8002985c`. Existing strict match records mark the nine controls
+`100.000000000% exact`; direct one-function objdiff confirms the update at
+**92.414010000% strict WIP**. The semantic report warns that its recorded
+match state is stale, so the focused listing and direct object comparison
+are the current source evidence.
+
+The retail `80029624` phase ramp reads both counters as unsigned halfwords,
+sign-extends their working values, uses a shared scaled result, and returns
+`-1` when both phases are zero. Its source and focused listing remain exact;
+retail `8002985c` calls it three times at `800298a8`, `800298e4`, and
+`8002a5b4`. The large update has the same 94 ordered direct calls, 482
+ordered function relocations, 19-entry switch destination grouping, and
+112-byte frame as retail. Its fresh CFG comparison gives 142/142 blocks,
+79/79 branches, and 2/2 known return-frontier edges. Both sides have one
+unresolved indirect switch jump, so equal known successor lists do not prove
+complete semantic equivalence. The first differing control is branch 56:
+retail uses `sltiu v1,v1,16; bne v1,zero`, whereas the candidate uses
+`sltiu s0,s0,16; bne s0,zero`, with the same destination. Earlier listing
+residue includes the clamped `4096` value held in `v0` by retail versus
+`a3` in the candidate, and immediate-subtraction scheduling. The C source
+already expresses the observed clamp, widths, calls, and branch conditions;
+no source-backed correction was retained in this slice.
+
+### Player collision bounds and core-state slice
+
+The next ten-function slice is `80023384`, `80023430`, `80023484`,
+`80023570`, `8002360c`, `80023814`, `80023868`, `80023984`, `80024034`,
+and `800240cc`. Fresh focused comparisons show the nine functions after
+`80023384` as `SAME`; existing strict records mark each at 100% exact.
+The bounds helper remains **63.2% listing similarity** and direct one-function
+objdiff confirms **76.23256% strict WIP**, with 5/5 CFG blocks, 2/2 branches,
+2/2 known return-frontier edges, and two ordered `player_death_begin(NULL)`
+calls. Retail separately loads player halfword fields `+0x134` and `+0x138`
+and the camera Y word `+0xdc` in both bounds arms. The candidate keeps one
+`player_state+0x134` base in `s0` across both arms, changing the frame and
+removing repeated HI16/LO16 pairs; its conditions and observed referents
+otherwise agree. The cache words at BSS `+0x11818`/`+0x1181c` now use shared
+lower/upper-bound views in source. A focused rebuild kept the 63.2% listing,
+and the complete cache/equipment boundary remains provisional.

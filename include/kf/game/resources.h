@@ -2,6 +2,14 @@
 #define KF_GAME_RESOURCES_H
 
 #include <kf/lib/types.h>
+#include <psyq/sdk.h>
+
+u32 map_cell_layer_mask(const VECTOR *position);
+u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius);
+s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);
+
+void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
+    u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y);
 
 void tim_upload_images(u8 *tim_data);
 void resource_tmd_read_complete(u8 *data);

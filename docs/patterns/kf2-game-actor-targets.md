@@ -430,7 +430,7 @@ four and twenty bytes longer than retail, respectively.
 | `80036ad8` | WIP, source-backed by another owner | `3247c`, `36ed4`, and `4678c` call a map-boundary predicate now modeled with `player_state.camera_position`; source is in the contiguous vertex-world unit. |
 | `80036b68` | exact | Two `36ed4` calls pass pairs of 8-byte offsets from unclassified `8006d6e4` rows. Typed source interpolates a target map object's rotated position and action progress; strict `100.000000000%`. The loaded row owner remains open. |
 | `80036e24` | WIP, audio owner | CD/frame service called twice by `36ed4`; strict `98.863640000%`, with saved-register assignment residue. |
-| `80036ed4` | WIP, no claim | Large 0x1df4-byte controller calls the placement/copy helpers, object pool helpers, audio, collision, and frame color setter. |
+| `80036ed4` | WIP, later sourced | Large 0x1df4-byte controller calls the placement/copy helpers, object pool helpers, audio, collision, and frame color setter; see the latest dispatcher verdict below. |
 | `8003fb94` | WIP, source-backed | Effect helper directly called by `36ed4` at `383c8`; typed effect and actor views are strict `87.791046000%`. |
 | `8004678c` | WIP, no claim | Event controller calls `366fc`, `368b4`, and `36ad8`; event action state still broad. |
 
@@ -615,7 +615,7 @@ branches and candidate table references, so neither has a C claim.
 | `80035894` | WIP, no source | Map placement controller calls `34f90` and `35194` twice each; 64 CFG blocks, two indirect jumps, and the loaded `8006787c` pattern-band owner remain open. |
 | `80036464` | WIP, strict `95.322580000%` | Typed map-object effect spawn calls pool acquire, reset, and `rand`; function register scheduling differs, and the contiguous unit's switch-table text addend remains four bytes off because preceding `36190` is WIP. |
 | `800366fc` | WIP, strict `37.336365000%` | Updates marker/action fields across 396 map objects; proven calls from `36ed4` twice and event controller `4678c`. Retail/compiled CFG is 37/38 blocks with switch-arm order differences. |
-| `80036ed4` | WIP, no source | Placed-object/actor controller directly calls `14a08`, `366fc`, map-cell placement, audio, and collision helpers; its 329-block CFG has indirect control and candidate data-table references. |
+| `80036ed4` | WIP, later sourced | Placed-object/actor controller directly calls `14a08`, `366fc`, map-cell placement, audio, and collision helpers; its 329-block CFG has indirect control. See the latest dispatcher verdict below. |
 | `8003a614` | WIP, historical strict `96.910110000%`; current focused `81.2%` | Actor-to-player radial damage gate called five times by `3d184`; distance, angle, and damage call set agrees, while player-state load/register scheduling differs. The historical strict score predates the current source comparison. |
 | `8003d084` | WIP, strict `91.600000000%` | Clamps the signed actor sound offset, then combines it with `rand`; five CFG blocks and both branches agree. GCC reassociates the final `-2` around the shift. |
 | `800460a0` | WIP, strict `99.268295000%` | Actor animation phase seek called three times by event dispatcher `462bc`; six CFG blocks, two branches, calls, and referents agree, with only step/half-step saved-register assignment different. |
@@ -871,7 +871,7 @@ or indirect callee was claimed.
 | `8003247c` | WIP, unclaimed | The 0xb70-byte scene renderer, called by exact frame driver `335a0`, reaches resource-range, world-model, animated-object, and map-mask helpers. Its 96-block body and shared render state need a complete source model. |
 | `80033d3c` | WIP, strict `95.218390000%` | Animation morph accumulator is called by exact cache updater `34070`. Three `ScaleMatrix` calls, 17/17 blocks, and 10/10 branches are present; the skip/pending-flush branch lands at a different common tail. The two adjacent sparse-animation functions remain exact. |
 | `80035894` | WIP, unclaimed | Placement controller called by `16820` invokes `34f90`/`35194` and collision probes. Its 64-block flow has an indirect jump and candidate pattern-band references near `8006787c`, without a proved table owner. |
-| `80036ed4` | WIP, unclaimed | Main-loop map-object controller calls placement, actor/collision, spatial sound, and angle helpers. Its 329 blocks include unresolved indirect jumps and the same provisional pattern-band referents. |
+| `80036ed4` | WIP, later sourced | Main-loop map-object controller calls placement, actor/collision, spatial sound, and angle helpers. Its 329 blocks include unresolved indirect jumps; see the latest dispatcher verdict below. |
 | `8003c614` | WIP, unclaimed | Actor behavior controller, called by `3d184`, invokes exact actor-position siblings, `3c3e0`, and effect constructor `40308`. Its 45-block switch includes an unresolved indirect jump/table. |
 | `80040308` | WIP, unclaimed | Large effect constructor reached by player equipment, actor behavior, and effect dispatch. Its 116-block body has an indirect jump and candidate `8006d704` table references; complete effect-data ownership is unproved. |
 
@@ -1483,3 +1483,58 @@ Effect-owned `3fb94`, a direct caller of `39c94`, has since been certified
 strict exact by isolated direct objdiff: 536/536 function bytes and all 36
 ordered relocations in its complete unit match. Its older WIP rows above
 record earlier checkpoints, not the current verdict.
+
+### Newly sourced GAME object and target dispatchers
+
+| GAME VA | Verdict | Evidence and limit |
+| --- | --- | --- |
+| `36944` | exact | The 396-object scatter wrapper is 116/116 bytes exact in direct objdiff; its contiguous map-object unit is 4/4 focused SAME. Its input source has no proved static caller, so the address-derived identity remains. |
+| `39108` | WIP | The candidate scorer now has a complete C control path and a 131-word bounded switch table at `80011cd8`, all targeting this function. One-VA delink has zero withheld references. Retail's early zero return and current-target return before score doubling are restored; direct objdiff reports 85.72369% fuzzy text with 1216 retail versus 1168 compiled bytes. Focused CFG remains 59/58 blocks and 37/36 branches. All four angle-success paths now branch to the shared scoring tail as retail does; focused listing rises to 35.1% and CFG gains two blocks and three branches overall, while direct text fuzzy falls because the probe lays out case tails more compactly. The semantic branch direction is retained without an exact claim. The retail and compiled 524-byte tables have the same ten-target equivalence pattern across all 131 entries; their case-code offsets differ. The callback through active slot 16 remains indirect, and the candidate's complete record stride is unresolved. |
+| `39b58` | WIP, newly admitted GAME function | Raw instructions at the former `39b58..39c13` data gap form a complete `0xbc`-byte function, from a 40-byte saved-register frame through `jr ra` and its delay-slot stack restore. It scans 200 typed `actor_state.actors` records at 124-byte stride, ignores slot-state `0xff`, compares actor group byte `+2` with the low halfword of arg0, and calls `actor_select_target_type_in_own_group(actor, 3)` for lifecycle 1 or `actor_set_lifecycle_and_home_position(actor)` otherwise. The old false Shift-JIS string was decoded loop instructions. Two-VA-focused module carve admits all four reviewed relocations with zero withheld; focused listing is 79.2% DIFF, with 9/9 CFG blocks, 4/4 branches, and one return. Fresh direct objdiff of the two-function unit is 97.62195% fuzzy text (984 retail versus 972 compiled bytes), not exact; all 52 relocation entries retain their type and referent order, while the final five sites shift with code layout. Its external caller and original TU boundary remain unproved; the address-derived identity stays. The contiguous prior `3983c` source remains 87.0% WIP with the same saved-register residue. |
+| `36ed4` | WIP, all primary arms sourced | The 396-object traversal, current object/template pointers, all 23 bounded primary action IDs (2, 3, 4, 5, 8, 9, 15, 16, 17, 18, 19, 22, 34, 81, 83, 84, 88, 89, 96, 97, 98, 224, 225), and fallback callback have retail-backed C paths. The three adjacent dispatch tables occupy `8001191c..80011cd7`. Action 4 rotates a linked object and tests a GTE-transformed offset against collision; action 19 grows a linked object's scale under the owned `game_counter_bytes[0x4c]` random gate; action 34 relocates the player camera. Action 81 follows four timer paths and latches an effect call; actions 83 and 89 follow decoded subaction tables; action 84 uses the owned `map_object_cell_patterns` at `80067890`. Actions 96–98 read the existing owner-relative `KF_COLLISION_CACHE_LAYER` view, without a new interior global; the cache subrecord boundary is still provisional. Nested C switches now emit all 238 retail table relocations, and the 239-word table target-group pattern has zero differing indices. Replacing the action-4 aggregate `SVECTOR` initializer with the three stack halfword stores proved at `80037518..80037524` removes an extra eight-byte constant, so compiled and retail `.rodata` are both 956 bytes. Retail's matching sparse timer dispatch for actions 2 and 3 is now expressed as two inner switches. Eleven missing HI16/LO16 pairs were added from raw signed-low instructions: six map-object pool refs, three collision-cache layer reads, one event-state byte, and one game counter byte. Retail action-3 `func_80035194` calls load the two map-object bytes with `lbu`; the shared spawn-byte view and `u8` field now preserve those widths at all four calls. Action 19 now shares one retail-proven action-start call across both completion paths and writes timer 2 after the callback, rather than duplicating the call and exposing timer 2 before it; direct call multiplicity is now 79/79 with two indirect calls on each side. Action 4 now uses the retail unsigned masked-angle comparison and the typed low/high spawn-byte view; its high-byte read compiles as the observed `lbu`. Actions 5, 8, and 19 use retail-supported three-case timer switches, and action 22 uses its four-case timer switch. Action 81 now has distinct timer-2 and timer-3 bodies, as retail does at `800383d8` and `80038424`, rather than one combined path. Action 84 has separate 0/1/32/99/default cases matching its raw tests, and action 88 has distinct timer 1/2/3 cases. Together these raise compiled CFG from 298 to 320 blocks and 168 to 176 branches. Focused comparison remains DIFF (27.7% listing; 329/320 blocks, 180/176 branches); the last direct objdiff before these timer edits reported `.text` at 7.1517997% fuzzy, 7668 retail versus 7464 compiled bytes. Both action-4 bearing paths now use explicit branches for the retail `0xf0`/`-200` choices; the probe still materializes `-200` as unsigned `0xff38` through the destination field's current `u16` type, so its store layout remains different. The low fuzzy score reflects a different switch-case code layout and does not prove semantic completeness. One-VA delink has zero withheld relocs; no strict exact claim is made. |
+
+The map-object halfword at `+0x0e` has mixed direct consumer evidence:
+GAME `0x80047688` copies it with `lhu`, while `0x800477c4`, `0x8004780c`,
+and `0x800478a8` read it with `lh`. The map renderer also loads this halfword
+with `lh` at `0x80032b78` for the final `func_80031850` stack argument. The
+action updater stores negative pitch
+sentinels there. This does not establish one globally signed declaration, so
+the shared field remains `u16` and signed event uses retain explicit casts.
+A fresh direct function-object comparison after the timer and action-4 edits
+reports `.text` at `7.146583%` fuzzy, 7668 retail versus 7464 probe bytes. The
+slight decrease from the earlier direct score does not undo the raw-supported
+branch structure or the focused CFG gain; the function remains WIP.
+
+The `39108` scorer reads candidate halfwords at offsets `+0x10`, `+0x12`,
+`+0x14`, `+0x16`, and `+0x1a`. The `+0x10` word shares its bytes with the event
+fallback cursor and its adjacent actor-state byte; the `+0x12` word shares its
+bytes with the event selector and marker state; the `+0x14` word is also the
+first two bytes of the event stream. Three named unions supply those proven
+views without casts or layout changes; the full byte-stream extent is still
+unresolved. Focused builds after the `+0x14` refinement
+retain scorer DIFF 35.1%, exact marker scan `46144` SAME, exact event save
+`48554` SAME, and the prior event WIP verdicts. Retail has five vector-angle and five
+angle-tolerance call sites, while the probe has four of each: the identical
+case-9/case-11 angle suffix is merged in compiled assembly at its case-11
+label. This is an observed call-site layout difference, not a missing C call.
+`KfTargetCandidate` therefore describes an observed 0x1c-byte prefix only;
+neither these reads nor the switch table prove the allocation stride. For
+`36ed4`, the retail first loop has 24 unique primary dispatch targets, of
+which 201 table entries select the fallback callback. All 23 concrete action
+IDs now have C paths, while subaction semantics and the compiled table layout
+remain WIP. Actions 96–98 read the provisional collision-cache interior at
+`801d8d4a` through the complete `bss_801c7540` owner. The cache subrecord
+boundary remains WIP; the controller defines no overlapping global.
+The complete `8001191c` RODATA identity now covers the 224-entry primary,
+9-entry secondary, and 5-entry tertiary pointer tables with one zero separator
+at `80011cc0` between the secondary and tertiary tables;
+the interior table starts are not independent data identities. A focused
+rebuild after that inventory correction still reports 27.6% DIFF. The first
+listing residue hoists `object+10` in retail versus `object+60` in the probe,
+with equivalent field offsets; the current evidence does not justify a source
+change solely for that pointer/register choice.
+After sharing the action-19 completion tail, the compiled body has one
+`map_object_start_action_if_idle` call, stores timer 2 after that call, and
+matches all 79 retail direct-call targets and multiplicities; both bodies also
+have two indirect callbacks. The focused CFG is still 329/298 blocks and
+180/168 branches, so the function remains WIP beyond this corrected path.

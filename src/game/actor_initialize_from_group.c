@@ -1,9 +1,8 @@
 #include <kf/lib/address.h>
 #include <kf/lib/null.h>
 #include <kf/game/actor.h>
+#include <kf/game/map_cell.h>
 #include <psyq/libc.h>
-
-extern s32 func_8002b73c(s32 x, s32 z, u16 parameter, s32 mode);
 
 ADDRESS(0x80038e38, 0xc4)
 void actor_initialize_from_group(KfActor *actor)

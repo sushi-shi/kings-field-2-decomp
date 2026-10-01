@@ -3,9 +3,67 @@
 #include <kf/game/cd.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/player.h>
+#include <kf/lib/audio.h>
 #include <kf/lib/math.h>
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
+
+/* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
+DATA(0x8009a6a0, 0x158)
+char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_TRACKS_PER_SEQUENCE];
+
+ADDRESS(0x800139c4, 0x120)
+void func_800139c4(void)
+{
+    KfAudioVabSlot *vab_slot;
+    KfAudioVoiceHandle *voice;
+    KfAudioVabStreamSlot *stream_slot;
+    u8 *stream_buffer;
+    s32 index;
+
+    SsInit();
+    SsSetMVol(0, 0);
+    SsSetTableSize(audio_sequence_table, KF_AUDIO_SEQUENCE_CAPACITY,
+        KF_AUDIO_TRACKS_PER_SEQUENCE);
+    SsSetTickMode(1);
+    SsStart2();
+    SsUtSetReverbType(4);
+    SsUtReverbOn();
+    SsUtSetReverbDepth(0x28, 0x28);
+
+    /* Sequence-data buffer owner and extent remain unresolved. */
+    audio_state.sequence_buffer = (u_long *)0x80198640;
+    audio_state.sequence_active = 0;
+    audio_state.sequence_ready = 0;
+    vab_slot = audio_state.vab_slots;
+    index = 129;
+    do {
+        vab_slot->vab_id = -1;
+        vab_slot->stream_slot = 0;
+        vab_slot++;
+        index--;
+    } while (index != -1);
+
+    voice = audio_state.voices.handles;
+    index = 9;
+    do {
+        voice->voice_id = -1;
+        voice++;
+        index--;
+    } while (index != -1);
+
+    /* Stream-buffer owners and complete extents remain unresolved. */
+    stream_slot = audio_state.vab_stream_slots;
+    stream_buffer = (u8 *)0x80165a68;
+    for (index = 0; index < 7; index++) {
+        stream_slot->state = 0;
+        stream_slot->buffer = stream_buffer;
+        stream_slot++;
+        stream_buffer += 0x1000;
+    }
+    audio_state.vab_stream_slots[5].buffer = (u8 *)0x80194e30;
+    audio_state.vab_stream_slots[6].buffer = (u8 *)0x80164a68;
+}
 
 ADDRESS(0x80013ae4, 0x98)
 void audio_start_sequence(void)

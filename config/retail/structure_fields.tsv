@@ -21,7 +21,7 @@ KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offse
 KfActor	0x13	0x1	unknown_13	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x14	0x1	unknown_14	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x15	0x1	unknown_15	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x16	0x2	unknown_16	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x16	0x2	unknown_16	s16	opaque	game/actor.h;retail GAME 0x8003247c actor draw	signed halfword read at 0x800325c0; meaning unresolved
 KfActor	0x18	0x2	animation_phase	u16	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x1c	0x2	unknown_1c	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
@@ -169,7 +169,7 @@ KfEffectRecord	0xb	0x1	cooldown	u8	supported	game/effect.h;asm;effect pool;game_
 KfEffectRecord	0xc	0x1	unknown_0c	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0xd	0x1	unknown_0d	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0xe	0x2	updates_remaining	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x10	0x2	unknown_10	u16	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x10	0x2	unknown_10	s16	opaque	game/effect.h;retail GAME 0x8003247c effect draws	signed halfword reads in both render paths; semantic meaning provisional
 KfEffectRecord	0x12	0x2	unknown_12	u16	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x14	0x10	position	VECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x24	0x8	rotation	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
@@ -347,6 +347,7 @@ KfMapObjectStateGame	0x8740	0x02	unknown_8740	u16	candidate	asm;map_object_pool_
 KfMapObjectStateGame	0x8742	0x02	unknown_8742	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
 KfMapObjectTail	0x0	0xc	fields	KfMapObjectTailFields	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;func_8003247c	byte view of the packed spawn sequence
 KfMapObjectTail	0x0	0xc	reset_words	u32[3]	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTailFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
@@ -354,6 +355,12 @@ KfMapObjectTailFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm;map obj
 KfMapObjectTailFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x8	0x2	spawn_sequence	u16	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;func_80036464;func_800365d8	signed spawn parameter initialized to zero or -120
+KfMapObjectTailSpawnByteFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
+KfMapObjectTailSpawnByteFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm	preceding tail byte
+KfMapObjectTailSpawnByteFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm	preceding tail byte
+KfMapObjectTailSpawnByteFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	preceding tail halfword
+KfMapObjectTailSpawnByteFields	0x8	0x2	spawn_sequence	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;func_8003247c	retail reads both sequence bytes separately
+KfMapObjectTailSpawnByteFields	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	following tail halfword
 KfMapObjectTailHalfword	0x0	0x2	value	u16	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfword	0x0	0x2	bytes	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x0	0x1	low	u8	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
@@ -660,11 +667,22 @@ KfTargetCandidate	0x8	0x2	unknown_08	u16	supported	GAME 0x800462bc retail lhu at
 KfTargetCandidate	0xa	0x2	unknown_0a	u16	supported	GAME 0x8003d184 lhu at target+0x0a	unsigned halfword control value; meaning unresolved
 KfTargetCandidate	0xc	0x2	unknown_0c	u16	supported	GAME 0x800462bc retail lhu at +0xc	base entry added to event byte before archive call
 KfTargetCandidate	0xe	0x2	unknown_0e	u16	supported	GAME 0x800462bc retail lhu at +0xe	phase-step operand for restored actor state
-KfTargetCandidate	0x10	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
-KfTargetCandidate	0x11	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at +0x11	actor state restored after event action
-KfTargetCandidate	0x12	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
-KfTargetCandidate	0x13	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
-KfTargetCandidate	0x14	0x2	bytes	u8[2]	candidate	game/actor.h;message marker scan;GAME 0x800462bc	start of variable byte stream; complete extent unresolved
+KfTargetCandidate	0x10	0x2	word_10	KfTargetCandidateWord10	supported	GAME 0x800391ac lhu at +0x10;GAME event lbu at +0x10/+0x11	shared word and byte view
+KfTargetCandidate	0x12	0x2	word_12	KfTargetCandidateWord12	supported	GAME 0x80039108 lhu at +0x12;GAME event lbu at +0x12/+0x13	shared word and byte view
+KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x800393f4 lhu at +0x14;GAME event byte stream	shared word and byte-stream prefix view
+KfTargetCandidate	0x16	0x2	unknown_16	u16	supported	GAME 0x80039108 lhu target+0x16	candidate distance bound; meaning unresolved
+KfTargetCandidate	0x18	0x2	unknown_18	u8[2]	opaque	game/actor.h	intervening bytes before candidate distance bound
+KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
+KfTargetCandidateWord10	0x0	0x2	value	u16	supported	GAME 0x800391ac lhu candidate+0x10	unsigned candidate distance bound
+KfTargetCandidateWord10	0x0	0x2	bytes	KfTargetCandidateWord10Bytes	supported	GAME event save/restore;message marker scan	byte-addressable view of the same halfword
+KfTargetCandidateWord10Bytes	0x0	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
+KfTargetCandidateWord10Bytes	0x1	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at +0x11	actor state restored after event action
+KfTargetCandidateWord12	0x0	0x2	value	u16	supported	GAME 0x80039108 lhu candidate+0x12	unsigned candidate distance bound
+KfTargetCandidateWord12	0x0	0x2	bytes	KfTargetCandidateWord12Bytes	supported	GAME event save/restore;message marker scan	byte-addressable view of the same halfword
+KfTargetCandidateWord12Bytes	0x0	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
+KfTargetCandidateWord12Bytes	0x1	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
+KfTargetCandidateWord14	0x0	0x2	value	u16	supported	GAME 0x800393f4 lhu candidate+0x14	unsigned candidate distance bound
+KfTargetCandidateWord14	0x0	0x2	bytes	u8[2]	candidate	GAME message marker scan;event target stream	start of variable byte stream; full extent unresolved
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
 KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step

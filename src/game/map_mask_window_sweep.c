@@ -4,6 +4,11 @@
 #include <kf/game/render_mask.h>
 #include <psyq/sdk.h>
 
+enum { KF_MAP_MASK_LIGHTING_OFFSET = 4 };
+typedef char kf_map_mask_lighting_offset[
+    (u32)&((KfMapOccupancyCell *)0)->layer[0].lighting_index ==
+    KF_MAP_MASK_LIGHTING_OFFSET ? 1 : -1];
+
 typedef struct KfMapMaskShapePair {
     s16 near;
     s16 far;
@@ -38,6 +43,7 @@ void func_8002c670(void)
     u16 layer;
     u8 *first_lighting;
     u8 *mask;
+    KfMapOccupancyCell *center_cell;
 
     pitch_weight = 0x1000 - rcos(game_graphics_runtime.render_state.view_rotation.vx);
     pair = DAT_80067874;
@@ -62,7 +68,8 @@ void func_8002c670(void)
     game_graphics_runtime.render_grid.map_scan_start_x =
         -game_graphics_runtime.render_state.cell_origin_x;
     render_mask_scan_state.window_x = x;
-    center_x = game_graphics_runtime.render_state.view_position.vx * 2;
+    center_x = (s32)((u32)game_graphics_runtime.render_state.view_position.vx
+                     << 1);
     z = (u8)((((-cosine) * shape[0]) >> 20) + 12);
     game_graphics_runtime.render_state.cell_origin_z = z - render_mask_scan_state.map_z;
     game_graphics_runtime.render_grid.map_scan_start_z =
@@ -71,7 +78,8 @@ void func_8002c670(void)
     mask = &game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
     render_mask_scan_state.mask_cursor = mask;
 
-    center_z = game_graphics_runtime.render_state.view_position.vz * 2;
+    center_z = (s32)((u32)game_graphics_runtime.render_state.view_position.vz
+                     << 1);
     func_8002a988(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
     layer = KF_COLLISION_CACHE_LAYER;
@@ -103,11 +111,11 @@ void func_8002c670(void)
                   render_mask_scan_state.first_layer_mask | 0x20);
     func_8002c1d4(render_mask_scan_state.first_layer_mask | 0x20);
 
-    first_lighting = &bss_801c7540.map_cells[0][0].layer[0].lighting_index;
-    first_lighting += render_mask_scan_state.map_z *
-                      sizeof(bss_801c7540.map_cells[0]);
-    first_lighting += render_mask_scan_state.map_x * sizeof(KfMapOccupancyCell);
-    first_lighting += render_mask_scan_state.first_layer_byte_offset;
+    center_cell = &bss_801c7540.map_cells[render_mask_scan_state.map_z]
+        [render_mask_scan_state.map_x];
+    /* The cached offset selects either layer's lighting byte (0 or 5). */
+    first_lighting = (u8 *)center_cell + KF_MAP_MASK_LIGHTING_OFFSET +
+        render_mask_scan_state.first_layer_byte_offset;
     if (*first_lighting & 0x80) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {

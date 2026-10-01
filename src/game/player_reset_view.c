@@ -18,9 +18,9 @@ void player_reset_view(void)
     player_state.unknown_110[2] = 0;
     player_state.unknown_110[1] = 0;
     player_state.unknown_110[0] = 0;
-    player_state.unknown_108[2] = 0;
-    player_state.unknown_108[1] = 0;
-    player_state.unknown_108[0] = 0;
+    player_state.unknown_108.components[2] = 0;
+    player_state.unknown_108.components[1] = 0;
+    player_state.unknown_108.components[0] = 0;
     player_state.unknown_100[2] = 0;
     player_state.unknown_100[1] = 0;
     player_state.unknown_100[0] = 0;

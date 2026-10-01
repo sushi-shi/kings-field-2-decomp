@@ -130,7 +130,7 @@ certification is pending.
 | `0x8002c290` | Focused listing SAME; strict certification pending | The two-layer mask update now matches in the focused object; the paired mask sweep remains WIP. |
 | `0x8002c424` | WIP, 73.5% focused listing | The second-neighbor cursor advance and empty-count setup follow retail; target/compiled CFG has 23/22 blocks and the remaining register and address schedule is unresolved. |
 | `0x8002c670` | WIP, 76.4% focused listing | Eleven target and compiled blocks, four branches, and one return agree. Retail stores the selected collision-cache layer at scan-state +0 and its alternate `5 - layer` at +4. The current typed center-cell expression forms the first lighting address differently from retail's BSS+4 field-base referent; mask traversal scheduling also differs. |
-| `0x80036ed4` | WIP, 27.7% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present, while case-pointer addends and text layout differ; indirect callback targets remain unresolved. |
+| `0x80036ed4` | WIP, 86.53104% direct strict code; 47.4% focused listing | The 0x1df4-byte no-argument map-object dispatcher has a source claim and three bounded indirect jumps. Its 956-byte table section and 238 relocation referents are present; the case-block order now gives 79/79 ordered direct calls, while case-pointer addends and text layout still differ and indirect callback targets remain unresolved. |
 
 The current 27-function focused cohort comprises the 17 collision-height
 wrappers, two map-cell pattern helpers, six map-object reset helpers, the
@@ -380,18 +380,45 @@ original linkage remain unproved, so its identity stays address-derived and
 the giant dispatcher's original TU owner remains WIP. The current
 `map_object_action_update.c` now defines the four-vector initialized table.
 After a GAME target-only refresh, direct strict objdiff gives the datum and
-its 0x20-byte `.data` section 100%; `func_80036ed4` remains WIP at
-7.0693793%. The source claim establishes the current link owner without
+its 0x20-byte `.data` section 100%.
+Against the same target object, isolated direct comparisons put the prior
+numeric-case source at 7.0693793% strict code and 26.572327% strict
+`.rodata`; the reordered current source reaches 86.53104% strict code and
+37.997902% strict `.rodata`. The retail code section is 7,668 bytes (probe
+7,652 bytes), and pointer addends in the 956-byte jump-table section still
+follow the different case-block offsets.
+The source claim establishes the current link owner without
 proving the historical TU boundary.
 The dispatcher source now reads and updates `rotation.vy` at object +0x26
 in ten action 2/3/16/88 call and sine paths. Retail loads `lh 28(s1)` and
 `lhu/sh 28(s1)` with `s1 = object + 0x0a`; the prior `rotation.pad` accessed
 +0x2a. Two action-98 target-angle uses still read +0x2a and remain `pad`.
-The corrected single-unit probe remains DIFF at 27.7% focused listing;
-its direct-call multiset is 79/79, but the case-block order and register
-schedule still differ. Reordering C case blocks to the physical retail label
-order raised the display score to 47.0% while leaving the probe call order
-unchanged, so that unsupported trial was reverted. No new exact claim follows.
+The source now orders its 23 explicit top-level action cases by their unique
+retail first-table target addresses. An isolated pinned compile of the
+previous numeric-order source matched only 22/79 direct-call positions in
+the retail sequence; the reordered source matches all 79/79 in order. This
+independently supports the physical source block order as well as the bounded
+table pointers, so the correction is retained. The focused listing improves
+from 27.7% to 47.4% but remains DIFF with register/text-layout differences;
+the current target/probe CFG has 329/320 blocks and 180/176 branches, so no
+strict exact claim follows.
+At action 8, timer 2, retail loads the previous angle with `lhu`, stores the
+step velocity at object +0x36 before the addition, masks the updated angle to
+12 bits, stores it, and compares that same masked value with signed `slti`.
+The retained unsigned source read and local `s32 angle` produce those
+instructions in the focused probe without a redundant halfword reload.
+Actions 81 and 225 both read and write a one-byte state at object +0x40:
+retail uses `lbu`/`sb` at `54(s1)` with `s1 = object + 0x0a`. The prior
+`extra_40.bytes[2]` source accessed +0x42; `bytes[0]` is now used for these
+state paths, while the independent +0x42 parameter uses remain unchanged.
+The field correction raises isolated strict code from 86.52322% to
+86.52582%; the focused listing remains 47.4%.
+Actions 96 and 98 instead use a signed/unsigned halfword at object +0x3e:
+retail `lh`, `lhu`, and `sh` use `52(s1)`, while the prior source's
+`extra_40.halfwords[1]` addressed +0x42. Their velocity reads and writes now
+use the existing `tail.fields.unknown_3e` signed/value union views. The
+separate earlier +0x42 rotation uses remain as they were. Isolated strict code
+rises from 86.52582% to 86.53104%; focused listing is unchanged.
 
 The provisional `bss_801c7540.map_cells[88][80]` spans `0x11300` bytes, while
 `0x8002aaa4` directly reads a shape-table base at BSS offset `0x10000`.

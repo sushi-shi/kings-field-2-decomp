@@ -1519,9 +1519,9 @@ retain scorer DIFF 35.1%, exact marker scan `46144` SAME, exact event save
 angle-tolerance call sites, while the probe has four of each: the identical
 case-9/case-11 angle suffix is merged in compiled assembly at its case-11
 label. This is an observed call-site layout difference, not a missing C call.
-`KfTargetCandidate` now describes an observed 0x20-byte prefix: selector 18
-also reads halfwords at +0x1c and +0x1e. Neither these reads nor the switch
-table prove the allocation stride. For
+`KfTargetCandidate` now describes an observed 0x2c-byte prefix: selector 18
+reads halfwords at +0x1c and +0x1e, selector 24 reaches +0x26, and selector
+23 reads through +0x2a. These reads do not prove the allocation stride. For
 `36ed4`, the retail first loop has 24 unique primary dispatch targets, of
 which 201 table entries select the fallback callback. All 23 concrete action
 IDs now have C paths, while subaction semantics and the compiled table layout
@@ -1693,7 +1693,7 @@ The 241-word switch table at `800120d8` sends selectors 6–8 and 31–239
 selectors above 240 there. That block loads
 `state_8017d118.active_table[17]` and calls it through `jalr` without a new
 argument setup. The retained C spells that callback for exactly those paths;
-selectors 3, 5, 9–13, 16–17, 23–25, 28, and 30 still require separate arms. A focused compile
+selectors 3, 5, 10–13, 16–17, 23–25, 28, and 30 still require separate arms. A focused compile
 improved the incomplete body from 3.6% to 4.7% listing similarity, with the
 0x248c-byte retail function still WIP. The table-target grouping and callback
 come from raw control flow; the score is only a comparison of this partial C.
@@ -1828,6 +1828,47 @@ from 21.1% to 20.6% because this incomplete C lays out the switch differently.
 It remains WIP; the lower intermediate score does not invalidate these raw
 branches.
 
+Selector 9 at `8003dc3c` also has a complete four-state raw path. State zero
+tries `3bae4` yaw motion and otherwise waits until player X/Z distance reaches
+candidate +0x0e, while advancing the wrapped animation. State one clamps the
+phase, then asks the exact `3b520` trajectory solver to launch toward player
+camera X/Z and Y-500 using candidate bytes +0x16/+0x17. Positive signed
+halfword result enters state two; failure enters state three. State two follows
+actor +0x0d and either applies `3bcd0` motion or changes animation. State
+three clamps phase, resets the target at 4095, and calls `3b9a4` with signed
+actor halfword +0x68 shifted by four. All field widths and calls are direct
+retail reads; no new candidate extent was inferred. The incomplete whole-
+function focused listing changes 20.6% to 19.6% after this case layout and
+remains WIP rather than an exact claim.
+
+Selector 24 at `8003e230` advances clamped animation and chooses a motion
+speed/step pair from phase boundaries at candidate +0x20/+0x22. The final
+phase range uses speed zero and signed step +0x26; the middle range uses
+unsigned speed +0x1c and signed step +0x24; the first uses speed +0x1c and
+candidate byte +0x0d. It computes player X/Z angle, stores actor +0x64,
+calls `3bcd0`, and on candidate +0x18 phase crossing calls `3a614` with the
+same eight observed byte/halfword arguments as selector 4. Phase 4095 resets
+the target. Raw `lhu` at +0x20/+0x22 and `lh` at +0x24/+0x26 justify only
+an observed 0x28-byte candidate prefix, not a record stride. Focused
+`3d184` listing changes 19.6% to 19.7% WIP after sourcing this case; twelve
+exact actor-animation, group-position, and motion-collision controls stay
+SAME with the expanded prefix.
+
+Selector 23 at `8003e0f0` initializes actor +0x70 from candidate +0x18,
+advances clamped animation, and on crossing that signed actor phase adds
+candidate +0x28 to the halfword. An unsigned bound at candidate +0x26 can
+reset the phase to zero. The first damage call consumes candidate bytes
++0x0e/+0x0f/+0x10 and halfwords +0x12/+0x14/+0x16, with candidate byte
++0x11 OR 0x80 as the last argument. A nonzero candidate +0x2a phase can
+trigger a second damage call, this time using bytes +0x1c/+0x1d/+0x1e/+0x1f
+and halfwords +0x20/+0x22/+0x24. Retail reads +0x24 and +0x26 with `lh`
+in selector 24 but `lhu` in selector 23, so the shared type now has explicit
+signed/unsigned two-byte views. The observed prefix reaches +0x2b; its
+complete record extent and stride remain unproved. Focused dispatcher listing
+is 20.3% WIP after this path. Six exact animation, three exact group-position,
+and three exact motion-collision listings remain SAME; the candidate scorer
+remains at its prior 35.1% focused WIP.
+
 Selector 25 at `8003ecdc` remains unsourced. Its raw loop reads halfwords
 from candidate +0x1a plus twice actor signed cursor +0x72. Marker `0x8000`
 resets that cursor, `0x8001` reads a repeat count, `0x8003` skips a counted
@@ -1835,8 +1876,29 @@ number of words, and `0x8002`/`0x8004` call the actor-group effect dispatcher
 with distinct argument forms. Ordinary words also feed that dispatcher, and
 the repeat count controls the backward edge to the next word. This proves a
 variable halfword payload beginning at candidate +0x1a, but not its complete
-record extent or stride; the current 0x20-byte candidate prefix is therefore
-left unchanged. No C path or exact verdict is claimed for this selector.
+record extent or stride; the observed prefix established by selector 23 does
+not resolve this stream. No C path or exact verdict is claimed for selector 25.
+The reviewed actor switch pointers also show selectors 12 and 16 both enter
+`8003d720`, while 13 and 17 both enter `8003daa8`; those are two shared
+retail bodies, not four independently inferred behaviors. Their C paths remain
+unresolved.
+
+Selectors 28 and 30 have bounded source paths from the retail control flow.
+Selector 28 at `8003f138` starts animation and motion state, plays spatial
+sound 0x1b at the actor position, increments rotation X/Y by 128/64, and
+passes the contiguous actor +0x50 motion halfwords to `3b33c`. A nonzero
+collision result with bit 0x80 applies the twelve-argument `248a8` player
+damage call; any nonzero result then selects actor target type 3, zeroes the
+three motion halfwords, and sets actor byte +0x0d to 16. Selector 30 at
+`8003f224` proposes X/Y/Z from those signed motion halfwords and calls
+`2b9d4` with actor collision dimensions and the existing actor-state mode.
+It applies the same damage call on collision bit 0x80, commits the proposed
+position when collision is zero or has bit 0x80, and otherwise zeroes the
+motion halfwords. It clamps animation and selects type 3 at phase 4095.
+The two new C paths include the direct retail call sets and stack argument
+order. The incomplete dispatcher focused listing changes from 19.7% through
+22.3% after selector 30, then to 21.0% with selector 28; it remains WIP and
+the later score change does not outweigh the decoded branches.
 
 The connected `3c614` actor-group effect dispatcher has a proved correction
 for kind `0x79` (switch word 120 at `800120c8`). After the 600-step direction
@@ -1858,7 +1920,10 @@ support changing a referent or adding a synthetic local.
 
 The current 30-function actor call-graph control was rebuilt with focused
 `kf try --context 0 --no-flow` after the candidate +0x20 prefix and actor
-+0x72 tail-view corrections.
++0x72 tail-view corrections. After the later candidate +0x2c observed-prefix
+extension, focused exact controls in animation, motion collision, group
+position, fixed curve, message marker, event save, and actor damage were
+rechecked individually; their WIP siblings retained the listed verdicts.
 `SAME` below means an identical focused listing; no broad strict match was
 run for this checkpoint. The actor-motion, animation, damage, collision,
 group-position, and fixup units are connected by calls from `3d184` and
@@ -1879,5 +1944,5 @@ group-position, and fixup units are connected by calls from `3d184` and
 | `3bf74` | SAME | `3c000` | SAME |
 | `3c10c` | SAME | `3c220` | SAME |
 | `3c3e0` | WIP 95.4% | `3c614` | WIP 25.2% |
-| `3d184` | WIP 20.6% | `3f610` | SAME |
+| `3d184` | WIP 20.3% | `3f610` | SAME |
 | `3f7ec` | WIP 93.8% | `3f860` | SAME |

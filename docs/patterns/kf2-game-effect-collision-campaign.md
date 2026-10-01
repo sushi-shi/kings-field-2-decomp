@@ -1926,3 +1926,76 @@ successors aligned by block order. Its direct
 `NormalClip`, `NormalColorCol`, `DpqColor`, `Clip4FTP`, `Clip3FTP`, and
 clipped-triangle calls retain their reviewed referents. No source edit was
 retained for register or stack-placement differences alone.
+
+The latest focused rebuild still reports `0x8002f194` SAME, with
+`0x8002f5b0` at 82.6% and `0x8002f808` at 58.9% listing similarity; these
+focused numbers do not supersede the direct strict scores above. Retail reads
+the FT4 vertex indices in 0/1/2/3 order as the source spells them, whereas
+the compiler schedules the independent reads 0/2/1/3. Retail also writes the
+third clipped-triangle UV before the colors, matching C statement order but
+not the probe schedule. Neither observation warrants a source reorder.
+
+## TMD preparation and subdivision continuation
+
+This thirteen-function connected batch follows the prepared-object call from
+`0x80030c18` into `0x8002ff5c` and the adjacent TMD packet walkers. Fresh
+focused builds below retain the prior direct objdiff verdicts; `SAME` is a
+listing result, not a new strict certificate.
+
+| GAME VA | Current verdict |
+| --- | --- |
+| 0x8002d5dc | Focused SAME; prior direct strict 100% index-control helper. |
+| 0x8002d8b0 | Focused SAME; prior strict exact TMD register helper. |
+| 0x8002d8f0 | Focused SAME; prior strict exact TMD slot helper. |
+| 0x8002d910 | Focused SAME; prior strict exact TMD release helper. |
+| 0x8002d918 | Focused SAME; prior strict exact projection helper. |
+| 0x8002da94 | Focused SAME; prior strict exact vertex helper. |
+| 0x8002dbd8 | Focused SAME; prior strict exact transform helper. |
+| 0x8002dc80 | Focused SAME; prior strict exact depth-transform helper. |
+| 0x8002dd28 | Focused SAME; prior strict exact projection helper. |
+| 0x8002ddb4 | WIP, 93.6% focused; prior direct 97.34716%, CFG 44/42 blocks. |
+| 0x8002e4dc | WIP, 92.0% focused; prior direct 97.2784%, CFG 44/42 blocks. |
+| 0x8002ebe0 | WIP, 88.7% focused; prior direct 95.27945%, CFG 26/25 blocks. |
+| 0x8002ff5c | WIP, 12.0% focused; prior direct 51.50675%, CFG 11/11 blocks. |
+
+The `0x8002ff5c` retail body has a 1248-byte frame, a shared packet-word
+scratch at `sp+48`, and a 128-element `SVECTOR` midpoint workspace beginning
+at `sp+64`; the C body preserves those extents and all fourteen
+`resource_copy_words` call sites, but still allocates 1360 bytes. The raw
+entry duplicates its packet-header load before the FT4/FT3 dispatch; the
+source origin of that second load is not established, so no redundant read
+was added. KF1 has no corresponding midpoint subdivider source. In
+`0x8002ebe0`, temporary source-only trials mutating the blend argument in
+place and widening the fixed-depth parameter with explicit `s16` casts both
+compiled to the unchanged 88.7% listing. They were discarded; neither trial
+established the original signature or prevented GCC from hoisting the
+equivalent depth guard ahead of the four packet arms. A separate temporary
+probe nested the positive-depth test around the triangle insertion in
+`0x8002ddb4` and `0x8002e4dc`; both listings and their 44/42-block CFG gaps
+were unchanged. KF1's TMD renderer uses a different ordering-table depth
+policy, so its source is a shape lead only. No tracked TMD source edit was
+retained.
+
+The subdivider also stores halfwords to stack scratch and rereads individual
+bytes before writing packet index fields. A temporary `WRITE_INDEX` variant
+used a local halfword with byte views in place of direct shifts. It reduced
+the candidate frame from 1360 to 1344 bytes, but focused listing similarity
+fell from 12.0% to 7.6%; the 1248-byte retail frame and source-local scratch
+layout remain unproved. The variant was not retained.
+
+Another temporary probe built the first FT4 vertex-index words through a
+two-halfword union, matching the retail `sh`/`sh`/`lw` scratch sequence in
+shape. It left the focused listing at 11.9% versus the 12.0% baseline and
+did not resolve the entry/frame divergence; it was also discarded.
+
+## Effect constructor ownership handoff
+
+The earlier `0x80040308` 11.4% focused verdict above is historical. The
+separate actor-group callee pass retained retail-backed constructor case-body
+ordering: its new focused score is 27.9%, and isolated strict `.text` is
+69.41712% (5092 retail bytes versus 4456 compiled), with 116 retail versus
+103 compiled CFG blocks. Kind 6 iterates 24 entries of 24 bytes in each of
+four ring slots at `0x801d9628`, using the `DAT_8006d704` counter; the
+complete storage owner and kind-102 Sony-runtime-adjacent timer owner remain
+unproved. The constructor stays WIP, and this handoff leaves its source with
+the actor-group worker.

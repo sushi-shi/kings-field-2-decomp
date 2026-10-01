@@ -26,7 +26,7 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     KfCollisionRow *light_rotation;
     KfTmdObject *object;
     const u8 *cell_lighting;
-    s32 object_index;
+    u16 object_index;
     s32 red;
     s32 green;
     s32 blue;

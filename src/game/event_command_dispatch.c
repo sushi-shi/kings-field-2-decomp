@@ -64,7 +64,6 @@ void func_8004678c(const VECTOR *position,
 {
     s32 index;
     s32 object_control_offset;
-    s32 transition_control_offset;
     const u8 *magic_ids;
 
     event_state.state_word = 0;
@@ -93,20 +92,21 @@ void func_8004678c(const VECTOR *position,
             switch (status) {
             case 1:
                 audio_play_sound_64();
-                break;
+                event_state.state_word = 1;
+                goto invoke_callback;
             case 3:
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
-                break;
+                event_state.state_word = 1;
+                goto invoke_callback;
             case 4:
                 notify_enqueue(4);
-                break;
+                event_state.state_word = 1;
+                goto invoke_callback;
             case 0:
             default:
                 index++;
                 continue;
             }
-            event_state.state_word = 1;
-            break;
         }
         break;
     case 0x72:
@@ -144,13 +144,13 @@ object_control_action:
         }
         break;
     case 0x6f:
-        transition_control_offset = 0x28;
+        object_control_offset = 0x28;
         goto transition_action;
     case 0x70:
-        transition_control_offset = 0x2c;
+        object_control_offset = 0x2c;
         goto transition_action;
     case 0x71:
-        transition_control_offset = 0x30;
+        object_control_offset = 0x30;
 transition_action: {
         u8 previous_value;
         KfMapObject *object;
@@ -159,24 +159,24 @@ transition_action: {
         s16 yaw;
 
         if (state_8017d118.values_04[0] == 7 ||
-            event_state.control.bytes[transition_control_offset] == 0xff ||
+            event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
         }
         player_state.vitals.current_mp -= 10;
         func_80036e24(1, 0, 4096, 256);
         func_80038f20();
-        previous_value = event_state.control.bytes[transition_control_offset + 2];
+        previous_value = event_state.control.bytes[object_control_offset + 2];
         do {
             cd_request_yield();
             func_80016820();
         } while (state_8017d118.transition_active != 0);
-        if (previous_value == state_8017d118.values_04[0]) {
-            func_80016260(0xff, 0xff, 0xff, 0xff, 0xff,
-                          0x7f, 0x7f, 0x7f);
-        } else {
+        if (previous_value != state_8017d118.values_04[0]) {
             func_80016260(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
+        } else {
+            func_80016260(0xff, 0xff, previous_value, 0xff, 0xff,
+                          0x7f, 0x7f, 0x7f);
         }
         do {
             cd_request_yield();
@@ -184,7 +184,7 @@ transition_action: {
         } while (state_8017d118.transition_active != 0);
         cd_request_wait_idle();
 
-        object_index = *(u16 *)&event_state.control.bytes[transition_control_offset];
+        object_index = *(u16 *)&event_state.control.bytes[object_control_offset];
         object = &map_object_state.objects[object_index];
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);
@@ -196,8 +196,8 @@ transition_action: {
         player_state.camera_position.vx = object->position.vx + forward.x;
         player_state.camera_position.vz = object->position.vz + forward.z;
         player_state.camera_position.vy = object->position.vy;
-        event_state.state_word = 1;
         yaw = object->rotation.vy + 2048;
+        event_state.state_word = 1;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
         func_80036e24(1, 4096, 4096, 0);
@@ -249,14 +249,12 @@ transition_action: {
         audio_play_sound_at_volume_100(8);
         break;
     case 0x59: {
+        KfMapObject *scan = map_object_state.objects;
         KfMapObject *nearest = 0;
         s32 nearest_distance = 999999;
-        s32 remaining;
-        KfMapObject *scan;
+        s32 remaining = KF_MAP_OBJECT_CAPACITY - 1;
 
-        for (remaining = KF_MAP_OBJECT_CAPACITY - 1,
-             scan = map_object_state.objects;
-             remaining != -1; remaining--, scan++) {
+        for (; remaining != -1; scan++, remaining--) {
             KfMapObject *object = scan;
             s32 object_id = object->object_id;
             s32 distance;
@@ -357,17 +355,20 @@ magic_action: {
             cd_request_service_stream();
             func_800335a0(0, 0);
         }
-        do {
+        /* The first decay step precedes service; later steps follow it. */
+        goto decay_update;
+        for (;;) {
+            cd_request_service_vab();
+            cd_request_service_stream();
+            func_800335a0(0, 0);
+decay_update:
             object->unknown_10 -= 64;
             object->rotation.vy += spin;
             spin += 8;
             if ((s16)object->unknown_10 <= 0) {
                 break;
             }
-            cd_request_service_vab();
-            cd_request_service_stream();
-            func_800335a0(0, 0);
-        } while (1);
+        }
         object->unknown_10 = 0;
         do {
             object->rotation.vy += spin;
@@ -397,13 +398,11 @@ magic_action: {
                 goto invoke_callback;
             }
         }
-        index = func_80047434(0x4d);
-        if (index == 0) {
+        if (func_80047434(0x4d) == 0) {
             notify_enqueue(0x16);
             func_800473e0(0x52);
-            index = 1;
         }
-        event_state.state_word = index;
+        event_state.state_word = 1;
         break;
     case 0x55: {
         s32 side = player_state.unknown_128 == 0 ? 1 : 2;
@@ -421,8 +420,8 @@ magic_action: {
             s32 remaining;
             KfMapObject *scan;
 
-            for (remaining = KF_MAP_OBJECT_CAPACITY - 1,
-                 scan = map_object_state.objects;
+            for (scan = map_object_state.objects,
+                 remaining = KF_MAP_OBJECT_CAPACITY - 1;
                  remaining != -1; remaining--, scan++) {
                 KfMapObject *object = scan;
 

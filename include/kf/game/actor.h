@@ -109,6 +109,34 @@ typedef union KfTargetCandidateWord18 {
 typedef char kf_target_candidate_word18_size[
     sizeof(KfTargetCandidateWord18) == 2 ? 1 : -1];
 
+typedef union KfTargetCandidateWord1c {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1c;
+typedef char kf_target_candidate_word1c_size[
+    sizeof(KfTargetCandidateWord1c) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord1e {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1e;
+typedef char kf_target_candidate_word1e_size[
+    sizeof(KfTargetCandidateWord1e) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord26 {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfTargetCandidateWord26;
+typedef char kf_target_candidate_word26_size[
+    sizeof(KfTargetCandidateWord26) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord24 {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfTargetCandidateWord24;
+typedef char kf_target_candidate_word24_size[
+    sizeof(KfTargetCandidateWord24) == 2 ? 1 : -1];
+
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
@@ -125,10 +153,16 @@ typedef struct KfTargetCandidate {
     KfTargetCandidateWord16 word_16;
     KfTargetCandidateWord18 word_18;
     u16 unknown_1a;
-    u16 unknown_1c;
-    u16 unknown_1e;
+    KfTargetCandidateWord1c word_1c;
+    KfTargetCandidateWord1e word_1e;
+    u16 unknown_20;
+    u16 unknown_22;
+    KfTargetCandidateWord24 word_24;
+    KfTargetCandidateWord26 word_26;
+    u16 unknown_28;
+    u16 unknown_2a;
 } KfTargetCandidate;
-typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x20 ? 1 : -1];
+typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x2c ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
 typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
@@ -147,8 +181,14 @@ typedef char kf_target_candidate_word_16_offset[(u32)&((KfTargetCandidate *)0)->
 typedef char kf_target_candidate_word_16_high_offset[(u32)&((KfTargetCandidate *)0)->word_16.bytes.high == 0x17 ? 1 : -1];
 typedef char kf_target_candidate_word_18_offset[(u32)&((KfTargetCandidate *)0)->word_18 == 0x18 ? 1 : -1];
 typedef char kf_target_candidate_word_18_high_offset[(u32)&((KfTargetCandidate *)0)->word_18.bytes.high == 0x19 ? 1 : -1];
-typedef char kf_target_candidate_unknown_1c_offset[(u32)&((KfTargetCandidate *)0)->unknown_1c == 0x1c ? 1 : -1];
-typedef char kf_target_candidate_unknown_1e_offset[(u32)&((KfTargetCandidate *)0)->unknown_1e == 0x1e ? 1 : -1];
+typedef char kf_target_candidate_word_1c_offset[(u32)&((KfTargetCandidate *)0)->word_1c == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_word_1e_offset[(u32)&((KfTargetCandidate *)0)->word_1e == 0x1e ? 1 : -1];
+typedef char kf_target_candidate_unknown_20_offset[(u32)&((KfTargetCandidate *)0)->unknown_20 == 0x20 ? 1 : -1];
+typedef char kf_target_candidate_unknown_22_offset[(u32)&((KfTargetCandidate *)0)->unknown_22 == 0x22 ? 1 : -1];
+typedef char kf_target_candidate_word_24_offset[(u32)&((KfTargetCandidate *)0)->word_24 == 0x24 ? 1 : -1];
+typedef char kf_target_candidate_word_26_offset[(u32)&((KfTargetCandidate *)0)->word_26 == 0x26 ? 1 : -1];
+typedef char kf_target_candidate_unknown_28_offset[(u32)&((KfTargetCandidate *)0)->unknown_28 == 0x28 ? 1 : -1];
+typedef char kf_target_candidate_unknown_2a_offset[(u32)&((KfTargetCandidate *)0)->unknown_2a == 0x2a ? 1 : -1];
 
 /* Group slots hold byte offsets until actor_fixup_group_targets runs. */
 typedef union KfTargetReference {

@@ -201,3 +201,87 @@ constant placement. The isolated strict `.text` result rises to
 **93.818756%** and shrinks from 3260 to 3196 candidate bytes against 3156
 retail bytes; `.data` remains 40/40 exact. Its jump-table target addends
 remain different because the rest of the function has not closed.
+
+The first object-action result switch had one more source-level join error.
+Retail's status 1, 3, and 4 blocks each call its sound/notification routine,
+store `event_state.state_word = 1`, then jump straight to the common callback;
+the status-0/default path alone increments the search index and repeats.
+The prior C broke out of the inner switch and used one common state store,
+which moved two stores and their branch destinations. Sending each successful
+arm directly to `invoke_callback` reproduces the complete raw prefix through
+the next command stubs, including all three stores and their jump delay
+slots. Isolated strict `.text` rises to **95.257286%** (3204 candidate bytes
+versus 3156 retail), with `.data` still exact and `.rodata` 57.857143%.
+This remains WIP until later CFG and all jump-table addends close.
+
+The transition's first color call also had its source arms inverted relative
+to retail's branch layout. Retail branches on equality to the all-`0xff`
+case and falls through to the repeated `previous_value` arguments on
+inequality. Spelling the C as `if (previous_value != current)` puts those
+argument stores and the shared call in retail order without changing
+behavior. The isolated strict `.text` result rises to **95.612170%** at the
+same 3204-byte candidate size; `.rodata` remains 57.857143% and WIP.
+
+In the same transition, retail stores the selected object's Y position into
+the camera before loading its yaw, writing event state, and adding 2048 to
+that yaw. Placing the yaw expression before the event-state assignment in C
+restores that load/store schedule without changing the state transition.
+The probe emits the retail sequence (`lw`/`nop`, camera `sw`, `lhu` yaw,
+`li 1`, event-state `sw`, `addiu 2048`) and raises isolated strict `.text` to
+**96.226870%** at 3204 candidate bytes; the jump-table addends remain WIP.
+
+The `0x59` scan backedge also specifies an ordered pair of side effects:
+advance the first object pointer by 68, decrement the remaining count,
+compare it with `-1`, then advance the second pointer in the branch delay
+slot. Reversing the C `for` increment expressions to `scan++, remaining--`
+recovers all four instructions in that order. Strict `.text` reaches
+**96.254750%** with unchanged candidate size and data; this is a loop-order
+correction, not exact closure.
+
+The magic animation's decay loop has one unusual but decoded CFG entry: after
+the initial interpolation loop, execution skips the service calls and enters
+the decrement/rotation update first. If the signed height remains positive,
+it branches backward to three service calls, then falls through to the same
+update. A source label on the shared update and one initial `goto` express
+that fact without duplicating the body or adding a synthetic flag. The
+probe now emits the retail first-loop exit (`beqz` then jump with stack-store
+delay slot), the three-call service block, and the `bgtz` backedge with
+`spin += 8` in its delay slot. Isolated strict `.text` rises to
+**97.699620%** (retail 3156 bytes); `.data` stays 40/40 exact and
+`.rodata` improves to 66.071430%, but table target addends and later paths
+still differ, so the function remains WIP.
+
+The command `0x52` result path stores literal `1` whether
+`func_80047434(0x4d)` returns zero or nonzero: the nonzero branch has
+`li v0,1` in its delay slot, and the zero path's jump to the shared store
+has the same delay-slot load. The earlier C stored the helper's return
+value, which happens to be Boolean in the currently modeled callee but did
+not express the raw dispatcher write. Calling the helper in the condition
+and storing literal `1` reproduces both delay slots and shared-store join.
+Isolated strict `.text` rises to **98.567810%** (retail 3156 bytes),
+with `.data` exact and `.rodata` still 66.071430% from displaced labels.
+
+Both object searches initialize a 68-byte pointer and a countdown to 395.
+Putting the pointer assignment before the count in the `0x55` `for` header
+keeps the count setup after the actor rejection, as retail does; the compiled
+text returns to the retail **3156-byte** size instead of 3152 bytes. Using
+the same offset local for the `0x72..0x74` object controls and `0x6f..0x71`
+transition controls matches their shared `0x28/0x2c/0x30` domain and makes
+both arms use retail's saved `s1` offset register. Initializing the `0x59`
+scan pointer before the nearest result, distance, and count makes GCC emit
+their entire retail setup order. These are source-equivalent loop and
+local-ownership corrections. At this stage the source is **99.334600%** strict
+`.text` at the retail 3156-byte size and **82.142860%** `.rodata`, with
+`.data` 40/40 exact. The remaining color-call join, magic-record scan
+registers, and table targets keep this function WIP.
+
+The equal-value color path was still modeled with five `0xff` channel
+arguments. Retail retains the saved previous value in `$a2` on that path:
+its first three arguments are `0xff, 0xff, previous_value`. Correcting that
+third argument removes the candidate's extra `li a2,0xff` and reproduces the
+entire first color-call join. The resulting candidate text is 3152 bytes
+against retail's 3156, while isolated strict `.text` improves to
+**99.493030%**; `.data` remains exact and `.rodata` is **80.357140%**.
+The missing four bytes and later magic scan register/label differences remain
+unattributed. The raw argument correction is retained despite the shorter
+text and lower focused listing score.

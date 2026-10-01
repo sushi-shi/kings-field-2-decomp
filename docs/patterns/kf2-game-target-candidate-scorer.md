@@ -194,3 +194,125 @@ form. It was discarded; the retained source has one actor cursor. For
 match the retail call set; its 72/71 block residue remains at the final
 linked-actor target-type guard. There is no supported source correction from
 this review.
+
+## Group-effect switch follow-up
+
+`game.actor_group_effects` at `0x8003c614` remains WIP. Its 123-word retail
+switch table at `0x80011ee8` maps kind `0x7b` to `0x8003c7c8`, where the
+second script word is loaded and a nonzero value branches directly to the
+common effect path at `0x8003c7ec`. A zero value falls through the spatial
+audio call at `0x8003c7d8`; kinds `7` and `0x20` enter that audio path
+directly. The retained source now puts the `0x7b` guard before the audio
+case and uses one common effect label. Focused listing moved 26.9% to 27.1%,
+with retail/compiled CFG blocks 45/48 to 45/47 and branches 15/18 to 15/17.
+
+The same retail table sends kinds `9` and `0x21` to `0x8003c9d4`, where the
+call to `func_80040308` receives an extra stack argument `0xfe` at `20(sp)`.
+Kind `0x16` enters `0x8003ca8c`, which calls the same effect routine without
+that argument. Their formerly shared C case hid this call-argument difference;
+the retained source separates the cases. This semantic split alone yielded
+26.7% focused listing DIFF, down from 27.1%; the raw call-site evidence
+governs the source.
+
+The decoded jump table and raw body addresses also support the lexical case
+order `0x7b`, `0x79`, `4`, `0x28`, `9`/`0x21`, `0x18`, `2`, `0x16`, `0x17`,
+`0x6c`, `1`/`0x1c`, `0x1a`/`0x1b`, `0x0c`, `0x78`, `0x6e`, `0x70`,
+`0x1d`/`0x1f`. A source-only reorder to this sequence raised focused listing
+similarity from 26.7% to 41.1%, and the compiled `0x7b` entry still
+directly loads the second script word before the audio/common path. Retail
+sets its effective kind register to `0x20` in the delay slot of the
+`0x7b` guard branch at `0x8003c7d4`. Modeling that as a local `kind = 0x20`
+before the guard, instead of a ternary at the later effect call, raises the
+retained focused listing to **41.2%** and narrows retail/compiled CFG counts
+to 45/46 blocks and 15/16 branches. It remains WIP: the first CFG divergence
+is still in the dispatch prelude; frame and register assignments also differ.
+The neighboring exact actor helpers in the table above were unaffected by
+this source-only change. An isolated current object comparison reports
+80.967064% strict `.text` similarity (`2672` retail bytes versus `2792`
+compiled) and 7.9268293% `.rodata` similarity (`492` bytes on each side);
+the matching `.rel.text` and `.rel.rodata` section sizes alone do not prove
+ordered relocation equality.
+
+The connected 22-function actor-group call/control pass used ten quick,
+focused GAME unit builds. `SAME` below means current listing equality, not
+a fresh isolated strict section audit. The WIP scores are focused listing
+similarities; the group-effect strict object result is given above.
+
+| GAME VA | Relation to group-effect path | Focused verdict |
+| --- | --- | --- |
+| `0x80013f50` | Spatial audio callee | SAME |
+| `0x80015034` | Pitch/yaw vector callee | SAME |
+| `0x80015104` | Rotation callee | SAME |
+| `0x80015188` | Vector scale callee | SAME |
+| `0x80015468` | Two-axis length callee | SAME |
+| `0x800154a8` | Three-axis length callee | SAME |
+| `0x800154fc` | Pitch/yaw calculation callee | SAME |
+| `0x8001584c` | Fixed interpolation callee | SAME |
+| `0x8001586c` | Adjacent interpolation control | SAME |
+| `0x800158b4` | Adjacent interpolation control | SAME |
+| `0x80015918` | Trajectory solver callee | WIP, 85.2% |
+| `0x80015bc8` | Adjacent trajectory control | SAME |
+| `0x80015ce0` | Predicted target callee | SAME |
+| `0x80038cc8` | Actor pool callee | SAME |
+| `0x80038e38` | Group initializer callee | SAME |
+| `0x80039758` | Group target selector callee | SAME |
+| `0x8003c000` | Vertex-position callee | SAME |
+| `0x8003c10c` | Adjacent position control | SAME |
+| `0x8003c220` | Adjacent position control | SAME |
+| `0x8003c3e0` | Direction solver callee | WIP, 95.4% |
+| `0x8003c614` | Group-effect switch | WIP, 41.2% |
+| `0x80040308` | Effect constructor callee | WIP, 28.0% |
+
+The direction solver `0x8003c3e0` has the retail call set, typed
+`player_state+0xe8` referent, and a matching 80-byte frame. Its current
+focused diff consists of an `a2`/`v1` register assignment exchange across
+the yaw-error fraction calculation at retail `0x8003c498..0x8003c4d8`;
+the three exact siblings in `actor_group_position.c` remain SAME. No source
+fact justifies a register-steering edit, so this WIP is unchanged.
+
+The trajectory solver `0x80015918` has matching retail/compiled CFG counts
+(41 blocks, 24 branches, one return), the same calls to `SquareRoot0` twice
+and `vector_xz_to_angle` once, and its first difference is the destination
+register of the second discriminant subtraction at retail `0x800159d8`.
+Retail checks positive longer-time before rejecting nonpositive shorter-time
+at `0x80015a70..0x80015a80`. A temporary C rewrite expressing that order
+kept the focused listing at 85.2% and both exact siblings SAME; it was
+discarded because it did not explain the remaining register assignments.
+
+## Connected effect-constructor switch
+
+The same group-effect switch calls `func_80040308` in GAME at `0x80040308`.
+Its 123-word retail jump table at `0x8001249c` has 62 distinct in-body
+targets. The current C has 48 case-body groups and 68 explicit kind labels;
+kind `6` and `102` still have unresolved buffer/timer ownership and only
+placeholder bodies. Decoding the retail target words gives a concrete body
+sequence, beginning kinds `7`/`49`, `32`, `4`, `28`/`1`, `26`, `27`, and
+`111`, and ending `109`, `120`, then default. A source-only reorder of the
+existing case-body groups to those retail addresses preserves each case
+body and label, without inventing the missing kinds.
+
+The retained case order moves focused listing similarity from 11.4% to
+27.9%. More decisively, isolated direct objdiff on the 5,092-byte retail
+function raises strict `.text` similarity from 38.156322% to 69.41712%;
+compiled `.text` is 4,456 bytes. The 492-byte `.rodata` switch table
+falls from 21.036585% to 11.99187% because the case targets still differ;
+both objects have equal `.rel.text` and `.rel.rodata` section sizes but
+ordered relocations remain unproved. Focused CFG is retail/compiled 116/103
+blocks and 22/23 branches before the next correction. Retail kind `28` at
+`0x8004058c` sets three scales to `0x800`, then falls through to kind `1`
+at `0x8004059c`. Replacing the shared C arm's `if (kind == 28)` with the
+same fall-through structure raises focused listing to **28.0%** and reduces
+the compiled CFG to 101 blocks and 22 branches. The final isolated direct
+objdiff is **69.49961%** `.text` (4,444 compiled bytes) and 16.666668%
+`.rodata`. This is a body-layout improvement, not closure,
+and the unresolved live variants and frame/argument allocation remain WIP.
+
+The two placeholder paths were reviewed without a source claim. Kind `6`
+starts at `0x800409e4`, uses `DAT_8006d704` as a modulo-four slot counter,
+and computes `0x801d9628 + slot * 576`; it then copies 24 entries of 24
+bytes each from the current record into that ring slot. The implied four-slot
+extent is 2,304 bytes, but `0x801d9628` is outside the GAME load and lacks a
+proved complete owner. Kind `102` starts at `0x80041204` and reads/writes
+`0x8009a5a8`, a timer word within a mixed Sony malloc/Psy-Q CD neighborhood.
+The owner of that word is also unresolved. Neither raw address is replaced
+with an invented global or build placement.

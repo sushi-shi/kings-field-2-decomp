@@ -38,6 +38,9 @@ void func_8003247c(void)
     const VECTOR *actor_position_ptr;
     KfMapObject *object;
     KfEffectRecord *effect;
+    KfPoolRecord **effect_cache;
+    SVECTOR *effect_scale_ptr;
+    const struct KfEulerAngles *effect_rotation_ptr;
     KfMapPlacedEntry *placed;
     s32 frame;
     s16 remaining;
@@ -234,6 +237,9 @@ map_object_next:
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
+    effect_cache = (KfPoolRecord **)&effect->unknown_3c[0];
+    effect_scale_ptr = (SVECTOR *)&effect->scale_x;
+    effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         MATRIX *world_matrix;
@@ -253,11 +259,11 @@ map_object_next:
             world_matrix = &game_graphics_runtime.render_state.view_matrix;
             break;
         case 4:
-            angles = (const struct KfEulerAngles *)&effect->rotation;
+            angles = effect_rotation_ptr;
             world_matrix = &render_world_identity_matrix;
             break;
         case 8:
-            angles = (const struct KfEulerAngles *)&effect->rotation;
+            angles = effect_rotation_ptr;
             world_matrix = &game_graphics_runtime.render_state.pitch_matrix;
             break;
         case 12:
@@ -266,8 +272,8 @@ map_object_next:
             goto effect_next;
         }
         func_80031850(effect->unknown_0a, effect->render_id + 0x28,
-                       &effect->position, angles, (SVECTOR *)&effect->scale_x,
-                       (KfPoolRecord **)&effect->direction, world_matrix,
+                       &effect->position, angles, effect_scale_ptr,
+                       effect_cache, world_matrix,
                        effect->animation_clip, effect->unknown_12,
                        effect->unknown_0c, effect->unknown_10,
                        effect->unknown_09, -60);
@@ -276,15 +282,19 @@ map_object_next:
 effect_special_draw:
         func_80031850(effect->unknown_0a, effect->render_id + 0x28,
                        &effect->position,
-                       (const struct KfEulerAngles *)&effect->rotation,
-                       (SVECTOR *)&effect->scale_x,
-                       (KfPoolRecord **)&effect->direction, 0,
+                       effect_rotation_ptr,
+                       effect_scale_ptr,
+                       effect_cache, 0,
                        effect->animation_clip, effect->unknown_12,
                        effect->unknown_0c, effect->unknown_10,
                        effect->unknown_09, 0x14);
 effect_next:
         effect++;
 effect_count_tail:
+        effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
+        effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
+        effect_rotation_ptr = (const struct KfEulerAngles *)(
+            (const u8 *)effect_rotation_ptr + sizeof *effect);
         remaining--;
     }
 

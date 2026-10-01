@@ -182,7 +182,7 @@ needed or retained.
 | `game.graphics_sliding_panels` | 2/2 exact |
 | `game.graphics_color_bytes_draw` | 1/1 exact |
 | `game.graphics_color_bytes_set` | 1/1 exact |
-| `game.render_world_model` | `0x80031850` WIP, 95.0% |
+| `game.render_world_model` | `0x80031850` WIP, 95.32836% |
 | `game.render_animated_object` | `0x80031d8c` WIP, 94.65414% |
 | `game.render_frame` | 2/2 exact |
 | `game.animation_sparse_vertices` | 3/3 exact |
@@ -210,3 +210,43 @@ Its direct strict score rises from 90.63798% to **90.69262%**. The body
 still has 96/96 CFG blocks and 54/54 branches, with the first successor
 discrepancy at effect-pass B62; the 32-byte identity matrix remains exact.
 No effect-pass source shape was inferred from the small score change.
+
+The effect renderer's sixth argument has a separate raw-proven field owner.
+Retail initializes its effect cache cursor at each record's `+0x3c`, passes
+that address to both normal and special `func_80031850` calls, and advances
+the cursor by the 72-byte record stride. The earlier C passed the direction
+vector at `+0x34`. Both calls now use the first word of the record's existing
+12-byte tail; no other source reads or writes that first word. The rest of
+the tail still lacks a complete shared field model, so its name remains WIP.
+The C now keeps a typed cache pointer separate from the record pointer
+through the loop and advances it by `sizeof(KfEffectRecord)` at the shared
+count tail, matching the retail `s3 += 72` instruction. A parallel typed
+scale cursor begins at record `+0x2c`, feeds both render calls, and advances
+by the same record stride, matching retail `s2 += 72`. The rotation cursor
+begins at record `+0x24`, supplies modes 4, 8, and 12, and advances 72 bytes
+in parallel with retail `s5`. Focused compilation confirms all three typed
+member addends; direct strict objdiff rises from **90.69262%** through
+**91.10109%** and **91.64891%** to **92.00273%**, with the 32-byte identity
+matrix exact. The first differing CFG successor remains at effect-pass B62,
+so these cursor findings do not close the dispatcher. Retail proves the
+distinct pointer values and strides; whether the original C spelled each as
+a separate local remains WIP.
+
+A fresh two-unit map-cell/asset-registry control after the effect cursor edits
+retains **6/7 strict exact** functions and 540/540 initialized map-cell data
+bytes. `render_map_cell_object` is unchanged at **96.521736%** direct strict:
+its focused 98.7% listing differs only in the order of the independent
+orientation-byte load, third-argument move, and first view-matrix address
+setup before `SetRotMatrix`. The other three map-cell functions and all
+three asset-registry functions remain exact. No source edit was justified by
+that entry schedule.
+
+The world-model object's selected index is now a `u16` local. Retail narrows
+the `clip & 0x7f` result with `andi` before the object-selection calls, and
+the shared `tmd_select_object_vertices`, `tmd_get_object`, and packet-render
+APIs take a `u16` object index. The previous `s32` local omitted that
+conversion. A focused off-tree source probe improved the listing from 84.2%
+to 87.1%; the retained source improves fresh direct strict objdiff from
+**95.0% to 95.32836%**. The same 12-unit graphics/TMD control remains
+**24/27 exact**, with its other two WIPs unchanged. The remaining
+world-model register and instruction-order differences are unresolved.

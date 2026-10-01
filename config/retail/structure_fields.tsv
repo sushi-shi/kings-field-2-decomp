@@ -678,8 +678,14 @@ KfTargetCandidate	0x14	0x2	word_14	KfTargetCandidateWord14	supported	GAME 0x8003
 KfTargetCandidate	0x16	0x2	word_16	KfTargetCandidateWord16	supported	GAME 0x80039108 lhu target+0x16;GAME 0x8003ef34/0x8003eff0 lbu	shared unsigned halfword and byte view; meaning unresolved
 KfTargetCandidate	0x18	0x2	word_18	KfTargetCandidateWord18	supported	GAME 0x8003e078 lhu candidate+0x18;GAME 0x8003ebe0 lbu candidate+0x19	shared unsigned halfword and high-byte view
 KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
-KfTargetCandidate	0x1c	0x2	unknown_1c	u16	supported	GAME 0x8003e640 lhu target+0x1c	motion-helper second argument; meaning unresolved
-KfTargetCandidate	0x1e	0x2	unknown_1e	u16	supported	GAME 0x8003e644 lhu target+0x1e	motion-helper third argument; meaning unresolved
+KfTargetCandidate	0x1c	0x2	word_1c	KfTargetCandidateWord1c	supported	GAME 0x8003e640 lhu;GAME 0x8003e1d0/0x8003e1d4 lbu	shared motion halfword and byte view; meaning unresolved
+KfTargetCandidate	0x1e	0x2	word_1e	KfTargetCandidateWord1e	supported	GAME 0x8003e644 lhu;GAME 0x8003e1d8/0x8003e1f8 lbu	shared motion halfword and byte view; meaning unresolved
+KfTargetCandidate	0x20	0x2	unknown_20	u16	supported	GAME 0x8003e280 lhu candidate+0x20	animation phase boundary; meaning unresolved
+KfTargetCandidate	0x22	0x2	unknown_22	u16	supported	GAME 0x8003e260 lhu candidate+0x22	animation phase boundary; meaning unresolved
+KfTargetCandidate	0x24	0x2	word_24	KfTargetCandidateWord24	supported	GAME 0x8003e1ec lhu;GAME 0x8003e298 lh	unsigned damage value and signed motion parameter; meaning unresolved
+KfTargetCandidate	0x26	0x2	word_26	KfTargetCandidateWord26	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh	unsigned bound and signed motion parameter; meaning unresolved
+KfTargetCandidate	0x28	0x2	unknown_28	u16	supported	GAME 0x8003e140 lhu candidate+0x28	state increment; meaning unresolved
+KfTargetCandidate	0x2a	0x2	unknown_2a	u16	supported	GAME 0x8003e1ac lhu candidate+0x2a	optional phase threshold; meaning unresolved
 KfTargetCandidateWord0c	0x0	0x2	value	u16	supported	GAME 0x800462bc lhu candidate+0x0c	halfword view
 KfTargetCandidateWord0c	0x0	0x2	bytes	KfTargetCandidateWord0cBytes	supported	GAME 0x8003e648 lbu candidate+0x0d	byte view
 KfTargetCandidateWord0cBytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x0c
@@ -704,6 +710,14 @@ KfTargetCandidateWord16Bytes	0x0	0x1	low	u8	supported	GAME 0x8003ef34 lbu candid
 KfTargetCandidateWord16Bytes	0x1	0x1	high	u8	supported	GAME 0x8003eff0 lbu candidate+0x17	high byte passed as wrapped animation step
 KfTargetCandidateWord18	0x0	0x2	value	u16	supported	GAME 0x8003e078 lhu candidate+0x18	unsigned phase threshold or state value
 KfTargetCandidateWord18	0x0	0x2	bytes	KfTargetCandidateWord18Bytes	supported	GAME 0x8003ebe0 lbu candidate+0x19	byte view
+KfTargetCandidateWord1c	0x0	0x2	value	u16	supported	GAME 0x8003e294 lhu candidate+0x1c	unsigned halfword view
+KfTargetCandidateWord1c	0x0	0x2	bytes	u8[2]	supported	GAME 0x8003e1d0/0x8003e1d4 lbu candidate+0x1c/+0x1d	byte view
+KfTargetCandidateWord1e	0x0	0x2	value	u16	supported	GAME 0x8003e2d4 lhu candidate+0x1e	unsigned halfword view
+KfTargetCandidateWord1e	0x0	0x2	bytes	u8[2]	supported	GAME 0x8003e1d8/0x8003e1f8 lbu candidate+0x1e/+0x1f	byte view
+KfTargetCandidateWord24	0x0	0x2	unsigned_value	u16	supported	GAME 0x8003e1ec lhu candidate+0x24	unsigned damage value view
+KfTargetCandidateWord24	0x0	0x2	signed_value	s16	supported	GAME 0x8003e298 lh candidate+0x24	signed motion-step view
+KfTargetCandidateWord26	0x0	0x2	unsigned_value	u16	supported	GAME 0x8003e154 lhu candidate+0x26	unsigned bound view
+KfTargetCandidateWord26	0x0	0x2	signed_value	s16	supported	GAME 0x8003e274 lh candidate+0x26	signed motion-step view
 KfTargetCandidateWord18Bytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x18
 KfTargetCandidateWord18Bytes	0x1	0x1	high	u8	supported	GAME 0x8003ebe0 lbu candidate+0x19	high byte used as animation step
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved

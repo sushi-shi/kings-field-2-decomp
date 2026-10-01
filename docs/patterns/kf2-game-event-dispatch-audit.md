@@ -18,10 +18,22 @@ The dispatcher transition path's two `func_80016260` arms at
 `0x80046ab4..0x80046b08` retain the same five unsigned-byte controls and
 three signed-byte offsets as the shared header. The three service loops in
 the magic branch have the retail `cd_request_service_vab`,
-`cd_request_service_stream`, and `func_800335a0` call sets. Their branch
-layout differs from the focused C probe, but no missing service call or
-different loop bound was found. The terminal `jalr` at `0x80047388` still
-has a loaded callback-table slot, not a proved fixed callee.
+`cd_request_service_stream`, and `func_800335a0` call sets. A shared
+`decay_update` entry after the first animation loop now reproduces the raw
+forward exit at `0x800470b8`, separate back-jump and stack-argument delay
+slot at `0x800470c0/0x800470c4`, and the decay service backedge from
+`0x80047104` to `0x800470c8`. The growth update at `0x80047130` similarly
+precedes its service backedge to `0x80047114`. The terminal `jalr` at
+`0x80047388` still has a loaded callback-table slot, not a proved fixed
+callee.
+
+Command `0x52` reaches `func_80047434(0x4d)` at `0x800471dc`. Its nonzero
+outcome branches to the shared state store with `li v0,1` in the branch
+delay slot at `0x800471e8`; its zero outcome calls `notify_enqueue(0x16)`
+and `func_800473e0(0x52)`, then jumps to the same store with `li v0,1` at
+`0x80047200`. The source now states the literal-one write explicitly.
+These source-backed dispatcher corrections reached 98.56781% strict text
+similarity in an isolated comparison; the remaining residue is WIP.
 
 The adjacent event family was reviewed with focused unit comparisons:
 
@@ -32,10 +44,21 @@ The adjacent event family was reviewed with focused unit comparisons:
 | `0x800461a0` | Previously verified WIP, 99.12676% strict; cursor-register/increment order. |
 | `0x800462bc` | Focused DIFF, 90.5% listing; the script execution gate loads actor +24 halfword and candidate +12 byte in the opposite order, with one extra candidate load-delay `nop`. No width mismatch is proved. |
 | `0x80046700` | Previously verified exact event-object spawn callee. |
-| `0x8004678c` | WIP command controller; the direct five-case correction above was communicated to its source owner. |
+| `0x8004678c` | WIP command controller; direct five-case, decay-join, and command `0x52` state-one corrections retained. Latest isolated strict text comparison: 98.56781%. |
 | `0x800473e0`, `0x80047434`, `0x800474c4` | Previously verified strict exact counter and transition callees. |
 | `0x800475d8` | Focused DIFF, 89.4% listing; retail keeps the selected map template in `$s1`, probe in `$s0`, affecting the pose-loop saved-register lifetimes. |
 | `0x80047c98` | Focused DIFF, 86.3% listing; retail keeps the rotation argument in `$s4`, probe in `$s5`. The linked-object notify branch is ordered differently; calls and typed referents remain present. |
+| `0x800482f8`, `0x800483a8`, `0x800483d8`, `0x80048428`, `0x80048498`, `0x800484e4` | Focused 6/6 identical listings in the event-state unit. |
+| `0x80048554` | Focused identical listing in the event-save unit. |
+| `0x800489ac` | WIP, 98.82883% previously recorded strict and 95.1% current focused listing; retail puts the actor-state base in `$a1` and the `0xff` sentinel in `$a2`, while the probe exchanges them. Calls, referents, and branches remain present. |
+
+For `0x80047c98`, retail `0x80048150..0x80048190` has one
+`notify_enqueue(6)` block reached when the linked index is `0xffff` or the
+linked object's ID is `0xff`. Two source-equivalent branch formulations for
+this kind-five handler compiled to the existing candidate listing, so the
+original concise condition was retained. Reordering the two stream pointers
+in `0x800461a0` likewise did not correct the retail cursor/marker register
+roles and was reverted. No speculative source edit was kept for these WIPs.
 
 KF1 `master` `src/game/map_scripts.c`, including history commit `bf051cfa`,
 has related magic-record updates and blocking scene-animation loops, while

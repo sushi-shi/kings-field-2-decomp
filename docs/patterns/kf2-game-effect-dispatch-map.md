@@ -100,7 +100,7 @@ other calls; it is a guide to inspect, not trustworthy C source.
 
 The current `src/game/effect_update_dispatch.c` claims the full retail body
 at `0x80042650 / 0x3670` and models many kind and phase arms. A focused
-rebuild emits 13,984 text bytes against 13,936 retail bytes; direct strict
+rebuild emits 13,892 text bytes against retail's 13,936; direct strict
 objdiff reports 0.0%, so this is a substantive WIP, not an exact function.
 The first compiled instructions already differ in frame size and saved-register
 setup. Retail kind 6 uses a five-entry phase jump table and its phase-1 path
@@ -112,17 +112,41 @@ but their code offsets differ. The collision-cache words around
 `0x801d8d40..0x801d8d5c` remain provisional because the current equipment
 record extent overlaps them; several dispatcher arms read those words. Do not
 create overlapping globals or collapse those arms to improve the metric.
+Retail entry loads `current_record`, `current_magic`, the unsigned kind byte,
+and the phase byte before dispatch. Kind zero compares that saved phase after
+several calls, and shared kind-103/104 handlers distinguish the saved kind.
+The source now captures those entry values before the switch instead of
+reloading them inside later arms; kinds 7/49, 10, 12, and 13/32 consume the
+saved phase where retail does. The focused prelude consequently loads and
+keeps magic, kind, and phase before the table, though its frame and register
+allocation still differ from retail. KF1's smaller `effect_dispatch.c` also
+captures current record, magic, kind, and phase before its switch; this is a
+source-shape lead, with the KF2 prelude and kind-zero branch providing the
+independent evidence here.
 
-The direct external-call multiset is still unequal: source has 209 `jal`
-sites against retail's 206. Relative to retail, source has one extra
-`func_8003feb0`, two extra `func_80041cd0`, one extra `func_80041e94`, and
-one fewer `func_80040308`. Retail kind 20 at `0x80043cb8` prepares
+The direct external-call multiset is still unequal: source has 205 `jal`
+sites against retail's 206. Only `func_80040308` differs in count (26 versus
+27); every other external target count agrees. Kind 114's source path does
+call that constructor, but the current compiler tail-merges its `jal` with
+another case at source offset `+0x3494`, whereas retail has a distinct `jal`
+at `0x800459e8`. This is a codegen/control-flow residue, not evidence to add
+another semantic call.
+
+Retail kind 20 at `0x80043cb8` prepares
 `(0x4000, 0x100, 0x20)` and jumps into the shared `func_80041cd0` call at
-`0x80044f30`; the same join receives a kind-12 phase path. That call's
+`0x80044f30`; the same join receives a kind-12 phase path and a kind-10 path.
+That call's
 continuation increments record halfword `+0x26`, which is rotation Y. The
-source's former kind-20 Z increment was corrected to Y; the focused object
-still compiles at 13.3% listing similarity. The remaining shared-call shape
-and other call-count differences need direct path-by-path reconstruction.
+source's former kind-20 Z increment was corrected to Y, and the three source
+paths now join before one call. The kind-12 collision continuation jumps to
+the kind-8 `func_80041e94` call at `0x80044aa4`, so those source paths now
+share one call. Kinds 7/49 and 13/32 share the retail
+`func_80042424`/`func_8003feb0` block at `0x800428d8` and the growth tail at
+`0x80042908`; the source now models that join. Conversely, kind 103/121 has
+two distinct `func_80042424` sites at `0x80043760` and `0x80043774`, and
+the source spells them in their respective phase branches. The focused
+listing is 13.0% similar and strict text remains 0.0%; the lower intermediate
+listing score does not falsify those directly decoded paths.
 
 The subsequent primary-target pass checked the retail body and all incoming
 and outgoing xrefs again. The first kind handler, at `0x80043624`, increments
@@ -152,3 +176,33 @@ dependent auxiliary byte: the kind-zero handler uses it as a collision latch,
 while this handler uses it as a parent index. A single global semantic field
 name would be misleading; the record tail remains opaque pending a supported
 variant view.
+
+## Adjacent focused controls
+
+The 11 neighboring effect-helper units were rebuilt as isolated objects and
+direct strict-compared after the dispatcher changes. Every listed function
+has a 100% text verdict:
+
+| Unit | Function VAs | Data verdict |
+| --- | --- | --- |
+| `effect_spatial_sound` | `0x8003fa2c` | exact |
+| `effect_update` | `0x8003fb94`, `0x8003fdac`, `0x8003fdd0`, `0x8003feb0`, `0x8003ff18`, `0x800400c0`, `0x800401b4`, `0x80040220`, `0x80040264`, `0x800402a4` | exact |
+| `effect_rotate_scale_offset_y` | `0x800416ec` | exact |
+| `effect_move_probe` | `0x8004177c` | exact |
+| `effect_aim_and_move` | `0x8004195c` | exact |
+| `effect_target_motion` | `0x80041b14` | exact |
+| `effect_scale_step` | `0x80041cd0` | exact |
+| `effect_spawn_zero_direction` | `0x80041d7c`, `0x80041e0c` | exact |
+| `effect_spawn_motion` | `0x80041e94`, `0x8004212c` | exact |
+| `effect_scatter` | `0x80042298`, `0x80042424`, `0x800424f0` | retail `.bss` 8 bytes; source COMMON/no section |
+| `effect_reset` | `0x80045cc0`, `0x80045cf0`, `0x80045d1c` | retail `.bss` 10,892 bytes; source COMMON/no section |
+
+The two BSS placement differences are strict-data WIPs. Their source
+definitions are the supported `DAT_801c7068` and `effect_state` objects;
+neither difference justifies a fabricated initializer or relocated owner.
+The compiler's `.def` for `effect_state` records its typed 10,892-byte extent,
+but its `.comm` directive rounds the tentative allocation to 10,896 bytes.
+This compiler/placement behavior remains separate from the retail object's
+10,892-byte BSS claim. The King's Field I analogue in `effect_pool.c` also
+uses a tentative `effect_state` definition, a useful lead but not proof of
+KF2's original declaration form.

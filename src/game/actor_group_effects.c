@@ -73,88 +73,33 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     position.vz = current->position.vz + offset.vz;
 
     switch (kind) {
-    case 1:
-    case 0x1c:
+    case 0x7b:
+        kind = 0x20;
+        if (((const s32 *)arguments)[1] != 0) {
+            goto target_effect;
+        }
+        /* fall through */
+    case 7:
+    case 0x20:
+        audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
+    target_effect:
         func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        effect = func_80040308(effect_id, 0x23, kind, &position, &direction);
+        if (effect != 0) effect->cooldown = 3;
         break;
-    case 2:
+    case 0x79:
+        func_8003c3e0(current, player, 600, &position, &direction, -1, 0x400, 1);
+        distance = fixed_vector3_length(position.vx - player->vx,
+                                        position.vy - player->vy,
+                                        position.vz - player->vz);
+        travel_time = (distance - 2000) / 600;
+        if (travel_time < 0) travel_time = 0;
         func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      0x1000, 0x100, 0x1000);
+                      travel_time);
         break;
     case 4:
         func_8003c3e0(current, player, 800, &position, &direction, -1, 0x400, 1);
         func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
-    case 7:
-    case 0x20:
-        audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
-        /* fall through */
-    case 0x7b:
-        if (kind == 0x7b && ((const s32 *)arguments)[1] == 0) {
-            audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
-        }
-        func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
-        effect = func_80040308(effect_id, 0x23,
-                                kind == 0x7b ? 0x20 : kind, &position, &direction);
-        if (effect != 0) effect->cooldown = 3;
-        break;
-    case 9:
-    case 0x21:
-    case 0x16:
-        func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
-    case 0xc:
-        func_800154fc(predicted.vx - position.vx,
-                      predicted.vy - position.vy,
-                      predicted.vz - position.vz,
-                      &angles);
-        pitch_yaw_to_forward_vector(&angles, &direction);
-        vector3s_scale_shift12(20, &direction);
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      &angles, 500, 0x3c, 0x80, 0x50, 0x8c);
-        break;
-    case 0x17:
-        parameters = va_arg(arguments, const u16 *);
-        func_80040308(effect_id, 0x23, kind, &position, 0,
-                      actor_state.unknown_93b8, position_mode, parameters[2]);
-        break;
-    case 0x18:
-        func_8003c3e0(current, player, 250, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
-    case 0x1a:
-    case 0x1b:
-        func_8003c3e0(current, player, 300, &position, &direction, -1, 0x400, 1);
-        func_80040308(effect_id, 0x23, kind, &position, &direction);
-        break;
-    case 0x1d:
-    case 0x1f:
-        target = *player;
-        for (count = 6; count != 0; count--) {
-            distance = fixed_vector2_length(target.vx - position.vx,
-                                            target.vz - position.vz);
-            if (func_80015918(0, distance,
-                    position.vy + 1400 - target.vy, 10, 800,
-                    &travel_time, &trajectory_angle) != 0) {
-                trajectory_angle = 0x100;
-            }
-            if (count != 1) {
-                func_80015ce0(player, (SVECTOR *)&player_state.unknown_e8,
-                              travel_time >> 6, &target);
-            }
-        }
-        motion.vx = trajectory_angle;
-        motion.vy = func_8003c3e0(current, &target, 800, &position,
-                                  &direction, trajectory_angle, 0xc00, 1);
-        motion.vz = 0;
-        effect = func_80040308(effect_id, 0x23, kind, &position, &direction, &motion);
-        if (effect != 0) {
-            effect->updates_remaining = 0x32;
-            effect->phase = 0;
-            *(u16 *)&effect->unknown_3c[4] = position.vy;
-        }
         break;
     case 0x28:
         func_800154fc(player->vx - position.vx,
@@ -168,11 +113,60 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         position.vz += direction.vz;
         func_80040308(effect_id, 0x23, kind, &position, &direction, &angles);
         break;
+    case 9:
+    case 0x21:
+        func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
+        func_80040308(effect_id, 0x23, kind, &position, &direction, 0xfe);
+        break;
+    case 0x18:
+        func_8003c3e0(current, player, 250, &position, &direction, -1, 0x400, 1);
+        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        break;
+    case 2:
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      0x1000, 0x100, 0x1000);
+        break;
+    case 0x16:
+        func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
+        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        break;
+    case 0x17:
+        parameters = va_arg(arguments, const u16 *);
+        func_80040308(effect_id, 0x23, kind, &position, 0,
+                      actor_state.unknown_93b8, position_mode, parameters[2]);
+        break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
         effect = func_80040308(effect_id, 0x23, 7, &position, &direction);
         if (effect != 0) effect->cooldown = 5;
+        break;
+    case 1:
+    case 0x1c:
+        func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
+        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        break;
+    case 0x1a:
+    case 0x1b:
+        func_8003c3e0(current, player, 300, &position, &direction, -1, 0x400, 1);
+        func_80040308(effect_id, 0x23, kind, &position, &direction);
+        break;
+    case 0xc:
+        func_800154fc(predicted.vx - position.vx,
+                      predicted.vy - position.vy,
+                      predicted.vz - position.vz,
+                      &angles);
+        pitch_yaw_to_forward_vector(&angles, &direction);
+        vector3s_scale_shift12(20, &direction);
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      &angles, 500, 0x3c, 0x80, 0x50, 0x8c);
+        break;
+    case 0x78:
+        position.vx = (rand() >> 2) + player->vx - 4096;
+        position.vz = (rand() >> 2) + player->vz - 4096;
+        position.vy = player->vy - 5000;
+        func_80040308(effect_id, 0x23, kind, &position, 0);
+        func_80040308(effect_id, 0x23, kind, &position, 0);
         break;
     case 0x6e:
         parameters = va_arg(arguments, const u16 *);
@@ -220,22 +214,32 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             actor_select_target_type_in_own_group(spawned, 0x1e);
         }
         break;
-    case 0x78:
-        position.vx = (rand() >> 2) + player->vx - 4096;
-        position.vz = (rand() >> 2) + player->vz - 4096;
-        position.vy = player->vy - 5000;
-        func_80040308(effect_id, 0x23, kind, &position, 0);
-        func_80040308(effect_id, 0x23, kind, &position, 0);
-        break;
-    case 0x79:
-        func_8003c3e0(current, player, 600, &position, &direction, -1, 0x400, 1);
-        distance = fixed_vector3_length(position.vx - player->vx,
-                                        position.vy - player->vy,
-                                        position.vz - player->vz);
-        travel_time = (distance - 2000) / 600;
-        if (travel_time < 0) travel_time = 0;
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      travel_time);
+    case 0x1d:
+    case 0x1f:
+        target = *player;
+        for (count = 6; count != 0; count--) {
+            distance = fixed_vector2_length(target.vx - position.vx,
+                                            target.vz - position.vz);
+            if (func_80015918(0, distance,
+                    position.vy + 1400 - target.vy, 10, 800,
+                    &travel_time, &trajectory_angle) != 0) {
+                trajectory_angle = 0x100;
+            }
+            if (count != 1) {
+                func_80015ce0(player, (SVECTOR *)&player_state.unknown_e8,
+                              travel_time >> 6, &target);
+            }
+        }
+        motion.vx = trajectory_angle;
+        motion.vy = func_8003c3e0(current, &target, 800, &position,
+                                  &direction, trajectory_angle, 0xc00, 1);
+        motion.vz = 0;
+        effect = func_80040308(effect_id, 0x23, kind, &position, &direction, &motion);
+        if (effect != 0) {
+            effect->updates_remaining = 0x32;
+            effect->phase = 0;
+            *(u16 *)&effect->unknown_3c[4] = position.vy;
+        }
         break;
     }
     va_end(arguments);

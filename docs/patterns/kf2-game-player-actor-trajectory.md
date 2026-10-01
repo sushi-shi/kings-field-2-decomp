@@ -1747,3 +1747,43 @@ separator, are identical. All 60 table-pointer relocations occur at the
 same ordered offsets in target and candidate; the remaining RODATA byte
 difference follows the WIP second switch's in-body label offsets. This
 ownership cleanup makes no new exact claim.
+
+Two further single-function RODATA spans now have supported owner identities.
+`func_8002722c_rodata` at GAME `0x80011298..0x800112fb` contains two
+adjacent jump tables: retail bounds a six-entry index to `0..5` at
+`0x800272e0..0x80027304`, then bounds a second 19-entry index to `0..18`
+at `0x800273f4..0x80027418` and uses base `+0x18`. All 25 raw words are
+aligned targets inside `func_8002722c`, with four and eight distinct case
+labels respectively. `func_8002985c_rodata` at `0x80011300..0x8001134b`
+has 19 raw aligned pointers to ten in-body labels; retail bounds its index
+to `0..18` before the indirect jump at `0x80029c08`. Both sources already
+claim the complete RODATA ranges, and these function owners do not prove
+their original TU boundaries.
+
+Safe one-VA delinks report 82 and 482 relocations, with zero withheld for
+either unit. Focused listings are unchanged after the identity corrections:
+`2722c` remains 89.3% DIFF, its `274ec` sibling 61.9% DIFF; sixteen exact
+siblings in `game.player_reaction` remain SAME while `2985c` remains 91.3%
+DIFF. No function body, retail pointer target, or match count changed.
+
+The 13-word `player_magic_dispatch_rodata` at GAME `0x80011260..0x80011293`
+is a bounded switch table for exact `func_80026498`: retail subtracts 38 from
+the magic ID, rejects indices beyond 12 at `0x8002652c..0x80026530`, then
+loads this table and jumps indirectly at `0x80026550`. Every raw word is an
+aligned address inside the 0x1c4-byte function, so the 13 candidate pointer
+rows are now reviewed without altering targets or source. A focused safe
+carve of the two-function unit emits three objects and 525 relocations with
+none withheld; the unit's 52-byte RODATA is strict 100%, and all 13 ordered
+pointer relocation types, offsets, and addends match. `func_80026498` remains
+SAME, while the `func_8002665c` caller remains 91.1% focused DIFF. The
+complete unit text is 98.8504%, so no new exact claim is made.
+
+The first seven words of `player_state_equipment_rodata` are also reviewed
+pointer rows now. Retail bounds the equipment slot to `0..6` at
+`0x80025464..0x8002546c` and dispatches through `0x80011168` at
+`0x8002548c`; the seven raw words target seven aligned case blocks inside
+`player_set_equipment_slot`. The same complete-unit safe carve still emits
+17 objects and 1044 relocations with none withheld, because it already
+accepted these pointer-shaped rows. All 15 exact siblings remain SAME,
+`func_80025a18` remains WIP, and isolated objdiff confirms the seven ordered
+RODATA relocation entries match. This review changes evidence status only.

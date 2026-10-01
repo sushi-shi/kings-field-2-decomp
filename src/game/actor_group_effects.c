@@ -60,11 +60,14 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         func_8003c000(current, second, &offset);
         third = va_arg(arguments, s32);
         predicted.vx = func_8001584c(player->vx,
-            ((offset.vx - target.vx) << 8) + current->position.vx, third);
+            (s32)((((u32)offset.vx - (u32)target.vx) << 8) +
+                  (u32)current->position.vx), third);
         predicted.vy = func_8001584c(player->vy,
-            ((offset.vy - target.vy) << 8) + current->position.vy, third);
+            (s32)((((u32)offset.vy - (u32)target.vy) << 8) +
+                  (u32)current->position.vy), third);
         predicted.vz = func_8001584c(player->vz,
-            ((offset.vz - target.vz) << 8) + current->position.vz, third);
+            (s32)((((u32)offset.vz - (u32)target.vz) << 8) +
+                  (u32)current->position.vz), third);
     } else {
         func_8003c000(current, position_mode, &offset);
     }

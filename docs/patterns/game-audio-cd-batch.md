@@ -1376,3 +1376,13 @@ step after the type correction retained their prior strict verdicts: 15
 audio-runtime functions and five phase callbacks exact, with the two audio,
 two startup, and one transition-step WIPs unchanged. The related effect
 dispatcher also rebuilt with its established WIP verdict.
+
+A fresh GAME `0x800144b8` VAB-service pass confirmed its retail 11 blocks,
+five branches, direct call set, and typed audio/CD referents. Retail loads
+the state value `1` into saved `s3` after leaving the critical section,
+whereas the probe saves the retry sentinel `-1` there and materializes `1`
+at each later use. Rewriting the call/retry loop from `for` plus `break` to
+an equivalent `while` emitted the identical 91.8% focused listing; it was
+reverted. The prior 94.87342% strict WIP verdict and 15 exact sibling
+functions remain unchanged. No independently evidenced source local explains
+the saved-register choice.

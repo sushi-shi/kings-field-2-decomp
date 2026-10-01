@@ -247,7 +247,7 @@ typedef struct KfTargetGroup {
     u16 unknown_1c;
     u16 unknown_1e;
     u16 unknown_20[8];
-    u8 unknown_30[2];
+    u16 unknown_30;
     u16 unknown_32;
     u32 unknown_34;
     KfTargetReference targets[16];
@@ -259,6 +259,8 @@ typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
 typedef char kf_target_group_curve_offset[
     (u32)&((KfTargetGroup *)0)->unknown_20 == 0x20 ? 1 : -1];
+typedef char kf_target_group_unknown_30_offset[
+    (u32)&((KfTargetGroup *)0)->unknown_30 == 0x30 ? 1 : -1];
 
 typedef struct KfActorHalfword4aBytes {
     u8 low;
@@ -285,6 +287,12 @@ typedef union KfActorState70 {
     KfActorState70Bytes bytes;
 } KfActorState70;
 typedef char kf_actor_state_70_size[sizeof(KfActorState70) == 2 ? 1 : -1];
+
+typedef struct KfActorOrientation {
+    struct KfEulerAngles rotation;
+    u8 unknown_46[2];
+} KfActorOrientation;
+typedef char kf_actor_orientation_size[sizeof(KfActorOrientation) == 8 ? 1 : -1];
 
 typedef struct KfActorTail72Motion {
     struct KfEulerAngles angles;

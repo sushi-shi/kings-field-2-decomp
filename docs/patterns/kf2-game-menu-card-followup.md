@@ -70,12 +70,12 @@ four directory-unit WIP verdicts above. The distinct `DIRENTRY` entry type
 comes from the pinned Psy-Q `KERNEL.H` and has a checked 40-byte stride.
 The `firstfile` pattern at `0x8006d6a8` spans seven bytes including its
 retail NUL terminator. Its reviewed `0x80022744` `lui`/`addiu` pair computes
-that address immediately before the direct `firstfile` call; the string's
-source owner is still unresolved. Its exact bytes do not occur in the supplied
-Psy-Q 3.0 library archives or card sample sources, which narrows but does not
-prove ownership.
-The identity inventory now records only the seven-byte candidate at that
-address; no module claims its DATA definition or padding beyond the NUL.
+that address immediately before the direct `firstfile` call. The seven-byte
+wildcard is now claimed by `memory_card_directory.c`; the rebuilt unit matches
+all 311 initialized-data bytes and all six `.rodata` bytes. Its exact bytes
+do not occur in the supplied Psy-Q 3.0 library archives or card sample
+sources. The original TU boundary and any allocation beyond the NUL remain
+unresolved.
 The neighboring bytes at `0x8006d6a4` and `0x8006d6a5` are `0x20, 0x00`.
 Retail loads both as the initial two-byte slot-digit buffer in `0x800226ec`,
 `0x800228c8`, and `0x80022ca0`. Their common two-byte role is supported by
@@ -254,10 +254,15 @@ independent correction.
 
 The `0x8001bf68` neighbor `0x8001c12c`, the two-option draw and heading
 helpers beside `0x8002083c`, and `memory_card_format` beside the four card
-WIPs remain strict exact controls. The card-directory unit's 304-byte `.data`
-and six-byte `.rodata` claims are also 100%. The wildcard identity at
-`0x8006d6a8` remains a seven-byte candidate without a DATA owner; the
-directory focused listing did not change when it entered the inventory.
+WIPs remain strict exact controls. The directory unit's current 311-byte
+`.data` and six-byte `.rodata` claims are 100%. The wildcard at `0x8006d6a8`
+is now source-owned; its reviewed `firstfile` referent remains intact. After
+the narrow target refresh, the focused unit remains 1/5 `SAME` including
+`memory_card_format`; `0x800226ec` is 88.6% focused WIP. All 137 text
+relocation sites remain, with one ordered referent-pair shift in existing WIP
+`0x800228c8`. A temporary signed-byte slot-buffer view left `0x800226ec`
+byte-identical and was discarded. The wildcard's original TU boundary and the
+adjacent seed-byte owner remain open.
 No linked build, repository tests, or banking were run for this recheck.
 
 ## Card-browser and directory focused audit (2026-10-01)

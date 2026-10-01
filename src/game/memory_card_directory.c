@@ -41,9 +41,11 @@ KfCardAssets memory_card_assets = {
     }
 };
 
+DATA(0x8006d6a8, 0x7)
+char DAT_8006d6a8[7] = "bu00:*";
+
 extern s8 DAT_8006d6a4;
 extern s8 DAT_8006d6a5;
-extern char DAT_8006d6a8[7];
 extern void func_800492dc(const u8 *payload);
 extern void func_80048d24(u8 *payload);
 

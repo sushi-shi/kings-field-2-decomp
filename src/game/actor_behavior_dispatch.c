@@ -33,6 +33,12 @@ extern void actor_reset_target_and_reselect(void);
 extern void func_8003c220(s32 first, s32 reverse, s32 forward, s32 fast,
                           s32 slow, s32 phase_step);
 extern void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...);
+extern void func_800365d8(u16 parameter, const VECTOR *origin,
+                          s32 height_offset);
+extern void map_object_spawn_effect(u8 source, u8 object_id,
+                                    const VECTOR *position,
+                                    s32 height_offset);
+extern void func_8003b5d0(void);
 
 RODATA(0x800120d8, 0x3c4)
 
@@ -93,25 +99,86 @@ dispatch_action:
         }
         func_8003b9a4(group->unknown_01[2] * 2, 10);
         break;
-    case 3:
+    case 3: {
+        s32 old_state = actor->state_70.signed_state;
+
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
+            actor->state_70.signed_state = 0;
+            actor->unknown_28 &= ~0x10000;
         }
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
-                           target->word_0e.bytes.high,
-                           target->word_10.bytes.fallback_offset,
-                           target->word_12.value, target->word_14.value,
-                           target->word_16.value,
-                           target->word_10.bytes.unknown_11);
+        if (actor->state_70.signed_state == 0) {
+            if (actor->animation_phase >= 0x400 &&
+                (actor->unknown_28 & 0x800) != 0) {
+                break;
+            }
+            actor_advance_animation_clamped(actor, target->unknown_08);
+            if (actor_animation_crossed_phase(actor, 0x800)) {
+                u16 effect_id = group->unknown_30 +
+                    func_800157f8(group->unknown_30);
+
+                if (effect_id != 0) {
+                    func_800365d8(effect_id, &actor->position,
+                                   -(actor->unknown_1e >> 1));
+                }
+                if (actor->slot_state == 0 || actor->slot_state == 4) {
+                    if (target->word_0c.bytes.low != 0xff &&
+                        (rand() >> 7) < target->word_0c.bytes.high) {
+                        map_object_spawn_effect(
+                            1, target->word_0c.bytes.low, &actor->position,
+                            -(actor->unknown_1e >> 1));
+                    }
+                } else if (actor->slot_state == 1 &&
+                           actor->unknown_0a[1] != 0xff) {
+                    map_object_spawn_effect(
+                        0, actor->unknown_0a[1], &actor->position,
+                        -(actor->unknown_1e >> 1));
+                }
+            }
+            if (actor->animation_phase >= 0xfff || target->unknown_08 == 0) {
+                actor->state_70.signed_state = 15;
+            }
+        } else {
+            s32 current_state = actor->state_70.signed_state;
+
+            if (current_state == 99) {
+                break;
+            }
+            actor->state_70.signed_state = current_state + 1;
+            if (old_state < 20) {
+                goto case3_motion;
+            }
+            if (old_state == 20) {
+                actor->unknown_14 = 0x42;
+                actor->unknown_16 = 0x400;
+                actor->unknown_13 = 1;
+            } else if (old_state < 38) {
+                if (actor->unknown_16 < 0x1000) {
+                    actor->unknown_16 += 192;
+                } else {
+                    actor->unknown_16 = 0x1000;
+                }
+            } else {
+                state_8017d118.active_table[19](actor);
+                if (actor->slot_state == 1) {
+                    actor_set_lifecycle_and_home_position(actor);
+                } else if (actor->slot_state == 2) {
+                    actor->lifecycle = 0;
+                    actor_set_home_position(actor);
+                } else if (actor->slot_state == 5) {
+                    actor->slot_state = 0xff;
+                    actor->lifecycle = 0;
+                } else {
+                    actor->lifecycle = 2;
+                    actor_set_home_position(actor);
+                }
+            }
         }
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
-        }
-        func_8003b9a4(target->word_0c.bytes.high, 10);
+case3_motion:
+        func_8003b9a4(group->unknown_01[2] * 2, 10);
         break;
+    }
     case 0:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
@@ -144,13 +211,13 @@ dispatch_action:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
-            actor->tail_72.angles.x = 0;
-            actor->tail_72.angles.y = 0;
             actor->tail_72.angles.z = 0;
+            actor->tail_72.angles.y = 0;
+            actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
                 func_8002b67c(actor->unknown_06,
-                    actor->unknown_24 + (actor->unknown_07[1] << 11),
-                    actor->unknown_22 + (actor->unknown_07[0] << 11),
+                    (actor->unknown_07[1] << 11) + actor->unknown_24,
+                    (actor->unknown_07[0] << 11) + actor->unknown_22,
                     actor->unknown_1c, actor->unknown_1e);
             func_80039804(target->unknown_01[0]);
             func_8003b5bc();
@@ -160,17 +227,17 @@ dispatch_action:
                 &actor->tail_72.angles, target->word_0c.value,
                 target->word_0e.value,
                 group->unknown_01[2],
-                group->unknown_01[3], interval & 1);
+                group->unknown_01[3], 17);
             if ((rand() >> 5) < target->word_12.bytes.marker_state) {
                 motion_flags |= 1;
             }
             if ((rand() >> 5) < target->word_12.bytes.marker_state) {
                 motion_flags |= 2;
             }
-            if (actor->position.vy <
-                actor->tail_72.motion.baseline + target->word_10.value) {
+            if (actor->tail_72.motion.baseline + target->word_10.value <
+                actor->position.vy) {
                 actor->unknown_52 -= target->word_12.bytes.unknown_12;
-            } else if (actor->position.vy >
+            } else if (actor->position.vy <
                        actor->tail_72.motion.baseline - target->word_10.value) {
                 actor->unknown_52 += target->word_12.bytes.unknown_12;
             }
@@ -199,11 +266,17 @@ dispatch_action:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
             func_80039804(target->unknown_01[0]);
-            actor->state_70.bytes.low =
-                actor->previous_target_type == 4 ||
-                actor->previous_target_type == 18 ||
-                actor->previous_target_type == 23 ||
-                actor->previous_target_type == 24;
+            switch (actor->previous_target_type) {
+            case 4:
+            case 18:
+            case 23:
+            case 24:
+                actor->state_70.bytes.low = 1;
+                break;
+            default:
+                actor->state_70.bytes.low = 0;
+                break;
+            }
             actor->state_70.bytes.high = 0;
         }
         if (rand() < 6000) {
@@ -551,13 +624,15 @@ dispatch_action:
             }
             actor->rotation.x = (actor->rotation.x + 256) & 0xfff;
             break;
-        case 2:
-            actor->rotation.x = (actor->rotation.x + 256) & 0xfff;
-            if (actor->rotation.x < 256) {
+        case 2: {
+            u32 pitch_phase = ((u16)actor->rotation.x + 256) & 0xfff;
+            actor->rotation.x = pitch_phase;
+            if (pitch_phase < 256) {
                 actor->rotation.x = 0;
                 actor->state_70.signed_state = 3;
             }
             break;
+        }
         case 3:
             actor_advance_animation_clamped(actor, -target->unknown_08);
             if (actor->animation_phase == 0) {
@@ -676,6 +751,7 @@ dispatch_action:
             }
             break;
         case 32:
+        case19_clamped:
             actor_advance_animation_clamped(actor, target->unknown_08);
             if (actor->animation_phase >= 0xfff) {
                 actor_reset_target_and_reselect();
@@ -760,12 +836,7 @@ dispatch_action:
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
         }
-        actor_advance_animation_clamped(actor, target->unknown_08);
-        if (actor->animation_phase >= 0xfff) {
-            actor_reset_target_and_reselect();
-        }
-        func_8003b9a4(group->unknown_01[3], 10);
-        break;
+        goto case19_clamped;
     case 26:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
@@ -778,7 +849,7 @@ dispatch_action:
         switch (actor->state_70.signed_state) {
         case 0: {
             KfMapObject *object = &map_object_state.objects[actor->unknown_20];
-            if (object->action_timer < 2 || object->rotation.vx <= 0 ||
+            if (object->action_timer < 2 || object->rotation.vx == 0 ||
                 object->rotation.vx >= 3072) {
                 break;
             }
@@ -834,30 +905,26 @@ dispatch_action:
                 u16 index = actor->tail_72.script.word_index;
                 actor->tail_72.script.word_index = index + 1;
 
-                switch (opcode) {
-                case 0x8000:
+                if (opcode == 0x8000) {
                     cursor = script->stream;
                     actor->tail_72.script.word_index = 0;
                     continue;
-                case 0x8001:
+                } else if (opcode == 0x8001) {
                     repeat = *cursor++;
                     actor->tail_72.script.word_index = index + 2;
                     continue;
-                case 0x8003: {
+                } else if (opcode == 0x8003) {
                     u16 skip = *cursor;
                     cursor += skip + 1;
                     continue;
-                }
-                case 0x8002: {
+                } else if (opcode == 0x8002) {
                     s16 x = *cursor++;
                     s16 y = *cursor++;
                     s16 z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, -1, x, y, z, cursor);
-                    break;
-                }
-                case 0x8004: {
+                } else if (opcode == 0x8004) {
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
@@ -865,14 +932,11 @@ dispatch_action:
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, -2,
                                    first, second, third);
-                    break;
-                }
-                default:
+                } else {
                     func_8003c614(target->word_0c.bytes.low,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
                                    (s16)actor->tail_72.script.unknown_74);
-                    break;
                 }
                 if (--repeat == 0) {
                     break;
@@ -1030,12 +1094,80 @@ dispatch_action:
     case 6:
     case 7:
     case 8:
+    default:
         state_8017d118.active_table[17]();
         break;
-    default:
-        if (actor->target_type >= 31 && actor->target_type != 240) {
-            state_8017d118.active_table[17]();
+    }
+
+    if (actor->unknown_28 & 0x10) {
+        KfActor *other = actor_state.other_actor;
+
+        if (actor->slot_state == 3) {
+            actor->unknown_03 = 0;
+            if (other->lifecycle != 1) {
+                actor->lifecycle = 0;
+                goto behavior_done;
+            }
+            if (other->target_type == actor->slot_state) {
+                actor->target_type = 3;
+                actor->unknown_0f = 0xf0;
+                actor->state_70.signed_state = 99;
+                goto behavior_done;
+            }
+        } else {
+            s32 collision;
+
+            actor->unknown_03 = other->unknown_03;
+            if (other->lifecycle != 1) {
+                actor->unknown_28 = (actor->unknown_28 & ~0x10) | 0x100;
+                collision = func_8002b9d4(
+                    actor->position.vx, actor->position.vy,
+                    actor->position.vz, actor->unknown_1c,
+                    actor->unknown_1e, 0x81);
+                if (collision & 0x80) {
+                    actor->position.vx += 800 + actor->unknown_1c;
+                }
+                if (collision & 0xf) {
+                    actor->unknown_28 |= 0x400;
+                }
+                if (actor->unknown_28 & 0x200) {
+                    actor_select_target_type_in_own_group(actor, 3);
+                }
+                actor->unknown_50 = other->unknown_50;
+                actor->unknown_52 = other->unknown_52;
+                actor->unknown_54 = other->unknown_54;
+                goto behavior_done;
+            }
         }
-        break;
+
+        {
+            struct KfEulerAngles rotation;
+            VECTOR group_offset;
+            VECTOR vertex_offset;
+
+            /* Copy the two trailing orientation bytes with the three angles. */
+            *(KfActorOrientation *)&actor->rotation =
+                *(const KfActorOrientation *)&other->rotation;
+            rotation.x = actor->rotation.x;
+            rotation.y = actor->rotation.y;
+            rotation.z = actor->rotation.z;
+            vector_rotate_yxz(&rotation, (SVECTOR *)&group->unknown_0c,
+                              &group_offset);
+            func_8003c000(other, actor->unknown_24, &vertex_offset);
+            actor->position.vx = other->position.vx + vertex_offset.vx -
+                                 group_offset.vx;
+            actor->position.vy = other->position.vy + vertex_offset.vy -
+                                 group_offset.vy;
+            actor->position.vz = other->position.vz + vertex_offset.vz -
+                                 group_offset.vz;
+        }
+    } else if ((actor->unknown_28 & 0x10000) == 0) {
+        func_8003b5d0();
+    }
+
+behavior_done:
+    if (actor->lifecycle == 1) {
+        func_8002b73c(actor->position.vx, actor->position.vz,
+                       actor->unknown_1c, 1);
     }
 }

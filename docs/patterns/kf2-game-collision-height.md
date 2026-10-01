@@ -190,6 +190,10 @@ source probe with explicit coordinate locals preserved all five SAME
 listings in `game.map_object_reset`, but left this function at 55.9% and
 changed only its arithmetic/address schedule. No source change was retained;
 the duplicated marker writes and scale updates still agree with retail.
+A later typed row-pointer correction in both branches matches the retail
+row-first calculation: the fresh focused unit is 6/6 SAME, and isolated
+strict objdiff confirms `map_object_set_cell_marker` plus its five siblings
+at 100%. The earlier coordinate-local probe remains a rejected intermediate.
 
 The map-placed expansion at `0x80034818` is also focused-listing SAME. It
 expands 128 typed 24-byte destination records, sampling elevation through
@@ -539,6 +543,20 @@ direct strict result after the signed velocity and predecrement corrections
 is 96.54460% code (7,676 probe bytes versus 7,668 retail), 32/32 exact
 `.data`, and 39.989517% `.rodata`; the focused listing is 82.6% DIFF.
 Later code placement and switch pointer addends remain WIP.
+
+A fresh one-unit strict report for `0x80036ed4` confirms this verdict:
+7,668 retail code bytes score 96.54460%; the 32-byte `.data` is exact,
+and the 956-byte `.rodata` is 39.989517%. The focused object has 180/180
+branches and one return, but 329 retail versus 327 candidate CFG blocks.
+The primary dispatch `jr` at `0x80036f98` still limits reachability analysis.
+Raw action-98 code stores the incremented signed velocity halfword in the
+delay slot of its negative-velocity branch; combining the source update and
+temporary into one expression emitted the same candidate listing. Reversing
+the action-225 or action-34 collision conditions did not close the two-block
+gap; the former lowered the focused score and the latter changed only local
+layout. Widening action 4's previous-timer temporary inserted a redundant
+zero-extension before its signed comparisons. These isolated trials were
+reverted. No new source fact was established, and the dispatcher remains WIP.
 
 Action 8 stores `-16` into the extra word's first halfword at retail
 `0x80037694..98`, then reloads it with signed `lh` at `0x800376c4`

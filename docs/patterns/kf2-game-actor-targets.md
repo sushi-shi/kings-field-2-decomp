@@ -408,6 +408,20 @@ control jump tables at `8001187c` and `800118c4` now have RODATA claims.
 Their unit-level text addends remain WIP because preceding functions compile
 four and twenty bytes longer than retail, respectively.
 
+The table owners are now the functions that dispatch through them:
+`map_object_spawn_effect` owns the 17 words at `8001187c`, and `func_800368b4`
+owns the 21 words at `800118c4`. Retail checks the first index against
+`0..16` and the second against `0..20` before the indirect jumps. All 38 raw
+words are aligned, target blocks inside the respective function bodies, and
+are reviewed pointer relocations. A focused safe carve of both complete units
+emits 10 objects and 156 relocations with none withheld. Isolated direct
+objdiff gives each unit's RODATA `100%`; all 17 and 21 ordered relocation
+types, offsets, and addends match. The scatter unit's 992-byte text is also
+`100%`, while the other unit's 1,096-byte text remains `97.68248%` because
+`func_80036190` and `map_object_spawn_effect` are still WIP. Focused source
+listings before and after the pointer review are identical; no new function
+exactness is claimed.
+
 | GAME VA | Verdict | Confirmed relationship and result |
 | --- | --- | --- |
 | `8002b604` | exact | Three calls from `36ed4`; calls `2a988` with Y minus 1280 and `2aaa4`, then reads the provisional collision-cache result in startup BSS. Strict `100.000000000%` in the collision-height wrapper unit. |

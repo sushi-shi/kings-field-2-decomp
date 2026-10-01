@@ -137,3 +137,11 @@ under the pinned compiler.
 The retail and compiled 123-word switch tables each partition their case
 indices into the same 19 destinations; the table's low strict data score
 comes from differing code-target offsets, not a missing or merged case arm.
+
+The position-mode `-2` interpolation scales each signed coordinate delta by
+256 before adding the actor position. Raw retail uses `subu`, `sll 8`, and
+`addu` for each axis. The source now casts those intermediate operands to
+`u32`, preserving the retail 32-bit wrap when a delta is negative or the sum
+overflows, without changing the focused 55.3% listing. The remaining first
+divergence is still the 192-byte retail frame versus the 184-byte probe frame;
+the shared constructor join and switch-label offsets remain WIP.

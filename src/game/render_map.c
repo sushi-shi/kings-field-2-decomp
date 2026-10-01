@@ -201,8 +201,8 @@ loop_test:
     }
 }
 
-#define MAP_OUTSIDE_Y(delta) ((u32)((delta) + 511) >= 1023)
-#define MAP_OUTSIDE_X(delta) ((u32)((delta) + 1023) >= 2047)
+#define MAP_OUTSIDE_Y(delta) ((u32)(delta) + 511u >= 1023u)
+#define MAP_OUTSIDE_X(delta) ((u32)(delta) + 1023u >= 2047u)
 #define MAP_ORIGINAL_VERTEX(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
 
 ADDRESS(0x8002f808, 0x754)

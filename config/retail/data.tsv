@@ -957,7 +957,7 @@ GAME.EXE	0x8006d6a1	0x5cea1	0x3	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	manual:card slot seed		s8	retail 0x20;three reviewed lui+lb pairs in card directory/header/writer	first signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	manual:card slot seed		s8	retail 0x00;three reviewed lui+lb pairs in card directory/header/writer	second signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a6	0x5cea6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard		char[7]	retail bytes;firstfile argument at 0x80022744	bu00:* plus NUL terminator
+GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard	DAT_8006d6a8	char[7]	retail bytes;firstfile argument at 0x80022744;source DATA claim	bu00:* plus NUL terminator; original TU boundary WIP
 GAME.EXE	0x8006d6af	0x5ceaf	0x1	unclassified	coverage-gap			payload-complement	zero alignment before player texture row rectangles
 GAME.EXE	0x8006d6b0	0x5ceb0	0x20	defined	manual:player status texture rows	player_status_texture_rows	RECT[4]	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM rows at x=0x240
 GAME.EXE	0x8006d6d0	0x5ced0	0x4	defined	manual:map TMD color		CVECTOR	retail bytes;NormalColorCol xrefs;KF1 counterpart	initialized neutral RGB 128,128,128,0

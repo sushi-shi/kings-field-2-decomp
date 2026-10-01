@@ -44,3 +44,13 @@ uses `lw`/`sw`. Focused `game.render_map` keeps `0x8002f194` SAME and the
 existing `0x8002f5b0`/`0x8002f808` WIP listings unchanged after that type
 refinement. No source change was retained for a register-order or frame-size
 residue without independent ownership evidence.
+A focused revisit of GAME `0x8002f808` rebuilt `game.render_map` against the
+selected retail body and checked its callers, calls, data references, and
+strings. The current listing has 51/51 CFG blocks, 35/35 branches, and the
+retail call set, but remains 58.9% similar; the first differences include a
+168-byte retail frame versus a 120-byte probe frame and the primitive-count
+reload schedule. The clipping-window macros now add their unsigned bias after
+casting the signed delta, giving defined 32-bit wrap for the retail `addiu`
+checks. A focused rebuild emits a byte-identical listing for the whole unit,
+including the exact `render_enqueue_map` sibling. The function remains WIP;
+the frame and register differences have no supported source correction.

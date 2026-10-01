@@ -96,7 +96,8 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
     if (mode == 0 && player_state.unknown_6a == 0) {
         s32 cell_z = object->position.vz >> 11;
         s32 cell_x = object->position.vx >> 11;
-        cell = &bss_801c7540.map_cells[cell_z][cell_x];
+        KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
+        cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
         if (object->unknown_00 != 1) {
             cell_marker = &cell->layer[1].object_index;
@@ -106,7 +107,8 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
     } else {
         s32 cell_z = object->position.vz >> 11;
         s32 cell_x = object->position.vx >> 11;
-        cell = &bss_801c7540.map_cells[cell_z][cell_x];
+        KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
+        cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
         if (object->unknown_00 != 1) {
             cell_marker = &cell->layer[1].object_index;

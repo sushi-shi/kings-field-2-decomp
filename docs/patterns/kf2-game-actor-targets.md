@@ -1483,3 +1483,19 @@ Effect-owned `3fb94`, a direct caller of `39c94`, has since been certified
 strict exact by isolated direct objdiff: 536/536 function bytes and all 36
 ordered relocations in its complete unit match. Its older WIP rows above
 record earlier checkpoints, not the current verdict.
+
+### Newly sourced GAME object and target dispatchers
+
+| GAME VA | Verdict | Evidence and limit |
+| --- | --- | --- |
+| `36944` | exact | The 396-object scatter wrapper is 116/116 bytes exact in direct objdiff; its contiguous map-object unit is 4/4 focused SAME. Its input source has no proved static caller, so the address-derived identity remains. |
+| `39108` | WIP | The candidate scorer now has a complete C control path and a 131-word bounded switch table at `80011cd8`, all targeting this function. One-VA delink has zero withheld references. Direct objdiff reports 90.54% fuzzy text with 1216 retail versus 1188 compiled bytes; the 524-byte table has a distinct case-target layout. The callback through active slot 16 remains indirect, and the candidate's complete record stride is unresolved. |
+| `36ed4` | WIP, incomplete source | The 396-object traversal, current object/template pointers, actions 2 and 3, and fallback callback are source-backed. The three adjacent dispatch tables occupy `8001191c..80011cd7`; the other 21 nondefault action bodies remain explicit unresolved arms. Focused comparison compiles but is DIFF, and no strict exact claim is made. |
+
+The `39108` scorer reads candidate halfwords at offsets `+0x16` and `+0x1a`.
+`KfTargetCandidate` therefore describes an observed 0x1c-byte prefix only;
+neither these reads nor the switch table prove the allocation stride. For
+`36ed4`, the retail first loop has 24 unique primary dispatch targets, of
+which 201 table entries select the fallback callback. The source leaves the
+remaining 22 concrete action bodies unresolved rather than sending them to
+that fallback.

@@ -94,7 +94,7 @@ KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell ori
 KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-pose view through angle_z; trailing alignment padding
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
-KfTargetCandidate	0x16	candidate	game/actor.h;actor sound and event-bytecode helpers	minimum observed view through two byte-stream bytes at +0x14; full extent unknown
+KfTargetCandidate	0x1c	candidate	game/actor.h;GAME 0x80039108;actor sound and event-bytecode helpers	minimum observed view through halfword +0x1a; full extent and stride unknown
 KfTargetGroup	0x78	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfTargetReference	0x4	supported	game/actor.h;asm;actor target fixup	relative offset and target pointer share one slot
 KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat triangle primitive body

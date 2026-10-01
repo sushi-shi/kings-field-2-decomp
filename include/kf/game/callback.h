@@ -30,6 +30,7 @@ typedef char kf_state_8017d118_values_17_offset[(u32)&((KfState8017d118 *)0)->va
 typedef char kf_state_8017d118_unknown_1a_offset[(u32)&((KfState8017d118 *)0)->unknown_1a == 0x1a ? 1 : -1];
 
 extern KfState8017d118 state_8017d118;
+extern KfCallback callback_default_table[32];
 
 void callback_invoke_slot_04_zero(void);
 void resource_transition_set_phase_1(void);

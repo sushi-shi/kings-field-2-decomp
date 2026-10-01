@@ -7,6 +7,58 @@
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
 
+ADDRESS(0x800139c4, 0x120)
+void func_800139c4(void)
+{
+    KfAudioVabSlot *vab_slot;
+    KfAudioVoiceHandle *voice;
+    KfAudioVabStreamSlot *stream_slot;
+    u8 *stream_buffer;
+    s32 index;
+
+    SsInit();
+    SsSetMVol(0, 0);
+    /* The SDK work table and stream buffers have fixed retail addresses;
+     * their source owners and complete extents remain unresolved. */
+    SsSetTableSize((char *)0x8009a6a0, 2, 1);
+    SsSetTickMode(1);
+    SsStart2();
+    SsUtSetReverbType(4);
+    SsUtReverbOn();
+    SsUtSetReverbDepth(0x28, 0x28);
+
+    audio_state.sequence_buffer = (u_long *)0x80198640;
+    audio_state.sequence_active = 0;
+    audio_state.sequence_ready = 0;
+    vab_slot = audio_state.vab_slots;
+    index = 129;
+    do {
+        vab_slot->vab_id = -1;
+        vab_slot->stream_slot = 0;
+        vab_slot++;
+        index--;
+    } while (index != -1);
+
+    voice = audio_state.voices.handles;
+    index = 9;
+    do {
+        voice->voice_id = -1;
+        voice++;
+        index--;
+    } while (index != -1);
+
+    stream_slot = audio_state.vab_stream_slots;
+    stream_buffer = (u8 *)0x80165a68;
+    for (index = 0; index < 7; index++) {
+        stream_slot->state = 0;
+        stream_slot->buffer = stream_buffer;
+        stream_slot++;
+        stream_buffer += 0x1000;
+    }
+    audio_state.vab_stream_slots[5].buffer = (u8 *)0x80194e30;
+    audio_state.vab_stream_slots[6].buffer = (u8 *)0x80164a68;
+}
+
 ADDRESS(0x80013ae4, 0x98)
 void audio_start_sequence(void)
 {

@@ -665,6 +665,9 @@ KfTargetCandidate	0x11	0x1	unknown_11	u8	supported	GAME 0x800462bc retail lbu at
 KfTargetCandidate	0x12	0x1	unknown_12	u8	supported	GAME 0x800462bc retail lbu at +0x12	high nibble selects post-event menu action
 KfTargetCandidate	0x13	0x1	marker_state	u8	candidate	game/actor.h;message marker scan	base of returned cursor difference
 KfTargetCandidate	0x14	0x2	bytes	u8[2]	candidate	game/actor.h;message marker scan;GAME 0x800462bc	start of variable byte stream; complete extent unresolved
+KfTargetCandidate	0x16	0x2	unknown_16	u16	supported	GAME 0x80039108 lhu target+0x16	candidate distance bound; meaning unresolved
+KfTargetCandidate	0x18	0x2	unknown_18	u8[2]	opaque	game/actor.h	intervening bytes before candidate distance bound
+KfTargetCandidate	0x1a	0x2	unknown_1a	u16	supported	GAME 0x80039108 lhu target+0x1a	candidate distance bound; meaning unresolved
 KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
 KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step

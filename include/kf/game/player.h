@@ -5,6 +5,7 @@
 #include <psyq/sdk.h>
 
 struct KfMagicRecord;
+struct KfEffectRecord;
 
 /* Runtime progression limits (King's Field capped vitals at 9999 and
  * experience at 99999 and loaded forty growth rows). */
@@ -67,26 +68,36 @@ typedef char kf_equipment_record_hp_drain_offset[
     (u32)&((KfEquipmentRecord *)0)->hp_drain_interval == 0x16 ? 1 : -1];
 
 typedef struct KfWeaponRecordGame {
-    u8 unknown_00[5];
+    u8 sound_id;
+    u8 charge_rank;
+    u8 unknown_02;
+    u8 initial_effect_id;
+    u8 release_effect_id;
     u8 magic_shots;
     u16 attack_components[8];
-    u8 unknown_16[8];
+    u16 unknown_16;
+    u16 unknown_18;
+    s16 attack_angle;
+    s16 attack_phase_step;
     u16 unknown_1e;
-    u8 unknown_20[4];
+    u16 magic_window_start;
+    u16 magic_window_end;
     u16 unknown_24;
     u16 unknown_26;
-    u8 unknown_28[4];
+    u16 unknown_28;
+    u16 magic_phase_step;
     u16 unknown_2c;
     u16 unknown_2e;
-    u8 unknown_30[4];
+    u16 unknown_30;
+    s16 release_phase_step;
     u16 position_offset_x;
     u16 position_offset_y;
     u16 position_offset_z;
-    u8 unknown_3a[2];
+    s16 initial_vertex_index;
     u16 rotation_offset_x;
     u16 rotation_offset_y;
     u16 rotation_offset_z;
-    u8 unknown_42[2];
+    s16 final_vertex_index;
 } KfWeaponRecordGame;
 
 typedef struct KfWeaponAssetBuffer {
@@ -139,6 +150,7 @@ typedef union KfPlayerReactionOverlay {
     KfPlayerDamageReaction damage;
     KfPlayerViewReaction view;
     KfPlayerPositionReaction position;
+    u16 angle_phase;
 } KfPlayerReactionOverlay;
 
 typedef char kf_player_reaction_overlay_size[
@@ -268,7 +280,7 @@ typedef struct KfPlayerState {
     KfWeaponRecordGame *equipped_weapon_record;
     struct KfAssetHeader *weapon_asset_buffer;
     struct KfPoolRecord *weapon_animation_cache;
-    u8 unknown_8c[4];
+    struct KfEffectRecord *weapon_effect;
     s16 weapon_attack_phase;
     u16 weapon_attack_window;
     u16 weapon_attack_recovery;

@@ -1121,11 +1121,11 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 | `8002569c` | SAME | Weapon equip control. |
 | `80025754` | SAME | Attack begin control. |
 | `80025878` | SAME | Actor-target selector control. |
-| `80025a18` | Unclaimed WIP | 53 bounded case pointers; 66 to zero withheld relocations; indirect C form unresolved. |
+| `80025a18` | DIFF, 40.7% | First-pass variadic effect dispatcher covers the bounded 53-entry switch; ordering the first retail case bodies in source improved the focused listing. |
 | `80026330` | SAME | Weapon transform control. |
 | `80026464` | SAME | Power/magic threshold control. |
 | `80026498` | SAME | Magic selector control. |
-| `8002665c` | Unclaimed WIP | Candidate `void()` ABI: sole proven caller `8002a728` has no argument setup and discards `v0`; entry replaces `a0` from player state. 114 CFG blocks and zero withheld relocations; other live-ins and full weapon/effect semantics remain unresolved. |
+| `8002665c` | DIFF, 25.7% | First-pass weapon/magic update covers the observed direct call set; the entry range check now follows retail, and caller `8002a728` passes no arguments and discards `v0`. |
 | `8002722c` | DIFF, 88.0% | First-pass C covers both bounded switches and player/magic state; 33 retail versus 34 compiled CFG blocks and 16/16 branches. Indirect table edges and original TU remain candidate. |
 | `800274ec` | DIFF, 61.9% | Horizontal movement source; collision and retry schedule residue. |
 | `80027928` | SAME | Collision-depth death helper control. |
@@ -1140,9 +1140,13 @@ not itself certify strict objdiff 100%. Unclaimed bodies have no C score.
 The adjacent `8002985c` update body has one proven external call from
 `game_main_loop` at `800138e0`; the other incoming pointers are its bounded
 internal switch targets. That caller does not prepare arguments or consume
-`v0`, and the callee initializes `a0`–`a3` before using them. Its identity
-therefore records candidate `void func_8002985c(void)` while the full
-control flow and source ownership remain unresolved.
+`v0`, and the callee initializes `a0`–`a3` before using them. Its first-pass
+`void func_8002985c(void)` source now covers the bounded 19-entry switch,
+status timers, texture animation, and collision update, and focused `kf try`
+reports **40.0% WIP**. The four VRAM source rows at `8006d6b0` are one
+initialized `RECT[4]` owner; four raw-checked HI16/LO16 pairs identify its
+interior row addresses. The current compiler frame and several block shapes
+still diverge from retail, so this is a started claim, not an exact match.
 
 The first-pass `8002722c` source now owns the contiguous run through
 `800274ec` in `game.player_select_magic_action`, reducing one module. Its

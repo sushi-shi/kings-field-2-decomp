@@ -6,6 +6,27 @@
 #include <kf/game/cd.h>
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
+#include <psyq/libc.h>
+#include <stdarg.h>
+
+extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
+
+DATA(0x800667a0, 0x28)
+SVECTOR DAT_800667a0[5] = {
+    {0, 0, 100, 0},
+    {-1000, 0, 0, 46},
+    {-2000, 0, -2000, 46},
+    {1000, 0, 0, 46},
+    {2000, 0, -2000, 46}
+};
+
+DATA(0x800667c8, 0x20)
+SVECTOR DAT_800667c8[4] = {
+    {-400, -400, 200, 0},
+    {-400, 400, 200, 0},
+    {400, -400, 200, 0},
+    {400, 400, 200, 0}
+};
 
 enum { PLAYER_CAMERA_HEIGHT_OFFSET = 1600 };
 
@@ -188,7 +209,7 @@ s32 player_distance_to_point(
         KF_PLAYER_HEIGHT, point_height);
 }
 
-RODATA(0x80011168, 0x1c)
+RODATA(0x80011168, 0xf4)
 
 ADDRESS(0x800253fc, 0x10)
 void player_set_unknown_97(u8 value)
@@ -388,4 +409,186 @@ KfActor *func_80025878(s32 scale, VECTOR *position, SVECTOR *direction,
         vector3s_scale_shift12(scale, direction);
     }
     return actor;
+}
+
+ADDRESS(0x80025a18, 0x918)
+void func_80025a18(s32 effect_id, ...)
+{
+    VECTOR position;
+    SVECTOR direction;
+    s32 distance;
+    KfActor *actor;
+    KfEffectRecord *effect;
+    s32 i;
+    s32 kind;
+    va_list arguments;
+    const VECTOR *override_position;
+
+    va_start(arguments, effect_id);
+
+    switch (effect_id) {
+    case 7:
+        func_80025878(1000, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
+        break;
+    case 2:
+        func_80040308(10, 0x13, effect_id, &player_state.camera_position,
+                       0, 0x1000, 0x100, 0x1000);
+        break;
+    case 3:
+        actor = func_80025878(5000, &position, &direction, &distance);
+        if (actor == 0) {
+            position.vx += direction.vx;
+            position.vy = player_state.camera_position.vy;
+            position.vz += direction.vz;
+        } else {
+            position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
+            position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
+            position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
+            if (func_8002b7f8(position.vx, position.vy, position.vz, 10, 10)) {
+                position = actor->position;
+            }
+        }
+        func_80040308(10, 0x12, 0x72, &position, 0);
+        break;
+    case 0:
+        actor = func_80025878(5000, &position, &direction, &distance);
+        kind = actor == 0 ? 255 : actor - actor_state.actors;
+        position.vx += direction.vx;
+        position.vz += direction.vz;
+        func_80040308(10, 0x12, 0x6f, &position, 0, kind);
+        break;
+    case 13:
+        for (i = 0; i < 4; i++) {
+            player_state.unknown_118 = DAT_800667c8[i];
+            func_80025878(800, &position, &direction, &distance);
+            direction.vx += -32 + (rand() >> 9);
+            direction.vy += -32 + (rand() >> 9);
+            direction.vz += -32 + (rand() >> 9);
+            func_80040308(10, 0x12, effect_id, &position, &direction);
+        }
+        break;
+    case 4:
+    case 51:
+    case 52:
+        func_80025878(700, &position, &direction, &distance);
+        func_80040308(10, 0x12,
+                       effect_id == 51 ? 0x76 : effect_id == 52 ? 0x77 : effect_id,
+                       &position, &direction);
+        break;
+    case 11:
+        func_80025878(600, &position, &direction, &distance);
+        if (distance == -1) {
+            distance = 10;
+        } else {
+            distance = distance / 600 - 8;
+            if (distance < 2) {
+                distance = 2;
+            }
+        }
+        direction.vy = 0;
+        func_80040308(10, 0x12, 0x67, &position, &direction, distance);
+        break;
+    case 5:
+    case 9:
+        func_80025878(effect_id == 5 ? 200 : 500, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
+        break;
+    case 8:
+        func_80025878(700, &position, &direction, &distance);
+        func_80040308(10, 0x12, 0x6a, &position, &direction);
+        break;
+    case 6:
+    case 10:
+    case 40:
+        func_80025878(effect_id == 6 ? 250 : effect_id == 10 ? 300 : 1000,
+                       &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
+        break;
+    case 12: {
+        s16 old_yaw = player_state.camera_rotation.angles[1];
+        player_state.camera_rotation.angles[1] -= player_state.unknown_118.vx * 2;
+        func_80025878(150, &position, &direction, &distance);
+        player_state.unknown_118.vx += 100;
+        player_state.camera_rotation.angles[1] = old_yaw;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation, 600, 60, 128, 140, 160);
+        break;
+    }
+    case 1:
+        func_80025878(500, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction);
+        break;
+    case 14:
+    case 16:
+    case 19:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
+        break;
+    case 15:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
+        player_state.unknown_62 = 900;
+        player_recalculate_combat_stats();
+        break;
+    case 17:
+        func_80040308(10, 0x10, effect_id, &player_state.camera_position,
+                       &direction);
+        player_state.unknown_64 = 900;
+        player_recalculate_combat_stats();
+        break;
+    case 34:
+    case 35:
+    case 38:
+        func_80025878(900, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
+    case 39:
+        func_80025878(50, 0, &direction, &distance);
+        override_position = va_arg(arguments, const VECTOR *);
+        position = *override_position;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
+    case 42:
+    case 43: {
+        const SVECTOR *record = DAT_800667a0;
+        player_state.unknown_118 = record[0];
+        func_80025878(600, &position, &direction, &distance);
+        effect = func_80040308(10, 0x12, effect_id == 42 ? 0x71 : 0x73,
+                               &position, &direction, &player_state.camera_rotation);
+        if (effect != 0) {
+            s32 index = effect - effect_state.records;
+            for (i = 1; i < 5; i++) {
+                player_state.unknown_118 = record[i];
+                func_80025878(600, &position, &direction, &distance);
+                func_80040308(10, 0x12, record[i].pad, &position, &direction, index);
+            }
+        }
+        break;
+    }
+    case 44:
+    case 45:
+        func_80025878(1000, &position, &direction, &distance);
+        func_80040308(10, 0x12, effect_id == 44 ? 0x75 : 0x74,
+                       &position, &direction, &player_state.camera_rotation);
+        break;
+    case 49:
+        func_80025878(550, 0, &direction, &distance);
+        override_position = va_arg(arguments, const VECTOR *);
+        position = *override_position;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
+    case 50:
+        override_position = va_arg(arguments, const VECTOR *);
+        position = *override_position;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
+    default:
+        break;
+    }
+    va_end(arguments);
 }

@@ -100,7 +100,8 @@ void game_main_loop(void)
     func_8002ce68(0x150, 0x100, 0, 4, 1, 0x40, 0x40);
 
     /* The fixed arena base and post-player word have no proved object owner. */
-    memory_arena_initialize_blocks((KfMemoryBlock *)0x8009b0a0, 0x5f000);
+    memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
+                                   KF_GAME_RESOURCE_ARENA_CAPACITY);
     func_80036e24(0x82, 0x1000, 0, -128);
     *(u32 *)0x80198630 = 0;
 

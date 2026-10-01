@@ -1089,3 +1089,26 @@ made in this read-only caller pass.
 | `0x8002360c` | Exact | Three direct calls to the eight-control dispatcher. |
 | `0x80036ed4` | WIP, unclaimed | Script-record byte loads and one direct dispatcher call. |
 | `0x8004678c` | WIP, unclaimed | Two direct dispatcher calls; command switch and callback unresolved. |
+
+### Five GAME startup and transition claims
+
+The previously unclaimed functions `0x800139c4`, `0x80015d58`, `0x80015fd4`,
+`0x80016260`, and `0x80016820` now have C `ADDRESS` claims. Each passed the
+required image-specific address, disassembly/CFG, xref, call, string, and
+match-state inspection before source. None is a vendored Psy-Q body; the
+startup function calls Psy-Q sound APIs but owns GAME audio state initialization.
+The seven-phase controller owns the reviewed 0x1c-byte switch-table range at
+`0x80011058` and the initialized 32-entry no-op callback table at `0x80063e00`.
+
+| GAME VA | Focused verdict | First material residue |
+| --- | --- | --- |
+| `0x800139c4` | WIP, 60.6% listing similarity | Unbound SDK table and stream/sequence workspaces compile as literal `lui/ori`, while retail constructs signed-low addresses with relocations. The calls and audio-state loops are present. |
+| `0x80015d58` | WIP, 87.1% listing similarity | Fixed archive arena and two copy destinations lack proven defining objects. Source now reloads each length-prefixed span after copying, matching the retail copy schedule. |
+| `0x80015fd4` | WIP, 96.1% listing similarity | The TMD slot pointer at `0x8012da68` has no proved owner; retail uses a relocation and signed-low address construction. State writes, CD/controller loop, and indirect callback align. |
+| `0x80016260` | WIP, 25.0% listing similarity | Eight byte-valued request controls, early returns, critical-section wait, state updates, and direct calls are modeled. The compiler selects a different register and branch schedule near the first sentinel dispatch; CFG/codegen remains under review. |
+| `0x80016820` | WIP, 88.5% listing similarity | Seven-phase switch, CD loads, actor/map cleanup, callback-table swap, sequence fade, and VAB queue are modeled. Moving completion before the fade phases, advancing the length-prefixed buffer in place, and clamping the signed fade at zero restored the retail CFG and copy schedule. Frame size and later pointer scheduling differ; `0x8019e138` and `0x8012da68` remain unbound workspaces. |
+
+All new units compile under focused `kf try` with the pinned probe. The 15
+previously exact audio neighbors stayed `SAME` in the focused audio unit build;
+`cd_request_service_vab` remains its established WIP. No strict 100% result
+was claimed, and no bank or README write was made.

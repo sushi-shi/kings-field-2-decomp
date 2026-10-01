@@ -16,7 +16,7 @@ enum {
     KF_ACTOR_LIFECYCLE_DORMANT = 0
 };
 
-/* Target candidate ownership and full extent remain under study. */
+/* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
     u8 unknown_01[3];
@@ -31,8 +31,11 @@ typedef struct KfTargetCandidate {
     u8 unknown_12;
     u8 marker_state;
     u8 bytes[2];
+    u16 unknown_16;
+    u8 unknown_18[2];
+    u16 unknown_1a;
 } KfTargetCandidate;
-typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x16 ? 1 : -1];
+typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x1c ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidate *)0)->fallback_offset == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
 typedef char kf_target_candidate_unknown_0a_offset[(u32)&((KfTargetCandidate *)0)->unknown_0a == 0x0a ? 1 : -1];
@@ -63,7 +66,7 @@ typedef struct KfTargetGroup {
     s16 unknown_10;
     u16 unknown_12;
     u16 unknown_14;
-    u8 unknown_16[2];
+    u16 unknown_16;
     u16 unknown_18;
     u16 unknown_1a;
     u16 unknown_1c;

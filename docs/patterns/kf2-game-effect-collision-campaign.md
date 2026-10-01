@@ -2296,6 +2296,121 @@ emits the retail `li -1; bne` and delay-slot constant, with unchanged loop
 behavior. Strict text rises from 76.418200% to 76.855340% on the same target;
 candidate text is 13,872 bytes and RODATA remains 27.918287%.
 
+The earlier growth arm and kind 13 converge on the same retail collision
+block at `0x800428d8`, where `func_80042424` and `func_8003feb0` run before
+the growth update at `0x80042908`. The C previously kept those shared labels
+at the end of the function, so both candidate arms jumped to a far tail.
+Moving the labels into the kind-13 physical region makes the focused object
+emit both calls there and improves the ordered named call/data relocation
+sequence from 259 to 261 matching entries out of 274 under an order-preserving
+alignment. All 128 table rows retain their exact relocation offsets and
+symbol class sequence, and all 64 target classes keep the same physical
+order; the named referent/addend multiset remains identical to retail.
+Isolated strict text rises from 76.855340% to 77.307690% on the same
+13,872-byte candidate. RODATA similarity falls to 17.996109% as the pointer
+targets shift. The dispatcher remains WIP.
+
+Within that local growth block, retail kind 13 branches from nonzero phase
+at `0x800428b4`, then branches on a zero collision result at `0x800428d0`
+past the shared collision calls to the helper path at `0x800428f4`.
+Separating those paths with labels reproduces the same local order and
+conditional-branch polarity in the focused object. Strict text changes from
+77.307690% to 77.267800% as later code shifts four bytes, while RODATA
+rises from 17.996109% to 32.587547%; candidate text is 13,868 bytes.
+The 128 ordered pointer relocations, 64 class identities and physical class
+order, and named call/data referent multiset are preserved. This raw-backed
+CFG correction is retained despite the small aggregate text decrease.
+
+The phase snapshot originates from `lbu` at the dispatcher entry. Keeping
+that zero-extended value in an `s32` local, rather than narrowing it back to
+`u8`, removes repeated candidate `andi 0xff` operations at the growth arms
+while preserving the entry load and all phase values. Focused text shrinks
+from 13,868 to 13,832 bytes; isolated strict text rises from 77.267800% to
+77.692310%, with RODATA at 29.766537%. All 128 ordered pointer rows, 64
+class identities and physical order, and the named call/data referent
+multiset remain aligned with retail. The updater remains WIP.
+
+The shared scale tail belongs just before kind 6 in retail: its
+`func_80041cd0` call at `0x80044f30` is followed by the common rotation-Y
+increment at `0x80044f38..0x80044f48`. The C formerly placed this tail
+after every switch case. Moving the label into the preceding kind-10 region
+retains all incoming paths and places the call and rotation update at the
+same physical point in the candidate. The ordered named call/data alignment
+improves from 261 to 262 of 274 entries, while all 128 ordered pointer rows,
+64 classes and their physical order, and the named referent multiset remain
+unchanged. Isolated strict text changes from 77.692310% to 77.613950% and
+RODATA from 29.766537% to 19.649805% as later addresses move; candidate
+text is 13,828 bytes. The raw-supported call placement is retained.
+
+The other shared tail, `func_80041e94`, sits at retail `0x80044aa0..0x80044ab0`
+between kind 8's phase-zero and phase-one code. It has two decoded incoming
+paths, from kind 12 at `0x80043de8` and from kind 8 at `0x80044a68`.
+The C had placed this common spawn call after every switch arm. Splitting
+kind 8's phase dispatch around a local spawn label preserves those paths
+and places the call before phase one, as in retail. The candidate call is now
+at body `+0x23b4`, against retail `+0x2454`; ordered named call/data alignment
+improves from 262 to 263 of 274 entries. Isolated strict text rises from
+77.613950% to 78.411020%, RODATA from 19.649805% to 30.642023%, and
+candidate text shrinks from 13,828 to 13,824 bytes. All 128 pointer-row
+offsets/symbols, 64 target classes and their physical order, and the named
+referent multiset remain aligned; the updater is still WIP.
+
+Kind 100's two phase-range paths had the correct calls but the opposite
+physical order. Retail branches at `0x80043e3c` into the collision probe
+at `0x80043ea4`, leaving the direction increment and `func_80042298`
+path as fallthrough. A local label now expresses that control flow while
+preserving the old phase and miss behavior. The candidate places those calls
+in retail order. A focused rebuild and isolated strict comparison raise
+updater text from 78.411020% to 79.511765%; RODATA stays 30.642023% and
+candidate text stays 13,824 bytes. All 128 pointer rows and 64 target
+classes retain their pairwise and physical order, and the named call/data
+referent multiset remains exact. The updater remains WIP.
+
+Kind 12's retail phase dispatch has direct paths: phase 101 increments and
+exits, 100 enters the child spawn at `0x80043d90`, 102 enters the reset at
+`0x80043dbc`, and 110 enters the shared scale setup at `0x80043d08`.
+The prior C used a temporary reset flag, and its compiled object emitted a
+constant condition after the child spawn. Explicit local reset/scale labels
+model the decoded paths without that redundant condition. The focused
+candidate shrinks from 13,824 to 13,792 text bytes. Isolated strict text
+changes from 79.511765% to 79.430540%, and RODATA from 30.642023% to
+24.027237%; the address movement affects global alignment, so the
+source-backed control-flow correction is retained. All 128 pointer rows,
+64 pairwise target classes and their physical order, and the named call/data
+referent multiset remain aligned with retail. The updater remains WIP.
+
+Within that kind-12 dispatch, retail branches on a nonnegative collision
+result at `0x80043d7c` to the `func_80041e0c` path at `0x80043df0`.
+The miss path falls through to sound and child creation, then the reset and
+scale setup precede the collision-success body in physical order. A local
+collision label now gives the C that same order. The candidate emits the
+same branch polarity and block sequence; isolated strict text rises from
+79.430540% to 79.590700%, with RODATA unchanged at 24.027237% and text
+still 13,792 bytes. The 128 pointer rows, 64 target classes and their
+physical order, and named referent multiset remain exact.
+
+Retail has a shared phase-increment block at `0x80044f4c`, immediately
+after the shared scale/rotation tail. Decoded incoming edges include kind
+12 phase 101 at `0x80043cd4` and three kind-100 paths at `0x80043e78`,
+`0x80043ee8`, and `0x80043f3c`. Routing those four source paths to a
+common label after the scale tail gives the candidate the same local
+instruction sequence (`lbu`, load-delay `nop`, `addiu`, `j`, delay-slot
+`sb`) and physical order. The candidate block is currently at body
+`+0x2828`, versus retail `+0x28fc`; other incoming retail paths still need
+review. Focused candidate text shrinks from 13,792 to 13,776 bytes,
+isolated strict text rises from 79.590700% to 79.954930%, and RODATA
+rises from 24.027237% to 28.696499%. All 128 pointer rows, 64 target
+classes and their physical order, and named referent multiset remain exact.
+
+The other five decoded incoming edges to that shared increment are three
+kind-104/122 paths at `0x80043a34`, `0x80043a78`, and `0x80043af0`, plus
+two kind-10 phase-dispatch paths at `0x80044c98` and `0x80044cac`.
+Those source paths now use the common label as well. Focused text shrinks
+from 13,776 to 13,752 bytes; isolated strict text rises from 79.954930%
+to 80.417046%, and RODATA from 28.696499% to 29.280155%. All 128
+pointer rows, 64 target classes and their physical order, and the named
+referent multiset remain exact. The updater is still WIP.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

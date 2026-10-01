@@ -42,6 +42,7 @@ void func_8003247c(void)
     SVECTOR *effect_scale_ptr;
     const struct KfEulerAngles *effect_rotation_ptr;
     KfMapPlacedEntry *placed;
+    const VECTOR *camera_position;
     s32 frame;
     s16 remaining;
 
@@ -110,6 +111,7 @@ actor_next:
     resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
 
     frame = cd_state.frame_count;
+    camera_position = &player_state.camera_position;
     repeat_store_word((u32 *)tmd_flags, 0, 80);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
@@ -146,7 +148,6 @@ map_sound_action: {
             s32 distance;
             s32 radius;
             s32 volume;
-            const VECTOR *camera_position;
 
             if (func_80036ad8(object->position.vx >> 11,
                               object->position.vz >> 11,
@@ -161,7 +162,6 @@ map_sound_action: {
             if ((s32)(object->extra_40.raw - frame) < 0) {
                 object->extra_40.raw = frame +
                     object->tail.fields.unknown_3e.value * 6;
-                camera_position = &player_state.camera_position;
                 distance = camera_position->vx -
                     (object->tail.fields.unknown_38 * 0x400 + object->position.vx);
                 if (distance < 0) distance = -distance;

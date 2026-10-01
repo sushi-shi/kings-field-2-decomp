@@ -51,7 +51,11 @@ void func_8003d184(void)
     u16 trigger;
     s32 interval;
 
-    actor_state.unknown_93a4 = (actor->unknown_28 & 4) == 0 ? 0x93 : 3;
+    if ((actor->unknown_28 & 4) != 0) {
+        actor_state.unknown_93a4 = 3;
+    } else {
+        actor_state.unknown_93a4 = 0x93;
+    }
     func_8002b73c(actor->position.vx, actor->position.vz,
                    actor->unknown_1c, -1);
 
@@ -145,7 +149,7 @@ dispatch_action:
             if (current_state == 99) {
                 break;
             }
-            actor->state_70.signed_state = current_state + 1;
+            actor->state_70.signed_state++;
             if (old_state < 20) {
                 goto case3_motion;
             }
@@ -285,7 +289,7 @@ case3_motion:
                 player_state.camera_position.vz - actor->position.vz);
             if (distance >= target->word_16.value) {
                 actor->state_70.bytes.low = 0;
-            } else if (distance > target->word_14.value) {
+            } else if (distance <= target->word_14.value) {
                 actor->state_70.bytes.low = 1;
             }
         }
@@ -342,7 +346,7 @@ case3_motion:
         func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
         if (actor->tail_72.angles.x >= 3585) {
             actor->tail_72.angles.x = 3584;
-        } else if (actor->tail_72.angles.x <= 512) {
+        } else if (actor->tail_72.angles.x > 512) {
             actor->tail_72.angles.x = 512;
         }
         if (distance >= target->word_16.value) {
@@ -584,8 +588,8 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_80039804(target->unknown_01[0]);
-            func_8003b5bc();
             actor->state_70.signed_state = 0;
+            func_8003b5bc();
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -973,8 +977,8 @@ case3_motion:
                 actor->state_70.signed_state = 1;
             } else {
                 actor->tail_72.signed_state = func_8003bd40(
-                    actor->unknown_24 + (actor->unknown_07[1] << 11),
-                    actor->unknown_22 + (actor->unknown_07[0] << 11),
+                    (actor->unknown_07[1] << 11) + actor->unknown_24,
+                    (actor->unknown_07[0] << 11) + actor->unknown_22,
                     target->word_0e.value, target->word_10.value,
                     actor->tail_72.signed_state,
                     group->unknown_01[2],

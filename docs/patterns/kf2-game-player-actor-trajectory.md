@@ -1812,3 +1812,27 @@ player-state address form after the initial sine/cosine calls. Existing
 direct strict verdicts remain those recorded above; none of these listing
 percentages is a newly banked match. No independently supported source fact
 justified changing the existing C in this pass.
+
+### Player reaction and collision strict follow-up
+
+An isolated safe carve and strict object comparison of the complete
+`game.player_reaction` unit retains all sixteen exact siblings. The WIP
+controller `8002985c` is now **99.26569% strict**. Retail increments the
+position-reaction byte at `player_state+0x14c` in case 5; the previous source
+used the adjacent `+0x14d`. The source now increments `.position.mode` and
+reads it again for the interpolation fraction and after the three calls for
+the completion check, matching the retail load/store sequence at
+`80029e74..80029ef8`. In case 2, retail rereads the view-mode byte before
+`func_800291d0`, so the call now uses the field instead of the earlier cached
+object index. In the revive branch, retail stores camera Y at `+0xdc` before
+camera X at `+0xd8`; the source follows that order. The target and candidate
+now have the same 482 ordered text relocation identities and no HI16/LO16
+addend differences. The remaining clamp, map-object base, and loop-register
+scheduling differences do not justify an exact claim.
+
+In `game.player_collision_sound`, retail loads the landing bob halfword at
+`player_state+0x110` before decrementing vertical speed at `+0x13a`. The
+source now preserves that read order. Isolated strict `800279cc` rises from
+97.09642% to **97.35812%**; the adjacent `80027928` and `80027988` remain
+exact. The target still has two extra player-state HI16/LO16 pairs because
+the candidate retains a base address through the landing zero-stores.

@@ -469,12 +469,12 @@ update_reaction_view:
             player_state.reaction.view.rotation.angles[2], 0, fraction);
         step = player_state.reaction.view.step++;
         if (step > 31) {
-            func_800291d0(object_index);
+            func_800291d0(player_state.reaction.view.mode);
         }
         goto after_reaction;
     case 5:
-        step = ++player_state.reaction.position.mode;
-        fraction = step << 8;
+        ++player_state.reaction.position.mode;
+        fraction = player_state.reaction.position.mode << 8;
         player_state.camera_position.vx = func_8001584c(
             player_state.camera_position.vx,
             player_state.reaction.position.position.vx, fraction);
@@ -484,7 +484,7 @@ update_reaction_view:
         player_state.camera_position.vz = func_8001584c(
             player_state.camera_position.vz,
             player_state.reaction.position.position.vz, fraction);
-        if (step > 15) {
+        if (player_state.reaction.position.mode > 15) {
             func_80029168();
         }
         goto after_reaction;
@@ -574,8 +574,8 @@ update_reaction_pose:
                     player_state.camera_rotation_target.angles[0] = 0;
                     player_state.camera_rotation_target.angles[1] = 0xc00;
                     player_state.camera_rotation_target.angles[2] = 0;
-                    player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vy = -0x2480;
+                    player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vz = 0x22000;
                     player_state.unknown_128 = 5;
                     game_counter_bytes[0x4c]--;

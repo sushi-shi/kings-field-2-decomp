@@ -233,3 +233,60 @@ as retail, but the probe keeps an eight-byte slot-offset induction value
 and a 56-byte frame where retail recomputes the slot index in a 48-byte
 frame. There is no supported new storage owner or source-level state to
 force that allocation, so its C body is unchanged.
+
+An isolated whole-unit compiler-profile control for `game.resource_runtime`
+does not offer a safe profile switch. `-mcpu=r3000` emits the same strict
+scores as the current `r2000` probe. With no CPU flag, the exact TMD-range
+sibling falls to 97.14286%; with `-fno-schedule-insns`, the radius helper
+rises from 73.95918% to 84.46939%, but the exact single-cell mask falls to
+92.85714% and the TMD queue falls to 84.35897%. No profile was retained;
+these comparisons do not attribute the remaining codegen differences.
+
+GAME `func_8002aaa4` masks its quarter-turn selector to `0..3` and compares
+it with `2` in seven case families. Every corresponding retail instruction
+is signed `slti`, while the `u16` temporary in the candidate emitted
+`sltiu`. Declaring the temporary `s32` reproduces all seven signed compares
+with the same 2,796-byte candidate text size and unchanged 49-pointer table.
+The isolated strict text score moves from 47.447803% to 44.086540%, because
+other control and register-order differences still dominate; the retail body
+is 2,912 bytes. This signedness correction is retained as a direct instruction
+fact, not an exact claim. The focused CFG remains 174/165 blocks and 99/97
+branches.
+
+An isolated profile control for that single-function shape unit gives
+44.08654% strict text with `r3000`, the same as the current `r2000` flags;
+plain scheduling gives 44.39698%, and `-fno-schedule-insns` gives 41.30495%.
+None resolves the missing 116 text bytes or the CFG difference, so the
+unit's profile remains unchanged.
+
+The shape dispatch's 49-pointer switch has the same thirteen case identities
+as retail, but the case-`0x40` target remains physically after the common
+exit in the probe, whereas retail places its second-layer scan before the
+`0x18` and `0x19` arms. An inline `case 0x40` copy moved strict text from
+44.08654% to 49.35165% and the candidate from 2,796 to 2,848 bytes, but
+still left that case after the exit and reduced the focused CFG from 165 to
+164 blocks. Its original shared-tail form was restored; switch placement
+remains WIP.
+
+An isolated compiler control for GAME `func_80040308` confirms that its
+configured GCC 2.5.7 profile is materially closer than GCC 2.6.0 for the
+same source and delinked target. The former emits 5,076 `.text` bytes at
+88.84053% strict match; the latter emits 5,088 bytes at 70.50275%.
+Both use the same `-O2`, `-G0`, ASPSX 1.07, and `-mcpu=r2000` settings.
+The retail text is 5,092 bytes. This control does not identify the original
+compiler or explain the remaining saved-register and variadic-cursor residue;
+no profile or constructor source was changed.
+
+The GAME actor-effect dispatcher at `0x8003c614` remains WIP: a fresh
+focused compile has 45/45 CFG blocks and 15/15 branches; isolated strict
+text is 84.98203% (2,672 retail bytes, 2,696 candidate bytes), and the
+123-word switch table is 39.430893%. Every table row still maps to the
+same one of nineteen case classes, in the same physical class order. The
+retail prologue reserves 192 bytes and the probe 184; their variadic reads
+reach the same caller slots after that frame displacement. Case 4's target
+is at retail `+0x2e0` versus candidate `+0x2dc`, while the following case
+40 starts at `+0x31c` versus `+0x350`, locating a substantial code-shape
+residue in the case-4 interval rather than a missing switch identity. No
+source or profile change follows from this comparison alone.
+An off-tree explicit `goto` after case 4 compiled byte-identically to the
+existing fallthrough, so it does not account for the shared-tail difference.

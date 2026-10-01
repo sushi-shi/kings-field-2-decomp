@@ -60,7 +60,7 @@ void effect_update_dispatch(void)
     KfEffectRecord *record = effect_state.current_record;
     KfMagicRecord *magic = effect_state.current_magic;
     u32 initial_kind = record->kind;
-    u8 initial_phase = record->phase;
+    s32 initial_phase = record->phase;
     s32 collision;
     s32 step;
     s32 shared_multiplier;
@@ -153,19 +153,34 @@ void effect_update_dispatch(void)
     case 32: {
         shared_growth_phase = initial_phase;
 
-        if (shared_growth_phase == 0) {
-            collision = func_80042298(180, 0, -300);
-            if (collision == 0) {
-                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-                break;
-            }
-            goto shared_growth_collision;
+        if (shared_growth_phase != 0) {
+            goto kind13_nonzero_phase;
         }
+        collision = func_80042298(180, 0, -300);
+        if (collision == 0) {
+            goto kind13_no_collision;
+        }
+    shared_growth_collision:
+        func_80042424();
+        func_8003feb0(collision);
+        record->phase = 1;
+        goto shared_growth_update;
+    kind13_no_collision:
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        break;
+    kind13_nonzero_phase:
         if (shared_growth_phase >= 3) {
             record->type = KF_EFFECT_SLOT_FREE;
             break;
         }
-        goto shared_growth_update;
+    shared_growth_update:
+        record->animation_clip = shared_growth_phase - 128;
+        step = record->scale_x + 2048;
+        record->scale_x = step;
+        record->scale_y = step;
+        record->scale_z = step;
+        record->phase++;
+        break;
     }
     case 23:
         if (initial_phase == 9) {
@@ -681,9 +696,8 @@ void effect_update_dispatch(void)
                     func_8002bf38(200, 180, 160, 32000, strength);
                 }
             }
-            record->phase++;
+            goto shared_phase_increment;
         }
-        break;
     case 11:
     case 54: {
         SVECTOR random_direction;
@@ -743,11 +757,9 @@ void effect_update_dispatch(void)
         goto shared_scale_step;
     case 12: {
         s32 prior_phase = initial_phase;
-        s32 reset = 0;
 
         if (prior_phase == 101) {
-            record->phase++;
-            break;
+            goto shared_phase_increment;
         }
         if (prior_phase == 100) {
             KfEffectRecord *child = func_80040308(
@@ -755,56 +767,59 @@ void effect_update_dispatch(void)
                 0, &record->rotation);
 
             child->phase = 101;
-            reset = 1;
-        } else if (prior_phase == 102) {
-            reset = 1;
-        } else if (prior_phase != 110) {
-            if (prior_phase == 0) {
-                effect_play_spatial_sound(record, 0x29);
-            }
-            record->phase++;
-            collision = func_8004195c(
-                *(s16 *)&record->unknown_3c[4],
-                *(s16 *)&record->unknown_3c[6],
-                *(s16 *)&record->unknown_3c[8],
-                *(s16 *)&record->unknown_3c[10],
-                0, 6000, *(s16 *)&record->unknown_3c[10], 0x800);
-            if (collision == -1) {
-                KfEffectRecord *child;
+            goto kind12_reset;
+        }
+        if (prior_phase == 102) {
+            goto kind12_reset;
+        }
+        if (prior_phase == 110) {
+            goto kind12_scale;
+        }
+        if (prior_phase == 0) {
+            effect_play_spatial_sound(record, 0x29);
+        }
+        record->phase++;
+        collision = func_8004195c(
+            *(s16 *)&record->unknown_3c[4],
+            *(s16 *)&record->unknown_3c[6],
+            *(s16 *)&record->unknown_3c[8],
+            *(s16 *)&record->unknown_3c[10],
+            0, 6000, *(s16 *)&record->unknown_3c[10], 0x800);
+        if (collision != -1) {
+            goto kind12_collision;
+        }
+        {
+            KfEffectRecord *child;
 
-                effect_play_spatial_sound(record, 0x18);
-                child = func_80040308(10, record->type | 3, 12,
-                                      &record->position, 0,
-                                      &record->rotation);
-                child->phase = 101;
-                reset = 1;
-            } else {
-                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-                record->rotation.vz = (u16)record->rotation.vz + 128;
-                shared_position_mode = 2;
-                shared_motion_mode = 0x400;
-                shared_motion_scale = 0xc00;
-                shared_motion_acceleration = -300;
-                shared_motion_count = 5;
-                shared_motion_layer = 33;
-                goto shared_spawn_motion;
-            }
+            effect_play_spatial_sound(record, 0x18);
+            child = func_80040308(10, record->type | 3, 12,
+                                  &record->position, 0,
+                                  &record->rotation);
+            child->phase = 101;
+            goto kind12_reset;
         }
-        if (reset) {
-            record->render_id = 0x11;
-            record->scale_x = 0;
-            record->scale_y = 0;
-            record->scale_z = 0;
-            record->phase = 110;
-            record->type |= 3;
-        }
-        if (reset || prior_phase == 110) {
-            shared_multiplier = 0x3800;
-            shared_limit = 0x31f;
-            shared_increment = 0x46;
-            goto shared_scale_step;
-        }
-        break;
+    kind12_reset:
+        record->render_id = 0x11;
+        record->scale_x = 0;
+        record->scale_y = 0;
+        record->scale_z = 0;
+        record->phase = 110;
+        record->type |= 3;
+    kind12_scale:
+        shared_multiplier = 0x3800;
+        shared_limit = 0x31f;
+        shared_increment = 0x46;
+        goto shared_scale_step;
+    kind12_collision:
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        record->rotation.vz = (u16)record->rotation.vz + 128;
+        shared_position_mode = 2;
+        shared_motion_mode = 0x400;
+        shared_motion_scale = 0xc00;
+        shared_motion_acceleration = -300;
+        shared_motion_count = 5;
+        shared_motion_layer = 33;
+        goto shared_spawn_motion;
     }
     case 100: {
         SVECTOR local_direction;
@@ -812,30 +827,30 @@ void effect_update_dispatch(void)
 
         if (phase < 100) {
             if ((u32)(phase - 4) < 67) {
-                if (func_8004195c(600, 30, 64, 100,
-                                  0, 0x1000, 360, 0x800) != -1) {
-                    func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-                    record->rotation.vz = (u16)record->rotation.vz + 128;
-                    func_80041e94(record, 5, 0x400, 0x800, -150, 10, 8, 0);
-                    record->phase++;
-                    break;
-                }
-            } else {
-                record->direction.vy = (u16)record->direction.vy + 10;
-                if (func_80042298(100, 0, 0) == 0) {
-                    func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-                    record->phase++;
-                    break;
-                }
+                goto kind100_collision;
+            }
+            record->direction.vy = (u16)record->direction.vy + 10;
+            if (func_80042298(100, 0, 0) == 0) {
+                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+                goto shared_phase_increment;
+            }
+            goto kind100_miss;
+        kind100_collision:
+            if (func_8004195c(600, 30, 64, 100,
+                              0, 0x1000, 360, 0x800) != -1) {
+                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+                record->rotation.vz = (u16)record->rotation.vz + 128;
+                func_80041e94(record, 5, 0x400, 0x800, -150, 10, 8, 0);
+                goto shared_phase_increment;
             }
         }
+    kind100_miss:
         /* Retail passes this stack local without a visible write on this path. */
         func_80040308(10, record->type | 3, 20, &record->position,
                       &local_direction);
         effect_play_spatial_sound(record, 0x18);
         record->type = KF_EFFECT_SLOT_FREE;
-        record->phase++;
-        break;
+        goto shared_phase_increment;
     }
     case 5: {
         s32 count;
@@ -1084,7 +1099,13 @@ void effect_update_dispatch(void)
         }
         break;
     case 8:
-        if (initial_phase == 0) {
+        if (initial_phase != 0) {
+            if (initial_phase == 1) {
+                goto kind8_phase_one;
+            }
+            break;
+        }
+        {
             VECTOR next;
             s32 first_collision;
 
@@ -1146,7 +1167,13 @@ void effect_update_dispatch(void)
             shared_motion_count = 2;
             shared_motion_layer = 8;
             goto shared_spawn_motion;
-        } else if (initial_phase == 1) {
+        }
+    shared_spawn_motion:
+        func_80041e94(record, shared_position_mode, shared_motion_mode,
+                       shared_motion_scale, shared_motion_acceleration,
+                       shared_motion_count, shared_motion_layer, 0);
+        break;
+    kind8_phase_one: {
             KfEffectRecord *parent =
                 &effect_state.records[record->unknown_3c[4]];
             struct KfVecXZi forward;
@@ -1251,7 +1278,7 @@ void effect_update_dispatch(void)
                 }
             }
         } else {
-            record->phase++;
+            goto shared_phase_increment;
         }
         if (reset) {
             record->phase = 1;
@@ -1268,7 +1295,15 @@ void effect_update_dispatch(void)
             goto shared_scale_step;
         }
         break;
+    shared_scale_step:
+        func_80041cd0(shared_multiplier, shared_limit, shared_increment,
+                       0x400, 0x8000);
+        record->rotation.vy = (u16)record->rotation.vy + 64;
+        break;
     }
+    shared_phase_increment:
+        record->phase++;
+        break;
     case 6: {
         switch (initial_phase) {
         case 0: {
@@ -1637,27 +1672,4 @@ void effect_update_dispatch(void)
     }
     return;
 
-shared_scale_step:
-    func_80041cd0(shared_multiplier, shared_limit, shared_increment,
-                   0x400, 0x8000);
-    record->rotation.vy = (u16)record->rotation.vy + 64;
-    return;
-
-shared_spawn_motion:
-    func_80041e94(record, shared_position_mode, shared_motion_mode,
-                   shared_motion_scale, shared_motion_acceleration,
-                   shared_motion_count, shared_motion_layer, 0);
-    return;
-
-shared_growth_collision:
-    func_80042424();
-    func_8003feb0(collision);
-    record->phase = 1;
-shared_growth_update:
-    record->animation_clip = shared_growth_phase - 128;
-    step = record->scale_x + 2048;
-    record->scale_x = step;
-    record->scale_y = step;
-    record->scale_z = step;
-    record->phase++;
 }

@@ -894,7 +894,7 @@ The eight remaining strict verdicts are:
 | `0x8002b67c` | WIP, 94.895836% | Cached-height reload versus retained elevation value. |
 | `0x8002b73c` | WIP, 98.404260% | Row-pointer and loop-index registers; KF1's different grid is only a shape lead. |
 | `0x8002b874` | WIP, 91.5% | Radius/height load order and common-tail schedule. |
-| `0x8002b9d4` | WIP, 92.744830% | Collision-channel result lifetime after the supported calls and branches. |
+| `0x8002b9d4` | WIP, 95.379310% | Storing each probe result directly in its cache field now matches three raw store/compare pairs; a frame/register residue remains. |
 | `0x8002bfd4` | WIP, 73.912620% | Two-axis mask-rasterizer induction and frame layout. |
 | `0x8002c424` | WIP, 98.299320% | Indexed cursor and direct cell lookup are retained; saved-register assignment remains. |
 | `0x8002c670` | WIP, 91.624245% | A whole-grid byte view with typed row and cell sizes emits the retail `bss_801c7540+4` lighting-field referent; later mask-state schedules remain different. Its 28-byte shape table matches exactly. |
@@ -931,3 +931,22 @@ preserved. The strict single-unit text result rose from 90.127270% to
 91.624245%; the 28-byte initialized shape table remains exact. The first
 residual is the interpolation `addu` destination, then scan-state flag
 stores and traversal scheduling. No exact function was banked.
+
+The retail scan loop retains a pointer to `render_mask_scan_state+0x10`.
+At X and Z steps it reloads and stores some coordinate words whose values
+do not change, while the current compiler omits those stores. This may
+reflect a broader original coordinate-update expression or a different
+optimizer, but neither is established by the raw words. No self-assignment,
+volatile qualification, or dummy local was added to imitate them.
+
+In the collision-shape dispatcher, retail's case `0x11`, families
+`0x20..0x23`, and `0x30..0x32` load their halfword fields relative to the operand pointer,
+the first word after the command word. The slope reads at `0x8002b168` and
+`0x8002b380` use `operand+8`; selector loads use `operand+6`, and bounds and
+divisors use their corresponding operand offsets. Spelling these reads through
+`operand` in C makes the probe use that same pointer origin. Focused
+similarity rises from 14.9% to 15.1%; the 174/165 block and 99/97 branch
+counts do not change. Isolated strict text moves from 44.086540% to
+44.168957%; the 196-byte switch table stays at 26.27551%. The probe still
+shares one multiplication tail across cases `0x30` and `0x32` where retail
+has two, so neither case nor the function is exact.

@@ -273,3 +273,64 @@ candidate's 128, with corresponding local stack-slot differences. None of
 these differences justifies fake locals, volatile accesses, or assembly.
 This dispatcher remains WIP at strict 99.66182% `.text` and 96.62863%
 `.rodata`, not an exact or bankable match.
+
+Action 3's nonzero-state path has a more precise C form. Retail loads the
+signed halfword at `0x8003d41c`, copies it to `$a0` in the branch delay slot
+at `0x8003d428`, compares it with 99 at `0x8003d558`, and stores its increment
+at `0x8003d564`. A postfix increment of the stored halfword emits that
+instruction sequence; the prior assignment from `current_state + 1` hoisted
+the 99 constant into the delay slot. This change alone adds one instruction
+to the full object, so it is paired with an independently evidenced action-11
+correction: retail calls `func_8003b5bc` at `0x8003e374` and clears actor
+state in that call's delay slot at `0x8003e378`. The state must therefore be
+cleared before the call in C. The prior source placed the clear afterward,
+leaving a `nop` delay slot and one extra instruction.
+
+With both corrections, the focused listing rises to 97.3% with 410/410
+known CFG blocks, 213/213 branches, and matching known successor lists.
+Isolated strict comparison against the refreshed one-VA GAME target reports
+99.77725% `.text` over exactly 9356 bytes on each side and **100% `.rodata`**
+over 964 bytes, including all 241 switch-table rows. All 341 ordered text
+relocations and 241 ordered RODATA relocations have the same offsets, types,
+and referents; all text-relocation masked immediates agree as well. Raw
+`.text` differs at 67 of 2339 aligned instruction words. Objdiff classifies
+61 argument mismatches, three replacements, and one insert/delete pair per
+side. The earliest differences are the 144-byte retail versus 136-byte
+candidate frame and saved-register offsets, then `li 3`/`li 0x93` in `$v0`
+versus `$v1` at offsets `0x40`/`0x44`. The first missing instruction is the
+entry's repeated target-halfword load versus probe CSE. Later residues are
+operand/branch orientation, saved-register choices, and local-slot schedule.
+No exact or banked claim is made.
+
+The entry's `actor_state.unknown_93a4` assignment is now spelled as the two
+source branches for the flag-4 choice. This preserves the same single store
+and 410/410 known CFG blocks, but the probe uses retail's `$v0` for constants
+3 and `0x93` at offsets `0x40`/`0x44` instead of `$v1`. Focused similarity
+is 97.4%; strict `.text` is 99.78367%, with 64 of 2339 raw words unequal.
+Strict `.rodata` remains 100%, and the 341 text plus 241 RODATA ordered
+relocations still match offsets, types, referents, and masked addends. The
+first non-frame instruction difference is now the repeated retail
+target-halfword load at offset `0x78` that the probe coalesces.
+
+Two remaining branch-orientation differences exposed reversed C conditions.
+Action 5 at `0x8003d98c..0x8003d9a0` computes `word_14 < distance` and
+skips writing state byte 1 when true; the write therefore occurs for
+`distance <= word_14` after the earlier upper-distance test. Actions 13/17
+at `0x8003db44..0x8003db4c` compute `angle < 513` and skip writing pitch
+512 when true; the write occurs for `angle > 512` under the preceding 3585
+bound. The source inequalities now express those raw paths. Focused
+similarity reaches 97.5% with the same known CFG and exact 241-row RODATA;
+isolated strict `.text` rises to 99.83497% over equal 9356-byte bodies.
+
+Action 27's direct call to `func_8003bd40` derives world X/Z by adding the
+actor's signed `+0x24`/`+0x22` offsets to its `+0x08`/`+0x07` cell bytes
+shifted by 11. Retail loads each cell byte before its signed offset at
+`0x8003ef8c..0x8003ef9c` and adds shift-first at
+`0x8003efac`/`0x8003efb8`. Spelling the equivalent C additions in that
+order restores both load interleaving and operand order. Focused listing
+reaches 97.6%; strict `.text` is 99.931595% over equal 9356-byte bodies,
+with 56 unequal raw instruction words. Strict `.rodata` stays 100% byte
+identical. All 341 ordered text and 241 ordered RODATA relocation sites,
+referents, and masked addends remain equal. The only objdiff replacement is
+still the second retail `lhu` of target `+0x0a` versus a probe `nop`; other
+residues are argument differences in frame/stack slots and register choices.

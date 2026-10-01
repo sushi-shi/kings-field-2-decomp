@@ -126,7 +126,6 @@ ADDRESS(0x8002b9d4, 0x244)
 s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 {
     s32 result = 0;
-    s32 index;
 
     if (mode & 1) {
         result = func_8002b7f8(x, y, z, radius, height);
@@ -141,16 +140,14 @@ s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
     height &= 0x0fffffff;
     if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if (mode & 0x10) {
-            index = func_8003a9f4(x, y, z, radius, height);
-            COLLISION_CACHE_ACTOR_INDEX = index;
-            if (index != -1) {
+            COLLISION_CACHE_ACTOR_INDEX = func_8003a9f4(x, y, z, radius, height);
+            if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= 0x10;
             }
         } else {
             if (mode & 0x40) {
-                index = func_8003ab5c(x, y, z, radius, height);
-                COLLISION_CACHE_ACTOR_INDEX = index;
-                if (index != -1) {
+                COLLISION_CACHE_ACTOR_INDEX = func_8003ab5c(x, y, z, radius, height);
+                if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= 0x10;
                 }
             }
@@ -158,9 +155,8 @@ s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
         }
 
         if (mode & 0x20) {
-            index = func_80036078(x, y, z, radius, height);
-            COLLISION_CACHE_OBJECT_INDEX = index;
-            if (index != -1) {
+            COLLISION_CACHE_OBJECT_INDEX = func_80036078(x, y, z, radius, height);
+            if (COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= 0x20;
             }
         } else {

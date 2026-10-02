@@ -405,3 +405,92 @@ offsets explicit loop variables preserved meaning but lowered strict text
 from 85.156250% to 83.856250%. The signed glyph union probe reported above
 also lowered strict text to 69.575000%. All three were discarded. No card C or
 shared type change is supported by this pass.
+
+## Fresh thirteen-function menu/card screen (2026-10-02)
+
+Thirteen current GAME source units were compiled in isolation against their
+delinked retail objects and checked with focused listings. Every unit has the
+same target/candidate relocation count and ordered section, type, and symbol
+sequence; no missing call or referent was found. The twelve functions for
+which focused CFG comparison was available have equal block and branch
+counts. `0x8001bf68` has an overlapping trial-function target that prevents
+the focused CFG comparison, so its control verdict is limited to the raw and
+listing evidence. No source edit was retained.
+
+| Function | Fresh strict text | Focused CFG | Current bounded verdict |
+| --- | ---: | ---: | --- |
+| `0x8001876c` location menu | 96.36646% | 34/34 | The `-1`/`-99` sentinels occupy exchanged saved registers; the indirect jump remains unresolved. Exact `0x800189f0` is preserved. |
+| `0x8001930c` map preview | 98.26363% | 47/47 | Retail's frame is eight bytes larger and the map-index/rotation values use other registers; the 69 ordered referents agree. |
+| `0x8001a4f0` item/magic controller | 99.74359% | 22/22 | The fixed-count initializer uses another index register; all 28 relocation sites and identities agree. |
+| `0x8001b554` card browser | 98.478264% | 33/33 | Retail copies probe status to `a0` before two guards; the candidate tests `v0` directly. The call sequence is intact. |
+| `0x8001bf68` card format flow | 97.12389% | unavailable | Probe-status and dialog-constant registers differ; all 76 ordered referent identities agree, and `0x8001c12c` remains exact. |
+| `0x8001f8b8` preview choice | **99.14365%** | 42/42 | The older 94.36464% strict score is stale. Current source and retail have the same 36 relocation sites and ordered controls; the first residue moves incoming arguments to different saved registers around four layout loads. |
+| `0x8001fc94` list renderer | 99.70803% | 55/55 | Two independent lower-panel setup instructions remain reversed; all 201 relocation sites agree. |
+| `0x8002083c` item preview | 99.65882% | 4/4 | Retail reserves 64 more stack bytes without a proved live object; both siblings remain exact. |
+| `0x80021c8c` display entry | 99.956985% | 7/7 | Only the frame and saved return-address offset differ; exit sibling remains exact. |
+| `0x80022058` number formatter | 97.39% | 36/36 | Retail's eight-byte frame changes the fifth argument load; digit branches and ordered referents agree. |
+| `0x80023178` card title digits | 93.52941% | 19/19 | Quotient and label pointers use different argument registers; three adjacent card helpers remain exact. |
+| `0x800349bc` fade transition | 96.31408% | 14/14 | Retail spills pad state where the candidate retains a saved register; TIM upload and transition caller remain exact. |
+| `0x8001fb8c` window drawer | 99.78788% | 10/10 | Retail reserves eight more stack bytes; both layout data claims and all 19 relocation sites remain exact. |
+
+The first differing control windows in the location, preview, card browser,
+card title, and fade functions change register choice or equivalent scheduling,
+not branch destination or source behavior. Earlier source-shape probes for
+these residues were negative. No artificial padding or register carrier is
+justified, and none of these WIPs was banked. Verification used focused quick
+builds and isolated strict objdiff only; no repository tests, lint, full
+build, broad match, or README update was run.
+
+## Card I/O caller-chain recheck (2026-10-02)
+
+A separate fresh isolated strict pass covered 23 GAME functions from directory
+enumeration through card event setup, card probe, load/save browsers, panel and
+label builders, and payload serialization. Nineteen are exact: the four card
+event helpers plus `input_wait_release`, the temporary-file probe, both
+payload walkers, the menu card choice/load/rows/slot/save controllers, all
+three card-panel functions, both card-label functions, and
+`memory_card_format`. Their owned initialized data and RODATA claims also
+remain exact. The other four functions are all in
+`game.memory_card_directory`:
+
+| Function | Fresh strict text | Focused CFG | Bounded verdict |
+| --- | ---: | ---: | --- |
+| `0x800226ec` directory enumerator | 93.60504% | 13/13 blocks, 7/7 branches | The record count, prefix scan, sorting, and SDK calls agree; the opening `memset`/seed-byte setup differs in register and instruction order. |
+| `0x800228c8` title reader | 85.15625% | 24/24 blocks, 13/13 branches | Retail loads each two-byte title glyph with signed `lb`, stores both bytes, then reloads the halfword; the probe uses unsigned loads and a different cursor register. Earlier signed-byte and union-view probes were negative. |
+| `0x80022b74` payload reader | 93.666664% | 9/9 blocks, 4/4 branches | The open/read/checksum/restore path agrees; retail reserves eight more stack bytes without a proved additional live object. |
+| `0x80022ca0` card writer | 95.896774% | 24/24 blocks, 14/14 branches | Slot scan, seven-palette selection, icon transfer, payload checksum, and card writes agree; the independent slot-seed and clear setup is scheduled differently. |
+
+The directory target and candidate each carry 137 `.text` relocations with
+the same symbol/type multiset. The only ordered-identity displacement is one
+HI16/LO16 pair for the initialized prefix address in `0x800228c8`: retail
+places it after the two seed-byte loads, while the probe forms it before them.
+The actual `strncmp` call and referent are unchanged. All 311 initialized
+DATA bytes and six RODATA bytes are strict exact, while the previously
+documented split DATA placement remains an ownership question. No new source
+fact supports altering the title-byte model or adding stack padding, so no
+source edit or exact bank followed. Only focused quick builds and isolated
+strict objdiff were used; no repository tests, lint, full build, broad match,
+or README update was run.
+
+## Menu item and input family: 15-function current-source screen
+
+A fresh isolated strict pass over `menu_item_*`, `menu_input_poll`, and
+`menu_list_input_controller` confirms **14 exact functions and one WIP**.
+The exact controls are `func_80018ac8`, `func_8001a898`,
+`func_8001d030`, `func_8001d340`, `func_8001d3b4`, `func_8001d654`,
+`func_8001d6a8`, `func_8001d8d0`, `func_8001ddd0`, `func_8001e0a8`,
+`func_8001e378`, `func_8001e484`, `menu_load_item_model`, and
+`menu_release_item_model`. Both item-code initialized tables (1,440 and
+1,200 bytes) and the item-model initialized 28-byte claim remain strict
+exact. These are current-source confirmations, not new matches.
+
+The sole WIP, GAME `func_8001a4f0`, remains **99.74359% strict** over its
+780-byte body and **96.0% focused**. Retail and candidate have 22/22 CFG
+blocks, 12/12 branches, matching return frontiers, and the same direct
+call/referent set. The first difference is the 74-row initializer: retail
+keeps its index in `s0` and its byte/word sentinel constants in `a3`/`t0`,
+while the candidate uses `a3` for the index and `t0`/`t1` for the sentinels.
+The four array clears and loop bound are the same; this is a register-lifetime
+residue with no supported type, width, or control-flow correction. No C
+source was changed or banked. Verification used focused quick builds and
+isolated strict objdiff only; no tests, lint, or full build ran.

@@ -40,16 +40,27 @@ Kind 114 writes its 100/600/100 halfwords to `direction` at record offsets
 the corrected fields match the raw stores. Retail writes X and Z before Y,
 so the source keeps that order. A trial moving the direction writes ahead of
 the position update worsened the pinned probe and was discarded.
+Kind 2 clears `scale_z` before `scale_x` at record offsets 48 and 44. The
+source now spells that raw store order ahead of its three optional halfwords.
+Kind 3 sets the animation clip between its two one-byte flags, matching
+retail's ordered stores at offsets 8, 4, and 9.
+Kind 23 clears direction Z, Y, then X at offsets 56, 54, and 52 after its
+initializer. That order matches the raw stores before the three optional
+halfwords and shared sound tail. It now writes each of the first two
+optional halfwords directly after its corresponding load. The earlier
+two-local form let the probe load both before either store; retail
+interleaves the first load/store pair with the second.
 The pinned probe now reproduces the complete retail prologue through `+0x70`
 and all **45 ordered optional-stack load width/offset pairs** (`lw`, `lhu`,
 `lbu`). The pointer walk is an O32-specific source model; linked bytes alone
 do not prove the historical C spelling.
 
-A fresh tracked focused quick build reports 87.6% listing similarity,
+A fresh tracked focused quick build reports 88.3% listing similarity,
 116/116 CFG blocks, 22/22 branches, and 26/26 known return frontiers.
-Isolated strict objdiff reports `.text` **97.18224%** and `.rodata`
-**18.59756%**. Kind 12's corrected load/store sequence raised text from
-93.75177% to 94.9725%; kinds 100, 46, 5, 38/39, 33/53, and 114 raised it further. The
+Isolated strict objdiff reports `.text` **97.58131%** and `.rodata`
+**18.394308%**. Kind 12's corrected load/store sequence raised text from
+93.75177% to 94.9725%; kinds 100, 46, 5, 38/39, 33/53, 114, 2, 3, and 23
+raised it further. The
 shorter body shifted many jump-table target addends and lowered the data
 percentage from 40.243904% without changing table identity.
 The candidate retains 157 `.text` and 123 switch-table relocation rows,

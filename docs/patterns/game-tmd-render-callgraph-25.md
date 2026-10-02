@@ -194,6 +194,20 @@ depth and ordering-table bound guards produced the retail's 26/26 blocks and
 the frame. None proved the original source form, so all were discarded and the
 focused TMD object was rebuilt from the retained source.
 
+A later off-tree control moved the full-width blend-bit calculation before
+`tmd_get_object`. Isolated strict text rose from 95.279450% to 96.08767%,
+but the probe shifted `$a1` before the call and stored it in the call delay
+slot. Retail saves the unshifted argument before the call, then reloads,
+shifts, and stores it afterward. The probe also retained the premature depth
+range calculation and 104-byte frame against retail's 96 bytes. It was
+discarded; the higher score did not establish a source correction.
+
+The `0x8002ddb4` GT3 ordering-table guard was also tested with the explicit
+break form retained for FT3. Direct strict text rose from 97.434494% to
+97.521835%, but the compiled CFG changed from 44/44 blocks and 28/28
+branches to 44/45 and 28/30. Its new local bound test and jump duplicate
+retail's shared-tail work, so this single-arm control was discarded.
+
 A fresh raw review confirms that all four colored/textured cases converge on
 `0x8002f114`, which stores the packet code byte at primitive offset `+7` before
 the signed depth and `0x2000` bound checks. A second shared-tail C probe used

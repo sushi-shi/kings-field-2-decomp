@@ -95,3 +95,26 @@ relocation sites. The 789 decoded instructions and all 35 jump-table rows
 agree. A focused `kf try --unit game.event_command_dispatch --context 0
 --no-flow` also reports `SAME`. This is an isolated object verdict; it does
 not by itself claim the original compiler provenance or a full linked image.
+
+## Message and event UI recheck (2026-10-02)
+
+A fresh isolated strict and focused pass covered 22 GAME functions across
+message-stream marker lookup, pose interpolation, event spawn/counters,
+save/restore/command dispatch, notification draw/queue, and menu glyph rows.
+Eighteen are strict exact, including all notification and glyph functions,
+the 3,156-byte command dispatcher with its data/table claims, and the event
+save encoder. Four remain WIP:
+
+| Function | Strict text | Focused CFG | Residue |
+| --- | ---: | ---: | --- |
+| `0x800461a0` marker lookup | 99.12676% | 14/14 blocks, 5/5 branches | Retail and probe exchange the record-cursor and marker-pointer registers; the 13 ordered relocation rows and sites agree. Exact `0x80046144` is preserved. |
+| `0x800475d8` map-object event controller | **99.166664%** | 55/54 blocks, 29/29 branches | The older 98.56481% strict score is stale. Retail at `0x80047afc..0x80047b08` leaves the `remove_object = 0` assignment in a fallthrough block; the probe schedules that independent assignment in the preceding `bne` delay slot. The taken branch skips the later use of that local. The selected template and pose-loop locals also exchange saved registers. All 62 ordered referent identities agree; 49 sites align. |
+| `0x80047c98` world event dispatcher | 99.81618% | 85/85 blocks, 55/55 branches | The rotation argument and constant one exchange saved registers; all 72 relocation rows and sites agree. The final indirect callback remains unresolved. |
+| `0x800489ac` event restore decoder | 98.82883% | 23/23 blocks, 7/7 branches | The actor-state base and `0xff` sentinel exchange argument registers. All 40 ordered referent identities agree; 38 sites align. The 64-byte jump table remains exact, while indirect-jump reachability is incomplete. |
+
+The `0x800475d8` block-count gap is a delay-slot placement of the same
+unobserved local assignment, not an evidenced state or call difference; no
+padding, register carrier, or branch rewrite is justified. No source edit was
+retained and no WIP was banked. This pass used focused quick builds and
+isolated strict objdiff only, with no repository tests, lint, full build,
+broad match, or README update.

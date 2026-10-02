@@ -561,3 +561,158 @@ addends are byte-identical, up from 120. The remaining eight differ by four
 bytes at types `4/18/23/24/132`, `5/13`, and `9`. The case-9/callback branch
 sharing and saved-register assignment remain unattributed codegen residue, so
 this function is still WIP.
+
+## Magic recipient linked-actor pointer (2026-10-02)
+
+GAME `0x80039c94` had a dead `linked = 0` initializer. The pointer receives
+the indexed actor before either of its guarded uses; the intervening angle,
+vector, square-root, and scale helpers write only their explicit local
+outputs, not the actor's link flag. Retail's initial slot-state branch at
+`0x80039d1c` has a `nop` delay slot, while the former candidate placed
+`move s8,zero` there for that initializer. Removing it improves fresh isolated
+strict text from **91.85132%** to **95.41007%**. The exact `0x80039c14`
+fixed-curve sibling remains **100%**, and the focused object is byte-identical
+to the off-tree trial. The candidate frame becomes 160 bytes against retail's
+168, so the remaining layout is still WIP; no padding or register carrier was
+added. Verification used only a focused unit build and isolated strict compare.
+
+At the `update_motion` linked-actor arm, retail forms one `actor_state` base
+and uses it for both the actor array and target-group array. The previous C
+spelled those as separate global expressions and emitted two address pairs.
+A local typed `KfActorStateGame *` scoped to that arm restores one base for
+both complete-object fields. The candidate function's relocation inventory
+falls from 38 to the retail **36** rows, with all types and referents aligned
+in order. Fresh isolated strict text rises further to **96.755394%**; the exact
+fixed-curve sibling remains 100%. The 160-versus-168-byte frame and residual
+register/branch layout are still WIP. The retained focused object is
+byte-identical to the off-tree trial.
+
+The next raw width check resolves that frame gap. Retail loads the caller's
+`amount` stack word with `lhu` at entry, stores the halfword at local `+0x48`,
+and reloads that local for the applied amount. Declaring the parameter `u16`
+instead of `s32` reproduces the 168-byte frame. The candidate body is still
+1,660 bytes against retail's 1,668-byte claim.
+Isolated strict text rises from **96.755394%** to **97.84173%**; the exact
+`0x80039c14` sibling remains 100%. All 36 callee relocation rows retain their
+ordered kinds and referents. The three disjoint caller declarations and the
+curated signature were synchronized; their focused strict results remain
+unchanged, including ten exact functions in `game.effect_update`. The active
+effect-dispatch owner synchronized the fourth caller declaration and confirmed
+its focused strict result remained unchanged. The
+remaining actor-curve mismatch is WIP; no frame padding was introduced.
+
+Retail keeps one `remaining` value across the depleted and target-scan arms:
+it clears that value on depletion and stores the same value to actor `+0x1a`
+after either arm (or in the scan-success jump delay slot). The source now
+expresses that shared store, rather than a separate literal-zero store in
+the depleted arm. It preserves all branches' state updates and improves
+isolated strict text again to **98.11751%**, with the fixed-curve sibling at
+100%. The tracked focused object matches the off-tree trial byte-for-byte.
+The retail zero assignment is scheduled before its depletion guard whereas
+the candidate puts it in that guard's delay slot; the remaining scan-loop
+constant/register schedule is still WIP.
+
+## Group-effect player-field referents (2026-10-02)
+
+In GAME `0x8003c614` kind `0x78`, retail rematerializes three signed-low
+addresses for `player_state.camera_position` X, Z, and Y after the two `rand`
+calls. The earlier source used a pointer kept from function entry, so the
+candidate lacked all three address pairs at this call site. Spelling those
+three typed fields directly restores the retail referents and raises the
+candidate `.rel.text` inventory from 83 to 89 rows against retail's 91.
+An off-tree isolated comparison moves strict `.text` from **85.93563%** to
+**86.041916%**. The constructor call arguments and two-call kind-`0x78`
+sequence remain unchanged. The missing two rows are not assigned by this
+field correction; four raw `func_8003c3e0` call sites still converge in the
+candidate, while retail emits them separately. Kind `0x79` computes and
+clamps its travel time before joining the retail shared constructor tail,
+but GCC spills its value to a local slot and joins a different pre-call
+block in the candidate. No supported signature, field, or condition change
+was found for that separate-call placement.
+
+### Connected actor-group controls
+
+A fresh isolated, focused pass covered eighteen functions in eleven actor
+units connected by the group-effect actor state, target, or animation path.
+These are direct strict function results, not broad-build certificates:
+
+| GAME function | Strict text verdict |
+| --- | ---: |
+| `actor_pool_find_free` | 100% |
+| `actor_initialize_from_group` | 100% |
+| `actor_prepare_and_initialize`, `func_80039048` | 100% each |
+| `actor_pool_clear` | 100% |
+| `actor_find_target_of_type` | 100% |
+| `actor_select_target_type_in_own_group` | 100% |
+| `actor_reset_target_and_reselect` | 100% |
+| `func_800397d8`, `func_80039804` | 100% each |
+| `func_8003a9f4`, `func_8003ab5c`, `actor_bind_current` | 100% each |
+| `actor_advance_animation_wrapped`, `actor_advance_animation_clamped`, `actor_animation_crossed_phase` | 100% each |
+| `func_8003ae50` | WIP, 99.31746% |
+| `func_800460a0` | WIP, 99.268295% |
+
+The two WIPs retain their documented register/schedule residues: the actor
+phase advance has matching calls and CFG, and the phase seeker exchanges
+saved registers for step and half-step with matching calls, widths, and CFG.
+No source edit was supported. The `actor_pool_clear` function's text is exact,
+while its separately audited 37,836-byte BSS claim is absent from the
+candidate object; this is not an initialized-data mismatch or a reason to
+change the exact function body.
+
+### Vector and effect downstream controls
+
+The next connected pass rebuilt 23 vector/trajectory functions across six
+small GAME units. All thirteen `game.vector_math` functions, both
+`game.vector_actor_helpers` functions, `vector_distance_to_point`,
+`func_80015698`, and all three `game.actor_fixed_interpolation` functions
+are direct strict **100%**. In `game.actor_trajectory_math`, `func_80015bc8`
+and `func_80015ce0` are 100%; `func_80015918` remains **95.49419%** with
+its previously verified 41-block CFG and two square-root plus one angle call.
+The remaining discriminant register schedule supplies no typed-field or
+control-flow correction.
+
+Sixteen downstream effect functions in ten units were also freshly focused
+and direct-strict checked. `effect_play_spatial_sound`,
+`effect_rotate_scale_offset_y`, `func_8004177c`, `func_8004195c`,
+`func_80041b14`, `func_80041cd0`, both `game.effect_spawn_zero_direction`
+functions, both `game.effect_spawn_motion` functions, all three
+`game.effect_scatter` functions, and all three `game.effect_reset` functions
+are text **100%**. The scatter candidate defines `DAT_801c7068` as an
+8-byte COMMON symbol against a retail 8-byte `.bss` claim. Reset's
+`effect_state` candidate is 10,896-byte COMMON against a retail 10,892-byte
+`.bss` claim (the proven C type is 10,892 bytes); the extra four bytes are
+consistent with COMMON allocation rounding. An isolated source-only `effect_state = {0}`
+control put 10,892 bytes in initialized `.data`, not `.bss`, and lowered the
+three exact text scores to 99.166664%, 99.09091%, and 99.68254%. It was
+discarded. The existing COMMON/BSS owner and compiler-attribution question
+remains separate from these exact function bodies.
+
+### Player damage and collision caller controls
+
+A third focused, direct-strict pass checked nineteen connected GAME player
+functions in twelve units around actor damage, movement, collision response,
+and magic dispatch. Each function has a final verdict from the current
+isolated objects:
+
+| Function(s) | Strict text verdict |
+| --- | ---: |
+| `func_80024498`, `player_cap_status_components`, `func_800248a8`, `func_80024ca4` | 100% each |
+| `func_80026330`, `player_has_power_and_magic_60` | 100% each |
+| `func_80027928`, `func_80027988` | 100% each |
+| `func_800279cc` | WIP, 98.23967% |
+| `func_80027f78` | WIP, 95.91228% |
+| `func_80028224`, `func_8002851c` | 100% each |
+| `func_8002897c` | WIP, 88.57143% |
+| `func_80028998`, `func_800316c8` | 100% each |
+| `func_8002722c` | WIP, 99.09091% |
+| `player_move_horizontal` | WIP, 89.8524% |
+| `func_80026498` | 100% |
+| `func_8002665c` | WIP, 98.67857% |
+
+The six WIPs retain their previously documented player-state base reuse,
+stack argument, and saved-register residues with matching known calls and
+field widths; this pass found no new semantic correction. The initialized
+32-byte damage, 28-byte apply-damage, and 52-byte magic-dispatch RODATA
+claims compare exactly. The player-select-magic unit's 100-byte table has a
+four-byte body-layout addend difference, not a changed table identity. No
+source or data-owner claim was altered from this control batch.

@@ -54,3 +54,24 @@ casting the signed delta, giving defined 32-bit wrap for the retail `addiu`
 checks. A focused rebuild emits a byte-identical listing for the whole unit,
 including the exact `render_enqueue_map` sibling. The function remains WIP;
 the frame and register differences have no supported source correction.
+
+## Fresh strict graphics and notification controls
+
+An isolated pinned-probe recheck of 20 disjoint GAME functions in twelve
+graphics, notification, and render units gives **17 strict exact** functions.
+This certifies `0x80030de4` at 100%, replacing its stale 89.52128% strict
+row above; the other two `render_map_cell` siblings, both sliding-panel
+helpers, both color-byte helpers, the collision-channel pair, the player-weapon
+render helper, both notification-quad helpers, all three enqueue helpers, and
+both frame-driver functions are also exact. Their initialized data sections
+are exact where present.
+
+The three WIPs are `0x80030c18` **96.521736%** (prologue instruction order;
+three exact siblings), `0x800311b0` **92.14815%** (packet-code delay-slot and
+saved-register schedule), and `0x80031850` **99.29851%** (saved-register and
+independent light-address schedule, superseding the stale 84.71045% row
+above). Their respective candidate and retail relocation sequences agree in
+type and symbol identity at **77/77**, **7/7**, and **68/68** rows. Existing
+raw control-flow and source reviews support the calls and fields; no source
+change follows from the remaining code-generation differences. No tests,
+lint, broad match, or full build ran.

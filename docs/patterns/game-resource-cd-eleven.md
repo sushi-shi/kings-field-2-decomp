@@ -137,3 +137,30 @@ Its focused differences are the address constructors for RAM workspaces
 pairs, while the provisional C uses literal `lui/ori` addresses. Neither
 workspace has a proved complete source object, so no definition or source
 change was added. The five adjacent phase callbacks remain exact controls.
+
+## Resource and render strict recheck (19 functions)
+
+Fresh isolated objects and focused unit builds leave **9 exact and 10 WIP**
+functions across seven GAME units. The five transition-phase callbacks and
+four `resource_runtime` helpers remain strict exact. The remaining direct
+strict scores are:
+
+| Unit | WIP functions and strict `.text` scores | Relocation control |
+| --- | --- | --- |
+| `resource_startup` | `0x80015d58` 89.03145%; `0x80015fd4` 89.710144% | 115 candidate/127 retail; six retail-only HI16/LO16 workspace pairs |
+| `resource_transition_request` | `0x80016260` 98.790085% | 135/135 in ordered type and symbol identity; 67/67 CFG blocks |
+| `resource_transition_step` | `0x80016820` 99.193474% | 229/235; three retail-only HI16/LO16 workspace pairs; 62/62 CFG blocks |
+| `resource_runtime` | `0x800320b0` 73.95918%; `0x80032174` 93.6%; `0x800321d8` 98.4359%; `0x80032274` 90.933334% | 41/41 in ordered type and symbol identity |
+| `render_animated_object` | `0x80031d8c` 94.65414% | 22/22 in ordered type and symbol identity; 7/7 CFG blocks |
+| `render_resource_dispatch` | `0x8003247c` 92.18579% | 84 candidate/82 retail; three direct `player_state` loads replace one retained camera-position base; 96/96 CFG blocks |
+
+The startup and transition-step missing pairs all target fixed RAM workspaces
+whose complete source allocations and TU owners remain unproved. The map-cell
+radius helper retains the supported bounds and mask reduction despite different
+row/column induction; the animated renderer retains its call and referent set
+but reloads a late argument where retail saves it. The resource dispatcher
+retains its reviewed actor, map-object, effect, and placed-record traversal;
+its camera pointer is still folded into direct loads by the pinned probe.
+These are not grounds to invent storage or force register lifetimes. No C or
+inventory edit was retained from this recheck; no tests, lint, broad match,
+or full build ran.

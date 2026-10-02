@@ -168,9 +168,9 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case 0x78:
-        position.vx = (rand() >> 2) + player->vx - 4096;
-        position.vz = (rand() >> 2) + player->vz - 4096;
-        position.vy = player->vy - 5000;
+        position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
+        position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
+        position.vy = player_state.camera_position.vy - 5000;
         func_80040308(effect_id, 0x23, kind, &position, 0);
         func_80040308(effect_id, 0x23, kind, &position, 0);
         break;

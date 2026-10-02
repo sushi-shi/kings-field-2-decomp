@@ -198,3 +198,33 @@ copy position. Focused isolated strict text rises from **98.56481%** to
 ordered text relocations retain matching kinds, referents, and addends. The
 remaining differences begin with the template and loop-value saved-register
 assignment, so the controller remains WIP.
+
+## Menu input and target-stream recheck (2026-10-02)
+
+Fresh isolated strict objects covered 17 GAME functions in the menu selection,
+equipment/list input, item-model, glyph drawing, and target-stream family.
+Fifteen remain strict exact: the menu item selector, three player clamps, two
+selection-row helpers, equipment list and category controllers, magic list,
+simple loop, item equipment controller, input poll, list input controller,
+and both item-model load/release helpers. Their owned menu data and RODATA
+claims also remain exact.
+
+`menu_draw_string` at `0x800210ac` remains **99.66904%** strict over 1,124
+text bytes and **90.4%** focused listing. Retail/candidate CFGs have 8/8
+blocks and 4/4 branches; all 54 ordered text relocations and sites agree.
+Retail reserves 56 stack bytes and the probe 48; the remaining glyph UV
+arithmetic uses exchanged temporary registers. No additional live object is
+proved, so the source stays unchanged.
+
+`func_800462bc` at `0x800462bc` remains **98.68132%** strict text and
+**92.1875%** RODATA, with **90.5%** focused listing. The 46/46 known CFG
+blocks, 21/21 branches, direct calls, 57 ordered text relocations, and 16
+ordered jump-table relocations agree. Retail `0x80046524..0x80046528` loads
+actor phase (`lhu`) before saved state (`lbu`); the probe reverses those
+independent loads and inserts one load-delay `nop`. This moves the table
+target addend at `+0x0c` by four bytes without changing its destination
+class. The earlier source-order trial emitted the same listing, so no type,
+field, call, or table edit is justified. Both functions remain WIP and were
+not banked. Verification used focused quick builds and isolated strict
+objdiff only; no repository tests, lint, full build, broad match, or README
+update was run.

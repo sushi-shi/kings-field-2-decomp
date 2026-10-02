@@ -197,3 +197,18 @@ now occurs at row 144. The 32-byte DATA aggregate and four individual vector
 claims remain exact. RODATA is **44.18239%** in strict comparison because
 switch target addends track the remaining code-layout differences; its table
 identity and ordered referents have not changed. The function remains WIP.
+
+The two action-84 pattern calls show a further argument-evaluation order.
+After the occupancy check, retail loads the object effect ID, position,
+rotation, template pattern byte, and low selector byte in that order before
+`func_80034f90`. In the reset arm, it first clears the three state fields,
+then loads those call inputs. The earlier C computed a `pattern_index` local
+before each call; the probe hoisted its two loads ahead of the object
+arguments and, in the reset arm, ahead of the clears. Spelling that same
+typed pattern expression at the call sites restores both raw load sequences
+without changing either call's values. Fresh tracked focused comparison is
+89.1% with 329/329 CFG blocks and 180/180 branches; its isolated strict text
+rises from **99.00313%** to **99.55399%** on the 7,668-byte retail body.
+The 32-byte DATA stays exact and RODATA remains **44.18239%** because the
+remaining switch-target addends differ. The tracked object is byte-identical
+to the off-tree trial. No repository tests, lint, or full build ran.

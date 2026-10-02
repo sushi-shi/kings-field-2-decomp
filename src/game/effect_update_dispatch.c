@@ -40,7 +40,7 @@ extern s32 func_8001584c(s32 start, s32 end, s32 fraction);
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                           u16 magic_08, u16 magic_0a, u16 magic_0c,
                           u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, s32 amount, s32 effect_flags,
+                          u16 magic_14, u16 amount, s32 effect_flags,
                           const VECTOR *position);
 extern s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
                          const VECTOR *target, SVECTOR *direction,

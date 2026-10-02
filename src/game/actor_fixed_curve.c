@@ -33,13 +33,13 @@ typedef void (*KfMagicRecipientCallback)(KfActor *actor, s32 amount,
 ADDRESS(0x80039c94, 0x684)
 void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
     u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
-    u16 magic_10, u16 magic_12, u16 magic_14, s32 amount,
+    u16 magic_10, u16 magic_12, u16 magic_14, u16 amount,
     s32 effect_flags, const VECTOR *position)
 {
     KfActor *actor = &actor_state.actors[(u16)actor_index];
     KfTargetGroup *group;
     KfTargetCandidate *candidate;
-    KfActor *linked = 0;
+    KfActor *linked;
     s32 total;
     s32 applied;
     s32 remaining;
@@ -127,7 +127,7 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
             player_add_experience(group->unknown_1e);
         }
         actor_select_target_type_in_own_group(actor, 3);
-        actor->unknown_1a = 0;
+        remaining = 0;
     } else {
         target_slot = group->targets;
         remaining_slots = 15;
@@ -145,14 +145,15 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                 }
             }
         } while (--remaining_slots != -1);
-        actor->unknown_1a = remaining;
     }
+    actor->unknown_1a = remaining;
 
 update_motion:
     if (actor->unknown_28 & 0x10) {
-        linked = &actor_state.actors[actor->unknown_22];
+        KfActorStateGame *state = &actor_state;
+        linked = &state->actors[actor->unknown_22];
         motion_divisor =
-            actor_state.target_groups[linked->group_index].unknown_01[1];
+            state->target_groups[linked->group_index].unknown_01[1];
     } else {
         motion_divisor = group->unknown_01[1];
     }

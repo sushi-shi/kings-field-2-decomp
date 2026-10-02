@@ -597,11 +597,12 @@ void func_80036ed4(void)
                 s32 source_z = center_z - ((height - 1) >> 1);
                 if (func_80036ad8(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
-                    s32 pattern_index = template->unknown_0d[1] * 2 +
-                                        (object->tail.fields.unknown_3e.bytes.low & 1);
                     func_80034f90(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
-                                  map_object_cell_patterns[pattern_index], 1, 0x80);
+                                  map_object_cell_patterns[
+                                      template->unknown_0d[1] * 2 +
+                                      (object->tail.fields.unknown_3e.bytes.low & 1)],
+                                  1, 0x80);
                     object->action_timer = 1;
                     object->scale.vz = 0x1000;
                     object->scale.vy = 0x1000;
@@ -625,14 +626,15 @@ void func_80036ed4(void)
             case 32:
                 object->unknown_0a += 128;
                 if (object->unknown_0a >= 0xfff) {
-                    s32 pattern_index = template->unknown_0d[1] * 2 +
-                                        (object->tail.fields.unknown_3e.bytes.low & 1);
                     object->unknown_01 = 0;
                     object->unknown_0a = 0;
                     object->action_timer = 0;
                     func_80034f90(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
-                                  map_object_cell_patterns[pattern_index], 0, 0);
+                                  map_object_cell_patterns[
+                                      template->unknown_0d[1] * 2 +
+                                      (object->tail.fields.unknown_3e.bytes.low & 1)],
+                                  0, 0);
                     object->scale.vz = 0;
                     object->scale.vy = 0;
                     object->scale.vx = 0;

@@ -140,3 +140,24 @@ typed view-matrix pointer in `0x80030c18` moved its focused listing from
 `SAME`. The map helper and alternate emitter retain matching known successor
 lists and return frontiers, but those CFG counts alone do not prove exact C
 structure. No repository tests, lint, broad match, or full linked build ran.
+
+## Clipped-fan UV scheduling recheck (2026-10-02)
+
+A fresh focused rebuild of `game.render_map` keeps `render_enqueue_map` at
+`SAME`, `func_8002f5b0` at 82.6% listing similarity, and `func_8002f808`
+at 59.2%. For the clipped fan, retail and source agree on the 13 CFG blocks,
+seven branches, three `DpqColor` calls, and ordered referents. Retail loads
+and stores all three UV halfwords before copying the first color word; the
+probe moves the third UV load/store across that copy. A temporary source
+local holding `third->txuv` after the buffer-bound check changed the listing
+to 81.0%, moved the UV load before the packet stores, and removed no CFG or
+referent gap. It was discarded. The original loop's clipped-vertex pointer
+and triangle counter occupy different saved registers, and no source-visible
+field or type correction accounts for that difference.
+
+For `func_8002f808`, the current 51/51 CFG blocks and 35/35 branches still
+agree. Retail reserves 168 stack bytes versus 120 in the probe; its primitive
+count is spilled before the zero guard, where the probe tests a register.
+The existing stack audit does not identify a missing live object in the
+48-byte frame gap. This pass retained no C edit and ran no repository tests,
+lint, or full build.

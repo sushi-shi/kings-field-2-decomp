@@ -389,8 +389,8 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->render_id = 9;
         record->unknown_0c = 0x44;
         record->unknown_10 = 0x1000;
-        record->scale_x = 0;
         record->scale_z = 0;
+        record->scale_x = 0;
         *(u16 *)&record->unknown_3c[4] = va[1];
         *(u16 *)&record->unknown_3c[6] = va[2];
         third_parameter = va[3];
@@ -673,8 +673,8 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         break;
     case 3:
         record->unknown_08 = 1;
-        record->unknown_09 = 1;
         record->animation_clip = 0x80;
+        record->unknown_09 = 1;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
         record->unknown_0c = 0x44;
@@ -739,18 +739,13 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         break;
     }
     case 23: {
-        u16 first_parameter;
-        u16 second_parameter;
-
         effect_pool_initialize_scaled(record, 8, 0x400);
-        record->direction.vx = 0;
-        record->direction.vy = 0;
         record->direction.vz = 0;
+        record->direction.vy = 0;
+        record->direction.vx = 0;
         record->phase = 9;
-        first_parameter = va[1];
-        second_parameter = va[2];
-        *(u16 *)&record->unknown_3c[4] = first_parameter;
-        *(u16 *)&record->unknown_3c[6] = second_parameter;
+        *(u16 *)&record->unknown_3c[4] = va[1];
+        *(u16 *)&record->unknown_3c[6] = va[2];
         third_parameter = va[3];
         three_parameter_sound = 0x26;
     emit_three_parameter_sound:

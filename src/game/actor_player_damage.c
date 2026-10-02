@@ -11,7 +11,7 @@ extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                           u16 magic_08, u16 magic_0a, u16 magic_0c,
                           u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, s32 radius, s32 effect_flags,
+                          u16 magic_14, u16 radius, s32 effect_flags,
                           const VECTOR *position);
 
 ADDRESS(0x8003a318, 0x2fc)

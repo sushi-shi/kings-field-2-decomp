@@ -1924,3 +1924,36 @@ has four extra player-state HI16/LO16 pairs but no missing referent. Moving
 the typed motion pointer to function entry regressed strict to 94.84795%
 and changed the already matching early address sequence; narrowing its scope
 at the scaling label emitted an identical object. Both probes were discarded.
+
+The trajectory solver `func_80015918` was also rebuilt in isolation on
+2026-10-02. Its focused listing remains 85.2% with 41/41 CFG blocks,
+24/24 branches, three direct calls, and the two following exact siblings.
+The first divergence is the register receiving the second discriminant
+subtraction; later differences carry that register assignment into the
+square-root input and selected-time calculations. An off-tree unsigned-wrap
+spelling for the discriminant subtraction compiled to the same listing, so
+it did not explain the residue. No tracked solver source was changed.
+
+### Player input and magic: 22-function current-source screen
+
+A fresh isolated strict compile of four related GAME units on 2026-10-02
+confirms **17 exact functions and five WIPs**. This is a current-source
+certificate, not five new matches. The exact functions are `func_80026498`,
+`func_80028998`, and the 15 preceding `func_80025a18` in
+`game.player_state_equipment` (`player_get_camera_pose` through
+`func_80025878` in claim order). All of those exact siblings remain 100%.
+
+| Function | Fresh strict text | Bounded verdict |
+| --- | ---: | --- |
+| GAME `func_8002722c` | 99.09091% | 33/33 CFG blocks and 16/16 branches; retail has an 8-byte frame and the candidate remains a frameless leaf. No missing call or field-width fact supports a source edit. |
+| GAME `player_move_horizontal` `0x800274ec` | 89.85240% | 35/34 CFG blocks, 20/20 branches, 11 ordered direct calls, and 128-byte frames. The retail result/retry/slide locals occupy `sp+80/+72/+64`; the candidate puts result at `sp+64` and hoists a player-state base. Retail has 11 more `player_state` HI16/LO16 pairs, but no distinct missing referent. The final failure zero-store and shorter-step camera-pointer scope are already represented by retained C. The remaining late arm contains the same shape-byte test, diagonal retry, and final failure behavior; its missing block and register lifetimes remain unattributed. |
+| GAME `func_8002665c` | 98.67857% | 114/114 CFG blocks and 68/68 branches; the 52-byte RODATA claim is exact. Retail has two more `player_state` HI16/LO16 pairs from address rematerialization, without a missing referent or call. |
+| GAME `func_80025a18` | 95.85052% | 99/97 CFG blocks and 31/31 branches. All 552 unit text relocation rows have equal referent/type multisets but diverge in switch-case placement order. Its 104-byte candidate frame remains eight bytes below retail without a proved live object. The case-3 source correction is already retained; no new case identity was inferred. |
+| GAME `func_8002897c` | 88.57143% | 3/3 CFG blocks and 1/1 branches, with its 148 unit relocation sites in order. Natural source-spelling controls do not resolve its result-register lifetime; the following `func_80028998` stays exact. |
+
+The `game.player_select_magic_action` 100-byte switch table and
+`game.player_state_equipment` 244-byte table retain their prior addend
+differences from non-exact text layout; the 52-byte dispatch table is exact.
+No player source or shared header was changed in this screen. Focused checks
+were used for the non-exact functions and the final scores above come from
+isolated strict objdiff; no repository tests, lint, or broad build ran.

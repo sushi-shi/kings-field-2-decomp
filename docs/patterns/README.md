@@ -1172,3 +1172,6 @@ promotes a probe to a proven historical toolchain.
 - [GAME menu render-mode follow-up ten](kf2-game-menu-render-mode-ten.md):
   an integer preview-mode ABI correction, ten strict WIP verdicts, and
   preserved exact card/menu callers.
+- [GAME player reaction and actor collision controls](kf2-game-player-actor-collision-24.md):
+  fresh strict verdicts for 24 connected functions, with 21 exact and three
+  bounded player/actor collision WIPs.

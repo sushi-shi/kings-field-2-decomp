@@ -145,3 +145,58 @@ orders its speed store before a separate cache load where the probe
 schedules those independent operations differently. The previously tried
 shared-reset label regressed both strict and focused results, so the
 retail-backed state branches and field widths remain unchanged.
+
+The collision-height rasterizer `0x8002bfd4` remains **73.91262%** strict
+and 35.5% focused, with 22/22 blocks and 11/11 branches. Retail loads both
+unsigned 16-bit map origins before forming absolute start/end coordinates;
+the probe cancels the common origins while computing deltas and allocates an
+otherwise unused 16-byte leaf frame. Both axis loops, grid-byte stores,
+step signs, and local jump targets agree. Its 3,520-byte default-row datum
+and eleven exact sibling functions remain unchanged. The nearby collision
+snapshot `0x8002b874` likewise keeps its retail fields and branches: retail
+stores each selected radius before loading interaction height, while the
+probe schedules the height load first. Previously tested branch-local and
+height-width spellings did not improve it. Neither function has a supported
+source correction from the observed instruction order.
+An off-tree spelling with four explicit shifted endpoint locals compiled to
+the same 73.91262% rasterizer object and left every exact sibling unchanged;
+the optimizer still cancels the common origins in the deltas.
+Using signed rather than unsigned shifted endpoint locals gave the same
+object, so the current unsigned shift and signed low-half tests remain the
+only instruction-backed width facts.
+
+## Current GAME source-claim census
+
+The image-qualified GAME rows in
+`config/retail/functions.tsv` contain **860 distinct starts**. Comparing
+their VAs with every `ADDRESS(0xVA, ...)` claim in `src/game/**/*.c` and the
+GAME rows in `config/retail/functions_vendored.tsv` gives **522 source
+claims**, **338 vendored exclusions**, **zero overlap**, and **zero unclaimed
+non-vendored starts**. The check used Python `csv.DictReader` on both TSVs
+after filtering comment lines, a recursive `Path('src/game').rglob('*.c')`
+scan with `re.findall(r'ADDRESS\(0x([0-9a-fA-F]+),', source)`, and set
+differences/intersection keyed by integer VA under `GAME.EXE`. It counts
+curated starts and claims, not strict exact objects; the matching campaign
+continues on the sourced WIPs. No generated inventory overwrote the curated
+files.
+
+## Transition workspace referents
+
+GAME `resource_transition_step` at `0x80016820` remains **99.193474%**
+strict, with 62/62 CFG blocks and 32/32 branches. Retail forms `0x8019e138`
+twice with `lui 0x801a; addiu -7880`, for the phase-1 archive destination
+and phase-2 active callback table. Phase 3 forms `0x8012da68` with
+`lui 0x8013; addiu -9624` for the TMD archive destination. These three
+reviewed HI16/LO16 pairs account for the six missing candidate relocation
+rows (229 versus 235). The phase calls and seven-entry switch are already
+aligned. `resource_transition_request` stays **98.790085%** with 135/135
+ordered referents and 67/67 CFG blocks.
+
+The callback destination starts four bytes after the curated `effect_state`
+extent, but its archive record length is unknown. The TMD destination starts
+16 bytes after `display_primitive_memory`; the next observed VAB slot gives
+only a `0x37000` maximum gap, not an allocation size. Neither address has a
+proved complete object, owning TU, or original definition mechanism. The
+current literal C pointers remain provisional; binding them to new globals
+or relocation symbols would assert unsupported ownership. No C or metadata
+edit was retained.

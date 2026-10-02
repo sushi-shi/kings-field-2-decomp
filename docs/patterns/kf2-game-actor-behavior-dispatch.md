@@ -350,3 +350,23 @@ second; the candidate makes the same calls in the same order. Its local
 copies occupy `sp+56`/`sp+64` instead of retail's `sp+48`/`sp+56`, so the
 listing aligns the first candidate call with the second retail call. This
 does not establish a call-order or referent error and warrants no source edit.
+
+A fresh isolated safe-delink and focused rebuild reconfirm the 99.931595%
+strict text and 100% RODATA result. The focused comparison has 410/410 known
+blocks, 213/213 branches, and 97.6% listing similarity. Both indirect actor
+callbacks have identical raw sites, pointer loads, and delay slots: slot 19
+at body `+0x45c` reads `state_8017d118.active_table+0x4c` and passes the
+actor in `$a0`; slot 17 at `+0x223c` reads table `+0x44` and passes no
+argument. The first real content residue remains retail's second `lhu` at
+body `+0x78` versus the probe's `nop`, with subsequent register and local
+stack-slot choices. No callback identity, control-flow, or field correction
+is supported by this comparison; the source remains unchanged and WIP.
+
+The distinct retail local stack slots do not follow merely from hoisting
+the existing case-11 direction vectors and linked-actor position vectors to
+function scope. Hoisting both families makes the probe reserve 176 bytes,
+with 99.85720% strict text and 41.39004% RODATA; hoisting only the
+linked-actor vectors reserves 160 bytes, with 99.85549% text and the same
+RODATA score. Retail reserves 144 bytes and the retained probe 136. Both
+scope-only controls disturb case addresses and were reverted; the stack
+layout remains an unattributed source/compiler residue.

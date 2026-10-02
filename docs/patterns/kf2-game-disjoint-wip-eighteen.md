@@ -47,3 +47,24 @@ using a signed-byte union instead lowers it to 69.575%. Explicit
 `-fsigned-char` and `-funsigned-char` compiler controls also leave all five
 function scores unchanged, including the exact format wrapper. These controls
 do not explain retail's `lb` pair or justify changing the shared card header.
+
+## Fresh main-loop target control
+
+A fresh safe delink of GAME `0x80013634` and `0x8001369c` admitted both
+reviewed `DAT_80198630` HI16/LO16 pairs at `0x800138c4/0x800138c8` and
+`0x8001394c/0x80013950`, with zero withheld rows. Its module object is
+byte-identical to the current cached delink target. Recompiling the unchanged
+`game.main` source and comparing directly against that fresh module gives
+`main` **100%** and `game_main_loop` **99.67553% strict**. The only `.text`
+word differences are the two arena-address instructions: retail uses
+`lui a0,0x800a; addiu a0,a0,-20320` for `0x8009b0a0`, while the C literal
+emits `lui a0,0x8009; ori a0,a0,0xb0a0`. The original arena-source mechanism
+remains unresolved; no C or identity edit is justified.
+
+The older **99.569145%** isolated score in the root near-exact dossier came
+from a prior comparison. Its explanation that **99.67553% necessarily meant
+a target missing the two BSS pairs is superseded**: the fresh target has both
+pairs and still scores 99.67553%. The older object's precise configuration
+was not preserved here, so the score difference is not attributable to one
+source or delinker change. Use the fresh target and direct score above for
+the current verdict.

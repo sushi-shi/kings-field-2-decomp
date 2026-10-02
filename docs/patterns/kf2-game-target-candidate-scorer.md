@@ -562,6 +562,14 @@ bytes at types `4/18/23/24/132`, `5/13`, and `9`. The case-9/callback branch
 sharing and saved-register assignment remain unattributed codegen residue, so
 this function is still WIP.
 
+A fresh off-tree test after that type-27 correction reversed case 9's
+equivalent tolerance guard to branch positively to `score_target`, as retail
+does at body `+0x190`. The pinned probe instead moved the case bodies and
+switch targets farther away: isolated strict `.text` fell from **93.93092%**
+to **89.68750%**, and `.rodata` from **96.183205%** to **37.02290%**. The
+source already has the separate case-9 calls and correct success/failure
+behavior, so this trial was discarded; the existing guard remains WIP.
+
 ## Magic recipient linked-actor pointer (2026-10-02)
 
 GAME `0x80039c94` had a dead `linked = 0` initializer. The pointer receives
@@ -824,3 +832,30 @@ were **9.764418%**, **9.764418%**, and **55.05031%** against the retained
 spills; the pointer form emitted indirect halfword stores instead of the
 retail direct stack stores. All kept 16 text relocations. None was retained;
 the original source spelling of the scratch remains unproved.
+
+### Fresh mask-line, actor-motion, and cell-pattern controls
+
+Focused quick builds and isolated strict objdiff from the current source
+supersede older CFG counts for these GAME WIPs:
+
+| Function | Direct strict text | Current CFG and verdict |
+| --- | ---: | --- |
+| `func_8002c424` | 98.29932% | **23/23 blocks**, 14/14 branches, and 2/2 return frontiers. The older 23/22 block note predates the indexed-cursor correction. The first remaining difference assigns the `-11` byte offset, BSS base, and `0xff` sentinel to different saved registers; eleven unit siblings remain exact. |
+| `func_8003b5d0` | 96.42041% | 40/39 blocks and 21/21 branches. Retail keeps a separate state-`0x20` zero-state store and exit block; the candidate shares an exit. Its signed collision-height/speed guard and stores agree with raw instructions. A nested short-circuit spelling compiled byte-for-byte identically off-tree. The other three unit functions remain exact. |
+| `func_80034f90` | 97.86822% | 14/14 blocks and 7/7 branches; rotated pattern fields and referents agree, with register and independent address scheduling residue. |
+| `func_80035194` | 89.59545% | **51/51 blocks**, 26/26 branches, and 3/3 return frontiers; older 51/49 and 86.086365% notes are stale. The nine-argument rectangle copy has the supported field masks, width/height guards, and eight known callers. Retail reserves 40 stack bytes versus 32 candidate bytes; stack-argument allocation and mask/row scheduling remain. |
+
+No source change was retained for these four functions. Both a nested
+short-circuit and an inverted positive guard for state `0x20` produced
+SHA256-identical objects off-tree; neither supplies a second source model.
+
+The same current-source isolated build rechecked four adjacent GAME units.
+The floor-item constructor `0x8002ce68` remains 65.85185% strict with its
+`0x8002ce2c` and `0x8002cf40` siblings exact; raw still reloads its fifth
+through seventh O32 arguments after free-slot acquisition. The 40-group
+target fixup `0x8003f7ec` remains 85.86207% with two exact siblings; only
+sentinel setup and commutative pointer-addition order differ. Lifecycle
+functions `0x8003983c` and `0x80039b58` remain 99.19598% and 90.95744%
+with matching calls and fields. Frame/CD helper `0x80036e24` remains
+98.86364% with all five direct calls and only cyclic saved-register
+assignments. None yielded a source-backed edit or new exact function.

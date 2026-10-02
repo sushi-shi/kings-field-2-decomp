@@ -11,7 +11,7 @@ stack halfword loads. The source preserves the all-zero program/tone/note
 gate and forwards zero fine pitch plus the two signed volumes. The focused
 `kf try --unit open.resources --context 0 --no-flow` rebuild leaves the TIM
 function SAME. The voice wrapper has the same instruction sequence and control
-flow except five stack-frame immediates: retail reserves 64 bytes, saves `$ra`
+flow except six stack-frame immediates: retail reserves 64 bytes, saves `$ra`
 at +56, loads the two incoming stack arguments at +80/+84, and restores a
 64-byte frame; the current GCC 2.5.7 plain O2 probe reserves 40 bytes, saves
 at +32, loads at +56/+60, and restores 40 bytes. The direct `jal` target and
@@ -33,6 +33,7 @@ them before `SsUtKeyOn`, and has no data or string referent. Its only outgoing
 relocation is the direct `jal` at `0x800134c0` to `SsUtKeyOn`; the raw call is
 proven, while the curated relocation row remains candidate. A fresh focused
 `open.resources` comparison again gives `tim_upload_images` SAME and the
-voice wrapper DIFF only at the five frame-dependent immediates (64 versus 40
-bytes). The prior strict 99.82353% verdict remains WIP; no source or
-relocation edit is supported by this pass.
+voice wrapper DIFF only at the six frame-dependent immediates (64 versus 40
+bytes). A fresh safe one-VA OPEN delink and manifest-profile compile reconfirm
+99.82353% strict over the 136-byte retail body. The verdict remains WIP; no
+source or relocation edit is supported by this pass.

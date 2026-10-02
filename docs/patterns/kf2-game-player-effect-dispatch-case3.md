@@ -37,3 +37,13 @@ entry reload and eight-byte frame gap remain, as does the placement of the
 shared rotation probe. The improved case-3 control fact should not be
 reversed merely to regain transient table offsets; final exactness still
 requires their raw addends, code, and data classes to agree.
+
+An isolated switch-layout control moved cases 10, 6, and 40 beside case 4,
+immediately before case 11, while leaving their shared rotation-probe call
+and argument values intact. The current-source baseline is **95.85052%**
+strict text and **39.87603%** table; this grouping fell to **94.14605%**
+text and **39.46281%** table. All fifteen sibling functions and the three
+initialized data symbols remained exact. Retail places the short case-10 and
+case-6 jump arms later than the shared probe, so this grouping also lacks a
+retail physical-order basis. It was discarded; the remaining 99/97 CFG and
+112/104-byte frame differences still need independent source evidence.

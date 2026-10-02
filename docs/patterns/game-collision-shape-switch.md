@@ -275,3 +275,26 @@ source already preserves the same tests and shared continuations; the switch
 version lowered isolated strict text from 57.526100% to 56.146976% and
 RODATA from 27.551018% to 21.683674% without supplying a new type,
 referent, or path fact. It was not retained.
+
+The latest fresh isolated comparison remains 57.526100% strict text (2,912
+retail bytes) and 27.551018% RODATA. All 49 table rows retain their 13
+target classes, but none has an identical body addend. Splitting text at
+those physical table targets finds no direct calls in either object. The
+retail-only non-stack load/store multiset in the physical opcode-`0x20`
+interval exactly reappears in the candidate's following opcode-`0x21`
+interval; the other eleven intervals have the same non-stack access
+opcodes and offsets. This supports shared-join placement rather than a
+missing typed field. Opcode `0x11` has four retail branches versus three
+candidate branches because of the already identified branch on a register
+just set to zero. The whole function remains at 174/172 CFG blocks and
+99/98 branches. No dead condition or memory access was added to source.
+
+The opcode-`0x30` slope path has a separate retail multiply at body
+`+0x6d0`, in the delay slot of its jump into the shared height-update
+tail. Opcode `0x32` multiplies independently at `+0x8e4` before falling
+into that tail. The probe instead branches the `0x30` paths to its one
+multiplication at `+0x8e0`, shared with `0x32`; it emits two `mult`
+instructions in the whole function versus retail's three. The C already
+has distinct slope expressions for both opcodes, so the missing physical
+multiply is a tail-coalescing residue, not evidence for a missing
+operation or a fabricated source side effect.

@@ -54,6 +54,14 @@
   sixteen actor/player/collision verdicts, eleven exact controls and five WIPs.
 - [kf2-game-actor-target-seventeen-exact.md](kf2-game-actor-target-seventeen-exact.md):
   seventeen already exact actor target, home, math, pool, and init controls.
+- [kf2-game-actor-seventeen-wip-verdict.md](kf2-game-actor-seventeen-wip-verdict.md):
+  twelve exact actor controls and five bounded actor WIPs.
+- [kf2-game-player-core-eighteen-exact.md](kf2-game-player-core-eighteen-exact.md):
+  eighteen strict-exact player core, view, and weapon controls.
+- [kf2-game-player-magic-module-audit.md](kf2-game-player-magic-module-audit.md):
+  two-function player magic module, exact table, and address-reuse residue.
+- [kf2-game-actor-behavior-dispatch.md](kf2-game-actor-behavior-dispatch.md):
+  the 241-row actor behavior switch and its near-exact callback/CFG audit.
 - [kf2-game-player-actor-trajectory.md](kf2-game-player-actor-trajectory.md):
   player damage and actor motion verdicts, exact trajectory and collision
   helpers, and contiguous unit consolidation.

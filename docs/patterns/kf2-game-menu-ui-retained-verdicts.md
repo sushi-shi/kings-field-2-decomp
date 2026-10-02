@@ -644,3 +644,34 @@ carves had no withheld rows; isolated objdiff gives each symbol and both
 units' `.data` sections 100%. The window body remains at its prior
 99.78788% strict frame-size residue. Transition's two exact neighbors remain
 100%, while the fade body retains its prior 96.31408% WIP verdict.
+
+## Fresh twelve-function menu control (2026-10-02)
+
+Eight menu units were recompiled individually with their complete manifest GCC
+2.5.7 `-O2 -G0 -mcpu=r2000` profile and compared by isolated strict objdiff
+against their existing safe-delink targets. The already-current preview choice
+object was included as a ninth unit. All nine units preserve the exact
+target/candidate `.rel.text` row counts (48, 69, 28, 54, 7, 19, 80, 38, and
+36 respectively). Three functions are strict exact; nine remain WIP:
+
+| GAME function | Fresh strict | Verdict |
+| --- | ---: | --- |
+| `0x8001876c` location number | 96.36646% | Result/sentinel register and reload schedule; fields and control retained |
+| `0x800189f0` location sibling | **100%** | Exact |
+| `0x8001930c` map preview | 98.26363% | Retail saves `s7` in a 64-byte frame; candidate uses 56 bytes |
+| `0x8001a4f0` item/magic controller | 99.74359% | Initializer index/constant registers differ |
+| `0x8001b554` card browser | 98.478264% | Probe result stays in `v0` rather than retail `a0` |
+| `0x8001f8b8` preview choice | 99.14365% | Eight remaining raw words have register/order differences; its older 94.36464% report is stale |
+| `0x8001fb8c` window draw | 99.78788% | Retail 48-byte versus candidate 40-byte frame; row walk retained |
+| `0x80020748` two-option draw | **100%** | Exact |
+| `0x8002083c` two-option preview | 99.65882% | Retail reserves 64 more stack bytes than the modeled live matrices require |
+| `0x80020990` two-option sibling | **100%** | Exact |
+| `0x800210ac` string draw | 99.66904% | Frame and UV temporary register placement |
+| `0x80022058` number format | 97.39% | Retail reserves eight extra stack bytes; digit and style operations align |
+
+An off-tree, source-equivalent preview-choice control moved the exit from the
+existing label to a natural `while (result == -99)` loop followed by
+`input_wait_release()`. With the complete unit profile it fell from
+**99.14365%** to **94.91713%** strict and from 36 to 34 `.rel.text` rows,
+so the tracked source is unchanged. These comparisons supplied no new field,
+call, or referent correction; no menu C or identity edit was retained.

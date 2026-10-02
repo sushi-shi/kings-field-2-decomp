@@ -101,6 +101,16 @@ emits that tentative pointer in `.data` instead: candidate `.data` becomes
 `menu_frame_begin` falls to 99.893616% (its eight-byte sibling stays exact).
 This control changed no shared profile or source.
 
+A separate off-tree GCC 2.6.0 `-O2 -G0` control distinguishes the available
+zero-storage spellings: `int tentative;` emits `.comm tentative,4`,
+`int explicit_zero = 0;` emits a `.word 0` in `.data`, and
+`static int static_zero;` emits `.lcomm static_zero,4`. Thus adding explicit
+zero initializers to the current exported definitions would move their bytes
+to `.data`, not recreate the retail `.bss` symbols. File-local storage is a
+plausible original form only where all users shared a defining TU; the linked
+image alone does not identify that boundary. This control changed no project
+source or profile.
+
 The audit produced no safe new initializer or TU-owner edit. Keep the table
 referents and data identities until the original source ownership or a
 code-layout correction is independently supported.
@@ -203,3 +213,26 @@ The address-gap inventory is a triage aid, not a set of new C array claims:
 | `0x80194e30` VAB slot 5 | `0x80197630` audio state | `0x2800` | Candidate maximum |
 | `0x80198640` sequence data | `0x8019b640` SDK datum | `0x3000` | Candidate maximum; KF1 size agrees |
 | `0x801d8d88` startup copy | `0x801d9588` SDK score table | `0x800` | Candidate maximum |
+
+## Prepared TMD target freshness control
+
+A focused GAME safe delink of `0x8002ff5c` from the hash-checked retail image
+produces module target SHA-256
+`cb01ce8f749c3697dbf004a27ccc1c3dc99d5d9de25efab52e1a9b4aca8f8d51`,
+byte-identical to the existing `build/delink` module target. It has 16 ordered
+text relocations. The current `tmd_prepared_subdivide.c` was independently
+compiled off-tree with its complete manifest GCC 2.5.7 `-O2 -G0`
+**`-mcpu=r2000`** probe: direct strict objdiff is **55.263805%** over 3,260
+retail bytes and 2,788 candidate bytes.
+The focused listing has 11/11 CFG blocks, 6/6 branches, and all 14 proven
+`resource_copy_words` calls; retail/current frames are 1,248/1,232 bytes.
+
+For a like-for-like source comparison, the parent of source commit `de6fc1b`
+was compiled with the same complete profile, headers, and target. Its strict
+result is **52.31411%** over 2,724 candidate bytes, so that commit improves
+the controlled comparison to **55.263805%**. The earlier dossier's
+55.263805% score is confirmed, although its 2,796-byte candidate size and
+1,240-byte candidate frame are stale against this fresh object. Omitting the
+profile's `-mcpu=r2000` flag instead yields a different 51.295704% control;
+that incomplete-profile result is not the project's match score. This pass
+changed no source, profile, or inventory; packet scratch layout remains WIP.

@@ -83,22 +83,22 @@ that moved instructions away from retail were reverted.
 | `8001369c` main loop | 99.569145% | WIP. The only focused listing difference is the fixed arena base `8009b0a0`: retail forms it with carry-adjusted `lui/addiu`, while the literal pointer uses `lui/ori`. The adjacent `main` remains strict exact. |
 | `8001a4f0` item/magic controller | 99.74359% | WIP. Focused listing differs only in the initializer loop's count and constant registers; the loop stores, calls, branches, and data references agree. No source fact supports changing the live locals. |
 | `8001fb8c` menu window | 99.78788% | WIP. All body instructions, calls, and referents align; the only focused differences are a 48-byte retail frame versus a 40-byte probe frame and their saved-register offsets. No live source object accounts for the extra eight bytes. |
-| `8001f8b8` preview choice | 94.36464% | WIP. The label glyph writes and call set agree, but the probe assigns the three retained arguments to different saved registers and places the input-release exit after the input loop. A source-equivalent `while` form worsened the CFG and was reverted. |
+| `8001f8b8` preview choice | 99.14365% | WIP on a fresh safe target; the earlier 94.36464% result is stale. The label glyph writes and call set agree, but the probe assigns the three retained arguments to different saved registers and places the input-release exit after the input loop. A natural `while` exit trial regressed strict text to 94.41989% and was reverted. |
 | `80022058` decimal formatter | 97.39% | WIP. Retail reserves an eight-byte leaf frame and loads its fifth argument at stack `+24`; the probe eliminates that frame and loads at `+16`. The remaining branch displacements follow this one-word offset, and no live local explains a frame. |
 | `800226ec` card-directory scan | 93.60504% | WIP. Retail reads the two slot defaults with `lb`; the probe uses `lbu` because their signed values are immediately narrowed into a byte array. The rest of the focused residue is register choice and one downstream instruction shift. The source keeps the supported `s8` global declarations without adding artificial sign-dependent work. |
 | `8001fc94` menu list renderer | 98.44964% | WIP. The call and referent sets agree. The first focused difference is the row-width register and early scheduling of the two-value card-mode test; moving its C declaration inside the loop, including a guarded `do` form, changed the frame and worsened the listing, so both were reverted. Casting before each range subtraction makes the retail wrap defined in C without changing the focused object. The last difference moves a zero initialization two instructions. |
 | `80022ca0` card write | 95.896774% | WIP. The focused body is 96.7% similar with the correct card calls, file path, image stores, and data referents. The remaining entry differences include the two signed default-byte loads narrowed into `slot_digit`, early initialization scheduling, and saved-register selection; no source edit is justified by them. |
 | `800349bc` menu fade | 92.34296% | WIP, 43.2% focused. The four packet shapes and direct call/referent set agree, but retail stores the pad-release state on the stack, while the probe retains it in a saved register; this changes the frame and loop/exit layout. The range check now casts before subtracting one so the retail `addiu` wrap is defined in C. Both sibling functions retain exact focused listings. |
-| `80035894` map-object placement loader | 95.312874% | WIP, 92.7% focused. The 350-record walk, placement fields, occupancy-layer selection, direct calls, and switch table are sourced. The first difference schedules two independent byte/halfword stores around a template load; the next assigns the region-index arithmetic to different registers. The layer elevation is an unsigned byte, so its seven-bit shift is already defined. No source fact supports an ordering change. |
-| `800475d8` event map-object controller | 98.56481% | WIP. The focused body is 89.4% similar with matching calls and referents. The first residual assigns the active object to `$s0` instead of retail `$s1`, cascading through the state loops; one later branch-delay initialization is scheduled differently. No identity or control-flow change is supported. |
+| `80035894` map-object placement loader | 100% provisional strict | The later source correction and fresh isolated certificate supersede this row's earlier 95.312874% WIP snapshot; its 350-record walk, calls, and switch table are now exact, pending a consistent score-report rebuild. |
+| `800475d8` event map-object controller | 99.166664% | WIP on a fresh safe target; the earlier 98.56481% result is stale. Calls and referents agree, while the active-object saved-register choice and one branch-delay initialization still differ. |
 | `8003bd40` actor motion target | 86.53226% | WIP. Retail's world-coordinate subtraction, negative magnitude, and signed sum comparison use wrapping `subu`/`negu`/`addu`. The source now spells those operations with unsigned intermediates, preserving the focused 68.2% listing and all six exact siblings. Remaining differences begin at actor-pointer register allocation and stack-argument scheduling. |
-| `80047c98` event world dispatcher | 97.37745% | WIP. Its focused listing is 85.7% with the direct call/referent set intact; the first difference swaps saved registers for rotation and the constant one. The linked-object notification branch in retail enters a shared call block; an equivalent early-exit C form emitted the same bytes and was reverted. The source retains the unresolved indirect callback instead of inventing a target. |
+| `80047c98` event world dispatcher | 99.81618% | WIP on a fresh safe target. Calls and referents remain intact; the first difference swaps saved registers for rotation and the constant one. The linked-object notification branch enters a shared call block; an equivalent early-exit C form emitted the same bytes and was reverted. The source retains the unresolved indirect callback. |
 | `800489ac` event save decoder | 98.82883% | WIP, 95.1% focused. Retail passes stack `+16` to the exact ten-pointer offset decoder, indexes the selected pointer by a four-byte stride, then walks actor and target sentinels. The first residual swaps the register holding `0xff` with the actor-base register; the source already declares all ten pointers, so the curated identity note now records the full array rather than four entries. |
 | `8002b874` collision snapshot | 91.5% | WIP, 85.8% focused. Retail selects player, actor, or map-object state and writes the same position, radius, and interaction-height fields as the typed source. Its actor and map-object arms store radius before the final halfword height, while the probe selects a different load/store schedule and register for the shared height. An explicit shared-tail `goto` emitted the same listing and was reverted; no field or branch correction is supported. Ten exact collision siblings remain SAME. |
 | `8002c170` mask-row run scan | 89.8% | WIP, 67.9% focused. Both direct call sites are in the exact row-fill sibling, and retail/source agree on the 24-cell unsigned bound, byte comparison, state transition, step, and return paths. The first difference assigns the row cursor and two state values to different registers; no source-level correction follows from it. |
 | `8002b9d4` collision channel query | 92.74483% | WIP, 59.4% focused. Retail and source gate the same grid, actor, map-object, and player calls by mode, store the same cache indices/flags, and agree on 23/23 CFG blocks and 12/12 branches. The probe uses a 56-byte frame and a different saved-register assignment where retail uses 64 bytes and keeps a second copy of mode in `$s7`; no additional live source object is evidenced. |
-| `8002bfd4` mask-line rasterizer | 60.46602% | WIP, 35.5% focused after a real width correction. Retail masks both coordinates to 16 bits for its bounds checks **and** grid address; the old C checked `(u16)` coordinates but indexed with full-width values. Both raster loops now index with `(u16)` coordinates, aligning the row/column address arithmetic and preserving the ten exact collision siblings. CFG is 22/22 blocks and 11/11 branches; the remaining entry differs in frame and origin/delta register scheduling. |
-| `8002c424` mask-line scan | 89.65306% | WIP, 73.5% focused. The eight proven calls from the map-mask sweep supply the six-argument step/stride pattern, and retail/source read the same scan-state, mask, and occupancy objects. CFG is 23/22 blocks with 14/14 branches; the probe assigns the second input to a saved register where retail first copies it to `$t5`, changing cursor-pointer lifetimes. Later mask-case joins differ by one block. No data-owner or control change is yet supported. |
+| `8002bfd4` mask-line rasterizer | 73.91262% | WIP, 35.5% focused after a real width correction. Retail masks both coordinates to 16 bits for bounds checks and grid addresses; both source raster loops now do likewise. The fresh strict result supersedes the older 60.46602% score. CFG is 22/22 blocks and 11/11 branches; frame and origin/delta register scheduling remain. |
+| `8002c424` mask-line scan | 98.29932% | WIP on a fresh safe target, superseding the older 89.65306% snapshot. The eight proven callers supply the six-argument step/stride pattern, with the same scan-state, mask, and occupancy referents. CFG is now 23/23 blocks and 14/14 branches; the first residual cyclically assigns the BSS base, `0xff` sentinel, and step to different saved registers. No source control or data-owner change is supported. |
 | `8002ce68` floor-item capture | 65.85185% | WIP, 55.7% focused. All five proven call sites are in `game_main_loop`, whose source passes seven arguments. Retail and source store the same item fields, call free-slot search, allocate pixels only for kind 1, then call `StoreImage` and `DrawSync`. CFG is 5/5 blocks and 2/2 branches, with exact free-slot and update siblings. Retail reloads the three stack arguments after free-slot search, while the probe saves them in `$s` registers before the call and grows the frame from 40 to 56 bytes. No signature or field correction supports forcing those lifetimes. |
 | `8002c670` map-mask sweep | 90.048485% | WIP, 76.4% focused. Retail doubles view X/Z with `sll`; the source now casts to `u32` before shifting so the same 32-bit wrap is defined. The four line draws, eight line scans, mask-cell referents, and shape table remain source-owned; CFG is 11/11 blocks and 4/4 branches. The first residual is an independent addition destination register; later state-byte stores and map-cell base scheduling differ, so no exact claim follows from this source correction. |
 
@@ -112,10 +112,11 @@ occupies the intervening four bytes, but the original allocation/TU boundary
 and any indirect writer remain unproved. A focused safe carve of the two
 `game.main` function claims admitted both reviewed relocation pairs with zero
 withheld rows. The focused listing now differs only at the unrelated fixed
-arena literal; direct objdiff keeps `main` at 100% and the loop at 99.569145%.
-The earlier 99.67553% score used a target without these two BSS relocations
-and is not a comparable exactness verdict. No full build or repository tests
-were run.
+arena literal. A fresh safe target retaining both BSS pairs matches `main`
+at 100% and the loop at 99.67553% strict; its only two differing text words
+form the arena base with `lui/addiu` in retail versus `lui/ori` in source.
+The cause of the older 99.569145% result is unresolved, so it is superseded
+by this direct comparison. No full build or repository tests were run.
 
 A follow-up focused pass tested three bounded control/dataflow spellings and kept
 the established source. Enclosing the `80036190` object scan in the initial
@@ -316,6 +317,22 @@ retail holds the phase argument in `$s7`, while the probe reloads the same
 caller stack slot at the final draw call. Neither function has a supported
 new local, referent, or control-flow correction, so both remain WIP.
 
+The clipped GT3 fan at `0x8002f5b0` keeps its 13-block CFG, seven branches,
+packet fields, and SDK calls at 95.833336% fresh strict text. Retail schedules
+the third UV halfword before the color stores and puts the third color store
+after tag/code writes. Moving only the latter store to that raw order in an
+off-tree source trial lowered strict text to 92.58667%; the source was kept.
+The three 32-bit depth words are added with `addu` before a signed divide
+by 12, and the quotient gains a signed depth bias through another `addu`.
+The retained C now uses an unsigned sum and unsigned bias addition with a
+signed view at the divide, making both observed wraps defined. That typed
+correction leaves the entire compiled `.text` byte-identical, including the
+exact `render_enqueue_map` sibling; the fan stays 95.833336% strict.
+A fresh safe three-claim module comparison confirms `render_enqueue_map`
+100%, the fan 95.833336%, and the adjacent prepared renderer 92.038376%; its
+four initialized data bytes are also exact. The prepared renderer's 51/51
+CFG and 35/35 branches remain source-owned, with no new field correction.
+
 The effect constructor's kind-114 arm has a concrete retail store schedule:
 position X, direction X/Z, position Y, direction Y, three scales, then
 position Z in the return jump's delay slot. Moving all stores into that
@@ -327,6 +344,18 @@ delink of the 5,092-byte retail unit, isolated strict text rose from
 97.58131% to 98.05656% at the same 5,084-byte candidate size; data and
 rodata results were unchanged. The narrower source order is retained, but
 the final position-Z schedule remains WIP; no new temporary is justified.
+Moving only the position-Z store after the three scales in this retained
+source also regressed fresh strict text to 96.85546% and RODATA to
+13.109756%, so the earlier position-Z spelling remains.
+The large focused switch diff also suggested the kind-9 and kind-33/53 arms
+might have a different source order. Swapping those complete arms off-tree
+kept behavior but lowered fresh strict text from 98.05656% to 96.34250% and
+RODATA from 18.394308% to 13.211382%; the tracked arm order was retained.
+In the audio-volume arm, retail reloads signed halfword `record+0x40`
+before dividing by 90, while the probe sign-extends the earlier variadic
+value kept in a register. Changing only the preceding store view from `s16`
+to `u16` compiled identically at 98.05656%; no volatile or artificial
+reload was added to force the retail instruction.
 
 In `cd_request_service_vab` at `0x800144b8`, retail keeps `1` in `$s3` for
 the phase and completion-state stores and materializes `-1` inside the VAB

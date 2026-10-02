@@ -3142,14 +3142,25 @@ remain aligned. The dispatcher is WIP.
 
 The complete 128-row kind table has 64 distinct target classes. In sorted
 physical order, all 62 interior regions between nonzero table targets have
-the same direct-call count in retail and the current candidate; both whole
-objects contain 206 `jal` instructions and 217 conditional branches. Only
-10 pointer rows currently have identical target addends. The shifts are
+the same direct-call and conditional-branch counts in retail and the current
+candidate; both whole objects contain 206 `jal` instructions and 217
+conditional branches. Only 10 pointer rows currently have identical target
+addends. The shifts are
 mainly from shared-tail layout: kind 13/32 removes an eight-byte local
 tail in the candidate, kind 46 shares a collision-cache load, and kind 20
 joins an argument-setup tail. The region audit separates these physical
 placements from field mismatches such as kind 11/54; equal call counts do
 not establish exact CFG or instruction scheduling.
+
+The retail dispatcher reserves 224 stack bytes; the current candidate
+reserves 184. Moving the existing ballistic `projected` VECTOR declaration
+from its switch arm to function scope in an off-tree probe grew the frame to
+200 bytes and strict text to 95.496270%. Hoisting its existing midpoint
+VECTOR as well grew the frame to 216 bytes and strict text to 95.513210%.
+Neither probe established the retail allocation: the first case kept its
+projected address at `sp+56`, while kind-111 local copies moved away from
+their retail slots. Both probes were discarded. Frame size and an
+intermediate score do not prove the historical lexical scope.
 
 ## Kind-102 audio parameter identity
 
@@ -3245,3 +3256,21 @@ and 26/26 known return frontiers while preserving 116/116 CFG blocks and
 32.926830%; the small text decrease from the previous 88.933230% follows
 body-offset shifts. All 123 table rows still form the same 62 target
 classes in order, with seven exact addends. This remains a WIP.
+
+## Fresh effect collision helper control
+
+A new safe one-VA GAME carve of `0x8003fa68` admits all 24 module
+relocations with none withheld. Isolated strict comparison of unchanged
+`effect_collision_probe.c` gives **70.73333%** over 300 text bytes. Retail
+has four distinct `func_8002b9d4` calls at `0x8003faf8`, `0x8003fb1c`,
+`0x8003fb40`, and `0x8003fb64`, using modes `0x31`, `0xa1`, `0xb1`, and
+`1`, respectively. The source spells these calls and the same argument
+values, but the pinned GCC 2.5.7 O2 probe merges them into one site.
+Selectors 0 and 5–7 take retail's common return with an inherited `v0`;
+their reachability is unproved, so no default result was invented.
+
+Off-tree GCC 2.5.7 O1 still emits one collision call and scores 67.26667%
+strict. O0 retains all four calls but scores only 9.68% strict, so its call
+count alone does not justify changing the unit profile. Prior direct-return,
+`if`/`else if`, case-order, and GCC 2.6.0 trials likewise did not close the
+retail topology. No source, identity, or relocation edit was retained.

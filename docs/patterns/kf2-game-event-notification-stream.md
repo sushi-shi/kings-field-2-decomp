@@ -228,3 +228,27 @@ field, call, or table edit is justified. Both functions remain WIP and were
 not banked. Verification used focused quick builds and isolated strict
 objdiff only; no repository tests, lint, full build, broad match, or README
 update was run.
+
+## Fresh nineteen-function event control (2026-10-02)
+
+Ten disjoint GAME event/message units were recompiled individually with their
+complete manifest GCC 2.5.7 `-O2 -G0 -mcpu=r2000` profile and compared against
+existing safe-delink targets by isolated strict objdiff. All ten units retain
+equal target/candidate `.rel.text` row counts; the target-stream and restore
+switch tables also retain 16/16 ordered `.rel.rodata` rows. Fourteen functions
+are strict exact: `0x80046144`, `0x80046700`, `0x80045f20`, `0x80045fd4`,
+`0x800473e0`, `0x80047434`, `0x800474c4`, `0x800482f8`, `0x800483a8`,
+`0x800483d8`, `0x80048428`, `0x80048498`, `0x800484e4`, and `0x80048554`.
+The five remaining functions have these final WIP verdicts:
+
+| GAME function | Fresh strict | First supported residue |
+| --- | ---: | --- |
+| `0x800461a0` marker search | 99.12676% | Cursor register/order with matching control and thirteen text relocations |
+| `0x800462bc` target stream | 98.68132% | Independent load order inserts candidate load-delay `nop`, shifting one table addend by four bytes |
+| `0x800475d8` map-object controller | 99.166664% | Template/loop-value saved-register assignment after the retained button-state correction |
+| `0x80047c98` world dispatch | 99.81618% | Rotation argument and constant-one saved registers are exchanged |
+| `0x800489ac` restore stream | 98.82883% | Actor base and `0xff` sentinel occupy exchanged argument registers; 64-byte table stays exact |
+
+No new field, call, or referent discrepancy appeared in this fresh screen, so
+no event C, data identity, or relocation row was changed. These are new
+strict measurements of existing claims, not new exact-count gains.

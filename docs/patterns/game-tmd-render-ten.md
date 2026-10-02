@@ -23,3 +23,10 @@ no shared source, signature, identity, or relocation edit was retained.
 Fresh `kf match --image game` relinked 147/147 target units and confirmed all
 ten scores. Global edge-check still stops on the three known, unrelated
 TMD/map-object `.rodata` addends. No repository tests, bank, or commit were run.
+
+The sparse-animation row above is historical. A fresh safe three-VA GAME
+delink and focused compile now give **100% strict** text for all three
+`game.animation_sparse_vertices` functions: `0x80033bfc` 196/196 bytes,
+`0x80033cc0` 124/124 bytes, and `0x80033d3c` 696/696 bytes. The seven
+ordered module relocations match, including all three `ScaleMatrix` calls;
+the safe carve withheld none. The current source needs no change.

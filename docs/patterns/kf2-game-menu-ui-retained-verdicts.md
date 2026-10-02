@@ -675,3 +675,56 @@ existing label to a natural `while (result == -99)` loop followed by
 **99.14365%** to **94.91713%** strict and from 36 to 34 `.rel.text` rows,
 so the tracked source is unchanged. These comparisons supplied no new field,
 call, or referent correction; no menu C or identity edit was retained.
+
+## Menu item controller exact control
+
+Ten further menu-item units were compiled individually with the same complete
+manifest profile and compared by isolated strict objdiff. All eleven function
+claims are **100% exact**, with equal target/candidate text relocation counts:
+`0x80018ac8` selection (22/22), `0x80019ed4` equipment category (56/56,
+plus 18/18 RODATA relocations), `0x8001a898` equipment (18/18), `0x8001d030`
+primary (38/38), `0x8001d340` item code (2/2), `0x8001d3b4` sell (29/29),
+`0x8001d654` and `0x8001d6a8` secondary code (26/26 for the unit),
+`0x8001d8d0` trade (39/39), `0x8001ddd0` stock (31/31), and `0x8001e0a8`
+secondary stock (29/29). `game.menu_item_model` was also refreshed separately:
+both load/release functions are exact with 32/32 unit text relocations. This
+screen retained no source or inventory edit.
+
+The related status and attribute renderers were also checked from current
+sources with the full manifest profile. `game.menu_status_render` at
+`0x8001e94c` and `game.menu_attribute_render` at `0x8001f008` are each
+**100% strict exact**, with 123/123 and 165/165 target/candidate text
+relocations. Older exploratory notes that call them unclaimed are stale.
+
+A separate ten-unit card/menu input control covers eleven more functions.
+`0x8001aa9c`, `0x8001ac80`, `0x8001b834`, `0x8001bcfc`, `0x8001c12c`,
+`0x8001a7fc`, `0x8001e378`, `0x8001e484`, `0x8001dc64`, and the
+`menu_blit_sprite_translucent` entry are **strict exact**. The remaining
+`0x8001bf68` card-format flow is **97.12389%** strict with its known probe
+status register and later write-path scheduling difference. All ten units
+have equal target/candidate text relocation counts; the card-format unit has
+76/76. No source-backed call, field, or control correction emerged, and no C
+or inventory edit was retained.
+
+Ten menu row/list/card units add 18 function claims in another current-source
+strict control. Seventeen are exact: `0x80018d08`, `0x80018dec`,
+`0x80018f8c`, `0x80019240`, `0x800192ac`, `0x800192dc`, `0x80019834`,
+`0x800199d0`, `0x80019ac4`, `0x80019ce4`, `0x8001a2f4`, `0x8001af30`,
+`0x8001b030`, `0x8001b14c`, `0x8001b2dc`, `0x8001ba80`, and
+`0x8001bb94`. The card browser `0x8001b554` remains **98.478264%** WIP
+with its previously documented result-register residue. All ten units have
+equal target/candidate text relocation counts; their row and card data
+identities did not need changes. In particular, older reports naming
+`0x8001b2dc` WIP are stale relative to this fresh strict check.
+
+Ten visual/primitive units add 15 current-source strict verdicts. Fourteen
+functions are exact: `0x8001f798`, `menu_draw_two_option`, `0x80020990`,
+`menu_blit_sprite`, `menu_blit_sprite_fixed_clut`, `menu_draw_number`,
+`0x800217f0`, `0x80021a60`, `menu_frame_begin`, `menu_present_frame`,
+`menu_blit_sprite_translucent`, `primitive_buffer_begin_poly_ft4`,
+`primitive_buffer_commit_poly_ft4`, and `menu_list_init`. The sole WIP is
+`0x8002083c` at **99.65882%** strict, with its already documented 64-byte
+retail/candidate frame difference and no proved extra live object. All ten
+units have equal target/candidate text relocation counts; the two-option unit
+has 80/80. Earlier `menu_draw_number` WIP scores are stale for the current
+source. No C or inventory change was retained.

@@ -433,6 +433,7 @@ void func_80025a18(s32 effect_id, ...)
     s32 kind;
     s32 rotation_scale;
     s32 target_scale;
+    s32 simple_scale;
     s32 case3_z;
     va_list arguments;
     const VECTOR *override_position;
@@ -441,7 +442,9 @@ void func_80025a18(s32 effect_id, ...)
 
     switch (effect_id) {
     case 7:
-        func_80025878(1000, &position, &direction, &distance);
+        simple_scale = 1000;
+simple_probe:
+        func_80025878(simple_scale, &position, &direction, &distance);
 emit_simple_effect:
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
@@ -508,7 +511,9 @@ simple_effect:
         rotation_scale = 700;
 probe_rotation_effect:
         func_80025878(rotation_scale, &position, &direction, &distance);
-        goto emit_rotation_effect;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
     case 11:
         func_80025878(600, &position, &direction, &adjusted_distance);
         if (adjusted_distance != -1) {
@@ -559,9 +564,8 @@ select_actor_effect:
         break;
     }
     case 1:
-        func_80025878(500, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
+        simple_scale = 500;
+        goto simple_probe;
     case 43:
         effect_id = 0x73;
         goto sequence_effect;

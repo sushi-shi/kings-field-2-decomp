@@ -223,3 +223,13 @@ candidate from 7,676 to 7,672 bytes. The retained, freshly rebuilt unit has
 32-byte DATA. The 956-byte jump-table RODATA is **43.396225%** because
 remaining target addends move with code layout; its referents are unchanged.
 The function remains WIP. No repository tests, lint, or full build ran.
+
+A fresh safe-delinked single-unit comparison on the retained source confirms
+**99.63745%** strict text, 329/329 CFG blocks, 180/180 branches, and no
+withheld relocations. The first non-target difference is a retail `nop` at
+function `+0x121c` between the final signed-byte load from a seven-argument
+archive-transition call and its `jal`; the probe schedules that `jal` into
+the load-delay gap. The next non-target residue, in action 98, reorders the
+angle and signed-velocity halfword loads/stores but preserves their values.
+No source-backed field, call, width, or control-flow correction follows from
+these schedules, so the C body and table claims remain unchanged.

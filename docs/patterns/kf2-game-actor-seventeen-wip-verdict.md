@@ -29,3 +29,12 @@ The five WIPs preserve their observed call and field meaning in this screen.
 The scorer's extra retail branch remains the only structural branch-count
 gap in this group. A percentage or register selection does not justify
 source changes without a new raw field, call, referent, or CFG fact.
+
+For lifecycle scan `0x80039b58`, a fresh two-function safe delink confirms
+90.95744% strict text over 188 bytes; the preceding `0x8003983c` remains
+99.19598%. Retail advances a base actor cursor and a second cursor anchored
+at actor `+9`, but both refer to the same typed record. A natural index-based
+`for` loop was compiled as a control for those two induction views. It
+lowered the scan to 56.744682% while leaving the preceding function
+unchanged. The index trial was reverted; no duplicate cursor or raw-offset
+view was added merely to reproduce register allocation.

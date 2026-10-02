@@ -318,3 +318,27 @@ Reordering the independent actor-loop cursor increments regressed focused
 listing from 71.0% to 70.9% and reassigned their saved registers; moving the
 actor count setup ahead of the position cursor kept the 71.0% verdict without
 recovering retail's full setup order. Neither source-only probe was retained.
+
+## Fresh isolated render control
+
+Ten graphics/render units were compiled individually from the current sources
+with their complete manifest profiles and compared against the existing
+delinked target objects. This covers 17 function claims: 12 are strict exact,
+and five remain WIP. No C or inventory change was retained.
+
+| GAME function | Current direct strict verdict | Text relocations, target/candidate |
+| --- | --- | --- |
+| `0x80031850` world model | WIP, 99.29851% | 68/68 |
+| `0x80031d8c` animated object | WIP, 94.65414% | 22/22 |
+| `0x8003247c` render/resource dispatch | WIP, 92.18579% | 82/84 |
+| `0x80030c18` map cell object | WIP, 96.521736% | 77/77 for its unit |
+| `0x800311b0` textured quad | WIP, 92.14815% | 7/7 |
+| `0x80030de4`, `0x80030f5c`, `0x80031024` map-cell siblings | All exact | 77/77 for their unit |
+| `0x800312f4`, `0x80031384`, `0x80031414`, `0x800314d4` panel/color helpers | All exact | Equal per unit |
+| `notification_draw_quad`, `notification_draw`, `notify_enqueue`, `notification_digit_set_v`, `func_80033284` | All exact | Equal per unit |
+
+The dispatcher's two extra candidate relocations rematerialize the player
+camera base. Raw component addresses remain correct, so the count difference
+does not establish a missing owner or field. The other four WIPs retain the
+previously documented register, frame, or instruction-order residues. This
+control used focused off-tree compilation and isolated strict objdiff only.

@@ -198,8 +198,36 @@ constructed interior address in the adjacent-pair scan. These are useful
 non-overlap and capacity bounds; they do not prove whether the six chunks
 share one C object, whether slot 5 owns the entire `0x2800` interval, or
 whether the TMD workspace fills its `0x37000`
-gap. The defining source modules also remain open. Literal workspace pointers
+gap. Its `cd_archive_queue_read` producer writes sector-counted entries, so a
+nonempty TMD read requires at least `0x800` writable bytes at this base. The
+defining source modules also remain open. Literal workspace pointers
 and their unbound relocation targets remain unchanged.
+
+The GAME loaded callback destination `0x8019e138` has another useful bounded
+placement. The complete startup-cleared `effect_state` ends at `0x8019e134`,
+four bytes before it; the next complete startup-cleared `event_state` starts
+at `0x801b2140`, a gap of `0x14008` bytes. A `0x14000`-byte loaded region
+would leave eight bytes before that next object, but neither the CD archive
+entry's maximum length nor its original definition is known. The initialized
+fallback table has 32 pointers, and current GAME callers use loaded slots
+through index 19, proving at least an 80-byte callable prefix. The exact
+`cd_archive_queue_read` path computes its read size from the entry's sector
+offset difference in 2,048-byte units, so any nonempty loaded table writes at
+least one sector there. Neither fact proves that the entire intervening gap
+is one source-level array.
+
+The separate GAME `cd_stream_work_buffer` at `0x801b6064` has a tighter
+lower bound than its four-byte candidate inventory anchor suggests. Resource
+transition phase one copies `0x3e80` words from `buffer + 4`, a readable
+range of at least `0xfa04` bytes from the base. The exact archive-queue path
+expresses loaded entry lengths in `0x800`-byte CD sectors. If the entry
+provides that whole copied range, its read is at least `0x10000` bytes after
+sector rounding. The next independently used BSS address is the
+`DAT_801c7068` motion-vector view, `0x11004` bytes after the buffer base.
+This bounds a plausible stream allocation between a 64-KiB sector-rounded
+load and that next live address; the archive's embedded second range and the
+original C definition are still unknown. No buffer extent is promoted in the
+inventory.
 
 The address-gap inventory is a triage aid, not a set of new C array claims:
 
@@ -208,10 +236,12 @@ The address-gap inventory is a triage aid, not a set of new C array claims:
 | `0x800855a0` second TMD copy | `0x8009a5a0` SDK datum | `0x15000` | Candidate maximum |
 | `0x8009b0a0` resource arena | `0x800fa0a0` allocator end | `0x5f000` | Proven runtime span; source owner open |
 | `0x800fa0d0` first TMD copy | `0x800fba38` SDK datum | `0x1968` | Candidate maximum |
-| `0x8012da68` transition TMD | `0x80164a68` VAB slot 6 | `0x37000` | Candidate maximum |
+| `0x8012da68` transition TMD | `0x80164a68` VAB slot 6 | `0x37000` | At least one CD sector; candidate maximum |
 | `0x80164a68` slot 6 plus slots 0..4 | `0x8016aa68` SDK datum | `0x6000` | Six observed `0x1000` chunks; object split open |
 | `0x80194e30` VAB slot 5 | `0x80197630` audio state | `0x2800` | Candidate maximum |
 | `0x80198640` sequence data | `0x8019b640` SDK datum | `0x3000` | Candidate maximum; KF1 size agrees |
+| `0x8019e138` loaded callbacks | `0x801b2140` event state | `0x14008` | At least one CD sector written and 20 pointers used; maximum/definition open |
+| `0x801b6064` map stream | `0x801c7068` motion vector | `0x11004` | `0xfa04` bytes read by phase one; valid sector-rounded input at least `0x10000` |
 | `0x801d8d88` startup copy | `0x801d9588` SDK score table | `0x800` | Candidate maximum |
 
 ## Prepared TMD target freshness control

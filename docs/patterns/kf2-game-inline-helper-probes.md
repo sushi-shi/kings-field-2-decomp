@@ -53,6 +53,16 @@ helper body leaves the focused result at 90.4%, with the same 56-versus-48-byte
 frame and glyph-UV register differences as the typed inline form. This probe
 cannot attribute the original spelling; the typed inline form was restored.
 
+KF1's exact `menu_draw_string` uses an indexed glyph loop, while the KF2
+source advances a glyph pointer. An off-tree KF2 probe using the KF1 loop
+shape, including indexed glyph reads and a signed glyph local, lowered the
+direct strict result from 99.66904% to 76.08541%. Isolating the changes gave
+98.65836% for an indexed loop with the existing unsigned glyph and 75.98933%
+for a signed glyph with the existing pointer loop. The 12-bit glyph mask is
+nonnegative either way, but signed division selects a different instruction
+sequence under this probe. KF1's spelling does not explain KF2's remaining
+frame and UV-register residue; the KF2 source remains unchanged.
+
 Across the seven current C helper definitions, six were checked against a
 direct macro expansion. Four macro spellings changed an exact listing and
 were rejected (the three status copy widths and notification dequeue). The

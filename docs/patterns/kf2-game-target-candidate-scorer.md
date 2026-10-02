@@ -859,3 +859,70 @@ functions `0x8003983c` and `0x80039b58` remain 99.19598% and 90.95744%
 with matching calls and fields. Frame/CD helper `0x80036e24` remains
 98.86364% with all five direct calls and only cyclic saved-register
 assignments. None yielded a source-backed edit or new exact function.
+
+An off-tree ABI probe widened only the floor-item constructor's third and
+fourth formals from `u8` to `s32`. It made the four raw `$s1`/`$s2` moves and
+byte stores agree and raised strict text from 65.85185% to 66.22222%, while
+both exact siblings stayed exact. The five known callers pass only small
+constants, and retail does no observable full-width use of either formal;
+their original declared widths therefore remain unproved. The frame and
+late stack-argument gap did not change, so the typed source was retained.
+Compiling the tracked source with the supplied GCC 2.5.7 probe instead of
+GCC 2.6.0 produced a byte-identical object, including both exact siblings.
+
+The released map-render unit was rebuilt separately. Its exact
+`render_enqueue_map` control stays 1052/1052 bytes, the clipped-fan helper
+`0x8002f5b0` stays 95.833336%, and `0x8002f808` is **92.038376%** strict
+with 51/51 CFG blocks, 35/35 branches, and 4/4 return frontiers. The older
+35/34 branch note is stale. Retail spills the full packet header at `sp+96`
+and extracted mode at `sp+120`, reloading both; the candidate uses one stack
+slot plus a saved register and reserves 120 versus retail's 168 stack bytes.
+The source already retains both header uses and the ordered clipping/shading
+calls. No complete missing live object or source change is evidenced.
+
+### Constructor and independent GAME controls
+
+A fresh focused constructor build has 116/116 CFG blocks, 22/22 branches,
+and 26/26 known return frontiers. Isolated strict comparison is **98.05656%**
+text, **18.394308%** RODATA, and exact DATA. Its first local residues are the
+retail case-26 repeated zero-byte delay-slot store and the case-102 record
+halfword reload; the candidate eliminates both through value reuse. The
+switch arms retain the documented 123 table rows and ordered external calls.
+No extra live field, call, or source-level control distinction is proved, so
+the constructor was left unchanged.
+
+Ten other current-source focused unit builds covered 34 GAME functions:
+`menu_card_browser`, `memory_card_wait`, `menu_card_format_flow`,
+`menu_transition`, `actor_lifecycle_target`, `player_reaction`,
+`frame_step_cd_service`, `event_restore_stream`, `event_target_stream`, and
+`actor_motion`. All prior exact siblings remain listing-identical; no new
+exact function appeared. Every extracted WIP CFG remains matched where
+available: respectively 33/33, 19/19, 14/14, 37/37 and 9/9, 142/142,
+5/5, 23/23, 46/46, and 9/9 blocks. The card-format flow's indirect/overlap
+boundary prevents a reliable CFG count. The first differences remain the
+already documented register, frame, and independent load schedules; none
+supports a new typed field, call, referent, or branch edit.
+
+The current collision-shape dispatcher still has 174/172 CFG blocks and
+99/98 branches. Raw opcode `0x11` writes zero to `$s7` at `0x8002acb4`
+immediately before its extra `bnez $s7` at `0x8002acb8`; no branch targets
+the latter address. That retail branch is unreachable under the decoded
+flow, so reproducing it by a dead C condition would not clarify the source.
+The 49 table rows and 13 target classes retain their reviewed order.
+
+The released render/resource dispatcher has 96/96 CFG blocks, 54/54
+branches, and 92.18579% fresh isolated strict text. Retail reserves 768
+stack bytes versus the candidate's 760. Its 82/84 text-relocation rows
+differ by two repeated candidate camera-base pairs, not by missing target
+identities. The reported B62 successor-index difference reaches the same
+effect-record increment in both objects. No separate eight-byte live object
+or corrected source edge is proved, so both large dispatchers remain WIP
+without a C edit.
+
+The adjacent 17-claim collision-height unit was refreshed: eleven focused
+listings remain identical and six remain WIP. The snapshot helper
+`0x8002b874` has 8/9 CFG blocks and 3/3 branches; raw stores each branch's
+unsigned radius halfword before loading its unsigned interaction height,
+whereas the candidate schedules the loads differently before the same
+shared height store. Prior local-width and branch-local controls compiled
+identically or lost the raw common tail. No source edit was justified.

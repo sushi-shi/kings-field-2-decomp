@@ -3,6 +3,10 @@
 #include <kf/game/graphics.h>
 #include <kf/game/player.h>
 
+enum {
+    FRAME_COLOR_LEVELS = 256,
+    FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1
+};
 
 ADDRESS(0x80036e24, 0xb0)
 void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step)
@@ -13,8 +17,8 @@ void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step)
     for (;;) {
         s32 brightness = (phase * phase) >> 16;
 
-        if (brightness >= 256) {
-            brightness = 255;
+        if (brightness >= FRAME_COLOR_LEVELS) {
+            brightness = FRAME_COLOR_MAX;
         }
         func_800314d4(mode, brightness, brightness, brightness);
         cd_request_service_vab();

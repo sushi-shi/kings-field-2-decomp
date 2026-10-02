@@ -42,6 +42,9 @@ char cd_path_prefix[5] = "\\CD\\";
 DATA(0x8006d688, 0x3)
 char cd_version_suffix[3] = ";1";
 
+DATA(0x8009b0a0, KF_GAME_RESOURCE_ARENA_CAPACITY)
+u8 game_resource_arena[KF_GAME_RESOURCE_ARENA_CAPACITY];
+
 DATA(0x801b5d60, 0x2a4)
 KfCdState cd_state;
 DATA(0x801b6004, 0x60)

@@ -1993,6 +1993,7 @@ GAME.EXE	0x80013834	0x3034		mips26	reachable-code	0x8002ce68	load	func_8002ce68	
 GAME.EXE	0x80013854	0x3054		mips26	reachable-code	0x8002ce68	load	func_8002ce68	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x80013874	0x3074		mips26	reachable-code	0x8002ce68	load	func_8002ce68	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x80013894	0x3094		mips26	reachable-code	0x8002ce68	load	func_8002ce68	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
+GAME.EXE	0x8001389c	0x309c	0x800138a0	mips_hi16_lo16	reachable-code	0x8009b0a0	bss	game_resource_arena	lui+addiu	a0	paired-reviewed	reviewed	manual:raw GAME arena initializer base and signed-low pair
 GAME.EXE	0x800138a8	0x30a8		mips26	reachable-code	0x800175e8	load	memory_arena_initialize_blocks	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800138bc	0x30bc		mips26	reachable-code	0x80036e24	load	func_80036e24	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800138c4	0x30c4	0x800138c8	mips_hi16_lo16	reachable-code	0x80198630	bss	DAT_80198630	lui+sw	at	paired-reviewed	reviewed	manual:game_main_loop raw zero initialization of bounded exit word
@@ -2217,6 +2218,7 @@ GAME.EXE	0x80015c1c	0x541c		mips26	reachable-code	0x80015468	load	fixed_vector2_
 GAME.EXE	0x80015c44	0x5444		mips26	reachable-code	0x80015918	load	func_80015918	jal		control-flow	reviewed	manual:actor_trajectory_vector
 GAME.EXE	0x80015c5c	0x545c		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:actor_trajectory_vector
 GAME.EXE	0x80015c80	0x5480		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:actor_trajectory_vector
+GAME.EXE	0x80015d64	0x5564	0x80015d68	mips_hi16_lo16	reachable-code	0x8009b0a0	bss	game_resource_arena	lui+addiu	s0	paired-reviewed	reviewed	manual:raw GAME startup staging base and signed-low pair
 GAME.EXE	0x80015d70	0x5570	0x80015d74	mips_hi16_lo16	reachable-code	0x8017d11f	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
 GAME.EXE	0x80015d78	0x5578	0x80015d7c	mips_hi16_lo16	reachable-code	0x8017d11e	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
 GAME.EXE	0x80015d80	0x5580	0x80015d84	mips_hi16_lo16	reachable-code	0x8017d11d	bss	state_8017d118	lui+addiu	v1	paired-reviewed	reviewed	manual:audio-cd-startup-reset
@@ -6718,6 +6720,7 @@ GAME.EXE	0x800320e4	0x218e4	0x800320e8	mips_hi16_lo16	reachable-code	0x80191f54	
 GAME.EXE	0x80032178	0x21978	0x8003217c	mips_hi16_lo16	reachable-code	0x80191f50	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800321a8	0x219a8	0x800321ac	mips_hi16_lo16	reachable-code	0x80191f4c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800321f8	0x219f8		mips26	reachable-code	0x800180b4	load		jal		control-flow	reviewed	manual:resource_runtime raw MIPS26 direct call
+GAME.EXE	0x80032200	0x21a00	0x80032204	mips_hi16_lo16	reachable-code	0x8009b0a0	bss	game_resource_arena	lui+addiu	a0	paired-reviewed	reviewed	manual:raw GAME resource allocator base and signed-low pair
 GAME.EXE	0x80032210	0x21a10	0x80032214	mips_hi16_lo16	reachable-code	0x8018d25c	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80032218	0x21a18		mips26	reachable-code	0x80017608	load		jal		control-flow	reviewed	manual:resource_runtime raw MIPS26 direct call
 GAME.EXE	0x8003222c	0x21a2c		mips26	reachable-code	0x800176e0	load		jal		control-flow	reviewed	manual:resource_runtime raw MIPS26 direct call

@@ -13,9 +13,9 @@ typedef struct KfMemoryBlock {
 
 typedef char kf_memory_block_size[sizeof(KfMemoryBlock) == 12 ? 1 : -1];
 
-/* GAME's fixed resource arena boundary; its original definition is unresolved. */
-#define KF_GAME_RESOURCE_ARENA_BASE ((KfMemoryBlock *)0x8009b0a0)
 #define KF_GAME_RESOURCE_ARENA_CAPACITY 0x5f000
+extern u8 game_resource_arena[KF_GAME_RESOURCE_ARENA_CAPACITY];
+#define KF_GAME_RESOURCE_ARENA_BASE ((KfMemoryBlock *)game_resource_arena)
 
 void memory_arena_free(KfMemoryBlock *block);
 void memory_arena_coalesce_free(KfMemoryBlock *block);

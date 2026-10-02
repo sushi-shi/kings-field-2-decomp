@@ -144,6 +144,11 @@ across both packet modes. The pinned compiler folded it back to the
 existing direct packet loads: 12.0% focused and 51.506750% direct strict,
 byte-identical to the retained source. The retail local's lifetime and
 allocation remain unresolved; no scratch variable was kept for score alone.
+A narrower off-tree `u32`/`u16[2]` pair used only for the first FT4 child's
+two packed-index words also failed: the candidate grew from 2,816 to 2,952
+text bytes and direct strict alignment fell to 2.873620%. The compiler
+allocated separate halfword spills rather than retail's reused four-byte
+scratch word, so this view was likewise discarded.
 A second off-tree union probe also used the same typed word for child index
 halfword/byte emission, following its apparent retail reuse at `sp+1088`.
 The compiler still did not reproduce that stack lifetime: 12.5% focused and

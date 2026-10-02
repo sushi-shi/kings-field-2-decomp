@@ -2513,6 +2513,138 @@ from 81.912740% to 81.752870% as code addresses shift, while RODATA
 rises from 26.945526% to 32.295720%. The 128 pointer rows, 64 class
 relations and physical order, and named referent multiset remain exact.
 
+Kind 117's elevated point contains only three copied position components.
+Retail body `+0x9ec..+0xa08` stores X, adds 5000 to Y, and stores Z; it
+does not copy the fourth `VECTOR` word. Replacing the whole-structure copy
+with those three field assignments removes the candidate's extra fourth
+word load/store and reproduces the local instruction order, apart from
+the frame offset and saved-record register. Isolated strict text rises
+from 81.752870% to 82.632610%; RODATA is 31.712063% after address shifts.
+
+Kinds 39 and 38 share a collision-response body, but retail places the
+kind-38 `func_80042298` call before the kind-39 `func_8004195c` call. The
+kind-39 age check branches into the later spawn call at body `+0xb00`;
+the kind-38 call branches to the shared response on a nonzero result and
+otherwise jumps to the shared finish. The spawn call compares its raw
+return directly against `-1`, then falls into the response only on equality.
+The earlier C materialized Boolean trigger values and placed the spawn
+call first. Two labels now express the retail control flow without an
+intermediate Boolean; the candidate reproduces the local branch/call
+sequence at `+0xaac..+0xb2c` except for the preceding address shift.
+Focused candidate text is 13,760 bytes. Isolated strict text rises from
+82.632610% to 83.171070%; RODATA is 30.739300%. All 128 pointer rows,
+64 class relations and physical order, and the 272 named referents remain
+exact. The overall CFG remains WIP at 446/451 blocks and 217/220 branches.
+
+The same kind-38/39 response loop terminates on `count == -1` in retail:
+after decrementing the counter, it loads `-1` and uses `bne` to repeat,
+with the next argument setup in the delay slot. Spelling the C loop as
+`count != -1` reproduces those four local instructions. It adds four bytes
+and shifts later addresses, so isolated strict text moves from 83.171070%
+to 83.045920% while RODATA stays 30.739300%; the source is retained on
+the direct loop-control evidence. Pointer classes and named referents remain
+exact.
+
+Kinds 26/27 had another axis error: retail body `+0xe24..+0xe30` reads and
+writes rotation Y at record `+0x26` when adding 100, while C used rotation
+Z at `+0x28`. The source now updates Y. After the constructor call, retail
+also checks phase zero first, phase one second, then returns for other
+values. An inner two-case switch reproduces that branch topology, including
+the kind-zero branch and the explicit other-value exit. Focused candidate
+text is 13,772 bytes; isolated strict text rises from 83.045920% to
+83.438286%, RODATA rises from 30.739300% to 32.392998%, and internal jump
+relocations rise from 465 to 466 against the target's 470. All pointer
+classes and named referents remain exact. The phase-one arithmetic still
+differs: target uses `addiu -512`, while this probe hoists `-512` into a
+register and uses `addu`.
+
+Kind 0 had a third axis error: retail body `+0xfd4..+0xfe8` increments
+direction Y at record `+0x36` by 20, while C incremented direction Z at
+`+0x38`. The scale growth reads `scale_z` with `lhu` at `+0xfec`, so the
+source now uses the unsigned halfword before adding 256. These changes
+restore both address and load width; isolated strict text rises from
+83.438286% to 83.524970%, with RODATA unchanged at 32.392998%. The 128
+pointer rows/classes/order and 272 named referents remain exact.
+
+Kinds 103/121 phase two use the stored X scale as the cap decision in
+retail: body `+0x10cc` writes X, then `lh` rereads X at `+0x10d0` before
+the positive test, while the Y store sits in that test's delay slot. The
+prior C tested an untruncated local. Reading the record field after its
+write now reproduces this local store/reload/branch order and preserves
+the signed halfword decision. The pinned probe still chooses a register
+constant plus `addu` for `-128` instead of retail `addiu -128`. Isolated
+strict text shifts from 83.524970% to 83.521240%; RODATA is unchanged at
+32.392998%. Pointer classes and named referents remain exact.
+
+The kinds 103/121 transition arm also had a source-order mismatch. In
+retail, a nonzero collision with low flags and nonzero prior phase calls
+`func_80042424`, probes the collision height, computes the lower bound,
+and jumps directly to the spawn block. Phase one can reach the same spawn
+block when its height distance reaches 7000; the phase-zero countdown is
+physically after that block and then joins the random-spawn loop. The old
+C used a temporary transition flag, placed the phase-zero countdown before
+the spawn block, and duplicated the height calculation in the compiled
+path. A direct label for the spawn block preserves the two distinct
+`func_80042424` calls and matches the retail branch/call order through the
+collision split; it also shares the calculated distance with both spawn
+calls. Isolated strict text rises from 83.521240% to 84.252010%, while
+RODATA moves to 31.517510% as later case addresses shift. Candidate text
+is 13,744 bytes. All 128 pointer rows, 64 class relationships/order, and
+272 named referents remain exact; this arm remains WIP in register and
+height-selection scheduling.
+
+The following four-iteration random-spawn loop also terminates on
+`index == -1`: retail loads `-1` and uses `beq` at body `+0x1344..+0x1348`,
+then jumps back to its `rand` call. Changing the C condition from
+`index >= 0` to `index != -1` reproduces this loop tail. Isolated strict
+text rises from 84.252010% to 84.561424%, RODATA to 33.754864%, and
+candidate text is 13,748 bytes. Pointer classes and named referents remain
+exact.
+
+Kind 2 passed the wrong position to `func_8003ff18`. Retail body
+`+0x15f0..+0x1614` builds a three-component stack point with the record's
+X and Z but Y raised by 1000, then passes that point as the first
+argument. The old C passed `&record->position` directly. The scale step
+also reads unsigned halfwords at record `+0x2c` and `+0x42`; the C had
+signed casts. A local elevated point and unsigned step reproduce the
+retail load/store and call-argument sequence, including no fourth-vector
+copy. Isolated strict text rises from 84.561424% to 84.804535%, RODATA
+to 34.046690%, and candidate text is 13,788 bytes. All 128 pointer rows,
+64 target classes/order, and 272 named referents remain exact.
+
+Kind 12's phase predispatch is a balanced comparison tree in retail:
+phase 101 is checked first, then the remaining values split at 102 before
+checking 100, 102, and 110. Replacing the flat C `if` chain with a switch
+over the same phase values produces the same first split and ordered case
+checks. Moving the shared scale label immediately after the switch gives
+phase 110 the retail `bne` to default, with the scale setup as fallthrough;
+the reset path jumps back to that shared label. The candidate now matches
+the dispatch control sequence through the default entry, aside from an
+extra register move in the first delay slot. Isolated strict text rises
+from 84.804535% to 85.272385%, RODATA moves from 34.046690% to
+32.490273%, text is 13,816 bytes, and internal jump relocations are 468
+versus retail 470. All pointer rows, classes, physical order, and named
+referents remain exact.
+
+At the kind-12 default entry, retail reloads the phase byte from the
+record (`lbu` at body `+0x16d0`) before testing for the initial sound;
+the switch's saved phase value is not reused. Reading `record->phase`
+there removes the candidate's saved-value test and gives the same
+load-delay check. Isolated strict text rises from 85.272385% to
+85.323770%, RODATA to 33.657590%, with 13,820 text bytes and unchanged
+pointer/referent controls.
+
+Kind 100's collision-probe result also chooses blocks in a physical order
+the old C obscured. Retail branches on a result other than `-1` at body
+`+0x1860` to the collision-success block, leaving the child-spawn miss
+block as fallthrough; success then performs the update and effect call.
+Putting an explicit success label after the miss block reproduces that
+branch polarity and the call order from the probe through the shared
+phase-increment exit. Isolated strict text rises from 85.323770% to
+86.077210%; RODATA stays 33.657590% and candidate text stays 13,820
+bytes. The 128 pointer rows/classes/order and 272 named referents remain
+exact.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`
@@ -2582,3 +2714,17 @@ from 6.707317% to 28.760162%; isolated strict text moves from 70.829540%
 to 70.502750%, with 116/116 CFG blocks and 22/22 branches unchanged.
 The lower intermediate text score does not falsify the raw discriminant
 evidence; the constructor remains WIP.
+
+The next focused constructor pass restored the kind-4 byte store at record
+offset `+8`, which retail emits before the clip and offset-`+9` stores at
+`0x80040528..0x80040538`. Seventeen equal-value scale triples now store the
+halfwords at offsets `+48`, `+46`, then `+44`, following the repeated raw
+retail order. The isolated strict `.text` result is 88.933230% of 5,092
+retail bytes, versus 88.840530% before these edits; `.rodata` rises from
+14.532520% to 32.926830%. The constructor's 123 ordered jump-table
+relocations still form the same 62 target-equivalence classes as retail,
+with no pairwise class conflict; only seven body-offset addends currently
+match exactly. Focused CFG remains 116/116 blocks and 22/22 branches.
+An off-tree fifth-slot cursor probe reproduced `sp+88` but lowered the
+focused listing from 39.8% to 39.6%; the stack address alone does not prove
+the historical variadic source spelling, so that probe was discarded.

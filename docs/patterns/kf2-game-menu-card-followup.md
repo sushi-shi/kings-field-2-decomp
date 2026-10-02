@@ -374,6 +374,16 @@ was retained.
 | `0x8001876c` location menu | 96.366460% | 90.8% | Two sentinel constants use swapped saved registers; retail reloads the result from its stack slot on the exit path. Exact `0x800189f0` remains unchanged. |
 | `0x800210ac` glyph drawer | 99.669040% | 90.4% | Retail reserves eight extra stack bytes and allocates the glyph arithmetic to the opposite volatile registers; call and referent sets agree. |
 
+An off-tree union view of the reader's two-byte glyph (`s16` code with two
+signed byte lanes) was also rejected. GCC combined the input bytes with
+`lbu`/shift/or instead of emitting retail's two `lb`/`sb` writes followed by
+a stack halfword load. The candidate grew to a 752-byte frame and direct
+strict text fell from 85.156250% to 69.575000%; the exact format sibling
+stayed 100%. The existing byte-lane source remains preferable.
+A separate two-byte signed array with a halfword read preserved the 640-byte
+body and exact format sibling but scored 83.568750%; it likewise failed to
+recover retail's signed-load/store sequence, so it was discarded.
+
 The source evidence does not justify artificial stack padding or register
 carriers for these residues. No tests, lint, full build, broad match, or README
 edit was run.

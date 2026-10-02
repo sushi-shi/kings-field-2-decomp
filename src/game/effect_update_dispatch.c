@@ -371,8 +371,9 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
-        elevated = record->position;
-        elevated.vy += 5000;
+        elevated.vx = record->position.vx;
+        elevated.vy = record->position.vy + 5000;
+        elevated.vz = record->position.vz;
         actor_index = func_8003a9f4(elevated.vx, elevated.vy, elevated.vz,
                                     100, 10000);
         if (actor_index != -1) {
@@ -393,20 +394,25 @@ void effect_update_dispatch(void)
         }
         break;
     case 39: {
-        s32 trigger;
         s32 count;
         u32 flags;
 
         if (record->updates_remaining < 45) {
-            trigger = func_8004195c(0x258, 0x28, 0x24, 0x32,
-                                    100, 0x1000, 0x104, 0x800) == -1;
-            goto kind38_response;
+            goto kind39_spawn;
         }
         record->direction.vy = (u16)record->direction.vy + 10;
     case 38:
-        trigger = func_80042298(100, 0, 0) != 0;
+        if (func_80042298(100, 0, 0) != 0) {
+            goto kind38_response;
+        }
+        goto kind38_finish;
+    kind39_spawn:
+        if (func_8004195c(0x258, 0x28, 0x24, 0x32,
+                          100, 0x1000, 0x104, 0x800) != -1) {
+            goto kind38_finish;
+        }
     kind38_response:
-        if (trigger) {
+        {
             flags = KF_COLLISION_CACHE_FLAGS;
             if (flags & 0x10) {
                 if (record->unknown_3c[4] == 0) {
@@ -416,7 +422,7 @@ void effect_update_dispatch(void)
             } else {
                 record->unknown_3c[4] = 0;
             }
-            for (count = 11; count >= 0; count--) {
+            for (count = 11; count != -1; count--) {
                 func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
             }
@@ -424,6 +430,7 @@ void effect_update_dispatch(void)
                 record->type = KF_EFFECT_SLOT_FREE;
             }
         }
+    kind38_finish:
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         break;
     }
@@ -504,21 +511,24 @@ void effect_update_dispatch(void)
     case 26:
     case 27:
         record->type = 0x21;
-        record->rotation.vz += 100;
+        record->rotation.vy += 100;
         func_8003ff18(&record->position, 0, (s16)record->scale_x,
                        0x8000, 0x400, 0x1000);
         record->type = 0x24;
-        if ((s8)record->unknown_3c[4] == 0) {
+        switch ((s8)record->unknown_3c[4]) {
+        case 0:
             if (func_80042298(100, 200, 0) != 0) {
                 record->direction.vz = 0;
                 record->direction.vy = 0;
                 record->direction.vx = 0;
             }
-        } else if ((s8)record->unknown_3c[4] == 1) {
+            break;
+        case 1:
             record->scale_z -= 512;
             if ((s16)record->scale_z <= 0) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
+            break;
         }
         break;
     case 111: {
@@ -552,9 +562,9 @@ void effect_update_dispatch(void)
         break;
     }
     case 0:
-        record->direction.vz += 20;
+        record->direction.vy += 20;
         if ((s16)record->scale_x < 0xc00) {
-            step = (s16)record->scale_z + 0x100;
+            step = (u16)record->scale_z + 0x100;
             record->scale_z = step;
             record->scale_y = step;
             record->scale_x = step;
@@ -584,14 +594,13 @@ void effect_update_dispatch(void)
     case 121: {
         s32 prior_phase = record->phase;
         s32 index;
-        s32 transition = 0;
+        s32 lower_bound;
+        s32 distance;
 
         if (prior_phase == 2) {
-            s16 scale = (u16)record->scale_x - 128;
-
-            record->scale_x = scale;
-            record->scale_y = scale;
-            if (scale <= 0) {
+            record->scale_x = (u16)record->scale_x - 128;
+            record->scale_y = record->scale_x;
+            if ((s16)record->scale_x <= 0) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
             break;
@@ -608,23 +617,18 @@ void effect_update_dispatch(void)
                     func_8002b604(record->position.vx,
                                   record->position.vy,
                                   record->position.vz, 50, 0);
-                    transition = 1;
+                    lower_bound = KF_COLLISION_CACHE_RESULT <
+                                          KF_COLLISION_CACHE_LOWER_BOUND
+                                      ? KF_COLLISION_CACHE_RESULT
+                                      : KF_COLLISION_CACHE_LOWER_BOUND;
+                    distance = lower_bound - record->position.vy;
+                    goto kind103_spawn;
                 }
             }
-            if (!transition) {
-                record->phase = 1;
-            }
+            record->phase = 1;
         }
-        if (prior_phase == 0) {
-            if ((s16)*(u16 *)&record->unknown_3c[4] <= 0) {
-                record->phase = 1;
-            }
-            *(u16 *)&record->unknown_3c[4] -= 1;
-        } else if (prior_phase == 1 && !transition) {
-            s32 lower_bound;
-
-            record->direction.vy =
-                (u16)record->direction.vy - 70;
+        if (prior_phase == 1) {
+            record->direction.vy = (u16)record->direction.vy - 70;
             record->direction.vx = func_8001584c(
                 0, (s16)record->direction.vx, 3000);
             record->direction.vz = func_8001584c(
@@ -633,33 +637,37 @@ void effect_update_dispatch(void)
                                   KF_COLLISION_CACHE_LOWER_BOUND
                               ? KF_COLLISION_CACHE_RESULT
                               : KF_COLLISION_CACHE_LOWER_BOUND;
-            if (lower_bound - record->position.vy >= 7000) {
-                transition = 1;
+            distance = lower_bound - record->position.vy;
+            if (distance >= 7000) {
+                goto kind103_spawn;
             }
         }
-        if (transition) {
-            VECTOR spawn_position;
-            SVECTOR spawn_direction;
-            s32 lower_bound = KF_COLLISION_CACHE_RESULT <
-                                      KF_COLLISION_CACHE_LOWER_BOUND
-                                  ? KF_COLLISION_CACHE_RESULT
-                                  : KF_COLLISION_CACHE_LOWER_BOUND;
-            s32 distance = lower_bound - record->position.vy;
+        goto kind103_after_spawn;
+    kind103_spawn: {
+        VECTOR spawn_position;
+        SVECTOR spawn_direction;
 
-            spawn_position.vx = record->position.vx;
-            spawn_position.vy = lower_bound;
-            spawn_position.vz = record->position.vz;
-            record->phase = 2;
-            /* Retail has no visible write to this stack direction. */
-            func_80040308(10, record->type | 3,
-                           initial_kind == 103 ? 104 : 122,
-                           &spawn_position, &spawn_direction, distance);
-            func_80040308(10, record->type, 2,
-                           &spawn_position, &spawn_direction,
-                           distance >> 1, distance >> 4, 0x800);
-            effect_play_spatial_sound(record, 0x17);
+        spawn_position.vx = record->position.vx;
+        spawn_position.vy = lower_bound;
+        spawn_position.vz = record->position.vz;
+        record->phase = 2;
+        /* Retail has no visible write to this stack direction. */
+        func_80040308(10, record->type | 3,
+                       initial_kind == 103 ? 104 : 122,
+                       &spawn_position, &spawn_direction, distance);
+        func_80040308(10, record->type, 2,
+                       &spawn_position, &spawn_direction,
+                       distance >> 1, distance >> 4, 0x800);
+        effect_play_spatial_sound(record, 0x17);
+    }
+    kind103_after_spawn:
+        if (prior_phase == 0) {
+            if ((s16)*(u16 *)&record->unknown_3c[4] <= 0) {
+                record->phase = 1;
+            }
+            *(u16 *)&record->unknown_3c[4] -= 1;
         }
-        for (index = 3; index >= 0; index--) {
+        for (index = 3; index != -1; index--) {
             SVECTOR random_direction;
 
             random_direction.vx = (rand() >> 7) - 128;
@@ -739,11 +747,16 @@ void effect_update_dispatch(void)
         break;
     }
     case 2:
-        step = (s16)record->scale_x + (s16)*(u16 *)&record->unknown_3c[6];
+        step = (u16)record->scale_x + *(u16 *)&record->unknown_3c[6];
         record->scale_x = step;
         record->scale_z = step;
         if ((s16)record->scale_x >= 0x300) {
-            func_8003ff18(&record->position,
+            VECTOR elevated;
+
+            elevated.vx = record->position.vx;
+            elevated.vy = record->position.vy + 1000;
+            elevated.vz = record->position.vz;
+            func_8003ff18(&elevated,
                            ((s16)record->scale_x -
                             (s16)*(u16 *)&record->unknown_3c[6]) * 4,
                            (s16)record->scale_x * 4 - 1,
@@ -762,10 +775,10 @@ void effect_update_dispatch(void)
     case 12: {
         s32 prior_phase = initial_phase;
 
-        if (prior_phase == 101) {
+        switch (prior_phase) {
+        case 101:
             goto shared_phase_increment;
-        }
-        if (prior_phase == 100) {
+        case 100: {
             KfEffectRecord *child = func_80040308(
                 10, record->type | 3, 12, &record->position,
                 0, &record->rotation);
@@ -773,13 +786,19 @@ void effect_update_dispatch(void)
             child->phase = 101;
             goto kind12_reset;
         }
-        if (prior_phase == 102) {
+        case 102:
             goto kind12_reset;
-        }
-        if (prior_phase == 110) {
+        case 110:
             goto kind12_scale;
         }
-        if (prior_phase == 0) {
+        goto kind12_default;
+    kind12_scale:
+        shared_multiplier = 0x3800;
+        shared_limit = 0x31f;
+        shared_increment = 0x46;
+        goto shared_scale_step;
+    kind12_default:
+        if (record->phase == 0) {
             effect_play_spatial_sound(record, 0x29);
         }
         record->phase++;
@@ -809,11 +828,7 @@ void effect_update_dispatch(void)
         record->scale_z = 0;
         record->phase = 110;
         record->type |= 3;
-    kind12_scale:
-        shared_multiplier = 0x3800;
-        shared_limit = 0x31f;
-        shared_increment = 0x46;
-        goto shared_scale_step;
+        goto kind12_scale;
     kind12_collision:
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         record->rotation.vz = (u16)record->rotation.vz + 128;
@@ -842,10 +857,7 @@ void effect_update_dispatch(void)
         kind100_collision:
             if (func_8004195c(600, 30, 64, 100,
                               0, 0x1000, 360, 0x800) != -1) {
-                func_80041e0c(&record->position, 0x2000, 0x2000, 500);
-                record->rotation.vz = (u16)record->rotation.vz + 128;
-                func_80041e94(record, 5, 0x400, 0x800, -150, 10, 8, 0);
-                goto shared_phase_increment;
+                goto kind100_success;
             }
         }
     kind100_miss:
@@ -854,6 +866,11 @@ void effect_update_dispatch(void)
                       &local_direction);
         effect_play_spatial_sound(record, 0x18);
         record->type = KF_EFFECT_SLOT_FREE;
+        goto shared_phase_increment;
+    kind100_success:
+        func_80041e0c(&record->position, 0x2000, 0x2000, 500);
+        record->rotation.vz = (u16)record->rotation.vz + 128;
+        func_80041e94(record, 5, 0x400, 0x800, -150, 10, 8, 0);
         goto shared_phase_increment;
     }
     case 5: {

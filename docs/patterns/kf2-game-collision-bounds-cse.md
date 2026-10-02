@@ -34,3 +34,6 @@ reuse residue. No profile change is applied to that unit.
 The five-function `game.memory_card_directory` control likewise retains all
 five strict scores, including its exact format helper; the flag does not
 alter that reader's signed-byte or offset-walk residues.
+On the much larger `game.actor_behavior_dispatch`, the same isolated flag
+reduces strict text from 99.931595% to 99.867035% (retail 9,356 B), so the
+dispatcher also retains its configured profile.

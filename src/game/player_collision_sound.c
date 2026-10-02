@@ -60,10 +60,11 @@ void func_800279cc(void)
 
     case 0x10:
         func_80027928();
-        player_state.camera_position.vy += player_state.unknown_13a;
+        next_y = player_state.camera_position.vy + player_state.unknown_13a;
+        player_state.camera_position.vy = next_y;
         player_state.unknown_ea = player_state.unknown_13a;
         player_state.unknown_13a += 40;
-        if (KF_COLLISION_CACHE_RESULT + 100 < player_state.camera_position.vy) {
+        if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             player_state.unknown_d0 = 0;
         }

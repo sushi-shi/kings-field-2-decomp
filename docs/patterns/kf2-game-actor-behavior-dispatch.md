@@ -122,6 +122,14 @@ remain WIP. The neighboring `actor_spatial_sound` functions are both SAME;
 in `actor_fixup_group_targets`, `func_8003f610` and `func_8003f860` remain
 SAME and the separate 93.8% WIP remains WIP.
 
+A fresh image-qualified pass over `actor_fixup_group_targets` at `0x8003f7ec`
+confirmed its 9/9 blocks, 4/4 branches, single return, and two validated
+referents. Its focused listing differs only in the order of the independent
+`0xff`/`-1` setup instructions and the commuted operands of the target-offset
+`addu` in a branch delay slot. Both exact sibling listings remain `SAME`.
+Neither difference establishes a different pointer owner or source operation,
+so the WIP body is unchanged.
+
 Action 26's group halfword at `+0x32` is loaded once at retail
 `0x8003ecb4` and written to actor `+0x4c`, `+0x4a`, then `+0x48`; its
 initial zero stores use that same descending order. The source now reads the

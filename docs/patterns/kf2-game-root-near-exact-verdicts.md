@@ -32,6 +32,11 @@ just the percentage: only offsets `+0x000`, `+0x004`, `+0x164`, and `+0x170`
 differ. The same eight-byte frame delta appears in the source-backed menu
 window and string renderers, but that recurrence alone does not identify a
 compiler mechanism or justify artificial stack use.
+An isolated GCC 2.6.0 `-O2 -G0 -mcpu=r2000` control for the whole
+`game.menu_display_state` unit does not recover the extra frame: the WIP
+`func_80021c8c` falls from 99.956985% to 85.827960% strict, and its exact
+`func_80021e00` sibling falls to 92.352940%. The configured GCC 2.5.7 probe
+is retained for both.
 
 ## KF1-backed horizontal movement identity
 

@@ -77,9 +77,6 @@ void func_8003b5d0(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
-    s32 next_y;
-    s32 collision;
-    s32 phase;
     s32 vertical_state;
 
     func_8002b604(actor->position.vx, actor->position.vy, actor->position.vz,
@@ -100,7 +97,8 @@ void func_8003b5d0(void)
     if (vertical_state == 0x30) goto state_30;
     return;
 
-state_0:
+state_0: {
+        s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
             actor->unknown_0d = 0x20;
@@ -110,8 +108,11 @@ state_0:
             actor->unknown_52 = 0;
         }
         return;
+    }
 
-state_10:
+state_10: {
+        s32 next_y;
+        s32 collision;
         next_y = actor->position.vy + actor->unknown_52;
         collision = func_8002b9d4(actor->position.vx, next_y,
                                   actor->position.vz, actor->unknown_1c,
@@ -130,8 +131,9 @@ state_10:
         }
         if (collision & 4) {
             if (actor->unknown_28 & 0x400) {
-                if (actor->position.vy < KF_COLLISION_CACHE_HEIGHT) goto advance_rise;
-                actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
+                s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
+                if (actor->position.vy < floor_y) goto advance_rise;
+                actor->position.vy = floor_y;
             } else {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
@@ -142,6 +144,7 @@ state_10:
         if (actor->unknown_28 & 0x400) goto advance_rise;
         actor->unknown_0d = 0;
         return;
+    }
 
 state_20:
         actor->position.vy += actor->unknown_52;
@@ -154,7 +157,10 @@ state_20:
         actor->unknown_0d = 0;
         return;
 
-state_30:
+state_30: {
+        s32 phase;
+        s32 next_y;
+        s32 collision;
         phase = actor->unknown_52;
         next_y = actor->unknown_3c - actor->unknown_6a * phase +
                  ((actor->unknown_6c * phase * phase) >> 1);
@@ -176,4 +182,5 @@ state_30:
         actor->unknown_0d = 0x10;
         actor->unknown_52 = 0;
         return;
+    }
 }

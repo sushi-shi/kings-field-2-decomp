@@ -63,17 +63,24 @@ record layout.
 The raw table points to the `0x32` body at retail `+0x818`, before the
 `0x31` body at `+0x944`; `0x18`/`0x19` also lie after the `0x20`–`0x32`
 family. Moving those intact C cases into that retail-backed order preserves
-the decoded behavior and raises isolated direct objdiff `.text` from
-31.652473% to 47.447803%. `.rodata` improves from 19.897959% to
-26.275510%. Retail has 2912 text bytes; the retained C has 2800. Both
-objects still have all 49 `R_MIPS_32` table sites and the same opcode
-equivalence groups, including 37 default entries. Focused listing similarity
-is 14.8% (previously 14.0%); the 174/165 CFG blocks and 99/97 branches
-remain WIP. The adjacent collision-height unit retains 11/17 focused SAME
-listings, including all its previously exact siblings. The compiled `0x40`
-block still follows `0x18`/`0x19`; an off-tree attempt to inline its already
-modeled second-layer path lowered focused similarity to 12.7% and reduced the
-compiled CFG by one block, so it was discarded.
+the decoded behavior and raised isolated direct objdiff `.text` from
+31.652473% to 47.447803%. Retail then placed the `0x40` second-layer body
+at `+0xa34`, immediately before the `0x18` and `0x19` bodies. Moving its
+existing C body into `case 0x40` preserves behavior and gives it the same
+relative placement: direct strict `.text` is 49.43956%, `.rodata` 26.785713%,
+and compiled text is 2848 B versus retail 2912 B. Both objects retain all 49
+`R_MIPS_32` table rows and the same opcode equivalence groups, including 37
+default entries. Focused listing similarity falls from 15.1% to 13.1% and the
+CFG is 174/164 versus 174/165 before this move, with 99/97 branches. The
+source remains WIP; the placement and strict gains do not establish the
+original compiler schedule. An earlier off-tree copy of the second-layer
+body likewise reduced focused similarity and was discarded.
+
+Retail forms an interior cache-height pointer at `0x8002abc0` and reads its
+adjacent height, result, and height-limit words. A typed three-field local
+view of those words was tried against the moved-case source. It reduced
+direct strict `.text` to 48.817307% and `.rodata` to 19.387754%; the view was
+reverted. The cache's complete source ownership remains unresolved.
 
 An off-tree post-decrement spelling of the record-count loop preserved
 174/165 CFG blocks and 99/97 branches but lowered focused listing similarity

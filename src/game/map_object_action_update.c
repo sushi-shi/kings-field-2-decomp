@@ -585,7 +585,7 @@ void func_80036ed4(void)
                 s32 height = object->tail.spawn_bytes.spawn_sequence.low;
                 s32 source_x = object->tail.fields.unknown_39 - ((width - 1) >> 1);
                 s32 source_z = object->tail.fields.unknown_3a.bytes.high - ((height - 1) >> 1);
-                s32 depth = -((s32)object->tail.spawn_bytes.spawn_sequence.high * 128);
+                s32 depth = (-(s32)object->tail.spawn_bytes.spawn_sequence.high) * 128;
                 if (func_80036ad8(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
                     s32 pattern_index = template->unknown_0d[1] * 2 +
@@ -594,9 +594,9 @@ void func_80036ed4(void)
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[pattern_index], 1, 0x80);
                     object->action_timer = 1;
-                    object->scale.vx = 0x1000;
-                    object->scale.vy = 0x1000;
                     object->scale.vz = 0x1000;
+                    object->scale.vy = 0x1000;
+                    object->scale.vx = 0x1000;
                 } else {
                     object->action_timer++;
                 }
@@ -626,9 +626,9 @@ void func_80036ed4(void)
                     func_80034f90(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[pattern_index], 0, 0);
-                    object->scale.vx = 0;
-                    object->scale.vy = 0;
                     object->scale.vz = 0;
+                    object->scale.vy = 0;
+                    object->scale.vx = 0;
                 }
                 break;
             case 99:
@@ -1003,7 +1003,7 @@ void func_80036ed4(void)
                 player_state.unknown_128 =
                     object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
                 player_state.camera_rotation_target.angles[1] =
-                    -(u8)object->tail.fields.unknown_3e.bytes.high * 16;
+                    -((u32)object->tail.fields.unknown_3e.bytes.high * 16);
                 player_sync_position_to_map();
                 player_state.camera_rotation.angles[1] =
                     player_state.camera_rotation_target.angles[1] +

@@ -1845,3 +1845,15 @@ All 22 ordered relocations and raw text bytes match; the focused unit reports
 `SAME`. Earlier WIP scores in this dossier describe the default compiler
 probe and are superseded for this function. The cache-object boundary remains
 provisional. See [the CSE control note](kf2-game-collision-bounds-cse.md).
+
+### Map-object marker scan exact control
+
+A fresh focused compile of unchanged `game.map_object_spawn_scatter` reports
+all four functions `SAME`. One-unit isolated strict objdiff matches all
+992/992 `.text` bytes and 84/84 `.rodata` bytes, including
+`func_800366fc` at GAME `0x800366fc`. Its earlier 37/38 CFG and 37.336365%
+WIP entries above were stale build-state observations; the current source
+has a verified 100% strict verdict. The cached 474-function report already
+includes these four exact functions, so this is a certificate correction, not
+a new count increase. All 48 ordered relocation rows agree. No source edit
+was needed.

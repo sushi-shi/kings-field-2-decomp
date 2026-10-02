@@ -67,3 +67,45 @@ retail jump and delay-slot store, so this semantic correction is retained.
 Verification used the affected `kf try` unit and isolated target-versus-probe
 objdiff only. No repository tests, lint, full build, broad match, or README
 update was run.
+
+In action 88, retail `0x80037b70..0x80037ba4` dispatches timers 1, 2, and 3
+with signed compare branches, and `0x80037ba8..0x80037bd8` handles the two
+selector values before the nine-argument spawn call. Replacing the selector's
+equivalent `if`/`else if` with a `switch` made the focused listing worse
+(90.6% to 85.7%) despite aligning the CFG block count at 329/329. It also
+changed code far beyond that selector. The trial was reverted; the remaining
+branch placement is not evidence that the selector semantics are wrong.
+
+Action 84 has two independently visible scale-store triples. Retail writes
+Z, Y, then X at function offsets near `+0x12e0` and `+0x13d0`, putting X in a
+jump delay slot; the earlier C wrote X, Y, then Z. Reordering those independent
+stores reproduces both local instruction sequences. The retained source now
+gives 91.0% focused similarity, 329/328 CFG blocks and 180/180 branches.
+Isolated strict text is **97.24152%** over 7,668 bytes, RODATA remains
+**94.7065%**, and DATA remains **100%**. The function is still WIP because
+other control placement, address arithmetic registers, and table addends
+differ.
+
+Action 34 computes a target yaw from the high spawn byte. Retail shifts the
+zero-extended byte left four bits and then negates it. The earlier expression
+negated the byte before multiplication by 16, and the probe emitted `negu`
+before `sll`. Grouping the multiplication under the negation reproduces the
+retail instruction order without changing the angle's value. With both action
+84 store-order corrections retained, the fresh focused listing reaches
+**91.1%** and isolated strict text **97.345856%**; the 7,668-byte function,
+956-byte RODATA, 32-byte DATA, CFG, and branch counts remain as above. This
+is still a WIP function.
+
+For action 19, retail schedules the linked-object `unknown_38` zero store
+between the source-byte load and destination-byte store. Reordering the two
+ordinary C assignments caused wider control-layout changes and lowered the
+focused listing from 91.1% to 84.7%, so that trial was reverted. The store
+schedule alone does not establish a different field or state transition.
+
+The action-84 map-depth argument comes from an unsigned spawn byte times
+negative 128. Retail computes `negu` on the byte before `sll` by seven; the
+earlier C grouped multiplication before negation and emitted the reverse
+order. Grouping the negation first preserves the bounded value and reproduces
+the local instruction sequence. The latest focused listing remains **91.1%**;
+isolated strict text rises to **97.4674%** on the same 7,668-byte body, with
+unchanged 94.7065% RODATA and exact DATA.

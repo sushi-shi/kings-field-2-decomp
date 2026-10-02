@@ -182,3 +182,27 @@ listing similarity moves from 68.2% to 69.3%. Isolated strict text for this
 function moves from 87.95102% to 89.616325%. The remaining 40/39 CFG-block
 gap and saved-register/return-join differences keep it WIP. A simple physical
 case reorder and the opposite high-range branch were discarded.
+
+## State-local motion values
+
+The state-0, state-0x10, and state-0x30 paths calculate independent vertical
+positions. Scoping each path's `next_y` to its own arm, with collision and
+phase values confined to the arms that use them, restores the retail 72-byte
+frame and four saved registers without changing the operations or calls.
+The focused listing rises from 69.3% to 94.0%; isolated strict text rises
+from 89.616325% to 94.37551%. The other three functions in the unit remain
+strict 100% and focused `SAME`. Retail and probe still have 40/39 CFG blocks
+and 21/21 branches. The remaining code differs around the state-0x10 join
+and state-0x20 height update, so the function remains WIP.
+A local signed velocity variable compiled identically to the retained source.
+Routing the state-0x10 settle path through the state-0x20 exit reduced the
+focused listing to 88.3% and was discarded; the target's physical join is
+not reproduced by that source spelling.
+
+Caching the collision floor once in the state-0x10 ceiling branch reflects
+retail's single load at `0x8003b7d4` and subsequent use for its comparison
+and position store. That natural local raises focused similarity from 94.0%
+to 94.3% and isolated strict text from 94.37551% to 96.42041%; the three
+siblings remain strict exact. The remaining differences are the state-0x10
+return join and the state-0x20 independent load schedule, with no missing
+call or field referent established.

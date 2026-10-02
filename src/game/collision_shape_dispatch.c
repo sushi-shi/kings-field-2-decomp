@@ -350,7 +350,14 @@ LAB_8002b450:
       }
       break;
     case 0x40:
-      goto scan_second_layer;
+      if (visited_second_layer) {
+        return result_flags;
+      }
+      KF_COLLISION_CACHE_LAYER = -(u16)(KF_COLLISION_CACHE_LAYER == 0) & 5;
+      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+      KF_COLLISION_CACHE_HEIGHT = (u32)selected_layer->elevation * -0x80;
+      visited_second_layer = 1;
+      goto LAB_8002ab5c;
     case 0x18:
       next_record = record + 2;
       KF_COLLISION_CACHE_LOWER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
@@ -380,13 +387,4 @@ LAB_8002b5c8:
       return result_flags;
     }
   } while( 1 );
-scan_second_layer:
-  if (visited_second_layer) {
-    return result_flags;
-  }
-  KF_COLLISION_CACHE_LAYER = -(u16)(KF_COLLISION_CACHE_LAYER == 0) & 5;
-  selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
-  KF_COLLISION_CACHE_HEIGHT = (u32)selected_layer->elevation * -0x80;
-  visited_second_layer = 1;
-  goto LAB_8002ab5c;
 }

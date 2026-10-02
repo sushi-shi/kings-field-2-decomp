@@ -145,7 +145,15 @@ typedef struct KfCollisionDefaultRow {
 void func_8002be9c(s32 flags, const KfCollisionFilterPayload *payload,
                     s32 value);
 void func_8002bc18(void);
+void func_8002c670(void);
+void floor_item_update_textures(void);
+void func_80030f5c(void);
+void func_80031024(void);
+void render_color_overlay(void);
+void render_accumulated_color_overlay(void);
+void func_800316c8(void);
 void func_80031634(s32 first, s32 second, s32 third, s32 scale);
+void func_8003247c(void);
 void func_800311b0(s32 x, s32 y, s32 right, s32 bottom,
                    u8 texture_u, u8 texture_v, u8 texture_width,
                    u8 texture_height, u8 semitrans, u16 tpage,
@@ -244,6 +252,7 @@ enum {
 
 void fog_set_near(s32 distance);
 void func_800314d4(u8 control, u8 red, u8 green, u8 blue);
+void func_80034e10(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);
 void display_begin_frame(void);

@@ -21,7 +21,6 @@ extern void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
 extern void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
                           s32 destination_x, s32 destination_z, s32 width,
                           s32 height, s32 rotation, u32 field_mask);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
 extern s32 func_80036b68(KfMapObject *source, KfMapObject *target,
                           SVECTOR *start_offset, SVECTOR *end_offset,
@@ -80,7 +79,7 @@ void func_80036ed4(void)
                 }
                 break;
             case 20:
-                if (func_8002b9d4(object->position.vx, object->position.vy,
+                if (collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
                     func_80034f90(object->unknown_00, object->position.vx,
                                   object->position.vz, object->rotation.vy,
@@ -143,7 +142,7 @@ void func_80036ed4(void)
             case 20: {
                 u8 phase_byte = object->tail.fields.unknown_38;
                 if (((u8)(phase_byte + 0x6a) > 0x30 || !(phase_byte & 1)) &&
-                    func_8002b9d4(object->position.vx, object->position.vy,
+                    collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x1130, 0xc80, 0xc0) == 0) {
                     object->action_timer = 21;
                     func_80035194(object->unknown_00,
@@ -244,7 +243,7 @@ void func_80036ed4(void)
                             ApplyMatrix(&rotation, &offset, &target);
                             target.vx += object->position.vx;
                             target.vz += object->position.vz;
-                            if (func_8002b9d4(target.vx, object->position.vy, target.vz,
+                            if (collision_query_world(target.vx, object->position.vy, target.vz,
                                                3000, object->collision_height, 0xc0)) {
                                 object->extra_40.halfwords[0] = 300;
                                 break;
@@ -743,7 +742,7 @@ void func_80036ed4(void)
                     func_800369b8(object, vertex_index, &position);
                     reach = (u16)pose_template->depth_offset;
                     height = pose_template->unknown_10;
-                    kind = func_8002b9d4(position.vx, position.vy, position.vz,
+                    kind = collision_query_world(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {
                         goto clear_action_trigger;

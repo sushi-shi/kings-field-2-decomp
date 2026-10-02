@@ -4,7 +4,6 @@
 #include <kf/game/collision_cache.h>
 #include <kf/game/player.h>
 
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 
 ADDRESS(0x80027f78, 0x2ac)
 s32 func_80027f78(void)
@@ -20,7 +19,7 @@ s32 func_80027f78(void)
     next.vy = player_state.camera_position.vy + player_state.reaction.damage.rotation.vy;
     next.vz = player_state.camera_position.vz + player_state.reaction.damage.rotation.vz;
 
-    flags = func_8002b9d4(next.vx, next.vy, next.vz, 800, 1700, 49);
+    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
     if (flags == 0) {
     accept:
         if (player_state.reaction.damage.rotation.vy >= 160
@@ -36,10 +35,10 @@ s32 func_80027f78(void)
     }
 
     next.vy = player_state.camera_position.vy;
-    flags = func_8002b9d4(next.vx, next.vy, next.vz, 800, 1700, 49);
+    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
     if (flags == 0) {
         player_state.reaction.damage.rotation.vy = 1;
-        flags = func_8002b9d4(next.vx, next.vy, next.vz, 800, 1700, 49);
+        flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
         if (flags == 0) {
             minimum_length = 32;
         scale_motion:

@@ -7,8 +7,6 @@ extern s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
 extern void func_8001c550(KfMenuGlyphString *rows);
 extern void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 extern void func_8001bf68(s32 slot);
 
 ADDRESS(0x8001bcfc, 0x26c)
@@ -58,7 +56,7 @@ void func_8001bcfc(void)
         if (mode != 0 || result != -99)
             input_wait_release();
         if (mode == 1) {
-            result = func_8001f8b8(&menu, 7, 9, 0xff);
+            result = menu_preview_choice(&menu, 7, 9, 0xff);
             if (result == -1)
                 result = -99;
             else

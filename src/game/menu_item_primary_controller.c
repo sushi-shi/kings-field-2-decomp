@@ -4,8 +4,6 @@
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
 
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 
 ADDRESS(0x8001d030, 0x310)
 void func_8001d030(s32 kind)
@@ -45,7 +43,7 @@ void func_8001d030(s32 kind)
             input_wait_release();
 
         if (selection == 1) {
-            result = func_8001f8b8(&menu, 3, 10, selected_item);
+            result = menu_preview_choice(&menu, 3, 10, selected_item);
             if (result == -1)
                 result = -99;
             else

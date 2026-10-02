@@ -2,6 +2,7 @@
 #include <kf/lib/null.h>
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/asset.h>
 #include <kf/game/cd.h>
 #include <kf/game/effect.h>
@@ -10,7 +11,6 @@
 #include <psyq/libc.h>
 #include <stdarg.h>
 
-extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 
 DATA(0x800667a0, 0x28)
 SVECTOR DAT_800667a0[5] = {

@@ -5,8 +5,6 @@
 #include <psyq/libc.h>
 
 extern s16 menu_row_prefix_649ec[4];
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 
 RODATA(0x800110b8, 0x4c)
 
@@ -84,7 +82,7 @@ void func_80019ed4(s32 category)
             input_wait_release();
 
         if (selection == 1) {
-            result = func_8001f8b8(&menu, 5, 5, selected_item);
+            result = menu_preview_choice(&menu, 5, 5, selected_item);
             if (result == -1)
                 result = -99;
             else

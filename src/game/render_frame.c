@@ -8,17 +8,6 @@
 #include <kf/game/pool.h>
 #include <kf/game/render_model.h>
 
-extern void func_8002cf40(void);
-extern void func_8002c670(void);
-extern void func_80030f5c(void);
-extern void func_8003247c(void);
-extern void func_80031414(void);
-extern void func_800314fc(void);
-extern void func_800316c8(void);
-extern void func_80031024(void);
-
-extern s32 render_model_yaw_smoothing_accumulator;
-
 ADDRESS(0x80033584, 0x1c)
 void display_toggle_buffer_index(void)
 {
@@ -42,7 +31,7 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     u8 row_state;
 
     func_8002d4f4(position, rotation);
-    func_8002cf40();
+    floor_item_update_textures();
     func_80033284();
     func_8002c670();
     display_begin_frame();
@@ -104,8 +93,8 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     func_8003247c();
     func_800312f4();
     func_80031384();
-    func_80031414();
-    func_800314fc();
+    render_color_overlay();
+    render_accumulated_color_overlay();
     display_present_frame();
     cd_wait_two_vsyncs();
     pool_release_stale();

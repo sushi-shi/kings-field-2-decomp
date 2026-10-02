@@ -123,7 +123,6 @@ charge_gate:
     player_state.selected_magic_record = record;
 }
 
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 extern void func_8002b874(void);
 
 enum {
@@ -158,7 +157,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     for (;;) {
         next.vx = player_state.camera_position.vx + dx;
         next.vz = player_state.camera_position.vz + dz;
-        flags = func_8002b9d4(next.vx, player_state.camera_position.vy, next.vz,
+        flags = collision_query_world(next.vx, player_state.camera_position.vy, next.vz,
                               PLAYER_MOVE_RADIUS, PLAYER_MOVE_HEIGHT,
                               PLAYER_MOVE_COLLISION_MODE);
         if (flags == 0) {
@@ -216,7 +215,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                            + ((-rsin(heading) * slide_distance) >> 12);
                     next.vz = camera->vz
                            + ((rcos(heading) * slide_distance) >> 12);
-                    if (func_8002b9d4(next.vx, camera->vy,
+                    if (collision_query_world(next.vx, camera->vy,
                                        next.vz, PLAYER_MOVE_RADIUS,
                                        PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
                         camera->vx = next.vx;

@@ -11,7 +11,7 @@ enum {
 };
 
 ADDRESS(0x80033994, 0x68)
-void func_80033994(void)
+void menu_render_item_model(void)
 {
     SetBackColor(KF_MENU_MODEL_BACK_COLOR, KF_MENU_MODEL_BACK_COLOR, KF_MENU_MODEL_BACK_COLOR);
     SetGeomScreen(KF_MENU_MODEL_GEOM_SCREEN);

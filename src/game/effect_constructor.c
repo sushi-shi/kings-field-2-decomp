@@ -1,10 +1,10 @@
 #include <kf/lib/address.h>
 #include <kf/game/audio.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 
 DATA(0x8006d704, 0x4)
 u32 DAT_8006d704 = 0;

@@ -448,6 +448,7 @@ extern KfActorStateGame actor_state;
 
 KfActor *actor_pool_find_free(void);
 void actor_set_home_position(KfActor *actor);
+void func_80038f20(void);
 void actor_set_lifecycle_and_home_position(KfActor *actor);
 void actor_pool_clear(void);
 void actor_set_target(KfActor *actor, KfTargetCandidate *target);
@@ -462,6 +463,21 @@ void actor_select_target_type_in_own_group(KfActor *actor, u8 type);
 void actor_select_best_target(s32 player_distance);
 s32 func_80039108(KfTargetCandidate *target, s32 player_distance);
 void actor_select_target_for_player_distance(void);
+KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
+                       s32 max_distance, s32 yaw_limit, s32 pitch_limit,
+                       s32 *distance, s32 variation);
+s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
+s32 func_8003ab5c(s32 x, s32 y, s32 z, s32 radius, s32 height);
+void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
+                   u16 magic_08, u16 magic_0a, u16 magic_0c,
+                   u16 magic_0e, u16 magic_10, u16 magic_12,
+                   u16 magic_14, u16 amount, s32 effect_flags,
+                   const VECTOR *position);
+void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
+                   s32 mode, u16 falloff, u16 power, u16 magic_06,
+                   u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
+                   u16 magic_10, u16 magic_12, u16 magic_14,
+                   s32 amount_and_flags, u16 effect_flags);
 VECTOR *func_8003c10c(KfActor *actor, VECTOR *output);
 s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output);
 void actor_reset_target_and_reselect(void);

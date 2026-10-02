@@ -4,8 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 
 extern s16 menu_row_prefix_649ec[4];
 
@@ -40,7 +38,7 @@ void func_8001a2f4(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = func_8001f8b8(&menu, 5, 4, 0xff);
+            result = menu_preview_choice(&menu, 5, 4, 0xff);
             if (result == -1)
                 result = -99;
             else

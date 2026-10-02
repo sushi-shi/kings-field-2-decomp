@@ -5,8 +5,6 @@
 #include <psyq/pad.h>
 
 extern s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 extern void func_8001cad4(KfMenuGlyphString *rows);
 extern void func_8001cb44(KfMenuGlyphString *rows, s32 kind);
 
@@ -43,7 +41,7 @@ s32 func_8001b834(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = func_8001f8b8(&menu, 6, 8, 0xff);
+            result = menu_preview_choice(&menu, 6, 8, 0xff);
             if (result == -1)
                 result = -99;
             else

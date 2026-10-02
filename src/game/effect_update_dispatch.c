@@ -23,7 +23,6 @@ extern void func_8002bf38(u8 first, u8 second, u8 third,
 extern s32 func_80041b14(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance,
                          s32 probe_radius, s32 probe_angle);
-extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 extern s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
                          s32 probe_radius, s32 probe_angle, s32 proximity,
                          s32 close_scale, s32 target_filter);
@@ -33,8 +32,6 @@ extern void func_800424f0(s32 count, s32 radius, s32 vertical_angle,
 extern void func_80026330(s32 mode, VECTOR *output);
 extern KfActor *func_80025878(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
-                          s32 height, s32 mode);
 extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
 extern s32 func_8001584c(s32 start, s32 end, s32 fraction);
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
@@ -313,7 +310,7 @@ void effect_update_dispatch(void)
         record->position.vz += record->direction.vz;
         switch ((s8)record->unknown_3c[4]) {
         case 0: {
-            collision = func_8002b9d4(record->position.vx, record->position.vy,
+            collision = collision_query_world(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
                                       (s16)record->scale_y, 0x30);
             func_8003feb0(collision);
@@ -1265,7 +1262,7 @@ void effect_update_dispatch(void)
                 s32 collision_kind;
 
                 *(u16 *)record->unknown_32 += 2048;
-                collision_kind = func_8002b9d4(
+                collision_kind = collision_query_world(
                     record->position.vx, record->position.vy,
                     record->position.vz, 256, (s16)record->scale_y, 144);
                 if (collision_kind != 0) {
@@ -1678,7 +1675,7 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
-        collision = func_8002b9d4(record->position.vx, record->position.vy,
+        collision = collision_query_world(record->position.vx, record->position.vy,
                                   record->position.vz, 10, 10, 176);
         if (collision == 0) {
             /* The kind-114 constructor saves its original Y at +0x44.

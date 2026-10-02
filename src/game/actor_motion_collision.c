@@ -4,8 +4,6 @@
 #include <kf/lib/math.h>
 
 extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
-                          s32 height_and_flags, s32 mode);
 extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
                           u16 value4, u16 value5, u16 value6, u16 value7,
                           u16 value8, u16 value9, u16 value10,
@@ -21,23 +19,23 @@ s32 func_8003b33c(SVECTOR *motion)
     proposed.vx = actor->position.vx + motion->vx;
     proposed.vy = actor->position.vy + motion->vy;
     proposed.vz = actor->position.vz + motion->vz;
-    result = func_8002b9d4(proposed.vx, proposed.vy, proposed.vz,
+    result = collision_query_world(proposed.vx, proposed.vy, proposed.vz,
         actor->unknown_1c,
         actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
         actor_state.unknown_93a4);
     if (result == 0) {
         copyVector(&actor->position, &proposed);
-    } else if (func_8002b9d4(proposed.vx, actor->position.vy,
+    } else if (collision_query_world(proposed.vx, actor->position.vy,
                              actor->position.vz, actor->unknown_1c,
                              actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
         motion->vx = -(u16)motion->vx;
-    } else if (func_8002b9d4(actor->position.vx, proposed.vy,
+    } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->unknown_1c,
                              actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
         motion->vy = -(u16)motion->vy;
-    } else if (func_8002b9d4(actor->position.vx, actor->position.vy,
+    } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->unknown_1c,
                              actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
@@ -114,7 +112,7 @@ state_10: {
         s32 next_y;
         s32 collision;
         next_y = actor->position.vy + actor->unknown_52;
-        collision = func_8002b9d4(actor->position.vx, next_y,
+        collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->unknown_1c,
                                   actor->unknown_1e |
                                       ((actor->unknown_28 & 0xc000) << 16),
@@ -164,7 +162,7 @@ state_30: {
         phase = actor->unknown_52;
         next_y = actor->unknown_3c - actor->unknown_6a * phase +
                  ((actor->unknown_6c * phase * phase) >> 1);
-        collision = func_8002b9d4(actor->position.vx, next_y,
+        collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->unknown_1c,
                                   actor->unknown_1e |
                                       ((actor->unknown_28 & 0xc000) << 16),

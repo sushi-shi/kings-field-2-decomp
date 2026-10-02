@@ -5,7 +5,7 @@
 
 
 ADDRESS(0x8001f8b8, 0x2d4)
-s32 func_8001f8b8(void *list_state, s32 label_kind,
+s32 menu_preview_choice(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id)
 {
     KfMenuGlyphString labels[2];

@@ -220,12 +220,17 @@ typedef char kf_map_object_state_counter_8742_offset[
 extern KfMapObjectStateGame map_object_state;
 
 void map_object_start_action_if_idle(KfMapObject *object, u8 action);
+void func_80035894(const KfMapObjectPlacement *placements);
+s32 func_80036078(s32 x, s32 y, s32 z, s32 radius, s32 height);
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence);
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound);
 void map_object_reset(KfMapObject *object);
 void map_object_pool_reset(void);
 void map_object_set_property(s32 index, s32 property, ...);
 void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker);
+void func_800366fc(u8 identifier);
+s32 func_800368b4(KfMapObject *object, s32 marker);
+s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
 void func_800357a0(s32 mode);
 s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);

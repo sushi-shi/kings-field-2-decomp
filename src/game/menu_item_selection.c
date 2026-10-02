@@ -3,8 +3,6 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/menu.h>
 
-extern s32 func_8001f8b8(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
 extern void func_8001930c(s32 item_id);
 
 ADDRESS(0x80018ac8, 0x240)
@@ -35,7 +33,7 @@ s32 func_80018ac8(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = func_8001f8b8(&menu, 0, 1, selected_item);
+            result = menu_preview_choice(&menu, 0, 1, selected_item);
             if (result == -1)
                 result = -99;
             else

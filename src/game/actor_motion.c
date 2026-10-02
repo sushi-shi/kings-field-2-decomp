@@ -1,10 +1,9 @@
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/collision_cache.h>
 
 extern s32 func_8003ae50(SVECTOR *motion, s32 target);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
-                          s32 height_and_flags, s32 mode);
 
 ADDRESS(0x8003b9a4, 0x140)
 s32 func_8003b9a4(s32 decay, s32 target)
@@ -140,7 +139,7 @@ s32 func_8003be38(const struct KfEulerAngles *angles, s32 speed,
     proposed_y = actor->position.vy + actor->unknown_52;
     radius = actor->unknown_1c;
     height_and_flags = actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16);
-    if (func_8002b9d4(actor->position.vx, proposed_y, actor->position.vz,
+    if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
                       actor_state.unknown_93a4) == 0) {
         actor->position.vy = proposed_y;

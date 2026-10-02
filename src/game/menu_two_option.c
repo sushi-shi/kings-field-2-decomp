@@ -5,8 +5,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern void func_80033994(void);
-
 enum { KF_PREVIEW_ANGLE_MASK = 0xfff };
 
 ADDRESS(0x80020748, 0xf4)
@@ -87,7 +85,7 @@ void func_8002083c(s32 item_id)
     SetColorMatrix(&color);
     SetRotMatrix(&rotation);
     SetTransMatrix(&rotation);
-    func_80033994();
+    menu_render_item_model();
     current_poly_ft4 = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
 }
 

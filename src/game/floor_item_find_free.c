@@ -44,7 +44,7 @@ void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
 }
 
 ADDRESS(0x8002cf40, 0x164)
-void func_8002cf40(void)
+void floor_item_update_textures(void)
 {
     KfFloorItem *item = game_graphics_runtime.floor_items;
     s32 remaining = KF_FLOOR_ITEM_CAPACITY - 1;

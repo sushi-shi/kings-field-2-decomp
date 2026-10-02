@@ -4,10 +4,6 @@
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
 
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
-                          s32 height_and_flags, s32 mode);
-extern s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius,
-                          s32 height_and_flags);
 extern void func_8002b874(void);
 
 ADDRESS(0x8003a9f4, 0x168)
@@ -169,7 +165,7 @@ s32 func_8003ae50(SVECTOR *motion, s32 flags)
 retry_move:
     proposed.vx = actor->position.vx + motion_x;
     proposed.vz = actor->position.vz + motion_z;
-    collision = func_8002b9d4(proposed.vx, actor->position.vy, proposed.vz,
+    collision = collision_query_world(proposed.vx, actor->position.vy, proposed.vz,
         actor->unknown_1c,
         actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
         actor_state.unknown_93a4);

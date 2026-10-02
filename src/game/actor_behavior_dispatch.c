@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/actor.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/audio.h>
 #include <kf/game/callback.h>
 #include <kf/game/map_cell.h>
@@ -8,8 +9,6 @@
 #include <psyq/libc.h>
 
 extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height,
-                         s32 mode);
 extern void func_8003d0e8(KfActor *actor);
 extern s32 func_8003b9a4(s32 decay, s32 target);
 extern s32 func_8003b33c(SVECTOR *motion);
@@ -1080,7 +1079,7 @@ case3_motion:
         next.vx = actor->position.vx + actor->unknown_50;
         next.vy = actor->position.vy + actor->unknown_52;
         next.vz = actor->position.vz + actor->unknown_54;
-        collision = func_8002b9d4(
+        collision = collision_query_world(
             next.vx, next.vy, next.vz, actor->unknown_1c,
             actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
             actor_state.unknown_93a4);
@@ -1143,7 +1142,7 @@ case3_motion:
             actor->unknown_03 = other->unknown_03;
             if (other->lifecycle != 1) {
                 actor->unknown_28 = (actor->unknown_28 & ~0x10) | 0x100;
-                collision = func_8002b9d4(
+                collision = collision_query_world(
                     actor->position.vx, actor->position.vy,
                     actor->position.vz, actor->unknown_1c,
                     actor->unknown_1e, 0x81);

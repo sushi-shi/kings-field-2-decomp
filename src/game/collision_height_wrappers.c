@@ -7,8 +7,6 @@
 #include <kf/game/map_object.h>
 #include <kf/game/render_mask.h>
 
-extern s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-
 #define COLLISION_CACHE_CELL KF_COLLISION_CACHE_CELL
 #define COLLISION_CACHE_SHAPE KF_COLLISION_CACHE_SHAPE
 #define COLLISION_CACHE_LAYER KF_COLLISION_CACHE_LAYER
@@ -118,12 +116,8 @@ void func_8002b874(void)
     COLLISION_CACHE_INTERACTION_HEIGHT = interaction_height;
 }
 
-extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_8003ab5c(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_80036078(s32 x, s32 y, s32 z, s32 radius, s32 height);
-
 ADDRESS(0x8002b9d4, 0x244)
-s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
+s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 {
     s32 result = 0;
 

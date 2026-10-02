@@ -6,7 +6,6 @@
 #include <psyq/sdk.h>
 
 extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 extern void func_8002b874(void);
 
 enum {
@@ -88,7 +87,7 @@ void func_800279cc(void)
     case 0x40:
         func_80027928();
         next_y = player_state.camera_position.vy + player_state.unknown_13a;
-        collision_flags = func_8002b9d4(player_state.camera_position.vx, next_y,
+        collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                          player_state.camera_position.vz, 800, 1700, 0x31);
         if (collision_flags == 0) {
             player_state.unknown_ea = player_state.unknown_13a;
@@ -112,7 +111,7 @@ void func_800279cc(void)
             func_8002b874();
             next_y = KF_COLLISION_CACHE_POSITION.vy
                    - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
-            if (func_8002b9d4(player_state.camera_position.vx, next_y,
+            if (collision_query_world(player_state.camera_position.vx, next_y,
                                player_state.camera_position.vz, 800, 1700, 0x31) == 0) {
                 player_state.camera_position.vy = next_y;
             }
@@ -167,7 +166,7 @@ landing:
         if (height_difference <= 0) {
             goto finish;
         }
-        if (func_8002b9d4(player_state.camera_position.vx,
+        if (collision_query_world(player_state.camera_position.vx,
                            player_state.camera_position.vy + 1,
                            player_state.camera_position.vz, 800, 1700, 0x31) != 0) {
             goto finish;

@@ -2,7 +2,7 @@
 #include <kf/game/graphics.h>
 
 ADDRESS(0x80031414, 0xc0)
-void func_80031414(void)
+void render_color_overlay(void)
 {
     if (game_graphics_runtime.unknown_14cc1 != 0xff) {
         func_800311b0(0, 0, 0x140, 0xf0,

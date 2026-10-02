@@ -494,3 +494,56 @@ meaningful calls and arguments. Prior natural controls in the trajectory,
 motion, and group-effect dossiers were negative. No source, profile, or
 table-owner correction is supported by this screen; no new 100% closure was
 created.
+
+## Actor-linked collision helpers: 29 current strict verdicts
+
+The actor home, motion, and vertical-state paths reach the GAME collision
+grid, shape dispatcher, height wrappers, channel helpers, and player collision
+response. A fresh complete-profile isolated strict comparison of eleven source
+units gives **19 exact claims and ten WIPs**. The collision-height dossier contains
+the detailed raw field and CFG audits; this table records the current
+per-function result, including the exact data controls, without repeating
+its negative source probes.
+
+| GAME address | Strict text | Verdict |
+| --- | ---: | --- |
+| `0x80023384` | 100% | Exact player collision bounds control. |
+| `0x80023430` | 100% | Exact player distance-margin helper. |
+| `0x80023484` | 100% | Exact player view-reset helper. |
+| `0x80027928` | 100% | Exact player collision-sound helper. |
+| `0x80027988` | 100% | Exact player collision-sound helper. |
+| `0x800279cc` | 98.239670% | WIP player collision sound; 70/70 CFG, 37/37 branches and 12 ordered calls agree, with two extra retail player-state address rematerializations. |
+| `0x80027f78` | 95.912280% | WIP player collision response; 27/27 CFG and 14/14 branches agree, with motion-vector base reuse residue. |
+| `0x8002a988` | 100% | Exact grid sampler; its 10-byte default cell is exact. |
+| `0x8002aaa4` | 57.52610% | WIP shape dispatcher, 174/172 CFG and 99/98 branches; 196-byte table 27.55102%, but all 49 rows retain 13 target classes. |
+| `0x8002b604` | 100% | Exact height-probe caller. |
+| `0x8002b67c` | 94.895836% | WIP cached-height reload after store; fields and shape call agree. |
+| `0x8002b73c` | 98.404260% | WIP row/column pointer and index schedule; byte store agrees. |
+| `0x8002b7f8` | 100% | Exact second shape caller. |
+| `0x8002b874` | 91.500000% | WIP source-selection load order; interaction-height store agrees. |
+| `0x8002b9d4` | 95.379310% | WIP cache-store path, 64/56-byte frame; call and result agree. |
+| `0x8002bc18` | 100% | Exact collision-row helper. |
+| `0x8002bd3c` | 100% | Exact collision-row helper. |
+| `0x8002bdbc` | 100% | Exact collision-row helper. |
+| `0x8002be9c` | 100% | Exact collision-row helper. |
+| `0x8002bf38` | 100% | Exact collision-row helper. |
+| `0x8002bfac` | 100% | Exact collision-row helper. |
+| `0x8002bfd4` | 73.912620% | WIP mask rasterizer; signed halfword tests and four incoming calls agree. |
+| `0x8002c170` | 100% | Exact mask-run scanner. |
+| `0x8002c1d4` | 100% | Exact mask-row fill. |
+| `0x8002c290` | 100% | Exact mask-cell update. |
+| `0x8002c424` | 98.299320% | WIP typed cell cursor; saved-register roles differ. |
+| `0x8002c670` | 91.624245% | WIP mask sweep; four rasterizer calls and 28-byte shape table agree, with two extra retail address pairs in the nonzero-layer arm. |
+| `0x800314fc` | 100% | Exact collision-channel draw helper. |
+| `0x80031634` | 100% | Exact collision-channel add helper. |
+
+The height-wrapper unit's 3,520-byte initialized row datum is strict
+exact. The shape unit has no missing external data referent; its known
+unreachable case-`0x11` branch and separate case-`0x30`/`0x32` arithmetic
+tails still require source/compiler attribution. The other nine WIPs have
+retail calls, field families, and CFG paths already represented in source.
+For `0x800279cc`, retail's landing tail separately materializes
+`player_state+0x110` for the halfword load and store; the candidate addresses
+that same field from its live `player_state+0x138` base at offset `-0x28`.
+This explains the two retail-only address pairs without a missing field.
+No C, header, or curated owner edit was justified by this screen.

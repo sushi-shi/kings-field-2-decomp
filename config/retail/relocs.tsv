@@ -12176,7 +12176,7 @@ OPEN.EXE	0x800121d8	0x19d8		mips26	reachable-code	0x8001547c	load		jal		control-
 OPEN.EXE	0x800121e0	0x19e0	0x800121e4	mips_hi16_lo16	reachable-code	0x800a8540	bss	display_primitives	lui+addiu		paired-reviewed	reviewed	manual:display
 OPEN.EXE	0x8001220c	0x1a0c		mips26	reachable-code	0x8001e5d8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012214	0x1a14		mips26	reachable-code	0x8001e7bc	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001221c	0x1a1c	0x80012220	mips_hi16_lo16	reachable-code	0x800ac618	bss	audio_sequence_table	lui+addiu		paired-reviewed	reviewed	manual:display
+OPEN.EXE	0x8001221c	0x1a1c	0x80012220	mips_hi16_lo16	reachable-code	0x800ac618	bss	audio_sequence_table	lui+addiu		paired-reviewed	reviewed	manual:audio_initialize
 OPEN.EXE	0x80012228	0x1a28		mips26	reachable-code	0x8001e618	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012230	0x1a30		mips26	reachable-code	0x8001ede8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80012238	0x1a38		mips26	reachable-code	0x8001eda8	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -15029,7 +15029,7 @@ END.EXE	0x80011c54	0x1454		mips26	reachable-code	0x80013e2c	load		jal		control-f
 END.EXE	0x80011c5c	0x145c	0x80011c60	mips_hi16_lo16	reachable-code	0x800a52f8	bss	display_primitives	lui+addiu		paired-reviewed	reviewed	manual:display
 END.EXE	0x80011c88	0x1488		mips26	reachable-code	0x8001b83c	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80011c90	0x1490		mips26	reachable-code	0x8001ba20	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80011c98	0x1498	0x80011c9c	mips_hi16_lo16	reachable-code	0x800a93f8	bss	audio_sequence_table	lui+addiu		paired-reviewed	reviewed	manual:display
+END.EXE	0x80011c98	0x1498	0x80011c9c	mips_hi16_lo16	reachable-code	0x800a93f8	bss	audio_sequence_table	lui+addiu		paired-reviewed	reviewed	manual:audio_initialize
 END.EXE	0x80011ca4	0x14a4		mips26	reachable-code	0x8001b87c	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80011cac	0x14ac		mips26	reachable-code	0x8001c04c	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80011cb4	0x14b4		mips26	reachable-code	0x8001c00c	load		jal		control-flow	candidate	investigation:relocs.tsv

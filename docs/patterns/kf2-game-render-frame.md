@@ -170,3 +170,44 @@ range updater. The queue's callback address at `0x80032248`/`0x8003224c`
 is also a raw-verified signed-low pair to `resource_tmd_read_complete`, passed
 as `$a3` to `cd_archive_queue_read`; its one-VA safe carve has nine
 relocations and none withheld. No C body changed from this relocation review.
+
+## Fresh floor capture and allocator chain
+
+A new 24-claim GAME control follows the five `game_main_loop` calls to
+`func_8002ce68`, its free-slot/update siblings, and the shared allocator
+block family. Narrow safe targets and current focused candidate objects
+confirm **21 strict exact and three WIP** claims. The exacts are `main`
+at `0x80013634`, floor-slot search `0x8002ce2c`, floor update
+`0x8002cf40`, and 18 allocator/block wrappers from
+`memory_arena_coalesce_free` at `0x80017270` through
+`cd_vsync_handler` at `0x800177d4`. Each of the 19 selected allocator
+targets was carved separately under the safe policy; all 19 admitted
+without a withheld relocation. Their current compiled object has 18
+strict exact function comparisons, including the direct callee
+`memory_allocate` at `0x80017754`.
+Those allocator exacts are `memory_arena_coalesce_free` (`0x80017270`),
+`memory_arena_free` (`0x800172f4`), `memory_arena_find_block`
+(`0x80017314`), `memory_arena_wait_pending` (`0x8001746c`),
+`memory_arena_compact` (`0x80017504`),
+`memory_arena_initialize_blocks` (`0x800175e8`),
+`memory_block_release` (`0x800176c0`), `memory_block_set_kind`
+(`0x800176e0`), `memory_block_kind` (`0x800176e8`),
+`memory_block_set_flags` (`0x800176f4`), `memory_block_flags`
+(`0x800176fc`), `memory_block_set_tag` (`0x80017708`),
+`memory_block_tag` (`0x80017710`), `memory_malloc_checked`
+(`0x8001771c`), `memory_allocate` (`0x80017754`), `memory_free`
+(`0x8001777c`), `cd_request_yield` (`0x8001779c`), and
+`cd_vsync_handler` (`0x800177d4`).
+
+| WIP claim | Fresh strict text | Raw and source verdict |
+| --- | ---: | --- |
+| `game_main_loop` `0x8001369c` | 99.67553% | Its five seven-argument floor-capture calls and 5/5 CFG blocks agree. The remaining pair forms arena base `0x8009b0a0` with retail signed-low `lui/addiu` versus candidate `lui/ori`; the defining owner/mechanism is unresolved. |
+| `func_8002ce68` | 65.85185% | 5/5 CFG blocks, 2/2 branches and the four free-slot, allocation, image-store, and GPU-sync calls agree. Retail uses a 40-byte frame and reloads O32 stack arguments late; the probe hoists them into saved registers and uses 56 bytes. The raw byte/word/halfword argument loads support the current seven-argument widths. |
+| `memory_arena_allocate_block` `0x80017608` | 99.78261% | 8/8 CFG blocks and 4/4 branches agree. Its only focused difference is the temporary register for `block->size - 12 - requested_size`; the same remainder comparison and block split follow. |
+
+The allocator callee and both floor siblings protect the current field,
+call, and return model. Existing source-only width and macro probes did
+not produce the retail floor-argument lifetime, and a forced stack
+carrier would have no semantic support. This pass retains no C, owner,
+relocation, or profile change; it used focused quick builds and isolated
+strict objdiff, with no repository tests or full build.

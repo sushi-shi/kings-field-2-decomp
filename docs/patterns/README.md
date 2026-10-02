@@ -7,6 +7,11 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-camera-transform-30.md](kf2-game-camera-transform-30.md): current
+  strict exact controls across 30 GAME camera, world, and event transforms.
+- [kf2-game-audio-voice-vab-26.md](kf2-game-audio-voice-vab-26.md): current
+  strict verdicts for 26 connected GAME audio, sound, and VAB functions;
+  24 exact controls and two bounded WIPs.
 - [kf2-game-actor-animation-phase-29.md](kf2-game-actor-animation-phase-29.md):
   strict 29-function actor animation, phase, motion, and group-position
   verdicts with blocking-phase caller evidence.
@@ -16,6 +21,9 @@
 - [kf2-game-effect-constructor-family-28.md](kf2-game-effect-constructor-family-28.md):
   per-function strict verdicts for the GAME constructor, actor-group caller,
   and 26 exact pool, spawn, motion, and sound controls.
+- [kf2-game-effect-data-owner-28.md](kf2-game-effect-data-owner-28.md):
+  strict effect-family controls and the unresolved retail BSS versus candidate
+  COMMON ownership of four effect data claims.
 - [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
   actor group-effect helper and constructor call topology, with bounded
   negative source trials.
@@ -207,6 +215,9 @@
 - [kf2-end-template-residue.md](kf2-end-template-residue.md): END frames and
   global reloads explained by trimmed OPEN templates (unreachable cleanup,
   leftover locals, cursor advances); count-down loops spelled `!= -1`.
+- [kf2-end-function-storage-audit.md](kf2-end-function-storage-audit.md):
+  fresh strict verdicts for 16 END and 25 OPEN claims, exact initialized
+  storage, unresolved BSS/COMMON allocation, and corrected audio-table evidence.
 - [kf2-open-source-shapes.md](kf2-open-source-shapes.md): OPEN title-screen
   shapes (goto restart, chained RECT origin, in-place fade level) and the
   unattributed 24-byte `audio_play_voice` frame residue.
@@ -1245,3 +1256,6 @@ promotes a probe to a proven historical toolchain.
 - [GAME menu focused ten](game-menu-focused-ten.md):
   nine existing exact neighbors and eight bounded menu/card WIPs across ten
   individually compiled units.
+- [GAME actor attack and target selection](kf2-game-actor-attack-target-25.md):
+  25 fresh strict GAME verdicts across the scorer, selectors, lifecycle,
+  damage chain, and exact home/preparation controls.

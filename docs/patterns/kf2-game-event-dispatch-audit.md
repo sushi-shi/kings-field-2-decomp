@@ -173,3 +173,81 @@ left unchanged; no percentage-only rewrite was retained. Collision/cache
 and map-grid source ownership was handed to the separate collision worker
 after this read-only comparison. Only isolated per-unit builds and strict
 objdiff were run; no tests, lint, broad match, link, or full build.
+
+## Current map-event and interaction call family (2026-10-02)
+
+An isolated manifest-profile strict comparison of eleven event/message units
+covers 20 current GAME claims. Fifteen are existing exact controls:
+`0x80045f20`, `0x80045fd4`, `0x80046144`, `0x80046700`, `0x8004678c`,
+`0x800473e0`, `0x80047434`, `0x800474c4`, `0x800482f8`, `0x800483a8`,
+`0x800483d8`, `0x80048428`, `0x80048498`, `0x800484e4`, and
+`0x80048554`. These include the pose, marker leaf, map-object spawn,
+command, counter, event-state and save-stream functions; none is a new exact
+closure. The five WIPs have these individual strict verdicts:
+
+| GAME address | Strict text | Focused and raw bound |
+| --- | ---: | --- |
+| `0x800461a0` | 99.12676% | 14/14 CFG, 5/5 branches; the exact marker-leaf sibling and 13 ordered referents remain intact. Cursor registers and final increment order differ. |
+| `0x800462bc` | 98.68132% | 46/46 CFG, 21/21 branches; independent phase/state load scheduling inserts a probe `nop`, shifting one addend in the 16-row table without changing its target class. A prior natural source-order trial emitted the same listing. |
+| `0x800475d8` | 99.166664% | 55/54 CFG, 29/29 branches; the retail fallthrough zero assignment is scheduled in the probe branch delay slot. All 62 referent identities agree. |
+| `0x80047c98` | 99.81618% | 85/85 CFG, 55/55 branches; 72 referent sites agree, with rotation and literal-one saved-register roles exchanged. Its final indirect callback remains unresolved. |
+| `0x800489ac` | 98.82883% | 23/23 CFG, 7/7 branches; actor-base and sentinel argument registers exchange roles, and the 64-byte opcode table is exact. |
+
+Fresh focused quick builds of those five WIP units reproduce the structural
+counts and exact marker sibling. The remaining differences do not establish
+a missing call, width, field, or distinct table destination. No C, data
+identity, relocation, or source-owner change was retained.
+
+## Map-object bridge into event commands (2026-10-02)
+
+The eight adjacent map-object/query/motion/frame claims were rebuilt with
+their own manifest profiles and compared by isolated strict objdiff. The
+twenty event/message claims immediately above were freshly compared in this
+same interval. Together they give a 28-function source-and-call graph: event
+commands can spawn map objects; map-object actions and the frame step feed
+event pose, target, and world control. Twenty functions were already exact and
+eight remain WIP. This adds no new exact claim to the cached score.
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x80036190` | 98.56115% | WIP object proximity/facing query; 15/15 CFG, 8/8 branches and all six known calls agree; independent stack-load/move order differs before tolerance call. |
+| `0x800363bc` | 100% | Exact action-start helper. |
+| `0x800363dc` | 100% | Exact effect-pool acquisition helper. |
+| `0x80036464` | 95.32258% | WIP effect-object spawn; 12/12 CFG, 3/3 branches and six direct calls agree; object-id/height saved-register and early sequence-store schedule differ. |
+| `0x800369b8` | 100% | Exact object-to-world vertex helper. |
+| `0x80036ad8` | 100% | Exact adjacent vertex helper. |
+| `0x80036b68` | 100% | Exact map-object motion control. |
+| `0x80036e24` | 98.86364% | WIP frame/CD step; 5/5 CFG, 2/2 branches and five ordered calls agree; mode, last-phase and step use different saved-register roles. |
+| `0x80045f20` | 100% | Exact event-pose control. |
+| `0x80045fd4` | 100% | Exact event-pose sibling. |
+| `0x80046144` | 100% | Exact marker leaf. |
+| `0x800461a0` | 99.12676% | WIP marker stream; cursor register and final increment order differ. |
+| `0x800462bc` | 98.68132% | WIP target stream; phase/state load order adds one probe delay `nop`; 16 table target classes agree. |
+| `0x80046700` | 100% | Exact event map-object spawn wrapper. |
+| `0x8004678c` | 100% | Exact event command dispatcher. |
+| `0x800473e0` | 100% | Exact event-counter entry. |
+| `0x80047434` | 100% | Exact event-counter sibling. |
+| `0x800474c4` | 100% | Exact event-counter tail. |
+| `0x800475d8` | 99.166664% | WIP map-object event controller; retail zero fallthrough versus probe branch-delay placement, with 62 referents intact. |
+| `0x80047c98` | 99.81618% | WIP event-world dispatch; rotation and literal-one saved-register roles differ, with 72 referents intact. |
+| `0x800482f8` | 100% | Exact event-state entry. |
+| `0x800483a8` | 100% | Exact event-state sibling. |
+| `0x800483d8` | 100% | Exact event-state sibling. |
+| `0x80048428` | 100% | Exact event-state sibling. |
+| `0x80048498` | 100% | Exact event-state sibling. |
+| `0x800484e4` | 100% | Exact event-state tail. |
+| `0x80048554` | 100% | Exact event-save stream. |
+| `0x800489ac` | 98.82883% | WIP event-restore stream; actor-base and sentinel argument registers exchange, with the 64-byte opcode table exact. |
+
+Raw GAME disassembly of `0x80036190` retains two distance calls, one matrix
+rotation and transform, the angle conversion and tolerance call. Its first
+focused divergence is the independent load of `sp+144` one instruction before
+that last call. Raw `0x80036464` confirms pool acquisition, reset, `rand`,
+three action-start calls, and the `map_object_state` fields used by the C
+source. The target and probe `map_object.o` each have 32 `.text` and 17
+`.rodata` relocation rows at identical sites with matching types/referents;
+the 68-byte switch table is direct strict exact. Raw `0x80036e24` has the
+five C-modeled calls in order. No fresh call, field, width, CFG, or referent
+gap supports changing C; the three new WIPs and the five earlier event WIPs
+remain bounded codegen/layout differences. No C or metadata change was
+retained.

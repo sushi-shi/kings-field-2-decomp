@@ -434,3 +434,35 @@ the target has 11 DATA bytes followed by 772 BSS bytes with
 also lost strict exactness, leaving 40/57 exact. This option alone is a
 negative placement control, not a reason to change the shared profile or
 invent per-global build placement.
+
+## Fresh 25-claim resource transition and CD request chain
+
+The current GAME transition graph was compared with narrow safe targets
+and focused candidate objects: two startup functions, the transition
+request, five phase setters, the transition step, the frame/CD step,
+and 15 CD request/archive helpers. **Twenty claims are strict exact**:
+all five `resource_transition_set_phase_{1,2,3,4,6}` functions and the
+CD helpers `cd_wait_two_vsyncs`, `cd_request_advance`,
+`cd_complete_handler`, `cd_data_ready_handler`, `cd_error_handler`,
+`cd_bcd_to_int`, `cd_int_to_bcd`, `cd_location_to_sector`,
+`cd_sector_to_location`, `cd_location_add`, `cd_request_wait_idle`,
+`cd_request_wait_done`, `cd_sectors_corrupt`, `cd_request_enqueue`, and
+`cd_archive_entry_extent`. All 15 CD targets were independently carved
+safe with 65 relocations and none withheld. The startup's 83-byte
+RODATA, transition step's 128-byte DATA and 28-byte RODATA are exact.
+
+| WIP claim | Fresh strict text | Raw/source verdict |
+| --- | ---: | --- |
+| Startup loader `0x80015d58` | 89.03145% | 1/1 CFG block; ordered archive/copy calls agree. Target has six signed-low workspace pairs absent from the candidate's fixed literals; the archive/arena defining TUs remain unproved. |
+| Startup pump `0x80015fd4` | 89.710144% | 3/3 CFG blocks and 1/1 branch; TMD slot-zero workspace still has a target-only signed-low pair. |
+| Transition request `0x80016260` | 98.790085% | 67/67 CFG blocks and 49/49 branches. Target/candidate each have 135 text relocations; stack-byte argument allocation and internal branch layout differ without a new width/call fact. |
+| Transition step `0x80016820` | 99.193474% | 62/62 CFG blocks and 32/32 branches, with an unresolved indirect switch jump in both. Retail has two `DAT_8019e138` and one `DAT_8012da68` HI16/LO16 pairs missing from the fixed-literal candidate. Text relocations are 196 target versus 190 candidate. |
+| Frame/CD step `0x80036e24` | 98.86364% | 5/5 CFG blocks, 2/2 branches and 5/5 text relocations; saved-register assignments differ while the display call and loop parameters agree. |
+
+The main loop and startup both construct resource arena base
+`0x8009b0a0`; retail's signed-low address form is still incompatible
+with the candidate fixed literal. The previously bounded runtime
+`0x5f000` arena span does not prove its original defining object or
+section. No source global, relocation owner, or profile change follows
+from this recheck. Only focused quick builds and isolated strict objdiff
+were run; no repository tests or full build were run.

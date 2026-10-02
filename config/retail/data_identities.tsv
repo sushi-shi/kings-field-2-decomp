@@ -942,7 +942,7 @@ OPEN.EXE	0x800a6438	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display
 OPEN.EXE	0x800a8540	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 OPEN.EXE	0x800ac540	0x1	display_fade_level	global	bss	u8	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	darkening applied by primitive_buffer_commit_poly_ft4; cleared per frame
 OPEN.EXE	0x800ac5d8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
-OPEN.EXE	0x800ac618	0x158	audio_sequence_table	global	bss	char[344]	display	supported	asm;xrefs;display_initialize/display_begin_frame	SsSetTableSize work area: 2 sequences x 1 track
+OPEN.EXE	0x800ac618	0x158	audio_sequence_table	global	bss	char[344]	audio	supported	asm;xrefs;audio_initialize	SsSetTableSize work area: 2 sequences x 1 track
 END.EXE	0x8001141c	0x4	DAT_8001141c	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x80011420	0x4	DAT_80011420	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x80011424	0x4	DAT_80011424	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -1359,4 +1359,4 @@ END.EXE	0x800a31f0	0x4	ending_data	global	bss	u8 *	ending	supported	asm;xrefs;ma
 END.EXE	0x800a31f8	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display	supported	asm;xrefs;display_initialize/display_begin_frame	double-buffered draw/display environments and ordering tables
 END.EXE	0x800a52f8	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 END.EXE	0x800a93b8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
-END.EXE	0x800a93f8	0x158	audio_sequence_table	global	bss	char[344]	display	supported	asm;xrefs;display_initialize/display_begin_frame	SsSetTableSize work area: 2 sequences x 1 track
+END.EXE	0x800a93f8	0x158	audio_sequence_table	global	bss	char[344]	audio	supported	asm;xrefs;audio_initialize	SsSetTableSize work area: 2 sequences x 1 track

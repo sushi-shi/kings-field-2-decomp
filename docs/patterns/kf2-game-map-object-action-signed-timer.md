@@ -338,3 +338,51 @@ relocation-section sizes stayed unchanged, while strict text fell from
 **57.52610%** to **57.251373%**; it did not reproduce the separate retail
 tails, so it was discarded. The other residues above have no new independent
 source fact; no C, metadata, or exact-claim change is retained.
+
+### Map-cell placement and render graph (2026-10-02)
+
+A fresh manifest-profile, isolated strict comparison covers 24 connected GAME
+claims in ten units. The connection is proved by six direct calls to
+`func_80034f90` and eight to `func_80035194` from map-object initialization
+and action update; both writers use the owned `bss_801c7540` occupancy grid.
+The map-cell renderer consumes that same grid and calls the map enqueue and
+prepared-object renderers. These are current KF2 identities, not address-only
+TU assumptions. Eighteen claims were already exact in the cached inventory;
+this pass reconfirms them but adds no new exact function to the score.
+
+| GAME address | Strict text | Verdict |
+| --- | ---: | --- |
+| `0x8002a988` | 100% | Exact grid-sample control. |
+| `0x8002f194` | 100% | Exact map enqueue control. |
+| `0x8002f5b0` | 95.833336% | WIP clipped fan; packet call/referent set agrees, with saved-register and independent store scheduling differences. |
+| `0x8002f808` | 92.038376% | WIP prepared-map renderer; 51/51 CFG and 35/35 branches, with an unattributed 168/120-byte frame gap. |
+| `0x80030c18` | 96.521736% | WIP map-cell object renderer; 11/11 CFG, 6/6 branches and known calls agree; independent prologue instruction order differs. |
+| `0x80030de4` | 100% | Exact two-layer cell emitter. |
+| `0x80030f5c` | 100% | Exact 24-by-24 cell-scan control. |
+| `0x80031024` | 100% | Exact render-model row control. |
+| `0x80034818` | 100% | Exact placed-map expander. |
+| `0x80034f90` | 97.86822% | WIP pattern writer; 14/14 CFG, 7/7 branches, `rcos`/`rsin`, cell-field writes, and ordered referents agree. Saved-register and one independent address instruction differ. |
+| `0x80035194` | 89.59545% | WIP rotated rectangle copier; 51/51 CFG, 26/26 branches and field masks agree. Retail reserves 40 stack bytes versus 32 in the probe and keeps different argument/mask lifetimes. |
+| `0x80035504` | 100% | Exact spatial-sound wrapper. |
+| `0x80035534` | 100% | Exact pool-reset control. |
+| `0x80035590` | 100% | Exact object reset control. |
+| `0x800355d8` | 100% | Exact object-property setter. |
+| `0x800356ac` | 100% | Exact cell-marker setter. |
+| `0x800357a0` | 100% | Exact reset-band tail. |
+| `0x80035894` | 100% | Exact map-object initializer, with two calls to each pattern writer. |
+| `0x80036078` | 100% | Exact map-object collision query. |
+| `0x800365d8` | 100% | Exact scatter-band first helper. |
+| `0x800366fc` | 100% | Exact map-object scatter helper. |
+| `0x800368b4` | 100% | Exact scatter-band third helper. |
+| `0x80036944` | 100% | Exact scatter-band fourth helper. |
+| `0x80036ed4` | 99.63745% | WIP action dispatcher; 329/329 CFG, 180/180 branches, and 239 switch words/36 target classes were previously certified. |
+
+Fresh focused `kf try` confirms the pattern writers' 14/14 and 51/51 CFG,
+7/7 and 26/26 branch counts, and the render-cell unit's three exact sibling
+controls. Raw pattern disassembly proves signed offset loads, the two trigonometric
+calls, typed 10-byte cell indexing, and the field-read/write masks. Its target
+and candidate objects each have the same 11 ordered `.text` relocation rows:
+two calls, two `bss_801c7540` HI16/LO16 pairs, and five internal jumps. Neither
+pattern WIP has a new field, width, call, referent, or CFG discrepancy that
+would justify a C change. No source, metadata, or compiler-profile edit was
+retained from this graph pass.

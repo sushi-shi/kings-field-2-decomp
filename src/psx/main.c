@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/lib/types.h>
 #include <psyq/kernel.h>
 
@@ -37,7 +38,7 @@ void main(void)
             overlay_header.s_addr = 0;
             overlay_header.s_size = 0;
             EnterCriticalSection();
-            Exec(&overlay_header, 0, 0);
+            Exec(&overlay_header, 0, NULL);
             overlay_index = *overlay_next_request;
             _96_init();
         }

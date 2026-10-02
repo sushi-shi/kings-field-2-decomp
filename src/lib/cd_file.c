@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/lib/cd_file.h>
+#include <kf/lib/null.h>
 #include <psyq/cd.h>
 #include <psyq/libc.h>
 
@@ -34,23 +35,23 @@ int cd_file_load_into(u_long *destination, const char *relative_path)
     memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, relative_path);
     strcat(path, cd_version_suffix);
-    if (CdSearchFile(&file, path) == 0) {
+    if (CdSearchFile(&file, path) == NULL) {
         return KF_CD_NOT_FOUND;
     }
     mode = CdlModeSpeed;
     sectors = (file.size + KF_CD_SECTOR_BYTES - 1) >> KF_CD_SECTOR_SHIFT;
-    CdControl(CdlSetmode, &mode, 0);
-    CdControl(CdlReadN, (u_char *)&file.pos, 0);
+    CdControl(CdlSetmode, &mode, NULL);
+    CdControl(CdlReadN, (u_char *)&file.pos, NULL);
     while (--sectors != -1) {
-        if (CdReady(0, 0) != CdlDataReady) {
-            CdControl(CdlSetloc, (u_char *)&start, 0);
+        if (CdReady(0, NULL) != CdlDataReady) {
+            CdControl(CdlSetloc, (u_char *)&start, NULL);
             CdPause();
             return KF_CD_READ_FAILED;
         }
         CdGetSector(destination, KF_CD_SECTOR_WORDS);
         destination += KF_CD_SECTOR_WORDS;
     }
-    CdControl(CdlSetloc, (u_char *)&start, 0);
+    CdControl(CdlSetloc, (u_char *)&start, NULL);
     CdPause();
     return KF_CD_LOADED;
 }

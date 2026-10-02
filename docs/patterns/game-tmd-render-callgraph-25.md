@@ -203,6 +203,14 @@ shifts, and stores it afterward. The probe also retained the premature depth
 range calculation and 104-byte frame against retail's 96 bytes. It was
 discarded; the higher score did not establish a source correction.
 
+A direct alignment of the retained objects localizes the first difference:
+retail saves unshifted `blend_mode` (`$a1`) at `sp+32`, keeps `fixed_depth`
+in `$s0`, and reloads and shifts the blend value after `tmd_get_object`.
+The probe keeps blend mode in `$s0`, depth in `$s2`, and caches an early
+in-range flag at `sp+48`; its eight-byte larger frame and missing late
+depth branch follow from that allocation. The caller proves argument width,
+but these register/stack choices do not prove a different source operation.
+
 The `0x8002ddb4` GT3 ordering-table guard was also tested with the explicit
 break form retained for FT3. Direct strict text rose from 97.434494% to
 97.521835%, but the compiled CFG changed from 44/44 blocks and 28/28

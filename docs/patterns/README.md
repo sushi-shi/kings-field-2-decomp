@@ -7,6 +7,12 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-renderer-graph-25.md](kf2-game-renderer-graph-25.md): 25 current
+  strict GAME renderer-graph verdicts, with 20 exact controls and five bounded
+  map-cell, quad, world, animation, and dispatcher WIPs.
+- [kf2-game-floor-item-capture-25.md](kf2-game-floor-item-capture-25.md):
+  25 strict GAME floor-item capture, frame, and allocation verdicts; 22 exact
+  controls and a bounded late-O32-argument residue.
 - [kf2-game-terrain-shape-query-23.md](kf2-game-terrain-shape-query-23.md):
   23 strict GAME terrain, shape, and line-query verdicts with 15 exact controls
   and bounded switch/rasterizer residues.
@@ -24,6 +30,9 @@
 - [kf2-game-cd-stream-storage-26.md](kf2-game-cd-stream-storage-26.md):
   26 strict CD request/archive controls, exact initialized bytes, and the
   bounded unresolved stream-work-buffer owner.
+- [kf2-game-cd-stream-service-memory-26.md](kf2-game-cd-stream-service-memory-26.md):
+  26 disjoint stream-service and memory controls, with the allocator residue
+  and fixed-workspace call-set boundary.
 - [kf2-game-actor-animation-phase-29.md](kf2-game-actor-animation-phase-29.md):
   strict 29-function actor animation, phase, motion, and group-position
   verdicts with blocking-phase caller evidence.

@@ -538,3 +538,61 @@ O32 stack slots `88(sp)` and `92(sp)` with `lbu`, but retail assigns them to
 `s8`/`t5` and the probe to `t5`/`s8`. The selector tests, subsequent byte
 loads, and ordered referents agree. This does not justify changing the
 eight-argument signature or source field widths.
+The request's four-byte body-length difference is at its `flag_16` assignment:
+retail leaves the `bne` delay slot at `+0x2a8` as `nop` and loads constant
+one at the non-equal successor `+0x2bc`; the probe loads one in that delay
+slot, where the equal path does not use it. Both store zero or one to the
+same byte at `state_8017d118+0x16` under the same condition. Focused
+counts remain 67/67 CFG blocks and 49/49 branches, so this is scheduling,
+not a missing source branch or state update.
+
+## Main loop to map-object, frame, and event extension
+
+A further current-source, narrow safe/direct strict pass covers **30 claims
+in 14 units**. Raw direct calls connect `game_main_loop` to the map-object
+action updater, transition step, and frame driver; the frame driver calls the
+resource dispatcher. Event command dispatch calls transition request/step
+and the map-object query; event world dispatch calls the map-object query
+and controller. These links establish a call graph independent of address
+proximity. The decoded retail `jal` sites include main-loop `0x800138d8`,
+`0x80013908`, `0x80013944`; frame `0x80033944`; event-command
+step `0x80046a98`/`0x80046b14` and request `0x80046b04`/`0x80046ca8`;
+and event-world `0x80047e08`,
+`0x80047f8c`, `0x80047fe0`. All 14 safe carves have zero withheld rows.
+The **17 exact** claims
+are `main` `0x80013634`, all five transition phase setters
+`0x800167bc`, `0x800167d0`, `0x800167e4`, `0x800167f8`, and `0x8001680c`,
+five resource-runtime helpers `0x80031fa0`,
+`0x80032008`, `0x80032040`, `0x80032274`, `0x80032364`, both frame helpers
+`0x80033584` and `0x800335a0`, two map-object helpers `0x800363bc` and
+`0x800363dc`, event spawn `0x80046700`, and event command dispatch
+`0x8004678c`. Each is 100% direct strict under the current source.
+
+| Remaining GAME claim | Fresh strict text | Bounded verdict |
+| --- | ---: | --- |
+| `game_main_loop` `0x8001369c` | 99.67553% | Arena base `0x8009b0a0` still lacks an original source owner for retail's signed-low address constructor. |
+| Transition request `0x80016260` | 98.790085% | Focused 67/67 CFG, 49/49 branches; first difference swaps saved/temporary registers for two stack-loaded bytes, preserving widths and 135 ordered referents. |
+| Transition step `0x80016820` | 99.193474% | Focused 62/62 CFG, 32/32 branches; three target-only HI16/LO16 workspace pairs remain unowned; 128-byte DATA and 28-byte RODATA exact. |
+| Runtime radius `0x800320b0` | 74.061226% | Supported scalar widths and mask result retained; row/column induction differs. |
+| Runtime visibility `0x80032174` | 93.6% | 5/5 CFG; result register differs. |
+| TMD queue `0x800321d8` | 98.4359% | Fixed arena literal versus signed-low retail owner remains open. |
+| Resource dispatcher `0x8003247c` | 92.18579% | 96/96 CFG and 54/54 branches; two extra candidate camera-base relocations, exact 32-byte identity DATA. Renderer C is a separate active lane. |
+| Map-object query `0x80036190` | 98.56115% | 15/15 CFG and 8/8 branches; independent angle-result move/load order differs. |
+| Map-object effect spawn `0x80036464` | 95.32258% | 12/12 CFG, 3/3 branches, exact 68-byte unit RODATA; saved-register and store/call schedule differ. |
+| Frame/CD service `0x80036e24` | 98.86364% | 5/5 CFG and five calls; mode, endpoint, and step saved-register assignment differs. |
+| Map-object action `0x80036ed4` | 99.63745% | 329/329 CFG, 180/180 branches, 252 text and 238 table relocations on both sides; action-224 caller `nop` accounts for the four-byte table addend shift. |
+| Event map-object controller `0x800475d8` | 99.166664% | 55/54 CFG, 29/29 branches; same unused zero assignment is in retail fallthrough versus probe delay slot. |
+| Event world dispatch `0x80047c98` | 99.81618% | 85/85 CFG and 55/55 branches; rotation value and constant-one saved-register roles exchange, with 72 referents intact. |
+
+The newly included exact event command's 40-byte DATA and 140-byte RODATA
+and the exact frame unit's four-byte DATA are unchanged. No field, width,
+call, target class, or complete storage-owner discrepancy in this graph
+supports a source or metadata edit. No repository tests, lint, full build,
+or linked executable build was run.
+
+The phase-three restore call also reaches `event_restore_stream`
+`0x800489ac`. A separate fresh safe/direct strict control confirms its
+888-byte text at 98.82883% and its complete 64-byte opcode table at 100%.
+Retail and source consume the same byte stream, actor/target-group fields,
+and map-object opcode classes; the first mismatch exchanges the actor base
+and `0xff` sentinel registers. This existing source remains unchanged.

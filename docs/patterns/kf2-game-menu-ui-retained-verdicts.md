@@ -881,5 +881,119 @@ explicit byte-offset C trials compiled identically or regressed, so the
 opcode difference alone does not justify changing the shared header. Target
 and probe directory objects each have 137 text relocation rows; one pair of
 prefix-data address loads is scheduled on the opposite side of the two
-slot-seed loads, but the referent set is unchanged. No source, metadata, or
-exact-claim change was retained.
+slot-seed loads, but the referent set is unchanged. In `0x80022b74`, the retail
+80-byte frame places the 40-byte `bu00:` path at `sp+16..55` and saves `s0`–`s3`
+and `ra` at `sp+56..72`. The 72-byte probe uses the same path extent and
+`sp+56..68` for `s0`–`s2` and `ra`. Retail's extra saved `s3` holds the input
+slot; no missing local object explains the frame delta. No source, metadata,
+or exact-claim change was retained.
+
+The adjacent directory enumerator `0x800226ec` has an identical 648-byte
+retail/probe frame: its sorted 15-entry `DIRENTRY` array occupies `sp+16..615`,
+the two-byte slot digit begins at `sp+616`, and saved registers start at
+`sp+624`. Both call `memset` with 600 bytes before the same `firstfile`,
+`nextfile`, prefix comparison, and record-copy sequence. Retail loads the two
+slot seeds with `lb`; the probe chooses `lbu` and schedules the independent
+loads across the first clear. The writer `0x80022ca0` also has the same
+1424-byte frame on both sides. Its retail path starts at `sp+1256` and is
+cleared from `sp+1262` for 34 bytes, while its ten-byte slot digit starts at
+`sp+1368`; the probe uses these same offsets but hoists its independent seed
+loads into the slot-tail clear setup. These raw stack extents provide no
+missing field or local that would justify source padding or a type change.
+
+The card-format controller `0x8001bf68` has the same 160-byte frame and call
+order in retail and the fresh probe. Its first divergence copies the
+temporary-file result into `v1` rather than probe `s0`; both guards then
+follow the same paths. Later the retail writer-error arm reuses saved dialog
+constants in the jump delay slot and following stack arguments, while the
+probe reloads two immediates, extending that arm by eight bytes. The sibling
+`0x8001c12c` stays exact. This is not evidence for an extra dialog branch or
+source variable; the earlier focused CFG overlap comes from trial placement
+across the next sibling's entry.
+
+### Menu label and painter continuation (2026-10-02)
+
+The card browser's label calls and frame painter define a further 25-claim
+GAME cohort in thirteen units. Fresh isolated manifest-profile strict
+comparisons find 23 existing exact controls and two unchanged WIPs:
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x80018d08` | 100% | Exact glyph-row control. |
+| `0x80018dec` | 100% | Exact glyph-row control. |
+| `0x80018f8c` | 100% | Exact glyph-row control. |
+| `0x80019ce4` | 100% | Exact glyph-selection control. |
+| `0x8001c550` | 100% | Exact label template. |
+| `0x8001c62c` | 100% | Exact label template. |
+| `0x8001c770` | 100% | Exact label template. |
+| `0x8001c8b0` | 100% | Exact label template. |
+| `0x8001c9f4` | 100% | Exact label template. |
+| `0x8001cad4` | 100% | Exact label template. |
+| `0x8001cb44` | 100% | Exact label template. |
+| `0x8001ccd4` | 100% | Exact label template. |
+| `0x8001cdb0` | 100% | Exact label template. |
+| `0x8001ceb8` | 100% | Exact label template. |
+| `0x8001f798` | 100% | Exact pair-row control. |
+| `0x8001fb8c` | 99.78788% | WIP window painter; 10/10 CFG and 6/6 branches, retail/probe frames 48/40 bytes. |
+| `0x80020b50` | 100% | Exact translucent sprite blit. |
+| `0x80020d20` | 100% | Exact sprite blit. |
+| `0x80020ef8` | 100% | Exact fixed-CLUT sprite blit. |
+| `0x800210ac` | 99.66904% | WIP string painter; 8/8 CFG and 4/4 branches, retail/probe frames 56/48 bytes. |
+| `0x80021510` | 100% | Exact number painter. |
+| `0x800217f0` | 100% | Exact nine-slice panel helper. |
+| `0x80021a60` | 100% | Exact frame setup helper. |
+| `0x80021a68` | 100% | Exact frame begin. |
+| `0x80021be0` | 100% | Exact frame presentation. |
+
+Focused quick builds for both WIPs preserve their branch and successor lists.
+The window row walk and glyph UV work have been checked against their KF1
+homologs and current retail raw instructions; the residual eight-byte frames
+do not identify a source local. In both retail bodies, stack accesses start
+with saved registers at `sp+24`; there is no access to the otherwise unused
+`sp+16..23` frame space. This cohort contributes no new exact claim.
+
+The related model preview `0x8002083c` remains 99.65882% strict in the
+earlier menu cohort. Its raw stack addresses identify a rotation matrix at
+`sp+16`, light at `sp+112`, light result at `sp+144`, and color at `sp+176`.
+The intervening `sp+48..111` region is never addressed. The 64-byte frame
+gap is therefore visible as unused space between live matrices, but does not
+prove two source locals or another semantic object. The KF1
+`menu_item_model_preview` analogue keeps a glyph string beside its three
+matrices, but KF2's following `0x80020990` body owns separate label drawing;
+no raw access licenses transplanting that KF1 local into `0x8002083c`. No
+filler was added.
+
+### Menu navigation control recheck (2026-10-02)
+
+Fresh isolated strict comparison of the connected menu input, selection,
+preview, and transition graph covers 22 claims in fourteen units. Seventeen
+previously exact controls remain exact and five WIPs retain their previously
+documented scores; no claim is newly exact:
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x8001876c` | 96.36646% | WIP location number; no new field or call gap. |
+| `0x800189f0` | 100% | Exact location sibling. |
+| `0x80019240` | 100% | Exact player clamp. |
+| `0x800192ac` | 100% | Exact player clamp. |
+| `0x800192dc` | 100% | Exact player clamp. |
+| `0x8001930c` | 98.26363% | WIP map preview; 47/47 CFG, 27/27 branches, 69 ordered referents; frame and archive-index scheduling. |
+| `0x80019834` | 100% | Exact selection row. |
+| `0x800199d0` | 100% | Exact selection row. |
+| `0x8001a2f4` | 100% | Exact magic-list control. |
+| `0x8001a7fc` | 100% | Exact menu loop. |
+| `0x8001dc64` | 100% | Exact list-choice controller. |
+| `0x8001e378` | 100% | Exact input poll. |
+| `0x8001e484` | 100% | Exact list-input controller. |
+| `0x8001e94c` | 100% | Exact status renderer. |
+| `0x8001f008` | 100% | Exact attribute renderer. |
+| `0x8001f8b8` | 99.14365% | WIP preview choice; 42/42 CFG, 18/18 branches, packet setup scheduling. |
+| `0x80020748` | 100% | Exact two-option painter. |
+| `0x8002083c` | 99.65882% | WIP model preview; 4/4 CFG, 2/2 branches, untouched 64-byte stack interval. |
+| `0x80020990` | 100% | Exact heading/amount painter. |
+| `0x8003494c` | 100% | Exact TIM upload. |
+| `0x800349bc` | 96.31408% | WIP transition; 14/14 CFG, 8/8 branches, frame/packet scheduling. |
+| `0x80034e10` | 100% | Exact transition sibling. |
+
+The visual and navigation cohorts overlap on `0x8002083c`; the listed
+comparisons are fresh controls, not additional score credit.

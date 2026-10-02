@@ -476,7 +476,7 @@ KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
                        s32 *distance, s32 variation);
 s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 func_8003ab5c(s32 x, s32 y, s32 z, s32 radius, s32 height);
-void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
+void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c,
                    u16 magic_0e, u16 magic_10, u16 magic_12,
                    u16 magic_14, u16 amount, s32 effect_flags,

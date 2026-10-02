@@ -88,14 +88,14 @@ void func_800475d8(KfMapObject *object, ...)
     target_pitch = (-pose->depth_offset) / 4 - 200;
 
     if (spawned_id != -1) {
-        func_80045f20(0, 500, 1500, target_yaw,
+        scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
                       pose->height_offset, pose->depth_offset,
                       &object->position);
     } else {
         first_angles = object->rotation;
         first_position = object->position;
-        func_80045f20(0, 500, 1500, target_yaw,
+        scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
                       pose->height_offset, pose->depth_offset,
                       &next_position);
@@ -107,7 +107,7 @@ void func_800475d8(KfMapObject *object, ...)
                 goto button_pressed;
             }
             previous_buttons = buttons;
-            func_80045fd4((KfScenePoseView *)object, &first_position,
+            scene_pose_interpolate((KfScenePoseView *)object, &first_position,
                           &next_position, &first_angles, &next_angles,
                           fraction);
             object->unknown_0e = value_approach(
@@ -137,7 +137,7 @@ button_pressed:
     if ((buttons & 0x20) == 0 && spawned_id == -1) {
         goto return_pose;
     }
-    if (func_80047434(object->object_id) == 0) {
+    if (game_counter_increment(object->object_id) == 0) {
         switch (object->object_id) {
         case 0x75: {
             s32 amount = ((rand() * 6) >> 15) + 4;
@@ -157,7 +157,7 @@ button_pressed:
             break;
         }
         remove_object = 1;
-        func_80045f20(-500, 500, 0, target_yaw,
+        scene_position_from_camera_offset(-500, 500, 0, target_yaw,
                       player_state.camera_rotation.angles[1], 0, 0,
                       &first_position);
         first_angles = object->rotation;
@@ -183,7 +183,7 @@ interpolate_back:
     next_position = object->position;
     current_yaw = player_state.camera_rotation.angles[0];
     for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
-        func_80045fd4((KfScenePoseView *)object, &next_position,
+        scene_pose_interpolate((KfScenePoseView *)object, &next_position,
                       &first_position, &next_angles, &first_angles,
                       fraction);
         player_state.camera_rotation.angles[0] = func_8001586c(

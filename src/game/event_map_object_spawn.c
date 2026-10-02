@@ -3,7 +3,7 @@
 #include <kf/lib/address.h>
 
 ADDRESS(0x80046700, 0x8c)
-void func_80046700(KfEventObjectView *event, s32 object_id)
+void event_spawn_effect_object(KfEventObjectView *event, s32 object_id)
 {
     KfMapObject *object = map_object_effect_pool_acquire(0x17c, 0x10, -1);
 

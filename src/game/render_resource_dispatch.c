@@ -230,9 +230,6 @@ map_object_next:
     effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
-        MATRIX *world_matrix;
-        const struct KfEulerAngles *angles;
-
         if (effect->type == KF_EFFECT_SLOT_FREE ||
             (effect->unknown_08 & 3) == 0) goto effect_next;
         if ((effect->unknown_08 & 3) != 2 &&
@@ -243,28 +240,37 @@ map_object_next:
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
-            angles = &rotation;
-            world_matrix = &game_graphics_runtime.render_state.view_matrix;
+            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+                           &effect->position, &rotation, effect_scale_ptr,
+                           effect_cache,
+                           &game_graphics_runtime.render_state.view_matrix,
+                           effect->animation_clip, effect->unknown_12,
+                           effect->unknown_0c, effect->unknown_10,
+                           effect->unknown_09, -60);
             break;
         case 4:
-            angles = effect_rotation_ptr;
-            world_matrix = &render_world_identity_matrix;
+            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+                           &effect->position, effect_rotation_ptr,
+                           effect_scale_ptr, effect_cache,
+                           &render_world_identity_matrix,
+                           effect->animation_clip, effect->unknown_12,
+                           effect->unknown_0c, effect->unknown_10,
+                           effect->unknown_09, -60);
             break;
         case 8:
-            angles = effect_rotation_ptr;
-            world_matrix = &game_graphics_runtime.render_state.pitch_matrix;
+            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+                           &effect->position, effect_rotation_ptr,
+                           effect_scale_ptr, effect_cache,
+                           &game_graphics_runtime.render_state.pitch_matrix,
+                           effect->animation_clip, effect->unknown_12,
+                           effect->unknown_0c, effect->unknown_10,
+                           effect->unknown_09, -60);
             break;
         case 12:
             goto effect_special_draw;
         default:
             goto effect_next;
         }
-        func_80031850(effect->unknown_0a, effect->render_id + 0x28,
-                       &effect->position, angles, effect_scale_ptr,
-                       effect_cache, world_matrix,
-                       effect->animation_clip, effect->unknown_12,
-                       effect->unknown_0c, effect->unknown_10,
-                       effect->unknown_09, -60);
         effect++;
         goto effect_count_tail;
 effect_special_draw:
@@ -286,10 +292,10 @@ effect_count_tail:
         remaining--;
     }
 
+    placed = game_graphics_runtime.map_placed_entries;
     rotation.z = 0;
     rotation.y = 0;
     rotation.x = 0;
-    placed = game_graphics_runtime.map_placed_entries;
     remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
     while (remaining != -1) {
         u32 visibility;

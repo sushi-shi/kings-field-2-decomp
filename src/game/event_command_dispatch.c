@@ -112,9 +112,9 @@ object_control_action:
                 event_state.control.bytes[object_control_offset + 2] =
                     state_8017d118.values_04[0];
                 event_state.state_word = 1;
-                func_800473e0(command);
+                game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
-                func_80046700((KfEventObjectView *)object, command);
+                event_spawn_effect_object((KfEventObjectView *)object, command);
             } else if (func_800368b4(object, command) == 3) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
                 event_state.state_word = 1;
@@ -199,8 +199,8 @@ transition_action: {
                     object->tail.fields.unknown_38 = command;
                     object->action_timer = 0;
                     event_state.state_word = 1;
-                    func_800473e0(command);
-                    func_80046700((KfEventObjectView *)object, command);
+                    game_counter_decrement(command);
+                    event_spawn_effect_object((KfEventObjectView *)object, command);
                 }
             } else if (func_800368b4(object, command) == 3) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
@@ -210,7 +210,7 @@ transition_action: {
         break;
     case 0x54:
         player_state.unknown_6a = 1200;
-        func_800473e0(0x54);
+        game_counter_decrement(0x54);
         event_state.state_word = 1;
         break;
     case 0x58:
@@ -306,7 +306,7 @@ magic_action: {
         object = map_object_effect_pool_acquire(
             0x15e, 10, map_object_state.unknown_873e);
         map_object_reset(object);
-        func_800473e0(command);
+        game_counter_decrement(command);
         object->object_id = command;
         object->unknown_02 = 1;
         object->unknown_00 = 3;
@@ -316,15 +316,15 @@ magic_action: {
         object->rotation.vy = 0;
         object->rotation.vx = 0;
 
-        func_80045f20(0, 200, 1500, player_state.camera_rotation.angles[0],
+        scene_position_from_camera_offset(0, 200, 1500, player_state.camera_rotation.angles[0],
                       player_state.camera_rotation.angles[1], 0, 0,
                       &far_position);
-        func_80045f20(0, 200, 1000, player_state.camera_rotation.angles[0],
+        scene_position_from_camera_offset(0, 200, 1000, player_state.camera_rotation.angles[0],
                       player_state.camera_rotation.angles[1], 0, 0,
                       &near_position);
         spin = 0;
         for (fraction = 0; fraction < 4096; fraction += 64) {
-            func_80045fd4((KfScenePoseView *)object, &near_position,
+            scene_pose_interpolate((KfScenePoseView *)object, &near_position,
                           &far_position, 0, 0, fraction);
             object->rotation.vy += spin;
             spin += 4;
@@ -376,9 +376,9 @@ decay_update:
                 goto invoke_callback;
             }
         }
-        if (func_80047434(0x4d) == 0) {
+        if (game_counter_increment(0x4d) == 0) {
             notify_enqueue(0x16);
-            func_800473e0(0x52);
+            game_counter_decrement(0x52);
         }
         event_state.state_word = 1;
         break;
@@ -420,12 +420,12 @@ decay_update:
         break;
     }
     case 0x56:
-        func_800473e0(0x56);
+        game_counter_decrement(0x56);
         player_state.unknown_6c = 900;
         event_state.state_word = 1;
         break;
     case 0x57:
-        func_800473e0(0x57);
+        game_counter_decrement(0x57);
         player_state.unknown_6e = 900;
         event_state.state_word = 1;
         player_recalculate_combat_stats();

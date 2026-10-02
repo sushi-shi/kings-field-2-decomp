@@ -911,7 +911,7 @@ void effect_update_dispatch(void)
             actor = &actor_state.actors[record->unknown_3c[5]];
             if (record->unknown_3c[4] != 0) {
                 step = (u16)effect_magic_power(record);
-                func_80039c94(record->unknown_3c[5], step,
+                actor_apply_magic_to_actor(record->unknown_3c[5], step,
                               magic->unknown_06, magic->unknown_08,
                               magic->unknown_0a, magic->unknown_0c,
                               magic->unknown_0e, magic->unknown_10,

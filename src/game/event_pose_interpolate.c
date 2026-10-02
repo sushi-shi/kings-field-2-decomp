@@ -4,7 +4,7 @@
 #include <kf/lib/math.h>
 
 ADDRESS(0x80045f20, 0xb4)
-void func_80045f20(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
+void scene_position_from_camera_offset(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
                    s32 height_offset, s32 z_offset, VECTOR *output)
 {
     SVECTOR offset;
@@ -27,7 +27,7 @@ void func_80045f20(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
 }
 
 ADDRESS(0x80045fd4, 0xcc)
-void func_80045fd4(
+void scene_pose_interpolate(
     KfScenePoseView *destination, const VECTOR *start_position,
     const VECTOR *end_position, const SVECTOR *start_angles,
     const SVECTOR *end_angles, s32 fraction)

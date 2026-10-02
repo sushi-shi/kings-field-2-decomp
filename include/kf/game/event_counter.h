@@ -6,7 +6,7 @@
 /* Event reset clears 0x1e words at this base. The menu reads byte +0x60. */
 extern u8 game_counter_bytes[0x78];
 
-s32 func_800473e0(s32 index);
-s32 func_80047434(s32 index);
+s32 game_counter_decrement(s32 index);
+s32 game_counter_increment(s32 index);
 
 #endif

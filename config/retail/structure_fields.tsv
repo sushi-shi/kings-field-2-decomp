@@ -753,7 +753,7 @@ KfTargetGroup	0x18	0x2	unknown_18	u16	supported	game/actor.h;retail GAME 0x8003f
 KfTargetGroup	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x1c	0x2	unknown_1c	u16	supported	asm;actor record loader	fallback signed actor vertical offset when load record has sentinel -1
 KfTargetGroup	0x1e	0x2	unknown_1e	u16	supported	asm;GAME 0x80039c94 lhu at 0x8003a070	unsigned player experience argument
-KfTargetGroup	0x20	0x10	unknown_20	u16[8]	supported	asm;GAME 0x80039c94 eight lhu reads	passed to func_80039c14 as eight curve divisors
+KfTargetGroup	0x20	0x10	unknown_20	u16[8]	supported	asm;GAME 0x80039c94 eight lhu reads	passed to actor_magic_component_curve as eight curve divisors
 KfTargetGroup	0x30	0x2	unknown_30	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x32	0x2	unknown_32	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfTargetGroup	0x34	0x4	unknown_34	u32	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved

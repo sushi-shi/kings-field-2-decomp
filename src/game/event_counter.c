@@ -9,7 +9,7 @@ DATA(0x8009a5e8, 0x78)
 u8 game_counter_bytes[0x78];
 
 ADDRESS(0x800473e0, 0x54)
-s32 func_800473e0(s32 index)
+s32 game_counter_decrement(s32 index)
 {
     if (game_counter_bytes[index] != 0) {
         game_counter_bytes[index]--;
@@ -20,7 +20,7 @@ s32 func_800473e0(s32 index)
 }
 
 ADDRESS(0x80047434, 0x90)
-s32 func_80047434(s32 index)
+s32 game_counter_increment(s32 index)
 {
     if (game_counter_bytes[index] < 99) {
         game_counter_bytes[index]++;

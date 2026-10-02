@@ -332,7 +332,7 @@ regular_weapon:
                                            bearing, group->unknown_16)
                     && angle_within_tolerance(actor->rotation.y,
                                               bearing + 0x800, group->unknown_18)) {
-                    func_80039c94(index, player_state.physical_power,
+                    actor_apply_magic_to_actor(index, player_state.physical_power,
                                    player_state.attack_components[0],
                                    player_state.attack_components[1],
                                    player_state.attack_components[2],

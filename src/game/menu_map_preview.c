@@ -13,13 +13,16 @@ ADDRESS(0x8001930c, 0x528)
 void menu_show_map_preview(s32 menu_code)
 {
     u32 entry;
+    u32 map_index;
+    u32 map_offset;
     u8 *image;
     s32 frame;
     s32 facing_tile;
     s32 u0;
 
-    entry = (((menu_code - 0x43) & 0xff) * 8)
-        + (state_8017d118.unknown_09[0] + 480);
+    map_index = (menu_code - 0x43) & 0xff;
+    map_offset = state_8017d118.unknown_09[0] + 480;
+    entry = map_index * 8 + map_offset;
     image = memory_allocate(cd_archive_entry_extent(6, entry, 0));
     cd_archive_read(6, entry, (u_long *)image);
     tim_upload_images(image);

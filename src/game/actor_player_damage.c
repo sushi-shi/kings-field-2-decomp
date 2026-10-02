@@ -58,7 +58,7 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
         } else {
             scaled_amount = amount;
         }
-        func_80039c94(index, power, magic_06, magic_08, magic_0a,
+        actor_apply_magic_to_actor(index, power, magic_06, magic_08, magic_0a,
                       magic_0c, magic_0e, magic_10, magic_12, magic_14,
                       (u16)scaled_amount, (u16)effect_flags,
                       damage_position);

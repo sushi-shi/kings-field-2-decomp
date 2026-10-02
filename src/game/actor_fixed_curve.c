@@ -7,7 +7,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x80039c14, 0x80)
-s32 func_80039c14(s32 base, s32 amount, s32 divisor)
+s32 actor_magic_component_curve(s32 base, s32 amount, s32 divisor)
 {
     amount <<= 4;
     divisor <<= 4;
@@ -31,7 +31,7 @@ typedef void (*KfMagicRecipientCallback)(KfActor *actor, s32 amount,
     u16 magic_0e, u16 magic_10, u16 magic_12, u16 magic_14);
 
 ADDRESS(0x80039c94, 0x684)
-void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
+void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
     u16 magic_10, u16 magic_12, u16 magic_14, u16 amount,
     s32 effect_flags, const VECTOR *position)
@@ -73,14 +73,14 @@ void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    total = func_80039c14(power, magic_06, group->unknown_20[0]);
-    total += func_80039c14(power, magic_08, group->unknown_20[1]);
-    total += func_80039c14(power, magic_0a, group->unknown_20[2]);
-    total += func_80039c14(power, magic_0c, group->unknown_20[3]);
-    total += func_80039c14(power, magic_0e, group->unknown_20[4]);
-    total += func_80039c14(power, magic_10, group->unknown_20[5]);
-    total += func_80039c14(power, magic_12, group->unknown_20[6]);
-    total += func_80039c14(power, magic_14, group->unknown_20[7]);
+    total = actor_magic_component_curve(power, magic_06, group->unknown_20[0]);
+    total += actor_magic_component_curve(power, magic_08, group->unknown_20[1]);
+    total += actor_magic_component_curve(power, magic_0a, group->unknown_20[2]);
+    total += actor_magic_component_curve(power, magic_0c, group->unknown_20[3]);
+    total += actor_magic_component_curve(power, magic_0e, group->unknown_20[4]);
+    total += actor_magic_component_curve(power, magic_10, group->unknown_20[5]);
+    total += actor_magic_component_curve(power, magic_12, group->unknown_20[6]);
+    total += actor_magic_component_curve(power, magic_14, group->unknown_20[7]);
     if (total > 0x68db7) {
         total = 0x68db7;
     }

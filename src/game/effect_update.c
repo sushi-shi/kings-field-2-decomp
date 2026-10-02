@@ -43,7 +43,7 @@ void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
         } else {
             record_type |= 2;
         }
-        func_80039c94(KF_COLLISION_CACHE_ACTOR_INDEX, power, magic_06,
+        actor_apply_magic_to_actor(KF_COLLISION_CACHE_ACTOR_INDEX, power, magic_06,
                       magic_08, magic_0a, magic_0c, magic_0e, magic_10,
                       magic_12, magic_14, radius, record_type, position);
         if (options & 0x10000) {

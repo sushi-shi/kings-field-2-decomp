@@ -95,18 +95,33 @@
 - [kf2-game-libcd-cdrom-data.md](kf2-game-libcd-cdrom-data.md):
   bound the two exact LIBCD CDROM register records while keeping interior
   direct relocation candidates under separate per-site review.
+- [kf2-game-libcd-rdata-strings.md](kf2-game-libcd-rdata-strings.md):
+  recover three complete EVENT/CDROM diagnostic strings from pinned
+  archive records and verify the focused `CdInit` reference.
 - [kf2-game-libspu-spu-data.md](kf2-game-libspu-spu-data.md):
   group seven exact LIBSPU hardware pointers into their pinned archive
   record while retaining uncertain original C linkage.
+- [kf2-game-libspu-rdata-strings.md](kf2-game-libspu-rdata-strings.md):
+  recover six full SPU and allocator diagnostic strings across four
+  exact archive records, with focused `_spu_ioctl` reference evidence.
 - [kf2-game-libgpu-tmd-labels.md](kf2-game-libgpu-tmd-labels.md):
   recover all 16 primitive labels and padding bytes in the pinned
   LIBGPU TMD string pool without promoting candidate references.
+- [kf2-game-libgpu-prim-rdata.md](kf2-game-libgpu-prim-rdata.md):
+  recover eleven complete PRIM format strings and padding across four
+  pinned, exact LIBGPU archive records.
+- [kf2-game-libgpu-sys-rdata.md](kf2-game-libgpu-sys-rdata.md):
+  bound three exact SYS format-string records and the focused
+  `DrawPrim` direct reference without promoting candidate rows.
 - [kf2-game-libgpu-otag-sdata.md](kf2-game-libgpu-otag-sdata.md):
   bound four exact LIBGPU OTAG small-data records, their primitive
   labels and format strings, and the separate trailing CPE residue.
 - [kf2-game-libetc-sdata-records.md](kf2-game-libetc-sdata-records.md):
   bound eight exact LIBETC small-data records across interrupt, DMA,
   and VSync members, including the archive-exported `Vcount` word.
+- [kf2-game-libetc-rdata-strings.md](kf2-game-libetc-rdata-strings.md):
+  recover four complete interrupt, DMA, and VSync diagnostic literals
+  from pinned LIBETC records while preserving alignment gaps.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.

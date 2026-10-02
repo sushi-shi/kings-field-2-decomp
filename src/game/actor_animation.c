@@ -19,7 +19,7 @@ s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height)
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         VECTOR alternate;
 
-        if (actor->lifecycle != 1 || actor->target_type == 3
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3
             || (actor_state.unknown_93a0 & actor->unknown_28)
             || actor == actor_state.current) {
             continue;
@@ -54,7 +54,7 @@ s32 func_8003ab5c(s32 x, s32 y, s32 z, s32 radius, s32 height)
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         VECTOR alternate;
 
-        if (actor->lifecycle != 1
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE
             || (actor_state.unknown_93a0 & actor->unknown_28)
             || actor == actor_state.current) {
             continue;
@@ -143,7 +143,7 @@ KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase)
 }
 
 ADDRESS(0x8003ae50, 0x4ec)
-s32 func_8003ae50(s16 *motion, s32 flags)
+s32 func_8003ae50(SVECTOR *motion, s32 flags)
 {
     KfActor *actor = actor_state.current;
     s32 motion_x;
@@ -157,14 +157,14 @@ s32 func_8003ae50(s16 *motion, s32 flags)
     s32 retry_count;
     s32 result = 0;
 
-    if (motion[0] == 0 && motion[2] == 0) {
+    if (motion->vx == 0 && motion->vz == 0) {
         return 0;
     }
     retry_count = 0;
     diagonal_attempted = 0;
     axis_attempted = 0;
-    original_x = motion_x = motion[0];
-    original_z = motion_z = motion[2];
+    original_x = motion_x = motion->vx;
+    original_z = motion_z = motion->vz;
 
 retry_move:
     proposed.vx = actor->position.vx + motion_x;
@@ -318,8 +318,8 @@ check_diagonal:
 
 finish:
     if (flags & 8) {
-        motion[0] = motion_x;
-        motion[2] = motion_z;
+        motion->vx = motion_x;
+        motion->vz = motion_z;
     }
     return result;
 }

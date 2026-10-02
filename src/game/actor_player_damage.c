@@ -31,7 +31,7 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
         s32 distance;
         u32 scaled_amount;
 
-        if (actor->lifecycle != 1 || actor == actor_state.current) {
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor == actor_state.current) {
             continue;
         }
         if (mode == 0x8000) {
@@ -124,7 +124,7 @@ KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
     s32 reach;
 
     do {
-        if (actor->lifecycle != 1 || actor->target_type == 3 ||
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3 ||
             actor == actor_state.current) {
             continue;
         }

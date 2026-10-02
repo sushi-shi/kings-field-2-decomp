@@ -8,7 +8,7 @@ ADDRESS(0x80038e38, 0xc4)
 void actor_initialize_from_group(KfActor *actor)
 {
     actor_copy_group_defaults(actor);
-    actor->lifecycle = 1;
+    actor->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
     actor->unknown_0c = 0;
     actor->animation_phase = 0;
     actor->unknown_11 = 0;

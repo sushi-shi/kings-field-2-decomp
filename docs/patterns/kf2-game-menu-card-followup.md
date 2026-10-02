@@ -679,3 +679,36 @@ debug type records but leaves all emitted instructions identical: the two
 title-glyph loops still use `lbu`, while retail uses `lb` before byte stores
 and halfword reloads. This flag and the earlier signed-view C probes do not
 establish a source correction; C and metadata remain unchanged.
+
+## Card directory internal-j relocation review
+
+Three GAME `mips26` candidates were promoted after decoding the retail `j`
+and its delay slot at each site. `0x800229a4 → 0x80022b28` joins the card
+reader's failure epilogue with `v0 = 1`; `0x80022c24 → 0x80022c74` joins
+the writer's retry tail with `v1 = 1`; `0x80022c6c → 0x80022c84` joins its
+success epilogue with `v0 = 0`. All targets are inside the respective
+claimed function and agree with the source guards. A fresh five-VA safe
+carve admits **274 relocations, zero withheld**. Focused comparison keeps
+`memory_card_format` exact, and isolated strict text remains 93.60504%,
+85.15625%, 100%, 93.666664%, and 95.896774% in ascending claim order;
+DATA and RODATA remain 100%. The promotion changes evidence status, with
+no source or score change.
+
+## Menu number and sound internal-j review
+
+Ten more decoded GAME `j` sites were promoted within two source units.
+In `menu_format_number`, `0x80022080` and `0x8002209c` join the style-count
+continuation at `0x800220b0`; `0x800220f8`, `0x80022124`, `0x80022148`,
+and `0x80022164` join the digit tail at `0x80022180`; and `0x80022108`
+joins the trailing-glyph store at `0x80022178`. Their delay slots respectively
+increment the count, write the style glyph, or load its value, matching the
+source branches. In `menu_sound_cue`, `0x80022310` joins the common
+`audio_key_on` call at `0x80022328`, `0x80022340` joins the epilogue at
+`0x80022384`, and `0x80022418` loops to the `PadRead` call at
+`0x800223f4`. Every destination lies inside its claimed function.
+
+A four-VA safe carve admits **54 relocations, zero withheld**. Fresh isolated
+strict comparison keeps the number formatter at **97.39%** and all three
+sound-cue siblings plus their four DATA bytes at **100%**; focused listing
+reports the same 0/1 and 3/3 exact counts. The formatter's known eight-byte
+frame difference remains, so no C edit follows from this relocation review.

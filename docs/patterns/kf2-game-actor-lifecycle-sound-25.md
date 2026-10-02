@@ -35,6 +35,29 @@ typed actor/target state.
 | `8003d0e8` | `func_8003d0e8` | 100% | Exact spatial-sound dispatch. |
 | `8003d184` | `func_8003d184` | 99.931595% | WIP behavior dispatch, with exact 241-row RODATA. |
 
+## Lifecycle state names
+
+KF1's recovered actor lifecycle has states 0 dormant, 1 active, 2 waiting
+for range exit, and 3 disabled. KF2 raw `0x80038e38` stores 1 into actor
+byte `+0x09` during initialization; raw `0x80038efc` stores 3 there before
+setting the home position. In KF2 `0x8003983c`, state 0 may activate or enter
+state 2; states 1 and 2 return to 0 when the actor exits the group range.
+These matching state transitions support the same four semantic constants in
+the KF2 actor header. The lifecycle update, group scan, initialization, and
+home wrapper now use them without changing the represented values.
+
+Fresh focused rebuilds kept initialization `SAME` and both home-wrapper
+functions `SAME`. Safe GAME delinking of the two lifecycle WIPs accepted 52
+relocations with none withheld; isolated strict text stayed 99.19598% for
+`0x8003983c` and 90.95744% for `0x80039b58`. The enum names do not claim a
+new match or settle the group scan's caller.
+
+The same active-state name replaces four literal comparisons in the two
+actor collision searches and two player-damage helpers. Post-integration
+safe one-VA carves withheld no relocations. Isolated strict text remains
+100% for `0x8003a9f4`, `0x8003ab5c`, and `0x8003a778`; the existing
+`0x8003a318` WIP remains 99.86911% over 764 bytes.
+
 ## Target sound fields
 
 Retail `0x8003d0e8` loads the target-candidate byte at `+0x04`, tests bit
@@ -79,3 +102,51 @@ no external direct caller. A separate raw word scan found no encoded `j` or
 `jal` to that address in GAME.EXE. Neither absence proves the function
 unreachable or establishes an indirect caller, so its address-derived
 identity remains WIP.
+
+## Motion-vector caller graph
+
+The three proven direct callers of `func_8003ae50` pass the contiguous actor
+motion fields beginning at `+0x50` (retail call sites `0x8003bac0`,
+`0x8003bb7c`, and `0x8003bef0`). The callee loads signed halfwords at input
+offsets 0 and 4 at `0x8003ae88`, `0x8003ae98`, `0x8003aeb8`, and
+`0x8003aebc`, then stores those same offsets at `0x8003b300` and
+`0x8003b304` when the output flag is set. The middle signed halfword is the
+Y component used independently by the 3-D caller. This establishes an
+`SVECTOR *` interface more directly than an unstructured `s16 *`; the mover
+now uses `vx` and `vz` while its callers retain their actor-field pointer
+cast until the complete actor motion field is modeled. No field width,
+argument location, or generated instruction changed.
+
+Five focused quick builds cover the 21 connected claims below. The two
+changed units retain 12/14 identical listings. Safe one-VA delinking of
+their WIPs accepted 42 animation and 5 steering relocations with none
+withheld; isolated strict text remains 99.31746% for the mover and
+86.53226% for steering. The three adjacent WIPs also retain their prior
+strict values: vertical motion 96.42041%, fixed curve 98.11751%, and phase
+seek 99.268295%, each from fresh safe one-VA targets with no withheld
+relocations. Existing exact siblings remain focused `SAME` and were already
+strict certified; this interface correction banks no new function.
+
+| GAME VA | Function or role | Verdict |
+| --- | --- | --- |
+| `80039c14` | fixed-curve scalar helper | Exact control. |
+| `80039c94` | actor fixed curve | WIP 98.11751%; prior raw call/CFG gap remains bounded. |
+| `8003a9f4` | actor collision search | Exact control. |
+| `8003ab5c` | alternate collision search | Exact control. |
+| `8003acb4` | current-actor binding | Exact control. |
+| `8003ad90` | wrapped phase update | Exact control. |
+| `8003adc4` | clamped phase update | Exact control. |
+| `8003ae20` | phase crossing | Exact control. |
+| `8003ae50` | X/Z mover | WIP 99.31746%; two masked-angle register/schedule differences. |
+| `8003b33c` | 3-D collision move | Exact control. |
+| `8003b520` | trajectory start | Exact control. |
+| `8003b5bc` | vertical mode setter | Exact control. |
+| `8003b5d0` | vertical motion | WIP 96.42041%; state-`0x20` reset join. |
+| `8003b9a4` | decayed movement caller | Exact control. |
+| `8003bae4` | scaled movement caller | Exact control. |
+| `8003bba0` | yaw steering | Exact control. |
+| `8003bcd0` | yaw/movement wrapper | Exact control. |
+| `8003bd40` | horizontal steering | WIP 86.53226%; saved-register/load schedule. |
+| `8003be38` | 3-D movement caller | Exact control. |
+| `8003bf74` | pitch/yaw movement wrapper | Exact control. |
+| `800460a0` | animation phase seek | WIP 99.268295%; step/half-step register assignment. |

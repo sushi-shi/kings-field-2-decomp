@@ -21,3 +21,13 @@ and direct objdiff of each rebuilt unit confirmed strict 100%.
 Their current typed source, calls, data referents, and relocation models need
 no correction on this probe. No tests, full build, broad match, or banking
 were run.
+
+The first two cache functions, GAME `0x80034070` and `0x80034344`, have
+seventeen decoded direct `jal` instructions. Each target agrees with the
+named source call and curated function identity. Seven decoded `j` targets
+remain inside their respective claimed bodies and match the source CFG.
+Those 24 `mips26` rows are now reviewed in `config/retail/relocs.tsv`.
+Separate safe one-function carves accepted 30 and seven relocations with none
+withheld. The unit rebuilt with all three listings SAME; isolated strict
+objdiff remains 100% for the 724- and 672-byte first two functions. The
+third function retains its previous strict-exact verdict.

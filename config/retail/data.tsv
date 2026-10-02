@@ -158,8 +158,8 @@ GAME.EXE	0x80012de4	0x25e4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4
 GAME.EXE	0x80012de8	0x25e8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80012dec	0x25ec	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: no param
 GAME.EXE	0x80012df8	0x25f8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012dfc	0x25fc	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: CdInit: Init failed
-GAME.EXE	0x80012e0f	0x260f	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012dfc	0x25fc	0x15	string	manual:exact Psy-Q 3.0 LIBCD EVENT .rdata literal		ascii	archive 21-byte Code record;retail exact	CdInit diagnostic including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80012e11	0x2611	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBCD EVENT Code record; ownership unresolved
 GAME.EXE	0x80012e14	0x2614	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: path level (%d) error
 GAME.EXE	0x80012e2d	0x262d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80012e30	0x2630	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: dir was not found
@@ -192,22 +192,21 @@ GAME.EXE	0x80012fb4	0x27b4	0x18	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80012fcc	0x27cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80012fd0	0x27d0	0x1c	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: %d files found
 GAME.EXE	0x80012fec	0x27ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ff0	0x27f0	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
-GAME.EXE	0x8001301b	0x281b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013020	0x2820	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA STATUS ERROR %x
-GAME.EXE	0x80013033	0x2833	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013038	0x2838	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: SPU:T/O [%s]
-GAME.EXE	0x80013044	0x2844	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013048	0x2848	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (reset)
-GAME.EXE	0x80013054	0x2854	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013058	0x2858	0x12	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (wrdy H -> L)
-GAME.EXE	0x8001306a	0x286a	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8001306c	0x286c	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (dmaf clear/W)
-GAME.EXE	0x8001307f	0x287f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013080	0x2880	0x10	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (ioctl/IRQ)
-GAME.EXE	0x80013090	0x2890	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013094	0x2894	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: [%d] %08x / %08x (%08d)
-GAME.EXE	0x800130ab	0x28ab	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012ff0	0x27f0	0x2d	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 45-byte Code record;retail exact	final-sector format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001301d	0x281d	0x3	unclassified	manual:LIBCD CDROM .rdata zero prefix			archive 24-byte Code record;retail zero	leading bytes before DMA-status string
+GAME.EXE	0x80013020	0x2820	0x15	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 24-byte Code record;retail exact	DMA-status format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013035	0x2835	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBCD CDROM Code record; ownership unresolved
+GAME.EXE	0x80013038	0x2838	0xe	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 29-byte Code record;retail exact	SPU timeout string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013046	0x2846	0x2	unclassified	manual:LIBSPU SPU .rdata zero padding			archive 29-byte Code record;retail zero	padding before reset string
+GAME.EXE	0x80013048	0x2848	0xd	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 29-byte Code record;retail exact	reset wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013055	0x2855	0x3	unclassified	manual:LIBSPU SPU .rdata zero prefix			archive 43-byte Code record;retail zero	leading bytes before wait string
+GAME.EXE	0x80013058	0x2858	0x13	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 43-byte Code record;retail exact	wrdy wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x8001306b	0x286b	0x1	unclassified	manual:LIBSPU SPU .rdata zero padding			archive 43-byte Code record;retail zero	padding before dmaf wait string
+GAME.EXE	0x8001306c	0x286c	0x14	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 43-byte Code record;retail exact	dmaf wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013080	0x2880	0x11	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 17-byte Code record;retail exact	ioctl wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013091	0x2891	0x3	unclassified	coverage-gap			payload-complement	zero alignment between SPU and S_M_INT records; original emission mechanism unresolved
+GAME.EXE	0x80013094	0x2894	0x19	string	manual:exact Psy-Q 3.0 LIBSPU S_M_INT .rdata literal		ascii	archive 25-byte Code record;retail exact	allocator diagnostic string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800130ad	0x28ad	0x3	unclassified	coverage-gap			payload-complement	outside pinned S_M_INT record; ownership unresolved
 GAME.EXE	0x800130b0	0x28b0	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: Can't Open Sequence data any more
 GAME.EXE	0x800130d1	0x28d1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800130d4	0x28d4	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: This is not SEQ Data.
@@ -368,20 +367,18 @@ GAME.EXE	0x80013368	0x2b68	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4
 GAME.EXE	0x8001336c	0x2b6c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80013370	0x2b70	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80013374	0x2b74	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80013378	0x2b78	0x33	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: intr.c,v 1.52 1995/03/14 12:20:44 hakama Exp $
-GAME.EXE	0x800133ab	0x2bab	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133ac	0x2bac	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: Too many interrupts
-GAME.EXE	0x800133bf	0x2bbf	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133c4	0x2bc4	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA bus error: code=%08x
-GAME.EXE	0x800133dc	0x2bdc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133e0	0x2be0	0xe	string	byte-pattern		ascii	investigation:string-census	escaped text: VSync: timeout
-GAME.EXE	0x800133ee	0x2bee	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133f0	0x2bf0	0x29	string	byte-pattern		ascii	investigation:string-census	escaped text: SetGraphDebug:level:%d,type:%d reverse:%d
-GAME.EXE	0x80013419	0x2c19	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8001341c	0x2c1c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: DrawPrim
-GAME.EXE	0x80013424	0x2c24	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013428	0x2c28	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: GPU timeout:QUE=(%2d,%2d),CODE=(%d,%d,%08X)
-GAME.EXE	0x80013453	0x2c53	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80013378	0x2b78	0x34	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 52-byte Code record;retail exact	INTR revision string including NUL; original C literal provenance unresolved
+GAME.EXE	0x800133ac	0x2bac	0x15	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 21-byte Code record;retail exact	interrupt-overflow string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133c1	0x2bc1	0x3	unclassified	coverage-gap			payload-complement	zero alignment outside pinned INTR Code records; original emission mechanism unresolved
+GAME.EXE	0x800133c4	0x2bc4	0x1a	string	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .rdata literal		ascii	archive 26-byte Code record;retail exact	DMA-bus-error string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133de	0x2bde	0x2	unclassified	coverage-gap			payload-complement	zero alignment outside pinned INTR_DMA Code record; original emission mechanism unresolved
+GAME.EXE	0x800133e0	0x2be0	0x10	string	manual:exact Psy-Q 3.0 LIBETC VSYNC .rdata literal		ascii	archive 16-byte Code record;retail exact	VSync timeout string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133f0	0x2bf0	0x2b	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 43-byte Code record;retail exact	SetGraphDebug format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001341b	0x2c1b	0x1	unclassified	manual:LIBGPU SYS .rdata zero prefix			archive 10-byte Code record;retail zero	leading byte before DrawPrim string
+GAME.EXE	0x8001341c	0x2c1c	0x9	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 10-byte Code record;retail exact	DrawPrim string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013425	0x2c25	0x3	unclassified	manual:LIBGPU SYS .rdata zero prefix			archive 48-byte Code record;retail zero	leading bytes before GPU-timeout string
+GAME.EXE	0x80013428	0x2c28	0x2d	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 48-byte Code record;retail exact	GPU-timeout format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013455	0x2c55	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBGPU SYS Code records; ownership unresolved
 GAME.EXE	0x80013458	0x2c58	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: id  =%08x
 GAME.EXE	0x80013461	0x2c61	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80013464	0x2c64	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: mode=%08x
@@ -400,28 +397,24 @@ GAME.EXE	0x800134ec	0x2cec	0x14	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80013500	0x2d00	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80013504	0x2d04	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: unsupported type (%08x)
 GAME.EXE	0x8001351b	0x2d1b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013520	0x2d20	0x14	string	byte-pattern		ascii	investigation:string-census	escaped text: tpage: (%d,%d,%d,%d)
-GAME.EXE	0x80013534	0x2d34	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013538	0x2d38	0xd	string	byte-pattern		ascii	investigation:string-census	escaped text: clut: (%d,%d)
-GAME.EXE	0x80013545	0x2d45	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013548	0x2d48	0x16	string	byte-pattern		ascii	investigation:string-census	escaped text: clip (%3d,%3d)-(%d,%d)
-GAME.EXE	0x8001355e	0x2d5e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013560	0x2d60	0xe	string	byte-pattern		ascii	investigation:string-census	escaped text: ofs  (%3d,%3d)
-GAME.EXE	0x8001356e	0x2d6e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013570	0x2d70	0x14	string	byte-pattern		ascii	investigation:string-census	escaped text: tw   (%d,%d)-(%d,%d)
-GAME.EXE	0x80013584	0x2d84	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013588	0x2d88	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: dtd   %d
-GAME.EXE	0x80013590	0x2d90	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013594	0x2d94	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: dfe   %d
-GAME.EXE	0x8001359c	0x2d9c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135a0	0x2da0	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: disp   (%3d,%3d)-(%d,%d)
-GAME.EXE	0x800135b8	0x2db8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135bc	0x2dbc	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: screen (%3d,%3d)-(%d,%d)
-GAME.EXE	0x800135d4	0x2dd4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135d8	0x2dd8	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: isinter %d
-GAME.EXE	0x800135e2	0x2de2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135e4	0x2de4	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: isrgb24 %d
-GAME.EXE	0x800135ee	0x2dee	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80013520	0x2d20	0x16	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 22-byte Code record;retail exact	tpage format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013536	0x2d36	0x2	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 17-byte Code record;retail zero	leading bytes before clut format string
+GAME.EXE	0x80013538	0x2d38	0xf	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 17-byte Code record;retail exact	clut format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013547	0x2d47	0x1	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 87-byte Code record;retail zero	leading byte before clip format string
+GAME.EXE	0x80013548	0x2d48	0x18	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	clip format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013560	0x2d60	0x10	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	offset format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013570	0x2d70	0x16	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	texture-window format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013586	0x2d86	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 87-byte Code record;retail zero	padding before dtd format string
+GAME.EXE	0x80013588	0x2d88	0xa	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	dtd format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013592	0x2d92	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 87-byte Code record;retail zero	padding before dfe format string
+GAME.EXE	0x80013594	0x2d94	0xa	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	dfe format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001359e	0x2d9e	0x2	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 82-byte Code record;retail zero	leading bytes before display format string
+GAME.EXE	0x800135a0	0x2da0	0x1a	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	display format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135ba	0x2dba	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 82-byte Code record;retail zero	padding before screen format string
+GAME.EXE	0x800135bc	0x2dbc	0x1a	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	screen format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135d6	0x2dd6	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 82-byte Code record;retail zero	padding before interlace format string
+GAME.EXE	0x800135d8	0x2dd8	0xc	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	interlace format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135e4	0x2de4	0xc	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	RGB24 format string including newline and NUL; original C literal provenance unresolved
 GAME.EXE	0x800135f0	0x2df0	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: OTag :prim
 GAME.EXE	0x800135fa	0x2dfa	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800135fb	0x2dfb	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:

@@ -74,3 +74,26 @@ Making symbols `static` solely to alter section class would discard
 currently shared declarations without evidence of original linkage.
 No source, inventory, or profile change was retained here. This audit ran
 focused compiles and isolated strict comparisons only.
+
+## Loaded-data boundary control
+
+Fresh image-specific isolated strict checks reconfirm the 15 adjacent
+game-owned initialized claims: OPEN `main` owns the mailbox pointer and
+`"OP.D"` at `0x8003db88..0x8003db90`, `title` owns seven state words at
+`0x8003db94..0x8003dbaf`, and shared `cd_file` owns the path and version
+strings at `0x8003dbb0` and `0x8003dbb8`; END `main` owns its mailbox
+pointer and `"ED.D"` at `0x8003aa34..0x8003aa3c`, and `cd_file` owns the
+same two strings at `0x8003aa40` and `0x8003aa48`. All 15 named symbols and
+their five containing initialized sections remain 100% strict, including
+padding (OPEN 9/9, 28/28, 11/11 B; END 9/9 and 11/11 B).
+
+The immediately following Ghidra pointer run is a negative owner control,
+not a game claim: it begins at OPEN `0x8003dbc4` and END `0x8003aa54`.
+The first pointer in each image has validated incoming references only from
+`MDEC_in` and `MDEC_report` (OPEN `0x80014578/7c` and `0x80014800/04`;
+END `0x80012f28/2c` and `0x800131b0/b4`). Both images have strong-unique
+`LIBPRESS.LIB` text-section evidence in this neighborhood in
+`config/evidence/psyq_30_text_sections.tsv`. This supports keeping the
+adjacent records address-only while the defining data extent remains
+unproved; proximity to exact game globals does not establish game ownership.
+No OPEN/END identity or data carve was made.

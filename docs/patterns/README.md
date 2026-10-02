@@ -7,6 +7,11 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-data-owner-fresh-audit.md](kf2-game-data-owner-fresh-audit.md):
+  current GAME initialized bytes, table addends, placement, and BSS/COMMON
+  boundaries from isolated owner comparisons.
+- [kf2-game-collision-bounds-cse.md](kf2-game-collision-bounds-cse.md): a
+  single-unit GCC CSE control producing a strict-exact collision-bounds helper.
 - [kf2-game-event-command-table.md](kf2-game-event-command-table.md): reviewed
   35-entry scene-command switch table and its remaining source-body boundary.
 - [kf2-game-event-dispatch-audit.md](kf2-game-event-dispatch-audit.md): retail
@@ -716,6 +721,9 @@ promotes a probe to a proven historical toolchain.
 - [game-map-object-clearing.md](game-map-object-clearing.md): corrected
   type-0..8 link predicate and aligned whole-link reset close both clearing
   functions; the earlier memset control emitted an unsupported call.
+- [kf2-game-map-object-action-signed-timer.md](kf2-game-map-object-action-signed-timer.md):
+  raw-backed action 4 signed timer, action 5 linked-index read, and action
+  81/83 state resets improve the WIP map-object dispatcher.
 - [game-map-object-constants.md](game-map-object-constants.md): interaction
   types, running actions, switch phases and transient drop groups; the linked
   motion follow-up maintains the complete remaining-literal ledger.

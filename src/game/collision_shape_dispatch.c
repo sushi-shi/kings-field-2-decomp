@@ -101,7 +101,7 @@ LAB_8002b3b8:
       }
       break;
     case 0x11:
-      next_record = record + 3;
+      next_record = operand + 2;
       saved_height_limit = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
       if (bottom_y < saved_height_limit) {
         candidate_height = (s16)operand[1] + KF_COLLISION_CACHE_HEIGHT;

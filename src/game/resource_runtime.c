@@ -89,18 +89,22 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
     s32 x;
     s32 visible = 0;
 
-    if (game_graphics_runtime.render_state.view_cell_z < z - radius_z) {
+    if (game_graphics_runtime.render_state.view_cell_z
+        < (s32)((u32)z - (u32)radius_z)) {
         goto done;
     }
-    if (z + radius_z < game_graphics_runtime.render_state.view_cell_z) {
+    if ((s32)((u32)z + (u32)radius_z)
+        < game_graphics_runtime.render_state.view_cell_z) {
         goto done;
     }
 
     x = position->vx >> KF_MAP_CELL_SHIFT;
-    if (game_graphics_runtime.render_state.view_cell_x < x - radius_x) {
+    if (game_graphics_runtime.render_state.view_cell_x
+        < (s32)((u32)x - (u32)radius_x)) {
         goto done;
     }
-    visible = x + radius_x >= game_graphics_runtime.render_state.view_cell_x;
+    visible = (s32)((u32)x + (u32)radius_x)
+        >= game_graphics_runtime.render_state.view_cell_x;
 
 done:
     return visible;

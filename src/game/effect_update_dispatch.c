@@ -72,7 +72,6 @@ void effect_update_dispatch(void)
     s32 shared_motion_acceleration;
     s32 shared_motion_count;
     s32 shared_motion_layer;
-    s32 shared_growth_phase;
 
     switch (initial_kind) {
     case 29:
@@ -80,7 +79,7 @@ void effect_update_dispatch(void)
     case 48: {
         VECTOR projected;
         VECTOR midpoint;
-        s32 age;
+        s16 age;
         s32 prior_y;
         s32 acceleration;
 
@@ -94,18 +93,17 @@ void effect_update_dispatch(void)
             break;
         }
         /* These kinds overlay the record tail with a Y origin and age. */
-        if ((s16)*(u16 *)&record->unknown_3c[6] == 0) {
+        if (*(s16 *)&record->unknown_3c[6] == 0) {
             audio_play_spatial_range(5, &record->position, 110,
                                      28000, 29000, 0);
         }
         age = *(u16 *)&record->unknown_3c[6] + 1;
         *(u16 *)&record->unknown_3c[6] = age;
-        age = (s16)age;
-        projected.vx = record->position.vx + record->direction.vx;
         prior_y = record->position.vy;
         projected.vy = (s16)*(u16 *)&record->unknown_3c[4] +
                        record->direction.vy * age +
                        ((acceleration * age * age) >> 1);
+        projected.vx = record->position.vx + record->direction.vx;
         projected.vz = record->position.vz + record->direction.vz;
         collision = func_8003fa68(&projected, 20, 20);
         if (collision == 0) {
@@ -133,9 +131,7 @@ void effect_update_dispatch(void)
     case 7:
     case 49: {
     shared_growth_entry:
-        shared_growth_phase = initial_phase;
-
-        if (shared_growth_phase == 0) {
+        if (initial_phase == 0) {
             collision = func_80042298(180, (s32)0x80000000, -300);
             if (collision == 0) {
                 break;
@@ -143,7 +139,7 @@ void effect_update_dispatch(void)
             func_8004212c(&record->position, 3, 400, 0x2000, 0x2000, 0x400);
             goto shared_growth_collision;
         }
-        if (shared_growth_phase >= 3) {
+        if (initial_phase >= 3) {
             record->type = KF_EFFECT_SLOT_FREE;
             break;
         }
@@ -151,9 +147,7 @@ void effect_update_dispatch(void)
     }
     case 13:
     case 32: {
-        shared_growth_phase = initial_phase;
-
-        if (shared_growth_phase != 0) {
+        if (initial_phase != 0) {
             goto kind13_nonzero_phase;
         }
         collision = func_80042298(180, 0, -300);
@@ -169,12 +163,12 @@ void effect_update_dispatch(void)
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         break;
     kind13_nonzero_phase:
-        if (shared_growth_phase >= 3) {
+        if (initial_phase >= 3) {
             record->type = KF_EFFECT_SLOT_FREE;
             break;
         }
     shared_growth_update:
-        record->animation_clip = shared_growth_phase - 128;
+        record->animation_clip = initial_phase - 128;
         step = record->scale_x + 2048;
         record->scale_x = step;
         record->scale_y = step;
@@ -187,9 +181,8 @@ void effect_update_dispatch(void)
             KfActor *actor = &actor_state.actors[*(s16 *)&record->unknown_3c[4]];
             VECTOR vertex_offset;
             VECTOR actor_position;
-            VECTOR old_position = record->position;
+            VECTOR old_position;
             VECTOR *position;
-            s32 scale;
 
             if (actor->lifecycle != 1 || actor->target_type != 25) {
                 record->type = KF_EFFECT_SLOT_FREE;
@@ -198,16 +191,15 @@ void effect_update_dispatch(void)
             func_8003c000(actor, *(s16 *)&record->unknown_3c[6],
                           &vertex_offset);
             position = func_8003c10c(actor, &actor_position);
+            old_position = record->position;
             record->position.vx = vertex_offset.vx + position->vx;
             record->position.vy = vertex_offset.vy + position->vy;
             record->position.vz = vertex_offset.vz + position->vz;
-            scale = (u16)record->scale_x + 512;
-            if ((s16)scale > 0x1800) {
-                scale = 0x1800;
+            record->scale_x = (u16)record->scale_x + 512;
+            if ((s16)record->scale_x > 0x1800) {
+                record->scale_x = 0x1800;
             }
-            record->scale_x = scale;
-            record->scale_y = scale;
-            record->scale_z = scale;
+            record->scale_y = record->scale_z = record->scale_x;
             record->direction.vx = (u16)record->position.vx - (u16)old_position.vx;
             record->direction.vy = (u16)record->position.vy - (u16)old_position.vy;
             record->direction.vz = (u16)record->position.vz - (u16)old_position.vz;
@@ -228,17 +220,20 @@ void effect_update_dispatch(void)
     case 4:
         collision = func_80042298(180, 0, 0);
         if (collision == 0) {
-            record->unknown_3c[4] = 0;
-        } else {
-            if (collision & 0xf) {
-                record->type = KF_EFFECT_SLOT_FREE;
-            }
-            if (record->unknown_3c[4] == 0) {
-                record->unknown_3c[4] = 1;
-                func_8003feb0(collision);
-            }
+            goto kind4_zero_collision;
         }
-        record->rotation.vz += 750;
+        if (collision & 0xf) {
+            record->type = KF_EFFECT_SLOT_FREE;
+        }
+        if (record->unknown_3c[4] == 0) {
+            record->unknown_3c[4] = 1;
+            func_8003feb0(collision);
+        }
+        goto kind4_rotate;
+    kind4_zero_collision:
+        record->unknown_3c[4] = 0;
+    kind4_rotate:
+        record->rotation.vy += 750;
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         break;
     case 34:
@@ -312,7 +307,8 @@ void effect_update_dispatch(void)
 
         record->position.vx += record->direction.vx;
         record->position.vz += record->direction.vz;
-        if ((s8)record->unknown_3c[4] == 0) {
+        switch ((s8)record->unknown_3c[4]) {
+        case 0: {
             collision = func_8002b9d4(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
                                       (s16)record->scale_y, 0x30);
@@ -320,14 +316,20 @@ void effect_update_dispatch(void)
             func_8002b604(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
             record->position.vy = KF_COLLISION_CACHE_RESULT;
-            height = record->position.vy - KF_COLLISION_CACHE_HEIGHT_LIMIT;
-            record->scale_y = height > 32767 ? 32767 : height;
+            height = KF_COLLISION_CACHE_RESULT - KF_COLLISION_CACHE_HEIGHT_LIMIT;
+            if (height <= 32767) {
+                record->scale_y = height;
+            } else {
+                record->scale_y = 32767;
+            }
             if (selected->type == KF_EFFECT_SLOT_FREE) {
                 record->unknown_3c[4] = 1;
                 *(u16 *)&record->unknown_3c[6] = 0;
                 *(u16 *)&record->unknown_32[0] = record->scale_y;
             }
-        } else if ((s8)record->unknown_3c[4] == 1) {
+            break;
+        }
+        case 1: {
             record->scale_y = func_8001584c(
                 (s16)*(u16 *)&record->unknown_32[0], 0,
                 (s16)*(u16 *)&record->unknown_3c[6]);
@@ -336,6 +338,8 @@ void effect_update_dispatch(void)
             if ((s16)age >= 4096) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
+            break;
+        }
         }
         break;
     }

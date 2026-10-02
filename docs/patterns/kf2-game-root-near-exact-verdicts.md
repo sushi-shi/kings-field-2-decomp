@@ -223,7 +223,13 @@ unaffected.
 GAME `map_cell_layer_mask_radius` at `0x800320b0` uses raw `sll` to double
 the radius. Its C expression now casts to `u32` before shifting, defining
 the observed 32-bit wrap without changing the focused listing or its four
-exact `game.resource_runtime` siblings. A source-order probe computing the
+exact `game.resource_runtime` siblings. The adjacent `map_cell_visible` at
+`0x80032174` likewise uses raw `subu`/`addu` followed by signed `slt` for
+the four X/Z radius bounds. Explicit unsigned arithmetic followed by an
+`s32` view models that 32-bit wrap without signed-overflow UB. A fresh
+single-unit strict comparison stays 93.6% for the visibility helper and
+retains all four exact siblings. A direct-return source probe fell to 79.6%,
+so its existing common-return form remains. A source-order probe computing the
 row address before the independent X bound improved focused similarity from
 26.9% to 40.4%, but lowered strict text from 73.95918% to 67.85714%; it was
 reverted because retail scheduling alone does not prove that source order.

@@ -80,6 +80,7 @@ void func_8003b5d0(void)
     s32 next_y;
     s32 collision;
     s32 phase;
+    s32 vertical_state;
 
     func_8002b604(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->unknown_1c,
@@ -89,8 +90,17 @@ void func_8003b5d0(void)
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
-    switch (actor->unknown_0d) {
-    case 0:
+    vertical_state = actor->unknown_0d;
+    if (vertical_state == 0x20) goto state_20;
+    if (vertical_state < 33) {
+        if (vertical_state == 0) goto state_0;
+        if (vertical_state == 0x10) goto state_10;
+        return;
+    }
+    if (vertical_state == 0x30) goto state_30;
+    return;
+
+state_0:
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
             actor->unknown_0d = 0x20;
@@ -101,7 +111,7 @@ void func_8003b5d0(void)
         }
         return;
 
-    case 0x10:
+state_10:
         next_y = actor->position.vy + actor->unknown_52;
         collision = func_8002b9d4(actor->position.vx, next_y,
                                   actor->position.vz, actor->unknown_1c,
@@ -133,7 +143,7 @@ void func_8003b5d0(void)
         actor->unknown_0d = 0;
         return;
 
-    case 0x20:
+state_20:
         actor->position.vy += actor->unknown_52;
         actor->unknown_52 += 5;
         if (KF_COLLISION_CACHE_RESULT < actor->position.vy &&
@@ -144,7 +154,7 @@ void func_8003b5d0(void)
         actor->unknown_0d = 0;
         return;
 
-    case 0x30:
+state_30:
         phase = actor->unknown_52;
         next_y = actor->unknown_3c - actor->unknown_6a * phase +
                  ((actor->unknown_6c * phase * phase) >> 1);
@@ -166,5 +176,4 @@ void func_8003b5d0(void)
         actor->unknown_0d = 0x10;
         actor->unknown_52 = 0;
         return;
-    }
 }

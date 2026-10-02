@@ -2411,6 +2411,108 @@ to 80.417046%, and RODATA from 28.696499% to 29.280155%. All 128
 pointer rows, 64 target classes and their physical order, and the named
 referent multiset remain exact. The updater is still WIP.
 
+The kind-29/31/48 age-zero check at retail `0x800426c4` uses `lh` from
+record tail `+0x42`; the next age arithmetic reload at `0x800426f0`
+uses `lhu` from the same address. A direct signed-halfword view for the
+zero check gives the candidate the retail `lh` opcode while preserving the
+later unsigned reload. The focused object remains 13,752 text bytes;
+isolated strict text rises from 80.417046% to 80.432840%, with RODATA
+unchanged at 29.280155%. This is an instruction-width correction, not a
+new object or field owner.
+
+The same ballistic arm computes the projected Y expression before storing
+projected X and Z in retail. The C had assigned X first, making the probe
+load X inputs before the Y multiply chain. Putting the Y expression first
+preserves the same arithmetic and gives the candidate the retail ordering
+from the age reload through both multiplies, then the X/Z stores. Focused
+candidate text stays 13,752 bytes; isolated strict text rises from
+80.432840% to 80.707520%, with RODATA unchanged at 29.280155%. Pointer
+class and named-referent controls remain exact.
+
+The age value itself is a signed 16-bit local. Declaring it `s16` lets the
+probe retain the unsigned halfword reload for the storage increment, then
+sign-extend once for the Y multiply chain and delay the halfword store to
+the same point after the three multiplies as retail. The candidate's local
+instruction sequence is now the retail sequence shifted eight body bytes
+by the preceding entry code; register allocation and the larger retail
+frame still differ. Focused candidate text remains 13,752 bytes, while
+isolated strict text rises from 80.707520% to 80.915610% and RODATA stays
+29.280155%. The 128 pointer rows, 64 class relations and physical order,
+and named referent multiset remain exact.
+
+The growth arms for kinds 7/49 and 13/32 copied the entry phase into a
+`shared_growth_phase` local that was never assigned another value. Using
+`initial_phase` directly preserves every path and removes the candidate's
+extra register move before the kind-7 phase test. Its branch delay slot
+now contains the same `slti phase,3` as retail at `0x8004285c`.
+Candidate text shrinks from 13,752 to 13,744 bytes. The physical shift
+moves isolated strict text from 80.915610% to 80.854770% and RODATA from
+29.280155% to 23.735409%; the raw-supported source simplification is
+retained. All 128 pointer rows, 64 class relations and physical order,
+and the named referent multiset remain exact.
+
+Kind 23 takes its four-word `old_position` snapshot after both
+`func_8003c000` and `func_8003c10c` return. Retail copies the four words
+at body `+0x34c..+0x368`, then updates the live record position from the
+returned pointer. The C had initialized `old_position` before either
+call, which was an observable ordering difference if those calls touch the
+record. Moving the snapshot after the calls gives the candidate the same
+local load/call/copy/update sequence through body `+0x394`. Its stack
+offsets still differ because the retail and candidate frames differ.
+Focused candidate text is 13,748 bytes; isolated strict text rises from
+80.854770% to 81.348740%, and RODATA from 23.735409% to 29.571985%.
+All 128 pointer rows, 64 class relations and physical order, and named
+referent multiset remain exact.
+
+Kind 23's scale update also uses the record field as the intermediate:
+retail stores the incremented X halfword before the signed cap check,
+conditionally overwrites X with `0x1800`, then reloads X once and stores
+that value to Z followed by Y. The prior C capped a local value before
+any X store. Updating X first and using a chained Y/Z assignment yields
+the retail local instruction order from body `+0x394` through `+0x3f4`;
+the field store before the check is a real source-order distinction.
+Focused candidate text is 13,756 bytes, isolated strict text 81.480770%
+(up from 81.348740%) and RODATA 27.626460%. The 128 pointer rows,
+64 target classes and physical order, and named referent multiset remain
+exact. The updater is still WIP.
+
+Kind 4 contained a real axis error: retail increments rotation Y at record
+offset `+0x26`, whereas the C incremented rotation Z at `+0x28`. The
+source now uses `rotation.vy`. Retail also branches on zero collision to
+the clear-flag path at body `+0x514`, leaving the hit path and optional
+`func_8003feb0` call as fallthrough before the common rotation/update
+tail. A local zero-collision label gives the candidate the same branch
+polarity and complete instruction sequence over body `+0x4c4..+0x53c`
+apart from saved-register allocation and global return targets. Focused
+candidate text is 13,760 bytes; isolated strict text rises from
+81.480770% to 81.508896%, and RODATA from 27.626460% to 30.642023%.
+All 128 pointer rows, 64 class relations and physical order, and named
+referent multiset remain exact.
+
+Kind 46's phase byte at record `+0x40` dispatches through two explicit
+checks in retail: `beqz` at body `+0x7b4` to phase zero, then comparison
+with one at `+0x7bc..+0x7c0` to the phase-one arm; other values return.
+The prior C `if`/`else if` compiled phase zero as fallthrough and skipped
+the second check on that route. Expressing the two arms as an inner
+two-case `switch` produces the retail check order and branch polarity.
+Focused candidate text is 13,768 bytes; isolated strict text rises from
+81.508896% to 81.912740%, while RODATA moves from 30.642023% to
+26.945526% as later case addresses shift. All 128 pointer rows,
+64 class relations and physical order, and named referent multiset remain
+exact. The phase-zero height/cap body still differs and remains WIP.
+
+For kind 46 phase zero, retail stores the collision-cache result to
+position Y, reloads that global result, subtracts the height-limit global,
+then branches to the `0x7fff` cap store only when the signed height is
+above the cap. The C now reads the result global for the subtraction and
+spells the uncapped assignment as the first branch arm. The pinned probe
+still folds the two result loads into one, so the data-load residue remains;
+it now emits the retail `bnez` polarity and height-first/cap-second
+store order. Candidate text is 13,772 bytes. Isolated strict text moves
+from 81.912740% to 81.752870% as code addresses shift, while RODATA
+rises from 26.945526% to 32.295720%. The 128 pointer rows, 64 class
+relations and physical order, and named referent multiset remain exact.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

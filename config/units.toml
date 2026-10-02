@@ -25,6 +25,16 @@ small_data = 0
 aspsx_version = "1.07"
 cc1_flags = ["-mcpu=r2000"]
 
+# Per-unit CSE traversal control. It reproduces the separately materialized
+# player-height address loads in one GAME leaf; this is not compiler provenance.
+[profiles.probe-gcc257-o2-no-cse-skip-blocks]
+language = "c"
+compiler = "gcc257-native"
+optimization = "O2"
+small_data = 0
+aspsx_version = "1.07"
+cc1_flags = ["-mcpu=r2000", "-fno-cse-skip-blocks"]
+
 # Initialized small-data probe; native actor code remains identical to G0.
 [profiles.probe-gcc257-o2-g8]
 language = "c"
@@ -539,7 +549,7 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.player_collision_bounds"
 image = "GAME.EXE"
 source = "src/game/player_collision_bounds.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-no-cse-skip-blocks"
 
 [[unit]]
 unit = "game.player_distance_margin"

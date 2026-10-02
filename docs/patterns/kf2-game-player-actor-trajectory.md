@@ -1836,3 +1836,12 @@ source now preserves that read order. Isolated strict `800279cc` rises from
 97.09642% to **97.35812%**; the adjacent `80027928` and `80027988` remain
 exact. The target still has two extra player-state HI16/LO16 pairs because
 the candidate retains a base address through the landing zero-stores.
+
+### Player collision-bounds exact control
+
+The unchanged GAME `func_80023384` source now emits a strict-exact 172-byte
+object under a dedicated GCC 2.5.7 `-fno-cse-skip-blocks` unit profile.
+All 22 ordered relocations and raw text bytes match; the focused unit reports
+`SAME`. Earlier WIP scores in this dossier describe the default compiler
+probe and are superseded for this function. The cache-object boundary remains
+provisional. See [the CSE control note](kf2-game-collision-bounds-cse.md).

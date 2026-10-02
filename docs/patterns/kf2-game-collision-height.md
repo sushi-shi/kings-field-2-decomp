@@ -950,3 +950,15 @@ counts do not change. Isolated strict text moves from 44.086540% to
 44.168957%; the 196-byte switch table stays at 26.27551%. The probe still
 shares one multiplication tail across cases `0x30` and `0x32` where retail
 has two, so neither case nor the function is exact.
+Case `0x11` also advances the next command from the operand pointer by four
+bytes in retail. Spelling its C cursor as `operand + 2` emits the same base
+and offset in the probe without changing strict 44.168957% or the CFG.
+Retail's case `0x32` jumps into the case `0x10` height-versus-`y` test after
+updating the cached result; the probe shares the same test in its case `0x10`
+block. Counting branches inside physical case intervals therefore reports a
+false extra condition in retail. A case `0x20` guard-shape trial also compiled
+byte-for-byte identically to the retained source, so it was discarded.
+Equivalent cursor spellings for cases `0x10` and `0x31` moved the compiled
+increment to the operand base but lowered strict text to 44.157967% and
+44.16346%, respectively. Retail's pointer base does not independently prove
+which equivalent C expression was original; both trials were discarded.

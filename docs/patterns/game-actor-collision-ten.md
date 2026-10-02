@@ -170,3 +170,15 @@ the one-block CFG gap; preserving the supported state semantics and exact
 siblings is preferable. None of the ten newly reached exact, and no source
 change from this recheck was retained. Only focused builds and retail queries
 were run.
+
+## Vertical-state dispatch follow-up (2026-10-02)
+
+Fresh retail disassembly of `0x8003b5d0` checks state `0x20` first, then a
+signed `< 33` range, state `0`, state `0x10`, and finally state `0x30`.
+Expressing this sparse dispatch explicitly in C preserves the four state
+bodies, their calls and constants, and the three exact preceding siblings.
+The first seven ordered control transfers now agree with retail; focused
+listing similarity moves from 68.2% to 69.3%. Isolated strict text for this
+function moves from 87.95102% to 89.616325%. The remaining 40/39 CFG-block
+gap and saved-register/return-join differences keep it WIP. A simple physical
+case reorder and the opposite high-range branch were discarded.

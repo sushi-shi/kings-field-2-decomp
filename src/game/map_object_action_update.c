@@ -182,7 +182,7 @@ void func_80036ed4(void)
         case 4:
             if (object->action_timer != 0) {
                 KfMapObject *linked;
-                u16 previous;
+                s16 previous;
                 if (object->collision_flags & 0x80) {
                     s32 bearing = vector_xz_to_angle(
                         player_state.camera_position.vx - object->position.vx,
@@ -214,7 +214,7 @@ void func_80036ed4(void)
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 previous = object->extra_40.halfwords[0]++;
-                if ((s16)previous < 32) {
+                if (previous < 32) {
                     object->unknown_01 = 0x81;
                     object->rotation.vy += 32;
                     if (linked != 0) {
@@ -231,8 +231,8 @@ void func_80036ed4(void)
                     } else if (previous == 31) {
                         object->extra_40.halfwords[0] = 0x118;
                     }
-                } else if ((s16)previous >= 300) {
-                    if ((s16)previous < 332) {
+                } else if (previous >= 300) {
+                    if (previous < 332) {
                         if (previous == 300) {
                             SVECTOR offset;
                             VECTOR target;
@@ -372,7 +372,8 @@ void func_80036ed4(void)
                     object->unknown_0a = 0xfff;
                     object->action_timer = 3;
                 } else {
-                    map_object_set_property(linked_index, 0);
+                    map_object_set_property(object->tail.fields.unknown_3a.value,
+                                            0);
                     object->action_timer = 1;
                 }
                 break;
@@ -457,6 +458,7 @@ void func_80036ed4(void)
                 if (object->tail.fields.unknown_38 == 3) {
                     object->unknown_0a = 0xfff;
                 }
+                object->action_timer = 0;
                 break;
             default:
                 break;
@@ -669,15 +671,14 @@ void func_80036ed4(void)
 
         case 81: {
             s32 increment = object->tail.fields.unknown_3a.bytes.low * 4;
-            const KfMapObjectTemplatePoseView *pose_template =
-                (const KfMapObjectTemplatePoseView *)template;
 
             switch (object->action_timer) {
             case 0:
                 if (object->tail.fields.unknown_38 == 0) {
                     object->action_timer = 2;
-                    object->unknown_0a = 0xfff;
+                    object->unknown_0a = 0;
                     object->unknown_01 = 1;
+                    object->unknown_0a = 0xfff;
                 } else if (object->tail.fields.unknown_3a.bytes.high != 0xfe &&
                            (object->tail.fields.unknown_3a.bytes.high == 0xff ||
                             func_80036ad8(object->position.vx >> 11,
@@ -723,6 +724,8 @@ void func_80036ed4(void)
                     object->unknown_0a &= 0xfff;
                 }
                 {
+                    const KfMapObjectTemplatePoseView *pose_template =
+                        (const KfMapObjectTemplatePoseView *)template;
                     VECTOR position;
                     u16 vertex_index = (u16)pose_template->height_offset;
                     u16 reach;

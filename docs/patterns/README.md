@@ -1181,3 +1181,9 @@ promotes a probe to a proven historical toolchain.
 - [GAME disjoint WIP follow-up](kf2-game-disjoint-wip-eighteen.md):
   fresh strict verdicts for 18 functions across resource, collision, card,
   render, and actor units, with 14 exact sibling controls.
+- [GAME actor and collision WIP controls](kf2-game-actor-collision-ten-wip-verdict.md):
+  ten fresh actor, collision-height, and player-interval WIP verdicts with
+  15 exact sibling controls.
+- [GAME player and actor WIP follow-up](kf2-game-player-actor-wip-ten.md):
+  ten strict player and actor verdicts, preserved exact siblings, and bounded
+  compiler-profile negative controls.

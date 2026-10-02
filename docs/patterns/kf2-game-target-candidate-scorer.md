@@ -729,3 +729,98 @@ tentative definition into 37,836 bytes of initialized `.data`, whereas the
 retail target owns 37,836 bytes of `.bss`. The default candidate is a
 37,840-byte COMMON symbol. Thus this flag does not establish the missing
 BSS source mechanism; no profile or owner claim was changed.
+
+### Graphics and TMD residual controls
+
+Eleven further GAME WIPs in nine isolated units were freshly compiled and
+compared with direct strict objdiff. Retail `sema` address, block disassembly,
+xrefs/callees, strings, and match records were reread for every row. The
+current target and candidate `.rel.text` inventories have equal row counts in
+all nine units except `render_resource_dispatch` (82 target, 84 candidate).
+The following are final verdicts for this pass; they are not closure claims.
+
+| Function | Strict text | Retail evidence and remaining difference |
+| --- | ---: | --- |
+| `func_8002ddb4` | 97.434494% | 44-block packet walker; target has two separate positive-depth branches that the candidate folds. Eleven proven calls and the unit's 169 text relocation rows are retained. |
+| `func_8002e4dc` | 97.38307% | Paired 44-block packet walker with the same two-branch gap; eleven proven calls and 169 unit text relocation rows. |
+| `func_8002ebe0` | 95.27945% | 26-block blended packet walker; target checks fixed depth at the packet tail, while the candidate reuses an earlier guard. Twelve proven calls. |
+| `func_8002ff5c` | 55.263805% | Prepared packet copier with all fourteen proven copy calls, eleven CFG blocks, and sixteen text relocations; the unresolved retail frame is 1248 bytes versus 1240 candidate bytes. |
+| `render_map_cell_object` | 96.521736% | Eleven CFG blocks and sixteen proven calls; only the independent prologue load/address order differs before `SetRotMatrix`. Its three unit siblings remain exact. |
+| `func_800311b0` | 92.14815% | Eight-block textured-quad builder with the single `AddPrim` call; packet-code store scheduling and saved-register allocation differ. |
+| `func_80031850` | 99.29851% | Forty-block world renderer, with all 68 unit text relocations; first difference is saved-register/evaluation order after the typed lighting and map-cell referents. |
+| `func_80031d8c` | 94.65414% | Seven-block animated renderer, with all 22 unit text relocations; retail retains a forwarded render argument in `s7`, candidate reloads it. |
+| `func_8003247c` | 92.18579% | Ninety-six-block render dispatcher; two extra candidate address relocations accompany rematerialized `player_state` camera base. Its 32-byte identity matrix remains byte exact. |
+| `func_800349bc` | 96.31408% | Four-quad menu fade with fourteen CFG blocks and 96 unit text relocations; target spills the pad state in a 72-byte frame, candidate uses a register and 64 bytes. Two siblings and eight initialized bytes stay exact. |
+| `func_80036e24` | 98.86364% | Five-block frame/CD service loop; all five calls and text relocations agree, with a cyclic assignment of three saved argument registers. |
+
+The packet walkers' branch-count differences remain the best structural
+questions, but current C already spells the observed depth checks; earlier
+equivalent branch and scope probes did not establish the original source
+shape. The other rows supplied no new field, call, constant, or referent
+correction. No source, identity, or relocation row was changed in this pass.
+
+### Resource, actor, and event follow-up
+
+A second fresh isolated batch checked fourteen GAME WIPs in twelve units.
+Every function received the same retail address, CFG disassembly, xref,
+callee, string, and match review. Strict results and final verdicts are:
+
+| Function | Strict text | Verdict |
+| --- | ---: | --- |
+| `func_80015d58` | 89.03145% | One-block startup loader, 22 proven calls; the candidate lacks relocatable constructors for unowned arena/copy destinations. |
+| `func_80015fd4` | 89.710144% | Three-block transition setup; the `0x8012da68` TMD workspace remains an unbound object address. Together the startup unit has 127 retail versus 115 candidate text relocations. |
+| `func_80016260` | 98.790085% | Sixty-seven-block transition request; all 135 text relocation rows are present. Byte-valued controls are typed, with argument-register/branch schedule still different. Its 28-byte retail `state_8017d118` `.bss` symbol is a 32-byte candidate COMMON symbol. |
+| `func_80016820` | 99.193474% | Sixty-two-block transition step; the candidate lacks three HI16/LO16 workspace pairs, two for `0x8019e138` and one for `0x8012da68` (196 retail versus 190 candidate text relocations). |
+| `func_8003983c` | 99.19598% | Thirty-seven-block actor lifecycle handler; call and referent families agree, with actor/chance saved-register assignment remaining. |
+| `func_80039b58` | 90.95744% | Nine-block actor-group scan; two proven calls agree, but the actor base and field cursor have different register lifetimes. |
+| `func_8003ae50` | 99.31746% | Fifty-eight-block animation updater; retained calls and referents, with a local register/schedule residue. Its six unit siblings remain exact. |
+| `func_8003c3e0` | 99.64539% | Twenty-three-block group-position helper; known calls/field reads agree, with yaw-normalization register order remaining. Its three unit siblings remain exact. |
+| `func_800460a0` | 99.268295% | Six-block animation phase seeker; call set and field widths agree, with step/half-step saved-register assignment remaining. |
+| `func_800461a0` | 99.12676% | Fourteen-block marker stream search; branch topology and thirteen relocation rows agree, with record-cursor register order remaining. Its marker leaf sibling is exact. |
+| `func_800462bc` | 98.68132% | Forty-six-block event target interpreter; all 57 text relocations agree. One candidate load-delay `nop` moves a single 64-byte jump-table addend by four bytes; retail table identity is unchanged. |
+| `func_800475d8` | 99.166664% | Fifty-five-block map-object event controller; 62 text relocations agree, but the candidate schedules `remove_object = 0` into a branch delay slot instead of a retail fallthrough block. |
+| `func_80047c98` | 99.81618% | Eighty-five-block world event dispatcher; all 72 text relocations agree, with rotation argument and constant-one saved registers exchanged. |
+| `func_800489ac` | 98.82883% | Twenty-three-block restore interpreter; the actor base and `0xff` sentinel exchange argument registers; its 64-byte jump table is exact. |
+
+The nine missing resource relocation pairs reflect real signed-low workspace
+address construction in retail, but the complete defining objects and source
+mechanism are not proved. The actor/event rows retain their already supported
+calls, widths, and referents; no field or CFG correction emerged from this
+pass. No C, metadata, or profile edit was retained.
+
+### Main, audio, menu, and player controls
+
+A third disjoint focused screen checked ten GAME WIPs in nine units, with the
+retail `sema` address, block, xref, callee, string, and match records reread
+for each. Fresh isolated strict results and final verdicts are:
+
+| Function | Strict text | Verdict |
+| --- | ---: | --- |
+| `game_main_loop` | 99.67553% | Five-block loop and 46 proven direct calls; the fixed `0x8009b0a0` arena constructor still differs in signed-low opcode/source origin. Adjacent `main` is exact. |
+| `func_800139c4` | 89.30556% | Seven-block audio startup with eight proven sound calls; four unowned sequence/VAB workspace addresses account for eight retail-only text relocation rows. |
+| `cd_request_service_vab` | 94.87342% | Eleven-block request service with eleven proven calls; retry and state-path constant/register placement remains. Fifteen audio-unit siblings are exact. |
+| `menu_draw_window` | 99.78788% | Ten-block window painter; retail uses a 48-byte frame versus 40 candidate bytes. Both initialized tables, 2704 bytes total, remain byte exact. |
+| `menu_draw_string` | 99.66904% | Eight-block glyph painter; retail uses a 56-byte frame versus 48 candidate bytes and a different UV temporary register. |
+| `menu_format_number` | 97.39% | Thirty-six-block numeric formatter; its seven text relocations agree, while frame and branch-delay placement remain. |
+| `func_80025a18` | 95.85052% | Ninety-nine-block equipment dispatcher; its fifteen siblings are exact. The 92-byte initialized DATA is exact, the 244-byte table has one four-byte code-layout addend difference, and the larger retail BSS versus candidate COMMON placement is separately audited. |
+| `func_800279cc` | 98.23967% | Seventy-block collision/sound handler; retail has two more `player_state` HI16/LO16 address pairs (141 versus 137 unit text relocs). Known call and typed field families agree. |
+| `func_80027f78` | 95.91228% | Twenty-seven-block collision response; candidate rematerializes four more `player_state` address pairs (59 versus 51 unit text relocs). Earlier pointer-scope source control regressed and was discarded. |
+| `func_8002ce68` | 65.85185% | Five-block, seven-argument floor-item constructor; target loads stack arguments after the free-slot call in a 40-byte frame, whereas the candidate hoists them into saved registers and uses 56 bytes. Both siblings are exact. |
+
+The sequence/VAB workspace extents and original defining owners are not
+proved. The other differences above follow stack/register lifetime or table
+body layout; none supplies a new width, call, field, or semantic correction.
+No source or metadata edit was retained from this batch.
+
+For `0x8002ff5c`, raw GAME `0x800303ec..0x8003043c` writes two index
+halfwords at `sp+1088` and `sp+1090`, reads their packed word, then replaces
+only the lower halfword and reads the packed word again for the first FT4
+child's packet offsets 24 and 28. This is a genuine local two-index scratch,
+not packet padding. Three off-tree typed views tested whether the source
+could recover that exact memory form: direct struct-halfword union, direct
+array-halfword union, and pointer-to-union. Their isolated strict results
+were **9.764418%**, **9.764418%**, and **55.05031%** against the retained
+**55.263805%**. The direct forms enlarged the frame and shifted unrelated
+spills; the pointer form emitted indirect halfword stores instead of the
+retail direct stack stores. All kept 16 text relocations. None was retained;
+the original source spelling of the scratch remains unproved.

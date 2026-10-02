@@ -612,6 +612,12 @@ scheduling. That trial was reverted. KF1 `display_play_transition.c` is an
 image fade, but has a different packet/loop contract than KF2's four-quad
 menu transition, so no source shape was transferred. No C edit was retained.
 
+A fresh isolated `0x8001fc94` control remains 99.70803% strict over 2,740
+bytes. Moving the existing lower-row `y = 0` initializer outside its
+visibility guard left the values unchanged but lowered strict text to
+99.49927%. The retail color/Y instruction order is therefore still an
+unattributed scheduling residue; the guarded source form is retained.
+
 ## Adjacent loaded menu scalars
 
 GAME `0x8006d690` is a four-byte initialized-zero input latch: 16 validated

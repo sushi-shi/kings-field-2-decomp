@@ -1983,3 +1983,20 @@ exact KF1 effect constructor uses a similar stack-slot walker, but that
 five-argument stack-slot case does not establish the original spelling of
 this register-home dispatcher. The control is therefore not retained in
 source; the `va_list` form continues to express the proven call contract.
+
+### Horizontal mover's extra CFG block
+
+A fresh paired object CFG localizes the 35/34 block difference in
+`player_move_horizontal` to the shorter-step retry's exit, not to an omitted
+collision or diagonal path. Retail branches from `+0x2bc` to `+0x350`, where
+it stores the slide-attempt flag with `sw t0,64(sp)`. The success path first
+sets `t0 = 1` at `+0x34c`, then falls through to that same store. The
+candidate sets its register-held slide flag at `+0x318` and falls directly
+into the following decision. Thus retail has separate `+0x34c` and
+`+0x350` blocks where the candidate has one. All 20 conditional branches,
+11 ordered calls, retry paths, and exit frontiers remain aligned. Fresh
+isolated strict objdiff confirms **89.85240%** for this function and
+**99.09091%** for its selector sibling. The remaining eleven
+`player_state` HI16/LO16 pairs are rematerializations of already referenced
+fields. There is no evidenced missing source condition, field, or call, so
+the C is unchanged.

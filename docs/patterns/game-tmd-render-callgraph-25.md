@@ -345,3 +345,30 @@ vertices and its `dy01/dy13/dy32/dy20/dy12` and
 `dx01/dx13/dx32/dx20/dx12` difference registers follow the present
 short-circuit check order. That check has no supported source correction;
 `render_map.c` was not edited in this lane.
+
+### Current graphics and render WIP screen
+
+Fresh isolated strict comparisons and focused quick builds cover ten remaining
+GAME render functions. The prior raw call, field, and referent audits above
+remain the evidence for their source models; this screen found no new source
+fact that warrants changing a function. The CFG counts below are retail/probe.
+
+| Function | Strict text | Focused CFG / branches | Bounded verdict |
+| --- | ---: | --- | --- |
+| `0x8002ddb4` | 97.434494% | 44/44; 28/28 | FT3/GT3 depth-guard layout still differs; source-equivalent guard swaps do not reproduce both retail exits. |
+| `0x8002e4dc` | 97.38307% | 44/44; 28/28 | Packet modes, calls, and owned fields remain aligned; no new control fact. |
+| `0x8002ebe0` | 95.27945% | 26/25; 17/16 | The late depth/bound-check split is still the one live structural gap; the prior nested-guard trial was not source-backed. |
+| `0x8002f5b0` | 95.833336% | 13/13; 7/7 | Clipped GT3 fan has the same calls and controls; saved-register assignment and depth-divide scheduling differ. |
+| `0x8002f808` | 92.038376% | 51/51; 35/35 | Raw FT4 vertex and edge order agrees; 168/120-byte frame and instruction scheduling remain. |
+| `0x80030c18` | 96.521736% | 11/11; 6/6 | Independent prologue loads around `SetRotMatrix` differ; three siblings and 540-byte initialized table are exact. |
+| `0x800311b0` | 92.14815% | 8/8; 5/5 | The authentic `setPolyFT4` path has the same control and arguments; saved-register and packet-store scheduling remain. |
+| `0x80031850` | 99.29851% | 40/40; 16/16 | Typed cell/lighting paths and ordered referents agree; remaining register/instruction order is unattributed. |
+| `0x80031d8c` | 94.65414% | 7/7; 2/2 | Sixth-argument blend width and calls agree; retail saves it where the probe reloads it. |
+| `0x8003247c` | 92.18579% | 96/96; 54/54 | Actor/effect/map passes retain the reviewed calls and fields; 768/760-byte frame and register lifetimes remain. |
+
+Current-source controls `game.animation_sparse_vertices` (three functions,
+including `0x80033d3c`) and `game.render_frame` (two functions, including
+`0x800335a0`) are strict 100% with focused `SAME` listings. They were already
+exact in the generated report; their older WIP prose is stale. The exact
+`render_enqueue_map`, eight TMD-pipeline siblings, and three map-cell siblings
+also remain 100%. No C change or new exact claim resulted.

@@ -22,3 +22,16 @@ referents. Focused CFG block/branch counts agree at `9/9, 5/5` for
 allocation, address reuse, and instruction scheduling already examined in
 the actor campaign notes. Source and inventory stayed unchanged. Only
 focused compiles and isolated strict comparisons were run.
+
+A fresh `0x800460a0` raw/focused check confirms identical 6/6 blocks, 2/2
+branches, and ordered calls; only the `step`/`half_step` saved-register choice
+differs. Off-tree GCC 2.5.7 `-fno-cse-skip-blocks` leaves strict text at
+99.268295%, while GCC 2.6.0 O2 regresses it to 80.39024%. Neither profile
+explains the retail bytes, so the source and profile remain unchanged.
+The same off-tree controls on `actor_motion` lower `0x8003bd40` from
+86.53226% to 84.38710% under GCC 2.5.7 no-CSE, preserving its six exact
+siblings; GCC 2.6.0 O2 lowers the WIP to 27.709677% and regresses all six.
+For `actor_group_position`, no-CSE lowers `0x8003c3e0` from 99.64539% to
+96.028366% while preserving three exact siblings; GCC 2.6.0 O2 lowers the
+WIP to 81.17731% and regresses those siblings. No alternate profile is
+retained.

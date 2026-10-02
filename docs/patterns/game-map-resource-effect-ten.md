@@ -26,3 +26,35 @@ confirmed the two sourced WIP scores and all nine exact siblings of
 `game.effect_update`. The global edge-check still stops on the three known,
 unrelated TMD/map-object `.rodata` addends. No source/config change, repository
 tests, bank, or commit were made in this batch.
+
+## Current-source map and resource ten-function follow-up
+
+The earlier unclaimed rows above describe the pilot before the present source
+claims. Fresh isolated strict objects and focused quick builds now give these
+ten GAME WIP verdicts. All quoted CFG and branch counts are retail/probe.
+
+| Address | Strict text | CFG / branches | Remaining evidence-bound gap |
+| --- | ---: | --- | --- |
+| `0x80015918` | 95.49419% | 41/41; 24/24 | Ballistic discriminant and time selection agree; result-register and arithmetic scheduling differ. Both adjacent helpers are exact. |
+| `0x80015d58` | 89.03145% | 1/1; 0/0 | Seven-archive startup has the reviewed calls; six retail-only HI16/LO16 pairs target fixed workspaces without proved source owners. Its 83-byte literal section is exact. |
+| `0x80015fd4` | 89.710144% | 3/3; 1/1 | Transition pump keeps its control and calls; the unowned TMD workspace address still compiles as a literal form. |
+| `0x80016260` | 98.790085% | 67/67; 49/49 | Request byte widths and 135 ordered referents agree; stack-byte register assignment and branch layout remain. |
+| `0x80016820` | 99.193474% | 62/62; 32/32 | Phase control and 128-byte callback table are exact; three signed-low workspace pairs are absent from candidate literals because complete owners remain unproved. |
+| `0x8002c670` | 91.624245% | 11/11; 4/4 | Mask-sweep call sequence and 28-byte shape table agree; state-byte store and loop-address scheduling differ. |
+| `0x80034f90` | 97.86822% | 14/14; 7/7 | Signed pattern interpolation and layer writes agree; saved-register/address order remains. |
+| `0x80035194` | 89.59545% | 51/51; 26/26 | Both rotated occupancy layers and field masks agree; retail uses a 40-byte frame against the probe's 32, and the probe hoists repeated mask tests. |
+| `0x80036190` | 98.56115% | 15/15; 8/8 | Interaction calls and conditions agree; angle-call result move and independent stack load exchange order. |
+| `0x80036464` | 95.32258% | 12/12; 3/3 | Effect-pool/sequence flow and calls agree; object ID and height offset use other saved registers. |
+
+The current `game.map_object_init_records` object is strict 100% for its
+2,020-byte body, 270-byte initialized pattern claim, and 1,016-byte switch
+table, matching its existing exact dossier. The two other `map_object`
+helpers and two trajectory helpers remain strict exact. No new source fact
+supports an edit or exact claim in this ten-function follow-up. Only focused
+quick builds and isolated strict objdiff were run.
+
+The transition request's `state_8017d118` is a 28-byte typed object by its
+layout check and retail BSS symbol. The pinned GCC emits it as a 32-byte
+COMMON allocation; a focused assembly/object audit shows that the extra four
+bytes are allocation rounding, not evidence for another C field. Its shared
+type remains unchanged.

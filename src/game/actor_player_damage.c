@@ -29,13 +29,13 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
             continue;
         }
         if (mode == 0x8000) {
-            distance = func_80015698(position, reach, &actor->position,
+            distance = vector_distance_between_with_reach(position, reach, &actor->position,
                                      actor->unknown_1c, actor->unknown_1e);
         } else if (mode == 0x8001) {
             if (position->vy < actor->position.vy - actor->unknown_1e) {
                 distance = -9999999;
             } else {
-                distance = func_80015698(position, reach, &actor->position,
+                distance = vector_distance_between_with_reach(position, reach, &actor->position,
                                          actor->unknown_1c, actor->unknown_1e);
             }
         } else {
@@ -97,7 +97,7 @@ s32 func_8003a614(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
         return 0;
     }
 
-    func_800248a8(damage0, damage1, damage2, damage3,
+    player_apply_damage(damage0, damage1, damage2, damage3,
                   0, 0, 0, 0, 0, 0x1000, 10, &origin);
     return 1;
 }

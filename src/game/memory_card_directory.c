@@ -166,7 +166,7 @@ s32 func_80022b74(s32 slot)
             buffer = memory_card_buffer;
             checksum = memory_card_payload_byte_sum(buffer + KF_CARD_HEADER_BYTES);
             if (((KfCardHeader *)buffer)->payload_checksum == checksum) {
-                func_800492dc(memory_card_buffer + KF_CARD_HEADER_BYTES);
+                card_payload_restore_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
                 memory_card_loaded_slot = slot;
                 return 0;
             }
@@ -241,7 +241,7 @@ s32 func_80022ca0(s32 slot)
     StoreImage(&icon_rect, (u_long *)header.icon_frames[2]);
 
     memset(memory_card_buffer, 0, KF_CARD_BLOCK_BYTES);
-    func_80048d24(memory_card_buffer + KF_CARD_HEADER_BYTES);
+    card_payload_capture_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
     header.payload_checksum = memory_card_payload_byte_sum(
         memory_card_buffer + KF_CARD_HEADER_BYTES);
     memcpy(memory_card_buffer, &header, sizeof(header));

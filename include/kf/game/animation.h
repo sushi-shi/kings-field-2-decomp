@@ -25,9 +25,9 @@ KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, 
 void animation_expand_sparse_vertices(SVECTOR *vertices, const SVECTOR *base,
                                       const s16 *encoded);
 void animation_decode_sparse_vertices(SVECTOR *vertices, const s16 *encoded);
-void func_80033d3c(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction);
+void animation_apply_sparse_morph(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction);
 const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index);
-s32 func_80034344(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
+s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
                   SVECTOR *output);
 
 #endif

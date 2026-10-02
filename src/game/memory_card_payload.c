@@ -7,7 +7,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x80048d24, 0x5b8)
-void func_80048d24(u8 *buffer)
+void card_payload_capture_game_state(u8 *buffer)
 {
     KfCardSavePayload *payload = (KfCardSavePayload *)buffer;
     KfCardPlayerSnapshot *saved = &payload->player;
@@ -81,7 +81,7 @@ void func_80048d24(u8 *buffer)
 }
 
 ADDRESS(0x800492dc, 0x5e0)
-void func_800492dc(const u8 *buffer)
+void card_payload_restore_game_state(const u8 *buffer)
 {
     const KfCardSavePayload *payload = (const KfCardSavePayload *)buffer;
     const KfCardPlayerSnapshot *saved = &payload->player;

@@ -71,7 +71,7 @@ void game_main_loop(void)
     actor_pool_clear();
     effect_pool_reset();
     func_80015d58();
-    func_800482f8();
+    event_state_initialize();
     memory_card_initialize();
     func_8002bc18();
     game_graphics_runtime.collision_rotation_dirty = 1;

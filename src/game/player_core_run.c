@@ -21,16 +21,16 @@ void player_restore_equipment_effects(void)
     player_equip_weapon(player_state.equipped_weapon_id);
     player_reset_view();
     if (player_state.unknown_62 != 0) {
-        func_80040308(10, 16, 15, &player_state.camera_position, NULL);
+        effect_construct_record(10, 16, 15, &player_state.camera_position, NULL);
     }
     if (player_state.unknown_64 != 0) {
-        func_80040308(10, 16, 17, &player_state.camera_position, NULL);
+        effect_construct_record(10, 16, 17, &player_state.camera_position, NULL);
     }
     player_recalculate_combat_stats();
 }
 
 ADDRESS(0x8002360c, 0x208)
-void func_8002360c(
+void player_reload_map_resources(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)
 {
     cd_request_wait_idle();
@@ -79,7 +79,7 @@ enum {
 };
 
 ADDRESS(0x80023814, 0x54)
-s32 func_80023814(s32 value, s32 rank)
+s32 player_charge_gain_for_rank(s32 value, s32 rank)
 {
     s32 scaled = ((value << KF_PLAYER_VALUE_SCALE_BITS) / (rank + 1)) + 1;
     if (scaled >= KF_PLAYER_VALUE_LIMIT) {

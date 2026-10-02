@@ -90,7 +90,7 @@ void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
 apply:
     if (state_8017d118.values_04[0] != 99 &&
         state_8017d118.values_04[0] != current_first) {
-        func_80048554(state_8017d118.values_04[0]);
+        event_world_state_save_slot(state_8017d118.values_04[0]);
     }
     if (event_state.control.fields.unknown_04[0] < current_first) {
         event_state.control.fields.unknown_04[0] = current_first;

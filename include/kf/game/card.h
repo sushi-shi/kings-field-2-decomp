@@ -82,7 +82,7 @@ void func_80023178(KfCardHeader *header, s32 slot_glyph);
 u32 memory_card_payload_byte_sum(const u8 *payload);
 s32 memory_card_wait_event(void);
 void memory_card_clear_events(void);
-void func_800492dc(const u8 *payload);
-void func_80048d24(u8 *payload);
+void card_payload_restore_game_state(const u8 *payload);
+void card_payload_capture_game_state(u8 *payload);
 
 #endif

@@ -69,7 +69,7 @@ dispatch_action:
         if (actor->animation_phase > 0xffe) {
             actor_reset_target_and_reselect();
         }
-        func_8003b9a4(group->unknown_01[2] * 2, 10);
+        actor_damp_horizontal_motion(group->unknown_01[2] * 2, 10);
         break;
     case 3: {
         s32 old_state = actor->state_70.signed_state;
@@ -148,7 +148,7 @@ dispatch_action:
             }
         }
 case3_motion:
-        func_8003b9a4(group->unknown_01[2] * 2, 10);
+        actor_damp_horizontal_motion(group->unknown_01[2] * 2, 10);
         break;
     }
     case 0:
@@ -161,14 +161,14 @@ case3_motion:
                                    target->animation_step - 1)) {
             actor->unknown_0f = 0xf1;
         }
-        func_8003b9a4(group->unknown_01[2], 10);
+        actor_damp_horizontal_motion(group->unknown_01[2], 10);
         break;
     case 1:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
             func_80039804(target->unknown_01[0]);
             actor->unknown_64 = rand() >> 3;
-        } else if (func_8003bcd0(actor->unknown_64,
+        } else if (actor_turn_and_move_along_heading(actor->unknown_64,
                                   target->word_0c.value, target->word_0e.value,
                                   group->unknown_01[2],
                                   group->unknown_01[3], 5) != 0 ||
@@ -192,10 +192,10 @@ case3_motion:
                     (actor->unknown_07[0] << 11) + actor->unknown_22,
                     actor->unknown_1c, actor->unknown_1e);
             func_80039804(target->unknown_01[0]);
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
             motion_flags = 3;
         } else {
-            motion_flags = func_8003bf74(
+            motion_flags = actor_turn_and_move_along_euler_angles(
                 &actor->tail_72.angles, target->word_0c.value,
                 target->word_0e.value,
                 group->unknown_01[2],
@@ -267,12 +267,12 @@ case3_motion:
         actor->unknown_64 = angle;
         mode = actor->state_70.bytes.high == 0 ? 5 : 33;
         if (actor->state_70.bytes.low == 0) {
-            motion_flags = func_8003bcd0((s16)angle,
+            motion_flags = actor_turn_and_move_along_heading((s16)angle,
                 target->word_0c.value, target->word_0e.value,
                 group->unknown_01[2],
                 group->unknown_01[3], mode);
         } else {
-            motion_flags = func_8003bae4((s16)angle + 2048,
+            motion_flags = actor_move_along_heading((s16)angle + 2048,
                 target->word_0c.value,
                 group->unknown_01[2], mode);
         }
@@ -325,7 +325,7 @@ case3_motion:
             actor->unknown_0f = 0xf0;
         }
         if (actor->state_70.signed_state == 0) {
-            func_8003bf74(&actor->tail_72.angles, target->word_0c.value,
+            actor_turn_and_move_along_euler_angles(&actor->tail_72.angles, target->word_0c.value,
                           target->word_0e.value,
                           group->unknown_01[2],
                           group->unknown_01[3], 17);
@@ -333,7 +333,7 @@ case3_motion:
             opposite.x = -512;
             opposite.y = actor->tail_72.angles.y + 2048;
             opposite.z = 0;
-            func_8003bf74(&opposite, target->word_0c.value,
+            actor_turn_and_move_along_euler_angles(&opposite, target->word_0c.value,
                           target->word_0e.value,
                           group->unknown_01[2],
                           group->unknown_01[3], 17);
@@ -355,7 +355,7 @@ case3_motion:
         }
         switch (actor->state_70.signed_state) {
         case 0:
-            if (func_8003bae4(actor->rotation.y + 2048,
+            if (actor_move_along_heading(actor->rotation.y + 2048,
                               target->word_12.value,
                               group->unknown_01[2], 5) == 0) {
                 actor_advance_animation_wrapped(actor, target->animation_step);
@@ -372,7 +372,7 @@ case3_motion:
         case 1:
             actor_advance_animation_clamped(actor, target->word_16.bytes.low);
             if (actor->animation_phase >= 0xfff) {
-                if ((s16)func_8003b520(
+                if ((s16)actor_start_ballistic_motion(
                         1, player_state.camera_position.vx,
                         player_state.camera_position.vy - 500,
                         player_state.camera_position.vz,
@@ -384,14 +384,14 @@ case3_motion:
                 }
                 actor->state_70.signed_state = 2;
             }
-            func_8003b9a4(group->unknown_01[2] * 2, 10);
+            actor_damp_horizontal_motion(group->unknown_01[2] * 2, 10);
             break;
         case 2:
             if (actor->unknown_0d == 0) {
                 actor->state_70.signed_state = 3;
                 func_800397d8(target->word_14.bytes[1]);
             } else {
-                func_8003bcd0(actor->rotation.y, actor->unknown_68, 0,
+                actor_turn_and_move_along_heading(actor->rotation.y, actor->unknown_68, 0,
                               actor->unknown_68,
                               group->unknown_01[3], 10);
             }
@@ -401,7 +401,7 @@ case3_motion:
             if (actor->animation_phase >= 0xfff) {
                 actor_reset_target_and_reselect();
             }
-            func_8003b9a4(actor->unknown_68 >> 4, 10);
+            actor_damp_horizontal_motion(actor->unknown_68 >> 4, 10);
             break;
         }
         break;
@@ -411,7 +411,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
             func_80039804(target->unknown_01[0]);
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
         }
         random_value = rand();
         if (random_value < 2048) {
@@ -449,9 +449,9 @@ case3_motion:
                 actor->unknown_52 = -target->word_0c.value;
             }
         }
-        func_8003b33c((SVECTOR *)&actor->unknown_50);
+        actor_move_with_collision((SVECTOR *)&actor->unknown_50);
         actor_advance_animation_wrapped(actor, target->animation_step);
-        func_8003bba0(actor, vector_xz_to_angle(actor->unknown_50,
+        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->unknown_50,
                                                 actor->unknown_54),
                         target->word_0e.value,
                         group->unknown_01[3]);
@@ -474,7 +474,7 @@ case3_motion:
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
         }
-        func_8003b9a4(target->word_0c.bytes.high, 10);
+        actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
     case 23:
         if (actor->unknown_0f == 0) {
@@ -506,7 +506,7 @@ case3_motion:
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
         }
-        func_8003b9a4(target->word_0c.bytes.high, 10);
+        actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
     case 24: {
         s32 speed;
@@ -531,7 +531,7 @@ case3_motion:
             player_state.camera_position.vx - actor->position.vx,
             player_state.camera_position.vz - actor->position.vz);
         actor->unknown_64 = angle;
-        func_8003bcd0(actor->unknown_64, speed,
+        actor_turn_and_move_along_heading(actor->unknown_64, speed,
                       target->word_1e.value, step,
                       group->unknown_01[3], 4);
         if (actor_animation_crossed_phase(actor, target->word_18.value)) {
@@ -557,7 +557,7 @@ case3_motion:
             actor->unknown_0f = 0xf0;
             func_80039804(target->unknown_01[0]);
             actor->state_70.signed_state = 0;
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -584,10 +584,10 @@ case3_motion:
                                                 forward.vy, outer.vy);
             actor->unknown_54 = value_approach(actor->unknown_54,
                                                 forward.vz, outer.vz);
-            collision = func_8003b33c((SVECTOR *)&actor->unknown_50);
+            collision = actor_move_with_collision((SVECTOR *)&actor->unknown_50);
             if (collision != 0) {
                 if (collision & 0x80) {
-                    func_800248a8(target->word_0e.value,
+                    player_apply_damage(target->word_0e.value,
                                    target->word_10.value,
                                    target->word_12.value,
                                    target->word_0c.bytes.high,
@@ -616,9 +616,9 @@ case3_motion:
         default:
             goto case11_turn;
         }
-        func_8003b33c((SVECTOR *)&actor->unknown_50);
+        actor_move_with_collision((SVECTOR *)&actor->unknown_50);
     case11_turn:
-        func_8003bba0(actor, vector_xz_to_angle(actor->unknown_50,
+        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->unknown_50,
                                                 actor->unknown_54),
                         target->word_16.value,
                         group->unknown_01[3]);
@@ -638,7 +638,7 @@ case3_motion:
         delta_z = player_state.camera_position.vz - actor->position.vz;
         fixed_vector3_length(delta_x, delta_y, delta_z);
         func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
-        func_8003bf74(&actor->tail_72.angles, target->word_1c.value,
+        actor_turn_and_move_along_euler_angles(&actor->tail_72.angles, target->word_1c.value,
                       target->word_1e.value,
                       target->word_0c.bytes.high,
                       group->unknown_01[3], 6);
@@ -700,7 +700,7 @@ case3_motion:
             actor->unknown_0f = 0xf0;
             func_80039804(target->unknown_01[0]);
         }
-        func_8003bcd0(actor->unknown_64,
+        actor_turn_and_move_along_heading(actor->unknown_64,
                       target->word_0c.value, target->word_0e.value,
                       group->unknown_01[2],
                       group->unknown_01[3], 5);
@@ -735,7 +735,7 @@ case3_motion:
             }
             break;
         }
-        func_8003b9a4(group->unknown_01[2], 10);
+        actor_damp_horizontal_motion(group->unknown_01[2], 10);
         break;
     case 20:
         if (actor->unknown_0f == 0) {
@@ -743,7 +743,7 @@ case3_motion:
             actor->state_70.signed_state = target->word_12.value;
             func_80039804(target->unknown_01[0]);
         }
-        if (func_8003bae4(actor->rotation.y + 2048,
+        if (actor_move_along_heading(actor->rotation.y + 2048,
                           target->word_10.value, 1000, 5) != 0) {
             actor->state_70.signed_state = 1;
         }
@@ -794,7 +794,7 @@ case3_motion:
             if (actor->animation_phase >= target->word_12.value) {
                 s32 saved_flags = actor_state.unknown_93a4;
                 actor_state.unknown_93a4 &= ~0x20;
-                func_8003bcd0(actor->unknown_64,
+                actor_turn_and_move_along_heading(actor->unknown_64,
                                target->word_0e.value, 0, 0xff, 0, 5);
                 actor_state.unknown_93a4 = saved_flags;
             }
@@ -803,7 +803,7 @@ case3_motion:
             s32 saved_flags = actor_state.unknown_93a4;
             s32 next_timer;
             actor_state.unknown_93a4 &= ~0x20;
-            func_8003bcd0(actor->unknown_64,
+            actor_turn_and_move_along_heading(actor->unknown_64,
                            target->word_0e.value, 0, 0xff, 0, 5);
             next_timer = actor->tail_72.unsigned_state - 1;
             actor->tail_72.unsigned_state = next_timer;
@@ -929,7 +929,7 @@ case3_motion:
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
         }
-        func_8003b9a4(group->unknown_01[2], 10);
+        actor_damp_horizontal_motion(group->unknown_01[2], 10);
         break;
     }
     case 27:
@@ -944,7 +944,7 @@ case3_motion:
             if (target->word_0e.value == 0) {
                 actor->state_70.signed_state = 1;
             } else {
-                actor->tail_72.signed_state = func_8003bd40(
+                actor->tail_72.signed_state = actor_turn_and_move_toward_point(
                     (actor->unknown_07[1] << 11) + actor->unknown_24,
                     (actor->unknown_07[0] << 11) + actor->unknown_22,
                     target->word_0e.value, target->word_10.value,
@@ -958,7 +958,7 @@ case3_motion:
             actor_advance_animation_wrapped(actor, target->word_16.bytes.high);
             break;
         case 1:
-            func_8003bba0(actor, actor->unknown_20, target->word_10.value,
+            actor_turn_toward_angle(actor, actor->unknown_20, target->word_10.value,
                           group->unknown_01[3]);
             if (actor->rotation.y == actor->unknown_20) {
                 func_800397d8(target->unknown_01[0]);
@@ -992,7 +992,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
             actor->tail_72.signed_state = 16;
         }
         actor->rotation.x += 128;
@@ -1014,15 +1014,15 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
             audio_play_spatial_default_range(0x1b, &actor->position, 120, 0);
         }
         actor->rotation.x += 128;
         actor->rotation.y += 64;
-        collision = func_8003b33c((SVECTOR *)&actor->unknown_50);
+        collision = actor_move_with_collision((SVECTOR *)&actor->unknown_50);
         if (collision != 0) {
             if (collision & 0x80) {
-                func_800248a8(target->word_0e.value, target->word_10.value,
+                player_apply_damage(target->word_0e.value, target->word_10.value,
                                target->word_12.value, target->word_0c.value,
                                target->word_14.value, target->word_16.value,
                                target->word_18.value, target->word_1a.value,
@@ -1043,7 +1043,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             func_800397d8(target->unknown_01[0]);
-            func_8003b5bc();
+            actor_suspend_vertical_motion();
         }
         next.vx = actor->position.vx + actor->unknown_50;
         next.vy = actor->position.vy + actor->unknown_52;
@@ -1059,7 +1059,7 @@ case3_motion:
             actor->position.vz = next.vz;
             goto case30_advance;
         } else if (collision & 0x80) {
-            func_800248a8(target->word_0e.value, target->word_10.value,
+            player_apply_damage(target->word_0e.value, target->word_10.value,
                            target->word_12.value, target->word_0c.value,
                            target->word_14.value, target->word_16.value,
                            target->word_18.value, target->word_1a.value,
@@ -1079,7 +1079,7 @@ case3_motion:
         break;
     }
     case 240:
-        func_8003b5bc();
+        actor_suspend_vertical_motion();
         break;
     case 6:
     case 7:
@@ -1153,7 +1153,7 @@ case3_motion:
                                  group_offset.vz;
         }
     } else if ((actor->unknown_28 & 0x10000) == 0) {
-        func_8003b5d0();
+        actor_update_vertical_motion();
     }
 
 behavior_done:

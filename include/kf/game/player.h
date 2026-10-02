@@ -336,17 +336,17 @@ typedef struct KfPlayerState {
     s16 unknown_110[3];
     u8 unknown_116[2];
     SVECTOR unknown_118;
-    s32 unknown_120;
-    s32 unknown_124;
+    s32 collision_lower_clearance;
+    s32 collision_upper_clearance;
     u16 unknown_128;
     s16 strafe_velocity;
     s16 forward_velocity;
     KfPlayerMovementSpeed movement_speed;
     s16 yaw_step;
     s16 pitch_step;
-    s16 unknown_134;
+    s16 camera_vertical_offset;
     s16 unknown_136;
-    s16 unknown_138;
+    s16 landing_vertical_offset;
     s16 unknown_13a;
     s16 unknown_13c;
     s16 unknown_13e;
@@ -400,18 +400,18 @@ s32 player_distance_to_point(
     s32 point_x, s32 point_y, s32 point_z, s32 max_distance, s32 point_height);
 s32 player_distance_to_point_with_margin(
     s32 point_x, s32 point_y, s32 point_z, s32 max_distance, s32 point_height);
-void func_80023384(void);
-void func_8002360c(s32 first, s32 second, s32 third, s32 fourth,
+void player_update_collision_bounds(void);
+void player_reload_map_resources(s32 first, s32 second, s32 third, s32 fourth,
                    s32 fifth, s32 optional_resource);
-s32 func_80023814(s32 value, s32 rank);
+s32 player_charge_gain_for_rank(s32 value, s32 rank);
 void player_add_equipment_bonuses(s32 item_id);
 s32 player_calculate_damage_component(s32 base_power, s32 defense, s32 attack);
-void func_80024498(const VECTOR *origin, s32 damage, s32 reaction_flags);
-void func_800248a8(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
+void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction_flags);
+void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 scale_q16, u16 multiplier_tenths,
                    const VECTOR *origin);
-void func_80024ca4(VECTOR *position, s32 start, s32 end, s32 mode,
+void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
                    u16 falloff, u16 damage0, u16 damage1, u16 damage2,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 damage8, s32 scale_and_flags, u16 record_id);

@@ -15,7 +15,7 @@ void func_80026330(s32 mode, VECTOR *output)
              - player_state.equipped_weapon_record->rotation_offset_y;
     angles.z = player_state.camera_rotation.angles[2]
              + player_state.equipped_weapon_record->rotation_offset_z;
-    func_80034344(32, player_state.weapon_attack_mode,
+    animation_sample_vertex(32, player_state.weapon_attack_mode,
                   player_state.weapon_attack_phase, mode, &offset);
     offset.vx -= player_state.equipped_weapon_record->position_offset_x;
     offset.vy += player_state.equipped_weapon_record->position_offset_y;
@@ -25,8 +25,8 @@ void func_80026330(s32 mode, VECTOR *output)
     output->vz += player_state.camera_position.vz;
     {
         s32 y = output->vy - 1600;
-        s32 camera_y = player_state.unknown_134 + player_state.camera_position.vy
-                     + player_state.unknown_138;
+        s32 camera_y = player_state.camera_vertical_offset + player_state.camera_position.vy
+                     + player_state.landing_vertical_offset;
         output->vy = y + camera_y;
     }
 }

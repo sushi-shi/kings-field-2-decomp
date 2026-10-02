@@ -5,10 +5,10 @@
 #include <psyq/libc.h>
 
 DATA(0x801c7068, 0x8)
-SVECTOR DAT_801c7068;
+SVECTOR effect_collision_motion_step;
 
 ADDRESS(0x80042298, 0x18c)
-s32 func_80042298(s32 radius, s32 angle, s32 step)
+s32 effect_collision_step(s32 radius, s32 angle, s32 step)
 {
     KfEffectRecord *record = effect_state.current_record;
     VECTOR previous;
@@ -18,16 +18,16 @@ s32 func_80042298(s32 radius, s32 angle, s32 step)
     addVector(&record->position, &record->direction);
     result = func_8003fa68(&record->position, radius, angle);
     if (record->unknown_0d != 0) {
-        DAT_801c7068.vx = record->direction.vx >> 1;
-        DAT_801c7068.vy = record->direction.vy >> 1;
-        DAT_801c7068.vz = record->direction.vz >> 1;
+        effect_collision_motion_step.vx = record->direction.vx >> 1;
+        effect_collision_motion_step.vy = record->direction.vy >> 1;
+        effect_collision_motion_step.vz = record->direction.vz >> 1;
         if (result == 0) {
-            previous.vx = record->position.vx - DAT_801c7068.vx;
-            previous.vy = record->position.vy - DAT_801c7068.vy;
-            previous.vz = record->position.vz - DAT_801c7068.vz;
+            previous.vx = record->position.vx - effect_collision_motion_step.vx;
+            previous.vy = record->position.vy - effect_collision_motion_step.vy;
+            previous.vz = record->position.vz - effect_collision_motion_step.vz;
             result = func_8003fa68(&previous, radius, angle);
             if (result != 0) {
-                copyVector(&DAT_801c7068, &record->direction);
+                copyVector(&effect_collision_motion_step, &record->direction);
             }
         }
     }
@@ -41,14 +41,14 @@ s32 func_80042298(s32 radius, s32 angle, s32 step)
 }
 
 ADDRESS(0x80042424, 0xcc)
-void func_80042424(void)
+void effect_collision_backtrack(void)
 {
     KfEffectRecord *record = effect_state.current_record;
 
     if (record->unknown_0d != 0) {
-        record->position.vx -= DAT_801c7068.vx;
-        record->position.vy -= DAT_801c7068.vy;
-        record->position.vz -= DAT_801c7068.vz;
+        record->position.vx -= effect_collision_motion_step.vx;
+        record->position.vy -= effect_collision_motion_step.vy;
+        record->position.vz -= effect_collision_motion_step.vz;
     } else {
         record->position.vx -= record->direction.vx;
         record->position.vy -= record->direction.vy;
@@ -60,7 +60,7 @@ void func_80042424(void)
 }
 
 ADDRESS(0x800424f0, 0x160)
-void func_800424f0(s32 count, s32 radius, s32 vertical_angle, s32 arg3)
+void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3)
 {
     KfEffectRecord *record = effect_state.current_record;
     SVECTOR direction;
@@ -78,7 +78,7 @@ void func_800424f0(s32 count, s32 radius, s32 vertical_angle, s32 arg3)
         direction.vz = (rsin(angle) * radius) >> KF_FIXED12_BITS;
         angle += angle_step;
         count--;
-        func_80040308(10, record->type | 3, 8, &position, &direction,
+        effect_construct_record(10, record->type | 3, 8, &position, &direction,
                       effect_state.current_index, arg3);
     }
 }

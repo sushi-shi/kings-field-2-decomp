@@ -90,7 +90,7 @@ void display_reset(void)
         item->kind = KF_FLOOR_ITEM_NONE;
         item++;
     }
-    GRAPHICS.unknown_14cc1 = 0xff;
+    GRAPHICS.color_overlay_control = 0xff;
     GRAPHICS.map_placed_frame_counter = 0;
     pool_reset();
 }

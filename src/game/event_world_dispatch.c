@@ -13,7 +13,8 @@
 #include <kf/lib/math.h>
 
 ADDRESS(0x80047c98, 0x660)
-void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
+void event_world_dispatch_interaction(const VECTOR *position,
+                                      const KfPlayerViewRotation *rotation)
 {
     VECTOR probe;
     s32 object_index;
@@ -25,9 +26,9 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
     probe.vz = position->vz;
     event_state.state_word = 0;
     if (func_80045e5c(&probe, (const struct KfEulerAngles *)rotation) != 0) {
-        func_800474c4(0x400, 0, 0, 0, 0x80, 0xa0, 0xff);
+        color_overlay_transition(0x400, 0, 0, 0, 0x80, 0xa0, 0xff);
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
-        func_800474c4(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);
+        color_overlay_transition(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);
     }
 
     object_index = func_8003a9f4(probe.vx, probe.vy, probe.vz, 0x578, 0xc80);
@@ -36,7 +37,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
         s32 angle = vector_xz_to_angle(actor->position.vx - probe.vx,
                                        actor->position.vz - probe.vz);
         if (angle_within_tolerance(rotation->angles[1], angle, 300)) {
-            func_800462bc(actor);
+            event_target_stream_execute(actor);
         }
     }
 
@@ -65,7 +66,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             }
             break;
         case 0x40:
-            func_800475d8(object);
+            event_map_object_interact(object);
             if (object->object_id == 0xff) {
                 goto invoke_callback;
             }
@@ -84,7 +85,7 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
                 u16 result_id;
                 linked->tail.fields.unknown_38 = 0xff;
                 linked->unknown_00 = linked_state;
-                func_800475d8(linked);
+                event_map_object_interact(linked);
                 result_id = linked->object_id;
                 linked->unknown_00 = 0;
                 linked->tail.fields.unknown_38 = 0;
@@ -190,12 +191,12 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
             break;
         case 0x12:
-            func_800474c4(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
+            color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
             player_state.vitals.current_hp = player_state.vitals.maximum_hp;
-            func_800474c4(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
+            color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
         case 0x0e:
-            func_80048554(state_8017d118.values_04[0]);
+            event_world_state_save_slot(state_8017d118.values_04[0]);
             func_80028fa8();
             func_8001bcfc();
             break;

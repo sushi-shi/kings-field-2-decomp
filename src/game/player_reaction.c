@@ -66,7 +66,8 @@ void func_80029014(void)
         if (player_state.death_state == 1) {
             func_800291ec(&map_object_state.objects[player_state.reaction.view.mode]);
         } else {
-            func_80047c98(&player_state.camera_position, &player_state.camera_rotation_target);
+            event_world_dispatch_interaction(&player_state.camera_position,
+                                             &player_state.camera_rotation_target);
         }
     }
     if ((player_state.flags_140.word & 0x00400040) != 0x40
@@ -79,13 +80,15 @@ void func_80029014(void)
     if (value >= 0) {
         if (func_8002897c(value) == 0) {
             func_800335a0(0, 0);
-            func_8004678c(&player_state.camera_position, &player_state.camera_rotation_target, value);
+            event_scene_command_dispatch(&player_state.camera_position,
+                                         &player_state.camera_rotation_target,
+                                         value);
         }
     } else if (value == -3) {
         s32 resource;
         player_restore_equipment_effects();
         resource = state_8017d118.values_04[0];
-        func_8002360c(resource, resource, resource, resource, resource, 255);
+        player_reload_map_resources(resource, resource, resource, resource, resource, 255);
     }
     player_clear_motion();
 }
@@ -481,9 +484,9 @@ update_reaction_view:
         func_80028998();
         player_update_camera_rotation();
         player_update_horizontal_motion();
-        player_state.unknown_134 = 0;
+        player_state.camera_vertical_offset = 0;
         player_update_vertical_motion();
-        player_state.unknown_134 += -256
+        player_state.camera_vertical_offset += -256
                                    + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
         player_state.unknown_108.components[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
         angle_phase = (player_state.reaction.angle_phase + 128) & 0xfff;
@@ -523,13 +526,13 @@ update_reaction_pose:
                                     player_state.reaction.damage.motion.vx, 8, 4);
         player_state.reaction.damage.motion.vx = value;
         player_state.unknown_100[0] += (value * 3) >> 1;
-        value = player_state.unknown_134;
-        player_state.unknown_134 = value < 1500 ? value + 500 : 1500;
+        value = player_state.camera_vertical_offset;
+        player_state.camera_vertical_offset = value < 1500 ? value + 500 : 1500;
         player_move_reaction_with_collision();
         player_state.unknown_106++;
         if (player_state.unknown_106 == 31
-            && player_state.unknown_120 > -1001
-            && player_state.unknown_124 >= 0
+            && player_state.collision_lower_clearance > -1001
+            && player_state.collision_upper_clearance >= 0
             && player_state.unknown_d1[4] == 0
             && (player_state.equipped_accessory_id == 54
                 || player_state.equipped_extra_id == 54)
@@ -543,7 +546,7 @@ update_reaction_pose:
             if (player_state.unknown_106 < 65) {
                 s32 shade = func_8001584c(0, 255,
                                             (player_state.unknown_106 - 32) * 128);
-                func_800314d4(0x82, shade, shade, shade);
+                render_set_color_overlay(0x82, shade, shade, shade);
             } else {
                 KfEffectRecord *effect = effect_state.records;
                 for (index = KF_EFFECT_CAPACITY; index != 0; index--) {
@@ -561,13 +564,13 @@ update_reaction_pose:
                     player_state.camera_position.vz = 0x22000;
                     player_state.unknown_128 = 5;
                     game_counter_bytes[0x4c]--;
-                    func_80048554(state_8017d118.values_04[0]);
+                    event_world_state_save_slot(state_8017d118.values_04[0]);
                     player_reset_status();
-                    func_8002360c(1, 1, 1, 1, 1, 0x43);
+                    player_reload_map_resources(1, 1, 1, 1, 1, 0x43);
                 } else {
                     player_initialize_state();
-                    func_800482f8();
-                    func_8002360c(0, 0, 0, 0, 0, 255);
+                    event_state_initialize();
+                    player_reload_map_resources(0, 0, 0, 0, 0, 255);
                 }
             }
         }
@@ -609,7 +612,7 @@ after_reaction:
             MoveImage(&player_status_texture_rows[2], 0x240, 0x106);
             notify_enqueue(34);
             player_state.unknown_6a = 0;
-            func_800357a0(0);
+            map_object_refresh_cell_markers(0);
         } else {
             if ((player_state.unknown_6a & 7) == 0) {
                 MoveImage(&player_status_texture_rows[1], 0x240, 0x103);
@@ -618,7 +621,7 @@ after_reaction:
                 MoveImage(&player_status_texture_rows[3], 0x240, 0x106);
             }
             if ((player_state.unknown_6a & 7) == 1) {
-                func_800357a0(1);
+                map_object_refresh_cell_markers(1);
             }
             player_state.unknown_6a--;
         }

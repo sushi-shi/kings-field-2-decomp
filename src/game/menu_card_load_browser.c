@@ -49,7 +49,7 @@ s32 func_8001ac80(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, 0, &mode, &result);
         if (mode == 1)
             func_80022300(16);
         for (frame = 0; frame < 2; frame++) {

@@ -5,7 +5,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x80041e94, 0x298)
-void func_80041e94(KfEffectRecord *record, s32 position_mode,
+void effect_spawn_motion(KfEffectRecord *record, s32 position_mode,
                    s32 motion_mode, s32 arg3, s32 arg4, s32 arg5,
                    s32 arg6, s32 arg7, ...)
 {
@@ -19,13 +19,13 @@ void func_80041e94(KfEffectRecord *record, s32 position_mode,
     if (position_mode == -1) {
         position_delta.vx = position_delta.vy = position_delta.vz = 0;
     } else {
-        func_800400c0(record, position_mode, &position_delta,
+        effect_sample_rotated_vertex(record, position_mode, &position_delta,
                       (const SVECTOR *)&record->scale_x);
     }
 
     switch (motion_mode) {
     case -1:
-        func_800400c0(record, args[2], &transformed,
+        effect_sample_rotated_vertex(record, args[2], &transformed,
                       (const SVECTOR *)args[3]);
         copyVector(&motion, &transformed);
         motion_mode = args[1];
@@ -57,12 +57,12 @@ add_direction:
 
 spawn:
     addVector(&position_delta, &record->position);
-    func_80040308(10, 0, 101, &position_delta, &motion,
+    effect_construct_record(10, 0, 101, &position_delta, &motion,
                   arg3, arg4, arg5, arg6, arg7);
 }
 
 ADDRESS(0x8004212c, 0x16c)
-s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
+s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation)
 {
     s32 lower_bound = KF_COLLISION_CACHE_LOWER_BOUND;
@@ -84,7 +84,7 @@ s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
             position.vz = origin->vz + offset_z;
             position.vy = KF_COLLISION_CACHE_LOWER_BOUND;
             magnitude = func_800157f8(variation) + 4096;
-            func_80040308(10, 0, 0x66, &position, &direction,
+            effect_construct_record(10, 0, 0x66, &position, &direction,
                           scale_x * magnitude >> 12,
                           scale_z * magnitude >> 12);
 

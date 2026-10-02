@@ -77,7 +77,7 @@ s32 vector_distance_to_point(
     s32 max_distance, s32 height, s32 point_height);
 void func_800154fc(s32 x, s32 y, s32 z, struct KfEulerAngles *angles);
 KfBool func_80015574(s32 first, s32 first_width, s32 second, s32 second_width);
-s32 func_80015698(const VECTOR *first, s32 reach, const VECTOR *second,
+s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VECTOR *second,
                   s32 offset, s32 height);
 s32 func_800157ac(s32 amplitude);
 s32 func_800157f8(s32 amplitude);

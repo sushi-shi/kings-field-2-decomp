@@ -1,0 +1,456 @@
+#include <kf/lib/address.h>
+#include <kf/lib/math.h>
+#include <kf/lib/null.h>
+#include <kf/game/audio.h>
+#include <kf/game/collision_cache.h>
+#include <kf/game/player.h>
+#include <psyq/sdk.h>
+
+enum {
+    COLLISION_DEPTH_ARM_HEIGHT = 200,
+    COLLISION_DEPTH_DEATH_LIMIT = 32000
+};
+
+ADDRESS(0x80027928, 0x60)
+void player_check_fall_death(void)
+{
+    if (player_state.unknown_13a >= COLLISION_DEPTH_ARM_HEIGHT
+        && (KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy)
+               > COLLISION_DEPTH_DEATH_LIMIT) {
+        player_death_begin(NULL);
+        player_state.unknown_d1[4] = 1;
+    }
+}
+
+ADDRESS(0x80027988, 0x44)
+void player_play_landing_sound(s32 magnitude)
+{
+    s32 volume = magnitude;
+
+    if (volume >= 320) {
+        volume -= 320;
+        if (volume >= 897) {
+            volume = 896;
+        }
+        audio_play_sound(12, (volume >> 3) + 32);
+    }
+}
+
+ADDRESS(0x800279cc, 0x5ac)
+void player_update_vertical_motion(void)
+{
+    s32 next_y;
+    s32 height_difference;
+    s32 collision_flags;
+    s32 impact;
+    s32 bob;
+    s32 movement_speed;
+
+    func_8002b604(player_state.camera_position.vx,
+                  player_state.camera_position.vy,
+                  player_state.camera_position.vz, 800, 1700);
+    player_state.unknown_ea = 0;
+
+    switch (player_state.unknown_d0) {
+    case 0:
+        break;
+
+    case 0x10:
+        player_check_fall_death();
+        next_y = player_state.camera_position.vy + player_state.unknown_13a;
+        player_state.camera_position.vy = next_y;
+        player_state.unknown_ea = player_state.unknown_13a;
+        player_state.unknown_13a += 40;
+        if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
+            player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+            player_state.unknown_d0 = 0;
+        }
+        goto finish;
+
+    case 0x20:
+        player_check_fall_death();
+        player_state.camera_position.vy += player_state.unknown_13a;
+        if (player_state.camera_position.vy <= KF_COLLISION_CACHE_RESULT
+            || player_state.unknown_13a >= 0) {
+            if (KF_COLLISION_CACHE_RESULT
+                < player_state.camera_position.vy - player_state.unknown_13a) {
+                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+            }
+            player_state.unknown_d0 = 0;
+        }
+        player_state.unknown_ea = player_state.unknown_13a;
+        player_state.unknown_13a += 5;
+        goto finish;
+
+    case 0x40:
+        player_check_fall_death();
+        next_y = player_state.camera_position.vy + player_state.unknown_13a;
+        collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
+                                         player_state.camera_position.vz, 800, 1700, 0x31);
+        if (collision_flags == 0) {
+            player_state.unknown_ea = player_state.unknown_13a;
+            player_state.unknown_13a += 40;
+            player_state.unknown_110[0] = player_state.unknown_13a >> 1;
+            player_state.camera_position.vy = next_y;
+            goto finish;
+        }
+        if (player_state.unknown_13a < 0) {
+            player_state.unknown_13a = 0;
+            goto finish;
+        }
+        player_play_landing_sound(player_state.unknown_13a);
+        if (player_state.unknown_13a >= 480) {
+            impact = (player_state.unknown_13a * player_state.unknown_13a) >> 12;
+            player_apply_damage_reaction(NULL, (impact * impact * impact) / 0x1ccf0, 0);
+        }
+        if ((collision_flags & 4) != 0) {
+            player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+        } else {
+            func_8002b874();
+            next_y = KF_COLLISION_CACHE_POSITION.vy
+                   - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
+            if (collision_query_world(player_state.camera_position.vx, next_y,
+                               player_state.camera_position.vz, 800, 1700, 0x31) == 0) {
+                player_state.camera_position.vy = next_y;
+            }
+        }
+        player_state.landing_vertical_offset = 1;
+        player_state.unknown_d0 = 0x50;
+        /* Enter the landing response in the same frame. */
+        goto landing;
+
+    case 0x50:
+landing:
+        if (player_state.landing_vertical_offset > 0) {
+            player_state.landing_vertical_offset += player_state.unknown_13a >> 2;
+        }
+        bob = player_state.unknown_110[0];
+        player_state.unknown_13a -= 100;
+        if (bob > 0) {
+            player_state.unknown_110[0] =
+                bob + (player_state.unknown_13a > 0 ? 10 : -30);
+        }
+        if (player_state.landing_vertical_offset <= 0
+            && player_state.unknown_110[0] <= 0) {
+            player_state.unknown_d0 = 0;
+            player_state.unknown_13a = 0;
+            player_state.landing_vertical_offset = 0;
+            player_state.unknown_110[0] = 0;
+        }
+        break;
+
+    default:
+        goto finish;
+    }
+
+    height_difference = KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy;
+    if (height_difference < 0) {
+        if (height_difference >= -256) {
+            if (height_difference < -128) {
+                player_state.camera_position.vy -= 128;
+            } else {
+                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+            }
+            goto finish;
+        }
+        if (height_difference >= -512) {
+            player_state.camera_position.vy -= 256;
+            goto finish;
+        }
+        movement_speed = player_state.movement_speed.signed_value;
+        player_state.unknown_d0 = 0x20;
+        player_state.unknown_13a = movement_speed > 200 ? -300 : -150;
+    } else {
+        if (height_difference <= 0) {
+            goto finish;
+        }
+        if (collision_query_world(player_state.camera_position.vx,
+                           player_state.camera_position.vy + 1,
+                           player_state.camera_position.vz, 800, 1700, 0x31) != 0) {
+            goto finish;
+        }
+        if (height_difference <= 256) {
+            if (height_difference >= 129) {
+                player_state.camera_position.vy += 128;
+            } else {
+                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+            }
+            goto finish;
+        }
+        if (height_difference <= 512) {
+            player_state.camera_position.vy += 256;
+            goto finish;
+        }
+        player_state.unknown_d0 = height_difference > 1024 ? 0x40 : 0x10;
+        player_state.unknown_13a = 40;
+    }
+    player_state.landing_vertical_offset = 0;
+    player_state.unknown_110[0] = 0;
+
+finish:
+    if (player_state.unknown_d0 == 0) {
+        if (player_state.unknown_c9[3] != 0) {
+            player_state.unknown_136 =
+                (player_state.unknown_136 + player_state.movement_speed.unsigned_value) & 0xfff;
+            bob = rsin(player_state.unknown_136) >> 5;
+            if (bob < 0) {
+                bob = -bob;
+            }
+            player_state.camera_vertical_offset = bob - (bob >> 2);
+        } else {
+            player_state.camera_vertical_offset = 0;
+        }
+    }
+    player_update_collision_bounds();
+}
+
+ADDRESS(0x80027f78, 0x2ac)
+s32 player_move_reaction_with_collision(void)
+{
+    VECTOR next;
+    s32 flags;
+    s32 length;
+    s32 remaining;
+    s32 minimum_length;
+    SVECTOR *motion;
+
+    next.vx = player_state.camera_position.vx + player_state.reaction.damage.rotation.vx;
+    next.vy = player_state.camera_position.vy + player_state.reaction.damage.rotation.vy;
+    next.vz = player_state.camera_position.vz + player_state.reaction.damage.rotation.vz;
+
+    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+    if (flags == 0) {
+    accept:
+        if (player_state.reaction.damage.rotation.vy >= 160
+            && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy > 32000) {
+            player_death_begin(NULL);
+            player_state.unknown_d1[4] = 1;
+        }
+        player_state.camera_position.vx = next.vx;
+        player_state.camera_position.vy = next.vy;
+        player_state.camera_position.vz = next.vz;
+        player_state.reaction.damage.rotation.vy += 32;
+        goto accepted;
+    }
+
+    next.vy = player_state.camera_position.vy;
+    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+    if (flags == 0) {
+        player_state.reaction.damage.rotation.vy = 1;
+        flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+        if (flags == 0) {
+            minimum_length = 32;
+        scale_motion:
+            motion = &player_state.reaction.damage.rotation;
+            length = fixed_vector2_length(motion->vx, motion->vz);
+            remaining = length - minimum_length;
+            if (length <= minimum_length) {
+                motion->vz = 0;
+                motion->vx = 0;
+                goto exhausted;
+            }
+            motion->vx = (motion->vx * remaining) / length;
+            motion->vz = (motion->vz * remaining) / length;
+            goto accept;
+        }
+    }
+
+    if (flags & -6) {
+        return 1;
+    }
+    if (KF_COLLISION_CACHE_RESULT + 256 < player_state.camera_position.vy) {
+        return 1;
+    }
+    next.vy = KF_COLLISION_CACHE_RESULT;
+    minimum_length = 56;
+    goto scale_motion;
+
+exhausted:
+    return 1;
+
+accepted:
+    player_update_collision_bounds();
+    return 0;
+}
+
+enum {
+    PLAYER_YAW_ACCEL_SHIFT = 2,
+    PLAYER_PITCH_STEP = 3,
+    PLAYER_PITCH_STEP_LIMIT = 32,
+    PLAYER_CAMERA_PITCH_LIMIT = 700
+};
+
+ADDRESS(0x80028224, 0x2f8)
+void player_update_camera_rotation(void)
+{
+    if (player_state.flags_140.low & 0x8000) {
+        player_state.yaw_step += player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
+        if (player_state.yaw_step > player_state.turn_step_limit) {
+            player_state.yaw_step = player_state.turn_step_limit;
+        }
+    } else if (player_state.flags_140.low & 0x2000) {
+        player_state.yaw_step -= player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
+        if (player_state.yaw_step < -player_state.turn_step_limit) {
+            player_state.yaw_step = -player_state.turn_step_limit;
+        }
+    } else if (player_state.yaw_step > 0) {
+        player_state.yaw_step -= player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
+        if (player_state.yaw_step < 0) {
+            player_state.yaw_step = 0;
+        }
+    } else if (player_state.yaw_step < 0) {
+        player_state.yaw_step += player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
+        if (player_state.yaw_step > 0) {
+            player_state.yaw_step = 0;
+        }
+    }
+
+    player_state.camera_rotation_target.angles[1] =
+        (player_state.camera_rotation_target.angles[1] + player_state.yaw_step)
+        & KF_ANGLE_WRAP_MASK;
+
+    if (player_state.flags_140.low & 2) {
+        player_state.pitch_step += PLAYER_PITCH_STEP;
+        if (player_state.pitch_step > PLAYER_PITCH_STEP_LIMIT) {
+            player_state.pitch_step = PLAYER_PITCH_STEP_LIMIT;
+        }
+    } else if (player_state.flags_140.low & 1) {
+        player_state.pitch_step -= PLAYER_PITCH_STEP;
+        if (player_state.pitch_step < -PLAYER_PITCH_STEP_LIMIT) {
+            player_state.pitch_step = -PLAYER_PITCH_STEP_LIMIT;
+        }
+    } else if (player_state.pitch_step > 0) {
+        player_state.pitch_step -= PLAYER_PITCH_STEP;
+        if (player_state.pitch_step < 0) {
+            player_state.pitch_step = 0;
+        }
+    } else if (player_state.pitch_step < 0) {
+        player_state.pitch_step += PLAYER_PITCH_STEP;
+        if (player_state.pitch_step > 0) {
+            player_state.pitch_step = 0;
+        }
+    }
+
+    if (player_state.pitch_step > 0) {
+        if (angle_mod_delta_le_half_turn(
+                (player_state.camera_rotation_target.angles[0] =
+                    (player_state.camera_rotation_target.angles[0] + player_state.pitch_step)
+                    & KF_ANGLE_WRAP_MASK),
+                PLAYER_CAMERA_PITCH_LIMIT)) {
+            player_state.camera_rotation_target.angles[0] = PLAYER_CAMERA_PITCH_LIMIT;
+        }
+    } else if (player_state.pitch_step < 0) {
+        if (angle_mod_delta_le_half_turn(
+                -PLAYER_CAMERA_PITCH_LIMIT,
+                (player_state.camera_rotation_target.angles[0] =
+                    (player_state.camera_rotation_target.angles[0] + player_state.pitch_step)
+                    & KF_ANGLE_WRAP_MASK))) {
+            player_state.camera_rotation_target.angles[0] = -PLAYER_CAMERA_PITCH_LIMIT;
+        }
+    }
+}
+
+ADDRESS(0x8002851c, 0x460)
+void player_update_horizontal_motion(void)
+{
+    s16 forward;
+    s16 strafe;
+    s32 forward_square;
+    s32 strafe_square;
+    s16 magnitude;
+
+    if (player_state.flags_140.low & 0x1000) {
+        forward = player_state.forward_velocity + (player_state.movement_step_limit >> 2);
+        if (forward > player_state.movement_step_limit) {
+            player_state.forward_velocity = player_state.movement_step_limit;
+        } else {
+            player_state.forward_velocity = forward;
+        }
+    } else if (player_state.flags_140.low & 0x4000) {
+        forward = player_state.forward_velocity - (player_state.movement_step_limit >> 2);
+        if (forward >= -player_state.movement_step_limit) {
+            player_state.forward_velocity = forward;
+        } else {
+            player_state.forward_velocity = -player_state.movement_step_limit;
+        }
+    } else if (player_state.forward_velocity > 0) {
+        player_state.forward_velocity -= player_state.movement_step_limit >> 3;
+        if (player_state.forward_velocity < 0) {
+            player_state.forward_velocity = 0;
+        }
+    } else if (player_state.forward_velocity < 0) {
+        player_state.forward_velocity += player_state.movement_step_limit >> 3;
+        if (player_state.forward_velocity > 0) {
+            player_state.forward_velocity = 0;
+        }
+    }
+
+    if (player_state.flags_140.low & 8) {
+        strafe = player_state.strafe_velocity + (player_state.movement_step_limit >> 2);
+        if (strafe > player_state.movement_step_limit) {
+            player_state.strafe_velocity = player_state.movement_step_limit;
+        } else {
+            player_state.strafe_velocity = strafe;
+        }
+    } else if (player_state.flags_140.low & 4) {
+        strafe = player_state.strafe_velocity - (player_state.movement_step_limit >> 2);
+        if (strafe >= -player_state.movement_step_limit) {
+            player_state.strafe_velocity = strafe;
+        } else {
+            player_state.strafe_velocity = -player_state.movement_step_limit;
+        }
+    } else if (player_state.strafe_velocity > 0) {
+        player_state.strafe_velocity -= player_state.movement_step_limit >> 2;
+        if (player_state.strafe_velocity < 0) {
+            player_state.strafe_velocity = 0;
+        }
+    } else if (player_state.strafe_velocity < 0) {
+        player_state.strafe_velocity += player_state.movement_step_limit >> 2;
+        if (player_state.strafe_velocity > 0) {
+            player_state.strafe_velocity = 0;
+        }
+    }
+
+    strafe_square = player_state.strafe_velocity;
+    strafe_square *= strafe_square;
+    forward_square = player_state.forward_velocity;
+    forward_square *= forward_square;
+    magnitude = SquareRoot0(strafe_square + forward_square);
+    if (magnitude == 0) {
+        forward = 0;
+        strafe = 0;
+    } else {
+        strafe = strafe_square / magnitude;
+        if (player_state.strafe_velocity < 0) {
+            strafe = -(strafe_square / magnitude);
+        }
+        forward = forward_square / magnitude;
+        if (player_state.forward_velocity < 0) {
+            forward = -(forward_square / magnitude);
+        }
+    }
+
+    player_state.movement_speed.unsigned_value = SquareRoot0(strafe * strafe + forward * forward);
+    if (forward >= 0) {
+        player_move_horizontal((s16)player_state.camera_rotation_target.angles[1], forward);
+    } else {
+        player_move_horizontal(
+            ((s16)player_state.camera_rotation_target.angles[1] + KF_ANGLE_HALF_TURN)
+                & KF_ANGLE_WRAP_MASK,
+            -forward);
+    }
+    if (strafe > 0) {
+        player_move_horizontal(
+            ((s16)player_state.camera_rotation_target.angles[1] - KF_ANGLE_QUARTER_TURN)
+                & KF_ANGLE_WRAP_MASK,
+            strafe);
+    } else if (strafe < 0) {
+        player_move_horizontal(
+            ((s16)player_state.camera_rotation_target.angles[1] + KF_ANGLE_QUARTER_TURN)
+                & KF_ANGLE_WRAP_MASK,
+            -strafe);
+    } else {
+        player_state.unknown_ec = 0;
+        player_state.unknown_e8 = 0;
+    }
+}

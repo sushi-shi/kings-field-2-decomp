@@ -11,7 +11,7 @@ void func_8001dc64(void)
     s32 selection = -1;
     s32 frame;
 
-    func_80021c8c(1);
+    menu_enter_display_state(1);
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         menu_draw_window(4, 3, cursor, confirmed);
@@ -34,12 +34,12 @@ void func_8001dc64(void)
 
         if (result != -99)
             break;
-        cursor = func_8001e378(cursor, 2, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, 2, &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_draw_window(4, 3, cursor, confirmed);
             menu_present_frame();
         }
     }
-    func_80021e00(0);
+    menu_exit_display_state(0);
 }

@@ -40,7 +40,7 @@ void scene_pose_interpolate(KfScenePoseView *destination,
                    const VECTOR *start_position, const VECTOR *end_position,
                    const SVECTOR *start_angles, const SVECTOR *end_angles,
                    s32 fraction);
-void func_800462bc(struct KfActor *actor);
-void func_800475d8(struct KfMapObject *object, ...);
+void event_target_stream_execute(struct KfActor *actor);
+void event_map_object_interact(struct KfMapObject *object, ...);
 
 #endif

@@ -47,7 +47,7 @@ void func_80031d8c(s32 asset_index, const struct KfEulerAngles *rotation,
     object_index = asset_index & 0xffff;
     asset_registry_select(object_index);
     object = tmd_get_object(0);
-    if (func_80034070(cache, object_index, clip & 0xffff, phase,
+    if (animation_prepare_asset_vertices(cache, object_index, clip & 0xffff, phase,
                       object->vertex_count) == 0) {
         tmd_select_object_vertices(0);
         object = tmd_get_object(0);

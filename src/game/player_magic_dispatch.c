@@ -129,7 +129,7 @@ special_mode_zero: {
                 }
                 if (game_counter_bytes[counter] != 0) {
                     game_counter_bytes[counter]--;
-                    player_state.weapon_effect = func_80040308(
+                    player_state.weapon_effect = effect_construct_record(
                         10, 0x12, effect_kind, &player_state.camera_position,
                         0, &player_state.camera_rotation);
                     effect = player_state.weapon_effect;
@@ -162,7 +162,7 @@ special_mode_zero: {
                 rotation.x = player_state.camera_rotation.angles[0] - weapon->rotation_offset_x;
                 rotation.y = player_state.camera_rotation.angles[1] - weapon->rotation_offset_y;
                 rotation.z = player_state.camera_rotation.angles[2] + weapon->rotation_offset_z;
-                func_80034344(32, player_state.weapon_attack_mode,
+                animation_sample_vertex(32, player_state.weapon_attack_mode,
                                player_state.weapon_attack_phase,
                                weapon->initial_vertex_index, &initial_vertex);
                 initial_vertex.vx -= weapon->position_offset_x;
@@ -172,9 +172,9 @@ special_mode_zero: {
                 effect->position.vx = player_state.camera_position.vx + world_position.vx;
                 effect->position.vz = player_state.camera_position.vz + world_position.vz;
                 effect->position.vy = player_state.camera_position.vy + world_position.vy
-                                    + player_state.unknown_134 + player_state.unknown_138 - 1600;
+                                    + player_state.camera_vertical_offset + player_state.landing_vertical_offset - 1600;
 
-                func_80034344(32, player_state.weapon_attack_mode,
+                animation_sample_vertex(32, player_state.weapon_attack_mode,
                                player_state.weapon_attack_phase,
                                weapon->final_vertex_index, &initial_vertex);
                 initial_vertex.vx -= weapon->position_offset_x;
@@ -358,7 +358,7 @@ regular_weapon:
 regular_idle:
     if ((player_state.flags_140.low & 0x10) == 0) {
         if (player_state.weapon_charge_delay == 0) {
-            s32 gain = func_80023814(player_state.physical_power,
+            s32 gain = player_charge_gain_for_rank(player_state.physical_power,
                                       weapon->charge_rank) * 2;
             if (player_state.equipped_leg_id == 44) {
                 gain >>= 1;

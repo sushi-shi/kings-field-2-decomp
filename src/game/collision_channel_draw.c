@@ -5,7 +5,7 @@ ADDRESS(0x800314fc, 0x138)
 void render_accumulated_color_overlay(void)
 {
     if (game_graphics_runtime.unknown_14cc5 != 0) {
-        func_800311b0(0, 0, 0x140, 0xf0,
+        render_textured_quad(0, 0, 0x140, 0xf0,
                       0x80, 0xd0, 0xf, 0xf, 1, 0x37, 0x7bdc,
                       *(s16 *)&game_graphics_runtime.unknown_14cc6 /
                           game_graphics_runtime.unknown_14cc5,

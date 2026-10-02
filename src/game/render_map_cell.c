@@ -210,7 +210,7 @@ void func_80031024(void)
             SetTransMatrix(&model);
             asset_registry_select(entry->asset_id);
             object = tmd_get_object(0);
-            if (func_80034070(&entry->animation_state, entry->asset_id,
+            if (animation_prepare_asset_vertices(&entry->animation_state, entry->asset_id,
                               entry->animation_clip, entry->animation_phase,
                               object->vertex_count)) {
                 tmd_select_object_vertices(0);

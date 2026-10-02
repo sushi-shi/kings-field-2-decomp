@@ -60,16 +60,17 @@ typedef char kf_event_state_saved_offsets_offset[
 
 extern KfEventState event_state;
 
-void func_8004678c(const VECTOR *position,
-                   const struct KfPlayerViewRotation *rotation, s32 command);
-void func_80047c98(const VECTOR *position,
-                   const struct KfPlayerViewRotation *rotation);
-void func_800482f8(void);
-void func_800483d8(u8 **pointers);
-void func_80048428(s32 delta);
-void func_80048498(u8 **pointers);
-void func_800484e4(s32 delta);
-void func_80048554(s32 save_slot);
-void func_800489ac(s32 save_slot);
+void event_scene_command_dispatch(const VECTOR *position,
+                                  const struct KfPlayerViewRotation *rotation,
+                                  s32 command);
+void event_world_dispatch_interaction(const VECTOR *position,
+                                      const struct KfPlayerViewRotation *rotation);
+void event_state_initialize(void);
+void event_saved_offsets_decode(u8 **pointers);
+void event_arena_owner_pointers_add_delta(s32 delta);
+void event_saved_offsets_encode(u8 **pointers);
+void event_arena_owner_pointers_subtract_delta(s32 delta);
+void event_world_state_save_slot(s32 save_slot);
+void event_world_state_restore_slot(s32 save_slot);
 
 #endif

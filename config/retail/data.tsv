@@ -68,7 +68,7 @@ GAME.EXE	0x800112fc	0xafc	0x4	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x80011300	0xb00	0x4c	pointer	manual:player-update-switch		pointer[19]	retail words;func_8002985c bounded jr table	19 case targets inside contiguous func_8002985c body
 GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	func_8002aaa4 jump-table dispatch;retail words	49 opcode rows, all targets within func_8002aaa4
 GAME.EXE	0x80011410	0xc10	0x74	pointer	manual:switch-table		pointer[29]	retail switch-table words	29 mode-index rows in tmd_prepare_primitive_indices
-GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	func_80035894 jump-table dispatch;retail words	254 opcode rows, all targets within func_80035894
+GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	map_object_initialize_from_placements jump-table dispatch;retail words	254 opcode rows, all targets within map_object_initialize_from_placements
 GAME.EXE	0x8001187c	0x107c	0x44	pointer	manual:switch-table		pointer[17]	retail jump-table words	map_object_spawn_effect 17-case template-kind jump table
 GAME.EXE	0x800118c0	0x10c0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800118c4	0x10c4	0x54	pointer	manual:switch-table		pointer[21]	retail jump-table words	func_800368b4 21-action dispatch table
@@ -788,7 +788,7 @@ GAME.EXE	0x80066888	0x56088	0x21c	defined	manual:render model rows	render_model_
 GAME.EXE	0x80066aa4	0x562a4	0x10	unclassified	coverage-gap			payload-complement	distinct bytes before collision defaults
 GAME.EXE	0x80066ab4	0x562b4	0xdc0	defined	manual:collision defaults		KfCollisionDefaultRow[80]	retail bytes;func_8002bc18 row copy;startup archive write	mutable default collision rows copied into the graphics runtime
 GAME.EXE	0x80067874	0x57074	0x1c	defined	reviewed-asm		KfMapMaskShapePair[7]	func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
-GAME.EXE	0x80067890	0x57090	0x10e	defined	reviewed-asm		KfMapCellPattern[9][3]	func_80035894 and func_80034f90 pattern argument;retail bytes	nine groups of three 10-byte patterns
+GAME.EXE	0x80067890	0x57090	0x10e	defined	reviewed-asm		KfMapCellPattern[9][3]	map_object_initialize_from_placements and func_80034f90 pattern argument;retail bytes	nine groups of three 10-byte patterns
 GAME.EXE	0x8006799e	0x5719e	0x2	unclassified	coverage-gap			payload-complement	two trailing zero alignment bytes after pattern family
 GAME.EXE	0x800679a0	0x571a0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f00 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
 GAME.EXE	0x800679a8	0x571a8	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f10 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
@@ -884,7 +884,7 @@ GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_800
 GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	third motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	fourth motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	DAT_8006d704	u32	retail zero bytes;func_80040308 raw read/write pairs	four-slot effect trail ring index; original defining TU unproved
-GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;func_80041d7c xref;effect constructor argument	eight-byte zero vector passed to effect constructor
+GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;effect_spawn_zero_direction xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 GAME.EXE	0x8006d714	0x5cf14	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d718	0x5cf18	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

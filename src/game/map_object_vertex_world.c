@@ -10,7 +10,7 @@ void func_800369b8(KfMapObject *object, s32 vertex_index, VECTOR *result)
     struct KfEulerAngles angles;
     SVECTOR vertex;
 
-    func_80034344(
+    animation_sample_vertex(
         object->object_id + 0x100, object->unknown_01, object->unknown_0a,
         vertex_index, &vertex);
 

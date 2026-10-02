@@ -131,10 +131,10 @@ phase_three:
             stream += *(u32 *)stream + 4;
             func_8003f860((const struct KfActorLoadRecord *)(stream + 4));
             stream += *(u32 *)stream + 4;
-            func_80035894((KfMapObjectPlacement *)(stream + 4));
+            map_object_initialize_from_placements((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;
             func_80034818((KfMapPlacedSource *)(stream + 4));
-            func_800489ac(state_8017d118.values_10[0]);
+            event_world_state_restore_slot(state_8017d118.values_10[0]);
             state_8017d118.active_table[5]();
             player_state.unknown_09[1] = 1;
         }

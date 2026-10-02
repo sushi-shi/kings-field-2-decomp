@@ -9,7 +9,7 @@ s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output)
     struct KfEulerAngles rotation;
     SVECTOR offset;
 
-    if (func_80034344(actor->unknown_01 + 128, actor->unknown_0c,
+    if (animation_sample_vertex(actor->unknown_01 + 128, actor->unknown_0c,
                       actor->animation_phase, vertex_index, &offset) != 0) {
         offset.vx = 0;
         offset.vy = -(s32)actor->unknown_1e >> 1;

@@ -39,7 +39,7 @@ void func_80028998(void)
                 if (func_8002897c(player_state.unknown_99) != 0) {
                     func_80018f8c(player_state.unknown_99);
                 } else {
-                    func_8004678c(&player_state.camera_position,
+                    event_scene_command_dispatch(&player_state.camera_position,
                                   &player_state.camera_rotation_target,
                                   player_state.unknown_99);
                 }
@@ -87,9 +87,9 @@ void func_80028998(void)
     }
 
     if (player_state.selected_magic_record == 0) {
-        player_state.magic_charge += func_80023814(player_state.magic, 0);
+        player_state.magic_charge += player_charge_gain_for_rank(player_state.magic, 0);
     } else {
-        charge_gain = func_80023814(player_state.magic,
+        charge_gain = player_charge_gain_for_rank(player_state.magic,
                                     player_state.selected_magic_record->unknown_01[0]);
         if (player_state.equipped_head_id == 24) {
             charge_gain >>= 1;

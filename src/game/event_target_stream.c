@@ -7,11 +7,104 @@
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
+#include <kf/lib/math.h>
 
 RODATA(0x80012890, 0x40)
 
+ADDRESS(0x800460a0, 0xa4)
+void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_phase, s32 phase_step)
+{
+    s32 step;
+    u32 half_step;
+    s32 final_phase;
+
+    if ((u16)phase_step == 0) {
+        return;
+    }
+
+    step = phase_step & 0xfffe;
+    half_step = (u32)step >> 1;
+    final_phase = target_phase - half_step;
+    actor->unknown_0c = state;
+    actor->animation_phase = phase;
+
+    while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
+        actor->animation_phase = (step + actor->animation_phase) & 0xfff;
+        func_800335a0(0, 0);
+    }
+
+    actor->animation_phase = final_phase & 0xfff;
+    func_800335a0(0, 0);
+}
+
+ADDRESS(0x80046144, 0x5c)
+u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker)
+{
+    const u8 *cursor = candidate->word_14.bytes;
+
+    for (;;) {
+        s32 code = *cursor++;
+
+        if (code == 0xf2) {
+            goto marker_record;
+        }
+        if (code == 0xff) {
+            return candidate->word_10.bytes.fallback_offset;
+        }
+        continue;
+
+marker_record:
+        if (*cursor == marker) {
+            const u8 *base = &candidate->word_12.bytes.marker_state;
+            return cursor - base;
+        }
+        cursor++;
+    }
+}
+
+ADDRESS(0x800461a0, 0x11c)
+u8 *event_target_stream_resolve_cursor(KfActor *actor)
+{
+    KfTargetCandidate *candidate =
+        actor_state.target_groups[actor->group_index].targets[0].pointer;
+    u8 *cursor = candidate->word_14.bytes;
+    u8 *marker = cursor + 3;
+
+    for (;;) {
+        u8 code = *cursor;
+
+        if (code == 0xf1) {
+            goto marker_record;
+        }
+        if (code != 0xfe) {
+            /* Retail retries this byte; the stream must supply a control code. */
+            continue;
+        }
+        if (candidate->word_10.bytes.fallback_offset == 0) {
+            cursor++;
+            candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
+            return cursor;
+        }
+use_fallback:
+        return candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
+
+marker_record:
+        if (event_state.control.bytes[cursor[1]] == cursor[2]) {
+            u8 offset = event_target_stream_find_marker(candidate, *marker);
+            if (candidate->word_10.bytes.fallback_offset < offset) {
+                candidate->word_10.bytes.fallback_offset = offset;
+            }
+            event_state.control.bytes[0x3f] = actor->unknown_01;
+            candidate->word_12.bytes.marker_state = 0;
+            goto use_fallback;
+        }
+        marker += 4;
+        cursor += 4;
+    }
+}
+
 ADDRESS(0x800462bc, 0x444)
-void func_800462bc(KfActor *actor)
+void event_target_stream_execute(KfActor *actor)
 {
     KfTargetCandidate *candidate =
         actor_state.target_groups[actor->group_index].targets[0].pointer;
@@ -33,7 +126,7 @@ void func_800462bc(KfActor *actor)
     if (candidate->word_10.bytes.fallback_offset == 0) {
         event_state.control.bytes[0x3f] = actor->unknown_01;
     }
-    cursor = func_800461a0(actor);
+    cursor = event_target_stream_resolve_cursor(actor);
     if (event_state.control.bytes[0x3f] != actor->unknown_01 &&
         candidate->word_12.bytes.marker_state == 1) {
         while (*cursor++ != 0xf0) {
@@ -57,7 +150,7 @@ void func_800462bc(KfActor *actor)
         }
         case 9:
             if (event_state.control.bytes[cursor[1]] == cursor[2]) {
-                candidate->word_10.bytes.fallback_offset = func_80046144(candidate, cursor[3]);
+                candidate->word_10.bytes.fallback_offset = event_target_stream_find_marker(candidate, cursor[3]);
                 cursor = candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
             } else {
                 cursor += 4;
@@ -104,10 +197,10 @@ execute:
             saved_state = actor->unknown_0c;
             restore_state = 1;
             if (phase != 0) {
-                func_800460a0(actor, actor->unknown_0c,
+                actor_animation_seek_phase(actor, actor->unknown_0c,
                               phase, 0, actor->animation_step);
             }
-            func_800460a0(actor, candidate->unknown_01[0], 0, 0xfff,
+            actor_animation_seek_phase(actor, candidate->unknown_01[0], 0, 0xfff,
                           candidate->animation_step);
         }
         func_80034e10(3, candidate->word_0c.value + *cursor);
@@ -139,7 +232,7 @@ after_script:
         break;
     case 0x30:
         func_80028fa8();
-        choice = func_8001d6a8();
+        choice = menu_choose_inventory_item();
         if (choice != -1) {
             func_800335a0(0, 0);
             func_80034e10(6, choice + 360);
@@ -151,7 +244,7 @@ after_script:
     }
     event_state.control.bytes[0x3f] = actor->unknown_01;
     if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
-        func_800460a0(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
+        actor_animation_seek_phase(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
                       candidate->word_0e.value);
         actor->unknown_0c = saved_state;
     }

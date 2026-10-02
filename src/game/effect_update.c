@@ -10,7 +10,7 @@
 enum { EFFECT_FIXED_MAGIC_POWER = 5 };
 
 ADDRESS(0x8003fb94, 0x218)
-void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
+void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 power,
                    u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position)
@@ -19,7 +19,7 @@ void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
     kind &= ~0xf0000;
 
     if (kind == 0x80) {
-        func_800248a8(magic_06, magic_08, magic_0a, magic_04,
+        player_apply_damage(magic_06, magic_08, magic_0a, magic_04,
                       magic_0c, magic_0e, magic_10, magic_12,
                       magic_14, radius, record_id, position);
     } else if (kind == 0x10) {
@@ -63,13 +63,13 @@ int effect_magic_power(KfEffectRecord *effect)
 
 
 ADDRESS(0x8003fdd0, 0xe0)
-void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position)
+void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position)
 {
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
     u16 power = effect_magic_power(record);
 
-    func_8003fb94(kind, record->type, radius, power, record->unknown_06,
+    effect_dispatch_magic_impact(kind, record->type, radius, power, record->unknown_06,
                   magic->unknown_06, magic->unknown_08, magic->unknown_0a,
                   magic->unknown_04, magic->unknown_0c, magic->unknown_0e,
                   magic->unknown_10, magic->unknown_12, magic->unknown_14,
@@ -77,7 +77,7 @@ void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position)
 }
 
 ADDRESS(0x8003feb0, 0x68)
-void func_8003feb0(s32 kind)
+void effect_apply_current_magic_backstep(s32 kind)
 {
     const KfEffectRecord *record = effect_state.current_record;
     VECTOR position;
@@ -85,18 +85,19 @@ void func_8003feb0(s32 kind)
     position.vx = record->position.vx - (record->direction.vx << 3);
     position.vy = record->position.vy - (record->direction.vy << 3);
     position.vz = record->position.vz - (record->direction.vz << 3);
-    func_8003fdd0(kind, 5000, &position);
+    effect_apply_current_magic(kind, 5000, &position);
 }
 
 
 ADDRESS(0x8003ff18, 0x1a8)
-void func_8003ff18(VECTOR *position, s32 start, s32 end, s32 arg3, s32 arg4, s32 arg5)
+void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
+                                      s32 arg3, s32 arg4, s32 arg5)
 {
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
 
     if (record->type & 1) {
-        func_80024ca4(position, start, end, arg3, arg4,
+        player_apply_radial_damage(position, start, end, arg3, arg4,
                       magic->unknown_06, magic->unknown_08, magic->unknown_0a,
                       magic->unknown_04, magic->unknown_0c, magic->unknown_0e,
                       magic->unknown_10, magic->unknown_12, magic->unknown_14,
@@ -115,12 +116,12 @@ void func_8003ff18(VECTOR *position, s32 start, s32 end, s32 arg3, s32 arg4, s32
 
 
 ADDRESS(0x800400c0, 0xf4)
-void func_800400c0(KfEffectRecord *record, s32 mode, VECTOR *output, const SVECTOR *scale)
+void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output, const SVECTOR *scale)
 {
     struct KfEulerAngles angles;
     SVECTOR offset;
 
-    func_80034344(record->render_id + 40, record->animation_clip,
+    animation_sample_vertex(record->render_id + 40, record->animation_clip,
                   record->unknown_12, mode, &offset);
     offset.vx = offset.vx * scale->vx >> KF_FIXED12_BITS;
     offset.vy = offset.vy * scale->vy >> KF_FIXED12_BITS;
@@ -133,9 +134,9 @@ void func_800400c0(KfEffectRecord *record, s32 mode, VECTOR *output, const SVECT
 }
 
 ADDRESS(0x800401b4, 0x6c)
-void func_800401b4(KfEffectRecord *record, s32 mode, VECTOR *position, const SVECTOR *scale)
+void effect_sample_world_vertex(KfEffectRecord *record, s32 mode, VECTOR *position, const SVECTOR *scale)
 {
-    func_800400c0(record, mode, position, scale);
+    effect_sample_rotated_vertex(record, mode, position, scale);
     addVector(position, &record->position);
 }
 

@@ -19,10 +19,10 @@ void func_8001d8d0(void)
     s32 cost;
     u8 selected_item;
 
-    func_80021c8c(1);
+    menu_enter_display_state(1);
     count = func_80018d08(menu_item_mask_pages[4], rows, values, indices,
         0, 119);
-    func_8001d340(counters, values, codes, indices, 0, count, 4);
+    menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, 4);
     menu_list_init(&menu.list, 5, 1);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -58,7 +58,7 @@ void func_8001d8d0(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu.list, indices, &selection, &result);
+        menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
             cost = (s32)menu.codes[menu.list.selected_index] * DAT_8006d694;
@@ -91,5 +91,5 @@ void func_8001d8d0(void)
         else
             counters[result] += (u8)DAT_8006d694;
     }
-    func_80021e00(0);
+    menu_exit_display_state(0);
 }

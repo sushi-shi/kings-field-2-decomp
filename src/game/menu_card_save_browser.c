@@ -19,7 +19,7 @@ void func_8001bcfc(void)
     s32 count;
     s32 frame;
 
-    func_80021c8c(1);
+    menu_enter_display_state(1);
     func_8001c550(dialog_rows);
     func_8001cdb0(dialog_rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
@@ -59,7 +59,7 @@ void func_8001bcfc(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, 0, &mode, &result);
         if (mode == 1)
             func_80022300(16);
         for (frame = 0; frame < 2; frame++) {
@@ -72,5 +72,5 @@ void func_8001bcfc(void)
     if (result != -1)
         func_8001bf68(slot_ids[result]);
     memory_card_stop();
-    func_80021e00(0);
+    menu_exit_display_state(0);
 }

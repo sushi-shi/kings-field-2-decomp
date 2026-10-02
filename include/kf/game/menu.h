@@ -189,7 +189,7 @@ extern u16 menu_item_code_primary[6][120];
 extern u16 menu_item_code_secondary[5][120];
 
 void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
-u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
+u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
 s32 menu_preview_choice(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
@@ -228,8 +228,10 @@ void func_8001e94c(void);
 void func_800189f0(void);
 s32 func_800199d0(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
-void func_8001d340(const u8 *source, u8 *decoded, u32 *codes,
+void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group);
+void menu_fill_item_prices(u32 *prices, const u8 *indices,
+    s32 first, s32 last, s32 group);
 s32 func_8001af30(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);
 void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
@@ -237,21 +239,21 @@ void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail5);
 void func_8001ba80(KfMenuGlyphString *rows);
 void func_8001bb94(KfMenuGlyphString *rows);
-s32 func_8001b834(void);
+s32 menu_card_load_slot_browser(void);
 void func_8001c550(KfMenuGlyphString *rows);
 void func_800217f0(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y);
-void func_80021c8c(s32 mode);
-void func_80021e00(s32 stop_sequence);
+void menu_enter_display_state(s32 mode);
+void menu_exit_display_state(s32 stop_sequence);
 s32 menu_load_item_model(u8 item_id);
 void menu_release_item_model(void);
 void func_80022300(s32 cue);
 void func_800223cc(void);
-s32 func_8001e378(s32 index, s32 last, s32 *selection, s32 *confirmed,
+s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
     s32 *cancelled);
 void func_8001bcfc(void);
 void func_8001ceb8(s32 kind);
-s32 func_8001d6a8(void);
+s32 menu_choose_inventory_item(void);
 void func_8001d8d0(void);
 void func_8001dc64(void);
 s32 func_8001876c(void);
@@ -274,8 +276,8 @@ void func_8001cb44(KfMenuGlyphString *rows, s32 kind);
 void func_8001ccd4(KfMenuGlyphString *rows);
 void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
-void func_8001d030(s32 kind);
-void func_8001d3b4(s32 kind);
+void menu_item_buy_controller(s32 kind);
+void menu_item_sell_controller(s32 kind);
 void func_8001ddd0(void);
 void func_8001e0a8(void);
 void func_8001f008(void);

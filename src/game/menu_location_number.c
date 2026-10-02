@@ -18,7 +18,7 @@ s32 func_8001876c(void)
     s32 frame;
     u32 buttons;
 
-    func_80021c8c(1);
+    menu_enter_display_state(1);
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         func_8001e94c();
@@ -63,7 +63,7 @@ selection_result:
         if (result != -99)
             break;
 
-        cursor = func_8001e378(cursor, 7, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, 7, &selection, &confirmed, &result);
         buttons = PadRead(1);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
@@ -78,9 +78,9 @@ selection_result:
     if (result == -1)
         func_80022300(0);
     if (result == -3)
-        func_80021e00(1);
+        menu_exit_display_state(1);
     else
-        func_80021e00(0);
+        menu_exit_display_state(0);
     if (result != -1 && result != -3 && (result & 0x1000) != 0) {
         func_8002722c(result & 0xfff);
         result = -1;

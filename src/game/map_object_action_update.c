@@ -909,7 +909,7 @@ void func_80036ed4(void)
                 s16 velocity;
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.fields.unknown_3e.signed_value;
-                func_80041e0c(&object->position, 0x1000, 6000, 300);
+                effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
                 {
                     s32 base_angle = object->rotation.vx;
                     s32 angle = base_angle - 0xa0;
@@ -1001,7 +1001,7 @@ void func_80036ed4(void)
                         player_state.unknown_108.components[1] +
                         player_state.unknown_110[1];
                     func_80036e24(1, 0x1000, 0, -0x100);
-                    func_800314d4(0xff, 0, 0, 0);
+                    render_set_color_overlay(0xff, 0, 0, 0);
                 }
             } else {
                 object->extra_40.bytes[0] = 0;

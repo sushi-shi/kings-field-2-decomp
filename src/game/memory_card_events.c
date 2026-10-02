@@ -3,6 +3,7 @@
 #include <kf/game/card.h>
 #include <psyq/kernel.h>
 #include <psyq/pad.h>
+#include <sys/fcntl.h>
 
 DATA(0x8006d6a0, 0x1)
 u8 memory_card_loaded_slot = 0;
@@ -69,4 +70,25 @@ void memory_card_stop(void)
 {
     StopCARD();
     PadInit(0);
+}
+
+RODATA(0x80011104, 0x1a)
+
+ADDRESS(0x80022600, 0xec)
+s32 memory_card_probe_temporary_file(void)
+{
+    char path[26] = "bu00:BISLPS-00069TEMP    ";
+    s32 status;
+    s32 handle;
+
+    memory_card_clear_events();
+    _card_info(0);
+    status = memory_card_wait_event();
+    if (status != KF_CARD_EVENT_NEW_DEVICE && status != KF_CARD_EVENT_IO_END) {
+        return status;
+    }
+    handle = open(path, FCREAT);
+    close(handle);
+    delete(path);
+    return (handle == -1) << 1;
 }

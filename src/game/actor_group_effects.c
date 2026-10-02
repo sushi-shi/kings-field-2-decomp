@@ -85,7 +85,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
         func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
-        effect = func_80040308(effect_id, 0x23, kind, &position, &direction);
+        effect = effect_construct_record(effect_id, 0x23, kind, &position, &direction);
         if (effect != 0) effect->cooldown = 3;
         break;
     case 0x79:
@@ -111,7 +111,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         position.vx = (s32)((u32)position.vx + (u32)direction.vx);
         position.vy = (s32)((u32)position.vy + (u32)direction.vy);
         position.vz = (s32)((u32)position.vz + (u32)direction.vz);
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
                       &orientation.angles);
         break;
     }
@@ -125,7 +125,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         travel_time = -1;
         goto simple_direction_effect;
     case 2:
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
     case 0x16:
@@ -134,13 +134,13 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         goto simple_direction_effect;
     case 0x17:
         parameters = (const u16 *)arguments[1];
-        func_80040308(effect_id, 0x23, kind, &position, 0,
+        effect_construct_record(effect_id, 0x23, kind, &position, 0,
                       actor_state.unknown_93b8, position_mode, parameters[2]);
         break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
-        effect = func_80040308(effect_id, 0x23, 7, &position, &direction);
+        effect = effect_construct_record(effect_id, 0x23, 7, &position, &direction);
         if (effect != 0) effect->cooldown = 5;
         break;
     case 1:
@@ -160,18 +160,18 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case 0x78:
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
-        func_80040308(effect_id, 0x23, kind, &position, 0);
-        func_80040308(effect_id, 0x23, kind, &position, 0);
+        effect_construct_record(effect_id, 0x23, kind, &position, 0);
+        effect_construct_record(effect_id, 0x23, kind, &position, 0);
         break;
     simple_direction_effect:
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
                       travel_time, 0x400, 1);
         break;
     case 0x6e:
@@ -247,7 +247,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                                               trajectory_angle, 0xc00, 1);
         orientation.motion.vx = trajectory_angle;
         orientation.motion.vz = 0;
-        effect = func_80040308(effect_id, 0x23, kind, &position, &direction,
+        effect = effect_construct_record(effect_id, 0x23, kind, &position, &direction,
                               &orientation.motion);
         if (effect != 0) {
             effect->updates_remaining = 0x32;

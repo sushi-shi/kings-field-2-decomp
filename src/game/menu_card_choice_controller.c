@@ -38,7 +38,7 @@ s32 func_8001aa9c(void)
         if (result != -99)
             break;
 
-        cursor = func_8001e378(cursor, 2, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, 2, &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_draw_window(1, 3, cursor, confirmed);

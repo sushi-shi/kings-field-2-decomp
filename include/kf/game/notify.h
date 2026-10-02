@@ -22,6 +22,6 @@ typedef char kf_notification_digit_sprite_size[sizeof(KfNotificationDigitSprite)
 
 void notify_enqueue(s32 message_id, ...);
 void notification_digit_set_v(KfNotificationDigitSprite *sprite, s32 digit);
-void func_80033284(void);
+void notification_update(void);
 
 #endif

@@ -151,15 +151,18 @@ void func_80030f5c(void);
 void func_80031024(void);
 void render_color_overlay(void);
 void render_accumulated_color_overlay(void);
+void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
+                              s32 target_first, s32 target_second,
+                              s32 target_third);
 void func_800316c8(void);
 void func_80031634(s32 first, s32 second, s32 third, s32 scale);
 void func_8003247c(void);
-void func_800311b0(s32 x, s32 y, s32 right, s32 bottom,
+void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
                    u8 texture_u, u8 texture_v, u8 texture_width,
                    u8 texture_height, u8 semitrans, u16 tpage,
                    u16 clut, u8 red, u8 green, u8 blue, s32 depth);
-void func_800312f4(void);
-void func_80031384(void);
+void render_sliding_panel_primary(void);
+void render_sliding_panel_secondary(void);
 void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 
 typedef struct KfGraphicsRuntimeGame {
@@ -180,8 +183,8 @@ typedef struct KfGraphicsRuntimeGame {
     u16 notification_payloads[KF_NOTIFICATION_CAPACITY];
     KfNotificationControl notification_control;
     u8 notification_brightness;
-    u8 unknown_14cc1;
-    u8 unknown_14cc2[3];
+    u8 color_overlay_control;
+    u8 color_overlay_rgb[3];
     u8 unknown_14cc5;
     u16 unknown_14cc6;
     u16 unknown_14cc8;
@@ -251,7 +254,7 @@ enum {
 };
 
 void fog_set_near(s32 distance);
-void func_800314d4(u8 control, u8 red, u8 green, u8 blue);
+void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue);
 void func_80034e10(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);

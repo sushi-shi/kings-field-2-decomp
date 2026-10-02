@@ -7,17 +7,17 @@ DATA(0x8006d708, 0x8)
 static SVECTOR effect_zero_direction = {0, 0, 0, 0};
 
 ADDRESS(0x80041d7c, 0x90)
-void func_80041d7c(KfEffectRecord *record, s32 mode)
+void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode)
 {
     VECTOR position;
     SVECTOR direction;
     KfEffectRecord *spawned;
 
-    func_800401b4(record, mode, &position, (const SVECTOR *)&record->scale_x);
+    effect_sample_world_vertex(record, mode, &position, (const SVECTOR *)&record->scale_x);
     direction.vx = record->rotation.vx;
     direction.vy = record->rotation.vy + (rand() >> 7) - 128;
     direction.vz = record->rotation.vz;
-    spawned = func_80040308(10, record->type, 100, &position,
+    spawned = effect_construct_record(10, record->type, 100, &position,
                             &effect_zero_direction, &direction);
     if (spawned != 0) {
         spawned->phase = 2;
@@ -25,7 +25,8 @@ void func_80041d7c(KfEffectRecord *record, s32 mode)
 }
 
 ADDRESS(0x80041e0c, 0x88)
-s32 func_80041e0c(const VECTOR *position, s32 arg1, s32 arg2, s32 vertical_window)
+s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
+                                s32 vertical_window)
 {
     s32 lower_bound = KF_COLLISION_CACHE_LOWER_BOUND;
     VECTOR spawn_position;
@@ -41,6 +42,6 @@ s32 func_80041e0c(const VECTOR *position, s32 arg1, s32 arg2, s32 vertical_windo
     spawn_position.vx = position->vx;
     spawn_position.vz = position->vz;
     spawn_position.vy = lower_bound;
-    func_80040308(10, 0, 0x66, &spawn_position, &direction, arg1, arg2);
+    effect_construct_record(10, 0, 0x66, &spawn_position, &direction, arg1, arg2);
     return 1;
 }

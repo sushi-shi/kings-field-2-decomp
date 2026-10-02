@@ -21,7 +21,7 @@ void func_8001e0a8(void)
     u8 selected_item;
 
     count = func_80018d08(counters, rows, values, indices, 99, 109);
-    func_8001d654(codes, indices, 0, count, 4);
+    menu_fill_item_prices(codes, indices, 0, count, 4);
     menu_list_init(&menu.list, 4, 1);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -46,7 +46,7 @@ void func_8001e0a8(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu.list, indices, &selection, &result);
+        menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
             if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]

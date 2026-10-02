@@ -102,7 +102,7 @@ s32 func_8001c12c(s32 kind)
         if (result != -99)
             break;
 
-        cursor = func_8001e378(cursor, 1, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, 1, &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_draw_two_option(&labels[0], &labels[1], cursor, confirmed);

@@ -42,7 +42,7 @@ void func_800316c8(void)
     SetTransMatrix(&model);
     asset_registry_select(0x20);
     object = tmd_get_object(0);
-    if (func_80034070(&player_state.weapon_animation_cache, 0x20,
+    if (animation_prepare_asset_vertices(&player_state.weapon_animation_cache, 0x20,
                       player_state.weapon_attack_mode,
                       player_state.weapon_attack_phase,
                       object->vertex_count) != 0) {

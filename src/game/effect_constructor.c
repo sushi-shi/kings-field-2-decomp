@@ -18,7 +18,7 @@ KfEffectTrailRow effect_trail_rows[4][24];
 RODATA(0x8001249c, 0x1ec)
 
 ADDRESS(0x80040308, 0x13e4)
-KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
+KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
                               const VECTOR *position,
                               const SVECTOR *direction, ...)
 {

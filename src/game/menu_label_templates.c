@@ -196,7 +196,7 @@ void func_8001ceb8(s32 kind)
     s32 selection = -1;
     s32 frame;
 
-    func_80021c8c(1);
+    menu_enter_display_state(1);
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         menu_draw_window(3, 3, cursor, confirmed);
@@ -210,21 +210,21 @@ void func_8001ceb8(s32 kind)
 
         switch (selection) {
         case 0:
-            func_8001d030(kind);
+            menu_item_buy_controller(kind);
             break;
         case 1:
-            func_8001d3b4(kind);
+            menu_item_sell_controller(kind);
             break;
         }
 
         if (result != -99)
             break;
-        cursor = func_8001e378(cursor, 2, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, 2, &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_draw_window(3, 3, cursor, confirmed);
             menu_present_frame();
         }
     }
-    func_80021e00(0);
+    menu_exit_display_state(0);
 }

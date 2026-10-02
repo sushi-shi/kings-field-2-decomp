@@ -41,7 +41,7 @@ s32 func_80018ac8(void)
         if (result != -99)
             break;
 
-        func_8001e484(&menu.list, indices, &mode, &result);
+        menu_update_list_input(&menu.list, indices, &mode, &result);
         selected_item = indices[menu.list.selected_index];
         if (mode == 1) {
             func_80022300(17);

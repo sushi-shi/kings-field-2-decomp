@@ -71,7 +71,7 @@ s32 func_8001b14c(void)
 
         if (result != -99)
             break;
-        current = func_8001e378(current, 1, &selected, &choice, &result);
+        current = menu_poll_choice_input(current, 1, &selected, &choice, &result);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             cursor_frame = menu_cursor_animation_frame;

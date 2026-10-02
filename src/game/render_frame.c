@@ -32,7 +32,7 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
 
     func_8002d4f4(position, rotation);
     floor_item_update_textures();
-    func_80033284();
+    notification_update();
     func_8002c670();
     display_begin_frame();
     pool_mark_allocated();
@@ -91,8 +91,8 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     notification_draw();
     func_80030f5c();
     func_8003247c();
-    func_800312f4();
-    func_80031384();
+    render_sliding_panel_primary();
+    render_sliding_panel_secondary();
     render_color_overlay();
     render_accumulated_color_overlay();
     display_present_frame();

@@ -63,7 +63,7 @@ typedef struct KfMapObjectTailCopyWords {
 typedef char kf_map_object_tail_copy_words_size[
     sizeof(KfMapObjectTailCopyWords) == 8 ? 1 : -1];
 
-/* Map resource placements consumed in 24-byte rows by func_80035894. */
+/* Map resource placements consumed in 24-byte rows by map_object_initialize_from_placements. */
 typedef struct KfMapObjectPlacement {
     u8 layer;
     u8 region_z;
@@ -220,7 +220,7 @@ typedef char kf_map_object_state_counter_8742_offset[
 extern KfMapObjectStateGame map_object_state;
 
 void map_object_start_action_if_idle(KfMapObject *object, u8 action);
-void func_80035894(const KfMapObjectPlacement *placements);
+void map_object_initialize_from_placements(const KfMapObjectPlacement *placements);
 s32 func_80036078(s32 x, s32 y, s32 z, s32 radius, s32 height);
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence);
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound);
@@ -239,7 +239,7 @@ void func_800365d8(u16 parameter, const VECTOR *origin, s32 height_offset);
 void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
                              s32 height_offset);
 void func_80036ed4(void);
-void func_800357a0(s32 mode);
+void map_object_refresh_cell_markers(s32 mode);
 s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);
 

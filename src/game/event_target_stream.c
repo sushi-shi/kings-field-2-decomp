@@ -2,6 +2,7 @@
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
+#include <kf/game/graphics.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
 
@@ -15,7 +16,6 @@ extern void func_8001ceb8(s32 value);
 extern void func_8001dc64(void);
 extern void func_8001d8d0(void);
 extern s32 func_8001d6a8(void);
-extern void func_800335a0(s32 arg0, s32 arg1);
 
 RODATA(0x80012890, 0x40)
 
@@ -117,9 +117,9 @@ execute:
                               phase, 0, actor->animation_step);
             }
             func_800460a0(actor, candidate->unknown_01[0], 0, 0xfff,
-                          candidate->unknown_08);
+                          candidate->animation_step);
         }
-        func_80034e10(3, candidate->unknown_0c + *cursor);
+        func_80034e10(3, candidate->word_0c.value + *cursor);
 
 advance:
         cursor++;
@@ -161,7 +161,7 @@ after_script:
     event_state.control.bytes[0x3f] = actor->unknown_01;
     if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
         func_800460a0(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
-                      candidate->unknown_0e);
+                      candidate->word_0e.value);
         actor->unknown_0c = saved_state;
     }
     event_state.state_word = 1;

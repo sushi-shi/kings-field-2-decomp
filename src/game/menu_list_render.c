@@ -30,7 +30,6 @@ void func_8001fc94(const void *list_state, s32 render_mode)
     byte_values += list->scroll_offset;
 
     {
-        const s32 card_columns = ((u32)render_mode - 8u) < 2u;
         for (row = 0; row < list->visible_rows && row < list->entry_count; row++) {
             text.position.x = list->list_x + 5;
             text.position.y = list->list_y + 5 + row * 14;
@@ -68,7 +67,7 @@ void func_8001fc94(const void *list_state, s32 render_mode)
                 }
             }
     
-            if (card_columns) {
+            if (((u32)render_mode - 8u) < 2u) {
                 value = *number_values++;
                 if (value != -1) {
                     text.position.x += 98;
@@ -84,7 +83,7 @@ void func_8001fc94(const void *list_state, s32 render_mode)
             }
     
             if (render_mode != 2 && render_mode != 3 && render_mode != 4
-                && !card_columns && render_mode != 16) {
+                && ((u32)render_mode - 8u) >= 2u && render_mode != 16) {
                 value = *byte_values++;
                 if (value != 0xff) {
                     text.position.x = list->list_x + 208;

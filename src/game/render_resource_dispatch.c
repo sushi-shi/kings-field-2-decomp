@@ -35,24 +35,27 @@ void func_8003247c(void)
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
     u8 vab_flags[320];
     KfActor *actor;
+    const VECTOR *actor_position_ptr;
     KfMapObject *object;
     KfEffectRecord *effect;
+    KfPoolRecord **effect_cache;
+    SVECTOR *effect_scale_ptr;
+    const struct KfEulerAngles *effect_rotation_ptr;
     KfMapPlacedEntry *placed;
+    const VECTOR *camera_position;
     s32 frame;
     s16 remaining;
 
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
+    actor_position_ptr = &actor->position;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
         u32 layer;
         KfTargetGroup *group;
-        const VECTOR *actor_position_ptr;
         const VECTOR *position;
-        MATRIX *world_matrix;
 
-        actor_position_ptr = &actor->position;
         if (actor->lifecycle != 1) {
             goto actor_next;
         }
@@ -71,19 +74,24 @@ actor_visible:
                 rotation.y = 0;
                 rotation.x = 0;
                 position = actor_position_ptr;
-                world_matrix = &render_world_identity_matrix;
+                func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
+                               position, &rotation, (SVECTOR *)&actor->unknown_48,
+                               &actor->animation_cache, &render_world_identity_matrix,
+                               actor->unknown_0c, actor->animation_phase,
+                               actor->unknown_14, actor->unknown_16,
+                               actor->unknown_13, (s8)actor->unknown_15);
             } else {
                 rotation.x = actor->rotation.x;
                 rotation.y = actor->rotation.y + 0x800;
                 rotation.z = actor->rotation.z;
-                world_matrix = &game_graphics_runtime.render_state.view_matrix;
+                func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
+                               position, &rotation, (SVECTOR *)&actor->unknown_48,
+                               &actor->animation_cache,
+                               &game_graphics_runtime.render_state.view_matrix,
+                               actor->unknown_0c, actor->animation_phase,
+                               actor->unknown_14, actor->unknown_16,
+                               actor->unknown_13, (s8)actor->unknown_15);
             }
-            func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
-                           position, &rotation, (SVECTOR *)&actor->unknown_48,
-                           &actor->animation_cache, world_matrix,
-                           actor->unknown_0c, actor->animation_phase,
-                           actor->unknown_14, actor->unknown_16,
-                           actor->unknown_13, (s8)actor->unknown_15);
         }
         group = &actor_state.target_groups[actor->group_index];
         vab_flags[group->unknown_07[0]] = 1;
@@ -94,6 +102,8 @@ actor_radius_check:
         if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
             actor->unknown_03) goto actor_visible;
 actor_next:
+        actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
+                                               sizeof *actor);
         actor++;
         remaining--;
     }
@@ -101,6 +111,7 @@ actor_next:
     resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
 
     frame = cd_state.frame_count;
+    camera_position = &player_state.camera_position;
     repeat_store_word((u32 *)tmd_flags, 0, 80);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
@@ -137,7 +148,6 @@ map_sound_action: {
             s32 distance;
             s32 radius;
             s32 volume;
-            const VECTOR *camera_position;
 
             if (func_80036ad8(object->position.vx >> 11,
                               object->position.vz >> 11,
@@ -152,7 +162,6 @@ map_sound_action: {
             if ((s32)(object->extra_40.raw - frame) < 0) {
                 object->extra_40.raw = frame +
                     object->tail.fields.unknown_3e.value * 6;
-                camera_position = &player_state.camera_position;
                 distance = camera_position->vx -
                     (object->tail.fields.unknown_38 * 0x400 + object->position.vx);
                 if (distance < 0) distance = -distance;
@@ -228,6 +237,9 @@ map_object_next:
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
+    effect_cache = (KfPoolRecord **)&effect->unknown_3c[0];
+    effect_scale_ptr = (SVECTOR *)&effect->scale_x;
+    effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         MATRIX *world_matrix;
@@ -247,34 +259,42 @@ map_object_next:
             world_matrix = &game_graphics_runtime.render_state.view_matrix;
             break;
         case 4:
-            angles = (const struct KfEulerAngles *)&effect->rotation;
+            angles = effect_rotation_ptr;
             world_matrix = &render_world_identity_matrix;
             break;
         case 8:
-            angles = (const struct KfEulerAngles *)&effect->rotation;
+            angles = effect_rotation_ptr;
             world_matrix = &game_graphics_runtime.render_state.pitch_matrix;
             break;
         case 12:
-            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
-                           &effect->position,
-                           (const struct KfEulerAngles *)&effect->rotation,
-                           (SVECTOR *)&effect->scale_x,
-                           (KfPoolRecord **)&effect->direction, 0,
-                           effect->animation_clip, effect->unknown_12,
-                           effect->unknown_0c, effect->unknown_10,
-                           effect->unknown_09, 0x14);
-            goto effect_next;
+            goto effect_special_draw;
         default:
             goto effect_next;
         }
         func_80031850(effect->unknown_0a, effect->render_id + 0x28,
-                       &effect->position, angles, (SVECTOR *)&effect->scale_x,
-                       (KfPoolRecord **)&effect->direction, world_matrix,
+                       &effect->position, angles, effect_scale_ptr,
+                       effect_cache, world_matrix,
                        effect->animation_clip, effect->unknown_12,
                        effect->unknown_0c, effect->unknown_10,
                        effect->unknown_09, -60);
+        effect++;
+        goto effect_count_tail;
+effect_special_draw:
+        func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+                       &effect->position,
+                       effect_rotation_ptr,
+                       effect_scale_ptr,
+                       effect_cache, 0,
+                       effect->animation_clip, effect->unknown_12,
+                       effect->unknown_0c, effect->unknown_10,
+                       effect->unknown_09, 0x14);
 effect_next:
         effect++;
+effect_count_tail:
+        effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
+        effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
+        effect_rotation_ptr = (const struct KfEulerAngles *)(
+            (const u8 *)effect_rotation_ptr + sizeof *effect);
         remaining--;
     }
 

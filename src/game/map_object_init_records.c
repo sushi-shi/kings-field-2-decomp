@@ -35,6 +35,7 @@ void func_80035894(const KfMapObjectPlacement *placements)
     for (index = KF_MAP_OBJECT_LOAD_COUNT - 1; index != -1; placements++, object++, index--) {
         const KfMapObjectTemplate *template;
         KfMapOccupancyCell *cell;
+        KfMapOccupancyCell *row;
         KfMapOccupancyLayer *layer;
 
         if (placements->object_id == 0xffff) {
@@ -60,23 +61,23 @@ void func_80035894(const KfMapObjectPlacement *placements)
         object->scale.vx = 0x1000;
         object->unknown_00 = placements->layer;
         object->collision_flags = template->unknown_02[1];
+        object->unknown_0e = template->unknown_0a;
         object->unknown_05 = 0xff;
         object->unknown_10 = 0;
-        object->unknown_0e = template->unknown_0a;
         if (object->collision_flags & 0x20) {
             object->unknown_02 = 0x80;
         }
         object->collision_height = template->interaction_height;
         object->position.vx = ((u32)placements->region_x << 11) + placements->local_x;
         object->position.vz = ((u32)placements->region_z << 11) + placements->local_z;
-        cell = &bss_801c7540.map_cells[placements->region_z][placements->region_x];
+        row = bss_801c7540.map_cells[placements->region_z];
+        cell = &row[placements->region_x];
         layer = cell->layer;
         if (object->unknown_00 != 1) {
             layer++;
         }
         object->position.vy = placements->height - ((s32)layer->elevation << 7);
-        object->tail.reset_words[1] = placements->tail_10;
-        object->tail.reset_words[2] = placements->tail_14;
+        object->tail.placement.copy_words = placements->tail_words;
         memset(&object->extra_40, 0xff, sizeof object->extra_40);
 
         if (template->collision_radius != 0) {
@@ -240,22 +241,27 @@ void func_80035894(const KfMapObjectPlacement *placements)
             object->action = 0x58;
             object->action_timer = 1;
             break;
-        case 0x59:
+        case 0x59: {
+            KfMapOccupancyCell *kind59_row;
+            KfMapOccupancyCell *kind59_cell;
+            KfMapOccupancyLayer *kind59_layer;
+
             object->action = 0x59;
             object->unknown_02 = 1;
             object->unknown_05 = 0x42;
             object->unknown_10 = 0x1000;
             object->position.vy += 0x100;
-            cell = &bss_801c7540.map_cells[object->position.vz >> 11]
-                                             [object->position.vx >> 11];
-            layer = cell->layer;
+            kind59_row = bss_801c7540.map_cells[object->position.vz >> 11];
+            kind59_cell = &kind59_row[object->position.vx >> 11];
+            kind59_layer = kind59_cell->layer;
             if (object->unknown_00 != 1) {
-                layer++;
+                kind59_layer++;
             }
-            layer->unknown_03 = 0x75;
+            kind59_layer->unknown_03 = 0x75;
             object->extra_40.bytes[2] = object->unknown_00;
             object->unknown_00 = 0;
             break;
+        }
         case 0xb:
         case 0x14:
             object->unknown_00 = 0;

@@ -174,11 +174,10 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if ((flags & -6) == 0) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
             high_collision = 1;
-            /* The cache/equipment boundary remains provisional. */
             if (collision_height + 1280 >= player_state.camera_position.vy
                 && player_state.death_state == 0
-                && (*(s32 *)((u8 *)&bss_801c7540 + 0x11814)
-                    - collision_height) < -PLAYER_MOVE_HEIGHT) {
+                && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
+                       < -PLAYER_MOVE_HEIGHT) {
                 goto accept_position;
             }
         }
@@ -211,16 +210,17 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if (!slide_attempted) {
             slide_distance = distance - PLAYER_MOVE_STEP;
             if (slide_distance >= 0) {
+                VECTOR *camera = &player_state.camera_position;
                 do {
-                    next.vx = player_state.camera_position.vx
+                    next.vx = camera->vx
                            + ((-rsin(heading) * slide_distance) >> 12);
-                    next.vz = player_state.camera_position.vz
+                    next.vz = camera->vz
                            + ((rcos(heading) * slide_distance) >> 12);
-                    if (func_8002b9d4(next.vx, player_state.camera_position.vy,
+                    if (func_8002b9d4(next.vx, camera->vy,
                                        next.vz, PLAYER_MOVE_RADIUS,
                                        PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
-                        player_state.camera_position.vx = next.vx;
-                        player_state.camera_position.vz = next.vz;
+                        camera->vx = next.vx;
+                        camera->vz = next.vz;
                         break;
                     }
                     slide_distance -= PLAYER_MOVE_STEP;
@@ -257,6 +257,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                 continue;
             }
         }
+        result = 0;
         break;
     }
     player_state.unknown_e8 = dx;

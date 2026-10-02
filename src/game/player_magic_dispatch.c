@@ -9,12 +9,11 @@
 #include <psyq/sdk.h>
 
 extern void func_80026330(s32 mode, VECTOR *output);
-extern void func_80025a18();
 extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                            u16 magic_08, u16 magic_0a, u16 magic_0c,
                            u16 magic_0e, u16 magic_10, u16 magic_12,
-                           u16 magic_14, s32 amount, s32 effect_flags,
+                           u16 magic_14, u16 amount, s32 effect_flags,
                            const VECTOR *position);
 
 RODATA(0x80011260, 0x34)

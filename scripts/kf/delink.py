@@ -987,6 +987,13 @@ def delink(
              if datum.storage == "load"),
             key=lambda item: item.va,
         )
+        # An initialized pointer table may address a literal owned by the
+        # same unit; its reloc must use that unit's .rodata section.
+        rodata_by_datum = {
+            datum.va: module.rodata
+            for module in selected_modules if module.rodata is not None
+            for datum in module.data if datum.storage == "load"
+        }
         rows_by_owner: dict[int, list[dict[str, str]]] = defaultdict(list)
         rows_by_datum: dict[int, list[dict[str, str]]] = defaultdict(list)
         withheld_rows: list[dict[str, object]] = []
@@ -1124,7 +1131,10 @@ def delink(
             datum_relocations: list[MipsRelocation] = []
             for row in rows_by_datum[datum.va]:
                 try:
-                    relocations, used = _apply_relocation(blob, owner, row, catalog, policy)
+                    relocations, used = _apply_relocation(
+                        blob, owner, row, catalog, policy,
+                        rodata_by_datum.get(datum.va),
+                    )
                 except ValueError as error:
                     withheld_rows.append(_withheld(row, None, f"data:{error}"))
                     continue

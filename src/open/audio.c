@@ -13,6 +13,19 @@ enum {
     OPENING_MOVIE_SEQUENCE_BYTES = 0x1c68
 };
 
+DATA(0x800a5a90, 0x4)
+u8 *audio_title_sequence_data;
+DATA(0x800a5a98, 0x4)
+u8 *audio_movie_sequence_data;
+DATA(0x800a5ab8, 0x2)
+short audio_vab_id;
+DATA(0x800a5ac8, 0x4)
+u8 *audio_vab_header;
+DATA(0x800a63c0, 0x2)
+short audio_title_sequence_id;
+DATA(0x800a63c8, 0x2)
+short audio_movie_sequence_id;
+
 ADDRESS(0x80012270, 0x2f0)
 void opening_open_audio(void)
 {

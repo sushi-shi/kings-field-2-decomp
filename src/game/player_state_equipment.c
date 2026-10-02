@@ -29,6 +29,12 @@ SVECTOR DAT_800667c8[4] = {
     {400, 400, 200, 0}
 };
 
+DATA(0x800667e8, 0x14)
+KfPlayerMagicIdSequence DAT_800667e8 = {
+    {39, 40, 60, 66, 84, 86, 39, 40, 60, 66, 84, 86},
+    {0x20, 0x10, 0x80, 0xffff}
+};
+
 enum { PLAYER_CAMERA_HEIGHT_OFFSET = 1600 };
 
 ADDRESS(0x80024ed4, 0x78)
@@ -68,6 +74,12 @@ void player_reset_status(void)
 
 DATA(0x80075da0, 0xc000)
 static KfWeaponAssetBuffer player_weapon_asset_buffer;
+
+DATA(0x801c7078, 0x4c8)
+KfWeaponRecordGame player_weapon_records[18];
+
+DATA(0x801c7540, 0x11844)
+KfBss801c7540 bss_801c7540;
 
 enum {
     PLAYER_INITIAL_LEVEL = 1,
@@ -146,9 +158,6 @@ void player_clear_motion(void)
     player_state.strafe_velocity = 0;
     player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;
 }
-
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 mode);
-extern void func_80023384(void);
 
 enum {
     PLAYER_MAP_PROBE_RADIUS = 800,
@@ -424,6 +433,8 @@ void func_80025a18(s32 effect_id, ...)
     s32 kind;
     s32 rotation_scale;
     s32 target_scale;
+    s32 simple_scale;
+    s32 case3_z;
     va_list arguments;
     const VECTOR *override_position;
 
@@ -431,7 +442,9 @@ void func_80025a18(s32 effect_id, ...)
 
     switch (effect_id) {
     case 7:
-        func_80025878(1000, &position, &direction, &distance);
+        simple_scale = 1000;
+simple_probe:
+        func_80025878(simple_scale, &position, &direction, &distance);
 emit_simple_effect:
         func_80040308(10, 0x12, effect_id, &position, &direction);
         break;
@@ -444,7 +457,8 @@ emit_simple_effect:
         if (actor == 0) {
             position.vx += direction.vx;
             position.vy = player_state.camera_position.vy;
-            position.vz += direction.vz;
+            case3_z = position.vz + direction.vz;
+            goto case3_store_z;
         } else {
             position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
             position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
@@ -452,9 +466,14 @@ emit_simple_effect:
             if (func_8002b7f8(position.vx, position.vy, position.vz, 10, 10)) {
                 position.vx = actor->position.vx;
                 position.vy = actor->position.vy;
-                position.vz = actor->position.vz;
+                case3_z = actor->position.vz;
+                goto case3_store_z;
             }
         }
+        goto case3_emit;
+case3_store_z:
+        position.vz = case3_z;
+case3_emit:
         func_80040308(10, 0x12, 0x72, &position, 0);
         break;
     case 0:
@@ -492,7 +511,9 @@ simple_effect:
         rotation_scale = 700;
 probe_rotation_effect:
         func_80025878(rotation_scale, &position, &direction, &distance);
-        goto emit_rotation_effect;
+        func_80040308(10, 0x12, effect_id, &position, &direction,
+                       &player_state.camera_rotation);
+        break;
     case 11:
         func_80025878(600, &position, &direction, &adjusted_distance);
         if (adjusted_distance != -1) {
@@ -525,11 +546,11 @@ select_actor_effect:
         func_80040308(10, 0x12, 0x6a, &position, &direction,
                        &player_state.camera_rotation);
         break;
-    case 6:
-        rotation_scale = 250;
-        goto probe_rotation_effect;
     case 10:
         rotation_scale = 300;
+        goto probe_rotation_effect;
+    case 6:
+        rotation_scale = 250;
         goto probe_rotation_effect;
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];
@@ -543,9 +564,8 @@ select_actor_effect:
         break;
     }
     case 1:
-        func_80025878(500, &position, &direction, &distance);
-        func_80040308(10, 0x12, effect_id, &position, &direction);
-        break;
+        simple_scale = 500;
+        goto simple_probe;
     case 43:
         effect_id = 0x73;
         goto sequence_effect;
@@ -572,16 +592,14 @@ sequence_effect: {
     case 44:
         func_80025878(1000, &position, &direction, &distance);
         effect_id = 0x75;
-        goto regular_weapon_effect;
+        goto emit_rotation_effect;
     case 45:
         func_80025878(1000, &position, &direction, &distance);
         effect_id = 0x74;
-        goto regular_weapon_effect;
+        goto emit_simple_effect;
     case 40:
         rotation_scale = 1000;
         goto probe_rotation_effect;
-regular_weapon_effect:
-        goto emit_rotation_effect;
     case 39:
         func_80025878(50, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);

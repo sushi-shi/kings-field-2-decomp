@@ -41,7 +41,7 @@ GAME.EXE	0x8001103a	0x83a	0x2	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x8001103c	0x83c	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: COM\\RTMD.T
 GAME.EXE	0x80011046	0x846	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011048	0x848	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: COM\\ITEM.T
-GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	final archive-path NUL followed by five unreferenced zero bytes before the next switch table; only the NUL is source-claimed
 GAME.EXE	0x80011058	0x858	0x1c	pointer	manual:resource-transition-switch		pointer[7]	retail words;func_80016820 bounded jr table	seven consecutive phase case pointers within resource transition controller
 GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
 GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -59,9 +59,7 @@ GAME.EXE	0x80011126	0x926	0x2	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x80011128	0x928	0x20	pointer	manual:player-damage-switch		pointer[8]	retail words;bounded indirect jr	8 direct case pointers within func_80024498
 GAME.EXE	0x80011148	0x948	0x1c	pointer	manual:player-damage-switch		pointer[7]	retail words;bounded indirect jr	7 direct case pointers within func_800248a8
 GAME.EXE	0x80011164	0x964	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011168	0x968	0x1c	pointer	manual:switch-table		pointer[7]	retail jump-table words	player_set_equipment_slot seven-case jump table
-GAME.EXE	0x80011184	0x984	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011188	0x988	0xd4	pointer	manual:player-effect-switch		pointer[53]	retail words;bounded unsigned index	53 raw case targets within func_80025a18; source owner unresolved
+GAME.EXE	0x80011168	0x968	0xf4	defined	manual:player-state-equipment-rodata		u32[61]	retail 7-pointer table;zero separator;53-pointer table;both bounded indirect jr;source RODATA claim	one unit RODATA span for player_set_equipment_slot and func_80025a18; all pointer targets in their respective bodies
 GAME.EXE	0x8001125c	0xa5c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011260	0xa60	0x34	pointer	manual:player-magic-switch		pointer[13]	retail words;func_80026498 jr table	13 rows indexed by magic ID minus 38, all targeting branches in func_80026498
 GAME.EXE	0x80011294	0xa94	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -83,247 +81,7 @@ GAME.EXE	0x80011cd8	0x14d8	0x20c	pointer	manual:switch-table		pointer[131]	retai
 GAME.EXE	0x80011ee4	0x16e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011ee8	0x16e8	0x1ec	pointer	manual:actor-group-effect-switch		pointer[123]	retail words;bounded indirect jr	123 words;all targets inside func_8003c614;next 0x120d4 is a gap
 GAME.EXE	0x800120d4	0x18d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800120d8	0x18d8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120dc	0x18dc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120e0	0x18e0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120e4	0x18e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120e8	0x18e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120ec	0x18ec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120f0	0x18f0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120f4	0x18f4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120f8	0x18f8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800120fc	0x18fc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012100	0x1900	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012104	0x1904	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012108	0x1908	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001210c	0x190c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012110	0x1910	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012114	0x1914	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012118	0x1918	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001211c	0x191c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012120	0x1920	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012124	0x1924	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012128	0x1928	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001212c	0x192c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012130	0x1930	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012134	0x1934	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012138	0x1938	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001213c	0x193c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012140	0x1940	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012144	0x1944	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012148	0x1948	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001214c	0x194c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012150	0x1950	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012154	0x1954	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012158	0x1958	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001215c	0x195c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012160	0x1960	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012164	0x1964	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012168	0x1968	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001216c	0x196c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012170	0x1970	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012174	0x1974	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012178	0x1978	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001217c	0x197c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012180	0x1980	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012184	0x1984	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012188	0x1988	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001218c	0x198c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012190	0x1990	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012194	0x1994	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012198	0x1998	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001219c	0x199c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121a0	0x19a0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121a4	0x19a4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121a8	0x19a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121ac	0x19ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121b0	0x19b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121b4	0x19b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121b8	0x19b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121bc	0x19bc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121c0	0x19c0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121c4	0x19c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121c8	0x19c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121cc	0x19cc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121d0	0x19d0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121d4	0x19d4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121d8	0x19d8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121dc	0x19dc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121e0	0x19e0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121e4	0x19e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121e8	0x19e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121ec	0x19ec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121f0	0x19f0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121f4	0x19f4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121f8	0x19f8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800121fc	0x19fc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012200	0x1a00	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012204	0x1a04	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012208	0x1a08	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001220c	0x1a0c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012210	0x1a10	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012214	0x1a14	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012218	0x1a18	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001221c	0x1a1c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012220	0x1a20	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012224	0x1a24	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012228	0x1a28	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001222c	0x1a2c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012230	0x1a30	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012234	0x1a34	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012238	0x1a38	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001223c	0x1a3c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012240	0x1a40	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012244	0x1a44	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012248	0x1a48	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001224c	0x1a4c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012250	0x1a50	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012254	0x1a54	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012258	0x1a58	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001225c	0x1a5c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012260	0x1a60	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012264	0x1a64	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012268	0x1a68	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001226c	0x1a6c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012270	0x1a70	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012274	0x1a74	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012278	0x1a78	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001227c	0x1a7c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012280	0x1a80	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012284	0x1a84	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012288	0x1a88	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001228c	0x1a8c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012290	0x1a90	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012294	0x1a94	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012298	0x1a98	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001229c	0x1a9c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122a0	0x1aa0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122a4	0x1aa4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122a8	0x1aa8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122ac	0x1aac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122b0	0x1ab0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122b4	0x1ab4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122b8	0x1ab8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122bc	0x1abc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122c0	0x1ac0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122c4	0x1ac4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122c8	0x1ac8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122cc	0x1acc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122d0	0x1ad0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122d4	0x1ad4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122d8	0x1ad8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122dc	0x1adc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122e0	0x1ae0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122e4	0x1ae4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122e8	0x1ae8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122ec	0x1aec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122f0	0x1af0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122f4	0x1af4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122f8	0x1af8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800122fc	0x1afc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012300	0x1b00	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012304	0x1b04	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012308	0x1b08	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001230c	0x1b0c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012310	0x1b10	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012314	0x1b14	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012318	0x1b18	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001231c	0x1b1c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012320	0x1b20	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012324	0x1b24	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012328	0x1b28	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001232c	0x1b2c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012330	0x1b30	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012334	0x1b34	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012338	0x1b38	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001233c	0x1b3c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012340	0x1b40	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012344	0x1b44	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012348	0x1b48	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001234c	0x1b4c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012350	0x1b50	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012354	0x1b54	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012358	0x1b58	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001235c	0x1b5c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012360	0x1b60	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012364	0x1b64	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012368	0x1b68	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001236c	0x1b6c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012370	0x1b70	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012374	0x1b74	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012378	0x1b78	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001237c	0x1b7c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012380	0x1b80	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012384	0x1b84	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012388	0x1b88	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001238c	0x1b8c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012390	0x1b90	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012394	0x1b94	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012398	0x1b98	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001239c	0x1b9c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123a0	0x1ba0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123a4	0x1ba4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123a8	0x1ba8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123ac	0x1bac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123b0	0x1bb0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123b4	0x1bb4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123b8	0x1bb8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123bc	0x1bbc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123c0	0x1bc0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123c4	0x1bc4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123c8	0x1bc8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123cc	0x1bcc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123d0	0x1bd0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123d4	0x1bd4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123d8	0x1bd8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123dc	0x1bdc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123e0	0x1be0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123e4	0x1be4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123e8	0x1be8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123ec	0x1bec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123f0	0x1bf0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123f4	0x1bf4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123f8	0x1bf8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x800123fc	0x1bfc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012400	0x1c00	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012404	0x1c04	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012408	0x1c08	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001240c	0x1c0c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012410	0x1c10	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012414	0x1c14	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012418	0x1c18	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001241c	0x1c1c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012420	0x1c20	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012424	0x1c24	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012428	0x1c28	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001242c	0x1c2c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012430	0x1c30	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012434	0x1c34	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012438	0x1c38	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001243c	0x1c3c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012440	0x1c40	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012444	0x1c44	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012448	0x1c48	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001244c	0x1c4c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012450	0x1c50	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012454	0x1c54	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012458	0x1c58	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001245c	0x1c5c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012460	0x1c60	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012464	0x1c64	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012468	0x1c68	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001246c	0x1c6c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012470	0x1c70	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012474	0x1c74	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012478	0x1c78	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001247c	0x1c7c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012480	0x1c80	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012484	0x1c84	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012488	0x1c88	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8001248c	0x1c8c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012490	0x1c90	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012494	0x1c94	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80012498	0x1c98	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x800120d8	0x18d8	0x3c4	pointer	manual:switch-table		pointer[241]	retail words;func_8003d184 bounded jr table	241 aligned pointers all target func_8003d184; next datum begins at 0x8001249c
 GAME.EXE	0x8001249c	0x1c9c	0x1ec	pointer	manual:switch-table		pointer[123]	retail kind 0..122 index at 0x800404a8..0x800404d0	123 in-body effect constructor handlers; TU boundary WIP
 GAME.EXE	0x80012688	0x1e88	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8001268c	0x1e8c	0x1ec	pointer	manual:switch-table		pointer[123]	retail jump-table words; indexed jump at 0x800426a8 or 0x80044f84	effect kind 0..122 dispatch table in 0x80042650
@@ -400,8 +158,8 @@ GAME.EXE	0x80012de4	0x25e4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4
 GAME.EXE	0x80012de8	0x25e8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80012dec	0x25ec	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: no param
 GAME.EXE	0x80012df8	0x25f8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012dfc	0x25fc	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: CdInit: Init failed
-GAME.EXE	0x80012e0f	0x260f	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012dfc	0x25fc	0x15	string	manual:exact Psy-Q 3.0 LIBCD EVENT .rdata literal		ascii	archive 21-byte Code record;retail exact	CdInit diagnostic including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80012e11	0x2611	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBCD EVENT Code record; ownership unresolved
 GAME.EXE	0x80012e14	0x2614	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: path level (%d) error
 GAME.EXE	0x80012e2d	0x262d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80012e30	0x2630	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: dir was not found
@@ -434,22 +192,21 @@ GAME.EXE	0x80012fb4	0x27b4	0x18	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80012fcc	0x27cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80012fd0	0x27d0	0x1c	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: %d files found
 GAME.EXE	0x80012fec	0x27ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ff0	0x27f0	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
-GAME.EXE	0x8001301b	0x281b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013020	0x2820	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA STATUS ERROR %x
-GAME.EXE	0x80013033	0x2833	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013038	0x2838	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: SPU:T/O [%s]
-GAME.EXE	0x80013044	0x2844	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013048	0x2848	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (reset)
-GAME.EXE	0x80013054	0x2854	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013058	0x2858	0x12	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (wrdy H -> L)
-GAME.EXE	0x8001306a	0x286a	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8001306c	0x286c	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (dmaf clear/W)
-GAME.EXE	0x8001307f	0x287f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013080	0x2880	0x10	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (ioctl/IRQ)
-GAME.EXE	0x80013090	0x2890	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013094	0x2894	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: [%d] %08x / %08x (%08d)
-GAME.EXE	0x800130ab	0x28ab	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012ff0	0x27f0	0x2d	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 45-byte Code record;retail exact	final-sector format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001301d	0x281d	0x3	unclassified	manual:LIBCD CDROM .rdata zero prefix			archive 24-byte Code record;retail zero	leading bytes before DMA-status string
+GAME.EXE	0x80013020	0x2820	0x15	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 24-byte Code record;retail exact	DMA-status format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013035	0x2835	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBCD CDROM Code record; ownership unresolved
+GAME.EXE	0x80013038	0x2838	0xe	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 29-byte Code record;retail exact	SPU timeout string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013046	0x2846	0x2	unclassified	manual:LIBSPU SPU .rdata zero padding			archive 29-byte Code record;retail zero	padding before reset string
+GAME.EXE	0x80013048	0x2848	0xd	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 29-byte Code record;retail exact	reset wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013055	0x2855	0x3	unclassified	manual:LIBSPU SPU .rdata zero prefix			archive 43-byte Code record;retail zero	leading bytes before wait string
+GAME.EXE	0x80013058	0x2858	0x13	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 43-byte Code record;retail exact	wrdy wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x8001306b	0x286b	0x1	unclassified	manual:LIBSPU SPU .rdata zero padding			archive 43-byte Code record;retail zero	padding before dmaf wait string
+GAME.EXE	0x8001306c	0x286c	0x14	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 43-byte Code record;retail exact	dmaf wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013080	0x2880	0x11	string	manual:exact Psy-Q 3.0 LIBSPU SPU .rdata literal		ascii	archive 17-byte Code record;retail exact	ioctl wait string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013091	0x2891	0x3	unclassified	coverage-gap			payload-complement	zero alignment between SPU and S_M_INT records; original emission mechanism unresolved
+GAME.EXE	0x80013094	0x2894	0x19	string	manual:exact Psy-Q 3.0 LIBSPU S_M_INT .rdata literal		ascii	archive 25-byte Code record;retail exact	allocator diagnostic string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800130ad	0x28ad	0x3	unclassified	coverage-gap			payload-complement	outside pinned S_M_INT record; ownership unresolved
 GAME.EXE	0x800130b0	0x28b0	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: Can't Open Sequence data any more
 GAME.EXE	0x800130d1	0x28d1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800130d4	0x28d4	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: This is not SEQ Data.
@@ -610,20 +367,18 @@ GAME.EXE	0x80013368	0x2b68	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4
 GAME.EXE	0x8001336c	0x2b6c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80013370	0x2b70	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80013374	0x2b74	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80013378	0x2b78	0x33	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: intr.c,v 1.52 1995/03/14 12:20:44 hakama Exp $
-GAME.EXE	0x800133ab	0x2bab	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133ac	0x2bac	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: Too many interrupts
-GAME.EXE	0x800133bf	0x2bbf	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133c4	0x2bc4	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA bus error: code=%08x
-GAME.EXE	0x800133dc	0x2bdc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133e0	0x2be0	0xe	string	byte-pattern		ascii	investigation:string-census	escaped text: VSync: timeout
-GAME.EXE	0x800133ee	0x2bee	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800133f0	0x2bf0	0x29	string	byte-pattern		ascii	investigation:string-census	escaped text: SetGraphDebug:level:%d,type:%d reverse:%d
-GAME.EXE	0x80013419	0x2c19	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8001341c	0x2c1c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: DrawPrim
-GAME.EXE	0x80013424	0x2c24	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013428	0x2c28	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: GPU timeout:QUE=(%2d,%2d),CODE=(%d,%d,%08X)
-GAME.EXE	0x80013453	0x2c53	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80013378	0x2b78	0x34	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 52-byte Code record;retail exact	INTR revision string including NUL; original C literal provenance unresolved
+GAME.EXE	0x800133ac	0x2bac	0x15	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 21-byte Code record;retail exact	interrupt-overflow string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133c1	0x2bc1	0x3	unclassified	coverage-gap			payload-complement	zero alignment outside pinned INTR Code records; original emission mechanism unresolved
+GAME.EXE	0x800133c4	0x2bc4	0x1a	string	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .rdata literal		ascii	archive 26-byte Code record;retail exact	DMA-bus-error string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133de	0x2bde	0x2	unclassified	coverage-gap			payload-complement	zero alignment outside pinned INTR_DMA Code record; original emission mechanism unresolved
+GAME.EXE	0x800133e0	0x2be0	0x10	string	manual:exact Psy-Q 3.0 LIBETC VSYNC .rdata literal		ascii	archive 16-byte Code record;retail exact	VSync timeout string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800133f0	0x2bf0	0x2b	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 43-byte Code record;retail exact	SetGraphDebug format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001341b	0x2c1b	0x1	unclassified	manual:LIBGPU SYS .rdata zero prefix			archive 10-byte Code record;retail zero	leading byte before DrawPrim string
+GAME.EXE	0x8001341c	0x2c1c	0x9	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 10-byte Code record;retail exact	DrawPrim string including NUL; original C literal provenance unresolved
+GAME.EXE	0x80013425	0x2c25	0x3	unclassified	manual:LIBGPU SYS .rdata zero prefix			archive 48-byte Code record;retail zero	leading bytes before GPU-timeout string
+GAME.EXE	0x80013428	0x2c28	0x2d	string	manual:exact Psy-Q 3.0 LIBGPU SYS .rdata literal		ascii	archive 48-byte Code record;retail exact	GPU-timeout format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013455	0x2c55	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBGPU SYS Code records; ownership unresolved
 GAME.EXE	0x80013458	0x2c58	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: id  =%08x
 GAME.EXE	0x80013461	0x2c61	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80013464	0x2c64	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: mode=%08x
@@ -642,28 +397,24 @@ GAME.EXE	0x800134ec	0x2cec	0x14	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80013500	0x2d00	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80013504	0x2d04	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: unsupported type (%08x)
 GAME.EXE	0x8001351b	0x2d1b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013520	0x2d20	0x14	string	byte-pattern		ascii	investigation:string-census	escaped text: tpage: (%d,%d,%d,%d)
-GAME.EXE	0x80013534	0x2d34	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013538	0x2d38	0xd	string	byte-pattern		ascii	investigation:string-census	escaped text: clut: (%d,%d)
-GAME.EXE	0x80013545	0x2d45	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013548	0x2d48	0x16	string	byte-pattern		ascii	investigation:string-census	escaped text: clip (%3d,%3d)-(%d,%d)
-GAME.EXE	0x8001355e	0x2d5e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013560	0x2d60	0xe	string	byte-pattern		ascii	investigation:string-census	escaped text: ofs  (%3d,%3d)
-GAME.EXE	0x8001356e	0x2d6e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013570	0x2d70	0x14	string	byte-pattern		ascii	investigation:string-census	escaped text: tw   (%d,%d)-(%d,%d)
-GAME.EXE	0x80013584	0x2d84	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013588	0x2d88	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: dtd   %d
-GAME.EXE	0x80013590	0x2d90	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80013594	0x2d94	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: dfe   %d
-GAME.EXE	0x8001359c	0x2d9c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135a0	0x2da0	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: disp   (%3d,%3d)-(%d,%d)
-GAME.EXE	0x800135b8	0x2db8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135bc	0x2dbc	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: screen (%3d,%3d)-(%d,%d)
-GAME.EXE	0x800135d4	0x2dd4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135d8	0x2dd8	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: isinter %d
-GAME.EXE	0x800135e2	0x2de2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800135e4	0x2de4	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: isrgb24 %d
-GAME.EXE	0x800135ee	0x2dee	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80013520	0x2d20	0x16	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 22-byte Code record;retail exact	tpage format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013536	0x2d36	0x2	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 17-byte Code record;retail zero	leading bytes before clut format string
+GAME.EXE	0x80013538	0x2d38	0xf	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 17-byte Code record;retail exact	clut format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013547	0x2d47	0x1	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 87-byte Code record;retail zero	leading byte before clip format string
+GAME.EXE	0x80013548	0x2d48	0x18	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	clip format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013560	0x2d60	0x10	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	offset format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013570	0x2d70	0x16	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	texture-window format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013586	0x2d86	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 87-byte Code record;retail zero	padding before dtd format string
+GAME.EXE	0x80013588	0x2d88	0xa	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	dtd format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x80013592	0x2d92	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 87-byte Code record;retail zero	padding before dfe format string
+GAME.EXE	0x80013594	0x2d94	0xa	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 87-byte Code record;retail exact	dfe format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x8001359e	0x2d9e	0x2	unclassified	manual:LIBGPU PRIM .rdata zero prefix			archive 82-byte Code record;retail zero	leading bytes before display format string
+GAME.EXE	0x800135a0	0x2da0	0x1a	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	display format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135ba	0x2dba	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 82-byte Code record;retail zero	padding before screen format string
+GAME.EXE	0x800135bc	0x2dbc	0x1a	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	screen format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135d6	0x2dd6	0x2	unclassified	manual:LIBGPU PRIM .rdata zero padding			archive 82-byte Code record;retail zero	padding before interlace format string
+GAME.EXE	0x800135d8	0x2dd8	0xc	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	interlace format string including newline and NUL; original C literal provenance unresolved
+GAME.EXE	0x800135e4	0x2de4	0xc	string	manual:exact Psy-Q 3.0 LIBGPU PRIM .rdata literal		ascii	archive 82-byte Code record;retail exact	RGB24 format string including newline and NUL; original C literal provenance unresolved
 GAME.EXE	0x800135f0	0x2df0	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: OTag :prim
 GAME.EXE	0x800135fa	0x2dfa	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800135fb	0x2dfb	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
@@ -672,9 +423,6 @@ GAME.EXE	0x80013600	0x2e00	0x9	string	byte-pattern		ascii	investigation:string-c
 GAME.EXE	0x80013609	0x2e09	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8001360c	0x2e0c	0x25	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: bad prim:addr=%08X,type=%s,len=%d
 GAME.EXE	0x80013631	0x2e31	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80018764	0x7f64	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80039048	0x28848	0x38	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80045f10	0x35710	0x10	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80049f20	0x39720	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80049f30	0x39730	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80049f40	0x39740	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1029,7 +777,7 @@ GAME.EXE	0x80065c20	0x55420	0x5a0	defined	manual:menu item code pages		u16[6][12
 GAME.EXE	0x800661c0	0x559c0	0x4b0	defined	manual:menu item code pages		u16[5][120]	retail bytes;func_8001d654 indexed halfword lookup	five 240-byte pages ending at card-file prefix
 GAME.EXE	0x80066670	0x55e70	0x10	defined	manual:card save prefix		char[16]	retail bytes;four card-file xrefs	12-character save prefix, NUL and alignment zeros
 GAME.EXE	0x80066680	0x55e80	0x120	defined	manual:card title and icon palettes		KfCardAssets	retail title bytes;card-writer indexed palette copy	Shift-JIS title and seven 16-color icon palettes
-GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records		s16[5][4]	retail bytes;func_80025a18 eight-byte copy stride	five XYZ-plus-parameter records; fourth signed halfword is read separately at 0x800260fc; original C type and TU unresolved
+GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records		SVECTOR[5]	retail bytes;func_80025a18 eight-byte copy stride;source DATA claim	current C uses five SVECTOR records; fourth signed halfword is read as an effect parameter at 0x800260fc; original C type and TU unresolved
 GAME.EXE	0x800667c8	0x55fc8	0x20	defined	manual:player effect vector templates		SVECTOR[4]	retail bytes;func_80025a18 eight-byte copy stride	four signed corner records read by the bounded effect-spawn loop; defining TU unresolved
 GAME.EXE	0x800667e8	0x55fe8	0x14	defined	manual:player magic IDs and attack masks		KfPlayerMagicIdSequence	retail bytes;func_80026498 indexed lbu;func_80028998 halfword sequence	12 effect IDs followed by 0x20,0x10,0x80,0xffff masks; source owner unresolved
 GAME.EXE	0x800667fc	0x55ffc	0xa	defined	manual:collision grid sample		KfMapOccupancyCell	retail bytes;func_8002a988 fallback pointer	two five-byte layers with object index 0xff and flags 0x3f
@@ -1048,43 +796,8 @@ GAME.EXE	0x800679b0	0x571b0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f2
 GAME.EXE	0x800679b8	0x571b8	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f30 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
 GAME.EXE	0x800679c0	0x571c0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f40 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
 GAME.EXE	0x800679c8	0x571c8	0x80	unclassified	coverage-gap			payload-complement	unclassified after the five bounded magic-ID lists
-GAME.EXE	0x80067a48	0x57248	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a4c	0x5724c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a50	0x57250	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a54	0x57254	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a58	0x57258	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a5c	0x5725c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a60	0x57260	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a64	0x57264	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a68	0x57268	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a6c	0x5726c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a70	0x57270	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a74	0x57274	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a78	0x57278	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a7c	0x5727c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a80	0x57280	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a84	0x57284	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a88	0x57288	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a8c	0x5728c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a90	0x57290	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a94	0x57294	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a98	0x57298	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067a9c	0x5729c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067aa0	0x572a0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067aa4	0x572a4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067aa8	0x572a8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067aac	0x572ac	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ab0	0x572b0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ab4	0x572b4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ab8	0x572b8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067abc	0x572bc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ac0	0x572c0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ac4	0x572c4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ac8	0x572c8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067acc	0x572cc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ad0	0x572d0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ad4	0x572d4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80067ad8	0x572d8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x80067a48	0x57248	0x74	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .data pointer record		u32[29]	29 archive 32-bit section patches;all 29 retail words	contiguous vendor pointer record; original C declaration and linkage unresolved
+GAME.EXE	0x80067abc	0x572bc	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .data pointer record		u32[8]	8 archive 32-bit section patches;all 8 retail words	second contiguous vendor pointer record; original C declaration and linkage unresolved
 GAME.EXE	0x80067adc	0x572dc	0x610	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800680ec	0x578ec	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x800680f0	0x578f0	0x2f4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1124,12 +837,7 @@ GAME.EXE	0x8006cb83	0x5c383	0x7	string	byte-pattern		shift_jis	investigation:str
 GAME.EXE	0x8006cb8a	0x5c38a	0x912	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d49c	0x5cc9c	0x30	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: pad.c,v 1.33 1995/03/14 04:44:13 suzu Exp $
 GAME.EXE	0x8006d4cc	0x5cccc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d4d0	0x5ccd0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d4d4	0x5ccd4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d4d8	0x5ccd8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d4dc	0x5ccdc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d4e0	0x5cce0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d4e4	0x5cce4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d4d0	0x5ccd0	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR .data fragment		u32[6]	archive code record and four section patches;retail words	contiguous vendor section fragment; individual C object and linkage remain unresolved
 GAME.EXE	0x8006d4e8	0x5cce8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d4ec	0x5ccec	0x20	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d50c	0x5cd0c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -1145,72 +853,37 @@ GAME.EXE	0x8006d565	0x5cd65	0x3	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006d568	0x5cd68	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d56c	0x5cd6c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d570	0x5cd70	0x18	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d588	0x5cd88	0x30	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: sys.c,v 1.67 1995/03/13 08:48:19 suzu Exp $
-GAME.EXE	0x8006d5b8	0x5cdb8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d5bc	0x5cdbc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5c0	0x5cdc0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5c4	0x5cdc4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5c8	0x5cdc8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5cc	0x5cdcc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5d0	0x5cdd0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5d4	0x5cdd4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5d8	0x5cdd8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5dc	0x5cddc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5e0	0x5cde0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5e4	0x5cde4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5e8	0x5cde8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5ec	0x5cdec	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5f0	0x5cdf0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5f4	0x5cdf4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5f8	0x5cdf8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d5fc	0x5cdfc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d600	0x5ce00	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d604	0x5ce04	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d608	0x5ce08	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d60c	0x5ce0c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d610	0x5ce10	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d614	0x5ce14	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d618	0x5ce18	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d61c	0x5ce1c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d620	0x5ce20	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d624	0x5ce24	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d628	0x5ce28	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d62c	0x5ce2c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d630	0x5ce30	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d634	0x5ce34	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d638	0x5ce38	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d63c	0x5ce3c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d640	0x5ce40	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d644	0x5ce44	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d648	0x5ce48	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d64c	0x5ce4c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d650	0x5ce50	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d654	0x5ce54	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d658	0x5ce58	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d588	0x5cd88	0x31	string	manual:exact Psy-Q 3.0 LIBGPU SYS .data revision string		ascii	49 archive bytes;retail exact including NUL	vendor revision string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d5b9	0x5cdb9	0x3	unclassified	manual:LIBGPU SYS .data alignment			archive 67-byte code record begins with three zero bytes	alignment before 16-pointer record; original C object boundary unresolved
+GAME.EXE	0x8006d5bc	0x5cdbc	0x40	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .data pointer record		u32[16]	16 archive 32-bit section patches;all 16 retail words	contiguous vendor pointer record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d5fc	0x5cdfc	0x60	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .data pointer record		u32[24]	24 archive 32-bit section patches;all 24 retail words	contiguous vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d65c	0x5ce5c	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
 GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68b	0x5ce8b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d690	0x5ce90	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d694	0x5ce94	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d698	0x5ce98	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d6a0	0x5cea0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	manual:menu item model flag		s32	retail zero word;3 validated xrefs in menu_load_item_model and menu_release_item_model	allocation pending flag; original containing object and TU unproved
+GAME.EXE	0x8006d690	0x5ce90	0x4	defined	manual:input active latch		s32	retail zero word;16 validated xrefs;input_read_mark_active writes 1 after nonzero PadRead	input active latch cleared by release/menu handlers; original containing object and TU unproved
+GAME.EXE	0x8006d694	0x5ce94	0x4	defined	manual:menu item quantity		s32	retail initialized word 1;24 validated xrefs;0x8001e484 full-word bounded increment/decrement	menu quantity scalar view; original containing object and TU remain unproved
+GAME.EXE	0x8006d698	0x5ce98	0x4	defined	manual:menu cursor frame		s32	retail zero word;12 validated xrefs;menu_frame_begin bounds frame at 0..7	cursor animation frame; original containing object and TU unproved
+GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	manual:menu cursor direction		s32	retail zero word;9 validated xrefs;menu_frame_begin stores 1 or -1 on bounds	cursor animation direction; original containing object and TU unproved
+GAME.EXE	0x8006d6a0	0x5cea0	0x1	defined	manual:card loaded slot		u8	retail zero byte;2 validated card reader/writer stores;source DATA owner in memory_card_events	last successful card slot byte
 GAME.EXE	0x8006d6a1	0x5cea1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	manual:card slot seed		s8	retail 0x20;three reviewed lui+lb pairs in card directory/header/writer	first signed-byte view of adjacent slot seed; original object extent and TU unproved
+GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	manual:card slot seed		s8	retail 0x00;three reviewed lui+lb pairs in card directory/header/writer	second signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a6	0x5cea6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard		char[7]	retail bytes;firstfile argument at 0x80022744	bu00:* plus NUL terminator
+GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard	DAT_8006d6a8	char[7]	retail bytes;firstfile argument at 0x80022744;source DATA claim	bu00:* plus NUL terminator; original TU boundary WIP
 GAME.EXE	0x8006d6af	0x5ceaf	0x1	unclassified	coverage-gap			payload-complement	zero alignment before player texture row rectangles
 GAME.EXE	0x8006d6b0	0x5ceb0	0x20	defined	manual:player status texture rows	player_status_texture_rows	RECT[4]	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM rows at x=0x240
 GAME.EXE	0x8006d6d0	0x5ced0	0x4	defined	manual:map TMD color		CVECTOR	retail bytes;NormalColorCol xrefs;KF1 counterpart	initialized neutral RGB 128,128,128,0
 GAME.EXE	0x8006d6d4	0x5ced4	0x4	defined	manual:render frame yaw accumulator	render_model_yaw_smoothing_accumulator	s32	retail zero word;four func_800335a0 read-write xrefs;angle_shortest_delta	initialized yaw-delta accumulator eased by one eighth per frame
 GAME.EXE	0x8006d6d8	0x5ced8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d6dc	0x5cedc	0x8	defined	manual:menu transition		RECT	retail bytes;StoreImage;MoveImage;LoadImage	initialized 320 by 240 image transfer rectangle
-GAME.EXE	0x8006d6e4	0x5cee4	0x20	defined	manual:map_object_motion_offsets	DAT_8006d6e4	SVECTOR[4]	retail bytes;four func_80036ed4 direct pointers;func_80036b68 SVECTOR arguments	four ordered start/end motion offsets; defining TU and linkage remain unresolved
-GAME.EXE	0x8006d704	0x5cf04	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6e4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	first motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6ec	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	second motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	third motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	fourth motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	DAT_8006d704	u32	retail zero bytes;func_80040308 raw read/write pairs	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;func_80041d7c xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 GAME.EXE	0x8006d714	0x5cf14	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1236,68 +909,24 @@ GAME.EXE	0x8006d760	0x5cf60	0x6	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x8006d766	0x5cf66	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d768	0x5cf68	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: DataEnd
 GAME.EXE	0x8006d76f	0x5cf6f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d770	0x5cf70	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: NoIntr
-GAME.EXE	0x8006d776	0x5cf76	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d778	0x5cf78	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d77c	0x5cf7c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d780	0x5cf80	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d784	0x5cf84	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d788	0x5cf88	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d78c	0x5cf8c	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d78d	0x5cf8d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d790	0x5cf90	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d794	0x5cf94	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d798	0x5cf98	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: %s...
-GAME.EXE	0x8006d79d	0x5cf9d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d7a0	0x5cfa0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7a4	0x5cfa4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7a8	0x5cfa8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7ac	0x5cfac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7b0	0x5cfb0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7b4	0x5cfb4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7b8	0x5cfb8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7bc	0x5cfbc	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CD001
-GAME.EXE	0x8006d7c1	0x5cfc1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d7c4	0x5cfc4	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7c6	0x5cfc6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d7c8	0x5cfc8	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7ca	0x5cfca	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7cb	0x5cfcb	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d7cc	0x5cfcc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7d0	0x5cfd0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7d4	0x5cfd4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7d8	0x5cfd8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7dc	0x5cfdc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7e0	0x5cfe0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7e4	0x5cfe4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7e8	0x5cfe8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7ec	0x5cfec	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7f0	0x5cff0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7f4	0x5cff4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7f8	0x5cff8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d7fc	0x5cffc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d800	0x5d000	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d804	0x5d004	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d808	0x5d008	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d80c	0x5d00c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d810	0x5d010	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d814	0x5d014	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d818	0x5d018	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d820	0x5d020	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d824	0x5d024	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d828	0x5d028	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d82c	0x5d02c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d830	0x5d030	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d832	0x5d032	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d770	0x5cf70	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive NoIntr bytes;retail exact including NUL	vendor command-name string; original C declaration unresolved
+GAME.EXE	0x8006d777	0x5cf77	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 33-byte record begins with one zero byte	alignment before eight-word record; original C object boundary unresolved
+GAME.EXE	0x8006d778	0x5cf78	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[8]	archive 33-byte code record after one zero alignment byte;all 32 table bytes retail exact	five hardware-register pointers and three zero words; original C declaration unresolved
+GAME.EXE	0x8006d798	0x5cf98	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive %s... newline NUL bytes;retail exact	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x8006d79f	0x5cf9f	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 25-byte record begins with one zero byte	alignment before six-word record; original C object boundary unresolved
+GAME.EXE	0x8006d7a0	0x5cfa0	0x18	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[6]	archive 25-byte code record after one zero alignment byte;all 24 table bytes retail exact	six hardware-register pointers; original C declaration unresolved
+GAME.EXE	0x8006d7b8	0x5cfb8	0x4	defined	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata scalar		u32	archive four-byte scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7bc	0x5cfbc	0x6	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive six-byte CD001 string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7c2	0x5cfc2	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive alignment bytes;retail zero	alignment before directory-name record
+GAME.EXE	0x8006d7c4	0x5cfc4	0x2	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7c6	0x5cfc6	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive record bytes;retail zero	alignment before dot-dot string
+GAME.EXE	0x8006d7c8	0x5cfc8	0x3	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot-dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7cb	0x5cfcb	0x1	unclassified	manual:LIBCD ISO9660 .sdata alignment			retail zero	alignment before next member
+GAME.EXE	0x8006d7cc	0x5cfcc	0x60	defined	manual:exact Psy-Q 3.0 LIBCD CDROM .sdata record		u32[24]	archive 96-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d82c	0x5d02c	0xc	defined	manual:exact Psy-Q 3.0 LIBCD CDROM .sdata record		u32[3]	archive 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d838	0x5d038	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d83c	0x5d03c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d840	0x5d040	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d844	0x5d044	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d848	0x5d048	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d84c	0x5d04c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d850	0x5d050	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d854	0x5d054	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d858	0x5d058	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d840	0x5d040	0x1c	defined	manual:exact Psy-Q 3.0 LIBSPU SPU .sdata record		u32[7]	archive 28-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d85c	0x5d05c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d860	0x5d060	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d864	0x5d064	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -1308,67 +937,50 @@ GAME.EXE	0x8006d874	0x5d074	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4
 GAME.EXE	0x8006d876	0x5d076	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d878	0x5d078	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d87c	0x5d07c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d880	0x5d080	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d884	0x5d084	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d888	0x5d088	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d88c	0x5d08c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d890	0x5d090	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d894	0x5d094	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d898	0x5d098	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d89c	0x5d09c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a0	0x5d0a0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a4	0x5d0a4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a8	0x5d0a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8ac	0x5d0ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b0	0x5d0b0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b4	0x5d0b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b8	0x5d0b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8bc	0x5d0bc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8c0	0x5d0c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8c4	0x5d0c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8c8	0x5d0c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8cc	0x5d0cc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8d0	0x5d0d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8d4	0x5d0d4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8d8	0x5d0d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8dc	0x5d0dc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8e0	0x5d0e0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8e4	0x5d0e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8e8	0x5d0e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8ec	0x5d0ec	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8f0	0x5d0f0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8f4	0x5d0f4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8f8	0x5d0f8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8fc	0x5d0fc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d900	0x5d100	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d904	0x5d104	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d908	0x5d108	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d90c	0x5d10c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: F3L\x20
-GAME.EXE	0x8006d910	0x5d110	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d914	0x5d114	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: G3L\x20
-GAME.EXE	0x8006d918	0x5d118	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d91c	0x5d11c	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: FT3L\x20
-GAME.EXE	0x8006d921	0x5d121	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d924	0x5d124	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: GT3L\x20
-GAME.EXE	0x8006d929	0x5d129	0xb	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d934	0x5d134	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: FT3\x20
-GAME.EXE	0x8006d938	0x5d138	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d93c	0x5d13c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: GT3\x20
-GAME.EXE	0x8006d940	0x5d140	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d944	0x5d144	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: F4L\x20
-GAME.EXE	0x8006d948	0x5d148	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d94c	0x5d14c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: G4L\x20
-GAME.EXE	0x8006d950	0x5d150	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d954	0x5d154	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: FT4L\x20
-GAME.EXE	0x8006d959	0x5d159	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d95c	0x5d15c	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: GT4L\x20
-GAME.EXE	0x8006d961	0x5d161	0xb	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d96c	0x5d16c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: FT4\x20
-GAME.EXE	0x8006d970	0x5d170	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d974	0x5d174	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: GT4\x20
-GAME.EXE	0x8006d978	0x5d178	0x55	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d9cd	0x5d1cd	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
-GAME.EXE	0x8006d9d1	0x5d1d1	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d880	0x5d080	0x10	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d890	0x5d090	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB export	Vcount	u32	archive XDEF at .sdata+0x10;separate four-byte zero record;retail exact	vendored 32-bit counter; original C signedness unresolved
+GAME.EXE	0x8006d894	0x5d094	0xc	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32[3]	archive 12-byte pointer-and-zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8a0	0x5d0a0	0x8	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32[2]	archive eight-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8a8	0x5d0a8	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32	archive four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8ac	0x5d0ac	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte hardware pointer;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8b0	0x5d0b0	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8b4	0x5d0b4	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8c4	0x5d0c4	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[6]	24 archive bytes;pointer patches to SYS .data+0x34 and printf;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8dc	0x5d0dc	0x24	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[9]	archive 36-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d900	0x5d100	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[3]	archive 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d90c	0x5d10c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d911	0x5d111	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d914	0x5d114	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d919	0x5d119	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d91c	0x5d11c	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d922	0x5d122	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d924	0x5d124	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d92a	0x5d12a	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d92c	0x5d12c	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d930	0x5d130	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d934	0x5d134	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d939	0x5d139	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d93c	0x5d13c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d941	0x5d141	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d944	0x5d144	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d949	0x5d149	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d94c	0x5d14c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d951	0x5d151	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d954	0x5d154	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d95a	0x5d15a	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d95c	0x5d15c	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d962	0x5d162	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d964	0x5d164	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d968	0x5d168	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d96c	0x5d16c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d971	0x5d171	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d974	0x5d174	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d979	0x5d179	0x3	unclassified	manual:LIBGPU OTAG .sdata alignment			retail zero;before exact OTAG section	alignment between pinned TMD and OTAG sections
+GAME.EXE	0x8006d97c	0x5d17c	0x47	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[71]	archive 71-byte primitive-name record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9c3	0x5d1c3	0x7	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[7]	archive seven-byte name-tail record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9ca	0x5d1ca	0x8	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[8]	archive eight-byte format-string record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9d2	0x5d1d2	0xb	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[11]	archive eleven-byte format-string record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9dd	0x5d1dd	0x3	unclassified	manual:CPE load-tail residue			retail bytes 43 50 45;outside 97-byte OTAG .sdata	separate CPE signature residue before page-rounded BSS tail
 GAME.EXE	0x8006d9e0	0x5d1e0	0x4	bss	reviewed	current_poly_ft4	POLY_FT4 *	manual:primitive_buffer	current quad pointer; CPE record residue in page-rounded load tail, assigned at runtime
 GAME.EXE	0x8006d9e4	0x5d1e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d9e8	0x5d1e8	0x1	bss	reviewed	menu_saved_music_enabled	u8	manual:menu display transition	zero-initialized music flag snapshot used by menu entry and exit
@@ -1380,66 +992,66 @@ GAME.EXE	0x8006da00	0x5d200	0x8	defined	reviewed	menu_item_preview_translation	S
 GAME.EXE	0x8006da08	0x5d208	0x8	defined	reviewed	menu_item_preview_rotation	SVECTOR	manual:menu-item-model	three signed 16-bit rotation coordinates and SDK vector pad; initialized zeros
 GAME.EXE	0x8006da10	0x5d210	0x4	defined	reviewed	menu_item_preview_rotation_step	s32	manual:menu-item-model	rotation increment used by preview renderer; initialized zero
 GAME.EXE	0x8006da14	0x5d214	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da18	0x5d218	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da18	0x5d218	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	IO-end event handle; original defining TU unproved
 GAME.EXE	0x8006da1c	0x5d21c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da20	0x5d220	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da20	0x5d220	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	timeout event handle; original defining TU unproved
 GAME.EXE	0x8006da24	0x5d224	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da28	0x5d228	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da28	0x5d228	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	new-device event handle; original defining TU unproved
 GAME.EXE	0x8006da2c	0x5d22c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da30	0x5d230	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da30	0x5d230	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	error event handle; original defining TU unproved
 GAME.EXE	0x8006da34	0x5d234	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da58	0x5d258	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da58	0x5d258	0x4	defined	manual:card I/O buffer pointer		u8 *	retail zero word;reviewed initializer store and card reader/writer loads	pointer assigned to memory_card_buffer_storage at initialization; original defining TU unproved
 GAME.EXE	0x8006da5c	0x5d25c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da60	0x5d260	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da60	0x5d260	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da64	0x5d264	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da68	0x5d268	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da68	0x5d268	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da6c	0x5d26c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da70	0x5d270	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da70	0x5d270	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da74	0x5d274	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da78	0x5d278	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da78	0x5d278	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da7c	0x5d27c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da80	0x5d280	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da80	0x5d280	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Psy-Q 3.0 LIBCD/BIOS xrefs	curated direct references occur in exact getintr text; defining object and extent unresolved
 GAME.EXE	0x8006da81	0x5d281	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006da82	0x5d282	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da88	0x5d288	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da88	0x5d288	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Psy-Q 3.0 LIBCD/BIOS xrefs	curated direct references occur in exact getintr text; defining object and extent unresolved
 GAME.EXE	0x8006da89	0x5d289	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da90	0x5d290	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da90	0x5d290	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Psy-Q 3.0 LIBCD/BIOS xrefs	curated direct references occur in exact getintr text; defining object and extent unresolved
 GAME.EXE	0x8006da91	0x5d291	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da98	0x5d298	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006da98	0x5d298	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
 GAME.EXE	0x8006da9c	0x5d29c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daa0	0x5d2a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006daa0	0x5d2a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
 GAME.EXE	0x8006daa4	0x5d2a4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daa8	0x5d2a8	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006daa8	0x5d2a8	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
 GAME.EXE	0x8006daa9	0x5d2a9	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dab0	0x5d2b0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dab0	0x5d2b0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dab1	0x5d2b1	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dab8	0x5d2b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dab8	0x5d2b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/BIOS .text xrefs	all curated direct references lie in the exact LIBCD/BIOS text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dabc	0x5d2bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dac0	0x5d2c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dac0	0x5d2c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/ISO9660 .text xrefs	all curated direct references lie in the exact LIBCD/ISO9660 text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dac4	0x5d2c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dac8	0x5d2c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dac8	0x5d2c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dacc	0x5d2cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dad0	0x5d2d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dad0	0x5d2d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dad4	0x5d2d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dad8	0x5d2d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dad8	0x5d2d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dadc	0x5d2dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dae0	0x5d2e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dae0	0x5d2e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dae4	0x5d2e4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daf0	0x5d2f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006daf0	0x5d2f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006daf4	0x5d2f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daf8	0x5d2f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006daf8	0x5d2f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dafc	0x5d2fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db00	0x5d300	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006db04	0x5d304	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db10	0x5d310	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db00	0x5d300	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006db04	0x5d304	0xc	unclassified	coverage-gap			payload-complement;seven candidate word xrefs to 0x8006db08 in exact Psy-Q 3.0 LIBCD/CDROM .text	0x8006db08 is a candidate SDK data view within this gap; original object start and extent remain unresolved
+GAME.EXE	0x8006db10	0x5d310	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db14	0x5d314	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db18	0x5d318	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db18	0x5d318	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db1c	0x5d31c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db20	0x5d320	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db20	0x5d320	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db24	0x5d324	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db28	0x5d328	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db28	0x5d328	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db2c	0x5d32c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db30	0x5d330	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db30	0x5d330	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db34	0x5d334	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db40	0x5d340	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006db44	0x5d344	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

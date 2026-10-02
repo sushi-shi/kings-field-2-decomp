@@ -10,7 +10,7 @@
 #include <kf/game/player.h>
 #include <kf/game/tmd.h>
 
-RODATA(0x80011000, 0x58)
+RODATA(0x80011000, 0x53)
 
 ADDRESS(0x80015d58, 0x27c)
 void func_80015d58(void)

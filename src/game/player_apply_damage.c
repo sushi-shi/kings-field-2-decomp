@@ -2,8 +2,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern void func_80024498(const VECTOR *origin, s32 damage, s32 reaction_flags);
-
 enum {
     KF_PLAYER_STATUS_GUARD_CHANCE = 16384,
     KF_PLAYER_POISON_ROLL_SCALE = 100,

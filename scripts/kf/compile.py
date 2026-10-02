@@ -179,7 +179,9 @@ def compile_source(
                              'KF_GCC257_SOURCE_SHA256': hashlib.sha256(source.read_bytes()).hexdigest()}
         if trace_function is not None:
             trace_environment['KF_GCC257_TRACE_FUNCTION'] = trace_function
-    data_claims = scan_data_claims(source) if source.suffix.lower() == '.c' else ()
+    data_claims = (tuple(claim for claim in scan_data_claims(source)
+                         if claim.image is None or claim.image == image.removesuffix('.EXE'))
+                   if source.suffix.lower() == '.c' else ())
     source_sizes = {}
     if source.suffix.lower() == '.c':
         if optimization is None:

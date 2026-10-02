@@ -36,7 +36,14 @@ extern void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
                           u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
                           u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                           u16 magic_12, u16 magic_14, const VECTOR *position);
-extern SVECTOR DAT_8006d6e4[4];
+DATA(0x8006d6e4, 0x8)
+SVECTOR DAT_8006d6e4 = {0, -1424, 0, 0};
+DATA(0x8006d6ec, 0x8)
+SVECTOR DAT_8006d6ec = {0, -912, 0, 0};
+DATA(0x8006d6f4, 0x8)
+SVECTOR DAT_8006d6f4 = {0, -100, 300, 0};
+DATA(0x8006d6fc, 0x8)
+SVECTOR DAT_8006d6fc = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
@@ -64,7 +71,7 @@ void func_80036ed4(void)
                 object->unknown_0a += 72;
                 if (object->unknown_0a == 0xc18) {
                     func_80034f90(object->unknown_00, object->position.vx,
-                                  object->position.vz, object->rotation.pad,
+                                  object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 1, 0xff);
                 }
                 if (object->unknown_0a > 0xfff) {
@@ -76,7 +83,7 @@ void func_80036ed4(void)
                 if (func_8002b9d4(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
                     func_80034f90(object->unknown_00, object->position.vx,
-                                  object->position.vz, object->rotation.pad,
+                                  object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
@@ -115,7 +122,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 object->unknown_0a += 72;
@@ -126,7 +133,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                 }
                 if (object->unknown_0a > 0xfff) {
                     object->unknown_0a = 0xfff;
@@ -146,7 +153,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 break;
@@ -163,7 +170,7 @@ void func_80036ed4(void)
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
                                   template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.pad, 0x2d);
+                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
                 }
                 break;
             default:
@@ -174,8 +181,8 @@ void func_80036ed4(void)
 
         case 4:
             if (object->action_timer != 0) {
-                KfMapObject *linked = 0;
-                u16 previous;
+                KfMapObject *linked;
+                s16 previous;
                 if (object->collision_flags & 0x80) {
                     s32 bearing = vector_xz_to_angle(
                         player_state.camera_position.vx - object->position.vx,
@@ -198,6 +205,8 @@ void func_80036ed4(void)
                             linked->unknown_0e = -200;
                         }
                     }
+                } else {
+                    linked = 0;
                 }
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
@@ -205,7 +214,7 @@ void func_80036ed4(void)
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 previous = object->extra_40.halfwords[0]++;
-                if ((s16)previous < 32) {
+                if (previous < 32) {
                     object->unknown_01 = 0x81;
                     object->rotation.vy += 32;
                     if (linked != 0) {
@@ -222,8 +231,8 @@ void func_80036ed4(void)
                     } else if (previous == 31) {
                         object->extra_40.halfwords[0] = 0x118;
                     }
-                } else if ((s16)previous >= 300) {
-                    if ((s16)previous < 332) {
+                } else if (previous >= 300) {
+                    if (previous < 332) {
                         if (previous == 300) {
                             SVECTOR offset;
                             VECTOR target;
@@ -265,44 +274,6 @@ void func_80036ed4(void)
             }
             break;
 
-        case 5:
-            switch (object->action_timer) {
-            case 0: {
-                u16 linked_index = object->tail.fields.unknown_3a.value;
-                if (linked_index != 0xffff) {
-                    KfMapObject *linked = &map_object_state.objects[linked_index];
-                    linked->unknown_0e += 200;
-                }
-                if (object->tail.fields.unknown_38 == 0xfe) {
-                    map_object_set_cell_marker(object, 1, template->marker_action_05);
-                    object->unknown_0a = 0xfff;
-                    object->action_timer = 3;
-                } else {
-                    map_object_set_property(linked_index, 0);
-                    object->action_timer = 1;
-                }
-                break;
-            }
-            case 1:
-                if (object->tail.fields.unknown_38 == 0xfe) {
-                    object->action_timer = 2;
-                    map_object_set_property(object->tail.fields.unknown_3a.value,
-                                            1, object->unknown_00);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
-                    map_object_set_cell_marker(object, 1, template->marker_action_05);
-                }
-                break;
-            case 2:
-                object->unknown_0a += 128;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_0a = 0xfff;
-                    map_object_set_property(object->tail.fields.unknown_3a.value, 2);
-                    object->action_timer = 3;
-                }
-                break;
-            }
-            break;
-
         case 8:
             switch (object->action_timer) {
             case 0:
@@ -317,7 +288,7 @@ void func_80036ed4(void)
                 break;
             case 1:
                 if (object->tail.fields.unknown_38 == 0xfe) {
-                    object->extra_40.halfwords[0] = (u16)-16;
+                    object->extra_40.signed_halfwords[0] = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->unknown_00);
@@ -326,134 +297,20 @@ void func_80036ed4(void)
                 break;
             case 2: {
                 s32 velocity = angle_velocity_step(0xa00, object->rotation.vx,
-                                                    (s16)object->extra_40.halfwords[0], 8, 4);
-                object->extra_40.halfwords[0] = velocity;
-                object->rotation.vx = (object->rotation.vx + velocity) & 0xfff;
-                if ((u16)object->rotation.vx < 0xc00) {
+                                                    object->extra_40.signed_halfwords[0], 8, 4);
+                s32 angle = ((u16)object->rotation.vx + velocity) & 0xfff;
+                object->extra_40.signed_halfwords[0] = velocity;
+                object->rotation.vx = angle;
+                if (angle < 0xc00) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                 }
-                if ((s16)object->extra_40.halfwords[0] == 0 && object->rotation.vx == 0xa00) {
+                if (object->extra_40.signed_halfwords[0] == 0 && object->rotation.vx == 0xa00) {
                     object->action_timer = 3;
                 }
                 break;
             }
             }
             break;
-
-        case 9: {
-            u16 linked_index = object->tail.fields.unknown_3a.value;
-            if (linked_index != 0xffff) {
-                KfMapObject *linked = &map_object_state.objects[linked_index];
-                if (linked->object_id != 0xff) {
-                    linked->unknown_00 = 0;
-                    linked->tail.fields.unknown_38 = 0;
-                }
-            }
-            object->action = KF_MAP_OBJECT_ACTION_NONE;
-            break;
-        }
-
-        case 15: {
-            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
-            if (object->action_timer != 0 && target->object_id == 0xff) {
-                switch (object->tail.fields.unknown_38) {
-                case 0x72:
-                    event_state.control.fields.sentinels.unknown_00 = 0xffff;
-                    break;
-                case 0x73:
-                    event_state.control.fields.sentinels.unknown_04 = 0xffff;
-                    break;
-                case 0x74:
-                    event_state.control.fields.sentinels.unknown_08 = 0xffff;
-                    break;
-                }
-                object->tail.fields.unknown_38 = 0xff;
-                object->action_timer = 0;
-            }
-            func_80036b68(object, target, &DAT_8006d6e4[0], &DAT_8006d6e4[1], 1, 32);
-            break;
-        }
-
-        case 16:
-            object->rotation.pad += 128;
-            object->position.vy = object->extra_40.raw +
-                                  (rsin((s16)object->rotation.pad) >> 6);
-            break;
-
-        case 17: {
-            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
-            KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
-            u8 marker_mask = object->tail.fields.unknown_3a.bytes.low;
-            if (object->action_timer != 0 && target->object_id == 0xff) {
-                object->tail.fields.unknown_38 = 0xff;
-                object->action_timer = 0;
-                linked->tail.fields.unknown_38 &= ~marker_mask;
-            }
-            if (func_80036b68(object, target, &DAT_8006d6e4[2],
-                              &DAT_8006d6e4[3], 0, 20)) {
-                linked->tail.fields.unknown_38 |= marker_mask;
-            }
-            break;
-        }
-
-        case 18:
-            if ((s32)(object->extra_40.raw - cd_state.frame_count) < 0) {
-                object->extra_40.raw = cd_state.frame_count + 30;
-                map_object_play_spatial_sound(object, 0xee);
-            }
-            break;
-
-        case 19: {
-            KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.value];
-            switch (object->action_timer) {
-            case 0:
-                func_800369b8(object, 2, &linked->position);
-                if (linked->position.vy != object->position.vy) {
-                    s16 scale;
-                    linked->rotation = object->rotation;
-                    if (object->tail.fields.unknown_38 == 0xff) {
-                        goto start_action_19;
-                    }
-                    linked->object_id = 0x4c;
-                    linked->action = KF_MAP_OBJECT_ACTION_NONE;
-                    linked->position.vy += 300;
-                    linked->tail.fields.unknown_38 = 0;
-                    linked->unknown_00 = object->unknown_00;
-                    scale = object->tail.fields.unknown_38 << 5;
-                    linked->scale.vx = scale;
-                    linked->scale.vy = scale;
-                    linked->scale.vz = scale;
-                    object->action_timer = 1;
-                }
-                break;
-            case 1: {
-                u8 chance = game_counter_bytes[0x4c];
-                if (chance < 16 && rand() >= chance * 2048) {
-                    s16 scale = (u16)linked->scale.vz + 1;
-                    linked->scale.vx = scale;
-                    linked->scale.vy = scale;
-                    linked->scale.vz = scale;
-                    object->tail.fields.unknown_38 = (u16)linked->scale.vz >> 5;
-                    if (linked->scale.vx >= 0x1000) {
-                        goto start_action_19;
-                    }
-                }
-                break;
-            }
-            case 2:
-                if (linked->object_id == KF_MAP_OBJECT_ID_NONE) {
-                    object->tail.fields.unknown_38 = 0;
-                }
-                break;
-            }
-            break;
-        start_action_19:
-            object->tail.fields.unknown_38 = 0xff;
-            linked->tail.fields.unknown_38 = 0xff;
-            map_object_start_action_if_idle(linked, 0x62);
-            object->action_timer = 2;
-            break;
-        }
 
         case 22:
             switch (object->action_timer) {
@@ -487,8 +344,7 @@ void func_80036ed4(void)
                 vector2i_scale_shift11(10, &displacement);
                 object->position.vx += displacement.x;
                 object->position.vz += displacement.z;
-                object->extra_40.halfwords[0]--;
-                if (object->extra_40.halfwords[0] == 0) {
+                if (--object->extra_40.halfwords[0] == 0) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                     object->action_timer = 3;
                 }
@@ -503,74 +359,351 @@ void func_80036ed4(void)
             }
             break;
 
-        case 34:
-            if (!func_80036ad8(object->tail.fields.unknown_38,
-                                object->tail.fields.unknown_39,
-                                object->tail.fields.unknown_3a.bytes.low,
-                                object->tail.fields.unknown_3a.bytes.high,
-                                object->position.vy)) {
-                object->extra_40.bytes[0] = 0;
-            } else if (object->extra_40.bytes[0] == 0) {
-                KfMapObject *candidate = map_object_state.objects;
-                s32 count = KF_MAP_OBJECT_CAPACITY;
-                audio_play_sound(0x14, 0x6e);
-                func_80036e24(1, 0, 0x1000, 0x100);
-                do {
-                    if (candidate->action == 34) {
-                        candidate->extra_40.bytes[0] = 1;
-                    }
-                    candidate++;
-                } while (--count != 0);
-                func_8002b73c(player_state.camera_position.vx,
-                               player_state.camera_position.vz, 800, -1);
-                player_state.camera_position.vx =
-                    object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
-                player_state.camera_position.vz =
-                    object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
-                player_state.unknown_128 =
-                    object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
-                player_state.camera_rotation_target.angles[1] =
-                    -(u8)object->tail.fields.unknown_3e.bytes.high * 16;
-                player_sync_position_to_map();
-                player_state.camera_rotation.angles[1] =
-                    player_state.camera_rotation_target.angles[1] +
-                    player_state.unknown_100[1] +
-                    player_state.unknown_108.components[1] +
-                    player_state.unknown_110[1];
-                func_80036e24(1, 0x1000, 0, -0x100);
-                func_800314d4(0xff, 0, 0, 0);
+        case 5:
+            switch (object->action_timer) {
+            case 0: {
+                u16 linked_index = object->tail.fields.unknown_3a.value;
+                if (linked_index != 0xffff) {
+                    KfMapObject *linked = &map_object_state.objects[linked_index];
+                    linked->unknown_0e += 200;
+                }
+                if (object->tail.fields.unknown_38 == 0xfe) {
+                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                    object->unknown_0a = 0xfff;
+                    object->action_timer = 3;
+                } else {
+                    map_object_set_property(object->tail.fields.unknown_3a.value,
+                                            0);
+                    object->action_timer = 1;
+                }
+                break;
             }
-            object->unknown_0a = (object->unknown_0a + 64) & 0xfff;
+            case 1:
+                if (object->tail.fields.unknown_38 == 0xfe) {
+                    object->action_timer = 2;
+                    map_object_set_property(object->tail.fields.unknown_3a.value,
+                                            1, object->unknown_00);
+                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                }
+                break;
+            case 2:
+                object->unknown_0a += 128;
+                if (object->unknown_0a >= 0xfff) {
+                    object->unknown_0a = 0xfff;
+                    map_object_set_property(object->tail.fields.unknown_3a.value, 2);
+                    object->action_timer = 3;
+                }
+                break;
+            }
             break;
+
+        case 83:
+            switch (object->action_timer) {
+            case 1:
+                map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                switch (object->tail.fields.unknown_38) {
+                case 0:
+                case 1:
+                    object->action_timer = 2;
+                    break;
+                case 2:
+                    object->action_timer = 2;
+                    object->tail.fields.unknown_38 = 3;
+                    break;
+                case 3:
+                    object->action_timer = 3;
+                    object->tail.fields.unknown_38 = 2;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case 2:
+                object->unknown_0a += 256;
+                if (object->unknown_0a < 0x1000) {
+                    break;
+                }
+                object->unknown_0a = 0xfff;
+            action83_complete:
+                func_800366fc(object->tail.fields.unknown_39);
+                switch (object->tail.fields.unknown_38) {
+                case 0:
+                    object->action_timer = 99;
+                    break;
+                case 1:
+                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    object->action_timer = 4;
+                    break;
+                case 2:
+                case 3:
+                    object->action_timer = 0;
+                    break;
+                }
+                break;
+            case 3:
+                object->unknown_0a -= 256;
+                if ((s16)object->unknown_0a > 0) {
+                    break;
+                }
+                object->unknown_0a = 0;
+                goto action83_complete;
+            case 4:
+                object->unknown_0a -= 256;
+                if ((s16)object->unknown_0a <= 0) {
+                    object->action_timer = 99;
+                }
+                break;
+            case 9:
+                if (object->tail.fields.unknown_38 == 3) {
+                    object->unknown_0a = 0xfff;
+                }
+                object->action_timer = 0;
+                break;
+            default:
+                break;
+            }
+            break;
+
+        case 88:
+            switch (object->action_timer) {
+            case 1:
+                switch (object->tail.fields.unknown_38) {
+                case 0:
+                    object->action_timer = 2;
+                    map_object_play_spatial_sound(object, 0x44);
+                    break;
+                case 1:
+                    object->action_timer = 3;
+                    map_object_play_spatial_sound(object, 0x44);
+                    break;
+                default:
+                    break;
+                }
+                func_80035194(object->unknown_00,
+                              object->tail.spawn_bytes.spawn_sequence.low +
+                                  object->tail.fields.unknown_3e.bytes.low,
+                              object->tail.spawn_bytes.spawn_sequence.high,
+                              object->tail.fields.unknown_3a.bytes.low,
+                              object->tail.fields.unknown_3a.bytes.high,
+                              object->tail.fields.unknown_3e.bytes.low,
+                              object->tail.fields.unknown_3e.bytes.high,
+                              object->rotation.vy, 0x2d);
+                break;
+            case 2:
+                object->unknown_0a -= 64;
+                if ((s16)object->unknown_0a <= 0) {
+                    object->unknown_0a = 0;
+                    object->action_timer = 99;
+                    func_80035194(object->unknown_00,
+                                  object->tail.spawn_bytes.spawn_sequence.low,
+                                  object->tail.spawn_bytes.spawn_sequence.high,
+                                  object->tail.fields.unknown_3a.bytes.low,
+                                  object->tail.fields.unknown_3a.bytes.high,
+                                  object->tail.fields.unknown_3e.bytes.low,
+                                  object->tail.fields.unknown_3e.bytes.high,
+                                  object->rotation.vy, 0x2d);
+                }
+                break;
+            case 3:
+                object->unknown_0a += 64;
+                if (object->unknown_0a >= 0x1000) {
+                    object->unknown_0a = 0xfff;
+                    object->action_timer = 99;
+                }
+                break;
+            }
+            break;
+
+        case 89:
+            switch (object->action_timer) {
+            case 1:
+                object->extra_40.halfwords[0] = object->tail.fields.unknown_3a.value;
+                object->action_timer = 2;
+                object->unknown_00 = object->extra_40.bytes[2];
+                break;
+            case 2: {
+                u16 previous = object->extra_40.halfwords[0];
+                object->extra_40.halfwords[0] = previous - 1;
+                if (previous == 0) {
+                    KfMapOccupancyCell *row =
+                        bss_801c7540.map_cells[object->position.vz >> 11];
+                    KfMapOccupancyCell *cell =
+                        &row[object->position.vx >> 11];
+                    KfMapOccupancyLayer *layer = &cell->layer[0];
+                    object->action_timer = 3;
+                    if (object->unknown_00 != 1) {
+                        layer = &cell->layer[1];
+                    }
+                    layer->unknown_03 = 0x74;
+                    map_object_play_spatial_sound(object, 0xe3);
+                }
+                break;
+            }
+            case 3:
+                object->unknown_10 -= 256;
+                if ((s16)object->unknown_10 <= 0) {
+                    object->unknown_10 = 0;
+                    object->action_timer = 4;
+                    object->extra_40.halfwords[0] = object->tail.fields.spawn_sequence;
+                }
+                break;
+            case 4: {
+                u16 previous = object->extra_40.halfwords[0];
+                object->extra_40.halfwords[0] = previous - 1;
+                if (previous == 0) {
+                    map_object_play_spatial_sound(object, 0xe3);
+                    object->action_timer = 5;
+                }
+                break;
+            }
+            case 5:
+                object->unknown_10 += 256;
+                if (object->unknown_10 >= 0x1000) {
+                    KfMapOccupancyCell *row =
+                        bss_801c7540.map_cells[object->position.vz >> 11];
+                    KfMapOccupancyCell *cell =
+                        &row[object->position.vx >> 11];
+                    KfMapOccupancyLayer *layer = &cell->layer[0];
+                    object->unknown_10 = 0x1000;
+                    object->action_timer = 0;
+                    if (object->unknown_00 != 1) {
+                        layer = &cell->layer[1];
+                    }
+                    layer->unknown_03 = 0x75;
+                    object->unknown_00 = 0;
+                }
+                break;
+            default:
+                break;
+            }
+            break;
+
+        case 16:
+            object->rotation.vy += 128;
+            object->position.vy = object->extra_40.raw +
+                                  (rsin((s16)object->rotation.vy) >> 6);
+            break;
+
+        case 84:
+            switch (object->action_timer) {
+            case 0: {
+                s32 depth = (-(s32)object->tail.spawn_bytes.spawn_sequence.high) * 128;
+                s32 center_x = object->tail.fields.unknown_39;
+                s32 width = object->tail.fields.unknown_3a.bytes.high;
+                s32 center_z = object->tail.fields.unknown_3a.bytes.low;
+                s32 height = object->tail.spawn_bytes.spawn_sequence.low;
+                s32 source_x = center_x - ((width - 1) >> 1);
+                s32 source_z = center_z - ((height - 1) >> 1);
+                if (func_80036ad8(source_x, source_z, width, height, depth) ||
+                    object->tail.fields.unknown_38 == 0xff) {
+                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
+                                  object->position.vz, object->rotation.vy,
+                                  map_object_cell_patterns[
+                                      template->unknown_0d[1] * 2 +
+                                      (object->tail.fields.unknown_3e.bytes.low & 1)],
+                                  1, 0x80);
+                    object->action_timer = 1;
+                    object->scale.vz = 0x1000;
+                    object->scale.vy = 0x1000;
+                    object->scale.vx = 0x1000;
+                }
+                break;
+            }
+            case 1:
+                object->unknown_0a += 256;
+                if (object->unknown_0a >= 0xfff) {
+                    object->unknown_01 = 1;
+                    object->unknown_0a = 0;
+                    if (object->tail.fields.unknown_3e.bytes.low & 2) {
+                        object->action_timer = 99;
+                        object->tail.fields.unknown_38 = 0xff;
+                    } else {
+                        object->action_timer = 2;
+                    }
+                }
+                break;
+            case 32:
+                object->unknown_0a += 128;
+                if (object->unknown_0a >= 0xfff) {
+                    object->unknown_01 = 0;
+                    object->unknown_0a = 0;
+                    object->action_timer = 0;
+                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
+                                  object->position.vz, object->rotation.vy,
+                                  map_object_cell_patterns[
+                                      template->unknown_0d[1] * 2 +
+                                      (object->tail.fields.unknown_3e.bytes.low & 1)],
+                                  0, 0);
+                    object->scale.vz = 0;
+                    object->scale.vy = 0;
+                    object->scale.vx = 0;
+                }
+                break;
+            case 99:
+                break;
+            default:
+                object->action_timer++;
+                break;
+            }
+            break;
+
+        case 224:
+            if (func_80036ad8(object->position.vx >> 11,
+                               object->position.vz >> 11,
+                               object->tail.fields.unknown_38,
+                               object->tail.fields.unknown_39,
+                               object->position.vy)) {
+                func_80016260(object->tail.fields.unknown_3a.bytes.low,
+                              object->tail.fields.unknown_3a.bytes.high,
+                              object->tail.spawn_bytes.spawn_sequence.low,
+                              object->tail.spawn_bytes.spawn_sequence.high,
+                              object->tail.fields.unknown_3e.bytes.low,
+                              (s8)object->extra_40.bytes[0],
+                              (s8)object->extra_40.bytes[1],
+                              (s8)object->extra_40.bytes[2]);
+            }
+            break;
+
+        case 9: {
+            u16 linked_index = object->tail.fields.unknown_3a.value;
+            if (linked_index != 0xffff) {
+                KfMapObject *linked = &map_object_state.objects[linked_index];
+                if (linked->object_id != 0xff) {
+                    linked->unknown_00 = 0;
+                    linked->tail.fields.unknown_38 = 0;
+                }
+            }
+            object->action = KF_MAP_OBJECT_ACTION_NONE;
+            break;
+        }
 
         case 81: {
             s32 increment = object->tail.fields.unknown_3a.bytes.low * 4;
-            u8 boundary = object->tail.fields.unknown_3a.bytes.high;
-            const KfMapObjectTemplatePoseView *pose_template =
-                (const KfMapObjectTemplatePoseView *)template;
 
             switch (object->action_timer) {
             case 0:
                 if (object->tail.fields.unknown_38 == 0) {
                     object->action_timer = 2;
-                    object->unknown_0a = 0xfff;
+                    object->unknown_0a = 0;
                     object->unknown_01 = 1;
-                } else if (boundary != 0xfe &&
-                           (boundary == 0xff ||
+                    object->unknown_0a = 0xfff;
+                } else if (object->tail.fields.unknown_3a.bytes.high != 0xfe &&
+                           (object->tail.fields.unknown_3a.bytes.high == 0xff ||
                             func_80036ad8(object->position.vx >> 11,
                                             object->position.vz >> 11,
-                                            boundary,
+                                            object->tail.fields.unknown_3a.bytes.high,
                                             object->tail.spawn_bytes.spawn_sequence.low,
                                             object->position.vy))) {
                     object->action_timer = 1;
                     object->unknown_0a = 0;
                     object->unknown_01 = 0;
-                    object->extra_40.bytes[2] = 0;
+                    object->extra_40.bytes[0] = 0;
                     map_object_play_spatial_sound(object, template->unknown_0d[9]);
                 }
                 break;
             case 1:
-                if (boundary != 0xff) {
+                if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                     if (object->unknown_0a == 0) {
                         map_object_set_cell_marker(object, 1,
                                                    template->marker_action_51);
@@ -589,7 +722,7 @@ void func_80036ed4(void)
                 }
                 object->unknown_0a += increment;
                 if (object->unknown_0a >= 0xfff) {
-                    if (boundary != 0xff) {
+                    if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                         object->unknown_0a = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, 0,
@@ -600,19 +733,22 @@ void func_80036ed4(void)
                     object->unknown_0a &= 0xfff;
                 }
                 {
+                    const KfMapObjectTemplatePoseView *pose_template =
+                        (const KfMapObjectTemplatePoseView *)template;
                     VECTOR position;
                     u16 vertex_index = (u16)pose_template->height_offset;
-                    u16 reach = (u16)pose_template->depth_offset;
-                    u16 height = template->unknown_0d[3] |
-                                 ((u16)template->unknown_0d[4] << 8);
+                    u16 reach;
+                    u16 height;
                     s32 kind;
                     func_800369b8(object, vertex_index, &position);
+                    reach = (u16)pose_template->depth_offset;
+                    height = pose_template->unknown_10;
                     kind = func_8002b9d4(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {
-                        object->extra_40.bytes[2] = 0;
-                    } else if (object->extra_40.bytes[2] == 0) {
-                        object->extra_40.bytes[2] = 1;
+                        goto clear_action_trigger;
+                    } else if (object->extra_40.bytes[0] == 0) {
+                        object->extra_40.bytes[0] = 1;
                         func_8003fb94(kind, 0x20, 5000, 5,
                                       object->tail.fields.unknown_39,
                                       template->unknown_0d[5], template->unknown_0d[6],
@@ -642,240 +778,132 @@ void func_80036ed4(void)
             break;
         }
 
-        case 83:
-            switch (object->action_timer) {
-            case 1:
-                map_object_play_spatial_sound(object, template->unknown_0d[2]);
-                if (object->tail.fields.unknown_38 == 2) {
-                    object->action_timer = 2;
-                    object->tail.fields.unknown_38 = 3;
-                } else if (object->tail.fields.unknown_38 == 3) {
-                    object->action_timer = 3;
-                    object->tail.fields.unknown_38 = 2;
-                } else if (object->tail.fields.unknown_38 < 2) {
-                    object->action_timer = 2;
-                }
-                break;
-            case 2:
-                object->unknown_0a += 256;
-                if (object->unknown_0a < 0x1000) {
+        case 15: {
+            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
+            if (object->action_timer != 0 && target->object_id == 0xff) {
+                u32 sentinel_offset;
+                switch (object->tail.fields.unknown_38) {
+                case 0x72:
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_00;
                     break;
-                }
-                object->unknown_0a = 0xfff;
-                goto action83_complete;
-            case 3:
-                object->unknown_0a -= 256;
-                if ((s16)object->unknown_0a > 0) {
+                case 0x73:
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_04;
                     break;
+                case 0x74:
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_08;
+                    break;
+                default:
+                    goto no_sentinel;
                 }
-                object->unknown_0a = 0;
-            action83_complete:
-                func_800366fc(object->tail.fields.unknown_39);
-                if (object->tail.fields.unknown_38 == 0) {
-                    object->action_timer = 99;
-                } else if (object->tail.fields.unknown_38 == 1) {
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
-                    object->action_timer = 4;
-                } else if (object->tail.fields.unknown_38 < 4) {
-                    object->action_timer = 0;
-                }
-                break;
-            case 4:
-                object->unknown_0a -= 256;
-                if ((s16)object->unknown_0a <= 0) {
-                    object->action_timer = 99;
-                }
-                break;
-            case 9:
-                if (object->tail.fields.unknown_38 == 3) {
-                    object->unknown_0a = 0xfff;
-                }
-                break;
-            default:
-                break;
+                *(u16 *)&event_state.control.bytes[sentinel_offset] = 0xffff;
+            no_sentinel:
+                object->tail.fields.unknown_38 = 0xff;
+                object->action_timer = 0;
+            }
+            func_80036b68(object, target, &DAT_8006d6e4, &DAT_8006d6ec, 1, 32);
+            break;
+        }
+
+        case 17: {
+            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
+            if (object->action_timer != 0 && target->object_id == 0xff) {
+                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
+                object->tail.fields.unknown_38 = 0xff;
+                object->action_timer = 0;
+                linked->tail.fields.unknown_38 &= ~object->tail.fields.unknown_3a.bytes.low;
+            }
+            if (func_80036b68(object, target, &DAT_8006d6f4,
+                              &DAT_8006d6fc, 0, 20)) {
+                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
+                linked->tail.fields.unknown_38 |= object->tail.fields.unknown_3a.bytes.low;
+            }
+            break;
+        }
+
+        case 18:
+            if ((s32)(object->extra_40.raw - cd_state.frame_count) < 0) {
+                object->extra_40.raw = cd_state.frame_count + 30;
+                map_object_play_spatial_sound(object, 0xee);
             }
             break;
 
-        case 84:
+        case 19: {
+            KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.value];
             switch (object->action_timer) {
-            case 0: {
-                s32 width = object->tail.fields.unknown_3a.bytes.low;
-                s32 height = object->tail.spawn_bytes.spawn_sequence.low;
-                s32 source_x = object->tail.fields.unknown_39 - ((width - 1) >> 1);
-                s32 source_z = object->tail.fields.unknown_3a.bytes.high - ((height - 1) >> 1);
-                s32 depth = -((s32)object->tail.spawn_bytes.spawn_sequence.high * 128);
-                if (func_80036ad8(source_x, source_z, width, height, depth) ||
-                    object->tail.fields.unknown_38 == 0xff) {
-                    s32 pattern_index = template->unknown_0d[1] * 2 +
-                                        (object->tail.fields.unknown_3e.bytes.low & 1);
-                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
-                                  object->position.vz, object->rotation.vy,
-                                  map_object_cell_patterns[pattern_index], 1, 0x80);
-                    object->action_timer = 1;
-                    object->scale.vx = 0x1000;
-                    object->scale.vy = 0x1000;
-                    object->scale.vz = 0x1000;
-                } else {
-                    object->action_timer++;
-                }
-                break;
-            }
-            case 1:
-                object->unknown_0a += 256;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_01 = 1;
-                    object->unknown_0a = 0;
-                    if (object->tail.fields.unknown_3e.bytes.low & 2) {
-                        object->action_timer = 99;
-                        object->tail.fields.unknown_38 = 0xff;
-                    } else {
-                        object->action_timer = 2;
+            case 0:
+                func_800369b8(object, 2, &linked->position);
+                if (linked->position.vy != object->position.vy) {
+                    s16 scale;
+                    linked->rotation = object->rotation;
+                    if (object->tail.fields.unknown_38 == 0xff) {
+                        goto start_action_19;
                     }
+                    linked->object_id = 0x4c;
+                    linked->action = KF_MAP_OBJECT_ACTION_NONE;
+                    linked->position.vy += 300;
+                    linked->unknown_00 = object->unknown_00;
+                    linked->tail.fields.unknown_38 = 0;
+                    scale = object->tail.fields.unknown_38 << 5;
+                    linked->scale.vz = scale;
+                    linked->scale.vy = scale;
+                    linked->scale.vx = scale;
+                    object->action_timer = 1;
                 }
                 break;
-            case 32:
-                object->unknown_0a += 128;
-                if (object->unknown_0a >= 0xfff) {
-                    s32 pattern_index = template->unknown_0d[1] * 2 +
-                                        (object->tail.fields.unknown_3e.bytes.low & 1);
-                    object->unknown_01 = 0;
-                    object->unknown_0a = 0;
-                    object->action_timer = 0;
-                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
-                                  object->position.vz, object->rotation.vy,
-                                  map_object_cell_patterns[pattern_index], 0, 0);
-                    object->scale.vx = 0;
-                    object->scale.vy = 0;
-                    object->scale.vz = 0;
+            case 1: {
+                s32 chance = game_counter_bytes[0x4c];
+                if (chance < 16 && rand() >= chance * 2048) {
+                    s16 scale = (u16)linked->scale.vz + 1;
+                    linked->scale.vz = scale;
+                    linked->scale.vy = scale;
+                    linked->scale.vx = scale;
+                    object->tail.fields.unknown_38 = (u16)linked->scale.vz >> 5;
+                    if (linked->scale.vx < 0x1000) {
+                        break;
+                    }
+                    goto start_action_19;
                 }
-                break;
-            case 99:
-                break;
-            default:
-                object->action_timer++;
                 break;
             }
+        start_action_19:
+            object->tail.fields.unknown_38 = 0xff;
+            linked->tail.fields.unknown_38 = 0xff;
+            map_object_start_action_if_idle(linked, 0x62);
+            object->action_timer = 2;
             break;
-
-        case 88:
-            switch (object->action_timer) {
-            case 1:
-                if (object->tail.fields.unknown_38 == 0) {
-                    object->action_timer = 2;
-                    map_object_play_spatial_sound(object, 0x44);
-                } else if (object->tail.fields.unknown_38 == 1) {
-                    object->action_timer = 3;
-                    map_object_play_spatial_sound(object, 0x44);
-                }
-                func_80035194(object->unknown_00,
-                              object->tail.spawn_bytes.spawn_sequence.low +
-                                  object->tail.fields.unknown_3e.bytes.low,
-                              object->tail.spawn_bytes.spawn_sequence.high,
-                              object->tail.fields.unknown_3a.bytes.low,
-                              object->tail.fields.unknown_3a.bytes.high,
-                              object->tail.fields.unknown_3e.bytes.low,
-                              object->tail.fields.unknown_3e.bytes.high,
-                              object->rotation.pad, 0x2d);
-                break;
             case 2:
-                object->unknown_0a -= 64;
-                if ((s16)object->unknown_0a <= 0) {
-                    object->unknown_0a = 0;
-                    object->action_timer = 99;
-                    func_80035194(object->unknown_00,
-                                  object->tail.spawn_bytes.spawn_sequence.low,
-                                  object->tail.spawn_bytes.spawn_sequence.high,
-                                  object->tail.fields.unknown_3a.bytes.low,
-                                  object->tail.fields.unknown_3a.bytes.high,
-                                  object->tail.fields.unknown_3e.bytes.low,
-                                  object->tail.fields.unknown_3e.bytes.high,
-                                  object->rotation.pad, 0x2d);
-                }
-                break;
-            case 3:
-                object->unknown_0a += 64;
-                if (object->unknown_0a >= 0x1000) {
-                    object->unknown_0a = 0xfff;
-                    object->action_timer = 99;
+                if (linked->object_id == KF_MAP_OBJECT_ID_NONE) {
+                    object->tail.fields.unknown_38 = 0;
                 }
                 break;
             }
             break;
-
-        case 89:
-            switch (object->action_timer) {
-            case 1:
-                object->extra_40.halfwords[0] = object->tail.fields.unknown_3a.value;
-                object->action_timer = 2;
-                object->unknown_00 = object->extra_40.bytes[2];
-                break;
-            case 2: {
-                u16 previous = object->extra_40.halfwords[0];
-                object->extra_40.halfwords[0] = previous - 1;
-                if (previous == 0) {
-                    KfMapOccupancyCell *cell =
-                        &bss_801c7540.map_cells[object->position.vz >> 11]
-                                                  [object->position.vx >> 11];
-                    object->action_timer = 3;
-                    cell->layer[object->unknown_00 == 1 ? 0 : 1].unknown_03 = 0x74;
-                    map_object_play_spatial_sound(object, 0xe3);
-                }
-                break;
-            }
-            case 3:
-                object->unknown_10 -= 256;
-                if ((s16)object->unknown_10 <= 0) {
-                    object->unknown_10 = 0;
-                    object->action_timer = 4;
-                    object->extra_40.halfwords[0] = object->tail.fields.spawn_sequence;
-                }
-                break;
-            case 4: {
-                u16 previous = object->extra_40.halfwords[0];
-                object->extra_40.halfwords[0] = previous - 1;
-                if (previous == 0) {
-                    map_object_play_spatial_sound(object, 0xe3);
-                    object->action_timer = 5;
-                }
-                break;
-            }
-            case 5:
-                object->unknown_10 += 256;
-                if (object->unknown_10 >= 0x1000) {
-                    KfMapOccupancyCell *cell =
-                        &bss_801c7540.map_cells[object->position.vz >> 11]
-                                                  [object->position.vx >> 11];
-                    object->unknown_10 = 0x1000;
-                    object->action_timer = 0;
-                    cell->layer[object->unknown_00 == 1 ? 0 : 1].unknown_03 = 0x75;
-                    object->unknown_00 = 0;
-                }
-                break;
-            default:
-                break;
-            }
-            break;
+        }
 
         case 96:
-            if (object->action_timer == 0) {
+            switch (object->action_timer) {
+            case 0: {
                 s32 floor_y = func_8002b604(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-                object->position.vy += (s16)object->extra_40.halfwords[1];
-                object->extra_40.halfwords[1] += 20;
+                object->position.vy += object->tail.fields.unknown_3e.signed_value;
+                object->tail.fields.unknown_3e.value += 20;
                 if (object->position.vy >= floor_y) {
                     object->position.vy = floor_y;
-                    object->extra_40.halfwords[1] = 16;
+                    object->tail.fields.unknown_3e.value = 16;
                     object->action_timer = 1;
                 }
-            } else if (object->action_timer == 1) {
-                object->rotation.vz += object->extra_40.halfwords[1];
-                object->extra_40.halfwords[1] += 16;
+                break;
+            }
+            case 1:
+                object->rotation.vz += object->tail.fields.unknown_3e.value;
+                object->tail.fields.unknown_3e.value += 16;
                 if (object->rotation.vz >= 0x400) {
                     object->rotation.vz = 0x400;
                     object->action_timer = 99;
                 }
+                break;
             }
             break;
 
@@ -901,21 +929,24 @@ void func_80036ed4(void)
                                              template->interaction_height);
                 s16 velocity;
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-                object->position.vy += (s16)object->extra_40.halfwords[1];
+                object->position.vy += object->tail.fields.unknown_3e.signed_value;
                 func_80041e0c(&object->position, 0x1000, 6000, 300);
-                if (object->action_timer == 0) {
-                    object->rotation.vx = (object->rotation.vx + 0xa0) & 0xfff;
-                } else {
-                    object->rotation.vx = (object->rotation.vx - 0xa0) & 0xfff;
+                {
+                    s32 base_angle = object->rotation.vx;
+                    s32 angle = base_angle - 0xa0;
+                    if (object->action_timer == 0) {
+                        angle = base_angle + 0xa0;
+                    }
+                    object->rotation.vx = angle & 0xfff;
                 }
-                object->extra_40.halfwords[1] += 30;
-                velocity = (s16)object->extra_40.halfwords[1];
+                object->tail.fields.unknown_3e.value += 30;
+                velocity = object->tail.fields.unknown_3e.signed_value;
                 if (velocity >= 0 && object->position.vy >= floor_y) {
                     if (velocity < 80) {
                         object->position.vy = floor_y;
                         object->action_timer = 2;
                     } else {
-                        object->extra_40.halfwords[1] = -(velocity >> 1);
+                        object->tail.fields.unknown_3e.value = -(velocity >> 1);
                         object->action_timer = object->action_timer == 0 ? 1 : 0;
                     }
                 }
@@ -928,47 +959,75 @@ void func_80036ed4(void)
             }
             break;
 
-        case 224:
+        case 225:
             if (func_80036ad8(object->position.vx >> 11,
                                object->position.vz >> 11,
                                object->tail.fields.unknown_38,
                                object->tail.fields.unknown_39,
                                object->position.vy)) {
-                func_80016260(object->tail.fields.unknown_3a.bytes.low,
-                              object->tail.fields.unknown_3a.bytes.high,
-                              object->tail.spawn_bytes.spawn_sequence.low,
-                              object->tail.spawn_bytes.spawn_sequence.high,
-                              object->tail.fields.unknown_3e.bytes.low,
-                              (s8)object->extra_40.bytes[0],
-                              (s8)object->extra_40.bytes[1],
-                              (s8)object->extra_40.bytes[2]);
+                if (object->extra_40.bytes[0] == 0) {
+                    if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {
+                        object->extra_40.bytes[0] = 1;
+                    }
+                    switch (object->tail.fields.unknown_3a.bytes.low & 0x0f) {
+                    case 0:
+                        ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
+                        break;
+                    case 1:
+                        func_800366fc(object->tail.fields.unknown_3a.bytes.high);
+                        break;
+                    case 2:
+                        event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
+                            object->tail.spawn_bytes.spawn_sequence.low;
+                        break;
+                    }
+                }
+            } else {
+            clear_action_trigger:
+                object->extra_40.bytes[0] = 0;
             }
             break;
 
-        case 225:
-            if (!func_80036ad8(object->position.vx >> 11,
-                                object->position.vz >> 11,
-                                object->tail.fields.unknown_38,
-                                object->tail.fields.unknown_39,
-                                object->position.vy)) {
-                object->extra_40.bytes[2] = 0;
-            } else if (object->extra_40.bytes[2] == 0) {
-                if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {
-                    object->extra_40.bytes[2] = 1;
+        case 34:
+            if (func_80036ad8(object->tail.fields.unknown_38,
+                               object->tail.fields.unknown_39,
+                               object->tail.fields.unknown_3a.bytes.low,
+                               object->tail.fields.unknown_3a.bytes.high,
+                               object->position.vy)) {
+                if (object->extra_40.bytes[0] == 0) {
+                    KfMapObject *candidate = map_object_state.objects;
+                    s32 count = KF_MAP_OBJECT_CAPACITY;
+                    audio_play_sound(0x14, 0x6e);
+                    func_80036e24(1, 0, 0x1000, 0x100);
+                    do {
+                        if (candidate->action == 34) {
+                            candidate->extra_40.bytes[0] = 1;
+                        }
+                        candidate++;
+                    } while (--count != 0);
+                    func_8002b73c(player_state.camera_position.vx,
+                                   player_state.camera_position.vz, 800, -1);
+                    player_state.camera_position.vx =
+                        object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
+                    player_state.camera_position.vz =
+                        object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
+                    player_state.unknown_128 =
+                        object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
+                    player_state.camera_rotation_target.angles[1] =
+                        -((u32)object->tail.fields.unknown_3e.bytes.high * 16);
+                    player_sync_position_to_map();
+                    player_state.camera_rotation.angles[1] =
+                        player_state.camera_rotation_target.angles[1] +
+                        player_state.unknown_100[1] +
+                        player_state.unknown_108.components[1] +
+                        player_state.unknown_110[1];
+                    func_80036e24(1, 0x1000, 0, -0x100);
+                    func_800314d4(0xff, 0, 0, 0);
                 }
-                switch (object->tail.fields.unknown_3a.bytes.low & 0x0f) {
-                case 0:
-                    ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
-                    break;
-                case 1:
-                    func_800366fc(object->tail.fields.unknown_3a.bytes.high);
-                    break;
-                case 2:
-                    event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
-                        object->tail.spawn_bytes.spawn_sequence.low;
-                    break;
-                }
+            } else {
+                object->extra_40.bytes[0] = 0;
             }
+            object->unknown_0a = (object->unknown_0a + 64) & 0xfff;
             break;
 
         default:

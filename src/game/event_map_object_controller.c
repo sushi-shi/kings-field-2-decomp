@@ -3,6 +3,7 @@
 #include <kf/game/cd.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_stream.h>
+#include <kf/game/graphics.h>
 #include <kf/game/map_object.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
@@ -17,7 +18,6 @@ extern void func_80045fd4(KfScenePoseView *destination,
                           const VECTOR *end_position,
                           const SVECTOR *start_angles,
                           const SVECTOR *end_angles, s32 fraction);
-extern void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 
 ADDRESS(0x800475d8, 0x6c0)
 void func_800475d8(KfMapObject *object, ...)
@@ -114,6 +114,7 @@ void func_800475d8(KfMapObject *object, ...)
             if (previous_buttons == 0 && buttons != 0) {
                 goto button_pressed;
             }
+            previous_buttons = buttons;
             func_80045fd4((KfScenePoseView *)object, &first_position,
                           &next_position, &first_angles, &next_angles,
                           fraction);
@@ -124,7 +125,6 @@ void func_800475d8(KfMapObject *object, ...)
             cd_request_service_vab();
             cd_request_service_stream();
             func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
-            previous_buttons = buttons;
         }
     }
     object->unknown_0e = target_pitch;

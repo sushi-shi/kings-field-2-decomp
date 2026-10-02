@@ -7,6 +7,9 @@
 DATA(0x8006d6a0, 0x1)
 u8 memory_card_loaded_slot = 0;
 
+DATA(0x8006dc00, KF_CARD_BLOCK_BYTES)
+u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
+
 /* LIBAPI's HwCARD, EvSpIOE, EvSpTIMOUT, EvSpNEW, EvSpERROR and EvMdNOINTR,
  * which the Psy-Q 3.0 kit's headers do not define. */
 #define CARD_EVENT_CLASS 0xf4000001

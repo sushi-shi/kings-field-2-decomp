@@ -42,7 +42,8 @@ typedef struct KfMapObjectTemplatePoseView {
     u8 unknown_00[0x0c];
     s16 height_offset;
     s16 depth_offset;
-    u8 unknown_10[8];
+    u16 unknown_10;
+    u8 unknown_12[6];
 } KfMapObjectTemplatePoseView;
 
 typedef char kf_map_object_template_pose_size[
@@ -51,6 +52,16 @@ typedef char kf_map_object_template_pose_height_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->height_offset == 0x0c ? 1 : -1];
 typedef char kf_map_object_template_pose_depth_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
+typedef char kf_map_object_template_pose_unknown_10_offset[
+    (u32)&((KfMapObjectTemplatePoseView *)0)->unknown_10 == 0x10 ? 1 : -1];
+
+/* The placement's final two words copy together into the object tail. */
+typedef struct KfMapObjectTailCopyWords {
+    u32 first;
+    u32 second;
+} KfMapObjectTailCopyWords;
+typedef char kf_map_object_tail_copy_words_size[
+    sizeof(KfMapObjectTailCopyWords) == 8 ? 1 : -1];
 
 /* Map resource placements consumed in 24-byte rows by func_80035894. */
 typedef struct KfMapObjectPlacement {
@@ -64,14 +75,15 @@ typedef struct KfMapObjectPlacement {
     s16 local_x;
     s16 height;
     u16 unknown_0e;
-    u32 tail_10;
-    u32 tail_14;
+    KfMapObjectTailCopyWords tail_words;
 } KfMapObjectPlacement;
 
 typedef char kf_map_object_placement_size[
     sizeof(KfMapObjectPlacement) == 24 ? 1 : -1];
 typedef char kf_map_object_placement_height_offset[
     (u32)&((KfMapObjectPlacement *)0)->height == 12 ? 1 : -1];
+typedef char kf_map_object_placement_tail_words_offset[
+    (u32)&((KfMapObjectPlacement *)0)->tail_words == 16 ? 1 : -1];
 
 typedef struct KfMapObjectTailHalfwordBytes {
     u8 low;
@@ -123,6 +135,10 @@ typedef union KfMapObjectTail {
     KfMapObjectTailPair38View pair_38;
     KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
+    struct {
+        u32 unknown_34;
+        KfMapObjectTailCopyWords copy_words;
+    } placement;
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 
@@ -136,6 +152,7 @@ typedef union KfMapObjectExtra40 {
     u8 bytes[4];
     u16 object_index;
     u16 halfwords[2];
+    s16 signed_halfwords[2];
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];
@@ -152,7 +169,7 @@ typedef struct KfMapObject {
     u16 action_timer;
     u16 unknown_0a;
     u16 collision_height;
-    u16 unknown_0e;
+    s16 unknown_0e;
     u16 unknown_10;
     u8 unknown_12[2];
     VECTOR position;

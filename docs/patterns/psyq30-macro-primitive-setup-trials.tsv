@@ -1,7 +1,0 @@
-source	line	macro	semitrans	full_listing_delta	delta_lines	exit_code
-src/game/tmd_pipeline.c	235	setPolyFT3	1	identical	0	1
-src/game/tmd_pipeline.c	272	setPolyGT3	1	identical	0	1
-src/game/tmd_pipeline.c	315	setPolyGT4	1	identical	0	1
-src/game/tmd_pipeline.c	353	setPolyFT4	1	identical	0	1
-src/game/tmd_pipeline.c	679	setPolyG3		identical	0	1
-src/game/tmd_pipeline.c	713	setPolyG4		identical	0	1

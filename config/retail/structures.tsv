@@ -4,7 +4,12 @@ name	size	layout_confidence	evidence	note
 KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfActorHalfword4a	0x2	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
 KfActorHalfword4aBytes	0x2	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
+KfActorState70	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003d934;GAME 0x80038f7c	Signed halfword and two byte action-state views at actor +0x70
+KfActorState70Bytes	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003da98	Two byte action-state view at actor +0x70/+0x71
 KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
+KfActorTail72	0x8	supported	game/actor.h;GAME 0x8003e414-0x8003e468;GAME 0x8003d784;GAME 0x8003d804;GAME 0x8003ed70-0x8003eed4	SVECTOR output/copy overlaps motion baseline, signed state, and script halfwords
+KfActorTail72Motion	0x8	supported	game/actor.h;GAME 0x8003d784;GAME 0x8003d804	Euler halfwords followed by signed actor +0x78 baseline
+KfActorTail72Script	0x4	supported	game/actor.h;GAME 0x8003ed70;GAME 0x8003ed88;GAME 0x8003eeb8;GAME 0x8003eed4	Minimum two-halfword action-script state; first word has signed and unsigned reads
 KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset
@@ -25,10 +30,12 @@ KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collisi
 KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
 KfCollisionRotation	0x14	supported	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
 KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collision row
+KfCollisionShapeOffsetTable	0x200	supported	game/collision_cache.h;GAME 0x2ab5c..0x2ab80	256 halfword offsets at the start of the loaded collision-shape bank; record layout unresolved
 KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
 KfEffectState	0x2a8c	supported	asm;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEffectTrailRow	0x18	supported	game/effect.h;GAME 0x80040a80-0x80040ac8;GAME 0x8004513c-0x800451bc	kind-6 position and rotation row copied into a four-bank provisional trail buffer
 KfEquipmentRecord	0x20	supported	asm;player_set_equipment_slot;game_main_loop startup clear	layout from the reconstructed header
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
 KfEventArena	0x3800	supported	game/event_state.h;func_800482f8;save pointer helpers	memory-block arena and word/byte clear views
@@ -94,12 +101,26 @@ KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell ori
 KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-pose view through angle_z; trailing alignment padding
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
-KfTargetCandidate	0x1c	candidate	game/actor.h;GAME 0x80039108;actor sound and event-bytecode helpers	minimum observed view through halfword +0x1a; full extent and stride unknown
+KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x8003e1b4	minimum observed view through unsigned halfword +0x2a; full extent and stride unknown
+KfTargetCandidateAction25	0x1c	candidate	GAME 0x8003ed78-0x8003eecc;game/actor.h	Type-25 prefix plus first script halfword; variable payload extent and candidate stride unresolved
+KfTargetCandidateWord0c	0x2	supported	GAME 0x8003e824 lhu;GAME 0x8003e648 lbu	shared candidate +0x0c halfword and high-byte views
+KfTargetCandidateWord0cBytes	0x2	supported	GAME 0x8003e648 lbu	byte-addressable candidate +0x0c word view
+KfTargetCandidateWord0e	0x2	supported	GAME 0x800391d0/0x80039358 lbu;0x800394a8 lhu	overlapping candidate +0x0e byte and halfword views
+KfTargetCandidateWord0eBytes	0x2	supported	GAME 0x800391d0/0x80039358 lbu	low and high bytes of candidate +0x0e halfword
 KfTargetCandidateWord10	0x2	supported	GAME 0x800391ac lhu candidate+0x10;event byte consumers	overlapping halfword and byte views at candidate +0x10
 KfTargetCandidateWord10Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x10 and +0x11
 KfTargetCandidateWord12	0x2	supported	GAME 0x80039108 lhu candidate+0x12;event byte consumers	overlapping halfword and byte views at candidate +0x12
 KfTargetCandidateWord12Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x12 and +0x13
 KfTargetCandidateWord14	0x2	supported	GAME 0x800393f4 lhu candidate+0x14;event byte stream	overlapping halfword and two-byte stream prefix; complete stream extent unresolved
+KfTargetCandidateWord16	0x2	supported	GAME 0x80039108 lhu candidate+0x16;GAME 0x8003ef34/0x8003eff0 lbu	shared unsigned halfword and byte view
+KfTargetCandidateWord16Bytes	0x2	supported	GAME 0x8003ef34/0x8003eff0 lbu	byte-addressable candidate +0x16 word view
+KfTargetCandidateWord18	0x2	supported	GAME 0x8003e078 lhu candidate+0x18;GAME 0x8003ebe0 lbu candidate+0x19	shared unsigned halfword and high-byte view
+KfTargetCandidateWord18Bytes	0x2	supported	GAME 0x8003ebe0 lbu candidate+0x19	byte-addressable candidate +0x18 word view
+KfTargetCandidateWord1a	0x2	supported	GAME 0x80039108 lhu candidate+0x1a;GAME 0x8003dc14 lbu candidate+0x1a	unsigned halfword and byte view
+KfTargetCandidateWord1c	0x2	supported	GAME 0x8003e294 lhu candidate+0x1c;GAME 0x8003e1d0/0x8003e1d4 lbu	unsigned halfword and byte view
+KfTargetCandidateWord1e	0x2	supported	GAME 0x8003e2d4 lhu candidate+0x1e;GAME 0x8003e1d8/0x8003e1f8 lbu	unsigned halfword and byte view
+KfTargetCandidateWord24	0x2	supported	GAME 0x8003e1ec lhu;GAME 0x8003e298 lh candidate+0x24	unsigned damage value and signed motion-step views
+KfTargetCandidateWord26	0x2	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh candidate+0x26	unsigned bound and signed motion-step views
 KfTargetGroup	0x78	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfTargetReference	0x4	supported	game/actor.h;asm;actor target fixup	relative offset and target pointer share one slot
 KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat triangle primitive body

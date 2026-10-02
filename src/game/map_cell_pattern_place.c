@@ -111,6 +111,8 @@ void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
         KfMapOccupancyCell *source = source_row;
         KfMapOccupancyCell *destination = destination_row;
         s32 columns_remaining = width - 1;
+        source_row += 80;
+        destination_row += row_step;
         if (columns_remaining != -1) {
             do {
             if (layer_select & 1) {
@@ -180,8 +182,6 @@ void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
                 columns_remaining--;
             } while (columns_remaining != -1);
         }
-        source_row += 80;
-        destination_row += row_step;
         rows_remaining--;
     } while (rows_remaining != -1);
 }

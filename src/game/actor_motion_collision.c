@@ -77,9 +77,7 @@ void func_8003b5d0(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
-    s32 next_y;
-    s32 collision;
-    s32 phase;
+    s32 vertical_state;
 
     func_8002b604(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->unknown_1c,
@@ -89,8 +87,18 @@ void func_8003b5d0(void)
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
-    switch (actor->unknown_0d) {
-    case 0:
+    vertical_state = actor->unknown_0d;
+    if (vertical_state == 0x20) goto state_20;
+    if (vertical_state < 33) {
+        if (vertical_state == 0) goto state_0;
+        if (vertical_state == 0x10) goto state_10;
+        return;
+    }
+    if (vertical_state == 0x30) goto state_30;
+    return;
+
+state_0: {
+        s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
             actor->unknown_0d = 0x20;
@@ -100,8 +108,11 @@ void func_8003b5d0(void)
             actor->unknown_52 = 0;
         }
         return;
+    }
 
-    case 0x10:
+state_10: {
+        s32 next_y;
+        s32 collision;
         next_y = actor->position.vy + actor->unknown_52;
         collision = func_8002b9d4(actor->position.vx, next_y,
                                   actor->position.vz, actor->unknown_1c,
@@ -109,6 +120,7 @@ void func_8003b5d0(void)
                                       ((actor->unknown_28 & 0xc000) << 16),
                                   actor_state.unknown_93a4);
         if (collision == 0) {
+        advance_rise:
             actor->position.vy = next_y;
             actor->unknown_52 += group->unknown_05;
             return;
@@ -117,30 +129,24 @@ void func_8003b5d0(void)
             func_800248a8(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
-        if ((collision & 4) == 0) {
+        if (collision & 4) {
             if (actor->unknown_28 & 0x400) {
-                actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_05;
+                s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
+                if (actor->position.vy < floor_y) goto advance_rise;
+                actor->position.vy = floor_y;
             } else {
-                actor->unknown_0d = 0;
+                actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
+            actor->unknown_52 = 0;
+            actor->unknown_0d = 0;
             return;
         }
-        if (actor->unknown_28 & 0x400) {
-            if (actor->position.vy < KF_COLLISION_CACHE_HEIGHT) {
-                actor->position.vy = next_y;
-                actor->unknown_52 += group->unknown_05;
-                return;
-            }
-            actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
-        } else {
-            actor->position.vy = KF_COLLISION_CACHE_RESULT;
-        }
-        actor->unknown_52 = 0;
+        if (actor->unknown_28 & 0x400) goto advance_rise;
         actor->unknown_0d = 0;
         return;
+    }
 
-    case 0x20:
+state_20:
         actor->position.vy += actor->unknown_52;
         actor->unknown_52 += 5;
         if (KF_COLLISION_CACHE_RESULT < actor->position.vy &&
@@ -151,7 +157,10 @@ void func_8003b5d0(void)
         actor->unknown_0d = 0;
         return;
 
-    case 0x30:
+state_30: {
+        s32 phase;
+        s32 next_y;
+        s32 collision;
         phase = actor->unknown_52;
         next_y = actor->unknown_3c - actor->unknown_6a * phase +
                  ((actor->unknown_6c * phase * phase) >> 1);

@@ -46,6 +46,15 @@ typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 
 typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
 
+/* Kind 6 copies a position and rotation into each 24-byte trail row. */
+typedef struct KfEffectTrailRow {
+    VECTOR position;
+    SVECTOR rotation;
+} KfEffectTrailRow;
+
+typedef char kf_effect_trail_row_size[sizeof(KfEffectTrailRow) == 24 ? 1 : -1];
+typedef char kf_effect_trail_rotation_offset[(u32)&((KfEffectTrailRow *)0)->rotation == 16 ? 1 : -1];
+
 /* The effect sweep indexes this 26-byte row family by the record kind. */
 typedef struct KfMagicRecord {
     u8 menu_available;

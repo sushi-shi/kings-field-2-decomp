@@ -3,7 +3,6 @@
 #include <kf/game/menu.h>
 #include <psyq/pad.h>
 
-extern s32 DAT_8006d694;
 
 ADDRESS(0x8001e484, 0x4c8)
 u32 func_8001e484(KfMenuList *list, const u8 *item_ids,

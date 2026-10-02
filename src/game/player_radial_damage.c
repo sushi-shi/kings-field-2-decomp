@@ -9,11 +9,6 @@ enum {
     KF_RADIAL_OUTSIDE_REACH = -9999999
 };
 
-extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
-                          u16 value4, u16 value5, u16 value6, u16 value7,
-                          u16 value8, u16 value9, u16 value10,
-                          const VECTOR *position);
-
 ADDRESS(0x80024ca4, 0x230)
 void func_80024ca4(VECTOR *position, s32 start, s32 end, s32 mode,
                    u16 falloff, u16 damage0, u16 damage1, u16 damage2,

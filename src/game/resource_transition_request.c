@@ -8,6 +8,9 @@
 
 extern void func_80048554(s32 save_slot);
 
+DATA(0x8017d118, 0x1c)
+KfState8017d118 state_8017d118;
+
 ADDRESS(0x80016260, 0x55c)
 void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
                     u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y)

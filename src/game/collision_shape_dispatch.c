@@ -1,9 +1,25 @@
 #include <kf/lib/address.h>
 #include <kf/game/collision_cache.h>
 
-/* Interior cache words and runtime shape bank remain WIP ownership views. */
-#define COLLISION_CACHE_HEIGHT_LIMIT (*(s32 *)((u8 *)&bss_801c7540 + 0x11814))
-#define COLLISION_CACHE_UPPER_BOUND (*(s32 *)((u8 *)&bss_801c7540 + 0x1181c))
+typedef struct KfCollisionShapeHeader {
+  s16 radius_scale;
+  s16 command_count;
+} KfCollisionShapeHeader;
+
+typedef struct KfCollisionHeightState {
+  s32 height;
+  s32 result;
+  s32 height_limit;
+} KfCollisionHeightState;
+
+typedef char kf_collision_shape_header_size[
+    sizeof(KfCollisionShapeHeader) == 4 ? 1 : -1];
+typedef char kf_collision_shape_count_offset[
+    (u32)&((KfCollisionShapeHeader *)0)->command_count == 2 ? 1 : -1];
+typedef char kf_collision_height_state_size[
+    sizeof(KfCollisionHeightState) == 12 ? 1 : -1];
+
+/* The runtime shape bank remains a WIP ownership view. */
 
 RODATA(0x8001134c, 0xc4)
 
@@ -15,7 +31,8 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   s32 special_floor_found;
   u32 height_flags;
   int saved_height_limit;
-  u16 record_value;
+  s32 record_value;
+  u16 shape_offset;
   int quotient;
   int candidate_height;
   u32 case_value;
@@ -37,24 +54,29 @@ s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height)
   s32 x_plus_cell;
   s32 z_plus_cell;
   KfMapOccupancyLayer *selected_layer;
-  u8 *shape_bank = (u8 *)&bss_801c7540 + 0x10000;
+  KfCollisionShapeHeader *shape;
+  KfCollisionHeightState *cache;
+  u8 *shape_bank;
 
   result_flags = 0;
   special_floor_found = 0;
   visited_second_layer = 0;
   KF_COLLISION_CACHE_RESULT = 100000;
   KF_COLLISION_CACHE_LOWER_BOUND = 100000;
-  COLLISION_CACHE_UPPER_BOUND = 100000;
-  COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
+  KF_COLLISION_CACHE_UPPER_BOUND = 100000;
+  KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
   KF_COLLISION_CACHE_SHAPE = (u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER;
   selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
   height_flags = (u32)height & 0xf0000000;
   height &= 0x0fffffff;
 LAB_8002ab5c:
-  record_value = *(u16 *)(shape_bank + (u32)selected_layer->unknown_03 * 2);
-  bottom_y = y - height;
-  records_left = *(s16 *)((shape_bank + 2) + record_value) + -1;
-  radius = radius * *(s16 *)(shape_bank + record_value) >> 0xc;
+  shape_offset = ((KfCollisionShapeOffsetTable *)KF_COLLISION_SHAPE_BANK)
+      ->offsets[selected_layer->unknown_03];
+  shape_bank = KF_COLLISION_SHAPE_BANK;
+  shape = (KfCollisionShapeHeader *)(shape_bank + shape_offset);
+  bottom_y = (s32)((u32)y - (u32)height);
+  records_left = shape->command_count + -1;
+  radius = radius * shape->radius_scale >> 0xc;
   if (records_left == -1) {
     return result_flags;
   }
@@ -69,246 +91,214 @@ LAB_8002ab5c:
   neg_x_minus_z = -(s32)x_fraction - (s32)z_fraction;
   x_plus_cell = (s32)x_fraction + 0x800;
   z_plus_cell = (s32)z_fraction + 0x800;
-  record = (u16 *)((shape_bank + 4) + record_value);
+  /* The cache height begins 12 bytes past the copied shape-bank range. */
+  cache = (KfCollisionHeightState *)(shape_bank + KF_COLLISION_SHAPE_BANK_BYTES + 0xc);
+  record = (u16 *)(shape + 1);
   do {
     operand = record + 1;
     next_record = operand;
-    saved_height_limit = COLLISION_CACHE_HEIGHT_LIMIT;
-    switch ((s16)*record) {
+    switch ((s16)*record++) {
     case 0x10:
-      next_record = record + 2;
+      next_record = record + 1;
       if (!special_floor_found) {
-        candidate_height = KF_COLLISION_CACHE_RESULT;
-        if ((s16)*operand + KF_COLLISION_CACHE_HEIGHT < KF_COLLISION_CACHE_RESULT) {
-          candidate_height = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
+        candidate_height = (s16)*operand + cache->height;
+        if (candidate_height < cache->result) {
+          cache->result = candidate_height;
         }
+        candidate_height = cache->result;
 LAB_8002b3b8:
-        KF_COLLISION_CACHE_RESULT = candidate_height;
-        if (KF_COLLISION_CACHE_RESULT < y) {
+        if (candidate_height < y) {
           result_flags = result_flags | 4;
         }
       }
       break;
     case 0x11:
-      next_record = record + 3;
-      COLLISION_CACHE_HEIGHT_LIMIT = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      if (bottom_y < COLLISION_CACHE_HEIGHT_LIMIT) {
-        saved_height_limit = (s16)record[2] + KF_COLLISION_CACHE_HEIGHT;
-        if (saved_height_limit < bottom_y) {
+      next_record = operand + 2;
+      saved_height_limit = (s16)*operand + cache->height;
+      if (bottom_y < saved_height_limit) {
+        candidate_height = (s16)operand[1] + cache->height;
+        if (candidate_height < bottom_y) {
           result_flags = result_flags | 8;
         }
         else {
-          if (saved_height_limit < KF_COLLISION_CACHE_RESULT) {
-            KF_COLLISION_CACHE_RESULT = saved_height_limit;
+          if (candidate_height < cache->result) {
+            cache->result = candidate_height;
           }
-          COLLISION_CACHE_HEIGHT_LIMIT = -100000;
+          cache->height_limit = -100000;
+          goto LAB_8002b5c8;
         }
       }
+      KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
       goto LAB_8002b5c8;
-    case 0x18:
-      KF_COLLISION_CACHE_LOWER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      next_record = record + 2;
-      if (((s32)height_flags < 0) && (KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_LOWER_BOUND, KF_COLLISION_CACHE_LOWER_BOUND < y)) {
-        result_flags = result_flags | 4;
-        special_floor_found = 1;
-      }
-      if (((height_flags & 0x40000000) != 0) && (saved_height_limit = KF_COLLISION_CACHE_LOWER_BOUND, bottom_y <= KF_COLLISION_CACHE_LOWER_BOUND)) {
-        result_flags = result_flags | 8;
-      }
-      break;
-    case 0x19:
-      next_record = record + 2;
-      COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      break;
     case 0x20:
-      next_record = record + 5;
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
+      next_record = record + 4;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
       case_value = 5;
-      if (record_value == 1) {
-        candidate_height = radius_complement - (s16)*operand;
-LAB_8002af70:
-        next_record = record + 5;
-        case_value = 5;
-        if (candidate_height <= (int)z_fraction) goto LAB_8002ada4;
-      }
-      else if (record_value < 2) {
-        if (record_value == 0) {
-          if ((int)x_fraction <= (s16)*operand + radius) goto LAB_8002ada4;
-          break;
+      if (record_value != 1) {
+        if (record_value < 2) {
+          if (record_value == 0 &&
+              (int)x_fraction <= (s16)*operand + radius) goto LAB_8002ada4;
         }
+        else if (record_value == 2) {
+          if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002ada4;
+        }
+        else if (record_value == 3) {
+          candidate_height = (s16)*operand + radius;
+          goto LAB_8002afc4;
+        }
+        goto LAB_8002b5c8;
       }
-      else if (record_value == 2) {
-        if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002ada4;
-      }
-      else if (record_value == 3) {
-        candidate_height = (s16)*operand + radius;
+      candidate_height = radius_complement - (s16)*operand;
+LAB_8002af70:
+      next_record = record + 4;
+      case_value = 5;
+      if (candidate_height <= (int)z_fraction) goto LAB_8002ada4;
+      goto LAB_8002b5c8;
 LAB_8002afc4:
-        next_record = record + 5;
-        case_value = 5;
-        if ((int)z_fraction <= candidate_height) goto LAB_8002ada4;
-      }
+      next_record = record + 4;
+      case_value = 5;
+      if ((int)z_fraction <= candidate_height) goto LAB_8002ada4;
       goto LAB_8002b5c8;
     case 0x21:
-      next_record = record + 5;
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
+      next_record = record + 4;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
       case_value = 5;
-      if (record_value == 1) {
+      switch (record_value) {
+      case 1:
         candidate_height = radius_complement - (s16)*operand;
-        if ((int)z_fraction < candidate_height) {
-LAB_8002af9c:
-          next_record = record + 5;
-          case_value = 5;
-          if ((int)x_fraction < candidate_height) goto LAB_8002b5c8;
-        }
-      }
-      else if (record_value < 2) {
-        if (record_value != 0) goto LAB_8002b5c8;
+        if ((int)z_fraction < candidate_height) goto LAB_8002af9c;
+        break;
+      case 0:
         candidate_height = radius_complement - (s16)*operand;
         if ((s16)*operand + radius < (int)x_fraction) goto LAB_8002af70;
-      }
-      else if (record_value == 2) {
+        break;
+      case 2:
         candidate_height = (s16)*operand + radius;
         if ((int)x_fraction < radius_complement - (s16)*operand) goto LAB_8002afc4;
-      }
-      else {
-        if (record_value != 3) goto LAB_8002b5c8;
+        break;
+      case 3:
         candidate_height = (s16)*operand + radius;
-        if (candidate_height < (int)z_fraction) {
-LAB_8002aff0:
-          next_record = record + 5;
-          case_value = 5;
-          if (candidate_height < (int)x_fraction) goto LAB_8002b5c8;
-        }
+        if (candidate_height < (int)z_fraction) goto LAB_8002aff0;
+        break;
+      default:
+        goto LAB_8002b5c8;
       }
 LAB_8002ada4:
-      next_record = record + 5;
-      candidate_height = (s16)record[3] + KF_COLLISION_CACHE_HEIGHT;
-      saved_height_limit = (s16)record[2] + KF_COLLISION_CACHE_HEIGHT;
-      if (((bottom_y < (s16)record[2] + KF_COLLISION_CACHE_HEIGHT) &&
-          (saved_height_limit = COLLISION_CACHE_HEIGHT_LIMIT, candidate_height < KF_COLLISION_CACHE_RESULT)) && (KF_COLLISION_CACHE_RESULT = candidate_height, candidate_height < y))
-      {
-        result_flags = result_flags | case_value;
+      next_record = record + 4;
+      candidate_height = (s16)operand[2] + cache->height;
+      saved_height_limit = (s16)operand[1] + cache->height;
+      if (bottom_y < saved_height_limit) {
+        if (candidate_height < cache->result) {
+          cache->result = candidate_height;
+          if (candidate_height < y) {
+            result_flags |= case_value;
+          }
+        }
       }
-      break;
+      else {
+        cache->height_limit = saved_height_limit;
+      }
+      goto LAB_8002b5c8;
     case 0x22:
-      next_record = record + 5;
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
-      if (record_value == 1) {
+      next_record = record + 4;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
+      case_value = 5;
+      switch (record_value) {
+      case 1:
         candidate_height = radius_complement - (s16)*operand;
         if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;
-      }
-      else if (record_value < 2) {
-        if (record_value != 0) goto LAB_8002b5c8;
+        break;
+      case 0:
         candidate_height = radius_complement - (s16)*operand;
         if ((int)x_fraction <= (s16)*operand + radius) goto LAB_8002af70;
-      }
-      else if (record_value == 2) {
+        break;
+      case 2:
         candidate_height = (s16)*operand + radius;
         if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002afc4;
-      }
-      else {
-        if (record_value != 3) goto LAB_8002b5c8;
+        break;
+      case 3:
         candidate_height = (s16)*operand + radius;
         if ((int)z_fraction <= candidate_height) goto LAB_8002aff0;
+        break;
+      default:
+        goto LAB_8002b5c8;
       }
       break;
+LAB_8002af9c:
+      if ((int)x_fraction >= candidate_height) goto LAB_8002ada4;
+      goto LAB_8002b5c8;
+LAB_8002aff0:
+      if ((int)x_fraction <= candidate_height) goto LAB_8002ada4;
+      goto LAB_8002b5c8;
     case 0x23:
-      next_record = record + 5;
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
+      next_record = record + 4;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
       case_value = 6;
-      if (record_value == 1) {
+      switch (record_value) {
+      case 1:
         candidate_height = (int)(s16)*operand + radius + -0x1000;
         saved_height_limit = neg_x_minus_z;
-      }
-      else if (record_value < 2) {
-        if (record_value != 0) goto LAB_8002b5c8;
+        break;
+      case 0:
         candidate_height = (int)(s16)*operand + radius + -0x800;
         saved_height_limit = x_minus_z;
-      }
-      else if (record_value == 2) {
+        break;
+      case 2:
         candidate_height = (int)(s16)*operand + radius + -0x800;
         saved_height_limit = z_minus_x;
-      }
-      else {
-        if (record_value != 3) goto LAB_8002b5c8;
+        break;
+      case 3:
         candidate_height = (s16)*operand + radius;
         saved_height_limit = x_plus_z;
+        break;
+      default:
+        goto LAB_8002b5c8;
       }
       if (saved_height_limit <= candidate_height) goto LAB_8002ada4;
       goto LAB_8002b5c8;
     case 0x30:
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
-      next_record = record + 7;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
+      next_record = record + 6;
       if (record_value == 1) {
-        if (((int)z_fraction <= (radius + 0x800) - (int)(s16)record[2]) &&
-           (radius_complement - (s16)record[3] <= (int)z_fraction)) {
-          candidate_height = (int)(s16)record[6];
+        if (((int)z_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
+           (radius_complement - (s16)operand[2] <= (int)z_fraction)) {
+          candidate_height = (int)(s16)operand[5];
           quotient = (int)x_fraction / candidate_height;
           goto LAB_8002b168;
         }
       }
       else if (record_value < 2) {
         if (record_value != 0) goto LAB_8002b5c8;
-        if (((s16)record[2] - radius <= (int)x_fraction) &&
-           ((int)x_fraction <= (s16)record[3] + radius)) {
-          candidate_height = (int)(s16)record[6];
+        if (((s16)operand[1] - radius <= (int)x_fraction) &&
+           ((int)x_fraction <= (s16)operand[2] + radius)) {
+          candidate_height = (int)(s16)operand[5];
           quotient = (int)z_fraction / candidate_height;
           goto LAB_8002b168;
         }
       }
       else if (record_value == 2) {
-        if (((int)x_fraction <= (radius + 0x800) - (int)(s16)record[2]) &&
-           (radius_complement - (s16)record[3] <= (int)x_fraction)) {
-          candidate_height = (int)(s16)record[6];
+        if (((int)x_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
+           (radius_complement - (s16)operand[2] <= (int)x_fraction)) {
+          candidate_height = (int)(s16)operand[5];
           quotient = (int)z_remaining / candidate_height;
 LAB_8002b168:
-          candidate_height = (quotient + 1) * (int)(s16)record[5];
+          candidate_height = (quotient + 1) * (int)(s16)operand[4];
           goto LAB_8002b38c;
         }
       }
       else {
         if (record_value != 3) goto LAB_8002b5c8;
-        if (((s16)record[2] - radius <= (int)z_fraction) &&
-           ((int)z_fraction <= (s16)record[3] + radius)) {
-          candidate_height = (int)(s16)record[6];
+        if (((s16)operand[1] - radius <= (int)z_fraction) &&
+           ((int)z_fraction <= (s16)operand[2] + radius)) {
+          candidate_height = (int)(s16)operand[5];
           quotient = (int)x_remaining / candidate_height;
           goto LAB_8002b168;
         }
       }
       break;
-    case 0x31:
-      if ((result_flags & 1) != 0) {
-        next_record = record + 6;
-        record_value = (u16)selected_layer->quarter_turns + record[5] & 3;
-        case_value = x_fraction;
-        if (record_value != 1) {
-          if (record_value < 2) {
-            case_value = z_fraction;
-            if (record_value == 0) goto LAB_8002b450;
-          }
-          else {
-            case_value = z_remaining;
-            if ((record_value == 2) || (case_value = x_remaining, record_value == 3)) goto LAB_8002b450;
-          }
-          goto LAB_8002b5c8;
-        }
-LAB_8002b450:
-        if (((s16)*operand + radius <= (int)(s16)case_value) &&
-           ((int)(s16)case_value <= (s16)record[2] - radius)) {
-          KF_COLLISION_CACHE_RESULT = (s16)record[3] + KF_COLLISION_CACHE_HEIGHT;
-          saved_height_limit = (s16)record[4] + KF_COLLISION_CACHE_HEIGHT;
-          if (bottom_y < saved_height_limit) {
-            result_flags = result_flags | 8;
-          }
-          if (y <= KF_COLLISION_CACHE_RESULT) {
-            result_flags = result_flags & 0xfffffffa;
-          }
-        }
-      }
-      break;
     case 0x32:
-      record_value = (u16)selected_layer->quarter_turns + record[4] & 3;
-      next_record = record + 7;
+      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
+      next_record = record + 6;
       if (record_value == 1) {
         candidate_height = x_plus_z;
       }
@@ -323,21 +313,90 @@ LAB_8002b450:
         if (record_value != 3) goto LAB_8002b5c8;
         candidate_height = (0x1000 - z_fraction) - x_fraction;
       }
-      quotient = (int)(s16)record[2];
-      if ((candidate_height < quotient) || (quotient = (int)(s16)record[3], quotient < candidate_height)) {
+      quotient = (int)(s16)operand[1];
+      if (candidate_height < quotient) {
         candidate_height = quotient;
       }
-      quotient = (int)(s16)record[6];
-      candidate_height = ((candidate_height - (s16)record[2]) / quotient) * (int)(s16)record[5];
+      else {
+        quotient = (int)(s16)operand[2];
+        if (quotient < candidate_height) {
+          candidate_height = quotient;
+        }
+      }
+      quotient = (int)(s16)operand[5];
+      candidate_height = ((candidate_height - (s16)operand[1]) / quotient) * (int)(s16)operand[4];
 LAB_8002b38c:
-      next_record = record + 7;
-      candidate_height = ((s16)*operand + KF_COLLISION_CACHE_HEIGHT) - candidate_height;
-      if (candidate_height < KF_COLLISION_CACHE_RESULT) goto LAB_8002b3b8;
+      candidate_height = ((s16)*operand + cache->height) - candidate_height;
+      if (candidate_height < cache->result) {
+        cache->result = candidate_height;
+        if (candidate_height < y) {
+          result_flags |= 4;
+        }
+      }
+      break;
+    case 0x31:
+      if ((result_flags & 1) != 0) {
+        next_record = operand + 5;
+        record_value = (u16)selected_layer->quarter_turns + operand[4] & 3;
+        case_value = x_fraction;
+        if (record_value != 1) {
+          if (record_value < 2) {
+            case_value = z_fraction;
+            if (record_value == 0) goto LAB_8002b450;
+          }
+          else {
+            case_value = z_remaining;
+            if ((record_value == 2) || (case_value = x_remaining, record_value == 3)) goto LAB_8002b450;
+          }
+          goto LAB_8002b5c8;
+        }
+LAB_8002b450:
+        if (((s16)*operand + radius <= (int)(s16)case_value) &&
+           ((int)(s16)case_value <= (s16)operand[1] - radius)) {
+          KF_COLLISION_CACHE_RESULT = (s16)operand[2] + KF_COLLISION_CACHE_HEIGHT;
+          saved_height_limit = (s16)operand[3] + KF_COLLISION_CACHE_HEIGHT;
+          KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
+          if (bottom_y < saved_height_limit) {
+            result_flags = result_flags | 8;
+          }
+          if (y <= KF_COLLISION_CACHE_RESULT) {
+            result_flags = result_flags & 0xfffffffa;
+          }
+        }
+      }
       break;
     case 0x40:
-      goto scan_second_layer;
+      if (visited_second_layer) {
+        return result_flags;
+      }
+      KF_COLLISION_CACHE_LAYER = -(u16)(KF_COLLISION_CACHE_LAYER == 0) & 5;
+      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+      KF_COLLISION_CACHE_HEIGHT = -(s32)selected_layer->elevation * 0x80;
+      visited_second_layer = 1;
+      goto LAB_8002ab5c;
+    case 0x18:
+      next_record = record + 1;
+      candidate_height = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
+      KF_COLLISION_CACHE_LOWER_BOUND = candidate_height;
+      if ((s32)height_flags < 0) {
+        KF_COLLISION_CACHE_RESULT = candidate_height;
+        if (candidate_height < y) {
+          result_flags |= 4;
+          special_floor_found = 1;
+        }
+      }
+      if (height_flags & 0x40000000) {
+        KF_COLLISION_CACHE_HEIGHT_LIMIT = candidate_height;
+        if (bottom_y <= candidate_height) {
+          result_flags |= 8;
+        }
+      }
+      goto LAB_8002b5c8;
+    case 0x19:
+      next_record = record + 1;
+      KF_COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
+      goto LAB_8002b5c8;
     }
-    COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
 LAB_8002b5c8:
     records_left = records_left + -1;
     record = next_record;
@@ -345,13 +404,4 @@ LAB_8002b5c8:
       return result_flags;
     }
   } while( 1 );
-scan_second_layer:
-  if (visited_second_layer) {
-    return result_flags;
-  }
-  KF_COLLISION_CACHE_LAYER = -(u16)(KF_COLLISION_CACHE_LAYER == 0) & 5;
-  selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
-  KF_COLLISION_CACHE_HEIGHT = (u32)selected_layer->elevation * -0x80;
-  visited_second_layer = 1;
-  goto LAB_8002ab5c;
 }

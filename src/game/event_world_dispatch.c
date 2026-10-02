@@ -46,10 +46,10 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
         }
     }
 
+    object_index = 0;
     objects = map_object_state.objects;
     templates = map_object_state.templates;
-    object_index = 0;
-    for (;;) {
+    for (;; object_index++) {
         KfMapObject *object;
         u16 object_id;
         s32 kind;
@@ -156,9 +156,15 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             switch (object->tail.fields.unknown_38) {
             case 0xfe: {
                 u16 linked_index = object->tail.fields.unknown_3a.value;
-                if (linked_index == 0xffff ||
-                    objects[linked_index].object_id == 0xff) {
-                    notify_enqueue(6);
+                if (linked_index != 0xffff) {
+                    goto check_linked_object;
+                }
+            notify_six:
+                notify_enqueue(6);
+                break;
+            check_linked_object:
+                if (objects[linked_index].object_id == 0xff) {
+                    goto notify_six;
                 }
                 break;
             }
@@ -200,7 +206,6 @@ void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)
             func_8001bcfc();
             break;
         }
-        object_index++;
     }
 
 invoke_callback:

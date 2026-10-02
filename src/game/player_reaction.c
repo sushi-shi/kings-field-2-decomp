@@ -8,6 +8,7 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
@@ -17,19 +18,16 @@
 s32 func_8001876c(void);
 s32 func_8002897c(s32 value);
 void func_80028fa8(void);
-void func_800335a0(s32 mode, s32 argument);
 void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation, s32 value);
 void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation);
 void func_8002360c(s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 sixth);
 void func_800291ec(KfMapObject *object);
-void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
 void func_8002bf38(u8 first, u8 second, u8 third, s32 angle, u16 value);
 void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
 s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void func_80038f20(void);
 void func_80048554(s32 save_slot);
 void func_8002665c(void);
-void func_80025a18();
 s32 func_80027f78(void);
 void func_80028224(void);
 void func_8002851c(void);
@@ -470,12 +468,12 @@ update_reaction_view:
             player_state.reaction.view.rotation.angles[2], 0, fraction);
         step = player_state.reaction.view.step++;
         if (step > 31) {
-            func_800291d0(object_index);
+            func_800291d0(player_state.reaction.view.mode);
         }
         goto after_reaction;
     case 5:
-        step = ++player_state.reaction.position.unknown_01[0];
-        fraction = step << 8;
+        ++player_state.reaction.position.mode;
+        fraction = player_state.reaction.position.mode << 8;
         player_state.camera_position.vx = func_8001584c(
             player_state.camera_position.vx,
             player_state.reaction.position.position.vx, fraction);
@@ -485,7 +483,7 @@ update_reaction_view:
         player_state.camera_position.vz = func_8001584c(
             player_state.camera_position.vz,
             player_state.reaction.position.position.vz, fraction);
-        if (step > 15) {
+        if (player_state.reaction.position.mode > 15) {
             func_80029168();
         }
         goto after_reaction;
@@ -575,8 +573,8 @@ update_reaction_pose:
                     player_state.camera_rotation_target.angles[0] = 0;
                     player_state.camera_rotation_target.angles[1] = 0xc00;
                     player_state.camera_rotation_target.angles[2] = 0;
-                    player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vy = -0x2480;
+                    player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vz = 0x22000;
                     player_state.unknown_128 = 5;
                     game_counter_bytes[0x4c]--;

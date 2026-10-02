@@ -72,8 +72,7 @@ tools required for building and running the game.
 `--verify` builds the standalone flake and, on source, its Rust library.
 The C++ build uses Clang, combines ELF objects with the MIPS linker and converts
 their relocations to a native Psy-Q linker input. SDK library bodies remain
-ordinary archive inputs, with the documented
-[interrupt-return correction](patterns/sdk-interrupt-return.md) applied by the
+ordinary archive inputs, with the interrupt-return correction applied by the
 shared builder. Typed overloads have real implementations; the effect
 constructor uses named arguments instead of relying on old compiler stack slots.
 Counted export transformations leave the reconstruction source untouched.

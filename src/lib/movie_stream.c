@@ -22,6 +22,34 @@ typedef struct {
     u_long headv;
 } StrSectorHeader;
 
+DATA_AT("OPEN", 0x8003dec0, 0x4)
+DATA_AT("END", 0x8003ace0, 0x4)
+int Rewind_Switch = 0;
+
+DATA_AT("OPEN", 0x8003dec8, 0x4)
+DATA_AT("END", 0x8003ace8, 0x4)
+long StrFrame = 0;
+
+DATA_AT("OPEN", 0x8003e058, 0x28000)
+DATA_AT("END", 0x8003ae50, 0x28000)
+u_long vlcbuf0[40960];
+
+DATA_AT("OPEN", 0x80066058, 0x28000)
+DATA_AT("END", 0x80062e50, 0x28000)
+u_long vlcbuf1[40960];
+
+DATA_AT("OPEN", 0x8008e058, 0x3c00)
+DATA_AT("END", 0x8008ae50, 0x3c00)
+u_short imgbuf[7680];
+
+DATA_AT("OPEN", 0x80091c58, 0x10000)
+DATA_AT("END", 0x8008ea50, 0x10000)
+u_long Ring_Buff[16384];
+
+DATA_AT("OPEN", 0x800a1c58, 0x30)
+DATA_AT("END", 0x8009ea50, 0x30)
+DECENV dec;
+
 
 ADDRESS_AT("OPEN", 0x8001383c, 0xbc)
 ADDRESS_AT("END", 0x800121ec, 0xbc)

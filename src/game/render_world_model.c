@@ -25,9 +25,7 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     KfCollisionRow *override;
     KfCollisionRow *light_rotation;
     KfTmdObject *object;
-    const u8 *cell_lighting;
-    s32 light_index;
-    s32 object_index;
+    u16 object_index;
     s32 red;
     s32 green;
     s32 blue;
@@ -36,6 +34,7 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     if (world_matrix != 0) {
         KfMapOccupancyCell *cell;
+        KfMapOccupancyCell *row;
         KfMapOccupancyLayer *lighting_layer;
 
         relative.vx = (s16)position->vx -
@@ -45,26 +44,29 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
         relative.vz = (s16)position->vz -
                       (s16)game_graphics_runtime.render_state.view_position.vz;
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
-        cell = &bss_801c7540.map_cells[position->vz >> 11][position->vx >> 11];
+        row = bss_801c7540.map_cells[position->vz >> 11];
+        cell = &row[position->vx >> 11];
         if (map_layer != 1) {
             lighting_layer = &cell->layer[1];
         } else {
             lighting_layer = &cell->layer[0];
         }
-        light_index = lighting_layer->lighting_index & 0x3f;
+        lighting = &game_graphics_runtime.collision_rows[
+            lighting_layer->lighting_index & 0x3f];
     } else {
         model.t[0] = position->vx;
         model.t[1] = position->vy;
         model.t[2] = position->vz;
-        cell_lighting = &bss_801c7540.map_cells[0][0].layer[0].lighting_index;
-        cell_lighting += (game_graphics_runtime.render_state.view_position.vz >> 11) *
-                         sizeof(bss_801c7540.map_cells[0]);
-        cell_lighting += (game_graphics_runtime.render_state.view_position.vx >> 11) *
-                         sizeof(KfMapOccupancyCell);
-        cell_lighting += player_state.unknown_128;
-        light_index = *cell_lighting & 0x3f;
+        {
+            u16 layer_offset = player_state.unknown_128;
+            u8 lighting_index = *(
+                &bss_801c7540.map_cells[
+                    game_graphics_runtime.render_state.view_position.vz >> 11][
+                    game_graphics_runtime.render_state.view_position.vx >> 11]
+                    .layer[0].lighting_index + layer_offset);
+            lighting = &game_graphics_runtime.collision_rows[lighting_index & 0x3f];
+        }
     }
-    lighting = &game_graphics_runtime.collision_rows[light_index];
 
     if (render_mode == 0x80) {
         render_mode = 0xff;
@@ -132,8 +134,8 @@ void func_80031850(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&model);
 
     asset_registry_select(asset_index);
-    object_index = 0;
     if (clip < 0x80) {
+        object_index = 0;
         object = tmd_get_object(0);
         if (func_80034070(cache, asset_index, clip, phase,
                           object->vertex_count) == 0) {

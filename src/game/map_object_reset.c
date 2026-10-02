@@ -4,6 +4,9 @@
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 
+DATA(0x801749d0, 0x8744)
+KfMapObjectStateGame map_object_state;
+
 ADDRESS(0x80035504, 0x30)
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound)
 {
@@ -91,8 +94,10 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
     u8 *cell_marker;
 
     if (mode == 0 && player_state.unknown_6a == 0) {
-        cell = bss_801c7540.map_cells[object->position.vz >> 11];
-        cell += object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> 11;
+        s32 cell_x = object->position.vx >> 11;
+        KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
+        cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
         if (object->unknown_00 != 1) {
             cell_marker = &cell->layer[1].object_index;
@@ -100,8 +105,10 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
         *cell_marker = marker;
         object->scale.vx = object->scale.vy = object->scale.vz = 0;
     } else {
-        cell = bss_801c7540.map_cells[object->position.vz >> 11];
-        cell += object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> 11;
+        s32 cell_x = object->position.vx >> 11;
+        KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
+        cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
         if (object->unknown_00 != 1) {
             cell_marker = &cell->layer[1].object_index;

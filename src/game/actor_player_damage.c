@@ -4,14 +4,10 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
-                          u16 value4, u16 value5, u16 value6, u16 value7,
-                          u16 value8, u16 value9, u16 value10,
-                          const VECTOR *position);
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                           u16 magic_08, u16 magic_0a, u16 magic_0c,
                           u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, s32 radius, s32 effect_flags,
+                          u16 magic_14, u16 radius, s32 effect_flags,
                           const VECTOR *position);
 
 ADDRESS(0x8003a318, 0x2fc)
@@ -35,7 +31,7 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
         s32 distance;
         u32 scaled_amount;
 
-        if (actor->lifecycle != 1 || actor == actor_state.current) {
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor == actor_state.current) {
             continue;
         }
         if (mode == 0x8000) {
@@ -128,7 +124,7 @@ KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
     s32 reach;
 
     do {
-        if (actor->lifecycle != 1 || actor->target_type == 3 ||
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3 ||
             actor == actor_state.current) {
             continue;
         }

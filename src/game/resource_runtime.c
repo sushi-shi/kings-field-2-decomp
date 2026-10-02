@@ -51,7 +51,7 @@ u32 map_cell_layer_mask(const VECTOR *position)
 ADDRESS(0x800320b0, 0xc4)
 u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
 {
-    s32 span = radius * 2;
+    s32 span = (s32)((u32)radius << 1);
     u8 mask = 0;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
@@ -63,13 +63,11 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
         if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
             s32 x = x0;
             s32 column_count = span;
-            const u8 *cell = row + x;
 
             do {
                 if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
-                    mask |= *cell;
+                    mask |= row[x];
                 }
-                cell++;
                 x++;
                 column_count--;
             } while (column_count != -1);
@@ -89,18 +87,22 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
     s32 x;
     s32 visible = 0;
 
-    if (game_graphics_runtime.render_state.view_cell_z < z - radius_z) {
+    if (game_graphics_runtime.render_state.view_cell_z
+        < (s32)((u32)z - (u32)radius_z)) {
         goto done;
     }
-    if (z + radius_z < game_graphics_runtime.render_state.view_cell_z) {
+    if ((s32)((u32)z + (u32)radius_z)
+        < game_graphics_runtime.render_state.view_cell_z) {
         goto done;
     }
 
     x = position->vx >> KF_MAP_CELL_SHIFT;
-    if (game_graphics_runtime.render_state.view_cell_x < x - radius_x) {
+    if (game_graphics_runtime.render_state.view_cell_x
+        < (s32)((u32)x - (u32)radius_x)) {
         goto done;
     }
-    visible = x + radius_x >= game_graphics_runtime.render_state.view_cell_x;
+    visible = (s32)((u32)x + (u32)radius_x)
+        >= game_graphics_runtime.render_state.view_cell_x;
 
 done:
     return visible;
@@ -130,7 +132,8 @@ void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
     s32 end = count + entry;
 
     while (entry < end) {
-        KfAudioVabStreamSlot *state = audio_state.vab_slots[vab_slot].stream_slot;
+        KfAudioVabSlot *slot = &audio_state.vab_slots[vab_slot];
+        KfAudioVabStreamSlot *state = slot->stream_slot;
 
         if (*flags++) {
             if (state == 0) {

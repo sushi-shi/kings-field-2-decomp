@@ -2,7 +2,7 @@
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
 
-extern s32 func_8003ae50(s16 *motion, s32 target);
+extern s32 func_8003ae50(SVECTOR *motion, s32 target);
 extern s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius,
                           s32 height_and_flags, s32 mode);
 
@@ -23,7 +23,7 @@ s32 func_8003b9a4(s32 decay, s32 target)
         actor->unknown_54 = value_approach(actor->unknown_54, 0,
             (actor->unknown_54 * decay * 2) / length);
     }
-    return func_8003ae50(&actor->unknown_50, target);
+    return func_8003ae50((SVECTOR *)&actor->unknown_50, target);
 }
 
 ADDRESS(0x8003bae4, 0xbc)
@@ -41,7 +41,7 @@ s32 func_8003bae4(s16 angle, s32 speed, s32 step, s32 target)
                                         direction.x, step_direction.x);
     actor->unknown_54 = value_approach(actor->unknown_54,
                                         direction.z, step_direction.z);
-    return func_8003ae50(&actor->unknown_50, target);
+    return func_8003ae50((SVECTOR *)&actor->unknown_50, target);
 }
 
 ADDRESS(0x8003bba0, 0x130)
@@ -136,7 +136,7 @@ s32 func_8003be38(const struct KfEulerAngles *angles, s32 speed,
                                         direction.vy, step_direction.vy);
     actor->unknown_54 = value_approach(actor->unknown_54,
                                         direction.vz, step_direction.vz);
-    moved = func_8003ae50(&actor->unknown_50, target) != 0;
+    moved = func_8003ae50((SVECTOR *)&actor->unknown_50, target) != 0;
     proposed_y = actor->position.vy + actor->unknown_52;
     radius = actor->unknown_1c;
     height_and_flags = actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16);

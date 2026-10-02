@@ -63,9 +63,8 @@ remain inspectable. It is part of the shared probe flags, not a second
 comparison build configuration.
 
 GNU MIPS binutils, psy-k and objdiff are inspection tools. They neither lay
-out nor emit the candidate executables. The KF1 compiler scheduling evidence
-is in [`patterns/gcc257-epilogue-and-scheduling.md`](patterns/gcc257-epilogue-and-scheduling.md);
-SLPS-00069 JP/US game code shows the same return-slot epilogue class.
+out nor emit the candidate executables. SLPS-00069 JP/US game code shows the
+same return-slot epilogue class observed in the KF1 reconstruction.
 
 The Ghidra extension's Psy-Q 3.00 signatures are also an analysis corpus.
 Vendored-function inventory code may use them to propose a name after the

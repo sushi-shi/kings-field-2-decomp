@@ -5,6 +5,19 @@
 
 s32 func_8002a988(s32 x, s32 y, s32 z);
 
+/* Phase-one resource loading copies 0x600 words to this interior BSS range.
+ * The variable-length shape records within it remain untyped. */
+#define KF_COLLISION_SHAPE_BANK \
+    ((u8 *)&bss_801c7540 + 0x10000)
+#define KF_COLLISION_SHAPE_BANK_BYTES 0x1800
+
+typedef struct KfCollisionShapeOffsetTable {
+    u16 offsets[256];
+} KfCollisionShapeOffsetTable;
+
+typedef char kf_collision_shape_offset_table_size[
+    sizeof(KfCollisionShapeOffsetTable) == 0x200 ? 1 : -1];
+
 /* Temporary interior view of the complete startup-cleared BSS object. The
  * boundary with the provisional equipment-record view is still unresolved. */
 #define KF_COLLISION_CACHE_CELL \
@@ -17,6 +30,8 @@ s32 func_8002a988(s32 x, s32 y, s32 z);
     (*(s32 *)((u8 *)&bss_801c7540 + 0x1180c))
 #define KF_COLLISION_CACHE_RESULT \
     (*(s32 *)((u8 *)&bss_801c7540 + 0x11810))
+#define KF_COLLISION_CACHE_HEIGHT_LIMIT \
+    (*(s32 *)((u8 *)&bss_801c7540 + 0x11814))
 /* The cache's complete layout still overlaps the provisional equipment view. */
 #define KF_COLLISION_CACHE_LOWER_BOUND \
     (*(s32 *)((u8 *)&bss_801c7540 + 0x11818))

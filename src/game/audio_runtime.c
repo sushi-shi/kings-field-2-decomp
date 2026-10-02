@@ -12,6 +12,9 @@
 DATA(0x8009a6a0, 0x158)
 char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_TRACKS_PER_SEQUENCE];
 
+DATA(0x80197630, 0xe9c)
+KfGameAudioState audio_state;
+
 ADDRESS(0x800139c4, 0x120)
 void func_800139c4(void)
 {

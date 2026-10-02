@@ -5,7 +5,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern s32 DAT_8006d694;
 extern void func_80033994(void);
 
 enum { KF_PREVIEW_ANGLE_MASK = 0xfff };

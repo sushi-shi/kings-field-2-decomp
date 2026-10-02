@@ -6,6 +6,18 @@
 #include <kf/game/pool.h>
 #include <psyq/audio.h>
 
+DATA(0x8006d9e8, 0x1)
+u8 menu_saved_music_enabled;
+
+DATA(0x8006d9f0, 0x4)
+u_long *menu_frame_upload_pixels;
+
+DATA(0x8006d9f8, 0x8)
+RECT menu_frame_upload_rect;
+
+DATA(0x8006dbe8, 0x18)
+KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
+
 ADDRESS(0x80021c8c, 0x174)
 void func_80021c8c(s32 mode)
 {

@@ -383,7 +383,7 @@ typedef char kf_player_movement_step_limit_offset[
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;
-extern const KfPlayerMagicIdSequence DAT_800667e8;
+extern KfPlayerMagicIdSequence DAT_800667e8;
 extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 
@@ -399,9 +399,15 @@ s32 player_distance_to_point(
     s32 point_x, s32 point_y, s32 point_z, s32 max_distance, s32 point_height);
 s32 player_distance_to_point_with_margin(
     s32 point_x, s32 point_y, s32 point_z, s32 max_distance, s32 point_height);
+void func_80023384(void);
 s32 func_80023814(s32 value, s32 rank);
 void player_add_equipment_bonuses(s32 item_id);
 s32 player_calculate_damage_component(s32 base_power, s32 defense, s32 attack);
+void func_80024498(const VECTOR *origin, s32 damage, s32 reaction_flags);
+void func_800248a8(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
+                   u16 damage3, u16 damage4, u16 damage5, u16 damage6,
+                   u16 damage7, u16 scale_q16, u16 multiplier_tenths,
+                   const VECTOR *origin);
 void player_adjust_hp_unclamped(s32 delta);
 void player_cap_status_components(u32 mask);
 void player_death_begin(const SVECTOR *rotation);
@@ -412,6 +418,7 @@ void player_set_unknown_98(u8 value);
 void player_set_unknown_99(u8 value);
 void player_set_equipment_slot(u8 item_id, u8 slot);
 void player_equip_weapon(u8 weapon_id);
+void func_80025a18(s32 effect_id, ...);
 void player_begin_weapon_attack(s32 mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);

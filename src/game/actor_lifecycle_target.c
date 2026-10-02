@@ -15,7 +15,7 @@ void func_8003983c(void)
     s32 distance;
 
     switch (actor->lifecycle) {
-    case 0:
+    case KF_ACTOR_LIFECYCLE_DORMANT:
         distance = vector_distance_to_point(
             &actor->position, player_state.camera_position.vx,
             KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
@@ -25,7 +25,7 @@ void func_8003983c(void)
         }
 
         if (slot_state == 3 || slot_state == 4) {
-            if (actor_state.other_actor->lifecycle != 1) {
+            if (actor_state.other_actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
             actor_prepare_and_initialize(actor_state.current);
@@ -79,11 +79,11 @@ void func_8003983c(void)
 
     set_dormant:
         if (slot_state != 2) {
-            actor->lifecycle = 2;
+            actor->lifecycle = KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT;
         }
         return;
 
-    case 1:
+    case KF_ACTOR_LIFECYCLE_ACTIVE:
         distance = vector_distance_to_point(
             &actor->position, player_state.camera_position.vx,
             KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
@@ -93,13 +93,13 @@ void func_8003983c(void)
         }
         func_8002b73c(actor->position.vx, actor->position.vz,
                        actor->unknown_1c, -1);
-        actor->lifecycle = 0;
+        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor_set_home_position(actor);
         return;
 
-    case 2:
+    case KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT:
         if (slot_state == 3 || slot_state == 4) {
-            if (actor_state.other_actor->lifecycle == 1) {
+            if (actor_state.other_actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
         } else {
@@ -111,7 +111,7 @@ void func_8003983c(void)
                 return;
             }
         }
-        actor->lifecycle = 0;
+        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor_set_home_position(actor);
         return;
     }
@@ -126,7 +126,7 @@ void func_80039b58(s32 group_index)
     do {
         if (actor->slot_state != 0xff &&
             actor->group_index == (u16)group_index) {
-            if (actor->lifecycle == 1) {
+            if (actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 actor_select_target_type_in_own_group(actor, 3);
             } else {
                 actor_set_lifecycle_and_home_position(actor);

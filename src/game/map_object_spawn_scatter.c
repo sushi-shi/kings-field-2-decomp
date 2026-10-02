@@ -63,7 +63,7 @@ void func_800366fc(u8 identifier)
             }
             break;
         case 0x51:
-            if (((u8 *)&object->tail.fields.spawn_sequence)[1] == identifier) {
+            if (object->tail.spawn_bytes.spawn_sequence.high == identifier) {
                 object->tail.fields.unknown_38 =
                     object->tail.fields.unknown_38 == 0 ? 0xff : 0;
             }

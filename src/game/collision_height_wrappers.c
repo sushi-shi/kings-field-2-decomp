@@ -126,7 +126,6 @@ ADDRESS(0x8002b9d4, 0x244)
 s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 {
     s32 result = 0;
-    s32 index;
 
     if (mode & 1) {
         result = func_8002b7f8(x, y, z, radius, height);
@@ -141,16 +140,14 @@ s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
     height &= 0x0fffffff;
     if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if (mode & 0x10) {
-            index = func_8003a9f4(x, y, z, radius, height);
-            COLLISION_CACHE_ACTOR_INDEX = index;
-            if (index != -1) {
+            COLLISION_CACHE_ACTOR_INDEX = func_8003a9f4(x, y, z, radius, height);
+            if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= 0x10;
             }
         } else {
             if (mode & 0x40) {
-                index = func_8003ab5c(x, y, z, radius, height);
-                COLLISION_CACHE_ACTOR_INDEX = index;
-                if (index != -1) {
+                COLLISION_CACHE_ACTOR_INDEX = func_8003ab5c(x, y, z, radius, height);
+                if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= 0x10;
                 }
             }
@@ -158,9 +155,8 @@ s32 func_8002b9d4(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
         }
 
         if (mode & 0x20) {
-            index = func_80036078(x, y, z, radius, height);
-            COLLISION_CACHE_OBJECT_INDEX = index;
-            if (index != -1) {
+            COLLISION_CACHE_OBJECT_INDEX = func_80036078(x, y, z, radius, height);
+            if (COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= 0x20;
             }
         } else {
@@ -391,8 +387,8 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
     /* The rasterizer uses 16-bit origins and truncates grid coordinates. */
-    u16 origin_x = *(u16 *)&game_graphics_runtime.render_state.cell_origin_x;
-    u16 origin_z = *(u16 *)&game_graphics_runtime.render_state.cell_origin_z;
+    u16 origin_x = (u16)game_graphics_runtime.render_state.cell_origin_x;
+    u16 origin_z = (u16)game_graphics_runtime.render_state.cell_origin_z;
     s32 x = ((u32)start->x >> 12) + origin_x;
     s32 z = ((u32)start->z >> 12) + origin_z;
     s32 dx = (((u32)end->x >> 12) + origin_x) - x;
@@ -455,14 +451,13 @@ ADDRESS(0x8002c170, 0x64)
 s32 func_8002c170(const u8 *row, s32 index, s32 step, u8 value)
 {
     s32 state = 0;
-    const u8 *cell = row + index;
 
     for (;;) {
         u8 current;
         if ((u32)index >= KF_MAP_CELL_GRID_SIDE) {
             return index;
         }
-        current = *cell;
+        current = row[index];
         switch (state) {
         case 0:
             if (current == value) {
@@ -475,7 +470,6 @@ s32 func_8002c170(const u8 *row, s32 index, s32 step, u8 value)
             }
             break;
         }
-        cell += step;
         index += step;
     }
 }
@@ -570,17 +564,14 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
 
     count--;
     if (count != -1) {
-        u8 *first_cursor = cursor + first_offset;
-        u8 *second_cursor = cursor + second_offset;
         const u8 *first_layer_mask = &render_mask_scan_state.first_layer_mask;
         const u8 *second_layer_mask = &render_mask_scan_state.second_layer_mask;
-        KfMapOccupancyCell (*map_cells)[80] = bss_801c7540.map_cells;
 
         do {
             if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != 0) {
                 if ((u32)map_x < 80 && (u32)map_z < 80) {
-                    u8 first = *first_cursor;
-                    u8 second = *second_cursor;
+                    u8 first = cursor[first_offset];
+                    u8 second = cursor[second_offset];
                     KfMapOccupancyCell *cell;
                     KfMapOccupancyLayer *first_layer;
                     KfMapOccupancyLayer *second_layer;
@@ -591,12 +582,12 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
                     if (second & *first_layer_mask) {
                         goto check_first_layer;
                     }
-                    cell = &map_cells[map_z][map_x];
+                    cell = &bss_801c7540.map_cells[map_z][map_x];
     clear_first_layer:
                     *cursor &= ~*first_layer_mask;
                     goto check_second_layer;
     check_first_layer:
-                    cell = &map_cells[map_z][map_x];
+                    cell = &bss_801c7540.map_cells[map_z][map_x];
                     first_layer = (KfMapOccupancyLayer *)((u8 *)cell +
                                   render_mask_scan_state.first_layer_byte_offset);
                     if (first_layer->object_index == 0xff) {
@@ -607,7 +598,7 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
                     }
     set_second_layer:
                     *cursor |= *second_layer_mask;
-                    goto advance_second;
+                    goto advance_iteration;
     check_second_layer:
                     second_layer = (KfMapOccupancyLayer *)((u8 *)cell +
                                    render_mask_scan_state.second_layer_byte_offset);
@@ -615,19 +606,13 @@ void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
                         if ((first & *second_layer_mask) ||
                             (second & *second_layer_mask)) {
                             goto set_second_layer;
-                        } else {
-                            second_cursor += mask_stride;
-                            goto advance_remaining;
                         }
                     }
                 } else {
                     *cursor = 0;
                 }
             }
-    advance_second:
-            second_cursor += mask_stride;
-    advance_remaining:
-            first_cursor += mask_stride;
+    advance_iteration:
             cursor += mask_stride;
             window_x += map_step;
             window_z += window_step;

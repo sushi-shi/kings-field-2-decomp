@@ -3,6 +3,9 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
 
+DATA(0x801b2140, 0x3918)
+KfEventState event_state;
+
 ADDRESS(0x800482f8, 0xb0)
 void func_800482f8(void)
 {

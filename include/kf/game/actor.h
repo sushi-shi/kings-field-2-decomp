@@ -13,8 +13,41 @@ enum {
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
     KF_ACTOR_SLOT_FREE = 0xff,
-    KF_ACTOR_LIFECYCLE_DORMANT = 0
+    KF_ACTOR_LIFECYCLE_DORMANT = 0,
+    KF_ACTOR_LIFECYCLE_ACTIVE = 1,
+    KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
+    KF_ACTOR_LIFECYCLE_DISABLED = 3
 };
+
+typedef struct KfTargetCandidateWord0cBytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord0cBytes;
+typedef char kf_target_candidate_word0c_bytes_size[
+    sizeof(KfTargetCandidateWord0cBytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord0c {
+    u16 value;
+    KfTargetCandidateWord0cBytes bytes;
+} KfTargetCandidateWord0c;
+typedef char kf_target_candidate_word0c_size[
+    sizeof(KfTargetCandidateWord0c) == 2 ? 1 : -1];
+typedef char kf_target_candidate_word0c_high_offset[
+    (u32)&((KfTargetCandidateWord0c *)0)->bytes.high == 1 ? 1 : -1];
+
+typedef struct KfTargetCandidateWord0eBytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord0eBytes;
+typedef char kf_target_candidate_word0e_bytes_size[
+    sizeof(KfTargetCandidateWord0eBytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord0e {
+    u16 value;
+    KfTargetCandidateWord0eBytes bytes;
+} KfTargetCandidateWord0e;
+typedef char kf_target_candidate_word0e_size[
+    sizeof(KfTargetCandidateWord0e) == 2 ? 1 : -1];
 
 typedef struct KfTargetCandidateWord10Bytes {
     u8 fallback_offset;
@@ -51,30 +84,103 @@ typedef union KfTargetCandidateWord14 {
 typedef char kf_target_candidate_word14_size[
     sizeof(KfTargetCandidateWord14) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateWord16Bytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord16Bytes;
+typedef char kf_target_candidate_word16_bytes_size[
+    sizeof(KfTargetCandidateWord16Bytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord16 {
+    u16 value;
+    KfTargetCandidateWord16Bytes bytes;
+} KfTargetCandidateWord16;
+typedef char kf_target_candidate_word16_size[
+    sizeof(KfTargetCandidateWord16) == 2 ? 1 : -1];
+
+typedef struct KfTargetCandidateWord18Bytes {
+    u8 low;
+    u8 high;
+} KfTargetCandidateWord18Bytes;
+typedef char kf_target_candidate_word18_bytes_size[
+    sizeof(KfTargetCandidateWord18Bytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord18 {
+    u16 value;
+    KfTargetCandidateWord18Bytes bytes;
+} KfTargetCandidateWord18;
+typedef char kf_target_candidate_word18_size[
+    sizeof(KfTargetCandidateWord18) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord1a {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1a;
+typedef char kf_target_candidate_word1a_size[
+    sizeof(KfTargetCandidateWord1a) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord1c {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1c;
+typedef char kf_target_candidate_word1c_size[
+    sizeof(KfTargetCandidateWord1c) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord1e {
+    u16 value;
+    u8 bytes[2];
+} KfTargetCandidateWord1e;
+typedef char kf_target_candidate_word1e_size[
+    sizeof(KfTargetCandidateWord1e) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord26 {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfTargetCandidateWord26;
+typedef char kf_target_candidate_word26_size[
+    sizeof(KfTargetCandidateWord26) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord24 {
+    u16 unsigned_value;
+    s16 signed_value;
+} KfTargetCandidateWord24;
+typedef char kf_target_candidate_word24_size[
+    sizeof(KfTargetCandidateWord24) == 2 ? 1 : -1];
+
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
     u8 unknown_01[3];
-    u8 unknown_04;
+    u8 sound_code;
     u8 unknown_05[3];
-    u16 unknown_08;
-    u16 unknown_0a;
-    u16 unknown_0c;
-    u16 unknown_0e;
+    u16 animation_step;
+    u16 sound_trigger;
+    KfTargetCandidateWord0c word_0c;
+    KfTargetCandidateWord0e word_0e;
     KfTargetCandidateWord10 word_10;
     KfTargetCandidateWord12 word_12;
     KfTargetCandidateWord14 word_14;
-    u16 unknown_16;
-    u8 unknown_18[2];
-    u16 unknown_1a;
+    KfTargetCandidateWord16 word_16;
+    KfTargetCandidateWord18 word_18;
+    KfTargetCandidateWord1a word_1a;
+    KfTargetCandidateWord1c word_1c;
+    KfTargetCandidateWord1e word_1e;
+    u16 unknown_20;
+    u16 unknown_22;
+    KfTargetCandidateWord24 word_24;
+    KfTargetCandidateWord26 word_26;
+    u16 unknown_28;
+    u16 unknown_2a;
 } KfTargetCandidate;
-typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x2c ? 1 : -1];
+typedef char kf_target_candidate_sound_code_offset[(u32)&((KfTargetCandidate *)0)->sound_code == 4 ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
-typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
-typedef char kf_target_candidate_unknown_0a_offset[(u32)&((KfTargetCandidate *)0)->unknown_0a == 0x0a ? 1 : -1];
-typedef char kf_target_candidate_unknown_0c_offset[(u32)&((KfTargetCandidate *)0)->unknown_0c == 0x0c ? 1 : -1];
-typedef char kf_target_candidate_unknown_0e_offset[(u32)&((KfTargetCandidate *)0)->unknown_0e == 0x0e ? 1 : -1];
+typedef char kf_target_candidate_animation_step_offset[(u32)&((KfTargetCandidate *)0)->animation_step == 0x08 ? 1 : -1];
+typedef char kf_target_candidate_sound_trigger_offset[(u32)&((KfTargetCandidate *)0)->sound_trigger == 0x0a ? 1 : -1];
+typedef char kf_target_candidate_word_0c_offset[(u32)&((KfTargetCandidate *)0)->word_0c == 0x0c ? 1 : -1];
+typedef char kf_target_candidate_word_0e_offset[(u32)&((KfTargetCandidate *)0)->word_0e == 0x0e ? 1 : -1];
+typedef char kf_target_candidate_word_0e_low_offset[(u32)&((KfTargetCandidate *)0)->word_0e.bytes.low == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->unknown_11 == 1 ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_total_offset[(u32)&((KfTargetCandidate *)0)->word_10.bytes.unknown_11 == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_word_12_offset[(u32)&((KfTargetCandidate *)0)->word_12 == 0x12 ? 1 : -1];
@@ -82,6 +188,42 @@ typedef char kf_target_candidate_marker_state_offset[(u32)&((KfTargetCandidateWo
 typedef char kf_target_candidate_marker_state_total_offset[(u32)&((KfTargetCandidate *)0)->word_12.bytes.marker_state == 0x13 ? 1 : -1];
 typedef char kf_target_candidate_word_14_offset[(u32)&((KfTargetCandidate *)0)->word_14 == 0x14 ? 1 : -1];
 typedef char kf_target_candidate_stream_bytes_offset[(u32)&((KfTargetCandidate *)0)->word_14.bytes == 0x14 ? 1 : -1];
+typedef char kf_target_candidate_word_16_offset[(u32)&((KfTargetCandidate *)0)->word_16 == 0x16 ? 1 : -1];
+typedef char kf_target_candidate_word_16_high_offset[(u32)&((KfTargetCandidate *)0)->word_16.bytes.high == 0x17 ? 1 : -1];
+typedef char kf_target_candidate_word_18_offset[(u32)&((KfTargetCandidate *)0)->word_18 == 0x18 ? 1 : -1];
+typedef char kf_target_candidate_word_18_high_offset[(u32)&((KfTargetCandidate *)0)->word_18.bytes.high == 0x19 ? 1 : -1];
+typedef char kf_target_candidate_word_1a_offset[(u32)&((KfTargetCandidate *)0)->word_1a == 0x1a ? 1 : -1];
+typedef char kf_target_candidate_word_1c_offset[(u32)&((KfTargetCandidate *)0)->word_1c == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_word_1e_offset[(u32)&((KfTargetCandidate *)0)->word_1e == 0x1e ? 1 : -1];
+typedef char kf_target_candidate_unknown_20_offset[(u32)&((KfTargetCandidate *)0)->unknown_20 == 0x20 ? 1 : -1];
+typedef char kf_target_candidate_unknown_22_offset[(u32)&((KfTargetCandidate *)0)->unknown_22 == 0x22 ? 1 : -1];
+typedef char kf_target_candidate_word_24_offset[(u32)&((KfTargetCandidate *)0)->word_24 == 0x24 ? 1 : -1];
+typedef char kf_target_candidate_word_26_offset[(u32)&((KfTargetCandidate *)0)->word_26 == 0x26 ? 1 : -1];
+typedef char kf_target_candidate_unknown_28_offset[(u32)&((KfTargetCandidate *)0)->unknown_28 == 0x28 ? 1 : -1];
+typedef char kf_target_candidate_unknown_2a_offset[(u32)&((KfTargetCandidate *)0)->unknown_2a == 0x2a ? 1 : -1];
+
+/* Type 25 reads a variable halfword stream after this proved prefix. Its
+ * complete allocation and record stride are not established. */
+typedef struct KfTargetCandidateAction25 {
+    u8 type;
+    u8 unknown_01[3];
+    u8 unknown_04;
+    u8 unknown_05[3];
+    u16 unknown_08;
+    u16 unknown_0a;
+    KfTargetCandidateWord0c word_0c;
+    KfTargetCandidateWord0e word_0e;
+    KfTargetCandidateWord10 word_10;
+    KfTargetCandidateWord12 word_12;
+    KfTargetCandidateWord14 word_14;
+    KfTargetCandidateWord16 word_16;
+    KfTargetCandidateWord18 word_18;
+    u16 stream[1]; /* first word of a variable-length archive payload */
+} KfTargetCandidateAction25;
+typedef char kf_target_candidate_action25_prefix_size[
+    sizeof(KfTargetCandidateAction25) == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_action25_stream_offset[
+    (u32)&((KfTargetCandidateAction25 *)0)->stream == 0x1a ? 1 : -1];
 
 /* Group slots hold byte offsets until actor_fixup_group_targets runs. */
 typedef union KfTargetReference {
@@ -109,7 +251,7 @@ typedef struct KfTargetGroup {
     u16 unknown_1c;
     u16 unknown_1e;
     u16 unknown_20[8];
-    u8 unknown_30[2];
+    u16 unknown_30;
     u16 unknown_32;
     u32 unknown_34;
     KfTargetReference targets[16];
@@ -121,6 +263,8 @@ typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
 typedef char kf_target_group_curve_offset[
     (u32)&((KfTargetGroup *)0)->unknown_20 == 0x20 ? 1 : -1];
+typedef char kf_target_group_unknown_30_offset[
+    (u32)&((KfTargetGroup *)0)->unknown_30 == 0x30 ? 1 : -1];
 
 typedef struct KfActorHalfword4aBytes {
     u8 low;
@@ -134,6 +278,52 @@ typedef union KfActorHalfword4a {
     KfActorHalfword4aBytes bytes;
 } KfActorHalfword4a;
 typedef char kf_actor_halfword_4a_size[sizeof(KfActorHalfword4a) == 2 ? 1 : -1];
+
+typedef struct KfActorState70Bytes {
+    u8 low;
+    u8 high;
+} KfActorState70Bytes;
+typedef char kf_actor_state_70_bytes_size[
+    sizeof(KfActorState70Bytes) == 2 ? 1 : -1];
+
+typedef union KfActorState70 {
+    s16 signed_state;
+    KfActorState70Bytes bytes;
+} KfActorState70;
+typedef char kf_actor_state_70_size[sizeof(KfActorState70) == 2 ? 1 : -1];
+
+typedef struct KfActorOrientation {
+    struct KfEulerAngles rotation;
+    u8 unknown_46[2];
+} KfActorOrientation;
+typedef char kf_actor_orientation_size[sizeof(KfActorOrientation) == 8 ? 1 : -1];
+
+typedef struct KfActorTail72Motion {
+    struct KfEulerAngles angles;
+    s16 baseline;
+} KfActorTail72Motion;
+typedef char kf_actor_tail_72_motion_size[
+    sizeof(KfActorTail72Motion) == 8 ? 1 : -1];
+
+typedef struct KfActorTail72Script {
+    u16 word_index;
+    u16 unknown_74;
+} KfActorTail72Script;
+typedef char kf_actor_tail_72_script_size[
+    sizeof(KfActorTail72Script) == 4 ? 1 : -1];
+
+/* Action-specific tail storage overlaps a vector, signed state, and script words. */
+typedef union KfActorTail72 {
+    s16 signed_state;
+    u16 unsigned_state;
+    struct KfEulerAngles angles;
+    SVECTOR direction;
+    KfActorTail72Motion motion;
+    KfActorTail72Script script;
+} KfActorTail72;
+typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 8 ? 1 : -1];
+typedef char kf_actor_tail_72_baseline_offset[
+    (u32)&((KfActorTail72 *)0)->motion.baseline == 6 ? 1 : -1];
 
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
@@ -184,14 +374,15 @@ typedef struct KfActor {
     u8 unknown_5a[2];
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
-    u8 unknown_64[2];
+    s16 unknown_64;
     s16 animation_step;
     s16 unknown_68;
     s16 unknown_6a;
     s16 unknown_6c;
     u8 unknown_6e[2];
-    s16 unknown_70;
-    u8 unknown_72[0x0a];
+    KfActorState70 state_70;
+    KfActorTail72 tail_72;
+    u8 unknown_7a[2];
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
@@ -204,11 +395,21 @@ typedef char kf_actor_motion_x_offset[(u32)&((KfActor *)0)->unknown_50 == 0x50 ?
 typedef char kf_actor_motion_z_offset[(u32)&((KfActor *)0)->unknown_54 == 0x54 ? 1 : -1];
 typedef char kf_actor_cache_offset[(u32)&((KfActor *)0)->animation_cache == 0x5c ? 1 : -1];
 typedef char kf_actor_target_offset[(u32)&((KfActor *)0)->target == 0x60 ? 1 : -1];
+typedef char kf_actor_unknown_64_offset[(u32)&((KfActor *)0)->unknown_64 == 0x64 ? 1 : -1];
 typedef char kf_actor_step_offset[(u32)&((KfActor *)0)->animation_step == 0x66 ? 1 : -1];
 typedef char kf_actor_motion_result_68_offset[(u32)&((KfActor *)0)->unknown_68 == 0x68 ? 1 : -1];
 typedef char kf_actor_motion_result_6a_offset[(u32)&((KfActor *)0)->unknown_6a == 0x6a ? 1 : -1];
 typedef char kf_actor_motion_result_6c_offset[(u32)&((KfActor *)0)->unknown_6c == 0x6c ? 1 : -1];
-typedef char kf_actor_unknown_70_offset[(u32)&((KfActor *)0)->unknown_70 == 0x70 ? 1 : -1];
+typedef char kf_actor_state_70_offset[(u32)&((KfActor *)0)->state_70 == 0x70 ? 1 : -1];
+typedef char kf_actor_state_71_offset[(u32)&((KfActor *)0)->state_70.bytes.high == 0x71 ? 1 : -1];
+typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed_state == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_unsigned_offset[(u32)&((KfActor *)0)->tail_72.unsigned_state == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_script_index_offset[(u32)&((KfActor *)0)->tail_72.script.word_index == 0x72 ? 1 : -1];
+typedef char kf_actor_tail_72_script_word_74_offset[(u32)&((KfActor *)0)->tail_72.script.unknown_74 == 0x74 ? 1 : -1];
+typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
+typedef char kf_actor_unknown_7a_offset[(u32)&((KfActor *)0)->unknown_7a == 0x7a ? 1 : -1];
 
 /* The startup clear bounds this runtime; the two trailer writes and actor
  * array are fixed by actor_pool_clear. */

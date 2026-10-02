@@ -141,6 +141,7 @@ GAME.EXE	0x80018418	0x7c18	0xb8	0xb8	1	function	mips-frame-carve			manual:cd_arc
 GAME.EXE	0x800184d0	0x7cd0	0xf0	0xf0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800185c0	0x7dc0	0x13c	0x13c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800186fc	0x7efc	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80018764	0x7f64	0x8	0x8	1	function	manual-retail-disasm			asm;adjacent-code	complete jr ra/nop stub between cd_close_events and menu controller; no incoming xrefs
 GAME.EXE	0x8001876c	0x7f6c	0x284	0x284	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800189f0	0x81f0	0xd8	0xd8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80018ac8	0x82c8	0x240	0x240	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -433,6 +434,7 @@ GAME.EXE	0x80038e38	0x28638	0xc4	0xc4	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x80038efc	0x286fc	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80038f20	0x28720	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80038ff0	0x287f0	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80039048	0x28848	0x38	0x38	1	function	manual-retail-disasm			retail:0x80039048..0x8003907f;frame;jal;return-delay	actor-index wrapper over 200 actor records
 GAME.EXE	0x80039080	0x28880	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800390d0	0x288d0	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80039108	0x28908	0x4c0	0x4c0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -511,6 +513,8 @@ GAME.EXE	0x80045d1c	0x3551c	0xfc	0xfc	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x80045e18	0x35618	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80045e3c	0x3563c	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80045e5c	0x3565c	0xb4	0xb4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80045f10	0x35710	0x8	0x8	1	function	manual-retail-disasm			asm;adjacent-code	first complete jr ra/nop stub after 0x45e5c return; no incoming xrefs
+GAME.EXE	0x80045f18	0x35718	0x8	0x8	1	function	manual-retail-disasm			asm;adjacent-code	second complete jr ra/nop stub before 0x45f20 entry; no incoming xrefs
 GAME.EXE	0x80045f20	0x35720	0xb4	0xb4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80045fd4	0x357d4	0xcc	0xcc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800460a0	0x358a0	0xa4	0xa4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

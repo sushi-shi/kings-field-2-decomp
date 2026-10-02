@@ -14,3 +14,9 @@ void actor_prepare_and_initialize(KfActor *actor)
         actor->unknown_03 = 0;
     }
 }
+
+ADDRESS(0x80039048, 0x38)
+void func_80039048(u16 actor_index)
+{
+    actor_prepare_and_initialize(&actor_state.actors[actor_index]);
+}

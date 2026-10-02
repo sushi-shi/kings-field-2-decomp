@@ -9,7 +9,6 @@ void tmd_prepare_primitive_indices(KfTmdHeader *tmd)
 {
     KfTmdObject *object;
     u8 *packet;
-    u8 *body;
     KfTmdPrimitive *primitive;
     u32 objects_left;
     u32 primitives_left;
@@ -21,10 +20,9 @@ void tmd_prepare_primitive_indices(KfTmdHeader *tmd)
         primitives_left = object->primitive_count;
         packet = (u8 *)tmd + (object->primitive_offset + KF_TMD_HEADER_BYTES);
         while (--primitives_left != (u32)-1) {
-            body = TMD_PACKET_BODY(packet);
+            primitive = (KfTmdPrimitive *)TMD_PACKET_BODY(packet);
             header.word = *(u32 *)packet;
-            packet = body + header.bytes.input_length * KF_TMD_WORD_BYTES;
-            primitive = (KfTmdPrimitive *)body;
+            packet = (u8 *)primitive + header.bytes.input_length * KF_TMD_WORD_BYTES;
             switch (tmd_packet_kind(header.word)) {
             case KF_TMD_MODE_F3: {
                 primitive->f3.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;

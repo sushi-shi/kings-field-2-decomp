@@ -3140,6 +3140,14 @@ handler addends shift. All 128 pointer rows still have the retail target
 equivalence classes in order, and all 470 text relocation type/symbol rows
 remain aligned. The dispatcher is WIP.
 
+A fresh off-tree profile control on the current dispatcher source gives
+**95.183700%** strict text with the selected GCC 2.5.7 O2 `-mcpu=r2000`
+probe and **77.219574%** with GCC 2.6.0 O2; the corresponding 516-byte
+switch-table scores are **31.614786%** and **28.307392%**. The compiler
+substitution does not resolve the shared-tail layout, so the selected
+unit profile remains unchanged. These are direct isolated object results,
+not a claim about the historical compiler.
+
 The complete 128-row kind table has 64 distinct target classes. In sorted
 physical order, all 62 interior regions between nonzero table targets have
 the same direct-call and conditional-branch counts in retail and the current
@@ -3151,6 +3159,14 @@ tail in the candidate, kind 46 shares a collision-cache load, and kind 20
 joins an argument-setup tail. The region audit separates these physical
 placements from field mismatches such as kind 11/54; equal call counts do
 not establish exact CFG or instruction scheduling.
+
+The first kind-13/32 tail divergence is concrete: after the three scale
+halfword stores at record `+0x2c/+0x2e/+0x30`, retail increments phase at
+`+0x7` before its jump (`addiu` then `sb` in the jump delay slot), while
+the selected probe places its third scale store in that delay slot and
+branches to a shared phase-update tail. Both paths retain the same source
+operations. The aligned `DIFF_REPLACE` at body `+0x2e0` is therefore a
+tail-placement artifact, not evidence for a different field width.
 
 The retail dispatcher reserves 224 stack bytes; the current candidate
 reserves 184. Moving the existing ballistic `projected` VECTOR declaration

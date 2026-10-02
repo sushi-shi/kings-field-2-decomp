@@ -103,3 +103,43 @@ position; a focused rebuild and direct strict objdiff improved `0x8001fc94`
 from 98.44964% to 99.70803%. The only remaining difference is the order of
 `s6 = 0xff` and `s3 = 0` before the lower-panel row loop. No source-backed
 reason for that order has been established, so the function remains WIP.
+
+## Fresh 26-claim item transaction graph (2026-10-02)
+
+Fresh narrow safe targets and isolated current-source strict comparisons cover
+the menu's item selection, row generation, equipment choice, shop stock and
+sale, item-code translation, and model allocation path. Each of the 19 unit
+carves admitted its curated relocations with **zero withheld**. These are
+call/data-linked claims: the controllers call the row builders and choice
+service, translate item codes, load and release the preview model, then
+update the selected inventory or equipment state. The outcome for **each**
+claim is:
+
+| GAME claim(s) | Final direct strict verdict |
+| --- | --- |
+| `0x80018ac8` item selection | Exact, 100% |
+| `0x80018d08`, `0x80018dec`, `0x80018f8c` glyph/item rows | Each exact, 100%; 4,080-byte DATA exact |
+| `0x80019240`, `0x800192ac`, `0x800192dc` player clamps | Each exact, 100% |
+| `0x80019834`, `0x800199d0` selection/magic rows | Each exact, 100% |
+| `0x80019ac4` equipment list | Exact, 100%; 200-byte DATA exact |
+| `0x80019ce4` equipment glyph rows | Exact, 100% |
+| `0x80019ed4` equipment category transaction | Exact, 100%; 76-byte switch RODATA exact |
+| `0x8001a2f4` magic list | Exact, 100%; 8-byte DATA exact |
+| `0x8001a4f0` item/magic controller | **WIP, 99.74359%** over 780 bytes |
+| `0x8001a898` item equipment controller | Exact, 100% |
+| `0x8001d030`, `0x8001d340`, `0x8001d3b4` primary purchase, code, and sale | Each exact, 100%; 1,440-byte code DATA exact |
+| `0x8001d654`, `0x8001d6a8` secondary code/amount | Each exact, 100%; 1,200-byte code DATA exact |
+| `0x8001d8d0`, `0x8001dc64` trade and list choice | Each exact, 100% |
+| `0x8001ddd0`, `0x8001e0a8` stock purchase controllers | Each exact, 100% |
+| `0x800221e8`, `0x800222bc` model load/release | Each exact, 100%; 28-byte DATA exact |
+
+The sole WIP retains its raw-supported 74-entry initializer, 22/22 CFG
+blocks, 12/12 branches, and 28/28 ordered text relocation sites and target
+symbols. Its first strict divergence is at `+0x38`: retail assigns the loop
+index to `s0` and the `0xff`/`-1` constants to `a3`/`t0`, while the probe uses
+`a3` and `t0`/`t1`. The loop stores the same byte and word values at the same
+offsets, with the same bound and calls. There is no independent source fact
+for steering those registers, so no C change was retained. This fresh strict
+pass also resolves the older note's uncertainty about `0x8001d654`: it is
+strict exact under the current complete two-claim module target. No
+repository tests, lint, full build, or linked executable build was run.

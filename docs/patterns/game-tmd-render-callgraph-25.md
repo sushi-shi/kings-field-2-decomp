@@ -540,3 +540,9 @@ component averages and packet writes, but the compiler scheduled different
 word and byte operations around both copy paths. Isolated strict text fell
 to **55.074850%** from **57.638040%**. The retained two-byte U/V view has
 direct support from retail's ordered `lbu` reads at `sp+48..61`.
+
+The unchanged retained subdivider was also compiled off-tree with the
+available GCC 2.6.0 O2 profile. Isolated strict text fell to **53.099390%**
+from the pinned GCC 2.5.7 result of **57.638040%**. This alternate compiler
+does not explain the packet-header or stack-lifetime residue; no unit profile
+change was retained.

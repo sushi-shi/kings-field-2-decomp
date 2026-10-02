@@ -6,6 +6,9 @@ symbols at 100%**. The complete `.text` bytes also match in every unit, as do
 the counts and ordered targets of the 306 text relocations. These are object
 results, not a linked-EXE equality claim. The target BSS sections below are
 curated delink models, not recovered original symbols or TU boundaries.
+The adjacent `__main`/`__SN_ENTRY_POINT` pair and `_ExpAllocArea` are
+archive-signature vendored controls in `functions_vendored.tsv`, outside the
+16 game-function denominator.
 
 | Unit | Function verdict | Initialized storage | Target BSS / candidate |
 | --- | --- | --- | --- |

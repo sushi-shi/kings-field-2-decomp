@@ -386,3 +386,35 @@ two calls, two `bss_801c7540` HI16/LO16 pairs, and five internal jumps. Neither
 pattern WIP has a new field, width, call, referent, or CFG discrepancy that
 would justify a C change. No source, metadata, or compiler-profile edit was
 retained from this graph pass.
+
+### Action-224 transition call: four-byte scheduling residue
+
+A fresh narrow safe delink and current-source isolated strict comparison
+reconfirms `0x80036ed4` at **99.63745%** text, **43.396225%** switch RODATA,
+and exact 32-byte DATA. The first text-length divergence is in action 224's
+eight-argument `func_80016260` call. Retail loads the signed final byte with
+`lb v0,56(s1)` at function `+0x1218`, executes a `nop` at `+0x121c`, calls at
+`+0x1220`, and writes that byte to O32 stack slot `28(sp)` in the call delay
+slot. The current probe uses the same `lb`, callee, argument value, and delay
+slot store, but puts `jal` at `+0x121c` without the intervening nop. This one
+instruction accounts for the four-byte downstream pointer-addend displacement;
+the complete 239-word switch table still preserves all 36 target classes.
+Fresh target/probe relocation counts are 252/252 in `.rel.text` and 238/238
+in `.rel.rodata`.
+The preceding raw argument loads are five `lbu` values from object offsets
+`+0x3a..+0x3e` into `$a0..$a3` and stack `16(sp)`, followed by three `lb`
+values from `+0x40..+0x42` into stack `20/24/28(sp)`. That matches the
+source's five selector bytes and three signed offsets in order.
+There is no independently supported alternate argument width, call, or
+source operation, so the current C remains unchanged.
+
+The adjacent current-source control rechecked **23 call/data-linked claims**
+in ten narrow safe units: 17 are strict exact, and the six unchanged WIPs are
+the two cell-pattern writers (`0x80034f90` 97.86822%, `0x80035194`
+89.59545%), object proximity/spawn (`0x80036190` 98.56115%, `0x80036464`
+95.32258%), frame/CD service (`0x80036e24` 98.86364%), and action dispatch
+(`0x80036ed4` 99.63745%). The exact controls are the six reset helpers,
+initializer, collision query, two adjacent object helpers, four scatter
+helpers, two vertex helpers, and motion helper. Their typed calls, data
+sections, and previously bounded CFG remain intact; this pass retained no C
+or relocation-model change.

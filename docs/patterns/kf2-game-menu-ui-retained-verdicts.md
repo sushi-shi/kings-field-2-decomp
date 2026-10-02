@@ -756,3 +756,130 @@ shifted menu index. The current C contains those inputs and bounds; a prior
 source operand reorder made the focused object worse without a separate
 source fact. No frame padding, forced register carrier, C edit, or new exact
 claim follows from this screen.
+
+### Current menu, notification, and display graph (2026-10-02)
+
+An isolated manifest-profile strict comparison of 17 current GAME units
+rechecks 28 connected menu, card, notification, and frame claims. Fifteen
+are already exact and thirteen remain WIP; none is a new score closure. The
+menu/card controllers call the frame-begin/present, window, input, and card
+helpers, while notification drawing and enqueue are exact UI controls.
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x8001876c` | 96.36646% | WIP location controller; 34/34 CFG, 14/14 branches, sentinel saved-register exchange and return-result reload. An older exact claim is stale. |
+| `0x800189f0` | 100% | Exact location-number sibling. |
+| `0x8001930c` | 98.26363% | WIP map preview; 47/47 CFG, 27/27 branches, 69 referents; retail/probe frames are 64/56 bytes. |
+| `0x8001a4f0` | 99.74359% | WIP item/magic controller; 22/22 CFG, 12/12 branches, initial 74-row index-register choice. Released to the item-transaction lane after this read-only control. |
+| `0x8001b554` | 98.478264% | WIP card browser; 33/33 CFG, 16/16 branches, probe result copied to `a0` in retail but tested in `v0` by the probe. |
+| `0x8001bf68` | 97.12389% | WIP card format flow; probe-status and dialog-constant saved-register allocation differ; 76 ordered referents agree. |
+| `0x8001c12c` | 100% | Exact card-format sibling. |
+| `0x8001f8b8` | 99.14365% | WIP preview choice; 42/42 CFG, 18/18 branches, saved-argument/order residue. |
+| `0x8001fb8c` | 99.78788% | WIP window painter; 10/10 CFG, 6/6 branches, retail/probe frames 48/40 bytes. |
+| `0x8001fc94` | 99.70803% | WIP list renderer; 55/55 CFG, 33/33 branches, two independent panel-setup instructions reverse order. |
+| `0x80020748` | 100% | Exact two-option draw control. |
+| `0x8002083c` | 99.65882% | WIP two-option preview; 4/4 CFG, 2/2 branches; 224/160-byte frame gap has no proved extra object. |
+| `0x80020990` | 100% | Exact two-option sibling. |
+| `0x800210ac` | 99.66904% | WIP glyph painter; 8/8 CFG, 4/4 branches, retail/probe frames 56/48 bytes. |
+| `0x80021a60` | 100% | Exact frame-begin leaf. |
+| `0x80021a68` | 100% | Exact menu frame begin. |
+| `0x80021be0` | 100% | Exact menu frame present. |
+| `0x80021c8c` | 99.956985% | WIP display-state entry; 7/7 CFG, 3/3 branches, retail/probe frames 32/24 bytes. |
+| `0x80021e00` | 100% | Exact display-state exit. |
+| `0x80022058` | 97.39% | WIP numeric formatter; 36/36 CFG, 19/19 branches; retail's eight-byte leaf frame shifts the fifth stack-argument load. |
+| `0x80032fec` | 100% | Exact notification quad draw. |
+| `0x80033140` | 100% | Exact notification draw sibling. |
+| `0x800331d0` | 100% | Exact notification enqueue. |
+| `0x80033274` | 100% | Exact notification digit setter. |
+| `0x80033284` | 100% | Exact notification helper. |
+| `0x8003494c` | 100% | Exact TIM upload. |
+| `0x800349bc` | 96.31408% | WIP fade transition; 14/14 CFG, 8/8 branches, retail/probe frames 72/64 bytes and pad-state spill difference. |
+| `0x80034e10` | 100% | Exact transition sibling. |
+
+Fresh focused builds of all thirteen WIP units reproduce twelve equal
+retail/probe CFG and branch counts; the card-format unit's overlapping local
+jump prevents a complete focused CFG extraction, while its adjacent sibling
+remains `SAME`. Raw card-browser
+disassembly confirms the card probe, input waits, status checks, and
+frame-begin/present calls; the first difference is the location of the probe
+result across the two guards. Raw numeric-format code loads its fifth O32
+argument at `sp+24` after an eight-byte frame, whereas the probe loads it at
+`sp+16`; its control successors still agree. No missing call, wrong field or
+width, or distinct referent has been established for these WIPs. No C,
+metadata, compiler-profile, or exact-claim change was retained.
+
+The card-format CFG warning is a trial-placement boundary, not a newly
+decoded branch. Retail `0x8001bf68` has a `0x1c4`-byte body and calls its
+exact next sibling `0x8001c12c` at body `+0x84`. The candidate first body is
+eight bytes longer (`0x1cc`); its same `jal` carries an `R_MIPS_26 .text`
+relocation to candidate sibling `+0x1cc`. The focused CFG tool treats that
+adjacent call target as overlapping the trial function placement and declines
+the comparison. Raw retail and candidate both branch to the same case body
+at `+0x84`, and both retain the format, write, dialog, and input-release
+calls. The eight-byte body difference begins with the probe-status/constant
+register allocation and repeated immediate loads, without a supported
+missing source path. KF1's related save-system format routine confirms the
+status/format protocol, but it is not an identical KF2 UI controller to copy.
+
+A raw stack audit of the map preview `0x8001930c` also bounds its 64/56-byte
+frame gap. Retail uses `sp+16` and `sp+20` only for outgoing call arguments,
+then `sp+24..56` for saved `s0` through `s7` and `ra`; there is no decoded
+local spill or address formed into an additional stack object. The extra
+eight bytes follow the retail use of `s7` and frame alignment, not evidence
+for an omitted C structure. The typed TIM upload, two frame draws, input
+release, and image free remain intact.
+
+The numeric formatter's raw eight-byte leaf frame is similarly unassigned:
+its only decoded stack reference loads the fifth incoming argument from
+`sp+24`; no instruction stores to the frame or takes a local address. The
+probe's frameless `sp+16` load is the same O32 argument. Adding a dummy local
+would model no observed value.
+
+### Card save/load continuation (2026-10-02)
+
+The card browser's proven directory, label, payload, and event calls define a
+second 27-claim GAME cohort. Fresh isolated manifest-profile strict comparisons
+cover twelve units; 22 functions were already exact and five remain WIP.
+These controls do not create new exact score credit.
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x8001aa9c` | 100% | Exact card-choice controller. |
+| `0x8001ac80` | 100% | Exact card-load browser. |
+| `0x8001af30` | 100% | Exact card-row helper. |
+| `0x8001b030` | 100% | Exact card-panel entry. |
+| `0x8001b14c` | 100% | Exact card-panel sibling. |
+| `0x8001b2dc` | 100% | Exact card-panel tail. |
+| `0x8001b834` | 100% | Exact card-slot browser. |
+| `0x8001ba80` | 100% | Exact card-label helper. |
+| `0x8001bb94` | 100% | Exact second card-label helper. |
+| `0x8001bcfc` | 100% | Exact card-save browser. |
+| `0x80022438` | 100% | Exact input-release waiter. |
+| `0x80022468` | 100% | Exact card-event initializer. |
+| `0x80022550` | 100% | Exact card-event shutdown. |
+| `0x800225b0` | 100% | Exact card start. |
+| `0x800225d8` | 100% | Exact card stop. |
+| `0x80022600` | 100% | Exact temporary-file probe. |
+| `0x800226ec` | 93.60504% | WIP directory enumerator; 13/13 CFG, 7/7 branches, signed seed-byte and initial `memset` scheduling differ. |
+| `0x800228c8` | 85.15625% | WIP title reader; 24/24 CFG, 13/13 branches; retail uses `lb`/`sb` then `lhu` for both two-byte glyph loops, while probe chooses `lbu`. |
+| `0x80022b48` | 100% | Exact card-format SDK wrapper. |
+| `0x80022b74` | 93.666664% | WIP payload reader; 9/9 CFG, 4/4 branches; 80/72-byte retail/probe frame difference. |
+| `0x80022ca0` | 95.896774% | WIP card writer; 24/24 CFG, 14/14 branches; slot-seed and zero-fill setup order differs. |
+| `0x80023178` | 93.52941% | WIP title-digit writer; 19/19 CFG, 10/10 branches; quotient and header pointer register lifetimes differ. |
+| `0x80023288` | 100% | Exact payload byte-sum control. |
+| `0x800232ac` | 100% | Exact card-event wait control. |
+| `0x8002332c` | 100% | Exact card-event clear control. |
+| `0x80048d24` | 100% | Exact payload serializer. |
+| `0x800492dc` | 100% | Exact payload reader. |
+
+Focused quick builds confirm the five WIPs' equal CFG and branch counts and
+their three exact directory/wait siblings. Raw `0x800228c8` loads both glyph
+bytes with signed `lb`, stores them as bytes to the local halfword, then
+reloads with `lhu` in each loop. The current typed header, two loop bounds,
+sentinel `0x4081`, and arithmetic agree. Earlier signed-char lvalue and
+explicit byte-offset C trials compiled identically or regressed, so the
+opcode difference alone does not justify changing the shared header. Target
+and probe directory objects each have 137 text relocation rows; one pair of
+prefix-data address loads is scheduled on the opposite side of the two
+slot-seed loads, but the referent set is unchanged. No source, metadata, or
+exact-claim change was retained.

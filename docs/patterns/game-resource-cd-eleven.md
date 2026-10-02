@@ -466,3 +466,75 @@ with the candidate fixed literal. The previously bounded runtime
 section. No source global, relocation owner, or profile change follows
 from this recheck. Only focused quick builds and isolated strict objdiff
 were run; no repository tests or full build were run.
+
+## Fresh 25-claim archive-to-TMD consumer chain
+
+The confirmed `resource_tmd_queue_read` edge calls
+`cd_archive_entry_size`, the block allocator, and
+`cd_archive_queue_read`, passing `resource_tmd_read_complete` as its
+callback. The archive queue itself calls the entry-extent helper and
+request enqueuer. A new narrow safe/direct strict pass followed these
+edges through 15 CD archive helpers, all eight `resource_runtime`
+claims, the resource dispatcher, and the TMD archive registry loader.
+**Twenty-one claims are strict exact**: the 15 CD helpers
+`cd_archive_queue_read`, `cd_archive_queue_read_kind_20`,
+`cd_archive_queue_stream_read`, `cd_archive_read_chunked`,
+`cd_archive_entry_size`, `cd_report_error`, `cd_read_sectors`,
+`cd_extent_load`, `cd_extent_read_into`, `cd_archive_read`,
+`cd_file_load`, `cd_file_load_into`, `cd_archive_open`,
+`cd_initialize`, and `cd_close_events`; runtime's
+`resource_registry_get`, `resource_tmd_read_complete`,
+`map_cell_layer_mask`, `resource_vab_update_range`, and
+`resource_tmd_update_range`; and `asset_registry_load_tmd_archive`.
+The 15 CD safe targets admitted 144 relocations with none withheld;
+the resource dispatcher's 32-byte identity DATA is exact.
+
+| WIP claim | Fresh strict text | Bounded verdict |
+| --- | ---: | --- |
+| `map_cell_layer_mask_radius` `0x800320b0` | 74.061226% | 10/10 CFG blocks and 6/6 branches; the retained scalar-width correction is supported, with row/column induction and coordinate scheduling still different. |
+| `map_cell_visible` `0x80032174` | 93.6% | 5/5 blocks and 3/3 branches; view-cell fields agree, return-value register choice differs. |
+| `resource_tmd_queue_read` `0x800321d8` | 98.4359% | 3/3 blocks and 1/1 branch; archive, allocator, block metadata, and callback referents agree. The arena base `0x8009b0a0` still lacks a proved defining object for retail's signed-low address form. |
+| Resource dispatcher `0x8003247c` | 92.18579% | 96/96 blocks and 54/54 branches. Retail/candidate text relocations are 82/84; the extra candidate HI16/LO16 pair rematerializes the same player camera base, not a new field or owner. |
+
+The standalone safe carve of `cd_archive_open` alone produced a misleading
+99.833336% comparison against the full CD candidate object: its local
+`.data`, `.rodata`, and `.text` relocation symbols lost module-relative
+addends. The current full-unit focused listing is SAME and direct strict
+module comparison is 100%. The fresh standalone target's text differs
+from the full module target only at its four context-dependent relocated
+words (`+0x54`, `+0xa8`, `+0xbc`, `+0xd4`), so it remains exact. No source
+edit or fabricated workspace owner follows from this pass.
+
+## Map-object transition and event consumer continuation
+
+The action-224 branch of `func_80036ed4` calls the eight-argument
+`func_80016260` transition request with five byte resource selectors and
+three signed byte offsets. Retail's final `lb` and O32 stack slot `28(sp)`
+agree with the current source call; the caller's lone extra `nop` before
+`jal` is documented in the indexed map-object action note. The event
+map-object spawn/controller pair separately consumes the same typed
+`map_object_state` pool and frame/CD services. A fresh narrow safe and
+current-source isolated strict pass over this connected **20-claim** graph
+found **11 exact and nine WIP**, with zero withheld curated relocation rows
+in all eight carved units:
+
+| Claim group | Fresh strict verdict |
+| --- | --- |
+| Five transition phase setters `0x800167bc..0x8001680c`; five exact `resource_runtime` helpers; event spawn `0x80046700` | Each exact, 100% |
+| Startup `0x80015d58`, `0x80015fd4` | WIP, 89.03145%, 89.710144%; six target-only workspace HI16/LO16 pairs still lack proved source owners |
+| Transition request `0x80016260`; step `0x80016820` | WIP, 98.790085%, 99.193474%; step retains three target-only workspace address pairs |
+| Runtime radius `0x800320b0`, visibility `0x80032174`, TMD queue `0x800321d8` | WIP, 74.061226%, 93.6%, 98.4359%; the queue's fixed arena literal remains unowned |
+| Resource dispatcher `0x8003247c`; event map-object controller `0x800475d8` | WIP, 92.18579%, 99.166664%; dispatcher camera-base rematerialization and controller zero-assignment delay-slot placement remain bounded |
+
+The transition step's 128-byte DATA and 28-byte RODATA, startup's 83-byte
+RODATA, and resource dispatcher's 32-byte DATA remain exact. The target-only
+workspace pairs are absent from the curated relocation inputs, rather than
+rows withheld by the safe delinker. No complete defining object or alternate
+caller argument has been proven, so this continuation retains no C or
+inventory change.
+For the transition request itself, the first raw/probe divergence is at
+function `+0x40` and `+0x48`: both load the two later byte arguments from
+O32 stack slots `88(sp)` and `92(sp)` with `lbu`, but retail assigns them to
+`s8`/`t5` and the probe to `t5`/`s8`. The selector tests, subsequent byte
+loads, and ordered referents agree. This does not justify changing the
+eight-argument signature or source field widths.

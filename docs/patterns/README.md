@@ -7,17 +7,32 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-terrain-shape-query-23.md](kf2-game-terrain-shape-query-23.md):
+  23 strict GAME terrain, shape, and line-query verdicts with 15 exact controls
+  and bounded switch/rasterizer residues.
+- [kf2-game-player-view-motion-25.md](kf2-game-player-view-motion-25.md):
+  25 fresh strict GAME player-view and motion verdicts; 20 exact controls and
+  five bounded WIPs.
 - [kf2-game-camera-transform-30.md](kf2-game-camera-transform-30.md): current
   strict exact controls across 30 GAME camera, world, and event transforms.
 - [kf2-game-audio-voice-vab-26.md](kf2-game-audio-voice-vab-26.md): current
   strict verdicts for 26 connected GAME audio, sound, and VAB functions;
   24 exact controls and two bounded WIPs.
+- [kf2-game-audio-state-storage-26.md](kf2-game-audio-state-storage-26.md):
+  26 fresh strict audio controls and complete runtime-state extent, with
+  bounded BSS/COMMON and four unowned workspace referents.
+- [kf2-game-cd-stream-storage-26.md](kf2-game-cd-stream-storage-26.md):
+  26 strict CD request/archive controls, exact initialized bytes, and the
+  bounded unresolved stream-work-buffer owner.
 - [kf2-game-actor-animation-phase-29.md](kf2-game-actor-animation-phase-29.md):
   strict 29-function actor animation, phase, motion, and group-position
   verdicts with blocking-phase caller evidence.
 - [kf2-game-event-save-restore-20.md](kf2-game-event-save-restore-20.md):
   strict per-function verdicts for 20 connected GAME event stream, state,
   collision, and save-caller functions.
+- [kf2-game-event-save-storage-audit.md](kf2-game-event-save-storage-audit.md):
+  21 fresh strict event/save verdicts, exact initialized command lists, and
+  bounded event-state and counter BSS/COMMON ownership.
 - [kf2-game-effect-constructor-family-28.md](kf2-game-effect-constructor-family-28.md):
   per-function strict verdicts for the GAME constructor, actor-group caller,
   and 26 exact pool, spawn, motion, and sound controls.
@@ -1259,3 +1274,12 @@ promotes a probe to a proven historical toolchain.
 - [GAME actor attack and target selection](kf2-game-actor-attack-target-25.md):
   25 fresh strict GAME verdicts across the scorer, selectors, lifecycle,
   damage chain, and exact home/preparation controls.
+- [GAME actor behavior and combat](kf2-game-actor-behavior-combat-24.md):
+  24 fresh strict GAME verdicts across animation, motion, vertical collision,
+  spatial sound, behavior dispatch, and exact sibling controls.
+- [GAME combat-to-effect current controls](kf2-game-combat-effect-current-30.md):
+  30 current strict GAME verdicts across the actor-group caller, constructor,
+  effect motion, pool, and spawn chain, with four bounded WIPs.
+- [GAME event-to-actor animation](kf2-game-event-actor-animation-26.md):
+  26 current strict GAME verdicts across event callback, frame, keyframe,
+  and sparse-animation paths, with five bounded WIPs.

@@ -342,3 +342,11 @@ identical. All 341 ordered text and 241 ordered RODATA relocation sites,
 referents, and masked addends remain equal. The only objdiff replacement is
 still the second retail `lhu` of target `+0x0a` versus a probe `nop`; other
 residues are argument differences in frame/stack slots and register choices.
+
+The apparent `vector3s_scale_shift12` call move in the focused diff for action
+1 is an alignment artifact of the local-stack offsets. Retail passes target
+`+0x14` with its first copied direction and then target `+0x18` with the
+second; the candidate makes the same calls in the same order. Its local
+copies occupy `sp+56`/`sp+64` instead of retail's `sp+48`/`sp+56`, so the
+listing aligns the first candidate call with the second retail call. This
+does not establish a call-order or referent error and warrants no source edit.

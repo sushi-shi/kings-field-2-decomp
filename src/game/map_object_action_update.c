@@ -841,8 +841,8 @@ void func_80036ed4(void)
                     linked->object_id = 0x4c;
                     linked->action = KF_MAP_OBJECT_ACTION_NONE;
                     linked->position.vy += 300;
-                    linked->tail.fields.unknown_38 = 0;
                     linked->unknown_00 = object->unknown_00;
+                    linked->tail.fields.unknown_38 = 0;
                     scale = object->tail.fields.unknown_38 << 5;
                     linked->scale.vz = scale;
                     linked->scale.vy = scale;

@@ -1056,6 +1056,15 @@ unchanged source with GCC 2.5.7 `-O2` and GCC 2.6.0 `-O1` still emit only one
 level change closes the 14-retail/15-candidate-block CFG difference. The
 function remains WIP; no source edit is supported by these probes.
 
+An additional unchanged-source, off-tree profile control shows call folding
+when optimization rises from `-O0` to `-O1`: GCC 2.5.7 and 2.6.0 at `-O0`
+emit four calls; their strict text scores are only 9.68% and 7.56%. GCC
+2.5.7 at `-O1`, `-O2`
+with `-fno-cse-skip-blocks`, and `-O2` with `-fno-schedule-insns` each emit
+one call (67.26667%, 70.73333%, and 67.26667% strict). Thus neither those
+two individual `-O2` controls nor switching wholesale to `-O0` recovers the
+retail code; the responsible optimizer behavior remains unattributed.
+
 For masked effect type 0, retail reaches the common return with `$v0=1`;
 types 5..7 reach it with `$v0=4`. Those values are leftover switch-comparison
 immediates, not explicit return assignments. No proved caller reaches those

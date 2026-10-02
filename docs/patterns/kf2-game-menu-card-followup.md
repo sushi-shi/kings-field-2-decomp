@@ -494,3 +494,24 @@ The four array clears and loop bound are the same; this is a register-lifetime
 residue with no supported type, width, or control-flow correction. No C
 source was changed or banked. Verification used focused quick builds and
 isolated strict objdiff only; no tests, lint, or full build ran.
+
+## Menu row and rendering family: 17-function current-source screen
+
+A fresh isolated strict pass over location, glyph, equipment, magic, status,
+attribute, pair-row, list-render, and number-format units confirms **14
+exact functions and three WIPs**. The exact controls are `func_800189f0`,
+`func_80018d08`, `func_80018dec`, `func_80018f8c`, `func_80019834`,
+`func_800199d0`, `func_80019ac4`, `func_80019ce4`, `func_80019ed4`,
+`func_8001a2f4`, `func_8001e94c`, `func_8001f008`, `func_8001f798`,
+and `menu_draw_number`. Their owned glyph/item tables, equipment labels,
+status headers, and 28-byte location switch table remain strict exact.
+
+| GAME WIP | Strict text | Current bounded verdict |
+| --- | ---: | --- |
+| `func_8001876c` | 96.36646% | Focused 90.8%; 34/34 known CFG blocks and 14/14 branches, with the same four return-frontier inputs. Retail assigns the `-1` and `-99` sentinels to the opposite saved registers and reloads the result on exit; both versions have the same unresolved indirect jump. The exact `func_800189f0` sibling is preserved. |
+| `func_8001fc94` | 99.70803% | Focused 99.9%; 55/55 CFG blocks and 33/33 branches. Retail zeroes the lower-row Y offset after loading its color constant; the candidate reverses those independent instructions. The remaining listing and 201 ordered relocation sites agree. |
+| `menu_format_number` `0x80022058` | 97.39% | The earlier direct audit found 36/36 CFG blocks and all 7 ordered referents; remaining frame placement lacks a supported source-local explanation. |
+
+No source edit or new exact claim resulted. These scores came from focused
+quick builds and isolated strict objdiff; no repository tests, lint, or full
+build ran.

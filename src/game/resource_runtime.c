@@ -134,7 +134,8 @@ void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
     s32 end = count + entry;
 
     while (entry < end) {
-        KfAudioVabStreamSlot *state = audio_state.vab_slots[vab_slot].stream_slot;
+        KfAudioVabSlot *slot = &audio_state.vab_slots[vab_slot];
+        KfAudioVabStreamSlot *state = slot->stream_slot;
 
         if (*flags++) {
             if (state == 0) {

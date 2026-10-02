@@ -100,8 +100,9 @@ After branch-target addends, the first raw word gap is case 26 at body
 `+0x304`: retail writes the final scale halfword, jumps to the return path,
 and repeats a zero byte store in the jump delay slot. The probe places that
 scale store in the delay slot and has only the earlier zero byte store.
-Both paths leave the same record fields. Later, the probe schedules case
-33/53's `updates_remaining` and `cooldown` stores between the first two
-`rand` calls, while retail places them between the second and third calls.
-No source fact yet explains these instruction-schedule differences, so the
-typed field operations remain unchanged.
+Both paths leave the same record fields. In cases 33/53, retail stores
+`updates_remaining` and `cooldown` at `0x800408c8..0x800408d4`, after the
+third `rand` call. The current source and focused candidate preserve that
+order. Moving both stores before the third call in an off-tree trial moved
+them between the second and third calls, away from retail, so it was
+discarded.

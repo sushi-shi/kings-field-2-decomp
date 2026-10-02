@@ -1957,3 +1957,29 @@ differences from non-exact text layout; the 52-byte dispatch table is exact.
 No player source or shared header was changed in this screen. Focused checks
 were used for the non-exact functions and the final scores above come from
 isolated strict objdiff; no repository tests, lint, or broad build ran.
+
+### Equipment argument-home control (off-tree)
+
+Retail `func_80025a18` homes `a0` before the frame, reloads `effect_id`
+from its home, anchors `s0` to that slot, and reads the optional position
+pointer at `4(s0)` in cases 39, 49, and 50. Its callers supply `&position`
+for exactly those three magic IDs. The current `va_list` source reaches the
+same caller argument but anchors the cursor to the second-argument home and
+reads at `0(s0)`.
+
+An off-tree O32-specific control used `s32 *arguments = &effect_id` and
+`(const VECTOR *)arguments[1]` in those three cases. It reproduced the
+retail first-argument reload, `s0` anchor, and `4(s0)` load. Focused listing
+similarity rose from 76.7% to 84.5%; isolated strict text for the function
+rose from 95.85052% to 96.04124%, and unit RODATA from 39.876034% to
+90.70248%. All 15 sibling functions remained strict 100%; target and both
+candidates retained 492 text and 60 RODATA relocation entries. The frame
+remained 104 versus retail 112 bytes, with 99/97 CFG blocks and 31/31
+branches, and the shared selector call still followed case 11 in the
+candidate rather than preceding it as in retail.
+
+Indexing past a single formal parameter is undefined in standard C. The
+exact KF1 effect constructor uses a similar stack-slot walker, but that
+five-argument stack-slot case does not establish the original spelling of
+this register-home dispatcher. The control is therefore not retained in
+source; the `va_list` form continues to express the proven call contract.

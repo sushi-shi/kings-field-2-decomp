@@ -291,3 +291,57 @@ An off-tree full-width midpoint-index probe kept the packet halfword truncation
 explicit and used the same direct vertex addresses, but fell to **54.446625%**
 strict. Retail's word load of `vertex_count` still does not establish the
 original index-local width, so the 16-bit packet-index locals remain.
+
+### Reused packet-index scratch control
+
+A fresh isolated strict comparison of GAME `0x8002ff5c` confirms the retained
+**55.263805%** text result; a focused quick build now reports **19.0%**
+listing. Retail and candidate still have 11/11 known CFG blocks, 6/6
+branches, all 14 ordered `resource_copy_words` calls, and 16 ordered
+relocations. The retail frame is 1,248 bytes against the candidate's 1,240.
+
+The raw four-byte local at `sp+1088..1091` is reused across FT4 and FT3
+child packets. For the first FT4 child, retail stores generated halfword
+indices to `sp+1088` and `sp+1090`, loads the combined word, and writes it
+to packet offset +24. It then replaces only the low halfword, loads the
+combined word again, and writes offset +28, preserving the prior high
+halfword. Later children store halfword indices to the same slots and read
+their two bytes separately for packet fields. This proves one scratch object's
+value flow; it does not prove the source spelling that kept it in memory.
+
+An off-tree typed four-byte union reused for both the word stores and every
+later byte-index write preserved the packet values, but GCC folded the view
+into register operations. Its frame shrank to 1,224 bytes and strict text
+fell to **46.90061%**. The trial was discarded. No padding, volatile carrier,
+or forced alias was introduced into tracked source. The current typed packet
+fields and midpoint workspace remain unchanged; no new exact claim follows.
+
+### Textured packet depth-guard recheck
+
+The current `game.tmd_pipeline` source supersedes the older 44/42-block
+snapshot above. A fresh isolated strict comparison puts GAME `0x8002ddb4`
+at **97.434494%** and `0x8002e4dc` at **97.38307%**; both now have 44/44
+known CFG blocks and 28/28 branches. The adjacent eight exact functions
+remain 100%, and `0x8002ebe0` remains 95.27945% with 26/25 blocks and
+17/16 branches. The first textured walker still maps its FT3 and GT3
+positive-depth paths differently from retail: retail's two `blez` exits
+precede jumps to one shared ordering-table bound check, while the probe
+folds one exit and emits a local bound check in the other arm.
+
+Two off-tree source-equivalent controls on `0x8002ddb4` were rejected.
+Putting all four successful packet modes through one typed primitive-pointer
+tail lowered strict text to **96.8428%**. Swapping the FT3 and GT3 bound-guard
+spellings raised strict text to **97.69651%** and kept 44/44 blocks,
+28/28 branches, and all eight exact siblings, but it merely moved the
+missing `blez` from GT3 to FT3 and kept a duplicate local bound check.
+The more uniform FT3 conditional form alone scored **97.34716%**. None
+reproduced the retail pair of local exits or proved an original source
+asymmetry, so `tmd_pipeline.c` is unchanged.
+
+An independent current-source audit of GAME `0x8002f808` in `render_map.c`
+reported **92.038376%** isolated strict, 51/51 CFG blocks, and 35/35
+branches. Retail FT4 at `0x8002f930` maps `s4/s3/s2/s5` to the four
+vertices and its `dy01/dy13/dy32/dy20/dy12` and
+`dx01/dx13/dx32/dx20/dx12` difference registers follow the present
+short-circuit check order. That check has no supported source correction;
+`render_map.c` was not edited in this lane.

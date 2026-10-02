@@ -55,3 +55,10 @@ same baseline listing. Both were discarded. Narrowing the fifth parameter
 to `u8` is unsupported: retail compares its full 32-bit stack value with
 one after storing its low byte in the item. No stack carrier or unrelated
 local was added to force deferred argument loads.
+
+An isolated unchanged-source compiler check did not recover those late
+loads. GCC 2.5.7 `-O2 -fno-cse-skip-blocks` and a K&R-style seven-argument
+definition emitted the same 65.85185% body; `-fno-schedule-insns` and `-O1`
+reached only 66.03704% and broke the exact update sibling. GCC 2.6.0 `-O2`
+fell to 33.203705% and also broke that sibling. The configured profile and
+typed source remain in place.

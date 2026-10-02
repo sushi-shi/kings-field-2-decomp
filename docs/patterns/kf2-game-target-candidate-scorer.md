@@ -716,3 +716,16 @@ field widths; this pass found no new semantic correction. The initialized
 claims compare exactly. The player-select-magic unit's 100-byte table has a
 four-byte body-layout addend difference, not a changed table identity. No
 source or data-owner claim was altered from this control batch.
+
+The group-effect switch table was independently checked as 123 relocatable
+pointer words on each side. Both have 19 distinct in-body target classes, and
+all 123 indices select the same class in retail and candidate order. Only one
+raw addend word is byte-identical because the case bodies occupy different
+offsets. This is a body-layout gap, not evidence to change any table row.
+
+For the separate actor-state allocation question, an off-tree
+`-fno-common` compile of exact `actor_pool_clear` changes its 37,836-byte
+tentative definition into 37,836 bytes of initialized `.data`, whereas the
+retail target owns 37,836 bytes of `.bss`. The default candidate is a
+37,840-byte COMMON symbol. Thus this flag does not establish the missing
+BSS source mechanism; no profile or owner claim was changed.

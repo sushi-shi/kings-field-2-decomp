@@ -1175,3 +1175,9 @@ promotes a probe to a proven historical toolchain.
 - [GAME player reaction and actor collision controls](kf2-game-player-actor-collision-24.md):
   fresh strict verdicts for 24 connected functions, with 21 exact and three
   bounded player/actor collision WIPs.
+- [GAME actor motion and animation controls](kf2-game-actor-motion-21-verdict.md):
+  strict verdicts for 21 connected functions, with 15 exact and six bounded
+  actor motion, lifecycle, animation, group, and seek WIPs.
+- [GAME disjoint WIP follow-up](kf2-game-disjoint-wip-eighteen.md):
+  fresh strict verdicts for 18 functions across resource, collision, card,
+  render, and actor units, with 14 exact sibling controls.

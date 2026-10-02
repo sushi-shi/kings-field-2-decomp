@@ -60,10 +60,37 @@ tentative globals as COMMON for `game.main`, `audio_runtime`,
 `event_state`. The large `cd_memory` and `map_object_reset` source objects
 likewise contain explicit `.comm` directives; their full-module focused
 carves cannot use the current VA-list report directory because its name
-exceeds the filesystem component limit. `game.player_state_equipment` is a
-different extent gap: fresh target `.bss` is 122124 B versus 49152 B in the
-candidate. These BSS and COMMON claims need allocation/toolchain attribution,
-not invented initialized bytes.
+exceeds the filesystem component limit. A fresh narrow carve resolves the
+reported `game.player_state_equipment` extent gap into the same storage-class
+issue. Its retail `.bss` has three named rows in order: private
+`player_weapon_asset_buffer` 49,152 B at `+0`, exported
+`player_weapon_records` 1,224 B at `+0xc000`, and exported `bss_801c7540`
+71,748 B at `+0xc4c8`, totaling 122,124 B. The candidate has the exact
+private 49,152-byte `.bss` row; the two exported definitions are COMMON
+requests of 1,224 and 71,752 bytes (the latter rounded four bytes above
+the C type). Thus the missing 72,972 B of `.bss` is already declared in C
+under the curated WIP identities, but is unplaced. Fifteen of the unit's
+sixteen functions remain direct strict 100%; `func_80025a18` is 95.85052%,
+and its 92-byte initialized DATA payload compares exactly. These BSS and
+COMMON claims need allocation/toolchain attribution, not invented initialized
+bytes or a second overlapping global.
+
+The fresh symbol tables isolate a repeatable COMMON-size effect. Across 15
+fresh isolated GAME units, all 24 same-name retail `.bss`/candidate COMMON
+symbol pairs have candidate size equal to the retail size rounded up to an
+eight-byte multiple. The one-byte `menu_saved_music_enabled` is requested
+as eight bytes; the other deltas are zero or four. Retail
+`actor_state` is a 37,836-byte `.bss` symbol, while the current C emits a
+37,840-byte COMMON request; retail `bss_801c7540` is 71,748 bytes versus a
+71,752-byte COMMON request. The same `+4` appears for the 28-byte
+`state_8017d118` and four-byte `DAT_80198630` and
+`display_frame_cleared_word` (`32`, `8`, and `8` bytes of COMMON,
+respectively). Eight-byte-multiple controls stay unchanged:
+`render_mask_scan_state` is 32/32, `player_state` is 352/352, and
+`event_state` is 14,616/14,616. The candidate assembly itself spells
+`.comm actor_state,37840` and `.comm display_frame_cleared_word,8`; this is
+the probe's tentative-definition emission, not evidence that the typed C
+objects lack four bytes or that retail owns a larger overlapping object.
 
 An isolated compiler control on tiny `game.menu_frame_begin` rules out a
 simple unit-wide `-fno-common` switch. With the pinned default probe,

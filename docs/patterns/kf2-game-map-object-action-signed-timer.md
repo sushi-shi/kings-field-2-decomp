@@ -212,3 +212,14 @@ rises from **99.00313%** to **99.55399%** on the 7,668-byte retail body.
 The 32-byte DATA stays exact and RODATA remains **44.18239%** because the
 remaining switch-target addends differ. The tracked object is byte-identical
 to the off-tree trial. No repository tests, lint, or full build ran.
+
+A later action-19 retry on this updated source gives a different result from
+the older negative control above. Retail loads the linked object's source
+byte before clearing `unknown_38`, then stores that byte to the linked
+object. Exchanging the two independent C assignments reproduces the raw
+`lbu; sb zero; sb byte` sequence at function `+0x17ec` and shortens the
+candidate from 7,676 to 7,672 bytes. The retained, freshly rebuilt unit has
+**99.63745%** isolated strict text against 7,668 retail bytes and exact
+32-byte DATA. The 956-byte jump-table RODATA is **43.396225%** because
+remaining target addends move with code layout; its referents are unchanged.
+The function remains WIP. No repository tests, lint, or full build ran.

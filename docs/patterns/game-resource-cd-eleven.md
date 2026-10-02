@@ -164,3 +164,17 @@ its camera pointer is still folded into direct loads by the pinned probe.
 These are not grounds to invent storage or force register lifetimes. No C or
 inventory edit was retained from this recheck; no tests, lint, broad match,
 or full build ran.
+
+## VAB range updater exact closure
+
+GAME `0x80032274` is now **100% strict** over its 240-byte body. Retail forms
+the eight-byte VAB slot offset inside each loop iteration and uses a 48-byte
+frame. Taking a typed `KfAudioVabSlot *` for the indexed slot before loading
+its stream pointer expresses that object access directly; the pinned compiler
+then emits the retail loop instead of carrying an offset induction register.
+The source still makes the same three state transitions and sole audio queue
+call. The five ordered relocations have identical function-relative offsets,
+types, and targets. A focused `resource_runtime` build and fresh isolated
+strict comparison retain all four previous exact siblings, so the unit is now
+**5/8 exact**. The other WIP strict scores are unchanged: `0x800320b0`
+73.95918%, `0x80032174` 93.6%, and `0x800321d8` 98.4359%.

@@ -418,3 +418,28 @@ initializer, collision query, two adjacent object helpers, four scatter
 helpers, two vertex helpers, and motion helper. Their typed calls, data
 sections, and previously bounded CFG remain intact; this pass retained no C
 or relocation-model change.
+
+### Extended map-object and pattern controls (2026-10-02)
+
+A fresh isolated manifest-profile rebuild extended that certificate to **28
+connected GAME claims** in thirteen focused units. The 21 exact controls are
+the previous 17 map-object/reset/vertex/motion controls, two animation leaves
+(`animation_select_keyframe` and `animation_find_sparse_vertex`), and both
+floor-item siblings (`0x8002ce2c`, `0x8002cf40`). Seven WIPs remain:
+
+| GAME function | Strict text | Focused control and final verdict |
+| --- | ---: | --- |
+| `0x8002ce68` | 65.85185% | 5/5 CFG, 2/2 branches; retail reloads the three O32 stack arguments after the free-slot call, while the probe retains them in saved registers and grows the frame from 40 to 56 bytes. |
+| `0x80034f90` | 97.86822% | 14/14 CFG, 7/7 branches; saved-register roles and one independent address instruction differ. |
+| `0x80035194` | 89.59545% | 51/51 CFG, 26/26 branches; the 40/32-byte frame and mask-hoisting schedule remain. Eight proven callers preserve the nine-argument copy contract. |
+| `0x80036190` | 98.56115% | 15/15 CFG, 8/8 branches; the stack-argument load and independent result move exchange order before the angle check. |
+| `0x80036464` | 95.32258% | 12/12 CFG, 3/3 branches; object-ID and height-offset saved registers exchange roles, with the exact 68-byte switch table retained. |
+| `0x80036e24` | 98.86364% | 5/5 CFG, 2/2 branches and five calls; mode, endpoint and step occupy different saved registers. |
+| `0x80036ed4` | 99.63745% | 329/329 CFG, 180/180 branches; the signed-byte load-delay `nop` and later action-98 schedule still move table addends by four bytes without changing target classes. |
+
+The focused rechecks preserve the same calls, direct referents, field widths,
+and data identities documented above. The King's Field I effect-pool/spawn
+functions are structural analogues, but use different object-reset and
+argument-width behavior; their signatures cannot be copied into KF2's two
+already exact adjacent helpers. No source, metadata, or exact-claim change
+was retained from this extension.

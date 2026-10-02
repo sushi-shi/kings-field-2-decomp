@@ -496,6 +496,12 @@ the resource dispatcher's 32-byte identity DATA is exact.
 | `resource_tmd_queue_read` `0x800321d8` | 98.4359% | 3/3 blocks and 1/1 branch; archive, allocator, block metadata, and callback referents agree. The arena base `0x8009b0a0` still lacks a proved defining object for retail's signed-low address form. |
 | Resource dispatcher `0x8003247c` | 92.18579% | 96/96 blocks and 54/54 branches. Retail/candidate text relocations are 82/84; the extra candidate HI16/LO16 pair rematerializes the same player camera base, not a new field or owner. |
 
+A later typed-grid control for the radius helper replaced the row pointer
+with `map_cell_layer_masks[z][x]` and advanced `z` per row. The complete
+`game.resource_runtime` candidate object was SHA256-identical to baseline,
+with all five exact siblings preserved. This natural two-dimensional spelling
+does not recover retail's column-index induction; the trial was reverted.
+
 The standalone safe carve of `cd_archive_open` alone produced a misleading
 99.833336% comparison against the full CD candidate object: its local
 `.data`, `.rodata`, and `.text` relocation symbols lost module-relative

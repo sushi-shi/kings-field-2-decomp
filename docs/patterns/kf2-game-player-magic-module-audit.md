@@ -143,3 +143,15 @@ then joins at `+0x31c` while retaining the flag in a register. The existing
 does not establish a missing retry, call, or field. A fresh safe two-VA
 delink accepted all 321 relocations with none withheld, and the focused
 comparison still has 35/34 blocks, 20/20 branches, and eleven ordered calls.
+
+After the next checkpoint, a fresh 28-claim isolated GAME control covered
+horizontal movement, the resource mask, collision response, camera turn,
+bounds, reset-view, and core-run units. Twenty-one claims remain strict
+exact. The seven unchanged WIPs are resource radius `0x800320b0`
+**74.061226%**, visible-cell `0x80032174` **93.6%**, TMD queue
+`0x800321d8` **98.4359%**, magic selector `0x8002722c` **99.09091%**,
+horizontal move `0x800274ec` **89.8524%**, collision sound `0x800279cc`
+**98.23967%**, and collision response `0x80027f78` **95.91228%**. Narrow
+safe targets admitted all 1,971 relocations across the eight units, with
+none withheld. The focused/strict comparisons found no new field, call, or
+CFG fact beyond the retry-join split above; all C remains unchanged.

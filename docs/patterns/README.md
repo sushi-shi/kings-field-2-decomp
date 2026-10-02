@@ -62,6 +62,18 @@
 - [kf2-game-sdk-card-boundary-25.md](kf2-game-sdk-card-boundary-25.md):
   25 GAME storage reference targets across SPU, sound, pad, GPU, saved menu
   primitives, and card-buffer boundaries, with isolated strict controls.
+- [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
+  30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
+  safe carves, with four exact affected text controls.
+- [kf2-game-menu-glyph-pointer-relocs-24.md](kf2-game-menu-glyph-pointer-relocs-24.md):
+  24 direct pointer pairs in the GAME glyph renderer, admitted by a one-VA
+  safe carve while its text remains a bounded WIP.
+- [kf2-game-menu-sprite-number-relocs-27.md](kf2-game-menu-sprite-number-relocs-27.md):
+  27 raw-reviewed current-primitive pointer pairs across two strict-exact
+  GAME menu packet renderers.
+- [kf2-game-menu-list-pointer-relocs-36.md](kf2-game-menu-list-pointer-relocs-36.md):
+  36 direct current-primitive pointer pairs in the GAME menu-list renderer,
+  admitted by one safe carve with unchanged strict text WIP.
 - [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
   actor group-effect helper and constructor call topology, with bounded
   negative source trials.

@@ -51,6 +51,47 @@ safe delink admitted 329 relocations, withheld none, and preserved the same
 targets and addends. This is a relocation-evidence correction, not an exact
 function closure.
 
+The paired textured walkers (`0x8002ddb4` and `0x8002e4dc`) now have 22
+reviewed direct-call rows. In each, the decoded call order is one
+`tmd_get_object`, four `NormalClip`, three `NormalColorDpq`, two
+`NormalColorDpq3`, and one `AddPrim`, matching the source's SDK call roles
+and order; the four source `AddPrim` paths compile to one shared call. The GTE
+and GPU callees have exact Psy-Q archive attribution; the object getter is
+the named source claim. A two-function safe carve admitted 88 relocations,
+with none withheld, and both target objects stayed byte-identical to the
+pre-promotion carve. The remaining WIP differences are unrelated to call
+identity.
+
+The blended walker and `render_enqueue_map` have another 26 reviewed direct
+call rows. Raw call order and targets cover the object getter, projection,
+clipping, `NormalColorCol3`/`NormalColorCol`, seven `DpqColor` sites, and the
+shared `AddPrim` tails. All named SDK callees have exact Psy-Q archive
+attribution. A two-function safe carve admitted 70 relocations with none
+withheld; both target objects stayed byte-identical to the candidate-row
+carve. Their non-exact code remains a source/codegen investigation.
+
+The clipped fan (`0x8002f5b0`) and alternate prepared renderer
+(`0x8002f808`) have 23 more reviewed direct-call rows. Decoded targets and
+source call roles include `NormalClip`, `NormalColorCol`, `DpqColor`, the
+exact SDK `Clip4FTP`/`Clip3FTP` pair, the object getter, projection, and
+shared `AddPrim`/clipped-fan calls. A two-function safe carve admitted 71
+relocations with none withheld, and both target objects stayed byte-identical
+to the earlier candidate-row carve. Their WIP text differences do not arise
+from an unresolved direct-call identity in this set.
+Together, these 71 promotions exhaust candidate direct `jal` rows in the
+six-function `0x8002ddb4..0x8002ff5c` walker/render band. Internal `j`
+targets remain separate CFG evidence, not call identities.
+
+Retail's blended walker (`0x8002ebe0`) does share one packet-code store and
+signed fixed-depth guard across all four packet modes: the branches converge
+at `0x8002f114`, then load and sign-shift the saved depth before testing it.
+Two off-tree C trials gave all modes a common enqueue tail. The direct
+condition compiled to a different unsigned-halfword range check and fell to
+91.93425% isolated strict from the retained 95.27945%; nesting its signed
+conditions also regressed the focused listing to 84.2%. Neither source form
+was retained. The raw shared tail is established, but its source spelling and
+the candidate's larger frame remain open.
+
 A fresh `0x8002f808` stack audit found the same ten saved registers (`ra` and
 `s0`–`s8`) in retail and the probe. Retail passes the extra `Clip4FTP`
 arguments at `sp+16..32`, forms the shade pointer at `sp+80`, and uses word

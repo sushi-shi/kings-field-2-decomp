@@ -84,3 +84,28 @@ The surrounding isolated units contain unrelated claims, including current
 resource map-mask/TMD WIPs; their scores are outside this 26-function audio
 verdict. There was no new exact result to bank. No repository test, lint, full
 build, or linked executable build was run for this bounded pass.
+
+## VAB slot/queue relocation review
+
+Ten formerly candidate GAME relocations in the exact VAB slot/queue pair
+now have direct raw and source evidence. In `audio_acquire_vab_stream_slot`,
+`0x80014628` and `0x80014690` jump to its return epilogue,
+`0x80014698` calls SDK `SsVabClose`, and `0x800146a4` rejoins the slot-state
+store. In `audio_queue_vab_stream`, `0x80014718` enters the default slot
+path, `0x80014720` joins the fixed-slot path, `0x80014728` calls the slot
+allocator, and `0x80014754` calls `cd_request_wait_done`. The adjacent
+`lui a3`/`addiu a3` at `0x80014770/74` resolves exactly to
+`audio_vab_stream_callback` (`0x80014394`), passed as the fourth argument
+to the `cd_archive_queue_stream_read` call at `0x80014778`. The compiled
+object has corresponding `R_MIPS_26` or HI16/LO16 sites at all ten
+relative offsets. These ten rows were promoted to reviewed without changing
+source or storage ownership.
+
+A fresh safe 17-VA audio-runtime carve admits 356 relocations with none
+withheld. Direct isolated strict comparison leaves 15/17 functions exact,
+including both VAB slot/queue functions at 100%; only the initializer
+(89.30556%) and VAB service (94.87342%) remain WIP. The two standalone
+VAB target objects are hash-identical before and after adding their curated
+callee names; no text, data, or relocation bytes changed from that metadata
+refinement. The four unresolved initializer workspace referents remain
+outside this reviewed ten-site set.

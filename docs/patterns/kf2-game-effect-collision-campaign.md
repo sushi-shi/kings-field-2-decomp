@@ -3298,3 +3298,37 @@ strict. O0 retains all four calls but scores only 9.68% strict, so its call
 count alone does not justify changing the unit profile. Prior direct-return,
 `if`/`else if`, case-order, and GCC 2.6.0 trials likewise did not close the
 retail topology. No source, identity, or relocation edit was retained.
+
+## Fresh connected effect-family control
+
+A current safe carve of 29 confirmed effect constructor/probe/updater,
+pool, spawn, motion, and scatter claims admitted 1,823 relocations with none
+withheld. Direct isolated strict comparison of all 14 source units gives
+**26 exact functions**: the 26 effect helpers listed as exact in the
+constructor-family verdict remain exact, including all ten `effect_update.c`
+and three `effect_reset.c` claims. The only WIPs in this connected set are
+`effect_collision_probe` (`0x8003fa68`, 70.73333% text),
+`func_80040308` (`0x80040308`, 98.43441% text / 51.016262% RODATA), and
+`effect_update_dispatch` (`0x80042650`, 95.18370% text / 31.614786%
+RODATA). The prior actor-group caller is outside this 29-claim set. No
+function newly became exact.
+
+All 128 dispatcher pointer rows still have the same 64 target classes in
+retail and source order. In the final kind groups 100–122, each table target
+class agrees; their changed addends accumulate from earlier body lengths.
+The raw kind-120 arm loads direction-Y at record `+54`, signed scale-X at
+`+44`, and unsigned scale-Z at `+48`; its two constructor calls and sound
+call retain the source's argument values and order. Kind 109's indexed
+record position uses a 72-byte stride and passes the source's seven
+arguments to `func_80041b14`. Kind 114's raw collision, floor probe,
+constructor, and two-particle path likewise retain their source calls and
+field offsets. These case checks yielded no justified source edit.
+
+An off-tree trial hoisted the existing ballistic `projected` and `midpoint`
+vectors and kind-10 `direction` vector to function scope. It reproduced
+retail's 224-byte frame and moved strict text to 95.498566%, but the
+kind-10 `vector_direction_scaled` fourth argument then pointed at
+`sp+88`, while retail `0x80044dec..0x80044df4` passes `sp+120` and reuses
+that pointer for the constructor fifth argument. The prior two-vector
+hoist also misplaced kind-111 copies. Lexical scope is not proved by frame
+size or score, so all hoists were discarded and the source stays unchanged.

@@ -130,7 +130,8 @@ source-shape lead, with the KF2 prelude and kind-zero branch providing the
 independent evidence here.
 
 The fresh isolated strict objects each have **206** direct `jal` sites,
-including **27** calls to `func_80040308`. The earlier 205/206 count is
+including **27** calls to `func_80040308`; all 206 target identities also
+agree in order. The earlier 205/206 count is
 superseded. Around retail offset `+0x1258`, objdiff aligns a constructor
 `jal` with the candidate's corresponding call two instructions earlier;
 the apparent delete/insert is argument-setup scheduling, not a missing call.
@@ -144,6 +145,17 @@ delay slot. The candidate places the scale store in the jump delay slot and
 reaches a shared phase-increment tail. Both paths perform the same field
 writes. This is a physical tail-layout difference; adding a second phase
 update would change the modeled behavior.
+
+An off-tree source-equivalent `return` at the growth tail in place of
+`break` emitted a byte-identical whole-unit object, so that spelling does
+not recover the retail tail layout and was not retained.
+
+In kind 46, retail loads the same collision-result word twice after
+`func_8002b604`, with the first value stored to record position Y before
+the second is compared against the height limit. The candidate reads that
+same validated `bss_801c7540+0x11810` referent once and reuses it across the
+position store. The source already spells both reads; no different datum or
+volatile hardware access is established by the extra retail load.
 
 Retail kind 20 at `0x80043cb8` prepares
 `(0x4000, 0x100, 0x20)` and jumps into the shared `func_80041cd0` call at

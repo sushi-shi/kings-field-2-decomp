@@ -161,3 +161,24 @@ count is spilled before the zero guard, where the probe tests a register.
 The existing stack audit does not identify a missing live object in the
 48-byte frame gap. This pass retained no C edit and ran no repository tests,
 lint, or full build.
+
+## Fresh strict map-emitter recheck (2026-10-02)
+
+A focused rebuild and fresh safe delink of all three `game.render_map`
+functions accepted 200 relocations with none withheld. Direct strict objdiff
+now gives `render_enqueue_map` **100%** (1,052/1,052 bytes),
+`func_8002f5b0` **95.833336%** (600 retail/592 candidate bytes), and
+`func_8002f808` **92.038376%** (1,876/1,860 bytes). These current-source
+results supersede the older 63.362473% strict score for `0x8002f808`.
+
+The focused `0x8002f808` control has 51/51 CFG blocks, 35/35 branches, and
+four/four known return frontiers; the older report of a branch or return gap
+is stale. Its first raw difference remains the 168-byte retail versus
+120-byte probe frame and shifted save slots. The earlier stack-slot audit
+does not establish a missing live object in the gap, so no padding or source
+change follows from this recheck. The exact `0x8002f194` sibling remains
+protected.
+The first FT4 case still loads all four face indices at `+0x12`, `+0x14`,
+`+0x16`, and `+0x18`; the probe schedules the middle two in reverse order.
+The resulting vertex-height, XY, and clip comparisons use the same fields,
+so this local instruction shuffle does not identify a wrong packet layout.

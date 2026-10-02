@@ -370,7 +370,7 @@ strict exact claim is made from the focused control alone.
 | `0x8003b33c` | SAME, collision motion sibling |
 | `0x8003b520` | SAME, trajectory motion sibling |
 | `0x8003b5bc` | SAME, state-step sibling |
-| `0x8003b5d0` | WIP, 66.5% |
+| `0x8003b5d0` | WIP, 66.5% at this historical pass; see current verdict below |
 | `0x8003b9a4` | SAME, motion sibling |
 | `0x8003bae4` | SAME, motion sibling |
 | `0x8003bba0` | SAME, motion sibling |
@@ -379,11 +379,11 @@ strict exact claim is made from the focused control alone.
 | `0x8003be38` | SAME, motion sibling |
 | `0x8003bf74` | SAME, motion sibling |
 
-`0x8003b5d0` has matching retail/compiled CFG counts (40 blocks, 21
-branches), the same five direct calls and actor-state/collision-cache
-referents, but the switch dispatch first tests state `0x20` in retail and
-`0x10` in the probe. The current case bodies are already in retail body
-order; proximity alone does not justify reordering them to steer a compare.
+At this historical pass, `0x8003b5d0` had matching retail/compiled CFG
+counts (40 blocks, 21 branches), the same five direct calls and
+actor-state/collision-cache referents, but the dispatch tested state `0x20`
+first in retail and `0x10` first in the probe. The later source correction
+made state `0x20` first; its current 40/39 CFG result is recorded below.
 `0x8003bd40` has matching CFG counts (9 blocks, 5 branches) and the same
 three direct calls. Its first difference is the register/address-load order
 around the actor position and yaw calculation. Neither WIP received a
@@ -942,6 +942,14 @@ branches. Isolated strict text rises only from **73.95918%** to
 updater, remain 100%; `map_cell_visible` and `resource_tmd_queue_read`
 stay at 93.6% and 98.4359%. No new exact is claimed.
 
+The row pointer itself is formed before the row-offset guard, as retail
+does. A separate off-tree flat-grid index kept pointer formation inside
+the valid range and read `grid[row_offset + x]` under both guards; it
+lowered isolated strict radius text to **57.938774%** while preserving all
+five exact siblings. That safe C variant does not explain retail's row
+pointer induction, so it was not retained. The current indexed read is
+guarded, but the out-of-range pointer-formation question remains open.
+
 The adjacent audio campaign rebuilt `game.audio_runtime` as one focused
 unit: fifteen of seventeen functions remain listing-identical. Startup
 `0x800139c4` has 7/7 CFG blocks and 3/3 branches; its four fixed workspace
@@ -983,3 +991,50 @@ frontiers, with an unresolved indirect jump on both sides. Its first local
 differences are constant and register scheduling around the same fade clamp.
 Prior signed-value controls regressed, and the shared caller semantics remain
 unchanged. None of these four merits a source edit on the current evidence.
+
+The adjacent five-function card-directory unit was rechecked: four WIPs
+retain matching CFG/branch counts (13/13 and 7/7, 24/24 and 13/13, 9/9 and
+4/4, 24/24 and 14/14), and `memory_card_format` remains exact. An off-tree
+source-equivalent aggregate initializer for the two slot-seed bytes lowered
+`0x800226ec` isolated strict text from **93.60504%** to **91.60504%**;
+the other functions and initialized data stayed unchanged. It was discarded.
+The retail signed-byte loads in the title path remain unsupported by a
+safe source change after the documented signed-view controls.
+
+### Event and card control screen
+
+Eleven separately focused GAME units cover 21 claims. Fourteen previously
+exact listings remain `SAME`: the command, counter, pose, and map-object
+spawn helpers; the card formatter, two menu-transition siblings, three
+card-wait siblings, and the message marker's first helper. The seven WIPs
+retain their reviewed call sets and source fields:
+
+| GAME VA | Focused CFG / branches | First remaining difference |
+| --- | --- | --- |
+| `0x8001b554` | 33/33, 16/16 | Probe result in `v0` versus retail's copied `a0`, then a delay-slot address setup. |
+| `0x8001bf68` | CFG unavailable at an overlapping trial target | Status/constant saved-register allocation; exact formatter sibling unchanged. |
+| `0x80023178` | 19/19, 10/10 | Card header and decimal-quotient register lifetimes. |
+| `0x800349bc` | 14/14, 8/8 | 72-byte retail frame versus 64-byte candidate, with independent packet-store scheduling. |
+| `0x800461a0` | 14/14, 5/5 | Two stream cursors use exchanged registers and equivalent relative byte offsets. |
+| `0x800462bc` | 46/46, 21/21 | Candidate loads state before phase and inserts a load-delay `nop`; the 64-byte table's row `+0x0c` consequently targets text addend `0x2c4` versus retail `0x2c0`. |
+| `0x80047c98` | 85/85, 55/55 | Saved register for a constant and one for the event-record pointer exchange roles. |
+
+For the target stream, the source already reads both fields with their raw
+widths before the phase-dependent call. Reordering those independent loads
+has no evidenced semantic basis. No source or metadata edit was retained
+from this screen, and no new exact result is claimed.
+
+One narrow off-tree marker probe expressed the two condition bytes relative
+to the already available marker cursor (`marker[-2]` and `marker[-1]`)
+instead of the equivalent stream-cursor offsets. Although retail addresses
+those bytes from the marker register, that spelling lowered isolated strict
+`0x800461a0` text from **99.12676%** to **96.73239%**; its exact sibling
+`0x80046144` stayed 100%. Machine-code base choice alone does not prove the
+original C subscript, so the readable source was preserved.
+
+A separate off-tree menu-transition macro control reused its local
+primitive-buffer pointer for the bounds check instead of rereading the
+global pointer. Although no call intervenes, this changed the pinned
+compiler's buffer lifetime and lowered `0x800349bc` isolated strict text
+from **96.31408%** to **83.71119%**. Its two exact siblings and the
+eight-byte datum remained 100%; the trial was discarded.

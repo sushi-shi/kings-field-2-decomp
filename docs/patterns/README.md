@@ -862,6 +862,8 @@ promotes a probe to a proven historical toolchain.
   retail-backed kind-23 variadic read order and focused/strict controls.
 - [kf2-game-effect-constructor-argument-walker.md](kf2-game-effect-constructor-argument-walker.md):
   fifth-slot argument walker, retail load-width controls, and constructor WIP.
+- [kf2-game-effect-constructor-case-local-calls.md](kf2-game-effect-constructor-case-local-calls.md):
+  raw-backed case-local initializer calls, tail merging, and strict table controls.
 - [KF2 GAME effect dispatcher map](kf2-game-effect-dispatch-map.md): retail
   123-kind and five-phase switch tables, decoded handler/call topology, and
   remaining source and collision-cache ownership limits at `0x80042650`.
@@ -1206,3 +1208,18 @@ promotes a probe to a proven historical toolchain.
 - [GAME player and actor WIP follow-up](kf2-game-player-actor-wip-ten.md):
   ten strict player and actor verdicts, preserved exact siblings, and bounded
   compiler-profile negative controls.
+- [GAME player and actor current ten](game-player-actor-followup-ten.md):
+  fresh isolated strict verdicts for ten player/actor WIPs, with exact sibling
+  controls and no unsupported source changes.
+- [GAME map, animation, and frame focused controls](game-map-animation-frame-focused.md):
+  31 existing exact functions and three bounded WIPs across 20 individually
+  compiled GAME units.
+- [GAME player focused ten](game-player-focused-ten.md):
+  21 existing exact player functions and two bounded collision WIPs across ten
+  individually compiled units.
+- [GAME event focused nine](game-event-focused-nine.md):
+  14 existing exact event functions and three bounded WIPs across nine
+  individually compiled units.
+- [GAME menu focused ten](game-menu-focused-ten.md):
+  nine existing exact neighbors and eight bounded menu/card WIPs across ten
+  individually compiled units.

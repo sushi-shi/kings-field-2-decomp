@@ -387,8 +387,8 @@ void func_8002bfd4(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
     /* The rasterizer uses 16-bit origins and truncates grid coordinates. */
-    u16 origin_x = *(u16 *)&game_graphics_runtime.render_state.cell_origin_x;
-    u16 origin_z = *(u16 *)&game_graphics_runtime.render_state.cell_origin_z;
+    u16 origin_x = (u16)game_graphics_runtime.render_state.cell_origin_x;
+    u16 origin_z = (u16)game_graphics_runtime.render_state.cell_origin_z;
     s32 x = ((u32)start->x >> 12) + origin_x;
     s32 z = ((u32)start->z >> 12) + origin_z;
     s32 dx = (((u32)end->x >> 12) + origin_x) - x;

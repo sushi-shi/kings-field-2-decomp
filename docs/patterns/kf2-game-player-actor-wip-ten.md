@@ -42,6 +42,11 @@ scheduling—each leave that score unchanged while regressing its exact
 The current manifest profile therefore remains the best supported unit
 probe; changing it would sacrifice an exact function without closing the
 predicate's result-register residue.
+An off-tree direct ternary spelling of the same signed interval
+(`value < 81 ? value >= 71 : 0`) falls from 88.57143% to 55.0% strict:
+retail initializes `$v0` in the upper-bound branch delay slot, while the
+current candidate carries the result in `$v1` and copies it to `$v0` in the
+return delay slot. The ternary was discarded; exact `0x80028998` is retained.
 
 For collision response `0x80027f78`, a full-unit off-tree
 `-fno-cse-skip-blocks` control moved strict text only from 95.91228% to
@@ -62,3 +67,15 @@ For magic dispatch `0x8002665c`, the same off-tree CSE control regressed strict
 text from 98.67857% to 96.968254%; its exact `0x80026498` sibling and RODATA
 remained exact. The target-only address rematerializations do not justify a
 unit-wide profile change.
+
+A fresh two-function safe carve of `game.player_select_magic_action` withheld
+none of its 321 relocations. Direct strict comparison reconfirms
+`player_move_horizontal` `0x800274ec` at **89.85240%** (1084 retail versus
+1036 candidate bytes) and its `0x8002722c` sibling at **99.09091%**. On the
+first accept-position path, both objects store the proposed X/Z position,
+collision layer, and success result, then jump to the common exit. Retail
+forms separate `player_state` addresses; the probe reuses a saved base. In
+the late diagonal-retry arm, a natural spelling that removes the `else`
+after `goto axis_retry` emitted a byte-identical whole-unit object and was
+reverted. The 35/34 CFG gap remains unattributed; no field, call, or branch
+meaning was changed in source.

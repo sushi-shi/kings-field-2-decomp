@@ -305,33 +305,25 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->rotation = *angles;
         break;
     }
-    case 121: {
-        s32 render_id;
-
-        render_id = 0x2e;
+    case 121:
+        effect_pool_initialize_scaled(record, 0x2e, 0x1000);
         goto initialize_103_121;
     case 103:
-        render_id = 0xf;
+        effect_pool_initialize_scaled(record, 0xf, 0x1000);
     initialize_103_121:
-        effect_pool_initialize_scaled(record, render_id, 0x1000);
         record->updates_remaining = 100;
         *(u16 *)&record->unknown_3c[4] = va[1];
         effect_play_spatial_sound(record, 0x28);
         break;
-    }
-    case 122: {
-        s32 render_id;
-
-        render_id = 0x2f;
+    case 122:
+        effect_pool_initialize_scaled(record, 0x2f, 0x1000);
         goto initialize_104_122;
     case 104:
-        render_id = 0x10;
+        effect_pool_initialize_scaled(record, 0x10, 0x1000);
     initialize_104_122:
-        effect_pool_initialize_scaled(record, render_id, 0x1000);
         record->scale_y = va[1];
         record->updates_remaining = 15;
         break;
-    }
     case 54: {
         s32 value;
         s32 render_id;

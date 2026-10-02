@@ -62,3 +62,23 @@ definition emitted the same 65.85185% body; `-fno-schedule-insns` and `-O1`
 reached only 66.03704% and broke the exact update sibling. GCC 2.6.0 `-O2`
 fell to 33.203705% and also broke that sibling. The configured profile and
 typed source remain in place.
+
+### Rasterizer raw/frame recheck
+
+A fresh focused build and isolated strict comparison retain `0x8002bfd4` at
+**73.91262%**. Retail is frameless; the candidate reserves 16 bytes but
+never accesses the stack. Both source and retail load the two unsigned
+halfword grid origins, rasterize along the dominant X or Z axis, test both
+24-cell bounds, and write the same byte. The first instruction-selection
+difference is the candidate's algebraic cancellation of the origin while
+computing the endpoint delta; retail adds the origin to each endpoint before
+subtracting. No distinct referent or call is absent.
+
+Two off-tree full-unit controls changed the origin locals from `u16` to
+`s32`, and replaced the low-halfword pointer read with a well-defined
+`(u16)` conversion of the owning word. Each emitted a byte-identical unit
+object and kept the unused 16-byte candidate frame. The conversion is
+retained because it expresses the unsigned low-halfword value without a
+pointer alias; a fresh tracked-source focused build has the same whole-unit
+SHA256 as baseline, preserving every exact sibling. The full-width local
+trial and compiler profile remain unchanged.

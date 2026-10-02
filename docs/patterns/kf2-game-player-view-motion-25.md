@@ -79,3 +79,34 @@ collision and actor-attack source campaigns untouched. KF1 source/history can
 suggest spellings, but every verdict here is from KF2 GAME retail and the
 current focused objects. No repository tests, lint, linked build, or broad
 match was run in this scoped pass.
+
+## Fresh camera/movement caller control
+
+A later 22-claim safe GAME carve admitted 1,757 relocations with zero
+withheld. Ten complete source units were compiled in isolation against that
+current target, and focused quick builds checked both nonexact units. The
+result is **19 strict exact, three WIP**, with no new exact closure or source
+edit. The graph is connected through the camera-position state, the three
+horizontal-move calls in `0x8002851c`, and the collision response.
+
+| Unit | Exact function VAs | WIP function VAs and strict text |
+| --- | --- | --- |
+| `player_core_run` | `0x80023570`, `0x8002360c`, `0x80023814`, `0x80023868`, `0x80023984`, `0x80024034`, `0x800240cc`, `0x80024164`, `0x80024384`, `0x80024448` | — |
+| `player_camera_turn` | `0x80028224`, `0x8002851c` | — |
+| `player_distance_margin` | `0x80023430` | — |
+| `player_reset_view` | `0x80023484` | — |
+| `player_select_magic_action` | — | `0x8002722c`: 99.09091%; `0x800274ec`: 89.85240% |
+| `player_status_cap` | `0x800247e4` | — |
+| `player_collision_response` | — | `0x80027f78`: 95.91228% |
+| `player_collision_bounds` | `0x80023384` | — |
+| `player_weapon_transform_power` | `0x80026330`, `0x80026464` | — |
+| `player_weapon_render` | `0x800316c8` | — |
+
+The three WIPs retain the previously established raw field widths and
+ordered calls. The selector's eight-byte retail frame, mover's one extra
+retry-flag block and separate player-state address pairs, and response's
+four extra candidate player-state pairs are the first bounded divergences;
+none proves an omitted source operation. The exact sibling controls and
+the `player_collision_bounds` dedicated compiler profile remain intact.
+`player_weapon_render` was read as an exact control under the render owner's
+source lane. No repository tests, lint, broad build, or linked build was run.

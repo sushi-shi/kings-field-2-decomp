@@ -70,3 +70,27 @@ All exact controls above were already exact in the current source; this
 campaign verifies their preservation and banks no new function. The other
 eight WIPs retain their existing calls, field identities, and documented
 source meanings. No tracked C or inventory change was retained.
+
+## Map-cell extension and fresh controls (2026-10-02)
+
+A fresh manifest-profile isolated pass replaced the four player consumers in
+the table above with four connected map-cell functions. The unchanged 21
+common function verdicts and these four give **25 GAME function claims: 15
+existing exact controls and ten WIPs**. Focused unit comparisons preserve the
+previous shape-dispatcher result (174/172 CFG blocks, 99/98 branches) and the
+height-wrapper call set. The collision snapshot helper `0x8002b874` has an
+8/9 known-block layout difference despite its three agreeing branches; its
+player/actor/object source fields and common cache writes are already modeled.
+
+| Additional GAME VA | Fresh strict text | Verdict |
+| --- | ---: | --- |
+| `0x8002c670` | 91.624245% | WIP: 11/11 CFG blocks and 4/4 branches; four rasterizer calls and typed grid/lighting referents agree, while address materialization and register allocation differ. |
+| `0x80034f90` | 97.86822% | WIP: 14/14 blocks and 7/7 branches; pattern-placement call and field widths agree, with a local schedule residue. |
+| `0x80035194` | 89.59545% | WIP: 51/51 blocks and 26/26 branches; rotated occupancy copy follows the retail control and field accesses, while the 40-byte retail versus 32-byte probe frame remains unexplained. |
+| `0x80036078` | 100% | Exact map-object collision-query control. |
+
+The original shape switch still has all 49 pointer rows in thirteen identical
+target classes; its extra case-`0x11` branch follows a register set to zero,
+and the `0x30`/`0x32` multiplication tails are independently present in C.
+No missing call, width, or data owner is supported by the fresh pass, so the
+source and curated inventories remain unchanged.

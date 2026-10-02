@@ -75,3 +75,12 @@ type and symbol identity at **77/77**, **7/7**, and **68/68** rows. Existing
 raw control-flow and source reviews support the calls and fields; no source
 change follows from the remaining code-generation differences. No tests,
 lint, broad match, or full build ran.
+
+The exact frame driver `0x800335a0` now has 44 more reviewed relocations:
+19 direct calls in raw source order and 25 signed-low references into the
+source-defined `render_model_rows` array. The latter follow its 36-byte row
+stride and the frame controller's state, yaw, asset, and scale updates;
+the contiguous array has a 0x21c-byte `DATA` claim. A focused one-VA safe
+carve admitted 93 relocations with none withheld, and the rebuilt
+`game.render_frame` unit kept both functions SAME. This promotes evidence
+tiers without changing source or the exact function count.

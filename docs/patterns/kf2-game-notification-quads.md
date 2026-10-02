@@ -26,3 +26,12 @@ order; the focused listing fell to 74.0% with both substitutions. The exact
 chained assignments were restored, and focused `game.notification_quad`
 returned SAME 2/2. This rejects those two macro spellings for this function,
 without claiming that the original source lacked other inline helpers.
+
+A fresh raw-reference pass reviewed 23 previously candidate relocations
+across the drawing and notification-update units: four direct calls and
+19 signed-low address pairs into the single 126-byte `notification_quads`
+claim. The interior offsets follow the proven 18-byte record stride and
+the source's kind/texture-field updates; `AddPrim` has exact Psy-Q archive
+attribution. A focused three-VA safe carve admitted 107 relocations
+with none withheld. Both focused units remain SAME (2/2 and 3/3), so this
+changes evidence tiers without adding a new exact match.

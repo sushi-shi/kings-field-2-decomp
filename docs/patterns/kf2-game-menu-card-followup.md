@@ -666,3 +666,16 @@ claims: 72 strict exact and 18 WIP. Every menu WIP listed in the cached
 GAME report was included in a fresh safe-target comparison here; the
 card-directory WIPs were also refreshed. None yielded a new source-backed
 type, call, control-flow, or referent correction.
+
+## Signed title-byte compiler control
+
+A fresh focused `game.memory_card_directory` build keeps the exact
+`memory_card_format` sibling and the four established WIPs. A safe five-VA
+carve admits 274 relocations with none withheld; direct strict text is
+93.60504% at `0x800226ec`, 85.15625% at `0x800228c8`, 100% at
+`0x80022b48`, 93.666664% at `0x80022b74`, and 95.896774% at
+`0x80022ca0`. In an off-tree GCC 2.5.7 O2 control, `-fsigned-char` changes
+debug type records but leaves all emitted instructions identical: the two
+title-glyph loops still use `lbu`, while retail uses `lb` before byte stores
+and halfword reloads. This flag and the earlier signed-view C probes do not
+establish a source correction; C and metadata remain unchanged.

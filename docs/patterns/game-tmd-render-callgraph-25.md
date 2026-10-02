@@ -113,6 +113,25 @@ claim or an exact Psy-Q SDK identity. A focused one-function safe carve
 admitted 136 relocations with none withheld. The renderer remains WIP;
 focused listing similarity is 94.5%, unchanged by call-row promotion.
 
+The animated-object renderer (`0x80031d8c`) has 16 further reviewed
+direct calls. Its raw order matches the source's rotation and GTE matrix
+setup, color/light selection, asset/object lookup, animation-buffer update,
+vertex projection, and blended-walker tail. The game targets have named
+source claims and the GTE targets have exact Psy-Q archive identities.
+A focused one-function safe carve admitted 44 relocations with none
+withheld. The function remains WIP at 79.5% focused listing similarity;
+the first difference is its saved-register and stack-argument lifetime.
+
+The adjacent screen-quad and player-weapon path has 17 further reviewed
+direct calls: `AddPrim` in the textured-quad builder, four calls to that
+builder from sliding/color channel emitters, and twelve GTE, asset,
+animation, and TMD calls in `0x800316c8`. Raw outgoing targets and source
+order agree; SDK targets have exact archive attribution. A focused six-VA
+safe carve admitted 120 relocations with none withheld. Focused rebuilds
+kept the four emitter functions and player-weapon renderer SAME; the
+textured-quad builder remains WIP at 57.5% listing similarity because of
+its saved-register and packet-code delay-slot schedule.
+
 Retail's blended walker (`0x8002ebe0`) does share one packet-code store and
 signed fixed-depth guard across all four packet modes: the branches converge
 at `0x8002f114`, then load and sign-shift the saved depth before testing it.

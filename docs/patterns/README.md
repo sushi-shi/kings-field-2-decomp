@@ -71,6 +71,15 @@
 - [kf2-game-player-spawn-record-type.md](kf2-game-player-spawn-record-type.md):
   align the five initialized player spawn records' curated current-C type
   with their source declaration and exact data, keeping historical type WIP.
+- [kf2-game-occupancy-bss-25.md](kf2-game-occupancy-bss-25.md):
+  25 reviewed target addresses across adjacent weapon and occupancy BSS
+  claims, retaining the unresolved grid, shape-bank, equipment, and cache overlap.
+- [kf2-game-sdk-pointer-band-25.md](kf2-game-sdk-pointer-band-25.md):
+  25 GAME load-image words bounded by a Sony intr.c version string and
+  exact LIBETC/LIBGPU pointers, with raw pointer relocations kept candidate.
+- [kf2-game-otag-pointer-record.md](kf2-game-otag-pointer-record.md):
+  24 exact LIBGPU OTAG primitive-name pointer words grouped by their
+  pinned archive data record while original C linkage stays unresolved.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.

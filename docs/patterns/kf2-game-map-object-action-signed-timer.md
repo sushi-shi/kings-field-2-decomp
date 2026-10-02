@@ -443,3 +443,20 @@ functions are structural analogues, but use different object-reset and
 argument-width behavior; their signatures cannot be copied into KF2's two
 already exact adjacent helpers. No source, metadata, or exact-claim change
 was retained from this extension.
+
+### Action and animation call-chain recheck (2026-10-02)
+
+Ten current manifest-profile units spanning the reset, initialization,
+collision query, spawn, vertex, motion, frame step, action dispatcher, and
+actor-animation callees contain **28 GAME function claims**. Fresh isolated
+strict comparison confirms **23 previously exact controls**. The five WIPs
+remain `0x80036190` **98.56115%** (15/15 CFG blocks, 8/8 branches),
+`0x80036464` **95.32258%** (12/12, 3/3), `0x80036e24` **98.86364%**
+(5/5, 2/2), `0x80036ed4` **99.63745%** (329/329, 180/180), and actor X/Z
+animation `0x8003ae50` **99.31746%** (58/58, 34/34). The other six actor
+animation functions remain exact. The dispatcher retains all 239 switch
+rows in their 36 target classes and the same ordered calls/referents; its
+first extra retail word is the action-224 signed-byte load-delay `nop` already
+identified above. The other four WIPs retain their documented stack,
+register, and independent-operation scheduling differences. No source or
+curated ownership change is supported by this recheck.

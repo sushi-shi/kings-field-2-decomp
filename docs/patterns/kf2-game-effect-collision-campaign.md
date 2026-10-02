@@ -3299,6 +3299,17 @@ count alone does not justify changing the unit profile. Prior direct-return,
 `if`/`else if`, case-order, and GCC 2.6.0 trials likewise did not close the
 retail topology. No source, identity, or relocation edit was retained.
 
+A later unchanged-source GCC 2.5.7 O2 control with each of
+`-fno-thread-jumps`, `-fno-cse-follow-jumps`,
+`-fno-expensive-optimizations`, `-fno-peephole`,
+`-fno-delayed-branch`, and `-fno-function-cse` still emits one
+`func_8002b9d4` call. None of those individual flags recovers the four
+retail calls; GCC 2.5.7 does not accept `-fno-crossjumping`.
+Fresh focused `kf try` remains DIFF at 57.5%, and a fresh safe one-VA carve
+admits 24/24 relocations with no withheld rows and reproduces 70.73333%
+strict text. Each retail case passes the same first five arguments and a
+distinct mode as already spelled in C. The helper source remains unchanged.
+
 ## Fresh connected effect-family control
 
 A current safe carve of 29 confirmed effect constructor/probe/updater,

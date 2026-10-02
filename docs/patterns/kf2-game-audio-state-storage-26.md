@@ -134,6 +134,14 @@ LIBCD `CdReadCallback` and `CD_readm` code. Those xrefs identify the next
 SDK data family, but unreferenced intervening storage and the original game
 defining TU remain unproved.
 
+The `SSINIT` member makes the slot-6 upper boundary more specific: its
+`_SsInit` text patch at member offsets `+0xfc/+0x100` names the member's
+8-byte XBSS `_snd_ev_flag`. The exact GAME-linked `_SsInit` begins at
+`0x80050bbc`; its raw `lui`/`sw` at `0x80050cb8/bc` resolves the signed-low
+address `0x8016aa68`. This identifies the datum immediately after the
+candidate six-slot region, without proving how that preceding game region
+was declared.
+
 The current safe 17-claim audio-runtime carve admitted all 178 module text
 relocations and kept 15 functions exact; `func_800139c4` remains
 89.30556% and `cd_request_service_vab` 94.87342%. Four connected sound
@@ -147,3 +155,68 @@ unit to 78.51635% strict text. The initializer fell from 89.30556% to
 75.97222%, and all fifteen exact audio siblings became non-exact. This
 compiler substitution neither proves a workspace owner nor warrants a
 profile change; it was discarded.
+
+## Sound-action caller graph
+
+A fresh safe carve selected 25 GAME sound-action claims outside
+`audio_runtime` and withheld no relocation or function. Isolated strict
+objects from the current source gave **17 exact, eight WIP**. The graph is
+linked by direct `audio_play_sound`, `audio_play_spatial_*`, or their typed
+map-object, effect, and actor wrappers; it includes the callers' exact
+siblings as controls.
+
+| Unit | Exact claims | WIP claim and strict text |
+| --- | --- | --- |
+| `actor_spatial_sound` | `0x8003d084`, `0x8003d0e8` | — |
+| `player_collision_sound` | `0x80027928`, `0x80027988` | `0x800279cc`: 98.23967% |
+| `player_magic_dispatch` | `0x80026498` | `0x8002665c`: 98.67857% |
+| `map_object_reset` | `0x80035504`, `0x80035534`, `0x80035590`, `0x800355d8`, `0x800356ac`, `0x800357a0` | — |
+| `map_object_motion` | `0x80036b68` | — |
+| `map_object_action_update` | — | `0x80036ed4`: 99.63745% |
+| `render_resource_dispatch` | — | `0x8003247c`: 92.18579% |
+| `effect_spatial_sound` | `0x8003fa2c` | — |
+| `effect_constructor` | — | `0x80040308`: 98.43441% |
+| `effect_update_dispatch` | — | `0x80042650`: 95.18370% |
+| `event_command_dispatch` | `0x8004678c` | — |
+| `audio_sound_wrappers` | `0x80045e18`, `0x80045e3c`, `0x80045e5c` | — |
+| `actor_group_effects` | — | `0x8003c614`: 86.04192% |
+| `actor_behavior_dispatch` | — | `0x8003d184`: 99.93160% |
+
+The `player_collision_sound` WIP is the clearest remaining relocation-count
+gap in this caller set: retail has 141 and the candidate 137 text rows.
+At GAME `0x80027d0c/10`, retail forms `player_state+0x13a` and at
+`0x80027d14/18` independently forms `player_state+0x110`. At
+`0x80027d40/44` it forms `+0x110` again for a store. The candidate retains
+an earlier `player_state+0x138` pointer, using `lh -40(a0)` and then
+`addiu a0,-40; sh 0(a0)` for the same `+0x110` field. These are the two
+missing HI16/LO16 pairs. The three-function module still has 70/70 CFG
+blocks, 37/37 branches, matching call roles, and two exact siblings;
+there is no missing datum or source-backed reason to manufacture an address
+carrier. No C or identity change was made.
+
+Seven direct-control rows in the exact `actor_spatial_sound` two-function
+module were individually decoded from GAME retail words and promoted to
+reviewed: internal jumps at `0x8003d0a8` and `0x8003d148`; calls to
+`rand` at `0x8003d0bc`, `func_8003d084` at `0x8003d118` and
+`0x8003d150`, `audio_play_spatial_range` at `0x8003d140`, and
+`audio_play_spatial_default_range` at `0x8003d168`. All seven raw `j`/`jal`
+targets agree with the source and the exact isolated object. A new two-VA
+safe carve admitted all 14 relocations with zero withheld, and both claims
+remain strict 100%. The target module SHA-256 was unchanged from the prior
+candidate-tier carve (`95edbdee5d75e3ac1592b0d7ce94dcc8aa70c5de0699a39637315f6607364cde`).
+
+The remaining 16 candidate control rows in `player_magic_dispatch`
+`0x8002665c` were also decoded individually. Every source word is a raw
+`j` (`opcode 2`) whose encoded target matches its curated row and lies
+inside this function. Sites `0x800266f0`, `0x80026b28`, `0x80026b5c`,
+`0x80026b74`, `0x80026da0`, `0x8002710c`, and `0x800271dc` share the
+`0x800271fc` destination; `0x80026710/1c` share `0x8002672c`.
+The other seven sites are `0x800266b8`, `0x800267c8`, `0x800268c4`,
+`0x80026bb0`, `0x80026ca4`, `0x80026e6c`, and `0x80026ec8`, each with
+its individually decoded local target. Their delay-slot words were retained
+in the raw audit. These rows are reviewed without changing the source:
+a new two-VA safe carve admits 525 aggregate relocations, zero withheld;
+the 256-row module text relocation table and target module SHA-256 remain
+unchanged (`951e40262d58ba2f297c395e782697f819a1d4edd24dcfea10ea77d864fe55b5`).
+The neighboring `0x80026498` stays strict exact, while `0x8002665c`
+remains 98.67857% with its already bounded `player_state` address reuse.

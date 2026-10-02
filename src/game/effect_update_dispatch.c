@@ -1251,9 +1251,10 @@ void effect_update_dispatch(void)
             KfEffectRecord *parent =
                 &effect_state.records[record->unknown_3c[4]];
             struct KfVecXZi forward;
-            s32 speed = (s16)record->direction.vz;
+            s32 speed;
 
             angle_to_forward_xz((s16)record->direction.vx, &forward);
+            speed = (s16)record->direction.vz;
             record->position.vx = parent->position.vx +
                                   ((speed * forward.x) >> 12);
             record->position.vz = parent->position.vz +

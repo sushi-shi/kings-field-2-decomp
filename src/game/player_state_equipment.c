@@ -433,6 +433,7 @@ void func_80025a18(s32 effect_id, ...)
     s32 kind;
     s32 rotation_scale;
     s32 target_scale;
+    s32 case3_z;
     va_list arguments;
     const VECTOR *override_position;
 
@@ -453,7 +454,8 @@ emit_simple_effect:
         if (actor == 0) {
             position.vx += direction.vx;
             position.vy = player_state.camera_position.vy;
-            position.vz += direction.vz;
+            case3_z = position.vz + direction.vz;
+            goto case3_store_z;
         } else {
             position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
             position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
@@ -461,9 +463,14 @@ emit_simple_effect:
             if (func_8002b7f8(position.vx, position.vy, position.vz, 10, 10)) {
                 position.vx = actor->position.vx;
                 position.vy = actor->position.vy;
-                position.vz = actor->position.vz;
+                case3_z = actor->position.vz;
+                goto case3_store_z;
             }
         }
+        goto case3_emit;
+case3_store_z:
+        position.vz = case3_z;
+case3_emit:
         func_80040308(10, 0x12, 0x72, &position, 0);
         break;
     case 0:

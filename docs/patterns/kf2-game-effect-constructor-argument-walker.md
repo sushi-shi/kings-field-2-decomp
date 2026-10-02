@@ -20,17 +20,38 @@ sound call. Retail makes the same case-2 jump into the case-23 tail.
 Kind 12 now copies rotation and writes the three scales before reading its
 remaining five optional halfwords. Retail interleaves each `lhu` with its
 record store; the previous source loaded all five before copying rotation.
+Kind 100 clears `rotation.vz` after its second `rand` call, as retail does;
+the earlier C order cleared it before that call.
+Kind 46 loads its optional byte before clearing `direction.vy` and stores
+the byte in the return jump's delay slot. A short `u8` local expresses that
+retail ordering without changing the field value.
+Kind 5 likewise reads its optional byte before setting the update count;
+retail then stores that byte in the sound call's delay slot.
+Kinds 38/39 draw the second rotation random value before clearing rotation
+and scale fields, then apply that value afterward. The retail instruction
+sequence places the second `rand` call before those field stores; a local
+holds the returned value across them.
+Kinds 33/53 use the same ordering for the third direction random value:
+retail calls `rand`, writes update count and cooldown, then applies the
+returned value to `direction.vz`. The shared switch tail uses a scoped local
+to keep that call sequence.
+Kind 114 writes its 100/600/100 halfwords to `direction` at record offsets
+52/54/56. The earlier C wrote the same values to `rotation` at 36/38/40;
+the corrected fields match the raw stores. Retail writes X and Z before Y,
+so the source keeps that order. A trial moving the direction writes ahead of
+the position update worsened the pinned probe and was discarded.
 The pinned probe now reproduces the complete retail prologue through `+0x70`
 and all **45 ordered optional-stack load width/offset pairs** (`lw`, `lhu`,
 `lbu`). The pointer walk is an O32-specific source model; linked bytes alone
 do not prove the historical C spelling.
 
-A fresh tracked focused quick build reports 87.0% listing similarity,
+A fresh tracked focused quick build reports 87.6% listing similarity,
 116/116 CFG blocks, 22/22 branches, and 26/26 known return frontiers.
-Isolated strict objdiff reports `.text` **94.9725%** and `.rodata`
+Isolated strict objdiff reports `.text` **97.18224%** and `.rodata`
 **18.59756%**. Kind 12's corrected load/store sequence raised text from
-93.75177%; the shorter body shifted many jump-table target addends and
-lowered the data percentage from 40.243904% without changing table identity.
+93.75177% to 94.9725%; kinds 100, 46, 5, 38/39, 33/53, and 114 raised it further. The
+shorter body shifted many jump-table target addends and lowered the data
+percentage from 40.243904% without changing table identity.
 The candidate retains 157 `.text` and 123 switch-table relocation rows,
 21 direct `effect_play_spatial_sound` sites, and all 69 external calls in
 the retail target order. All 123 table entries preserve the retail's 62

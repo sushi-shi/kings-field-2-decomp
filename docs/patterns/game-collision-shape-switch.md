@@ -254,3 +254,24 @@ three subsequent live conditionals in the same source arm. The extra retail
 branch is consistent with the two-block CFG count difference, but the full
 ordered CFG still needs comparison. No dead source condition was added merely
 to reproduce this unreachable branch.
+
+A four-case `switch` for opcode `0x31` was also compiled off-tree after the
+height-result correction. It preserves the same four quarter-turn values,
+but GCC adds a jump for rotation 1 before the shared range test, whereas
+retail branches to its later rotation-1 arm. Isolated strict text falls from
+57.526100% to 57.064560%, and RODATA remains 27.551018%; the existing
+source control shape was retained.
+
+A second opcode `0x31` control placed rotation 1 after the common range
+test and jumped back into it, following retail's physical jump from body
+`+0xa2c` to `+0x9a8`. The probe emitted that jump/assignment pair at
+`+0xa00` but moved the surrounding test and second-layer entry earlier;
+strict text was 56.901100% and RODATA 22.959183%. The off-tree trial was
+discarded pending a source fact that explains the whole layout.
+
+After the opcode `0x32` cursor fix, opcode `0x20` was recompiled as a
+four-case C switch to test the retail 1/0/2/3 selector order. The current
+source already preserves the same tests and shared continuations; the switch
+version lowered isolated strict text from 57.526100% to 56.146976% and
+RODATA from 27.551018% to 21.683674% without supplying a new type,
+referent, or path fact. It was not retained.

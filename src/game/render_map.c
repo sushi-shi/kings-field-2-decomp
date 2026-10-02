@@ -240,8 +240,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
             (object->primitive_offset + KF_TMD_HEADER_BYTES);
     }
     remaining = object->primitive_count;
-    if (remaining != 0) {
-        remaining--;
+    if (remaining-- != 0) {
         do {
             vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
             header.word = *(u32 *)packet;

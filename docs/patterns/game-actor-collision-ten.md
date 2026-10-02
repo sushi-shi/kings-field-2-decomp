@@ -213,3 +213,16 @@ to 94.3% and isolated strict text from 94.37551% to 96.42041%; the three
 siblings remain strict exact. The remaining differences are the state-0x10
 return join and the state-0x20 independent load schedule, with no missing
 call or field referent established.
+
+A fresh isolated control confirms this retained source at **96.42041%**
+strict text and 94.3% focused listing. Retail jumps from the state-`0x10`
+settle arm at body `+0x238` to the reset at `+0x2a0`, whereas the probe
+stores the state byte in its direct return jump's delay slot. An off-tree C
+label joining that settle arm with the state-`0x20` reset is semantically
+faithful but GCC instead merges the separate clear-bit exit with that reset:
+strict text falls to **95.216324%**, focused listing to 88.6%, and known
+return frontiers move from 10/11 to 10/9 against retail's 10. The trial was
+reverted. Casting the state-`0x20` speed read to `u16` before its modular
+halfword increment emits the retained object byte-for-byte and was also not
+kept. All 59 ordered relocation type/symbol pairs and three exact sibling
+functions remain unchanged in these controls.

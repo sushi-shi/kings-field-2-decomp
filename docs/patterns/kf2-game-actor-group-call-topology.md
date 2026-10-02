@@ -51,6 +51,28 @@ an invalid option, so that flag provides no controlled profile comparison.
 The pinned GCC 2.6.0 probe lowered strict text similarity to 60.167664%; it
 does not explain the duplicated retail call sites.
 
+A later isolated kind-`0x78` fallthrough probe gave the second constructor a
+shared call with the simple-direction cases. Retail stores a null fifth
+argument after the first constructor and then enters that shared call. Two
+local pointer-selection spellings reduced the candidate to nine constructor
+sites and raised strict text similarity to 86.01347% and 86.47605%, but the
+pinned compiler emitted a non-null `&direction` fifth argument on the
+kind-`0x78` path. That changes the call's behavior and contradicts retail's
+`sw zero,16(sp)`, so neither spelling was retained. An explicit conditional
+fifth argument preserved the null value and nine call sites, but introduced
+an extra kind comparison absent from retail and scored 85.711075%. The
+committed two-call source remains the supported semantic model; the shared
+call-site shape is unresolved.
+
+The four duplicated retail position-helper sites at body `+0x3ec`, `+0x4a4`,
+`+0x568`, and `+0x5a4` each prepare the same outgoing pointer, pitch,
+yaw-limit, and iteration arguments, vary the distance immediate, then jump to
+the shared constructor. The C has eleven corresponding helper expressions,
+but GCC crossjumps four into one site. Moving five independent `travel_time =
+-1` assignments before their helper calls was a natural source-order probe;
+it still emitted seven helper sites, restored ten constructor sites, and
+lowered strict similarity to 84.92066%. It was discarded.
+
 The related `func_80039108` target scorer has the same kind of evidence
 limit. Retail keeps separate type-9 and type-11 angle/tolerance calls,
 whereas the current compiler merges their identical argument path. Its

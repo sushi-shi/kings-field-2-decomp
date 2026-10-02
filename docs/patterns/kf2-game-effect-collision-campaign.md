@@ -3038,6 +3038,34 @@ Isolated strict text is 94.856200%, RODATA 35.214010%, text 13,808
 bytes, and `.rel.text` 470/470. Pointer/referent controls remain exact;
 the lower aggregate percent comes from shifted body and table addends.
 
+Kind 8 phase one loads its signed direction-Z speed only after the
+`angle_to_forward_xz` call (retail `+0x2480..+0x2494`). The former C
+snapshotted that halfword before the call. Moving the read to the first
+use restores the local call/load order. Focused CFG remains 446/448,
+branches 217/217. Isolated strict text is 94.842710%, RODATA
+35.214010%, candidate text 13,808 bytes, and `.rel.text` 470/470;
+all pointer and named referent controls remain exact. The small aggregate
+dip follows register allocation despite the now-matching read point.
+
+An isolated profile check of this same source keeps the current GCC 2.5.7
+O2 `-mcpu=r2000` probe: strict text/RODATA are 94.842710%/35.214010%
+with 470 ordered text relocations. GCC 2.5.7 O2 without instruction
+scheduling gives 87.135765%/39.785990% and 14,012 text bytes; its plain
+O2 profile gives 90.423360%/41.536964% and 13,844 bytes. GCC 2.6.0
+O2 gives 77.251434%/28.501945%, 13,724 bytes, only 465 text
+relocations, and 269 of 272 named referents. All four preserve 128
+pointer classes; the current probe remains the strongest supported
+per-unit choice, without proving historical compiler attribution.
+
+At this state the 206 external call targets and all 470 text relocation
+type/target pairs remain in retail physical order. A direct O32 call-site
+scan finds no differing literal `$a0`–`$a3` setups or differing direct
+record-field load widths/offsets where both objects load an argument;
+remaining direct-load differences are shifted stack slots or register
+choices for the same actor pointer. The 3,476 retail instructions versus
+3,444 candidate instructions differ mainly in `move` and `nop` counts,
+which this audit does not attribute to a particular compiler mechanism.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

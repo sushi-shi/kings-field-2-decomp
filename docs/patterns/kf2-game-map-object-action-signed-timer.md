@@ -180,3 +180,20 @@ its `else` arm. Removing that increment preserves the successful action
 path, changes the failed-query branch to the retail exit, and raises focused
 isolated strict text to **98.60146%**. The small score change reflects the
 large unchanged body; the removed state transition is required by raw flow.
+
+Action 89 timer cases 2 and 5 both index the occupancy grid using the
+object's Z row and X column. Retail at function `+0xe60..+0xe8c` and
+`+0xf6c..+0xf84` forms the row base before shifting the column, whereas the
+earlier compound two-dimensional C expression caused the probe to shift the
+column first. Naming the typed row pointer in each case preserves the cell
+and layer identities and reproduces the retail address-construction order.
+The first change raises isolated strict text from **98.60146%** to
+**98.80229%**; both together reach **99.00313%** over the 7,668-byte retail
+body, with **88.8%** focused listing. Retail and candidate each have 329 CFG
+blocks, 180 branches, 252 text relocations, and 238 RODATA relocations. The
+ordered relocation type/symbol sequences agree in both sections, all 238
+RODATA relocation sites agree, and the first text relocation-site mismatch
+now occurs at row 144. The 32-byte DATA aggregate and four individual vector
+claims remain exact. RODATA is **44.18239%** in strict comparison because
+switch target addends track the remaining code-layout differences; its table
+identity and ordered referents have not changed. The function remains WIP.

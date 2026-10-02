@@ -13,8 +13,8 @@ unclaimed renderers still need a complete source and data-owner model.
 | `0x8001f8b8` | Two 28-byte glyph rows, eleven label-kind cases, input polling, two frame draws per iteration, and a confirmed choice return. | **WIP, 99.14365% strict**; 42/42 CFG blocks and 18/18 branches agree, with eight raw register/scheduling differences. |
 | `0x8001fb8c` | Menu window renderer with ten blocks and shared sprite state. | **WIP, 99.78788% strict**; retail has a 48-byte frame, current C a 40-byte frame, with no evidenced extra local. |
 | `0x8001fc94` | Large preview renderer calls glyph/number helpers and draws several `POLY_FT4` primitives with the shared sprite definitions. | **WIP, unclaimed**; its complete record and drawing-state contract are unresolved. |
-| `0x80020d20` | Sprite blit reads sprite width and subtracts an eight-pixel margin from X. | **WIP, 99.44068% strict**; equivalent X arithmetic produces a different load/order schedule. |
-| `0x80020ef8` | Paired fixed-CLUT sprite blit uses a seven-pixel X margin. | **WIP, 99.39449% strict**; the same arithmetic-order residue remains. |
+| `0x80020d20` | Sprite blit reads sprite width and subtracts an eight-pixel margin from X. | **Exact, 100% fresh direct strict**; the prior 99.44068% cached row was stale. |
+| `0x80020ef8` | Paired fixed-CLUT sprite blit uses a seven-pixel X margin. | **Exact, 100% fresh direct strict**; the prior 99.39449% cached row was stale. |
 | `0x800210ac` | String drawing loops over glyphs with eight matching CFG blocks. | **WIP, 99.66904% strict**; retail uses a 56-byte frame versus 48 bytes and differs in one glyph-UV register choice. |
 | `0x80021510` | Number drawing has seven matching CFG blocks and uses the shared glyph atlas. | **WIP, 98.61957% strict**; entry delay-slot and repeated atlas-U load order differ. |
 | `0x80022058` | Number formatter selects style/padding and writes digit glyphs. | **WIP, 95.74% strict**; 36/37 CFG blocks match, but retail has an eight-byte frame while current C compiles as a leaf. |
@@ -44,3 +44,9 @@ non-exact sources at the scores above, and reported `0x8001f8b8` at 94.36464%.
 Retail census validation passed. Global edge-check still stops at three
 pre-existing unrelated TMD/map-object `.rodata` addends. No repository tests,
 banking, or commit were performed.
+
+A later focused rebuild and isolated direct strict comparison certify both
+sprite blits as exact without a source edit: `0x80020d20` matches all 472
+text bytes and `0x80020ef8` matches all 436. Their old cached WIP rows do
+not describe the current source objects. This pass used no broad build or
+repository tests.

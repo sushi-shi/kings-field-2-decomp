@@ -38,8 +38,8 @@ typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
     (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
 } while (0)
 #define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).u = ((lhs).u + (rhs).u) >> 1; \
-    (dst).v = ((lhs).v + (rhs).v) >> 1; \
+    (dst).u = ((u32)(lhs).u + (u32)(rhs).u) >> 1; \
+    (dst).v = ((u32)(lhs).v + (u32)(rhs).v) >> 1; \
 } while (0)
 
 ADDRESS(0x8002ff5c, 0xcbc)
@@ -51,7 +51,6 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     KfTmdObject *target;
     u8 *source_packet;
     u8 *output_packet;
-    SVECTOR *source_vertices;
     union { SVECTOR vector; u32 words[2]; } corners[4];
     KfTmdFt4TextureWords tex;
     SVECTOR midpoints[128];
@@ -72,7 +71,6 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     remaining = source->primitive_count;
     target->primitive_count = remaining;
     source_packet = base + source->primitive_offset;
-    source_vertices = (SVECTOR *)(base + source->vertex_offset);
     while (--remaining != (u32)-1) {
         KfTmdPacketHeader header;
         KfUvScratch uv_ab, uv_ac, uv_ad, uv_cd, uv_bd;
@@ -88,22 +86,22 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
 
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex0);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
                 corners[0].words[0] = vertex[0];
                 corners[0].words[1] = vertex[1];
             }
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex1);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
                 corners[1].words[0] = vertex[0];
                 corners[1].words[1] = vertex[1];
             }
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex2);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
                 corners[2].words[0] = vertex[0];
                 corners[2].words[1] = vertex[1];
             }
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex3);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex3);
                 corners[3].words[0] = vertex[0];
                 corners[3].words[1] = vertex[1];
             }
@@ -174,17 +172,17 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
 
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex0);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
                 corners[0].words[0] = vertex[0];
                 corners[0].words[1] = vertex[1];
             }
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex1);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
                 corners[1].words[0] = vertex[0];
                 corners[1].words[1] = vertex[1];
             }
             {
-                const u32 *vertex = (const u32 *)((u8 *)source_vertices + (s16)face->vertex2);
+                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
                 corners[2].words[0] = vertex[0];
                 corners[2].words[1] = vertex[1];
             }
@@ -243,7 +241,7 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     }
     target->vertex_offset = target->primitive_offset + output_packet_bytes;
     target->vertex_count = source->vertex_count + midpoint_count;
-    resource_copy_words((u32 *)output_packet, (u32 *)source_vertices,
+    resource_copy_words((u32 *)output_packet, (u32 *)(base + source->vertex_offset),
                         source->vertex_count * 2);
     output_packet += source->vertex_count * sizeof(SVECTOR);
     resource_copy_words((u32 *)output_packet, (u32 *)midpoints, midpoint_count * 2);

@@ -1904,3 +1904,23 @@ RODATA claim retains the same pointer-addend difference. The flag that closed
 the separate collision-bounds helper does not rematerialize this movement
 loop's player-state field addresses. The unit profile and C source stay
 unchanged.
+
+A fresh isolated control of `player_move_horizontal` confirms the same
+89.85240% strict score, 35/34 CFG blocks, 20/20 branches, 11 ordered calls,
+and 128-byte frame on both sides. Retail stores the result at `sp+80`, the
+retry count at `sp+72`, and the slide flag at `sp+64`; the candidate places
+the result at `sp+64`. Reordering these three genuine local declarations in
+an off-tree source probe moved the result to `sp+72`, not the retail slot,
+and lowered strict similarity to 89.84502%. The raw final failure arm at
+`0x800278e0` and the shorter-step probe's success path are already represented
+in C, so the trial was discarded.
+
+The related GAME `func_80027f78` collision response remains 95.91228%
+strict and 80.5% focused in a fresh isolated build: 27/27 CFG blocks,
+14/14 branches, and all six direct calls align. Its first ordered relocation
+divergence occurs at body `+0x190`, where the candidate rematerializes the
+reaction-motion global instead of using retail's pointer base. The candidate
+has four extra player-state HI16/LO16 pairs but no missing referent. Moving
+the typed motion pointer to function entry regressed strict to 94.84795%
+and changed the already matching early address sequence; narrowing its scope
+at the scaling label emitted an identical object. Both probes were discarded.

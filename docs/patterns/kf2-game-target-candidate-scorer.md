@@ -546,3 +546,18 @@ case-9 failure collapsed the candidate to 58 CFG blocks. GCC 2.5.7 with
 `-fno-cse-skip-blocks` emitted a byte-identical object to the baseline, so
 that flag does not explain this branch sharing. The unchanged source retains
 the separate case-9 angle/tolerance calls and all table target classes.
+
+A later raw-tail review found that type `27` falls through to the same
+zero-score block as types `2`, `3`, and `22` when its distance is below the
+candidate bound. Retail's type-`27` test at `+0x418` branches to the shared
+scoring path on success; the failed path enters the jump at `+0x42c`, whose
+delay slot clears the score. The source now expresses this fallthrough and
+explicit zero assignment. A focused build remains DIFF with 59/59 CFG blocks
+and 37/36 retail/probe branches. Isolated strict `.text` improves from
+93.30592% to **93.93092%**, and `.rodata` from 94.75191% to **96.183205%**.
+The 64 ordered text relocations and 131 table relocations still match by kind
+and referent. All 131 pointer rows retain the exact ten target classes; 123
+addends are byte-identical, up from 120. The remaining eight differ by four
+bytes at types `4/18/23/24/132`, `5/13`, and `9`. The case-9/callback branch
+sharing and saved-register assignment remain unattributed codegen residue, so
+this function is still WIP.

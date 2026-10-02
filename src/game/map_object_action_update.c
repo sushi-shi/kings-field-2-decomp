@@ -526,9 +526,10 @@ void func_80036ed4(void)
                 u16 previous = object->extra_40.halfwords[0];
                 object->extra_40.halfwords[0] = previous - 1;
                 if (previous == 0) {
+                    KfMapOccupancyCell *row =
+                        bss_801c7540.map_cells[object->position.vz >> 11];
                     KfMapOccupancyCell *cell =
-                        &bss_801c7540.map_cells[object->position.vz >> 11]
-                                                  [object->position.vx >> 11];
+                        &row[object->position.vx >> 11];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->action_timer = 3;
                     if (object->unknown_00 != 1) {
@@ -559,9 +560,10 @@ void func_80036ed4(void)
             case 5:
                 object->unknown_10 += 256;
                 if (object->unknown_10 >= 0x1000) {
+                    KfMapOccupancyCell *row =
+                        bss_801c7540.map_cells[object->position.vz >> 11];
                     KfMapOccupancyCell *cell =
-                        &bss_801c7540.map_cells[object->position.vz >> 11]
-                                                  [object->position.vx >> 11];
+                        &row[object->position.vx >> 11];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->unknown_10 = 0x1000;
                     object->action_timer = 0;

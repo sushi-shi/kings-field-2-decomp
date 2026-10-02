@@ -387,3 +387,21 @@ recover retail's signed-load/store sequence, so it was discarded.
 The source evidence does not justify artificial stack padding or register
 carriers for these residues. No tests, lint, full build, broad match, or README
 edit was run.
+
+## Card directory writer and title reader recheck (2026-10-02)
+
+Fresh isolated strict comparisons kept `0x80022ca0` at 95.896774% and
+`0x800228c8` at 85.156250%; the adjacent `memory_card_format` remains exact.
+The writer's raw path, slot scan, seven-palette source, icon transfers, payload
+serialization, checksum, and final card writes agree with the source. Its
+24-block/14-branch CFG is unchanged. Its first difference remains initialization
+and register scheduling around the slot-seed bytes and zero fills.
+
+The reader's retail title bytes at header offsets `0x2c/0x2d` and `0x3e/0x3f`
+are the same glyph pairs selected by the source. Retail uses two signed byte
+loads, two byte stores, then a halfword reload for each pair. An off-tree
+signed-byte lvalue change compiled byte-identically; making the two title
+offsets explicit loop variables preserved meaning but lowered strict text
+from 85.156250% to 83.856250%. The signed glyph union probe reported above
+also lowered strict text to 69.575000%. All three were discarded. No card C or
+shared type change is supported by this pass.

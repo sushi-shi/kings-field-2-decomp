@@ -134,13 +134,14 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         score = -1;
         goto done;
     case 27:
-        if (player_distance < target->word_0c.value) {
-            goto done;
+        if (player_distance >= target->word_0c.value) {
+            break;
         }
-        break;
+        /* Fall through to the zero-score cases. */
     case 2:
     case 3:
     case 22:
+        score = 0;
         goto done;
     default:
         if (target->type >= 128 &&

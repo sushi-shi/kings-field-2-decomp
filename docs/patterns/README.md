@@ -571,6 +571,8 @@ promotes a probe to a proven historical toolchain.
   returns and retail packet dispatch in the GAME map polygon emitter.
 - [kf2-game-render-map.md](kf2-game-render-map.md): KF2's exact FT3/FT4 map
   packet emitter and its four-byte shared neutral-color owner.
+- [GAME prepared-TMD renderer count guard](kf2-game-render-map-prepared-count.md):
+  the retail postdecrement packet-count guard and its preserved CFG.
 - [kf2-game-collision-height.md](kf2-game-collision-height.md): map-cell
   elevation wrappers, reviewed cache referents, and their unresolved BSS owner.
 - [kf2-game-collision-grid-sample.md](kf2-game-collision-grid-sample.md):
@@ -1150,6 +1152,8 @@ promotes a probe to a proven historical toolchain.
 - [GAME target-candidate scorer pilot](kf2-game-target-candidate-scorer.md):
   131-row candidate switch-table evidence, direct calls, object referents,
   and the unresolved callback blocking a source claim.
+- [GAME player effect dispatcher case-3 join](kf2-game-player-effect-dispatch-case3.md):
+  the shared Z store, raw jump target, and switch-table addend tradeoff.
 - [GAME card, menu, and transition ten](game-card-menu-transition-ten.md):
   strict verdicts for ten linked card/menu functions, focused source probes,
   and preserved exact neighbors.

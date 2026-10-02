@@ -497,7 +497,7 @@ void effect_update_dispatch(void)
         collision = func_80042298(radius, radius * 2, 250);
         if (collision != 0) {
             func_8003feb0(collision);
-            if (phase == 1) {
+            if (record->unknown_3c[4] == 1) {
                 record->unknown_3c[4] = 2;
                 record->unknown_09 = 1;
                 record->unknown_0c = 0x42;
@@ -529,7 +529,7 @@ void effect_update_dispatch(void)
             }
             break;
         case 1:
-            record->scale_z -= 512;
+            record->scale_z = (s16)record->scale_z - 512;
             if ((s16)record->scale_z <= 0) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
@@ -603,7 +603,7 @@ void effect_update_dispatch(void)
         s32 distance;
 
         if (prior_phase == 2) {
-            record->scale_x = (u16)record->scale_x - 128;
+            record->scale_x = (s16)record->scale_x - 128;
             record->scale_y = record->scale_x;
             if ((s16)record->scale_x <= 0) {
                 record->type = KF_EFFECT_SLOT_FREE;
@@ -655,9 +655,9 @@ void effect_update_dispatch(void)
     kind103_spawn: {
         SVECTOR spawn_direction;
 
+        record->phase = 2;
         spawn_position.vx = record->position.vx;
         spawn_position.vz = record->position.vz;
-        record->phase = 2;
         /* Retail has no visible write to this stack direction. */
         func_80040308(10, record->type | 3,
                        initial_kind == 103 ? 104 : 122,
@@ -816,7 +816,7 @@ void effect_update_dispatch(void)
             *(s16 *)&record->unknown_3c[4],
             *(s16 *)&record->unknown_3c[6],
             *(s16 *)&record->unknown_3c[8],
-            *(s16 *)&record->unknown_3c[10],
+            0xa0,
             0, 6000, *(s16 *)&record->unknown_3c[10], 0x800);
         if (collision != -1) {
             goto kind12_collision;
@@ -1195,15 +1195,18 @@ void effect_update_dispatch(void)
                         &effect_state.records[record->unknown_3c[4]];
 
                     if (func_80041e0c(&next, 0x2000, 0x2000, 500) == 0) {
-                        s32 dx = record->position.vx - parent->position.vx;
-                        s32 dz = record->position.vz - parent->position.vz;
-                        s32 distance = fixed_vector2_length(dx, dz);
+                        s32 dx;
+                        s32 dz;
+                        s32 distance;
 
                         record->phase = 1;
                         record->unknown_08 = 9;
                         record->render_id = 20;
                         record->rotation.vz = 0;
+                        dx = record->position.vx - parent->position.vx;
+                        dz = record->position.vz - parent->position.vz;
                         record->direction.vx = vector_xz_to_angle(dx, dz);
+                        distance = fixed_vector2_length(dx, dz);
                         record->direction.vz = distance;
                         record->direction.vy = distance;
                         record->scale_z = 0;
@@ -1487,7 +1490,7 @@ void effect_update_dispatch(void)
                     *(KfEffectTrailRow **)&record->unknown_3c[4];
                 KfEffectTrailRow *row = &rows[record->unknown_3c[8]];
                 s32 radius = ((s32)actor_extent * 25 << 8) >> 12;
-                s16 angle = record->rotation.pad;
+                s32 angle = (s16)record->rotation.pad;
 
                 record->unknown_3c[9]++;
                 record->rotation.pad = angle + 100000 / actor_extent;
@@ -1660,7 +1663,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 22:
-        record->rotation.vy = (u16)record->rotation.vy + 10;
+        record->direction.vy = (u16)record->direction.vy + 10;
         collision = func_80042298(100, (s32)0x80000000, -300);
         if (collision != 0) {
             func_8003feb0(collision);
@@ -1685,16 +1688,18 @@ void effect_update_dispatch(void)
                           *(s32 *)&record->unknown_3c[8],
                           record->position.vz, 0, 0);
             if (record->position.vy < KF_COLLISION_CACHE_RESULT) {
-                for (count = 1; count != -1; count--) {
-                    func_80041e94(record, (rand() * 20) >> 15,
-                                   -3, 6000, -200, 5, 39, 0, 0x100);
-                }
-                break;
+                goto kind114_particles;
             }
             record->position.vy = KF_COLLISION_CACHE_RESULT;
         }
         func_80040308(10, record->type | 3, 3, &record->position, 0, 0);
         record->type = KF_EFFECT_SLOT_FREE;
+        break;
+    kind114_particles:
+        for (count = 1; count != -1; count--) {
+            func_80041e94(record, (rand() * 20) >> 15,
+                           -3, 6000, -200, 5, 39, 0, 0x100);
+        }
         break;
     }
     case 24: {

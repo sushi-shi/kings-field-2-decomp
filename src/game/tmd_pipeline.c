@@ -238,8 +238,9 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
+                break;
+            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -426,8 +427,9 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
+                break;
+            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {

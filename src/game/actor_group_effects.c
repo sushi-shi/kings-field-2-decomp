@@ -26,14 +26,17 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     s32 first;
     s32 second;
     s32 third;
-    VECTOR offset;
     VECTOR position;
+    VECTOR offset;
     VECTOR target;
     VECTOR predicted;
-    SVECTOR rotated;
     SVECTOR direction;
-    SVECTOR motion;
-    struct KfEulerAngles angles;
+    union {
+        SVECTOR motion;
+        struct KfEulerAngles angles;
+    } orientation;
+    SVECTOR rotated;
+    VECTOR trajectory_target;
     KfEffectRecord *effect;
     KfActor *spawned;
     s32 travel_time;
@@ -102,21 +105,19 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     case 4:
         func_8003c3e0(current, player, 800, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
-    simple_direction_effect:
-        func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      travel_time, 0x400, 1);
-        break;
+        goto simple_direction_effect;
     case 0x28:
         func_800154fc(player->vx - position.vx,
                       player->vy - (position.vy + 1600),
                       player->vz - position.vz,
-                      &angles);
-        pitch_yaw_to_forward_vector(&angles, &direction);
+                      &orientation.angles);
+        pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(1000, &direction);
         position.vx = (s32)((u32)position.vx + (u32)direction.vx);
         position.vy = (s32)((u32)position.vy + (u32)direction.vy);
         position.vz = (s32)((u32)position.vz + (u32)direction.vz);
-        func_80040308(effect_id, 0x23, kind, &position, &direction, &angles);
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      &orientation.angles);
         break;
     case 9:
     case 0x21:
@@ -160,11 +161,11 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         func_800154fc(predicted.vx - position.vx,
                       predicted.vy - position.vy,
                       predicted.vz - position.vz,
-                      &angles);
-        pitch_yaw_to_forward_vector(&angles, &direction);
+                      &orientation.angles);
+        pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
         func_80040308(effect_id, 0x23, kind, &position, &direction,
-                      &angles, 500, 0x3c, 0x80, 0x50, 0x8c);
+                      &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case 0x78:
         position.vx = (rand() >> 2) + player->vx - 4096;
@@ -172,6 +173,10 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         position.vy = player->vy - 5000;
         func_80040308(effect_id, 0x23, kind, &position, 0);
         func_80040308(effect_id, 0x23, kind, &position, 0);
+        break;
+    simple_direction_effect:
+        func_80040308(effect_id, 0x23, kind, &position, &direction,
+                      travel_time, 0x400, 1);
         break;
     case 0x6e:
         parameters = va_arg(arguments, const u16 *);
@@ -227,27 +232,29 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         break;
     case 0x1d:
     case 0x1f:
-        target = *player;
+        trajectory_target = *player;
         count = 6;
         do {
-            distance = fixed_vector2_length(target.vx - position.vx,
-                                            target.vz - position.vz);
+            distance = fixed_vector2_length(trajectory_target.vx - position.vx,
+                                            trajectory_target.vz - position.vz);
             if (func_80015918(0, distance,
-                    position.vy + 1400 - target.vy, 10, 800,
+                    position.vy + 1400 - trajectory_target.vy, 10, 800,
                     &travel_time, &trajectory_angle) != 0) {
                 trajectory_angle = 0x100;
             }
             count--;
             if (count != 0) {
                 func_80015ce0(player, (SVECTOR *)&player_state.unknown_e8,
-                              travel_time >> 6, &target);
+                              travel_time >> 6, &trajectory_target);
             }
         } while (count != 0);
-        motion.vx = trajectory_angle;
-        motion.vy = func_8003c3e0(current, &target, 800, &position,
-                                  &direction, trajectory_angle, 0xc00, 1);
-        motion.vz = 0;
-        effect = func_80040308(effect_id, 0x23, kind, &position, &direction, &motion);
+        orientation.motion.vx = trajectory_angle;
+        orientation.motion.vy = func_8003c3e0(current, &trajectory_target,
+                                              800, &position, &direction,
+                                              trajectory_angle, 0xc00, 1);
+        orientation.motion.vz = 0;
+        effect = func_80040308(effect_id, 0x23, kind, &position, &direction,
+                              &orientation.motion);
         if (effect != 0) {
             effect->updates_remaining = 0x32;
             effect->phase = 0;

@@ -3,19 +3,29 @@
 #include <kf/game/memory.h>
 #include <kf/game/tmd.h>
 #include <kf/game/tmd_packets.h>
+
+typedef struct KfTmdUvBytes {
+    u8 u, v;
+} KfTmdUvBytes;
+typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
+
 typedef struct KfTmdFt4TextureWords {
-    u16 uv0, clut, uv1, tpage, uv2, pad0, uv3, pad1;
+    KfTmdUvBytes uv0; u16 clut; KfTmdUvBytes uv1; u16 tpage;
+    KfTmdUvBytes uv2; u16 pad0; KfTmdUvBytes uv3; u16 pad1;
 } KfTmdFt4TextureWords;
 typedef char kf_tmd_ft4_texture_words_size[
     sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
-typedef union KfUvScratch {
-    u16 halfword;
-    struct { u8 u, v; } bytes;
-} KfUvScratch;
+typedef char kf_tmd_ft4_texture_uv1_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv1 == 4 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv2_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv3_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
+typedef KfTmdUvBytes KfUvScratch;
 typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
 #define WRITE_UV_CACHED(field, value) do { \
-    ((u8 *)&(field))[0] = (value).bytes.u; \
-    ((u8 *)&(field))[1] = (value).bytes.v; \
+    ((u8 *)&(field))[0] = (value).u; \
+    ((u8 *)&(field))[1] = (value).v; \
 } while (0)
 #define WRITE_INDEX(field, value) do { \
     ((u8 *)&(field))[0] = (u8)(value); \
@@ -28,8 +38,8 @@ typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
     (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
 } while (0)
 #define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).bytes.u = ((u8)(lhs) + (u8)(rhs)) >> 1; \
-    (dst).bytes.v = ((u8)((lhs) >> 8) + (u8)((rhs) >> 8)) >> 1; \
+    (dst).u = ((lhs).u + (rhs).u) >> 1; \
+    (dst).v = ((lhs).v + (rhs).v) >> 1; \
 } while (0)
 
 ADDRESS(0x8002ff5c, 0xcbc)

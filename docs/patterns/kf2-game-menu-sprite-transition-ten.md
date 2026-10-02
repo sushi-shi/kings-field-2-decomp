@@ -72,3 +72,16 @@ quad helpers, the sound-cue dispatcher, and the TIM/VRAM transition are exact.
 Adjacent `0x189f0`, `0x21e00`, and `tim_upload_images` remain strict exact
 controls. The earlier percentage and CFG statements for these exact functions
 are historical; no tests, linked build, or banking were run in this recheck.
+
+## Focused transition recheck
+
+A fresh isolated object comparison gives `game.menu_transition` strict
+**96.31408%** for `0x800349bc`, with `tim_upload_images` and `0x80034e10`
+strict **100%** and the eight-byte initialized `menu_transition_rect`
+byte exact. Retail and source have the same four `SetPolyFT4` calls, two
+`SetSemiTrans` calls, texture-page/CLUT calls, four `AddPrim` calls, and
+PadRead/DrawSync frame loop. The first difference is a 72-byte retail frame
+versus 64 bytes in the probe: retail keeps the transition state at `sp+24`
+and a `0xff` packet constant in a saved register, while the probe keeps state
+in a saved register. No decoded access establishes another local object or
+missing packet field. The source and SDK macro calls remain unchanged.

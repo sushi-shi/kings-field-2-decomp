@@ -1895,3 +1895,12 @@ collision branch delay slot, and retry while the signed distance is
 nonnegative. Retail's successful retry stores through the late camera
 pointer, as the retained C now expresses. No additional source edit is
 supported by the remaining address-lifetime or stack-allocation difference.
+
+An isolated `-fno-cse-skip-blocks` control on the complete
+`game.player_select_magic_action` unit emits a byte-identical object to the
+configured profile. Direct strict scores remain **99.09091%** for
+`func_8002722c` and **89.85240%** for `player_move_horizontal`; the 100-byte
+RODATA claim retains the same pointer-addend difference. The flag that closed
+the separate collision-bounds helper does not rematerialize this movement
+loop's player-state field addresses. The unit profile and C source stay
+unchanged.

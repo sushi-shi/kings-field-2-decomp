@@ -25,7 +25,7 @@ listing residues and exact controls.
 | `0x8002f194` | `render_enqueue_map` | **Exact, 100%**; regression control beside the map clipper. |
 | `0x8002f5b0` | Clipped GT3 fan builder | **WIP, 95.833336%**. The clipped-vertex and SDK call set agree; retail keeps a different saved-register assignment and orders one `lhu`/`sh` pair before the depth divide. |
 | `0x8002f808` | Alternate prepared TMD renderer | **WIP, 91.176970% fresh direct strict objdiff; 58.9% focused listing**. FT3/FT4 clipping and packet fields are modeled. The retail-backed zero-count guard and postdecrement loop give 51/51 CFG blocks, 35/35 branches, 4/4 return frontiers, and matching known successor lists. Forming the projected-vertex base inside the packet loop removes two extra global address pairs. Placing each normal packet path before its clipping fallback follows the retail branch layout and raises strict similarity from 64.961624% to 91.176970%. The target and source each have 48 function relocation rows in the same type/referent order; all external call counts agree. The first differing control is #6, and retail's 168-byte frame versus the probe's 120-byte frame remains unattributed. |
-| `0x8002ff5c` | Prepared TMD object copier | **Claimed WIP; 51.506750% direct strict objdiff; 12.0% focused listing**. The sole caller passes asset, 16-bit object index, and a 4096-byte output object. The C claim models 14 copy calls, four-child FT4/FT3 subdivision, five or three midpoint vertices, packet counts, and final vertex/normal copies. All 14 external copy-call targets and counts agree. Retail and C have 11/11 CFG blocks, 6/6 branches, the same known successor lists, and 16 relocation rows each. Raw FT4 and FT3 paths copy respectively four and three packet words into a shared scratch record at `sp+48`; subsequent byte reads at offsets 48, 49, 52, 53, 56, and 57 prove the local texture-word view. Retail initializes its midpoint pointer at `sp+64` and later copies vertices from that address; the next stack record begins at `sp+1088`, supporting the 1024-byte, 128-`SVECTOR` workspace. The probe uses the same `sp+48` scratch and `sp+64` midpoint addresses, so retail's 1248-byte frame versus the probe's 1360-byte frame comes from the upper temporary/spill region, whose ownership remains unresolved. The first subdivided FT4 child writes two full words at packet offsets 24 and 28; a shared typed view now expresses both index pairs without an aliasing cast, preserving the adjacent halfword in the second pair. The retail local halfword scratch that feeds those words is not yet modeled. A typed `SVECTOR` aggregate-copy probe for four corner records expanded text 2816→2892 bytes and reduced strict matching to 44.068710%; the retained union view spells the raw two-word vertex copies. A shared `u8` packet-mode local compiled to a byte-identical object and was discarded. The pinned no-scheduler profile was a temporary 12.2% focused regression and was discarded. |
+| `0x8002ff5c` | Prepared TMD object copier | **Claimed WIP; 52.31411% fresh direct strict objdiff; prior 12.0% focused listing**. The sole caller passes asset, 16-bit object index, and a 4096-byte output object. The C claim models 14 copy calls, four-child FT4/FT3 subdivision, five or three midpoint vertices, packet counts, and final vertex/normal copies. All 14 external copy-call targets and counts agree. Retail and C have 11/11 CFG blocks, 6/6 branches, the same known successor lists, and 16 relocation rows each. Raw FT4 and FT3 paths copy respectively four and three packet words into a shared scratch record at `sp+48`; subsequent byte reads at offsets 48, 49, 52, 53, 56, and 57 prove the local texture-word view. Retail initializes its midpoint pointer at `sp+64` and later copies vertices from that address; the next stack record begins at `sp+1088`, supporting the 1024-byte, 128-`SVECTOR` workspace. The probe uses the same `sp+48` scratch and `sp+64` midpoint addresses, while the current candidate uses a 1240-byte frame against retail's 1248; the remaining upper temporary/spill extent is unresolved. The first subdivided FT4 child writes two full words at packet offsets 24 and 28; a shared typed view now expresses both index pairs without an aliasing cast, preserving the adjacent halfword in the second pair. The retail local halfword scratch that feeds those words is not yet modeled. A typed `SVECTOR` aggregate-copy probe for four corner records expanded text 2816→2892 bytes and reduced strict matching to 44.068710%; the retained union view spells the raw two-word vertex copies. A shared `u8` packet-mode local compiled to a byte-identical object and was discarded. The pinned no-scheduler profile was a temporary 12.2% focused regression and was discarded. |
 | `0x80030c18` | `render_map_cell_object` | **WIP, 96.521736% direct strict objdiff; 98.7% focused listing**. Retail/source CFGs have 11/11 blocks and 6/6 branches; the call set and typed cell/lighting fields agree. Four prologue instructions are ordered differently before `SetRotMatrix`, after which the focused listing is SAME. Moving the object-index read earlier in a temporary source expanded the frame and was discarded. This is an unattributed codegen residue; all three sibling functions in the unit remain strict 100% controls. |
 | `0x80030de4` | Two-layer map-cell emitter | **Direct strict objdiff 100%; focused SAME**. Retail and source have 10/10 CFG blocks, two calls to `render_map_cell_object`, and the same 80-column grid stride. Computing each layer's vertical position before its depth position aligns the lower-layer load and x/z instruction schedule. This result is not banked. |
 | `0x80030f5c` | Map-cell row traversal | **Exact, 100%**; adjacent regression control. |
@@ -52,12 +52,12 @@ which `0x80030408` copies to packet +24. `0x8003041c` replaces only its low
 halfword with `ad`, and `0x80030430` copies the word to packet +28 with `ac`
 still in the high halfword. The source's `vertex1_vertex2` and
 `vertex3_pad2` assignments express precisely those bytes. A fresh focused
-build remains 12.0% listing DIFF; the 1248/1360-byte frame and packet-local
-schedule remain unexplained. Both retail and probe form the midpoint workspace
-at `sp+64`; retail stores FT4 corner words at `sp+16..47` and computes signed
-halfword midpoint averages with eight-byte output strides. The 112-byte frame
-gap therefore does not support shrinking the 128-entry midpoint array. This
-pass retains no source edit.
+build was 12.0% listing DIFF; the then-current 1248/1360-byte frame and
+packet-local schedule were unexplained. Both retail and probe form the
+midpoint workspace at `sp+64`; retail stores FT4 corner words at `sp+16..47`
+and computes signed halfword midpoint averages with eight-byte output strides.
+The 112-byte frame gap therefore did not support shrinking the 128-entry
+midpoint array. That pass retained no source edit.
 
 The fresh isolated `game.tmd_pipeline` object is 97.388570% strict for its
 6,372-byte `.text` section and keeps all eight adjacent functions at direct
@@ -135,8 +135,8 @@ For `0x8002ff5c`, merely widening the UV scratch union to four bytes raised a
 temporary probe to 20.4% focused and 54.321472% direct strict, but the added
 word member had no source use and would only steer allocation. Computing the
 two UV components through that word instead dropped focused similarity to
-10.2%. Both probes were discarded; the retained builder remains 12.0%
-focused and 51.506750% direct strict.
+10.2%. Both probes were discarded; at that checkpoint the retained builder was
+12.0% focused and 51.506750% direct strict.
 Retail also reuses one stack word at `sp+1088` for each packed FT4/FT3
 vertex-index word, then reads the selected signed halfword. An off-tree
 source probe expressed that real value flow with one `u32`/`s16[2]` union
@@ -209,3 +209,46 @@ signatures. `kf sema --image game addr` parses all three; focused comparisons
 of their existing caller/owner units preserve the prior WIP and exact sibling
 listings. The `0x8002f808` loop change preserves exact `render_enqueue_map`.
 No repository tests, lint, full build, broad match, bank, or commit were run.
+
+## Prepared packet UV component view
+
+The copied FT4/FT3 texture words at stack `+48..+63` contain packed, separate
+8-bit U and V components. After the FT4 `resource_copy_words` at body `+0x35c`,
+retail reads U and V with `lbu` from `sp+48/49`, `+52/53`, `+56/57`, and
+`+60/61` before averaging the components. The old local `u16` view produced
+`lhu` plus shifts. A two-byte U/V struct now names those fields inside the
+same 16-byte local packet view, preserving the four-child FT4 and FT3 paths,
+all 14 direct copy calls, and the object extent.
+
+The FT3 path repeats the byte pattern after its copy call at body `+0x8b4`:
+retail loads `sp+48/49`, `+52/53`, and `+56/57` at `+0x8c8..+0x91c`.
+
+The first byte-field view moved strict text from **51.50675%** to
+**50.339878%** and candidate `lbu`/`lhu` counts from 10/19 to 18/13. The
+unused halfword member of the midpoint UV scratch union was then removed:
+the scratch is the same two-byte U/V struct as the copied packet fields.
+The fresh focused object reaches **52.31411%** strict. Its candidate text is
+2,724 bytes against retail's 3,260; the objdiff helper reports the retail
+function size, not the candidate extent. The frame narrows from 1,360 to
+1,240 bytes, eight bytes below retail's 1,248. Candidate `lbu`/`lhu` counts move
+to 55/2, versus retail's 53/0. All 14 direct `resource_copy_words` calls and
+16 ordered relocation rows remain present. This is a type/lifetime
+correction supported by the raw byte accesses; register and scratch-word
+scheduling still leave the function WIP.
+
+An off-tree index-word union for packed vertex indices compiled
+byte-identically to the original halfword-view source and was discarded.
+An isolated GCC 2.6.0 profile control of the first byte-field view fell to
+46.65767% strict, so the unit profile remains unchanged. Verification used
+only focused object compiles, isolated strict comparisons, raw disassembly,
+and `git diff --check`.
+
+The remaining candidate `lhu` instructions read the low half of the source
+object's 32-bit vertex count at the FT4/FT3 midpoint-index setup, whereas
+retail loads the word. An off-tree `u32` index-local trial removed both
+`lhu` instructions but let high bits contaminate the packed first-child
+index words; an explicit 16-bit mask restored the required packet semantics.
+That masked trial was **51.305523%** strict versus the retained
+**52.31411%**, and narrowed the frame another eight bytes away from retail.
+The raw word load alone does not prove the original index-local width, so the
+retained 16-bit packet indices remain unchanged.

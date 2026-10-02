@@ -2949,6 +2949,95 @@ The C now spells that common exit. Focused CFG is 446/448 blocks with
 35.116730%, text 13,808 bytes, and `.rel.text` 470/470. All 128
 ordered pointer classes and 272 named referents remain exact.
 
+Kind 114's ground check branches forward to the two-particle loop when
+the position lies below the collision result. Retail places the clamp,
+constructor, and release before that loop (`+0x3374..+0x33a8`); the
+earlier C layout put the loop first, reversing the physical branch. The
+C now shares the same paths in retail order. Focused CFG remains 446/448
+blocks and 217/217 branches. Isolated strict text rises to 94.256890%;
+RODATA is 35.116730%, candidate text 13,808 bytes, and `.rel.text`
+470/470. All 128 ordered pointer classes and 272 named referents remain
+exact.
+
+Kind 8's successful parent collision sets phase one and the render fields,
+computes the parent X/Z difference, then calls `vector_xz_to_angle`
+before `fixed_vector2_length` (retail `+0x2314..+0x2364`). The previous
+C evaluated the length call first. Preserving retail call and store order
+raises isolated strict text to 94.466995%; RODATA is 31.614786% after
+body-offset shifts, text 13,800 bytes, and `.rel.text` 470/470. Focused
+CFG stays 446/448 with 217/217 branches. The 128 ordered table pointer
+classes and 272 named referents remain exact.
+
+The current 94.466995% candidate also has the same 206 external
+`R_MIPS_26` call targets in physical order as retail. The full 470-row
+`.rel.text` type-and-symbol sequence is identical; individual relocation
+offsets and jump-table addends still move with differing body layout.
+
+On the kind-103/121 spawn arm, retail writes phase two before copying X
+and Z to the constructor position (`+0x120c..+0x1224`). Moving that C
+store ahead of the two vector-member copies restores the local `li`/`sb`
+then X/Z load/store sequence. Focused CFG stays 446/448 with 217/217
+branches. Isolated strict text reaches 94.853905%, RODATA 35.116730%,
+candidate text 13,804 bytes, and `.rel.text` 470/470; 128 ordered table
+pointer classes and 272 named referents remain exact.
+
+Kind 22 increments the direction Y halfword at record `+0x36` by ten
+before its collision call (retail `+0x3298..+0x32a8`). The former C
+updated rotation Y at `+0x26`; correcting the field restores the load
+and delay-slot store offsets. Focused CFG remains 446/448 with 217/217
+branches. Isolated strict text is 94.854480%, RODATA 35.116730%,
+candidate text 13,804 bytes, and `.rel.text` 470/470. The exact table
+pointer and named referent controls remain unchanged.
+
+Kind 1/28 captures record byte `+0x40` for its early phase decisions but
+reloads it after the collision response call before deciding whether to
+enter phase two (retail `+0xda4` `lbu`, then `bne`). The prior C compared
+the pre-call snapshot. The post-call field read now emits the matching
+local `lbu`/delay/branch chain. Focused CFG stays 446/448 with 217/217
+branches; isolated strict text is 94.791046%, RODATA 14.980545% after
+body-offset movement, text 13,812 bytes, and `.rel.text` 470/470.
+The 128 table pointer classes/order and 272 named referents remain exact.
+The lower aggregate percentage does not overturn the direct post-call
+read evidence.
+
+Kind 6 phase two reads the saved angle from record `+0x2a` with signed
+`lh` at retail `+0x2cb8`. Modeling it as a promoted `s32` from the
+stored signed halfword makes the candidate use `lh` too, rather than
+`lhu` plus later sign extension. Focused CFG remains 446/448 and
+branches 217/217. Isolated strict text rises to 94.989090%, RODATA
+32.879380%, candidate text 13,804 bytes, and `.rel.text` 470/470.
+The ordered pointer and named referent controls remain exact.
+
+Kind 12's `func_8004195c` call passes literal `0xa0` in O32 `$a3`,
+while record halfword `+0x46` supplies the later seventh stack argument.
+The former C passed that halfword in both positions. The corrected call
+setup reproduces retail's two `li a3,0xa0` paths around the optional
+sound call and its single signed halfword load for the stack slot
+(`+0x16d0..+0x1724`). Focused CFG remains 446/448 and branches 217/217.
+Isolated strict text is 94.900980%, RODATA 35.214010%, candidate text
+13,808 bytes, and `.rel.text` 470/470; ordered pointer and named
+referent controls remain exact. The source retains the proven argument
+despite the intermediate aggregate text shift.
+
+Kind 26/27's phase-one scale-Z decrement uses `lhu` followed by
+`addiu -512`, stores the low halfword, then tests the signed result
+(retail `+0xe94..+0xeac`). Promoting that halfword as signed for the
+subtraction produces the same instruction chain, rather than building
+unsigned literal `0xfe00` and adding it. Focused CFG remains 446/448
+with 217/217 branches. Isolated strict text reaches 95.026695%,
+RODATA 35.214010%, candidate text 13,808 bytes, and `.rel.text`
+470/470; pointer classes and named referents remain exact.
+
+Kind 103/121 phase two similarly loads scale X at record `+0x2c`,
+subtracts 128 with signed `addiu`, stores scale X, reloads its signed
+halfword for the exit test, and copies the result to scale Y (retail
+`+0x10c0..+0x10dc`). Promoting the stored halfword as signed before the
+subtraction restores that chain; the former unsigned expression emitted
+`li 0xff80` plus `addu`. Focused CFG stays 446/448, branches 217/217.
+Isolated strict text is 94.856200%, RODATA 35.214010%, text 13,808
+bytes, and `.rel.text` 470/470. Pointer/referent controls remain exact;
+the lower aggregate percent comes from shifted body and table addends.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

@@ -173,3 +173,84 @@ rises to 53.690933%, while RODATA falls to 19.132652% because case-body
 addends move; all 49 pointer rows retain the same 13 target classes and
 ordered class membership. The candidate has 34 internal text jumps against
 47 retail, and all 24 ordered HI16/LO16 data-reference pairs remain.
+
+Opcode `0x23` selects one of four quarter-turn height comparisons. Its raw
+entry branches first to rotation 1, then checks 0, 2, and 3 before joining
+the common bound test. A four-case C switch preserves those operations and
+induces the same branch order more closely than the prior `if` ladder.
+Focused CFG rises from 166 to 168 candidate blocks against 174 retail,
+with 99/99 branches unchanged. Isolated strict text rises from 53.690933%
+to 54.490383%, and RODATA from 19.132652% to 26.530613%. All 49 pointer
+rows keep the same 13 target classes and ordered membership; their addends
+remain non-exact while the body layout is incomplete.
+
+With the operand-relative cursor in place, spelling opcode `0x21`'s four
+quarter-turn arms as a switch also emits retail's initial forward `beq` to
+rotation 1 and the following 0/2/3 checks. The arm operations and shared
+result block are unchanged. Focused CFG reaches 170 candidate blocks against
+174 retail, retaining 99/99 branches. Isolated strict text rises from
+54.490383% to 54.553570% and RODATA from 26.530613% to 27.040817%.
+The 49 pointer rows still have the same 13 target classes in the same order;
+none of their body-offset addends is exact yet.
+
+The same four-case switch spelling for opcode `0x20` was tried off-tree. Its
+shared cross-opcode labels compiled to a different physical layout and
+lowered strict text to 52.961540% and RODATA to 24.234694%; it was not
+retained. The source keeps the forward rotation-1 branch established above.
+
+Opcode `0x22` is another four-rotation selector with two direct rectangular
+tests and two exits through the shared `0x20` bound checks. A four-case C
+switch preserves those paths and follows retail's 1/0/2/3 comparison order.
+Focused CFG reaches 172 candidate blocks against 174 retail, still with
+99/99 branches. Isolated strict text rises from 54.553570% to 56.032967%;
+RODATA becomes 24.234694% as later blocks move. All 49 table rows retain
+their 13 target classes in order, and one pointer addend is now exact. The
+remaining switch targets and source still need matching work.
+
+Retail opcode `0x21` rotation 1 jumps into opcode `0x22`'s X-near-bound
+test at body `+0x4cc`, and rotation 3 jumps into its X-far-bound test at
+`+0x54c`; each already shares the same first Z-axis threshold. The source
+now joins those two cross-opcode continuations explicitly. The compiler
+still merges one conditional path differently: focused CFG is 174/170 and
+branches 99/98, versus 174/172 and 99/99 before the shared labels. Isolated
+strict text rises to 56.247253% and RODATA to 27.295916%; all 49 table rows
+retain their 13 target classes but no pointer addend is exact. An explicit
+decrement-path `goto` after each shared comparison emitted an identical
+object. The raw jump targets support the sharing, while the remaining
+branch and block deficit keeps this source WIP.
+
+Placing those shared X-axis continuations after opcode `0x22`'s rotation
+switch, rather than inside its two `if` arms, keeps the same decoded paths
+but prevents one block merge. Focused CFG recovers to 174/172; the branch
+count remains 99/98. Isolated strict text rises to 56.755493% and RODATA
+to 28.826529%. All 49 table rows retain their 13 ordered target classes,
+and one pointer addend is exact. The remaining branch and two-block gap
+still need a source-backed explanation.
+
+The opcode `0x32` height result has a second local comparison against `y`
+after storing the new result. Retail at body `+0x904` through `+0x920`
+branches separately on `candidate_height < cache->result` and
+`candidate_height < y`, whereas the earlier source jumped to opcode `0x10`'s
+shared comparison. Keeping the second test local emits the two branches in
+the retail order. Isolated strict text is 56.530220% and RODATA 22.959183%;
+focused CFG remains 174/172 with 99/98 branches overall. The score moved
+down because of later layout, but the local branch sequence is now supported
+by raw instructions. The remaining global branch gap has not been attributed.
+
+The shared height-result block is reached only from opcodes `0x30` and
+`0x32`, which both set `next_record = record + 6` before entering it. Removing
+the redundant assignment from that block lets the opcode `0x32` continuation
+use the first branch delay slot for its second signed comparison, as retail
+does at `+0x90c`; the store, second branch, and flag-setting jump follow in
+the same order. Isolated strict text rises to 57.526100% and RODATA to
+27.551018%. Focused CFG is still 174/172 blocks and 99/98 branches, so the
+rest of the function remains WIP.
+
+The remaining branch-count discrepancy has a concrete raw location in opcode
+`0x11`: retail writes zero to `$s7` at body `+0x210`, then branches on `$s7`
+at `+0x214` before reading the command operands. That branch is never taken
+under the observed instruction sequence. The probe omits it and emits the
+three subsequent live conditionals in the same source arm. The extra retail
+branch is consistent with the two-block CFG count difference, but the full
+ordered CFG still needs comparison. No dead source condition was added merely
+to reproduce this unreachable branch.

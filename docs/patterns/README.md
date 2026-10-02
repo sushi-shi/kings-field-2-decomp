@@ -100,6 +100,9 @@
 - [kf2-game-tmd-primitive-preparation.md](kf2-game-tmd-primitive-preparation.md):
   typed GAME TMD parser, its 29-row switch-table owner, and the remaining
   entry, branch, and table-addend WIP residue.
+- [kf2-game-tmd-pipeline-depth-tail.md](kf2-game-tmd-pipeline-depth-tail.md):
+  FT3 depth guards, preserved exact TMD pipeline siblings, and the remaining
+  textured and lit walker scheduling residues.
 - [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
   render-frame and notification verdicts, three new strict matches, and
   remaining model, map-grid, and resource boundaries.
@@ -836,8 +839,8 @@ promotes a probe to a proven historical toolchain.
   functions, including the 80-row defaults and same-module DATA relocation rule.
 - [kf2-game-effect-constructor-case23.md](kf2-game-effect-constructor-case23.md):
   retail-backed kind-23 variadic read order and focused/strict controls.
-- [kf2-game-effect-constructor-case101.md](kf2-game-effect-constructor-case101.md):
-  retail-backed kind-101 argument access across its initializer call.
+- [kf2-game-effect-constructor-argument-walker.md](kf2-game-effect-constructor-argument-walker.md):
+  fifth-slot argument walker, retail load-width controls, and constructor WIP.
 - [KF2 GAME effect dispatcher map](kf2-game-effect-dispatch-map.md): retail
   123-kind and five-phase switch tables, decoded handler/call topology, and
   remaining source and collision-cache ownership limits at `0x80042650`.

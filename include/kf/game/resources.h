@@ -10,6 +10,7 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);
 
 void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
     u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y);
+void func_80016820(void);
 
 void tim_upload_images(u8 *tim_data);
 void resource_tmd_read_complete(u8 *data);

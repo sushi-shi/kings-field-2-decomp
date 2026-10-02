@@ -62,5 +62,6 @@ void func_800483d8(u8 **pointers);
 void func_80048428(s32 delta);
 void func_80048498(u8 **pointers);
 void func_800484e4(s32 delta);
+void func_80048554(s32 save_slot);
 
 #endif

@@ -6,8 +6,6 @@
 #include <kf/game/resources.h>
 #include <psyq/kernel.h>
 
-extern void func_80048554(s32 save_slot);
-
 DATA(0x8017d118, 0x1c)
 KfState8017d118 state_8017d118;
 

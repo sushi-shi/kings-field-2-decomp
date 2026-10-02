@@ -97,6 +97,14 @@ listing similarity from 98.7% to 92.3%. The retained pre-call read is
 necessary for the observed call-adjacent schedule, but its placement alone
 does not settle the two swapped setup instructions.
 
+A second focused trial cached the view-matrix address in a typed local
+shared by the two GTE setup calls and the quarter-turn call. It placed
+the address construction before the orientation read, but kept the pointer
+in an extra saved register, removed retail's repeated address setup, and
+dropped listing similarity to 79.0%. The source keeps the direct matrix
+references; even restricting that local to the first call kept the 79.0%
+listing. The trial does not support a view-pointer local.
+
 The exact render-model row traversal (`0x80031024`) has another 15 reviewed
 direct calls. Retail order matches the source's rotation, fog/light matrix
 setup, asset/vertex selection, animation buffer update, vertex transform,

@@ -37,3 +37,12 @@ were also 100%; the unrelated `func_8002083c` remained 99.65882% WIP.
 its four-byte BSS section remained 0% because allocation form is unresolved.
 No C source or data identity changed. No repository tests, lint, full build,
 broad match, or full-image link were run.
+
+The later list-input audit promoted 23 further candidate rows in
+`func_8001e484`: nine decoded direct calls and fourteen HI16/LO16 sites
+for the typed preview translation, rotation, and rotation-step data at
+`0x8006da00`, `0x8006da08`, and `0x8006da10`. The raw targets, paired
+low instructions, identity extents, and source references agree. A focused
+one-VA safe carve admitted 168 relocations with none withheld, and the
+rebuilt `game.menu_list_input_controller` listing remained SAME. These are
+evidence-tier changes; the function was already strict exact.

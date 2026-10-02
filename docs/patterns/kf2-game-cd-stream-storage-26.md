@@ -71,3 +71,22 @@ maximum, source object split and allocation/linker mechanism are unknown.
 The existing address-only inventory anchor remains unpromoted. No source,
 identity, relocation, or compiler-profile change follows from this audit,
 and no linked-EXE equality is claimed.
+
+A subsequent raw call audit reviewed 24 remaining candidate direct `jal`
+rows in the CD read/file/archive/init group at `0x80018100..0x800186e4`.
+The other 25 direct calls in those ten functions were already reviewed;
+all 49 decoded targets agree with their named source calls, including exact
+Psy-Q CD/event and libc functions. An eight-VA safe carve admitted 116
+relocations with none withheld. A focused rebuild kept 56 of 57
+`game.cd_memory` function listings SAME; the sole existing allocator WIP
+retains its temporary-register difference. No source change or new strict
+match resulted from the evidence-tier promotion.
+
+The adjacent sector-location and request-queue group at
+`0x80017aec..0x80017fd4` supplied 28 more proven direct calls. Raw
+targets and the source's BCD conversion, critical-section, queue, and
+archive-extent call order agree; the Sony event/CD callees have exact SDK
+archive identities. A focused ten-VA safe carve admitted 41 relocations
+with none withheld, and the affected `game.cd_memory` unit again retained
+56/57 SAME listings with the same allocator WIP. These call-row promotions
+do not alter the unresolved CD workspace or arena owner.

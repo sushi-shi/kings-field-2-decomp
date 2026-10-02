@@ -55,7 +55,7 @@ allocate_vertices:
                                           &blend_fraction);
     if (record->clip_index != clip || record->keyframe_index != keyframe_index) {
         tmd_select_object_vertices(0);
-        morph_offsets = (u32 *)((u8 *)asset + asset->unknown_0c);
+        morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
         remaining = keyframe->morph_count;
         if (remaining != 0) {
             morph_indices = (u16 *)(keyframe + 1);
@@ -140,7 +140,7 @@ copy_object_vertex:
     keyframe = animation_select_keyframe(asset, clip, phase, &keyframe_index,
                                           &blend_fraction);
     vertex = vertices[vertex_index];
-    morph_offsets = (u32 *)((u8 *)asset + asset->unknown_0c);
+    morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
     remaining = keyframe->morph_count;
     morph_indices = (u16 *)(keyframe + 1);
     for (--remaining; remaining != -1; --remaining) {

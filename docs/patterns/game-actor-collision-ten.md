@@ -413,6 +413,18 @@ the output of `pitch_yaw_to_forward_vector` and the input of
 The frame difference remains unattributed after the exact vector callees
 were confirmed, so no padding or surrogate `SVECTOR` was introduced.
 
+A fresh manifest-profile compile keeps `0x80039c14` exact and places
+`0x80039c94` at **98.11751%** strict, with 72/72 CFG blocks and 46/46
+branches. The target and candidate unit each have 37 relocation rows in the
+same type/symbol order, including the eight direct curve calls, the actor and
+transition-state pairs, and the target/angle/vector calls. The proven
+`0x80026ec0` caller loads physical power and all eight attack components with
+`lhu` before the O32 call, supporting the current halfword signature. The
+first residual rotates saved registers for the incoming components and
+amount; it supplies no independent type or referent correction. KF1's
+five-component damage routine lacks this function's slot-18 callback, so its
+source form does not identify the remaining KF2 register schedule.
+
 The exact player damage reaction `0x80024498` calls
 `func_80029464` and `func_800294f8`; a fresh isolated strict rebuild of
 their `game.player_reaction` unit confirms both callees at **100%** (148 and

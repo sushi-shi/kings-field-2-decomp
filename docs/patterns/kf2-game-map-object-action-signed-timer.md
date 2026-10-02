@@ -227,7 +227,7 @@ The function remains WIP. No repository tests, lint, or full build ran.
 A fresh safe-delinked single-unit comparison on the retained source confirms
 **99.63745%** strict text, 329/329 CFG blocks, 180/180 branches, and no
 withheld relocations. The first non-target difference is a retail `nop` at
-function `+0x121c` between the final signed-byte load from a seven-argument
+function `+0x121c` between the final signed-byte load from an eight-argument
 archive-transition call and its `jal`; the probe schedules that `jal` into
 the load-delay gap. The next non-target residue, in action 98, reorders the
 angle and signed-velocity halfword loads/stores but preserves their values.
@@ -460,3 +460,36 @@ first extra retail word is the action-224 signed-byte load-delay `nop` already
 identified above. The other four WIPs retain their documented stack,
 register, and independent-operation scheduling differences. No source or
 curated ownership change is supported by this recheck.
+
+### Map-object action and event-controller edge (2026-10-02)
+
+A fresh zero-withheld safe carve of **23 connected claims in eleven units**
+materialized 1,516 relocations. Isolated strict comparison and focused quick
+builds retain **18 exact** functions: all six reset helpers (`35504` through
+`357a0`), initializer `35894`, collision query `36078`, adjacent object
+helpers `363bc`/`363dc`, all four scatter helpers (`365d8` through `36944`),
+both vertex-world helpers `369b8`/`36ad8`, motion `36b68`, and event spawn
+`46700`. The five WIPs are `36190` **98.56115%**, `36464` **95.32258%**,
+frame/CD service `36e24` **98.86364%**, action dispatcher `36ed4`
+**99.63745%**, and event map-object controller `475d8` **99.166664%**.
+
+Raw first-divergence review reconfirms the independent stack-load/result-move
+exchange in `36190`, opposite saved-register assignments in `36464`, and
+the action-224 load-delay `nop` in `36ed4`. Action 98 then exchanges the
+halfword angle/velocity load order and store schedule while preserving the
+field values and branch conditions. The controller's 55/54 CFG discrepancy
+remains its documented unused-zero fallthrough/delay-slot placement; all 29
+branches and 62 ordered referents agree. The dispatcher's 239 switch words
+retain their 36 target classes; moving code addends explain the low RODATA
+percentage. No newly evidenced call, field, width, or destination supports a
+C or metadata edit in this cohort.
+
+The two cell-pattern writers called by object initialization and action
+handling extend the connected screen to **25 claims: 18 exact, seven WIP**.
+Their separate two-VA safe carve has 22 relocations and none withheld.
+Fresh strict results stay at `34f90` **97.86822%** and `35194`
+**89.59545%**. At entry, the former exchanges saved-register assignments
+for world X/Z origins and layer flag; the latter retains a 40-byte retail
+frame against a 32-byte probe frame and assigns the later O32 stack arguments
+to different registers. Their known field-mask behavior and CFG remain
+unchanged, so neither result justifies a source edit.

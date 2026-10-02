@@ -80,6 +80,12 @@
 - [kf2-game-otag-pointer-record.md](kf2-game-otag-pointer-record.md):
   24 exact LIBGPU OTAG primitive-name pointer words grouped by their
   pinned archive data record while original C linkage stays unresolved.
+- [kf2-game-gpu-sys-data-record.md](kf2-game-gpu-sys-data-record.md):
+  correct the LIBGPU SYS revision-string boundary and group its 16 exact
+  archive-patched pointer words without inventing original C objects.
+- [kf2-game-libcd-bios-pointer-record.md](kf2-game-libcd-bios-pointer-record.md):
+  group 29 plus eight exact LIBCD BIOS command-string pointers and the
+  adjacent command-register records while keeping raw relocations unpromoted.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.
@@ -214,6 +220,9 @@
   textured and lit walker scheduling residues.
 - [game-tmd-render-callgraph-25.md](game-tmd-render-callgraph-25.md):
   prepared-TMD subdivision and connected renderer call/packet evidence.
+- [game-tmd-subdivide-scratch-followup.md](game-tmd-subdivide-scratch-followup.md):
+  bounded packet-header, index-serialization, and UV scratch trials for the
+  prepared-TMD subdivider.
 - [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
   render-frame and notification verdicts, three new strict matches, and
   remaining model, map-grid, and resource boundaries.

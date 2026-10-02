@@ -47,3 +47,44 @@ animated renderer's sixth argument was already corrected to the retail
 integer blend mode. None of these residues supplies a new call, field width,
 table identity, or source-control correction. No C or data-owner edit was
 retained, and no new 100% closure is claimed.
+
+## Asset-to-animation exact control
+
+A fresh safe GAME carve of the eleven adjacent functions at
+`0x800339fc..0x80034643` admits 126 relocation rows across their standalone
+and five module objects, with none withheld. Focused builds report 11/11 SAME;
+isolated strict comparison gives 100% text for all five modules:
+`asset_registry` (three functions), `animation_keyframe` (one),
+`animation_sparse_vertices` (three), `animation_sparse_find` (one), and
+`asset_vertex_count` (three). These are current exact controls, not new
+closures. The direct caller `0x80031d8c` remains 94.65414% strict over 532
+bytes in a separate safe one-VA carve with 22 ordered module references.
+Its seven CFG blocks, two branches, calls, and referents agree; retail saves
+the blend argument in `$s7` while the candidate reloads its stack home.
+That difference does not establish a new source expression, so the
+animated-renderer C body remains unchanged.
+
+The connected cache/render control totals 26 GAME claims: 23 exact and three
+WIP. It adds six exact pool lifecycle functions, four exact TMD selection
+helpers in `display`, and the exact menu-model and player-weapon callers to
+the eleven animation/asset controls above. Fresh focused builds preserve all
+of those exact listings; isolated strict comparisons are 100% for their
+owning modules. The three WIPs are `render_world_model` at 99.29851%, the
+animated caller at 94.65414%, and `render_resource_dispatch` at 92.18579%.
+The world-model call set, 40 CFG blocks and 68 ordered text references agree;
+the resource dispatcher has 96 CFG blocks, 54 branches, and the established
+two extra candidate camera-base rematerializations. A separate safe carve of
+the 20 related pool/display/caller controls admits 674 relocations across
+standalone/module objects with none withheld. These WIP residuals remain
+bounded by the existing raw investigations; no C or metadata change follows
+from their register and frame differences.
+
+The asset header's word at +`0x0c` is an offset to a `u32` table of morph
+record offsets: both vertex-cache functions add it to the asset base, index
+the resulting table by the keyframe's morph and rest indices, and pass the
+selected records to sparse-vertex decoders. The shared field is therefore
+named `morph_offsets_offset`, with its +`0x0c` layout checked. The two users
+were updated without changing their access widths or referents. Focused
+rebuilds preserve the 3/3 exact `asset_vertex_count` listings and adjacent
+registry, keyframe, and sparse-vertex controls; a fresh safe isolated strict
+comparison keeps all three `asset_vertex_count` functions at 100% text.

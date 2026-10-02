@@ -52,3 +52,33 @@ object remained byte-identical after that interface cleanup. These controls,
 and the raw argument/field details, are in [the actor collision dossier](game-actor-collision-ten.md).
 This fresh comparison supplied no independent source fact for changing a C
 body, header, relocation, or data owner, and created no new exact closure.
+
+### Lifecycle and target recheck (2026-10-02)
+
+A fresh safe GAME carve of **27 call-linked claims in 18 units** admitted all
+677 relocations with none withheld. Complete-unit focused quick builds and
+isolated strict comparison confirm **21 exact** functions: `38d04`, `38dc4`,
+`38e38`, `38efc`, `38f20`, `38ff0`, `39048`, `390d0`, `395c8`, `396c4`,
+`39710`, `39758`, `397a8`, `397d8`, `39804`, `39c14`, `3c000`, `3c10c`,
+`3c220`, `3f610`, and `3f860` (all GAME VAs with prefix `0x800`). The six
+WIPs retain their strict text results: candidate scorer `39108`
+**93.93092%** (524-byte table **96.183205%**), lifecycle `3983c`
+**99.19598%** and scan `39b58` **90.95744%**, fixed-curve caller `39c94`
+**98.11751%**, group-position stepper `3c3e0` **99.64539%**, and target
+fixup `3f7ec` **85.86207%**.
+
+Raw first differences remain bounded: `3983c` exchanges the actor pointer
+and constant-one saved registers; `39b58` keeps the free-slot `0xff` in
+`$s4` where the probe rematerializes it. Target and probe both use a 40-byte
+frame for `39b58`, but the probe saves one fewer register. The fixed-curve
+caller begins with different incoming halfword/register roles but preserves
+the supported `u16` amount contract, eight curve calls, and 72/72 CFG blocks. `3c3e0` changes
+only the yaw intermediate register, and `3f7ec` the sentinel setup and
+commutative pointer addition. The scorer still has the independently
+documented 37/36 branch join around case 9, with 59/59 known CFG blocks and
+the same target-table classes. These differences do not supply a new source
+field, call, width, referent, or branch outcome; no C or metadata edit was retained.
+For the five units containing those six WIPs, target and probe have identical
+ordered relocation type/symbol sequences (195, 52, 37, 37, and 37 rows for
+scorer, lifecycle, fixed curve, group position, and fixup respectively).
+This confirms referent order, not identical site offsets or table addends.

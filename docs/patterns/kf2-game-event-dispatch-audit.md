@@ -251,3 +251,34 @@ five C-modeled calls in order. No fresh call, field, width, CFG, or referent
 gap supports changing C; the three new WIPs and the five earlier event WIPs
 remain bounded codegen/layout differences. No C or metadata change was
 retained.
+
+## Controller-centered marker pointer control (2026-10-02)
+
+A fresh focused pass covered 29 connected claims in twelve units: the event
+map-object controller and world dispatcher; both event-pose helpers; three
+event-counter helpers; four map-object helpers; both message-marker helpers;
+six event-state helpers; the command dispatcher and map-object spawn wrapper;
+`notify_enqueue`; six map-object reset/property helpers; and the render-frame
+callee `func_800335a0`. Twenty-four remained strict exact controls. The five
+unchanged WIPs are `0x80036190` (98.56115%), `0x80036464` (95.32258%),
+`0x800461a0` (99.12676%), `0x800475d8` (99.166664%), and `0x80047c98`
+(99.81618%). This is a fresh control of existing claims, not a new closure.
+
+For the marker WIP, a safe one-VA GAME carve accepted all eleven relocation
+rows and withheld none. Retail keeps the stream cursor at `candidate+0x14`
+in `$a1` and the marker pointer at `candidate+0x17` in `$a0`; it reads the
+index and comparison bytes at `-2(a0)` and `-1(a0)`, passes `0(a0)` to the
+exact marker leaf, then advances both pointers by four. The current C reads
+the same two bytes as `cursor[1]` and `cursor[2]`. An off-tree, semantically
+equivalent `marker[-2]`/`marker[-1]` expression compiled worse: focused
+listing similarity fell from 86.6% to 73.9%, adding a third pointer and a
+loop-layout difference. The trial was discarded. Retail and candidate still
+have 14/14 CFG blocks, 5/5 branches, the same call and referents; the strict
+99.12676% residue is pointer-register and increment order, without a proved
+field or control-flow correction.
+
+The controller's two proven incoming world-dispatch calls and its map-object,
+pose, counter, notification, and render-frame direct calls agree with source.
+The world dispatcher's final `jalr` reads an active runtime callback slot;
+neither a fixed callback identity nor the loaded code owner is proved. No
+source, identity, or relocation edit was retained.

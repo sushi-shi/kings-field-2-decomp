@@ -42,3 +42,25 @@ direct pairs to the three former `.sdata` identities now resolve as
 retail target addresses. It has no direct reference to the revised
 `DAT_8006d5bc` identity, whose attribution rests on the archive bytes
 and patches.
+
+Later in the same SYS `.sdata` section, the archive emits a distinct
+36-byte code record at GAME `0x8006d8dc..0x8006d8ff`. Its nine
+little-endian words are hardware pointers `0x1f801810`,
+`0x1f801814`, `0x1f8010a0`, `0x1f8010a4`, `0x1f8010a8`,
+`0x1f8010e0`, `0x1f8010e4`, `0x1f8010e8`, and `0x1f8010f0`.
+All 36 bytes match retail; `0x8006d900` is outside this emitted
+record. The nine Ghidra pointer rows now form one address-only
+`DAT_8006d8dc` identity of extent `0x24`, while the original C
+declaration and linkage remain unresolved. The 64 existing candidate
+direct pairs into its words are in the `instruction-word` channel;
+neither the archive comparison nor this metadata correction promotes
+them.
+
+The archive next emits a separate 12-byte zero `.sdata` record at
+`0x8006d900..0x8006d90b`, and all 12 retail bytes agree. Its three
+Ghidra four-byte fragments now form address-only `DAT_8006d900` of
+extent `0x0c`. The following `0x8006d90c` string belongs to a
+different record. Forty-nine candidate direct pairs into the zero
+record remain in the `instruction-word` channel; this byte match
+does not establish their relocation status or the original C
+declaration.

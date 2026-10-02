@@ -276,42 +276,14 @@ GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006d71c	0x4	DAT_8006d71c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d778	0x20	DAT_8006d778	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata eight-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7a0	0x18	DAT_8006d7a0	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata six-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d7b8	0x4	DAT_8006d7b8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7c4	0x2	DAT_8006d7c4	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7c8	0x2	DAT_8006d7c8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7ca	0x1	DAT_8006d7ca	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7cc	0x4	DAT_8006d7cc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7d0	0x4	DAT_8006d7d0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7d4	0x4	DAT_8006d7d4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7d8	0x4	DAT_8006d7d8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7dc	0x4	DAT_8006d7dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7e0	0x4	DAT_8006d7e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7e4	0x4	DAT_8006d7e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7e8	0x4	DAT_8006d7e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7ec	0x4	DAT_8006d7ec	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7f0	0x4	DAT_8006d7f0	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7f4	0x4	DAT_8006d7f4	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7f8	0x4	DAT_8006d7f8	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d7fc	0x4	DAT_8006d7fc	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d800	0x4	DAT_8006d800	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d804	0x4	DAT_8006d804	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d808	0x4	DAT_8006d808	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d810	0x4	DAT_8006d810	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d814	0x4	DAT_8006d814	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d820	0x4	DAT_8006d820	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d824	0x4	DAT_8006d824	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d828	0x4	DAT_8006d828	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d82c	0x4	DAT_8006d82c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d830	0x2	DAT_8006d830	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d7b8	0x4	DAT_8006d7b8	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7c4	0x2	DAT_8006d7c4	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7c8	0x3	DAT_8006d7c8	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7cc	0x60	DAT_8006d7cc	unknown	load	u32[24]		address-only	Psy-Q 3.0 LIBCD CDROM .sdata 96-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d82c	0xc	DAT_8006d82c	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBCD CDROM .sdata 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d838	0x4	DAT_8006d838	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d83c	0x4	DAT_8006d83c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d840	0x4	DAT_8006d840	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d844	0x4	DAT_8006d844	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d848	0x4	DAT_8006d848	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d84c	0x4	DAT_8006d84c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d850	0x4	DAT_8006d850	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d854	0x4	DAT_8006d854	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d858	0x4	DAT_8006d858	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d840	0x1c	DAT_8006d840	unknown	load	u32[7]		address-only	Psy-Q 3.0 LIBSPU SPU .sdata 28-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d85c	0x4	DAT_8006d85c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d860	0x4	DAT_8006d860	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d864	0x4	DAT_8006d864	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -338,18 +310,8 @@ GAME.EXE	0x8006d8b8	0x4	DAT_8006d8b8	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x8006d8bc	0x4	DAT_8006d8bc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d8c0	0x4	DAT_8006d8c0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d8c4	0x18	DAT_8006d8c4	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 24-byte record;two exact archive pointer patches;retail words	vendor record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d8dc	0x4	DAT_8006d8dc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8e0	0x4	DAT_8006d8e0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8e4	0x4	DAT_8006d8e4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8e8	0x4	DAT_8006d8e8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8ec	0x4	DAT_8006d8ec	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8f0	0x4	DAT_8006d8f0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8f4	0x4	DAT_8006d8f4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8f8	0x4	DAT_8006d8f8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d8fc	0x4	DAT_8006d8fc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d900	0x4	DAT_8006d900	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d904	0x4	DAT_8006d904	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d908	0x4	DAT_8006d908	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d8dc	0x24	DAT_8006d8dc	unknown	load	u32[9]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 36-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d900	0xc	DAT_8006d900	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d9e0	0x4	current_poly_ft4	global	bss	POLY_FT4 *	menu_frame_begin	supported	asm;154 xrefs;KF1 static menu_runtime counterpart;menu_frame_begin and menu_two_option writers;CPE residue	current textured quad pointer; current C owner is central frame writer, original TU remains WIP; CPE residue occupies padded load page
 GAME.EXE	0x8006d9e8	0x1	menu_saved_music_enabled	global	bss	u8	menu_display_state	supported	asm;menu entry and exit;CPE zero tail	music enabled flag captured before the menu and compared on exit; original defining TU unresolved
 GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *	menu_display_state	supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; original TU owner unresolved

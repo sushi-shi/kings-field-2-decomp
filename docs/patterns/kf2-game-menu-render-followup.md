@@ -101,3 +101,50 @@ ordered relocation sites match the retail object. Isolated objdiff reports
 98.44964% fuzzy similarity, slightly lower than its earlier 98.581024%
 score; the evidenced instruction and relocation alignment support keeping
 the loop while the earlier card-mode calculation residue remains WIP.
+
+A later direct-call audit promoted all 30 remaining candidate `jal` rows in
+the status renderer at `0x8001e94c`. Raw proven targets are the named
+string, number-format, number-draw, and panel helpers used by its source.
+A one-VA safe carve admitted 246 relocations with none withheld. The focused
+listing stayed SAME, and isolated strict objdiff retained 100% for both
+the 1,724-byte text and 240-byte owned data sections. No source behavior
+or exact-function score changed.
+
+The paired attribute renderer at `0x8001f008` then supplied 55 proven
+direct `jal` rows to the same four named helper identities. A separate
+one-VA safe carve admitted 330 relocations with none withheld. Its focused
+listing stayed SAME and isolated strict objdiff retained 100% for the
+1,936-byte text section. Both menu call-row batches leave their previously
+exact source and data ownership unchanged.
+
+The related list renderer at `0x8001fc94` supplied 29 further candidate
+direct-call rows; two of its 31 proven calls were already reviewed. The
+named targets and source calls agree, including exact Psy-Q `SetSemiTrans`.
+Its one-VA safe carve admitted 402 relocations with none withheld. A fresh
+focused build leaves the two independent panel-setup instructions reversed;
+isolated strict objdiff remains **99.70803%** over 2,740 text bytes. This
+does not support changing the source to force a scheduler choice.
+
+The adjacent `menu_draw_window` has five further proven helper-call rows.
+The source and raw call order agree; its one-VA safe carve admitted 38
+relocations with none withheld. Isolated strict objdiff keeps text at
+**99.78788%** and the owned initialized layout data at 100%. The only
+remaining text difference begins with retail's 48-byte versus candidate's
+40-byte frame, for which no additional live source object is proved.
+
+The same two visual units then supplied 55 validated address pairs:
+seven from `menu_draw_window` and 48 from the list renderer. Each decoded
+target is an interior of the existing typed `menu_sprite_defs` or
+`menu_window_layouts` records, or the `current_poly_ft4` pointer used by
+the packet writer. After promoting only those candidate pairs, narrow safe
+carves again withheld zero relocations (38 and 402 admitted), and focused
+listings kept their prior differences. No global split or source change
+was needed.
+
+The status and attribute renderers also had 68 remaining candidate typed
+address pairs: 30 in status and 38 in attribute. All point within the
+owned `menu_header_labels` records or the shared `menu_sprite_defs` array,
+at the decoded interior offsets used by the current C. Narrow safe carves
+again admitted 246 and 330 relocations with none withheld. Both focused
+listings remain SAME; their prior isolated strict text/data exact results
+are preserved.

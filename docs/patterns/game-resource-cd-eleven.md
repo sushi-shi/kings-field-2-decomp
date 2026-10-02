@@ -602,3 +602,24 @@ The phase-three restore call also reaches `event_restore_stream`
 Retail and source consume the same byte stream, actor/target-group fields,
 and map-object opcode classes; the first mismatch exchanges the actor base
 and `0xff` sentinel registers. This existing source remains unchanged.
+## Fresh transition and CD-consumer control (2026-10-02)
+
+A new safe carve and direct strict comparison covered 28 connected GAME
+claims: two resource-startup functions, the transition request, five phase
+callbacks, the transition step, eight resource-runtime functions, ten
+player-core CD/resource consumers, and frame-step CD service. The three
+focused carves admitted 1,764 target relocations with none withheld. Twenty
+functions are exact: all five phase callbacks, five resource-runtime siblings,
+and all ten player-core functions. The eight WIPs are startup `0x80015d58`
+(89.03145%) and `0x80015fd4` (89.710144%), request `0x80016260`
+(98.790085%), step `0x80016820` (99.193474%), radius `0x800320b0`
+(74.061226%), visibility `0x80032174` (93.6%), TMD queue `0x800321d8`
+(98.4359%), and frame-step CD service `0x80036e24` (98.86364%).
+
+The request's first raw difference is saved-register allocation after matching
+eight stack-byte arguments. The step's first difference is the two existing
+reviewed HI16/LO16 pairs for the unowned `0x8019e138` callback destination;
+its `0x8012da68` TMD destination remains a third missing source referent.
+The frame-step CD service differs first in argument-register allocation, with
+its calls and loop control unchanged. Existing extent audits do not prove the
+workspace definitions, so no source or identity change was retained.

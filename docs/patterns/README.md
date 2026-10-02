@@ -81,11 +81,20 @@
   24 exact LIBGPU OTAG primitive-name pointer words grouped by their
   pinned archive data record while original C linkage stays unresolved.
 - [kf2-game-gpu-sys-data-record.md](kf2-game-gpu-sys-data-record.md):
-  correct the LIBGPU SYS revision-string boundary and group its 16 exact
-  archive-patched pointer words without inventing original C objects.
+  correct the LIBGPU SYS revision-string boundary and group its exact
+  archive-backed data and hardware-pointer records without inventing C objects.
 - [kf2-game-libcd-bios-pointer-record.md](kf2-game-libcd-bios-pointer-record.md):
   group 29 plus eight exact LIBCD BIOS command-string pointers and the
   adjacent command-register records while keeping raw relocations unpromoted.
+- [kf2-game-libcd-iso9660-data.md](kf2-game-libcd-iso9660-data.md):
+  recover the bounded ISO9660 scalar and directory-name strings from pinned
+  archive bytes and verify their exact vendored function referents.
+- [kf2-game-libcd-cdrom-data.md](kf2-game-libcd-cdrom-data.md):
+  bound the two exact LIBCD CDROM register records while keeping interior
+  direct relocation candidates under separate per-site review.
+- [kf2-game-libspu-spu-data.md](kf2-game-libspu-spu-data.md):
+  group seven exact LIBSPU hardware pointers into their pinned archive
+  record while retaining uncertain original C linkage.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.
@@ -223,6 +232,8 @@
 - [game-tmd-subdivide-scratch-followup.md](game-tmd-subdivide-scratch-followup.md):
   bounded packet-header, index-serialization, and UV scratch trials for the
   prepared-TMD subdivider.
+- [game-tmd-map-pipeline-25.md](game-tmd-map-pipeline-25.md): fresh strict
+  verdicts for 25 connected TMD, packet, quad, and map-cell functions.
 - [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
   render-frame and notification verdicts, three new strict matches, and
   remaining model, map-grid, and resource boundaries.

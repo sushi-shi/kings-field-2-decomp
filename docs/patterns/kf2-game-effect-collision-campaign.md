@@ -3343,3 +3343,13 @@ kind-10 `vector_direction_scaled` fourth argument then pointed at
 that pointer for the constructor fifth argument. The prior two-vector
 hoist also misplaced kind-111 copies. Lexical scope is not proved by frame
 size or score, so all hoists were discarded and the source stays unchanged.
+
+A fresh safe carve of the actor-group caller, collision probe, constructor,
+updater, and 22 connected helper claims admitted 2,072 relocations with none
+withheld. Direct strict comparison found 22 exact helpers and four WIPs:
+actor group 86.041916%, collision probe 70.73333%, constructor 98.43441%,
+and updater 95.18370% text. No new exact closure was found. Six off-tree
+declaration orders for those same three hoisted vectors all yielded a
+224-byte frame and 95.26005–95.498566% updater text, yet passed the kind-10
+direction vector at `sp+56`, `sp+72`, or `sp+88`; retail passes `sp+120`.
+Every order fails that raw argument identity, so none was retained.

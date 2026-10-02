@@ -148,10 +148,10 @@ typedef char kf_target_candidate_word24_size[
 typedef struct KfTargetCandidate {
     u8 type;
     u8 unknown_01[3];
-    u8 unknown_04;
+    u8 sound_code;
     u8 unknown_05[3];
-    u16 unknown_08;
-    u16 unknown_0a;
+    u16 animation_step;
+    u16 sound_trigger;
     KfTargetCandidateWord0c word_0c;
     KfTargetCandidateWord0e word_0e;
     KfTargetCandidateWord10 word_10;
@@ -170,10 +170,11 @@ typedef struct KfTargetCandidate {
     u16 unknown_2a;
 } KfTargetCandidate;
 typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x2c ? 1 : -1];
+typedef char kf_target_candidate_sound_code_offset[(u32)&((KfTargetCandidate *)0)->sound_code == 4 ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
-typedef char kf_target_candidate_unknown_08_offset[(u32)&((KfTargetCandidate *)0)->unknown_08 == 0x08 ? 1 : -1];
-typedef char kf_target_candidate_unknown_0a_offset[(u32)&((KfTargetCandidate *)0)->unknown_0a == 0x0a ? 1 : -1];
+typedef char kf_target_candidate_animation_step_offset[(u32)&((KfTargetCandidate *)0)->animation_step == 0x08 ? 1 : -1];
+typedef char kf_target_candidate_sound_trigger_offset[(u32)&((KfTargetCandidate *)0)->sound_trigger == 0x0a ? 1 : -1];
 typedef char kf_target_candidate_word_0c_offset[(u32)&((KfTargetCandidate *)0)->word_0c == 0x0c ? 1 : -1];
 typedef char kf_target_candidate_word_0e_offset[(u32)&((KfTargetCandidate *)0)->word_0e == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_word_0e_low_offset[(u32)&((KfTargetCandidate *)0)->word_0e.bytes.low == 0x0e ? 1 : -1];

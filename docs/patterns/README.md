@@ -7,6 +7,9 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-actor-lifecycle-sound-25.md](kf2-game-actor-lifecycle-sound-25.md):
+  25 current actor lifecycle/target controls and retail-backed sound-code,
+  animation-step, and sound-trigger fields.
 - [kf2-game-collision-shape-family-25.md](kf2-game-collision-shape-family-25.md):
   strict 25-function shape, height, channel, and player collision verdicts.
 - [kf2-game-renderer-graph-25.md](kf2-game-renderer-graph-25.md): 25 current
@@ -95,6 +98,15 @@
 - [kf2-game-libspu-spu-data.md](kf2-game-libspu-spu-data.md):
   group seven exact LIBSPU hardware pointers into their pinned archive
   record while retaining uncertain original C linkage.
+- [kf2-game-libgpu-tmd-labels.md](kf2-game-libgpu-tmd-labels.md):
+  recover all 16 primitive labels and padding bytes in the pinned
+  LIBGPU TMD string pool without promoting candidate references.
+- [kf2-game-libgpu-otag-sdata.md](kf2-game-libgpu-otag-sdata.md):
+  bound four exact LIBGPU OTAG small-data records, their primitive
+  labels and format strings, and the separate trailing CPE residue.
+- [kf2-game-libetc-sdata-records.md](kf2-game-libetc-sdata-records.md):
+  bound eight exact LIBETC small-data records across interrupt, DMA,
+  and VSync members, including the archive-exported `Vcount` word.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.

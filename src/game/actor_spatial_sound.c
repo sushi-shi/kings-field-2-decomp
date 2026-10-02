@@ -21,12 +21,12 @@ void func_8003d0e8(KfActor *actor)
 {
     KfTargetCandidate *target = actor->target;
 
-    if (target->unknown_04 & 0x80) {
-        audio_play_spatial_range((target->unknown_04 & 0x7f) + 96,
+    if (target->sound_code & 0x80) {
+        audio_play_spatial_range((target->sound_code & 0x7f) + 96,
             &actor->position, 0x7f, 0x6000, 0x7800,
             func_8003d084(actor));
     } else {
-        audio_play_spatial_default_range(target->unknown_04 + 96,
+        audio_play_spatial_default_range(target->sound_code + 96,
             &actor->position, 0x6e, func_8003d084(actor));
     }
 }

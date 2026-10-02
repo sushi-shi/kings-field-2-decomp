@@ -14,3 +14,21 @@ call audit is in `kf2-game-player-actor-trajectory.md`.
 The reaction unit's 32-byte DATA and 76-byte RODATA are strict exact. No
 source-backed field, width, call, referent, or control-flow correction emerged
 from this refresh, so both WIP bodies retain their existing C.
+
+A later safe 26-claim control adds `player_interval_71_80` (two claims),
+`player_damage_reaction` (one), and `event_counter` (three) to the same
+reaction/sound graph. Three focused carves admitted 2,139 target relocations
+with none withheld; direct strict comparison gives **23 exact and three WIP**.
+The damage reaction and all three event-counter functions are exact. The
+interval unit's `0x80028998` caller is exact; its 28-byte `0x8002897c`
+predicate remains 88.57143%. Retail branches with zero moved to `v0` in the
+delay slot and returns with a nop; the current source emits the same 71–80
+tests but carries the result through `v1` and moves it in the return delay
+slot. Natural early-return, explicit `if`/`else`, and late-return off-tree
+spellings scored 55%, 55%, and 47.857143% strict, so none was retained.
+The reaction and sound WIPs retain the raw first differences above; no new
+source-backed correction emerged. The reaction's 99.26569% figure used the
+pre-promotion full-unit target. After 41 direct-call rows were reviewed, a
+fresh isolated one-VA target measured the unchanged `0x8002985c` source at
+99.25660%. That target-vintage difference is not a source regression; the
+post-promotion score supersedes the earlier number.

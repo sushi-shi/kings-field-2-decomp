@@ -2025,3 +2025,22 @@ three-unit control also regresses the neighboring non-exact player functions:
 92.84795%, and `0x8002985c` 99.26569% to 98.67425%. Their 18 exact
 siblings remain exact, but the mixed WIP response rules out a shared
 compiler-flag correction for this player batch.
+
+A later GAME damage call audit promoted 18 remaining candidate direct
+`jal` rows in `player_apply_damage` and `player_damage_reaction`; three
+other calls were already reviewed. The raw targets and source order agree,
+including the exact Psy-Q `SquareRoot0` identity and the LIBC-shaped `rand`
+target. Narrow one-VA safe carves admitted 169 and 98 relocations with
+none withheld. Both focused listings stayed SAME. Isolated strict objdiff
+kept the apply-damage text/RODATA at **1,020/1,020** and **28/28** bytes,
+and the reaction text/RODATA at **844/844** and **32/32** bytes. No source
+or data-owner change followed.
+
+The connected `player_reaction` controller at `0x8002985c` supplied 41
+remaining candidate direct calls; 53 other raw `jal` rows were already
+reviewed. Its named source calls and decoded targets agree across the
+movement, angle, sound, CD, and random branches. A one-VA safe carve admitted
+482 relocations with none withheld, and the focused unit kept 16/17 SAME
+listings. Fresh isolated strict text against this updated carve is
+**99.25660%** over 4,396 bytes; the older 99.26569% report used a prior
+target snapshot. The branch/register residue remains WIP, with no C edit.

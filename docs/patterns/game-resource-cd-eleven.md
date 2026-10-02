@@ -623,3 +623,13 @@ its `0x8012da68` TMD destination remains a third missing source referent.
 The frame-step CD service differs first in argument-register allocation, with
 its calls and loop control unchanged. Existing extent audits do not prove the
 workspace definitions, so no source or identity change was retained.
+
+The GAME main-loop call audit reviewed 44 remaining candidate direct `jal`
+rows at `0x8001369c`; two of its 46 decoded calls were already reviewed.
+Every raw target agrees with the source's initialization, floor capture,
+resource, frame, and shutdown call order. `SsSetMVol` is the exact Psy-Q
+library identity. A one-VA safe carve admitted 72 relocations with none
+withheld. The focused unit kept `main` SAME and the main loop's single
+arena-base constructor difference; isolated strict text remained
+**99.67553%** over 752 bytes. This evidence-tier promotion does not
+establish the original symbol or defining mechanism for `0x8009b0a0`.

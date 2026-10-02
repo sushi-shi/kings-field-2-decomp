@@ -154,6 +154,31 @@ instead of retail's signed-low pair.
 Without a defining object, complete source extent, and owning TU, this audit
 does not introduce an overlapping global, bind an extern, or alter metadata.
 
+A 28-claim caller/allocator control reinforces that limit. Isolated strict
+comparisons and the allocator owner's focused exact control identify 20 exact
+functions: `main`, ten `player_core_run` consumers,
+three `asset_registry` helpers, five `resource_runtime` siblings, and
+`memory_arena_initialize_blocks`. Eight remain WIP: `game_main_loop`
+(99.67553%), the two resource-startup bodies (89.03145%, 89.710144%),
+the radius, visibility, and TMD-queue runtime bodies (74.061226%, 93.6%,
+98.4359%), `memory_arena_allocate_block` (99.78261%), and frame-step CD
+service (98.86364%). Fresh safe carves for the selected units withheld no
+relocations; the allocator result is an independent focused control from its
+current owner. The three raw constructors at GAME `0x8001389c/8a0`,
+`0x80015d64/68`, and `0x80032200/04` use `lui 0x800a` then signed
+`addiu -0x4f60`; the current literal uses `lui 0x8009` then `ori 0xb0a0`.
+
+The pinned Psy-Q 3.0 `LIBSND.LIB` member `SSINIT.OBJ` independently declares
+`MarkCallback` as a native `XBSS` symbol of size `0x800`. Its public
+`LIBSND.H` declares `SsSetMarkCallback` and the callback type, but not the
+`MarkCallback` object. Thus array-end adjacency does not establish that GAME
+C referred to the SDK-private symbol to derive the arena. The exact
+initializer establishes the `0x5f000` **used capacity**, not a complete C
+object size: the next separately observed destination begins 0x30 bytes
+after that capacity. No pinned linker command/map or game defining object
+proves a named symbol or placement at this base. The truthful fixed pointer
+stays in source, and the missing original address mechanism remains open.
+
 The startup copy destination `0x801d8d88` has a similarly suggestive but
 incomplete boundary. Curated `bss_801c7540` ends at `0x801d8d84`, four bytes
 before it. Current retail `SsSetTableSize` forms its separate LIBSND

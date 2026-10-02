@@ -31,6 +31,13 @@ scratch home was `sp+0x468` and its frame shrank to 1,224 bytes. Macro-local,
 function-local, and branch-local declarations did not recover the retail
 home or schedule. These trials were left off-tree.
 
+A further off-tree union shared the loop's packet header with the generated
+`u16` index-byte serializer, reflecting retail's reuse of `sp+0x440` for
+mutually exclusive header and index values. Function-scope and loop-scope
+declarations compiled identically: strict text fell to **47.530060%** from
+**57.638040%**. The stack reuse alone therefore does not establish a usable
+source declaration; the retained C is unchanged.
+
 Retail also packs midpoint U/V values through masked register-word updates:
 it has 16 `or` instructions versus two in the retained candidate, which
 keeps separate byte locals. Off-tree `unsigned short` and `unsigned int`

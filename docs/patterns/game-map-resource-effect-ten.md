@@ -212,3 +212,12 @@ global address. A natural local for the second value, tested with both `u8`
 and `s32`, lowered strict text to **85.943436%**. A narrowly scoped typed
 scan-state pointer lowered it to **88.935356%**. Both trials preserved the
 exact table and were reverted; no C change or new owner claim remains.
+
+A fresh direct strict recheck retains **91.624245%** over the 1,980-byte
+retail body. The first raw difference at body `+0x74` is the register chosen
+for the interpolated halfword sum. At `+0x1ac..+0x1cc`, retail joins for one
+second mask-byte store; the candidate duplicates that store and rematerializes
+the scan-state address. An off-tree whole-function typed pointer to the same
+scan state reduced strict text to **80.004040%** (1,828 candidate bytes)
+without changing the layer values. It was discarded; source and data remain
+unchanged.

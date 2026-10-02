@@ -944,52 +944,50 @@ GAME.EXE	0x8006d874	0x5d074	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4
 GAME.EXE	0x8006d876	0x5d076	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d878	0x5d078	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d87c	0x5d07c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d880	0x5d080	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d884	0x5d084	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d888	0x5d088	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d88c	0x5d08c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d890	0x5d090	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d894	0x5d094	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d898	0x5d098	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d89c	0x5d09c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a0	0x5d0a0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a4	0x5d0a4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8a8	0x5d0a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8ac	0x5d0ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b0	0x5d0b0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b4	0x5d0b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8b8	0x5d0b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8bc	0x5d0bc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d8c0	0x5d0c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d880	0x5d080	0x10	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d890	0x5d090	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB export	Vcount	u32	archive XDEF at .sdata+0x10;separate four-byte zero record;retail exact	vendored 32-bit counter; original C signedness unresolved
+GAME.EXE	0x8006d894	0x5d094	0xc	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32[3]	archive 12-byte pointer-and-zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8a0	0x5d0a0	0x8	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32[2]	archive eight-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8a8	0x5d0a8	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32	archive four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8ac	0x5d0ac	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte hardware pointer;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8b0	0x5d0b0	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8b4	0x5d0b4	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8c4	0x5d0c4	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[6]	24 archive bytes;pointer patches to SYS .data+0x34 and printf;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8dc	0x5d0dc	0x24	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[9]	archive 36-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d900	0x5d100	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[3]	archive 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d90c	0x5d10c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: F3L\x20
-GAME.EXE	0x8006d910	0x5d110	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d914	0x5d114	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: G3L\x20
-GAME.EXE	0x8006d918	0x5d118	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d91c	0x5d11c	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: FT3L\x20
-GAME.EXE	0x8006d921	0x5d121	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d924	0x5d124	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: GT3L\x20
-GAME.EXE	0x8006d929	0x5d129	0xb	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d934	0x5d134	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: FT3\x20
-GAME.EXE	0x8006d938	0x5d138	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d93c	0x5d13c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: GT3\x20
-GAME.EXE	0x8006d940	0x5d140	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d944	0x5d144	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: F4L\x20
-GAME.EXE	0x8006d948	0x5d148	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d94c	0x5d14c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: G4L\x20
-GAME.EXE	0x8006d950	0x5d150	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d954	0x5d154	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: FT4L\x20
-GAME.EXE	0x8006d959	0x5d159	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d95c	0x5d15c	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: GT4L\x20
-GAME.EXE	0x8006d961	0x5d161	0xb	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d96c	0x5d16c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: FT4\x20
-GAME.EXE	0x8006d970	0x5d170	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d974	0x5d174	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: GT4\x20
-GAME.EXE	0x8006d978	0x5d178	0x55	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d9cd	0x5d1cd	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
-GAME.EXE	0x8006d9d1	0x5d1d1	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d90c	0x5d10c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d911	0x5d111	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d914	0x5d114	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d919	0x5d119	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d91c	0x5d11c	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d922	0x5d122	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d924	0x5d124	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT3L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d92a	0x5d12a	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d92c	0x5d12c	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d930	0x5d130	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d934	0x5d134	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d939	0x5d139	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d93c	0x5d13c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT3 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d941	0x5d141	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d944	0x5d144	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d949	0x5d149	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d94c	0x5d14c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d951	0x5d151	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d954	0x5d154	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d95a	0x5d15a	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d95c	0x5d15c	0x6	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT4L label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d962	0x5d162	0x2	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d964	0x5d164	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d968	0x5d168	0x4	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	G4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d96c	0x5d16c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	FT4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d971	0x5d171	0x3	unclassified	manual:LIBGPU TMD .sdata zero padding			archive label-record padding;retail zero	padding before next literal
+GAME.EXE	0x8006d974	0x5d174	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	GT4 label including NUL; original C literal provenance unresolved
+GAME.EXE	0x8006d979	0x5d179	0x3	unclassified	manual:LIBGPU OTAG .sdata alignment			retail zero;before exact OTAG section	alignment between pinned TMD and OTAG sections
+GAME.EXE	0x8006d97c	0x5d17c	0x47	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[71]	archive 71-byte primitive-name record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9c3	0x5d1c3	0x7	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[7]	archive seven-byte name-tail record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9ca	0x5d1ca	0x8	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[8]	archive eight-byte format-string record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9d2	0x5d1d2	0xb	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .sdata Code record		u8[11]	archive eleven-byte format-string record;retail exact	vendor section record; original C declarations and linkage unresolved
+GAME.EXE	0x8006d9dd	0x5d1dd	0x3	unclassified	manual:CPE load-tail residue			retail bytes 43 50 45;outside 97-byte OTAG .sdata	separate CPE signature residue before page-rounded BSS tail
 GAME.EXE	0x8006d9e0	0x5d1e0	0x4	bss	reviewed	current_poly_ft4	POLY_FT4 *	manual:primitive_buffer	current quad pointer; CPE record residue in page-rounded load tail, assigned at runtime
 GAME.EXE	0x8006d9e4	0x5d1e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d9e8	0x5d1e8	0x1	bss	reviewed	menu_saved_music_enabled	u8	manual:menu display transition	zero-initialized music flag snapshot used by menu entry and exit

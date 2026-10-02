@@ -342,3 +342,28 @@ camera base. Raw component addresses remain correct, so the count difference
 does not establish a missing owner or field. The other four WIPs retain the
 previously documented register, frame, or instruction-order residues. This
 control used focused off-tree compilation and isolated strict objdiff only.
+
+## Fresh 26-claim packet and frame control
+
+A separate safe delink and isolated strict compilation from the current sources
+covered 26 claims connected by the frame driver's primitive buffer, packet,
+map, world-model, and resource-dispatch calls. All 26 compiled with their
+manifest profiles. Twenty are strict exact: all three `primitive_buffer`
+claims, all ten `display` claims, both sliding-panel claims, both color-byte
+claims, both `render_frame` claims, and `render_enqueue_map`. The display BSS
+has no byte-comparison score; the 4-byte `render_frame` DATA and 4-byte
+`render_map` DATA are exact.
+
+| Non-exact GAME claim | Fresh strict text | Focused CFG and branches | Raw/source verdict |
+| --- | ---: | --- | --- |
+| `0x8002f5b0` clipped-map packet | 95.833336% | 13/13, 7/7 | The call set and unsigned depth-wrap behavior agree; the first differences are saved-register assignment and independent packet-store scheduling. |
+| `0x8002f808` prepared-map renderer | 92.038376% | 51/51, 35/35 | FT4 edge order and known successors agree; the 168/120-byte frame and instruction schedule have no proved missing source object. |
+| `0x800311b0` textured quad | 92.14815% | 8/8, 5/5 | The 15 O32 arguments, typed `POLY_FT4` stores, and `AddPrim` call agree; retail saves one extra argument register and places the code-byte store in a different delay slot. |
+| `0x80031850` world model | 99.29851% | 40/40, 16/16 | All 68 ordered text referents agree; saved-register and independent instruction order remain. |
+| `0x80031d8c` animated object | 94.65414% | 7/7, 2/2 | The caller sign-extends its depth halfword, and the draw calls agree; retail saves the blend argument earlier than the probe. |
+| `0x8003247c` resource dispatch | 92.18579% | 96/96, 54/54 | The three camera coordinates agree; two extra candidate address pairs rematerialize their player-state base. The B62 edge reaches the same effect-record advance under different block numbering. |
+
+The two frame/packet groups and their callers have complete verdicts here;
+fresh comparisons establish no new exact claim. The remaining differences
+provide no independent field, width, call, relocation-owner, or control-flow
+fact for a humane C edit. No source or curated inventory was changed.

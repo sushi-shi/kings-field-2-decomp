@@ -833,9 +833,9 @@ void effect_update_dispatch(void)
         }
     kind12_reset:
         record->render_id = 0x11;
-        record->scale_x = 0;
-        record->scale_y = 0;
         record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
         record->phase = 110;
         record->type |= 3;
         goto kind12_scale;
@@ -1316,9 +1316,9 @@ void effect_update_dispatch(void)
         record->phase = 1;
         record->render_id = 0xb;
         record->unknown_0c = 0x44;
-        record->scale_x = 0;
-        record->scale_y = 0;
         record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
         record->updates_remaining = -1;
         record->type |= 3;
         goto kind10_phase1;
@@ -1476,8 +1476,8 @@ void effect_update_dispatch(void)
                 s32 scale = func_8001584c(
                     0, actor_extent, record->unknown_3c[9] << 9);
 
-                record->scale_x = scale;
                 record->scale_z = scale;
+                record->scale_x = scale;
                 record->scale_y = func_8001584c(
                     0, actor->unknown_1e, record->unknown_3c[9] * 350);
             } else if (record->unknown_3c[9] >= 60) {
@@ -1572,8 +1572,8 @@ void effect_update_dispatch(void)
         record->position.vz += record->direction.vz;
         step = record->scale_x + *(u16 *)&record->unknown_3c[4];
         record->scale_x = step;
-        record->scale_y = step;
         record->scale_z = step;
+        record->scale_y = step;
         record->position.vy += record->direction.vy;
         break;
     case 102:

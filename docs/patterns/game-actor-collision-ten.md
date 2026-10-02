@@ -226,3 +226,18 @@ reverted. Casting the state-`0x20` speed read to `u16` before its modular
 halfword increment emits the retained object byte-for-byte and was also not
 kept. All 59 ordered relocation type/symbol pairs and three exact sibling
 functions remain unchanged in these controls.
+
+An isolated actor-damage follow-up (2026-10-02) reconfirmed
+`func_8003a318` at **99.86911%** strict text, `func_8003a614` at
+**96.91011%**, and the adjacent `func_8003a778` at **100%**. The first
+function's early stack loads assign `amount_and_flags` and `falloff` to
+opposite temporary registers while retaining all 26 CFG blocks, 13
+branches, calls, and referents. Moving the independent amount-mask
+assignment before the damage-position flag test in an off-tree C copy was
+semantically equivalent but lowered strict text to **91.272255%**; the exact
+sibling and second WIP stayed unchanged. This source-order trial was
+discarded. The second function's six blocks, three branches, four calls, and
+field widths still agree; retail rematerializes the player camera Z address
+where the probe reuses the existing camera base. No supported C change was
+retained, and the tracked source stayed unchanged. Verification used focused
+`kf try` and isolated strict objdiff only.

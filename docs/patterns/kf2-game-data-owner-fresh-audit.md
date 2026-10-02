@@ -402,3 +402,7 @@ address-base reuse rather than a missing identity. The pattern-placement
 unit has 11/11 text relocations, no owned initialized storage, and retains
 its known frame/induction differences. No map C or data-owner claim was
 changed.
+
+For the separately linked overlays, see the focused
+[OPEN/END data-owner audit](kf2-open-end-data-owner-focused.md). It confirms
+initialized sections independently from their BSS/COMMON placement gaps.

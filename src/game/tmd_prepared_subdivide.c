@@ -68,8 +68,8 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     output_packet += target->primitive_offset;
     base = (u8 *)asset + KF_TMD_HEADER_BYTES;
     source = &TMD_OBJECTS(asset)[object_index];
+    target->primitive_count = source->primitive_count;
     remaining = source->primitive_count;
-    target->primitive_count = remaining;
     source_packet = base + source->primitive_offset;
     while (--remaining != (u32)-1) {
         KfTmdPacketHeader header;

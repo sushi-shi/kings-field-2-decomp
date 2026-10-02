@@ -33,3 +33,27 @@ and candidate each use a 49-row jump table with the same 13 target classes,
 but the first known branch-target correspondence already differs after the
 initial record setup, and indirect-switch reachability is incomplete. This
 pass did not force any source change to improve a score.
+
+### Disjoint actor control recheck (2026-10-02)
+
+Nine manifest-profile GAME units were isolated and compared strictly with
+retail: 31 functions, 21 existing exact controls and ten WIPs. Exact controls
+are six in `actor_animation`, six in `actor_motion`, three in
+`actor_motion_collision`, three in `actor_group_position`, two in
+`actor_fixup_group_targets`, and one in `actor_fixed_curve`.
+
+| WIP | Fresh strict text | Focused CFG/branches | Bounded residue |
+| --- | ---: | ---: | --- |
+| `0x8003ae50` animation motion | 99.31746% | 58/58, 34/34 | Store and delay-slot scheduling. |
+| `0x800460a0` animation seek | 99.268295% | 6/6, 2/2 | Phase-result register order. |
+| `0x8003d184` behavior dispatch | 99.931595% | 410/410, 213/213 | Repeated target-halfword load and frame/register lifetime. |
+| `0x80039c94` fixed curve | 98.11751% | 72/72, 46/46 | Duplicate retail constant setup before shared store. |
+| `0x8003f7ec` target fixup | 85.86207% | 9/9, 4/4 | Commuted pointer addition and sentinel scheduling. |
+| `0x8003c3e0` group position | 99.64539% | 23/23, 11/11 | Yaw-normalization temporary register. |
+| `0x8003983c` lifecycle | 99.19598% | 37/37, 24/24 | Actor-base/register lifetime. |
+| `0x80039b58` lifecycle scan | 90.95744% | 9/9, 4/4 | Free-slot byte saved-register lifetime. |
+| `0x8003bd40` actor motion | 86.53226% | 9/9, 5/5 | Typed slots and calls agree; register allocation differs. |
+| `0x8003b5d0` motion collision | 96.42041% | 40/39, 21/21 | Retail keeps a separate state-`0x20` reset/exit block; a prior shared-label control regressed. |
+
+No new call, field, width, constant, or referent fact emerged from the first
+raw differences. No C edit or new exact closure follows.

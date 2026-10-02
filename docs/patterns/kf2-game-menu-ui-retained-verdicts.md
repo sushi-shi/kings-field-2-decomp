@@ -728,3 +728,31 @@ retail/candidate frame difference and no proved extra live object. All ten
 units have equal target/candidate text relocation counts; the two-option unit
 has 80/80. Earlier `menu_draw_number` WIP scores are stale for the current
 source. No C or inventory change was retained.
+
+### Menu preview and visual control recheck (2026-10-02)
+
+A fresh manifest-profile isolated comparison across 16 disjoint menu units
+covered 26 functions: 17 existing exact controls and nine WIPs. The exact
+functions are `0x80018ac8`, `0x80018d08`, `0x80018dec`, `0x80018f8c`,
+`0x80019240`, `0x800192ac`, `0x800192dc`, `0x80019834`, `0x800199d0`,
+`0x8001e94c`, `0x8001f008`, `0x8001f798`, `menu_draw_two_option`,
+`0x80020990`, `0x80021e00`, `tim_upload_images`, and `0x80034e10`. These
+are controls, not new exact closures.
+
+| WIP | Fresh strict text | Focused control and remaining gap |
+| --- | ---: | --- |
+| `0x8001930c` map preview | 98.26363% | 47/47 CFG blocks, 27/27 branches, 69 ordered referents; archive/TIM/packet calls agree. Retail reserves 64 bytes and saves `s7`; candidate reserves 56. The equivalent archive-index additions reassociate. |
+| `0x8001a4f0` item/magic controller | 99.74359% | 22/22 blocks, 12/12 branches; initial row-index and sentinel registers differ. |
+| `0x8001f8b8` preview choice | 99.14365% | 42/42 blocks, 18/18 branches; packet setup scheduling and saved-register choices differ. |
+| `menu_draw_window` | 99.78788% | 10/10 blocks, 6/6 branches; retail/candidate frames are 48/40 bytes. |
+| `0x8001fc94` list renderer | 99.70803% | 55/55 blocks, 33/33 branches; a zero move is scheduled two instructions apart. |
+| `0x8002083c` two-option preview | 99.65882% | 4/4 blocks, 2/2 branches; retail/candidate frames are 224/160 bytes, with no proved additional live object. |
+| `menu_draw_string` | 99.66904% | 8/8 blocks, 4/4 branches; retail/candidate frames are 56/48 bytes. |
+| `0x80021c8c` display state | 99.956985% | 7/7 blocks, 3/3 branches; retail/candidate frames are 32/24 bytes. |
+| `0x800349bc` transition | 96.31408% | 14/14 blocks, 8/8 branches; retail/candidate frames are 72/64 bytes and packet-store/state-register schedules differ. |
+
+The preview's raw arithmetic reads the state byte, adds 480, then adds the
+shifted menu index. The current C contains those inputs and bounds; a prior
+source operand reorder made the focused object worse without a separate
+source fact. No frame padding, forced register carrier, C edit, or new exact
+claim follows from this screen.

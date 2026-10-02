@@ -515,3 +515,56 @@ status headers, and 28-byte location switch table remain strict exact.
 No source edit or new exact claim resulted. These scores came from focused
 quick builds and isolated strict objdiff; no repository tests, lint, or full
 build ran.
+
+## Card title, format, and payload chain: 20-function strict recheck
+
+Fresh isolated strict builds of `game.memory_card_directory`,
+`game.memory_card_wait`, `game.memory_card_events`, `game.memory_card_probe`,
+`game.memory_card_payload`, `game.menu_card_format_flow`, and
+`game.menu_format_number` give **13 exact and seven WIP** function verdicts.
+The exact controls are `memory_card_format`, `memory_card_payload_byte_sum`,
+`memory_card_wait_event`, `memory_card_clear_events`, `input_wait_release`,
+`memory_card_initialize`, `memory_card_shutdown_events`,
+`memory_card_start`, `memory_card_stop`, `memory_card_probe_temporary_file`,
+`func_80048d24`, `func_800492dc`, and `func_8001c12c`. Each remains 100%
+strict in its rebuilt unit. The directory's 311 initialized DATA bytes and
+six RODATA bytes, the event unit's one-byte datum, and the probe's 26-byte
+RODATA also remain exact.
+
+| GAME WIP | Strict text | Final bounded verdict |
+| --- | ---: | --- |
+| `0x8001bf68` format flow | 97.123890% | Its probe, format, write, dialog, and input-release calls agree; probe-status and dialog-constant registers differ. Exact `0x8001c12c` is preserved. |
+| `0x80022058` number formatter | 97.39% | The 36-block CFG and seven ordered referents agree; its remaining frame placement has no supported source-local cause. |
+| `0x800226ec` directory enumerator | 93.605040% | The prefix scan, slot sort, and SDK calls agree; `memset` and signed slot-seed loads are scheduled differently. |
+| `0x800228c8` title reader | 85.156250% | Retail uses two `lb` title-byte loads, two stack `sb` stores, and a halfword reload per glyph in both six- and two-digit loops. The current typed header and call/CFG path agree, but GCC emits `lbu` and chooses a different byte-offset lifetime. |
+| `0x80022b74` payload reader | 93.666664% | Open/read/checksum/restore calls and branches agree; retail's 80-byte frame exceeds the probe's 72-byte frame without a proved extra live object. |
+| `0x80022ca0` card writer | 95.896774% | Directory scan, palette selection, icon transfer, checksum, and writes agree; slot-seed and clear setup is scheduled differently. |
+| `0x80023178` title digit writer | 93.529410% | Retail's six-digit experience and two-digit level loops use the same signed division and title-byte stores as source; header/quotient register lifetimes differ. |
+
+The writer's experience positions are title offsets 50, 48, 46, 44, 42,
+and 40; the reader visits the same six encoded pairs in ascending order at
+offsets 40–50 and weights them 100000 to 1. The writer's two level pairs at
+offsets 60 and 58 are read at 58 then 60. This cross-function agreement
+also pairs the writer's `0x82` lead byte with `digit + 0x4f` in the high
+byte of each little-endian halfword; the reader's signed high-byte shift
+and subtraction of 79 recover that digit. It supports the glyph layout and
+digit order independently of the reader's
+`lb`/`lbu` residue. The reader has 24/24 CFG blocks, 13/13 branches, and
+the same `strncmp`, `strcat`, `open`, `read`, `close`, and `atoi` calls as
+retail. Prior signed-view and explicit-offset C probes in this dossier
+either compiled identically or regressed, so this pass made no C, header,
+data-owner, or profile edit. Only focused unit builds and isolated strict
+objdiff were used. KF1's `save_system.c` stores its own title and summary
+format and has no matching two-glyph numeric reader, so it supplies no
+source-shape correction for these KF2 loops.
+
+An adjacent 11-function card-browser rebuild gives ten strict exact controls:
+`func_8001aa9c`, `func_8001ac80`, `func_8001af30`, `func_8001b030`,
+`func_8001b14c`, `func_8001b2dc`, `func_8001b834`, `func_8001ba80`,
+`func_8001bb94`, and `func_8001bcfc`. The only WIP is `func_8001b554` at
+98.478264% strict: all 33 retail/probe CFG blocks, 16 branches, and the
+card probe, enumeration, input, drawing, and stop calls agree. Retail moves
+the probe result from `v0` to `a0` before two guards; the probe tests `v0`
+directly. The source already models both guards and their error paths, so
+there is no supported call, width, or branch correction to retain. These
+eleven are current exact rechecks and one WIP verdict, not new closures.

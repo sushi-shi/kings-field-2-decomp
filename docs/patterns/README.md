@@ -17,6 +17,9 @@
 - [kf2-game-data-owner-fresh-audit.md](kf2-game-data-owner-fresh-audit.md):
   current GAME initialized bytes, table addends, placement, and BSS/COMMON
   boundaries from isolated owner comparisons.
+- [kf2-open-end-data-owner-focused.md](kf2-open-end-data-owner-focused.md):
+  OPEN/END movie-buffer ownership, COMMON/BSS placement, and a negative
+  `-fno-common` profile control.
 - [kf2-game-collision-bounds-cse.md](kf2-game-collision-bounds-cse.md): a
   single-unit GCC CSE control producing a strict-exact collision-bounds helper.
 - [kf2-game-event-command-table.md](kf2-game-event-command-table.md): reviewed
@@ -110,6 +113,8 @@
 - [kf2-game-menu-card-followup.md](kf2-game-menu-card-followup.md): 25 connected
   menu/card verdicts, exact panel, display-exit and item-model C, and the
   remaining display-entry/card-label codegen residues.
+- [kf2-game-menu-ui-retained-verdicts.md](kf2-game-menu-ui-retained-verdicts.md):
+  current menu preview, list, window, and display-state strict verdicts.
 - [kf2-game-menu-graphics-links.md](kf2-game-menu-graphics-links.md): 25
   menu/graphics/card linkage verdicts, an exact numeric overlay, and the
   signed-low referent correction for its byte-sized counter.
@@ -122,6 +127,8 @@
 - [kf2-game-tmd-pipeline-depth-tail.md](kf2-game-tmd-pipeline-depth-tail.md):
   FT3 depth guards, preserved exact TMD pipeline siblings, and the remaining
   textured and lit walker scheduling residues.
+- [game-tmd-render-callgraph-25.md](game-tmd-render-callgraph-25.md):
+  prepared-TMD subdivision and connected renderer call/packet evidence.
 - [kf2-game-render-frame.md](kf2-game-render-frame.md): 25 confirmed
   render-frame and notification verdicts, three new strict matches, and
   remaining model, map-grid, and resource boundaries.
@@ -131,6 +138,9 @@
 - [kf2-game-actor-group-call-topology.md](kf2-game-actor-group-call-topology.md):
   raw GAME actor-group call multiplicity, isolated source-shape controls, and
   the related target-scorer tail-merge limit.
+- [kf2-game-effect-dispatch-store-order.md](kf2-game-effect-dispatch-store-order.md):
+  raw scale-field store order in the large GAME effect updater and strict
+  focused comparison.
 - [game-menu-visual-fourteen.md](game-menu-visual-fourteen.md): current GAME
   visual-menu direct comparison with eleven strict exact functions, three
   bounded frame/codegen WIPs, and exact sprite/window data.

@@ -1422,3 +1422,28 @@ sentinel `-1` there. A second off-tree spelling with the first partial
 transfer before a `while (result == -1)` loop lowered focused listing
 similarity from 91.8% to 73.2% and was discarded. No independent source
 fact justifies changing the tracked loop or its value lifetimes.
+
+## Focused 28-function audio/CD control
+
+A fresh pinned manifest-profile compile and isolated strict comparison of
+`game.audio_runtime`, `game.resource_transition_phase`, and `game.cd_memory`
+checked a related 28-function campaign. The 17 audio-runtime functions have
+15 exact controls; only initializer `0x800139c4` (89.30556%) and
+`cd_request_service_vab` `0x800144b8` (94.87342%) remain WIP. All five
+transition-phase callbacks are exact. Six directly connected CD controls are
+exact: `cd_archive_queue_read`, `cd_archive_entry_extent`,
+`cd_request_advance`, `cd_request_service_stream`, `cd_request_yield`, and
+`cd_file_load_into`. Thus 26/28 selected functions are strict exact; no
+new exact result was banked.
+
+The audio target/candidate `.rel.text` counts are 178/170. The precise
+multiset difference is four target-only HI16/LO16 pairs at object offsets
+`+0x64`, `+0xcc`, `+0xf0`, and `+0x100` for `DAT_80198640`,
+`DAT_80165a68`, `DAT_80194e30`, and `DAT_80164a68`. Each target pair is
+`lui/addiu`; the current C uses fixed workspace literals. The 15 exact
+audio siblings and the VAB-service function have no missing referent.
+The latter's first raw divergence holds phase value `1` in retail `$s3`
+versus retry sentinel `-1` in candidate `$s3`; calls, 316-byte extent, and
+the branch structure agree. Neither gap supports a new global definition
+or a source-level change. No C, inventory, or compiler-profile edit was
+retained; only focused objects and isolated strict reports were used.

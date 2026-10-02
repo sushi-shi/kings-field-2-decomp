@@ -82,3 +82,35 @@ retained because it expresses the unsigned low-halfword value without a
 pointer alias; a fresh tracked-source focused build has the same whole-unit
 SHA256 as baseline, preserving every exact sibling. The full-width local
 trial and compiler profile remain unchanged.
+
+### Linked grid and collision controls, 27-function follow-up
+
+Eight focused GAME unit compilations, compared directly against their safe
+delinked modules with strict objdiff, cover 27 functions. Sixteen are exact:
+`8002a988`, `8002b604`, `8002b7f8`, `8002bc18`, `8002bd3c`, `8002bdbc`,
+`8002be9c`, `8002bf38`, `8002bfac`, `8002c170`, `8002c1d4`, `8002c290`,
+`8002ce2c`, `8002cf40`, `800314fc`, and `80031634`. The other eleven have
+these final strict verdicts:
+
+| GAME address | Strict text | Bounded first gap |
+| --- | ---: | --- |
+| `8002aaa4` | 57.52610% | The 49-row switch table keeps its reviewed target classes; retail has 47 internal jump relocations versus 42 compiled, with a remaining CFG layout gap. |
+| `8002b67c` | 94.895836% | Retail reloads the stored cache height before the five-argument call; the candidate retains its calculated value, removing one BSS HI16/LO16 pair. |
+| `8002b73c` | 98.40426% | The bounded occupancy loop and referent agree; row and coordinate registers differ. |
+| `8002b874` | 91.50000% | Retail leaves the first flag branch delay slot empty and loads the actor radius before the interaction height; the candidate hoists the `-1` index comparison and reverses those independent loads. Both select the same player, actor, and object fields. The candidate removes one BSS address pair. |
+| `8002b9d4` | 95.37931% | All grid, actor, object, and player calls and 23/23 CFG blocks agree; argument and saved-register schedules differ. |
+| `8002bfd4` | 73.91262% | Both axes and unsigned origins are represented; endpoint/origin arithmetic and the unused compiled frame remain different. |
+| `8002c424` | 98.29932% | Mask and occupancy referents and 23/23 CFG blocks agree; scan-state register assignment differs. |
+| `8002c670` | 91.624245% | The builder uses the same mask/graphics/BSS families, but materializes the scan-state address 15 times versus retail's 13. The complete scan-state ownership remains WIP. |
+| `8002ce68` | 65.85185% | Retail reloads its three stack arguments after finding a free item; the candidate hoists them, increasing its frame from 40 to 56 bytes. |
+| `80034f90` | 97.86822% | Fourteen CFG blocks, seven branches, and the occupancy referent agree; cell-origin and layer-flag registers differ. |
+| `80035194` | 89.59545% | Fifty-one CFG blocks, 26 branches, and both occupancy layers agree; retail uses a 40-byte frame versus 32 compiled bytes. |
+
+The height-wrapper module has 79 retail versus 77 candidate HI16/LO16
+pairs, wholly accounted for by one extra cache reference in each of
+`8002b67c` and `8002b874`. The mask-builder module has 27 retail versus
+29 candidate pairs, with the two extras both naming its existing
+`render_mask_scan_state` referent. The floor-item and map-pattern modules
+have equal HI16/LO16 and `R_MIPS_26` counts. These differences alone do not
+prove a missing source object or justify an artificial address reload.
+No C, identity, or relocation edit followed this screen.

@@ -118,3 +118,58 @@ padding, register carrier, or branch rewrite is justified. No source edit was
 retained and no WIP was banked. This pass used focused quick builds and
 isolated strict objdiff only, with no repository tests, lint, full build,
 broad match, or README update.
+
+## Event-to-resource and map bridge: thirty live WIPs (2026-10-02)
+
+The event controllers call the pose and marker helpers, map-object routines,
+CD/frame services, and save/restore path; the latter reaches the resource
+allocator. A fresh isolated build of each related unit, using its complete
+manifest profile and direct strict objdiff against the existing GAME target,
+checked these thirty non-exact source claims. Exact siblings in the same
+units were also compared and remained exact. Percentages below are strict
+text results, not focused-listing similarity. This is a current comparison
+and an ownership boundary, not a new claim about original TU membership.
+
+| GAME address | Strict text | Bounded verdict |
+| --- | ---: | --- |
+| `0x800461a0` | 99.12676% | Marker cursor/register order; 14/14 CFG and 13 ordered text referents. |
+| `0x800462bc` | 98.68132% | Independent phase/state load order adds one probe delay `nop`; 16-row dispatch table identity is unchanged. |
+| `0x800475d8` | 99.166664% | Fallthrough versus branch-delay placement of an unused local zero; calls and 62 referents agree. |
+| `0x80047c98` | 99.81618% | Rotation and constant-one saved-register roles exchange; calls and 72 referents agree. |
+| `0x800489ac` | 98.82883% | Actor-base and sentinel argument registers exchange; 64-byte switch table remains exact. |
+| `0x800139c4` | 89.30556% | Audio startup workspace owner and complete extent remain unproved; no relocation promotion. |
+| `0x800144b8` | 94.87342% | VAB CD-service workspace/address-form residue; known direct calls retained. |
+| `0x80015d58` | 89.03145% | Resource startup fixed-workspace referents lack a proven defining owner. |
+| `0x80015fd4` | 89.710144% | Resource transition initializer has the same unresolved workspace ownership. |
+| `0x80016260` | 98.790085% | Request callback/state paths agree; COMMON allocation rounding does not prove a larger C record. |
+| `0x80016820` | 99.193474% | Callback/TMD workspace literals versus missing candidate address pairs; extent remains unproved. |
+| `0x80017608` | 99.78261% | Arena allocator has 8/8 CFG and four branches; two arithmetic instructions choose another temporary. |
+| `0x80027f78` | 95.91228% | Player collision response preserves 27/27 CFG; motion-vector base/rematerialization differs. |
+| `0x8002aaa4` | 57.52610% | Shape switch retains 49 row identities; case `0x11` has an unreachable retail branch and `0x30`/`0x32` split multiplication tails. |
+| `0x8002b67c` | 94.895836% | Retail reloads the stored cache height before shape call; probe carries the value. |
+| `0x8002b73c` | 98.40426% | Same indexed cell update, different row-pointer/index register lifetime. |
+| `0x8002b874` | 91.50000% | Three height sources and common cache store agree; load order differs. |
+| `0x8002b9d4` | 95.37931% | Cache calls/stores agree; 64/56-byte frame and saved-register roles differ. |
+| `0x8002bfd4` | 73.91262% | Rasterizer has four proven mask-sweep callers and signed halfword tests; loop induction/layout differs. |
+| `0x8002c424` | 98.29932% | Cell lookup and cursor control agree; saved-register roles differ. |
+| `0x8002c670` | 91.624245% | Four rasterizer calls and 28-byte shape data agree; nonzero-layer arm has two extra retail address pairs. |
+| `0x8002ce68` | 65.85185% | Seven-argument free-slot finder reloads late O32 arguments after acquisition in retail. |
+| `0x80034f90` | 97.86822% | Map-cell placement source/control is retained; no independent new field fact in this screen. |
+| `0x80035194` | 89.59545% | Layer-arm field-mask recomputation versus reuse; 51/51 CFG and 26/26 branches. |
+| `0x80036190` | 98.56115% | Object proximity/facing calls and 15/15 CFG agree; independent angle-result move/load order differs. |
+| `0x80036464` | 95.32258% | Effect-object spawn calls and 12/12 CFG agree; register lifetime and predecessor-dependent table addend remain. |
+| `0x80036e24` | 98.86364% | Frame/CD helper has all five calls and 5/5 CFG; three saved argument roles rotate. |
+| `0x8003983c` | 99.19598% | Actor lifecycle caller has 37/37 CFG, 24/24 branches and matching referents; saved roles differ. |
+| `0x80039b58` | 90.95744% | Actor-group scan has 9/9 CFG and matching two calls; free-slot byte register lifetime differs. |
+| `0x800460a0` | 99.268295% | Animation phase helper has 6/6 CFG and two calls; step/half-step saved-register roles differ. |
+
+The event pose, command dispatcher, counter, state, and save-stream controls
+were strict exact; in particular `0x8004678c` retains exact text, data,
+rodata, and ordered relocations. The CD/memory unit had 56 exact siblings;
+the wrapper unit retained its exact initialized rows. The five event WIPs
+and the connected sources above have no newly proved missing call, wrong
+field width, or assignable global owner. Source and curated metadata were
+left unchanged; no percentage-only rewrite was retained. Collision/cache
+and map-grid source ownership was handed to the separate collision worker
+after this read-only comparison. Only isolated per-unit builds and strict
+objdiff were run; no tests, lint, broad match, link, or full build.

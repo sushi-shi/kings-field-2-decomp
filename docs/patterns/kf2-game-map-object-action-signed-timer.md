@@ -255,3 +255,53 @@ relocations. Direct strict comparison finds 17 exact claims and five WIPs:
 The five WIPs retain their existing humane source. This certificate adds no
 exact closure beyond the previously recorded unit results and makes no new
 source-owner claim from address adjacency.
+
+### Post-checkpoint map-object recheck (2026-10-02)
+
+A fresh manifest-profile isolated comparison of eight map-object units covers
+20 claims: 17 existing strict-exact controls and the three unchanged WIPs
+`0x80036190` (**98.56115%**), `map_object_spawn_effect` (**95.32258%**),
+and `0x80036ed4` (**99.63745%**). The reset, initialization, collision
+query, scatter, vertex-world, and motion bodies remain exact. Their exact
+addresses are `0x80035504`, `0x80035534`, `0x80035590`, `0x800355d8`,
+`0x800356ac`, `0x800357a0`, `0x80035894`, `0x80036078`, `0x800363bc`,
+`0x800363dc`, `0x800365d8`, `0x800366fc`, `0x800368b4`, `0x80036944`,
+`0x800369b8`, `0x80036ad8`, and `0x80036b68`. For the action
+dispatcher, focused control remains 329/329 CFG blocks and 180/180 branches;
+its 32-byte DATA is exact and 956-byte RODATA is 43.396225% because text
+layout shifts switch target addends. Direct relocation comparison finds
+252 text and 238 RODATA rows on each side, with all 490 ordered type/symbol
+pairs identical. The first different text site is row 145 (`0x1220` retail,
+`0x121c` candidate); all 238 RODATA relocation sites align.
+Reading the 956-byte table as 239 little-endian words gives the same
+first-occurrence target-equivalence class at every position (36 classes,
+including the leading literal word). Twenty-three words currently have
+equal raw addends; the first differing pointer is word 4 at table `+0x10`
+(`0x1d88` retail versus `0x1d8c` candidate). No pointer row needs a new
+identity or destination class.
+
+At action 98, retail adds 30 to a 16-bit velocity, tests the signed result,
+and stores it in the branch delay slot. The current source stores first and
+then reads the signed view. An off-tree spelling that explicitly computed
+the signed new velocity before storing it emitted a SHA256-identical object
+at **99.63745%** strict text. This is a scheduling residue, so that source
+trial was not retained. No new exact claim or C/identity edit follows.
+
+The action dispatcher's `0x80036e24` frame/CD-service callee was also rebuilt
+as a separate direct control: **98.86364%** strict text, 5/5 CFG blocks,
+2/2 branches, and all five ordered calls. Retail and candidate assign mode,
+end phase, and step to different saved registers; phase arithmetic and call
+arguments agree. This makes the connected screen 21 functions, 17 exact and
+four WIPs, without a source-backed correction to the frame helper.
+
+The map-object state owner remains a separate data-placement WIP. The curated
+target `map_object_reset.o` defines `map_object_state` in a `0x8744`-byte `.bss`;
+the current manifest probe emits a `0x8748`-byte COMMON reservation even
+though the typed structure is `0x8744`. An off-tree explicit zero initializer
+`= {0}` produced a `0x8744`-byte `.data` section, not retail `.bss`, while
+leaving all 912 raw text bytes unchanged. A separate off-tree `-fno-common`
+compiler control also emitted a `0x8744`-byte `.data` section. Neither
+control reproduces the curated target allocation, so no source or profile change
+was retained. The raw startup clear covers precisely `0x8744` bytes, but it
+cannot establish the historical source spelling or compiler option that
+placed this object in BSS.

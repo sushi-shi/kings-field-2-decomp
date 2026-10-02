@@ -7,6 +7,12 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-event-save-restore-20.md](kf2-game-event-save-restore-20.md):
+  strict per-function verdicts for 20 connected GAME event stream, state,
+  collision, and save-caller functions.
+- [kf2-game-effect-constructor-family-28.md](kf2-game-effect-constructor-family-28.md):
+  per-function strict verdicts for the GAME constructor, actor-group caller,
+  and 26 exact pool, spawn, motion, and sound controls.
 - [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
   actor group-effect helper and constructor call topology, with bounded
   negative source trials.

@@ -178,3 +178,151 @@ types, and targets. A focused `resource_runtime` build and fresh isolated
 strict comparison retain all four previous exact siblings, so the unit is now
 **5/8 exact**. The other WIP strict scores are unchanged: `0x800320b0`
 73.95918%, `0x80032174` 93.6%, and `0x800321d8` 98.4359%.
+
+## Fresh 29-function resource/workspace control
+
+A pinned-profile isolated compile of eight connected GAME units covers 29
+selected functions: main (2), startup (2), transition request (1), phase
+setters (5), transition step (1), seven CD/allocator controls, resource
+runtime (8), and asset registry (3). Twenty are strict exact. They are
+`main`; all five `resource_transition_set_phase_*` callbacks;
+`cd_request_service_stream`, `cd_request_yield`, `cd_request_advance`,
+`cd_archive_entry_extent`, `cd_archive_queue_read`, `cd_file_load_into`;
+`resource_registry_get`, `resource_tmd_read_complete`,
+`map_cell_layer_mask`, `resource_vab_update_range`,
+`resource_tmd_update_range`; and `asset_registry_load_tmd_archive`,
+`asset_registry_set`, `asset_registry_select`.
+
+| GAME function | Strict text | Final bounded verdict |
+| --- | ---: | --- |
+| `game_main_loop` | 99.67553% | Its arena-base constructor still uses the fixed literal `0x8009b0a0` where retail uses signed-low address construction. The exact allocator establishes the `0x5f000` runtime span, not its source definition. |
+| `80015d58` startup loader | 89.03145% | Six target-only HI16/LO16 pairs name four unowned workspaces: `DAT_801d8d88` once, `DAT_8012da68` once, and `DAT_800fa0d0`/`DAT_800855a0` twice each. The archive/copy calls and strings retain their retail order. |
+| `80015fd4` startup pump | 89.710144% | Its TMD slot-zero pointer uses the unowned `0x8012da68` workspace. |
+| `80016260` transition request | 98.790085% | All 135 target/candidate relocations have the same type and symbol order, and CFG is 67/67 blocks. The first raw difference assigns the seventh/eighth stack-byte values to different saved registers; later independent state-byte stores and a branch delay slot schedule differ. |
+| `80016820` transition step | 99.193474% | The seven-phase dispatch retains 62/62 CFG blocks. Retail has two HI16/LO16 pairs for `DAT_8019e138` at `+0x104`/`+0x1f4` and one for `DAT_8012da68` at `+0x22c`; fixed C literals supply none. Its 128-byte DATA callback table and 28-byte RODATA switch table are both strict exact. |
+| `memory_arena_allocate_block` | 99.78261% | A two-word temporary-register choice differs; the block split threshold, owner write, and calls agree. |
+| `map_cell_layer_mask_radius` | 74.061226% | The raw-backed scalar-width radius correction is retained; remaining row/column induction and coordinate scheduling differ. |
+| `map_cell_visible` | 93.60000% | Same view-cell comparisons and five-block return path; result-register choice remains. |
+| `resource_tmd_queue_read` | 98.43590% | Its only material address-form gap is the unowned arena base `0x8009b0a0`. |
+
+All other selected units have equal relocation counts; request and runtime
+also retain ordered type/symbol identity. The target request unit owns
+`state_8017d118` as 28 bytes of `.bss` aligned to eight, whereas the pinned
+candidate requests 32 bytes of COMMON, the repository-wide tentative-symbol
+rounding already controlled in the [data-owner audit](kf2-game-data-owner-fresh-audit.md).
+Read-only `kf sema --image game addr` lookups for `0x8019e138` and
+`0x8012da68` each report outside-load storage, no binding, and two incoming
+value references. The same check finds no binding for the startup copy
+destinations `0x801d8d88`, `0x800fa0d0`, and `0x800855a0` (one, two, and
+two incoming value references). The arena base `0x8009b0a0` also has no
+binding or navigator reference row despite its three raw address constructors;
+the semantic index does not infer that address's source allocation. None of
+these lookups establishes allocation size or a defining translation unit.
+This batch retains no source, inventory, or compiler-profile edit; focused
+objects and isolated strict comparisons were the only checks.
+
+### Regional retail address-motion control
+
+The local JP, US, and EU `GAME.EXE` files all contain `COM\\FDAT.T` at
+`0x80011024`. Its unique adjacent signed-low address reference identifies
+the corresponding startup archive-open sequence at JP `0x80015df8`, US
+`0x80015e74`, and EU `0x8001627c`. Scanning the ordered `lui/addiu`
+constructors around those sites gives:
+
+| Startup pointer role | JP GAME | US GAME | EU GAME |
+| --- | ---: | ---: | ---: |
+| Resource arena base | `0x8009b0a0` | `0x8009bfe4` | `0x8009e11c` |
+| Third copied resource | `0x801d8d88` | `0x801d9ccc` | `0x801dd5b8` |
+| First TMD archive | `0x800fa0d0` | `0x800fb014` | `0x800fd11c` |
+| Second TMD archive | `0x800855a0` | `0x800864e4` | `0x80088e44` |
+| Transition TMD slot-zero pointer | `0x8012da68` | `0x8012e9ac` | `0x80130a90` |
+| Transition loaded-callback destination | `0x8019e138` | `0x8019f07c` | `0x801a1190` |
+
+The JP-to-US values all move by `+0xf44`; EU values move by differing
+amounts, consistent with a changed layout. This is evidence against one
+cross-region invariant literal address. It does not distinguish relocated
+C objects from generated build constants, linker symbols, or a memory-policy
+layout maintained separately for each program. In particular it proves no
+complete array size or source translation-unit owner; the JP source literals
+and candidate identities remain provisional.
+
+Each region has three adjacent signed-low constructors for its own arena
+base, in the same main-loop, startup-loader, and later resource-queue roles:
+JP `0x8001389c/0x80015d64/0x80032200`, US
+`0x800138dc/0x80015de0/0x80032f38`, and EU
+`0x80013d38/0x800161d0/0x80034c90`. This co-moving three-site pattern
+strengthens the address identity across regional builds; it still does not
+identify the original linker or C declaration mechanism. Each main-loop
+constructor is followed by `lui a1,5`; the call delay slot forms
+`0x5f000` with `ori a1,0xf000`, confirming the same runtime arena
+capacity in all three regional programs.
+
+The adjacent startup heap-boundary constructor moves from JP
+`0x801da018` to US `0x801daf5c` and EU `0x801df038`, while the fixed
+heap ceiling stays `0x801f8000`. JP and US arena and boundary
+both shift by `+0xf44`; in EU the arena shifts by `+0x307c` but this
+boundary shifts by `+0x5020`. Thus the arena is neither the boundary
+itself nor a single invariant displacement below it across all three
+programs. This narrows possible source expressions without establishing
+whether the arena was a C object, linker symbol, or generated memory map.
+
+The corresponding audio initializer likewise constructs the same four
+workspace roles with signed-low pairs in each image:
+
+| Audio workspace role | JP GAME | US GAME | EU GAME |
+| --- | ---: | ---: | ---: |
+| Sequence buffer | `0x80198640` | `0x80199584` | `0x8019b630` |
+| First VAB slot | `0x80165a68` | `0x801669ac` | `0x80168a90` |
+| Fifth-slot override | `0x80194e30` | `0x80195d74` | `0x80197e28` |
+| Sixth-slot override | `0x80164a68` | `0x801659ac` | `0x80167a90` |
+
+These four JP-to-US pointers also shift by `+0xf44`; EU shifts vary by
+workspace family. Their ordered initializer uses support corresponding
+runtime roles, but regional address motion still does not prove a complete
+array extent or original defining translation unit. The four Japanese
+source literals remain WIP, preserving the real retail referents until
+that mechanism is established.
+
+The callback destination is independently repeated twice in each regional
+transition step, before its TMD destination constructor: JP
+`0x80016924/0x80016a14`, US `0x800169a0/0x80016a90`, and EU
+`0x80016db8/0x80016ec4`. This confirms the corresponding callback pointer
+role, while leaving its maximum archive-loaded extent unresolved.
+The startup copy constructor for `effect_state` moves from JP
+`0x8019b6a8` to US `0x8019c5ec` and EU `0x8019e700`; each regional
+callback destination lies exactly `+0x2a90` after that base. The complete
+JP effect-state object ends at base `+0x2a8c`, leaving the same four-byte
+gap before the callback destination. This repeated adjacency supports a
+separate following workspace, but it still does not prove that workspace's
+maximum size or original declaration.
+
+## Startup data-consumer controls, 25 functions
+
+Three source units connected to resource startup were compiled and compared
+in isolation: `player_state_equipment` (16 functions), `event_state` (6), and
+`asset_registry` (3). Twenty-four functions are strict exact. In the player
+unit these are `player_get_camera_pose`, `player_reset_status`,
+`player_initialize_state`, `game_initialize_session`,
+`player_clear_motion`, `player_sync_position_to_map`,
+`player_distance_to_point_in_cone`, `player_distance_to_point`,
+`player_set_unknown_97`, `player_set_unknown_98`,
+`player_set_unknown_99`, `player_set_equipment_slot`,
+`player_equip_weapon`, `player_begin_weapon_attack`, and `func_80025878`.
+All six event-state functions (`800482f8`, `800483a8`, `800483d8`,
+`80048428`, `80048498`, `800484e4`) and all three asset-registry functions
+(`asset_registry_load_tmd_archive`, `asset_registry_set`,
+`asset_registry_select`) are also exact. The sole WIP is equipment update
+`80025a18` at **98.02234% strict**; its owner is another active source
+lane, so this is a read-only verdict.
+
+The exact `game_initialize_session` consumer sits in a player unit whose
+92 initialized DATA bytes are strict exact. Its target `.bss` comprises a
+49,152-byte local weapon buffer, 1,224-byte `player_weapon_records`, and
+71,748-byte `bss_801c7540` (122,124 bytes total). The pinned candidate
+keeps the 49,152-byte local buffer in `.bss` but requests the two exported
+objects as 1,224- and 71,752-byte COMMON symbols. The event-state unit's
+six exact functions likewise coexist with target `.bss` 14,616 bytes and
+candidate COMMON 14,616 bytes. These controls separate initialized-data
+matching and function matching from the unresolved zero-storage section and
+tentative-definition mechanism; they do not justify per-global placement
+rules or new object extents. No source or config edit followed this pass.

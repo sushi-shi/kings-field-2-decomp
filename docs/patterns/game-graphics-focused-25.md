@@ -367,3 +367,67 @@ The two frame/packet groups and their callers have complete verdicts here;
 fresh comparisons establish no new exact claim. The remaining differences
 provide no independent field, width, call, relocation-owner, or control-flow
 fact for a humane C edit. No source or curated inventory was changed.
+
+## Extended 24-claim render call chain
+
+A second narrow safe-target pass followed the map packet emitters and the
+frame/resource dispatcher into 18 other confirmed graphics, animation, and
+asset callers. All 18 are strict exact: `notification_quad` (2 claims),
+`notify_enqueue` (3), `menu_model_render` (1), `asset_registry` (3),
+`animation_keyframe` (1), `animation_sparse_vertices` (3),
+`animation_sparse_find` (1), `asset_vertex_count` (3), and
+`player_weapon_render` (1). The notification unit's 126-byte DATA is exact.
+These controls are connected by the scene's draw, asset selection, and
+prepared-vertex paths; exactness is established by isolated objdiff against
+fresh safe targets, not by the old aggregate report.
+
+The six non-exact claims in this 24-claim chain are the two `render_map`
+emitters and `0x800311b0`, `0x80031850`, `0x80031d8c`, and `0x8003247c`
+listed above. Focused quick builds reproduce their listed CFG and branch
+counts. The first `0x8003247c` control difference at `+0x498` computes the
+sound-volume coordinate using different registers; raw source operands still
+denote the same camera and map-object fields. Its B62 taken edge names a
+different block ordinal but reaches the same effect-record advance. The
+`0x8002f808` first divergence remains the 168/120-byte frame and FT4 packet
+instruction schedule; the raw body provides no access proving an omitted
+48-byte source object. No new source, owner, or relocation edit follows from
+this extended control.
+
+The fresh `render_map` safe target and compiled unit each have 100 text
+relocations with identical ordered type/symbol pairs. Retail `0x8002f808`
+has one physical `AddPrim` call after its FT4/FT3 branches; the current
+compiler also merges the two humane source calls to one site. Its retail
+call inventory still includes two `NormalClip`, two `NormalColorCol`, seven
+`DpqColor`, one `Clip4FTP`, one `Clip3FTP`, and one clipped-fan call.
+`render_resource_dispatch` has 82 target versus 84 candidate text
+relocations; the only extra candidate pair is HI16/LO16 `player_state` for
+the already correct camera-coordinate loads. Its five world-model calls and
+one animated-object call match the raw retail sites. The counts and referents
+do not support deleting any source reference.
+The complete external-call multisets also agree: 36 calls in each
+`render_map` object and 27 in each dispatcher object, including all repeated
+`DpqColor`, map-mask, range-update, and world-model calls.
+
+An off-tree `-fno-cse-skip-blocks` GCC 2.5.7 control on the unchanged source
+kept the exact `render_enqueue_map` sibling but regressed `0x8002f808` from
+92.038376% to 86.76119%, `0x80031850` from 99.29851% to 94.96418%, and
+`0x8003247c` from 92.18579% to 91.22131%. It left `0x8002f5b0`,
+`0x800311b0`, and `0x80031d8c` unchanged. This compiler flag therefore
+does not close the render family's instruction-order residue and was not
+retained.
+
+An independent off-tree GCC 2.6.0 `-O2` control also regressed every member
+of the five render units: `render_enqueue_map` lost exactness (90.1673%),
+the clipped/prepared map renderers fell to 73.86%/84.460556%, and the quad,
+world, animated, and resource dispatchers fell to 45.493828%, 78.83582%,
+75.07519%, and 86.008194%. This compiler substitution is contradicted by
+the exact sibling and the wider connected corpus, so it was discarded.
+
+Retail `0x8002f808` stores the decoded packet-mode word at `sp+120` and
+reloads it in both textured arms. An off-tree, source-equivalent trial named
+that value as `u32 packet_mode = header.word >> 24` and used it for the switch,
+packet-code bits, and clipped-fan mode argument. The compiler still kept the
+value in a register rather than producing the retail stack lifetime; its
+strict text fell from 92.038376% to 91.614075%. The exact enqueue sibling
+and clipped-fan score stayed unchanged. The trial was discarded; a forced
+stack carrier would not be a supported source correction.

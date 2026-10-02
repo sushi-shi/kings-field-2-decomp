@@ -63,3 +63,37 @@ Their source-backed field and store-order corrections are already retained
 in the player trajectory dossier. This extension brings the current screen
 to 56 functions, 48 existing exact controls, eight WIPs, and no new C edit or
 exact closure.
+
+## Fresh 26-claim movement and equipment control
+
+Narrow safe targets and isolated strict objects from current source cover
+seven related GAME units, with focused quick builds for each. Twenty-two
+claims are strict exact. The fifteen exact `player_state_equipment` siblings
+are `player_get_camera_pose`, `player_reset_status`,
+`player_initialize_state`, `game_initialize_session`,
+`player_clear_motion`, `player_sync_position_to_map`,
+`player_distance_to_point_in_cone`, `player_distance_to_point`,
+`player_set_unknown_97`, `player_set_unknown_98`,
+`player_set_unknown_99`, `player_set_equipment_slot`,
+`player_equip_weapon`, `player_begin_weapon_attack`, and `func_80025878`.
+`func_80026498`, both `player_weapon_transform_power` claims, both
+`player_camera_turn` claims, `player_distance_to_point_with_margin`, and
+`player_reset_view` are also exact. The equipment unit's 92-byte DATA and
+the magic updater's 52-byte RODATA are exact.
+
+| Remaining claim | Fresh strict text | Focused control and bounded verdict |
+| --- | ---: | --- |
+| `0x80025a18` equipment dispatcher | 98.02234% | 99/99 CFG, 31/31 branches; 16/16 target probes and 11/11 effect constructors. All 53 switch rows retain 31 destination classes; candidate addends are four bytes below retail. Retail homes/reloads the first variadic argument in a 112-byte frame; current `va_list` C keeps the ABI-correct second-argument cursor in a 104-byte frame. No defined source replacement for that home is proved. |
+| `0x8002665c` magic updater | 98.67857% | 114/114 CFG, 68/68 branches, 20 ordered calls. Two missing candidate `player_state` HI16/LO16 pairs are repeat address materializations of the same phase field. |
+| `0x8002722c` magic selector | 99.09091% | 33/33 CFG, 16/16 branches; both switch-table class relations and 82 ordered function referents agree. The retail eight-byte leaf frame has no proved live source object. |
+| `0x800274ec` horizontal mover | 89.85240% | 35/34 CFG, 20/20 branches, 11 ordered calls. The one retail-only block stores the already modeled slide-attempt flag at the retry join; extra retail player-state pairs rematerialize known fields. |
+
+The 244-byte equipment RODATA remains 39.876034% and the 100-byte selector
+RODATA 37.5% while their ordered table destination classes remain supported.
+Fresh unit text-relocation totals are 492/492 for equipment, 256/252 for
+magic update, and 148/126 for selector plus movement (retail/candidate);
+their differences are the already identified repeated `player_state`
+HI16/LO16 address pairs. The exact camera-turn caller invokes horizontal
+movement at three proven retail sites; the menu-location helper and exact
+player action controller reach the selector at three sites in total.
+No new exact claim or C/config change resulted from this pass.

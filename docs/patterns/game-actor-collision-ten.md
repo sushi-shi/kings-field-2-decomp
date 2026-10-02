@@ -241,3 +241,103 @@ field widths still agree; retail rematerializes the player camera Z address
 where the probe reuses the existing camera base. No supported C change was
 retained, and the tracked source stayed unchanged. Verification used focused
 `kf try` and isolated strict objdiff only.
+
+## Actor target/damage call family: 27 current strict verdicts
+
+A post-checkpoint isolated rebuild of nine GAME units with their complete
+manifest profile, followed by direct strict objdiff and focused `kf try`,
+rechecked the scorer, its actor target/collision callers, damage handlers,
+animation and group helpers. The table lists every function in those units:
+**16 exact controls and 11 WIPs**. The 241-row behavior table remains byte
+exact, while the scorer's 131-row table remains WIP with all ten target
+classes preserved. This is a linked call/data campaign, not a claim that
+these nine source modules were one original TU. Earlier percentages in this
+note are historical focused listings; this table is the current strict result.
+
+| GAME address | Strict text | Verdict |
+| --- | ---: | --- |
+| `0x80039108` | 93.93092% | WIP; case-9 tolerance Boolean joins the callback branch, 59/59 CFG and 37/36 branches. |
+| `0x8003a318` | 99.86911% | WIP; early `amount_and_flags`/`falloff` stack loads use opposite temporaries. |
+| `0x8003a614` | 96.91011% | WIP; four calls and 6/6 CFG agree; player camera Z base is rematerialized only in retail. |
+| `0x8003a778` | 100% | Exact actor recipient control. |
+| `0x8003983c` | 99.19598% | WIP; 37/37 CFG and 24/24 branches; actor and constant saved-register roles differ. |
+| `0x80039b58` | 90.95744% | WIP; 9/9 CFG and 4/4 branches; free-slot byte lifetime differs. |
+| `0x80039c14` | 100% | Exact fixed-curve sibling. |
+| `0x80039c94` | 98.11751% | WIP; eight curve calls and 72/72 CFG agree; accumulator/store schedule remains. |
+| `0x8003a9f4` | 100% | Exact animation control. |
+| `0x8003ab5c` | 100% | Exact animation control. |
+| `0x8003acb4` | 100% | Exact actor-bind control. |
+| `0x8003ad90` | 100% | Exact animation control. |
+| `0x8003adc4` | 100% | Exact animation control. |
+| `0x8003ae20` | 100% | Exact phase-crossing control. |
+| `0x8003ae50` | 99.31746% | WIP; 58/58 CFG and 34/34 branches; independent store/delay schedule. |
+| `0x8003b33c` | 100% | Exact actor collision control. |
+| `0x8003b520` | 100% | Exact actor trajectory caller. |
+| `0x8003b5bc` | 100% | Exact state setter. |
+| `0x8003b5d0` | 96.42041% | WIP; 40/39 CFG and 21/21 branches; state-`0x20` reset join differs. |
+| `0x8003c000` | 100% | Exact group position control. |
+| `0x8003c10c` | 100% | Exact group position control. |
+| `0x8003c220` | 100% | Exact group position control. |
+| `0x8003c3e0` | 99.64539% | WIP; 23/23 CFG and 11/11 branches; yaw intermediate register differs. |
+| `0x8003f610` | 100% | Exact target-fixup caller. |
+| `0x8003f7ec` | 85.86207% | WIP; 9/9 CFG and 4/4 branches; immediate and commutative operand order differs. |
+| `0x8003f860` | 100% | Exact target-fixup sibling. |
+| `0x8003d184` | 99.931595% | WIP; 410/410 CFG, 213/213 branches, exact table; repeated retail `lhu` is probe `nop`. |
+
+The scorer's raw case-9 tail branches from the tolerance result at
+`0x80039298` directly into scoring and jumps from `0x800392a0` to the
+return path on failure. The source already makes the separate angle and
+tolerance calls. Positive-guard and return-shape probes previously moved
+switch addends or regressed CFG, so those forms were not repeated. In the
+damage sender, a KF1 radial-damage analogue suggested checking the local
+falloff width. Removing redundant `u16` casts and, separately, declaring
+`scaled_amount` as `u16` both emitted the retained object byte-for-byte in
+off-tree complete-profile builds; neither establishes a missing width fact.
+The independent amount/flag source-order trial above regressed strict text.
+No actor C, header, compiler profile, or curated identity edit was retained;
+the exact sibling controls remained exact. Only focused unit builds and
+isolated strict comparisons were used.
+
+Two later off-tree type/control checks constrain the open source model.
+Spelling the scorer default as explicit `type < 128` success and callback
+failure branches, exactly the two retail decisions at `0x80039544` and
+`0x8003956c`, emits the retained scorer object byte-for-byte; it does not
+separate the case-9 Boolean branch. KF1's radial-damage handler suggested
+four narrow leading arguments for `0x8003a614`, but trying `u16, u16, s16,
+s16` made the probe emit `andi` and shift/sign-extension instructions at
+entry that retail does not have. Strict text fell from **96.91011%** to
+**85.33708%**, while exact `0x8003a778` remained exact. The current wider
+arguments are therefore better supported by KF2 raw entry instructions;
+the KF1 signature is not transferred. Both trials were discarded.
+
+For `0x8003b5d0` state `0x20`, retail separately reads the signed and
+unsigned views of actor halfword `+0x52` before the floor comparison. An
+off-tree `u16 next_speed` local that stores the increment and tests its
+signed view is a faithful expression of that value chain, but the pinned
+probe emitted a SHA256-identical object to the retained source. Its three
+exact siblings stayed exact; this trial does not explain the 40/39 block
+join and was discarded.
+
+An ordered relocation check of all nine refreshed actor units found matching
+type/symbol sequences in the scorer (64 text and 131 table rows), lifecycle
+(52), fixed curve (37), animation (80), motion collision (59), group
+position (37), fixup (37), and behavior dispatcher (341 text and 241 table
+rows). The damage unit is the exception: retail has **34** text rows and
+the probe **30**. Two retail-only `player_state` HI16/LO16 pairs occur before
+the distance call and before `vector_xz_to_angle` in `0x8003a614`; the source
+already reads the corresponding camera fields, while GCC reuses an earlier
+base. Splitting the X/Z expressions into natural typed locals compiled
+SHA256-identically to the retained object, so the missing address
+materializations are not grounds for a false global owner or duplicate
+source read. This trial was discarded with the exact sibling intact.
+
+The scorer's direct caller and adjacent target helpers were also rebuilt in
+their own complete-profile units and compared with strict objdiff. All eight
+functions are **100%**: `actor_select_best_target` (`0x800395c8`),
+`actor_set_target` (`0x800390d0`),
+`actor_select_target_for_player_distance` (`0x800396c4`),
+`actor_find_target_of_type` (`0x80039710`),
+`actor_select_target_type_in_own_group` (`0x80039758`),
+`actor_reset_target_and_reselect` (`0x800397a8`), and the two
+`actor_home_wrapper` claims (`0x80038efc`, `0x80038f20`). They are exact
+caller/field controls, not new closures; no source changed in this screen.

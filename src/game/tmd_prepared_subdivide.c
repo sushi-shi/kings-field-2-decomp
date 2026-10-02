@@ -38,8 +38,8 @@ typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
     (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
 } while (0)
 #define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).u = ((u32)(lhs).u + (u32)(rhs).u) >> 1; \
     (dst).v = ((u32)(lhs).v + (u32)(rhs).v) >> 1; \
+    (dst).u = ((u32)(lhs).u + (u32)(rhs).u) >> 1; \
 } while (0)
 
 ADDRESS(0x8002ff5c, 0xcbc)
@@ -245,10 +245,10 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
                         source->vertex_count * 2);
     output_packet += source->vertex_count * sizeof(SVECTOR);
     resource_copy_words((u32 *)output_packet, (u32 *)midpoints, midpoint_count * 2);
-    output_packet += midpoint_count * sizeof(SVECTOR);
-    target->normal_offset = target->vertex_offset + target->vertex_count * sizeof(SVECTOR);
+    target->normal_offset = target->vertex_offset +
+        source->vertex_count * sizeof(SVECTOR) + midpoint_count * sizeof(SVECTOR);
     target->normal_count = source->normal_count;
-    resource_copy_words((u32 *)output_packet,
+    resource_copy_words((u32 *)(output_packet + midpoint_count * sizeof(SVECTOR)),
                         (u32 *)(base + source->normal_offset), source->normal_count * 2);
 }
 #undef MID_INDEX

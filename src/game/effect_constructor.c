@@ -7,13 +7,13 @@
 
 
 DATA(0x8006d704, 0x4)
-u32 DAT_8006d704 = 0;
+u32 effect_trail_next_slot = 0;
 
 DATA(0x8009a5a8, 0x4)
 s32 DAT_8009a5a8;
 
 DATA(0x801d9628, 0x900)
-KfEffectTrailRow DAT_801d9628[4][24];
+KfEffectTrailRow effect_trail_rows[4][24];
 
 RODATA(0x8001249c, 0x1ec)
 
@@ -274,10 +274,10 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->unknown_10 = 0x1000;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
-        slot = DAT_8006d704;
-        rows = DAT_801d9628[slot];
+        slot = effect_trail_next_slot;
+        rows = effect_trail_rows[slot];
         *(KfEffectTrailRow **)&record->unknown_3c[4] = rows;
-        DAT_8006d704 = (slot + 1) & 3;
+        effect_trail_next_slot = (slot + 1) & 3;
         for (index = 23; index != -1; index--, rows++) {
             rows->position = record->position;
             rows->rotation = record->rotation;

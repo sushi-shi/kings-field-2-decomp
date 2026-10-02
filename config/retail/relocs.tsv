@@ -8282,9 +8282,9 @@ GAME.EXE	0x8004093c	0x3013c		mips26	control-flow	0x80040264	load	effect_pool_ini
 GAME.EXE	0x8004095c	0x3015c		mips26	control-flow	0x800416c4	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x800409d4	0x301d4		mips26	control-flow	0x8003fa2c	load	effect_play_spatial_sound	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x800409dc	0x301dc		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
-GAME.EXE	0x80040a48	0x30248	0x80040a4c	mips_hi16_lo16	instruction-word	0x8006d704	load	DAT_8006d704	lui+lw	v1	paired-pattern	reviewed	manual:func_80040308 raw signed-low index load
-GAME.EXE	0x80040a50	0x30250	0x80040a54	mips_hi16_lo16	instruction-word	0x801d9628	bss	DAT_801d9628	lui+addiu	a0	paired-pattern	reviewed	manual:func_80040308 raw signed-low trail base
-GAME.EXE	0x80040a78	0x30278	0x80040a7c	mips_hi16_lo16	instruction-word	0x8006d704	load	DAT_8006d704	lui+sw	at	paired-pattern	reviewed	manual:func_80040308 raw signed-low index store
+GAME.EXE	0x80040a48	0x30248	0x80040a4c	mips_hi16_lo16	instruction-word	0x8006d704	load	effect_trail_next_slot	lui+lw	v1	paired-pattern	reviewed	manual:func_80040308 raw signed-low index load
+GAME.EXE	0x80040a50	0x30250	0x80040a54	mips_hi16_lo16	instruction-word	0x801d9628	bss	effect_trail_rows	lui+addiu	a0	paired-pattern	reviewed	manual:func_80040308 raw signed-low trail base
+GAME.EXE	0x80040a78	0x30278	0x80040a7c	mips_hi16_lo16	instruction-word	0x8006d704	load	effect_trail_next_slot	lui+sw	at	paired-pattern	reviewed	manual:func_80040308 raw signed-low index store
 GAME.EXE	0x80040ae0	0x302e0		mips26	control-flow	0x8003fa2c	load	effect_play_spatial_sound	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x80040ae8	0x302e8		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80040b54	0x30354		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump

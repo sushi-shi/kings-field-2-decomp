@@ -370,3 +370,13 @@ linked-actor vectors reserves 160 bytes, with 99.85549% text and the same
 RODATA score. Retail reserves 144 bytes and the retained probe 136. Both
 scope-only controls disturb case addresses and were reverted; the stack
 layout remains an unattributed source/compiler residue.
+
+A further off-tree entry probe removed the cached `u16 trigger` local and
+spelled the low-14-bit interval and high-two-bit selector as two direct reads
+of target halfword `+0x0a`. The manifest-profile compiler produced a
+SHA256-identical object to the retained source: strict text stays
+99.931595%, and it still coalesces the retail's consecutive `lhu` pair into
+one load and a `nop`. Merely repeating the field expression does not recover
+the raw read; no `volatile` qualifier or artificial barrier is justified by
+the actor-memory evidence. A lexical case scope around the phase-angle local
+was also byte-identical. The current source remains the supported form.

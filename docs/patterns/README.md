@@ -62,6 +62,15 @@
 - [kf2-game-sdk-card-boundary-25.md](kf2-game-sdk-card-boundary-25.md):
   25 GAME storage reference targets across SPU, sound, pad, GPU, saved menu
   primitives, and card-buffer boundaries, with isolated strict controls.
+- [kf2-game-spu-gte-storage-25.md](kf2-game-spu-gte-storage-25.md):
+  25 further GAME load-image targets classified by exact Psy-Q SPU, sound,
+  and GTE source spans, with unclassified references left unresolved.
+- [kf2-game-etc-gpu-storage-25.md](kf2-game-etc-gpu-storage-25.md):
+  25 GAME ETC/GPU-adjacent load-image targets classified by exact Psy-Q
+  source spans, preserving 78 unclassified references as candidates.
+- [kf2-game-player-spawn-record-type.md](kf2-game-player-spawn-record-type.md):
+  align the five initialized player spawn records' curated current-C type
+  with their source declaration and exact data, keeping historical type WIP.
 - [kf2-game-menu-scalar-relocs-30.md](kf2-game-menu-scalar-relocs-30.md):
   30 raw-reviewed direct GAME menu-scalar pairs admitted by four one-VA
   safe carves, with four exact affected text controls.

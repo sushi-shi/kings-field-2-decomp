@@ -188,7 +188,7 @@ closure. The five WIPs have these individual strict verdicts:
 | GAME address | Strict text | Focused and raw bound |
 | --- | ---: | --- |
 | `0x800461a0` | 99.12676% | 14/14 CFG, 5/5 branches; the exact marker-leaf sibling and 13 ordered referents remain intact. Cursor registers and final increment order differ. |
-| `0x800462bc` | 98.68132% | 46/46 CFG, 21/21 branches; independent phase/state load scheduling inserts a probe `nop`, shifting one addend in the 16-row table without changing its target class. A prior natural source-order trial emitted the same listing. |
+| `0x800462bc` | 98.68132% | 46/46 CFG, 21/21 branches; independent phase/state load scheduling inserts a probe `nop`. Table rows 3 and 15 shift from retail addends `+0x2c0` and `+0x2dc` to probe `+0x2c4` and `+0x2e0`, without changing target classes. A prior natural source-order trial emitted the same listing. |
 | `0x800475d8` | 99.166664% | 55/54 CFG, 29/29 branches; the retail fallthrough zero assignment is scheduled in the probe branch delay slot. All 62 referent identities agree. |
 | `0x80047c98` | 99.81618% | 85/85 CFG, 55/55 branches; 72 referent sites agree, with rotation and literal-one saved-register roles exchanged. Its final indirect callback remains unresolved. |
 | `0x800489ac` | 98.82883% | 23/23 CFG, 7/7 branches; actor-base and sentinel argument registers exchange roles, and the 64-byte opcode table is exact. |

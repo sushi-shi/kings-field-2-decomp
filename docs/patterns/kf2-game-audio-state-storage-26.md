@@ -92,3 +92,58 @@ value `1` in `$s3` while the candidate retains retry sentinel `-1`; the
 316-byte extent, call set, CFG, and ordered data referents agree. No
 source-backed change follows from either WIP. No C, identity, relocation, or
 profile edit was made, and no linked-EXE equality is claimed.
+
+## Workspace owner follow-up
+
+A full GAME.EXE word scan for **adjacent** `lui` plus signed-low consumers
+found only the four initializer constructions of these exact bases:
+`0x80013a28/2c` for `0x80198640`, `0x80013a90/94` for `0x80165a68`,
+`0x80013ab4/b8` for `0x80194e30`, and `0x80013ac4/c8` for
+`0x80164a68`. Later game code reaches the buffers through
+`audio_state.sequence_buffer` or the stream-slot pointer fields.
+`resource_transition_step` passes the sequence pointer to
+`cd_archive_queue_read`; `audio_queue_vab_stream` passes a selected slot
+pointer to `cd_archive_queue_stream_read`. Both CD helpers obtain their
+request size from archive entry metadata, which is not present in the four
+available retail EXEs. This establishes the consumers, not a maximum
+payload size or a defining C array.
+
+The pinned Psy-Q 3.0 `LIBSND.H` declares `SsSeqOpen` with a caller-supplied
+`unsigned long *` and `SsVabTransBodyPartly` with a caller-supplied byte
+pointer. The GAME-linked functions match the corresponding Psy-Q 3.0 archive
+members `SSOPEN` (`SsSeqOpen`), `VS_VH` (`SsVabOpenHead`), and `VS_VTBP`
+(`SsVabTransBodyPartly`); those members contain no BSS
+definition for these game workspaces; `SSINIT` has its own distinct SDK
+BSS symbols and accepts the separate 344-byte `SsSetTableSize` table.
+Those member facts do not identify which game TU declared the four
+buffers, whether their candidate gaps are full object extents, or whether
+an original linker symbol or derived address was used. No source global,
+identity, or additional relocation was invented.
+
+The candidate upper boundaries repeat across all three regional GAME
+images. Raw adjacent signed-low references occur at the address exactly
+`+0x6000` after the slot-6 base (`0x8016aa68` JP, `0x8016b9ac` US,
+`0x8016da90` EU) and at `+0x3000` after the sequence base
+(`0x8019b640`, `0x8019c584`, `0x8019e630`). The corresponding
+`audio_state` base lies `+0x2800` after the slot-5 override in each image
+(`0x80197630`, `0x80198574`, `0x8019a628`), with four adjacent-pair
+references to that base per region. These stable gaps strengthen the
+capacity hypotheses. In JP, the `+0x6000` boundary is referenced by exact
+LIBSND `_SsInit` and `SsUtKeyOn` code, and the `+0x3000` boundary by exact
+LIBCD `CdReadCallback` and `CD_readm` code. Those xrefs identify the next
+SDK data family, but unreferenced intervening storage and the original game
+defining TU remain unproved.
+
+The current safe 17-claim audio-runtime carve admitted all 178 module text
+relocations and kept 15 functions exact; `func_800139c4` remains
+89.30556% and `cd_request_service_vab` 94.87342%. Four connected sound
+wrappers in a separate six-object safe carve were strict exact, bringing
+this follow-up to 21 function verdicts: **19 exact, two WIP**. The
+unresolved initializer is a source/owner question rather than an absent
+raw address reference.
+
+An unchanged-source off-tree GCC 2.6.0 O2 control lowered the audio-runtime
+unit to 78.51635% strict text. The initializer fell from 89.30556% to
+75.97222%, and all fifteen exact audio siblings became non-exact. This
+compiler substitution neither proves a workspace owner nor warrants a
+profile change; it was discarded.

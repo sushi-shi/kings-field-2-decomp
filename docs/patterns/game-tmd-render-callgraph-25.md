@@ -82,6 +82,37 @@ Together, these 71 promotions exhaust candidate direct `jal` rows in the
 six-function `0x8002ddb4..0x8002ff5c` walker/render band. Internal `j`
 targets remain separate CFG evidence, not call identities.
 
+The adjacent map-cell object builder and its two traversal callers have 20
+more reviewed direct calls. Retail call order in `0x80030c18` follows the
+source's GTE matrix setup, lighting, object selection, prepared subdivision,
+and map enqueue paths; `0x80030de4` calls it twice, and `0x80030f5c` calls
+`tmd_select` then the two-layer emitter. All direct targets are named source
+claims or exact Psy-Q SDK functions. A focused three-function safe carve
+admitted 58 relocations and withheld none. `0x80030c18` remains WIP from
+its pre-call prologue ordering; the two traversal functions remain exact.
+
+Moving the independent quarter-turn read after `SetRotMatrix` in a focused
+source trial shifted the `lbu` and mask past the first call and dropped
+listing similarity from 98.7% to 92.3%. The retained pre-call read is
+necessary for the observed call-adjacent schedule, but its placement alone
+does not settle the two swapped setup instructions.
+
+The exact render-model row traversal (`0x80031024`) has another 15 reviewed
+direct calls. Retail order matches the source's rotation, fog/light matrix
+setup, asset/vertex selection, animation buffer update, vertex transform,
+and textured enqueue. The GTE routines have exact Psy-Q archive identities;
+the game callees have the named source claims. A focused one-function safe
+carve admitted 19 relocations and withheld none. This promotion changes
+call evidence only; the function was already strict exact.
+
+The world-model renderer (`0x80031850`) has 36 further reviewed direct
+calls. Raw outgoing call sites from `0x800318b4` through `0x80031d54`
+agree with the source's matrix, fog, light, asset-selection, TMD object,
+vertex-transform, and prepared-render paths. Each target is a named game
+claim or an exact Psy-Q SDK identity. A focused one-function safe carve
+admitted 136 relocations with none withheld. The renderer remains WIP;
+focused listing similarity is 94.5%, unchanged by call-row promotion.
+
 Retail's blended walker (`0x8002ebe0`) does share one packet-code store and
 signed fixed-depth guard across all four packet modes: the branches converge
 at `0x8002f114`, then load and sign-shift the saved depth before testing it.

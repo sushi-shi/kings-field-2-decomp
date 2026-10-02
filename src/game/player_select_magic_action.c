@@ -210,16 +210,17 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if (!slide_attempted) {
             slide_distance = distance - PLAYER_MOVE_STEP;
             if (slide_distance >= 0) {
+                VECTOR *camera = &player_state.camera_position;
                 do {
-                    next.vx = player_state.camera_position.vx
+                    next.vx = camera->vx
                            + ((-rsin(heading) * slide_distance) >> 12);
-                    next.vz = player_state.camera_position.vz
+                    next.vz = camera->vz
                            + ((rcos(heading) * slide_distance) >> 12);
-                    if (func_8002b9d4(next.vx, player_state.camera_position.vy,
+                    if (func_8002b9d4(next.vx, camera->vy,
                                        next.vz, PLAYER_MOVE_RADIUS,
                                        PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
-                        player_state.camera_position.vx = next.vx;
-                        player_state.camera_position.vz = next.vz;
+                        camera->vx = next.vx;
+                        camera->vz = next.vz;
                         break;
                     }
                     slide_distance -= PLAYER_MOVE_STEP;

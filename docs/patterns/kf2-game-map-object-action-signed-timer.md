@@ -143,3 +143,31 @@ comparison-layout difference. A fresh focused build rises from **92.4%** to
 **92.7%**; isolated strict text rises from **97.62389%** to **97.77204%** on
 the same 7,668-byte body. RODATA remains **95.80713%** and DATA **100%**.
 CFG remains 329/328 blocks with 180/180 branches, so this is WIP.
+
+Two later action exits share a latch-clear tail in retail. The zero result
+from action 81's `func_8002b9d4` call branches at function `+0x1488`, and the
+zero result from action 225's `func_80036ad8` call branches at `+0x1b5c`.
+Both target `+0x1c24`, whose jump delay slot clears
+`extra_40.bytes[0]`. Joining the two source paths at a single labelled clear
+reproduces that branch and delay-slot shape. The isolated strict text score
+rises from **97.77204%** to **98.012%** with the same 7,668-byte body.
+
+With that shared exit present, action 88 timer case 1 exposes a separate
+two-value dispatch. Retail function `+0x0cd4..+0x0d08` compares selector
+values 0 and 1, shares one timer store and sound call, and falls through to
+the spawn call for other values. A source `switch` over those values now
+reproduces that entire instruction range, including the branch delay slots.
+The earlier switch trial above was on an older source layout and remains a
+valid negative control for that stage. The retained focused object now has
+**98.30673%** isolated strict text and exact 32-byte DATA. Its candidate
+text is 7,672 bytes versus retail's 7,668, with a RODATA pointer-addend
+difference beginning at `+0x10`; it is still WIP.
+
+Action 34 has a further control-flow correction. Retail branches on the
+`func_80036ad8` result at function `+0x1c48`: zero goes to the late latch
+clear at `+0x1d6c`, while success checks the one-shot byte and performs the
+calls. Expressing the success arm first in C preserves the single call and
+field writes and reproduces that branch direction and late clear block.
+Focused strict text rises to **98.598854%**. The candidate text is now 7,676
+bytes against retail's 7,668; DATA remains byte exact and RODATA still has
+an addend difference beginning at `+0x10`.

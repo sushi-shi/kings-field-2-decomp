@@ -747,14 +747,14 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         u16 second_parameter;
         u16 third_parameter;
 
-        first_parameter = va_arg(arguments, s32);
-        second_parameter = va_arg(arguments, s32);
-        third_parameter = va_arg(arguments, s32);
         effect_pool_initialize_scaled(record, 8, 0x400);
         record->direction.vx = 0;
         record->direction.vy = 0;
         record->direction.vz = 0;
         record->phase = 9;
+        first_parameter = va_arg(arguments, s32);
+        second_parameter = va_arg(arguments, s32);
+        third_parameter = va_arg(arguments, s32);
         *(u16 *)&record->unknown_3c[4] = first_parameter;
         *(u16 *)&record->unknown_3c[6] = second_parameter;
         *(u16 *)&record->unknown_3c[8] = third_parameter;

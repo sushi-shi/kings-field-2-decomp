@@ -468,12 +468,17 @@ void func_80036ed4(void)
         case 88:
             switch (object->action_timer) {
             case 1:
-                if (object->tail.fields.unknown_38 == 0) {
+                switch (object->tail.fields.unknown_38) {
+                case 0:
                     object->action_timer = 2;
                     map_object_play_spatial_sound(object, 0x44);
-                } else if (object->tail.fields.unknown_38 == 1) {
+                    break;
+                case 1:
                     object->action_timer = 3;
                     map_object_play_spatial_sound(object, 0x44);
+                    break;
+                default:
+                    break;
                 }
                 func_80035194(object->unknown_00,
                               object->tail.spawn_bytes.spawn_sequence.low +
@@ -739,7 +744,7 @@ void func_80036ed4(void)
                     kind = func_8002b9d4(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {
-                        object->extra_40.bytes[0] = 0;
+                        goto clear_action_trigger;
                     } else if (object->extra_40.bytes[0] == 0) {
                         object->extra_40.bytes[0] = 1;
                         func_8003fb94(kind, 0x20, 5000, 5,
@@ -976,46 +981,49 @@ void func_80036ed4(void)
                     }
                 }
             } else {
+            clear_action_trigger:
                 object->extra_40.bytes[0] = 0;
             }
             break;
 
         case 34:
-            if (!func_80036ad8(object->tail.fields.unknown_38,
-                                object->tail.fields.unknown_39,
-                                object->tail.fields.unknown_3a.bytes.low,
-                                object->tail.fields.unknown_3a.bytes.high,
-                                object->position.vy)) {
+            if (func_80036ad8(object->tail.fields.unknown_38,
+                               object->tail.fields.unknown_39,
+                               object->tail.fields.unknown_3a.bytes.low,
+                               object->tail.fields.unknown_3a.bytes.high,
+                               object->position.vy)) {
+                if (object->extra_40.bytes[0] == 0) {
+                    KfMapObject *candidate = map_object_state.objects;
+                    s32 count = KF_MAP_OBJECT_CAPACITY;
+                    audio_play_sound(0x14, 0x6e);
+                    func_80036e24(1, 0, 0x1000, 0x100);
+                    do {
+                        if (candidate->action == 34) {
+                            candidate->extra_40.bytes[0] = 1;
+                        }
+                        candidate++;
+                    } while (--count != 0);
+                    func_8002b73c(player_state.camera_position.vx,
+                                   player_state.camera_position.vz, 800, -1);
+                    player_state.camera_position.vx =
+                        object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
+                    player_state.camera_position.vz =
+                        object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
+                    player_state.unknown_128 =
+                        object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
+                    player_state.camera_rotation_target.angles[1] =
+                        -((u32)object->tail.fields.unknown_3e.bytes.high * 16);
+                    player_sync_position_to_map();
+                    player_state.camera_rotation.angles[1] =
+                        player_state.camera_rotation_target.angles[1] +
+                        player_state.unknown_100[1] +
+                        player_state.unknown_108.components[1] +
+                        player_state.unknown_110[1];
+                    func_80036e24(1, 0x1000, 0, -0x100);
+                    func_800314d4(0xff, 0, 0, 0);
+                }
+            } else {
                 object->extra_40.bytes[0] = 0;
-            } else if (object->extra_40.bytes[0] == 0) {
-                KfMapObject *candidate = map_object_state.objects;
-                s32 count = KF_MAP_OBJECT_CAPACITY;
-                audio_play_sound(0x14, 0x6e);
-                func_80036e24(1, 0, 0x1000, 0x100);
-                do {
-                    if (candidate->action == 34) {
-                        candidate->extra_40.bytes[0] = 1;
-                    }
-                    candidate++;
-                } while (--count != 0);
-                func_8002b73c(player_state.camera_position.vx,
-                               player_state.camera_position.vz, 800, -1);
-                player_state.camera_position.vx =
-                    object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
-                player_state.camera_position.vz =
-                    object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
-                player_state.unknown_128 =
-                    object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
-                player_state.camera_rotation_target.angles[1] =
-                    -((u32)object->tail.fields.unknown_3e.bytes.high * 16);
-                player_sync_position_to_map();
-                player_state.camera_rotation.angles[1] =
-                    player_state.camera_rotation_target.angles[1] +
-                    player_state.unknown_100[1] +
-                    player_state.unknown_108.components[1] +
-                    player_state.unknown_110[1];
-                func_80036e24(1, 0x1000, 0, -0x100);
-                func_800314d4(0xff, 0, 0, 0);
             }
             object->unknown_0a = (object->unknown_0a + 64) & 0xfff;
             break;

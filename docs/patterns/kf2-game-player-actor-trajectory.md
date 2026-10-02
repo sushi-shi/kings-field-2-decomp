@@ -1870,3 +1870,28 @@ adjacent `func_8002722c` is unchanged at 99.09091% strict. The remaining
 differences include the result stack slot (`sp+80` retail versus `sp+64`
 candidate) and player-state base-register reuse, so this is a verified
 improvement, not an exact claim.
+
+Retail forms a pointer to `player_state.camera_position` at `0x800277b0`,
+after the shorter-step distance check, and uses it throughout that collision
+retry loop. Scoping a typed `VECTOR *` to the corresponding C block makes
+the candidate form its pointer at the same source boundary. Focused listing
+similarity rises from 62.8% to **65.6%** and isolated strict text from
+89.01476% to **89.85240%**, with the same 1084-byte candidate body and the
+same 35/34 CFG and 20/20 branch counts. The neighboring `func_8002722c`
+remains 99.09091% strict. The candidate still retains a separate earlier
+player-state base across the movement loop, where retail rematerializes
+individual field addresses; the missing block and other register/stack
+differences remain WIP.
+
+A fresh instruction comparison after that pointer change places the first
+remaining divergence before the collision retry: retail saves the heading in
+`s5`, keeps the slide flag at `sp+64`, and reloads each `player_state` field by
+its own HI16/LO16 pair at `0x80027574`–`0x80027588`. The candidate saves the
+heading in `s7`, hoists `player_state+0xd8` into `s5` before the loop, and
+keeps the slide flag in a register until that register becomes the scoped
+camera pointer. Inside the shorter-step loop both versions call `rsin`,
+`rcos`, and `func_8002b9d4` in the same order, decrement by 22 in the
+collision branch delay slot, and retry while the signed distance is
+nonnegative. Retail's successful retry stores through the late camera
+pointer, as the retained C now expresses. No additional source edit is
+supported by the remaining address-lifetime or stack-allocation difference.

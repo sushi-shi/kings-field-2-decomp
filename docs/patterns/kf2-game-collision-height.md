@@ -932,6 +932,15 @@ preserved. The strict single-unit text result rose from 90.127270% to
 residual is the interpolation `addu` destination, then scan-state flag
 stores and traversal scheduling. No exact function was banked.
 
+A fresh isolated comparison confirms retail's 86 text relocations against
+82 in the compiled object. The four extra rows are two HI16/LO16 pairs in
+the nonzero-layer mask arm: the compiler constructs addresses for the two
+adjacent mask bytes, while retail stores both through its existing scan-state
+pointer. A typed pointer to that byte pair lowered strict text to 90.10707%;
+two typed ternary assignments lowered it to 89.12323%. Both source-shape
+controls were discarded, since the fields and values already agree with raw
+stores. The 32-byte BSS claim still appears as COMMON in the candidate object.
+
 The retail scan loop retains a pointer to `render_mask_scan_state+0x10`.
 At X and Z steps it reloads and stores some coordinate words whose values
 do not change, while the current compiler omits those stores. This may

@@ -466,7 +466,7 @@ ownership. Their WIP verdicts have no objdiff percentage.
 | 0x8002ddb4 | WIP, unclaimed | The 0x728-byte textured TMD renderer reaches `tmd_get_object`, `NormalClip`, `NormalColorDpq*`, and `AddPrim`; packet and object-state ownership remain incomplete. |
 | 0x8002e4dc | WIP, unclaimed | The adjacent 0x704-byte textured TMD variant has the same proven GPU/GTE call family, but its distinct branches and packet fields need a source model. |
 | 0x8002ebe0 | WIP, unclaimed | The 0x5b4-byte colored TMD variant reaches `NormalColorCol*` and `AddPrim`; its material and packet views are not yet complete. |
-| 0x8002ff5c | WIP, unclaimed | The 0xcbc-byte map render helper has 13 direct `resource_copy_words` calls and feeds the existing map renderer; the copied data extents and state owner remain unresolved. |
+| 0x8002ff5c | WIP, unclaimed | The 0xcbc-byte map render helper has 14 direct `resource_copy_words` calls and feeds the existing map renderer; the copied data extents and state owner remain unresolved. |
 
 The 0x26498 source claims only its proven 0x80011260..0x80011293 switch
 table. The separate 13-byte effect-ID table at 0x800667e8 remains a
@@ -1496,7 +1496,7 @@ This raw-backed path compiles; focused aggregate similarity is 8.2% WIP.
 
 Kind 114 enters 0x8004593c and advances the three position words by the
 signed direction halfwords. It tests the new position through
-`func_8002b9d4(x, y, z, 10, 176, 10)`. A nonzero result spawns kind 3 and
+`func_8002b9d4(x, y, z, 10, 10, 176)`. A nonzero result spawns kind 3 and
 frees the current slot. The kind-114 constructor directly writes its original
 position Y to the +0x44 tail word; `func_8002b604` probes with that saved Y.
 The subsequent cache-result comparison either
@@ -2735,6 +2735,130 @@ and the paired X/Z stores before the copy. Isolated strict text is
 89.480194%, RODATA rises to 32.782100%, candidate text is 13,832 bytes,
 and `.rel.text` is 469/470; the 128 pointer rows/classes/order and 272
 named referents remain exact.
+
+Kind 10's phase switch dispatches 1, 0, and 5 before its phase-zero body.
+Retail checks phase one first, then branches on `< 2` to distinguish phase
+zero, and checks phase five on the other side (`+0x262c..+0x2664`). The
+phase-five reset sits after the phase-zero child spawn and before the
+ordinary phase-zero continuation; the phase-one helper call sits after
+both. The C now uses those explicit branches, so each path retains its
+original behavior and physical order. Focused compilation and isolated
+strict comparison give 90.758320% text, 15.953307% RODATA, candidate
+text 13,828 bytes, and `.rel.text` 470/470. All 128 pointer rows/classes/
+order and 272 named referents remain exact; the unit is still WIP.
+
+The kind-10 countdown path calls `func_800401b4` before reading the
+record's tail actor index `+0x40` and resolving `actor_state`. Keeping the
+pointer assignment after that call restores the retail load order around
+`+0x274c..+0x2774`. Isolated strict text rises to 91.067740%; RODATA
+stays 15.953307%, candidate text remains 13,828 bytes, `.rel.text` is
+470/470, and all 128 pointer rows/classes/order and 272 named referents
+remain exact.
+
+Kind 6 creates exactly eight children and writes render ID `0x18` to the
+last child only after the loop. Retail has the loop branch at `+0x2990`
+and the final `sb` at `+0x2998`, with the child pointer still live. Moving
+that write out of the C loop restores the same topology. Isolated strict
+text reaches 91.069176% and RODATA 33.463036%; candidate text is 13,812
+bytes, `.rel.text` remains 470/470, and the pointer/referent controls
+remain exact.
+
+Within kind 6's child loop, retail loads `effect_state.current_index`
+before storing the child's own index at `+0x41`, then stores the loaded
+parent index at child `+0x40` (`+0x2978..+0x2988`). The C now snapshots
+that parent index before both child stores. This restores the raw load/
+store order; isolated strict text is 91.058266% after local code layout
+movement, RODATA remains 33.463036%, and exact pointer/referent controls
+are unchanged.
+
+Kind 6 phase one writes its incremented frame byte at record `+0x44`
+before comparing it with 24, then overwrites that byte with zero only on
+wrap (`+0x2ac8..+0x2aec`). The prior conditional assignment delayed the
+first write until after the comparison. The two-step C update restores the
+retail store/`andi`/branch sequence. Isolated strict text reaches
+91.274680% and RODATA 35.019455%; candidate text is 13,808 bytes,
+`.rel.text` is 469/470, with exact pointer classes and named referents.
+
+The phase-two frame update uses the same store-before-wrap sequence at
+retail `+0x2ba0..+0x2bc4`. Expressing that sequence in C restores the
+store, `andi`, unsigned limit check, and conditional zero store before
+`func_8003c10c`. Isolated strict text reaches 91.502300%; RODATA is
+33.463036%, candidate text is 13,800 bytes, and `.rel.text` is 468/470.
+All 128 pointer rows/classes/order and 272 named referents remain exact.
+
+In kind 6 phase two, retail saves the actor's unsigned halfword at `+0x1c`
+before `func_8003c10c` (`+0x2ba4`). That saved extent supplies the first
+`func_8001584c` call, the rotation divisor, and the radius calculation
+(`+0x2c28`, `+0x2c74`, `+0x2ca0`). By contrast, the Y adjustment and second
+interpolation reload actor `+0x1e` after the position call (`+0x2bec`,
+`+0x2c44`). The C now keeps these fields separate and retains the `+0x1c`
+snapshot across the call. Isolated strict text is 91.643230%, RODATA
+33.463036%, candidate text 13,796 bytes, and `.rel.text` 468/470. All 128
+ordered pointer rows/classes and 272 named referents remain exact.
+
+The phase-two count branches at `+0x2c04..+0x2c24` exit immediately after
+setting phase four when the count reaches 60. When it is below 17, the two
+scale calls fall directly into the radius update; counts 17–59 join that
+update without a second count check. The C now follows those three paths.
+The focused build compiles with 446/451 CFG blocks, 217/217 branches, and
+one return on each side. Isolated strict text reaches 91.877720%, RODATA
+32.782100%, candidate text 13,780 bytes, `.rel.text` 468/470, and the
+ordered pointer/referent controls remain exact. Signed member and array-view
+probes for rotation `pad` did not alter the unsigned load plus explicit
+sign-extension residue and were discarded.
+
+The saved `+0x1c` actor halfword is promoted to an `s32` local after its
+unsigned load, so its full zero-extended value survives across the scale
+calls into the division and radius arithmetic. The probe no longer inserts
+an extra `andi 0xffff` before division. Isolated strict text is 91.962685%,
+RODATA 13.229572% after body-offset shifts, candidate text 13,776 bytes,
+and `.rel.text` 468/470. The focused CFG/branch counts and exact ordered
+pointer/referent controls are unchanged; the different radius shift sequence
+remains unattributed codegen residue.
+
+In the ballistic kinds 29/31/48 and 30/47, retail's collision-cache layer
+selection at body `+0x1cc..+0x1e4` starts with layer two, branches over a
+layer-one override when the cache halfword is nonzero, then writes the result
+to record `+0x0a`. An explicit local and zero test recover the exact retail
+`bnez` polarity and delay-slot constant without changing the two outcomes.
+The focused build has 446/451 CFG blocks and 217/217 branches; isolated
+strict text is 91.976750%, RODATA 13.229572%, candidate text 13,776 bytes,
+and `.rel.text` 468/470. All 128 ordered table pointer classes and 272
+named referents remain exact.
+
+Kind 114's two-emission path counts from one down through zero in retail:
+the less-than-cache-result branch initializes the loop register to one at
+`+0x3378`, decrements it in the `rand` delay slot at `+0x33ac`, and exits
+after the second `func_80041e94` when it equals minus one at `+0x33f4`.
+The C now uses that countdown loop. The probe recovers the loop decrement,
+minus-one sentinel check, and branch sequence. Focused CFG remains 446/451
+blocks with 217/217 branches and one return each. Isolated strict text is
+92.104770%, RODATA 13.229572%, candidate text 13,776 bytes, and `.rel.text`
+468/470; all 128 ordered table pointer classes and 272 named referents
+remain exact.
+
+The kind-114 collision call passes `10` in `$a3`, then stores `10` and
+`176` in the two O32 stack argument slots at body `+0x331c..+0x333c`.
+The prior source reversed those stack values. It now spells the raw call
+`func_8002b9d4(x, y, z, 10, 10, 176)`, correcting a behavior-affecting
+argument mismatch. Focused compilation and exact pointer/referent controls
+hold; isolated strict text is 92.105340% with the same 13,776-byte text,
+13.229572% RODATA, and 468/470 `.rel.text` rows.
+
+The two missing text relocation rows are internal `R_MIPS_26` jumps:
+retail has 128 and the probe has 126. Local HI16 and LO16 counts both
+match two apiece, while the 272 named call/data referents remain exact.
+
+The kind-38/39 collision response resolves one of those jumps and a
+behavioral error. With cache flag `0x10` set, retail tail byte `+0x40`
+zero calls `func_8003feb0` then jumps past the `+0x40 = 1` store; a
+nonzero byte takes the branch to that store (`+0xb54..+0xb88`). The prior
+C wrote one on both paths. The corrected branch preserves the raw call and
+store conditions. Focused compilation has 446/452 CFG blocks, 217/217
+branches, and one return each. Isolated strict text is 92.334100%, RODATA
+21.887160%, candidate text 13,784 bytes, and `.rel.text` 469/470: local
+`R_MIPS_26` jumps are 127 candidate versus 128 retail. All 128 ordered
+pointer rows/classes and 272 named referents remain exact.
 
 ## Kind-102 audio parameter identity
 

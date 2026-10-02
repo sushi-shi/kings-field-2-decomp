@@ -73,17 +73,21 @@ s32 func_8001f8b8(void *list_state, s32 label_kind,
         labels[1].glyphs.codes[0] = 65;
         labels[1].glyphs.codes[1] = 65;
         labels[1].glyphs.codes[2] = 67;
+        goto labels_ready;
+    finished:
+        input_wait_release();
+        return result;
     } else {
         labels[1].glyphs.codes[0] = 99;
         labels[1].glyphs.codes[1] = 97;
         labels[1].glyphs.codes[2] = 106;
     }
+labels_ready:
     labels[1].glyphs.codes[3] = -1;
 
     for (;;) {
         if (result != -99) {
-            input_wait_release();
-            return result;
+            goto finished;
         }
         func_800223cc();
         buttons = input_read_mark_active();

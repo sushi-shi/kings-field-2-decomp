@@ -10,7 +10,7 @@ unclaimed renderers still need a complete source and data-owner model.
 | --- | --- | --- |
 | `0x8001e94c` | Repeated calls to `menu_draw_string`, `menu_format_number`, and `menu_draw_number` use 20-byte initialized suffix rows at `0x80064a00` onward. | **WIP, unclaimed**; the suffix-table owner and full numeric-rendering state are unresolved. |
 | `0x8001f008` | The paired numeric renderer repeats the same call family and suffix rows through `0x80064adc`. | **WIP, unclaimed**; its full source/data contract is unresolved. |
-| `0x8001f8b8` | Two 28-byte glyph rows, eleven label-kind cases, input polling, two frame draws per iteration, and a confirmed choice return. | **WIP, 94.36464% strict**; 42/42 CFG blocks and 18/18 branches match, but block ordering and saved-register allocation differ. |
+| `0x8001f8b8` | Two 28-byte glyph rows, eleven label-kind cases, input polling, two frame draws per iteration, and a confirmed choice return. | **WIP, 99.14365% strict**; 42/42 CFG blocks and 18/18 branches agree, with eight raw register/scheduling differences. |
 | `0x8001fb8c` | Menu window renderer with ten blocks and shared sprite state. | **WIP, 99.78788% strict**; retail has a 48-byte frame, current C a 40-byte frame, with no evidenced extra local. |
 | `0x8001fc94` | Large preview renderer calls glyph/number helpers and draws several `POLY_FT4` primitives with the shared sprite definitions. | **WIP, unclaimed**; its complete record and drawing-state contract are unresolved. |
 | `0x80020d20` | Sprite blit reads sprite width and subtracts an eight-pixel margin from X. | **WIP, 99.44068% strict**; equivalent X arithmetic produces a different load/order schedule. |
@@ -25,6 +25,19 @@ against retail. A retail-supported split of the two input bits improved its
 focused CFG to 42/42 blocks. A source-equivalent alternate loop exit made the
 block layout worse and was discarded. The function's forwarded list/render
 pointers remain opaque until `0x8001fc94` establishes their record type.
+
+Retail places `input_wait_release` and the selected-result return at body
+`+0x1a8`, between the label-kind-2 glyph writes and the alternate glyph
+initialization. The loop at `+0x1dc` branches back to that shared exit when
+the result changes. Placing the source's exit label after the kind-2 jump and
+before the alternate writes restores that physical block order without
+changing the menu behavior. Focused similarity rises from 84.8% to 89.9%; the
+known CFG successor lists now agree with 42/42 blocks and 18/18 branches.
+Isolated strict `.text` rises from the previous 94.36464% snapshot to
+99.14365% over equal 724-byte bodies. All 36 ordered text relocations agree
+in offset, type, and referent; eight of 181 raw instruction words still differ,
+primarily in saved-register assignment and the independent result-initializer
+schedule. The function remains WIP.
 
 The strict GAME pass relinked 143/143 target units, preserved the six existing
 non-exact sources at the scores above, and reported `0x8001f8b8` at 94.36464%.

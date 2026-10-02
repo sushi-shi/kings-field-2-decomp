@@ -165,7 +165,6 @@ LAB_8002afc4:
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
         if ((int)z_fraction < candidate_height) {
-LAB_8002af9c:
           next_record = record + 5;
           case_value = 5;
           if ((int)x_fraction < candidate_height) goto LAB_8002b5c8;
@@ -184,7 +183,6 @@ LAB_8002af9c:
         if (record_value != 3) goto LAB_8002b5c8;
         candidate_height = (s16)*operand + radius;
         if (candidate_height < (int)z_fraction) {
-LAB_8002aff0:
           next_record = record + 5;
           case_value = 5;
           if (candidate_height < (int)x_fraction) goto LAB_8002b5c8;
@@ -212,7 +210,8 @@ LAB_8002ada4:
       case_value = 5;
       if (record_value == 1) {
         candidate_height = radius_complement - (s16)*operand;
-        if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;
+        if (candidate_height <= (int)z_fraction &&
+            (int)x_fraction >= candidate_height) goto LAB_8002ada4;
       }
       else if (record_value < 2) {
         if (record_value != 0) goto LAB_8002b5c8;
@@ -226,7 +225,8 @@ LAB_8002ada4:
       else {
         if (record_value != 3) goto LAB_8002b5c8;
         candidate_height = (s16)*operand + radius;
-        if ((int)z_fraction <= candidate_height) goto LAB_8002aff0;
+        if ((int)z_fraction <= candidate_height &&
+            (int)x_fraction <= candidate_height) goto LAB_8002ada4;
       }
       break;
     case 0x23:

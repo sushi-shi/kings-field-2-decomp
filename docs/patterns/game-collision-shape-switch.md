@@ -119,3 +119,22 @@ retail's `lhu` opcode load, subtracts `0x10`, then sign-extends before the
 unsigned range check. Thus the C cast does not account for the 174/165 CFG
 gap; command-width changes should be grounded in another consumer or record
 definition rather than the switch's load opcode alone.
+
+Opcode `0x22` checks two cell-local axes for each quarter-turn. Retail's
+rotation-1 body at `+0x4e0` compares the Z fraction with the near bound and
+then the X fraction with that same bound; its rotation-3 body at `+0x534`
+similarly compares Z and X with the far bound. Expressing those two
+rectangular tests directly in their case arms, rather than routing each
+second comparison through another opcode's shared label, preserves the
+observed geometry and raises the candidate's known branch count from 97 to
+**99**, equal to retail. Its CFG grows from 164 to **166** blocks against
+174 retail. The focused listing stays at 15.2%; isolated strict text becomes
+**52.618134%** on the 2,912-byte retail body, and RODATA is **26.530613%**.
+All 49 table rows retain the same 13 target classes; `.rel.text` retains 24
+ordered HI16/LO16 pairs and 33 internal jumps. Equivalent direct tests for
+the other two rotations moved table addends farther from retail and were
+reverted. The rotation-1 correction alone scored 52.843407% text and
+27.806122% RODATA, but left one branch absent; adding the raw-backed
+rotation-3 test shifts pointer addends and lowers both percentages while
+reproducing the retail branch count. This remains WIP; the matching branch
+count does not establish complete control-flow equivalence.

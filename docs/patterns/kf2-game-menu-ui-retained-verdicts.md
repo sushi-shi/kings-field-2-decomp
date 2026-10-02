@@ -963,6 +963,68 @@ matrices, but KF2's following `0x80020990` body owns separate label drawing;
 no raw access licenses transplanting that KF1 local into `0x8002083c`. No
 filler was added.
 
+### Card directory object-diff frontier (2026-10-02)
+
+The three card slot-seed consumers all read the same two curated one-byte
+identities at `0x8006d6a4` and `0x8006d6a5`. Retail uses signed `lb` in
+each; their complete object extent and defining TU remain unresolved in
+`data_identities.tsv`. The candidate's `lbu` values are immediately stored
+as bytes, so the opcode does not show a different observed slot digit.
+Current strict `0x80022ca0` keeps the same 1240-byte body size; its 19
+marked instruction differences end at object offset `0x6d4`, 288 bytes from
+that function's start. The remaining 948 bytes are aligned, including icon
+transfer, payload serialization/checksum, card writes, and return paths.
+`0x800226ec` has twelve marked differences ending at offset `0x10c` in its
+476-byte body. These bounds reinforce the seed-load/scheduling verdict;
+they do not justify changing unknown data ownership or fabricating locals.
+
+### Item choice and card-preview continuation (2026-10-02)
+
+The card browser shares its input, list, glyph, model-preview, and number
+rendering calls with item choice. A fresh isolated strict screen of 26
+current GAME claims across 23 units finds 19 existing exact controls and
+seven WIPs. All nine nonempty initialized `.data`/`.rodata` sections in these
+units compare at 100%:
+
+| GAME address | Strict text | Final verdict |
+| --- | ---: | --- |
+| `0x8001876c` | 96.36646% | WIP location-number control; no new call/field gap. |
+| `0x800189f0` | 100% | Exact location sibling. |
+| `0x80018ac8` | 100% | Exact item-selection helper. |
+| `0x8001930c` | 98.26363% | WIP map preview; frame and archive-index scheduling residue. |
+| `0x80019ac4` | 100% | Exact equipment-list controller. |
+| `0x80019ed4` | 100% | Exact equipment category controller. |
+| `0x8001a2f4` | 100% | Exact magic-list renderer. |
+| `0x8001a4f0` | 99.74359% | WIP item/magic controller; first 74-row initializer register choices. |
+| `0x8001a898` | 100% | Exact item-equipment controller. |
+| `0x8001d030` | 100% | Exact primary item controller. |
+| `0x8001d340` | 100% | Exact primary item-code helper. |
+| `0x8001d3b4` | 100% | Exact sell controller. |
+| `0x8001d654` | 100% | Exact secondary item-code helper. |
+| `0x8001d6a8` | 100% | Exact secondary item-code helper. |
+| `0x8001d8d0` | 100% | Exact trade controller. |
+| `0x8001ddd0` | 100% | Exact stock controller. |
+| `0x8001e0a8` | 100% | Exact secondary stock controller. |
+| `0x8001e94c` | 100% | Exact status renderer. |
+| `0x8001f008` | 100% | Exact attribute renderer. |
+| `0x8001f8b8` | 99.14365% | WIP choice callback; packet scheduling residue. |
+| `0x8001fb8c` | 99.78788% | WIP window painter; 48/40-byte frame gap. |
+| `0x800210ac` | 99.66904% | WIP glyph painter; 56/48-byte frame gap. |
+| `0x80022058` | 97.39% | WIP numeric formatter; 8-byte retail O32 frame with no local stack object. |
+| `0x800221e8` | 100% | Exact item-model loader. |
+| `0x800222bc` | 100% | Exact item-model release. |
+| `0x80033994` | 100% | Exact model renderer. |
+
+In `0x8001a4f0`, all nine marked strict instruction differences are register
+arguments in the 74-entry initializer loop, ending at body offset `0x74`;
+the later 660 bytes align. A focused quick build preserves 22/22 CFG blocks,
+12/12 branches, the same successors, and all 28 ordered text relocation
+types/targets; its first differing loop window
+increments/tests `s0` in retail and `a3` in the probe. The loop count, four
+array stores, calls, and control edges are already represented by source.
+An earlier natural loop rewrite regressed the focused object, so no C or
+score-credit change was retained in this cohort.
+
 ### Menu navigation control recheck (2026-10-02)
 
 Fresh isolated strict comparison of the connected menu input, selection,

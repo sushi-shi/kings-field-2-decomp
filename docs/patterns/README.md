@@ -7,6 +7,8 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-collision-shape-family-25.md](kf2-game-collision-shape-family-25.md):
+  strict 25-function shape, height, channel, and player collision verdicts.
 - [kf2-game-renderer-graph-25.md](kf2-game-renderer-graph-25.md): 25 current
   strict GAME renderer-graph verdicts, with 20 exact controls and five bounded
   map-cell, quad, world, animation, and dispatcher WIPs.
@@ -48,6 +50,9 @@
 - [kf2-game-effect-data-owner-28.md](kf2-game-effect-data-owner-28.md):
   strict effect-family controls and the unresolved retail BSS versus candidate
   COMMON ownership of four effect data claims.
+- [kf2-game-map-effect-storage-26.md](kf2-game-map-effect-storage-26.md):
+  26 bounded GAME map, collision, and effect storage verdicts, current source
+  owners, candidate BSS limits, and a Sony LIBCD pointer-table exclusion.
 - [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
   actor group-effect helper and constructor call topology, with bounded
   negative source trials.

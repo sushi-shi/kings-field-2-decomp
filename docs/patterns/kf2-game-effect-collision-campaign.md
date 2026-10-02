@@ -3160,6 +3160,14 @@ joins an argument-setup tail. The region audit separates these physical
 placements from field mismatches such as kind 11/54; equal call counts do
 not establish exact CFG or instruction scheduling.
 
+The main kind-table base pair at GAME `0x80042694/98` is now manually
+reviewed. Retail bounds the byte kind to 0..122, forms `0x8001268c` with
+`lui/addiu`, indexes the resulting 123-word table, then loads and jumps
+through its entry. All 123 table words were already reviewed and the shared
+validator accepts the signed-low pair. A focused rebuild after the row
+promotion preserves the dispatcher WIP; this corrects referent confidence,
+not text bytes or the unresolved historical table owner.
+
 The first kind-13/32 tail divergence is concrete: after the three scale
 halfword stores at record `+0x2c/+0x2e/+0x30`, retail increments phase at
 `+0x7` before its jump (`addiu` then `sb` in the jump delay slot), while

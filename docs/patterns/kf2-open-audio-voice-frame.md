@@ -74,3 +74,12 @@ The older [OPEN sentinel-sharing note](open-sentinel-sharing.md) discusses
 `opening_ending_scroll_run` at `0x80014e28`; that identity and address are
 absent from the current KF2 OPEN source, unit manifest and curated identity
 table. Its scores are not a verdict for this 25-claim inventory.
+
+Fresh post-checkpoint compilation of the ten current OPEN units again gives
+24/25 strict-exact functions, with only `0x80013450` at 99.82353%. The
+focused `open.resources` unit keeps its TIM sibling exact and differs in the
+same six frame immediates; the 5-block/3-branch voice control, direct SDK
+call, and argument sequence are unchanged. Psy-Q 3.0 `LIBSND.H` declares
+`SsUtKeyOn` as seven `short` arguments returning `short`, consistent with the
+retail halfword loads and sign extensions. No source-backed use of the extra
+24 stack bytes has appeared, so the wrapper remains WIP without a C change.

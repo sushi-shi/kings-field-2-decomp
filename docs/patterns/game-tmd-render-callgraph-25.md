@@ -46,6 +46,18 @@ padding or artificial local was added. The first non-frame listing difference
 is a retail primitive-count spill/reload before its zero guard versus the
 probe's direct register branch.
 
+Fresh direct alignment of the retained render-map object confirms the next
+FT4 scheduling residue: retail loads primitive vertex offsets `+0x14`,
+`+0x16`, and `+0x18` in that order, while the probe loads `+0x16` first.
+The source names the same `va`, `vb`, and `vc` fields and later computes the
+same five X/Y edge pairs; this ordering alone does not support changing an
+index or field width. In the adjacent clipped GT3 fan (`0x8002f5b0`), the
+retail/probe field values likewise agree; the earliest non-register gap is
+placement of the first-color stack load and packet store around the third
+UV halfword load. Its 151 aligned instructions have 121 unmarked entries,
+25 argument/register mismatches, and a few local insertions/deletions, with
+no missing call or source field proved.
+
 The first FT4 child in retail confirms the retained packed-index values:
 `0x800303ec` and `0x800303f8` write `ab`/`ac` halfwords to one stack word,
 which `0x80030408` copies to packet +24. `0x8003041c` replaces only its low
@@ -211,11 +223,26 @@ in-range flag at `sp+48`; its eight-byte larger frame and missing late
 depth branch follow from that allocation. The caller proves argument width,
 but these register/stack choices do not prove a different source operation.
 
+For the separate prepared subdivider, an off-tree source-order probe moved
+source-object selection before the prepared packet-offset assignment, matching
+the apparent early retail evaluation order. Focused listing similarity fell
+from 19.7% to 19.5%, with the same 1232-byte candidate frame against 1248
+retail bytes; the retained C already models both source facts. No edit was
+kept on evaluation order alone.
+
 The `0x8002ddb4` GT3 ordering-table guard was also tested with the explicit
 break form retained for FT3. Direct strict text rose from 97.434494% to
 97.521835%, but the compiled CFG changed from 44/44 blocks and 28/28
 branches to 44/45 and 28/30. Its new local bound test and jump duplicate
 retail's shared-tail work, so this single-arm control was discarded.
+
+Fresh alignment of the retained object shows how narrow this residue is:
+445 of 460 aligned instructions are unmarked. At the FT3 and GT3 depth
+divides, retail emits a local `blez`, then loads and adds the depth bias
+before jumping to the shared ordering-table limit check. The probe jumps
+to a tail that shares the positive-depth guard as well. The source already
+spells the signed positive-depth test and bias addition in both arms;
+changing a field or bound to force local code would misstate that evidence.
 
 A fresh raw review confirms that all four colored/textured cases converge on
 `0x8002f114`, which stores the packet code byte at primitive offset `+7` before

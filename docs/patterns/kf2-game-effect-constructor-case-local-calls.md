@@ -94,3 +94,29 @@ source calls into one. Replacing each case's `break` with an explicit jump
 to a common function exit in an off-tree source produced a byte-identical
 focused listing and the same 14/15-block CFG. This does not justify
 changing the case expressions or the callee arguments.
+
+## Current effect collision call-graph control
+
+After the effect storage-owner metadata alignment, fresh narrow safe targets
+and current-source isolated strict comparisons cover **28 claims in 13
+effect units**, with no withheld relocations. The 26 exact claims are the
+spatial-sound helper, all ten `effect_update` functions, five
+rotate/move/aim/target/scale helpers, both zero-direction spawners, both
+motion spawners, all three scatter functions, and all three reset functions.
+The two WIPs remain `0x8003fa68` at 70.73333% text (300 retail versus 228
+candidate bytes) and `0x80040308` at 98.43441% text with 51.016262%
+RODATA; constructor DATA remains exact. Focused CFG stays 14/15 blocks and
+6/6 branches for the probe, and 116/116 blocks and 22/22 branches for the
+constructor. The probe still has four raw collision calls against one
+compiled site.
+
+As a separate call-topology control, retail `actor_motion_collision`
+`0x8003b33c` calls `func_8002b9d4` four times at `0x8003b3c8`,
+`0x8003b434`, `0x8003b48c`, and `0x8003b4e4`. Its current source also
+spells four calls, varies the sampled X/Y/Z coordinates along the guarded
+paths, and is fresh strict exact; its three unit siblings are two exact
+and one 96.42041% WIP. The effect probe's four calls instead pass the
+same coordinates and differ only in the constant mode. This comparison
+bounds the observable call-site distinction; it does not prove the
+historical optimizer or justify adding artificial differences to the
+effect source. No C or relocation edit follows.

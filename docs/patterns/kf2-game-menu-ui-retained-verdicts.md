@@ -1025,6 +1025,49 @@ array stores, calls, and control edges are already represented by source.
 An earlier natural loop rewrite regressed the focused object, so no C or
 score-credit change was retained in this cohort.
 
+### Card title reader source-boundary recheck (2026-10-02)
+
+A fresh focused build of `game.memory_card_directory` preserves all four WIP
+CFG/branch pairs (13/13 and 7/7, 24/24 and 13/13, 9/9 and 4/4, 24/24 and
+14/14) plus its exact format sibling. In `0x800228c8`, retail addresses the
+whole stack header at `sp+16`, adds byte offsets `0x2c` and `0x3e` for the
+two digit loops, then loads both glyph bytes with `lb` before storing them
+into the local halfword. Those are exactly the two `KfCardHeader.title` field
+positions selected by the current typed source. The probe retains a different
+title cursor and selects `lbu`; earlier signed-view and explicit-offset
+trials did not recover the retail sequence. The raw base address is not a
+reason to replace the supported header type with offsets or to change the
+four-argument card-reader contract. No C change was retained.
+
+### Menu display entry near-exact audit (2026-10-02)
+
+Fresh isolated strict `game.menu_display_state` gives `0x80021c8c`
+**99.956985%** over 372 bytes and exact sibling `0x80021e00` at 100%.
+Focused quick build has the same 7/7 CFG blocks, 3/3 branches, and return
+frontiers. Objdiff marks exactly four words: retail `sp -= 32`, saves/loads
+`ra` at `sp+24`, and restores 32; the probe uses a 24-byte frame and
+`sp+16`. Raw retail has no other stack address or stack store/load. Seven
+external callers are proven (`0x800187a4`, `0x8001b58c`, `0x8001bd20`,
+`0x8001cef0`, `0x8001d6d0`, `0x8001d8fc`, `0x8001dc94`); their source calls
+pass the documented mode values, while this retail body does not consume
+`a0`. The buffer snapshot, frame upload, music gate, SDK calls, and data
+referents already match. There is no live local or source branch that owns
+the eight idle bytes; adding one would only steer the frame and is not a
+source-backed correction. No C edit or new exact claim was retained.
+
+### Card browser first-divergence recheck (2026-10-02)
+
+Fresh focused `game.menu_card_browser` retains 33/33 CFG blocks, 16/16
+branches, and both return frontiers. After `memory_card_probe_temporary_file`,
+retail copies the result from `v0` to `a0`, tests it twice, and leaves a
+`nop` in the first test's delay slot. The probe tests `v0` directly and puts
+the later `entries` stack address in that delay slot, saving two instructions;
+all subsequent branch offsets differ by that displacement. Raw retail uses
+`a0` only for those two tests before the next call overwrites it. The source
+already preserves both probe outcomes, the directory-call path, and its
+typed stack arrays, so this does not establish a missing source operation.
+The isolated strict result remains **98.478264%**; no C edit was retained.
+
 ### Menu navigation control recheck (2026-10-02)
 
 Fresh isolated strict comparison of the connected menu input, selection,

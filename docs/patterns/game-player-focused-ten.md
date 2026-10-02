@@ -23,3 +23,14 @@ The current player-collision sources already encode the known calls, typed
 fields, and control joins. These relocation-count differences reflect address
 materialization frequency, so neither target rows nor real C references were
 removed merely to equalize counts. No additional exact result was banked.
+
+A fresh complete-profile focused and isolated strict pass reconfirms both WIPs
+at the scores above. In the `0x80027f78` scale loop, retail forms one base for
+the reaction vector at `player_state+0x14c` and uses its `+0` and `+4`
+halfwords. The candidate keeps that base for X but rematerializes Z, accounting
+for four extra HI16/LO16 pairs without a different field or call. For
+`0x800279cc`, the retail 72-byte frame has only outgoing words at `sp+16` and
+`sp+20`, and saved registers at `sp+48..68`; the candidate frame is 64 bytes.
+The eight-byte difference does not establish a live local. Both functions
+retain the same CFG, branch counts, and ordered calls, so these controls did
+not warrant a source edit or artificial stack object.

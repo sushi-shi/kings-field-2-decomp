@@ -36,6 +36,21 @@ listing residues and exact controls.
 | `0x800321d8` | `resource_tmd_queue_read` | **WIP, 98.435900%**. Calls, registry referents, and three CFG blocks agree. Retail forms the fixed arena `0x8009b0a0` with `lui/addiu`; the provisional C literal forms `lui/ori`. A temporary extern probe reproduces the opcode, but the arena symbol's binding and extent remain unproved, so the source literal stays unchanged. |
 | `0x8003247c` | Per-frame actor/placed-object resource dispatcher | **Claimed WIP; 92.00273% current direct strict objdiff and 71.0% focused listing**. The C models the actor, animated map-object, sound-action, ordinary map-object, effect, and placed-object passes with typed records; retail/source CFGs have 96/96 blocks and 54/54 branches. Explicit common tails for the actor, map-object, effect, and placed-entry loops follow the raw retail increment and decrement paths. The actor visibility and radius checks share a typed position pointer distinct from the draw position returned by `func_8003c10c`, following raw value flow across that call. The actor radius check and ordinary map-object radius check sit at loop tails and branch back to shared render paths. The actor identity and nonidentity branches each prepare their draw arguments before the compiler merges them to one call, matching the retail branch-local setup; actor identity and placed-object rotation zero stores follow retail's z/y/x order. The ordinary visibility and radius paths each establish a typed template-row pointer before the shared draw block. The ordinary draw writes rotation before selecting render mode. Map-object action bodies follow the retail animated/sound/ordinary order, and the sound-outside frame reset follows its raw branch target. The sound-volume path clamps to its configured maximum when the computed distance volume reaches the radius, with the saturation branch before the scaling block. A typed camera-position pointer serves all three sound-distance coordinates. Retail `lbu` calls establish unsigned action and sound-radius arguments; signed `lh` reads establish actor/effect blend fields. Full-width map-layer-mask returns and local visibility masks remove caller-side truncation. A typed union view spells the low/high bytes of the packed spawn sequence without aliasing casts; focused map-object reset and 0x80036944 exact controls remain SAME. The 32-byte identity matrix is strict 100%. Retail/source frames are 768/760 bytes. Retail uses `sp+56..60` for the three rotation halfwords and passes `sp+56` as draw argument four; actor scale comes from `actor+72` in argument five at `sp+16`. No retail access establishes a missing object in the eight-byte gap at `sp+64..71`, so frame-size padding would be unsupported. The effect normal-draw path advances its record before jumping to the count tail, while mode 12 falls through its separate increment; the C now retains both effect draw calls, matching retail's five total `func_80031850` call sites. The first reported effect-loop CFG successor reaches the same next-record increment in both objects despite different block numbering; each has 82 relocation rows, including 13 local jumps. |
 
+`0x8002ff5c` has 14 decoded direct `jal` sites targeting the exact
+`resource_copy_words` at `0x800171c8`, in the same order as its 14 source
+calls. Each call relocation is now reviewed with the named target. A focused
+safe delink admitted all 32 relocations for this claim and withheld none;
+the prepared subdivider still has no new source correction or exact match.
+
+The 18 TMD/render `map_textured_primitive_color` pairs are also reviewed.
+Each retail `lui/addiu` resolves to the defined `CVECTOR` at `0x8006d6d0`,
+whose initialized bytes are `80 80 80 00`. All 18 resulting registers reach
+the next Psy-Q GTE color call in the header-defined argument register; source
+has the same 13 TMD plus five renderer references. A focused six-function
+safe delink admitted 329 relocations, withheld none, and preserved the same
+targets and addends. This is a relocation-evidence correction, not an exact
+function closure.
+
 A fresh `0x8002f808` stack audit found the same ten saved registers (`ra` and
 `s0`–`s8`) in retail and the probe. Retail passes the extra `Clip4FTP`
 arguments at `sp+16..32`, forms the shade pointer at `sp+80`, and uses word
@@ -243,6 +258,7 @@ before jumping to the shared ordering-table limit check. The probe jumps
 to a tail that shares the positive-depth guard as well. The source already
 spells the signed positive-depth test and bias addition in both arms;
 changing a field or bound to force local code would misstate that evidence.
+
 
 A fresh raw review confirms that all four colored/textured cases converge on
 `0x8002f114`, which stores the packet code byte at primitive offset `+7` before

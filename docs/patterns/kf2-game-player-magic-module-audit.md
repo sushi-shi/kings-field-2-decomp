@@ -132,3 +132,14 @@ previously documented redundant zero path. The collision response and
 interval helper retain their documented address-lifetime/register residues.
 No new source fact or exact closure was found; all C and identity files remain
 unchanged.
+
+The fresh `0x800274ec` raw retry-join check locates the extra retail block:
+`bltz` at body `+0x2bc` sets the slide-attempt value to one in its delay
+slot and targets `+0x350`; loop exhaustion falls through `+0x34c`, which
+sets the same value before `+0x350` stores it at stack `+0x40`. The current
+candidate has corresponding value assignments at `+0x28c` and `+0x318`,
+then joins at `+0x31c` while retaining the flag in a register. The existing
+`slide_attempted = 1` source expresses both paths; the extra retail block
+does not establish a missing retry, call, or field. A fresh safe two-VA
+delink accepted all 321 relocations with none withheld, and the focused
+comparison still has 35/34 blocks, 20/20 branches, and eleven ordered calls.

@@ -53,6 +53,15 @@
 - [kf2-game-map-effect-storage-26.md](kf2-game-map-effect-storage-26.md):
   26 bounded GAME map, collision, and effect storage verdicts, current source
   owners, candidate BSS limits, and a Sony LIBCD pointer-table exclusion.
+- [kf2-game-libcd-storage-25.md](kf2-game-libcd-storage-25.md): 25 GAME
+  CD-adjacent data candidates checked against raw words and exact Psy-Q
+  LIBCD text; unresolved late references remain address-only.
+- [kf2-game-sdk-zero-storage-25.md](kf2-game-sdk-zero-storage-25.md): 25
+  retail-zero GAME data candidates checked against Sony MALLOC and
+  exact LIBCD source sites, with unclassified archive-adjacent sites bounded.
+- [kf2-game-sdk-card-boundary-25.md](kf2-game-sdk-card-boundary-25.md):
+  25 GAME storage reference targets across SPU, sound, pad, GPU, saved menu
+  primitives, and card-buffer boundaries, with isolated strict controls.
 - [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
   actor group-effect helper and constructor call topology, with bounded
   negative source trials.

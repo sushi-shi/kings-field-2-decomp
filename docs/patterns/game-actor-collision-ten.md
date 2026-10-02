@@ -242,6 +242,15 @@ where the probe reuses the existing camera base. No supported C change was
 retained, and the tracked source stayed unchanged. Verification used focused
 `kf try` and isolated strict objdiff only.
 
+The sole proven external caller of `0x8003a318` is GAME `0x8003ff18` at
+`0x8004008c`; its own source body is strict exact. It passes the fifth input
+as the callee's `u16` falloff and the fifteenth as amount/flags. Retail and
+candidate both load amount/flags before falloff and apply the same
+`0x8000`/`0x7fff` masks. Their first difference is the choice of `$v1` and
+`$a0` for those two independent loaded values, not argument order or width.
+The exact caller control therefore does not support changing the callee
+signature to chase the near-exact score.
+
 ## Actor target/damage call family: 27 current strict verdicts
 
 A post-checkpoint isolated rebuild of nine GAME units with their complete

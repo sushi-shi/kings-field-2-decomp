@@ -1038,3 +1038,144 @@ global pointer. Although no call intervenes, this changed the pinned
 compiler's buffer lifetime and lowered `0x800349bc` isolated strict text
 from **96.31408%** to **83.71119%**. Its two exact siblings and the
 eight-byte datum remained 100%; the trial was discarded.
+
+### Actor scorer and adjacent control screen (2026-10-02)
+
+Eight focused GAME units cover 21 functions. Each strict percentage below
+comes from a fresh manifest-profile compile into an isolated object followed
+by direct objdiff against its safe-delinked retail object; the older cached
+report is not used. Twelve functions remain exact, and nine remain WIP:
+
+| Function | Strict text | Final verdict |
+| --- | ---: | --- |
+| `func_80039108` | 93.93092% | WIP: 59/59 CFG blocks, 37/36 branches; the case-9 tolerance Boolean still joins the callback branch. All 131 switch rows retain their ten target classes. |
+| `actor_select_best_target` | 100% | Exact control. |
+| `func_8003983c` | 99.19598% | WIP: 37/37 blocks and 24/24 branches; first difference exchanges the saved actor and constant registers. |
+| `func_80039b58` | 90.95744% | WIP: 9/9 blocks and 4/4 branches; retail saves `s4` for `0xff`, while the probe materializes it at the comparison in a smaller frame. |
+| `func_80039c14` | 100% | Exact fixed-curve control. |
+| `func_80039c94` | 98.11751% | WIP: 72/72 blocks and 46/46 branches; eight fixed-curve calls agree, with saved argument/accumulator registers and a later eight-byte layout offset differing. |
+| `func_8003a318` | 99.86911% | WIP: 26/26 blocks and 13/13 branches; two call-argument temporaries exchange registers. |
+| `func_8003a614` | 96.91011% | WIP: 6/6 blocks and 3/3 branches; retail rematerializes the player-state base. |
+| `func_8003a778` | 100% | Exact damage sibling. |
+| `func_8003a9f4` | 100% | Exact animation control. |
+| `func_8003ab5c` | 100% | Exact animation control. |
+| `actor_bind_current` | 100% | Exact animation control. |
+| `actor_advance_animation_wrapped` | 100% | Exact animation control. |
+| `actor_advance_animation_clamped` | 100% | Exact animation control. |
+| `actor_animation_crossed_phase` | 100% | Exact animation control. |
+| `func_8003ae50` | 99.31746% | WIP: 58/58 blocks and 34/34 branches; remaining delay-slot/store scheduling has no supported source correction. |
+| `func_8003b33c` | 100% | Exact motion/collision control. |
+| `func_8003b520` | 100% | Exact motion/collision control. |
+| `func_8003b5bc` | 100% | Exact motion/collision control. |
+| `func_8003b5d0` | 96.42041% | WIP: 40/39 blocks and 21/21 branches; retail keeps a separate state-`0x20` reset/exit block. |
+| `func_8003c614` | 86.041916% | WIP: 45/45 blocks and 15/15 branches; retail has 11 versus seven position-helper calls and nine versus ten constructor calls. |
+
+The scorer's raw case-9 tail branches from the tolerance result at
+`0x80039298` directly to the score path and jumps to the return path at
+`0x800392a0` on failure. The C already expresses those outcomes with a
+separate angle/tolerance call pair. The group-effect helper-call gap and the
+motion reset block likewise have prior source-equivalent negative controls.
+An additional off-tree case-9 spelling used a positive tolerance guard and
+`break` to enter the post-switch scoring tail. It produced the same negative
+result as the prior positive `goto`: strict text **89.68750%** and RODATA
+**37.02290%**, versus the retained **93.93092%** and **96.183205%**.
+No source or metadata change follows from this screen, and none of its twelve
+exact functions is a new exact claim.
+
+### Actor motion, group, and trajectory controls (2026-10-02)
+
+Seven more focused units cover 21 functions. Direct objdiff of fresh isolated
+manifest-profile objects confirms 15 previously exact controls and six WIPs:
+
+| Function | Strict text | Final verdict |
+| --- | ---: | --- |
+| `func_8003b9a4` | 100% | Exact motion control. |
+| `func_8003bae4` | 100% | Exact motion control. |
+| `func_8003bba0` | 100% | Exact motion control. |
+| `func_8003bcd0` | 100% | Exact motion control. |
+| `func_8003bd40` | 86.53226% | WIP: 9/9 CFG blocks and 5/5 branches; pre-angle-call subtraction order and register lifetimes differ, with identical calls and typed slots. |
+| `func_8003be38` | 100% | Exact motion control. |
+| `func_8003bf74` | 100% | Exact motion control. |
+| `func_8003c000` | 100% | Exact group-position control. |
+| `func_8003c10c` | 100% | Exact group-position control. |
+| `func_8003c220` | 100% | Exact group-position control. |
+| `func_8003c3e0` | 99.64539% | WIP: 23/23 blocks and 11/11 branches; the masked angle value uses a different temporary register before the same comparison. |
+| `func_8003d084` | 100% | Exact spatial-sound control. |
+| `func_8003d0e8` | 100% | Exact spatial-sound control. |
+| `func_8003d184` | 99.931595% | WIP: 410/410 known blocks and 213/213 branches; one repeated target-halfword load, 144/136-byte frame, and local/register allocation remain. All 241 switch rows and their RODATA bytes are exact. |
+| `func_8003f610` | 100% | Exact target-fixup control. |
+| `actor_fixup_group_targets` | 85.86207% | WIP: 9/9 blocks and 4/4 branches; sentinel scheduling and commutative pointer addition differ. |
+| `func_8003f860` | 100% | Exact target-fixup control. |
+| `func_800460a0` | 99.268295% | WIP: 6/6 blocks and 2/2 branches; the pre-tolerance angle values occupy different saved registers. |
+| `func_80015918` | 95.49419% | WIP: 41/41 blocks and 24/24 branches; subtraction result and three-call path preserve semantics but allocate different argument temporaries. |
+| `func_80015bc8` | 100% | Exact trajectory control. |
+| `func_80015ce0` | 100% | Exact trajectory control. |
+
+The near-exact behavior dispatcher was checked against its raw callsites:
+the apparent shifted `vector3s_scale_shift12` call in the focused listing
+comes from local-stack offsets, while the two calls and arguments keep their
+retail order. Its separate case-vector scope probes already enlarged the
+frame past retail and were discarded. No supported source correction or new
+exact result emerged from these 21 functions.
+
+### Menu map preview and primitive controls (2026-10-02)
+
+Eleven focused GAME units and fresh isolated strict objects cover 18
+functions linked by the map-preview's TIM upload, FT4 setup, menu drawing,
+and nearby primitive helpers. Twelve were already exact; six remain WIP:
+
+| Function | Strict text | Final verdict |
+| --- | ---: | --- |
+| `func_8001930c` | 98.26363% | WIP: 47/47 CFG blocks and 27/27 branches; archive/TIM/primitive calls and 69 ordered referents agree. Retail reserves 64 stack bytes and saves `s7`; the probe reserves 56 bytes. |
+| `menu_draw_window` | 99.78788% | WIP: 10/10 blocks and 6/6 branches; retail frame is 48 bytes versus 40 probe bytes. |
+| `menu_draw_two_option` | 100% | Exact control. |
+| `func_8002083c` | 99.65882% | WIP: 4/4 blocks and 2/2 branches; four live SDK `MATRIX` locals explain the calls, but retail reserves 224 bytes versus 160 probe bytes. |
+| `func_80020990` | 100% | Exact control. |
+| `menu_draw_string` | 99.66904% | WIP: 8/8 blocks and 4/4 branches; retail frame is 56 bytes versus 48 probe bytes. |
+| `menu_draw_number` | 100% | Exact control. |
+| `primitive_buffer_begin_poly_ft4` | 100% | Exact FT4 setup control. |
+| `primitive_buffer_commit_poly_ft4` | 100% | Exact FT4 commit control. |
+| `menu_list_init` | 100% | Exact primitive/list control. |
+| `func_800312f4` | 100% | Exact sliding-panel control. |
+| `func_80031384` | 100% | Exact sliding-panel control. |
+| `func_80031414` | 100% | Exact color-byte draw control. |
+| `func_800314d4` | 100% | Exact color-byte setup control. |
+| `tim_upload_images` | 100% | Exact TIM upload control. |
+| `func_800349bc` | 96.31408% | WIP: 14/14 blocks and 8/8 branches; retail frame is 72 bytes versus 64 probe bytes, with packet-store and register scheduling differences. |
+| `func_80034e10` | 100% | Exact transition control. |
+| `func_800311b0` | 92.14815% | WIP: 8/8 blocks and 5/5 branches; retail saves `s2` in a 32-byte frame while the probe uses 28 bytes. |
+
+The map-preview source already uses the SDK packet macros and preserves the
+two-frame allocation, upload, draw, pad-wait, and free lifetime. Previous
+source-equivalent archive-index and frame-layout probes were negative; no
+additional live object is proved for any of the frame differences above.
+KF1's `menu_map_viewer.c` is a related but distinct implementation: it uses
+stack-owned double-buffered quads and a path string, while this KF2 retail
+body writes global `current_poly_ft4` packets from an allocated archive TIM.
+Its stack objects therefore do not explain the KF2 frame difference.
+No source or metadata edit, exact closure, or new exact count follows from
+this screen.
+
+### Adjacent menu controller controls (2026-10-02)
+
+Ten further focused menu units cover twelve functions. Fresh isolated strict
+objdiff finds six existing exact controls and six WIPs:
+
+| Function | Strict text | Final verdict |
+| --- | ---: | --- |
+| `func_8001a4f0` | 99.74359% | WIP: 22/22 CFG blocks, 12/12 branches; the 74-record initializer index uses a different register, with its widths and 28 referents aligned. |
+| `func_8001b554` | 98.478264% | WIP: 33/33 blocks, 16/16 branches; probe result remains in `v0` rather than retail's copied `a0`. |
+| `func_8001bf68` | 97.12389% | WIP: card-format status and constant register allocation differs; the focused CFG tool cannot analyze its overlapping trial target. |
+| `func_8001c12c` | 100% | Exact card-format sibling. |
+| `func_8001e378` | 100% | Exact input-poll control. |
+| `func_8001e484` | 100% | Exact list-input control. |
+| `func_8001e94c` | 100% | Exact status-render control. |
+| `func_8001f008` | 100% | Exact attribute-render control. |
+| `func_8001fc94` | 99.70803% | WIP: 55/55 blocks and 33/33 branches; an independent list-tail immediate/move schedule remains. |
+| `func_80021c8c` | 99.956985% | WIP: 7/7 blocks and 3/3 branches; retail reserves eight more frame bytes. |
+| `func_80021e00` | 100% | Exact display-state sibling. |
+| `menu_format_number` | 97.39000% | WIP: 36/36 blocks and 19/19 branches; retail's extra eight-byte leaf frame shifts the fifth stack argument. |
+
+The previously tested source-equivalent initializer, local-buffer, and
+status-order spellings did not establish a missing field or control path.
+No C change or new exact claim was retained.

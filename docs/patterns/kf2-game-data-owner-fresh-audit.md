@@ -278,3 +278,127 @@ the controlled comparison to **55.263805%**. The earlier dossier's
 profile's `-mcpu=r2000` flag instead yields a different 51.295704% control;
 that incomplete-profile result is not the project's match score. This pass
 changed no source, profile, or inventory; packet scratch layout remains WIP.
+
+## Effect-constructor BSS linkage control
+
+GAME `effect_constructor` references `DAT_8009a5a8` and `DAT_801d9628` in
+its current C. No other source unit or current `kf sema` xref was found for
+either symbol. A single off-tree change made both tentative definitions
+`static`: the pinned candidate then emitted `.bss` size `0x908`, with a
+four-byte cooldown word at offset `0` and the 2,304-byte trail array at
+offset `+8`. Both object symbols scored 100% in isolated objdiff, matching
+the current delink target's sizes and offsets. The baseline tentative
+definitions instead emit COMMON symbols with no candidate `.bss` section;
+explicit zero initializers emit `.data` and do not model the target section.
+
+The target object's `.bss` has alignment 8 and its curated symbols are
+GLOBAL. The `static` probe has alignment 4 and LOCAL symbols. Those target
+binding choices are part of the working delink model, not recovered retail
+symbol facts, but the control still does not establish the original defining
+translation unit or complete extent. In particular, the `0x900` trail array
+is an observed minimum span. Both identities remain `candidate`, and no
+source, identity, relocation, or profile change was retained.
+
+## Resource/event ten-unit owner control
+
+A fresh manifest-profile compile and isolated strict objdiff of ten GAME
+resource/event units covers 22 functions: 13 already exact and nine WIP.
+These are direct object comparisons against the existing delink targets;
+no broad build or source/config change was made. Per-function verdicts:
+
+| Unit | Strict function verdicts |
+| --- | --- |
+| `resource_startup` | `0x80015d58` 89.03145% WIP; `0x80015fd4` 89.710144% WIP |
+| `resource_transition_request` | `0x80016260` 98.790085% WIP |
+| `resource_transition_step` | `0x80016820` 99.193474% WIP |
+| `resource_runtime` | `resource_registry_get`, `resource_tmd_read_complete`, `map_cell_layer_mask`, `resource_vab_update_range`, and `resource_tmd_update_range` exact; `map_cell_layer_mask_radius` 74.061226%, `map_cell_visible` 93.6%, and `resource_tmd_queue_read` 98.4359% WIP |
+| `event_target_stream` | `0x800462bc` 98.68132% WIP |
+| `event_command_dispatch` | `0x8004678c` exact |
+| `event_world_dispatch` | `0x80047c98` 99.81618% WIP |
+| `event_state` | `0x800482f8`, `callback_invoke_slot_04_zero`, `0x800483d8`, `0x80048428`, `0x80048498`, and `0x800484e4` exact |
+| `event_save_stream` | `0x80048554` exact |
+| `event_restore_stream` | `0x800489ac` 98.82883% WIP |
+
+The startup target has 127 `.rel.text` rows against 115 in the pinned
+candidate. Its **six** target-only HI16/LO16 pairs are one each for
+`DAT_801d8d88` and `DAT_8012da68`, and two each for `DAT_800fa0d0` and
+`DAT_800855a0`. Target object instructions at offsets `+0x14c`, `+0x200`,
+`+0x228`, `+0x23c`, `+0x254`, and `+0x354` use `lui` followed by signed-low
+`addiu`. The corresponding C call arguments are fixed address literals;
+the candidate has no substitute relocation. Transition step has 196/190
+`.rel.text` rows: two target-only pairs for `DAT_8019e138` at `+0x104` and
+`+0x1f4`, and one for `DAT_8012da68` at `+0x22c`. They likewise use
+`lui/addiu`, while the C uses fixed literals. All other type/symbol
+multiplicities in those two text relocation tables agree. These nine pairs
+support the referent addresses and expose the source-binding gap; they do
+not establish complete object extents or defining translation units, so no
+tentative workspace was promoted to a fabricated global.
+
+The fresh target `resource_transition_request` `.bss` is 28 bytes with
+`state_8017d118` at `+0`; the candidate instead emits a 32-byte COMMON
+request, one instance of the already measured tentative-definition rounding.
+Fresh target `event_state` `.bss` is 14,616 bytes; the candidate requests a
+same-sized COMMON symbol. Both have exact text siblings where listed above,
+so the section-class difference is independent of their function scores.
+
+Initialized section controls are narrow and positive: startup `.rodata`
+is 83/83 bytes exact; transition step `.data` is 128/128 bytes with all
+32 pointer relocations and `.rodata` 28/28 bytes with seven table relocations
+exact; event command's five eight-byte DATA objects, 40-byte section, and
+35-row switch table are exact; event save/restore tables are exact. Event
+target stream retains 16/16 table pointer relocations and the same 64-byte
+extent, but the two raw pointer addends at `+0xc` and `+0x3c` are each four
+bytes later in the candidate (`0x2c0/0x2c4` and `0x2dc/0x2e0`). Its raw
+retail action path lacks a candidate load-delay nop, explaining the text
+layout shift; the target table entries are not adjusted to hide that gap.
+
+## Adjacent event/CD owner control
+
+Seven more disjoint GAME units were compiled under their manifest profiles
+and compared in isolation. Of their 71 function claims, 68 are already
+strict exact. The complete unit verdicts are:
+
+| Unit | Function verdict |
+| --- | --- |
+| `resource_transition_phase` | All five phase callbacks exact |
+| `cd_memory` | All 57 functions exact except `memory_arena_allocate_block` 99.78261% WIP |
+| `event_pose_interpolate` | Both functions exact |
+| `message_stream_find_marker` | `0x80046144` exact; `0x800461a0` 99.12676% WIP |
+| `event_map_object_spawn` | `0x80046700` exact |
+| `event_counter` | All three functions exact |
+| `event_map_object_controller` | `0x800475d8` 99.166664% WIP |
+
+Each unit's target and candidate `.rel.text` counts agree. The allocator's
+single instruction difference at object offset `+0x78c` is a temporary
+register choice: retail uses `addiu v0,a1,-12` then subtracts from `v0`,
+while the candidate computes the same value directly in `a0`; its calls,
+CFG, and 46-instruction extent match. The marker function's pointer
+register/origin differs while retaining the same accesses and 71-instruction
+extent. The event controller has matching 432-instruction extents and
+ordered relocation counts, but a late shared-path layout/register gap; this
+screen found no independently supported field or referent correction.
+
+The `cd_memory` target's 11-byte `.data` and 33-byte `.rodata` are exact,
+including `cd_path_prefix` and `cd_version_suffix`. Its target `.bss` is
+772 bytes: `cd_state` 676 bytes at `+0`, followed by `cd_archives` 96 bytes
+at `+0x2a4`. The candidate instead requests separate COMMON symbols of
+680 and 96 bytes. This is the same rounded tentative-definition/placement
+issue as other data owners, not an initialized-data mismatch. Likewise the
+target `event_counter` has a 120-byte `.bss` `game_counter_bytes`, while
+the candidate requests a 120-byte COMMON symbol. No C or inventory owner
+was changed to accommodate those section differences.
+
+## Two map-grid owner controls
+
+Fresh isolated objects leave `map_mask_window_sweep` `0x8002c670` at
+91.624245% strict, and `map_cell_pattern_place` `0x80034f90` and
+`0x80035194` at 97.86822% and 89.59545%. The 28-byte signed-pair
+`DAT_80067874` DATA object is byte exact. The target mask unit puts its
+32-byte `render_mask_scan_state` in `.bss`, while the pinned candidate
+requests a same-sized COMMON symbol. Target/candidate text relocation
+counts are 82/86: the four extra candidate rows are precisely two
+HI16/LO16 pairs to that **same** scan-state object, consistent with
+address-base reuse rather than a missing identity. The pattern-placement
+unit has 11/11 text relocations, no owned initialized storage, and retains
+its known frame/induction differences. No map C or data-owner claim was
+changed.

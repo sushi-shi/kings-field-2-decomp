@@ -1011,3 +1011,53 @@ The isolated text relocations contain the same 23
 `bss_801c7540` HI16/LO16 pairs and one switch-base pair on both sides;
 retail has 47 local `R_MIPS_26` jumps against 42 in the probe. No external
 data referent is missing from this source claim.
+
+### Fresh collision-shape family control (2026-10-02)
+
+An isolated rebuild of `game.collision_grid_sample`,
+`game.collision_shape_dispatch`, `game.collision_height_wrappers`, and
+`game.map_mask_window_sweep` with their complete unit profiles, followed by
+direct strict objdiff, gives a final verdict for all 20 source claims in this
+related family. These are current strict results, not focused-listing scores.
+
+| GAME address | Strict text | Verdict from retail instructions and source |
+| --- | ---: | --- |
+| `0x8002a988` | 100% | Exact cell/layer selection and cached-height producer. |
+| `0x8002aaa4` | 57.5261% | WIP: 174/172 CFG blocks and 99/98 branches; all 49 switch rows have the same 13 target classes. Case `0x11` has a retail-only unreachable branch after `move s7,zero`; cases `0x30`/`0x32` have separate retail multiplication tails. |
+| `0x8002b604` | 100% | Exact height-probe caller. |
+| `0x8002b67c` | 94.895836% | WIP: retail reloads the just-stored cached height for the shape call; the source call and elevation/field widths agree, but the probe retains the computed value. |
+| `0x8002b73c` | 98.404260% | WIP: indexed row/column update has the same control and byte store; row-pointer and index register choices differ. |
+| `0x8002b7f8` | 100% | Exact second shape caller. |
+| `0x8002b874` | 91.5% | WIP: the three player/actor/object sources and common interaction-height store agree; load order and register schedule differ. |
+| `0x8002b9d4` | 95.379310% | WIP: direct cache-field stores preserve retail call/result semantics; 64/56-byte frame and saved-register assignments differ. |
+| `0x8002bc18` | 100% | Exact collision-row helper. |
+| `0x8002bd3c` | 100% | Exact collision-row helper. |
+| `0x8002bdbc` | 100% | Exact collision-row helper. |
+| `0x8002be9c` | 100% | Exact collision-row helper. |
+| `0x8002bf38` | 100% | Exact collision-row helper. |
+| `0x8002bfac` | 100% | Exact collision-row helper. |
+| `0x8002bfd4` | 73.912620% | WIP: four calls from mask sweep, two axis loops, `lhu` cell origins, signed 16-bit direction/error/count tests, and byte-grid stores match source; induction order and frame/register allocation differ. |
+| `0x8002c170` | 100% | Exact mask-run scanner. |
+| `0x8002c1d4` | 100% | Exact mask-row fill. |
+| `0x8002c290` | 100% | Exact mask-cell update. |
+| `0x8002c424` | 98.299320% | WIP: direct typed cell lookup and indexed cursor preserve retail control; saved-register assignments differ. |
+| `0x8002c670` | 91.624245% | WIP: typed grid/lighting referents and four rasterizer calls agree; retail has two additional address-materialization pairs for the nonzero-layer mask arm, while the probe derives adjacent bytes differently. |
+
+The wrapper unit's 3,520-byte `collision_default_rows` initialized datum is
+also strict exact. The grid sampler's 10-byte default cell and mask sweep's
+28-byte shape table are strict exact. The shape unit's 196-byte switch table
+is 27.551018% strict by bytes/addends, while its row order and target-class
+identity agree.
+The rasterizer's four proven incoming calls come from `0x8002c670`; it has no
+outgoing function call or string reference. The current source already spells
+the raw signed 16-bit tests and address families, so this pass retained no C
+or identity edit. KF1's collision grid is a related algorithmic lead but has
+no matching shape-dispatch switch; it does not justify a source rewrite here.
+An off-tree split of case `0x30`'s `(quotient + 1) * slope` into an increment
+followed by multiplication raised strict text slightly to 57.656593% but
+lowered the switch table to 22.959183%. Retail proves the `addiu` before
+`mult`, but not which of these equivalent C spellings produced it; the trial
+was discarded and the 20-function verdict above is the retained source.
+Two adjacent collision-channel helpers, `0x800314fc` and `0x80031634`, were
+also reconfirmed strict exact in separate focused unit builds and require no
+source change.

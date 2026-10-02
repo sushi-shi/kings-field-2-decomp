@@ -1402,3 +1402,23 @@ Raw CFG, call, and address-reference review of the first and third rows
 confirmed the relevant constructor sites. Address containment in a broad RAM
 arena is not sufficient to define these objects, so this pass made no source
 or metadata edit and claims no new exact match.
+
+### Audio runtime current strict verdict
+
+A fresh GAME unit comparison of the current 17-function `audio_runtime.c`
+gives 15 existing strict-exact functions and two WIPs: initializer
+`0x800139c4` at **89.30556%** and VAB transfer service `0x800144b8` at
+**94.87342%**. The initializer retains 7/7 CFG blocks, 3/3 branches, and
+all eight Psy-Q calls in retail order. Its four raw `lui/addiu` workspace
+references are `0x80198640`, `0x80165a68`, `0x80194e30`, and
+`0x80164a68`; the current fixed C literals compile as `lui/ori` without
+those target relocations. KF1's sequence buffer is allocated dynamically,
+so its `0x3000` capacity does not establish a KF2 static owner. The KF2
+source/config remain unchanged pending a defining mechanism and extent.
+
+The transfer service retains 11/11 CFG blocks, 5/5 branches, and its call
+set. Retail keeps phase value `1` in `$s3`, while the probe keeps retry
+sentinel `-1` there. A second off-tree spelling with the first partial
+transfer before a `while (result == -1)` loop lowered focused listing
+similarity from 91.8% to 73.2% and was discarded. No independent source
+fact justifies changing the tracked loop or its value lifetimes.

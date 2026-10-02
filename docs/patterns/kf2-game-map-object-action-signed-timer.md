@@ -233,3 +233,25 @@ the load-delay gap. The next non-target residue, in action 98, reorders the
 angle and signed-velocity halfword loads/stores but preserves their values.
 No source-backed field, call, width, or control-flow correction follows from
 these schedules, so the C body and table claims remain unchanged.
+
+### Fresh related-unit certificate
+
+A narrow safe delink and focused rebuild of the related map-object band used
+the current source for 22 claims in nine units; every target had zero withheld
+relocations. Direct strict comparison finds 17 exact claims and five WIPs:
+
+| Unit | Strict verdict for its claims | Remaining bounded difference |
+| --- | --- | --- |
+| `map_cell_pattern_place` | `34f90` 97.86822%, `35194` 89.59545% | Both retain matching CFG and branches (14/14, 7/7; 51/51, 26/26). Retail/probe text relocations agree at all 11 ordered type, symbol, and site rows. The first function exchanges saved-register roles and one independent address instruction; the second uses a 40-byte retail frame against a 32-byte probe frame and different argument lifetimes. |
+| `map_object_reset` | Six exact | The BSS/COMMON ownership difference remains separate from the six text claims. |
+| `map_object_init_records` | `35894` exact | Its 270-byte DATA and 1016-byte RODATA are also exact. |
+| `map_object_collision_query` | `36078` exact | No remaining text mismatch. |
+| `map_object` | `36190` 98.56115%, `363bc` exact, `363dc` exact, `36464` 95.32258% | Both WIPs have matching CFG and branches (15/15, 8/8; 12/12, 3/3), and all 32 ordered text relocation type, symbol, and site rows agree. The first differs by one independent load/move order before `angle_within_tolerance`; the second uses opposite saved registers for object ID and height offset and a different reset-call delay-slot store. Its 68-byte RODATA is now strict exact; the older preceding-body addend displacement was stale. |
+| `map_object_spawn_scatter` | Four exact | Its 84-byte RODATA is exact. |
+| `map_object_vertex_world` | Two exact | No remaining text mismatch. |
+| `map_object_motion` | `36b68` exact | No remaining text mismatch. |
+| `map_object_action_update` | `36ed4` 99.63745% | 329/329 CFG blocks, 180/180 branches, and 252/252 ordered text relocation type/symbol rows agree; its 238 pointer rows preserve the 239-word target-equivalence relation. The four-byte text-length and pointer addend residue remains. |
+
+The five WIPs retain their existing humane source. This certificate adds no
+exact closure beyond the previously recorded unit results and makes no new
+source-owner claim from address adjacency.

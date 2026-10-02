@@ -73,6 +73,7 @@ keeps the blend word in a saved register and hoists the equivalent depth-range
 flag. The sole source caller passes a signed depth; the raw callee truncation
 at the tail does not establish whether the original formal was `s16` or `s32`.
 No source change is justified by those codegen differences alone.
+
 An isolated positive-depth spelling probe put the FT3 and GT3 insertion bodies
 inside `if (depth > 0)` in both textured walkers, preserving their packet
 semantics. The compiled direct strict scores remained exactly 97.347160% and
@@ -373,3 +374,23 @@ including `0x80033d3c`) and `game.render_frame` (two functions, including
 exact in the generated report; their older WIP prose is stale. The exact
 `render_enqueue_map`, eight TMD-pipeline siblings, and three map-cell siblings
 also remain 100%. No C change or new exact claim resulted.
+
+### Prepared subdivider header and object-base control
+
+A fresh GAME `0x8002ff5c` raw/focused pass keeps the 3,260-byte prepared
+subdivider at **55.263805% strict**. Its sole caller, all 14 ordered
+`resource_copy_words` calls, and the two internal target branches remain
+identified. Retail's first packet-mode test loads a word, stores it to a
+stack header at `sp+1088`, then reads the mode byte at `sp+1091`; the probe
+retains the word in a register and extracts its high byte. The source already
+uses the typed `KfTmdPacketHeader` union. An off-tree whole-union copy in
+place of its word assignment left the focused listing unchanged.
+
+Retail computes an object index from the header-adjusted asset base. An
+off-tree spelling that indexed the same typed `KfTmdObject` array from the
+existing `base` pointer moved that `addiu asset,+12` before the indexed
+addition, but isolated strict text fell to **53.845398%** and the first
+packet-mode difference remained. Both trials were discarded. The current
+probe reserves 1,232 stack bytes against retail's 1,248, with the same
+1,024-byte midpoint workspace at `sp+64`; no additional complete local
+object is proved by the frame gap.

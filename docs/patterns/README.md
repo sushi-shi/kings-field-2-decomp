@@ -1217,6 +1217,9 @@ promotes a probe to a proven historical toolchain.
 - [GAME player focused ten](game-player-focused-ten.md):
   21 existing exact player functions and two bounded collision WIPs across ten
   individually compiled units.
+- [GAME player sound and reaction fresh controls](kf2-game-player-sound-reaction-fresh.md):
+  20 current claims across two units, with 18 exact siblings and two bounded
+  player-state/reaction scheduling WIPs.
 - [GAME event focused nine](game-event-focused-nine.md):
   14 existing exact event functions and three bounded WIPs across nine
   individually compiled units.

@@ -27,9 +27,7 @@ def read_tsv(path: Path):
 
 def trial_rows(census: Path, name: str):
     local = census / f"{name}.tsv"
-    published = Path(__file__).resolve().parents[2] / "docs/patterns" / f"psyq30-macro-{name.replace('_', '-')}.tsv"
-    return read_tsv(local if local.exists() else published) if (
-        local.exists() or published.exists()) else []
+    return read_tsv(local) if local.exists() else []
 
 
 def number_value(spelling: str) -> int:

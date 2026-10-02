@@ -171,7 +171,8 @@
 - Keep source comments operational: ABI constraints, delay-slot-sensitive
   behavior, unresolved identity markers, and concise safety explanations. Do
   not keep score diaries or reconstruction history in C files.
-- Put reusable compiler/MIPS findings under `docs/patterns/` and index them.
+- Keep reusable compiler/MIPS evidence concise in existing technical
+  documentation or curated inventories; avoid per-campaign Markdown diaries.
 - Before commit: inspect raw constants and referents, run focused matches,
   `ruff check scripts tests`, the repository tests, `git diff --check`, and a
   full `kf build`. Run `nix flake check -L` for tooling/flake changes.

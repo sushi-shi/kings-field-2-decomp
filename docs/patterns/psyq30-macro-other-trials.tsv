@@ -1,7 +1,0 @@
-source	macro	unit	full_listing_delta	decision
-src/game/floor_item_find_free.c:36	setWH	game.floor_item_find_free	identical	compatible spelling left explicit
-src/game/menu_display_state.c:38	setWH	game.menu_display_state	identical	compatible spelling left explicit
-src/game/actor_spatial_sound.c:11	limitRange	game.actor_spatial_sound	changed	keep evidenced branch order
-src/game/audio_runtime.c:261	limitRange	game.audio_runtime	changed	keep evidenced branch order
-src/game/vector_math.c:116	abs from ABS.H	game.vector_math	changed	keep exact libc call
-src/game/menu_blit_sprite.c:21	getClut	game.menu_blit_sprite	changed	keep exact packed arithmetic

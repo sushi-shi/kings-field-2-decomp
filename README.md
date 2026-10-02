@@ -16,9 +16,8 @@ The disc carries four linked programs: the `PSX.EXE` boot loader and the
 `OPEN.EXE`, `GAME.EXE` and `END.EXE` overlays, which share one load window at
 `0x80011000`. Initialize them with `kf init --retail-dir PATH`.
 
-The tooling and matching workflow are inherited from the King's Field
-(`SLPS-00017`) project. [`docs/patterns/`](docs/patterns/README.md) keeps that
-project's compiler and MIPS notes; their function names refer to KF1.
+The tooling and matching workflow build on the King's Field
+(`SLPS-00017`) project.
 
 <!-- match-score:start -->
 ## Match status

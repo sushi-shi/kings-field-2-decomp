@@ -68,3 +68,20 @@ pairs and still scores 99.67553%. The older object's precise configuration
 was not preserved here, so the score difference is not attributable to one
 source or delinker change. Use the fresh target and direct score above for
 the current verdict.
+
+## Fresh exact controls across ten claimed functions
+
+Focused `kf try --unit` builds and fresh safe delinks give **100% strict text**
+for all ten functions in four GAME units:
+
+| Unit | Functions and retail text sizes | Safe delink |
+| --- | --- | --- |
+| `game.animation_sparse_vertices` | `0x80033bfc` 196 B, `0x80033cc0` 124 B, `0x80033d3c` 696 B | 7 ordered relocations, none withheld |
+| `game.map_object_spawn_scatter` | `0x800365d8` 292 B, `0x800366fc` 440 B, `0x800368b4` 144 B, `0x80036944` 116 B | 75 relocations, none withheld |
+| `game.render_frame` | `0x80033584` 28 B, `0x800335a0` 1012 B | 190 relocations, none withheld |
+| `game.event_command_dispatch` | `0x8004678c` 3156 B | 471 relocations, none withheld |
+
+These are current exact controls, not new closures: the old `0x800366fc`
+37.3% and `0x80033d3c` 95.21839% WIP entries elsewhere are stale. The
+event controller's five compared object symbols also report 100% strict.
+No C source was changed for this recheck.

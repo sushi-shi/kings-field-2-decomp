@@ -200,3 +200,15 @@ proved complete object, owning TU, or original definition mechanism. The
 current literal C pointers remain provisional; binding them to new globals
 or relocation symbols would assert unsupported ownership. No C or metadata
 edit was retained.
+
+## Mask-window layer selection control
+
+GAME `func_8002c670` remains **91.624245%** strict with its 28-byte shape
+table exact. At retail `0x8002c81c..0x8002c840`, each layer arm stores the
+first mask byte through the saved scan-state pointer, then a single join
+stores the second mask byte. The current source has the same values and
+reachable paths, but GCC duplicates the second store and materializes its
+global address. A natural local for the second value, tested with both `u8`
+and `s32`, lowered strict text to **85.943436%**. A narrowly scoped typed
+scan-state pointer lowered it to **88.935356%**. Both trials preserved the
+exact table and were reverted; no C change or new owner claim remains.

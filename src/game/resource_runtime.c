@@ -63,13 +63,11 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
         if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
             s32 x = x0;
             s32 column_count = span;
-            const u8 *cell = row + x;
 
             do {
                 if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
-                    mask |= *cell;
+                    mask |= row[x];
                 }
-                cell++;
                 x++;
                 column_count--;
             } while (column_count != -1);

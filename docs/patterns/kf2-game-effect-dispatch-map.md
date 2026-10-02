@@ -99,9 +99,10 @@ unreachable blocks and supplies incorrect speculative arguments to `rand` and
 other calls; it is a guide to inspect, not trustworthy C source.
 
 The current `src/game/effect_update_dispatch.c` claims the full retail body
-at `0x80042650 / 0x3670` and models many kind and phase arms. A focused
-rebuild emits 13,852 text bytes against retail's 13,936; direct strict
-objdiff reports 0.0%, so this is a substantive WIP, not an exact function.
+at `0x80042650 / 0x3670` and models many kind and phase arms. A fresh
+isolated pinned-probe build emits 13,804 text bytes against retail's 13,936;
+direct strict objdiff reports **95.181404%**, so this remains a substantive
+WIP.
 The first compiled instructions already differ in frame size and saved-register
 setup. Retail kind 6 uses a five-entry phase jump table and its phase-1 path
 jumps directly to the phase-2 handler; the nested C switch and join now emit
@@ -128,13 +129,21 @@ captures current record, magic, kind, and phase before its switch; this is a
 source-shape lead, with the KF2 prelude and kind-zero branch providing the
 independent evidence here.
 
-The direct external-call multiset is still unequal: source has 205 `jal`
-sites against retail's 206. Only `func_80040308` differs in count (26 versus
-27); every other external target count agrees. Kind 114's source path does
-call that constructor, but the current compiler tail-merges its `jal` with
-another case at source offset `+0x3494`, whereas retail has a distinct `jal`
-at `0x800459e8`. This is a codegen/control-flow residue, not evidence to add
-another semantic call.
+The fresh isolated strict objects each have **206** direct `jal` sites,
+including **27** calls to `func_80040308`. The earlier 205/206 count is
+superseded. Around retail offset `+0x1258`, objdiff aligns a constructor
+`jal` with the candidate's corresponding call two instructions earlier;
+the apparent delete/insert is argument-setup scheduling, not a missing call.
+Kind 114's source constructor is also present in the compiled body. No
+duplicate source call is supported by this evidence.
+
+The first non-register/layout divergence in the current aligned text is at
+retail offset `+0x2d4`: retail stores the third scale halfword, increments
+the phase byte, and jumps to the return path with the phase store in its
+delay slot. The candidate places the scale store in the jump delay slot and
+reaches a shared phase-increment tail. Both paths perform the same field
+writes. This is a physical tail-layout difference; adding a second phase
+update would change the modeled behavior.
 
 Retail kind 20 at `0x80043cb8` prepares
 `(0x4000, 0x100, 0x20)` and jumps into the shared `func_80041cd0` call at
@@ -149,8 +158,9 @@ share one call. Kinds 7/49 and 13/32 share the retail
 `0x80042908`; the source now models that join. Conversely, kind 103/121 has
 two distinct `func_80042424` sites at `0x80043760` and `0x80043774`, and
 the source spells them in their respective phase branches. The focused
-listing is 13.0% similar and strict text remains 0.0%; the lower intermediate
-listing score does not falsify those directly decoded paths.
+listing was 13.0% similar at that intermediate stage; the lower intermediate
+listing score did not falsify those directly decoded paths. The current
+isolated strict score is the 95.181404% reported above.
 
 The subsequent primary-target pass checked the retail body and all incoming
 and outgoing xrefs again. The first kind handler, at `0x80043624`, increments

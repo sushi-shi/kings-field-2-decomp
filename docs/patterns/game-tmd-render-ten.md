@@ -30,3 +30,12 @@ delink and focused compile now give **100% strict** text for all three
 `0x80033cc0` 124/124 bytes, and `0x80033d3c` 696/696 bytes. The seven
 ordered module relocations match, including all three `ScaleMatrix` calls;
 the safe carve withheld none. The current source needs no change.
+
+A fresh 11-function safe carve also supersedes the table's two textured-walker
+CFG counts: `0x8002ddb4` is 97.434494% strict with 44/44 blocks and 28/28
+branches, and `0x8002e4dc` is 97.38307% with the same counts. All eight
+neighboring functions remain exact. The fixed-depth walker `0x8002ebe0`
+remains 95.27945% with 26/25 blocks and 17/16 branches; retail checks signed
+depth at the common packet tail, while the probe hoists an equivalent range
+predicate. A source-equivalent shared ordering-tail trial kept that CFG gap,
+so no TMD source or table edit was retained.

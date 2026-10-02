@@ -926,3 +926,60 @@ unsigned radius halfword before loading its unsigned interaction height,
 whereas the candidate schedules the loads differently before the same
 shared height store. Prior local-width and branch-local controls compiled
 identically or lost the raw common tail. No source edit was justified.
+
+### Indexed radius-mask access
+
+In `map_cell_layer_mask_radius` (GAME `0x800320b0`), retail advances the
+column index in the inner loop and addresses each byte from the current
+row base plus that index. The former C advanced a separate `cell` pointer.
+The indexed load occurs only inside the `x >= 0 && (u32)x < 24` guard, so
+negative and out-of-range columns do not evaluate `row[x]`. Spelling the
+access this way preserves the bytes and gives the source the raw indexing
+relationship. The pinned compiler still strength-reduces that expression
+into a pointer induction; focused CFG remains 10/10 blocks and 6/6
+branches. Isolated strict text rises only from **73.95918%** to
+**74.061226%**. The five exact siblings, including the newly exact VAB
+updater, remain 100%; `map_cell_visible` and `resource_tmd_queue_read`
+stay at 93.6% and 98.4359%. No new exact is claimed.
+
+The adjacent audio campaign rebuilt `game.audio_runtime` as one focused
+unit: fifteen of seventeen functions remain listing-identical. Startup
+`0x800139c4` has 7/7 CFG blocks and 3/3 branches; its four fixed workspace
+addresses still lack complete defining owners and appear as literals where
+retail has relocation pairs. VAB service `0x800144b8` has 11/11 blocks and
+5/5 branches; the probe keeps retry sentinel `-1` in a saved register where
+retail keeps phase value `1`. Both preserve their call and field behavior,
+and no audio source or metadata edit was retained.
+
+The post-correction player effect dispatcher `0x80025a18` was rechecked
+read-only. Its 99/99 CFG blocks, 31/31 branches, 12/12 return frontiers,
+16 probe and 11 constructor call sites, and 108 ordered text referents now
+agree; all fifteen unit siblings remain identical. Retail still homes and
+reloads `effect_id` at `sp+112` in a 112-byte frame, while the supported
+`va_list` source uses a 104-byte frame and retains the argument register.
+Both supplied SDK and repository `stdarg` headers emit that supported form.
+Manual indexing beyond `&effect_id` was an earlier positive ABI control but
+has no proven source/header provenance, so no dispatcher edit was retained.
+
+### Player collision and reaction control screen
+
+A fresh focused screen of `player_collision_sound`,
+`player_collision_response`, `player_interval_71_80`, and `player_reaction`
+covered 23 GAME claims. The 19 prior exact siblings remain listing-identical;
+the four WIPs have no newly missing call or typed referent. Landing controller
+`0x800279cc` still has 70/70 CFG blocks, 37/37 branches, and 3/3 return
+frontiers. Its first control-word difference changes only the register holding
+the same collision result; the candidate also retains a 64-byte frame versus
+retail's 72. Collision response `0x80027f78` has 27/27 blocks, 14/14
+branches, and 4/4 return frontiers; the `player_state` component addresses
+in its motion-length arm are rematerialized in the candidate instead of
+loaded from the retained structure pointer. No distinct target field is lost.
+
+The inclusive 71–80 predicate `0x8002897c` has 3/3 blocks and its sole
+branch on both sides; retail and candidate exchange the Boolean temporary
+registers and the candidate adds a final move. The larger reaction dispatcher
+`0x8002985c` remains 142/142 blocks, 79/79 branches, and 2/2 return
+frontiers, with an unresolved indirect jump on both sides. Its first local
+differences are constant and register scheduling around the same fade clamp.
+Prior signed-value controls regressed, and the shared caller semantics remain
+unchanged. None of these four merits a source edit on the current evidence.

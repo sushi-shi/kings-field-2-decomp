@@ -142,9 +142,15 @@ destination after the arena is `0x800fa0d0`, 0x30 bytes beyond its end, and
 
 The array-end adjacency and exact allocator capacity support a reserved RAM
 span, but do not distinguish a declared game BSS array from a linker boundary
-or another allocation mechanism. No current `data_identities.tsv` row defines
-the arena, and its three raw base pairs have no `relocs.tsv` rows. The current
-fixed-literal C macro emits `lui/ori` instead of retail's signed-low pair.
+or another allocation mechanism. It is specifically **not** the current
+`BSS_END` label: `config/retail/link_labels.tsv` places that GAME boundary at
+`0x801da018`, and retail `main` constructs that separate address at
+`0x8001364c/50` before passing it to `InitHeap`.
+KF1's memory arena is allocated through `malloc`, so its source shape cannot
+identify KF2's original arena declaration either. No current
+`data_identities.tsv` row defines the arena, and its three raw base pairs have
+no `relocs.tsv` rows. The current fixed-literal C macro emits `lui/ori`
+instead of retail's signed-low pair.
 Without a defining object, complete source extent, and owning TU, this audit
 does not introduce an overlapping global, bind an extern, or alter metadata.
 
@@ -243,6 +249,12 @@ The address-gap inventory is a triage aid, not a set of new C array claims:
 | `0x8019e138` loaded callbacks | `0x801b2140` event state | `0x14008` | At least one CD sector written and 20 pointers used; maximum/definition open |
 | `0x801b6064` map stream | `0x801c7068` motion vector | `0x11004` | `0xfa04` bytes read by phase one; valid sector-rounded input at least `0x10000` |
 | `0x801d8d88` startup copy | `0x801d9588` SDK score table | `0x800` | Candidate maximum |
+
+KF1's audio startup requests a `0x3000`-byte sequence buffer through its
+arena allocator, which agrees with the KF2 sequence-address gap as a capacity
+analogue. It is not evidence that KF2 declared a `0x3000`-byte static array at
+`0x80198640`; that base's original definition and allocation mechanism remain
+open.
 
 ## Prepared TMD target freshness control
 

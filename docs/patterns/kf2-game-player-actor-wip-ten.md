@@ -34,10 +34,30 @@ physical order of distinct case bodies. Non-exact addends move by four or
 28 bytes as nearby code shifts. These rows support neither a missing switch
 case identity nor a physical case-order correction.
 
+The seven-instruction signed 71–80 predicate at `0x8002897c` is still
+**88.57143%** strict. Three off-tree whole-unit compiler controls—GCC 2.6.0,
+GCC 2.5.7 without the CPU flag, and GCC 2.5.7 without instruction
+scheduling—each leave that score unchanged while regressing its exact
+`0x80028998` sibling to 95.36364%, 94.30606%, and 94.412125%, respectively.
+The current manifest profile therefore remains the best supported unit
+probe; changing it would sacrifice an exact function without closing the
+predicate's result-register residue.
+
 For collision response `0x80027f78`, a full-unit off-tree
 `-fno-cse-skip-blocks` control moved strict text only from 95.91228% to
 95.93567%; disabling instruction scheduling fell to 73.83041%. Neither
 eliminated the extra player-state address pairs, so no profile change follows.
+Two further complete-profile off-tree controls regress to 83.24561% with
+GCC 2.6.0 and 84.730995% with GCC 2.5.7 without the CPU scheduling flag.
+Neither is a supported profile correction.
+An independent fresh safe one-VA carve confirms **95.91228%** strict text with
+no withheld relocations. Retail's scale loop forms one pointer to the typed
+motion vector at `player_state+0x14c` and loads/stores X at `+0` and Z at
+`+4` through it. The current compiler retains that pointer for X but
+rematerializes the global Z address for its load, zero store, reload, and
+final store, adding four HI16/LO16 pairs. The current C already uses one
+`SVECTOR *motion` for both fields; no different field identity, call, or
+control edge is supported by this address-lifetime residue.
 For magic dispatch `0x8002665c`, the same off-tree CSE control regressed strict
 text from 98.67857% to 96.968254%; its exact `0x80026498` sibling and RODATA
 remained exact. The target-only address rematerializations do not justify a

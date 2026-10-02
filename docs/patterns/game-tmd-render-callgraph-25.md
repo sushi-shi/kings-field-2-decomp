@@ -300,14 +300,15 @@ listing. Retail and candidate still have 11/11 known CFG blocks, 6/6
 branches, all 14 ordered `resource_copy_words` calls, and 16 ordered
 relocations. The retail frame is 1,248 bytes against the candidate's 1,240.
 
-The raw four-byte local at `sp+1088..1091` is reused across FT4 and FT3
+The raw four-byte stack slot at `sp+1088..1091` is reused across FT4 and FT3
 child packets. For the first FT4 child, retail stores generated halfword
 indices to `sp+1088` and `sp+1090`, loads the combined word, and writes it
 to packet offset +24. It then replaces only the low halfword, loads the
 combined word again, and writes offset +28, preserving the prior high
 halfword. Later children store halfword indices to the same slots and read
-their two bytes separately for packet fields. This proves one scratch object's
-value flow; it does not prove the source spelling that kept it in memory.
+their two bytes separately for packet fields. This proves the first child's
+packed-word value flow; stack-slot reuse does not establish whether the
+original C declared one shared object.
 
 An off-tree typed four-byte union reused for both the word stores and every
 later byte-index write preserved the packet values, but GCC folded the view

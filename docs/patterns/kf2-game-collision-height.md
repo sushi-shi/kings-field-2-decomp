@@ -993,3 +993,21 @@ one extra time and `scan_state+9` once, where retail derives the adjacent
 mask byte from its retained `+8` pointer. The raw field, call, and CFG checks
 support address-lifetime differences without a new global or missing field.
 No source or inventory change was justified by this recheck.
+
+A fresh isolated safe carve of the GAME shape dispatcher at `0x8002aaa4`
+materialized 239 relocations with none withheld. Direct strict text is
+**57.5261%** and its 196-byte switch table is **27.551018%**; focused CFG
+has 174/172 retail/probe blocks and 99/98 branches. All 49 table rows still
+have the same thirteen target classes and physical class order. One raw
+branch-count difference is bounded in opcode `0x11`: the retail table enters
+body `+0x20c`, then `move s7,zero` at `+0x210` precedes `bnez s7,+0xb20`
+at `+0x214`. No table row or direct control transfer enters `+0x214`, so
+that branch's taken edge is unreachable from the decoded entry; the probe
+omits it. Retail's persistent `special_floor_found` is separately held at
+`sp+16` and is not reset by this register move. Adding a state reset or a
+forced branch in C would change the model without a source fact. The other
+shape-case ordering and register differences remain WIP.
+The isolated text relocations contain the same 23
+`bss_801c7540` HI16/LO16 pairs and one switch-base pair on both sides;
+retail has 47 local `R_MIPS_26` jumps against 42 in the probe. No external
+data referent is missing from this source claim.

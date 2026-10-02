@@ -7,6 +7,13 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-actor-group-call-tail.md](kf2-game-actor-group-call-tail.md):
+  actor group-effect helper and constructor call topology, with bounded
+  negative source trials.
+- [game-disjoint-wip-sixteen.md](game-disjoint-wip-sixteen.md): fresh strict
+  verdicts for 16 GAME WIPs and 17 exact controls across ten isolated units.
+- [game-vector-math-focused-ten.md](game-vector-math-focused-ten.md): ten
+  focused GAME math/vector units, 38 exact controls and one trajectory WIP.
 - [kf2-game-data-owner-fresh-audit.md](kf2-game-data-owner-fresh-audit.md):
   current GAME initialized bytes, table addends, placement, and BSS/COMMON
   boundaries from isolated owner comparisons.

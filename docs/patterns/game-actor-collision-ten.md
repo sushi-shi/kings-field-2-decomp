@@ -171,6 +171,13 @@ siblings is preferable. None of the ten newly reached exact, and no source
 change from this recheck was retained. Only focused builds and retail queries
 were run.
 
+A fresh isolated profile control for GAME `0x8003fa68` left the C and retail
+call arguments unchanged. GCC 2.6.0 lowered strict text from the configured
+GCC 2.5.7 result of **70.73333%** to **57.02667%** over 300 bytes;
+GCC 2.5.7 with `-fno-cse-skip-blocks` emitted the same **70.73333%** result.
+Retail's four separate `func_8002b9d4` sites and the source's four cases are
+still folded by the configured compiler, so neither profile change is kept.
+
 ## Vertical-state dispatch follow-up (2026-10-02)
 
 Fresh retail disassembly of `0x8003b5d0` checks state `0x20` first, then a

@@ -55,10 +55,10 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
-            break;
+        if (!angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
+            goto done;
         }
-        goto done;
+        goto score_target;
 
     case 4:
     case 18:
@@ -151,6 +151,7 @@ s32 func_80039108(KfTargetCandidate *target, s32 player_distance)
         break;
     }
 
+score_target:
     if (target == actor->target) {
         score = func_800157ac(target->unknown_01[2]);
     } else {

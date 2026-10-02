@@ -1539,7 +1539,7 @@ unsigned actor index at effect tail +0x41; sentinel 0xff or a zero vertex
 count instead yields 16 children, zero progress step, and one remaining
 update. Counts above 32 clamp to 32 and derive a fractional step from the
 original vertex count. The constructor loop emits kind 105, passing the
-effect's rotation, `effect_state.current_index`, actor index, and accumulated
+effect's direction, `effect_state.current_index`, actor index, and accumulated
 fraction as distinct O32 operands; it then enters phase one. Phase one
 waits while updates remain and tail halfword +0x42 is nonzero, then scans
 all 128 effect records for active kind-105 children whose tail +0x40 byte
@@ -2645,6 +2645,97 @@ phase-increment exit. Isolated strict text rises from 85.323770% to
 bytes. The 128 pointer rows/classes/order and 272 named referents remain
 exact.
 
+Kind 5's phase dispatch checks zero, then one, then exits on other values
+at retail body `+0x18f4..+0x1908`. The old C compiled phase zero as
+fallthrough and hoisted actor index from record `+0x41` before that check.
+Retail instead loads the index inside phase zero and again inside each
+child-spawn iteration. An inner phase switch with direct record reads
+reproduces those branch and load sites. The child loop counts down from
+`count - 1` to `-1`; retail decrements its loop counter and compares
+against `-1` around `+0x198c..+0x1994` and `+0x19c8..+0x19dc`.
+That form restores the loop tail and all iterations. Isolated strict text
+rises from 86.077210% to 86.827780%, RODATA is 33.560310%, candidate
+text is 13,808 bytes, and `.rel.text` is 469 versus retail 470. All
+128 pointer rows/classes/order and 272 named referents remain exact.
+
+In kind 5's phase-one magic call, retail truncates the return from
+`effect_magic_power` before passing it as `func_80039c94`'s `u16` power
+argument (`andi a1,v0,0xffff` at body `+0x1b50`). The sibling effect
+callers also store this return in `u16 power`. An explicit conversion in
+the dispatcher restores that instruction. Isolated strict text rises to
+86.878010%; RODATA remains 33.560310%, and all 128 pointer rows,
+classes, physical order, and 272 named referents remain exact.
+
+Kind 105 first updates rotation Z, then tests phase two before loading its
+actor index at record `+0x41`; retail has the phase branch at `+0x1b90`
+and the `lbu` at `+0x1b98`. Moving the C actor-index read into the
+non-phase-two arm restores that order. Isolated strict text reaches
+87.102180%. RODATA is 31.906614% after compiler layout movement; all
+128 pointer rows/classes/physical order and named referents remain exact.
+
+Retail kind 105 places its phase-two scale update after the actor position
+calculation and before the shared collision check (`+0x1c18..+0x1c34`).
+It then dispatches the actor path through explicit phase-zero and phase-one
+tests at `+0x1c60..+0x1c70`; other phases leave without copying the
+position. Source labels for these raw branch targets restore that order and
+the missing nonzero-phase exit. Isolated strict text reaches 88.363950%;
+RODATA is 31.322958%, candidate text is 13,832 bytes, and `.rel.text`
+now has 470 rows versus retail 470. The 128 pointer rows/classes/order
+and 272 named referents remain exact. The unit is still WIP.
+
+Kind 5's phase-one scan uses two ascending 72-byte record pointers and a
+counter from 127 down to `-1` in retail (`+0x1a14..+0x1a9c`). A pointer
+walk with a descending iteration count recovers the same scan topology;
+the pool remains 128 records. With the pointer increment before the counter
+decrement, isolated strict text reaches 88.415900%. RODATA is 28.696499%
+after layout movement; `.rel.text` remains 470/470, and all 128 pointer
+rows/classes/order and 272 named referents remain exact.
+
+The kind-5 child constructor receives record direction at `+0x34`, not
+rotation at `+0x24`: retail computes the fifth-argument pointer with
+`addiu s4,s2,52` at body `+0x1998`. Correcting the C pointer changes the
+candidate immediate from 36 to 52 without disturbing the strict score or
+the exact pointer/referent controls.
+
+Kind 9's repeated `func_80041e94` emission begins with count 11 and
+decrements to `-1` in retail (`+0x1e98`, `+0x1ef4..+0x1efc`). The C loop
+now expresses the same twelve iterations and countdown, raising isolated
+strict text from 88.415900% to 88.596725%; RODATA and exact pointer/
+referent controls are unchanged.
+
+Kind 9 tests the actor byte against `0xfe` first, then `0xff` (`+0x1dcc`
+and `+0x1e18`); the player-camera branch precedes the indexed-actor
+branch. The `0xff` path begins only after the impact-emission block at
+`+0x1f30` and rejoins that block on a nonzero proximity result. The C
+branches and labels now preserve that order and the same three outcomes.
+Isolated strict text rises to 89.237080%; RODATA is 15.953307% after
+layout movement, and candidate text is 13,828 bytes. Its `.rel.text` has
+469 rows versus 470 retail, while all 128 pointer rows/classes/order and
+272 named referents remain exact.
+
+Kind 106 tests phase zero and one before entering its phase-zero body at
+retail `+0x20f8..+0x2110`; the prior C put the phase-one test after that
+body. The explicit phase dispatch restores the retail branch sequence and
+default exit. Isolated strict text reaches 89.479620%; RODATA is
+15.758755%, candidate text is 13,836 bytes, and `.rel.text` returns to
+470/470. All 128 pointer rows/classes/order and 272 named referents
+remain exact.
+
+Kind 8's second collision probe clears direction Z and X when its low
+nibble is zero. Retail stores to record `+0x38` and `+0x34` at body
+`+0x23d4..+0x23d8`; the prior C cleared Y and X. The corrected C emits
+the two exact halfword offsets. Strict text remains 89.479620% until the
+reset block's physical placement is recovered, and the exact pointer/
+referent controls are unchanged.
+
+The zero-nibble kind-8 reset block sits after the parent effect handling
+and immediately before the shared position copy in retail. A branch to
+that later block restores the `beqz` form after the second collision call
+and the paired X/Z stores before the copy. Isolated strict text is
+89.480194%, RODATA rises to 32.782100%, candidate text is 13,832 bytes,
+and `.rel.text` is 469/470; the 128 pointer rows/classes/order and 272
+named referents remain exact.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`
@@ -2728,3 +2819,14 @@ match exactly. Focused CFG remains 116/116 blocks and 22/22 branches.
 An off-tree fifth-slot cursor probe reproduced `sp+88` but lowered the
 focused listing from 39.8% to 39.6%; the stack address alone does not prove
 the historical variadic source spelling, so that probe was discarded.
+
+The constructor allocation-failure path now joins the final record return.
+Retail branches from body `+0x3c` to `+0x13bc`, moves the null record into
+`v0`, then enters the shared epilogue. The former early `return 0` sent the
+probe straight to the epilogue with an immediate zero in the branch delay
+slot. The source `goto finish` recovers the branch target, nop delay slot,
+and 26/26 known return frontiers while preserving 116/116 CFG blocks and
+22/22 branches. Isolated strict `.text` is 88.886090% and `.rodata` is
+32.926830%; the small text decrease from the previous 88.933230% follows
+body-offset shifts. All 123 table rows still form the same 62 target
+classes in order, with seven exact addends. This remains a WIP.

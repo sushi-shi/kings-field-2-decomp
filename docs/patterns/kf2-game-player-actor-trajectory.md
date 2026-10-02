@@ -1857,3 +1857,16 @@ has a verified 100% strict verdict. The cached 474-function report already
 includes these four exact functions, so this is a certificate correction, not
 a new count increase. All 48 ordered relocation rows agree. No source edit
 was needed.
+
+### Player horizontal-move failure result
+
+GAME `player_move_horizontal` at `0x800274ec` stores zero to its stack-held
+result at `0x80027550` and repeats that store at `0x800278e0` on the final
+failed collision path. The source now explicitly resets `result` on that
+path. Focused comparison rises from 61.9% to 62.8%, with candidate CFG
+blocks increasing from 33 to 34 against 35 retail blocks; both have 20
+branches. Isolated strict text rises from 88.631% to **89.01476%**. The
+adjacent `func_8002722c` is unchanged at 99.09091% strict. The remaining
+differences include the result stack slot (`sp+80` retail versus `sp+64`
+candidate) and player-state base-register reuse, so this is a verified
+improvement, not an exact claim.

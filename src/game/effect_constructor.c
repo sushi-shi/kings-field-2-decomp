@@ -31,8 +31,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
     record = effect_pool_find_free();
 
     if (record == 0) {
-        va_end(arguments);
-        return 0;
+        goto finish;
     }
     record->type = type;
     record->kind = kind;
@@ -788,6 +787,7 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         record->type = KF_EFFECT_SLOT_FREE;
         break;
     }
+finish:
     va_end(arguments);
     return record;
 }

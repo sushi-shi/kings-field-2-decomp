@@ -109,3 +109,37 @@ order. Grouping the negation first preserves the bounded value and reproduces
 the local instruction sequence. The latest focused listing remains **91.1%**;
 isolated strict text rises to **97.4674%** on the same 7,668-byte body, with
 unchanged 94.7065% RODATA and exact DATA.
+
+The same action-84 argument setup loads the depth byte, X/Z cell centers,
+width, and height as distinct source values. Separating the two center bytes
+from the final centered coordinates moves the first center load into the
+retail position. The remaining center/width loads still use exchanged
+registers and order, so this does not close the arm. The retained stage has
+**97.4747%** isolated strict text and **91.1%** focused listing; RODATA and
+DATA scores are unchanged.
+
+The raw action-84 call at `0x80037ee4..0x80037f1c` resolves the two bytes of
+`unknown_3a` more strongly than the earlier field guess. Retail puts byte
+`+0x3b` in the width argument (`$a2`) and subtracts half of that width from
+the X center at `+0x39`; byte `+0x3a` is the Z center in the `$a1` delay-slot
+subtraction. The earlier C reversed width and Z center. Correcting those
+roles removes the local register/field mismatch and raises isolated strict
+text to **97.47992%**; focused listing is **91.2%**. The function remains WIP.
+
+Action 225's success path tests the returned occupancy result, then checks its
+one-shot byte before dispatching one of three operations. Retail's first
+branch at the end of this case uses `beqz` toward the clear path. Expressing
+success first in C gives that branch direction while preserving the same
+source behavior. The retained stage rises to **92.4%** focused listing,
+**97.62389%** isolated strict text, and **95.80713%** RODATA; DATA stays exact.
+The candidate still places the clear block and several action-225 joins at
+different offsets, so no exact claim is made.
+
+The action-83 timer-one subdispatch has the same four byte-valued cases in
+retail and C. Retail's `0x80037a34..0x80037a64` comparison layout routes
+values 0/1 to a shared timer store. Moving the existing 0/1 C case labels
+ahead of 2/3 preserves the field writes and calls while removing that local
+comparison-layout difference. A fresh focused build rises from **92.4%** to
+**92.7%**; isolated strict text rises from **97.62389%** to **97.77204%** on
+the same 7,668-byte body. RODATA remains **95.80713%** and DATA **100%**.
+CFG remains 329/328 blocks with 180/180 branches, so this is WIP.

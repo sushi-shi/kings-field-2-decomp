@@ -256,6 +256,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                 continue;
             }
         }
+        result = 0;
         break;
     }
     player_state.unknown_e8 = dx;

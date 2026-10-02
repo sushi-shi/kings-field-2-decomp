@@ -80,7 +80,30 @@ Retail forms an interior cache-height pointer at `0x8002abc0` and reads its
 adjacent height, result, and height-limit words. A typed three-field local
 view of those words was tried against the moved-case source. It reduced
 direct strict `.text` to 48.817307% and `.rodata` to 19.387754%; the view was
-reverted. The cache's complete source ownership remains unresolved.
+reverted. The raw pointer's use is narrower: only the case bodies before
+`0x31` read the three fields through it. The case `0x11` alternate-limit
+store at `0x8002ad24` instead materializes the BSS address directly, as do
+the later `0x31`, `0x40`, `0x18`, and `0x19` bodies. A scoped three-field view
+for the early cases, derived from the same bank base plus its proven
+`0x1800`-byte copy extent and the cache height's `+0xc` offset, follows that
+provenance. Retail separately materializes the bank base for the offset-table
+load and the selected header, then derives the cache pointer from the latter.
+Spelling the two bank references separately in C gives that ordered
+materialization. At retail `0x8002b51c/0x8002b520`, the selected layer's
+unsigned elevation is negated before shifting seven bits. The signed,
+bounded spelling `-(s32)elevation * 0x80` emits the same order; the previous
+`(u32)elevation * -0x80` emitted shift before negation. The isolated strict
+result is now 51.95055% `.text` and
+27.806122% `.rodata`, with 81 candidate versus 95 retail `.rel.text` rows.
+Focused listing similarity is 15.2%; CFG and branch counts remain 174/164
+and 99/97. The candidate and retail each have 49 ordered `R_MIPS_32` table
+rows. Retail's `0x18` lower-bound case reuses its calculated value for the
+result, limit, and tests; using the existing scalar in C removes a duplicate
+candidate BSS load. The complete ordered `.rel.text` data-reference sequence
+now agrees: 24 HI16/LO16 pairs with the same symbol/type order and all 23
+ordered BSS low addends equal. The remaining text-relocation count gap is
+internal `R_MIPS_26` jumps (47 retail, 33 candidate). The cache's complete
+source ownership remains unresolved.
 
 An off-tree post-decrement spelling of the record-count loop preserved
 174/165 CFG blocks and 99/97 branches but lowered focused listing similarity

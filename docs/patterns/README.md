@@ -106,6 +106,9 @@
 - [game-graphics-focused-25.md](game-graphics-focused-25.md): refreshed
   27-function graphics/TMD strict controls, exact primitive-index switch
   data, and the actor cursor correction in resource dispatch.
+- [kf2-game-actor-group-call-topology.md](kf2-game-actor-group-call-topology.md):
+  raw GAME actor-group call multiplicity, isolated source-shape controls, and
+  the related target-scorer tail-merge limit.
 - [game-menu-visual-fourteen.md](game-menu-visual-fourteen.md): current GAME
   visual-menu direct comparison with eleven strict exact functions, three
   bounded frame/codegen WIPs, and exact sprite/window data.

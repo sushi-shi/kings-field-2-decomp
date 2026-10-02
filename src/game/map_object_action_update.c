@@ -403,6 +403,10 @@ void func_80036ed4(void)
             case 1:
                 map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 switch (object->tail.fields.unknown_38) {
+                case 0:
+                case 1:
+                    object->action_timer = 2;
+                    break;
                 case 2:
                     object->action_timer = 2;
                     object->tail.fields.unknown_38 = 3;
@@ -410,10 +414,6 @@ void func_80036ed4(void)
                 case 3:
                     object->action_timer = 3;
                     object->tail.fields.unknown_38 = 2;
-                    break;
-                case 0:
-                case 1:
-                    object->action_timer = 2;
                     break;
                 default:
                     break;
@@ -581,11 +581,13 @@ void func_80036ed4(void)
         case 84:
             switch (object->action_timer) {
             case 0: {
-                s32 width = object->tail.fields.unknown_3a.bytes.low;
-                s32 height = object->tail.spawn_bytes.spawn_sequence.low;
-                s32 source_x = object->tail.fields.unknown_39 - ((width - 1) >> 1);
-                s32 source_z = object->tail.fields.unknown_3a.bytes.high - ((height - 1) >> 1);
                 s32 depth = (-(s32)object->tail.spawn_bytes.spawn_sequence.high) * 128;
+                s32 center_x = object->tail.fields.unknown_39;
+                s32 width = object->tail.fields.unknown_3a.bytes.high;
+                s32 center_z = object->tail.fields.unknown_3a.bytes.low;
+                s32 height = object->tail.spawn_bytes.spawn_sequence.low;
+                s32 source_x = center_x - ((width - 1) >> 1);
+                s32 source_z = center_z - ((height - 1) >> 1);
                 if (func_80036ad8(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
                     s32 pattern_index = template->unknown_0d[1] * 2 +
@@ -951,28 +953,30 @@ void func_80036ed4(void)
             break;
 
         case 225:
-            if (!func_80036ad8(object->position.vx >> 11,
-                                object->position.vz >> 11,
-                                object->tail.fields.unknown_38,
-                                object->tail.fields.unknown_39,
-                                object->position.vy)) {
+            if (func_80036ad8(object->position.vx >> 11,
+                               object->position.vz >> 11,
+                               object->tail.fields.unknown_38,
+                               object->tail.fields.unknown_39,
+                               object->position.vy)) {
+                if (object->extra_40.bytes[0] == 0) {
+                    if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {
+                        object->extra_40.bytes[0] = 1;
+                    }
+                    switch (object->tail.fields.unknown_3a.bytes.low & 0x0f) {
+                    case 0:
+                        ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
+                        break;
+                    case 1:
+                        func_800366fc(object->tail.fields.unknown_3a.bytes.high);
+                        break;
+                    case 2:
+                        event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
+                            object->tail.spawn_bytes.spawn_sequence.low;
+                        break;
+                    }
+                }
+            } else {
                 object->extra_40.bytes[0] = 0;
-            } else if (object->extra_40.bytes[0] == 0) {
-                if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {
-                    object->extra_40.bytes[0] = 1;
-                }
-                switch (object->tail.fields.unknown_3a.bytes.low & 0x0f) {
-                case 0:
-                    ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
-                    break;
-                case 1:
-                    func_800366fc(object->tail.fields.unknown_3a.bytes.high);
-                    break;
-                case 2:
-                    event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
-                        object->tail.spawn_bytes.spawn_sequence.low;
-                    break;
-                }
             }
             break;
 

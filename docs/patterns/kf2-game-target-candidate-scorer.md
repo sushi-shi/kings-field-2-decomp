@@ -513,3 +513,23 @@ including the `rand` gate, are represented by the C. No KF1 analogue or
 retail caller establishes a different condition or field width, so the source
 keeps its defined zero score and the separate retail call placement remains
 an unattributed source/codegen residue.
+
+Later focused follow-up: spelling case 9's failed tolerance as an early exit
+and its success as a jump to the shared score tail keeps that retail call pair
+separate. The source still has the same test, outputs, and callback behavior.
+The pinned object now has the retail 0x4c0-byte text extent, five separately
+ordered angle/tolerance call pairs, and 59/59 CFG blocks; its 36 branches
+remain one short of retail's 37. Isolated direct objdiff rises from the cached
+89.06250% to **93.30592% strict text**, while focused listing is 34.0%.
+All 64 text relocations and 131 switch-table relocations retain their ordered
+kinds and referents. The 131 pointer rows retain all ten target equivalence
+classes, with 120 addends now byte-identical. The eleven remaining addend
+rows belong only to types `2/3/22` (`+0x42c` retail versus `+0x4a0` probe),
+`4/18/23/24/132` (`+0x1a0` versus `+0x19c`), `5/13` (`+0x6c` versus `+0x70`),
+and `9` (`+0x110` versus `+0x114`). Retail branches directly from
+case 9's successful tolerance test to the score tail; the probe still shares
+one post-call Boolean branch with the later indirect callback, so this remains
+WIP. Reversing the C test into a positive branch restored the old 59/58 CFG
+and was discarded. Moving the zero-score initialization into every switch
+arm reached 93.75% strict text but moved most switch-pointer addends, dropping
+`.rodata` similarity to 38.93%; that repetitive source was also discarded.

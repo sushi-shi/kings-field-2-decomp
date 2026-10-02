@@ -971,3 +971,25 @@ Equivalent cursor spellings for cases `0x10` and `0x31` moved the compiled
 increment to the operand base but lowered strict text to 44.157967% and
 44.16346%, respectively. Retail's pointer base does not independently prove
 which equivalent C expression was original; both trials were discarded.
+
+A later six-unit focused and isolated strict recheck covered 25 function
+claims: the 17 collision-height wrappers, mask sweep, two map-cell placement
+functions, three player collision/sound functions, collision response, and
+textured-quad builder. Thirteen remain strict exact and twelve remain WIP at
+the scores recorded above and in their player/render dossiers. The four
+retail-only text-relocation rows in the collision wrappers are two additional
+`bss_801c7540` HI16/LO16 pairs; player collision/sound likewise has two
+additional `player_state` pairs. The mask sweep has two extra candidate
+`render_mask_scan_state` pairs, and collision response has four extra
+candidate `player_state` pairs. Map-cell placement and textured-quad text
+relocation type/symbol sequences are equal at 11/11 and 7/7. The extra retail
+collision BSS pairs have signed-low immediates 6156 and 6208, representing
+owner offsets `+0x1180c` and `+0x11840` (one each); both already occur in
+the candidate. Player collision/sound's two extra retail pairs target
+`player_state+272`, also present in the candidate.
+The four extra collision-response pairs target `player_state+336`, also
+already present in retail. The mask probe instead materializes `scan_state+8`
+one extra time and `scan_state+9` once, where retail derives the adjacent
+mask byte from its retained `+8` pointer. The raw field, call, and CFG checks
+support address-lifetime differences without a new global or missing field.
+No source or inventory change was justified by this recheck.

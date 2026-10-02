@@ -1984,6 +1984,17 @@ five-argument stack-slot case does not establish the original spelling of
 this register-home dispatcher. The control is therefore not retained in
 source; the `va_list` form continues to express the proven call contract.
 
+A second off-tree form anchored a preincrementing argument cursor at
+`&effect_id`; it compiled to the same **96.04124%** function text and
+**90.70248%** RODATA as the earlier first-home control, with all 15 exact
+siblings preserved. The SDK 3.0 `STDARG.H` and the repository's KF1-derived
+`stdarg.h` both anchor after the named argument and emit the retained form.
+Moving the complete case-11 body later in the C switch, hoping to place the
+shared rotation probe before it as retail does at `0x80025dd0..0x80025dec`,
+instead lowered strict text to **34.407215%** and RODATA to **37.809917%**.
+Neither source change is retained: the first-home spelling lacks header
+provenance, and the later case order contradicts the physical retail order.
+
 ### Horizontal mover's extra CFG block
 
 A fresh paired object CFG localizes the 35/34 block difference in
@@ -2000,3 +2011,17 @@ isolated strict objdiff confirms **89.85240%** for this function and
 `player_state` HI16/LO16 pairs are rematerializations of already referenced
 fields. There is no evidenced missing source condition, field, or call, so
 the C is unchanged.
+
+An off-tree `-fno-cse-follow-jumps` control for the same GCC 2.5.7 unit
+raises the mover's direct strict text from 89.85240% to 90.66421% while its
+selector sibling remains 99.09091%. It increases the mover's candidate body
+from 1036 to 1044 bytes against 1084 retail bytes and restores two of the
+eleven missing `player_state` HI16/LO16 pairs (12 candidate relocation rows
+versus 8 with the configured profile and 30 retail). The CFG remains 35/34.
+This flag does not explain the remaining address lifetimes or the slide-flag
+block, and it was not adopted as a unit compiler profile. A disjoint
+three-unit control also regresses the neighboring non-exact player functions:
+`0x800279cc` 97.09642% to 86.13499%, `0x80027f78` 95.91228% to
+92.84795%, and `0x8002985c` 99.26569% to 98.67425%. Their 18 exact
+siblings remain exact, but the mixed WIP response rules out a shared
+compiler-flag correction for this player batch.

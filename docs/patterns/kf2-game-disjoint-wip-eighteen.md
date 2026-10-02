@@ -40,3 +40,10 @@ title-byte sites where retail has `lb`. A typed signed view lowered it to
 reader remains untouched. The floor-item profile and K&R negative controls
 are recorded in [the collision campaign](game-collision-mask-ten.md). No
 artificial frame storage, volatile carrier, or register-steering edit was kept.
+
+A fresh five-function isolated card-unit control confirms that changing the
+`encoded` byte destinations to `s8 *` leaves the reader at 85.15625% strict;
+using a signed-byte union instead lowers it to 69.575%. Explicit
+`-fsigned-char` and `-funsigned-char` compiler controls also leave all five
+function scores unchanged, including the exact format wrapper. These controls
+do not explain retail's `lb` pair or justify changing the shared card header.

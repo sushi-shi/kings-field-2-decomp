@@ -741,8 +741,8 @@ The following are final verdicts for this pass; they are not closure claims.
 
 | Function | Strict text | Retail evidence and remaining difference |
 | --- | ---: | --- |
-| `func_8002ddb4` | 97.434494% | 44-block packet walker; target has two separate positive-depth branches that the candidate folds. Eleven proven calls and the unit's 169 text relocation rows are retained. |
-| `func_8002e4dc` | 97.38307% | Paired 44-block packet walker with the same two-branch gap; eleven proven calls and 169 unit text relocation rows. |
+| `func_8002ddb4` | 97.434494% | 44-block packet walker; both sides have 28 branches, but the FT3/GT3 positive-depth exits occupy different positions. Eleven proven calls and the unit's 169 text relocation rows are retained. |
+| `func_8002e4dc` | 97.38307% | Paired 44-block packet walker with the same depth-exit placement residue; eleven proven calls and 169 unit text relocation rows. |
 | `func_8002ebe0` | 95.27945% | 26-block blended packet walker; target checks fixed depth at the packet tail, while the candidate reuses an earlier guard. Twelve proven calls. |
 | `func_8002ff5c` | 55.263805% | Prepared packet copier with all fourteen proven copy calls, eleven CFG blocks, and sixteen text relocations; the unresolved retail frame is 1248 bytes versus 1240 candidate bytes. |
 | `render_map_cell_object` | 96.521736% | Eleven CFG blocks and sixteen proven calls; only the independent prologue load/address order differs before `SetRotMatrix`. Its three unit siblings remain exact. |
@@ -753,8 +753,8 @@ The following are final verdicts for this pass; they are not closure claims.
 | `func_800349bc` | 96.31408% | Four-quad menu fade with fourteen CFG blocks and 96 unit text relocations; target spills the pad state in a 72-byte frame, candidate uses a register and 64 bytes. Two siblings and eight initialized bytes stay exact. |
 | `func_80036e24` | 98.86364% | Five-block frame/CD service loop; all five calls and text relocations agree, with a cyclic assignment of three saved argument registers. |
 
-The packet walkers' branch-count differences remain the best structural
-questions, but current C already spells the observed depth checks; earlier
+The blended packet walker's one-branch difference remains a structural
+question, but current C already spells the observed depth check; earlier
 equivalent branch and scope probes did not establish the original source
 shape. The other rows supplied no new field, call, constant, or referent
 correction. No source, identity, or relocation row was changed in this pass.

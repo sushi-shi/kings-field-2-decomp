@@ -58,3 +58,90 @@ layout check and retail BSS symbol. The pinned GCC emits it as a 32-byte
 COMMON allocation; a focused assembly/object audit shows that the extra four
 bytes are allocation rounding, not evidence for another C field. Its shared
 type remains unchanged.
+
+## Current-source event and effect eleven-function follow-up
+
+A further isolated strict/focused pass covered five event/message functions
+and six connected actor/effect functions. The current sources preserve the
+reviewed calls, byte and halfword fields, and data identities. The following
+are final bounded verdicts for this pass; CFG and branch counts are
+retail/probe, and indirect jumps remain unresolved where noted.
+
+| GAME address | Strict text | CFG / branches | Verdict |
+| --- | ---: | --- | --- |
+| `0x8003a318` | 99.86911% | 26/26; 13/13 | Two incoming stack values use exchanged volatile registers; five visible instruction differences follow that assignment. |
+| `0x8003a614` | 96.91011% | 6/6; 3/3 | Damage fields and four calls agree; retail rematerializes the player-state address where the probe retains a base. Its sibling `0x8003a778` is exact. |
+| `0x8003c3e0` | 99.64539% | 23/23; 11/11 | Yaw-normalization intermediates use exchanged volatile registers; three group-position siblings remain exact. |
+| `0x8003c614` | 86.041916% | 45/45; 15/15 | Retail retains eleven position-helper and nine constructor call sites; the probe merges them to seven and ten. Its 123-row, 19-class table identity is intact, but code-layout addends differ. The indirect table jump limits CFG reachability. |
+| `0x8003fa68` | 70.73333% | 14/15; 6/6 | Four retail collision calls with distinct modes fold to one compiled call despite four source expressions. No forced side effect was added. |
+| `0x800460a0` | 99.268295% | 6/6; 2/2 | Animation phase and two calls agree; step/half-step saved-register assignment remains. |
+| `0x800461a0` | 99.12676% | 14/14; 5/5 | Marker cursor setup exchanges argument registers; its marker leaf sibling is exact. |
+| `0x800462bc` | 98.68132% | 46/46; 21/21 | Event byte stream and 57 text referents agree; one load-delay `nop` shifts a 64-byte jump-table addend. The indirect jump is unresolved. |
+| `0x800475d8` | 99.166664% | 55/54; 29/29 | The probe schedules `remove_object = 0` into a branch delay slot rather than retail's fallthrough block; 62 text referents agree. |
+| `0x80047c98` | 99.81618% | 85/85; 55/55 | World event calls and 72 referents agree; rotation and constant-one saved registers exchange roles. |
+| `0x800489ac` | 98.82883% | 23/23; 7/7 | Restore interpreter exchanges actor/sentinel argument registers; its 64-byte jump table is exact. The indirect jump is unresolved. |
+
+The unchanged `game.effect_update` ten functions and
+`game.effect_spawn_motion` two functions were reconfirmed strict 100% and
+focused `SAME`; these are existing exact controls, not new closures. None of
+the WIP differences above establishes a missing field, call, or table row, so
+no C or curated metadata was changed. This pass used focused quick builds
+and isolated strict comparisons only.
+
+## Live structural-gap recheck
+
+`game.event_command_dispatch` is already strict exact in the current tree:
+its 3,156-byte text, five eight-byte initialized rows, 40-byte `.data`, and
+140-byte switch table all compare at 100%. The older event-command WIP prose
+predates that closure and is not a new exact claim. An independent check of
+`game.player_collision_bounds` also confirms its 172-byte function is exact.
+
+Three apparent GAME control gaps remain source-stable after fresh retail and
+focused inspection. `0x8003fa68` is 70.73333% strict (14/15 blocks): retail
+uses four separate collision calls with modes `0xa1`, `0x31`, `0xb1`, and 1,
+while GCC merges the four ordinary C switch arms into one call. The modes,
+call arguments, cooldown gate, and case domain agree. `0x800475d8` is
+99.166664% strict (55/54 blocks): the sole extra retail fallthrough block
+holds a local zero assignment that GCC puts in the preceding branch delay
+slot; all 62 ordered referent identities agree. `0x8002c670` is 91.624245%
+strict (11/11 blocks, four branches): all 26 direct calls and its 28-byte
+shape table agree, while the probe forms two scan-state flag stores from
+global address pairs rather than the saved `render_mask_scan_state+0x0c`
+pointer and schedules loop-field updates differently. Earlier natural
+shared-pointer trials regressed the focused object. Two fresh off-tree
+spelling controls also regressed strict text from 91.624245%: a shared typed
+state pointer for setup fields gave 86.79394%, and the same pointer for only
+the two layer-mask flags gave 88.935356%. These observations do
+not justify duplicate calls, artificial locals, or raw-offset field views;
+no source or metadata edit was retained. Only focused quick builds and
+isolated strict comparisons were run.
+
+The released player collision controller `0x800279cc` was also rechecked at
+**98.23967%** strict with 70/70 CFG blocks, 37/37 branches, and the two
+adjacent collision-sound helpers exact. Retail reserves 72 stack bytes to
+the probe's 64 and rematerializes the same `player_state+0x110` landing-bob
+address twice where the probe carries a base pointer. The halfword read and
+write, twelve direct calls, and branch domain remain aligned. No new field
+access or source edit follows from those two relocation pairs.
+
+The actor fixed-curve recipient `0x80039c94` now compares at **98.11751%**
+strict (1,668 retail versus 1,660 probe bytes), with 72/72 CFG blocks and
+46/46 branches. Its prior 72/71 CFG note predates the committed source
+correction; the adjacent 128-byte curve helper remains exact. All 36
+ordered relocation classes and external targets agree; only five local
+jump addends shift with code layout. This includes eight direct curve calls
+and the indirect slot-18 callback. The first remaining differences
+assign incoming halfwords and the aggregate to other saved registers;
+the speed-cap tail also keeps its value in a different register. The
+callback target is still dynamic and unproved, but its observed argument
+slots are modeled. No type, call, or field correction is supported here.
+
+The neighboring actor vertical-motion controller `0x8003b5d0` remains
+**96.42041%** strict and 94.3% focused, with 40/39 blocks and 21/21
+branches; its three preceding functions are exact. Retail's state-`0x10`
+settle arm jumps through a shared state-byte reset, while GCC places that
+zero store in a direct return jump's delay slot. The state-`0x20` arm also
+orders its speed store before a separate cache load where the probe
+schedules those independent operations differently. The previously tried
+shared-reset label regressed both strict and focused results, so the
+retail-backed state branches and field widths remain unchanged.

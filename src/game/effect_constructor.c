@@ -701,10 +701,10 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
             candidate_position.vz = record->position.vz;
         }
         record->position.vx = candidate_position.vx - 2730;
-        record->position.vy -= 16384;
         record->position.vz = candidate_position.vz - 2730;
         record->direction.vx = 100;
         record->direction.vz = 100;
+        record->position.vy -= 16384;
         record->direction.vy = 600;
         record->scale_z = 0x4000;
         record->scale_y = 0x4000;

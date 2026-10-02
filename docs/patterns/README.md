@@ -50,6 +50,10 @@
 - [kf2-game-actor-targets.md](kf2-game-actor-targets.md): GAME actor, animation,
   map, rendering, and menu matching verdicts with strict exact and WIP
   boundaries recorded by function.
+- [kf2-game-actor-player-sixteen-verdict.md](kf2-game-actor-player-sixteen-verdict.md):
+  sixteen actor/player/collision verdicts, eleven exact controls and five WIPs.
+- [kf2-game-actor-target-seventeen-exact.md](kf2-game-actor-target-seventeen-exact.md):
+  seventeen already exact actor target, home, math, pool, and init controls.
 - [kf2-game-player-actor-trajectory.md](kf2-game-player-actor-trajectory.md):
   player damage and actor motion verdicts, exact trajectory and collision
   helpers, and contiguous unit consolidation.

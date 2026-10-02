@@ -1,5 +1,13 @@
 # SDK data ownership
 
+Some GAME addresses in this initial ownership snapshot are stale against the
+current retail image and curated inventory. For example, current `_SsInit`
+uses `0x8009a8a0` for its `0x800`-byte callback array, and current
+`SsSetTableSize` uses `0x801d9588` for its score-pointer table, rather than
+the GAME addresses listed below. Recheck any address against current raw
+instructions before using this historical note as a placement claim; see
+`kf2-game-data-owner-fresh-audit.md` for the bounded resource-arena audit.
+
 This campaign starts from 1,036 unresolved ownership entries after the first
 LIBSPU table cleanup. Ownership evidence is separate from recovering an original
 private symbol spelling, exact historical SDK revision, or executable placement.

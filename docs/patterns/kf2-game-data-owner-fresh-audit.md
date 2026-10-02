@@ -104,3 +104,102 @@ This control changed no shared profile or source.
 The audit produced no safe new initializer or TU-owner edit. Keep the table
 referents and data identities until the original source ownership or a
 code-layout correction is independently supported.
+
+## Resource arena boundary at `0x8009b0a0`
+
+Current GAME retail `_SsInit` at `0x80050c74` constructs `0x8009a8a0` and
+clears 32 rows of 16 words. This is the `0x800`-byte LIBSND `MarkCallback`
+COMMON array, whose final written word is at `0x8009b09c`; the next byte is
+the resource arena base `0x8009b0a0`. The curated `audio_sequence_table`
+ends at `0x8009a7f8`, before the SDK callback array. The older address
+examples for this array and other SDK globals in `sdk-data-ownership.md`
+do not describe the current GAME image. Current `SsSetTableSize` constructs
+its score-pointer table at `0x801d9588`, not the older `0x800a06e0` claim.
+Those stale examples cannot establish an SDK object overlapping the arena.
+
+Retail `game_main_loop` at `0x8001389c` passes `0x8009b0a0` and `0x5f000`
+to `memory_arena_initialize_blocks`. Its exact body writes the first block
+header at the base and the terminal `0xff` byte at `0x800fa09c`, establishing
+the runtime extent `[0x8009b0a0, 0x800fa0a0)`. Resource startup at
+`0x80015d64` reads an archive into the same base before initialization, and
+`resource_tmd_queue_read` at `0x80032200` allocates from it later. All three
+sites form the base with `lui 0x800a` followed by signed `addiu -0x4f60`.
+An adjacent HI/low-opcode scan of current GAME code found these three direct
+base constructors and no direct interior constructor; this scan does not rule
+out derived or nonadjacent references. The first separately observed copy
+destination after the arena is `0x800fa0d0`, 0x30 bytes beyond its end, and
+`display_primitive_memory` starts at `0x800fba58`.
+
+The array-end adjacency and exact allocator capacity support a reserved RAM
+span, but do not distinguish a declared game BSS array from a linker boundary
+or another allocation mechanism. No current `data_identities.tsv` row defines
+the arena, and its three raw base pairs have no `relocs.tsv` rows. The current
+fixed-literal C macro emits `lui/ori` instead of retail's signed-low pair.
+Without a defining object, complete source extent, and owning TU, this audit
+does not introduce an overlapping global, bind an extern, or alter metadata.
+
+The startup copy destination `0x801d8d88` has a similarly suggestive but
+incomplete boundary. Curated `bss_801c7540` ends at `0x801d8d84`, four bytes
+before it. Current retail `SsSetTableSize` forms its separate LIBSND
+`_ss_score` table base at `0x801d9588`, exactly `0x800` bytes beyond the copy
+destination. Only the startup `0x80015ea4/a8` pair directly constructs an
+address in the intervening span in the adjacent-pair scan. This supports a
+candidate separate copy buffer, but the length-prefixed archive record's
+maximum size and original definition are unavailable; the `0x800` gap is not
+promoted to a proved C array extent.
+
+The second embedded TMD archive copied by resource startup uses destination
+`0x800855a0`. Its two direct constructors are at `0x80015f94` and
+`0x80015fac`; the next address found by the adjacent-pair scan is a vendored
+SDK datum at `0x8009a5a0`, exactly `0x15000` bytes later. The scan
+found no direct interior constructor. This is a strong candidate maximum
+workspace span, but the variable archive record length and original owner
+remain unproved. `asset_registry_load_tmd_archive` stores pointers into both
+copied archives, so both workspaces must remain live after startup. The first
+TMD destination at `0x800fa0d0` lacks an equally clean end boundary: its
+next directly referenced SDK storage is
+`0x800fba38`, `0x1968` bytes later, before `display_primitive_memory`.
+
+## Audio workspace boundaries
+
+Retail GAME `func_800139c4` stores `0x80198640` in
+`audio_state.sequence_buffer`. The next address found by the adjacent-pair
+scan is `0x8019b640`, exactly `0x3000` bytes later, used by exact vendored
+LIBCD/SYS `CdReadCallback` as its callback word. LIBSND/VMANAGER references
+start at `0x80198638`, eight bytes before the sequence pointer. The KF1
+game audio source independently requests a `0x3000`-byte sequence allocation.
+Together these support a strong `0x3000` candidate span, while the GAME
+archive entry's maximum size, original allocation class, and defining TU
+remain unproved.
+
+The same startup routine seeds seven VAB slot pointers at `0x80165a68` in
+`0x1000` increments, then overrides slot 5 with `0x80194e30` and slot 6
+with `0x80164a68`. The retained slots 0..4 span
+`[0x80165a68, 0x8016aa68)`, and the slot-6 pointer sits in the preceding
+`0x1000`-byte interval. Current vendored LIBSND `_SsInit` directly touches
+`0x8016aa68`, exactly after those six contiguous chunks. The slot-5
+override equals the end of `game_graphics_runtime` and lies `0x2800` bytes
+before `audio_state`. The separate transition TMD workspace pointer
+`0x8012da68` starts `0x10` bytes after the complete
+`display_primitive_memory` extent; vendored SDK code directly addresses the
+intervening `0x8012da58` and `0x8012da60` words. The TMD pointer lies
+exactly `0x37000` bytes before the slot-6 pointer, with no directly
+constructed interior address in the adjacent-pair scan. These are useful
+non-overlap and capacity bounds; they do not prove whether the six chunks
+share one C object, whether slot 5 owns the entire `0x2800` interval, or
+whether the TMD workspace fills its `0x37000`
+gap. The defining source modules also remain open. Literal workspace pointers
+and their unbound relocation targets remain unchanged.
+
+The address-gap inventory is a triage aid, not a set of new C array claims:
+
+| GAME base and use | Next boundary or referenced address | Gap | Status |
+| --- | --- | ---: | --- |
+| `0x800855a0` second TMD copy | `0x8009a5a0` SDK datum | `0x15000` | Candidate maximum |
+| `0x8009b0a0` resource arena | `0x800fa0a0` allocator end | `0x5f000` | Proven runtime span; source owner open |
+| `0x800fa0d0` first TMD copy | `0x800fba38` SDK datum | `0x1968` | Candidate maximum |
+| `0x8012da68` transition TMD | `0x80164a68` VAB slot 6 | `0x37000` | Candidate maximum |
+| `0x80164a68` slot 6 plus slots 0..4 | `0x8016aa68` SDK datum | `0x6000` | Six observed `0x1000` chunks; object split open |
+| `0x80194e30` VAB slot 5 | `0x80197630` audio state | `0x2800` | Candidate maximum |
+| `0x80198640` sequence data | `0x8019b640` SDK datum | `0x3000` | Candidate maximum; KF1 size agrees |
+| `0x801d8d88` startup copy | `0x801d9588` SDK score table | `0x800` | Candidate maximum |

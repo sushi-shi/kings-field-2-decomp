@@ -301,3 +301,37 @@ residue in the case-4 interval rather than a missing switch identity. No
 source or profile change follows from this comparison alone.
 An off-tree explicit `goto` after case 4 compiled byte-identically to the
 existing fallthrough, so it does not account for the shared-tail difference.
+
+## Fresh renderer, constructor, and VAB-service controls
+
+The GAME world-model renderer at `0x80031850` retains its 40-block CFG,
+16 branches, 68 ordered referents, and proven call set. A fresh focused
+build first differs in saved-register assignments for the scale pointer,
+lighting blend, and graphics-runtime base; later instruction scheduling
+around light/color matrix setup differs, but the typed source has the same
+field reads and branch outcomes. The animated-object renderer at
+`0x80031d8c` likewise retains all 20 outgoing references and seven CFG
+blocks. Its first focused difference is one extra retail saved register:
+retail holds the phase argument in `$s7`, while the probe reloads the same
+caller stack slot at the final draw call. Neither function has a supported
+new local, referent, or control-flow correction, so both remain WIP.
+
+The effect constructor's kind-114 arm has a concrete retail store schedule:
+position X, direction X/Z, position Y, direction Y, three scales, then
+position Z in the return jump's delay slot. Moving all stores into that
+order lowered focused listing similarity from 88.3% to 88.1% and moved the
+branch target/addend tail, so that trial was reverted. Moving the two
+direction-X/Z stores before position Y while retaining the existing
+position-Z store raised focused similarity to 89.0%. Against a fresh safe
+delink of the 5,092-byte retail unit, isolated strict text rose from
+97.58131% to 98.05656% at the same 5,084-byte candidate size; data and
+rodata results were unchanged. The narrower source order is retained, but
+the final position-Z schedule remains WIP; no new temporary is justified.
+
+In `cd_request_service_vab` at `0x800144b8`, retail keeps `1` in `$s3` for
+the phase and completion-state stores and materializes `-1` inside the VAB
+retry loop. The candidate instead keeps `-1` in `$s3` and materializes `1`
+at the stores. Rewriting the same retry behavior as a `do` loop yielded an
+identical focused listing, including all 15 exact siblings in
+`game.audio_runtime`; the original loop spelling was restored. Its calls,
+11-block CFG, and validated data referents still agree with retail.

@@ -3075,6 +3075,82 @@ choices for the same actor pointer. The 3,476 retail instructions versus
 3,444 candidate instructions differ mainly in `move` and `nop` counts,
 which this audit does not attribute to a particular compiler mechanism.
 
+## Kind-111 actor field order
+
+A fresh isolated comparison of the first 30 kind-table indices (29, 31, 48,
+30, 47, 7, 49, 13, 32, 23, 4, 34, 35, 25, 42, 115, 113, 46, 45, 116,
+117, 40, 39, 38, 50, 28, 1, 26, 27, 111) confirms 23 physical handler
+regions. Each region has the same retail and candidate direct `jal` count.
+Their entry addends first diverge by eight bytes after the shared kind-13/32
+tail and by a further sixteen bytes after kind 46, both previously documented
+code-sharing differences. The kind-111 region itself was 284 retail bytes
+against 288 candidate bytes, with three direct calls on each side.
+
+In kind 111's actor-backed branch, retail loads position X at actor `+0x2c`,
+then unsigned spread at `+0x1c` while X is in its load delay, stores X, then
+loads and stores position Z (`+0x34`) before Y (`+0x30`). The previous source
+copied X/Y/Z and only then read spread; the candidate inserted a `nop` after
+the X load. Moving the existing spread read before the position assignments
+and spelling the observed X/Z/Y order yields the retail field-opcode sequence
+through the subsequent eight-byte direction copy. It removes that extra
+`nop`, so the candidate region is also 284 bytes. The source still expresses
+the same fields and calls, with no new alias or register carrier.
+
+Focused quick build keeps the dispatcher WIP at 446 retail versus 448
+candidate CFG blocks and 217/217 branches. Fresh isolated strict text rises
+from **94.842710%** to **95.004300%** (13,936 retail / 13,804 candidate bytes).
+RODATA moves from 35.214010% to **29.377432%** because later handler addends
+shift; all 128 ordered pointer rows retain the same target-equivalence
+classes and all 470 text relocation type/symbol rows remain in order. This
+local field-order correction does not claim an exact dispatcher.
+
+## Kind-8 direction-speed reads
+
+The next 25 physical handler regions, from kind 0 through kind 15, retain
+the same direct `jal` count in retail and candidate. In kind 8 phase one,
+retail reloads the signed direction-Z halfword at record `+0x38` after
+storing the newly interpolated position X: `lh` at body `+0x2488` feeds
+the X multiplication, and a second `lh` at `+0x24b0` feeds Z. The previous
+source cached that halfword in `speed`, causing the probe to reuse the first
+read for both products. Reading the typed field separately at the two
+expressions restores both `lh` instructions at the same points relative to
+the call and X store. No width, call argument, or computed position changes.
+
+Focused quick build still reports 446/448 CFG blocks and 217/217 branches.
+Isolated strict text moves from 95.004300% to **95.140360%** (13,936 retail /
+13,808 candidate bytes), and RODATA moves from 29.377432% to **35.116730%**.
+The 470 ordered text relocation type/symbol rows are unchanged, and the
+128 pointer rows retain the same target classes in the same order. The
+dispatcher remains WIP.
+
+## Kind-11/54 rotation field
+
+After the kind-11/54 constructor call, retail jumps to a shared tail that
+loads, adds 64 to, and stores the rotation-Y halfword at record `+0x26`.
+The previous source incremented rotation Z at `+0x28`; the probe loaded
+that different halfword and joined a separate store tail. Changing the
+source to `record->rotation.vy += 64` makes its raw load/add/store sequence
+and halfword offset agree with retail. It also shortens the candidate by
+four bytes through tail sharing, without changing the constructor call.
+
+The focused build retains 446/448 CFG blocks and 217/217 branches. Isolated
+strict text rises from 95.140360% to **95.181404%** (13,936 retail / 13,804
+candidate bytes); RODATA moves from 35.116730% to **31.614786%** as later
+handler addends shift. All 128 pointer rows still have the retail target
+equivalence classes in order, and all 470 text relocation type/symbol rows
+remain aligned. The dispatcher is WIP.
+
+The complete 128-row kind table has 64 distinct target classes. In sorted
+physical order, all 62 interior regions between nonzero table targets have
+the same direct-call count in retail and the current candidate; both whole
+objects contain 206 `jal` instructions and 217 conditional branches. Only
+10 pointer rows currently have identical target addends. The shifts are
+mainly from shared-tail layout: kind 13/32 removes an eight-byte local
+tail in the candidate, kind 46 shares a collision-cache load, and kind 20
+joins an argument-setup tail. The region audit separates these physical
+placements from field mismatches such as kind 11/54; equal call counts do
+not establish exact CFG or instruction scheduling.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

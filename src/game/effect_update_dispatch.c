@@ -553,11 +553,11 @@ void effect_update_dispatch(void)
             const KfActor *actor =
                 &actor_state.actors[(s16)*(u16 *)&record->unknown_3c[4]];
 
-            spawn_position.vx = actor->position.vx;
-            spawn_position.vy = actor->position.vy;
-            spawn_position.vz = actor->position.vz;
-            spawn_direction = *(const SVECTOR *)&actor->unknown_50;
             spread = actor->unknown_1c;
+            spawn_position.vx = actor->position.vx;
+            spawn_position.vz = actor->position.vz;
+            spawn_position.vy = actor->position.vy;
+            spawn_direction = *(const SVECTOR *)&actor->unknown_50;
         }
         spawn_position.vx += ((rand() * spread) >> 14) - spread;
         spawn_position.vy -= 2000;
@@ -731,7 +731,7 @@ void effect_update_dispatch(void)
         random_direction.vy = -(rand() >> 7) - 128;
         func_80040308(10, 0, 101, &record->position, &random_direction,
                        0xc00, -128, 15, 18, 10);
-        record->rotation.vz += 64;
+        record->rotation.vy += 64;
         break;
     }
     case 51:
@@ -1251,14 +1251,12 @@ void effect_update_dispatch(void)
             KfEffectRecord *parent =
                 &effect_state.records[record->unknown_3c[4]];
             struct KfVecXZi forward;
-            s32 speed;
 
             angle_to_forward_xz((s16)record->direction.vx, &forward);
-            speed = (s16)record->direction.vz;
             record->position.vx = parent->position.vx +
-                                  ((speed * forward.x) >> 12);
+                                  (((s16)record->direction.vz * forward.x) >> 12);
             record->position.vz = parent->position.vz +
-                                  ((speed * forward.z) >> 12);
+                                  (((s16)record->direction.vz * forward.z) >> 12);
             record->direction.vz = func_8001584c(
                 (s16)record->direction.vy, 0, (s16)record->scale_z);
             record->scale_y = ((u32)(rsin((s16)record->scale_z >> 1) * 25)) >> 5;

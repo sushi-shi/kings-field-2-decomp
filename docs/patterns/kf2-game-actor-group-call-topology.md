@@ -79,3 +79,17 @@ whereas the current compiler merges their identical argument path. Its
 131-row switch table preserves all ten target classes at all indices;
 offset differences track code layout. No table addend or field was changed
 to compensate for this source/codegen residue.
+
+A fresh focused build and isolated strict comparison of the retained source
+give 86.041916% `.text` and 37.906506% RODATA, with 45/45 CFG blocks and
+15/15 branches. The current 91 retail versus 89 candidate text-relocation
+rows differ only in call/control multiplicity: retail has four more
+`func_8003c3e0` calls and one fewer `func_80040308` call and internal jump.
+Both objects retain seven `player_state` HI16/LO16 pairs and four
+`actor_state` pairs, so the two-row total difference is not a missing data
+referent. The 123 ordered switch pointers still retain their 19 target
+classes. No source or relocation-inventory edit follows from this check.
+An off-tree GCC 2.5.7 O1 control still emits only seven position-helper
+calls; it emits nine constructors but lowers strict text to 76.199104% and
+RODATA to 39.430893%. Lowering optimization alone does not recover retail's
+eleven position-helper call sites.

@@ -97,3 +97,38 @@ HI16/LO16 address pairs. The exact camera-turn caller invokes horizontal
 movement at three proven retail sites; the menu-location helper and exact
 player action controller reach the selector at three sites in total.
 No new exact claim or C/config change resulted from this pass.
+
+## Current player session and movement continuation (2026-10-02)
+
+The older `player_warp_to_floor_entry` `0x80017cf8` lead is not a current KF2
+GAME claim: neither that identity nor VA occurs in the current source,
+function identities or unit manifest. A fresh isolated manifest-profile
+comparison instead covers 29 connected current claims in the player bounds,
+distance, reset-view, core-run and state/equipment units. Twenty-eight are
+already strict exact:
+
+| Unit | Strict-exact GAME addresses | WIP |
+| --- | --- | --- |
+| `player_collision_bounds` | `0x80023384` | None |
+| `player_distance_margin` | `0x80023430` | None |
+| `player_reset_view` | `0x80023484` | None |
+| `player_core_run` | `0x80023570`, `0x8002360c`, `0x80023814`, `0x80023868`, `0x80023984`, `0x80024034`, `0x800240cc`, `0x80024164`, `0x80024384`, `0x80024448` | None |
+| `player_state_equipment` | `0x80024ed4`, `0x80024f4c`, `0x80025004`, `0x80025184`, `0x800251f0`, `0x80025234`, `0x800252e4`, `0x800253ac`, `0x800253fc`, `0x8002540c`, `0x80025434`, `0x8002545c`, `0x8002569c`, `0x80025754`, `0x80025878` | `0x80025a18` **98.02234%** |
+
+Focused `game.player_state_equipment` confirms all 15 siblings SAME and
+`0x80025a18` at 99/99 CFG blocks and 31/31 branches. The already-reviewed
+variadic argument home and first successor after a shared probe remain WIP;
+the 53 switch rows preserve all 31 destination classes. A second disjoint
+player selection/view control adds twelve current claims: strict exact
+`0x800247e4`, `0x80026330`, `0x80026464`, `0x80026498`, `0x80028224`,
+`0x8002851c`, and `0x80028998`; WIP `0x8002665c` **98.67857%**,
+`0x8002722c` **99.09091%**, `0x800274ec` **89.85240%**,
+`0x80027f78` **95.91228%**, and `0x8002897c` **88.57143%**. The focused
+magic updater retains 114/114 CFG blocks and 68/68 branches with two
+`player_state` base rematerialization pairs missing from the probe. The
+magic selector has 33/33 blocks and 16/16 branches with an eight-byte retail
+leaf frame; horizontal movement has 35/34 blocks and 20/20 branches with a
+previously documented redundant zero path. The collision response and
+interval helper retain their documented address-lifetime/register residues.
+No new source fact or exact closure was found; all C and identity files remain
+unchanged.

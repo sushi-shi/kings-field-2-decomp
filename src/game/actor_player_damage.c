@@ -4,10 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
-                          u16 value4, u16 value5, u16 value6, u16 value7,
-                          u16 value8, u16 value9, u16 value10,
-                          const VECTOR *position);
 extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
                           u16 magic_08, u16 magic_0a, u16 magic_0c,
                           u16 magic_0e, u16 magic_10, u16 magic_12,

@@ -7,6 +7,9 @@
 
 ## King's Field II (SLPS-00069)
 
+- [kf2-game-actor-animation-phase-29.md](kf2-game-actor-animation-phase-29.md):
+  strict 29-function actor animation, phase, motion, and group-position
+  verdicts with blocking-phase caller evidence.
 - [kf2-game-event-save-restore-20.md](kf2-game-event-save-restore-20.md):
   strict per-function verdicts for 20 connected GAME event stream, state,
   collision, and save-caller functions.

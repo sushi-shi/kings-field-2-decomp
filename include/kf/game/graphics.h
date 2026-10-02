@@ -152,6 +152,7 @@ void func_800311b0(s32 x, s32 y, s32 right, s32 bottom,
                    u16 clut, u8 red, u8 green, u8 blue, s32 depth);
 void func_800312f4(void);
 void func_80031384(void);
+void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 
 typedef struct KfGraphicsRuntimeGame {
     KfDisplayState display_state;

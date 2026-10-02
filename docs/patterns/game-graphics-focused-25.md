@@ -431,3 +431,43 @@ value in a register rather than producing the retail stack lifetime; its
 strict text fell from 92.038376% to 91.614075%. The exact enqueue sibling
 and clipped-fan score stayed unchanged. The trial was discarded; a forced
 stack carrier would not be a supported source correction.
+
+## Fresh map packet and display-state cross-check
+
+Narrow safe targets and isolated strict objects were regenerated for a
+25-claim map/packet graph and a 29-claim display/notification graph using
+current GAME unit identities. The map/packet graph has **18 exact and
+seven WIP** claims; exact controls include `render_enqueue_map`, three
+`render_map_cell` siblings, two sliding panels, two color-byte helpers,
+two collision-channel helpers, both notification quads, all three
+`notify_enqueue` claims, both frame helpers, and `menu_model_render`.
+Its 540-byte map-cell DATA, 32-byte resource matrix DATA, 126-byte
+notification DATA, and four-byte frame DATA are exact. Most claims were
+already covered in the earlier packet campaign; the collision-channel
+helpers are additional fresh exact controls.
+
+The seven map/packet WIPs retain their prior direct strict values:
+`0x8002f5b0` 95.833336%, `0x8002f808` 92.038376%, `0x80030c18`
+96.521736%, `0x800311b0` 92.14815%, `0x80031850` 99.29851%,
+`0x80031d8c` 94.65414%, and `0x8003247c` 92.18579%. Focused quick
+builds reconfirmed their matching CFG/branch counts; `0x80030c18` has
+11/11 blocks and 6/6 branches, with the first difference still the
+independent orientation-load and view-matrix setup order before
+`SetRotMatrix`. Its three siblings and 540-byte table remain exact.
+The fresh map-cell unit retains 77/77 text relocation rows; resource
+dispatch still has 82 target versus 84 candidate rows from the already
+identified camera-base rematerialization.
+
+The display/notification graph has **28 exact and one WIP**. Exact
+controls are all three `primitive_buffer` claims, all ten `display`
+claims, both `menu_frame_begin` claims, `menu_present_frame`, the display
+exit, both `render_frame` claims, the two color-byte helpers, both
+sliding panels, both notification quads, and all three notification
+enqueue claims. Display entry `0x80021c8c` remains 99.956985% strict,
+7/7 CFG blocks and 3/3 branches; its only supported residue is the
+32/24-byte retail/probe frame. Its exit sibling is exact. Initialized
+DATA sections are byte-exact; BSS sections have no byte score.
+
+The graphs deliberately share several exact frame/notification controls.
+Neither exposes a new field, width, call, relocation target, or CFG
+correction, so no source, identity, or profile change was retained.

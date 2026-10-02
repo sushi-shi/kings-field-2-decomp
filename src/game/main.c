@@ -47,7 +47,6 @@ extern void func_8002bd3c(void);
 extern void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
                           s32 kind, s32 width_bytes, u16 height);
 extern void func_8002985c(void);
-extern void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
 extern void func_80036ed4(void);
 extern void func_8003f610(void);

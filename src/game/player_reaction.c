@@ -18,7 +18,6 @@
 s32 func_8001876c(void);
 s32 func_8002897c(s32 value);
 void func_80028fa8(void);
-void func_800335a0(s32 mode, s32 argument);
 void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation, s32 value);
 void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation);
 void func_8002360c(s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 sixth);

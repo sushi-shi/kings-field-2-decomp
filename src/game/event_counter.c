@@ -5,8 +5,6 @@
 #include <kf/game/notify.h>
 #include <kf/lib/math.h>
 
-extern void func_800335a0(s32, s32);
-
 DATA(0x8009a5e8, 0x78)
 u8 game_counter_bytes[0x78];
 

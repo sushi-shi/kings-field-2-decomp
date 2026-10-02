@@ -341,3 +341,156 @@ functions are **100%**: `actor_select_best_target` (`0x800395c8`),
 `actor_reset_target_and_reselect` (`0x800397a8`), and the two
 `actor_home_wrapper` claims (`0x80038efc`, `0x80038f20`). They are exact
 caller/field controls, not new closures; no source changed in this screen.
+
+## Connected target and damage callees: 27 strict controls
+
+The actor scorer and damage paths directly call the corresponding angle,
+distance, random-scalar, and player-damage functions below. The actor behavior and
+fixed-curve callers also use the vector and interpolation siblings in their
+respective source units. Each listed claim was freshly rebuilt with its
+complete pinned unit profile and compared against its own GAME retail object
+with direct strict objdiff. Every verdict is **100%**; the player damage
+switch tables are also exact. These are reconfirmed controls, not newly
+matched functions, and no source or ownership metadata was changed.
+
+| GAME address | Function | Verdict |
+| --- | --- | --- |
+| `0x80015034` | `pitch_yaw_to_forward_vector` | Exact, 208 text bytes. |
+| `0x80015104` | `vector_rotate_yxz` | Exact, 68 text bytes. |
+| `0x80015148` | `vector2i_scale_shift11` | Exact, 64 text bytes. |
+| `0x80015188` | `vector3s_scale_shift12` | Exact, 92 text bytes. |
+| `0x800151e4` | `vector2i_scale_shift12` | Exact, 64 text bytes. |
+| `0x80015224` | `vector3s_scale_shift12_alt` | Exact, 92 text bytes. |
+| `0x80015280` | `vector3i_add_xz` | Exact, 44 text bytes. |
+| `0x800152ac` | `angle_within_tolerance` | Exact, 60 text bytes. |
+| `0x800152e8` | `angle_mod_delta_le_half_turn` | Exact, 16 text bytes. |
+| `0x800152f8` | `angle_shortest_delta` | Exact, 32 text bytes. |
+| `0x80015318` | `vector_xz_to_angle` | Exact, 336 text bytes. |
+| `0x80015468` | `fixed_vector2_length` | Exact, 64 text bytes. |
+| `0x800154a8` | `fixed_vector3_length` | Exact, 84 text bytes. |
+| `0x800154fc` | `func_800154fc` | Exact, 120 text bytes. |
+| `0x80015574` | `func_80015574` | Exact, 48 text bytes. |
+| `0x800155a4` | `vector_distance_to_point` | Exact, 244 text bytes. |
+| `0x80015698` | `func_80015698` | Exact, 276 text bytes. |
+| `0x800157ac` | `func_800157ac` | Exact, 76 text bytes. |
+| `0x800157f8` | `func_800157f8` | Exact, 84 text bytes. |
+| `0x8001584c` | `func_8001584c` | Exact, 32 text bytes. |
+| `0x8001586c` | `func_8001586c` | Exact, 72 text bytes. |
+| `0x800158b4` | `func_800158b4` | Exact, 100 text bytes. |
+| `0x80024498` | `func_80024498` | Exact, 844 text and 32 table bytes. |
+| `0x800248a8` | `func_800248a8` | Exact, 1020 text and 28 table bytes. |
+| `0x80024ca4` | `func_80024ca4` | Exact, 560 text bytes. |
+| `0x800397d8` | `func_800397d8` | Exact, 44 text bytes. |
+| `0x80039804` | `func_80039804` | Exact, 56 text bytes. |
+
+This exact callee chain bounds the remaining scorer/damage WIPs to their
+callers' own instruction ordering, case joins, and address materialization.
+It gives no basis for changing a callee signature, table owner, or global
+placement to raise a caller score.
+
+One off-tree source-structure check targeted the remaining lifecycle scan
+`0x80039b58`. Retail saves `0xff` in `$s4` and uses two separate branches
+for slot state and group index; the retained C uses one short-circuit test.
+Spelling those branches as two early `goto next` guards is a faithful raw
+control-flow form, but the complete-profile probe produced a SHA256-identical
+object and the same **90.95744%** strict score. The `0x8003983c` sibling
+remained at **99.19598%**. No C edit was retained.
+
+The fixed-curve WIP `0x80039c94` does not justify an extra 8-byte motion
+local to explain its 168-versus-160-byte frame. Retail passes stack `sp+40`
+as the angle result to `func_800154fc`, then passes `actor+80` directly as
+the output of `pitch_yaw_to_forward_vector` and the input of
+`vector3s_scale_shift12`; the source has those same object destinations.
+The frame difference remains unattributed after the exact vector callees
+were confirmed, so no padding or surrogate `SVECTOR` was introduced.
+
+The exact player damage reaction `0x80024498` calls
+`func_80029464` and `func_800294f8`; a fresh isolated strict rebuild of
+their `game.player_reaction` unit confirms both callees at **100%** (148 and
+120 text bytes). Its other fifteen claims are unchanged: fourteen exact
+controls and the previously known `0x8002985c` at **99.26569%**. That large
+dispatcher is outside this direct damage edge; no edit was inferred from its
+shared unit placement.
+
+The lifecycle WIP `0x8003983c` directly calls the actor preparation and
+home-position chain. Fresh isolated strict comparisons confirm all five
+claims in that chain at **100%**: `actor_set_home_position` (`0x80038d04`,
+192 bytes), `actor_copy_group_defaults` (`0x80038dc4`, 116),
+`actor_initialize_from_group` (`0x80038e38`, 196),
+`actor_prepare_and_initialize` (`0x80038ff0`, 88), and its adjacent
+`func_80039048` wrapper (56). These are exact caller/callee controls and no
+new closures. The lifecycle WIP's divergent saved-register roles do not
+justify changing their interfaces.
+
+One final off-tree scorer control replaced case 9's successful
+`goto score_target` with a natural `break` from the switch. Retail's case-9
+success does branch to the same post-switch scoring tail, so this form
+preserves the raw behavior. The complete-profile probe nevertheless emitted
+the retained object byte-for-byte: **93.93092%** text, **96.183205%**
+table, and the same 37/36 branch gap. No C edit was retained.
+The corresponding positive guard with `break` reproduced the prior
+positive-guard regression (**89.68750%** text, **37.02290%** table) and was
+also discarded.
+
+The direct player-damage chain exposed one real interface correction.
+`render_frame.c` defines `func_800335a0(const VECTOR *, const SVECTOR *)`,
+and its curated GAME identity and nonnull callers agree; `player_reaction.c`
+still declared two `s32` parameters for its two `(0, 0)` calls. After the
+shared pointer declaration was added to `graphics.h`, the stale local
+declaration was removed. The focused unit has **16/17 SAME** listings; fresh
+isolated strict leaves all sixteen exact text claims, its 32-byte data and
+76-byte rodata exact, and `0x8002985c` at **99.26569%**. The complete object
+is SHA256-identical to the pre-correction one, as expected for null O32
+arguments. This fixes source type consistency without claiming a new match.
+The actor damage caller also now uses `player.h`'s existing semantic
+`func_800248a8` declaration instead of a duplicate twelve-argument local
+prototype. Focused output and fresh isolated strict remain **99.86911%**,
+**96.91011%**, and **100%** for its three claims; the whole object is
+SHA256-identical to baseline. In particular, `0x8003a614`'s fourth damage
+word is the exact callee's `status_flags` slot, a semantic mapping that the
+shared declaration now exposes without changing the O32 call.
+
+## Actor lifecycle and AI network: 22 strict verdicts
+
+This read-only follow-up follows actor preparation, target behavior, group
+effects, spatial sound, steering, and trajectory calls. Each row is a current
+GAME complete-profile isolated strict comparison. The pool, spatial, motion,
+trajectory, and group-effect units were freshly rebuilt; the seven scalar,
+interpolation, and target-byte controls were rebuilt earlier in the same
+checkpoint. The result is **19 exact controls and three WIPs**.
+
+| GAME address | Function | Strict verdict |
+| --- | --- | --- |
+| `0x800157ac` | `func_800157ac` | 100%, 76 text bytes. |
+| `0x800157f8` | `func_800157f8` | 100%, 84 text bytes. |
+| `0x8001584c` | `func_8001584c` | 100%, 32 text bytes. |
+| `0x8001586c` | `func_8001586c` | 100%, 72 text bytes. |
+| `0x800158b4` | `func_800158b4` | 100%, 100 text bytes. |
+| `0x80015918` | `func_80015918` | WIP 95.49419%, 688 text bytes. |
+| `0x80015bc8` | `func_80015bc8` | 100%, 280 text bytes. |
+| `0x80015ce0` | `func_80015ce0` | 100%, 112 text bytes. |
+| `0x80038cc8` | `actor_pool_find_free` | 100%, 60 text bytes. |
+| `0x80039080` | `actor_pool_clear` | 100%, 80 text bytes. |
+| `0x800397d8` | `func_800397d8` | 100%, 44 text bytes. |
+| `0x80039804` | `func_80039804` | 100%, 56 text bytes. |
+| `0x8003b9a4` | `func_8003b9a4` | 100%, 320 text bytes. |
+| `0x8003bae4` | `func_8003bae4` | 100%, 188 text bytes. |
+| `0x8003bba0` | `func_8003bba0` | 100%, 304 text bytes. |
+| `0x8003bcd0` | `func_8003bcd0` | 100%, 112 text bytes. |
+| `0x8003bd40` | `func_8003bd40` | WIP 86.53226%, 248 text bytes. |
+| `0x8003be38` | `func_8003be38` | 100%, 316 text bytes. |
+| `0x8003bf74` | `func_8003bf74` | 100%, 140 text bytes. |
+| `0x8003c614` | `func_8003c614` | WIP 86.041916% text, 37.90650% 492-byte table. |
+| `0x8003d084` | `func_8003d084` | 100%, 100 text bytes. |
+| `0x8003d0e8` | `func_8003d0e8` | 100%, 156 text bytes. |
+
+The three WIPs retain current raw bounds: `0x80015918` has 41/41 CFG and
+24/24 branches with two `SquareRoot0` and one angle call; `0x8003bd40`
+has 9/9 CFG, 5/5 branches, and aligned angle/steering calls; `0x8003c614`
+has 45/45 CFG, 15/15 branches, 123 table rows and 19 preserved target
+classes. Its retail versus probe has 11/7 physical direction-helper and
+9/10 constructor call sites, although the source already spells the
+meaningful calls and arguments. Prior natural controls in the trajectory,
+motion, and group-effect dossiers were negative. No source, profile, or
+table-owner correction is supported by this screen; no new 100% closure was
+created.

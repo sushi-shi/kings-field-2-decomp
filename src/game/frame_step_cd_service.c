@@ -3,7 +3,6 @@
 #include <kf/game/graphics.h>
 #include <kf/game/player.h>
 
-extern void func_800335a0(const VECTOR *position, const SVECTOR *angles);
 
 ADDRESS(0x80036e24, 0xb0)
 void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step)

@@ -56,6 +56,7 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     SVECTOR midpoints[128];
     SVECTOR *midpoint_end;
     u32 midpoint_count;
+    u32 source_vertex_count;
     u32 output_packet_bytes;
     u32 remaining;
 
@@ -241,12 +242,13 @@ void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
     }
     target->vertex_offset = target->primitive_offset + output_packet_bytes;
     target->vertex_count = source->vertex_count + midpoint_count;
+    source_vertex_count = source->vertex_count;
     resource_copy_words((u32 *)output_packet, (u32 *)(base + source->vertex_offset),
-                        source->vertex_count * 2);
-    output_packet += source->vertex_count * sizeof(SVECTOR);
+                        source_vertex_count * 2);
+    output_packet += source_vertex_count * sizeof(SVECTOR);
     resource_copy_words((u32 *)output_packet, (u32 *)midpoints, midpoint_count * 2);
     target->normal_offset = target->vertex_offset +
-        source->vertex_count * sizeof(SVECTOR) + midpoint_count * sizeof(SVECTOR);
+        source_vertex_count * sizeof(SVECTOR) + midpoint_count * sizeof(SVECTOR);
     target->normal_count = source->normal_count;
     resource_copy_words((u32 *)(output_packet + midpoint_count * sizeof(SVECTOR)),
                         (u32 *)(base + source->normal_offset), source->normal_count * 2);

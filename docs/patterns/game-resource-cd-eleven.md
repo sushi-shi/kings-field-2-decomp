@@ -256,6 +256,18 @@ identify the original linker or C declaration mechanism. Each main-loop
 constructor is followed by `lui a1,5`; the call delay slot forms
 `0x5f000` with `ori a1,0xf000`, confirming the same runtime arena
 capacity in all three regional programs.
+The arena end is therefore JP `0x800fa0a0`, US `0x800fafe4`, and EU
+`0x800fd11c`. The first TMD archive destination is 0x30 bytes after
+that end in JP and US, but exactly at the end in EU. This establishes a
+version-dependent adjacency to the next workspace, not a uniform
+array-declaration or linker-padding rule.
+The same startup range constructs the `SsSetTableSize` workspace at
+JP `0x8009a6a0` (`0x800139e0`), US `0x8009b5e4` (`0x80013a5c`), and
+EU `0x8009df30` (`0x80013ebc`). With the SDK-derived `0x158`-byte
+minimum table size, the gap from that table's end to the arena start
+is `0x8a8` in JP/US but only `0x94` in EU. Thus both the lower and
+upper arena neighbors change their padding between regional builds;
+these addresses do not by themselves reveal a C declaration boundary.
 
 The adjacent startup heap-boundary constructor moves from JP
 `0x801da018` to US `0x801daf5c` and EU `0x801df038`, while the fixed
@@ -292,7 +304,10 @@ The startup copy constructor for `effect_state` moves from JP
 `0x8019b6a8` to US `0x8019c5ec` and EU `0x8019e700`; each regional
 callback destination lies exactly `+0x2a90` after that base. The complete
 JP effect-state object ends at base `+0x2a8c`, leaving the same four-byte
-gap before the callback destination. This repeated adjacency supports a
+gap before the callback destination. In fact each regional main-loop clear
+passes exactly `0x0aa3` words in its call delay slot (JP/US
+`0x8001374c`, EU `0x80013b84`), so the `0x2a8c` clear extent and four-byte
+gap hold in all three builds. This repeated adjacency supports a
 separate following workspace, but it still does not prove that workspace's
 maximum size or original declaration.
 
@@ -326,3 +341,96 @@ candidate COMMON 14,616 bytes. These controls separate initialized-data
 matching and function matching from the unresolved zero-storage section and
 tentative-definition mechanism; they do not justify per-global placement
 rules or new object extents. No source or config edit followed this pass.
+
+### Callback-to-event-state regional boundary
+
+The same three retail main loops each construct the beginning of the
+`event_state` clear region: JP `0x801b2140` at `0x800136ec`, US
+`0x801b3084` at `0x800136ec`, and EU `0x801b5198` at `0x80013b24`.
+In each image this is exactly `+0x14008` after the independently repeated
+loaded-callback destination (`0x8019e138`, `0x8019f07c`, and `0x801a1190`,
+respectively). This is a useful adjacent-region bound, and the JP
+`event_state` identity already owns its complete `0x3918` bytes. The
+main-loop clear call passes `0x0e46` words in its delay slot in every
+region (JP/US `0x800136fc`, EU `0x80013b34`), independently confirming
+the same `0x3918`-byte event-state span. It is
+**not** a proved `0x14008`-byte callback object: no archive-entry maximum
+or defining source declaration has been recovered, and the gap may contain
+other allocations or padding. The callback remains an unbound
+workspace pointer in C and the inventory.
+
+## CD stream and arena helper control, 25 new functions
+
+One fresh pinned compile of `game.cd_memory` was compared against its
+isolated retail target after the preceding resource pass. A one-unit safe
+delink against the hash-checked JP GAME retail file, with the focused
+report directory shortened off-tree to accommodate 57 addresses, produced
+zero withheld functions or relocations. Its module object is SHA256-identical
+to the cached target (`4af6bd82…bb711`), and direct objdiff against that
+fresh object repeats the following verdicts. The module has
+56/57 strict-exact functions; the only WIP remains the separately recorded
+allocator at `0x80017608`. Its `0x1890`-byte text section has the same
+size in both objects and all **263 ordered `.rel.text` offset/type/symbol
+rows match**. The 11 initialized DATA and 33 RODATA bytes are strict
+exact. These 25 newly selected stream/copy/arena helpers are each strict
+100%, with no candidate source or referent difference to repair:
+
+| GAME address | Function | Strict |
+| --- | --- | ---: |
+| `0x80016ed4` | `cd_stream_mark_complete` | 100% |
+| `0x80016ee0` | `cd_map_stream_read` | 100% |
+| `0x80016f10` | `cd_stream_limit_chunk` | 100% |
+| `0x800171c8` | `resource_copy_words` | 100% |
+| `0x800171f8` | `resource_copy_halfwords` | 100% |
+| `0x80017228` | `repeat_store_word` | 100% |
+| `0x8001724c` | `repeat_store_halfword` | 100% |
+| `0x80017270` | `memory_arena_coalesce_free` | 100% |
+| `0x800172f4` | `memory_arena_free` | 100% |
+| `0x80017314` | `memory_arena_find_block` | 100% |
+| `0x8001746c` | `memory_arena_wait_pending` | 100% |
+| `0x80017504` | `memory_arena_compact` | 100% |
+| `0x800175e8` | `memory_arena_initialize_blocks` | 100% |
+| `0x800176c0` | `memory_block_release` | 100% |
+| `0x800176e0` | `memory_block_set_kind` | 100% |
+| `0x800176e8` | `memory_block_kind` | 100% |
+| `0x800176f4` | `memory_block_set_flags` | 100% |
+| `0x800176fc` | `memory_block_flags` | 100% |
+| `0x80017708` | `memory_block_set_tag` | 100% |
+| `0x80017710` | `memory_block_tag` | 100% |
+| `0x8001771c` | `memory_malloc_checked` | 100% |
+| `0x80017754` | `memory_allocate` | 100% |
+| `0x8001777c` | `memory_free` | 100% |
+| `0x800177d4` | `cd_vsync_handler` | 100% |
+| `0x80017804` | `cd_wait_two_vsyncs` | 100% |
+
+The CD module's zero-storage discrepancy remains separate from these code
+verdicts. Its target `.bss` is 772 bytes: `cd_state` is 676 bytes and
+`cd_archives` is 96 bytes. The pinned candidate emits COMMON symbols of
+680 and 96 bytes, respectively, with no `.bss` section. The four-byte
+`cd_state` excess follows the previously bounded tentative-definition
+rounding pattern; neither exact consumer code nor this size comparison
+establishes the original source/section mechanism. No C or config edit was
+made for the batch.
+
+Regional CD-code signed-low references independently preserve this
+boundary. The repeatedly constructed `cd_state + 4` pointers are JP
+`0x801b5d64`, US `0x801b6ca8`, and EU `0x801ba5ac`; the corresponding
+`cd_archives` starts are `0x801b6004`, `0x801b6f48`, and `0x801ba84c`.
+Subtracting four from the first address gives a `0x2a4`-byte state span
+before archives in all three images. The repeatedly constructed stream
+buffer pointers are JP `0x801b6064`, US `0x801b6fa8`, and EU
+`0x801ba8ac`, each exactly `+0x60` after the archive-array start.
+Other repeated state-tail addresses move with them. This supports the
+complete `KfCdState` and eight-entry archive-array extents across
+regions, while the stream buffer's own extent and the original
+zero-storage emission mechanism remain unresolved.
+
+An off-tree, one-unit `-fno-common` control did recover a 676-byte
+`cd_state` symbol, but the pinned compiler placed both zero objects in
+`.data`, after the 11 initialized bytes, ordered `cd_archives` before
+`cd_state`, and emitted no `.bss`. Its `.data` grew to `0x310` bytes;
+the target has 11 DATA bytes followed by 772 BSS bytes with
+`cd_state` before `cd_archives`. Sixteen previously exact CD functions
+also lost strict exactness, leaving 40/57 exact. This option alone is a
+negative placement control, not a reason to change the shared profile or
+invent per-global build placement.

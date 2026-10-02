@@ -31,7 +31,6 @@ extern void func_80045fd4(KfScenePoseView *destination,
                           const VECTOR *end_position,
                           const SVECTOR *start_angles,
                           const SVECTOR *end_angles, s32 fraction);
-extern void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
 extern void func_80038f20(void);
 extern void func_80016820(void);

@@ -1,8 +1,7 @@
 #include <kf/game/actor.h>
+#include <kf/game/graphics.h>
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
-
-extern void func_800335a0(s32 mode, s32 argument);
 
 ADDRESS(0x800460a0, 0xa4)
 void func_800460a0(KfActor *actor, u8 state, u16 phase, s32 target_phase, s32 phase_step)

@@ -568,3 +568,101 @@ the probe result from `v0` to `a0` before two guards; the probe tests `v0`
 directly. The source already models both guards and their error paths, so
 there is no supported call, width, or branch correction to retain. These
 eleven are current exact rechecks and one WIP verdict, not new closures.
+
+## Fresh 30-claim menu visual, input, and card-wait control
+
+Fresh narrow safe targets and isolated manifest-profile strict objects cover
+22 related GAME units, 30 function claims in total. Twenty-one are strict
+exact: `func_800189f0`, `menu_draw_two_option`, `func_80020990`, all three
+`menu_blit_sprite*` functions, `menu_draw_number`, `func_800217f0`, both
+`menu_frame_begin` claims, `menu_present_frame`, `func_80021e00`,
+`func_8001e94c`, `func_8001f008`, `func_8001e378`, `func_8001e484`,
+`func_8001f798`, `func_80033994`, and the three `memory_card_wait` helpers
+after `0x80023178`. The location unit's 28-byte RODATA, window unit's
+2,704-byte DATA, status renderer's 240-byte DATA, and frame-begin unit's
+8-byte DATA are exact.
+
+| WIP claim | Fresh strict text | Focused CFG/branches | Final bounded verdict |
+| --- | ---: | --- | --- |
+| `0x8001876c` location controller | 96.36646% | 34/34; 14/14 | Sentinel saved registers and result-stack reload differ; call/return meaning and exact sibling remain. |
+| `0x8001f8b8` preview choice | 99.14365% | 42/42; 18/18 | Eight remaining raw words choose different saved argument registers and instruction order; the older 94.36% row is stale. |
+| `0x8001fb8c` window drawer | 99.78788% | 10/10; 6/6 | Retail/probe frames are 48/40 bytes; sprite row walk, all references, and 2,704-byte layout DATA agree. |
+| `0x8001fc94` list renderer | 99.70803% | 55/55; 33/33 | Two independent lower-panel setup instructions swap order; 201 relocation sites agree. |
+| `0x8002083c` two-option preview | 99.65882% | 4/4; 2/2 | Retail reserves 224 versus 160 bytes; four live `MATRIX` locals and both exact siblings do not prove a fifth object. |
+| `0x800210ac` string drawer | 99.66904% | 8/8; 4/4 | Retail/probe frames differ by eight bytes and glyph UV temporaries use different registers; ordered calls/referents agree. |
+| `0x80021c8c` display entry | 99.956985% | 7/7; 3/3 | Only 32/24-byte frame and saved-return slot differ; display exit remains exact. |
+| `0x80022058` number formatter | 97.39% | 36/36; 19/19 | The eight-byte frame delta shifts the fifth O32 argument load; digit/style branches and seven ordered references agree. |
+| `0x80023178` card title digits | 93.52941% | 19/19; 10/10 | Signed decimal loops and encoded title writes agree; quotient/header pointer register lifetimes differ, with three exact helper siblings. |
+
+Focused quick builds reproduced these CFG and branch counts. Existing raw
+call and data-reference audits above were checked before considering a
+source edit. No new width, field, target, or control fact justifies changing
+the current C, and no new exact claim is bankable from this pass.
+
+## Fresh 25-claim label, browser, and save-directory control
+
+A second narrow safe-delink and isolated strict comparison covers eight
+call-linked GAME units and 25 claims. Seventeen are strict exact: all ten
+`menu_label_templates` claims (`0x8001c550` through `0x8001ceb8`),
+`memory_card_format` at `0x80022b48`, the `menu_card_format_flow` sibling
+`0x8001c12c`, all three `menu_card_panel` claims (`0x8001b030`,
+`0x8001b14c`, `0x8001b2dc`), and both `menu_card_labels` claims
+(`0x8001ba80`, `0x8001bb94`). The label unit's 320-byte DATA and the
+directory's 311-byte DATA and six-byte RODATA are strict exact.
+
+| WIP claim | Fresh strict text | Final bounded verdict |
+| --- | ---: | --- |
+| `0x800226ec` directory scan | 93.60504% | 13/13 CFG blocks and 7/7 branches; signed slot-seed loads and first `memset` setup still differ. |
+| `0x800228c8` title reader | 85.15625% | 24/24 blocks and 13/13 branches. Retail uses paired `lb`/`sb` and `lhu` for each glyph; source has the correct typed header and digit order, but the probe selects `lbu` and a different index lifetime. |
+| `0x80022b74` payload reader | 93.666664% | 9/9 blocks and 4/4 branches; source-backed calls and checksum remain, with frame/register residue. |
+| `0x80022ca0` card writer | 95.896774% | 24/24 blocks and 14/14 branches; slot-seed and clear setup still differ. |
+| `0x8001b554` card browser | 98.478264% | 33/33 blocks and 16/16 branches; probe-result register and guard scheduling differ. |
+| `0x8001bf68` card format flow | 97.12389% | Probe status and dialog-constant register choices differ; exact `0x8001c12c` is preserved. |
+| `0x8001930c` map preview | 98.26363% | 47/47 blocks and 27/27 branches; retail/probe frames are 64/56 bytes, with otherwise aligned TIM, packet, pad, and release calls. |
+| `0x8001a4f0` item/magic controller | 99.74359% | 22/22 blocks and 12/12 branches; the 74-entry initialization loop selects a different index register. |
+
+The title-reader raw block at `0x800229d8` and its second loop at
+`0x80022a84` both load two signed title bytes, store them into one stack
+halfword, and reload that halfword. Prior signed-view and offset-walk
+source probes did not recover this instruction choice. The current source
+preserves the proved card layout and caller-visible values, so no C,
+identity, or profile change is retained. Focused quick builds reproduced
+the WIP CFG controls and exact siblings; no repository tests or full build
+were run.
+
+## Fresh 25-claim card-choice, glyph, and item-controller control
+
+A third call-linked menu pass rebuilt 21 GAME units against narrow safe
+targets. **All 25 function claims are strict exact:** the five card choice,
+load, row, save, and slot browsers (`0x8001aa9c`, `0x8001ac80`,
+`0x8001af30`, `0x8001bcfc`, `0x8001b834`); the three glyph-row claims
+(`0x80018d08`, `0x80018dec`, `0x80018f8c`); glyph selection
+`0x80019ce4`; two selection rows (`0x80019834`, `0x800199d0`); list
+choice `0x8001dc64`; equipment category/list `0x80019ed4` and
+`0x80019ac4`; magic list `0x8001a2f4`; item selection/equipment
+`0x80018ac8` and `0x8001a898`; and primary, secondary-stock, sell,
+stock, trade, and code controllers (`0x8001d030`, `0x8001e0a8`,
+`0x8001d3b4`, `0x8001ddd0`, `0x8001d8d0`, `0x8001d340`,
+`0x8001d654`, `0x8001d6a8`). The owned 4,080-, 200-, 8-, 1,440-, and
+1,200-byte DATA sections and 76-byte equipment RODATA are also exact.
+These are current exact controls, with no source edit or new bank claim.
+
+## Fresh 10-claim menu transition and auxiliary control
+
+Narrow safe targets and isolated strict objects confirm nine exact claims:
+all three `menu_player_clamps` functions (`0x80019240`, `0x800192ac`,
+`0x800192dc`), `tim_upload_images` (`0x8003494c`), transition caller
+`0x80034e10`, all three `menu_sound_cue` functions (`0x80022300`,
+`0x80022394`, `0x800223cc`), and `menu_simple_loop` (`0x8001a7fc`).
+The transition's eight DATA bytes and sound unit's four DATA bytes are
+also exact. Fade emitter `0x800349bc` remains **96.31408% strict**: its
+four quad packets, pad state, 14/14 CFG blocks and 8/8 branches agree,
+while the retail/probe frames remain 72/64 bytes and packet-store order
+differs. Earlier natural source probes did not establish an extra live
+object, so this pass retains no C change.
+
+Together the three fresh menu/card batches cover 90 distinct function
+claims: 72 strict exact and 18 WIP. Every menu WIP listed in the cached
+GAME report was included in a fresh safe-target comparison here; the
+card-directory WIPs were also refreshed. None yielded a new source-backed
+type, call, control-flow, or referent correction.

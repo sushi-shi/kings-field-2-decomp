@@ -305,3 +305,36 @@ control reproduces the curated target allocation, so no source or profile change
 was retained. The raw startup clear covers precisely `0x8744` bytes, but it
 cannot establish the historical source spelling or compiler option that
 placed this object in BSS.
+
+### Floor and collision call-graph continuation (2026-10-02)
+
+An isolated manifest-profile rebuild and direct strict comparison covers 27
+additional GAME claims in eight units linked through map-object placement,
+collision queries, mask updates, and the floor-item allocator. Sixteen are
+already exact: `0x8002a988`, `0x8002b604`, `0x8002b7f8`, `0x8002bc18`,
+`0x8002bd3c`, `0x8002bdbc`, `0x8002be9c`, `0x8002bf38`, `0x8002bfac`,
+`0x8002c170`, `0x8002c1d4`, `0x8002c290`, `0x8002ce2c`, `0x8002cf40`,
+`0x800314fc`, and `0x80031634`. The eleven WIPs are:
+
+| GAME address | Strict text | Current verdict |
+| --- | ---: | --- |
+| `0x8002aaa4` | 57.52610% | 174/172 CFG blocks, 99/98 branches; all 49 switch rows preserve the 13 target classes. The extra retail case-`0x11` branch follows a zeroed register, while case-`0x30`/`0x32` tail placement remains different. |
+| `0x8002b67c` | 94.895836% | Retail reloads the stored cache height for the shape call; source values and field widths agree. |
+| `0x8002b73c` | 98.404260% | Row/column induction and saved-register assignment differ; cell write and bounds control agree. |
+| `0x8002b874` | 91.5% | Player, actor, and object field sources and the common height write agree; load order differs. |
+| `0x8002b9d4` | 95.379310% | Direct cache stores and result agree; probe uses a 56-byte frame against retail's 64. |
+| `0x8002bfd4` | 73.912620% | Four mask-sweep calls, two axis loops, signed widths, and grid stores agree; induction and frame allocation differ. |
+| `0x8002c424` | 98.299320% | 23/23 CFG and 14/14 branches; saved-register assignments differ. |
+| `0x8002c670` | 91.624245% | 11/11 CFG, 4/4 branches, four rasterizer calls, and 28-byte shape data agree; two mask-state address pairs are rematerialized differently. |
+| `0x8002ce68` | 65.85185% | 5/5 CFG and four ordered calls; the probe hoists three late O32 stack arguments across the free-slot call, using a 56-byte frame versus retail's 40. |
+| `0x80034f90` | 97.86822% | 14/14 CFG and 7/7 branches; row-major writes agree, with register/address scheduling residue. |
+| `0x80035194` | 89.59545% | 51/51 CFG and 26/26 branches; rotated two-layer copy agrees, with frame and mask-hoisting residue. |
+
+Focused `kf try` controls on the shape dispatcher, mask sweep, and floor-item
+unit confirm those structural counts and the exact floor siblings. A bounded
+off-tree shape trial duplicated the case-`0x30` multiplication/result tail in
+C instead of jumping to case-`0x32`'s tail. The compiled text size and
+relocation-section sizes stayed unchanged, while strict text fell from
+**57.52610%** to **57.251373%**; it did not reproduce the separate retail
+tails, so it was discarded. The other residues above have no new independent
+source fact; no C, metadata, or exact-claim change is retained.

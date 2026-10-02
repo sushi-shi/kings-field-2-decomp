@@ -3,6 +3,7 @@
 #include <kf/game/cd.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_stream.h>
+#include <kf/game/graphics.h>
 #include <kf/game/map_object.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
@@ -17,7 +18,6 @@ extern void func_80045fd4(KfScenePoseView *destination,
                           const VECTOR *end_position,
                           const SVECTOR *start_angles,
                           const SVECTOR *end_angles, s32 fraction);
-extern void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
 
 ADDRESS(0x800475d8, 0x6c0)
 void func_800475d8(KfMapObject *object, ...)

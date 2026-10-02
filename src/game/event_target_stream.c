@@ -2,6 +2,7 @@
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
+#include <kf/game/graphics.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
 
@@ -15,7 +16,6 @@ extern void func_8001ceb8(s32 value);
 extern void func_8001dc64(void);
 extern void func_8001d8d0(void);
 extern s32 func_8001d6a8(void);
-extern void func_800335a0(s32 arg0, s32 arg1);
 
 RODATA(0x80012890, 0x40)
 

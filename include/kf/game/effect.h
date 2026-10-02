@@ -93,9 +93,35 @@ typedef char kf_effect_current_index_offset[(u32)&((KfEffectState *)0)->current_
 extern KfEffectState effect_state;
 
 int effect_magic_power(KfEffectRecord *effect);
+void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
+                   u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
+                   u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
+                   u16 magic_12, u16 magic_14, const VECTOR *position);
 s32 func_8003fa68(const VECTOR *position, s32 arg1, s32 angle);
+void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position);
+void func_8003feb0(s32 kind);
+void func_8003ff18(VECTOR *position, s32 start, s32 end, s32 arg3, s32 arg4, s32 arg5);
 s32 func_8004177c(s32 scale, s32 max_length, s32 probe_radius, s32 probe_angle,
                   SVECTOR *motion);
+s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
+                  s32 probe_radius, s32 probe_angle, s32 proximity,
+                  s32 close_scale, s32 target_filter);
+s32 func_80041b14(const VECTOR *target, s32 max_length, s32 scale,
+                  s32 settle_distance, s32 min_distance,
+                  s32 probe_radius, s32 probe_angle);
+void func_80041cd0(s32 multiplier, s32 limit, s32 increment,
+                   s32 arg3, s32 arg5);
+void func_80041d7c(KfEffectRecord *record, s32 mode);
+s32 func_80041e0c(const VECTOR *position, s32 arg1, s32 arg2,
+                  s32 vertical_window);
+void func_80041e94(KfEffectRecord *record, s32 position_mode,
+                   s32 motion_mode, s32 arg3, s32 arg4, s32 arg5,
+                   s32 arg6, s32 arg7, ...);
+s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
+                  s32 scale_x, s32 scale_z, s32 variation);
+s32 func_80042298(s32 radius, s32 angle, s32 step);
+void func_80042424(void);
+void func_800424f0(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
 KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);
 KfEffectRecord *effect_pool_find_free(void);
 KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind, const VECTOR *position,

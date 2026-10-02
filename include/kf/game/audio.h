@@ -17,6 +17,7 @@ enum {
 };
 
 typedef s32 KfAudioPlaybackResult;
+struct KfEulerAngles;
 
 typedef struct KfAudioVabStreamSlot {
     s16 state;
@@ -95,6 +96,7 @@ typedef char kf_game_audio_stream_slots_offset[
 
 extern KfGameAudioState audio_state;
 
+void func_800139c4(void);
 void audio_shutdown(void);
 void audio_start_sequence(void);
 void audio_stop_sequence(void);
@@ -110,6 +112,7 @@ void audio_play_sound(s32 sound, s32 volume);
 void audio_update_listener(const VECTOR *position, const SVECTOR *rotation);
 void audio_play_sound_64(void);
 void audio_play_sound_at_volume_100(s32 sound);
+s32 func_80045e5c(const VECTOR *position, const struct KfEulerAngles *angles);
 void audio_refresh_voice_handles(void);
 void audio_key_off_handle(KfAudioVoiceHandle *handle);
 KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id);

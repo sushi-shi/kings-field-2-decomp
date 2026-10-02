@@ -4,15 +4,6 @@
 #include <psyq/libc.h>
 #include <psyq/pad.h>
 
-extern s32 func_8001c12c(s32 kind);
-extern void func_8001c62c(KfMenuGlyphString *rows);
-extern void func_8001c770(KfMenuGlyphString *rows);
-extern void func_8001c8b0(KfMenuGlyphString *rows);
-extern void func_8001c9f4(KfMenuGlyphString *rows);
-extern void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
-    s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
-extern s32 func_80022ca0(s32 slot);
-
 ADDRESS(0x8001bf68, 0x1c4)
 void func_8001bf68(s32 slot)
 {

@@ -5,6 +5,7 @@
 #include <kf/game/audio.h>
 #include <kf/game/event_state.h>
 #include <kf/game/event_counter.h>
+#include <kf/game/effect.h>
 #include <kf/game/graphics.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
@@ -14,27 +15,6 @@
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
-extern KfMapCellPattern map_object_cell_patterns[9][3];
-extern void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
-                          const KfMapCellPattern *patterns, s32 variant_index,
-                          s32 layer_flag);
-extern void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
-                          s32 destination_x, s32 destination_z, s32 width,
-                          s32 height, s32 rotation, u32 field_mask);
-extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
-extern s32 func_80036b68(KfMapObject *source, KfMapObject *target,
-                          SVECTOR *start_offset, SVECTOR *end_offset,
-                          s32 brighten, s32 duration);
-extern void func_800366fc(u8 identifier);
-extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
-extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_80041e0c(const VECTOR *position, s32 arg1,
-                          s32 arg2, s32 vertical_window);
-extern void func_800369b8(KfMapObject *object, s32 vertex_index, VECTOR *result);
-extern void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
-                          u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
-                          u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
-                          u16 magic_12, u16 magic_14, const VECTOR *position);
 DATA(0x8006d6e4, 0x8)
 SVECTOR DAT_8006d6e4 = {0, -1424, 0, 0};
 DATA(0x8006d6ec, 0x8)

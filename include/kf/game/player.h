@@ -6,6 +6,7 @@
 
 struct KfMagicRecord;
 struct KfEffectRecord;
+struct KfActor;
 
 /* Runtime progression limits (King's Field capped vitals at 9999 and
  * experience at 99999 and loaded forty growth rows). */
@@ -400,6 +401,8 @@ s32 player_distance_to_point(
 s32 player_distance_to_point_with_margin(
     s32 point_x, s32 point_y, s32 point_z, s32 max_distance, s32 point_height);
 void func_80023384(void);
+void func_8002360c(s32 first, s32 second, s32 third, s32 fourth,
+                   s32 fifth, s32 optional_resource);
 s32 func_80023814(s32 value, s32 rank);
 void player_add_equipment_bonuses(s32 item_id);
 s32 player_calculate_damage_component(s32 base_power, s32 defense, s32 attack);
@@ -408,6 +411,10 @@ void func_800248a8(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 scale_q16, u16 multiplier_tenths,
                    const VECTOR *origin);
+void func_80024ca4(VECTOR *position, s32 start, s32 end, s32 mode,
+                   u16 falloff, u16 damage0, u16 damage1, u16 damage2,
+                   u16 damage3, u16 damage4, u16 damage5, u16 damage6,
+                   u16 damage7, u16 damage8, s32 scale_and_flags, u16 record_id);
 void player_adjust_hp_unclamped(s32 delta);
 void player_cap_status_components(u32 mask);
 void player_death_begin(const SVECTOR *rotation);
@@ -418,7 +425,26 @@ void player_set_unknown_98(u8 value);
 void player_set_unknown_99(u8 value);
 void player_set_equipment_slot(u8 item_id, u8 slot);
 void player_equip_weapon(u8 weapon_id);
+struct KfActor *func_80025878(s32 scale, VECTOR *position,
+                              SVECTOR *direction, s32 *distance);
 void func_80025a18(s32 effect_id, ...);
+void func_80026330(s32 mode, VECTOR *output);
+void func_8002665c(void);
+void func_8002722c(s32 magic_id);
+void player_update_vertical_motion(void);
+s32 player_move_reaction_with_collision(void);
+void player_update_camera_rotation(void);
+void player_update_horizontal_motion(void);
+s32 func_8002897c(s32 value);
+void func_80028998(void);
+void func_80028fa8(void);
+void func_800293d4(u8 mode);
+void func_80029464(const SVECTOR *rotation, const SVECTOR *motion,
+                   s16 duration);
+void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion,
+                   s16 duration);
+void func_8002985c(void);
+void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
 void player_begin_weapon_attack(s32 mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);

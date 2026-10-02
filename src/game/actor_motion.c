@@ -3,8 +3,6 @@
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
 
-extern s32 func_8003ae50(SVECTOR *motion, s32 target);
-
 ADDRESS(0x8003b9a4, 0x140)
 s32 func_8003b9a4(s32 decay, s32 target)
 {

@@ -4,8 +4,6 @@
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
 
-extern void func_8002b874(void);
-
 ADDRESS(0x8003a9f4, 0x168)
 s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {

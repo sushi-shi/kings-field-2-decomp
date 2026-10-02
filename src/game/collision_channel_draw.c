@@ -2,7 +2,7 @@
 #include <kf/game/graphics.h>
 
 ADDRESS(0x800314fc, 0x138)
-void func_800314fc(void)
+void render_accumulated_color_overlay(void)
 {
     if (game_graphics_runtime.unknown_14cc5 != 0) {
         func_800311b0(0, 0, 0x140, 0xf0,

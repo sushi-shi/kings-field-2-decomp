@@ -4,9 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/pad.h>
 
-extern void func_800217f0(s32 arg0, s32 arg1, s32 arg2, s32 arg3,
-    s32 arg4, s32 arg5);
-
 ADDRESS(0x8001b030, 0x11c)
 void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,
@@ -87,9 +84,6 @@ s32 func_8001b14c(void)
     }
     return result;
 }
-extern void func_8001f798(KfMenuGlyphString *left, KfMenuGlyphString *right,
-    const u8 *selected);
-
 enum {
     KF_MENU_OPTION_COUNT = 6,
     KF_MENU_OPTION_CANCEL_ROW = 6,

@@ -3,8 +3,6 @@
 #include <kf/game/tmd.h>
 #include <kf/game/tmd_packets.h>
 
-extern void func_8002d918(s32 vertex_count);
-
 DATA(0x8006d6d0, 0x4)
 CVECTOR map_textured_primitive_color = {128, 128, 128, 0};
 
@@ -163,7 +161,7 @@ void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
 loop_body: {
         KfGpuGT3 *packet;
         s32 depth;
-        u32 summed_depth;
+        s32 summed_depth;
 
         third = *next++;
         DpqColor(&shade, third->sxyz.pad >> 1, &third->rgb);
@@ -186,9 +184,8 @@ loop_body: {
         *(u32 *)&packet->packed.color2 = *(u32 *)&third->rgb;
         ((u8 *)&packet->sdk.tag)[3] = 9;
         packet->sdk.code = packet_code;
-        summed_depth = (u32)first->sxyz.vz + (u32)second->sxyz.vz +
-                       (u32)third->sxyz.vz;
-        depth = (s32)((u32)((s32)summed_depth / 12) + (u32)depth_bias);
+        summed_depth = first->sxyz.vz + second->sxyz.vz + third->sxyz.vz;
+        depth = summed_depth / 12 + depth_bias;
         if (depth < 16) {
             depth = 16;
         }

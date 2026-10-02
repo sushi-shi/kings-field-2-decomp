@@ -7,48 +7,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern s32 func_80042298(s32 radius, s32 angle, s32 step);
-extern void func_8003feb0(s32 kind);
-extern s32 func_80041e0c(const VECTOR *position, s32 arg1,
-                         s32 arg2, s32 vertical_window);
-extern void func_80041cd0(s32 multiplier, s32 limit, s32 increment,
-                          s32 arg3, s32 arg5);
-extern void func_8003ff18(VECTOR *position, s32 start, s32 end,
-                          s32 arg3, s32 arg4, s32 arg5);
-extern s32 func_8004212c(const VECTOR *origin, s32 count, s32 spread,
-                         s32 scale_x, s32 scale_z, s32 variation);
-extern void func_80042424(void);
-extern void func_8002bf38(u8 first, u8 second, u8 third,
-                         s32 angle, u16 value);
-extern s32 func_80041b14(const VECTOR *target, s32 max_length, s32 scale,
-                         s32 settle_distance, s32 min_distance,
-                         s32 probe_radius, s32 probe_angle);
-extern s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
-                         s32 probe_radius, s32 probe_angle, s32 proximity,
-                         s32 close_scale, s32 target_filter);
-extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_800424f0(s32 count, s32 radius, s32 vertical_angle,
-                          s32 arg3);
-extern void func_80026330(s32 mode, VECTOR *output);
-extern KfActor *func_80025878(s32 scale, VECTOR *position,
-                              SVECTOR *direction, s32 *distance);
-extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern s32 func_8001584c(s32 start, s32 end, s32 fraction);
-extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
-                          u16 magic_08, u16 magic_0a, u16 magic_0c,
-                          u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, u16 amount, s32 effect_flags,
-                          const VECTOR *position);
-extern s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
-                         const VECTOR *target, SVECTOR *direction,
-                         s32 pitch_override, u16 yaw_limit, s32 iterations);
-extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
-                              s32 max_distance, s32 yaw_limit, s32 pitch_limit,
-                              s32 *distance, s32 variation);
-extern void func_80041d7c(KfEffectRecord *record, s32 mode);
-extern void func_8003fdd0(s32 kind, s32 radius, const VECTOR *position);
-extern long SquareRoot12(long value);
-
 RODATA(0x8001268c, 0x204)
 
 ADDRESS(0x80042650, 0x3670)
@@ -1119,7 +1077,7 @@ void effect_update_dispatch(void)
         func_80041e0c(&record->position, 0x2000, 0x2000, 500);
         if (result == -1) {
             func_8003feb0(KF_COLLISION_CACHE_FLAGS);
-            for (count = 11; count >= 0; count--) {
+            for (count = 11; count != -1; count--) {
                 func_80041e94(record, -1, -2, 0xc00, -90, 16, 33, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
             }
@@ -1709,7 +1667,7 @@ void effect_update_dispatch(void)
         result = func_80041b14(&target, 300, 40, 2000, 0, 10, 0);
         if (result == -1) {
             func_8003feb0(KF_COLLISION_CACHE_FLAGS);
-            for (count = 11; count >= 0; count--) {
+            for (count = 11; count != -1; count--) {
                 func_80041e94(record, -1, -2, 0xc00, -90, 16, 14, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
             }

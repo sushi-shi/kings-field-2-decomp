@@ -8,20 +8,8 @@
 #include <psyq/libc.h>
 
 enum {
-    KF_MAP_OBJECT_LOAD_COUNT = 0x15e,
-    KF_MAP_OBJECT_PATTERN_GROUPS = 9,
-    KF_MAP_OBJECT_PATTERN_ROWS = 3
+    KF_MAP_OBJECT_LOAD_COUNT = 0x15e
 };
-
-extern KfMapCellPattern map_object_cell_patterns
-    [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS];
-
-extern void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
-                          const KfMapCellPattern *patterns, s32 variant_index,
-                          s32 layer_flag);
-extern void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
-                          s32 destination_x, s32 destination_z, s32 width,
-                          s32 height, s32 rotation, u32 field_mask);
 
 RODATA(0x80011484, 0x3f8)
 

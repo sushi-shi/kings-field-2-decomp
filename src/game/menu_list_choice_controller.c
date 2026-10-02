@@ -2,9 +2,6 @@
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
 
-extern void func_8001ddd0(void);
-extern void func_8001e0a8(void);
-
 ADDRESS(0x8001dc64, 0x16c)
 void func_8001dc64(void)
 {

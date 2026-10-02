@@ -3,9 +3,6 @@
 #include <kf/game/menu.h>
 #include <psyq/libc.h>
 
-extern void func_8001d030(s32 kind);
-extern void func_8001d3b4(s32 kind);
-
 DATA(0x80064af0, 0x140)
 KfMenuLabelSuffix menu_label_suffixes[16] = {
     {{33, 34, 41, 45, 5, 45, 4115, 88, -1, 0}},

@@ -4,36 +4,19 @@
 #include <kf/game/actor.h>
 #include <kf/game/audio.h>
 #include <kf/game/callback.h>
+#include <kf/game/cd.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/effect.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
 #include <kf/game/graphics.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
+#include <kf/game/menu.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
 #include <psyq/libc.h>
 #include <psyq/sdk.h>
-
-s32 func_8001876c(void);
-s32 func_8002897c(s32 value);
-void func_80028fa8(void);
-void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation, s32 value);
-void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation);
-void func_8002360c(s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 sixth);
-void func_800291ec(KfMapObject *object);
-void func_8002bf38(u8 first, u8 second, u8 third, s32 angle, u16 value);
-void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
-s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-void func_80038f20(void);
-void func_80048554(s32 save_slot);
-void func_8002665c(void);
-s32 func_80027f78(void);
-void func_80028224(void);
-void func_8002851c(void);
-void func_80028998(void);
-void func_800279cc(void);
-void cd_report_error(s32 code);
 
 DATA(0x8006d6b0, 0x20)
 static RECT player_status_texture_rows[4] = {
@@ -427,14 +410,14 @@ void func_8002985c(void)
     switch (player_state.death_state) {
     case 0:
         func_80028998();
-        func_80028224();
-        func_8002851c();
+        player_update_camera_rotation();
+        player_update_horizontal_motion();
         goto update_reaction_pose;
     case 1:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
         func_80028998();
-        func_80028224();
+        player_update_camera_rotation();
         player_state.unknown_e8 = (s16)object->position.vx
                                 - (s16)player_state.camera_position.vx;
         player_state.unknown_ea = (s16)object->position.vy
@@ -488,7 +471,7 @@ update_reaction_view:
         }
         goto after_reaction;
     case 3:
-        if (func_80027f78() != 0) {
+        if (player_move_reaction_with_collision() != 0) {
             func_80029168();
         }
         goto update_reaction_view;
@@ -496,10 +479,10 @@ update_reaction_view:
         u16 angle_phase;
 
         func_80028998();
-        func_80028224();
-        func_8002851c();
+        player_update_camera_rotation();
+        player_update_horizontal_motion();
         player_state.unknown_134 = 0;
-        func_800279cc();
+        player_update_vertical_motion();
         player_state.unknown_134 += -256
                                    + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
         player_state.unknown_108.components[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
@@ -513,10 +496,10 @@ update_reaction_view:
     }
     case 16:
         func_80028998();
-        func_80028224();
-        func_8002851c();
+        player_update_camera_rotation();
+        player_update_horizontal_motion();
         player_state.reaction.damage.rotation.vy = 1;
-        func_80027f78();
+        player_move_reaction_with_collision();
         func_80028ec0();
         if (player_state.unknown_100[0] == 0
             && player_state.unknown_100[1] == 0
@@ -524,7 +507,7 @@ update_reaction_view:
             func_80029168();
         }
 update_reaction_pose:
-        func_800279cc();
+        player_update_vertical_motion();
         goto update_reaction_view;
     case 18:
         func_80028ec0();
@@ -542,7 +525,7 @@ update_reaction_pose:
         player_state.unknown_100[0] += (value * 3) >> 1;
         value = player_state.unknown_134;
         player_state.unknown_134 = value < 1500 ? value + 500 : 1500;
-        func_80027f78();
+        player_move_reaction_with_collision();
         player_state.unknown_106++;
         if (player_state.unknown_106 == 31
             && player_state.unknown_120 > -1001

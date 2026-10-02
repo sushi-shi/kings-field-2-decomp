@@ -446,6 +446,8 @@ typedef char kf_actor_state_active_actor_count_offset[
 
 extern KfActorStateGame actor_state;
 
+struct KfActorLoadRecord;
+
 KfActor *actor_pool_find_free(void);
 void actor_set_home_position(KfActor *actor);
 void func_80038f20(void);
@@ -457,8 +459,14 @@ void actor_initialize_from_group(KfActor *actor);
 void actor_prepare_and_initialize(KfActor *actor);
 void actor_bind_current(KfActor *actor);
 void actor_fixup_group_targets(void);
+void func_8003f860(const struct KfActorLoadRecord *records);
+void func_8003983c(void);
+void func_8003d184(void);
 KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type);
 u8 func_80046144(const KfTargetCandidate *candidate, u8 marker);
+u8 *func_800461a0(KfActor *actor);
+void func_800460a0(KfActor *actor, u8 state, u16 phase,
+                   s32 target_phase, s32 phase_step);
 void actor_select_target_type_in_own_group(KfActor *actor, u8 type);
 void actor_select_best_target(s32 player_distance);
 s32 func_80039108(KfTargetCandidate *target, s32 player_distance);
@@ -480,11 +488,39 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 amount_and_flags, u16 effect_flags);
 VECTOR *func_8003c10c(KfActor *actor, VECTOR *output);
 s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output);
+s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
+                  const VECTOR *target, SVECTOR *direction,
+                  s32 pitch_override, u16 yaw_limit, s32 iterations);
 void actor_reset_target_and_reselect(void);
 void func_800397d8(u8 value);
 void func_80039804(u8 value);
 void actor_advance_animation_wrapped(KfActor *actor, s16 delta);
 void actor_advance_animation_clamped(KfActor *actor, s16 delta);
 KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase);
+s32 func_8003ae50(SVECTOR *motion, s32 flags);
+void func_8003d0e8(KfActor *actor);
+s32 func_8003b9a4(s32 decay, s32 target);
+s32 func_8003b33c(SVECTOR *motion);
+s32 func_8003bae4(s16 angle, s32 speed, s32 step, s32 target);
+s32 func_8003b520(s32 first, s32 target_x, s32 target_y,
+                  s32 target_z, s32 trajectory_parameter,
+                  s32 trajectory_speed);
+void func_8003b5bc(void);
+s32 func_8003a614(s32 minimum_distance, s32 maximum_distance,
+                  s32 y_offset, s32 angle_tolerance, u16 damage0,
+                  u16 damage1, u16 damage2, u16 damage3);
+s32 func_8003bcd0(s16 angle, s32 speed, s32 range, s32 step,
+                  s32 mode, s32 target);
+s32 func_8003bf74(const struct KfEulerAngles *angles, s32 speed,
+                  s32 range, s32 step, s32 mode, s32 target);
+s32 func_8003bd40(s32 world_x, s32 world_z, s32 speed, s32 range,
+                  s16 reference_angle, s32 step, s32 mode, s32 target);
+void func_8003bba0(KfActor *actor, s32 target_angle, s32 max_speed,
+                   s32 acceleration);
+void func_8003c220(s32 first, s32 reverse, s32 forward, s32 fast,
+                   s32 slow, s32 phase_step);
+void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...);
+void func_8003b5d0(void);
+void func_8003f610(void);
 
 #endif

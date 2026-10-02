@@ -255,6 +255,9 @@ void func_800314d4(u8 control, u8 red, u8 green, u8 blue);
 void func_80034e10(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);
+void func_8002bd3c(void);
+void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
+                   s32 kind, s32 width_bytes, u16 height);
 void display_begin_frame(void);
 void display_present_frame(void);
 void func_8002d4f4(const VECTOR *position, const SVECTOR *rotation);

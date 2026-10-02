@@ -4,12 +4,6 @@
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
-#include <stdarg.h>
-
-extern s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output);
-extern s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
-                         const VECTOR *target, SVECTOR *direction,
-                         s32 pitch_override, u16 yaw_limit, s32 iterations);
 
 RODATA(0x80011ee8, 0x1ec)
 
@@ -19,7 +13,8 @@ RODATA(0x80011ee8, 0x1ec)
 ADDRESS(0x8003c614, 0xa70)
 void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
 {
-    va_list arguments;
+    /* Retail walks O32 argument home slots from the last named word. */
+    const s32 *arguments = &position_mode;
     KfActor *current = actor_state.current;
     const VECTOR *player = &player_state.camera_position;
     const u16 *parameters;
@@ -46,22 +41,20 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     u16 group_index;
     KfTargetGroup *group;
 
-    va_start(arguments, position_mode);
     if (position_mode == -1) {
         /* Each coordinate occupies an O32 word slot but is read as u16. */
-        rotated.vx = *(const u16 *)arguments;
-        (void)va_arg(arguments, s32);
-        rotated.vy = *(const u16 *)arguments;
-        (void)va_arg(arguments, s32);
+        arguments += 3;
+        rotated.vx = *(const u16 *)(arguments - 2);
+        rotated.vy = *(const u16 *)(arguments - 1);
         rotated.vz = *(const u16 *)arguments;
-        (void)va_arg(arguments, s32);
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
     } else if (position_mode == -2) {
-        first = va_arg(arguments, s32);
+        first = arguments[1];
         func_8003c000(current, first, &target);
-        second = va_arg(arguments, s32);
+        second = arguments[2];
         func_8003c000(current, second, &offset);
-        third = va_arg(arguments, s32);
+        arguments += 3;
+        third = *arguments;
         predicted.vx = func_8001584c(player->vx,
             (s32)((((u32)offset.vx - (u32)target.vx) << 8) +
                   (u32)current->position.vx), third);
@@ -71,6 +64,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         predicted.vz = func_8001584c(player->vz,
             (s32)((((u32)offset.vz - (u32)target.vz) << 8) +
                   (u32)current->position.vz), third);
+        player = &predicted;
     } else {
         func_8003c000(current, position_mode, &offset);
     }
@@ -82,7 +76,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
     switch (kind) {
     case 0x7b:
         kind = 0x20;
-        if (((const s32 *)arguments)[1] != 0) {
+        if (arguments[2] != 0) {
             goto target_effect;
         }
         /* fall through */
@@ -106,9 +100,10 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         func_8003c3e0(current, player, 800, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
-    case 0x28:
+    case 0x28: {
+        s32 raised_y = position.vy + 1600;
         func_800154fc(player->vx - position.vx,
-                      player->vy - (position.vy + 1600),
+                      player->vy - raised_y,
                       player->vz - position.vz,
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
@@ -119,6 +114,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         func_80040308(effect_id, 0x23, kind, &position, &direction,
                       &orientation.angles);
         break;
+    }
     case 9:
     case 0x21:
         func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
@@ -137,7 +133,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         travel_time = -1;
         goto simple_direction_effect;
     case 0x17:
-        parameters = va_arg(arguments, const u16 *);
+        parameters = (const u16 *)arguments[1];
         func_80040308(effect_id, 0x23, kind, &position, 0,
                       actor_state.unknown_93b8, position_mode, parameters[2]);
         break;
@@ -158,9 +154,9 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         travel_time = -1;
         goto simple_direction_effect;
     case 0xc:
-        func_800154fc(predicted.vx - position.vx,
-                      predicted.vy - position.vy,
-                      predicted.vz - position.vz,
+        func_800154fc(player->vx - position.vx,
+                      player->vy - position.vy,
+                      player->vz - position.vz,
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
@@ -179,7 +175,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                       travel_time, 0x400, 1);
         break;
     case 0x6e:
-        parameters = va_arg(arguments, const u16 *);
+        parameters = (const u16 *)arguments[1];
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {
@@ -195,9 +191,8 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             spawned->unknown_28 = group->unknown_34;
             spawned->unknown_15 = group->unknown_09;
             spawned->position.vx = position.vx;
-            spawned->position.vy = position.vy;
+            spawned->position.vy = position.vy + 4096;
             spawned->position.vz = position.vz;
-            spawned->position.vy += 4096;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
@@ -205,7 +200,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         }
         break;
     case 0x70:
-        parameters = va_arg(arguments, const u16 *);
+        parameters = (const u16 *)arguments[1];
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {
@@ -221,9 +216,8 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
             spawned->unknown_28 = group->unknown_34;
             spawned->unknown_15 = group->unknown_09;
             spawned->position.vx = position.vx;
-            spawned->position.vy = position.vy;
+            spawned->position.vy = position.vy + (group->unknown_14 >> 1);
             spawned->position.vz = position.vz;
-            spawned->position.vy += group->unknown_14 >> 1;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
@@ -248,10 +242,10 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                               travel_time >> 6, &trajectory_target);
             }
         } while (count != 0);
-        orientation.motion.vx = trajectory_angle;
         orientation.motion.vy = func_8003c3e0(current, &trajectory_target,
                                               800, &position, &direction,
                                               trajectory_angle, 0xc00, 1);
+        orientation.motion.vx = trajectory_angle;
         orientation.motion.vz = 0;
         effect = func_80040308(effect_id, 0x23, kind, &position, &direction,
                               &orientation.motion);
@@ -262,5 +256,4 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         }
         break;
     }
-    va_end(arguments);
 }

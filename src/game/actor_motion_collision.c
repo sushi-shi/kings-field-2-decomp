@@ -1,13 +1,8 @@
 #include <kf/lib/address.h>
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
+#include <kf/game/player.h>
 #include <kf/lib/math.h>
-
-extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
-                          u16 value4, u16 value5, u16 value6, u16 value7,
-                          u16 value8, u16 value9, u16 value10,
-                          const VECTOR *position);
 
 ADDRESS(0x8003b33c, 0x1e4)
 s32 func_8003b33c(SVECTOR *motion)

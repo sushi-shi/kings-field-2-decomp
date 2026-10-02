@@ -3,10 +3,6 @@
 #include <kf/game/player.h>
 #include <kf/game/event_counter.h>
 
-extern void func_80019240(void);
-extern void func_800192ac(void);
-extern void func_800192dc(void);
-
 DATA(0x80064c30, 0xb40)
 KfMenuGlyphRow menu_glyph_rows[120] = {
     {{4111, 4101, 45, -1, 0, 0, 0, 0, 0, 0, 0, 0}},

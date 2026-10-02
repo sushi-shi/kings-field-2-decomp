@@ -1,11 +1,9 @@
 #include <kf/lib/address.h>
 #include <kf/lib/types.h>
+#include <kf/game/card.h>
 #include <psyq/kernel.h>
 
 typedef char kf_card_directory_entry_size[sizeof(struct DIRENTRY) == 40 ? 1 : -1];
-
-extern s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
-    s32 *slot_id);
 
 ADDRESS(0x8001af30, 0x100)
 s32 func_8001af30(const struct DIRENTRY *card_entries, s16 *glyph_rows,

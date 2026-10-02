@@ -11,14 +11,6 @@
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
-extern void func_80045f20(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
-                          s32 height_offset, s32 z_offset, VECTOR *output);
-extern void func_80045fd4(KfScenePoseView *destination,
-                          const VECTOR *start_position,
-                          const VECTOR *end_position,
-                          const SVECTOR *start_angles,
-                          const SVECTOR *end_angles, s32 fraction);
-
 ADDRESS(0x800475d8, 0x6c0)
 void func_800475d8(KfMapObject *object, ...)
 {

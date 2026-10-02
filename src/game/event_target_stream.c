@@ -2,20 +2,11 @@
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
+#include <kf/game/event_stream.h>
 #include <kf/game/graphics.h>
+#include <kf/game/menu.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
-
-extern u8 *func_800461a0(KfActor *actor);
-extern u8 func_80046144(const KfTargetCandidate *candidate, u8 marker);
-extern void func_800460a0(KfActor *actor, u8 state, u16 phase,
-                           s32 target_phase, s32 phase_step);
-extern void func_80034e10(u16 archive_slot, u16 archive_entry);
-extern void func_80028fa8(void);
-extern void func_8001ceb8(s32 value);
-extern void func_8001dc64(void);
-extern void func_8001d8d0(void);
-extern s32 func_8001d6a8(void);
 
 RODATA(0x80012890, 0x40)
 

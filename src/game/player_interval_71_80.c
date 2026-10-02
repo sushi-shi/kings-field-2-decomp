@@ -2,12 +2,10 @@
 #include <kf/lib/types.h>
 #include <kf/game/effect.h>
 #include <kf/game/event_counter.h>
+#include <kf/game/event_state.h>
 #include <kf/game/menu.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
-
-void func_8002722c(s32 value);
-void func_8004678c(const VECTOR *position, const KfPlayerViewRotation *rotation, s32 value);
 
 ADDRESS(0x8002897c, 0x1c)
 s32 func_8002897c(s32 value)

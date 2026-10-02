@@ -5,9 +5,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_8002b874(void);
-
 enum {
     COLLISION_DEPTH_ARM_HEIGHT = 200,
     COLLISION_DEPTH_DEATH_LIMIT = 32000
@@ -39,7 +36,7 @@ void func_80027988(s32 magnitude)
 }
 
 ADDRESS(0x800279cc, 0x5ac)
-void func_800279cc(void)
+void player_update_vertical_motion(void)
 {
     s32 next_y;
     s32 height_difference;

@@ -1,22 +1,16 @@
 #include <kf/game/actor.h>
+#include <kf/game/audio.h>
 #include <kf/game/callback.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
+#include <kf/game/event_stream.h>
+#include <kf/game/graphics.h>
 #include <kf/game/map_object.h>
+#include <kf/game/menu.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
-
-extern s32 func_80045e5c(const VECTOR *position,
-                         const struct KfEulerAngles *angles);
-extern s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-extern void func_800462bc(KfActor *actor);
-extern void func_800475d8(KfMapObject *object, ...);
-extern void func_80034e10(u16 archive_slot, u16 archive_entry);
-extern void func_80028fa8(void);
-extern void func_8001bcfc(void);
-extern void func_800293d4(u8 mode);
 
 ADDRESS(0x80047c98, 0x660)
 void func_80047c98(const VECTOR *position, const KfPlayerViewRotation *rotation)

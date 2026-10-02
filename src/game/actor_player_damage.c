@@ -4,12 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
-                          u16 magic_08, u16 magic_0a, u16 magic_0c,
-                          u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, u16 radius, s32 effect_flags,
-                          const VECTOR *position);
-
 ADDRESS(0x8003a318, 0x2fc)
 void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,

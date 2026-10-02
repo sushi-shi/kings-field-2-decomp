@@ -4,19 +4,13 @@
 #include <kf/game/callback.h>
 #include <kf/game/cd.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/map_placed.h>
 #include <kf/game/memory.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
 #include <psyq/audio.h>
-
-extern void func_80015d50();
-extern void func_800160e8(s32 dx, s32 dy, s32 dz);
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
-extern void func_8003f860(const void *records);
-extern void func_80035894(const KfMapObjectPlacement *placements);
-extern void func_800489ac(s32 save_slot);
 
 RODATA(0x80011058, 0x1c)
 
@@ -135,7 +129,7 @@ phase_three:
                 (u32 *)(stream + 4), 0xcb0);
             actor_fixup_group_targets();
             stream += *(u32 *)stream + 4;
-            func_8003f860(stream + 4);
+            func_8003f860((const struct KfActorLoadRecord *)(stream + 4));
             stream += *(u32 *)stream + 4;
             func_80035894((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;

@@ -181,6 +181,8 @@ extern SVECTOR menu_item_preview_rotation;
 extern s32 menu_item_preview_rotation_step;
 extern KfMenuGlyphRow menu_glyph_rows[120];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
+extern KfMenuLabelSuffix menu_equipment_labels_64910[10];
+extern s16 menu_row_prefix_649ec[4];
 extern u8 menu_item_mask_pages[6][120];
 void func_80019ce4(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];
@@ -253,5 +255,31 @@ s32 func_8001d6a8(void);
 void func_8001d8d0(void);
 void func_8001dc64(void);
 s32 func_8001876c(void);
+void func_80019240(void);
+void func_800192ac(void);
+void func_800192dc(void);
+void func_80019ed4(s32 category);
+void func_8001a2f4(void);
+void func_8001a4f0(void);
+s32 func_8001ac80(void);
+s32 func_8001b14c(void);
+void func_8001bf68(s32 slot);
+s32 func_8001c12c(s32 kind);
+void func_8001c62c(KfMenuGlyphString *rows);
+void func_8001c770(KfMenuGlyphString *rows);
+void func_8001c8b0(KfMenuGlyphString *rows);
+void func_8001c9f4(KfMenuGlyphString *rows);
+void func_8001cad4(KfMenuGlyphString *rows);
+void func_8001cb44(KfMenuGlyphString *rows, s32 kind);
+void func_8001ccd4(KfMenuGlyphString *rows);
+void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
+    s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
+void func_8001d030(s32 kind);
+void func_8001d3b4(s32 kind);
+void func_8001ddd0(void);
+void func_8001e0a8(void);
+void func_8001f008(void);
+void func_8001f798(KfMenuGlyphString *left, KfMenuGlyphString *right,
+    const u8 *selected);
 
 #endif

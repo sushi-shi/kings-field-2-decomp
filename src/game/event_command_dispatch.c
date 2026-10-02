@@ -14,27 +14,6 @@
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
 
-extern s32 func_80045e5c(const VECTOR *position,
-                         const struct KfEulerAngles *rotation);
-extern void func_800366fc(u8 identifier);
-extern s32 func_800368b4(KfMapObject *object, s32 command);
-extern void func_80046700(KfEventObjectView *event, s32 object_id);
-extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
-                              s32 max_distance, s32 yaw_limit, s32 pitch_limit,
-                              s32 *distance, s32 variation);
-extern void func_80034e10(u16 archive_slot, u16 archive_entry);
-extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
-extern void func_80045f20(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
-                          s32 height_offset, s32 z_offset, VECTOR *output);
-extern void func_80045fd4(KfScenePoseView *destination,
-                          const VECTOR *start_position,
-                          const VECTOR *end_position,
-                          const SVECTOR *start_angles,
-                          const SVECTOR *end_angles, s32 fraction);
-extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
-extern void func_80038f20(void);
-extern void func_80016820(void);
-extern void func_800314d4(u8 control, u8 red, u8 green, u8 blue);
 
 DATA(0x800679a0, 0x8)
 u8 DAT_800679a0[8] = {7, 8, 9, 10, 0xff, 0, 0, 0};

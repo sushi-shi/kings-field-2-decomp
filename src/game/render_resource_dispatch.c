@@ -10,20 +10,8 @@
 #include <kf/game/memory.h>
 #include <kf/game/player.h>
 #include <kf/game/render_mask.h>
+#include <kf/game/render_model.h>
 #include <kf/game/resources.h>
-
-extern void func_80031850(u8 layer, u16 asset_index, const VECTOR *position,
-                           const struct KfEulerAngles *rotation,
-                           const SVECTOR *scale, KfPoolRecord **cache,
-                           MATRIX *world_matrix, u16 clip, u16 phase,
-                           u8 lighting_override, s16 lighting_blend,
-                           u8 render_mode, s32 depth);
-extern void func_80031d8c(s32 asset_index, const struct KfEulerAngles *rotation,
-                           KfPoolRecord **cache, s32 clip, u16 phase,
-                           s32 blend_mode, s32 lighting_flags, s16 depth);
-extern s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
-
-extern MATRIX render_world_identity_matrix;
 
 /* The two flag ranges are consumed as byte arrays by the resource updaters. */
 ADDRESS(0x8003247c, 0xb70)

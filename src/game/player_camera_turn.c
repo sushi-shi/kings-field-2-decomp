@@ -10,7 +10,7 @@ enum {
 };
 
 ADDRESS(0x80028224, 0x2f8)
-void func_80028224(void)
+void player_update_camera_rotation(void)
 {
     if (player_state.flags_140.low & 0x8000) {
         player_state.yaw_step += player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
@@ -80,7 +80,7 @@ void func_80028224(void)
 }
 
 ADDRESS(0x8002851c, 0x460)
-void func_8002851c(void)
+void player_update_horizontal_motion(void)
 {
     s16 forward;
     s16 strafe;

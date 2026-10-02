@@ -482,8 +482,8 @@ KfPlayerLevelGrowth	0x06	0x02	magic_step	u16	supported	asm;xrefs;KF1 player.h co
 KfPlayerLevelGrowth	0x08	0x04	experience_threshold	u32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerMagicIdSequence	0x00	0x0c	effect_ids	u8[12]	supported	asm;func_80026498 indexed lbu;retail bytes	twelve effect IDs
 KfPlayerMagicIdSequence	0x0c	0x08	attack_masks	u16[4]	supported	asm;func_80028998 lhu and pointer increment;retail bytes	0x20,0x10,0x80,0xffff sentinel
-KfPlayerMovementSpeed	0x00	0x02	unsigned_value	u16	supported	asm;func_800279cc	view bob phase reads lhu
-KfPlayerMovementSpeed	0x00	0x02	signed_value	s16	supported	asm;func_800279cc	falling threshold reads lh
+KfPlayerMovementSpeed	0x00	0x02	unsigned_value	u16	supported	asm;player_update_vertical_motion	view bob phase reads lhu
+KfPlayerMovementSpeed	0x00	0x02	signed_value	s16	supported	asm;player_update_vertical_motion	falling threshold reads lh
 KfPlayerPositionReaction	0x00	0x01	mode	u8	supported	asm;func_800291ec	cleared before position reaction
 KfPlayerPositionReaction	0x01	0x03	unknown_01	u8[3]	opaque	game/player.h	padding before aligned position
 KfPlayerPositionReaction	0x04	0x10	position	VECTOR	supported	asm;func_800291ec	three signed world-position words stored at +0x150/+0x154/+0x158
@@ -570,9 +570,9 @@ KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet m
 KfPlayerState	0xd0	0x01	unknown_d0	u8	supported	asm;func_80029464	set to 0x40 when entering state 0x10
 KfPlayerState	0xd1	0x07	unknown_d1	u8[7]	opaque	asm;player_death_begin	not yet modelled
 KfPlayerState	0xd8	0x10	camera_position	VECTOR	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
-KfPlayerState	0xe8	0x02	unknown_e8	u16	opaque	asm;func_8002851c	cleared when movement is idle
+KfPlayerState	0xe8	0x02	unknown_e8	u16	opaque	asm;player_update_horizontal_motion	cleared when movement is idle
 KfPlayerState	0xea	0x02	unknown_ea	u16	opaque	asm;player_get_camera_pose	not yet modelled
-KfPlayerState	0xec	0x02	unknown_ec	u16	opaque	asm;func_8002851c	cleared when movement is idle
+KfPlayerState	0xec	0x02	unknown_ec	u16	opaque	asm;player_update_horizontal_motion	cleared when movement is idle
 KfPlayerState	0xee	0x02	unknown_ee	u16	opaque	asm;player_get_camera_pose	not yet modelled
 KfPlayerState	0xf0	0x08	camera_rotation	KfPlayerViewRotation	supported	asm;player_get_camera_pose;player_reset_view	three signed 16-bit camera angles and fourth halfword
 KfPlayerState	0xf8	0x08	camera_rotation_target	KfPlayerViewRotation	supported	asm;player_reset_view	copied into current rotation
@@ -580,7 +580,7 @@ KfPlayerState	0x100	0x06	unknown_100	u16[3]	opaque	asm;player_reset_view	cleared
 KfPlayerState	0x106	0x02	unknown_106	u16	opaque	asm;player_death_begin	cleared when death begins
 KfPlayerState	0x108	0x06	unknown_108	u16[3]	opaque	asm;player_reset_view	cleared by view reset
 KfPlayerState	0x10e	0x02	unknown_10e	u8[2]	opaque	asm;player_reset_view	not yet modelled
-KfPlayerState	0x110	0x06	unknown_110	s16[3]	supported	asm;func_800279cc	landing motion uses signed halfword compare and negative decrement
+KfPlayerState	0x110	0x06	unknown_110	s16[3]	supported	asm;player_update_vertical_motion	landing motion uses signed halfword compare and negative decrement
 KfPlayerState	0x116	0x02	unknown_116	u8[2]	opaque	asm;player_reset_view	not yet modelled
 KfPlayerState	0x118	0x08	unknown_118	SVECTOR	supported	asm;func_80025878	rotated into optional attack origin
 KfPlayerState	0x120	0x04	unknown_120	s32	opaque	asm;player_reset_view	set to 10000 by view reset
@@ -588,7 +588,7 @@ KfPlayerState	0x124	0x04	unknown_124	s32	opaque	asm;player_reset_view	set to 100
 KfPlayerState	0x128	0x02	unknown_128	u16	opaque	asm;player_sync_position_to_map	selects map height probe layer
 KfPlayerState	0x12a	0x02	strafe_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x12c	0x02	forward_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
-KfPlayerState	0x12e	0x02	movement_speed	KfPlayerMovementSpeed	supported	asm;func_800279cc;KF1 player.h counterpart	dual signed and unsigned reads of one motion-speed halfword
+KfPlayerState	0x12e	0x02	movement_speed	KfPlayerMovementSpeed	supported	asm;player_update_vertical_motion;KF1 player.h counterpart	dual signed and unsigned reads of one motion-speed halfword
 KfPlayerState	0x130	0x02	yaw_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x132	0x02	pitch_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x134	0x02	unknown_134	s16	opaque	asm;player_get_camera_pose	vertical position contribution
@@ -598,8 +598,8 @@ KfPlayerState	0x13a	0x02	unknown_13a	s16	opaque	asm;player_reset_view	cleared by
 KfPlayerState	0x13c	0x02	unknown_13c	s16	opaque	asm;player_initialize_state	cleared on new state
 KfPlayerState	0x13e	0x02	unknown_13e	s16	opaque	asm;player_initialize_state	cleared on new state
 KfPlayerState	0x140	0x04	flags_140	KfPlayerFlags140	supported	asm;func_80029014;player_clear_motion	full-word and low-halfword flag views
-KfPlayerState	0x144	0x04	movement_step_limit	s32	supported	asm;func_8002851c;KF1 player_update.c	signed full-word movement acceleration limit
-KfPlayerState	0x148	0x04	turn_step_limit	s32	supported	asm;func_80028224;KF1 player_update.c	signed full-word turn step and low-halfword clamp value
+KfPlayerState	0x144	0x04	movement_step_limit	s32	supported	asm;player_update_horizontal_motion;KF1 player_update.c	signed full-word movement acceleration limit
+KfPlayerState	0x148	0x04	turn_step_limit	s32	supported	asm;player_update_camera_rotation;KF1 player_update.c	signed full-word turn step and low-halfword clamp value
 KfPlayerState	0x14c	0x14	reaction	KfPlayerReactionOverlay	supported	asm;func_800291ec;func_800293d4;func_80029464	overlapping death, camera and position reaction views
 KfPlayerViewReaction	0x00	0x01	mode	u8	supported	asm;player_reset_view	camera reaction mode
 KfPlayerViewReaction	0x01	0x01	step	u8	supported	asm;player_reset_view	camera reaction step

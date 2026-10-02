@@ -1,8 +1,6 @@
 #include <kf/game/player.h>
+#include <kf/game/menu.h>
 #include <kf/lib/address.h>
-
-void func_800192ac(void);
-void func_800192dc(void);
 
 ADDRESS(0x80019240, 0x6c)
 void func_80019240(void)

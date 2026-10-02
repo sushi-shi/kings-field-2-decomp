@@ -6,7 +6,7 @@
 
 
 ADDRESS(0x80027f78, 0x2ac)
-s32 func_80027f78(void)
+s32 player_move_reaction_with_collision(void)
 {
     VECTOR next;
     s32 flags;

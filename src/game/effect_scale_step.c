@@ -1,9 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/effect.h>
 
-extern void func_8003ff18(VECTOR *position, s32 start, s32 end, s32 arg5,
-                          s32 arg3, s32 fixed_scale);
-
 ADDRESS(0x80041cd0, 0xac)
 void func_80041cd0(s32 multiplier, s32 limit, s32 increment, s32 arg3, s32 arg5)
 {

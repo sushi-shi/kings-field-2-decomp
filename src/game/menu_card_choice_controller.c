@@ -4,10 +4,6 @@
 #include <psyq/audio.h>
 #include <psyq/cd.h>
 
-extern s32 func_8001ac80(void);
-extern s32 func_8001b14c(void);
-extern void func_8001ccd4(KfMenuGlyphString *rows);
-
 ADDRESS(0x8001aa9c, 0x1e4)
 s32 func_8001aa9c(void)
 {

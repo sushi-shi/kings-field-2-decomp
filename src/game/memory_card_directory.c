@@ -44,11 +44,6 @@ KfCardAssets memory_card_assets = {
 DATA(0x8006d6a8, 0x7)
 char DAT_8006d6a8[7] = "bu00:*";
 
-extern s8 DAT_8006d6a4;
-extern s8 DAT_8006d6a5;
-extern void func_800492dc(const u8 *payload);
-extern void func_80048d24(u8 *payload);
-
 ADDRESS(0x800226ec, 0x1dc)
 s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count)
 {

@@ -13,6 +13,7 @@
 #include <kf/game/memory.h>
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
+#include <kf/game/resources.h>
 #include <psyq/audio.h>
 #include <psyq/cd.h>
 #include <psyq/kernel.h>
@@ -37,19 +38,6 @@ void main(void)
     ExitCriticalSection();
     game_main_loop();
 }
-
-extern void func_800139c4(void);
-extern void func_80015d58(void);
-extern void func_80015fd4(void);
-extern void func_80016820(void);
-extern void func_8002bc18(void);
-extern void func_8002bd3c(void);
-extern void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
-                          s32 kind, s32 width_bytes, u16 height);
-extern void func_8002985c(void);
-extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
-extern void func_80036ed4(void);
-extern void func_8003f610(void);
 
 ADDRESS(0x8001369c, 0x2f0)
 void game_main_loop(void)

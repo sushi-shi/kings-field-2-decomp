@@ -4,9 +4,6 @@
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 
-extern void func_8003983c(void);
-extern void func_8003d184(void);
-
 ADDRESS(0x8003f610, 0x1dc)
 void func_8003f610(void)
 {

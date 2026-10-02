@@ -231,6 +231,14 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker);
 void func_800366fc(u8 identifier);
 s32 func_800368b4(KfMapObject *object, s32 marker);
 s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
+s32 func_80036b68(KfMapObject *source, KfMapObject *target,
+                  SVECTOR *start_offset, SVECTOR *end_offset,
+                  s32 brighten, s32 duration);
+void func_800369b8(KfMapObject *object, s32 vertex_index, VECTOR *result);
+void func_800365d8(u16 parameter, const VECTOR *origin, s32 height_offset);
+void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
+                             s32 height_offset);
+void func_80036ed4(void);
 void func_800357a0(s32 mode);
 s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);

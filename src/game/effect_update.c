@@ -9,16 +9,6 @@
 
 enum { EFFECT_FIXED_MAGIC_POWER = 5 };
 
-extern void func_800248a8(u16 value0, u16 value1, u16 value2, u16 value3,
-                          u16 value4, u16 value5, u16 value6, u16 value7,
-                          u16 value8, u16 value9, u16 value10,
-                          const VECTOR *position);
-extern void func_80039c94(s32 actor_index, u16 power, u16 magic_06,
-                          u16 magic_08, u16 magic_0a, u16 magic_0c,
-                          u16 magic_0e, u16 magic_10, u16 magic_12,
-                          u16 magic_14, u16 radius, s32 effect_flags,
-                          const VECTOR *position);
-
 ADDRESS(0x8003fb94, 0x218)
 void func_8003fb94(s32 kind, s32 record_type, s32 radius, u16 power,
                    u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
@@ -98,15 +88,6 @@ void func_8003feb0(s32 kind)
     func_8003fdd0(kind, 5000, &position);
 }
 
-
-extern void func_80024ca4(VECTOR *position, s32 start, s32 end, s32 arg3,
-                          s32 arg4, u16 magic_06, u16 magic_08, u16 magic_0a,
-                          u8 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
-                          u16 magic_12, u16 magic_14, s32 arg5, u8 record_id);
-extern void func_8003a318(VECTOR *position, s32 start, s32 end, s32 arg3,
-                          u16 arg4, u16 power, u16 magic_06, u16 magic_08,
-                          u16 magic_0a, u16 magic_0c, u16 magic_0e, u16 magic_10,
-                          u16 magic_12, u16 magic_14, s32 arg5, u16 effect_flags);
 
 ADDRESS(0x8003ff18, 0x1a8)
 void func_8003ff18(VECTOR *position, s32 start, s32 end, s32 arg3, s32 arg4, s32 arg5)

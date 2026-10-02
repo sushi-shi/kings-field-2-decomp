@@ -5,8 +5,6 @@
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
-extern s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-
 ADDRESS(0x80045e18, 0x24)
 void audio_play_sound_64(void)
 {

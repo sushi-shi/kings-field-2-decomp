@@ -4,8 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern s16 menu_row_prefix_649ec[4];
-
 RODATA(0x800110b8, 0x4c)
 
 ADDRESS(0x80019ed4, 0x420)

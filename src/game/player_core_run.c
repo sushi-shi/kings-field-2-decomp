@@ -29,9 +29,6 @@ void player_restore_equipment_effects(void)
     player_recalculate_combat_stats();
 }
 
-extern void func_80016820(void);
-extern void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
-
 ADDRESS(0x8002360c, 0x208)
 void func_8002360c(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)

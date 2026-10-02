@@ -3,8 +3,7 @@
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
-
-extern void func_8002e4dc(s32 object_index, s32 depth_bias);
+#include <kf/game/tmd_packets.h>
 
 ADDRESS(0x800316c8, 0x188)
 void func_800316c8(void)

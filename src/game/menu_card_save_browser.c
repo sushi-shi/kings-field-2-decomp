@@ -3,12 +3,6 @@
 #include <kf/game/menu.h>
 #include <psyq/kernel.h>
 
-extern s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
-extern void func_8001c550(KfMenuGlyphString *rows);
-extern void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
-    s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
-extern void func_8001bf68(s32 slot);
-
 ADDRESS(0x8001bcfc, 0x26c)
 void func_8001bcfc(void)
 {

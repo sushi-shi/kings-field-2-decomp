@@ -6,8 +6,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern s16 menu_row_prefix_649ec[4];
-
 ADDRESS(0x8001a4f0, 0x30c)
 void func_8001a4f0(void)
 {

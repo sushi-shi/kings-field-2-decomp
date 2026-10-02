@@ -3,6 +3,9 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/memory.h>
+#include <psyq/sdk.h>
+
+struct KfPlayerViewRotation;
 
 enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
 
@@ -57,11 +60,16 @@ typedef char kf_event_state_saved_offsets_offset[
 
 extern KfEventState event_state;
 
+void func_8004678c(const VECTOR *position,
+                   const struct KfPlayerViewRotation *rotation, s32 command);
+void func_80047c98(const VECTOR *position,
+                   const struct KfPlayerViewRotation *rotation);
 void func_800482f8(void);
 void func_800483d8(u8 **pointers);
 void func_80048428(s32 delta);
 void func_80048498(u8 **pointers);
 void func_800484e4(s32 delta);
 void func_80048554(s32 save_slot);
+void func_800489ac(s32 save_slot);
 
 #endif

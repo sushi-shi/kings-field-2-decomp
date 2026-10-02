@@ -123,8 +123,6 @@ charge_gate:
     player_state.selected_magic_record = record;
 }
 
-extern void func_8002b874(void);
-
 enum {
     PLAYER_MOVE_RADIUS = 800,
     PLAYER_MOVE_HEIGHT = 1700,

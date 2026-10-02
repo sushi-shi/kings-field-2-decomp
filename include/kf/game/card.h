@@ -66,6 +66,9 @@ extern s8 DAT_8006d6a5;
 
 struct DIRENTRY;
 s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
+s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
+    s32 *slot_id);
+s32 func_80022ca0(s32 slot);
 void input_wait_release(void);
 u32 input_read_mark_active(void);
 void memory_card_initialize(void);

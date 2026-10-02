@@ -13,11 +13,11 @@ s32 func_8003fa68(const VECTOR *position, s32 arg1, s32 angle)
     if (record->cooldown == 0) {
         y = position->vy + ((angle & 0xfff) >> 1);
         switch (record->type & 7) {
-        case 1:
-            result = collision_query_world(position->vx, y, position->vz, arg1, angle, 0xa1);
-            break;
         case 2:
             result = collision_query_world(position->vx, y, position->vz, arg1, angle, 0x31);
+            break;
+        case 1:
+            result = collision_query_world(position->vx, y, position->vz, arg1, angle, 0xa1);
             break;
         case 3:
             result = collision_query_world(position->vx, y, position->vz, arg1, angle, 0xb1);

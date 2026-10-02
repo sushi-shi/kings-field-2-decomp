@@ -4,10 +4,6 @@
 #include <kf/game/effect.h>
 #include <kf/game/player.h>
 
-extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
-                               s32 max_distance, s32 filter_a, s32 filter_b,
-                               s32 *distance, s32 flags);
-
 ADDRESS(0x8004195c, 0x1b8)
 s32 func_8004195c(s32 max_length, s32 scale, s32 turn_step,
                   s32 probe_radius, s32 probe_angle, s32 proximity,

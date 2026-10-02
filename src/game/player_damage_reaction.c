@@ -4,9 +4,6 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-extern void func_80029464(const SVECTOR *rotation, const SVECTOR *motion, s16 duration);
-extern void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion, s16 duration);
-
 enum {
     KF_PLAYER_DAMAGE_DEATH_STATE = 0x11,
     KF_PLAYER_DAMAGE_ORIGIN_HEIGHT = 850,

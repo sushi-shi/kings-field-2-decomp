@@ -8,37 +8,6 @@
 #include <kf/game/player.h>
 #include <psyq/libc.h>
 
-extern void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount);
-extern void func_8003d0e8(KfActor *actor);
-extern s32 func_8003b9a4(s32 decay, s32 target);
-extern s32 func_8003b33c(SVECTOR *motion);
-extern s32 func_8003bae4(s16 angle, s32 speed, s32 step, s32 target);
-extern s32 func_8003b520(s32 mode, s32 target_x, s32 target_y,
-                         s32 target_z, s32 trajectory_parameter,
-                         s32 trajectory_speed);
-extern void func_8003b5bc(void);
-extern s32 func_8003a614(s32 minimum_distance, s32 maximum_distance,
-                          s32 y_offset, s32 angle_tolerance, u16 damage0,
-                          u16 damage1, u16 damage2, u16 damage3);
-extern s32 func_8003bcd0(s16 angle, s32 speed, s32 range, s32 step,
-                         s32 mode, s32 target);
-extern s32 func_8003bf74(const struct KfEulerAngles *angles, s32 speed,
-                         s32 range, s32 step, s32 mode, s32 target);
-extern s32 func_8003bd40(s32 world_x, s32 world_z, s32 speed, s32 range,
-                         s16 reference_angle, s32 step, s32 mode, s32 target);
-extern void func_8003bba0(KfActor *actor, s32 target_angle, s32 max_speed,
-                          s32 acceleration);
-extern void actor_reset_target_and_reselect(void);
-extern void func_8003c220(s32 first, s32 reverse, s32 forward, s32 fast,
-                          s32 slow, s32 phase_step);
-extern void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...);
-extern void func_800365d8(u16 parameter, const VECTOR *origin,
-                          s32 height_offset);
-extern void map_object_spawn_effect(u8 source, u8 object_id,
-                                    const VECTOR *position,
-                                    s32 height_offset);
-extern void func_8003b5d0(void);
-
 RODATA(0x800120d8, 0x3c4)
 
 ADDRESS(0x8003d184, 0x248c)

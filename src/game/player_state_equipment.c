@@ -373,10 +373,6 @@ void player_begin_weapon_attack(s32 mode)
     player_state.unknown_9c[0] = 0;
 }
 
-extern KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
-                               s32 max_distance, s32 filter_a, s32 filter_b,
-                               s32 *distance, s32 flags);
-
 ADDRESS(0x80025878, 0x1a0)
 KfActor *func_80025878(s32 scale, VECTOR *position, SVECTOR *direction,
                        s32 *distance)

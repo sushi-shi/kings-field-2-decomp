@@ -4,14 +4,8 @@
 #include <psyq/kernel.h>
 #include <psyq/pad.h>
 
-extern void func_8001c550(KfMenuGlyphString *rows);
-extern void func_8001ba80(KfMenuGlyphString *rows);
-extern void func_8001bb94(KfMenuGlyphString *rows);
-extern s32 func_8001b834(void);
-extern s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
-
 ADDRESS(0x8001b554, 0x2e0)
-s32 func_8001b554(void)
+s32 menu_card_browser(void)
 {
     struct DIRENTRY entries[15];
     KfMenuGlyphString rows[4];

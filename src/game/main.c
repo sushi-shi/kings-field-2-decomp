@@ -11,6 +11,7 @@
 #include <kf/game/graphics.h>
 #include <kf/game/map_object.h>
 #include <kf/game/memory.h>
+#include <kf/game/menu.h>
 #include <kf/game/player.h>
 #include <psyq/audio.h>
 #include <psyq/cd.h>
@@ -41,7 +42,6 @@ extern void func_800139c4(void);
 extern void func_80015d58(void);
 extern void func_80015fd4(void);
 extern void func_80016820(void);
-extern s32 func_8001b554(void);
 extern void func_8002bc18(void);
 extern void func_8002bd3c(void);
 extern void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
@@ -89,7 +89,7 @@ void game_main_loop(void)
     game_graphics_runtime.collision_rotation_dirty = 1;
     func_8002bd3c();
     SsSetMVol(0x7f, 0x7f);
-    if (func_8001b554() != -1) {
+    if (menu_card_browser() != -1) {
         player_restore_equipment_effects();
     }
     func_80015fd4();

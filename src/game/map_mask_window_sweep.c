@@ -4,21 +4,6 @@
 #include <kf/game/render_mask.h>
 #include <psyq/sdk.h>
 
-typedef struct KfMapMaskShapePair {
-    s16 near;
-    s16 far;
-} KfMapMaskShapePair;
-
-extern KfMapMaskShapePair DAT_80067874[7];
-
-extern void func_8002bfac(void);
-extern void func_8002bfd4(const KfCollisionMaskPoint *start,
-                          const KfCollisionMaskPoint *end, u8 value);
-extern void func_8002c1d4(u8 value);
-extern void func_8002c290(s32 cursor_offset);
-extern void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
-                          s8 window_step, s32 mask_stride, s32 count);
-
 ADDRESS(0x8002c670, 0x7bc)
 void func_8002c670(void)
 {
@@ -41,7 +26,7 @@ void func_8002c670(void)
     s32 lighting_offset;
 
     pitch_weight = 0x1000 - rcos(game_graphics_runtime.render_state.view_rotation.vx);
-    pair = DAT_80067874;
+    pair = map_mask_pitch_shape_pairs;
     shape_cursor = shape;
     shape_index = 6;
     do {
@@ -181,7 +166,7 @@ void func_8002c670(void)
 }
 
 DATA(0x80067874, 0x1c)
-KfMapMaskShapePair DAT_80067874[7] = {
+KfMapMaskShapePair map_mask_pitch_shape_pairs[7] = {
     {0x0500, 0x0000},
     {(s16)0xf720, (s16)0xfb20},
     {0x0920, 0x0520},

@@ -60,7 +60,12 @@ extern u8 *memory_card_buffer;
 extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
+/* The adjacent slot-digit seed bytes still have unresolved storage ownership. */
+extern s8 DAT_8006d6a4;
+extern s8 DAT_8006d6a5;
 
+struct DIRENTRY;
+s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
 void input_wait_release(void);
 u32 input_read_mark_active(void);
 void memory_card_initialize(void);
@@ -74,5 +79,7 @@ void func_80023178(KfCardHeader *header, s32 slot_glyph);
 u32 memory_card_payload_byte_sum(const u8 *payload);
 s32 memory_card_wait_event(void);
 void memory_card_clear_events(void);
+void func_800492dc(const u8 *payload);
+void func_80048d24(u8 *payload);
 
 #endif

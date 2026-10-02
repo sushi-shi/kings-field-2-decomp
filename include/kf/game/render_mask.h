@@ -28,6 +28,22 @@ typedef struct KfCollisionMaskPoint {
     s32 z;
 } KfCollisionMaskPoint;
 
+typedef struct KfMapMaskShapePair {
+    s16 near;
+    s16 far;
+} KfMapMaskShapePair;
+
+typedef char kf_map_mask_shape_pair_size[sizeof(KfMapMaskShapePair) == 4 ? 1 : -1];
+
 extern KfRenderMaskScanState render_mask_scan_state;
+extern KfMapMaskShapePair map_mask_pitch_shape_pairs[7];
+
+void func_8002bfac(void);
+void func_8002bfd4(const KfCollisionMaskPoint *start,
+                   const KfCollisionMaskPoint *end, u8 value);
+void func_8002c1d4(u8 value);
+void func_8002c290(s32 cursor_offset);
+void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
+                   s8 window_step, s32 mask_stride, s32 count);
 
 #endif

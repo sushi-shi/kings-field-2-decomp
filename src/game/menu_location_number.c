@@ -5,16 +5,6 @@
 #include <kf/lib/address.h>
 #include <psyq/pad.h>
 
-extern s32 func_80018ac8(void);
-extern s32 func_80019834(void);
-extern void func_80019ac4(void);
-extern void func_8001a898(void);
-extern s32 func_8001aa9c(void);
-extern void func_8001b2dc(void);
-extern void func_8001e94c(void);
-extern void func_8002722c(s32 result);
-void func_800189f0(void);
-
 RODATA(0x80011098, 0x1c)
 
 ADDRESS(0x8001876c, 0x284)
@@ -70,32 +60,32 @@ selection_result:
             break;
         }
 
-        if (result == -99) {
-            cursor = func_8001e378(cursor, 7, &selection, &confirmed, &result);
-            buttons = PadRead(1);
-            for (frame = 0; frame < 2; frame++) {
-                menu_frame_begin();
-                if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
-                    func_800189f0();
-                func_8001e94c();
-                menu_draw_window(0, 8, cursor, confirmed);
-                menu_present_frame();
-            }
-            continue;
-        }
+        if (result != -99)
+            break;
 
-        if (result == -1)
-            func_80022300(0);
-        if (result == -3)
-            func_80021e00(1);
-        else
-            func_80021e00(0);
-        if (result != -1 && result != -3 && (result & 0x1000) != 0) {
-            func_8002722c(result & 0xfff);
-            result = -1;
+        cursor = func_8001e378(cursor, 7, &selection, &confirmed, &result);
+        buttons = PadRead(1);
+        for (frame = 0; frame < 2; frame++) {
+            menu_frame_begin();
+            if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
+                func_800189f0();
+            func_8001e94c();
+            menu_draw_window(0, 8, cursor, confirmed);
+            menu_present_frame();
         }
-        return result;
     }
+
+    if (result == -1)
+        func_80022300(0);
+    if (result == -3)
+        func_80021e00(1);
+    else
+        func_80021e00(0);
+    if (result != -1 && result != -3 && (result & 0x1000) != 0) {
+        func_8002722c(result & 0xfff);
+        result = -1;
+    }
+    return result;
 }
 
 ADDRESS(0x800189f0, 0xd8)

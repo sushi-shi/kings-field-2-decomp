@@ -10,7 +10,7 @@
 #include <psyq/sdk.h>
 
 ADDRESS(0x8001930c, 0x528)
-void func_8001930c(s32 menu_code)
+void menu_show_map_preview(s32 menu_code)
 {
     u32 entry;
     u8 *image;

@@ -191,6 +191,8 @@ u32 func_8001e484(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
 s32 menu_preview_choice(void *list_state, s32 label_kind,
     s32 render_mode, s32 item_id);
+void menu_show_map_preview(s32 menu_code);
+s32 menu_card_browser(void);
 /* Menu modes reinterpret the four payload words after the common list prefix. */
 void func_8001fc94(const void *list_state, s32 render_mode);
 void menu_blit_sprite(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
@@ -214,6 +216,14 @@ s32 func_80018d08(const u8 *mask, KfMenuGlyphRow *rows,
 s32 func_80018dec(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
 void func_80018f8c(s32 item_id);
+s32 func_80018ac8(void);
+s32 func_80019834(void);
+void func_80019ac4(void);
+void func_8001a898(void);
+s32 func_8001aa9c(void);
+void func_8001b2dc(void);
+void func_8001e94c(void);
+void func_800189f0(void);
 s32 func_800199d0(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
 void func_8001d340(const u8 *source, u8 *decoded, u32 *codes,
@@ -223,6 +233,10 @@ s32 func_8001af30(const struct DIRENTRY *card_entries, s16 *glyph_rows,
 void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,
     s32 detail5);
+void func_8001ba80(KfMenuGlyphString *rows);
+void func_8001bb94(KfMenuGlyphString *rows);
+s32 func_8001b834(void);
+void func_8001c550(KfMenuGlyphString *rows);
 void func_800217f0(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y);
 void func_80021c8c(s32 mode);
@@ -233,5 +247,11 @@ void func_80022300(s32 cue);
 void func_800223cc(void);
 s32 func_8001e378(s32 index, s32 last, s32 *selection, s32 *confirmed,
     s32 *cancelled);
+void func_8001bcfc(void);
+void func_8001ceb8(s32 kind);
+s32 func_8001d6a8(void);
+void func_8001d8d0(void);
+void func_8001dc64(void);
+s32 func_8001876c(void);
 
 #endif

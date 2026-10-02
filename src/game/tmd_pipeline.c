@@ -195,8 +195,8 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
-        u32 header = *(u32 *)packet;
-        u8 mode = header >> 24;
+        KfTmdPacketHeader header;
+        u8 mode;
         KfTmdPrimitive *face;
         KfScreenVertex *va;
         KfScreenVertex *vb;
@@ -204,6 +204,8 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
         KfScreenVertex *vd;
         s32 depth;
 
+        header.word = *(u32 *)packet;
+        mode = header.word >> 24;
         packet += KF_TMD_PACKET_HEADER_BYTES;
         face = (KfTmdPrimitive *)packet;
         switch (mode & KF_TMD_MODE_MASK) {
@@ -362,7 +364,7 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
             break;
         }
         }
-        packet += (header >> 6) & 0x3fc;
+        packet += TMD_PACKET_BODY_BYTES(header.word);
     }
 }
 
@@ -372,7 +374,7 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
     KfTmdObject *object;
     u8 *normals;
     u8 *packet;
-    u32 header;
+    KfTmdPacketHeader header;
     u32 remaining;
 
     object = tmd_get_object(object_index);
@@ -391,8 +393,8 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
         KfScreenVertex *vd;
         s32 depth;
 
-        header = *(u32 *)packet;
-        mode = header >> 24;
+        header.word = *(u32 *)packet;
+        mode = header.word >> 24;
         packet += KF_TMD_PACKET_HEADER_BYTES;
         face = (KfTmdPrimitive *)packet;
         switch (mode & KF_TMD_MODE_MASK) {
@@ -551,7 +553,7 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
             break;
         }
         }
-        packet += (header >> 6) & 0x3fc;
+        packet += TMD_PACKET_BODY_BYTES(header.word);
     }
 }
 
@@ -573,14 +575,16 @@ void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth)
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
-        u32 header = *(u32 *)packet;
-        u8 mode = header >> 24;
+        KfTmdPacketHeader header;
+        u8 mode;
         KfTmdPrimitive *face;
         KfScreenVertex *va;
         KfScreenVertex *vb;
         KfScreenVertex *vc;
         KfScreenVertex *vd;
 
+        header.word = *(u32 *)packet;
+        mode = header.word >> 24;
         packet += KF_TMD_PACKET_HEADER_BYTES;
         face = (KfTmdPrimitive *)packet;
         switch (mode & KF_TMD_MODE_MASK) {
@@ -722,6 +726,6 @@ void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth)
             break;
         }
         }
-        packet += (header >> 6) & 0x3fc;
+        packet += TMD_PACKET_BODY_BYTES(header.word);
     }
 }

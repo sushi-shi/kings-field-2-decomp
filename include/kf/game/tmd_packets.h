@@ -9,6 +9,8 @@
 enum {
     KF_TMD_PACKET_HEADER_BYTES = 4,
     KF_TMD_WORD_BYTES = 4,
+    KF_TMD_INPUT_LENGTH_TO_BYTES_SHIFT = 6,
+    KF_TMD_PACKET_BODY_BYTES_MASK = 0x3fc,
     KF_TMD_VECTOR_OFFSET_SHIFT = 3,
     KF_TMD_MODE_F3 = 0x20,
     KF_TMD_MODE_FT3 = 0x24,
@@ -26,6 +28,9 @@ enum {
 };
 
 #define TMD_PACKET_BODY(packet) ((packet) + KF_TMD_PACKET_HEADER_BYTES)
+#define TMD_PACKET_BODY_BYTES(header_word) \
+    (((header_word) >> KF_TMD_INPUT_LENGTH_TO_BYTES_SHIFT) & \
+     KF_TMD_PACKET_BODY_BYTES_MASK)
 #define tmd_packet_kind(word) (((word) >> 24) & KF_TMD_MODE_MASK)
 
 typedef union KfTmdPacketHeader {

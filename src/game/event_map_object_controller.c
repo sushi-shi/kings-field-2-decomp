@@ -114,6 +114,7 @@ void func_800475d8(KfMapObject *object, ...)
             if (previous_buttons == 0 && buttons != 0) {
                 goto button_pressed;
             }
+            previous_buttons = buttons;
             func_80045fd4((KfScenePoseView *)object, &first_position,
                           &next_position, &first_angles, &next_angles,
                           fraction);
@@ -124,7 +125,6 @@ void func_800475d8(KfMapObject *object, ...)
             cd_request_service_vab();
             cd_request_service_stream();
             func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
-            previous_buttons = buttons;
         }
     }
     object->unknown_0e = target_pitch;

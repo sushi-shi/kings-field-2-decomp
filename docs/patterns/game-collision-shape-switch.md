@@ -138,3 +138,38 @@ reverted. The rotation-1 correction alone scored 52.843407% text and
 rotation-3 test shifts pointer addends and lowers both percentages while
 reproducing the retail branch count. This remains WIP; the matching branch
 count does not establish complete control-flow equivalence.
+
+The opcode-`0x20` quarter-turn-1 arm is a branch target in retail: its first
+rotation compare at body `+0x2ac` branches forward to that arm, while the
+other rotations follow through. Reordering the same four C arms around that
+condition changes the candidate's first rotation compare from `bne` to the
+observed `beq` without changing its geometry. Isolated strict text rises from
+52.618134% to 52.887363%; RODATA remains 26.530613%, and focused CFG and
+branch counts remain 174/166 and 99/99. Other opcode and table-placement
+residues remain WIP.
+
+Off-tree opcode-`0x21` controls also put its rotation-1 arm behind the retail
+`beq`, but the compiler placed its shared X-bound continuation differently
+from retail. The best such trial reached 52.855770% strict text with unchanged
+RODATA; a cross-case shared-label variant reached 52.767857%. Neither improved
+the retained 52.887363% result, so the opcode-`0x21` source was left alone.
+
+Opcode `0x31` starts from the already-advanced operand pointer in retail:
+the entry delay slot copies that pointer, and body `+0x950` adds ten bytes
+for the conditional six-halfword record. Spelling the source cursor as
+`operand + 5` emits the matching operand-relative `addiu` rather than a
+record-relative twelve-byte increment. Focused CFG/branch counts stay
+174/166 and 99/99; isolated strict text is 52.881866%, a small metric
+decrease from 52.887363% despite the directly supported pointer provenance.
+
+The opcode cursor is advanced once for every record in retail's range-check
+delay slot at body `+0x1a8`; all case-specific increments then start from its
+operand pointer. The source now uses a post-increment opcode read and
+operand-relative record lengths, including the default one-halfword record.
+The probe schedules its pointer increment earlier at `+0x160` rather than in
+that delay slot, but its cursor state and command lengths are equivalent.
+Focused CFG and branch counts remain 174/166 and 99/99. Isolated strict text
+rises to 53.690933%, while RODATA falls to 19.132652% because case-body
+addends move; all 49 pointer rows retain the same 13 target classes and
+ordered class membership. The candidate has 34 internal text jumps against
+47 retail, and all 24 ordered HI16/LO16 data-reference pairs remain.

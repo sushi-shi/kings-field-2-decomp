@@ -836,6 +836,8 @@ promotes a probe to a proven historical toolchain.
   functions, including the 80-row defaults and same-module DATA relocation rule.
 - [kf2-game-effect-constructor-case23.md](kf2-game-effect-constructor-case23.md):
   retail-backed kind-23 variadic read order and focused/strict controls.
+- [kf2-game-effect-constructor-case101.md](kf2-game-effect-constructor-case101.md):
+  retail-backed kind-101 argument access across its initializer call.
 - [KF2 GAME effect dispatcher map](kf2-game-effect-dispatch-map.md): retail
   123-kind and five-phase switch tables, decoded handler/call topology, and
   remaining source and collision-cache ownership limits at `0x80042650`.

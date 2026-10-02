@@ -2860,6 +2860,95 @@ branches, and one return each. Isolated strict text is 92.334100%, RODATA
 `R_MIPS_26` jumps are 127 candidate versus 128 retail. All 128 ordered
 pointer rows/classes and 272 named referents remain exact.
 
+In kinds 103/121, the spawned branch calls `effect_play_spatial_sound`
+at body `+0x1294` and jumps directly to the four-child loop at `+0x12d0`
+(`j` at `+0x129c`, loop count three in its delay slot). The prior C fell
+through the nonspawn phase-zero tail update, which could decrement tail
+`+0x40` and change phase on a spawn. An explicit jump now preserves the
+retail paths. Focused compilation has 446/452 CFG blocks, 217/217
+branches, and one return each. Isolated strict text is 92.384610%,
+RODATA 27.529182%, candidate text 13,792 bytes, and `.rel.text` 470/470.
+All 128 ordered table pointer classes and 272 named referents remain exact.
+
+On the nonspawn phase-zero path, retail loads tail halfword `+0x40` as
+unsigned, calculates its decrement, shifts the original value for a signed
+test, and stores the decrement in the `bgtz` delay slot before an optional
+phase-one store (`+0x12ac..+0x12c8`). The C now snapshots that unsigned
+halfword, writes `count - 1`, and tests the saved count as signed. The
+compiled sequence matches this local retail order. Focused CFG improves to
+446/451 blocks with 217/217 branches; isolated strict text is 92.604190%,
+RODATA 28.015564%, candidate text 13,788 bytes, and `.rel.text` 470/470.
+The 128 ordered table pointer classes and 272 named referents remain exact.
+
+The two kind-103/121 collision-bound paths write their selected lower Y
+bound to stack `+0x5c`; later stores fill X and Z at `+0x58` and `+0x60`
+before passing that VECTOR to both constructors. The C now stores the bound
+in `spawn_position.vy` at selection time instead of carrying an independent
+scalar and assigning the vector member just before the calls. Focused CFG
+and branches stay 446/451 and 217/217. Isolated strict text rises to
+92.663315%, RODATA to 32.101166%, candidate text is 13,796 bytes,
+and `.rel.text` is 470/470; table and referent controls remain exact.
+
+Retail's two lower-bound selections each branch and write exactly one of
+the two cache words into `spawn_position.vy` (`+0x1158..+0x1170` and
+`+0x11d8..+0x11f0`). Explicit if/else stores in C recover those local
+`beqz`, `j` with store delay slot, and alternate store sequences. Focused
+CFG is 446/453 with 217/217 branches and one return each. Isolated strict
+text rises to 92.750000%; RODATA is 16.634241% after body-offset shifts,
+candidate text 13,812 bytes, and `.rel.text` 472/470. The two extra local
+`R_MIPS_26` rows are a remaining cross-body shape difference; all 128
+ordered table classes and 272 named referents are still exact.
+Only 9 of the 128 pointer addends are byte-exact at this intermediate body
+layout; the remaining values point to shifted case bodies while preserving
+the 64 target-equivalence classes and their order.
+
+Kind 6 phase zero falls through after creating eight children: retail sets
+phase one at body `+0x29a0` and immediately reads `updates_remaining` for
+the phase-one update, with no intervening jump. The previous C `break`
+delayed that update until the next dispatch and introduced an extra local
+`R_MIPS_26`. The raw-supported fallthrough now compiles with 446/450 CFG
+blocks, 217/217 branches, and one return each. Isolated strict text is
+92.823770%, RODATA 35.116730%, candidate text 13,812 bytes, and
+`.rel.text` 471/470 (129 versus 128 local jumps). All 128 ordered pointer
+rows/classes and 272 named referents remain exact.
+
+Kind 5 phase zero has one shared default count path. Retail branches on
+actor tail byte `0xff` to count 16, step zero, and one update; after
+`asset_vertex_count`, a zero count branches backward to that same default
+block (`+0x190c..+0x195c`). Nonzero counts below 33 use step `0x1000`,
+and larger counts divide the shifted count before capping it at 32. The
+C now spells that shared path and its actor branch explicitly. Focused
+compilation remains 446/450 CFG blocks and 217/217 branches. Isolated
+strict text reaches 93.141500%; RODATA remains 35.116730%, candidate
+text 13,812 bytes, and `.rel.text` 471/470. The 128 pointer rows/classes/
+order and 272 named referents remain exact.
+
+Kind 6 phase one records the collision actor index at `record+0x46`, then
+reloads that byte before indexing `actor_state` (retail body `+0x2a44`
+and `+0x2a48`). Indexing through the stored record member in C restores
+that `sb`/`lbu` value chain. Focused compilation reports 446/450 CFG
+blocks and 217/217 branches. Isolated strict text reaches 93.246840%;
+RODATA is 33.754864%, candidate text 13,820 bytes, and `.rel.text`
+471/470. All 128 ordered table pointer classes and 272 named referents
+remain exact.
+
+On the kind 6 actor-capture path, retail stores the negative actor-facing
+angle in record halfword `+0x2a`, the same `rotation.pad` field read by
+phase two. The previous C wrote `rotation.vy` at `+0x26`; correcting the
+field makes the local store target exact. Focused CFG remains 446/450
+with 217/217 branches. Isolated strict text is 93.247130%, RODATA
+33.754864%, text 13,820 bytes, and `.rel.text` 471/470. All ordered
+table-pointer classes and named referents remain exact.
+
+The kind 6 low-count branch sets phase three, remaining updates `-1`,
+and frame count 24 at body `+0x29b8..+0x29d0`. A failed collision-cache
+flag check branches back to `+0x29bc`, and a captured actor of the wrong
+target type branches to `+0x29b8`; these paths share the same transition.
+The C now spells that common exit. Focused CFG is 446/448 blocks with
+217/217 branches. Isolated strict text reaches 93.606480%, RODATA
+35.116730%, text 13,808 bytes, and `.rel.text` 470/470. All 128
+ordered pointer classes and 272 named referents remain exact.
+
 ## Kind-102 audio parameter identity
 
 The two kind-102 signed-low loads use `lui 0x801a` followed by `lh`

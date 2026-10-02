@@ -185,3 +185,16 @@ relocations. An isolated pinned compile and strict objdiff show 100% `.text`
 218 `.rel.text` and 35 `.rel.rodata` entries are identical. The focused unit
 listing is also 1/1 SAME. This rechecks the existing exact verdict without
 changing the exact count; older analyzed scores are stale.
+
+The later map-object scene controller at GAME `0x800475d8` has a bounded
+button-state scheduling correction. Retail copies the freshly sampled button
+word to its retained previous-button register at body `+0x304`, before the
+first `func_80045fd4` interpolation call. The earlier C assigned
+`previous_buttons` after that call sequence, so the probe moved the register
+copy to `+0x324`. Moving the ordinary local assignment immediately after the
+edge-detection guard preserves the input behavior and reproduces the retail
+copy position. Focused isolated strict text rises from **98.56481%** to
+**99.166664%**; the candidate is 1,724 bytes versus retail's 1,728. All 62
+ordered text relocations retain matching kinds, referents, and addends. The
+remaining differences begin with the template and loop-value saved-register
+assignment, so the controller remains WIP.

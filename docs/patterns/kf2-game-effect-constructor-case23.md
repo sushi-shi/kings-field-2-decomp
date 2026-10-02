@@ -14,7 +14,7 @@ A focused `kf try --unit game.effect_constructor` quick build now reports
 22/22 branches, and 26/26 known return frontiers. A one-unit isolated strict
 objdiff on byte-identical tracked source reports `.text` 89.12569% (previously
 88.88609%) and `.rodata` 32.92683% (unchanged). The candidate retains all
-157 ordered text and 123 switch-table relocation rows, 21 direct
+157 text and 123 switch-table relocation rows, 21 direct
 `effect_play_spatial_sound` sites, and the retail table's 62 target-equivalence
 classes across all 123 entries; seven pointer addends are exact. This is a
 source-order correction, not an exact match.

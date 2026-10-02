@@ -171,3 +171,12 @@ field writes and reproduces that branch direction and late clear block.
 Focused strict text rises to **98.598854%**. The candidate text is now 7,676
 bytes against retail's 7,668; DATA remains byte exact and RODATA still has
 an addend difference beginning at `+0x10`.
+
+Action 84 timer case 0 had one incorrect state transition. After
+`func_80036ad8` returns zero, retail at function `+0x1054..+0x1060` compares
+the marker byte with `0xff`; a different value branches directly to the
+next object. The earlier C incremented `action_timer` on that path through
+its `else` arm. Removing that increment preserves the successful action
+path, changes the failed-query branch to the retail exit, and raises focused
+isolated strict text to **98.60146%**. The small score change reflects the
+large unchanged body; the removed state transition is required by raw flow.

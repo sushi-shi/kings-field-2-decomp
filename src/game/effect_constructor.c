@@ -596,21 +596,14 @@ KfEffectRecord *func_80040308(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x18);
         break;
     case 101: {
-        s32 scale;
-        s32 first_value;
-        s32 lifetime;
-        s32 render_id;
-        s32 second_value;
+        const s32 *parameters = (const s32 *)arguments;
+        s32 scale = parameters[0];
+        s32 render_id = parameters[3];
 
-        scale = va_arg(arguments, s32);
-        first_value = va_arg(arguments, s32);
-        lifetime = va_arg(arguments, s32);
-        render_id = va_arg(arguments, s32);
-        second_value = va_arg(arguments, s32);
         effect_pool_initialize_scaled(record, render_id, scale);
-        *(u16 *)&record->unknown_3c[4] = first_value;
-        record->updates_remaining = lifetime;
-        *(u16 *)&record->unknown_3c[6] = second_value;
+        *(u16 *)&record->unknown_3c[4] = parameters[1];
+        record->updates_remaining = parameters[2];
+        *(u16 *)&record->unknown_3c[6] = parameters[4];
         break;
     }
     case 102: {

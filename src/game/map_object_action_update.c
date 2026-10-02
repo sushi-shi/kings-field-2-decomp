@@ -604,8 +604,6 @@ void func_80036ed4(void)
                     object->scale.vz = 0x1000;
                     object->scale.vy = 0x1000;
                     object->scale.vx = 0x1000;
-                } else {
-                    object->action_timer++;
                 }
                 break;
             }

@@ -533,3 +533,16 @@ WIP. Reversing the C test into a positive branch restored the old 59/58 CFG
 and was discarded. Moving the zero-score initialization into every switch
 arm reached 93.75% strict text but moved most switch-pointer addends, dropping
 `.rodata` similarity to 38.93%; that repetitive source was also discarded.
+
+An isolated follow-up confirmed the specific branch merge. Retail case 9
+branches from its tolerance result directly to the score tail and jumps to
+the return path on failure. The current object instead jumps to the Boolean
+branch after the indirect callback. Assigning the tolerance result to the
+existing `score` local emitted the retail 37 branches, but lowered strict
+text from 93.30592% to 93.1579% and the 131-row table's `.rodata` similarity
+from 94.75191% to 37.5%; it was reverted. Directly returning `score` on
+the callback failure emitted the baseline object, while returning it on
+case-9 failure collapsed the candidate to 58 CFG blocks. GCC 2.5.7 with
+`-fno-cse-skip-blocks` emitted a byte-identical object to the baseline, so
+that flag does not explain this branch sharing. The unchanged source retains
+the separate case-9 angle/tolerance calls and all table target classes.

@@ -599,7 +599,7 @@ void effect_update_dispatch(void)
     case 121: {
         s32 prior_phase = record->phase;
         s32 index;
-        s32 lower_bound;
+        VECTOR spawn_position;
         s32 distance;
 
         if (prior_phase == 2) {
@@ -622,11 +622,13 @@ void effect_update_dispatch(void)
                     func_8002b604(record->position.vx,
                                   record->position.vy,
                                   record->position.vz, 50, 0);
-                    lower_bound = KF_COLLISION_CACHE_RESULT <
-                                          KF_COLLISION_CACHE_LOWER_BOUND
-                                      ? KF_COLLISION_CACHE_RESULT
-                                      : KF_COLLISION_CACHE_LOWER_BOUND;
-                    distance = lower_bound - record->position.vy;
+                    if (KF_COLLISION_CACHE_RESULT <
+                        KF_COLLISION_CACHE_LOWER_BOUND) {
+                        spawn_position.vy = KF_COLLISION_CACHE_RESULT;
+                    } else {
+                        spawn_position.vy = KF_COLLISION_CACHE_LOWER_BOUND;
+                    }
+                    distance = spawn_position.vy - record->position.vy;
                     goto kind103_spawn;
                 }
             }
@@ -638,22 +640,22 @@ void effect_update_dispatch(void)
                 0, (s16)record->direction.vx, 3000);
             record->direction.vz = func_8001584c(
                 0, (s16)record->direction.vz, 3000);
-            lower_bound = KF_COLLISION_CACHE_RESULT <
-                                  KF_COLLISION_CACHE_LOWER_BOUND
-                              ? KF_COLLISION_CACHE_RESULT
-                              : KF_COLLISION_CACHE_LOWER_BOUND;
-            distance = lower_bound - record->position.vy;
+            if (KF_COLLISION_CACHE_RESULT <
+                KF_COLLISION_CACHE_LOWER_BOUND) {
+                spawn_position.vy = KF_COLLISION_CACHE_RESULT;
+            } else {
+                spawn_position.vy = KF_COLLISION_CACHE_LOWER_BOUND;
+            }
+            distance = spawn_position.vy - record->position.vy;
             if (distance >= 7000) {
                 goto kind103_spawn;
             }
         }
         goto kind103_after_spawn;
     kind103_spawn: {
-        VECTOR spawn_position;
         SVECTOR spawn_direction;
 
         spawn_position.vx = record->position.vx;
-        spawn_position.vy = lower_bound;
         spawn_position.vz = record->position.vz;
         record->phase = 2;
         /* Retail has no visible write to this stack direction. */
@@ -664,14 +666,17 @@ void effect_update_dispatch(void)
                        &spawn_position, &spawn_direction,
                        distance >> 1, distance >> 4, 0x800);
         effect_play_spatial_sound(record, 0x17);
+        goto kind103_loop;
     }
     kind103_after_spawn:
         if (prior_phase == 0) {
-            if ((s16)*(u16 *)&record->unknown_3c[4] <= 0) {
+            u16 count = *(u16 *)&record->unknown_3c[4];
+            *(u16 *)&record->unknown_3c[4] = count - 1;
+            if ((s16)count <= 0) {
                 record->phase = 1;
             }
-            *(u16 *)&record->unknown_3c[4] -= 1;
         }
+    kind103_loop:
         for (index = 3; index != -1; index--) {
             SVECTOR random_direction;
 
@@ -887,28 +892,31 @@ void effect_update_dispatch(void)
 
         switch (initial_phase) {
         case 0: {
-            progress = 0;
-            if (record->unknown_3c[5] == 0xff) {
-                count = 16;
-                step_size = 0;
-                record->updates_remaining = 1;
-            } else {
-                const KfActor *actor =
-                    &actor_state.actors[record->unknown_3c[5]];
+            const KfActor *actor;
 
-                count = asset_vertex_count(actor->unknown_01 + 128,
-                                           actor->unknown_0c);
-                if (count == 0) {
-                    count = 16;
-                    step_size = 0;
-                    record->updates_remaining = 1;
-                } else if (count < 33) {
-                    step_size = 0x1000;
-                } else {
-                    step_size = (count << 12) / 32;
-                    count = 32;
-                }
+            progress = 0;
+            if (record->unknown_3c[5] != 0xff) {
+                goto kind5_actor_count;
             }
+        kind5_default_count:
+            count = 16;
+            step_size = 0;
+            record->updates_remaining = 1;
+            goto kind5_count_ready;
+        kind5_actor_count:
+            actor = &actor_state.actors[record->unknown_3c[5]];
+            count = asset_vertex_count(actor->unknown_01 + 128,
+                                       actor->unknown_0c);
+            if (count == 0) {
+                goto kind5_default_count;
+            }
+            if (count < 33) {
+                step_size = 0x1000;
+                goto kind5_count_ready;
+            }
+            step_size = (count << 12) / 32;
+            count = 32;
+        kind5_count_ready:
             *(u16 *)&record->unknown_3c[6] = count;
             record->unknown_3c[4] = count;
             for (index = count - 1; index != -1; index--) {
@@ -1386,10 +1394,11 @@ void effect_update_dispatch(void)
             }
             child->render_id = 0x18;
             record->phase = 1;
-            break;
         }
+        /* The spawn tick also runs the phase-one update. */
         case 1:
             if (record->updates_remaining < 3) {
+            kind6_phase3:
                 record->phase = 3;
                 record->updates_remaining = -1;
                 record->unknown_3c[9] = 24;
@@ -1398,14 +1407,17 @@ void effect_update_dispatch(void)
             if (func_8004195c(250, 25, 32, 200,
                               0, 0x400, 100, 0x800) == -1) {
                 record->updates_remaining = -1;
-                if (KF_COLLISION_CACHE_FLAGS == 0x10) {
+                if (KF_COLLISION_CACHE_FLAGS != 0x10) {
+                    goto kind6_phase3;
+                }
+                {
                     u8 actor_index;
                     KfActor *actor;
 
                     func_8003fdd0(0x10010, 5000, 0);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
                     record->unknown_3c[10] = actor_index;
-                    actor = &actor_state.actors[actor_index];
+                    actor = &actor_state.actors[record->unknown_3c[10]];
                     if (actor->target_type == 2 || actor->target_type == 3) {
                         record->unknown_08 = 1;
                         record->render_id = 22;
@@ -1413,14 +1425,13 @@ void effect_update_dispatch(void)
                         record->unknown_3c[9] = 0;
                         record->rotation.vz = 0;
                         record->rotation.vx = 0;
-                        record->rotation.vy = -vector_xz_to_angle(
+                        record->rotation.pad = -vector_xz_to_angle(
                             record->position.vx - actor->position.vx,
                             record->position.vz - actor->position.vz);
                         goto phase_two;
                     }
                 }
-                record->phase = 3;
-                record->unknown_3c[9] = 24;
+                goto kind6_phase3;
             } else {
                 KfEffectTrailRow *rows =
                     *(KfEffectTrailRow **)&record->unknown_3c[4];

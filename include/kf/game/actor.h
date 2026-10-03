@@ -16,7 +16,9 @@ enum {
     KF_ACTOR_LIFECYCLE_DORMANT = 0,
     KF_ACTOR_LIFECYCLE_ACTIVE = 1,
     KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
-    KF_ACTOR_LIFECYCLE_DISABLED = 3
+    KF_ACTOR_LIFECYCLE_DISABLED = 3,
+    KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
+    KF_ACTOR_FLAG_LINKED = 0x10
 };
 
 typedef struct KfTargetCandidateWord0cBytes {
@@ -25,6 +27,19 @@ typedef struct KfTargetCandidateWord0cBytes {
 } KfTargetCandidateWord0cBytes;
 typedef char kf_target_candidate_word0c_bytes_size[
     sizeof(KfTargetCandidateWord0cBytes) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord02 {
+    struct {
+        u8 initial_score_scale;
+        u8 continuing_score_scale;
+    } target_selection;
+    struct {
+        u8 reaction_chance;
+        u8 unused;
+    } damage_reaction;
+} KfTargetCandidateWord02;
+typedef char kf_target_candidate_word02_size[
+    sizeof(KfTargetCandidateWord02) == 2 ? 1 : -1];
 
 typedef union KfTargetCandidateWord0c {
     u16 value;
@@ -147,13 +162,28 @@ typedef union KfTargetCandidateWord24 {
 typedef char kf_target_candidate_word24_size[
     sizeof(KfTargetCandidateWord24) == 2 ? 1 : -1];
 
+typedef union KfTargetCandidateWord20 {
+    u16 damage_component0;
+    u16 animation_phase_start;
+} KfTargetCandidateWord20;
+typedef char kf_target_candidate_word20_size[
+    sizeof(KfTargetCandidateWord20) == 2 ? 1 : -1];
+
+typedef union KfTargetCandidateWord22 {
+    u16 damage_component1;
+    u16 animation_phase_stop;
+} KfTargetCandidateWord22;
+typedef char kf_target_candidate_word22_size[
+    sizeof(KfTargetCandidateWord22) == 2 ? 1 : -1];
+
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
     u8 animation_id;
-    u8 unknown_02[2];
+    KfTargetCandidateWord02 word_02;
     u8 sound_code;
-    u8 unknown_05[3];
+    u8 unknown_05[2];
+    u8 start_vertical_motion_on_entry;
     u16 animation_step;
     u16 sound_trigger;
     KfTargetCandidateWord0c word_0c;
@@ -166,17 +196,19 @@ typedef struct KfTargetCandidate {
     KfTargetCandidateWord1a word_1a;
     KfTargetCandidateWord1c word_1c;
     KfTargetCandidateWord1e word_1e;
-    u16 unknown_20;
-    u16 unknown_22;
+    KfTargetCandidateWord20 word_20;
+    KfTargetCandidateWord22 word_22;
     KfTargetCandidateWord24 word_24;
     KfTargetCandidateWord26 word_26;
-    u16 unknown_28;
-    u16 unknown_2a;
+    u16 repeated_attack_phase_step;
+    u16 secondary_hit_phase;
 } KfTargetCandidate;
 typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x2c ? 1 : -1];
 typedef char kf_target_candidate_animation_id_offset[(u32)&((KfTargetCandidate *)0)->animation_id == 1 ? 1 : -1];
-typedef char kf_target_candidate_unknown_02_offset[(u32)&((KfTargetCandidate *)0)->unknown_02 == 2 ? 1 : -1];
+typedef char kf_target_candidate_word_02_offset[(u32)&((KfTargetCandidate *)0)->word_02 == 2 ? 1 : -1];
 typedef char kf_target_candidate_sound_code_offset[(u32)&((KfTargetCandidate *)0)->sound_code == 4 ? 1 : -1];
+typedef char kf_target_candidate_start_vertical_motion_offset[
+    (u32)&((KfTargetCandidate *)0)->start_vertical_motion_on_entry == 7 ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
 typedef char kf_target_candidate_animation_step_offset[(u32)&((KfTargetCandidate *)0)->animation_step == 0x08 ? 1 : -1];
@@ -198,12 +230,14 @@ typedef char kf_target_candidate_word_18_high_offset[(u32)&((KfTargetCandidate *
 typedef char kf_target_candidate_word_1a_offset[(u32)&((KfTargetCandidate *)0)->word_1a == 0x1a ? 1 : -1];
 typedef char kf_target_candidate_word_1c_offset[(u32)&((KfTargetCandidate *)0)->word_1c == 0x1c ? 1 : -1];
 typedef char kf_target_candidate_word_1e_offset[(u32)&((KfTargetCandidate *)0)->word_1e == 0x1e ? 1 : -1];
-typedef char kf_target_candidate_unknown_20_offset[(u32)&((KfTargetCandidate *)0)->unknown_20 == 0x20 ? 1 : -1];
-typedef char kf_target_candidate_unknown_22_offset[(u32)&((KfTargetCandidate *)0)->unknown_22 == 0x22 ? 1 : -1];
+typedef char kf_target_candidate_word_20_offset[(u32)&((KfTargetCandidate *)0)->word_20 == 0x20 ? 1 : -1];
+typedef char kf_target_candidate_word_22_offset[(u32)&((KfTargetCandidate *)0)->word_22 == 0x22 ? 1 : -1];
 typedef char kf_target_candidate_word_24_offset[(u32)&((KfTargetCandidate *)0)->word_24 == 0x24 ? 1 : -1];
 typedef char kf_target_candidate_word_26_offset[(u32)&((KfTargetCandidate *)0)->word_26 == 0x26 ? 1 : -1];
-typedef char kf_target_candidate_unknown_28_offset[(u32)&((KfTargetCandidate *)0)->unknown_28 == 0x28 ? 1 : -1];
-typedef char kf_target_candidate_unknown_2a_offset[(u32)&((KfTargetCandidate *)0)->unknown_2a == 0x2a ? 1 : -1];
+typedef char kf_target_candidate_repeated_attack_phase_step_offset[
+    (u32)&((KfTargetCandidate *)0)->repeated_attack_phase_step == 0x28 ? 1 : -1];
+typedef char kf_target_candidate_secondary_hit_phase_offset[
+    (u32)&((KfTargetCandidate *)0)->secondary_hit_phase == 0x2a ? 1 : -1];
 
 /* Type 25 reads a variable halfword stream after this proved prefix. Its
  * complete allocation and record stride are not established. */
@@ -235,6 +269,13 @@ typedef union KfTargetReference {
 } KfTargetReference;
 typedef char kf_target_reference_size[sizeof(KfTargetReference) == 4 ? 1 : -1];
 
+/* Slot-state-3 actors can use the initial-health word as a local X fallback. */
+typedef union KfTargetGroupWord1a {
+    u16 initial_health;
+    u16 slot3_home_x_fallback;
+} KfTargetGroupWord1a;
+typedef char kf_target_group_word1a_size[sizeof(KfTargetGroupWord1a) == 2 ? 1 : -1];
+
 typedef struct KfTargetGroup {
     u8 definition_id;
     u8 unknown_01;
@@ -254,7 +295,7 @@ typedef struct KfTargetGroup {
     u16 collision_height;
     u16 player_facing_tolerance;
     u16 actor_facing_tolerance;
-    u16 unknown_1a;
+    KfTargetGroupWord1a word_1a;
     u16 default_vertical_anchor_offset;
     u16 experience_reward;
     u16 magic_component_divisors[8];
@@ -282,6 +323,8 @@ typedef char kf_target_group_player_facing_tolerance_offset[
     (u32)&((KfTargetGroup *)0)->player_facing_tolerance == 0x16 ? 1 : -1];
 typedef char kf_target_group_actor_facing_tolerance_offset[
     (u32)&((KfTargetGroup *)0)->actor_facing_tolerance == 0x18 ? 1 : -1];
+typedef char kf_target_group_word_1a_offset[
+    (u32)&((KfTargetGroup *)0)->word_1a == 0x1a ? 1 : -1];
 typedef char kf_target_group_experience_reward_offset[
     (u32)&((KfTargetGroup *)0)->experience_reward == 0x1e ? 1 : -1];
 typedef char kf_target_group_vertical_acceleration_offset[
@@ -384,6 +427,28 @@ typedef char kf_actor_motion_size[sizeof(KfActorMotion) == 8 ? 1 : -1];
 typedef char kf_actor_ballistic_phase_offset[
     (u32)&((KfActorMotion *)0)->ballistic.phase == 2 ? 1 : -1];
 
+typedef union KfActorWord20 {
+    u16 value;
+    u16 home_yaw;
+    u16 linked_map_object_slot;
+} KfActorWord20;
+typedef char kf_actor_word20_size[sizeof(KfActorWord20) == 2 ? 1 : -1];
+
+typedef union KfActorWord22 {
+    s16 value;
+    s16 home_local_z;
+    s16 linked_actor_slot;
+    s16 linked_map_object_slot;
+} KfActorWord22;
+typedef char kf_actor_word22_size[sizeof(KfActorWord22) == 2 ? 1 : -1];
+
+typedef union KfActorWord24 {
+    s16 value;
+    s16 home_local_x;
+    s16 linked_animation_vertex_index;
+} KfActorWord24;
+typedef char kf_actor_word24_size[sizeof(KfActorWord24) == 2 ? 1 : -1];
+
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
 typedef struct KfActor {
@@ -392,7 +457,7 @@ typedef struct KfActor {
     u8 group_index;
     u8 current_map_layer;
     u8 unknown_04;
-    u8 unknown_05;
+    u8 placement_flags;
     u8 home_map_layer;
     u8 home_cell_z;
     u8 home_cell_x;
@@ -414,9 +479,9 @@ typedef struct KfActor {
     u16 health;
     u16 collision_radius;
     u16 collision_height;
-    u16 unknown_20;
-    s16 unknown_22;
-    s16 unknown_24;
+    KfActorWord20 word_20;
+    KfActorWord22 word_22;
+    KfActorWord24 word_24;
     s16 vertical_anchor_offset;
     u32 unknown_28;
     VECTOR position;
@@ -481,7 +546,9 @@ typedef char kf_actor_phase_offset[(u32)&((KfActor *)0)->animation_phase == 0x18
 typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1 : -1];
 typedef char kf_actor_ballistic_origin_y_offset[
     (u32)&((KfActor *)0)->ballistic_origin_y == 0x3c ? 1 : -1];
-typedef char kf_actor_home_offset_x[(u32)&((KfActor *)0)->unknown_24 == 0x24 ? 1 : -1];
+typedef char kf_actor_home_yaw_offset[(u32)&((KfActor *)0)->word_20.home_yaw == 0x20 ? 1 : -1];
+typedef char kf_actor_home_offset_z[(u32)&((KfActor *)0)->word_22.home_local_z == 0x22 ? 1 : -1];
+typedef char kf_actor_home_offset_x[(u32)&((KfActor *)0)->word_24.home_local_x == 0x24 ? 1 : -1];
 typedef char kf_actor_vertical_anchor_offset[
     (u32)&((KfActor *)0)->vertical_anchor_offset == 0x26 ? 1 : -1];
 typedef char kf_actor_model_scale_x_offset[

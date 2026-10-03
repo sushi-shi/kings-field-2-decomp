@@ -184,7 +184,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->slot_state = 5;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
-            spawned->unknown_05 = 0;
+            spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];
@@ -209,7 +209,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->slot_state = 5;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
-            spawned->unknown_05 = 0;
+            spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];

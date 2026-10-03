@@ -6,7 +6,7 @@ KfActor	0x1	0x1	definition_id	u8	supported	actor_copy_group_defaults group+0x00 
 KfActor	0x2	0x1	group_index	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3	0x1	current_map_layer	u8	supported	actor_motion collision layer assignment;render_resource_dispatch map_cell_layer_mask and render_world_model layer argument	Actor's current map layer used for visibility and collision side
 KfActor	0x4	0x1	unknown_04	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x5	0x1	unknown_05	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x5	0x1	placement_flags	u8	supported	GAME 0x8003f8d0 loads placement record+2;GAME 0x80038e70 lbu and mask 0x01 gates initial yaw randomization	Placement byte controlling preservation of the archive-supplied yaw; other bits unresolved
 KfActor	0x6	0x1	home_map_layer	u8	supported	actor_load_records placement +7;actor_prepare_and_initialize current_map_layer reset;collision_sample_map_layer_height	Placement's home map layer for actor initialization and home height
 KfActor	0x7	0x1	home_cell_z	u8	supported	actor_load_records cell_z copy;actor_set_home_position z shift	Home map cell Z from placement
 KfActor	0x8	0x1	home_cell_x	u8	supported	actor_load_records cell_x copy;actor_set_home_position x shift	Home map cell X from placement
@@ -28,11 +28,11 @@ KfActor	0x18	0x2	animation_phase	u16	supported	game/actor.h;retail GAME actor ch
 KfActor	0x1a	0x2	health	u16	supported	actor_copy_group_defaults group+0x1a copy;actor_apply_magic_to_actor damage/death transition;KF1 KfActor health	Current actor health depleted by magic damage
 KfActor	0x1c	0x2	collision_radius	u16	supported	actor_copy_group_defaults group collision_radius copy;collision_query_world;collision cache radius	Dynamic actor collision radius, sometimes interpolated by action
 KfActor	0x1e	0x2	collision_height	u16	supported	actor_copy_group_defaults group collision_height copy;collision_query_world;collision cache interaction height	Dynamic actor collision height, sometimes interpolated by action
-KfActor	0x20	0x2	unknown_20	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x22	0x2	unknown_22	s16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x24	0x2	unknown_24	s16	opaque	game/actor.h;GAME 0x80038d04 lh/add	signed local X offset; name remains address-derived
+KfActor	0x20	0x2	word_20	KfActorWord20	supported	GAME actor_set_home_position;actor_prepare_and_initialize;actor_update_behavior	Home yaw copied from placement; slot-3 behavior also indexes a linked map object with this word
+KfActor	0x22	0x2	word_22	KfActorWord22	supported	GAME actor_set_home_position;actor_target_selection;actor_fixup_group_targets	Signed home-local Z offset; linked actors and a linked map object use this word as an index in specific modes
+KfActor	0x24	0x2	word_24	KfActorWord24	supported	GAME actor_set_home_position;actor_update_behavior	Signed home-local X offset; linked actor behavior also uses this word as an animation vertex index
 KfActor	0x26	0x2	vertical_anchor_offset	s16	supported	actor_load_records;actor_set_home_position;actor_animation;actor_behavior_dispatch	signed local Y offset used for placement, collision baseline, and target sampling
-KfActor	0x28	0x4	unknown_28	u32	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x28	0x4	unknown_28	u32	opaque	GAME actor_set_home_position;actor_update_behavior;actor_target_selection	Flag word; bit 0x10 links actor motion/position to another actor and bypasses normal vertical-anchor placement; other bits remain unresolved
 KfActor	0x2c	0x10	position	VECTOR	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3c	0x4	ballistic_origin_y	s32	supported	actor_start_ballistic_motion;actor_update_vertical_motion state 0x30	captures actor Y at ballistic start and anchors the parabolic position equation
 KfActor	0x40	0x6	rotation	KfEulerAngles	supported	game/actor.h;retail GAME actor motion	three signed rotation angles passed to pitch_yaw_to_forward_vector
@@ -731,7 +731,7 @@ KfPlayerState	0x7c	0x04	selected_magic_record	KfMagicRecord *	supported	asm;func
 KfPlayerState	0x80	0x04	equipped_weapon_record	KfWeaponRecordGame *	supported	asm;player_equip_weapon;KF1 player_core.c	68-byte weapon record index
 KfPlayerState	0x84	0x04	weapon_asset_buffer	KfAssetHeader *	supported	asm;player_equip_weapon;KF1 player_core.c	archive read destination and registry asset
 KfPlayerState	0x88	0x04	weapon_animation_cache	KfPoolRecord *	supported	asm;player_equip_weapon;KF1 player_core.c	cleared after weapon equip
-KfPlayerState	0x8c	0x04	unknown_8c	u8[4]	opaque	asm;player_equip_weapon	not yet modelled
+KfPlayerState	0x8c	0x04	weapon_effect	KfEffectRecord *	supported	GAME 0x800267ac/0x800267b4/0x800268d4;player_update_weapon_attack	constructed weapon effect stored and later updated during the attack phase
 KfPlayerState	0x90	0x02	weapon_attack_phase	s16	supported	asm;player_equip_weapon;KF1 player_core.c	set inactive after equip
 KfPlayerState	0x92	0x02	weapon_attack_window	u16	supported	asm;player_begin_weapon_attack	weapon record dependent attack parameter
 KfPlayerState	0x94	0x02	weapon_next_sound_phase	s16	supported	player_begin_weapon_attack;player_update_weapon_attack	next attack phase that plays weapon sound; 5000 disables
@@ -872,11 +872,12 @@ KfState8017d118	0x17	0x03	transition_offset_xzy	s8[3]	supported	resource_request
 KfState8017d118	0x1a	0x02	sequence_fade_volume	s16	supported	resource_advance_transition;SsSeqSetVol	starts at 60 and decrements by 2 to zero, then sequence stops
 KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfTargetCandidate	0x1	0x1	animation_id	u8	supported	game/actor.h;actor behavior/event stream	byte passed to actor animation setters and phase seek
-KfTargetCandidate	0x2	0x2	unknown_02	u8[2]	opaque	game/actor.h;actor target scoring	remaining bytes before sound selector
-KfTargetCandidate	0x4	0x1	unknown_04	u8	supported	game/actor.h;actor sound wrapper	sound selector with alternate range in high bit
-KfTargetCandidate	0x5	0x3	unknown_05	u8[3]	opaque	game/actor.h;message marker scan	intervening bytes before halfword fields
-KfTargetCandidate	0x8	0x2	unknown_08	u16	supported	GAME 0x800462bc retail lhu at +8	phase-step operand for event action
-KfTargetCandidate	0xa	0x2	unknown_0a	u16	supported	GAME 0x8003d184 lhu at target+0x0a	unsigned halfword control value; meaning unresolved
+KfTargetCandidate	0x2	0x2	word_02	KfTargetCandidateWord02	supported	GAME actor_score_target_candidate lbu +2/+3;actor_apply_magic_to_actor	Initial and continuing selection-score scales; type-2 damage reaction reuses byte +2 as an unsigned chance threshold
+KfTargetCandidate	0x4	0x1	sound_code	u8	supported	actor_spatial_sound;actor_update_behavior	Sound selector with alternate spatial range in high bit
+KfTargetCandidate	0x5	0x2	unknown_05	u8[2]	opaque	game/actor.h	intervening bytes before vertical-motion selector
+KfTargetCandidate	0x7	0x1	start_vertical_motion_on_entry	u8	supported	GAME 0x8003ed0c lbu candidate+7;0x8003ed1c sb actor+0x0d	Value one enters vertical-motion state 0x10 when this target action starts
+KfTargetCandidate	0x8	0x2	animation_step	u16	supported	GAME 0x800462bc retail lhu at +8;actor_update_behavior	Phase step passed to animation advance and event action
+KfTargetCandidate	0xa	0x2	sound_trigger	u16	supported	GAME 0x8003d184 lhu at target+0x0a;actor_update_behavior	Sound trigger interval in low 14 bits and trigger mode in high 2 bits
 KfTargetCandidate	0xc	0x2	word_0c	KfTargetCandidateWord0c	supported	GAME 0x800462bc lhu;GAME 0x80039108 lbu candidate+0x0d	shared unsigned halfword and high-byte view
 KfTargetCandidate	0xe	0x2	word_0e	KfTargetCandidateWord0e	supported	GAME 0x800391d0/0x80039358 lbu;0x800394a8 lhu	shared byte and halfword view
 KfTargetCandidate	0x10	0x2	word_10	KfTargetCandidateWord10	supported	GAME 0x800391ac lhu at +0x10;GAME event lbu at +0x10/+0x11	shared word and byte view
@@ -887,12 +888,12 @@ KfTargetCandidate	0x18	0x2	word_18	KfTargetCandidateWord18	supported	GAME 0x8003
 KfTargetCandidate	0x1a	0x2	word_1a	KfTargetCandidateWord1a	supported	GAME 0x80039108 lhu;GAME 0x8003dc14 lbu	shared distance bound and byte view; meaning unresolved
 KfTargetCandidate	0x1c	0x2	word_1c	KfTargetCandidateWord1c	supported	GAME 0x8003e640 lhu;GAME 0x8003e1d0/0x8003e1d4 lbu	shared motion halfword and byte view; meaning unresolved
 KfTargetCandidate	0x1e	0x2	word_1e	KfTargetCandidateWord1e	supported	GAME 0x8003e644 lhu;GAME 0x8003e1d8/0x8003e1f8 lbu	shared motion halfword and byte view; meaning unresolved
-KfTargetCandidate	0x20	0x2	unknown_20	u16	supported	GAME 0x8003e280 lhu candidate+0x20	animation phase boundary; meaning unresolved
-KfTargetCandidate	0x22	0x2	unknown_22	u16	supported	GAME 0x8003e260 lhu candidate+0x22	animation phase boundary; meaning unresolved
+KfTargetCandidate	0x20	0x2	word_20	KfTargetCandidateWord20	supported	GAME 0x8003e1cc lhu candidate+0x20;0x8003e280 lhu candidate+0x20	First damage component for secondary hit; lower animation-phase boundary for motion action
+KfTargetCandidate	0x22	0x2	word_22	KfTargetCandidateWord22	supported	GAME 0x8003e1e0 lhu candidate+0x22;0x8003e260 lhu candidate+0x22	Second damage component for secondary hit; upper animation-phase boundary for motion action
 KfTargetCandidate	0x24	0x2	word_24	KfTargetCandidateWord24	supported	GAME 0x8003e1ec lhu;GAME 0x8003e298 lh	unsigned damage value and signed motion parameter; meaning unresolved
 KfTargetCandidate	0x26	0x2	word_26	KfTargetCandidateWord26	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh	unsigned bound and signed motion parameter; meaning unresolved
-KfTargetCandidate	0x28	0x2	unknown_28	u16	supported	GAME 0x8003e140 lhu candidate+0x28	state increment; meaning unresolved
-KfTargetCandidate	0x2a	0x2	unknown_2a	u16	supported	GAME 0x8003e1ac lhu candidate+0x2a	optional phase threshold; meaning unresolved
+KfTargetCandidate	0x28	0x2	repeated_attack_phase_step	u16	supported	GAME 0x8003e140 lhu candidate+0x28;actor_update_behavior	Advances the next hit phase after a repeated attack crossing
+KfTargetCandidate	0x2a	0x2	secondary_hit_phase	u16	supported	GAME 0x8003e1ac lhu candidate+0x2a;actor_update_behavior	Optional animation phase for the second damage-cone call
 KfTargetCandidateAction25	0x1a	0x2	stream	u16[1]	supported	GAME 0x8003ed78-0x8003eecc lhu at candidate+0x1a and cursor increments	First word of variable-length type-25 halfword script; full extent and stride unresolved
 KfTargetCandidateWord0c	0x0	0x2	value	u16	supported	GAME 0x800462bc lhu candidate+0x0c	halfword view
 KfTargetCandidateWord0c	0x0	0x2	bytes	KfTargetCandidateWord0cBytes	supported	GAME 0x8003e648 lbu candidate+0x0d	byte view
@@ -948,7 +949,7 @@ KfTargetGroup	0x12	0x2	collision_radius	u16	supported	GAME actor_initialization 
 KfTargetGroup	0x14	0x2	collision_height	u16	supported	GAME actor_initialization +0x1e copy;GAME 0x8003983c overlap height;KF1 actor definition collision_height	Actor collision height used for placement and overlap
 KfTargetGroup	0x16	0x2	player_facing_tolerance	u16	supported	GAME 0x800270b0 lhu group+0x16;angle_within_tolerance	Player-facing tolerance before a direct actor hit
 KfTargetGroup	0x18	0x2	actor_facing_tolerance	u16	supported	GAME 0x800270c8 lhu group+0x18;GAME 0x8003fb94;angle_within_tolerance	Actor-facing tolerance for direct hits and magic impacts
-KfTargetGroup	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfTargetGroup	0x1a	0x2	word_1a	KfTargetGroupWord1a	supported	GAME 0x80038df0 lhu group+0x1a to actor health;GAME 0x8003f9a8 lhu group+0x1a to slot-state-3 local X fallback	Shared raw halfword has initial-health and slot-state-3 local-X views
 KfTargetGroup	0x1c	0x2	default_vertical_anchor_offset	u16	supported	actor_load_records;actor_set_home_position	fallback actor vertical anchor offset when placement record has -1 sentinel
 KfTargetGroup	0x1e	0x2	experience_reward	u16	supported	GAME actor_fixed_curve player_add_experience argument;KF1 actor definition experience_reward	Experience awarded when the actor dies
 KfTargetGroup	0x20	0x10	magic_component_divisors	u16[8]	supported	GAME 0x80039c94 eight lhu reads;actor_magic_component_curve third parameter	Eight divisors for the per-component magic response curve

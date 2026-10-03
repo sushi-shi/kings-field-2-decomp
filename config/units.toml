@@ -372,36 +372,6 @@ source = "src/game/display.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.tmd_pipeline"
-image = "GAME.EXE"
-source = "src/game/tmd_pipeline.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_map_cell"
-image = "GAME.EXE"
-source = "src/game/render_map_cell.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.graphics_overlay_primitives"
-image = "GAME.EXE"
-source = "src/game/graphics_overlay_primitives.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.player_weapon_render"
-image = "GAME.EXE"
-source = "src/game/player_weapon_render.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_world_model"
-image = "GAME.EXE"
-source = "src/game/render_world_model.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.resource_runtime"
 image = "GAME.EXE"
 source = "src/game/resource_runtime.c"
@@ -492,42 +462,6 @@ source = "src/game/actor_target_selection.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_animation_selection"
-image = "GAME.EXE"
-source = "src/game/actor_animation_selection.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_lifecycle_target"
-image = "GAME.EXE"
-source = "src/game/actor_lifecycle_target.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_magic_damage"
-image = "GAME.EXE"
-source = "src/game/actor_magic_damage.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_animation"
-image = "GAME.EXE"
-source = "src/game/actor_animation.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_motion"
-image = "GAME.EXE"
-source = "src/game/actor_motion.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_group_position"
-image = "GAME.EXE"
-source = "src/game/actor_group_position.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.actor_group_effects"
 image = "GAME.EXE"
 source = "src/game/actor_group_effects.c"
@@ -579,42 +513,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.effect_rotate_scale_offset_y"
 image = "GAME.EXE"
 source = "src/game/effect_rotate_scale_offset_y.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_move_probe"
-image = "GAME.EXE"
-source = "src/game/effect_move_probe.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_scale_step"
-image = "GAME.EXE"
-source = "src/game/effect_scale_step.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_spawn_zero_direction"
-image = "GAME.EXE"
-source = "src/game/effect_spawn_zero_direction.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_spawn_motion"
-image = "GAME.EXE"
-source = "src/game/effect_spawn_motion.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_runtime"
-image = "GAME.EXE"
-source = "src/game/effect_runtime.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_reset"
-image = "GAME.EXE"
-source = "src/game/effect_reset.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import bisect
 import fcntl
+import hashlib
 import re
 import struct
 from collections import Counter, defaultdict
@@ -1224,13 +1225,18 @@ def delink(
         focused_rows = list(object_rows)
         report_output = image_output
         if selected_vas:
-            report_output = image_output / "focused" / "_".join(
-                f"{va:08x}" for va in sorted(selected_vas)
-            )
+            focused_vas = sorted(selected_vas)
+            focused_address_list = "_".join(f"{va:08x}" for va in focused_vas)
+            focused_name = focused_address_list
+            if len(focused_name.encode("ascii")) > 240:
+                digest = hashlib.sha256(focused_name.encode("ascii")).hexdigest()
+                focused_name = f"{focused_vas[0]:08x}_{focused_vas[-1]:08x}_{digest}"
+            report_output = image_output / "focused" / focused_name
             report_output.mkdir(parents=True, exist_ok=True)
             write_tsv(
                 report_output / "objects.tsv", OBJECT_FIELDS, focused_rows,
-                _comments("Targets selected by this focused carve.", policy),
+                _comments("Targets selected by this focused carve.", policy)
+                + (f"selected function VAs: {focused_address_list}",),
             )
 
         # A focused carve adds or replaces only its selected rows.  Keep the

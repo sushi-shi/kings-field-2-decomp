@@ -35,9 +35,9 @@ ADDRESS(0x80038d04, 0xc0)
 void actor_set_home_position(KfActor *actor)
 {
     actor->position.vx = (actor->home_cell_x << ACTOR_HOME_CELL_SHIFT)
-                       + actor->unknown_24;
+                       + actor->word_24.home_local_x;
     actor->position.vz = (actor->home_cell_z << ACTOR_HOME_CELL_SHIFT)
-                       + actor->unknown_22;
+                       + actor->word_22.home_local_z;
     actor->position.vy = collision_sample_map_layer_height(actor->home_map_layer,
                                         actor->position.vx,
                                         actor->position.vz,
@@ -49,7 +49,7 @@ void actor_set_home_position(KfActor *actor)
     if (actor->unknown_28 & 0x400) {
         actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
-    if (!(actor->unknown_28 & 0x10)) {
+    if (!(actor->unknown_28 & KF_ACTOR_FLAG_LINKED)) {
         actor->position.vy += actor->vertical_anchor_offset;
     }
 }
@@ -61,7 +61,7 @@ void actor_copy_group_defaults(KfActor *actor)
     u16 value;
 
     actor->definition_id = group->definition_id;
-    actor->health = group->unknown_1a;
+    actor->health = group->word_1a.initial_health;
     actor->collision_radius = group->collision_radius;
     actor->collision_height = group->collision_height;
     actor->unknown_28 = group->initial_actor_flags;
@@ -83,7 +83,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->target_type = 0;
     actor->target_action_state = 0xff;
     actor->target = NULL;
-    if ((actor->unknown_05 & 1) == 0) {
+    if ((actor->placement_flags & KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW) == 0) {
         actor->rotation.y = rand() >> 3;
     }
     actor->motion.vector.vz = 0;
@@ -131,7 +131,7 @@ void actor_prepare_and_initialize(KfActor *actor)
     actor->rotation.z = 0;
     actor->rotation.x = 0;
     actor->current_map_layer = actor->home_map_layer;
-    actor->rotation.y = actor->unknown_20;
+    actor->rotation.y = actor->word_20.home_yaw;
     actor_set_home_position(actor);
     actor_initialize_from_group(actor);
     if (actor->slot_state == 3) {

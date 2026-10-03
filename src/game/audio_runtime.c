@@ -12,6 +12,12 @@
 DATA(0x8009a6a0, 0x158)
 char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_TRACKS_PER_SEQUENCE];
 
+/* Five pooled VAB headers and the dedicated stream-slot-6 header use 0x1000 bytes each. */
+DATA(0x80164a68, 0x6000)
+static u8 audio_vab_stream_buffers[6][0x1000];
+typedef char kf_audio_vab_stream_buffers_size[
+    sizeof(audio_vab_stream_buffers) == 0x6000 ? 1 : -1];
+
 DATA(0x80197630, 0xe9c)
 KfGameAudioState audio_state;
 
@@ -55,9 +61,8 @@ void audio_initialize_runtime(void)
         index--;
     } while (index != -1);
 
-    /* Stream-buffer owners and complete extents remain unresolved. */
     stream_slot = audio_state.vab_stream_slots;
-    stream_buffer = (u8 *)0x80165a68;
+    stream_buffer = audio_vab_stream_buffers[1];
     for (index = 0; index < 7; index++) {
         stream_slot->state = 0;
         stream_slot->buffer = stream_buffer;
@@ -65,7 +70,7 @@ void audio_initialize_runtime(void)
         stream_buffer += 0x1000;
     }
     audio_state.vab_stream_slots[5].buffer = (u8 *)0x80194e30;
-    audio_state.vab_stream_slots[6].buffer = (u8 *)0x80164a68;
+    audio_state.vab_stream_slots[6].buffer = audio_vab_stream_buffers[0];
 }
 
 ADDRESS(0x80013ae4, 0x98)

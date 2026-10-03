@@ -710,8 +710,8 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
     s32 dz = end_z - z;
     s32 step_x;
     s32 step_z;
-    s32 count;
-    s32 error;
+    s16 count;
+    s16 error;
 
     if ((s16)dx < 0) {
         dx = -dx;
@@ -735,13 +735,13 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                     .map_cell_layer_masks[(u16)z][(u16)x] = value;
             }
             error -= dz;
-            if ((s16)error <= 0) {
+            if (error <= 0) {
                 z += step_z;
                 error += dx;
             }
             x += step_x;
             count--;
-        } while ((s16)count >= 0);
+        } while (count >= 0);
     } else {
         error = (s16)dz >> 1;
         count = dz;
@@ -752,13 +752,13 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                     .map_cell_layer_masks[(u16)z][(u16)x] = value;
             }
             error -= dx;
-            if ((s16)error <= 0) {
+            if (error <= 0) {
                 x += step_x;
                 error += dz;
             }
             z += step_z;
             count--;
-        } while ((s16)count >= 0);
+        } while (count >= 0);
     }
 }
 

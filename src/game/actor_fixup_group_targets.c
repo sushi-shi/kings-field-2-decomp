@@ -33,7 +33,7 @@ void actor_update_frame(void)
 
             if ((actor_state.active_group->initial_actor_flags & 0x10000) != 0) {
                 KfMapObject *object =
-                    &map_object_state.objects[actor->unknown_22];
+                    &map_object_state.objects[actor->word_22.linked_map_object_slot];
                 s32 object_z;
 
                 actor->position.vx = object->position.vx;
@@ -89,7 +89,7 @@ void actor_fixup_group_targets(void)
 typedef struct KfActorLoadRecord {
     u8 slot_state;
     u8 group_index;
-    u8 unknown_02;
+    u8 placement_flags;
     u8 cell_z;
     u8 cell_x;
     u8 spawn_chance;
@@ -115,15 +115,15 @@ void actor_load_records(const KfActorLoadRecord *records)
 
             actor->group_index = records->group_index;
             actor->unknown_04 = 0;
-            actor->unknown_05 = records->unknown_02;
+            actor->placement_flags = records->placement_flags;
             actor->home_map_layer = records->home_map_layer;
             actor->home_cell_z = records->cell_z;
             actor->home_cell_x = records->cell_x;
             actor->spawn_chance = records->spawn_chance;
             actor->death_drop_object_id = records->death_drop_object_id;
-            actor->unknown_20 = records->unknown_08;
-            actor->unknown_22 = records->unknown_0a;
-            actor->unknown_24 = records->unknown_0c;
+            actor->word_20.value = records->unknown_08;
+            actor->word_22.value = records->unknown_0a;
+            actor->word_24.value = records->unknown_0c;
             actor->vertical_anchor_offset = records->vertical_anchor_offset;
             actor->lifecycle = 0;
             actor->target_type = 0;
@@ -134,10 +134,10 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor_copy_group_defaults(actor);
             actor_set_home_position(actor);
             actor->render_depth = group->render_depth;
-            if ((actor->unknown_28 & 0x10) != 0) {
+            if ((actor->unknown_28 & KF_ACTOR_FLAG_LINKED) != 0) {
                 if (actor->slot_state == 3) {
-                    if (actor->unknown_24 == -1) {
-                        actor->unknown_24 = group->unknown_1a;
+                    if (actor->word_24.value == -1) {
+                        actor->word_24.value = group->word_1a.slot3_home_x_fallback;
                     }
                     if (actor->vertical_anchor_offset == -1) {
                         actor->vertical_anchor_offset = group->default_vertical_anchor_offset;

@@ -500,14 +500,6 @@ GAME.EXE	0x8005b6b6	0x4aeb6	0x4	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x8005b6ba	0x4aeba	0x11a	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005b8f8	0x4b0f8	0x124	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005bacc	0x4b2cc	0x218	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cbb0	0x4c3b0	0x54	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cc2c	0x4c42c	0x9c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cce4	0x4c4e4	0x108	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cebc	0x4c6bc	0x4c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cf2c	0x4c72c	0x10	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cf5c	0x4c75c	0x44	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005cff8	0x4c7f8	0xcc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005d350	0x4cb50	0x9e0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005dd98	0x4d598	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005df80	0x4d780	0x34	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005e5b8	0x4ddb8	0x48	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

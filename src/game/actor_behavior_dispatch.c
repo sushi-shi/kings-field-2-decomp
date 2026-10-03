@@ -188,8 +188,8 @@ case3_motion:
             actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = (u16)actor->vertical_anchor_offset +
                 collision_sample_map_layer_height(actor->home_map_layer,
-                    (actor->home_cell_x << 11) + actor->unknown_24,
-                    (actor->home_cell_z << 11) + actor->unknown_22,
+                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
                     actor->collision_radius, actor->collision_height);
             actor_set_animation_if_changed(target->animation_id);
             actor_suspend_vertical_motion();
@@ -485,7 +485,7 @@ case3_motion:
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, actor->state_70.signed_state)) {
-            actor->state_70.signed_state = (u16)actor->state_70.signed_state + target->unknown_28;
+            actor->state_70.signed_state = (u16)actor->state_70.signed_state + target->repeated_attack_phase_step;
             if (target->word_26.unsigned_value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;
             }
@@ -496,12 +496,12 @@ case3_motion:
                            target->word_16.value,
                            target->word_10.bytes.unknown_11 | 0x80);
         }
-        if (target->unknown_2a != 0 &&
-            actor_animation_crossed_phase(actor, target->unknown_2a)) {
+        if (target->secondary_hit_phase != 0 &&
+            actor_animation_crossed_phase(actor, target->secondary_hit_phase)) {
             actor_try_damage_player_in_cone(0, target->word_1c.bytes[0],
                            target->word_1c.bytes[1],
-                           target->word_1e.bytes[0], target->unknown_20,
-                           target->unknown_22, target->word_24.unsigned_value,
+                           target->word_1e.bytes[0], target->word_20.damage_component0,
+                           target->word_22.damage_component1, target->word_24.unsigned_value,
                            target->word_1e.bytes[1]);
         }
         if (actor->animation_phase >= 0xfff) {
@@ -518,10 +518,10 @@ case3_motion:
             actor_set_animation(target->animation_id);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
-        if (actor->animation_phase >= target->unknown_22) {
+        if (actor->animation_phase >= target->word_22.animation_phase_stop) {
             speed = 0;
             step = target->word_26.signed_value;
-        } else if (actor->animation_phase >= target->unknown_20) {
+        } else if (actor->animation_phase >= target->word_20.animation_phase_start) {
             speed = target->word_1c.value;
             step = target->word_24.signed_value;
         } else {
@@ -828,7 +828,7 @@ case3_motion:
         }
         switch (actor->state_70.signed_state) {
         case 0: {
-            KfMapObject *object = &map_object_state.objects[actor->unknown_20];
+            KfMapObject *object = &map_object_state.objects[actor->word_20.linked_map_object_slot];
             u16 group_scale;
 
             if (object->action_timer < 2 || object->rotation.vx == 0 ||
@@ -862,7 +862,7 @@ case3_motion:
             actor->state_70.signed_state = target->word_0e.value;
             actor->tail_72.script.word_index = 0;
             actor->tail_72.script.effect_cycle_index = 0;
-            if (target->unknown_05[2] == 1) {
+            if (target->start_vertical_motion_on_entry == 1) {
                 actor->vertical_motion_state = 16;
             }
         }
@@ -946,8 +946,8 @@ case3_motion:
                 actor->state_70.signed_state = 1;
             } else {
                 actor->tail_72.signed_state = actor_turn_and_move_toward_point(
-                    (actor->home_cell_x << 11) + actor->unknown_24,
-                    (actor->home_cell_z << 11) + actor->unknown_22,
+                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
                     target->word_0e.value, target->word_10.value,
                     actor->tail_72.signed_state,
                     group->movement_step,
@@ -959,9 +959,9 @@ case3_motion:
             actor_advance_animation_wrapped(actor, target->word_16.bytes.high);
             break;
         case 1:
-            actor_turn_toward_angle(actor, actor->unknown_20, target->word_10.value,
+            actor_turn_toward_angle(actor, actor->word_20.home_yaw, target->word_10.value,
                           group->turn_acceleration);
-            if (actor->rotation.y == actor->unknown_20) {
+            if (actor->rotation.y == actor->word_20.home_yaw) {
                 actor_set_animation(target->animation_id);
                 actor->state_70.signed_state = 2;
             }
@@ -1090,7 +1090,7 @@ case3_motion:
         break;
     }
 
-    if (actor->unknown_28 & 0x10) {
+    if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
         KfActor *other = actor_state.other_actor;
         u8 slot_state = actor->slot_state;
 
@@ -1111,7 +1111,7 @@ case3_motion:
 
             actor->current_map_layer = other->current_map_layer;
             if (other->lifecycle != 1) {
-                actor->unknown_28 = (actor->unknown_28 & ~0x10) | 0x100;
+                actor->unknown_28 = (actor->unknown_28 & ~KF_ACTOR_FLAG_LINKED) | 0x100;
                 collision = collision_query_world(
                     actor->position.vx, actor->position.vy,
                     actor->position.vz, actor->collision_radius,
@@ -1145,7 +1145,7 @@ case3_motion:
             rotation.z = actor->rotation.z;
             vector_rotate_yxz(&rotation, (SVECTOR *)&group->position_offset_x,
                               &group_offset);
-            actor_sample_rotated_animation_vertex(other, actor->unknown_24, &vertex_offset);
+            actor_sample_rotated_animation_vertex(other, actor->word_24.linked_animation_vertex_index, &vertex_offset);
             actor->position.vx = other->position.vx + vertex_offset.vx -
                                  group_offset.vx;
             actor->position.vy = other->position.vy + vertex_offset.vy -

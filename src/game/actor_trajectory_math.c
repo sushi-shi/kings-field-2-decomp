@@ -34,12 +34,12 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     }
     if (mode == 0) {
         chosen_time = shorter_time;
-        if (longer_time > 0 && longer_time < shorter_time) {
+        if (longer_time > 0 && longer_time <= shorter_time) {
             chosen_time = longer_time;
         }
     } else {
         chosen_time = shorter_time;
-        if (shorter_time < longer_time) {
+        if (shorter_time <= longer_time) {
             chosen_time = longer_time;
         }
     }

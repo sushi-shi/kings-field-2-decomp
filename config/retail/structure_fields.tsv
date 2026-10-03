@@ -408,6 +408,9 @@ KfMapObjectExtra40	0x00	0x02	angular_velocity_x	s16	supported	GAME 0x800376c4-0x
 KfMapObjectExtra40	0x00	0x02	movement_frames_left	u16	supported	map_object_update_actions action 22	countdown initialized to 16 while moving before next action phase
 KfMapObjectExtra40	0x00	0x04	resource_offsets	KfMapObjectResourceOffsets	supported	map_object_initialize_from_placements;map_object_update_actions action 224	three signed placement offsets forwarded to resource_request_transition
 KfMapObjectExtra40	0x00	0x04	layer_fade	KfMapObjectLayerFadeState	supported	map_object_initialize_from_placements;map_object_update_actions action 89	wait countdown and saved collision layer mask during fade
+KfMapObjectExtra40	0x00	0x04	saved_layer	KfMapObjectSavedLayerState	supported	GAME 0x80037f38/0x8003801c lbu;map_object_update_actions action 84	action-specific view of layer mask saved at placement time
+KfMapObjectSavedLayerState	0x00	0x01	layer_mask	u8	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	original layer mask passed to map_cell_apply_rotated_pattern
+KfMapObjectSavedLayerState	0x01	0x03	unknown_41	u8[3]	opaque	game/map_object.h	remaining action-specific state
 KfMapObjectResourceOffsets	0x00	0x01	offset_x	s8	supported	map_object_initialize_from_placements;GAME 0x800380d4 lb	signed X offset for resource transition
 KfMapObjectResourceOffsets	0x01	0x01	offset_z	s8	supported	map_object_initialize_from_placements;GAME 0x800380e0 lb	signed Z offset for resource transition
 KfMapObjectResourceOffsets	0x02	0x01	offset_y	s8	supported	map_object_initialize_from_placements;GAME 0x800380ec lb	signed Y offset for resource transition
@@ -504,7 +507,7 @@ KfMapObjectTailCellCopyView	0x8	0x1	source_z	u8	supported	GAME 0x80035c18 lbu;ma
 KfMapObjectTailCellCopyView	0x9	0x1	unknown_3d	u8	opaque	game/map_object.h	action-specific byte
 KfMapObjectTailCellCopyView	0xa	0x2	unknown_3e	u16	opaque	game/map_object.h	action-specific halfword
 KfMapObjectTailAction88CellCopyView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 88
-KfMapObjectTailAction88CellCopyView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	action-specific state byte
+KfMapObjectTailAction88CellCopyView	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 88	zero selects decreasing phase and second cell copy; one selects increasing phase
 KfMapObjectTailAction88CellCopyView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	action-specific byte
 KfMapObjectTailAction88CellCopyView	0x6	0x1	destination_x	u8	supported	GAME 0x80037c44 lbu;map_cell_copy_rotated_fields	destination map-cell X argument
 KfMapObjectTailAction88CellCopyView	0x7	0x1	destination_z	u8	supported	GAME 0x80037c34 lbu;map_cell_copy_rotated_fields	destination map-cell Z argument
@@ -534,8 +537,17 @@ KfMapObjectTailLinkedPropertyView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h
 KfMapObjectTailLinkedPropertyView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	adjacent byte remains unresolved
 KfMapObjectTailLinkedPropertyView	0x6	0x2	linked_object_index	u16	supported	GAME 0x800355d8;map_object_set_property;map_object_update_actions	halfword indexes map_object_state.objects; 0xffff sentinel
 KfMapObjectTailLinkedPropertyView	0x8	0x4	unknown_3c	u32	opaque	game/map_object.h	remaining action-specific tail bytes
+KfMapObjectTailInitialRotationView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains action-specific
+KfMapObjectTailInitialRotationView	0x4	0x2	unknown_38	u8[2]	opaque	game/map_object.h	preceding action-specific bytes
+KfMapObjectTailInitialRotationView	0x6	0x1	rotation_x_code	u8	supported	GAME 0x80035abc/0x80035d88 lbu;map_object_initialize_from_placements	0xff sentinel or byte shifted by six into rotation.vx
+KfMapObjectTailInitialRotationView	0x7	0x1	rotation_y_code	u8	supported	GAME 0x80035adc/0x80035da8 lbu;map_object_initialize_from_placements	0xff sentinel or byte shifted by six into rotation.vy
+KfMapObjectTailInitialRotationView	0x8	0x1	rotation_z_code	u8	supported	GAME 0x80035afc/0x80035dc8 lbu;map_object_initialize_from_placements	0xff sentinel or byte shifted by six into rotation.vz
+KfMapObjectTailInitialRotationView	0x9	0x3	unknown_3d	u8[3]	opaque	game/map_object.h	remaining action-specific bytes
+KfMapObjectTailMarkerView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains action-specific
+KfMapObjectTailMarkerView	0x4	0x1	marker_id	u8	supported	GAME 0x800367c4..0x80036894 lbu/sb;map_object_apply_marker_signal;map_object_check_and_consume_marker	incoming marker identifier compared and consumed for marker-driven actions
+KfMapObjectTailMarkerView	0x5	0x7	unknown_39	u8[7]	opaque	game/map_object.h	remaining tail bytes retain action-specific meanings
 KfMapObjectTailAction83View	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 83
-KfMapObjectTailAction83View	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	action 83 mode byte remains unnamed
+KfMapObjectTailAction83View	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 83	selects opening, closing, and return path on phase completion
 KfMapObjectTailAction83View	0x5	0x1	completion_marker	u8	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	marker emitted when action 83 opening or closing phase completes
 KfMapObjectTailAction83View	0x6	0x6	unknown_3a	u8[6]	opaque	game/map_object.h	remaining action-specific bytes
 KfMapObjectTailScaleLinkView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 19
@@ -781,7 +793,7 @@ KfPlayerState	0x106	0x02	death_transition_frame	s16	supported	asm;player_death_b
 KfPlayerState	0x108	0x06	view_rotation_offset	KfPlayerViewRotationOffset	supported	asm;player_update_frame;player_reset_view;event_command_dispatch	three-axis additive view rotation set by map-object and reaction poses
 KfPlayerState	0x10e	0x02	unknown_10e	u8[2]	opaque	asm;player_reset_view	not yet modelled
 KfPlayerState	0x110	0x02	vertical_motion_pitch_offset	s16	supported	asm;player_update_vertical_motion;player_update_frame	fall velocity seeds camera pitch offset and landing response decays it
-KfPlayerState	0x112	0x04	unknown_112	s16[2]	opaque	asm;player_reset_view;player_update_frame	other two camera rotation offsets are only cleared and summed
+KfPlayerState	0x112	0x04	camera_yaw_roll_offsets	s16[2]	supported	GAME 0x800234b8/0x800234c0 and 0x800291b4/0x800291bc sh;GAME 0x8002a674/0x8002a69c lhu;player_update_frame	additive camera yaw and roll offsets; cleared by reset routines, source of nonzero values unresolved
 KfPlayerState	0x116	0x02	unknown_116	u8[2]	opaque	asm;player_reset_view	not yet modelled
 KfPlayerState	0x118	0x08	magic_origin_offset	SVECTOR	supported	asm;player_probe_view_target_and_vectors;player_select_magic_action;player_dispatch_magic_effect	magic effect origin offset rotated by the player camera orientation
 KfPlayerState	0x120	0x04	collision_lower_clearance	s32	supported	asm;player_update_collision_bounds;player_reset_view	lower collision clearance; set to 10000 by view reset

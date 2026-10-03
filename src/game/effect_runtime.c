@@ -1,14 +1,23 @@
 #include <kf/lib/address.h>
-#include <kf/lib/math.h>
-#include <kf/game/actor.h>
-#include <kf/game/asset.h>
-#include <kf/game/collision_cache.h>
+#include <kf/game/audio.h>
 #include <kf/game/effect.h>
+#include <kf/game/collision_cache.h>
+#include <kf/lib/null.h>
+#include <kf/lib/math.h>
+#include <kf/game/animation.h>
+#include <kf/game/actor.h>
 #include <kf/game/player.h>
 #include <psyq/libc.h>
+#include <kf/game/asset.h>
+
+DATA(0x8006d704, 0x4)
+u32 effect_trail_next_slot = 0;
 
 DATA(0x8006d708, 0x8)
 static SVECTOR effect_zero_direction = {0, 0, 0, 0};
+
+DATA(0x8009a5a8, 0x4)
+s32 effect_kind102_sound_cooldown_frame;
 
 DATA(0x8019b6a8, 0x2a8c)
 KfEffectState effect_state;
@@ -16,7 +25,1019 @@ KfEffectState effect_state;
 DATA(0x801c7068, 0x8)
 SVECTOR effect_collision_motion_step;
 
-RODATA(0x8001268c, 0x204)
+DATA(0x801d9628, 0x900)
+KfEffectTrailRow effect_trail_rows[4][24];
+
+RODATA(0x8001249c, 0x3f4)
+
+enum {
+    EFFECT_SPATIAL_VOLUME = 110,
+    EFFECT_SPATIAL_MAX_DISTANCE = 0x6d60,
+    EFFECT_SPATIAL_ATTENUATION_DISTANCE = 0x7148
+};
+
+ADDRESS(0x8003fa2c, 0x3c)
+KfAudioPlaybackResult effect_play_spatial_sound(
+    KfEffectRecord *effect, s32 sound)
+{
+    return audio_play_spatial_range(sound, &effect->position,
+        EFFECT_SPATIAL_VOLUME, EFFECT_SPATIAL_MAX_DISTANCE,
+        EFFECT_SPATIAL_ATTENUATION_DISTANCE, 0);
+}
+
+ADDRESS(0x8003fa68, 0x12c)
+s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
+    s32 height_flags)
+{
+    KfEffectRecord *record = effect_state.current_record;
+    s32 y;
+    if (record->cooldown == 0) {
+        y = position->vy + ((height_flags & 0xfff) >> 1);
+        switch (record->type & 7) {
+        case 2:
+            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0x31);
+        case 1:
+            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0xa1);
+        case 3:
+            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0xb1);
+        case 4:
+            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 1);
+        }
+    } else {
+        record->cooldown--;
+        return 0;
+    }
+}
+
+enum { EFFECT_FIXED_MAGIC_POWER = 5 };
+
+ADDRESS(0x8003fb94, 0x218)
+void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 power,
+                   u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
+                   u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
+                   u16 magic_12, u16 magic_14, const VECTOR *position)
+{
+    s32 options = kind & 0xf0000;
+    kind &= ~0xf0000;
+
+    if (kind == 0x80) {
+        player_apply_damage(magic_06, magic_08, magic_0a, magic_04,
+                      magic_0c, magic_0e, magic_10, magic_12,
+                      magic_14, radius, damage_multiplier_tenths, position);
+    } else if (kind == 0x10) {
+        s32 actor_index = KF_COLLISION_CACHE_ACTOR_INDEX;
+        KfActor *actor = &actor_state.actors[actor_index];
+        KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
+
+        if (position != NULL) {
+            s32 angle = vector_xz_to_angle(
+                actor->position.vx - position->vx,
+                actor->position.vz - position->vz);
+            if (!angle_within_tolerance(actor->rotation.y, angle + 0x800,
+                                        group->actor_facing_tolerance)) {
+                return;
+            }
+        }
+
+        record_type &= 0x30;
+        if (options & 0x20000) {
+            record_type |= 1;
+        } else {
+            record_type |= 2;
+        }
+        actor_apply_magic_to_actor(KF_COLLISION_CACHE_ACTOR_INDEX, power, magic_06,
+                      magic_08, magic_0a, magic_0c, magic_0e, magic_10,
+                      magic_12, magic_14, radius, record_type, position);
+        if (options & 0x10000) {
+            actor->unknown_28 |= 0x800;
+        }
+    }
+}
+
+ADDRESS(0x8003fdac, 0x24)
+int effect_magic_power(KfEffectRecord *effect)
+{
+    if ((effect->type & KF_EFFECT_USE_PLAYER_MAGIC) != 0) {
+        return player_state.magic;
+    }
+    return EFFECT_FIXED_MAGIC_POWER;
+}
+
+
+ADDRESS(0x8003fdd0, 0xe0)
+void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position)
+{
+    KfEffectRecord *record = effect_state.current_record;
+    const KfMagicRecord *magic = effect_state.current_magic;
+    u16 power = effect_magic_power(record);
+
+    effect_dispatch_magic_impact(kind, record->type, radius, power, record->damage_multiplier_tenths,
+                  magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
+                  magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
+                  magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
+                  position);
+}
+
+ADDRESS(0x8003feb0, 0x68)
+void effect_apply_current_magic_backstep(s32 kind)
+{
+    const KfEffectRecord *record = effect_state.current_record;
+    VECTOR position;
+
+    position.vx = record->position.vx - (record->direction.vx << 3);
+    position.vy = record->position.vy - (record->direction.vy << 3);
+    position.vz = record->position.vz - (record->direction.vz << 3);
+    effect_apply_current_magic(kind, 5000, &position);
+}
+
+
+ADDRESS(0x8003ff18, 0x1a8)
+void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
+                                      s32 arg3, s32 arg4, s32 arg5)
+{
+    KfEffectRecord *record = effect_state.current_record;
+    const KfMagicRecord *magic = effect_state.current_magic;
+
+    if (record->type & 1) {
+        player_apply_radial_damage(position, start, end, arg3, arg4,
+                      magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
+                      magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
+                      magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
+                      arg5, record->damage_multiplier_tenths);
+    }
+    if (record->type & 2) {
+        u16 power = effect_magic_power(record);
+
+        actor_apply_area_magic(position, start, end, arg3, arg4,
+                      power, magic->damage_components[0],
+                      magic->damage_components[1], magic->damage_components[2], magic->damage_components[3],
+                      magic->damage_components[4], magic->damage_components[5], magic->damage_components[6],
+                      magic->damage_components[7], arg5, (record->type & 0x30) | 2);
+    }
+}
+
+
+ADDRESS(0x800400c0, 0xf4)
+void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output, const SVECTOR *scale)
+{
+    struct KfEulerAngles angles;
+    SVECTOR offset;
+
+    animation_sample_vertex(record->render_id + 40, record->animation_clip,
+                  record->animation_phase_q12, mode, &offset);
+    offset.vx = offset.vx * scale->vx >> KF_FIXED12_BITS;
+    offset.vy = offset.vy * scale->vy >> KF_FIXED12_BITS;
+    offset.vz = offset.vz * scale->vz >> KF_FIXED12_BITS;
+
+    angles.x = record->rotation.vx;
+    angles.y = record->rotation.vy + KF_ANGLE_HALF_TURN;
+    angles.z = record->rotation.vz;
+    vector_rotate_yxz(&angles, &offset, output);
+}
+
+ADDRESS(0x800401b4, 0x6c)
+void effect_sample_world_vertex(KfEffectRecord *record, s32 mode, VECTOR *position, const SVECTOR *scale)
+{
+    effect_sample_rotated_vertex(record, mode, position, scale);
+    addVector(position, &record->position);
+}
+
+
+ADDRESS(0x80040220, 0x44)
+KfEffectRecord *effect_pool_find_free(void)
+{
+    KfEffectRecord *record = effect_state.records;
+    u16 i = KF_EFFECT_CAPACITY;
+
+    do {
+        if (record->type == KF_EFFECT_SLOT_FREE) {
+            return record;
+        }
+        record++;
+    } while (--i != 0);
+    return NULL;
+}
+
+ADDRESS(0x80040264, 0x40)
+void effect_pool_initialize_scaled(KfEffectRecord *record, u8 render_id, u16 scale)
+{
+    record->render_flags = 5;
+    record->animation_clip = 0x80;
+    record->base_render_id = render_id;
+    record->render_id = render_id;
+    record->render_queue_mode = 1;
+    record->lighting_override_index = 0x43;
+    record->lighting_blend_q12 = 0x1000;
+    record->scale_z = scale;
+    record->scale_y = scale;
+    record->scale_x = scale;
+}
+
+ADDRESS(0x800402a4, 0x64)
+void effect_pool_initialize_fixed(KfEffectRecord *record, u8 render_id)
+{
+    record->render_flags = 14;
+    record->animation_clip = 0x80;
+    record->base_render_id = render_id;
+    record->render_id = render_id;
+    record->render_queue_mode = 1;
+    record->lighting_override_index = 0x44;
+    record->lighting_blend_q12 = 0x1000;
+    record->scale_y = 0x100;
+    record->scale_z = 0x100;
+    record->scale_x = 0x100;
+    record->position.vx = 160;
+    record->position.vy = 120;
+    record->rotation.vz = 0;
+    record->rotation.vy = 0;
+    record->rotation.vx = 0;
+    record->position.vz = 0;
+}
+
+ADDRESS(0x80040308, 0x13e4)
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8 kind,
+                              const VECTOR *position,
+                              const SVECTOR *direction, ...)
+{
+    KfEffectRecord *record;
+    s32 length_squared;
+    s32 three_parameter_sound;
+    u16 third_parameter;
+    /* O32 stacks the fifth argument; optional words follow its home slot. */
+    s32 *va = (s32 *)&direction;
+
+    record = effect_pool_find_free();
+
+    if (record == 0) {
+        goto finish;
+    }
+    record->type = type;
+    record->kind = kind;
+    if (position != 0) {
+        record->position = *position;
+    }
+    record->map_layer_mask = 3;
+    if (direction != 0) {
+        record->direction = *direction;
+    } else {
+        record->direction.vz = 0;
+        record->direction.vy = 0;
+        record->direction.vx = 0;
+    }
+    record->phase = 0;
+    record->damage_multiplier_tenths = damage_multiplier_tenths;
+    record->scale_z = 0x1000;
+    record->scale_y = 0x1000;
+    record->scale_x = 0x1000;
+    record->rotation.vz = 0;
+    record->rotation.vy = 0;
+    record->rotation.vx = 0;
+    record->animation_phase_q12 = 0;
+    record->unknown_05 = 0;
+    record->render_flags = 1;
+    if ((record->type & KF_EFFECT_USE_PLAYER_MAGIC) != 0 &&
+        player_state.death_state == 1) {
+        record->cooldown = 8;
+    } else {
+        record->cooldown = 1;
+    }
+    record->lighting_override_index = 0xff;
+    record->render_queue_mode = 0xff;
+    record->updates_remaining = -1;
+    length_squared = (s32)record->direction.vx * record->direction.vx +
+        (s32)record->direction.vy * record->direction.vy +
+        (s32)record->direction.vz * record->direction.vz;
+    record->lighting_blend_q12 = 0;
+    if (length_squared >= 810001) {
+        record->midpoint_collision_enabled = 1;
+    } else {
+        record->midpoint_collision_enabled = 0;
+    }
+
+    switch (record->kind) {
+    case 7:
+    case 49:
+        effect_pool_initialize_scaled(record, 0x2d, 0x1800);
+        record->updates_remaining = 50;
+        record->midpoint_collision_enabled = 1;
+        effect_play_spatial_sound(record, 0x23);
+        break;
+    case 32:
+        effect_pool_initialize_scaled(record, 0x21, 0x1800);
+        record->updates_remaining = 50;
+        break;
+    case 4:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0x1f;
+        record->render_id = 0x1f;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 0x2d;
+        record->unknown_3c[4] = 0;
+        record->scale_z = 0x32c8;
+        record->scale_y = 0x32c8;
+        record->scale_x = 0x32c8;
+        record->midpoint_collision_enabled = 1;
+        effect_play_spatial_sound(record, 0x20);
+        break;
+    case 28:
+        record->scale_z = 0x800;
+        record->scale_y = 0x800;
+        record->scale_x = 0x800;
+        /* fall through */
+    case 1:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x20;
+        record->render_id = 0x20;
+        record->unknown_3c[4] = 0;
+        record->updates_remaining = 70;
+        effect_play_spatial_sound(record, 0x1b);
+        break;
+    case 26:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x24;
+        record->render_id = 0x24;
+        record->unknown_3c[4] = 0;
+        record->updates_remaining = 70;
+        record->scale_z = 600;
+        record->scale_y = 600;
+        record->scale_x = 600;
+        break;
+    case 27:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x25;
+        record->render_id = 0x25;
+        record->unknown_3c[4] = 0;
+        record->updates_remaining = 70;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        break;
+    case 111: {
+        u16 value = va[1];
+        record->render_flags = 0;
+        record->updates_remaining = 50;
+        *(u16 *)&record->unknown_3c[4] = value;
+        effect_play_spatial_sound(record, 0x21);
+        break;
+    }
+    case 13:
+        effect_pool_initialize_scaled(record, 0x21, 0x1000);
+        record->updates_remaining = 50;
+        effect_play_spatial_sound(record, 0x2a);
+        break;
+    case 0:
+        effect_pool_initialize_scaled(record, 0xe, 0x200);
+        record->updates_remaining = 50;
+        record->unknown_3c[4] = 0;
+        break;
+    case 25: {
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0xd;
+        record->render_id = 0xd;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 45;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->rotation.vz = rand() >> 3;
+        record->unknown_3c[4] = 0;
+        break;
+    }
+    case 5: {
+        KfEffectKind5Fanout *fanout =
+            (KfEffectKind5Fanout *)&record->unknown_3c[4];
+        u8 parameter;
+
+        record->render_flags = 0;
+        parameter = va[1];
+        record->updates_remaining = 70;
+        fanout->actor_index = parameter;
+        effect_play_spatial_sound(record, 0x21);
+        break;
+    }
+    case 105: {
+        KfEffectKind105Attachment *attachment =
+            (KfEffectKind105Attachment *)&record->unknown_3c[4];
+
+        effect_pool_initialize_scaled(record, 0xe, 0x1000);
+        record->rotation.vz = rand();
+        record->direction.vx += (rand() >> 9) - 32;
+        record->direction.vy += (rand() >> 9) - 32;
+        record->direction.vz += (rand() >> 9) - 32;
+        attachment->parent_index = va[1];
+        attachment->actor_index = va[2];
+        attachment->vertex_index = va[3];
+        record->updates_remaining = 70;
+        break;
+    }
+    case 9: {
+        KfEffectKind9Target *target = (KfEffectKind9Target *)&record->unknown_3c[4];
+
+        effect_pool_initialize_scaled(record, 8, 0x1000);
+        record->direction.vx += (rand() >> 8) - 64;
+        record->direction.vy += (rand() >> 8) - 64;
+        record->direction.vz += (rand() >> 8) - 64;
+        target->actor_index = va[1];
+        record->updates_remaining = 100;
+        record->cooldown = 3;
+        effect_play_spatial_sound(record, 0x26);
+        break;
+    }
+    case 53:
+        effect_pool_initialize_scaled(record, 0x21, 0x2000);
+        goto randomize_33_53;
+    case 33:
+        effect_pool_initialize_scaled(record, 0x21, 0x1000);
+    randomize_33_53: {
+        s32 random_z;
+
+        record->direction.vx += (rand() >> 8) - 64;
+        record->direction.vy += (rand() >> 8) - 64;
+        random_z = rand();
+        record->updates_remaining = 100;
+        record->cooldown = 3;
+        record->direction.vz += (random_z >> 8) - 64;
+        effect_play_spatial_sound(record, 0x21);
+        break;
+    }
+    case 106:
+        effect_pool_initialize_scaled(record, 8, 0x2000);
+        record->direction.vy -= 100;
+        effect_play_spatial_sound(record, 0x24);
+        record->updates_remaining = 100;
+        break;
+    case 8: {
+        KfEffectKind8State *kind8 =
+            (KfEffectKind8State *)&record->unknown_3c[4];
+
+        effect_pool_initialize_scaled(record, 8, 0x1000);
+        kind8->parent_index = va[1];
+        kind8->vertical_step = va[2];
+        record->updates_remaining = 50;
+        break;
+    }
+    case 10: {
+        KfEffectKind10Targeting *targeting =
+            (KfEffectKind10Targeting *)&record->unknown_3c[4];
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0x15;
+        record->render_id = 0x15;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 3000;
+        record->scale_y = 3000;
+        record->scale_x = 3000;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        targeting->emissions_remaining = 0;
+        record->updates_remaining = 150;
+        effect_play_spatial_sound(record, 0x27);
+        break;
+    }
+    case 6: {
+        const SVECTOR *angles;
+        KfEffectTrailRow *rows;
+        KfEffectTrailState *trail = (KfEffectTrailState *)&record->unknown_3c[4];
+        s32 index;
+        u32 slot;
+
+        record->render_flags = 0;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0;
+        record->render_id = 0;
+        record->scale_z = 0x1000;
+        record->scale_y = 0x1000;
+        record->scale_x = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        slot = effect_trail_next_slot;
+        rows = effect_trail_rows[slot];
+        trail->rows = rows;
+        effect_trail_next_slot = (slot + 1) & 3;
+        for (index = 23; index != -1; index--, rows++) {
+            rows->position = record->position;
+            rows->rotation = record->rotation;
+        }
+        trail->frame_index = 0;
+        trail->phase_counter = 0;
+        record->updates_remaining = 150;
+        effect_play_spatial_sound(record, 0x22);
+        break;
+    }
+    case 107: {
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0x23;
+        record->render_id = 0x23;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0x1000;
+        record->scale_y = 0x1000;
+        record->scale_x = 0x1000;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        break;
+    }
+    case 121:
+        effect_pool_initialize_scaled(record, 0x2e, 0x1000);
+        goto initialize_103_121;
+    case 103:
+        effect_pool_initialize_scaled(record, 0xf, 0x1000);
+    initialize_103_121:
+        record->updates_remaining = 100;
+        *(u16 *)&record->unknown_3c[4] = va[1];
+        effect_play_spatial_sound(record, 0x28);
+        break;
+    case 122:
+        effect_pool_initialize_scaled(record, 0x2f, 0x1000);
+        record->scale_y = va[1];
+        record->updates_remaining = 15;
+        break;
+    case 104:
+        effect_pool_initialize_scaled(record, 0x10, 0x1000);
+        record->scale_y = va[1];
+        record->updates_remaining = 15;
+        break;
+    case 54: {
+        s32 value;
+        s32 render_id;
+
+        render_id = 0x30;
+        goto initialize_11_54;
+    case 11:
+        render_id = 0x11;
+    initialize_11_54:
+
+        record->base_render_id = render_id;
+        record->render_id = render_id;
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        value = va[1];
+        *(u16 *)&record->unknown_3c[4] = value / 4;
+        break;
+    }
+    case 118:
+    case 119: {
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x13;
+        record->render_id = 0x13;
+        record->updates_remaining = 0x23;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        effect_play_spatial_sound(record, 0x20);
+        break;
+    }
+    case 51:
+    case 52:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x25;
+        record->render_id = 0x25;
+        record->unknown_3c[4] = 0;
+    zero_scale_27_51_52:
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        break;
+    case 2: {
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 9;
+        record->render_id = 9;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_x = 0;
+        *(u16 *)&record->unknown_3c[4] = va[1];
+        *(u16 *)&record->unknown_3c[6] = va[2];
+        third_parameter = va[3];
+        three_parameter_sound = 0x1e;
+        goto emit_three_parameter_sound;
+    }
+    case 20:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0xb;
+        record->render_id = 0xb;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        break;
+    case 12: {
+        KfEffectKind12Aim *aim =
+            (KfEffectKind12Aim *)&record->unknown_3c[4];
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->render_queue_mode = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x22;
+        record->render_id = 0x22;
+        record->lighting_override_index = 0x49;
+        record->lighting_blend_q12 = 0x1000;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->scale_z = 30000;
+        record->scale_y = 30000;
+        record->scale_x = 30000;
+        aim->max_length = va[2];
+        aim->scale = va[3];
+        aim->turn_step = va[4];
+        aim->close_scale = va[5];
+        record->updates_remaining = va[6];
+        break;
+    }
+    case 100: {
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x22;
+        record->render_id = 0x22;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->rotation.vy += (rand() >> 7) - 128;
+        record->rotation.vx += (rand() >> 7) - 128;
+        record->rotation.vz = 0;
+        effect_play_spatial_sound(record, 0x29);
+        break;
+    }
+    case 42: {
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0x11;
+        record->render_id = 0x11;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        record->unknown_3c[4] = va[1];
+        break;
+    }
+    case 113:
+    case 115: {
+        const SVECTOR *angles;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0xd;
+        record->render_id = 0xd;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 45;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->scale_z = 5000;
+        record->scale_y = 5000;
+        record->scale_x = 5000;
+        effect_play_spatial_sound(record, 0x29);
+        break;
+    }
+    case 46: {
+        KfEffectKind46State *kind46 =
+            (KfEffectKind46State *)&record->unknown_3c[4];
+        u8 parameter;
+
+        effect_pool_initialize_scaled(record, 0x10, 0x1000);
+        record->scale_y = 0;
+        kind46->phase = 0;
+        parameter = va[1];
+        record->direction.vy = 0;
+        kind46->linked_effect_index = parameter;
+        break;
+    }
+    case 45: {
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0x30;
+        record->render_id = 0x30;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        effect_play_spatial_sound(record, 0x17);
+        *(u16 *)&record->unknown_3c[4] = va[1];
+        break;
+    }
+    case 116:
+        record->render_flags = 0;
+        record->updates_remaining = 20;
+        break;
+    case 117:
+        record->base_render_id = 0x31;
+        record->render_id = 0x31;
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 50;
+        goto initialize_angles_34_35_117;
+    case 40: {
+        const SVECTOR *angles;
+
+        record->base_render_id = 0xa;
+        record->render_id = 0xa;
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 50;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        effect_play_spatial_sound(record, 0x32);
+        break;
+    }
+    case 38:
+    case 39: {
+        const SVECTOR *angles;
+        s32 random_x;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x2c;
+        record->render_id = 0x2c;
+        record->updates_remaining = 50;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->rotation.vy += (rand() >> 6) - 256;
+        random_x = rand();
+        record->rotation.vz = 0;
+        record->unknown_3c[4] = 0;
+        record->scale_z = 0x2000;
+        record->scale_y = 0x2000;
+        record->scale_x = 0x2000;
+        record->rotation.vx += (random_x >> 6) - 256;
+        effect_play_spatial_sound(record, 0x20);
+        break;
+    }
+    case 34: {
+        const SVECTOR *angles;
+        s32 render_id;
+
+        render_id = 0x28;
+        goto initialize_34_35;
+    case 35:
+        render_id = 0x29;
+    initialize_34_35:
+        record->base_render_id = render_id;
+        record->render_id = render_id;
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->updates_remaining = 45;
+    initialize_angles_34_35_117:
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->unknown_3c[4] = 0;
+        effect_play_spatial_sound(record, 0x20);
+        break;
+    }
+    case 50:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->base_render_id = 0xb;
+        record->render_id = 0xb;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        record->unknown_3c[4] = 0;
+        effect_play_spatial_sound(record, 0x18);
+        break;
+    case 101: {
+        KfEffectKind101Motion *motion =
+            (KfEffectKind101Motion *)&record->unknown_3c[4];
+        s32 scale = va[1];
+        s32 render_id = va[4];
+
+        effect_pool_initialize_scaled(record, render_id, scale);
+        motion->scale_step = *(u16 *)(va + 2);
+        record->updates_remaining = *(u16 *)(va + 3);
+        motion->vertical_step = *(u16 *)(va + 5);
+        break;
+    }
+    case 102: {
+        KfEffectKind102Payload *kind102 =
+            (KfEffectKind102Payload *)&record->unknown_3c[4];
+        u16 scale;
+        s32 volume;
+        s16 slot;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0xc;
+        record->render_id = 0xc;
+        record->scale_y = 0;
+        scale = va[1];
+        record->scale_z = scale;
+        record->scale_x = scale;
+        kind102->amplitude = va[2];
+        if ((s32)(effect_kind102_sound_cooldown_frame - cd_state.frame_count) >= 0) {
+            break;
+        }
+        volume = kind102->amplitude / 90;
+        effect_kind102_sound_cooldown_frame = cd_state.frame_count + 30;
+        if (volume >= 128) {
+            volume = 127;
+        }
+        slot = audio_state.voices.params[236].vab_slot_index;
+        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
+            audio_state.vab_slots[slot].vab_id != 0xfe) {
+            audio_play_spatial_range(0xec, &record->position, volume, 28000,
+                                     0x7148, 0);
+            break;
+        }
+        slot = audio_state.voices.params[239].vab_slot_index;
+        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
+            audio_state.vab_slots[slot].vab_id != 0xfe) {
+            audio_play_spatial_range(0xef, &record->position, volume, 28000,
+                                     0x7148, 0);
+        }
+        break;
+    }
+    case 15:
+        effect_pool_initialize_fixed(record, 0x19);
+        break;
+    case 17:
+        effect_pool_initialize_fixed(record, 0x1a);
+        break;
+    case 16:
+        record->render_flags = 0;
+        record->updates_remaining = 8;
+        audio_play_sound(0x2b, 120);
+        break;
+    case 14:
+    case 19:
+        record->render_flags = 0;
+        record->updates_remaining = 16;
+        audio_play_sound(0x2b, 120);
+        break;
+    case 22:
+        effect_pool_initialize_scaled(record, 0x1e, 0x1000);
+        record->cooldown = 3;
+        record->updates_remaining = 30;
+        record->direction.vx += (rand() >> 9) - 32;
+        record->direction.vy += (rand() >> 9) - 32;
+        record->direction.vz += (rand() >> 9) - 32;
+        break;
+    case 3:
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->render_queue_mode = 1;
+        record->base_render_id = 0xb;
+        record->render_id = 0xb;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        effect_play_spatial_sound(record, 0x1f);
+        break;
+    case 114: {
+        VECTOR candidate_position;
+
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->base_render_id = 0x26;
+        record->render_id = 0x26;
+        record->updates_remaining = 45;
+        *(s32 *)&record->unknown_3c[8] = record->position.vy;
+        candidate_position.vx = record->position.vx + (rand() >> 5) - 512;
+        candidate_position.vz = record->position.vz + (rand() >> 5) - 512;
+        if (collision_query_shapes_with_layer_sample(candidate_position.vx, record->position.vy,
+                          candidate_position.vz, 10, 10) != 0) {
+            candidate_position.vx = record->position.vx;
+            candidate_position.vz = record->position.vz;
+        }
+        record->position.vx = candidate_position.vx - 2730;
+        record->position.vz = candidate_position.vz - 2730;
+        record->direction.vx = 100;
+        record->direction.vz = 100;
+        record->position.vy -= 16384;
+        record->direction.vy = 600;
+        record->scale_z = 0x4000;
+        record->scale_y = 0x4000;
+        record->scale_x = 0x4000;
+        break;
+    }
+    case 48: {
+        const SVECTOR *angles;
+        s32 render_id;
+
+        render_id = 0x2a;
+        goto setup_render_id;
+    case 47:
+        render_id = 0x2b;
+        goto setup_render_id;
+    case 30:
+        render_id = 0x1d;
+        goto setup_render_id;
+    case 29:
+    case 31:
+        render_id = 0x1c;
+    setup_render_id:
+        record->base_render_id = render_id;
+        record->render_flags = 1;
+        record->animation_clip = 0x80;
+        record->lighting_override_index = 0xff;
+        record->render_id = record->base_render_id;
+        angles = (const SVECTOR *)va[1];
+        record->rotation = *angles;
+        record->rotation.vz = 0;
+        *(u16 *)&record->unknown_3c[6] = 0;
+        break;
+    }
+    case 23: {
+        effect_pool_initialize_scaled(record, 8, 0x400);
+        record->direction.vz = 0;
+        record->direction.vy = 0;
+        record->direction.vx = 0;
+        record->phase = 9;
+        *(u16 *)&record->unknown_3c[4] = va[1];
+        *(u16 *)&record->unknown_3c[6] = va[2];
+        third_parameter = va[3];
+        three_parameter_sound = 0x26;
+    emit_three_parameter_sound:
+        *(u16 *)&record->unknown_3c[8] = third_parameter;
+        effect_play_spatial_sound(record, three_parameter_sound);
+        break;
+    }
+    case 24:
+        record->render_flags = 0;
+        record->updates_remaining = 70;
+        break;
+    case 109: {
+        KfEffectKind109Target *target = (KfEffectKind109Target *)&record->unknown_3c[4];
+
+        effect_pool_initialize_scaled(record, 0xe, 0x400);
+        record->updates_remaining = 20;
+        target->effect_index = va[1];
+        record->direction.vx += (rand() >> 8) - 64;
+        record->direction.vy += (rand() >> 8) - 64;
+        record->direction.vz += (rand() >> 8) - 64;
+        break;
+    }
+    case 120:
+        effect_pool_initialize_scaled(record, 50, 0);
+        record->updates_remaining = 100;
+        if (rand() < 4096) {
+            effect_play_spatial_sound(record, 0x21);
+        }
+        break;
+    /* The remaining kinds reach the retail table's free-slot sentinel.
+     * The table dispatch itself remains indirect. */
+    default:
+        record->type = KF_EFFECT_SLOT_FREE;
+        break;
+    }
+finish:
+    return record;
+}
 
 ADDRESS(0x800416ec, 0x90)
 void effect_rotate_scale_offset_y(const SVECTOR *offset, VECTOR *output, s16 angle, s32 scale)

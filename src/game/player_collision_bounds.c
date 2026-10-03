@@ -61,8 +61,8 @@ void player_reset_view(void)
     player_state.vertical_motion_state = 0;
     player_state.vertical_velocity = 0;
     player_state.death_state = 0;
-    player_state.unknown_112[1] = 0;
-    player_state.unknown_112[0] = 0;
+    player_state.camera_yaw_roll_offsets[1] = 0;
+    player_state.camera_yaw_roll_offsets[0] = 0;
     player_state.vertical_motion_pitch_offset = 0;
     player_state.view_rotation_offset.components[2] = 0;
     player_state.view_rotation_offset.components[1] = 0;

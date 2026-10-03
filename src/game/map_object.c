@@ -220,17 +220,17 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         switch (template->collision_kind) {
         case 0x40:
             if (template->kind != 0x20) {
-                if (object->tail.fields.unknown_3a.bytes.low != 0xff) {
+                if (object->tail.initial_rotation.rotation_x_code != 0xff) {
                     object->rotation.vx =
-                        (u8)object->tail.fields.unknown_3a.bytes.low << 6;
+                        object->tail.initial_rotation.rotation_x_code << 6;
                 }
-                if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
+                if (object->tail.initial_rotation.rotation_y_code != 0xff) {
                     object->rotation.vy =
-                        (u8)object->tail.fields.unknown_3a.bytes.high << 6;
+                        object->tail.initial_rotation.rotation_y_code << 6;
                 }
-                if ((u8)object->tail.fields.spawn_sequence != 0xff) {
+                if (object->tail.initial_rotation.rotation_z_code != 0xff) {
                     object->rotation.vz =
-                        (u8)object->tail.fields.spawn_sequence << 6;
+                        object->tail.initial_rotation.rotation_z_code << 6;
                 }
                 if (object->tail.fields.unknown_39 == 0) {
                     object->action = 0x10;
@@ -325,17 +325,17 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->extra_40.bytes[0] = 0;
             break;
         case 0xd:
-            if (object->tail.fields.unknown_3a.bytes.low != 0xff) {
+            if (object->tail.initial_rotation.rotation_x_code != 0xff) {
                 object->rotation.vx =
-                    (u8)object->tail.fields.unknown_3a.bytes.low << 6;
+                    object->tail.initial_rotation.rotation_x_code << 6;
             }
-            if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
+            if (object->tail.initial_rotation.rotation_y_code != 0xff) {
                 object->rotation.vy =
-                    (u8)object->tail.fields.unknown_3a.bytes.high << 6;
+                    object->tail.initial_rotation.rotation_y_code << 6;
             }
-            if ((u8)object->tail.fields.spawn_sequence != 0xff) {
+            if (object->tail.initial_rotation.rotation_z_code != 0xff) {
                 object->rotation.vz =
-                    (u8)object->tail.fields.spawn_sequence << 6;
+                    object->tail.initial_rotation.rotation_z_code << 6;
             }
             break;
         case 0x1f:
@@ -349,10 +349,10 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 0x54:
             object->asset_clip_selector = 0;
-            object->extra_40.bytes[0] = object->layer_mask;
+            object->extra_40.saved_layer.layer_mask = object->layer_mask;
             object->layer_mask = 3;
             object->action = 0x54;
-            map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
+            map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[
                               ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
@@ -422,13 +422,13 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 9:
             object->action = 9;
-            object->extra_40.bytes[0] = object->layer_mask;
+            object->extra_40.saved_layer.layer_mask = object->layer_mask;
             break;
         case 0x15:
             object->action = 9;
             /* Fall through: this kind saves the original layer. */
         case 0xe2:
-            object->extra_40.bytes[0] = object->layer_mask;
+            object->extra_40.saved_layer.layer_mask = object->layer_mask;
             object->layer_mask = 0;
             break;
         default:
@@ -670,8 +670,8 @@ void map_object_apply_marker_signal(u8 identifier)
         case 0x5f:
         case 0xa2:
         case 0xa3:
-            if (object->tail.fields.unknown_38 == identifier) {
-                object->tail.fields.unknown_38 = 0xff;
+            if (object->tail.marker.marker_id == identifier) {
+                object->tail.marker.marker_id = 0xff;
             }
             break;
         case 0x58:
@@ -688,7 +688,7 @@ void map_object_apply_marker_signal(u8 identifier)
             }
             break;
         case 0x59:
-            if (object->tail.fields.unknown_38 == identifier) {
+            if (object->tail.marker.marker_id == identifier) {
                 object->action_timer = 1;
             }
             break;
@@ -696,19 +696,19 @@ void map_object_apply_marker_signal(u8 identifier)
         case 3:
         case 4:
             if ((u8)(identifier + 106) < 49) {
-                if ((object->tail.fields.unknown_38 & 0xfe) == identifier) {
-                    object->tail.fields.unknown_38 ^= 1;
+                if ((object->tail.marker.marker_id & 0xfe) == identifier) {
+                    object->tail.marker.marker_id ^= 1;
                 }
             } else {
-                u8 marker = object->tail.fields.unknown_38;
+                u8 marker = object->tail.marker.marker_id;
 
                 if (marker == identifier) {
                     if (marker >= 200) {
-                        object->tail.fields.unknown_38 = 0xff;
+                        object->tail.marker.marker_id = 0xff;
                     } else if (object->action_timer == 0) {
                         object->action_timer = 1;
                         if (marker >= 100) {
-                            object->tail.fields.unknown_38 = 0xff;
+                            object->tail.marker.marker_id = 0xff;
                         }
                     }
                 }
@@ -733,11 +733,11 @@ s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker)
     case 5:
     case 8:
     case 22:
-        if (object->tail.fields.unknown_38 >= 0xfe) {
+        if (object->tail.marker.marker_id >= 0xfe) {
             return 2;
         }
-        if (object->tail.fields.unknown_38 == marker) {
-            object->tail.fields.unknown_38 = 0xff;
+        if (object->tail.marker.marker_id == marker) {
+            object->tail.marker.marker_id = 0xff;
             return 1;
         }
         return 3;

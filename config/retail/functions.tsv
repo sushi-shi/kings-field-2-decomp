@@ -727,14 +727,41 @@ GAME.EXE	0x8005a0e4	0x498e4	0x70	0x70	1	function	sdk-object-label	cln		psyq-sdk3
 GAME.EXE	0x8005a154	0x49954	0x158	0x158	1	function	sdk-object-label	csqrt_1		psyq-sdk30:LIBGTE.LIB/COR.OBJ	archive XDEF .text+0x5bc;exact 0x87c-byte section;retail return delay slot
 GAME.EXE	0x8005a2ac	0x49aac	0x98	0x98	1	function	sdk-object-label	csqrt		psyq-sdk30:LIBGTE.LIB/COR.OBJ	archive XDEF .text+0x714;exact 0x87c-byte section;retail return delay slot
 GAME.EXE	0x8005a344	0x49b44	0xd0	0xd0	1	function	sdk-object-label	catan		psyq-sdk30:LIBGTE.LIB/COR.OBJ	archive XDEF .text+0x7ac;exact 0x87c-byte section;retail return delay slot
-GAME.EXE	0x8005a4a4	0x49ca4	0x20	0x20	1	function	ghidra-analysis	SetBackColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a4c4	0x49cc4	0x20	0x20	1	function	ghidra-analysis	SetFarColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a558	0x49d58	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a570	0x49d70	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a57c	0x49d7c	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a588	0x49d88	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a640	0x49e40	0x30	0x30	1	function	ghidra-analysis	ReadORGB		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a688	0x49e88	0x20	0x20	1	function	ghidra-analysis	ReadGeomOffset		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005a414	0x49c14	0x10	0x10	1	function	sdk-object-label	SetVertex0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a424	0x49c24	0x10	0x10	1	function	sdk-object-label	SetVertex1		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x10;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a434	0x49c34	0x10	0x10	1	function	sdk-object-label	SetVertex2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a444	0x49c44	0x20	0x20	1	function	sdk-object-label	SetVertexTri		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x30;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a464	0x49c64	0xc	0xc	1	function	sdk-object-label	SetRGBcd		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x50;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a470	0x49c70	0x14	0x14	1	function	sdk-object-label	SetRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x5c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a484	0x49c84	0x14	0x14	1	function	sdk-object-label	SetIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x70;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a498	0x49c98	0xc	0xc	1	function	sdk-object-label	SetIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x84;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a4a4	0x49ca4	0x20	0x20	1	function	sdk-object-label	SetBackColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x90;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a4c4	0x49cc4	0x20	0x20	1	function	sdk-object-label	SetFarColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xb0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a4e4	0x49ce4	0x14	0x14	1	function	sdk-object-label	SetSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xd0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a4f8	0x49cf8	0x18	0x18	1	function	sdk-object-label	SetSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xe4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a510	0x49d10	0x14	0x14	1	function	sdk-object-label	SetSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xfc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a524	0x49d24	0x14	0x14	1	function	sdk-object-label	SetRii		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x110;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a538	0x49d38	0x14	0x14	1	function	sdk-object-label	SetMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x124;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a54c	0x49d4c	0xc	0xc	1	function	sdk-object-label	SetData32		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x138;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a558	0x49d58	0x18	0x18	1	function	sdk-object-label	SetGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x144;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a570	0x49d70	0xc	0xc	1	function	sdk-object-label	SetGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x15c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a57c	0x49d7c	0xc	0xc	1	function	sdk-object-label	SetDQA		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x168;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a588	0x49d88	0xc	0xc	1	function	sdk-object-label	SetDQB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x174;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a594	0x49d94	0xc	0xc	1	function	sdk-object-label	ReadOTZ		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x180;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5a0	0x49da0	0xc	0xc	1	function	sdk-object-label	ReadIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x18c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5ac	0x49dac	0x14	0x14	1	function	sdk-object-label	ReadIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x198;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5c0	0x49dc0	0xc	0xc	1	function	sdk-object-label	ReadSZ2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1ac;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5cc	0x49dcc	0x14	0x14	1	function	sdk-object-label	ReadSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1b8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5e0	0x49de0	0x18	0x18	1	function	sdk-object-label	ReadSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1cc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a5f8	0x49df8	0x14	0x14	1	function	sdk-object-label	ReadSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1e4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a60c	0x49e0c	0x14	0x14	1	function	sdk-object-label	ReadRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1f8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a620	0x49e20	0xc	0xc	1	function	sdk-object-label	ReadMac0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a62c	0x49e2c	0x14	0x14	1	function	sdk-object-label	ReadMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x218;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a640	0x49e40	0x30	0x30	1	function	sdk-object-label	ReadORGB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x22c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a670	0x49e70	0xc	0xc	1	function	sdk-object-label	ReadLZC		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x25c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a67c	0x49e7c	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x268;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a688	0x49e88	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+GAME.EXE	0x8005a6a8	0x49ea8	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 GAME.EXE	0x8005a6b4	0x49eb4	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005a71c	0x49f1c	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005a76c	0x49f6c	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -820,7 +847,7 @@ GAME.EXE	0x8005dd30	0x4d530	0x68	0x68	1	function	ghidra-analysis	rcossin		Ghidra
 GAME.EXE	0x8005dda4	0x4d5a4	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005ddf4	0x4d5f4	0xb8	0xb8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005deac	0x4d6ac	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005dfb4	0x4d7b4	0x28	0x28	1	function	manual-retail-disasm			asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section	unnamed archive-local SetDQA/SetDQB wrapper, complete jr ra delay slot
+GAME.EXE	0x8005df80	0x4d780	0x5c	0x5c	1	function	sdk-object-label	SetFogFar		psyq-sdk30:LIBGTE.LIB/GEO.OBJ	native XDEF .text+0x1dc;division sequence falls through SetDQA/SetDQB calls and returns at 0x8005dfd4
 GAME.EXE	0x8005dfdc	0x4d7dc	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e040	0x4d840	0x418	0x418	1	function	manual-retail-disasm	EigenMatrix		asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section and XDEF	retail prologue through jr ra delay slot; exact archive member offset 0x29c
 GAME.EXE	0x8005e458	0x4dc58	0xd0	0xd0	1	function	manual-retail-disasm	IsIdMatrix		asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section and XDEF	retail entry through jr ra delay slot; exact archive member offset 0x6b4
@@ -1037,12 +1064,41 @@ OPEN.EXE	0x8001970c	0x8f0c	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x80019778	0x8f78	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800197d4	0x8fd4	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800199c4	0x91c4	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019ae8	0x92e8	0x20	0x20	1	function	ghidra-analysis	SetBackColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019b08	0x9308	0x20	0x20	1	function	ghidra-analysis	SetFarColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019b9c	0x939c	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019bb4	0x93b4	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019c84	0x9484	0x30	0x30	1	function	ghidra-analysis	ReadORGB		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019ccc	0x94cc	0x20	0x20	1	function	ghidra-analysis	ReadGeomOffset		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80019a58	0x9258	0x10	0x10	1	function	sdk-object-label	SetVertex0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019a68	0x9268	0x10	0x10	1	function	sdk-object-label	SetVertex1		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x10;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019a78	0x9278	0x10	0x10	1	function	sdk-object-label	SetVertex2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019a88	0x9288	0x20	0x20	1	function	sdk-object-label	SetVertexTri		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x30;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019aa8	0x92a8	0xc	0xc	1	function	sdk-object-label	SetRGBcd		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x50;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019ab4	0x92b4	0x14	0x14	1	function	sdk-object-label	SetRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x5c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019ac8	0x92c8	0x14	0x14	1	function	sdk-object-label	SetIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x70;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019adc	0x92dc	0xc	0xc	1	function	sdk-object-label	SetIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x84;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019ae8	0x92e8	0x20	0x20	1	function	sdk-object-label	SetBackColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x90;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b08	0x9308	0x20	0x20	1	function	sdk-object-label	SetFarColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xb0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b28	0x9328	0x14	0x14	1	function	sdk-object-label	SetSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xd0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b3c	0x933c	0x18	0x18	1	function	sdk-object-label	SetSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xe4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b54	0x9354	0x14	0x14	1	function	sdk-object-label	SetSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xfc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b68	0x9368	0x14	0x14	1	function	sdk-object-label	SetRii		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x110;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b7c	0x937c	0x14	0x14	1	function	sdk-object-label	SetMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x124;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b90	0x9390	0xc	0xc	1	function	sdk-object-label	SetData32		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x138;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019b9c	0x939c	0x18	0x18	1	function	sdk-object-label	SetGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x144;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019bb4	0x93b4	0xc	0xc	1	function	sdk-object-label	SetGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x15c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019bc0	0x93c0	0xc	0xc	1	function	sdk-object-label	SetDQA		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x168;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019bcc	0x93cc	0xc	0xc	1	function	sdk-object-label	SetDQB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x174;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019bd8	0x93d8	0xc	0xc	1	function	sdk-object-label	ReadOTZ		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x180;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019be4	0x93e4	0xc	0xc	1	function	sdk-object-label	ReadIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x18c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019bf0	0x93f0	0x14	0x14	1	function	sdk-object-label	ReadIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x198;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c04	0x9404	0xc	0xc	1	function	sdk-object-label	ReadSZ2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1ac;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c10	0x9410	0x14	0x14	1	function	sdk-object-label	ReadSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1b8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c24	0x9424	0x18	0x18	1	function	sdk-object-label	ReadSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1cc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c3c	0x943c	0x14	0x14	1	function	sdk-object-label	ReadSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1e4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c50	0x9450	0x14	0x14	1	function	sdk-object-label	ReadRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1f8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c64	0x9464	0xc	0xc	1	function	sdk-object-label	ReadMac0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c70	0x9470	0x14	0x14	1	function	sdk-object-label	ReadMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x218;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019c84	0x9484	0x30	0x30	1	function	sdk-object-label	ReadORGB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x22c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019cb4	0x94b4	0xc	0xc	1	function	sdk-object-label	ReadLZC		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x25c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019cc0	0x94c0	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x268;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019ccc	0x94cc	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+OPEN.EXE	0x80019cec	0x94ec	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 OPEN.EXE	0x80019cf8	0x94f8	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x80019d60	0x9560	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80019db0	0x95b0	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1343,12 +1399,41 @@ END.EXE	0x80016970	0x6170	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x800169dc	0x61dc	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016a38	0x6238	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016c28	0x6428	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016d4c	0x654c	0x20	0x20	1	function	ghidra-analysis	SetBackColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016d6c	0x656c	0x20	0x20	1	function	ghidra-analysis	SetFarColor		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016e00	0x6600	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016e18	0x6618	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016ee8	0x66e8	0x30	0x30	1	function	ghidra-analysis	ReadORGB		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80016f30	0x6730	0x20	0x20	1	function	ghidra-analysis	ReadGeomOffset		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80016cbc	0x64bc	0x10	0x10	1	function	sdk-object-label	SetVertex0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016ccc	0x64cc	0x10	0x10	1	function	sdk-object-label	SetVertex1		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x10;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016cdc	0x64dc	0x10	0x10	1	function	sdk-object-label	SetVertex2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016cec	0x64ec	0x20	0x20	1	function	sdk-object-label	SetVertexTri		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x30;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d0c	0x650c	0xc	0xc	1	function	sdk-object-label	SetRGBcd		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x50;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d18	0x6518	0x14	0x14	1	function	sdk-object-label	SetRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x5c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d2c	0x652c	0x14	0x14	1	function	sdk-object-label	SetIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x70;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d40	0x6540	0xc	0xc	1	function	sdk-object-label	SetIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x84;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d4c	0x654c	0x20	0x20	1	function	sdk-object-label	SetBackColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x90;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d6c	0x656c	0x20	0x20	1	function	sdk-object-label	SetFarColor		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xb0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016d8c	0x658c	0x14	0x14	1	function	sdk-object-label	SetSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xd0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016da0	0x65a0	0x18	0x18	1	function	sdk-object-label	SetSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xe4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016db8	0x65b8	0x14	0x14	1	function	sdk-object-label	SetSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0xfc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016dcc	0x65cc	0x14	0x14	1	function	sdk-object-label	SetRii		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x110;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016de0	0x65e0	0x14	0x14	1	function	sdk-object-label	SetMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x124;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016df4	0x65f4	0xc	0xc	1	function	sdk-object-label	SetData32		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x138;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e00	0x6600	0x18	0x18	1	function	sdk-object-label	SetGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x144;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e18	0x6618	0xc	0xc	1	function	sdk-object-label	SetGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x15c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e24	0x6624	0xc	0xc	1	function	sdk-object-label	SetDQA		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x168;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e30	0x6630	0xc	0xc	1	function	sdk-object-label	SetDQB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x174;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e3c	0x663c	0xc	0xc	1	function	sdk-object-label	ReadOTZ		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x180;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e48	0x6648	0xc	0xc	1	function	sdk-object-label	ReadIR0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x18c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e54	0x6654	0x14	0x14	1	function	sdk-object-label	ReadIR123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x198;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e68	0x6668	0xc	0xc	1	function	sdk-object-label	ReadSZ2		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1ac;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e74	0x6674	0x14	0x14	1	function	sdk-object-label	ReadSZfifo3		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1b8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016e88	0x6688	0x18	0x18	1	function	sdk-object-label	ReadSZfifo4		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1cc;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016ea0	0x66a0	0x14	0x14	1	function	sdk-object-label	ReadSXSYfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1e4;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016eb4	0x66b4	0x14	0x14	1	function	sdk-object-label	ReadRGBfifo		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x1f8;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016ec8	0x66c8	0xc	0xc	1	function	sdk-object-label	ReadMac0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x20c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016ed4	0x66d4	0x14	0x14	1	function	sdk-object-label	ReadMAC123		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x218;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016ee8	0x66e8	0x30	0x30	1	function	sdk-object-label	ReadORGB		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x22c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016f18	0x6718	0xc	0xc	1	function	sdk-object-label	ReadLZC		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x25c;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016f24	0x6724	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x268;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016f30	0x6730	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
+END.EXE	0x80016f50	0x6750	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 END.EXE	0x80016f5c	0x675c	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
 END.EXE	0x80016fc4	0x67c4	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017014	0x6814	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

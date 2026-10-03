@@ -372,60 +372,6 @@ source = "src/game/display.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.resource_runtime"
-image = "GAME.EXE"
-source = "src/game/resource_runtime.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.notify_enqueue"
-image = "GAME.EXE"
-source = "src/game/notify_enqueue.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_frame"
-image = "GAME.EXE"
-source = "src/game/render_frame.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_model_render"
-image = "GAME.EXE"
-source = "src/game/menu_model_render.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.asset_registry"
-image = "GAME.EXE"
-source = "src/game/asset_registry.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.animation_keyframe"
-image = "GAME.EXE"
-source = "src/game/animation_keyframe.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.pool"
-image = "GAME.EXE"
-source = "src/game/pool.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_placed_expand"
-image = "GAME.EXE"
-source = "src/game/map_placed_expand.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_transition"
-image = "GAME.EXE"
-source = "src/game/menu_transition.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.map_cell_pattern_place"
 image = "GAME.EXE"
 source = "src/game/map_cell_pattern_place.c"
@@ -486,33 +432,9 @@ source = "src/game/actor_fixup_group_targets.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.effect_spatial_sound"
+unit = "game.effect_runtime"
 image = "GAME.EXE"
-source = "src/game/effect_spatial_sound.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_collision_probe"
-image = "GAME.EXE"
-source = "src/game/effect_collision_probe.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_update"
-image = "GAME.EXE"
-source = "src/game/effect_update.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_constructor"
-image = "GAME.EXE"
-source = "src/game/effect_constructor.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_rotate_scale_offset_y"
-image = "GAME.EXE"
-source = "src/game/effect_rotate_scale_offset_y.c"
+source = "src/game/effect_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -531,12 +453,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_pose_interpolate"
 image = "GAME.EXE"
 source = "src/game/event_pose_interpolate.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.event_target_stream"
-image = "GAME.EXE"
-source = "src/game/event_target_stream.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

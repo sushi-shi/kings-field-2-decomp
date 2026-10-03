@@ -275,7 +275,7 @@ typedef char kf_map_object_tail_cell_copy_source_offset[
 /* Action 88 stores its copy coordinates and dimensions at different offsets. */
 typedef struct KfMapObjectTailAction88CellCopyView {
     u32 unknown_34;
-    u8 unknown_38;
+    u8 transition_mode;
     u8 unknown_39;
     u8 destination_x;
     u8 destination_z;
@@ -286,6 +286,8 @@ typedef struct KfMapObjectTailAction88CellCopyView {
 } KfMapObjectTailAction88CellCopyView;
 typedef char kf_map_object_tail_action88_cell_copy_size[
     sizeof(KfMapObjectTailAction88CellCopyView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action88_mode_offset[
+    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->transition_mode == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action88_source_offset[
     (u32)&((KfMapObjectTailAction88CellCopyView *)0)->source_x == 8 ? 1 : -1];
 typedef char kf_map_object_tail_action88_width_offset[
@@ -344,12 +346,14 @@ typedef char kf_map_object_tail_linked_property_index_offset[
 /* Action 83 emits its marker after each opening or closing phase. */
 typedef struct KfMapObjectTailAction83View {
     u32 unknown_34;
-    u8 unknown_38;
+    u8 transition_mode;
     u8 completion_marker;
     u8 unknown_3a[6];
 } KfMapObjectTailAction83View;
 typedef char kf_map_object_tail_action83_size[
     sizeof(KfMapObjectTailAction83View) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action83_mode_offset[
+    (u32)&((KfMapObjectTailAction83View *)0)->transition_mode == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action83_marker_offset[
     (u32)&((KfMapObjectTailAction83View *)0)->completion_marker == 5 ? 1 : -1];
 
@@ -374,6 +378,36 @@ typedef struct KfMapObjectTailPair38View {
     u16 value_38;
     u8 unknown_3a[6];
 } KfMapObjectTailPair38View;
+
+/* Marker-driven actions compare this byte with an incoming signal, then
+ * consume or arm the action. Other actions give the byte different meanings. */
+typedef struct KfMapObjectTailMarkerView {
+    u32 unknown_34;
+    u8 marker_id;
+    u8 unknown_39[7];
+} KfMapObjectTailMarkerView;
+typedef char kf_map_object_tail_marker_size[
+    sizeof(KfMapObjectTailMarkerView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_marker_id_offset[
+    (u32)&((KfMapObjectTailMarkerView *)0)->marker_id == 4 ? 1 : -1];
+
+/* Two placement kinds seed three object rotation axes from byte codes;
+ * 0xff leaves an axis at its default value. The final code overlaps the
+ * spawn-sequence halfword used by other object kinds. */
+typedef struct KfMapObjectTailInitialRotationView {
+    u32 unknown_34;
+    u8 unknown_38[2];
+    u8 rotation_x_code;
+    u8 rotation_y_code;
+    u8 rotation_z_code;
+    u8 unknown_3d[3];
+} KfMapObjectTailInitialRotationView;
+typedef char kf_map_object_tail_initial_rotation_size[
+    sizeof(KfMapObjectTailInitialRotationView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_initial_rotation_x_offset[
+    (u32)&((KfMapObjectTailInitialRotationView *)0)->rotation_x_code == 6 ? 1 : -1];
+typedef char kf_map_object_tail_initial_rotation_z_offset[
+    (u32)&((KfMapObjectTailInitialRotationView *)0)->rotation_z_code == 8 ? 1 : -1];
 
 typedef struct KfMapObjectTailEventEffectView {
     u32 unknown_34;
@@ -428,6 +462,8 @@ typedef union KfMapObjectTail {
     KfMapObjectTailAction83View action_83;
     KfMapObjectTailScaleLinkView scale_link;
     KfMapObjectTailPair38View pair_38;
+    KfMapObjectTailMarkerView marker;
+    KfMapObjectTailInitialRotationView initial_rotation;
     KfMapObjectTailEventEffectView event_effect;
     KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
@@ -473,6 +509,15 @@ typedef struct KfMapObjectLayerFadeState {
 typedef char kf_map_object_layer_fade_state_size[
     sizeof(KfMapObjectLayerFadeState) == 4 ? 1 : -1];
 
+/* Placement kinds 9, 0x15, 0x54, and 0xe2 save the layer before changing
+ * visibility; action 0x54 later passes it to map-cell pattern updates. */
+typedef struct KfMapObjectSavedLayerState {
+    u8 layer_mask;
+    u8 unknown_41[3];
+} KfMapObjectSavedLayerState;
+typedef char kf_map_object_saved_layer_state_size[
+    sizeof(KfMapObjectSavedLayerState) == 4 ? 1 : -1];
+
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
     u32 raw;
@@ -486,6 +531,7 @@ typedef union KfMapObjectExtra40 {
     KfMapObjectOffsetMotionState offset_motion;
     KfMapObjectResourceOffsets resource_offsets;
     KfMapObjectLayerFadeState layer_fade;
+    KfMapObjectSavedLayerState saved_layer;
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];

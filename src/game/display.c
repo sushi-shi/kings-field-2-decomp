@@ -1,4 +1,10 @@
 #include <kf/lib/address.h>
+#include <kf/game/map_placed.h>
+#include <psyq/pad.h>
+#include <kf/lib/null.h>
+#include <kf/game/animation.h>
+#include <psyq/libc.h>
+#include <psyq/sdk.h>
 #include <kf/game/graphics.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
@@ -8,9 +14,21 @@
 #include <kf/game/callback.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/memory.h>
-#include <kf/game/player.h>
 #include <kf/game/asset.h>
 #include <kf/game/render_model.h>
+#include <kf/game/actor.h>
+#include <kf/game/audio.h>
+#include <kf/game/cd.h>
+#include <kf/game/effect.h>
+#include <kf/game/map_object.h>
+#include <kf/game/render_mask.h>
+#include <kf/game/resources.h>
+#include <stdarg.h>
+#include <kf/game/menu.h>
+#include <kf/game/notification_quad.h>
+#include <kf/game/notify.h>
+
+enum { KF_MAP_CELL_SHIFT = 11 };
 
 enum {
     KF_MAP_CELL_ORIENTATION_MASK = 3,
@@ -78,6 +96,24 @@ enum {
     KF_RENDER_MODEL_ACTIVE = 1
 };
 
+DATA(0x80063dcc, 0x20)
+MATRIX render_world_identity_matrix = {
+    {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
+    0,
+    {0, 0, 0}
+};
+
+DATA(0x80066808, 0x7e)
+KfNotificationQuad notification_quads[7] = {
+    {0, 0, 0, 127, 14, 0, 96, 203, 127, 14, 0x7f24, 0x1b},
+    {0, 0, 0, 127, 14, 0, 110, 203, 127, 14, 0x7f24, 0x1b},
+    {0, 240, 0, 7, 14, 0, 90, 203, 7, 13, 0x7f64, 0x1d},
+    {0, 240, 0, 7, 14, 0, 80, 203, 7, 13, 0x7f64, 0x1d},
+    {0, 240, 0, 7, 14, 0, 70, 203, 7, 13, 0x7f64, 0x1d},
+    {0, 240, 0, 7, 14, 0, 60, 203, 7, 13, 0x7f64, 0x1d},
+    {0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
 DATA(0x80066888, 0x21c)
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
     {1, 0, 0x40, 0,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, 0},
@@ -99,6 +135,12 @@ KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
 
 DATA(0x8006d6d0, 0x4)
 CVECTOR map_textured_primitive_color = {128, 128, 128, 0};
+
+DATA(0x8006d6d4, 0x4)
+s32 render_model_yaw_smoothing_accumulator = 0;
+
+DATA(0x8006d6dc, 0x8)
+RECT menu_transition_rect = {320, 0, 320, 240};
 
 DATA(0x800fba58, 0x32000)
 u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
@@ -2242,4 +2284,1417 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
         tmd_project_vertices(object->vertex_count);
     }
     render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
+}
+
+ADDRESS(0x80031fa0, 0x68)
+KfAssetHeader *resource_registry_get(u16 index)
+{
+    KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[index];
+
+    if (index < 104) {
+        return asset;
+    }
+    if (asset != 0 && (u8)(memory_block_kind((u8 *)asset) - 1) < 2) {
+        return asset;
+    }
+    return 0;
+}
+
+ADDRESS(0x80032008, 0x38)
+void resource_tmd_read_complete(u8 *data)
+{
+    KfAssetHeader *asset = (KfAssetHeader *)data;
+
+    tmd_prepare_primitive_indices((KfTmdHeader *)(data + asset->tmd_data_offset));
+    memory_block_set_kind(data, 2);
+}
+
+ADDRESS(0x80032040, 0x70)
+u32 map_cell_layer_mask(const VECTOR *position)
+{
+    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
+    s32 x;
+
+    if ((u32)z >= KF_MAP_CELL_GRID_SIDE) {
+        return 0;
+    }
+    x = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
+    if ((u32)x >= KF_MAP_CELL_GRID_SIDE) {
+        return 0;
+    }
+    return game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
+}
+
+ADDRESS(0x800320b0, 0xc4)
+u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
+{
+    s32 span = (s32)((u32)radius << 1);
+    u8 mask = 0;
+    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
+    s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
+    s32 row_offset = z * KF_MAP_CELL_GRID_SIDE;
+    const u8 *row = &game_graphics_runtime.render_grid.map_cell_layer_masks[0][0] + row_offset;
+    s32 row_count = span;
+
+    do {
+        if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
+            s32 x = x0;
+            s32 column_count = span;
+
+            do {
+                if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
+                    mask |= row[x];
+                }
+                x++;
+                column_count--;
+            } while (column_count != -1);
+        }
+        row += KF_MAP_CELL_GRID_SIDE;
+        row_offset += KF_MAP_CELL_GRID_SIDE;
+        row_count--;
+    } while (row_count != -1);
+
+    return mask;
+}
+
+ADDRESS(0x80032174, 0x64)
+s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
+{
+    s32 z = position->vz >> KF_MAP_CELL_SHIFT;
+    s32 x;
+    s32 visible = 0;
+
+    if (game_graphics_runtime.render_state.view_cell_z
+        < (s32)((u32)z - (u32)radius_z)) {
+        goto done;
+    }
+    if ((s32)((u32)z + (u32)radius_z)
+        < game_graphics_runtime.render_state.view_cell_z) {
+        goto done;
+    }
+
+    x = position->vx >> KF_MAP_CELL_SHIFT;
+    if (game_graphics_runtime.render_state.view_cell_x
+        < (s32)((u32)x - (u32)radius_x)) {
+        goto done;
+    }
+    visible = (s32)((u32)x + (u32)radius_x)
+        >= game_graphics_runtime.render_state.view_cell_x;
+
+done:
+    return visible;
+}
+
+ADDRESS(0x800321d8, 0x9c)
+void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
+{
+    u32 size = cd_archive_entry_size(archive_slot, entry);
+    u8 *block;
+
+    block = memory_arena_allocate_block(KF_GAME_RESOURCE_ARENA_BASE, size,
+        (u8 **)&game_graphics_runtime.asset_registry_entries[registry_index]);
+    if (block != 0) {
+        memory_block_set_kind(block, 3);
+        memory_block_set_tag(block, registry_index);
+        /* Kind 0x10 completion passes the destination, not the request. */
+        cd_archive_queue_read(archive_slot, entry, (u_long *)block,
+            (KfCdRequestCallback)resource_tmd_read_complete);
+    }
+}
+
+ADDRESS(0x80032274, 0xf0)
+void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
+    s32 count, u8 *flags)
+{
+    s32 end = count + entry;
+
+    while (entry < end) {
+        KfAudioVabSlot *slot = &audio_state.vab_slots[vab_slot];
+        KfAudioVabStreamSlot *state = slot->stream_slot;
+
+        if (*flags++) {
+            if (state == 0) {
+                audio_queue_vab_stream(archive_slot, entry, vab_slot);
+            } else if (state->state == 2) {
+                state->state = 1;
+            }
+        } else if (state != 0 && state->state == 1) {
+            state->state = 2;
+        }
+        entry++;
+        vab_slot++;
+    }
+}
+
+ADDRESS(0x80032364, 0x118)
+void resource_tmd_update_range(s32 archive_slot, s32 entry, s32 registry_index,
+    s32 count, u8 *flags)
+{
+    s32 end = count + entry;
+
+    while (entry < end) {
+        u8 *block;
+
+        if (*flags++) {
+            block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
+            if (block == 0) {
+                resource_tmd_queue_read(archive_slot, entry, registry_index);
+            } else if (memory_block_kind(block) == 1) {
+                memory_block_set_kind(block, 2);
+            }
+        } else {
+            block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
+            if (block != 0 && memory_block_kind(block) != 3) {
+                memory_block_set_kind(block, 1);
+            }
+        }
+        entry++;
+        registry_index++;
+    }
+}
+/* The two flag ranges are consumed as byte arrays by the resource updaters. */
+ADDRESS(0x8003247c, 0xb70)
+void render_scene_and_update_resources(void)
+{
+    struct KfEulerAngles rotation;
+    VECTOR actor_position;
+    u8 tmd_flags[320];
+    /* The second stack region spans 320 bytes; the VAB updater reads 64. */
+    u8 vab_flags[320];
+    KfActor *actor;
+    const VECTOR *actor_position_ptr;
+    KfMapObject *object;
+    KfEffectRecord *effect;
+    KfPoolRecord **effect_cache;
+    SVECTOR *effect_scale_ptr;
+    const struct KfEulerAngles *effect_rotation_ptr;
+    KfMapPlacedEntry *placed;
+    const VECTOR *camera_position;
+    s32 frame;
+    s16 remaining;
+
+    repeat_store_word((u32 *)tmd_flags, 0, 32);
+    repeat_store_word((u32 *)vab_flags, 0, 16);
+    actor = actor_state.actors;
+    actor_position_ptr = &actor->position;
+    remaining = KF_ACTOR_CAPACITY - 1;
+    while (remaining != -1) {
+        u32 layer;
+        KfTargetGroup *group;
+        const VECTOR *position;
+
+        if (actor->lifecycle != 1) {
+            goto actor_next;
+        }
+        if (actor->unknown_28 & 0x2000) {
+            layer = actor->current_map_layer | 0x20;
+        } else {
+            layer = actor->current_map_layer;
+        }
+        if (actor->unknown_28 & 0x80000) goto actor_radius_check;
+        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
+actor_visible:
+        if (resource_registry_get(actor->definition_id + 0x80) != 0) {
+            position = actor_resolve_group_position(actor, &actor_position);
+            if (actor->unknown_28 & 0x20) {
+                rotation.z = 0;
+                rotation.y = 0;
+                rotation.x = 0;
+                position = actor_position_ptr;
+                render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
+                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
+                               &actor->animation_cache, &render_world_identity_matrix,
+                               actor->animation_id, actor->animation_phase,
+                               actor->lighting_override, actor->lighting_blend,
+                               actor->render_mode, (s8)actor->render_depth);
+            } else {
+                rotation.x = actor->rotation.x;
+                rotation.y = actor->rotation.y + 0x800;
+                rotation.z = actor->rotation.z;
+                render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
+                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
+                               &actor->animation_cache,
+                               &game_graphics_runtime.render_state.view_matrix,
+                               actor->animation_id, actor->animation_phase,
+                               actor->lighting_override, actor->lighting_blend,
+                               actor->render_mode, (s8)actor->render_depth);
+            }
+        }
+        group = &actor_state.target_groups[actor->group_index];
+        vab_flags[group->vab_resource_indices[0]] = 1;
+        vab_flags[group->vab_resource_indices[1]] = 1;
+        tmd_flags[actor->definition_id] = 1;
+        goto actor_next;
+actor_radius_check:
+        if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
+            actor->current_map_layer) goto actor_visible;
+actor_next:
+        actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
+                                               sizeof *actor);
+        actor++;
+        remaining--;
+    }
+    resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);
+    resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
+
+    frame = cd_state.frame_count;
+    camera_position = &player_state.camera_position;
+    repeat_store_word((u32 *)tmd_flags, 0, 80);
+    repeat_store_word((u32 *)vab_flags, 0, 16);
+    object = map_object_state.objects;
+    remaining = KF_MAP_OBJECT_CAPACITY - 1;
+    while (remaining != -1) {
+        u32 visibility;
+        s32 object_index;
+
+        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+            goto map_object_next;
+        }
+        object->collision_flags &= 0x7f;
+        if (object->action == 0x1f) goto map_sound_action;
+        if (object->action != 0xf0) goto map_ordinary_object;
+        if (map_cell_visible(&object->position,
+                             object->tail.animated.radius_x,
+                             object->tail.animated.radius_z) != 0 &&
+            (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
+            if (resource_registry_get(object->object_id + 0x100) != 0) {
+                render_animated_object(object->object_id + 0x100,
+                               (const struct KfEulerAngles *)&object->rotation,
+                               &object->tail.animated.animation_cache,
+                               object->asset_clip_selector, object->phase_q12,
+                               object->tail.animated.blend_mode,
+                               object->tail.animated.lighting_flags,
+                               0x1fff - object->tail.animated.depth_code);
+                object->collision_flags |= 0x80;
+            }
+            tmd_flags[object->object_id] = 1;
+        }
+        goto map_object_next;
+map_sound_action: {
+            s32 sound;
+            s32 distance;
+            s32 radius;
+            s32 volume;
+
+            if (player_camera_within_map_region(object->position.vx >> 11,
+                              object->position.vz >> 11,
+                              object->tail.ambient_sound.region_width,
+                              object->tail.ambient_sound.region_depth, 0x8000) == 0)
+                goto map_sound_outside;
+            sound = object->tail.ambient_sound.sound_id;
+            if ((u16)(audio_state.voices.params[sound].vab_slot_index - 0x42) < 0x40) {
+                /* This update starts at VAB slot 0x42. */
+                vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = 1;
+            }
+            if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
+                object->extra_40.next_sound_frame = frame +
+                    object->tail.ambient_sound.repeat_delay_units * 6;
+                distance = camera_position->vx -
+                    (object->tail.ambient_sound.region_width * 0x400 + object->position.vx);
+                if (distance < 0) distance = -distance;
+                volume = object->tail.ambient_sound.region_width * 0x400 - distance;
+                distance = camera_position->vz -
+                    (object->tail.ambient_sound.region_depth * 0x400 + object->position.vz);
+                if (distance < 0) distance = -distance;
+                distance = object->tail.ambient_sound.region_depth * 0x400 - distance;
+                if (distance < volume) volume = distance;
+                radius = object->tail.ambient_sound.audible_radius_code << 11;
+                if (volume >= radius) {
+                    volume = object->tail.ambient_sound.maximum_volume;
+                } else {
+                    if (radius == 0) goto map_object_next;
+                    volume = object->tail.ambient_sound.maximum_volume * volume / radius;
+                }
+                if (object->tail.ambient_sound.vertical_attenuation_flags & 1) {
+                    distance = camera_position->vy - object->position.vy;
+                    if (distance < 0) distance = -distance;
+                    volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
+                }
+                if (volume > 19) {
+                    audio_play_sound(sound, volume);
+                }
+            }
+            goto map_object_next;
+map_sound_outside:
+            object->extra_40.next_sound_frame = frame +
+                object->tail.ambient_sound.repeat_delay_units * 6;
+            goto map_object_next;
+        }
+map_ordinary_object: {
+            u8 render_mode;
+            KfMapObjectTemplate *object_template;
+            if (object->collision_flags & 2) goto map_radius_check;
+            visibility = map_cell_layer_mask(&object->position);
+            if ((visibility & object->layer_mask) == 0) goto map_object_next;
+            object_template = &map_object_state.templates[object->object_id];
+map_ordinary_visible:
+            object_index = object->object_id;
+            tmd_flags[object_index] = 1;
+            vab_flags[object_template->vab_resource_index] = 1;
+            if (resource_registry_get(object_index + 0x100) != 0) {
+                rotation.x = object->rotation.vx;
+                rotation.y = object->rotation.vy + 0x800;
+                rotation.z = object->rotation.vz;
+                render_mode = object->render_queue_mode;
+                if (object->collision_flags & 1) {
+                    render_mode = (visibility & 0x80) ? 0xfe : 0xff;
+                }
+                render_world_model(object->layer_mask, object_index + 0x100,
+                               &object->position, &rotation, &object->scale,
+                               (KfPoolRecord **)&object->tail,
+                               &game_graphics_runtime.render_state.view_matrix,
+                               object->asset_clip_selector, object->phase_q12,
+                               object->lighting_override_index, object->lighting_blend_q12,
+                               render_mode,
+                               (s16)object->render_depth_offset);
+                object->collision_flags |= 0x80;
+            }
+            goto map_object_next;
+map_radius_check:
+            object_template = &map_object_state.templates[object->object_id];
+            visibility = map_cell_layer_mask_radius(&object->position,
+                object_template->marker_action_05);
+            if (visibility & object->layer_mask) goto map_ordinary_visible;
+        }
+map_object_next:
+        object++;
+        remaining--;
+    }
+    resource_tmd_update_range(0, 0x80, 0x100, 0x140, tmd_flags);
+    resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
+
+    effect = effect_state.records;
+    effect_cache = &((KfEffectCacheTail *)effect->unknown_3c)->animation_cache;
+    effect_scale_ptr = (SVECTOR *)&effect->scale_x;
+    effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
+    remaining = KF_EFFECT_CAPACITY - 1;
+    while (remaining != -1) {
+        if (effect->type == KF_EFFECT_SLOT_FREE ||
+            (effect->render_flags & 3) == 0) goto effect_next;
+        if ((effect->render_flags & 3) != 2 &&
+            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == 0)
+            goto effect_next;
+        switch (effect->render_flags & 12) {
+        case 0:
+            rotation.x = effect->rotation.vx;
+            rotation.y = effect->rotation.vy + 0x800;
+            rotation.z = effect->rotation.vz;
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+                           &effect->position, &rotation, effect_scale_ptr,
+                           effect_cache,
+                           &game_graphics_runtime.render_state.view_matrix,
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
+            break;
+        case 4:
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+                           &effect->position, effect_rotation_ptr,
+                           effect_scale_ptr, effect_cache,
+                           &render_world_identity_matrix,
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
+            break;
+        case 8:
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+                           &effect->position, effect_rotation_ptr,
+                           effect_scale_ptr, effect_cache,
+                           &game_graphics_runtime.render_state.pitch_matrix,
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
+            break;
+        case 12:
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+                           &effect->position,
+                           effect_rotation_ptr,
+                           effect_scale_ptr,
+                           effect_cache, 0,
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, 0x14);
+            break;
+        }
+effect_next:
+        effect++;
+        effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
+        effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
+        effect_rotation_ptr = (const struct KfEulerAngles *)(
+            (const u8 *)effect_rotation_ptr + sizeof *effect);
+        remaining--;
+    }
+
+    placed = game_graphics_runtime.map_placed_entries;
+    rotation.z = 0;
+    rotation.y = 0;
+    rotation.x = 0;
+    remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
+    while (remaining != -1) {
+        u32 visibility;
+        if (placed->id != 0xffff) {
+            visibility = map_cell_layer_mask(&placed->position);
+            if (visibility & placed->layer) {
+                render_world_model(placed->layer, placed->id + 0x28,
+                               &placed->position, &rotation, 0, 0,
+                               &game_graphics_runtime.render_state.pitch_matrix,
+                               placed->frame_index + 0x80, 0, 0x46,
+                               0x1000, 1, 0);
+            }
+            if (placed->frame_period != 0 &&
+                game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
+                placed->frame_index++;
+                if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
+            }
+        }
+        placed++;
+        remaining--;
+    }
+    game_graphics_runtime.map_placed_frame_counter++;
+}
+
+ADDRESS(0x80032fec, 0x154)
+void notification_draw_quad(const KfNotificationQuad *source, u16 tpage_flags, const u8 *color)
+{
+    POLY_FT4 *quad = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
+
+    game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT4);
+    if (game_graphics_runtime.display_state.primitive_buffer->cursor >
+        game_graphics_runtime.display_state.primitive_buffer->end) {
+        return;
+    }
+
+    setPolyFT4(quad);
+    setSemiTrans(quad, 1);
+    quad->x0 = quad->x2 = source->x;
+    quad->x1 = quad->x3 = source->x + source->width;
+    quad->y0 = quad->y1 = source->y;
+    quad->y2 = quad->y3 = source->y + source->height;
+    quad->clut = source->clut;
+    quad->tpage = source->tpage | tpage_flags;
+    quad->u0 = quad->u2 = source->texture_u;
+    quad->u1 = quad->u3 = source->texture_u + source->texture_width;
+    quad->v0 = quad->v1 = source->texture_v;
+    quad->v2 = quad->v3 = source->texture_v + source->texture_height;
+    setRGB0(quad, color[0], color[1], color[2]);
+    AddPrim(game_graphics_runtime.display_state.ordering_table + 1, quad);
+}
+
+ADDRESS(0x80033140, 0x90)
+void notification_draw(void)
+{
+    KfNotificationQuad *quad = notification_quads;
+    u8 color[3];
+
+    color[0] = color[1] = color[2] = game_graphics_runtime.notification_brightness;
+    if (quad->kind == 0xff) {
+        return;
+    }
+    do {
+        if (quad->kind != 0) {
+            notification_draw_quad(quad, 0x20, color);
+            notification_draw_quad(quad, 0x40, color);
+        }
+        quad++;
+    } while (quad->kind != 0xff);
+}
+
+ADDRESS(0x800331d0, 0xa4)
+void notify_enqueue(s32 message_id, ...)
+{
+    u8 *head;
+
+    if (message_id > KF_NOTIFICATION_MAX_QUEUED_ID) {
+        return;
+    }
+    head = &game_graphics_runtime.notification_control.queue_head;
+    if (game_graphics_runtime.notification_message_ids[*head] == KF_NOTIFICATION_EMPTY) {
+        game_graphics_runtime.notification_message_ids[*head] = message_id;
+        if (message_id == KF_NOTIFICATION_PAYLOAD_ID) {
+            va_list arguments;
+            va_start(arguments, message_id);
+            game_graphics_runtime.notification_payloads[*head] = va_arg(arguments, s32);
+            va_end(arguments);
+        }
+        *head = (*head + 1) & (KF_NOTIFICATION_CAPACITY - 1);
+    }
+}
+
+ADDRESS(0x80033274, 0x10)
+void notification_digit_set_v(KfNotificationDigitSprite *sprite, s32 digit)
+{
+    sprite->texture_v = digit * 15;
+}
+
+static inline void notification_dequeue_group(void)
+{
+    KfNotificationControl *control;
+    s32 id;
+
+    control = &game_graphics_runtime.notification_control;
+    id = game_graphics_runtime.notification_message_ids[
+        game_graphics_runtime.notification_control.queue_tail];
+    do {
+        game_graphics_runtime.notification_message_ids[control->queue_tail] =
+            KF_NOTIFICATION_EMPTY;
+        control->queue_tail = (control->queue_tail + 1) & (KF_NOTIFICATION_CAPACITY - 1);
+    } while (id == game_graphics_runtime.notification_message_ids[control->queue_tail]
+             && id != KF_NOTIFICATION_PAYLOAD_ID);
+    control->effect_phase = 0;
+}
+
+ADDRESS(0x80033284, 0x300)
+void notification_update(void)
+{
+    u8 *phase = &game_graphics_runtime.notification_control.effect_phase;
+
+    switch (*phase) {
+    case 0: {
+        u8 tail = game_graphics_runtime.notification_control.queue_tail;
+        u8 id = game_graphics_runtime.notification_message_ids[tail];
+        if (id == KF_NOTIFICATION_EMPTY) {
+            break;
+        }
+        *phase = 1;
+        game_graphics_runtime.notification_brightness = 0;
+        game_graphics_runtime.notification_control.hold_frames = 15;
+        if (id == KF_NOTIFICATION_PAYLOAD_ID) {
+            s16 digits[12];
+
+            notification_quads[0].kind = 0;
+            notification_quads[1].kind = 1;
+            notification_quads[1].texture_u = 128;
+            notification_quads[1].texture_v = 42;
+            menu_format_number(game_graphics_runtime.notification_payloads[tail],
+                               4, 0, 0, digits);
+            notification_quads[2].kind = 1;
+            notification_digit_set_v(&notification_quads[2], (u16)digits[3]);
+            notification_quads[3].kind = 1;
+            notification_digit_set_v(&notification_quads[3], (u16)digits[2]);
+            notification_quads[4].kind = 1;
+            notification_digit_set_v(&notification_quads[4], (u16)digits[1]);
+            notification_quads[5].kind = 1;
+            notification_digit_set_v(&notification_quads[5], (u16)digits[0]);
+        } else {
+            notification_quads[0].kind = 1;
+            notification_quads[5].kind = 0;
+            notification_quads[4].kind = 0;
+            notification_quads[3].kind = 0;
+            notification_quads[2].kind = 0;
+            notification_quads[1].kind = 0;
+            notification_quads[0].texture_u = (id / 18) << 7;
+            notification_quads[0].texture_v = (id % 18) * 14;
+        }
+        break;
+    }
+    case 1:
+        game_graphics_runtime.notification_brightness += 20;
+        if (game_graphics_runtime.notification_brightness >= 100) {
+            *phase = 2;
+        }
+        break;
+    case 2:
+    {
+        u8 frames = game_graphics_runtime.notification_control.hold_frames - 1;
+        game_graphics_runtime.notification_control.hold_frames = frames;
+        if (frames == 0) {
+            *phase = 3;
+        }
+        break;
+    }
+    case 3:
+        game_graphics_runtime.notification_brightness -= 20;
+        if (game_graphics_runtime.notification_brightness == 0) {
+            notification_quads[5].kind = 0;
+            notification_quads[4].kind = 0;
+            notification_quads[3].kind = 0;
+            notification_quads[2].kind = 0;
+            notification_quads[1].kind = 0;
+            notification_quads[0].kind = 0;
+            notification_dequeue_group();
+        }
+        break;
+    }
+}
+
+ADDRESS(0x80033584, 0x1c)
+void display_toggle_buffer_index(void)
+{
+    game_graphics_runtime.display_state.buffer_index =
+        game_graphics_runtime.display_state.buffer_index == 0;
+}
+
+ADDRESS(0x800335a0, 0x3f4)
+void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
+{
+    s32 remainder;
+    s32 hp_hundreds;
+    s32 hp_tens;
+    s32 hp_ones;
+    s32 mp_hundreds;
+    s32 mp_tens;
+    s32 mp_ones;
+    s32 attack_width;
+    s32 magic_width;
+    s32 yaw_delta;
+    u8 row_state;
+
+    display_set_view_transform(position, rotation);
+    floor_item_update_textures();
+    notification_update();
+    build_camera_map_cell_layer_masks();
+    display_begin_frame();
+    pool_mark_allocated();
+    render_player_weapon();
+
+    render_model_rows[0].state = player_state.compass_enabled;
+    row_state = player_state.hud_gauges_enabled;
+    render_model_rows[13].state = row_state;
+    render_model_rows[12].state = row_state;
+    render_model_rows[11].state = row_state;
+    render_model_rows[10].state = row_state;
+    render_model_rows[9].state = row_state;
+    render_model_rows[8].state = row_state;
+    render_model_rows[7].state = row_state;
+    render_model_rows[6].state = row_state;
+    render_model_rows[5].state = row_state;
+    render_model_rows[4].state = row_state;
+    render_model_rows[3].state = row_state;
+    render_model_rows[2].state = row_state;
+    render_model_rows[1].state = row_state;
+
+    yaw_delta = render_model_yaw_smoothing_accumulator +
+                angle_shortest_delta(render_model_rows[0].rotation.vy,
+                                     game_graphics_runtime.render_state.view_rotation.vy);
+    render_model_yaw_smoothing_accumulator = yaw_delta;
+    if (yaw_delta > 0) {
+        render_model_yaw_smoothing_accumulator = yaw_delta - ((yaw_delta + 7) >> 3);
+    } else if (yaw_delta < 0) {
+        render_model_yaw_smoothing_accumulator = yaw_delta - ((yaw_delta - 7) >> 3);
+    }
+
+    remainder = player_state.vitals.current_hp % 1000;
+    hp_hundreds = remainder / 100;
+    hp_tens = (remainder % 100) / 10;
+    hp_ones = remainder % 10;
+    remainder = player_state.vitals.current_mp % 1000;
+    mp_hundreds = remainder / 100;
+    mp_tens = (remainder % 100) / 10;
+    mp_ones = remainder % 10;
+    attack_width = player_state.attack_charge_current * 204 / 5000;
+    magic_width = player_state.magic_charge * 204 / 5000;
+
+    render_model_rows[0].rotation.vy +=
+        render_model_yaw_smoothing_accumulator >> 6;
+    render_model_rows[0].rotation.vx = game_graphics_runtime.render_state.view_rotation.vx;
+    render_model_rows[3].asset_id = hp_hundreds + 3;
+    render_model_rows[4].asset_id = hp_tens + 3;
+    render_model_rows[5].asset_id = hp_ones + 3;
+    render_model_rows[6].asset_id = mp_hundreds + 3;
+    render_model_rows[7].asset_id = mp_tens + 3;
+    render_model_rows[8].asset_id = mp_ones + 3;
+    render_model_rows[9].scale.vx = attack_width;
+    render_model_rows[10].scale.vx = magic_width;
+
+    render_active_model_rows();
+    notification_draw();
+    render_map_cell_window();
+    render_scene_and_update_resources();
+    render_sliding_panel_primary();
+    render_sliding_panel_secondary();
+    render_color_overlay();
+    render_accumulated_color_overlay();
+    display_present_frame();
+    cd_wait_two_vsyncs();
+    pool_release_stale();
+}
+
+enum {
+    KF_MENU_MODEL_BACK_COLOR = 60,
+    KF_MENU_MODEL_GEOM_SCREEN = 200,
+    KF_MENU_MODEL_FOG_NEAR = 0x59d8
+};
+
+ADDRESS(0x80033994, 0x68)
+void menu_render_item_model(void)
+{
+    SetBackColor(KF_MENU_MODEL_BACK_COLOR, KF_MENU_MODEL_BACK_COLOR, KF_MENU_MODEL_BACK_COLOR);
+    SetGeomScreen(KF_MENU_MODEL_GEOM_SCREEN);
+    tmd_select(KF_TMD_SLOT_MENU_ITEM);
+    tmd_select_object_vertices(0);
+    fog_set_near(KF_MENU_MODEL_FOG_NEAR);
+    tmd_project_vertices_with_fog(tmd_get_object(0)->vertex_count);
+    render_enqueue_textured_tmd(0, 0);
+}
+
+ADDRESS(0x800339fc, 0xb8)
+void asset_registry_load_tmd_archive(u16 first_asset_id, u8 *archive)
+{
+    u16 count = *(u16 *)archive;
+
+    archive += KF_ASSET_ARCHIVE_HEADER_BYTES;
+    while (count-- != 0) {
+        KfAssetHeader *asset = (KfAssetHeader *)archive;
+        u32 size = asset->byte_size;
+
+        if (size >= KF_ASSET_MIN_REGISTERED_BYTES) {
+            game_graphics_runtime.asset_registry_entries[first_asset_id] = asset;
+            asset_registry_select(first_asset_id);
+            tmd_prepare_primitive_indices(game_graphics_runtime.tmd_state.current_asset);
+        }
+        archive += size;
+        first_asset_id++;
+    }
+}
+
+ADDRESS(0x80033ab4, 0x48)
+void asset_registry_set(u16 index, KfAssetHeader *asset)
+{
+    game_graphics_runtime.asset_registry_entries[index] = asset;
+    asset_registry_select(index);
+    tmd_prepare_primitive_indices(game_graphics_runtime.tmd_state.current_asset);
+}
+
+ADDRESS(0x80033afc, 0x38)
+void asset_registry_select(u16 index)
+{
+    KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[index];
+
+    game_graphics_runtime.tmd_state.current_asset =
+        (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+}
+
+enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
+
+ADDRESS(0x80033b34, 0xc8)
+KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, s32 phase,
+                                          s32 *keyframe_index, u32 *blend_fraction)
+{
+    u32 *clip_table = (u32 *)((u8 *)asset + asset->clip_table_offset);
+    KfAnimClip *clip = (KfAnimClip *)((u8 *)asset + clip_table[clip_index]);
+    u32 *offsets = clip->keyframe_offsets;
+    s32 remaining = clip->keyframe_count;
+    s32 index = 0;
+    s32 phase_end = 0;
+    s32 phase_start = 0;
+    u32 fraction;
+    KfAnimKeyframe *keyframe;
+
+    for (--remaining; remaining != -1; --remaining) {
+        keyframe = (KfAnimKeyframe *)((u8 *)asset + *offsets++);
+
+        phase_end += keyframe->duration;
+        if (phase < phase_end) {
+            fraction = ((u32)(phase - phase_start) << KF_ANIMATION_BLEND_SHIFT)
+                / keyframe->duration;
+            if (keyframe->reverse != 0) {
+                fraction = KF_ANIMATION_BLEND_ONE - fraction;
+            }
+            goto selected;
+        }
+        phase_start = phase_end;
+        index++;
+    }
+    index--;
+    fraction = KF_ANIMATION_BLEND_ONE;
+
+selected:
+    *keyframe_index = index;
+    *blend_fraction = fraction;
+    return keyframe;
+}
+
+enum { KF_ANIMATION_SPARSE_SKIP = -32768 };
+
+ADDRESS(0x80033bfc, 0xc4)
+void animation_expand_sparse_vertices(SVECTOR *vertices, const SVECTOR *base,
+                                      const s16 *encoded)
+{
+    s32 remaining = *encoded++;
+
+    for (--remaining; remaining != -1; --remaining) {
+        u16 value = *encoded++;
+
+        if ((s16)value == KF_ANIMATION_SPARSE_SKIP) {
+            s32 copy_count = *encoded++;
+
+            for (--copy_count; copy_count != -1; --copy_count) {
+                copyVector(vertices, base);
+                vertices++;
+                base++;
+            }
+        } else {
+            vertices->vx = value;
+            vertices->vy = *encoded++;
+            vertices->vz = *encoded++;
+            vertices++;
+            base++;
+        }
+    }
+}
+
+ADDRESS(0x80033cc0, 0x7c)
+void animation_decode_sparse_vertices(SVECTOR *vertices, const s16 *encoded)
+{
+    s32 remaining = *encoded++;
+
+    for (--remaining; remaining != -1; --remaining) {
+        u16 value = *encoded++;
+
+        if ((s16)value == KF_ANIMATION_SPARSE_SKIP) {
+            vertices += *encoded++;
+        } else {
+            vertices->vx = value;
+            vertices->vy = *encoded++;
+            vertices->vz = *encoded++;
+            vertices++;
+        }
+    }
+}
+
+ADDRESS(0x80033d3c, 0x2b8)
+void animation_apply_sparse_morph(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction)
+{
+    MATRIX deltas;
+    VECTOR scale;
+    SVECTOR *group_start;
+    SVECTOR *cursor;
+    s32 pending;
+    s32 remaining;
+    s16 *delta_write;
+
+    scale.vz = blend_fraction;
+    scale.vy = blend_fraction;
+    scale.vx = blend_fraction;
+    remaining = *encoded;
+    cursor = vertices;
+    encoded++;
+    pending = 0;
+    group_start = cursor;
+    delta_write = &deltas.m[0][0];
+
+    for (--remaining; remaining != -1; --remaining) {
+        s16 value = *encoded++;
+
+        if (value == KF_ANIMATION_SPARSE_SKIP) {
+            cursor += *encoded++;
+            if (pending != 0) {
+                s16 *scaled;
+
+                ScaleMatrix(&deltas, &scale);
+                scaled = &deltas.m[0][0];
+                for (--pending; pending != -1; --pending) {
+                    group_start->vx += *scaled++;
+                    group_start->vy += *scaled++;
+                    group_start->vz += *scaled++;
+                    group_start++;
+                }
+                pending = 0;
+                delta_write = &deltas.m[0][0];
+            }
+            group_start = cursor;
+        } else {
+            *delta_write++ = value - cursor->vx;
+            *delta_write++ = *encoded++ - cursor->vy;
+            *delta_write++ = *encoded++ - cursor->vz;
+            cursor++;
+
+            if (pending == 2) {
+                ScaleMatrix(&deltas, &scale);
+                group_start[0].vx += deltas.m[0][0];
+                group_start[0].vy += deltas.m[0][1];
+                group_start[0].vz += deltas.m[0][2];
+                group_start[1].vx += deltas.m[1][0];
+                group_start[1].vy += deltas.m[1][1];
+                group_start[1].vz += deltas.m[1][2];
+                group_start[2].vx += deltas.m[2][0];
+                pending = 0;
+                group_start[2].vy += deltas.m[2][1];
+                group_start[2].vz += deltas.m[2][2];
+                delta_write = &deltas.m[0][0];
+                group_start = cursor;
+            } else {
+                ++pending;
+            }
+        }
+    }
+
+    if (pending != 0) {
+        s16 *scaled;
+
+        ScaleMatrix(&deltas, &scale);
+        scaled = &deltas.m[0][0];
+        for (--pending; pending != -1; --pending) {
+            group_start->vx += *scaled++;
+            group_start->vy += *scaled++;
+            group_start->vz += *scaled++;
+            group_start++;
+        }
+    }
+}
+
+ADDRESS(0x80033ff4, 0x7c)
+const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index)
+{
+    s32 remaining = *encoded;
+    s32 current = 0;
+
+    encoded++;
+    for (--remaining; remaining != -1; --remaining) {
+        s16 value = *encoded;
+
+        if (value == KF_ANIMATION_SPARSE_SKIP) {
+            encoded++;
+            current += *encoded++;
+            if (vertex_index < current) {
+                return 0;
+            }
+        } else {
+            if (current == vertex_index) {
+                return encoded;
+            }
+            current++;
+            encoded += 3;
+        }
+    }
+    return 0;
+}
+
+enum { KF_ASSET_OBJECT_SELECT_BIT = 0x80, KF_ASSET_OBJECT_INDEX_MASK = 0x7f };
+
+ADDRESS(0x80034070, 0x2d4)
+s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index, s32 clip,
+                  s32 phase, s32 vertex_count)
+{
+    KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
+    KfPoolRecord *record = *owner_slot;
+    KfAnimKeyframe *keyframe;
+    u32 *morph_offsets;
+    u16 *morph_indices;
+    u16 remaining;
+    s32 keyframe_index;
+    u32 blend_fraction;
+
+    if (asset->animation_present == 0) {
+        if (record != 0) {
+            pool_record_release(record);
+        }
+        asset_registry_select(asset_index);
+        tmd_select_object_vertices(0);
+        return 1;
+    }
+
+    if (record == 0) {
+        record = pool_allocate();
+        if (record == 0) {
+            return 0;
+        }
+allocate_vertices:
+        record->asset_index = asset_index;
+        record->owner_slot = owner_slot;
+        for (;;) {
+            record->cached_vertices = (SVECTOR *)memory_malloc_checked(vertex_count * sizeof(SVECTOR));
+            if (record->cached_vertices != 0) {
+                break;
+            }
+            pool_release_all();
+        }
+        *owner_slot = record;
+    } else if (record->asset_index != asset_index) {
+        pool_record_release(record);
+        record->clip_index = KF_ANIMATION_CLIP_NONE;
+        goto allocate_vertices;
+    }
+
+    keyframe = animation_select_keyframe(asset, clip, phase, &keyframe_index,
+                                          &blend_fraction);
+    if (record->clip_index != clip || record->keyframe_index != keyframe_index) {
+        tmd_select_object_vertices(0);
+        morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+        remaining = keyframe->morph_count;
+        if (remaining != 0) {
+            morph_indices = (u16 *)(keyframe + 1);
+            animation_expand_sparse_vertices(
+                record->cached_vertices, game_graphics_runtime.current_tmd_vertices,
+                (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+            for (--remaining; remaining != 0; --remaining) {
+                animation_decode_sparse_vertices(
+                    record->cached_vertices,
+                    (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+            }
+        } else {
+            const u32 *source = (const u32 *)game_graphics_runtime.current_tmd_vertices;
+            u32 *destination = (u32 *)record->cached_vertices;
+            u16 copy_count = vertex_count;
+
+            do {
+                *destination++ = *source++;
+                *destination++ = *source++;
+            } while (--copy_count != 0);
+        }
+        record->rest_morph_offset = morph_offsets[keyframe->rest_index];
+    }
+    record->clip_index = clip;
+    record->keyframe_index = keyframe_index;
+
+    {
+        u16 copy_count = vertex_count;
+        const u32 *source = (const u32 *)record->cached_vertices;
+        u32 *destination = (u32 *)game_graphics_runtime.animation_vertex_scratch;
+
+        do {
+            *destination++ = *source++;
+            *destination++ = *source++;
+        } while (--copy_count != 0);
+    }
+    animation_apply_sparse_morph(game_graphics_runtime.animation_vertex_scratch,
+                   (const s16 *)((u8 *)asset + record->rest_morph_offset),
+                   blend_fraction);
+    tmd_set_current_vertices(game_graphics_runtime.animation_vertex_scratch);
+    record->state = KF_ANIMATION_CACHE_LIVE;
+    return (s32)record;
+}
+
+ADDRESS(0x80034344, 0x2a0)
+s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
+                  SVECTOR *output)
+{
+    KfAssetHeader *asset = resource_registry_get(asset_index);
+    KfTmdHeader *tmd;
+    SVECTOR *vertices;
+    KfAnimKeyframe *keyframe;
+    SVECTOR vertex;
+    u32 *morph_offsets;
+    u16 *morph_indices;
+    const s16 *encoded;
+    s32 remaining;
+    s32 keyframe_index;
+    u32 blend_fraction;
+
+    if (asset == 0) {
+        output->vz = 0;
+        output->vy = 0;
+        output->vx = 0;
+        return 1;
+    }
+
+    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    if (clip >= KF_ASSET_OBJECT_SELECT_BIT) {
+copy_object_vertex:
+        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[clip & KF_ASSET_OBJECT_INDEX_MASK]);
+        *output = vertices[vertex_index];
+        goto finished;
+    }
+    if (asset->animation_present == 0) {
+        clip = 0;
+        goto copy_object_vertex;
+    }
+
+    vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[0]);
+    keyframe = animation_select_keyframe(asset, clip, phase, &keyframe_index,
+                                          &blend_fraction);
+    vertex = vertices[vertex_index];
+    morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+    remaining = keyframe->morph_count;
+    morph_indices = (u16 *)(keyframe + 1);
+    for (--remaining; remaining != -1; --remaining) {
+        encoded = animation_find_sparse_vertex(
+            (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]),
+            vertex_index);
+        if (encoded != 0) {
+            vertex.vx = *encoded++;
+            vertex.vy = *encoded++;
+            vertex.vz = *encoded;
+        }
+    }
+    encoded = animation_find_sparse_vertex(
+        (const s16 *)((u8 *)asset + morph_offsets[keyframe->rest_index]),
+        vertex_index);
+    if (encoded != 0) {
+        vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> 12) + vertex.vx;
+        vertex.vy = (((*encoded - vertex.vy) * (s32)blend_fraction) >> 12) + vertex.vy;
+        vertex.vz = (((encoded[1] - vertex.vz) * (s32)blend_fraction) >> 12) + vertex.vz;
+    }
+    *output = vertex;
+finished:
+    return 0;
+}
+
+ADDRESS(0x800345e4, 0x60)
+u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
+{
+    KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
+    KfTmdHeader *tmd;
+
+    if (asset == 0) {
+        return 0;
+    }
+    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    if (encoded_object_index >= KF_ASSET_OBJECT_SELECT_BIT) {
+        return TMD_OBJECTS(tmd)[encoded_object_index & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
+    }
+    return TMD_OBJECTS(tmd)[0].vertex_count;
+}
+
+/*
+ * The twelve-entry pool that caches per-instance vertex allocations across
+ * frames. Records advance free -> live and are marked stale each frame so the
+ * render pass can revalidate them before pool_release_stale frees the rest.
+ */
+ADDRESS(0x80034644, 0x30)
+void pool_reset(void)
+{
+    KfPoolRecord *record = game_graphics_runtime.pool_records;
+    u16 records_left = KF_ANIMATION_CACHE_CAPACITY;
+
+    do {
+        record->state = KF_ANIMATION_CACHE_FREE;
+        record->cached_vertices = NULL;
+        record++;
+    } while (--records_left != 0);
+}
+
+ADDRESS(0x80034674, 0x3c)
+void pool_mark_allocated(void)
+{
+    KfPoolRecord *record = game_graphics_runtime.pool_records;
+    u16 records_left = KF_ANIMATION_CACHE_CAPACITY;
+
+    do {
+        if (record->state != KF_ANIMATION_CACHE_FREE) {
+            record->state = KF_ANIMATION_CACHE_STALE;
+        }
+        record++;
+    } while (--records_left != 0);
+}
+
+ADDRESS(0x800346b0, 0x48)
+void pool_record_release(KfPoolRecord *record)
+{
+    record->state = KF_ANIMATION_CACHE_FREE;
+    *record->owner_slot = NULL;
+    if (record->cached_vertices != NULL) {
+        free(record->cached_vertices);
+        record->cached_vertices = NULL;
+    }
+}
+
+ADDRESS(0x800346f8, 0x6c)
+void pool_release_all(void)
+{
+    KfPoolRecord *record = game_graphics_runtime.pool_records;
+    s16 records_left;
+
+    for (records_left = KF_ANIMATION_CACHE_CAPACITY - 1; records_left != -1; records_left--) {
+        if (record->state != KF_ANIMATION_CACHE_FREE) {
+            pool_record_release(record);
+        }
+        record++;
+    }
+}
+
+ADDRESS(0x80034764, 0x6c)
+void pool_release_stale(void)
+{
+    KfPoolRecord *record = game_graphics_runtime.pool_records;
+    u16 records_left = KF_ANIMATION_CACHE_CAPACITY;
+
+    do {
+        if (record->state == KF_ANIMATION_CACHE_STALE) {
+            pool_record_release(record);
+        }
+        record++;
+    } while (--records_left != 0);
+}
+
+ADDRESS(0x800347d0, 0x48)
+KfPoolRecord *pool_allocate(void)
+{
+    KfPoolRecord *record = game_graphics_runtime.pool_records;
+    u16 records_left = KF_ANIMATION_CACHE_CAPACITY;
+
+    do {
+        if (record->state == KF_ANIMATION_CACHE_FREE) {
+            record->clip_index = KF_ANIMATION_CLIP_NONE;
+            return record;
+        }
+        record++;
+    } while (--records_left != 0);
+    return NULL;
+}
+
+enum { KF_MAP_PLACED_REGION_SHIFT = 11, KF_MAP_PLACED_RANDOM_SHIFT = 15 };
+
+ADDRESS(0x80034818, 0x134)
+void map_placed_expand_sources(const KfMapPlacedSource *sources)
+{
+    KfMapPlacedEntry *entry = game_graphics_runtime.map_placed_entries;
+    s32 remaining;
+
+    for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1; remaining != -1; --remaining) {
+        if (sources->id != 0xffff) {
+            entry->id = sources->id;
+            entry->layer = sources->layer;
+            entry->frame_count = sources->frame_count;
+            entry->frame_period = sources->frame_period;
+            entry->position.vx = (sources->region_x << KF_MAP_PLACED_REGION_SHIFT) + sources->local_x;
+            entry->position.vz = (sources->region_z << KF_MAP_PLACED_REGION_SHIFT) + sources->local_z;
+            entry->position.vy = collision_sample_map_layer_height(entry->layer, entry->position.vx, entry->position.vz, 0, 0)
+                + sources->height_offset;
+            entry->frame_index = (rand() * entry->frame_count) >> KF_MAP_PLACED_RANDOM_SHIFT;
+        } else {
+            entry->id = 0xffff;
+        }
+        entry++;
+        sources++;
+    }
+}
+
+ADDRESS(0x8003494c, 0x70)
+void tim_upload_images(u8 *tim_data)
+{
+    TIM_IMAGE image;
+
+    OpenTIM((u_long *)tim_data);
+    while (ReadTIM(&image) != NULL) {
+        if (image.caddr != NULL) {
+            LoadImage(image.crect, image.caddr);
+        }
+        if (image.paddr != NULL) {
+            LoadImage(image.prect, image.paddr);
+        }
+    }
+}
+
+#define MENU_FADE_NEXT_QUAD() do { \
+    KfPrimitiveBuffer *buffer = game_graphics_runtime.display_state.primitive_buffer; \
+    quad = (POLY_FT4 *)buffer->cursor; \
+    buffer->cursor += sizeof(POLY_FT4); \
+    if (game_graphics_runtime.display_state.primitive_buffer->cursor > \
+        game_graphics_runtime.display_state.primitive_buffer->end) \
+        goto present; \
+    SetPolyFT4(quad); \
+} while (0)
+
+ADDRESS(0x800349bc, 0x454)
+s32 menu_fade_transition(s32 level, s32 step)
+{
+    POLY_FT4 *quad;
+    s32 state = -1;
+    s32 shade;
+    u32 buttons;
+
+    for (;;) {
+        display_begin_frame();
+        shade = 0x80 - (level >> 1);
+
+        MENU_FADE_NEXT_QUAD();
+        setXYWH(quad, 0, 0, 192, 240);
+        setUVWH(quad, 0, 0, 192, 240);
+        quad->clut = 0;
+        setTPage(quad, 2, 0, 320, 0);
+        setRGB0(quad, shade, shade, shade);
+        AddPrim(game_graphics_runtime.display_state.ordering_table + 2, quad);
+
+        MENU_FADE_NEXT_QUAD();
+        setXYWH(quad, 192, 0, 128, 240);
+        setUVWH(quad, 0, 0, 128, 240);
+        quad->clut = 0;
+        setTPage(quad, 2, 0, 512, 0);
+        setRGB0(quad, shade, shade, shade);
+        AddPrim(game_graphics_runtime.display_state.ordering_table + 2, quad);
+
+        MENU_FADE_NEXT_QUAD();
+        SetSemiTrans(quad, 1);
+        setXYWH(quad, 32, 112, 256, 128);
+        setUVWH(quad, 0, 0, 255, 128);
+        setClut(quad, 576, 511);
+        setTPage(quad, 0, 1, 960, 256);
+        setRGB0(quad, level, level, level);
+        AddPrim(game_graphics_runtime.display_state.ordering_table, quad);
+
+        MENU_FADE_NEXT_QUAD();
+        SetSemiTrans(quad, 1);
+        setXYWH(quad, 32, 112, 256, 128);
+        setUVWH(quad, 0, 0, 255, 128);
+        setClut(quad, 576, 511);
+        setTPage(quad, 0, 2, 960, 256);
+        setRGB0(quad, level, level, level);
+        AddPrim(game_graphics_runtime.display_state.ordering_table + 1, quad);
+
+present:
+        DrawSync(0);
+        display_present_frame();
+        level += step;
+        if (((u32)level - 1u) < 119u) {
+            buttons = PadRead(1);
+            if (state == -1) {
+                if (buttons == 0)
+                    state = -2;
+            } else if (buttons != 0) {
+                DrawSync(0);
+                return level;
+            }
+        } else {
+            DrawSync(0);
+            return state;
+        }
+    }
+}
+
+#undef MENU_FADE_NEXT_QUAD
+
+ADDRESS(0x80034e10, 0x180)
+void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
+{
+    s32 frame;
+    u32 buttons;
+    u8 *scratch;
+
+    DrawSync(0);
+    cd_archive_read(archive_slot, archive_entry,
+        (u_long *)game_graphics_runtime.display_state.asset_load_buffer);
+    tim_upload_images(game_graphics_runtime.display_state.asset_load_buffer);
+    DrawSync(0);
+
+    scratch = game_graphics_runtime.display_state.primitive_buffers[0].start;
+    scratch += KF_GAME_PRIMITIVE_BUFFER_BYTES / 4;
+    game_graphics_runtime.display_state.primitive_buffers[0].end = scratch;
+    game_graphics_runtime.display_state.primitive_buffers[1].start = scratch;
+    scratch += KF_GAME_PRIMITIVE_BUFFER_BYTES / 4;
+    game_graphics_runtime.display_state.primitive_buffers[1].end = scratch;
+    StoreImage(&menu_transition_rect, (u_long *)scratch);
+    DrawSync(0);
+    MoveImage(&game_graphics_runtime.display_draw_environments[
+            game_graphics_runtime.display_state.buffer_index].clip,
+        menu_transition_rect.x, menu_transition_rect.y);
+    DrawSync(0);
+
+    frame = menu_fade_transition(0, 12);
+    if (frame < 0) {
+        for (;;) {
+            buttons = PadRead(1);
+            if (frame == -1) {
+                if (buttons != 0)
+                    continue;
+                frame = -2;
+                continue;
+            }
+            if (buttons == 0)
+                continue;
+            frame = 80;
+            break;
+        }
+    }
+    menu_fade_transition(frame, -12);
+    LoadImage(&menu_transition_rect,
+        (u_long *)game_graphics_runtime.display_state.primitive_buffers[1].end);
+    game_graphics_runtime.display_state.primitive_buffers[0].end =
+        game_graphics_runtime.display_state.primitive_buffers[0].start
+        + KF_GAME_PRIMITIVE_BUFFER_BYTES;
+    game_graphics_runtime.display_state.primitive_buffers[1].start =
+        game_graphics_runtime.display_state.primitive_buffers[0].end;
+    game_graphics_runtime.display_state.primitive_buffers[1].end =
+        game_graphics_runtime.display_state.primitive_buffers[1].start
+        + KF_GAME_PRIMITIVE_BUFFER_BYTES;
 }

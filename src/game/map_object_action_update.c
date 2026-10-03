@@ -384,18 +384,18 @@ void map_object_update_actions(void)
             switch (object->action_timer) {
             case 1:
                 map_object_play_spatial_sound(object, template->sound_id);
-                switch (object->tail.fields.unknown_38) {
+                switch (object->tail.action_83.transition_mode) {
                 case 0:
                 case 1:
                     object->action_timer = 2;
                     break;
                 case 2:
                     object->action_timer = 2;
-                    object->tail.fields.unknown_38 = 3;
+                    object->tail.action_83.transition_mode = 3;
                     break;
                 case 3:
                     object->action_timer = 3;
-                    object->tail.fields.unknown_38 = 2;
+                    object->tail.action_83.transition_mode = 2;
                     break;
                 default:
                     break;
@@ -409,7 +409,7 @@ void map_object_update_actions(void)
                 object->phase_q12 = 0xfff;
             action83_complete:
                 map_object_apply_marker_signal(object->tail.action_83.completion_marker);
-                switch (object->tail.fields.unknown_38) {
+                switch (object->tail.action_83.transition_mode) {
                 case 0:
                     object->action_timer = 99;
                     break;
@@ -437,7 +437,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 9:
-                if (object->tail.fields.unknown_38 == 3) {
+                if (object->tail.action_83.transition_mode == 3) {
                     object->phase_q12 = 0xfff;
                 }
                 object->action_timer = 0;
@@ -450,7 +450,7 @@ void map_object_update_actions(void)
         case 88:
             switch (object->action_timer) {
             case 1:
-                switch (object->tail.fields.unknown_38) {
+                switch (object->tail.action_88_cell_copy.transition_mode) {
                 case 0:
                     object->action_timer = 2;
                     map_object_play_spatial_sound(object, 0x44);
@@ -579,7 +579,7 @@ void map_object_update_actions(void)
                 s32 source_z = center_z - ((height - 1) >> 1);
                 if (player_camera_within_map_region(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
-                    map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
+                    map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
                                       ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
@@ -611,7 +611,7 @@ void map_object_update_actions(void)
                     object->asset_clip_selector = 0;
                     object->phase_q12 = 0;
                     object->action_timer = 0;
-                    map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
+                    map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
                                       ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
@@ -999,7 +999,7 @@ void map_object_update_actions(void)
                         player_state.camera_rotation_target.angles[1] +
                         player_state.reaction_rotation_offset[1] +
                         player_state.view_rotation_offset.components[1] +
-                        player_state.unknown_112[0];
+                        player_state.camera_yaw_roll_offsets[0];
                     render_frames_with_color_overlay(1, 0x1000, 0, -0x100);
                     render_set_color_overlay(0xff, 0, 0, 0);
                 }

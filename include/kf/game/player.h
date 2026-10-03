@@ -360,7 +360,7 @@ typedef struct KfPlayerState {
     s16 death_transition_frame;
     KfPlayerViewRotationOffset view_rotation_offset;
     s16 vertical_motion_pitch_offset;
-    s16 unknown_112[2];
+    s16 camera_yaw_roll_offsets[2];
     u8 unknown_116[2];
     SVECTOR magic_origin_offset;
     s32 collision_lower_clearance;
@@ -412,6 +412,8 @@ typedef char kf_player_frame_displacement_offset[
     (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
 typedef char kf_player_vertical_motion_pitch_offset[
     (u32)&((KfPlayerState *)0)->vertical_motion_pitch_offset == 0x110 ? 1 : -1];
+typedef char kf_player_camera_yaw_roll_offsets_offset[
+    (u32)&((KfPlayerState *)0)->camera_yaw_roll_offsets == 0x112 ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[

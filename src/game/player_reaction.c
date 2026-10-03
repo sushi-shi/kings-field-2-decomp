@@ -245,8 +245,8 @@ void player_reset_reaction_state(void)
     player_state.view_rotation_offset.components[2] = 0;
     player_state.view_rotation_offset.components[1] = 0;
     player_state.view_rotation_offset.components[0] = 0;
-    player_state.unknown_112[1] = 0;
-    player_state.unknown_112[0] = 0;
+    player_state.camera_yaw_roll_offsets[1] = 0;
+    player_state.camera_yaw_roll_offsets[0] = 0;
     player_state.vertical_motion_pitch_offset = 0;
 }
 
@@ -259,17 +259,19 @@ void player_begin_map_object_view_follow(u8 mode)
 
 struct KfMapObjectRecord40 {
     u8 unknown_00;
-    u8 unknown_01;
+    u8 reaction_mode;
     u8 unknown_02[0x0a];
-    SVECTOR unknown_0c;
+    SVECTOR reaction_rotation_vector;
     u8 unknown_14[0x24];
-    s16 unknown_38;
+    s16 reaction_rotation_scale_q15;
 };
 
 typedef char kf_player_map_object_vector_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->unknown_0c == 0x0c ? 1 : -1];
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_vector == 0x0c ? 1 : -1];
+typedef char kf_player_map_object_reaction_mode_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_mode == 0x01 ? 1 : -1];
 typedef char kf_player_map_object_halfword_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->unknown_38 == 0x38 ? 1 : -1];
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_scale_q15 == 0x38 ? 1 : -1];
 
 ADDRESS(0x800291ec, 0x1e8)
 void player_apply_map_object_reaction(KfMapObject *object)
@@ -291,11 +293,11 @@ void player_apply_map_object_reaction(KfMapObject *object)
     player_state.view_rotation_offset.components[1] = 0;
     player_state.view_rotation_offset.components[2] = 0;
 
-    if (record->unknown_01 == 0) {
+    if (record->reaction_mode == 0) {
         SVECTOR rotation;
-        rotation.vx = (record->unknown_0c.vx * record->unknown_38) >> 15;
-        rotation.vy = ((record->unknown_0c.vy * record->unknown_38) >> 15) + 512;
-        rotation.vz = (record->unknown_0c.vz * record->unknown_38) >> 15;
+        rotation.vx = (record->reaction_rotation_vector.vx * record->reaction_rotation_scale_q15) >> 15;
+        rotation.vy = ((record->reaction_rotation_vector.vy * record->reaction_rotation_scale_q15) >> 15) + 512;
+        rotation.vz = (record->reaction_rotation_vector.vz * record->reaction_rotation_scale_q15) >> 15;
         player_begin_rotation_reaction(&rotation);
     } else {
         struct KfVecXZi offset;
@@ -780,11 +782,11 @@ after_reaction:
     player_state.camera_rotation.angles[1] =
         player_state.camera_rotation_target.angles[1]
         + player_state.reaction_rotation_offset[1] + player_state.view_rotation_offset.components[1]
-        + player_state.unknown_112[0];
+        + player_state.camera_yaw_roll_offsets[0];
     player_state.camera_rotation.angles[2] =
         player_state.camera_rotation_target.angles[2]
         + player_state.reaction_rotation_offset[2] + player_state.view_rotation_offset.components[2]
-        + player_state.unknown_112[1];
+        + player_state.camera_yaw_roll_offsets[1];
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);
     actor_state.actor_overlap_exclusion_flags = 0;

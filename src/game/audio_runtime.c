@@ -18,8 +18,14 @@ static u8 audio_vab_stream_buffers[6][0x1000];
 typedef char kf_audio_vab_stream_buffers_size[
     sizeof(audio_vab_stream_buffers) == 0x6000 ? 1 : -1];
 
+DATA(0x80194e30, 0x2800)
+static u8 audio_main_vab_header_buffer[0x2800];
+
 DATA(0x80197630, 0xe9c)
 KfGameAudioState audio_state;
+
+DATA(0x80198640, 0x3000)
+static u8 audio_sequence_buffer[0x3000];
 
 ADDRESS(0x800139c4, 0x120)
 void audio_initialize_runtime(void)
@@ -40,8 +46,7 @@ void audio_initialize_runtime(void)
     SsUtReverbOn();
     SsUtSetReverbDepth(0x28, 0x28);
 
-    /* Sequence-data buffer owner and extent remain unresolved. */
-    audio_state.sequence_buffer = (u_long *)0x80198640;
+    audio_state.sequence_buffer = (u_long *)audio_sequence_buffer;
     audio_state.sequence_active = 0;
     audio_state.sequence_ready = 0;
     vab_slot = audio_state.vab_slots;
@@ -69,7 +74,7 @@ void audio_initialize_runtime(void)
         stream_slot++;
         stream_buffer += 0x1000;
     }
-    audio_state.vab_stream_slots[5].buffer = (u8 *)0x80194e30;
+    audio_state.vab_stream_slots[5].buffer = audio_main_vab_header_buffer;
     audio_state.vab_stream_slots[6].buffer = audio_vab_stream_buffers[0];
 }
 

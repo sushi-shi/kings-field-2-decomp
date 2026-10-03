@@ -1935,15 +1935,15 @@ GAME.EXE	0x80013344	0x2b44		mips32_candidate	raw-word	0x80057688	load		.word		ra
 GAME.EXE	0x80013348	0x2b48		mips32_candidate	raw-word	0x80057690	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x8001334c	0x2b4c		mips32_candidate	raw-word	0x80057690	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x80013350	0x2b50		mips32_candidate	raw-word	0x80057690	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013354	0x2b54		mips32_candidate	raw-word	0x8005e350	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013358	0x2b58		mips32_candidate	raw-word	0x8005e350	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001335c	0x2b5c		mips32_candidate	raw-word	0x8005e350	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013360	0x2b60		mips32_candidate	raw-word	0x8005e33c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013364	0x2b64		mips32_candidate	raw-word	0x8005e33c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013368	0x2b68		mips32_candidate	raw-word	0x8005e33c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001336c	0x2b6c		mips32_candidate	raw-word	0x8005e31c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013370	0x2b70		mips32_candidate	raw-word	0x8005e31c	load		.word		range-only	candidate	investigation:relocs.tsv
-GAME.EXE	0x80013374	0x2b74		mips32_candidate	raw-word	0x8005e31c	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x80013354	0x2b54		mips32_candidate	raw-word	0x8005e350	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x0 native R_MIPS_32 XREF .text+0x5ac;retail raw word
+GAME.EXE	0x80013358	0x2b58		mips32_candidate	raw-word	0x8005e350	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x4 native R_MIPS_32 XREF .text+0x5ac;retail raw word
+GAME.EXE	0x8001335c	0x2b5c		mips32_candidate	raw-word	0x8005e350	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x8 native R_MIPS_32 XREF .text+0x5ac;retail raw word
+GAME.EXE	0x80013360	0x2b60		mips32_candidate	raw-word	0x8005e33c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0xc native R_MIPS_32 XREF .text+0x598;retail raw word
+GAME.EXE	0x80013364	0x2b64		mips32_candidate	raw-word	0x8005e33c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x10 native R_MIPS_32 XREF .text+0x598;retail raw word
+GAME.EXE	0x80013368	0x2b68		mips32_candidate	raw-word	0x8005e33c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x14 native R_MIPS_32 XREF .text+0x598;retail raw word
+GAME.EXE	0x8001336c	0x2b6c		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x18 native R_MIPS_32 XREF .text+0x578;retail raw word
+GAME.EXE	0x80013370	0x2b70		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x1c native R_MIPS_32 XREF .text+0x578;retail raw word
+GAME.EXE	0x80013374	0x2b74		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x20 native R_MIPS_32 XREF .text+0x578;retail raw word
 GAME.EXE	0x8001363c	0x2e3c		mips26	reachable-code	0x800498bc	load		jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x8001364c	0x2e4c	0x80013650	mips_hi16_lo16	reachable-code	0x801da018	bss	BSS_END	lui+addiu		paired-reviewed	reviewed	manual:main heap start is the .bss end label
 GAME.EXE	0x80013654	0x2e54		mips26	reachable-code	0x80049b70	load		jal		control-flow	reviewed	manual:memory_card
@@ -2027,13 +2027,13 @@ GAME.EXE	0x80013a04	0x3204		mips26	reachable-code	0x80051444	load		jal		control-
 GAME.EXE	0x80013a0c	0x320c		mips26	reachable-code	0x80051404	load		jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x80013a18	0x3218		mips26	reachable-code	0x800514b4	load		jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x80013a20	0x3220	0x80013a24	mips_hi16_lo16	reachable-code	0x80197630	bss	audio_state	lui+addiu	v1	paired-reviewed	reviewed	manual:audio-init-state
-GAME.EXE	0x80013a28	0x3228	0x80013a2c	mips_hi16_lo16	reachable-code	0x80198640	bss		lui+addiu	v0	paired-reviewed	reviewed	manual:audio-sequence-buffer;object-extent-unbound
+GAME.EXE	0x80013a28	0x3228	0x80013a2c	mips_hi16_lo16	reachable-code	0x80198640	bss	audio_sequence_buffer	lui+addiu	v0	paired-reviewed	reviewed	manual:audio-sequence-buffer;0x3000 extent candidate from KF1 GAME counterpart and adjacent KF2 BSS boundary
 GAME.EXE	0x80013a34	0x3234	0x80013a38	mips_hi16_lo16	reachable-code	0x80197638	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013a3c	0x323c	0x80013a40	mips_hi16_lo16	reachable-code	0x8019763c	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013a64	0x3264	0x80013a68	mips_hi16_lo16	reachable-code	0x80197a6c	bss	audio_state	lui+addiu	v0	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013a84	0x3284	0x80013a88	mips_hi16_lo16	reachable-code	0x80198494	bss	audio_state	lui+addiu	v1	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013a90	0x3290	0x80013a94	mips_hi16_lo16	reachable-code	0x80165a68	bss	audio_vab_stream_buffers	lui+addiu	a1	paired-reviewed	reviewed	manual:audio-initial-VAB-buffer;second 0x1000-byte element of reviewed six-buffer span
-GAME.EXE	0x80013ab4	0x32b4	0x80013ab8	mips_hi16_lo16	reachable-code	0x80194e30	bss		lui+addiu	v0	paired-reviewed	reviewed	manual:audio-VAB-slot5-override;object-extent-unbound
+GAME.EXE	0x80013ab4	0x32b4	0x80013ab8	mips_hi16_lo16	reachable-code	0x80194e30	bss	audio_main_vab_header_buffer	lui+addiu	v0	paired-reviewed	reviewed	manual:audio-VAB-slot5-override;0x2800 candidate ends at adjacent audio_state
 GAME.EXE	0x80013abc	0x32bc	0x80013ac0	mips_hi16_lo16	reachable-code	0x801984c0	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013ac4	0x32c4	0x80013ac8	mips_hi16_lo16	reachable-code	0x80164a68	bss	audio_vab_stream_buffers	lui+addiu	v0	paired-reviewed	reviewed	manual:audio-VAB-slot6-override;first 0x1000-byte element of reviewed six-buffer span
 GAME.EXE	0x80013acc	0x32cc	0x80013ad0	mips_hi16_lo16	reachable-code	0x801984c8	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
@@ -11052,67 +11052,83 @@ GAME.EXE	0x8005bb88	0x4b388		mips26	instruction-word	0x8005f430	load	printf	jal	
 GAME.EXE	0x8005bb90	0x4b390	0x8005bb94	mips_hi16_lo16	instruction-word	0x8006898c	load	DAT_8006898c	lui+lw	ra	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd7c .data base XREF;retail raw pair
 GAME.EXE	0x8005bba8	0x4b3a8	0x8005bbac	mips_hi16_lo16	instruction-word	0x80068998	load	DAT_8006898c	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd94 .data+0xc XREF;retail raw pair
 GAME.EXE	0x8005bbb0	0x4b3b0	0x8005bbb8	mips_hi16_lo16	instruction-word	0x8006899c	load	DAT_8006898c	lui+addiu	t7	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd9c .data+0x10 XREF;retail raw pair
-GAME.EXE	0x8005bd10	0x4b510		mips26	reachable-code	0x8005bdf4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bd38	0x4b538		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bda0	0x4b5a0		mips26	reachable-code	0x8005bf74	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bdc8	0x4b5c8		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bdfc	0x4b5fc	0x8005be00	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005be40	0x4b640	0x8005be44	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005be6c	0x4b66c	0x8005be70	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005be98	0x4b698	0x8005be9c	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bec8	0x4b6c8	0x8005becc	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bed8	0x4b6d8		mips26	reachable-code	0x8005cc04	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bee0	0x4b6e0	0x8005bee4	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bf50	0x4b750		mips26	reachable-code	0x8005c134	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bf7c	0x4b77c	0x8005bf80	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bfc8	0x4b7c8	0x8005bfcc	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bff4	0x4b7f4	0x8005bff8	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c020	0x4b820	0x8005c024	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c04c	0x4b84c	0x8005c050	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c088	0x4b888	0x8005c08c	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c098	0x4b898		mips26	reachable-code	0x8005cc04	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c0a0	0x4b8a0	0x8005c0a4	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c110	0x4b910		mips26	reachable-code	0x8005c134	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c1ac	0x4b9ac		mips26	reachable-code	0x8005c1b8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c1f8	0x4b9f8	0x8005c1fc	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c208	0x4ba08		mips26	reachable-code	0x8005c238	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c228	0x4ba28	0x8005c22c	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c238	0x4ba38		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c240	0x4ba40	0x8005c244	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c2b0	0x4bab0		mips26	reachable-code	0x8005c2bc	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c2fc	0x4bafc	0x8005c300	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c30c	0x4bb0c		mips26	reachable-code	0x8005c33c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c32c	0x4bb2c	0x8005c330	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c33c	0x4bb3c		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c344	0x4bb44	0x8005c348	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c3b4	0x4bbb4		mips26	reachable-code	0x8005c3c0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c41c	0x4bc1c	0x8005c420	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c434	0x4bc34		mips26	reachable-code	0x8005c48c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c47c	0x4bc7c	0x8005c480	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c4a8	0x4bca8		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c4b0	0x4bcb0	0x8005c4b4	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c520	0x4bd20		mips26	reachable-code	0x8005c52c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c584	0x4bd84	0x8005c588	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c59c	0x4bd9c		mips26	reachable-code	0x8005c5f4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c5e4	0x4bde4	0x8005c5e8	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c610	0x4be10		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c618	0x4be18	0x8005c61c	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c688	0x4be88		mips26	reachable-code	0x8005c694	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c6f0	0x4bef0	0x8005c6f4	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c708	0x4bf08		mips26	reachable-code	0x8005c760	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c750	0x4bf50	0x8005c754	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c77c	0x4bf7c		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c784	0x4bf84	0x8005c788	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c7f4	0x4bff4		mips26	reachable-code	0x8005c800	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c858	0x4c058	0x8005c85c	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c870	0x4c070		mips26	reachable-code	0x8005c8c8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c8b8	0x4c0b8	0x8005c8bc	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c8e4	0x4c0e4		mips26	reachable-code	0x8005c94c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c8ec	0x4c0ec	0x8005c8f0	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c980	0x4c180		mips26	reachable-code	0x8005c9b8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c9cc	0x4c1cc		mips26	reachable-code	0x8005a7bc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c9e8	0x4c1e8		mips26	reachable-code	0x8005a8cc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005c9f8	0x4c1f8		mips26	reachable-code	0x8005cc04	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005bd10	0x4b510		mips26	reachable-code	0x8005bdf4	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x2c native XREF .text+0x110;retail raw jal
+GAME.EXE	0x8005bd38	0x4b538		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x54 native XREF RotTransPers;retail raw jal
+GAME.EXE	0x8005bda0	0x4b5a0		mips26	reachable-code	0x8005bf74	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xbc native XREF .text+0x290;retail raw jal
+GAME.EXE	0x8005bdc8	0x4b5c8		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xe4 native XREF RotTransPers;retail raw jal
+GAME.EXE	0x8005bdfc	0x4b5fc	0x8005be00	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x118 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005be40	0x4b640	0x8005be44	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x15c native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005be6c	0x4b66c	0x8005be70	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x188 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005be98	0x4b698	0x8005be9c	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x1b4 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005bec8	0x4b6c8	0x8005becc	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x1e4 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005bed8	0x4b6d8		mips26	reachable-code	0x8005cc04	load	RotTrans	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x1f4 native XREF RotTrans;retail raw jal
+GAME.EXE	0x8005bee0	0x4b6e0	0x8005bee4	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x1fc native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005bee8	0x4b6e8	0x8005beec	mips_hi16_lo16	instruction-word	0x800fba38	bss	CLIPKdhx	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x204 native HI16/LO16 XREF CLIPKdhx;retail raw pair
+GAME.EXE	0x8005bf04	0x4b704	0x8005bf08	mips_hi16_lo16	instruction-word	0x800fba48	bss	CLIPKdhy	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x220 native HI16/LO16 XREF CLIPKdhy;retail raw pair
+GAME.EXE	0x8005bf50	0x4b750		mips26	reachable-code	0x8005c134	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x26c native XREF .text+0x450;retail raw jal
+GAME.EXE	0x8005bf7c	0x4b77c	0x8005bf80	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x298 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005bfc8	0x4b7c8	0x8005bfcc	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x2e4 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005bff4	0x4b7f4	0x8005bff8	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x310 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c020	0x4b820	0x8005c024	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x33c native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c04c	0x4b84c	0x8005c050	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x368 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c088	0x4b888	0x8005c08c	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x3a4 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c098	0x4b898		mips26	reachable-code	0x8005cc04	load	RotTrans	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x3b4 native XREF RotTrans;retail raw jal
+GAME.EXE	0x8005c0a0	0x4b8a0	0x8005c0a4	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x3bc native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c0a8	0x4b8a8	0x8005c0ac	mips_hi16_lo16	instruction-word	0x800fba38	bss	CLIPKdhx	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x3c4 native HI16/LO16 XREF CLIPKdhx;retail raw pair
+GAME.EXE	0x8005c0c4	0x4b8c4	0x8005c0c8	mips_hi16_lo16	instruction-word	0x800fba48	bss	CLIPKdhy	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x3e0 native HI16/LO16 XREF CLIPKdhy;retail raw pair
+GAME.EXE	0x8005c110	0x4b910		mips26	reachable-code	0x8005c134	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x42c native XREF .text+0x450;retail raw jal
+GAME.EXE	0x8005c1ac	0x4b9ac		mips26	reachable-code	0x8005c1b8	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x4c8 native XREF .text+0x4d4;retail raw j
+GAME.EXE	0x8005c1bc	0x4b9bc	0x8005c1c0	mips_hi16_lo16	instruction-word	0x8012da58	bss	CLIPFarz	lui+lw	a3	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x4d8 native HI16/LO16 XREF CLIPFarz;retail raw pair
+GAME.EXE	0x8005c1f8	0x4b9f8	0x8005c1fc	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x514 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c208	0x4ba08		mips26	reachable-code	0x8005c238	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x524 native XREF .text+0x554;retail raw j
+GAME.EXE	0x8005c228	0x4ba28	0x8005c22c	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x544 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c238	0x4ba38		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x554 native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c240	0x4ba40	0x8005c244	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x55c native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c2b0	0x4bab0		mips26	reachable-code	0x8005c2bc	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x5cc native XREF .text+0x5d8;retail raw j
+GAME.EXE	0x8005c2c0	0x4bac0	0x8005c2c4	mips_hi16_lo16	instruction-word	0x8017d138	bss	CLIPNearz	lui+lw	a3	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x5dc native HI16/LO16 XREF CLIPNearz;retail raw pair
+GAME.EXE	0x8005c2fc	0x4bafc	0x8005c300	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x618 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c30c	0x4bb0c		mips26	reachable-code	0x8005c33c	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x628 native XREF .text+0x658;retail raw j
+GAME.EXE	0x8005c32c	0x4bb2c	0x8005c330	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x648 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c33c	0x4bb3c		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x658 native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c344	0x4bb44	0x8005c348	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x660 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c3b4	0x4bbb4		mips26	reachable-code	0x8005c3c0	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x6d0 native XREF .text+0x6dc;retail raw j
+GAME.EXE	0x8005c3f8	0x4bbf8	0x8005c3fc	mips_hi16_lo16	instruction-word	0x800fba50	bss	CLIPHdky	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x714 native HI16/LO16 XREF CLIPHdky;retail raw pair
+GAME.EXE	0x8005c41c	0x4bc1c	0x8005c420	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x738 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c434	0x4bc34		mips26	reachable-code	0x8005c48c	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x750 native XREF .text+0x7a8;retail raw j
+GAME.EXE	0x8005c454	0x4bc54	0x8005c458	mips_hi16_lo16	instruction-word	0x800fba50	bss	CLIPHdky	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x770 native HI16/LO16 XREF CLIPHdky;retail raw pair
+GAME.EXE	0x8005c47c	0x4bc7c	0x8005c480	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x798 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c4a8	0x4bca8		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x7c4 native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c4b0	0x4bcb0	0x8005c4b4	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x7cc native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c520	0x4bd20		mips26	reachable-code	0x8005c52c	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x83c native XREF .text+0x848;retail raw j
+GAME.EXE	0x8005c560	0x4bd60	0x8005c564	mips_hi16_lo16	instruction-word	0x800fba50	bss	CLIPHdky	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x87c native HI16/LO16 XREF CLIPHdky;retail raw pair
+GAME.EXE	0x8005c584	0x4bd84	0x8005c588	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x8a0 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c59c	0x4bd9c		mips26	reachable-code	0x8005c5f4	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x8b8 native XREF .text+0x910;retail raw j
+GAME.EXE	0x8005c5bc	0x4bdbc	0x8005c5c0	mips_hi16_lo16	instruction-word	0x800fba50	bss	CLIPHdky	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x8d8 native HI16/LO16 XREF CLIPHdky;retail raw pair
+GAME.EXE	0x8005c5e4	0x4bde4	0x8005c5e8	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x900 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c610	0x4be10		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x92c native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c618	0x4be18	0x8005c61c	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x934 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c688	0x4be88		mips26	reachable-code	0x8005c694	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x9a4 native XREF .text+0x9b0;retail raw j
+GAME.EXE	0x8005c6cc	0x4becc	0x8005c6d0	mips_hi16_lo16	instruction-word	0x800fba40	bss	CLIPHdkx	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0x9e8 native HI16/LO16 XREF CLIPHdkx;retail raw pair
+GAME.EXE	0x8005c6f0	0x4bef0	0x8005c6f4	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xa0c native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c708	0x4bf08		mips26	reachable-code	0x8005c760	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xa24 native XREF .text+0xa7c;retail raw j
+GAME.EXE	0x8005c728	0x4bf28	0x8005c72c	mips_hi16_lo16	instruction-word	0x800fba40	bss	CLIPHdkx	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xa44 native HI16/LO16 XREF CLIPHdkx;retail raw pair
+GAME.EXE	0x8005c750	0x4bf50	0x8005c754	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xa6c native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c77c	0x4bf7c		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xa98 native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c784	0x4bf84	0x8005c788	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xaa0 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c7f4	0x4bff4		mips26	reachable-code	0x8005c800	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xb10 native XREF .text+0xb1c;retail raw j
+GAME.EXE	0x8005c834	0x4c034	0x8005c838	mips_hi16_lo16	instruction-word	0x800fba40	bss	CLIPHdkx	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xb50 native HI16/LO16 XREF CLIPHdkx;retail raw pair
+GAME.EXE	0x8005c858	0x4c058	0x8005c85c	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xb74 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c870	0x4c070		mips26	reachable-code	0x8005c8c8	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xb8c native XREF .text+0xbe4;retail raw j
+GAME.EXE	0x8005c890	0x4c090	0x8005c894	mips_hi16_lo16	instruction-word	0x800fba40	bss	CLIPHdkx	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xbac native HI16/LO16 XREF CLIPHdkx;retail raw pair
+GAME.EXE	0x8005c8b8	0x4c0b8	0x8005c8bc	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	a2	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xbd4 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c8e4	0x4c0e4		mips26	reachable-code	0x8005c94c	load		jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xc00 native XREF .text+0xc68;retail raw jal
+GAME.EXE	0x8005c8ec	0x4c0ec	0x8005c8f0	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xc08 native HI16/LO16 XREF CLIPEvbf;retail raw pair
+GAME.EXE	0x8005c980	0x4c180		mips26	reachable-code	0x8005c9b8	load		j		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xc9c native XREF .text+0xcd4;retail raw j
+GAME.EXE	0x8005c9cc	0x4c1cc		mips26	reachable-code	0x8005a7bc	load	LoadAverageShort12	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xce8 native XREF LoadAverageShort12;retail raw jal
+GAME.EXE	0x8005c9e8	0x4c1e8		mips26	reachable-code	0x8005a8cc	load	LoadAverageByte	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xd04 native XREF LoadAverageByte;retail raw jal
+GAME.EXE	0x8005c9f8	0x4c1f8		mips26	reachable-code	0x8005cc04	load	RotTrans	jal		control-flow	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xd14 native XREF RotTrans;retail raw jal
+GAME.EXE	0x8005ca04	0x4c204	0x8005ca08	mips_hi16_lo16	instruction-word	0x800fba38	bss	CLIPKdhx	lui+lw	v0	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xd20 native HI16/LO16 XREF CLIPKdhx;retail raw pair
+GAME.EXE	0x8005ca18	0x4c218	0x8005ca1c	mips_hi16_lo16	instruction-word	0x800fba48	bss	CLIPKdhy	lui+lw	v1	paired-reviewed	reviewed	manual:LIBGTE CLIP_FT.OBJ .text+0xd34 native HI16/LO16 XREF CLIPKdhy;retail raw pair
 GAME.EXE	0x8005cb44	0x4c344	0x8005cb48	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xdc XREF .sdata CLIPEvbf;retail raw pair
 GAME.EXE	0x8005cb4c	0x4c34c	0x8005cb50	mips_hi16_lo16	reachable-code	0x8017d138	bss	CLIPNearz	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xe4 XREF XBSS CLIPNearz;retail raw pair
 GAME.EXE	0x8005cb54	0x4c354	0x8005cb58	mips_hi16_lo16	reachable-code	0x8012da58	bss	CLIPFarz	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xec XREF XBSS CLIPFarz;retail raw pair
@@ -11158,35 +11174,35 @@ GAME.EXE	0x8005dbd4	0x4d3d4		mips26	instruction-word	0x8005dbfc	load		j		range-f
 GAME.EXE	0x8005dbe0	0x4d3e0	0x8005dbe8	mips_hi16_lo16	instruction-word	0x8006949c	load	rcossin_tbl	lui+lw	t9	paired-reviewed	reviewed	manual:LIBGTE FGO.OBJ .text+0xb6c native XREF rcossin_tbl;retail raw HI/LO
 GAME.EXE	0x8005dd48	0x4d548	0x8005dd50	mips_hi16_lo16	instruction-word	0x8006949c	load	rcossin_tbl	lui+lw	t9	paired-reviewed	reviewed	manual:LIBGTE FGO.OBJ .text+0xcd4 native XREF rcossin_tbl;retail raw HI/LO
 GAME.EXE	0x8005dd74	0x4d574	0x8005dd7c	mips_hi16_lo16	instruction-word	0x8006949c	load	rcossin_tbl	lui+lw	t9	paired-reviewed	reviewed	manual:LIBGTE FGO.OBJ .text+0xd00 native XREF rcossin_tbl;retail raw HI/LO
-GAME.EXE	0x8005ddcc	0x4d5cc		mips26	reachable-code	0x8005ddf4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ddd4	0x4d5d4		mips26	reachable-code	0x8005dde4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005dddc	0x4d5dc		mips26	reachable-code	0x8005ddf4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de00	0x4d600	0x8005de04	mips_hi16_lo16	reachable-code	0x80068c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de10	0x4d610		mips26	reachable-code	0x8005dea4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de30	0x4d630	0x8005de34	mips_hi16_lo16	reachable-code	0x80068c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de40	0x4d640		mips26	reachable-code	0x8005dea4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de58	0x4d658	0x8005de5c	mips_hi16_lo16	reachable-code	0x80067c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de68	0x4d668		mips26	reachable-code	0x8005dea4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005de8c	0x4d68c	0x8005de90	mips_hi16_lo16	reachable-code	0x80068c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005dee4	0x4d6e4	0x8005dee8	mips_hi16_lo16	reachable-code	0x80068c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005def4	0x4d6f4		mips26	reachable-code	0x8005df78	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005df0c	0x4d70c	0x8005df10	mips_hi16_lo16	reachable-code	0x8006849c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005df1c	0x4d71c		mips26	reachable-code	0x8005df78	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005df3c	0x4d73c	0x8005df40	mips_hi16_lo16	reachable-code	0x80068c9c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005df4c	0x4d74c		mips26	reachable-code	0x8005df78	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005df68	0x4d768	0x8005df6c	mips_hi16_lo16	reachable-code	0x8006749c	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005dfbc	0x4d7bc		mips26	instruction-word	0x8005a57c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005dfc4	0x4d7c4		mips26	instruction-word	0x8005a588	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e020	0x4d820		mips26	reachable-code	0x8005a57c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e028	0x4d828		mips26	reachable-code	0x8005a588	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e300	0x4db00	0x8005e304	mips_hi16_lo16	instruction-word	0x80013354	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e334	0x4db34		mips26	instruction-word	0x8005e36c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e348	0x4db48		mips26	instruction-word	0x8005e35c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e390	0x4db90		mips26	instruction-word	0x8005cfa0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e3a0	0x4dba0		mips26	instruction-word	0x8005a99c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e3cc	0x4dbcc		mips26	instruction-word	0x8005a99c	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e3f8	0x4dbf8		mips26	instruction-word	0x8005cfa0	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e404	0x4dc04		mips26	instruction-word	0x8005a99c	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ddcc	0x4d5cc		mips26	reachable-code	0x8005ddf4	load		jal		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x28 native XREF .text+0x50;retail raw jal
+GAME.EXE	0x8005ddd4	0x4d5d4		mips26	reachable-code	0x8005dde4	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x30 native XREF .text+0x40;retail raw j
+GAME.EXE	0x8005dddc	0x4d5dc		mips26	reachable-code	0x8005ddf4	load		jal		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x38 native XREF .text+0x50;retail raw jal
+GAME.EXE	0x8005de00	0x4d600	0x8005de04	mips_hi16_lo16	reachable-code	0x80068c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x5c native HI16/LO16 XREF rsin_tbl+0x0;retail raw pair
+GAME.EXE	0x8005de10	0x4d610		mips26	reachable-code	0x8005dea4	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x6c native XREF .text+0x100;retail raw j
+GAME.EXE	0x8005de30	0x4d630	0x8005de34	mips_hi16_lo16	reachable-code	0x80068c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x8c native HI16/LO16 XREF rsin_tbl+0x0;retail raw pair
+GAME.EXE	0x8005de40	0x4d640		mips26	reachable-code	0x8005dea4	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x9c native XREF .text+0x100;retail raw j
+GAME.EXE	0x8005de58	0x4d658	0x8005de5c	mips_hi16_lo16	reachable-code	0x80067c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0xb4 native HI16/LO16 XREF rsin_tbl-0x1000;retail raw pair
+GAME.EXE	0x8005de68	0x4d668		mips26	reachable-code	0x8005dea4	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0xc4 native XREF .text+0x100;retail raw j
+GAME.EXE	0x8005de8c	0x4d68c	0x8005de90	mips_hi16_lo16	reachable-code	0x80068c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0xe8 native HI16/LO16 XREF rsin_tbl+0x0;retail raw pair
+GAME.EXE	0x8005dee4	0x4d6e4	0x8005dee8	mips_hi16_lo16	reachable-code	0x80068c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x140 native HI16/LO16 XREF rsin_tbl+0x0;retail raw pair
+GAME.EXE	0x8005def4	0x4d6f4		mips26	reachable-code	0x8005df78	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x150 native XREF .text+0x1d4;retail raw j
+GAME.EXE	0x8005df0c	0x4d70c	0x8005df10	mips_hi16_lo16	reachable-code	0x8006849c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x168 native HI16/LO16 XREF rsin_tbl-0x800;retail raw pair
+GAME.EXE	0x8005df1c	0x4d71c		mips26	reachable-code	0x8005df78	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x178 native XREF .text+0x1d4;retail raw j
+GAME.EXE	0x8005df3c	0x4d73c	0x8005df40	mips_hi16_lo16	reachable-code	0x80068c9c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x198 native HI16/LO16 XREF rsin_tbl+0x0;retail raw pair
+GAME.EXE	0x8005df4c	0x4d74c		mips26	reachable-code	0x8005df78	load		j		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x1a8 native XREF .text+0x1d4;retail raw j
+GAME.EXE	0x8005df68	0x4d768	0x8005df6c	mips_hi16_lo16	reachable-code	0x8006749c	load	rsin_tbl	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x1c4 native HI16/LO16 XREF rsin_tbl-0x1800;retail raw pair
+GAME.EXE	0x8005dfbc	0x4d7bc		mips26	instruction-word	0x8005a57c	load	SetDQA	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x218 native XREF SetDQA;retail raw jal
+GAME.EXE	0x8005dfc4	0x4d7c4		mips26	instruction-word	0x8005a588	load	SetDQB	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x220 native XREF SetDQB;retail raw jal
+GAME.EXE	0x8005e020	0x4d820		mips26	reachable-code	0x8005a57c	load	SetDQA	jal		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x27c native XREF SetDQA;retail raw jal
+GAME.EXE	0x8005e028	0x4d828		mips26	reachable-code	0x8005a588	load	SetDQB	jal		control-flow	reviewed	manual:LIBGTE GEO.OBJ .text+0x284 native XREF SetDQB;retail raw jal
+GAME.EXE	0x8005e300	0x4db00	0x8005e304	mips_hi16_lo16	instruction-word	0x80013354	load	DAT_80013354	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGTE GEO.OBJ .text+0x55c native HI16/LO16 XREF GEO .rdata+0;retail raw pair
+GAME.EXE	0x8005e334	0x4db34		mips26	instruction-word	0x8005e36c	load		j		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x590 native XREF .text+0x5c8;retail raw j
+GAME.EXE	0x8005e348	0x4db48		mips26	instruction-word	0x8005e35c	load		j		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x5a4 native XREF .text+0x5b8;retail raw j
+GAME.EXE	0x8005e390	0x4db90		mips26	instruction-word	0x8005cfa0	load	OuterProduct12	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x5ec native XREF OuterProduct12;retail raw jal
+GAME.EXE	0x8005e3a0	0x4dba0		mips26	instruction-word	0x8005a99c	load	VectorNormal	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x5fc native XREF VectorNormal;retail raw jal
+GAME.EXE	0x8005e3cc	0x4dbcc		mips26	instruction-word	0x8005a99c	load	VectorNormal	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x628 native XREF VectorNormal;retail raw jal
+GAME.EXE	0x8005e3f8	0x4dbf8		mips26	instruction-word	0x8005cfa0	load	OuterProduct12	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x654 native XREF OuterProduct12;retail raw jal
+GAME.EXE	0x8005e404	0x4dc04		mips26	instruction-word	0x8005a99c	load	VectorNormal	jal		range-filtered	reviewed	manual:LIBGTE GEO.OBJ .text+0x660 native XREF VectorNormal;retail raw jal
 GAME.EXE	0x8005e534	0x4dd34		mips26	instruction-word	0x8005e8a8	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e558	0x4dd58		mips26	instruction-word	0x8005e8a8	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e57c	0x4dd7c		mips26	instruction-word	0x8005e8a8	load		jal		range-filtered	candidate	investigation:relocs.tsv

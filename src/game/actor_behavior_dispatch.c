@@ -1295,9 +1295,9 @@ typedef struct KfActorLoadRecord {
     u8 spawn_chance;
     u8 death_drop_object_id;
     u8 home_map_layer;
-    u16 unknown_08;
-    u16 unknown_0a;
-    u16 unknown_0c;
+    u16 initial_actor_word_20;
+    u16 initial_actor_word_22;
+    u16 initial_actor_word_24;
     u16 vertical_anchor_offset;
 } KfActorLoadRecord;
 typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
@@ -1321,9 +1321,9 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->home_cell_x = records->cell_x;
             actor->spawn_chance = records->spawn_chance;
             actor->death_drop_object_id = records->death_drop_object_id;
-            actor->word_20.value = records->unknown_08;
-            actor->word_22.value = records->unknown_0a;
-            actor->word_24.value = records->unknown_0c;
+            actor->word_20.value = records->initial_actor_word_20;
+            actor->word_22.value = records->initial_actor_word_22;
+            actor->word_24.value = records->initial_actor_word_24;
             actor->vertical_anchor_offset = records->vertical_anchor_offset;
             actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
             actor->target_type = 0;

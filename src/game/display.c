@@ -2663,7 +2663,7 @@ map_object_next:
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
-    effect_cache = &((KfEffectCacheTail *)effect->unknown_3c)->animation_cache;
+    effect_cache = &effect->cache_tail.animation_cache;
     effect_scale_ptr = (SVECTOR *)&effect->scale_x;
     effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;

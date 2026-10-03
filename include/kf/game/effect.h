@@ -26,6 +26,15 @@ typedef union KfEffectScaleThreshold {
 
 typedef char kf_effect_scale_threshold_size[sizeof(KfEffectScaleThreshold) == 2 ? 1 : -1];
 
+/* Renderer-owned cache slot followed by the effect kind's variant payload. */
+typedef struct KfEffectCacheTail {
+    struct KfPoolRecord *animation_cache;
+    u8 kind_payload[8];
+} KfEffectCacheTail;
+
+typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
+typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->kind_payload == 4 ? 1 : -1];
+
 /* The pool scan and reset visit 128 records at a 72-byte stride. */
 typedef struct KfEffectRecord {
     u8 type;
@@ -52,17 +61,8 @@ typedef struct KfEffectRecord {
     u16 scale_z;
     KfEffectScaleThreshold scale_threshold;
     SVECTOR direction;
-    u8 unknown_3c[12];
+    KfEffectCacheTail cache_tail;
 } KfEffectRecord;
-
-/* Renderer-owned cache slot followed by the effect kind's variant payload. */
-typedef struct KfEffectCacheTail {
-    struct KfPoolRecord *animation_cache;
-    u8 kind_payload[8];
-} KfEffectCacheTail;
-
-typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
-typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->kind_payload == 4 ? 1 : -1];
 
 /* Ballistic kinds keep the launch Y and elapsed update count in the payload. */
 typedef struct KfEffectBallisticState {
@@ -86,7 +86,7 @@ typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 
 typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
 typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale_threshold == 0x32 ? 1 : -1];
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
-typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->unknown_3c == 0x3c ? 1 : -1];
+typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->cache_tail == 0x3c ? 1 : -1];
 
 /* Kind 6 copies a position and rotation into each 24-byte trail row. */
 typedef struct KfEffectTrailRow {
@@ -107,7 +107,7 @@ typedef struct KfEffectTrailState {
 } KfEffectTrailState;
 
 typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];
-typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->unknown_3c[4] == 0x40 ? 1 : -1];
+typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->cache_tail.kind_payload == 0x40 ? 1 : -1];
 typedef char kf_effect_trail_state_frame_offset[(u32)&((KfEffectTrailState *)0)->frame_index == 4 ? 1 : -1];
 typedef char kf_effect_trail_state_actor_offset[(u32)&((KfEffectTrailState *)0)->actor_index == 6 ? 1 : -1];
 

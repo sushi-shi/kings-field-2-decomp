@@ -40,6 +40,7 @@ enum {
     KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR = 0x400,
     KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD = 0x800,
     KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20 = 0x2000,
+    KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK = 0xc000,
     KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED = 0x10000,
     KF_ACTOR_FLAG_CONE_TARGET_PRIORITY = 0x20000,
     KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000
@@ -321,7 +322,7 @@ typedef struct KfTargetGroup {
     u8 movement_step;
     u8 turn_acceleration;
     u8 vertical_acceleration;
-    u8 unknown_06;
+    u8 contact_damage_component1;
     u8 vab_resource_indices[2];
     u8 render_depth;
     u8 activation_range_cells;
@@ -373,7 +374,8 @@ typedef char kf_target_group_turn_acceleration_offset[
     (u32)&((KfTargetGroup *)0)->turn_acceleration == 0x04 ? 1 : -1];
 typedef char kf_target_group_knockback_divisor_offset[
     (u32)&((KfTargetGroup *)0)->knockback_divisor == 0x02 ? 1 : -1];
-typedef char kf_target_group_byte_06_offset[(u32)&((KfTargetGroup *)0)->unknown_06 == 0x06 ? 1 : -1];
+typedef char kf_target_group_contact_damage_component1_offset[
+    (u32)&((KfTargetGroup *)0)->contact_damage_component1 == 0x06 ? 1 : -1];
 typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->position_offset_x == 0x0c ? 1 : -1];
 typedef char kf_target_group_offset_y[

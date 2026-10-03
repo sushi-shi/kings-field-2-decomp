@@ -1165,7 +1165,7 @@ void actor_update_vertical_motion(void)
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
-                   actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
+                   actor->collision_height | ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
     actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
     if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
@@ -1201,7 +1201,7 @@ state_10: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->unknown_28 & 0xc000) << 16),
+                                      ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == 0) {
         advance_rise:
@@ -1210,7 +1210,7 @@ state_10: {
             return;
         }
         if (collision == 0x80 && actor->motion.vector.vy > 40) {
-            player_apply_damage(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
+            player_apply_damage(0, group->contact_damage_component1, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
         if (collision & 4) {
@@ -1251,7 +1251,7 @@ state_30: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->unknown_28 & 0xc000) << 16),
+                                      ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == 0) {
             actor->position.vy = next_y;
@@ -1260,7 +1260,7 @@ state_30: {
             return;
         }
         if (collision == 0x80) {
-            player_apply_damage(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
+            player_apply_damage(0, group->contact_damage_component1, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
         actor->vertical_motion_state = 0x10;

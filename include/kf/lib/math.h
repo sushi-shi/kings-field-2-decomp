@@ -19,11 +19,13 @@ enum {
     KF_LENGTH_SQUARE_DOWNSHIFT = 3
 };
 
-/* vector_distance_to_point: a point_y of KF_DISTANCE_IGNORE_HEIGHT skips the
- * vertical test; KF_DISTANCE_NONE reports a point out of range. */
+/* vector_distance_to_point skips height at KF_DISTANCE_IGNORE_HEIGHT and
+ * returns KF_DISTANCE_NONE out of range. vector_distance_between_with_reach
+ * returns KF_DISTANCE_OUTSIDE_REACH out of range. */
 enum {
     KF_DISTANCE_IGNORE_HEIGHT = 0xffff,
-    KF_DISTANCE_NONE = -1
+    KF_DISTANCE_NONE = -1,
+    KF_DISTANCE_OUTSIDE_REACH = -9999999
 };
 
 /* Quarter turns about Y applied by matrix_rotate_quarter_turns and

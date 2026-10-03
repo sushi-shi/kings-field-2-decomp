@@ -12,7 +12,11 @@ enum {
     AUDIO_VAB_STREAM_BUFFER_BYTES = 0x1000,
     AUDIO_VAB_STREAM_BUFFER_COUNT = KF_AUDIO_VAB_STREAM_POOL_COUNT + 1,
     AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES = 0x2800,
-    AUDIO_SEQUENCE_BUFFER_BYTES = 0x3000
+    AUDIO_SEQUENCE_BUFFER_BYTES = 0x3000,
+    AUDIO_PRIORITY_ABOVE_MAX = 1 << 16,
+    AUDIO_NOTE_MAX = 0x7f,
+    AUDIO_VOLUME_MAX = 0x7f,
+    AUDIO_VAB_TRANSFER_MORE_DATA = -2
 };
 
 /* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
@@ -47,9 +51,9 @@ void audio_initialize_runtime(void)
     SsSetMVol(0, 0);
     SsSetTableSize(audio_sequence_table, KF_AUDIO_SEQUENCE_CAPACITY,
         KF_AUDIO_TRACKS_PER_SEQUENCE);
-    SsSetTickMode(1);
+    SsSetTickMode(SS_TICK60);
     SsStart2();
-    SsUtSetReverbType(4);
+    SsUtSetReverbType(SS_REV_TYPE_STUDIO_C);
     SsUtReverbOn();
     SsUtSetReverbDepth(0x28, 0x28);
 
@@ -95,9 +99,9 @@ void audio_start_sequence(void)
         audio_state.sequence_id = SsSeqOpen(
             audio_state.sequence_buffer, audio_state.vab_slots[1].vab_id);
         SsSeqSetVol(audio_state.sequence_id, 0x3c, 0x3c);
-        SsSeqPlay(audio_state.sequence_id, 1, 0);
+        SsSeqPlay(audio_state.sequence_id, SSPLAY_PLAY, SSPLAY_INFINITY);
         audio_state.sequence_active = KF_AUDIO_SEQUENCE_ACTIVE;
-        SsSetMVol(0x7f, 0x7f);
+        SsSetMVol(AUDIO_VOLUME_MAX, AUDIO_VOLUME_MAX);
     }
 }
 
@@ -167,17 +171,17 @@ KfAudioPlaybackResult audio_play_spatial(
     if (level < 20) {
         return KF_AUDIO_NOT_PLAYED;
     }
-    if (level >= 128) {
-        level = 127;
+    if (level >= AUDIO_VOLUME_MAX + 1) {
+        level = AUDIO_VOLUME_MAX;
     }
 
     angle = vector_xz_to_angle(
         position->vx - audio_state.listener_position.vx,
         position->vz - audio_state.listener_position.vz);
-    listener_angle = audio_state.listener_rotation.vy - 1024;
-    angle = (angle - listener_angle) & 0xfff;
-    if (angle >= 2048) {
-        angle = 4096 - angle;
+    listener_angle = audio_state.listener_rotation.vy - KF_ANGLE_QUARTER_TURN;
+    angle = (angle - listener_angle) & KF_ANGLE_WRAP_MASK;
+    if (angle >= KF_ANGLE_HALF_TURN) {
+        angle = KF_ANGLE_FULL_TURN - angle;
     }
     angle >>= 1;
     if (attenuation >= 64 && !alternate_pan) {
@@ -185,12 +189,12 @@ KfAudioPlaybackResult audio_play_spatial(
     }
 
     left = (level * rsin(angle)) / 0xd48;
-    if (left >= 128) {
-        left = 127;
+    if (left >= AUDIO_VOLUME_MAX + 1) {
+        left = AUDIO_VOLUME_MAX;
     }
     right = (level * rcos(angle)) / 0xd48;
-    if (right >= 128) {
-        right = 127;
+    if (right >= AUDIO_VOLUME_MAX + 1) {
+        right = AUDIO_VOLUME_MAX;
     }
     audio_key_on(sound, left, right, note_offset);
     return KF_AUDIO_PLAYED;
@@ -299,7 +303,7 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
         index--;
     } while (index != -1);
 
-    lowest_priority = 0x10000;
+    lowest_priority = AUDIO_PRIORITY_ABOVE_MAX;
     voices = &audio_state.voices;
     handle = voices->handles;
     index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
@@ -341,8 +345,8 @@ void audio_key_on(s32 sound, s32 left_volume, s32 right_volume, s32 note_offset)
     note_offset += voice->note;
     if (note_offset < 0) {
         note_offset = 0;
-    } else if (note_offset > 0x7f) {
-        note_offset = 0x7f;
+    } else if (note_offset > AUDIO_NOTE_MAX) {
+        note_offset = AUDIO_NOTE_MAX;
     }
     handle->voice_id = SsUtKeyOn(vab->vab_id, voice->program, voice->tone,
         note_offset, 0, left_volume, right_volume);
@@ -410,15 +414,15 @@ void cd_request_service_vab(void)
             SsVabClose(vab_slot->vab_id);
             cd_request_advance(request);
         }
-        if (result == -2) {
+        if (result == AUDIO_VAB_TRANSFER_MORE_DATA) {
             request->phase = KF_CD_REQUEST_PHASE_SEEK;
             request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READ;
             cd_location_add(location, request->sector_count, location);
             CdSeekP(location);
-            SsVabTransCompleted(1);
+            SsVabTransCompleted(SS_WAIT_COMPLETED);
         } else if (result == vab_slot->vab_id) {
             cd_request_advance(request);
-            SsVabTransCompleted(1);
+            SsVabTransCompleted(SS_WAIT_COMPLETED);
             request->payload.vab.stream_slot->state =
                 KF_AUDIO_VAB_STREAM_IN_USE;
             request->sector_count = 0;

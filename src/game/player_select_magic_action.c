@@ -13,7 +13,8 @@ void player_select_magic_action(s32 magic_id)
     KfMagicRecord *record;
     u16 mp_cost;
 
-    if (player_state.queued_magic_action.magic_id != 0xff || magic_id == 0xff) {
+    if (player_state.queued_magic_action.magic_id != KF_PLAYER_MAGIC_ACTION_NONE ||
+        magic_id == KF_PLAYER_MAGIC_ACTION_NONE) {
         return;
     }
 
@@ -129,7 +130,9 @@ enum {
                                  KF_COLLISION_QUERY_MAP_OBJECTS,
     PLAYER_MOVE_SLIDE_RADIUS = 880,
     PLAYER_MOVE_DEFLECTION_ANGLE = 32,
-    PLAYER_MOVE_STEP = 22
+    PLAYER_MOVE_STEP = 22,
+    PLAYER_MOVE_STEP_UP_TOLERANCE = 1280,
+    PLAYER_MOVE_COLLISION_RETRY_LIMIT = 2
 };
 
 ADDRESS(0x800274ec, 0x43c)
@@ -171,7 +174,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
             high_collision = 1;
-            if (collision_height + 1280 >= player_state.camera_position.vy
+            if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
                 && player_state.death_state == 0
                 && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
                        < -KF_PLAYER_HEIGHT) {
@@ -181,7 +184,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
 
         if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
             collision_retry++;
-            if (collision_retry == 2) {
+            if (collision_retry == PLAYER_MOVE_COLLISION_RETRY_LIMIT) {
                 break;
             }
             collision_cache_load_hit_bounds();

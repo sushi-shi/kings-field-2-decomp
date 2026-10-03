@@ -119,8 +119,8 @@ void player_update_actions_and_charge(void)
         }
         player_state.magic_charge += charge_gain;
     }
-    if (player_state.magic_charge > 5000) {
-        player_state.magic_charge = 5000;
+    if (player_state.magic_charge > KF_PLAYER_CHARGE_FULL) {
+        player_state.magic_charge = KF_PLAYER_CHARGE_FULL;
     }
     player_state.damage_scale += 128;
     if (player_state.damage_scale > 4096) {
@@ -145,8 +145,8 @@ void player_update_actions_and_charge(void)
             goto cancel_weapon_attack;
         }
         if (attack_mask == player_magic_id_sequence.attack_masks
-            && (player_state.attack_charge_current != 5000
-                || player_state.magic_charge != 5000)) {
+            && (player_state.attack_charge_current != KF_PLAYER_CHARGE_FULL
+                || player_state.magic_charge != KF_PLAYER_CHARGE_FULL)) {
             goto cancel_weapon_attack;
         }
         player_state.magic_attack_mask_cursor = attack_mask + 1;
@@ -336,7 +336,7 @@ void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR 
     player_state.reaction.damage.motion = *motion;
     player_state.damage_red_overlay_scale = 3500;
     player_state.damage_red_overlay_decay = duration;
-    player_state.vertical_motion_state = 0x40;
+    player_state.vertical_motion_state = KF_PLAYER_VERTICAL_DEEP_FALL;
     player_state.vertical_velocity = player_state.reaction.damage.rotation.vy;
 }
 
@@ -471,7 +471,7 @@ void player_update_frame(void)
 
     actor_state.actor_overlap_exclusion_flags = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
-                   player_state.camera_position.vz, 800, -1);
+                   player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, -1);
     value = status_phase_step_scaled((u16 *)&player_state.darkness_phase,
                            &player_state.darkness_phase_limit, 64, 0xc00);
     if (value != -1) {
@@ -789,16 +789,16 @@ after_reaction:
         + player_state.reaction_rotation_offset[2] + player_state.view_rotation_offset.components[2]
         + player_state.camera_yaw_roll_offsets[1];
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
-                   player_state.camera_position.vz, 800, 1);
+                   player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, 1);
     actor_state.actor_overlap_exclusion_flags = 0;
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
-                           player_state.camera_position.vz, 1, 1700);
+                           player_state.camera_position.vz, 1, KF_PLAYER_HEIGHT);
     if (index != -1 && (actor_state.actors[index].unknown_28 & 8) != 0) {
         player_begin_actor_overlap_bob();
     }
     player_update_weapon_attack();
-    if (player_state.equipped_weapon_id != 0xff) {
+    if (player_state.equipped_weapon_id != KF_EQUIPMENT_NONE) {
         KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
         if (weapon->hp_regen_interval != 0
             && player_state.equipment_effect_ticks % weapon->hp_regen_interval == 0) {
@@ -810,25 +810,25 @@ after_reaction:
             player_adjust_mp(1);
         }
     }
-    if (player_state.equipped_head_id != 0xff) {
+    if (player_state.equipped_head_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_head_record);
     }
-    if (player_state.equipped_body_id != 0xff) {
+    if (player_state.equipped_body_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_body_record);
     }
-    if (player_state.equipped_arm_id != 0xff) {
+    if (player_state.equipped_arm_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_arm_record);
     }
-    if (player_state.equipped_leg_id != 0xff) {
+    if (player_state.equipped_leg_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_leg_record);
     }
-    if (player_state.equipped_shield_id != 0xff) {
+    if (player_state.equipped_shield_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_shield_record);
     }
-    if (player_state.equipped_accessory_id != 0xff) {
+    if (player_state.equipped_accessory_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_accessory_record);
     }
-    if (player_state.equipped_extra_id != 0xff) {
+    if (player_state.equipped_extra_id != KF_EQUIPMENT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_extra_record);
     }
     if (player_state.equipped_head_id == 25 && rand() < 36) {

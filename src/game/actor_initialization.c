@@ -29,7 +29,12 @@ done:
     return found;
 }
 
-enum { ACTOR_HOME_CELL_SHIFT = 11 };
+enum {
+    ACTOR_HOME_CELL_SHIFT = 11,
+    ACTOR_RENDER_TEXTURED = 0xff,
+    ACTOR_RENDER_BLEND_MODE_1 = 1,
+    ACTOR_LIGHTING_BLEND_HALF = KF_FIXED12_ONE / 2
+};
 
 ADDRESS(0x80038d04, 0xc0)
 void actor_set_home_position(KfActor *actor)
@@ -81,7 +86,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->unknown_11 = 0;
     actor->vertical_motion_state = 0;
     actor->target_type = 0;
-    actor->target_action_state = 0xff;
+    actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     actor->target = NULL;
     if ((actor->placement_flags & KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW) == 0) {
         actor->rotation.y = rand() >> 3;
@@ -91,11 +96,11 @@ void actor_initialize_from_group(KfActor *actor)
     actor->motion.vector.vx = 0;
     actor->turn_rate = 0;
     actor->lighting_override = 0x47;
-    actor->lighting_blend = 0x800;
+    actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
     if (actor->unknown_28 & KF_ACTOR_FLAG_BLENDED_MODEL) {
-        actor->render_mode = 1;
+        actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
     } else {
-        actor->render_mode = 0xff;
+        actor->render_mode = ACTOR_RENDER_TEXTURED;
     }
     map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->collision_radius, 1);
 }
@@ -114,9 +119,10 @@ void actor_disable_type3_transition_actors(void)
     s32 remaining = KF_ACTOR_CAPACITY - 1;
 
     do {
-        if (actor->slot_state == 1 &&
+        if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
             actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE &&
-            ((*(u32 *)&actor->animation_id & 0xffff0000) == 0xf0030000) &&
+            actor->target_type == 3 &&
+            actor->target_action_state == 0xf0 &&
             (actor->state_70.signed_state != 0 || actor->animation_phase > 2048)) {
             state_8017d118.active_table[19](actor);
             actor_set_lifecycle_and_home_position(actor);
@@ -134,7 +140,7 @@ void actor_prepare_and_initialize(KfActor *actor)
     actor->rotation.y = actor->word_20.home_yaw;
     actor_set_home_position(actor);
     actor_initialize_from_group(actor);
-    if (actor->slot_state == 3) {
+    if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
         actor->current_map_layer = 0;
     }
 }

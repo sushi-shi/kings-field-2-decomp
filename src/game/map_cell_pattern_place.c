@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
@@ -9,7 +10,11 @@ enum {
     KF_PATTERN_SKIP_OBJECT = 0xff,
     KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
-    KF_PATTERN_MODE_FIRST_LAYER = 1
+    KF_PATTERN_MODE_FIRST_LAYER = 1,
+    KF_PATTERN_ORIENTATION_MASK = 0x03,
+    KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
+    KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
+    KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0
 };
 
 ADDRESS(0x80034f90, 0x204)
@@ -17,8 +22,8 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag)
 {
-    s32 cell_origin_x = world_x >> 11;
-    s32 cell_origin_z = world_z >> 11;
+    s32 cell_origin_x = world_x >> KF_MAP_CELL_POSITION_SHIFT;
+    s32 cell_origin_z = world_z >> KF_MAP_CELL_POSITION_SHIFT;
     s32 cosine = rcos(angle);
     s32 sine = rsin(angle);
     s32 first_layer_offset = ((mode & 0xff) == KF_PATTERN_MODE_FIRST_LAYER)
@@ -81,25 +86,25 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;
     }
-    quarter_turns = -(rotation >> 10) & 3;
+    quarter_turns = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
     switch (quarter_turns) {
     case 0:
         inner_step = 1;
-        row_step = 80;
+        row_step = KF_MAP_WORLD_GRID_SIDE;
         break;
     case 1:
-        inner_step = -80;
+        inner_step = -KF_MAP_WORLD_GRID_SIDE;
         row_step = 1;
         destination_z += width - 1;
         break;
     case 2:
         inner_step = -1;
-        row_step = -80;
+        row_step = -KF_MAP_WORLD_GRID_SIDE;
         destination_x += width - 1;
         destination_z += height - 1;
         break;
     case 3:
-        inner_step = 80;
+        inner_step = KF_MAP_WORLD_GRID_SIDE;
         row_step = -1;
         destination_x += height - 1;
         break;
@@ -114,7 +119,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
         KfMapOccupancyCell *source = source_row;
         KfMapOccupancyCell *destination = destination_row;
         s32 columns_remaining;
-        source_row += 80;
+        source_row += KF_MAP_WORLD_GRID_SIDE;
         destination_row += row_step;
         columns_remaining = width - 1;
         if (columns_remaining != -1) {
@@ -128,16 +133,18 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                 }
                 if (field_mask & KF_MAP_CELL_COPY_ROTATED_ORIENTATION) {
                     destination->layer[0].quarter_turns =
-                        (destination->layer[0].quarter_turns & 0xfc) |
-                        ((source->layer[0].quarter_turns + quarter_turns) & 3);
+                        (destination->layer[0].quarter_turns &
+                         KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
+                        ((source->layer[0].quarter_turns + quarter_turns) &
+                         KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[0].collision_shape_id = source->layer[0].collision_shape_id;
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[0].lighting_index =
-                        (source->layer[0].lighting_index & 0x3f) |
-                        (destination->layer[0].lighting_index & 0xc0);
+                        (source->layer[0].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (destination->layer[0].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
                     destination->layer[0].lighting_index =
@@ -159,16 +166,18 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                 }
                 if (field_mask & KF_MAP_CELL_COPY_ROTATED_ORIENTATION) {
                     destination->layer[1].quarter_turns =
-                        (destination->layer[1].quarter_turns & 0xfc) |
-                        ((source->layer[1].quarter_turns + quarter_turns) & 3);
+                        (destination->layer[1].quarter_turns &
+                         KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
+                        ((source->layer[1].quarter_turns + quarter_turns) &
+                         KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[1].collision_shape_id = source->layer[1].collision_shape_id;
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[1].lighting_index =
-                        (source->layer[1].lighting_index & 0x3f) |
-                        (destination->layer[1].lighting_index & 0xc0);
+                        (source->layer[1].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (destination->layer[1].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
                     destination->layer[1].lighting_index =

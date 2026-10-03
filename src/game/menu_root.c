@@ -20,6 +20,9 @@ enum {
     MENU_LOCATION_REGION_PLACE = 100000,
     MENU_LOCATION_LAYER_PLACE = 10000,
     MENU_LOCATION_CELL_X_PLACE = 100,
+    MENU_MAP_ITEM_FIRST = 67,
+    MENU_MAP_ARCHIVE_FIRST_ENTRY = 480,
+    MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM = 8,
     MENU_EFFECT_RELIEVE_AILMENTS = 71,
     MENU_EFFECT_RESTORE_MP_40 = 72,
     MENU_EFFECT_RAISE_BASE_MAGIC = 73,
@@ -384,7 +387,9 @@ s32 menu_item_selection_controller(void)
         selected_item = indices[menu.list.selected_index];
         if (mode == 1) {
             menu_play_sound_cue(17);
-            if (selected_item == 67 || selected_item == 68 || selected_item == 69) {
+            if (selected_item == MENU_MAP_ITEM_FIRST
+                || selected_item == MENU_MAP_ITEM_FIRST + 1
+                || selected_item == MENU_MAP_ITEM_FIRST + 2) {
                 menu_release_item_model();
                 menu_show_map_preview(selected_item);
                 menu_play_sound_cue(18);
@@ -572,9 +577,9 @@ void menu_show_map_preview(s32 menu_code)
     s32 facing_tile;
     s32 u0;
 
-    map_index = (menu_code - 0x43) & 0xff;
-    map_offset = state_8017d118.current_map_region_id + 480;
-    entry = map_index * 8 + map_offset;
+    map_index = (menu_code - MENU_MAP_ITEM_FIRST) & 0xff;
+    map_offset = state_8017d118.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
+    entry = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
     image = memory_allocate(cd_archive_entry_extent(6, entry, 0));
     cd_archive_read(6, entry, (u_long *)image);
     tim_upload_images(image);

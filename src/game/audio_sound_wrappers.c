@@ -20,11 +20,12 @@ void audio_play_sound_at_volume_100(s32 sound)
 ADDRESS(0x80045e5c, 0xb4)
 s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles)
 {
-    s32 x = position->vx - ((rsin(angles->y) * 800) >> 12);
-    s32 z = position->vz + ((rcos(angles->y) * 800) >> 12);
+    s32 x = position->vx - ((rsin(angles->y) * KF_PLAYER_COLLISION_RADIUS) >> KF_FIXED12_BITS);
+    s32 z = position->vz + ((rcos(angles->y) * KF_PLAYER_COLLISION_RADIUS) >> KF_FIXED12_BITS);
     KfMapOccupancyLayer *selected_layer;
 
-    collision_probe_floor_height(x, position->vy, z, 800, 1700);
+    collision_probe_floor_height(x, position->vy, z,
+        KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
     selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
     return selected_layer->object_index == 0x20;
 }

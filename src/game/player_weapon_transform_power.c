@@ -15,7 +15,7 @@ void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output)
              - player_state.equipped_weapon_record->rotation_offset_y;
     angles.z = player_state.camera_rotation.angles[2]
              + player_state.equipped_weapon_record->rotation_offset_z;
-    animation_sample_vertex(32, player_state.weapon_attack_mode,
+    animation_sample_vertex(KF_PLAYER_WEAPON_ASSET_INDEX, player_state.weapon_attack_mode,
                   player_state.weapon_attack_phase, vertex_index, &offset);
     offset.vx -= player_state.equipped_weapon_record->position_offset_x;
     offset.vy += player_state.equipped_weapon_record->position_offset_y;
@@ -24,7 +24,7 @@ void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output)
     output->vx += player_state.camera_position.vx;
     output->vz += player_state.camera_position.vz;
     {
-        s32 y = output->vy - 1600;
+        s32 y = output->vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         s32 camera_y = player_state.camera_vertical_offset + player_state.camera_position.vy
                      + player_state.landing_vertical_offset;
         output->vy = y + camera_y;

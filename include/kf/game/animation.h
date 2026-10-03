@@ -5,6 +5,8 @@
 #include <kf/game/asset.h>
 #include <psyq/sdk.h>
 
+enum { KF_PLAYER_WEAPON_ASSET_INDEX = 0x20 };
+
 typedef struct KfAnimClip {
     u16 keyframe_count;
     u16 unknown_02;

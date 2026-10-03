@@ -3,6 +3,12 @@
 #include <kf/lib/math.h>
 #include <psyq/libc.h>
 
+enum {
+    RANDOM_TRIANGULAR_CENTER = 0x8000,
+    LERP_HALFWORD_COUNT = 9,
+    TRAJECTORY_PREFER_SHORTER_TIME = 0
+};
+
 /*
  * Angles are 12-bit (0..0xfff). Within a half turn the step is applied
  * directly and clamped at the target; beyond it the angle wraps the other
@@ -480,10 +486,6 @@ reject:
     return KF_DISTANCE_NONE;
 }
 
-enum {
-    KF_DISTANCE_OUTSIDE_REACH = -9999999
-};
-
 ADDRESS(0x80015698, 0x114)
 s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VECTOR *second,
                   s32 offset, s32 height)
@@ -537,7 +539,7 @@ s32 random_centered_triangular_scaled(s32 amplitude)
     s32 first = rand();
     s32 second = rand();
 
-    return ((first + second - 0x8000) * amplitude) >> 15;
+    return ((first + second - RANDOM_TRIANGULAR_CENTER) * amplitude) >> 15;
 }
 
 ADDRESS(0x8001584c, 0x20)
@@ -565,7 +567,7 @@ void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output
     u16 *destination = output;
     s32 index;
 
-    for (index = 8; index != -1; index--) {
+    for (index = LERP_HALFWORD_COUNT - 1; index != -1; index--) {
         u16 value = *source++;
         u16 next = *target++;
         s32 delta = (s16)next - (s16)value;
@@ -605,7 +607,7 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     if (longer_time <= 0 && shorter_time <= 0) {
         return -1;
     }
-    if (mode == 0) {
+    if (mode == TRAJECTORY_PREFER_SHORTER_TIME) {
         chosen_time = shorter_time;
         if (longer_time > 0 && longer_time <= shorter_time) {
             chosen_time = longer_time;

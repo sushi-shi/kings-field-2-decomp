@@ -29,6 +29,7 @@ enum {
 
 enum {
     KF_PLAYER_CHARGE_FULL = 5000,
+    KF_PLAYER_MAGIC_ACTION_NONE = 0xff,
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 

@@ -7,14 +7,15 @@
 RODATA(0x80011128, 0x3c)
 
 enum {
-    KF_PLAYER_DAMAGE_DEATH_STATE = 0x11,
     KF_PLAYER_DAMAGE_ORIGIN_HEIGHT = 850,
     KF_PLAYER_DAMAGE_MOTION_MIN = 80,
     KF_PLAYER_DAMAGE_MOTION_MAX = 300,
     KF_PLAYER_DAMAGE_STRONG_MAX = 600,
     KF_PLAYER_DAMAGE_VERTICAL_LIMIT = 200,
     KF_PLAYER_DAMAGE_DURATION_BASE = 1300,
-    KF_PLAYER_DAMAGE_DURATION_MIN = 70
+    KF_PLAYER_DAMAGE_DURATION_MIN = 70,
+    KF_PLAYER_DAMAGE_REACTION_STRONG = 0x40,
+    KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY = 0x80
 };
 
 ADDRESS(0x80024498, 0x34c)
@@ -29,7 +30,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     s32 direction_index;
     s32 origin_height;
 
-    if (player_state.death_state == KF_PLAYER_DAMAGE_DEATH_STATE || damage == 0) {
+    if (player_state.death_state == KF_PLAYER_REACTION_DEATH || damage == 0) {
         return;
     }
     remaining = player_state.vitals.current_hp - damage;
@@ -49,7 +50,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
         if (magnitude < KF_PLAYER_DAMAGE_MOTION_MIN) {
             magnitude = KF_PLAYER_DAMAGE_MOTION_MIN;
         }
-        if (reaction_flags & 0x40) {
+        if (reaction_flags & KF_PLAYER_DAMAGE_REACTION_STRONG) {
             magnitude *= 5;
             if (magnitude > KF_PLAYER_DAMAGE_STRONG_MAX) {
                 magnitude = KF_PLAYER_DAMAGE_STRONG_MAX;
@@ -92,10 +93,10 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     } else if (intensity > 42) {
         intensity = 42;
     }
-    if (reaction_flags & 0x40) {
+    if (reaction_flags & KF_PLAYER_DAMAGE_REACTION_STRONG) {
         intensity <<= 1;
     }
-    if (reaction_flags & 0x80) {
+    if (reaction_flags & KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY) {
         angles.x = 0;
         if (rand() >= 16385) {
             angles.z = intensity;
@@ -184,6 +185,9 @@ void player_cap_status_components(u32 mask)
 }
 
 enum {
+    KF_PLAYER_POISON_GUARD_ACCESSORY_ID = 0x35,
+    KF_PLAYER_STATUS_GUARD_ACCESSORY_ID = 0x36,
+    KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID = 0x3a,
     KF_PLAYER_STATUS_GUARD_CHANCE = 16384,
     KF_PLAYER_POISON_ROLL_SCALE = 100,
     KF_PLAYER_POISON_ROLL_SHIFT = 15
@@ -208,14 +212,14 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     if (player_state.weapon_guard_active != 0) {
         return;
     }
-    if (player_state.equipped_accessory_id == 0x36
-        || player_state.equipped_extra_id == 0x36) {
+    if (player_state.equipped_accessory_id == KF_PLAYER_STATUS_GUARD_ACCESSORY_ID
+        || player_state.equipped_extra_id == KF_PLAYER_STATUS_GUARD_ACCESSORY_ID) {
         if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
             flags &= 0xfff8;
         }
     }
-    if (player_state.equipped_accessory_id == 0x3a
-        || player_state.equipped_extra_id == 0x3a) {
+    if (player_state.equipped_accessory_id == KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID
+        || player_state.equipped_extra_id == KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID) {
         curse_phase_limit = 300;
         darkness_phase_limit = 250;
         poison_duration = 300;
@@ -239,8 +243,8 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
         player_state.darkness_phase_limit = darkness_phase_limit;
         break;
     case 2:
-        if (player_state.equipped_accessory_id == 0x35
-            || player_state.equipped_extra_id == 0x35) {
+        if (player_state.equipped_accessory_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID
+            || player_state.equipped_extra_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID) {
             if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
                 break;
             }
@@ -294,7 +298,8 @@ enum {
     KF_RADIAL_MODE_PLAYER = 0x8000,
     KF_RADIAL_MODE_PLAYER_ABOVE = 0x8001,
     KF_RADIAL_REACH_OFFSET = 800,
-    KF_RADIAL_OUTSIDE_REACH = -9999999
+    KF_RADIAL_NO_REACTION_ORIGIN = 0x8000,
+    KF_RADIAL_BASE_SCALE_MASK = 0x7fff
 };
 
 ADDRESS(0x80024ca4, 0x230)
@@ -308,17 +313,17 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
     u16 attenuation;
     u16 base_scale;
 
-    if (scale_and_flags & 0x8000) {
+    if (scale_and_flags & KF_RADIAL_NO_REACTION_ORIGIN) {
         reaction_origin = 0;
     }
-    base_scale = scale_and_flags & 0x7fff;
+    base_scale = scale_and_flags & KF_RADIAL_BASE_SCALE_MASK;
 
     if (mode == KF_RADIAL_MODE_PLAYER) {
         distance = vector_distance_between_with_reach(position, end, &player_state.camera_position,
                                   KF_RADIAL_REACH_OFFSET, KF_PLAYER_HEIGHT);
     } else if (mode == KF_RADIAL_MODE_PLAYER_ABOVE) {
         if (position->vy < player_state.camera_position.vy - KF_PLAYER_HEIGHT) {
-            distance = KF_RADIAL_OUTSIDE_REACH;
+            distance = KF_DISTANCE_OUTSIDE_REACH;
         } else {
             distance = vector_distance_between_with_reach(position, end,
                                       &player_state.camera_position,
@@ -328,7 +333,7 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
         distance = player_distance_to_point(position->vx, position->vy,
                                             position->vz, end, mode);
         if (distance == KF_DISTANCE_NONE) {
-            distance = KF_RADIAL_OUTSIDE_REACH;
+            distance = KF_DISTANCE_OUTSIDE_REACH;
         }
     }
 

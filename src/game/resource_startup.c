@@ -14,6 +14,16 @@
 
 RODATA(0x80011000, 0x53)
 
+enum {
+    RESOURCE_ARCHIVE_MO = 0,
+    RESOURCE_ARCHIVE_RTMD = 1,
+    RESOURCE_ARCHIVE_RTIM = 2,
+    RESOURCE_ARCHIVE_TALK = 3,
+    RESOURCE_ARCHIVE_VAB = 4,
+    RESOURCE_ARCHIVE_FDAT = 5,
+    RESOURCE_ARCHIVE_ITEM = 6
+};
+
 ADDRESS(0x80015d50, 0x8)
 /* The default table serves callback slots with different caller arguments. */
 void resource_noop_callback()
@@ -38,18 +48,18 @@ void resource_initialize_game_assets(void)
     state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = 0;
     state_8017d118.current_map_region_id = 0;
 
-    cd_archive_open(0, "COM\\MO.T");
-    cd_archive_open(3, "COM\\TALK.T");
-    cd_archive_open(4, "COM\\VAB.T");
-    cd_archive_open(5, "COM\\FDAT.T");
-    cd_archive_open(2, "COM\\RTIM.T");
-    cd_archive_open(1, "COM\\RTMD.T");
-    cd_archive_open(6, "COM\\ITEM.T");
+    cd_archive_open(RESOURCE_ARCHIVE_MO, "COM\\MO.T");
+    cd_archive_open(RESOURCE_ARCHIVE_TALK, "COM\\TALK.T");
+    cd_archive_open(RESOURCE_ARCHIVE_VAB, "COM\\VAB.T");
+    cd_archive_open(RESOURCE_ARCHIVE_FDAT, "COM\\FDAT.T");
+    cd_archive_open(RESOURCE_ARCHIVE_RTIM, "COM\\RTIM.T");
+    cd_archive_open(RESOURCE_ARCHIVE_RTMD, "COM\\RTMD.T");
+    cd_archive_open(RESOURCE_ARCHIVE_ITEM, "COM\\ITEM.T");
 
     /* The read arena and three copy destinations still lack full source owners. */
-    cd_archive_read(5, 0x30, (u_long *)source);
-    cd_map_stream_read(5, 0x2f);
-    audio_queue_vab_stream(4, 0, 0);
+    cd_archive_read(RESOURCE_ARCHIVE_FDAT, 0x30, (u_long *)source);
+    cd_map_stream_read(RESOURCE_ARCHIVE_FDAT, 0x2f);
+    audio_queue_vab_stream(RESOURCE_ARCHIVE_VAB, 0, 0);
 
     resource_copy_words((u32 *)&map_object_state, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
@@ -138,7 +148,7 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
     object = map_object_state.objects;
     object_remaining = KF_MAP_OBJECT_CAPACITY - 1;
     do {
-        if (object->object_id != 0xff) {
+        if (object->object_id != KF_MAP_OBJECT_ID_NONE) {
             object->position.vx += dx;
             object->position.vz += dz;
             object->position.vy += dy;

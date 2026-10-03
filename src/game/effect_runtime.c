@@ -1098,7 +1098,9 @@ void effect_update_dispatch(void)
         break;
     }
     case 9: {
-        u8 actor_index = record->unknown_3c[4];
+        const KfEffectKind9Target *target =
+            (const KfEffectKind9Target *)&record->unknown_3c[4];
+        u8 actor_index = target->actor_index;
 
         if (actor_index == 0xfe) {
             VECTOR target;
@@ -1786,11 +1788,15 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 109:
+    case 109: {
+        const KfEffectKind109Target *target =
+            (const KfEffectKind109Target *)&record->unknown_3c[4];
+
         effect_target_motion(
-            &effect_state.records[record->unknown_3c[4]].position,
+            &effect_state.records[target->effect_index].position,
             500, 15, -1, 0, 0, -1);
         break;
+    }
     case 120: {
         record->direction.vy = (u16)record->direction.vy + 20;
         if ((s16)record->scale_x < 0x1000) {

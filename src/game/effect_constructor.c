@@ -204,11 +204,13 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 9: {
+        KfEffectKind9Target *target = (KfEffectKind9Target *)&record->unknown_3c[4];
+
         effect_pool_initialize_scaled(record, 8, 0x1000);
         record->direction.vx += (rand() >> 8) - 64;
         record->direction.vy += (rand() >> 8) - 64;
         record->direction.vz += (rand() >> 8) - 64;
-        record->unknown_3c[4] = va[1];
+        target->actor_index = va[1];
         record->updates_remaining = 100;
         record->cooldown = 3;
         effect_play_spatial_sound(record, 0x26);
@@ -773,9 +775,11 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->updates_remaining = 70;
         break;
     case 109: {
+        KfEffectKind109Target *target = (KfEffectKind109Target *)&record->unknown_3c[4];
+
         effect_pool_initialize_scaled(record, 0xe, 0x400);
         record->updates_remaining = 20;
-        record->unknown_3c[4] = va[1];
+        target->effect_index = va[1];
         record->direction.vx += (rand() >> 8) - 64;
         record->direction.vy += (rand() >> 8) - 64;
         record->direction.vz += (rand() >> 8) - 64;

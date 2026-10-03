@@ -768,7 +768,12 @@ GAME.EXE	0x8005dd30	0x4d530	0x68	0x68	1	function	ghidra-analysis	rcossin		Ghidra
 GAME.EXE	0x8005dda4	0x4d5a4	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005ddf4	0x4d5f4	0xb8	0xb8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005deac	0x4d6ac	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005dfb4	0x4d7b4	0x28	0x28	1	function	manual-retail-disasm			asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section	unnamed archive-local SetDQA/SetDQB wrapper, complete jr ra delay slot
 GAME.EXE	0x8005dfdc	0x4d7dc	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005e040	0x4d840	0x418	0x418	1	function	manual-retail-disasm	EigenMatrix		asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section and XDEF	retail prologue through jr ra delay slot; exact archive member offset 0x29c
+GAME.EXE	0x8005e458	0x4dc58	0xd0	0xd0	1	function	manual-retail-disasm	IsIdMatrix		asm;cfg;Psy-Q 3.0 LIBGTE GEO.OBJ exact text section and XDEF	retail entry through jr ra delay slot; exact archive member offset 0x6b4
+GAME.EXE	0x8005e528	0x4dd28	0x24	0x24	1	function	manual-retail-disasm	DecDCTinCallback		asm;cfg;Psy-Q 3.0 LIBETC CALLBACK.OBJ exact text section and XDEF	complete callback wrapper through jr ra delay slot
+GAME.EXE	0x8005e54c	0x4dd4c	0x24	0x24	1	function	manual-retail-disasm	DecDCToutCallback		asm;cfg;Psy-Q 3.0 LIBETC CALLBACK.OBJ exact text section and XDEF	complete callback wrapper through jr ra delay slot
 GAME.EXE	0x8005e570	0x4dd70	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e594	0x4dd94	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e600	0x4de00	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

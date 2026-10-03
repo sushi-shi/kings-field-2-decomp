@@ -81,7 +81,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->unknown_11 = 0;
     actor->vertical_motion_state = 0;
     actor->target_type = 0;
-    actor->unknown_0f = 0xff;
+    actor->target_action_state = 0xff;
     actor->target = NULL;
     if ((actor->unknown_05 & 1) == 0) {
         actor->rotation.y = rand() >> 3;

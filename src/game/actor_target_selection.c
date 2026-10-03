@@ -20,12 +20,12 @@ void actor_set_target(KfActor *actor, KfTargetCandidate *target)
 
         actor->target = target;
         target_type = target->type;
-        actor->unknown_0f = 0;
+        actor->target_action_state = 0;
         actor->target_type = target_type;
     } else {
         actor->target = NULL;
         actor->target_type = 0xff;
-        actor->unknown_0f = 0xff;
+        actor->target_action_state = 0xff;
     }
 }
 
@@ -194,7 +194,7 @@ void actor_select_best_target(s32 player_distance)
     s32 score;
     s32 remaining;
 
-    if (actor->unknown_0f == 0xf0 || actor->unknown_0f == 0) {
+    if (actor->target_action_state == 0xf0 || actor->target_action_state == 0) {
         return;
     }
 
@@ -215,7 +215,7 @@ void actor_select_best_target(s32 player_distance)
     } while (--remaining != -1);
 
     if (best_target != NULL &&
-        (best_target != actor->target || actor->unknown_0f == 0xff)) {
+        (best_target != actor->target || actor->target_action_state == 0xff)) {
         actor_set_target(actor, best_target);
     }
 }
@@ -265,6 +265,6 @@ void actor_reset_target_and_reselect(void)
     KfActor *actor = actor_state.current;
 
     actor->target = NULL;
-    actor->unknown_0f = 0xff;
+    actor->target_action_state = 0xff;
     actor_select_target_for_player_distance();
 }

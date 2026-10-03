@@ -209,7 +209,7 @@ GAME.EXE	0x800130ec	0x28ec	0x1f	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x8001310b	0x290b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80013110	0x2910	0x1e8	pointer	manual:bounded LIBSND SetControlChange jump table		pointer[122]	selector 0..0x79;122 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
 GAME.EXE	0x800132f8	0x2af8	0x5c	pointer	manual:bounded LIBSND Snd_setVabAttr jump table		pointer[23]	selector 0..0x16;23 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
-GAME.EXE	0x80013354	0x2b54	0x24	pointer	manual:bounded nine-way jump table		pointer[9]	selector 0..8;all nine targets at 0x8005e31c..0x8005e350	code owner at 0x8005e300 remains uncarved
+GAME.EXE	0x80013354	0x2b54	0x24	pointer	manual:bounded nine-way jump table		pointer[9]	selector 0..8;all nine targets at 0x8005e31c..0x8005e350 in exact LIBGTE GEO EigenMatrix	vendor jump table; original static name unresolved
 GAME.EXE	0x80013378	0x2b78	0x34	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 52-byte Code record;retail exact	INTR revision string including NUL; original C literal provenance unresolved
 GAME.EXE	0x800133ac	0x2bac	0x15	string	manual:exact Psy-Q 3.0 LIBETC INTR .rdata literal		ascii	archive 21-byte Code record;retail exact	interrupt-overflow string including newline and NUL; original C literal provenance unresolved
 GAME.EXE	0x800133c1	0x2bc1	0x3	unclassified	coverage-gap			payload-complement	zero alignment outside pinned INTR Code records; original emission mechanism unresolved
@@ -509,14 +509,7 @@ GAME.EXE	0x8005cf5c	0x4c75c	0x44	unclassified	coverage-gap			payload-complement	
 GAME.EXE	0x8005cff8	0x4c7f8	0xcc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005d350	0x4cb50	0x9e0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005dd98	0x4d598	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005df80	0x4d780	0x5c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005e040	0x4d840	0x2c3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005e303	0x4db03	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: <T3!$!
-GAME.EXE	0x8005e309	0x4db09	0x7a	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005e383	0x4db83	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: '!\x20\x20
-GAME.EXE	0x8005e387	0x4db87	0x40	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005e3c7	0x4dbc7	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: '!(\x20
-GAME.EXE	0x8005e3cb	0x4dbcb	0x1a5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8005df80	0x4d780	0x34	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005e5b8	0x4ddb8	0x48	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005e624	0x4de24	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005e6f8	0x4def8	0xb0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -663,14 +656,7 @@ GAME.EXE	0x80068606	0x57e06	0x2	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x80068608	0x57e08	0x30	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[12]	archive K_cor_tbl XDEF .data+0;unique exact 100-byte retail section	first correlation coefficient table; original element signedness unresolved
 GAME.EXE	0x80068638	0x57e38	0x18	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[6]	archive H_cor_tbl XDEF .data+0x30;text relocation to base	second correlation coefficient table; original element signedness unresolved
 GAME.EXE	0x80068650	0x57e50	0x1c	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[7]	archive H_ln_tbl XDEF .data+0x48;text relocations to base and +4	line coefficient table; original element signedness unresolved
-GAME.EXE	0x8006866c	0x57e6c	0x4	unclassified	coverage-gap			payload-complement	outside exact COR .data Code100; ownership unresolved
-GAME.EXE	0x80068670	0x57e70	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068674	0x57e74	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068678	0x57e78	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006867c	0x57e7c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068680	0x57e80	0x26b	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800688eb	0x580eb	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-GAME.EXE	0x8006890a	0x5810a	0x82	unclassified	coverage-gap			payload-complement	before exact LIBGTE MTX.OBJ .data section; ownership unresolved
+GAME.EXE	0x8006866c	0x57e6c	0x320	defined	manual:exact Psy-Q 3.0 LIBGTE MSC.OBJ .data section		u8[0x320]	archive 800-byte Code section matches retail uniquely;InitGeom-family XREF to section+0xc	vendor geometric table section; original static objects and names unresolved
 GAME.EXE	0x8006898c	0x5818c	0x290	defined	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data working state		u8[0x290]	archive section +0..+0x290 exact;PushMatrix and PopMatrix section-base xrefs;diagnostics follow	vendor matrix working state; original static subobjects unresolved
 GAME.EXE	0x80068c1c	0x5841c	0x2f	string	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data literal		ascii	archive section +0x290;full 0x310-byte section exact unique	escaped text: Error: Can't push matrix,stack(max 20) is full!
 GAME.EXE	0x80068c4b	0x5844b	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1454,9 +1440,8 @@ OPEN.EXE	0x8003ca50	0x2c250	0x30	string	byte-pattern		ascii	investigation:string
 OPEN.EXE	0x8003ca80	0x2c280	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003ca84	0x2c284	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .data record		pointer[16]	16 ordered archive 32-bit patches;retail words match in OPEN/END	vendor SYS pointer record after version string; original C declaration unresolved
 OPEN.EXE	0x8003cac4	0x2c2c4	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
-OPEN.EXE	0x8003cb24	0x2c324	0x297	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003cdbb	0x2c5bb	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-OPEN.EXE	0x8003cdda	0x2c5da	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003cb24	0x2c324	0x18	unclassified	coverage-gap			payload-complement	before exact LIBGTE MSC.OBJ .data section; ownership unresolved
+OPEN.EXE	0x8003cb3c	0x2c33c	0x320	defined	manual:exact Psy-Q 3.0 LIBGTE MSC.OBJ .data section		u8[0x320]	archive 800-byte Code section matches retail uniquely;InitGeom-family XREF to section+0xc	vendor geometric table section; original static objects and names unresolved
 OPEN.EXE	0x8003ce5c	0x2c65c	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
 OPEN.EXE	0x8003cedc	0x2c6dc	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
 OPEN.EXE	0x8003cf50	0x2c750	0x20	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[8]	archive CD_intstr XDEF at .data+0x74;8 section patches;retail words exact	32-byte exported CD interrupt string pointer table
@@ -2243,9 +2228,8 @@ END.EXE	0x800398fc	0x290fc	0x30	string	byte-pattern		ascii	investigation:string-
 END.EXE	0x8003992c	0x2912c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80039930	0x29130	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .data record		pointer[16]	16 ordered archive 32-bit patches;retail words match in OPEN/END	vendor SYS pointer record after version string; original C declaration unresolved
 END.EXE	0x80039970	0x29170	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
-END.EXE	0x800399d0	0x291d0	0x297	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80039c67	0x29467	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-END.EXE	0x80039c86	0x29486	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x800399d0	0x291d0	0x18	unclassified	coverage-gap			payload-complement	before exact LIBGTE MSC.OBJ .data section; ownership unresolved
+END.EXE	0x800399e8	0x291e8	0x320	defined	manual:exact Psy-Q 3.0 LIBGTE MSC.OBJ .data section		u8[0x320]	archive 800-byte Code section matches retail uniquely;InitGeom-family XREF to section+0xc	vendor geometric table section; original static objects and names unresolved
 END.EXE	0x80039d08	0x29508	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
 END.EXE	0x80039d88	0x29588	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
 END.EXE	0x80039dfc	0x295fc	0x20	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[8]	archive CD_intstr XDEF at .data+0x74;8 section patches;retail words exact	32-byte exported CD interrupt string pointer table

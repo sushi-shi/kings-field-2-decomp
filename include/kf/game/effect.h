@@ -136,6 +136,20 @@ typedef struct KfEffectKind8State {
 typedef char kf_effect_kind8_state_size[sizeof(KfEffectKind8State) == 4 ? 1 : -1];
 typedef char kf_effect_kind8_vertical_step_offset[(u32)&((KfEffectKind8State *)0)->vertical_step == 2 ? 1 : -1];
 
+/* Kind 9 targets an actor; 0xfe selects the player camera, 0xff no target. */
+typedef struct KfEffectKind9Target {
+    u8 actor_index;
+} KfEffectKind9Target;
+
+typedef char kf_effect_kind9_target_size[sizeof(KfEffectKind9Target) == 1 ? 1 : -1];
+
+/* Kind 109 follows another record in the effect pool. */
+typedef struct KfEffectKind109Target {
+    u8 effect_index;
+} KfEffectKind109Target;
+
+typedef char kf_effect_kind109_target_size[sizeof(KfEffectKind109Target) == 1 ? 1 : -1];
+
 typedef struct KfEffectKind101Motion {
     u16 scale_step;
     u16 vertical_step;

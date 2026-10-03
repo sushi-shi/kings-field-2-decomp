@@ -127,7 +127,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->vertical_anchor_offset = records->vertical_anchor_offset;
             actor->lifecycle = 0;
             actor->target_type = 0;
-            actor->unknown_0f = 0xff;
+            actor->target_action_state = 0xff;
             actor->target = NULL;
 
             group = &actor_state.target_groups[actor->group_index];

@@ -349,7 +349,7 @@ typedef char kf_actor_tail_72_motion_size[
 
 typedef struct KfActorTail72Script {
     u16 word_index;
-    u16 unknown_74;
+    u16 effect_cycle_index;
 } KfActorTail72Script;
 typedef char kf_actor_tail_72_script_size[
     sizeof(KfActorTail72Script) == 4 ? 1 : -1];
@@ -402,7 +402,7 @@ typedef struct KfActor {
     u8 animation_id;
     u8 vertical_motion_state;
     u8 target_type;
-    u8 unknown_0f;
+    u8 target_action_state;
     u8 previous_target_type;
     u8 unknown_11;
     u8 unknown_12;
@@ -458,6 +458,8 @@ typedef char kf_actor_animation_id_offset[
     (u32)&((KfActor *)0)->animation_id == 0x0c ? 1 : -1];
 typedef char kf_actor_vertical_motion_state_offset[
     (u32)&((KfActor *)0)->vertical_motion_state == 0x0d ? 1 : -1];
+typedef char kf_actor_target_action_state_offset[
+    (u32)&((KfActor *)0)->target_action_state == 0x0f ? 1 : -1];
 typedef char kf_actor_render_mode_offset[
     (u32)&((KfActor *)0)->render_mode == 0x13 ? 1 : -1];
 typedef char kf_actor_lighting_override_offset[
@@ -509,7 +511,7 @@ typedef char kf_actor_tail_72_signed_offset[(u32)&((KfActor *)0)->tail_72.signed
 typedef char kf_actor_tail_72_unsigned_offset[(u32)&((KfActor *)0)->tail_72.unsigned_state == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_script_index_offset[(u32)&((KfActor *)0)->tail_72.script.word_index == 0x72 ? 1 : -1];
-typedef char kf_actor_tail_72_script_word_74_offset[(u32)&((KfActor *)0)->tail_72.script.unknown_74 == 0x74 ? 1 : -1];
+typedef char kf_actor_tail_72_script_effect_cycle_index_offset[(u32)&((KfActor *)0)->tail_72.script.effect_cycle_index == 0x74 ? 1 : -1];
 typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
 typedef char kf_actor_unknown_7a_offset[(u32)&((KfActor *)0)->unknown_7a == 0x7a ? 1 : -1];
 

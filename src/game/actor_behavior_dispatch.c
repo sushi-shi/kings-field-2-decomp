@@ -58,8 +58,8 @@ dispatch_action:
 
     switch (actor->target_type) {
     case 2:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
         }
         if (actor->animation_phase < 0x800 ||
@@ -74,8 +74,8 @@ dispatch_action:
     case 3: {
         s32 old_state = actor->state_70.signed_state;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor->state_70.signed_state = 0;
             actor->unknown_28 &= ~0x10000;
@@ -152,20 +152,20 @@ case3_motion:
         break;
     }
     case 0:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation_if_changed(target->animation_id);
         }
         actor_advance_animation_wrapped(actor, target->animation_step);
         if (angle_within_tolerance(actor->animation_phase, 0,
                                    target->animation_step - 1)) {
-            actor->unknown_0f = 0xf1;
+            actor->target_action_state = 0xf1;
         }
         actor_damp_horizontal_motion(group->movement_step, 10);
         break;
     case 1:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
             actor->movement_yaw = rand() >> 3;
         } else if (actor_turn_and_move_along_heading(actor->movement_yaw,
@@ -181,8 +181,8 @@ case3_motion:
     case 16: {
         s32 motion_flags;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor->tail_72.angles.z = 0;
             actor->tail_72.angles.y = 0;
             actor->tail_72.angles.x = 0;
@@ -235,8 +235,8 @@ case3_motion:
         s32 mode;
         s32 motion_flags;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
             switch (actor->previous_target_type) {
             case 4:
@@ -302,8 +302,8 @@ case3_motion:
         s32 distance;
         struct KfEulerAngles opposite;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation_if_changed(target->animation_id);
             actor->state_70.signed_state = 0;
         }
@@ -319,10 +319,10 @@ case3_motion:
         }
         if (distance >= target->word_16.value) {
             actor->state_70.signed_state = 0;
-            actor->unknown_0f = 0xf1;
+            actor->target_action_state = 0xf1;
         } else if (distance <= target->word_14.value) {
             actor->state_70.signed_state = 1;
-            actor->unknown_0f = 0xf0;
+            actor->target_action_state = 0xf0;
         }
         if (actor->state_70.signed_state == 0) {
             actor_turn_and_move_along_euler_angles(&actor->tail_72.angles, target->word_0c.value,
@@ -348,8 +348,8 @@ case3_motion:
         break;
     }
     case 9:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = 0;
             actor_set_animation(target->word_14.bytes[0]);
         }
@@ -409,8 +409,8 @@ case3_motion:
     case 10: {
         s32 random_value;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
             actor_suspend_vertical_motion();
         }
@@ -459,8 +459,8 @@ case3_motion:
         break;
     }
     case 4:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
@@ -478,8 +478,8 @@ case3_motion:
         actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
     case 23:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = target->word_18.value;
             actor_set_animation(target->animation_id);
         }
@@ -513,8 +513,8 @@ case3_motion:
         s32 speed;
         s32 step;
         s32 angle;
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
@@ -554,8 +554,8 @@ case3_motion:
         SVECTOR forward;
         SVECTOR outer;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation_if_changed(target->animation_id);
             actor->state_70.signed_state = 0;
             actor_suspend_vertical_motion();
@@ -630,8 +630,8 @@ case3_motion:
         s32 delta_y;
         s32 delta_z;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation_if_changed(target->animation_id);
         }
         delta_x = player_state.camera_position.vx - actor->position.vx;
@@ -659,8 +659,8 @@ case3_motion:
     }
     case 14: {
         KfActor *other = actor_state.other_actor;
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor->state_70.signed_state = 0;
         }
         switch (actor->state_70.signed_state) {
@@ -697,8 +697,8 @@ case3_motion:
         break;
     }
     case 15:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation_if_changed(target->animation_id);
         }
         actor_turn_and_move_along_heading(actor->movement_yaw,
@@ -711,8 +711,8 @@ case3_motion:
         }
         break;
     case 19:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = 0;
             actor_set_animation_if_changed(target->animation_id);
         }
@@ -739,8 +739,8 @@ case3_motion:
         actor_damp_horizontal_motion(group->movement_step, 10);
         break;
     case 20:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = target->word_12.value;
             actor_set_animation_if_changed(target->animation_id);
         }
@@ -758,14 +758,14 @@ case3_motion:
         }
         break;
     case 22:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
         }
         goto case19_clamped;
     case 21:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = 0;
             actor_set_animation(target->animation_id);
             actor->collision_radius = target->word_14.value;
@@ -818,8 +818,8 @@ case3_motion:
         }
         break;
     case 26:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor->state_70.signed_state = 0;
             actor_set_animation(target->animation_id);
             actor->model_scale_z = 0;
@@ -856,12 +856,12 @@ case3_motion:
         const u16 *cursor;
         s32 repeat;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor->state_70.signed_state = target->word_0e.value;
             actor->tail_72.script.word_index = 0;
-            actor->tail_72.script.unknown_74 = 0;
+            actor->tail_72.script.effect_cycle_index = 0;
             if (target->unknown_05[2] == 1) {
                 actor->vertical_motion_state = 16;
             }
@@ -919,13 +919,13 @@ case3_motion:
                     actor_dispatch_group_effect(target->word_0c.bytes.low,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
-                                   (s16)actor->tail_72.script.unknown_74);
+                                   (s16)actor->tail_72.script.effect_cycle_index);
                 }
                 if (--repeat == 0) {
                     break;
                 }
             }
-            actor->tail_72.script.unknown_74++;
+            actor->tail_72.script.effect_cycle_index++;
         }
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
@@ -934,8 +934,8 @@ case3_motion:
         break;
     }
     case 27:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf1;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf1;
             actor->state_70.signed_state = 0;
             actor->tail_72.signed_state = -1;
             actor_set_animation(target->word_16.bytes.low);
@@ -990,8 +990,8 @@ case3_motion:
         }
         break;
     case 29:
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor_suspend_vertical_motion();
             actor->tail_72.signed_state = 16;
@@ -1012,8 +1012,8 @@ case3_motion:
     case 28: {
         s32 collision;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor_suspend_vertical_motion();
             audio_play_spatial_default_range(0x1b, &actor->position, 120, 0);
@@ -1041,8 +1041,8 @@ case3_motion:
         VECTOR next;
         s32 collision;
 
-        if (actor->unknown_0f == 0) {
-            actor->unknown_0f = 0xf0;
+        if (actor->target_action_state == 0) {
+            actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor_suspend_vertical_motion();
         }
@@ -1102,7 +1102,7 @@ case3_motion:
             }
             if (other->target_type == slot_state) {
                 actor->target_type = 3;
-                actor->unknown_0f = 0xf0;
+                actor->target_action_state = 0xf0;
                 actor->state_70.signed_state = 99;
                 goto behavior_done;
             }

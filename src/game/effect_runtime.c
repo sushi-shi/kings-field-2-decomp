@@ -1001,7 +1001,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         record->rotation.vz = 0;
-        *(u16 *)&record->cache_tail.payload.raw[2] = 0;
+        record->cache_tail.payload.ballistic.age = 0;
         break;
     }
     case 23: {
@@ -1434,14 +1434,14 @@ void effect_update_dispatch(void)
             break;
         }
         /* These kinds overlay the record tail with a Y origin and age. */
-        if (*(s16 *)&record->cache_tail.payload.raw[2] == 0) {
+        if (record->cache_tail.payload.ballistic.age == 0) {
             audio_play_spatial_range(5, &record->position, 110,
                                      28000, 29000, 0);
         }
-        age = *(u16 *)&record->cache_tail.payload.raw[2] + 1;
-        *(u16 *)&record->cache_tail.payload.raw[2] = age;
+        age = (u16)record->cache_tail.payload.ballistic.age + 1;
+        record->cache_tail.payload.ballistic.age = age;
         prior_y = record->position.vy;
-        projected.vy = (s16)*(u16 *)&record->cache_tail.payload.raw[0] +
+        projected.vy = record->cache_tail.payload.ballistic.origin_y +
                        record->direction.vy * age +
                        ((acceleration * age * age) >> 1);
         projected.vx = record->position.vx + record->direction.vx;

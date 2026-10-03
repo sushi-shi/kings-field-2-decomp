@@ -54,10 +54,20 @@ typedef struct KfEffectKind102Payload {
 
 typedef char kf_effect_kind102_payload_size[sizeof(KfEffectKind102Payload) == 2 ? 1 : -1];
 
+/* Ballistic kinds keep the launch Y and elapsed update count in the payload. */
+typedef struct KfEffectBallisticState {
+    s16 origin_y;
+    s16 age;
+} KfEffectBallisticState;
+
+typedef char kf_effect_ballistic_state_size[sizeof(KfEffectBallisticState) == 4 ? 1 : -1];
+typedef char kf_effect_ballistic_age_offset[(u32)&((KfEffectBallisticState *)0)->age == 2 ? 1 : -1];
+
 typedef union KfEffectKindPayload {
     u8 raw[8];
     KfEffectTrailState trail;
     KfEffectKind102Payload kind102;
+    KfEffectBallisticState ballistic;
 } KfEffectKindPayload;
 
 typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
@@ -99,15 +109,6 @@ typedef struct KfEffectRecord {
     SVECTOR direction;
     KfEffectCacheTail cache_tail;
 } KfEffectRecord;
-
-/* Ballistic kinds keep the launch Y and elapsed update count in the payload. */
-typedef struct KfEffectBallisticState {
-    s16 origin_y;
-    u16 age;
-} KfEffectBallisticState;
-
-typedef char kf_effect_ballistic_state_size[sizeof(KfEffectBallisticState) == 4 ? 1 : -1];
-typedef char kf_effect_ballistic_age_offset[(u32)&((KfEffectBallisticState *)0)->age == 2 ? 1 : -1];
 
 typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
 typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];

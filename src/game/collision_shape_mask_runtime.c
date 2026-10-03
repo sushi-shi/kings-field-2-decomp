@@ -364,16 +364,18 @@ LAB_8002b450:
         }
       }
       break;
-    case 0x40:
+    case 0x40: {
+      u16 *layer_offset;
       if (visited_second_layer) {
         return result_flags;
       }
-      KF_COLLISION_CACHE_LAYER = KF_COLLISION_CACHE_LAYER == 0 ?
-          sizeof(KfMapOccupancyLayer) : 0;
-      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+      layer_offset = &KF_COLLISION_CACHE_LAYER;
+      *layer_offset = *layer_offset == 0 ? sizeof(KfMapOccupancyLayer) : 0;
+      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
       KF_COLLISION_CACHE_HEIGHT = -(s32)selected_layer->elevation * 0x80;
       visited_second_layer = 1;
       goto LAB_8002ab5c;
+    }
     case 0x18:
       next_record = record + 1;
       candidate_height = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;

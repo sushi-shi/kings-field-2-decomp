@@ -204,7 +204,7 @@ special_mode_zero: {
                 vector3s_scale_shift12((player_state.attack_charge_current * 900) / KF_PLAYER_CHARGE_FULL,
                                        &effect->direction);
                 effect->updates_remaining = 50;
-                *(u16 *)&effect->cache_tail.payload.raw[0] = effect->position.vy;
+                effect->cache_tail.payload.ballistic.origin_y = effect->position.vy;
             }
             player_state.weapon_attack_mode = 1;
             player_state.weapon_attack_phase = 0;

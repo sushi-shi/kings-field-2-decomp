@@ -265,7 +265,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         if (effect != 0) {
             effect->updates_remaining = 0x32;
             effect->phase = 0;
-            ((KfEffectBallisticState *)&effect->cache_tail.payload.raw[0])->origin_y = position.vy;
+            effect->cache_tail.payload.ballistic.origin_y = position.vy;
         }
         break;
     }

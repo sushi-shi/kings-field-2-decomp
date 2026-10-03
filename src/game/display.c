@@ -946,10 +946,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s16 fixed_
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u16 blend_bits;
+    u32 blend_bits;
 
     object = tmd_get_object(object_index);
-    blend_bits = (u16)blend_mode << 5;
+    blend_bits = (u32)blend_mode << 5;
     packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
              (object->primitive_offset + KF_TMD_HEADER_BYTES);
     normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
@@ -1383,7 +1383,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                 dx32 = vd->x - vc->x;
                 dx20 = vc->x - va->x;
                 dx12 = vb->x - vc->x;
-                if (!(((u16)va->sz | (u16)vb->sz | (u16)vc->sz | (u16)vd->sz) == 0xffff ||
+                if (!((s16)(va->sz | vb->sz | vc->sz | vd->sz) == -1 ||
                     MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy13) ||
                     MAP_OUTSIDE_Y(dy32) || MAP_OUTSIDE_Y(dy20) ||
                     MAP_OUTSIDE_Y(dy12) || MAP_OUTSIDE_X(dx01) ||

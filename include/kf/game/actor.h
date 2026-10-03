@@ -555,7 +555,6 @@ typedef struct KfActor {
     u8 unknown_6e[2];
     KfActorState70 state_70;
     KfActorTail72 tail_72;
-    u8 unknown_7a[2];
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
@@ -630,7 +629,6 @@ typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles
 typedef char kf_actor_tail_72_script_index_offset[(u32)&((KfActor *)0)->tail_72.script.word_index == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_script_effect_cycle_index_offset[(u32)&((KfActor *)0)->tail_72.script.effect_cycle_index == 0x74 ? 1 : -1];
 typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
-typedef char kf_actor_unknown_7a_offset[(u32)&((KfActor *)0)->unknown_7a == 0x7a ? 1 : -1];
 
 /* The startup clear bounds this runtime; the two trailer writes and actor
  * array are fixed by actor_pool_clear. */

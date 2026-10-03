@@ -149,7 +149,7 @@ void event_world_state_save_slot(s32 save_slot)
     group = actor_state.target_groups;
     for (index = 0; index < 40; group++, index++) {
         KfTargetCandidate *candidate;
-        if (group->unknown_00 == 0xff) {
+        if (group->definition_id == 0xff) {
             break;
         }
         candidate = group->targets[0].pointer;

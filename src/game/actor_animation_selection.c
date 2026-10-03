@@ -7,7 +7,7 @@ void actor_set_animation(u8 animation_id)
     if (animation_id != 0xff) {
         KfActor *actor = actor_state.current;
 
-        actor->unknown_0c = animation_id;
+        actor->animation_id = animation_id;
         actor->animation_phase = 0;
     }
 }
@@ -17,8 +17,8 @@ void actor_set_animation_if_changed(u8 animation_id)
 {
     KfActor *actor = actor_state.current;
 
-    if (animation_id != 0xff && actor->unknown_0c != animation_id) {
-        actor->unknown_0c = animation_id;
+    if (animation_id != 0xff && actor->animation_id != animation_id) {
+        actor->animation_id = animation_id;
         actor->animation_phase = 0;
     }
 }

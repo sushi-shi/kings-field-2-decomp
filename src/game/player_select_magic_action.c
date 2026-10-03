@@ -13,7 +13,7 @@ void player_select_magic_action(s32 magic_id)
     KfMagicRecord *record;
     u16 mp_cost;
 
-    if (player_state.unknown_d1[0] != 0xff || magic_id == 0xff) {
+    if (player_state.queued_magic_action.magic_id != 0xff || magic_id == 0xff) {
         return;
     }
 
@@ -60,8 +60,8 @@ void player_select_magic_action(s32 magic_id)
     default:
         goto charge_gate;
     }
-    player_state.unknown_d1[1] = 1;
-    player_state.unknown_d1[2] = 1;
+    player_state.queued_magic_action.casts_remaining = 1;
+    player_state.queued_magic_action.repeat_interval = 1;
 
 charge_gate:
     if (player_state.magic_charge < 5000) {
@@ -69,11 +69,11 @@ charge_gate:
     }
     player_state.magic_charge = 0;
     mp_cost = record->mp_cost;
-    player_state.unknown_d1[0] = magic_id;
+    player_state.queued_magic_action.magic_id = magic_id;
     player_state.magic_origin_offset.vx = -200;
     player_state.magic_origin_offset.vy = 200;
     player_state.magic_origin_offset.vz = 400;
-    player_state.unknown_d1[3] = 1;
+    player_state.queued_magic_action.countdown = 1;
     player_state.vitals.current_mp -= mp_cost;
 
     switch (magic_id) {
@@ -90,33 +90,33 @@ charge_gate:
     case 8:
     case 11:
     case 18:
-        player_state.unknown_d1[1] = 1;
-        player_state.unknown_d1[2] = 1;
+        player_state.queued_magic_action.casts_remaining = 1;
+        player_state.queued_magic_action.repeat_interval = 1;
         break;
     case 12:
         player_state.magic_origin_offset.vx = -200;
-        player_state.unknown_d1[1] = 5;
-        player_state.unknown_d1[2] = 2;
+        player_state.queued_magic_action.casts_remaining = 5;
+        player_state.queued_magic_action.repeat_interval = 2;
         break;
     case 9:
-        player_state.unknown_d1[1] = 6;
-        player_state.unknown_d1[2] = 1;
+        player_state.queued_magic_action.casts_remaining = 6;
+        player_state.queued_magic_action.repeat_interval = 1;
         break;
     case 0:
     case 2:
-        player_state.unknown_d1[1] = 1;
-        player_state.unknown_d1[2] = 1;
+        player_state.queued_magic_action.casts_remaining = 1;
+        player_state.queued_magic_action.repeat_interval = 1;
         player_state.magic_origin_offset.vz = 0;
         player_state.magic_origin_offset.vy = 0;
         player_state.magic_origin_offset.vx = 0;
         break;
     case 13:
-        player_state.unknown_d1[1] = 7;
-        player_state.unknown_d1[2] = 1;
+        player_state.queued_magic_action.casts_remaining = 7;
+        player_state.queued_magic_action.repeat_interval = 1;
         break;
     case 3:
-        player_state.unknown_d1[1] = 6;
-        player_state.unknown_d1[2] = 2;
+        player_state.queued_magic_action.casts_remaining = 6;
+        player_state.queued_magic_action.repeat_interval = 2;
         break;
     }
 

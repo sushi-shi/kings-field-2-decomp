@@ -11,7 +11,7 @@ enum { EFFECT_FIXED_MAGIC_POWER = 5 };
 
 ADDRESS(0x8003fb94, 0x218)
 void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 power,
-                   u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
+                   u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position)
 {
@@ -21,7 +21,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
     if (kind == 0x80) {
         player_apply_damage(magic_06, magic_08, magic_0a, magic_04,
                       magic_0c, magic_0e, magic_10, magic_12,
-                      magic_14, radius, record_id, position);
+                      magic_14, radius, damage_multiplier_tenths, position);
     } else if (kind == 0x10) {
         s32 actor_index = KF_COLLISION_CACHE_ACTOR_INDEX;
         KfActor *actor = &actor_state.actors[actor_index];
@@ -69,10 +69,10 @@ void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position)
     const KfMagicRecord *magic = effect_state.current_magic;
     u16 power = effect_magic_power(record);
 
-    effect_dispatch_magic_impact(kind, record->type, radius, power, record->unknown_06,
-                  magic->unknown_06, magic->unknown_08, magic->unknown_0a,
-                  magic->unknown_04, magic->unknown_0c, magic->unknown_0e,
-                  magic->unknown_10, magic->unknown_12, magic->unknown_14,
+    effect_dispatch_magic_impact(kind, record->type, radius, power, record->damage_multiplier_tenths,
+                  magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
+                  magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
+                  magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
                   position);
 }
 
@@ -98,19 +98,19 @@ void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
 
     if (record->type & 1) {
         player_apply_radial_damage(position, start, end, arg3, arg4,
-                      magic->unknown_06, magic->unknown_08, magic->unknown_0a,
-                      magic->unknown_04, magic->unknown_0c, magic->unknown_0e,
-                      magic->unknown_10, magic->unknown_12, magic->unknown_14,
-                      arg5, record->unknown_06);
+                      magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
+                      magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
+                      magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
+                      arg5, record->damage_multiplier_tenths);
     }
     if (record->type & 2) {
         u16 power = effect_magic_power(record);
 
         actor_apply_area_magic(position, start, end, arg3, arg4,
-                      power, magic->unknown_06,
-                      magic->unknown_08, magic->unknown_0a, magic->unknown_0c,
-                      magic->unknown_0e, magic->unknown_10, magic->unknown_12,
-                      magic->unknown_14, arg5, (record->type & 0x30) | 2);
+                      power, magic->damage_components[0],
+                      magic->damage_components[1], magic->damage_components[2], magic->damage_components[3],
+                      magic->damage_components[4], magic->damage_components[5], magic->damage_components[6],
+                      magic->damage_components[7], arg5, (record->type & 0x30) | 2);
     }
 }
 

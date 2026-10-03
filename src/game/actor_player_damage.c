@@ -30,18 +30,18 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
         }
         if (mode == 0x8000) {
             distance = vector_distance_between_with_reach(position, reach, &actor->position,
-                                     actor->unknown_1c, actor->unknown_1e);
+                                     actor->collision_radius, actor->collision_height);
         } else if (mode == 0x8001) {
-            if (position->vy < actor->position.vy - actor->unknown_1e) {
+            if (position->vy < actor->position.vy - actor->collision_height) {
                 distance = -9999999;
             } else {
                 distance = vector_distance_between_with_reach(position, reach, &actor->position,
-                                         actor->unknown_1c, actor->unknown_1e);
+                                         actor->collision_radius, actor->collision_height);
             }
         } else {
             distance = vector_distance_to_point(
                 &actor->position, position->vx, position->vy, position->vz,
-                reach, actor->unknown_1e, mode);
+                reach, actor->collision_height, mode);
             if (distance == KF_DISTANCE_NONE) {
                 distance = -9999999;
             }

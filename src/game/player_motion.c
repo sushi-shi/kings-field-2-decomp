@@ -18,7 +18,7 @@ void player_check_fall_death(void)
         && (KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy)
                > COLLISION_DEPTH_DEATH_LIMIT) {
         player_death_begin(NULL);
-        player_state.unknown_d1[4] = 1;
+        player_state.fatal_fall_latch = 1;
     }
 }
 
@@ -90,7 +90,7 @@ void player_update_vertical_motion(void)
         if (collision_flags == 0) {
             player_state.frame_displacement.vy = player_state.vertical_velocity;
             player_state.vertical_velocity += 40;
-            player_state.unknown_110[0] = player_state.vertical_velocity >> 1;
+            player_state.vertical_motion_pitch_offset = player_state.vertical_velocity >> 1;
             player_state.camera_position.vy = next_y;
             goto finish;
         }
@@ -124,18 +124,18 @@ landing:
         if (player_state.landing_vertical_offset > 0) {
             player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
         }
-        bob = player_state.unknown_110[0];
+        bob = player_state.vertical_motion_pitch_offset;
         player_state.vertical_velocity -= 100;
         if (bob > 0) {
-            player_state.unknown_110[0] =
+            player_state.vertical_motion_pitch_offset =
                 bob + (player_state.vertical_velocity > 0 ? 10 : -30);
         }
         if (player_state.landing_vertical_offset <= 0
-            && player_state.unknown_110[0] <= 0) {
+            && player_state.vertical_motion_pitch_offset <= 0) {
             player_state.vertical_motion_state = 0;
             player_state.vertical_velocity = 0;
             player_state.landing_vertical_offset = 0;
-            player_state.unknown_110[0] = 0;
+            player_state.vertical_motion_pitch_offset = 0;
         }
         break;
 
@@ -185,7 +185,7 @@ landing:
         player_state.vertical_velocity = 40;
     }
     player_state.landing_vertical_offset = 0;
-    player_state.unknown_110[0] = 0;
+    player_state.vertical_motion_pitch_offset = 0;
 
 finish:
     if (player_state.vertical_motion_state == 0) {
@@ -224,7 +224,7 @@ s32 player_move_reaction_with_collision(void)
         if (player_state.reaction.damage.rotation.vy >= 160
             && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy > 32000) {
             player_death_begin(NULL);
-            player_state.unknown_d1[4] = 1;
+            player_state.fatal_fall_latch = 1;
         }
         player_state.camera_position.vx = next.vx;
         player_state.camera_position.vy = next.vy;

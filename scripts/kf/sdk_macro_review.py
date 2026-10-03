@@ -172,7 +172,8 @@ def main() -> None:
                     decision = "quad_trial_nonexact_or_store_order_differs"
             elif field in {"clut", "tpage"}:
                 family = "setClut/setTPage"
-                if field == "clut" and path.endswith("menu_blit_sprite.c"):
+                if (field == "clut" and path.endswith("menu_render_primitives.c")
+                        and 418 <= line < 495):
                     decision = "getClut_trial_changed_exact_listing"
                 else:
                     decision = "direct_value_or_packed_copy_not_GetClut_or_GetTPage_call"

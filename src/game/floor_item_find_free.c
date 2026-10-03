@@ -19,16 +19,16 @@ KfFloorItem *floor_item_find_free(void)
 }
 
 ADDRESS(0x8002ce68, 0xd8)
-void floor_item_capture_image(s32 x, s32 y, u8 value_01, u8 value_03,
+void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
                    s32 kind, s32 width_bytes, u16 height)
 {
     KfFloorItem *item = floor_item_find_free();
 
     if (item != 0) {
-        item->unknown_04 = 0;
-        item->unknown_01 = value_01;
-        item->unknown_03 = value_03;
-        item->unknown_02 = 0;
+        item->row_offset = 0;
+        item->update_interval = update_interval;
+        item->row_step = row_step;
+        item->frames_until_update = 0;
         item->rect.x = x;
         item->rect.y = y;
         item->kind = kind;
@@ -51,25 +51,25 @@ void floor_item_update_textures(void)
     RECT rect;
 
     do {
-        if (item->unknown_02 == 0) {
-            item->unknown_02 = item->unknown_01;
+        if (item->frames_until_update == 0) {
+            item->frames_until_update = item->update_interval;
             if (item->kind == 1) {
-                item->unknown_04 += item->unknown_03;
-                if ((s16)item->unknown_04 >= item->rect.h) {
-                    item->unknown_04 -= item->rect.h;
+                item->row_offset += item->row_step;
+                if ((s16)item->row_offset >= item->rect.h) {
+                    item->row_offset -= item->rect.h;
                 }
-                setRECT(&rect, item->rect.x, item->rect.y + item->unknown_04,
-                        item->rect.w, item->rect.h - item->unknown_04);
+                setRECT(&rect, item->rect.x, item->rect.y + item->row_offset,
+                        item->rect.w, item->rect.h - item->row_offset);
                 LoadImage(&rect, item->pixels);
-                if ((s16)item->unknown_04 != 0) {
+                if ((s16)item->row_offset != 0) {
                     u_long *pixels = (((s16)rect.w * (s16)rect.h) >> 1) + item->pixels;
                     rect.y = item->rect.y;
-                    rect.h = item->unknown_04;
+                    rect.h = item->row_offset;
                     LoadImage(&rect, pixels);
                 }
             }
         } else {
-            item->unknown_02--;
+            item->frames_until_update--;
         }
         item++;
     } while (--remaining != -1);

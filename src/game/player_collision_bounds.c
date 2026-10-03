@@ -58,12 +58,12 @@ void player_reset_view(void)
     player_state.camera_vertical_offset = 0;
     player_state.walking_bob_phase = 0;
     player_state.landing_vertical_offset = 0;
-    player_state.unknown_ce[2] = 0;
+    player_state.vertical_motion_state = 0;
     player_state.vertical_velocity = 0;
     player_state.death_state = 0;
-    player_state.unknown_110[2] = 0;
-    player_state.unknown_110[1] = 0;
-    player_state.unknown_110[0] = 0;
+    player_state.unknown_112[1] = 0;
+    player_state.unknown_112[0] = 0;
+    player_state.vertical_motion_pitch_offset = 0;
     player_state.view_rotation_offset.components[2] = 0;
     player_state.view_rotation_offset.components[1] = 0;
     player_state.view_rotation_offset.components[0] = 0;
@@ -74,7 +74,7 @@ void player_reset_view(void)
     player_state.movement_speed_adjustment_q12 = 0;
     player_state.unknown_0c[1] = 0;
     player_state.damage_scale = PLAYER_VIEW_SCALE_INITIAL;
-    player_state.unknown_ce[3] = 0xff;
+    player_state.queued_magic_action.magic_id = 0xff;
     player_state.collision_lower_clearance = PLAYER_VIEW_TIMER_INITIAL;
     player_state.collision_upper_clearance = PLAYER_VIEW_TIMER_INITIAL;
 }

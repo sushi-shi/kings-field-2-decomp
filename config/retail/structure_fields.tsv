@@ -2,31 +2,32 @@
 # opaque means the byte range is modeled for layout but has no supported semantic meaning yet.
 structure	offset	size	name	datatype	meaning_confidence	evidence	note
 KfActor	0x0	0x1	slot_state	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
-KfActor	0x1	0x1	unknown_01	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x1	0x1	definition_id	u8	supported	actor_copy_group_defaults group+0x00 copy;actor TMD/portrait asset references;KF1 KfActor definition_id	Actor definition and render asset identity
 KfActor	0x2	0x1	group_index	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
-KfActor	0x3	0x1	unknown_03	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x3	0x1	current_map_layer	u8	supported	actor_motion collision layer assignment;render_resource_dispatch map_cell_layer_mask and render_world_model layer argument	Actor's current map layer used for visibility and collision side
 KfActor	0x4	0x1	unknown_04	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x5	0x1	unknown_05	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x6	0x1	unknown_06	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x7	0x2	unknown_07	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x6	0x1	home_map_layer	u8	supported	actor_load_records placement +7;actor_prepare_and_initialize current_map_layer reset;collision_sample_map_layer_height	Placement's home map layer for actor initialization and home height
+KfActor	0x7	0x1	home_cell_z	u8	supported	actor_load_records cell_z copy;actor_set_home_position z shift	Home map cell Z from placement
+KfActor	0x8	0x1	home_cell_x	u8	supported	actor_load_records cell_x copy;actor_set_home_position x shift	Home map cell X from placement
 KfActor	0x9	0x1	lifecycle	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0xa	0x1	spawn_chance	u8	supported	game/actor.h;actor_load_records +5;actor_update_lifecycle_for_player_range activation rolls;KF1 actor_update_awareness spawn_chance	Chance threshold for dormant actors entering active lifecycle
 KfActor	0xb	0x1	death_drop_object_id	u8	supported	game/actor.h;actor_load_records +6;actor_update_behavior death branch;KF1 actor_behavior/death_drop_object_id	Placement object ID spawned at the actor death phase
-KfActor	0xc	0x1	unknown_0c	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0xd	0x1	unknown_0d	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0xc	0x1	animation_id	u8	supported	actor_set_animation writes;render_world_model clip argument;animation_sample_vertex;KF1 KfActor animation_id	Current animation clip ID
+KfActor	0xd	0x1	vertical_motion_state	u8	supported	GAME actor_update_vertical_motion state dispatch;actor_suspend_vertical_motion;KF1 vertical_state analog	Current vertical motion mode; observed values differ from KF1 enum
 KfActor	0xe	0x1	target_type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0xf	0x1	unknown_0f	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x10	0x1	previous_target_type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x11	0x1	unknown_11	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x13	0x1	unknown_13	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x14	0x1	unknown_14	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x13	0x1	render_mode	u8	supported	render_resource_dispatch render_world_model render_mode argument;actor_initialization	Actor model render mode
+KfActor	0x14	0x1	lighting_override	u8	supported	render_resource_dispatch render_world_model lighting_override argument;actor behavior lighting transition	Actor lighting override index
 KfActor	0x15	0x1	render_depth	u8	supported	actor_load_records group+0x09 copy;render_resource_dispatch;render_world_model depth argument	Signed render depth/order value carried by each actor
-KfActor	0x16	0x2	unknown_16	s16	opaque	game/actor.h;retail GAME 0x8003247c actor draw	signed halfword read at 0x800325c0; meaning unresolved
+KfActor	0x16	0x2	lighting_blend	s16	supported	GAME 0x8003247c signed halfword;render_world_model lighting_blend argument;actor behavior transition	Actor lighting blend amount
 KfActor	0x18	0x2	animation_phase	u16	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
-KfActor	0x1a	0x2	unknown_1a	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x1c	0x2	unknown_1c	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x1e	0x2	unknown_1e	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfActor	0x1a	0x2	health	u16	supported	actor_copy_group_defaults group+0x1a copy;actor_apply_magic_to_actor damage/death transition;KF1 KfActor health	Current actor health depleted by magic damage
+KfActor	0x1c	0x2	collision_radius	u16	supported	actor_copy_group_defaults group collision_radius copy;collision_query_world;collision cache radius	Dynamic actor collision radius, sometimes interpolated by action
+KfActor	0x1e	0x2	collision_height	u16	supported	actor_copy_group_defaults group collision_height copy;collision_query_world;collision cache interaction height	Dynamic actor collision height, sometimes interpolated by action
 KfActor	0x20	0x2	unknown_20	u16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x22	0x2	unknown_22	s16	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x24	0x2	unknown_24	s16	opaque	game/actor.h;GAME 0x80038d04 lh/add	signed local X offset; name remains address-derived
@@ -177,7 +178,7 @@ KfEffectRecord	0x2	0x1	base_render_id	u8	supported	game/effect.h;asm;effect pool
 KfEffectRecord	0x3	0x1	render_id	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x4	0x1	animation_clip	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x5	0x1	unknown_05	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x6	0x1	unknown_06	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x6	0x1	damage_multiplier_tenths	u8	observed	game/effect.h;GAME 0x800403c8;player_apply_damage consumer	constructor callers normally supply 10; actor script supplies target word +0x18; damage callee scales total by this value divided by 10
 KfEffectRecord	0x7	0x1	phase	u8	supported	game/effect.h;GAME 0x80042650 kind/phase dispatch;0x80041d7c spawn	Checked effect phase byte; dispatcher selects five phase handlers at 0x80044f60.
 KfEffectRecord	0x8	0x1	render_flags	u8	observed	game/effect.h;GAME 0x80032c6c/0x80032ca4;effect constructor/update	low two bits govern draw eligibility/visibility test; bits 2-3 select render path
 KfEffectRecord	0x9	0x1	render_queue_mode	u8	observed	game/effect.h;asm 0x8003259c/0x80040468;render_world_model consumer	0xff constructor default selects textured queue; constructor/update value 1 selects blended queue; renderer also handles 0xfe clipped mode
@@ -231,10 +232,10 @@ KfEventState	0x04	0x100	control	KfEventControl	supported	func_800482f8;game_main
 KfEventState	0x104	0x3800	arena	KfEventArena	supported	func_800482f8;memory_arena_initialize_blocks;pointer rebasing	memory block chain and saved stream data
 KfEventState	0x3904	0x14	saved_offsets	u16[10]	supported	func_800482f8;func_800483d8;func_80048498	ten halfword offsets relative to the arena base; 0xffff means absent
 KfFloorItem	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
-KfFloorItem	0x01	0x01	unknown_01	u8	supported	asm;caller;game headers	assigned from third argument at 0x8002ce68
-KfFloorItem	0x02	0x01	unknown_02	u8	supported	asm;game headers	cleared at capture; advanced by 0x8002cf40
-KfFloorItem	0x03	0x01	unknown_03	u8	supported	asm;caller;game headers	assigned from fourth argument at 0x8002ce68
-KfFloorItem	0x04	0x02	unknown_04	u16	supported	asm;game headers	cleared at capture
+KfFloorItem	0x01	0x01	update_interval	u8	supported	asm;game_main_loop;floor_item_update_textures	reload value for the per-frame update countdown
+KfFloorItem	0x02	0x01	frames_until_update	u8	supported	asm;floor_item_capture_image;floor_item_update_textures	zero triggers an update; nonzero decrements each frame
+KfFloorItem	0x03	0x01	row_step	u8	supported	asm;game_main_loop;floor_item_update_textures	texture rows added on each update
+KfFloorItem	0x04	0x02	row_offset	u16	supported	asm;floor_item_update_textures	wrapped texture row offset used to split LoadImage rectangles
 KfFloorItem	0x06	0x08	rect	RECT	supported	asm;StoreImage;LoadImage	GPU rectangle at +6
 KfFloorItem	0x0e	0x02	unknown_0e	u16	opaque	game headers;asm	field use not yet established
 KfFloorItem	0x10	0x04	pixels	u_long *	supported	asm;StoreImage;LoadImage	captured GPU pixel buffer
@@ -316,16 +317,9 @@ KfMagicMenuList	0x28	0x08	unknown_28	u8[8]	opaque	game/menu.h;menu_choose_magic_
 KfMagicMenuList	0x30	0x04	values	s32 *	supported	menu_choose_magic_action;func_8001a2f4	pointer to parallel selection values
 KfMagicRecord	0x0	0x1	menu_available	u8	supported	game/effect.h;asm;menu_collect_available_magic_rows;player_state_equipment	Magic menu filter checks one; equipment reset clears the byte
 KfMagicRecord	0x1	0x3	unknown_01	u8[3]	opaque	game/effect.h;asm;magic_load_records	Remaining opaque bytes before +4
-KfMagicRecord	0x4	0x1	unknown_04	u8	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
+KfMagicRecord	0x4	0x1	player_status_flags	u8	observed	game/effect.h;effect_dispatch_magic_impact;player_apply_damage	passed as the player damage status-flags argument; actor magic path omits this byte
 KfMagicRecord	0x5	0x1	unknown_05	u8	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0x6	0x2	unknown_06	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0x8	0x2	unknown_08	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0xa	0x2	unknown_0a	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0xc	0x2	unknown_0c	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0xe	0x2	unknown_0e	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0x10	0x2	unknown_10	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0x12	0x2	unknown_12	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
-KfMagicRecord	0x14	0x2	unknown_14	u16	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
+KfMagicRecord	0x6	0x10	damage_components	u16[8]	observed	game/effect.h;effect_dispatch_magic_impact;actor_apply_magic_to_actor;player_apply_damage	eight contiguous halfwords feed player damage channels 0..7 and actor component curves with group divisors 0..7
 KfMagicRecord	0x16	0x2	mp_cost	u16	supported	game/effect.h;asm;func_80026498	Unsigned cost compared against and subtracted from player MP before selecting the magic row
 KfMagicRecord	0x18	0x2	unknown_18	u8[2]	opaque	game/effect.h;asm;magic_load_records	Remaining two bytes of 26-byte archive magic record
 KfMapCellPattern	0x00	0x08	variant	KfMapCellPatternVariant[2]	supported	asm;func_80034f90;callers	placement pattern field
@@ -354,8 +348,16 @@ KfMapObject	0x2c	0x08	scale	SVECTOR	supported	asm;func_80035590;transform caller
 KfMapObject	0x34	0xc	tail	KfMapObjectTail	supported	game/map_object.h;asm;map_object_pool_reset	twelve-byte tail with field and three-word reset views
 KfMapObject	0x40	0x04	extra_40	KfMapObjectExtra40	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte state views of map-object +0x40
 KfMapObjectExtra40	0x00	0x04	record	KfMapObjectRecord40 *	candidate	asm;func_800291ec	pointer read by player map-object reaction; pointed object's extent unresolved
-KfMapObjectExtra40	0x00	0x04	bytes	u8[4]	supported	asm;map_object_step_offset_motion	low byte is map-object motion progress
+KfMapObjectExtra40	0x00	0x04	bytes	u8[4]	supported	asm;map_object_step_offset_motion	raw byte view for action-specific state
 KfMapObjectExtra40	0x00	0x02	object_index	u16	supported	asm;map_object_step_offset_motion	index of a source map object stored in target +0x40
+KfMapObjectExtra40	0x00	0x04	hinge	KfMapObjectHingeMotion	supported	map_object_initialize_from_placements;map_object_update_actions	action 4 motion progress and initial yaw
+KfMapObjectExtra40	0x00	0x04	bob_base_y	s32	supported	map_object_initialize_from_placements;map_object_update_actions action 16	base Y sampled before sine bob update
+KfMapObjectExtra40	0x00	0x04	next_sound_frame	u32	supported	map_object_initialize_from_placements;map_object_update_actions;render_scene_and_update_resources	actions 0x12 and 0x1f schedule their next sound using frame count
+KfMapObjectExtra40	0x00	0x04	offset_motion	KfMapObjectOffsetMotionState	supported	map_object_step_offset_motion	motion progress with trailing bytes unresolved
+KfMapObjectHingeMotion	0x00	0x02	progress_ticks	u16	supported	map_object_initialize_from_placements;map_object_update_actions	state 0/999 initializer; increments through open and close intervals
+KfMapObjectHingeMotion	0x02	0x02	base_yaw	u16	supported	map_object_initialize_from_placements;map_object_update_actions	initial yaw used by bearing test and rotation matrix
+KfMapObjectOffsetMotionState	0x00	0x01	elapsed_frames	u8	supported	map_object_step_offset_motion	elapsed fraction numerator and duration comparison
+KfMapObjectOffsetMotionState	0x01	0x03	unknown_41	u8[3]	opaque	game/map_object.h	trailing bytes not used by this motion path
 KfMapObjectStateGame	0x00	0x1e00	templates	KfMapObjectTemplate[320]	supported	asm;func_800355d8;24-byte indexing	object template records preceding the pool
 KfMapObjectStateGame	0x1e00	0x6930	objects	KfMapObject[396]	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	member used by reconstructed code
 KfMapObjectStateGame	0x8730	0x04	unknown_8730	u8[4]	opaque	game_main_loop startup clear	unresolved tail bytes
@@ -366,6 +368,10 @@ KfMapObjectStateGame	0x873e	0x02	spawn_sequence_pool_15e	u16	supported	asm;map_o
 KfMapObjectStateGame	0x8740	0x02	spawn_sequence_pool_168	u16	supported	asm;map_object_pool_reset;map_object_spawn_effect	sequence counter for source-nonzero objects 0x168..0x171
 KfMapObjectStateGame	0x8742	0x02	spawn_sequence_pool_172	u16	supported	asm;map_object_pool_reset;map_object_spawn_effect	sequence counter for source-zero objects 0x172..0x17b
 KfMapObjectTail	0x0	0xc	fields	KfMapObjectTailFields	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
+KfMapObjectTail	0x0	0xc	motion	KfMapObjectTailMotionView	supported	game/map_object.h;map_object_spawn_effect;map_object_update_actions	actions 0x60 and 0x62 use tail +0x3e as a motion rate
+KfMapObjectTail	0x0	0xc	notification	KfMapObjectTailNotificationView	supported	game/map_object.h;event_scene_command_dispatch;event_world_dispatch_interaction	interaction notification bytes at tail +0x3e/+0x3f
+KfMapObjectTail	0x0	0xc	transition	KfMapObjectTailTransitionView	supported	game/map_object.h;map_object_update_actions action 34	region and destination cells for action 34
+KfMapObjectTail	0x0	0xc	resource_trigger	KfMapObjectTailResourceTriggerView	supported	game/map_object.h;map_object_update_actions action 224	region and five ordered resource selectors
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
 KfMapObjectTail	0x0	0xc	visibility	KfMapObjectTailVisibilityView	supported	game/map_object.h;render_scene_and_update_resources	action 0xf0 uses tail bytes +0x38/+0x39 as view-cell radii
 KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;render_scene_and_update_resources	byte view of the packed spawn sequence
@@ -376,6 +382,33 @@ KfMapObjectTailFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm;map obj
 KfMapObjectTailFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x8	0x2	spawn_sequence	u16	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;func_80036464;map_object_spawn_scattered_effect	signed spawn parameter initialized to zero or -120
+KfMapObjectTailMotionView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
+KfMapObjectTailMotionView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	preceding tail byte
+KfMapObjectTailMotionView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	preceding tail byte
+KfMapObjectTailMotionView	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h	preceding tail halfword
+KfMapObjectTailMotionView	0x8	0x2	unknown_3c	u16	opaque	game/map_object.h	preceding halfword has action-specific meanings
+KfMapObjectTailMotionView	0xa	0x2	motion_velocity	KfMapObjectTailHalfword	supported	map_object_spawn_effect;map_object_spawn_scattered_effect;map_object_update_actions;KF1 map_object.c	motion rate used for vertical fall/bounce and angular tip
+KfMapObjectTailNotificationView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
+KfMapObjectTailNotificationView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	preceding tail byte
+KfMapObjectTailNotificationView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	preceding tail byte
+KfMapObjectTailNotificationView	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h	preceding tail halfword
+KfMapObjectTailNotificationView	0x8	0x2	unknown_3c	u16	opaque	game/map_object.h	preceding tail halfword has action-specific meanings
+KfMapObjectTailNotificationView	0xa	0x1	linked_notification	u8	supported	event_scene_command_dispatch;KF1 map_scripts.c	queued after marker-consume linked result
+KfMapObjectTailNotificationView	0xb	0x1	default_notification	u8	supported	event_world_dispatch_interaction;KF1 map_scripts.c	fallback interaction notification
+KfMapObjectTailTransitionView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
+KfMapObjectTailTransitionView	0x4	0x1	region_x	u8	supported	map_object_update_actions;player_camera_within_map_region	region left cell for action 34
+KfMapObjectTailTransitionView	0x5	0x1	region_z	u8	supported	map_object_update_actions;player_camera_within_map_region	region near cell for action 34
+KfMapObjectTailTransitionView	0x6	0x1	region_width	u8	supported	map_object_update_actions;player_camera_within_map_region	region X extent for action 34
+KfMapObjectTailTransitionView	0x7	0x1	region_depth	u8	supported	map_object_update_actions;player_camera_within_map_region	region Z extent for action 34
+KfMapObjectTailTransitionView	0x8	0x1	destination_cell_x	u8	supported	map_object_update_actions action 34	new player X cell times 0x800 plus center offset
+KfMapObjectTailTransitionView	0x9	0x1	destination_cell_z	u8	supported	map_object_update_actions action 34	new player Z cell times 0x800 plus center offset
+KfMapObjectTailTransitionView	0xa	0x1	destination_layer_code	u8	supported	map_object_update_actions action 34	code 1 selects layer 0; other values select layer 5
+KfMapObjectTailTransitionView	0xb	0x1	destination_yaw_code	u8	supported	map_object_update_actions action 34	new camera yaw is negative code times 16
+KfMapObjectTailResourceTriggerView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
+KfMapObjectTailResourceTriggerView	0x4	0x1	region_width	u8	supported	map_object_update_actions;player_camera_within_map_region	X extent around trigger position
+KfMapObjectTailResourceTriggerView	0x5	0x1	region_depth	u8	supported	map_object_update_actions;player_camera_within_map_region	Z extent around trigger position
+KfMapObjectTailResourceTriggerView	0x6	0x5	resource_selectors	u8[5]	supported	map_object_update_actions;resource_request_transition	ordered resource selectors; individual slot meanings unresolved
+KfMapObjectTailResourceTriggerView	0xb	0x1	unknown_3f	u8	opaque	game/map_object.h	last tail byte remains unproven for action 224
 KfMapObjectTailSpawnByteFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
 KfMapObjectTailSpawnByteFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm	preceding tail byte
 KfMapObjectTailSpawnByteFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm	preceding tail byte
@@ -395,7 +428,8 @@ KfMapObjectTailVisibilityView	0x5	0x1	radius_z	u8	supported	render_scene_and_upd
 KfMapObjectTailVisibilityView	0x6	0x6	unknown_3a	u8[6]	opaque	game/map_object.h;asm	trailing tail bytes retain existing field view
 KfMapObjectTemplate	0x00	0x01	collision_kind	u8	candidate	asm;func_80036190	kind 4 tests a rotated forward point
 KfMapObjectTemplate	0x01	0x01	kind	u8	supported	asm;map_object_set_property	0x10 selects a rotation reset value
-KfMapObjectTemplate	0x02	0x02	unknown_02	u8[2]	opaque	asm;map_object_refresh_cell_markers	unresolved
+KfMapObjectTemplate	0x02	0x01	vab_resource_index	u8	supported	render_scene_and_update_resources;resource_vab_update_range	indexes frame VAB demand flags for visible map objects
+KfMapObjectTemplate	0x03	0x01	collision_flags	u8	supported	map_object_initialize_from_placements	copied into KfMapObject.collision_flags
 KfMapObjectTemplate	0x04	0x02	collision_radius	u16	supported	asm;func_80036078;vector_distance_to_point	map-object collision radius added to query radius
 KfMapObjectTemplate	0x06	0x02	interaction_radius	u16	candidate	asm;func_80036190	added to caller radius before distance query
 KfMapObjectTemplate	0x08	0x02	interaction_height	u16	candidate	asm;func_80036190	ordinary-kind vertical extent
@@ -553,7 +587,7 @@ KfPlayerState	0x9b	0x01	equipped_weapon_id	u8	supported	asm;player_recalculate_c
 KfPlayerState	0x9c	0x02	unknown_9c	u8[2]	opaque	asm;player_begin_weapon_attack	first byte reset at attack begin
 KfPlayerState	0x9e	0x01	weapon_magic_shots_configured	u8	supported	asm;player_begin_weapon_attack	selected from weapon record on full charge
 KfPlayerState	0x9f	0x01	weapon_attack_fully_charged	u8	supported	asm;player_begin_weapon_attack;KF1 player.h	set when both charges reach 5000
-KfPlayerState	0xa0	0x01	unknown_a0	u8	opaque	asm;player_equip_weapon	cleared after equip; purpose unresolved
+KfPlayerState	0xa0	0x01	weapon_guard_active	u8	supported	asm;player_magic_dispatch;player_reaction;player_damage	weapon 13 action-bit attack hold rewinds phase, halves movement, and blocks damage
 KfPlayerState	0xa1	0x03	unknown_a1	u8[3]	opaque	asm;player_equip_weapon	not yet modelled
 KfPlayerState	0xa4	0x04	equipped_head_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
 KfPlayerState	0xa8	0x04	equipped_body_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
@@ -578,7 +612,9 @@ KfPlayerState	0xcc	0x01	walking_bob_enabled	u8	supported	asm;player_update_verti
 KfPlayerState	0xcd	0x01	death_state	u8	supported	asm;player_death_begin	0x11 marks the death transition
 KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet modelled
 KfPlayerState	0xd0	0x01	vertical_motion_state	u8	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses
-KfPlayerState	0xd1	0x07	unknown_d1	u8[7]	opaque	asm;player_death_begin	not yet modelled
+KfPlayerState	0xd1	0x04	queued_magic_action	KfQueuedMagicAction	supported	asm;player_select_magic_action;player_update_frame	magic ID sentinel 0xff and dispatch-count/interval/countdown loop
+KfPlayerState	0xd5	0x01	fatal_fall_latch	u8	supported	asm;player_check_fall_death;player_move_reaction_with_collision;player_update_frame	set after fatal fall and gates recovery at death-transition frame 31
+KfPlayerState	0xd6	0x02	unknown_d6	u8[2]	opaque	asm	unresolved tail bytes adjacent to queued magic action
 KfPlayerState	0xd8	0x10	camera_position	VECTOR	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0xe8	0x08	frame_displacement	SVECTOR	supported	asm;player_move_horizontal;player_update_vertical_motion;actor_compute_target_direction	per-frame signed XYZ displacement used to lead moving player targets; fourth halfword remains pad
 KfPlayerState	0xf0	0x08	camera_rotation	KfPlayerViewRotation	supported	asm;player_get_camera_pose;player_reset_view	three signed 16-bit camera angles and fourth halfword
@@ -587,7 +623,8 @@ KfPlayerState	0x100	0x06	reaction_rotation_offset	s16[3]	supported	asm;player_up
 KfPlayerState	0x106	0x02	death_transition_frame	s16	supported	asm;player_death_begin;player_update_frame	incremented in death state 17; frame 31 gates recovery and frames 32 through 64 drive fade
 KfPlayerState	0x108	0x06	view_rotation_offset	KfPlayerViewRotationOffset	supported	asm;player_update_frame;player_reset_view;event_command_dispatch	three-axis additive view rotation set by map-object and reaction poses
 KfPlayerState	0x10e	0x02	unknown_10e	u8[2]	opaque	asm;player_reset_view	not yet modelled
-KfPlayerState	0x110	0x06	unknown_110	s16[3]	supported	asm;player_update_vertical_motion	landing motion uses signed halfword compare and negative decrement
+KfPlayerState	0x110	0x02	vertical_motion_pitch_offset	s16	supported	asm;player_update_vertical_motion;player_update_frame	fall velocity seeds camera pitch offset and landing response decays it
+KfPlayerState	0x112	0x04	unknown_112	s16[2]	opaque	asm;player_reset_view;player_update_frame	other two camera rotation offsets are only cleared and summed
 KfPlayerState	0x116	0x02	unknown_116	u8[2]	opaque	asm;player_reset_view	not yet modelled
 KfPlayerState	0x118	0x08	magic_origin_offset	SVECTOR	supported	asm;player_probe_view_target_and_vectors;player_select_magic_action;player_dispatch_magic_effect	magic effect origin offset rotated by the player camera orientation
 KfPlayerState	0x120	0x04	collision_lower_clearance	s32	supported	asm;player_update_collision_bounds;player_reset_view	lower collision clearance; set to 10000 by view reset
@@ -743,11 +780,11 @@ KfTargetCandidateWord26	0x0	0x2	unsigned_value	u16	supported	GAME 0x8003e154 lhu
 KfTargetCandidateWord26	0x0	0x2	signed_value	s16	supported	GAME 0x8003e274 lh candidate+0x26	signed motion-step view
 KfTargetCandidateWord18Bytes	0x0	0x1	low	u8	opaque	game/actor.h	low byte of candidate +0x18
 KfTargetCandidateWord18Bytes	0x1	0x1	high	u8	supported	GAME 0x8003ebe0 lbu candidate+0x19	high byte used as animation step
-KfTargetGroup	0x0	0x1	unknown_00	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
+KfTargetGroup	0x0	0x1	definition_id	u8	supported	actor_copy_group_defaults actor+0x01 copy;0xff group terminator;actor asset references;KF1 definition_id	Actor definition ID for this target group
 KfTargetGroup	0x1	0x4	unknown_01	u8[4]	opaque	game/actor.h;retail GAME actor chain	first four bytes remain unresolved
 KfTargetGroup	0x5	0x1	unknown_05	u8	supported	GAME 0x8003b5d0 lbu at group+5	added to actor signed motion halfword after collision-free step
 KfTargetGroup	0x6	0x1	unknown_06	u8	supported	GAME 0x8003b5d0 lbu at group+6	passed as second argument to func_800248a8 on collision
-KfTargetGroup	0x7	0x2	unknown_07	u8[2]	opaque	game/actor.h	remaining unresolved bytes before +0x09
+KfTargetGroup	0x7	0x2	vab_resource_indices	u8[2]	supported	render_resource_dispatch indexes vab_flags with both bytes;resource_vab_update_range consumes flags	Two VAB resources kept resident while group actors render
 KfTargetGroup	0x9	0x1	render_depth	u8	supported	actor_load_records and actor_group_effects copy to actor+0x15;render_world_model depth argument	Default signed render depth/order for actors in the group
 KfTargetGroup	0xa	0x1	activation_range_cells	u8	supported	GAME 0x8003983c dormant branch;vector_distance_to_point radius	cell-scale radius gating dormant actor activation
 KfTargetGroup	0xb	0x1	deactivation_range_cells	u8	supported	GAME 0x8003983c active and wait-for-range-exit branches	cell-scale radius gating active actor deactivation

@@ -48,47 +48,47 @@ void render_scene_and_update_resources(void)
             goto actor_next;
         }
         if (actor->unknown_28 & 0x2000) {
-            layer = actor->unknown_03 | 0x20;
+            layer = actor->current_map_layer | 0x20;
         } else {
-            layer = actor->unknown_03;
+            layer = actor->current_map_layer;
         }
         if (actor->unknown_28 & 0x80000) goto actor_radius_check;
         if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
 actor_visible:
-        if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
+        if (resource_registry_get(actor->definition_id + 0x80) != 0) {
             position = actor_resolve_group_position(actor, &actor_position);
             if (actor->unknown_28 & 0x20) {
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
                 position = actor_position_ptr;
-                render_world_model(actor->unknown_03, actor->unknown_01 + 0x80,
+                render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
                                position, &rotation, (SVECTOR *)&actor->unknown_48,
                                &actor->animation_cache, &render_world_identity_matrix,
-                               actor->unknown_0c, actor->animation_phase,
-                               actor->unknown_14, actor->unknown_16,
-                               actor->unknown_13, (s8)actor->render_depth);
+                               actor->animation_id, actor->animation_phase,
+                               actor->lighting_override, actor->lighting_blend,
+                               actor->render_mode, (s8)actor->render_depth);
             } else {
                 rotation.x = actor->rotation.x;
                 rotation.y = actor->rotation.y + 0x800;
                 rotation.z = actor->rotation.z;
-                render_world_model(actor->unknown_03, actor->unknown_01 + 0x80,
+                render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
                                position, &rotation, (SVECTOR *)&actor->unknown_48,
                                &actor->animation_cache,
                                &game_graphics_runtime.render_state.view_matrix,
-                               actor->unknown_0c, actor->animation_phase,
-                               actor->unknown_14, actor->unknown_16,
-                               actor->unknown_13, (s8)actor->render_depth);
+                               actor->animation_id, actor->animation_phase,
+                               actor->lighting_override, actor->lighting_blend,
+                               actor->render_mode, (s8)actor->render_depth);
             }
         }
         group = &actor_state.target_groups[actor->group_index];
-        vab_flags[group->unknown_07[0]] = 1;
-        vab_flags[group->unknown_07[1]] = 1;
-        tmd_flags[actor->unknown_01] = 1;
+        vab_flags[group->vab_resource_indices[0]] = 1;
+        vab_flags[group->vab_resource_indices[1]] = 1;
+        tmd_flags[actor->definition_id] = 1;
         goto actor_next;
 actor_radius_check:
         if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
-            actor->unknown_03) goto actor_visible;
+            actor->current_map_layer) goto actor_visible;
 actor_next:
         actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
                                                sizeof *actor);
@@ -147,8 +147,8 @@ map_sound_action: {
                 /* This update starts at VAB slot 0x42. */
                 vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = 1;
             }
-            if ((s32)(object->extra_40.raw - frame) < 0) {
-                object->extra_40.raw = frame +
+            if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
+                object->extra_40.next_sound_frame = frame +
                     object->tail.fields.unknown_3e.value * 6;
                 distance = camera_position->vx -
                     (object->tail.fields.unknown_38 * 0x400 + object->position.vx);
@@ -177,7 +177,7 @@ map_sound_action: {
             }
             goto map_object_next;
 map_sound_outside:
-            object->extra_40.raw = frame +
+            object->extra_40.next_sound_frame = frame +
                 object->tail.fields.unknown_3e.value * 6;
             goto map_object_next;
         }
@@ -191,7 +191,7 @@ map_ordinary_object: {
 map_ordinary_visible:
             object_index = object->object_id;
             tmd_flags[object_index] = 1;
-            vab_flags[object_template->unknown_02[0]] = 1;
+            vab_flags[object_template->vab_resource_index] = 1;
             if (resource_registry_get(object_index + 0x100) != 0) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;

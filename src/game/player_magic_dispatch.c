@@ -272,12 +272,12 @@ regular_weapon:
     if (player_state.weapon_attack_phase >= player_state.weapon_attack_window
         && player_state.weapon_attack_phase
              < player_state.weapon_attack_window + phase_step) {
-        player_state.unknown_a0 = 0;
+        player_state.weapon_guard_active = 0;
         if (player_state.weapon_attack_mode == 1) {
             if (player_state.equipped_weapon_id == 13
                 && (player_state.flags_140.low & 0x80) != 0) {
                 player_state.weapon_attack_phase -= phase_step;
-                player_state.unknown_a0 = 1;
+                player_state.weapon_guard_active = 1;
                 return;
             }
             if (weapon->release_effect_id != 0xff) {

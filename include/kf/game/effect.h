@@ -20,7 +20,7 @@ typedef struct KfEffectRecord {
     u8 render_id;
     u8 animation_clip;
     u8 unknown_05;
-    u8 unknown_06;
+    u8 damage_multiplier_tenths;
     u8 phase;
     u8 render_flags;
     u8 render_queue_mode;
@@ -42,6 +42,7 @@ typedef struct KfEffectRecord {
 } KfEffectRecord;
 
 typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
+typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];
 typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];
 typedef char kf_effect_map_layer_mask_offset[(u32)&((KfEffectRecord *)0)->map_layer_mask == 0x0a ? 1 : -1];
 typedef char kf_effect_render_queue_mode_offset[(u32)&((KfEffectRecord *)0)->render_queue_mode == 0x09 ? 1 : -1];
@@ -66,21 +67,16 @@ typedef char kf_effect_trail_rotation_offset[(u32)&((KfEffectTrailRow *)0)->rota
 typedef struct KfMagicRecord {
     u8 menu_available;
     u8 unknown_01[3];
-    u8 unknown_04;
+    u8 player_status_flags;
     u8 unknown_05;
-    u16 unknown_06;
-    u16 unknown_08;
-    u16 unknown_0a;
-    u16 unknown_0c;
-    u16 unknown_0e;
-    u16 unknown_10;
-    u16 unknown_12;
-    u16 unknown_14;
+    u16 damage_components[8];
     u16 mp_cost;
     u8 unknown_18[2];
 } KfMagicRecord;
 
 typedef char kf_magic_record_size[sizeof(KfMagicRecord) == 26 ? 1 : -1];
+typedef char kf_magic_record_damage_components_offset[(u32)&((KfMagicRecord *)0)->damage_components == 0x06 ? 1 : -1];
+typedef char kf_magic_record_status_flags_offset[(u32)&((KfMagicRecord *)0)->player_status_flags == 0x04 ? 1 : -1];
 typedef char kf_magic_record_mp_cost_offset[(u32)&((KfMagicRecord *)0)->mp_cost == 0x16 ? 1 : -1];
 
 /* game_main_loop clears this complete region at startup. */
@@ -101,7 +97,7 @@ extern KfEffectState effect_state;
 
 int effect_magic_power(KfEffectRecord *effect);
 void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 power,
-                   u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
+                   u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position);
 s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
@@ -133,7 +129,7 @@ void effect_collision_backtrack(void);
 void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
 KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);
 KfEffectRecord *effect_pool_find_free(void);
-KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind, const VECTOR *position,
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8 kind, const VECTOR *position,
                               const SVECTOR *direction, ...);
 void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output,
                    const SVECTOR *scale);

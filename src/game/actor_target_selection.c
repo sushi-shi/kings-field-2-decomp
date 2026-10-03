@@ -86,7 +86,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 24:
     case 132:
         if ((actor->unknown_28 & 0x100) || target->word_1a.value < player_distance ||
-            !directed_intervals_overlap(actor->position.vy, actor->unknown_1e,
+            !directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
             goto done;
         }

@@ -69,7 +69,7 @@ void actor_fixup_group_targets(void)
     empty_offset = -1;
     base = (KfTargetCandidate *)actor_state.unknown_73a0;
     while (group_index < 40) {
-        if (group->unknown_00 == 0xff) {
+        if (group->definition_id == 0xff) {
             break;
         }
         slot = group->targets;
@@ -94,7 +94,7 @@ typedef struct KfActorLoadRecord {
     u8 cell_x;
     u8 spawn_chance;
     u8 death_drop_object_id;
-    u8 unknown_07;
+    u8 home_map_layer;
     u16 unknown_08;
     u16 unknown_0a;
     u16 unknown_0c;
@@ -116,9 +116,9 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->group_index = records->group_index;
             actor->unknown_04 = 0;
             actor->unknown_05 = records->unknown_02;
-            actor->unknown_06 = records->unknown_07;
-            actor->unknown_07[0] = records->cell_z;
-            actor->unknown_07[1] = records->cell_x;
+            actor->home_map_layer = records->home_map_layer;
+            actor->home_cell_z = records->cell_z;
+            actor->home_cell_x = records->cell_x;
             actor->spawn_chance = records->spawn_chance;
             actor->death_drop_object_id = records->death_drop_object_id;
             actor->unknown_20 = records->unknown_08;

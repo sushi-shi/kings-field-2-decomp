@@ -18,7 +18,7 @@ KfEffectTrailRow effect_trail_rows[4][24];
 RODATA(0x8001249c, 0x1ec)
 
 ADDRESS(0x80040308, 0x13e4)
-KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8 kind,
                               const VECTOR *position,
                               const SVECTOR *direction, ...)
 {
@@ -48,7 +48,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->direction.vx = 0;
     }
     record->phase = 0;
-    record->unknown_06 = id;
+    record->damage_multiplier_tenths = damage_multiplier_tenths;
     record->scale_z = 0x1000;
     record->scale_y = 0x1000;
     record->scale_x = 0x1000;
@@ -203,9 +203,9 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->direction.vx += (rand() >> 8) - 64;
         record->direction.vy += (rand() >> 8) - 64;
         record->direction.vz += (rand() >> 8) - 64;
+        record->unknown_3c[4] = va[1];
         record->updates_remaining = 100;
         record->cooldown = 3;
-        record->unknown_3c[4] = va[1];
         effect_play_spatial_sound(record, 0x26);
         break;
     }

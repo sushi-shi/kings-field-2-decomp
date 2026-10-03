@@ -9,11 +9,11 @@ s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index, VECT
     struct KfEulerAngles rotation;
     SVECTOR offset;
 
-    if (animation_sample_vertex(actor->unknown_01 + 128, actor->unknown_0c,
+    if (animation_sample_vertex(actor->definition_id + 128, actor->animation_id,
                       actor->animation_phase, vertex_index, &offset) != 0) {
         offset.vx = 0;
-        offset.vy = -(s32)actor->unknown_1e >> 1;
-        offset.vz = -(s32)actor->unknown_1c;
+        offset.vy = -(s32)actor->collision_height >> 1;
+        offset.vz = -(s32)actor->collision_radius;
     } else {
         offset.vx = ((s32)offset.vx * (s16)actor->unknown_48) >> KF_FIXED12_BITS;
         offset.vy = ((s32)offset.vy * (s16)actor->unknown_4a.value) >> KF_FIXED12_BITS;
@@ -75,42 +75,42 @@ void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast
         }
     }
 
-    if (actor->unknown_0c == first) {
+    if (actor->animation_id == first) {
         actor_advance_animation_wrapped(actor, phase_step);
         if (actor_animation_crossed_phase(actor, 0)) {
             actor_set_animation_if_changed(selected);
         }
-    } else if (actor->unknown_0c == reverse) {
+    } else if (actor->animation_id == reverse) {
         if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
             actor_advance_animation_clamped(actor, phase_step);
-        } else if (selected != actor->unknown_0c) {
+        } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 actor_set_animation(selected);
             }
         }
-    } else if (actor->unknown_0c == forward) {
+    } else if (actor->animation_id == forward) {
         if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
             actor_advance_animation_clamped(actor, phase_step);
-        } else if (selected != actor->unknown_0c) {
+        } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 actor_set_animation(selected);
             }
         }
-    } else if (actor->unknown_0c == fast) {
+    } else if (actor->animation_id == fast) {
         if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
             actor_advance_animation_clamped(actor, phase_step);
-        } else if (selected != actor->unknown_0c) {
+        } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 actor_set_animation(selected);
             }
         }
-    } else if (actor->unknown_0c == slow) {
+    } else if (actor->animation_id == slow) {
         if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
             actor_advance_animation_clamped(actor, phase_step);
-        } else if (selected != actor->unknown_0c) {
+        } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 actor_set_animation(selected);

@@ -49,7 +49,7 @@ s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
         goto move;
     }
     target_position.vx = target->position.vx;
-    target_position.vy = target->position.vy - (target->unknown_1e >> 1);
+    target_position.vy = target->position.vy - (target->collision_height >> 1);
     target_position.vz = target->position.vz;
 
 aim:

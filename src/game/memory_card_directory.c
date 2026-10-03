@@ -160,7 +160,7 @@ s32 memory_card_read_slot(s32 slot)
     u32 checksum;
 
     attempt = 0;
-    do {
+    for (;;) {
         strcat(path, memory_card_file_prefix);
         path[17] = slot + '0';
         path[18] = 0;
@@ -179,7 +179,11 @@ s32 memory_card_read_slot(s32 slot)
             }
             status = 2;
         }
-    } while (attempt++ < 2);
+        if (attempt >= 2) {
+            break;
+        }
+        attempt++;
+    }
     return status;
 }
 

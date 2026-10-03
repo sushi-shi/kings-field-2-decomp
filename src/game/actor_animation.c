@@ -27,12 +27,12 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->unknown_26;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->unknown_1c + radius, actor->unknown_1e, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->unknown_1c + radius, actor->unknown_1e, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
             }
         }
@@ -62,12 +62,12 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->unknown_26;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->unknown_1c + radius, actor->unknown_1e, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->unknown_1c + radius, actor->unknown_1e, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
             }
         }
@@ -165,12 +165,12 @@ retry_move:
     proposed.vx = actor->position.vx + motion_x;
     proposed.vz = actor->position.vz + motion_z;
     collision = collision_query_world(proposed.vx, actor->position.vy, proposed.vz,
-        actor->unknown_1c,
-        actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+        actor->collision_radius,
+        actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
         actor_state.unknown_93a4);
     if (collision == 0) {
     check_floor:
-        if (actor->unknown_0d == 0 && (flags & 0x24)) {
+        if (actor->vertical_motion_state == 0 && (flags & 0x24)) {
             s32 floor_height = KF_COLLISION_CACHE_RESULT;
             s32 probe_x;
             s32 probe_z;
@@ -178,26 +178,26 @@ retry_move:
             if (motion_x == 0) {
                 probe_x = 0;
             } else if (motion_x > 0) {
-                probe_x = actor->unknown_1c * 2;
+                probe_x = actor->collision_radius * 2;
             } else {
-                probe_x = -(s32)actor->unknown_1c * 2;
+                probe_x = -(s32)actor->collision_radius * 2;
             }
             if (motion_z == 0) {
                 probe_z = 0;
             } else if (motion_z > 0) {
-                probe_z = actor->unknown_1c * 2;
+                probe_z = actor->collision_radius * 2;
             } else {
-                probe_z = -(s32)actor->unknown_1c * 2;
+                probe_z = -(s32)actor->collision_radius * 2;
             }
             collision_query_shapes_with_layer_sample(actor->position.vx, actor->position.vy,
-                actor->position.vz + probe_z, actor->unknown_1c,
-                actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
+                actor->position.vz + probe_z, actor->collision_radius,
+                actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
             collision_query_shapes_with_layer_sample(actor->position.vx + probe_x, actor->position.vy,
-                actor->position.vz, actor->unknown_1c,
-                actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
+                actor->position.vz, actor->collision_radius,
+                actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }

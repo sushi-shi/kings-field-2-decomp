@@ -205,7 +205,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     s32 poison_duration;
     u16 flags = status_flags;
 
-    if (player_state.unknown_a0 != 0) {
+    if (player_state.weapon_guard_active != 0) {
         return;
     }
     if (player_state.equipped_accessory_id == 0x36

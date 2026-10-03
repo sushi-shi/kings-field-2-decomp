@@ -233,11 +233,11 @@ typedef union KfTargetReference {
 typedef char kf_target_reference_size[sizeof(KfTargetReference) == 4 ? 1 : -1];
 
 typedef struct KfTargetGroup {
-    u8 unknown_00;
+    u8 definition_id;
     u8 unknown_01[4];
     u8 unknown_05;
     u8 unknown_06;
-    u8 unknown_07[2];
+    u8 vab_resource_indices[2];
     u8 render_depth;
     u8 activation_range_cells;
     u8 deactivation_range_cells;
@@ -258,8 +258,12 @@ typedef struct KfTargetGroup {
     KfTargetReference targets[16];
 } KfTargetGroup;
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
+typedef char kf_target_group_definition_id_offset[
+    (u32)&((KfTargetGroup *)0)->definition_id == 0x00 ? 1 : -1];
 typedef char kf_target_group_render_depth_offset[
     (u32)&((KfTargetGroup *)0)->render_depth == 0x09 ? 1 : -1];
+typedef char kf_target_group_vab_resource_indices_offset[
+    (u32)&((KfTargetGroup *)0)->vab_resource_indices == 0x07 ? 1 : -1];
 typedef char kf_target_group_activation_range_offset[
     (u32)&((KfTargetGroup *)0)->activation_range_cells == 0x0a ? 1 : -1];
 typedef char kf_target_group_deactivation_range_offset[
@@ -346,31 +350,32 @@ typedef char kf_actor_tail_72_baseline_offset[
  * helpers. Other fields remain open. */
 typedef struct KfActor {
     u8 slot_state;
-    u8 unknown_01;
+    u8 definition_id;
     u8 group_index;
-    u8 unknown_03;
+    u8 current_map_layer;
     u8 unknown_04;
     u8 unknown_05;
-    u8 unknown_06;
-    u8 unknown_07[2];
+    u8 home_map_layer;
+    u8 home_cell_z;
+    u8 home_cell_x;
     u8 lifecycle;
     u8 spawn_chance;
     u8 death_drop_object_id;
-    u8 unknown_0c;
-    u8 unknown_0d;
+    u8 animation_id;
+    u8 vertical_motion_state;
     u8 target_type;
     u8 unknown_0f;
     u8 previous_target_type;
     u8 unknown_11;
     u8 unknown_12;
-    u8 unknown_13;
-    u8 unknown_14;
+    u8 render_mode;
+    u8 lighting_override;
     u8 render_depth;
-    s16 unknown_16;
+    s16 lighting_blend;
     u16 animation_phase;
-    u16 unknown_1a;
-    u16 unknown_1c;
-    u16 unknown_1e;
+    u16 health;
+    u16 collision_radius;
+    u16 collision_height;
     u16 unknown_20;
     s16 unknown_22;
     s16 unknown_24;
@@ -404,11 +409,37 @@ typedef struct KfActor {
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
+typedef char kf_actor_definition_id_offset[
+    (u32)&((KfActor *)0)->definition_id == 0x01 ? 1 : -1];
+typedef char kf_actor_current_map_layer_offset[
+    (u32)&((KfActor *)0)->current_map_layer == 0x03 ? 1 : -1];
+typedef char kf_actor_home_map_layer_offset[
+    (u32)&((KfActor *)0)->home_map_layer == 0x06 ? 1 : -1];
+typedef char kf_actor_home_cell_z_offset[
+    (u32)&((KfActor *)0)->home_cell_z == 0x07 ? 1 : -1];
+typedef char kf_actor_home_cell_x_offset[
+    (u32)&((KfActor *)0)->home_cell_x == 0x08 ? 1 : -1];
+typedef char kf_actor_animation_id_offset[
+    (u32)&((KfActor *)0)->animation_id == 0x0c ? 1 : -1];
+typedef char kf_actor_vertical_motion_state_offset[
+    (u32)&((KfActor *)0)->vertical_motion_state == 0x0d ? 1 : -1];
+typedef char kf_actor_render_mode_offset[
+    (u32)&((KfActor *)0)->render_mode == 0x13 ? 1 : -1];
+typedef char kf_actor_lighting_override_offset[
+    (u32)&((KfActor *)0)->lighting_override == 0x14 ? 1 : -1];
+typedef char kf_actor_lighting_blend_offset[
+    (u32)&((KfActor *)0)->lighting_blend == 0x16 ? 1 : -1];
 typedef char kf_actor_spawn_chance_offset[(u32)&((KfActor *)0)->spawn_chance == 0x0a ? 1 : -1];
 typedef char kf_actor_death_drop_object_offset[
     (u32)&((KfActor *)0)->death_drop_object_id == 0x0b ? 1 : -1];
 typedef char kf_actor_render_depth_offset[
     (u32)&((KfActor *)0)->render_depth == 0x15 ? 1 : -1];
+typedef char kf_actor_health_offset[
+    (u32)&((KfActor *)0)->health == 0x1a ? 1 : -1];
+typedef char kf_actor_collision_radius_offset[
+    (u32)&((KfActor *)0)->collision_radius == 0x1c ? 1 : -1];
+typedef char kf_actor_collision_height_offset[
+    (u32)&((KfActor *)0)->collision_height == 0x1e ? 1 : -1];
 typedef char kf_actor_phase_offset[(u32)&((KfActor *)0)->animation_phase == 0x18 ? 1 : -1];
 typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1 : -1];
 typedef char kf_actor_previous_y_offset[(u32)&((KfActor *)0)->unknown_3c == 0x3c ? 1 : -1];

@@ -118,6 +118,14 @@ typedef union KfPlayerViewRotationOffset {
 } KfPlayerViewRotationOffset;
 typedef char kf_player_view_rotation_offset_size[sizeof(KfPlayerViewRotationOffset) == 8 ? 1 : -1];
 
+typedef struct KfQueuedMagicAction {
+    u8 magic_id;
+    u8 casts_remaining;
+    u8 repeat_interval;
+    u8 countdown;
+} KfQueuedMagicAction;
+typedef char kf_queued_magic_action_size[sizeof(KfQueuedMagicAction) == 4 ? 1 : -1];
+
 typedef struct KfPlayerDamageReaction {
     SVECTOR rotation;
     SVECTOR motion;
@@ -300,7 +308,7 @@ typedef struct KfPlayerState {
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
     u8 weapon_attack_fully_charged;
-    u8 unknown_a0;
+    u8 weapon_guard_active;
     u8 unknown_a1[3];
     KfEquipmentRecord *equipped_head_record;
     KfEquipmentRecord *equipped_body_record;
@@ -325,7 +333,9 @@ typedef struct KfPlayerState {
     u8 death_state;
     u8 unknown_ce[2];
     u8 vertical_motion_state;
-    u8 unknown_d1[7];
+    KfQueuedMagicAction queued_magic_action;
+    u8 fatal_fall_latch;
+    u8 unknown_d6[2];
     VECTOR camera_position;
     SVECTOR frame_displacement;
     KfPlayerViewRotation camera_rotation;
@@ -333,7 +343,8 @@ typedef struct KfPlayerState {
     s16 reaction_rotation_offset[3];
     s16 death_transition_frame;
     KfPlayerViewRotationOffset view_rotation_offset;
-    s16 unknown_110[3];
+    s16 vertical_motion_pitch_offset;
+    s16 unknown_112[2];
     u8 unknown_116[2];
     SVECTOR magic_origin_offset;
     s32 collision_lower_clearance;
@@ -371,8 +382,14 @@ typedef char kf_player_equipped_head_id_offset[
     (u32)&((KfPlayerState *)0)->equipped_head_id == 0xc0 ? 1 : -1];
 typedef char kf_player_death_state_offset[
     (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
+typedef char kf_player_queued_magic_action_offset[
+    (u32)&((KfPlayerState *)0)->queued_magic_action == 0xd1 ? 1 : -1];
+typedef char kf_player_fatal_fall_latch_offset[
+    (u32)&((KfPlayerState *)0)->fatal_fall_latch == 0xd5 ? 1 : -1];
 typedef char kf_player_frame_displacement_offset[
     (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
+typedef char kf_player_vertical_motion_pitch_offset[
+    (u32)&((KfPlayerState *)0)->vertical_motion_pitch_offset == 0x110 ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[

@@ -66,7 +66,7 @@ void player_reset_status(void)
     player_state.curse_phase_limit = 0;
     player_state.curse_strength = 0;
     player_state.poison_timer = 0;
-    player_state.unknown_ce[7] = 0;
+    player_state.fatal_fall_latch = 0;
     player_state.vitals.current_hp = player_state.vitals.maximum_hp;
     player_state.vitals.current_mp = player_state.vitals.maximum_mp;
     player_reset_view();
@@ -180,7 +180,7 @@ void player_sync_position_to_map(void)
                       PLAYER_MAP_PROBE_RADIUS, PLAYER_MAP_PROBE_HEIGHT);
     player_update_collision_bounds();
     player_state.unknown_09[1] = 1;
-    player_state.unknown_ce[2] = 0;
+    player_state.vertical_motion_state = 0;
     player_state.vertical_velocity = 0;
     player_state.death_state = 0;
     player_clear_motion();
@@ -335,7 +335,7 @@ void player_equip_weapon(u8 weapon_id)
     player_state.weapon_attack_phase = PLAYER_WEAPON_ATTACK_INACTIVE;
     player_state.weapon_animation_cache = NULL;
     player_state.weapon_magic_shots_remaining = 0;
-    player_state.unknown_a0 = 0;
+    player_state.weapon_guard_active = 0;
     player_recalculate_combat_stats();
 }
 

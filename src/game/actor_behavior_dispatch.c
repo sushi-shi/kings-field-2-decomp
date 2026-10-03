@@ -25,7 +25,7 @@ void actor_update_behavior(void)
         actor_state.unknown_93a4 = 0x93;
     }
     map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
-                   actor->unknown_1c, -1);
+                   actor->collision_radius, -1);
 
     if (target->sound_code != 0xff) {
         trigger = target->sound_trigger;
@@ -92,20 +92,20 @@ dispatch_action:
 
                 if (effect_id != 0) {
                     map_object_spawn_scattered_effect(effect_id, &actor->position,
-                                   -(actor->unknown_1e >> 1));
+                                   -(actor->collision_height >> 1));
                 }
                 if (actor->slot_state == 0 || actor->slot_state == 4) {
                     if (target->word_0c.bytes.low != 0xff &&
                         (rand() >> 7) < target->word_0c.bytes.high) {
                         map_object_spawn_effect(
                             1, target->word_0c.bytes.low, &actor->position,
-                            -(actor->unknown_1e >> 1));
+                            -(actor->collision_height >> 1));
                     }
                 } else if (actor->slot_state == 1 &&
                            actor->death_drop_object_id != 0xff) {
                     map_object_spawn_effect(
                         0, actor->death_drop_object_id, &actor->position,
-                        -(actor->unknown_1e >> 1));
+                        -(actor->collision_height >> 1));
                 }
             }
             if (actor->animation_phase >= 0xfff || target->animation_step == 0) {
@@ -122,14 +122,14 @@ dispatch_action:
                 goto case3_motion;
             }
             if (old_state == 20) {
-                actor->unknown_14 = 0x42;
-                actor->unknown_16 = 0x400;
-                actor->unknown_13 = 1;
+                actor->lighting_override = 0x42;
+                actor->lighting_blend = 0x400;
+                actor->render_mode = 1;
             } else if (old_state < 38) {
-                if (actor->unknown_16 < 0x1000) {
-                    actor->unknown_16 += 192;
+                if (actor->lighting_blend < 0x1000) {
+                    actor->lighting_blend += 192;
                 } else {
-                    actor->unknown_16 = 0x1000;
+                    actor->lighting_blend = 0x1000;
                 }
             } else {
                 state_8017d118.active_table[19](actor);
@@ -187,10 +187,10 @@ case3_motion:
             actor->tail_72.angles.y = 0;
             actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
-                collision_sample_map_layer_height(actor->unknown_06,
-                    (actor->unknown_07[1] << 11) + actor->unknown_24,
-                    (actor->unknown_07[0] << 11) + actor->unknown_22,
-                    actor->unknown_1c, actor->unknown_1e);
+                collision_sample_map_layer_height(actor->home_map_layer,
+                    (actor->home_cell_x << 11) + actor->unknown_24,
+                    (actor->home_cell_z << 11) + actor->unknown_22,
+                    actor->collision_radius, actor->collision_height);
             actor_set_animation_if_changed(target->unknown_01[0]);
             actor_suspend_vertical_motion();
             motion_flags = 3;
@@ -387,7 +387,7 @@ case3_motion:
             actor_damp_horizontal_motion(group->unknown_01[2] * 2, 10);
             break;
         case 2:
-            if (actor->unknown_0d == 0) {
+            if (actor->vertical_motion_state == 0) {
                 actor->state_70.signed_state = 3;
                 actor_set_animation(target->word_14.bytes[1]);
             } else {
@@ -767,8 +767,8 @@ case3_motion:
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = 0;
             actor_set_animation(target->unknown_01[0]);
-            actor->unknown_1c = target->word_14.value;
-            actor->unknown_1e = target->word_16.value;
+            actor->collision_radius = target->word_14.value;
+            actor->collision_height = target->word_16.value;
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -780,13 +780,13 @@ case3_motion:
             break;
         case 1:
             actor_advance_animation_clamped(actor, target->animation_step);
-            actor->unknown_1c = fixed_lerp_q12(target->word_14.value,
+            actor->collision_radius = fixed_lerp_q12(target->word_14.value,
                 group->collision_radius, actor->animation_phase);
-            actor->unknown_1e = fixed_lerp_q12(target->word_16.value,
+            actor->collision_height = fixed_lerp_q12(target->word_16.value,
                 group->collision_height, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {
-                actor->unknown_1c = group->collision_radius;
-                actor->unknown_1e = group->collision_height;
+                actor->collision_radius = group->collision_radius;
+                actor->collision_height = group->collision_height;
                 actor->state_70.signed_state = 2;
                 actor->tail_72.signed_state = target->word_10.value;
                 actor_set_animation(target->word_18.bytes.low);
@@ -836,8 +836,8 @@ case3_motion:
             }
             actor->state_70.signed_state = 1;
             actor->tail_72.signed_state = 8;
-            actor->unknown_1c = group->collision_radius;
-            actor->unknown_1e = group->collision_height;
+            actor->collision_radius = group->collision_radius;
+            actor->collision_height = group->collision_height;
             actor->position.vy += 2048;
             group_height = group->unknown_32;
             actor->unknown_4c = group_height;
@@ -847,7 +847,7 @@ case3_motion:
         }
             /* fall through */
         case 1:
-            actor->unknown_0d = 0;
+            actor->vertical_motion_state = 0;
             goto case29_shared_motion;
         }
         break;
@@ -862,7 +862,7 @@ case3_motion:
             actor->tail_72.script.word_index = 0;
             actor->tail_72.script.unknown_74 = 0;
             if (target->unknown_05[2] == 1) {
-                actor->unknown_0d = 16;
+                actor->vertical_motion_state = 16;
             }
         }
         actor_advance_animation_clamped(actor, target->animation_step);
@@ -945,8 +945,8 @@ case3_motion:
                 actor->state_70.signed_state = 1;
             } else {
                 actor->tail_72.signed_state = actor_turn_and_move_toward_point(
-                    (actor->unknown_07[1] << 11) + actor->unknown_24,
-                    (actor->unknown_07[0] << 11) + actor->unknown_22,
+                    (actor->home_cell_x << 11) + actor->unknown_24,
+                    (actor->home_cell_z << 11) + actor->unknown_22,
                     target->word_0e.value, target->word_10.value,
                     actor->tail_72.signed_state,
                     group->unknown_01[2],
@@ -968,15 +968,15 @@ case3_motion:
         case 2: {
             KfTargetCandidate *next_target;
             actor_advance_animation_clamped(actor, target->animation_step);
-            actor->unknown_1c = fixed_lerp_q12(
+            actor->collision_radius = fixed_lerp_q12(
                 group->collision_radius,
                 target->word_12.value, actor->animation_phase);
-            actor->unknown_1e = fixed_lerp_q12(
+            actor->collision_height = fixed_lerp_q12(
                 group->collision_height,
                 target->word_14.value, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {
-                actor->unknown_1c = target->word_12.value;
-                actor->unknown_1e = target->word_14.value;
+                actor->collision_radius = target->word_12.value;
+                actor->collision_height = target->word_14.value;
                 next_target = actor_find_target_of_type(group, 21);
                 if (next_target != 0) {
                     actor_set_target(actor, next_target);
@@ -1032,7 +1032,7 @@ case3_motion:
             actor->unknown_54 = 0;
             actor->unknown_52 = 0;
             actor->unknown_50 = 0;
-            actor->unknown_0d = 16;
+            actor->vertical_motion_state = 16;
         }
         break;
     }
@@ -1049,8 +1049,8 @@ case3_motion:
         next.vy = actor->position.vy + actor->unknown_52;
         next.vz = actor->position.vz + actor->unknown_54;
         collision = collision_query_world(
-            next.vx, next.vy, next.vz, actor->unknown_1c,
-            actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+            next.vx, next.vy, next.vz, actor->collision_radius,
+            actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
             actor_state.unknown_93a4);
         if (collision == 0) {
         case30_position:
@@ -1074,7 +1074,7 @@ case3_motion:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= 0xfff) {
             actor_select_target_type_in_own_group(actor, 3);
-            actor->unknown_0d = 16;
+            actor->vertical_motion_state = 16;
         }
         break;
     }
@@ -1094,7 +1094,7 @@ case3_motion:
         u8 slot_state = actor->slot_state;
 
         if (slot_state == 3) {
-            actor->unknown_03 = 0;
+            actor->current_map_layer = 0;
             if (other->lifecycle != 1) {
                 actor->lifecycle = 0;
                 goto behavior_done;
@@ -1108,15 +1108,15 @@ case3_motion:
         } else {
             s32 collision;
 
-            actor->unknown_03 = other->unknown_03;
+            actor->current_map_layer = other->current_map_layer;
             if (other->lifecycle != 1) {
                 actor->unknown_28 = (actor->unknown_28 & ~0x10) | 0x100;
                 collision = collision_query_world(
                     actor->position.vx, actor->position.vy,
-                    actor->position.vz, actor->unknown_1c,
-                    actor->unknown_1e, 0x81);
+                    actor->position.vz, actor->collision_radius,
+                    actor->collision_height, 0x81);
                 if (collision & 0x80) {
-                    actor->position.vx += 800 + actor->unknown_1c;
+                    actor->position.vx += 800 + actor->collision_radius;
                 }
                 if (collision & 0xf) {
                     actor->unknown_28 |= 0x400;
@@ -1159,6 +1159,6 @@ case3_motion:
 behavior_done:
     if (actor->lifecycle == 1) {
         map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
-                       actor->unknown_1c, 1);
+                       actor->collision_radius, 1);
     }
 }

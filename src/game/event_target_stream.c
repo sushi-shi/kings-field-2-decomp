@@ -25,7 +25,7 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
     step = phase_step & 0xfffe;
     half_step = (u32)step >> 1;
     final_phase = target_phase - half_step;
-    actor->unknown_0c = state;
+    actor->animation_id = state;
     actor->animation_phase = phase;
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
@@ -94,7 +94,7 @@ marker_record:
             if (candidate->word_10.bytes.fallback_offset < offset) {
                 candidate->word_10.bytes.fallback_offset = offset;
             }
-            event_state.control.bytes[0x3f] = actor->unknown_01;
+            event_state.control.bytes[0x3f] = actor->definition_id;
             candidate->word_12.bytes.marker_state = 0;
             goto use_fallback;
         }
@@ -124,10 +124,10 @@ void event_target_stream_execute(KfActor *actor)
     restore_state = 0;
     repeat = 0;
     if (candidate->word_10.bytes.fallback_offset == 0) {
-        event_state.control.bytes[0x3f] = actor->unknown_01;
+        event_state.control.bytes[0x3f] = actor->definition_id;
     }
     cursor = event_target_stream_resolve_cursor(actor);
-    if (event_state.control.bytes[0x3f] != actor->unknown_01 &&
+    if (event_state.control.bytes[0x3f] != actor->definition_id &&
         candidate->word_12.bytes.marker_state == 1) {
         while (*cursor++ != 0xf0) {
         }
@@ -174,7 +174,7 @@ void event_target_stream_execute(KfActor *actor)
             repeat = *cursor;
             goto advance;
         case 6:
-            event_state.control.bytes[0x3f] = actor->unknown_01;
+            event_state.control.bytes[0x3f] = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
@@ -194,10 +194,10 @@ void event_target_stream_execute(KfActor *actor)
 execute:
         if (restore_state == 0 && candidate->unknown_01[0] != 0xff) {
             u16 phase = actor->animation_phase;
-            saved_state = actor->unknown_0c;
+            saved_state = actor->animation_id;
             restore_state = 1;
             if (phase != 0) {
-                actor_animation_seek_phase(actor, actor->unknown_0c,
+                actor_animation_seek_phase(actor, actor->animation_id,
                               phase, 0, actor->animation_step);
             }
             actor_animation_seek_phase(actor, candidate->unknown_01[0], 0, 0xfff,
@@ -242,11 +242,11 @@ after_script:
     if (game_counter_bytes[0x53] < old_counter) {
         event_state.control.bytes[0x1c] = 1;
     }
-    event_state.control.bytes[0x3f] = actor->unknown_01;
+    event_state.control.bytes[0x3f] = actor->definition_id;
     if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
         actor_animation_seek_phase(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
                       candidate->word_0e.value);
-        actor->unknown_0c = saved_state;
+        actor->animation_id = saved_state;
     }
     event_state.state_word = 1;
     player_clear_motion();

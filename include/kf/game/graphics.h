@@ -71,10 +71,10 @@ typedef struct KfNotificationControl {
 
 typedef struct KfFloorItem {
     u8 kind;
-    u8 unknown_01;
-    u8 unknown_02;
-    u8 unknown_03;
-    u16 unknown_04;
+    u8 update_interval;
+    u8 frames_until_update;
+    u8 row_step;
+    u16 row_offset;
     RECT rect;
     u16 unknown_0e;
     u_long *pixels;
@@ -263,7 +263,7 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);
 void refresh_collision_row_rotations(void);
-void floor_item_capture_image(s32 x, s32 y, u8 value_01, u8 value_03,
+void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
                    s32 kind, s32 width_bytes, u16 height);
 void display_begin_frame(void);
 void display_present_frame(void);

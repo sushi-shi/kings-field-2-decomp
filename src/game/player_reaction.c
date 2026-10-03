@@ -72,17 +72,17 @@ void player_update_actions_and_charge(void)
         }
     }
 
-    if (player_state.unknown_d1[0] != 0xff) {
-        timer = player_state.unknown_d1[3] - 1;
-        player_state.unknown_d1[3] = timer;
+    if (player_state.queued_magic_action.magic_id != 0xff) {
+        timer = player_state.queued_magic_action.countdown - 1;
+        player_state.queued_magic_action.countdown = timer;
         if (timer == 0) {
-            player_dispatch_magic_effect(player_state.unknown_d1[0]);
-            timer = player_state.unknown_d1[1] - 1;
-            player_state.unknown_d1[1] = timer;
+            player_dispatch_magic_effect(player_state.queued_magic_action.magic_id);
+            timer = player_state.queued_magic_action.casts_remaining - 1;
+            player_state.queued_magic_action.casts_remaining = timer;
             if (timer == 0) {
-                player_state.unknown_d1[0] = 0xff;
+                player_state.queued_magic_action.magic_id = 0xff;
             } else {
-                player_state.unknown_d1[3] = player_state.unknown_d1[2];
+                player_state.queued_magic_action.countdown = player_state.queued_magic_action.repeat_interval;
             }
         }
     }
@@ -245,9 +245,9 @@ void player_reset_reaction_state(void)
     player_state.view_rotation_offset.components[2] = 0;
     player_state.view_rotation_offset.components[1] = 0;
     player_state.view_rotation_offset.components[0] = 0;
-    player_state.unknown_110[2] = 0;
-    player_state.unknown_110[1] = 0;
-    player_state.unknown_110[0] = 0;
+    player_state.unknown_112[1] = 0;
+    player_state.unknown_112[0] = 0;
+    player_state.vertical_motion_pitch_offset = 0;
 }
 
 ADDRESS(0x800291d0, 0x1c)
@@ -543,7 +543,7 @@ void player_update_frame(void)
             accumulate_color_overlay(60, 30, 0, 0xc00);
         }
     }
-    if (player_state.unknown_a0 != 0) {
+    if (player_state.weapon_guard_active != 0) {
         player_state.movement_step_limit >>= 1;
         player_state.turn_step_limit >>= 1;
     }
@@ -671,7 +671,7 @@ update_reaction_pose:
         if (player_state.death_transition_frame == 31
             && player_state.collision_lower_clearance > -1001
             && player_state.collision_upper_clearance >= 0
-            && player_state.unknown_d1[4] == 0
+            && player_state.fatal_fall_latch == 0
             && (player_state.equipped_accessory_id == 54
                 || player_state.equipped_extra_id == 54)
             && game_counter_bytes[0x53] != 0) {
@@ -776,15 +776,15 @@ after_reaction:
     player_state.camera_rotation.angles[0] =
         player_state.camera_rotation_target.angles[0]
         + player_state.reaction_rotation_offset[0] + player_state.view_rotation_offset.components[0]
-        + player_state.unknown_110[0];
+        + player_state.vertical_motion_pitch_offset;
     player_state.camera_rotation.angles[1] =
         player_state.camera_rotation_target.angles[1]
         + player_state.reaction_rotation_offset[1] + player_state.view_rotation_offset.components[1]
-        + player_state.unknown_110[1];
+        + player_state.unknown_112[0];
     player_state.camera_rotation.angles[2] =
         player_state.camera_rotation_target.angles[2]
         + player_state.reaction_rotation_offset[2] + player_state.view_rotation_offset.components[2]
-        + player_state.unknown_110[2];
+        + player_state.unknown_112[1];
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);
     actor_state.unknown_93a0 = 0;

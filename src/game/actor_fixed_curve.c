@@ -93,7 +93,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    if (actor->unknown_1a != 0 && kind == 0x10) {
+    if (actor->health != 0 && kind == 0x10) {
         if (mode == 2) {
             player_increment_magic_training();
         } else if (mode == 1 && (u16)amount >= 2500) {
@@ -121,9 +121,9 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         }
     }
 
-    remaining = (u16)actor->unknown_1a - applied;
+    remaining = (u16)actor->health - applied;
     if (remaining <= 0) {
-        if (actor->unknown_1a != 0 && kind == 0x10) {
+        if (actor->health != 0 && kind == 0x10) {
             player_add_experience(group->experience_reward);
         }
         actor_select_target_type_in_own_group(actor, 3);
@@ -140,13 +140,13 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
                 u8 chance = candidate->unknown_01[1];
                 if (chance == 0xff || (rand() >> 7) < chance) {
                     actor_set_target(actor, candidate);
-                    actor->unknown_1a = remaining;
+                    actor->health = remaining;
                     goto update_motion;
                 }
             }
         } while (--remaining_slots != -1);
     }
-    actor->unknown_1a = remaining;
+    actor->health = remaining;
 
 update_motion:
     if (actor->unknown_28 & 0x10) {
@@ -163,7 +163,7 @@ update_motion:
         s32 speed;
 
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
-                      actor->position.vy - (actor->unknown_1e >> 1) - position->vy,
+                      actor->position.vy - (actor->collision_height >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
         pitch_yaw_to_forward_vector(&angles, motion);
         speed = SquareRoot0(SquareRoot0(applied << 11));
@@ -184,5 +184,5 @@ update_motion:
             }
         }
     }
-    actor->unknown_0d = 0x10;
+    actor->vertical_motion_state = 0x10;
 }

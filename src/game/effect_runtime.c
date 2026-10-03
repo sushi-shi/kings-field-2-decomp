@@ -587,7 +587,7 @@ void effect_update_dispatch(void)
             const KfActor *actor =
                 &actor_state.actors[(s16)*(u16 *)&record->unknown_3c[4]];
 
-            spread = actor->unknown_1c;
+            spread = actor->collision_radius;
             spawn_position.vx = actor->position.vx;
             spawn_position.vz = actor->position.vz;
             spawn_position.vy = actor->position.vy;
@@ -939,8 +939,8 @@ void effect_update_dispatch(void)
             goto kind5_count_ready;
         kind5_actor_count:
             actor = &actor_state.actors[record->unknown_3c[5]];
-            count = asset_vertex_count(actor->unknown_01 + 128,
-                                       actor->unknown_0c);
+            count = asset_vertex_count(actor->definition_id + 128,
+                                       actor->animation_id);
             if (count == 0) {
                 goto kind5_default_count;
             }
@@ -991,10 +991,10 @@ void effect_update_dispatch(void)
             if (record->unknown_3c[4] != 0) {
                 step = (u16)effect_magic_power(record);
                 actor_apply_magic_to_actor(record->unknown_3c[5], step,
-                              magic->unknown_06, magic->unknown_08,
-                              magic->unknown_0a, magic->unknown_0c,
-                              magic->unknown_0e, magic->unknown_10,
-                              magic->unknown_12, magic->unknown_14,
+                              magic->damage_components[0], magic->damage_components[1],
+                              magic->damage_components[2], magic->damage_components[3],
+                              magic->damage_components[4], magic->damage_components[5],
+                              magic->damage_components[6], magic->damage_components[7],
                               (matches << 12) / record->unknown_3c[4],
                               (record->type & 0x30) | 2,
                               &actor->position);
@@ -1103,7 +1103,7 @@ void effect_update_dispatch(void)
             const KfActor *actor = &actor_state.actors[actor_index];
 
             target.vx = actor->position.vx;
-            target.vy = actor->position.vy - (actor->unknown_1e >> 1);
+            target.vy = actor->position.vy - (actor->collision_height >> 1);
             target.vz = actor->position.vz;
             collision = effect_target_motion(&target, 600, 50,
                                        0, 0, 10, (s32)0x80000000);
@@ -1368,7 +1368,7 @@ void effect_update_dispatch(void)
                            (const SVECTOR *)&record->scale_x);
             actor = &actor_state.actors[record->unknown_3c[4]];
             target.vx = actor->position.vx;
-            target.vy = actor->position.vy - (actor->unknown_1e >> 1);
+            target.vy = actor->position.vy - (actor->collision_height >> 1);
             target.vz = actor->position.vz;
             vector_direction_scaled(&origin, &target, 800, &direction);
             effect_construct_record(10, record->type, 7, &origin, &direction);
@@ -1498,14 +1498,14 @@ void effect_update_dispatch(void)
             s32 actor_extent;
 
             actor->unknown_28 |= 0x800;
-            actor_extent = actor->unknown_1c;
+            actor_extent = actor->collision_radius;
             record->unknown_3c[8] = frame;
             if (frame >= 24) {
                 record->unknown_3c[8] = 0;
             }
             position = actor_resolve_group_position(actor, &scratch);
             record->position = *position;
-            record->position.vy -= actor->unknown_1e >> 1;
+            record->position.vy -= actor->collision_height >> 1;
             if (record->unknown_3c[9] < 17) {
                 s32 scale = fixed_lerp_q12(
                     0, actor_extent, record->unknown_3c[9] << 9);
@@ -1513,7 +1513,7 @@ void effect_update_dispatch(void)
                 record->scale_z = scale;
                 record->scale_x = scale;
                 record->scale_y = fixed_lerp_q12(
-                    0, actor->unknown_1e, record->unknown_3c[9] * 350);
+                    0, actor->collision_height, record->unknown_3c[9] * 350);
             } else if (record->unknown_3c[9] >= 60) {
                 record->phase = 4;
                 break;

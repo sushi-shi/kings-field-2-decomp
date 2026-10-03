@@ -16,7 +16,8 @@ enum {
 typedef struct KfMapObjectTemplate {
     u8 collision_kind;
     u8 kind;
-    u8 unknown_02[2];
+    u8 vab_resource_index;
+    u8 collision_flags;
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
@@ -27,6 +28,10 @@ typedef struct KfMapObjectTemplate {
 } KfMapObjectTemplate;
 
 typedef char kf_map_object_template_size[sizeof(KfMapObjectTemplate) == 24 ? 1 : -1];
+typedef char kf_map_object_template_vab_resource_index_offset[
+    (u32)&((KfMapObjectTemplate *)0)->vab_resource_index == 2 ? 1 : -1];
+typedef char kf_map_object_template_collision_flags_offset[
+    (u32)&((KfMapObjectTemplate *)0)->collision_flags == 3 ? 1 : -1];
 typedef char kf_map_object_template_radius_offset[
     (u32)&((KfMapObjectTemplate *)0)->collision_radius == 4 ? 1 : -1];
 typedef char kf_map_object_template_interaction_radius_offset[
@@ -105,6 +110,58 @@ typedef struct KfMapObjectTailFields {
     KfMapObjectTailHalfword unknown_3e;
 } KfMapObjectTailFields;
 
+/* Actions 0x60 and 0x62 reuse this halfword for vertical and angular motion. */
+typedef struct KfMapObjectTailMotionView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    KfMapObjectTailHalfword unknown_3a;
+    u16 unknown_3c;
+    KfMapObjectTailHalfword motion_velocity;
+} KfMapObjectTailMotionView;
+typedef char kf_map_object_tail_motion_velocity_offset[
+    (u32)&((KfMapObjectTailMotionView *)0)->motion_velocity == 10 ? 1 : -1];
+
+typedef struct KfMapObjectTailNotificationView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    KfMapObjectTailHalfword unknown_3a;
+    u16 unknown_3c;
+    u8 linked_notification;
+    u8 default_notification;
+} KfMapObjectTailNotificationView;
+typedef char kf_map_object_tail_notification_size[
+    sizeof(KfMapObjectTailNotificationView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_linked_notification_offset[
+    (u32)&((KfMapObjectTailNotificationView *)0)->linked_notification == 10 ? 1 : -1];
+typedef char kf_map_object_tail_default_notification_offset[
+    (u32)&((KfMapObjectTailNotificationView *)0)->default_notification == 11 ? 1 : -1];
+
+typedef struct KfMapObjectTailTransitionView {
+    u32 unknown_34;
+    u8 region_x;
+    u8 region_z;
+    u8 region_width;
+    u8 region_depth;
+    u8 destination_cell_x;
+    u8 destination_cell_z;
+    u8 destination_layer_code;
+    u8 destination_yaw_code;
+} KfMapObjectTailTransitionView;
+typedef char kf_map_object_tail_transition_size[
+    sizeof(KfMapObjectTailTransitionView) == 12 ? 1 : -1];
+
+typedef struct KfMapObjectTailResourceTriggerView {
+    u32 unknown_34;
+    u8 region_width;
+    u8 region_depth;
+    u8 resource_selectors[5];
+    u8 unknown_3f;
+} KfMapObjectTailResourceTriggerView;
+typedef char kf_map_object_tail_resource_trigger_size[
+    sizeof(KfMapObjectTailResourceTriggerView) == 12 ? 1 : -1];
+
 /* Event archive commands read the two state bytes at +0x38 as one halfword. */
 typedef struct KfMapObjectTailPair38View {
     u32 unknown_34;
@@ -146,6 +203,10 @@ typedef char kf_map_object_tail_spawn_bytes_offset[
 
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
+    KfMapObjectTailMotionView motion;
+    KfMapObjectTailNotificationView notification;
+    KfMapObjectTailTransitionView transition;
+    KfMapObjectTailResourceTriggerView resource_trigger;
     KfMapObjectTailPair38View pair_38;
     KfMapObjectTailVisibilityView visibility;
     KfMapObjectTailSpawnByteFields spawn_bytes;
@@ -161,13 +222,31 @@ typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
  * map-object motion. The pointed object's complete extent is unresolved. */
 typedef struct KfMapObjectRecord40 KfMapObjectRecord40;
 
+typedef struct KfMapObjectHingeMotion {
+    u16 progress_ticks;
+    u16 base_yaw;
+} KfMapObjectHingeMotion;
+typedef char kf_map_object_hinge_motion_size[
+    sizeof(KfMapObjectHingeMotion) == 4 ? 1 : -1];
+
+typedef struct KfMapObjectOffsetMotionState {
+    u8 elapsed_frames;
+    u8 unknown_41[3];
+} KfMapObjectOffsetMotionState;
+typedef char kf_map_object_offset_motion_state_size[
+    sizeof(KfMapObjectOffsetMotionState) == 4 ? 1 : -1];
+
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
     u32 raw;
+    s32 bob_base_y;
+    u32 next_sound_frame;
     u8 bytes[4];
     u16 object_index;
     u16 halfwords[2];
     s16 signed_halfwords[2];
+    KfMapObjectHingeMotion hinge;
+    KfMapObjectOffsetMotionState offset_motion;
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];

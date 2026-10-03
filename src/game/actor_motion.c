@@ -15,24 +15,24 @@ s32 actor_move_with_collision(SVECTOR *motion)
     proposed.vy = actor->position.vy + motion->vy;
     proposed.vz = actor->position.vz + motion->vz;
     result = collision_query_world(proposed.vx, proposed.vy, proposed.vz,
-        actor->unknown_1c,
-        actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+        actor->collision_radius,
+        actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
         actor_state.unknown_93a4);
     if (result == 0) {
         copyVector(&actor->position, &proposed);
     } else if (collision_query_world(proposed.vx, actor->position.vy,
-                             actor->position.vz, actor->unknown_1c,
-                             actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+                             actor->position.vz, actor->collision_radius,
+                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
         motion->vx = -(u16)motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
-                             actor->position.vz, actor->unknown_1c,
-                             actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+                             actor->position.vz, actor->collision_radius,
+                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
         motion->vy = -(u16)motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
-                             proposed.vz, actor->unknown_1c,
-                             actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16),
+                             proposed.vz, actor->collision_radius,
+                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
                              actor_state.unknown_93a4) != 0) {
         motion->vz = -(u16)motion->vz;
     }
@@ -52,7 +52,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
         &actor->unknown_68, &actor->unknown_6a) != 0) {
         return -1;
     }
-    actor->unknown_0d = 0x30;
+    actor->vertical_motion_state = 0x30;
     actor->unknown_52 = 1;
     actor->unknown_6c = trajectory_parameter;
     actor->unknown_3c = actor->position.vy;
@@ -62,7 +62,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
 ADDRESS(0x8003b5bc, 0x14)
 void actor_suspend_vertical_motion(void)
 {
-    actor_state.current->unknown_0d = 0x60;
+    actor_state.current->vertical_motion_state = 0x60;
 }
 
 ADDRESS(0x8003b5d0, 0x3d4)
@@ -73,14 +73,14 @@ void actor_update_vertical_motion(void)
     s32 vertical_state;
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
-                   actor->unknown_1c,
-                   actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
-    actor->unknown_03 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                   actor->collision_radius,
+                   actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
+    actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
     if (actor->unknown_28 & 0x400) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
-    vertical_state = actor->unknown_0d;
+    vertical_state = actor->vertical_motion_state;
     if (vertical_state == 0x20) goto state_20;
     if (vertical_state < 33) {
         if (vertical_state == 0) goto state_0;
@@ -94,10 +94,10 @@ state_0: {
         s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
-            actor->unknown_0d = 0x20;
+            actor->vertical_motion_state = 0x20;
             actor->unknown_52 = -100;
         } else if (next_y > 0) {
-            actor->unknown_0d = 0x10;
+            actor->vertical_motion_state = 0x10;
             actor->unknown_52 = 0;
         }
         return;
@@ -108,8 +108,8 @@ state_10: {
         s32 collision;
         next_y = actor->position.vy + actor->unknown_52;
         collision = collision_query_world(actor->position.vx, next_y,
-                                  actor->position.vz, actor->unknown_1c,
-                                  actor->unknown_1e |
+                                  actor->position.vz, actor->collision_radius,
+                                  actor->collision_height |
                                       ((actor->unknown_28 & 0xc000) << 16),
                                   actor_state.unknown_93a4);
         if (collision == 0) {
@@ -131,11 +131,11 @@ state_10: {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
             actor->unknown_52 = 0;
-            actor->unknown_0d = 0;
+            actor->vertical_motion_state = 0;
             return;
         }
         if (actor->unknown_28 & 0x400) goto advance_rise;
-        actor->unknown_0d = 0;
+        actor->vertical_motion_state = 0;
         return;
     }
 
@@ -147,7 +147,7 @@ state_20:
             return;
         }
         actor->position.vy = KF_COLLISION_CACHE_RESULT;
-        actor->unknown_0d = 0;
+        actor->vertical_motion_state = 0;
         return;
 
 state_30: {
@@ -158,21 +158,21 @@ state_30: {
         next_y = actor->unknown_3c - actor->unknown_6a * phase +
                  ((actor->unknown_6c * phase * phase) >> 1);
         collision = collision_query_world(actor->position.vx, next_y,
-                                  actor->position.vz, actor->unknown_1c,
-                                  actor->unknown_1e |
+                                  actor->position.vz, actor->collision_radius,
+                                  actor->collision_height |
                                       ((actor->unknown_28 & 0xc000) << 16),
                                   actor_state.unknown_93a4);
         if (collision == 0) {
             actor->position.vy = next_y;
             actor->unknown_52++;
-            actor->unknown_03 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+            actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
             return;
         }
         if (collision == 0x80) {
             player_apply_damage(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
-        actor->unknown_0d = 0x10;
+        actor->vertical_motion_state = 0x10;
         actor->unknown_52 = 0;
         return;
     }
@@ -184,7 +184,7 @@ s32 actor_damp_horizontal_motion(s32 decay, s32 target)
     KfActor *actor = actor_state.current;
     s32 length;
 
-    if (actor->unknown_0d == 0) {
+    if (actor->vertical_motion_state == 0) {
         length = SquareRoot0(actor->unknown_50 * actor->unknown_50
                            + actor->unknown_54 * actor->unknown_54);
         if (length == 0) {
@@ -310,8 +310,8 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
                                         direction.vz, step_direction.vz);
     moved = actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target) != 0;
     proposed_y = actor->position.vy + actor->unknown_52;
-    radius = actor->unknown_1c;
-    height_and_flags = actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16);
+    radius = actor->collision_radius;
+    height_and_flags = actor->collision_height | ((actor->unknown_28 & 0xc000) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
                       actor_state.unknown_93a4) == 0) {

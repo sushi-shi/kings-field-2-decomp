@@ -191,7 +191,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->scale.vy = 0x1000;
         object->scale.vx = 0x1000;
         object->layer_mask = placements->layer_mask;
-        object->collision_flags = template->unknown_02[1];
+        object->collision_flags = template->collision_flags;
         object->unknown_0e = template->unknown_0a;
         object->lighting_override_index = 0xff;
         object->lighting_blend_q12 = 0;
@@ -236,7 +236,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                     object->render_queue_mode = 1;
                     object->lighting_override_index = 0x44;
                     object->lighting_blend_q12 = 0x1000;
-                    object->extra_40.raw = object->position.vy;
+                    object->extra_40.bob_base_y = object->position.vy;
                 }
             }
             break;
@@ -256,8 +256,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           2, 2, 0, 0x2d);
             object->action = 4;
             object->action_timer = 2;
-            object->extra_40.halfwords[0] = 999;
-            object->extra_40.halfwords[1] = object->rotation.vy;
+            object->extra_40.hinge.progress_ticks = 999;
+            object->extra_40.hinge.base_yaw = object->rotation.vy;
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 3000, 1);
             break;
         case 3:
@@ -337,7 +337,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case 0x1f:
             object->layer_mask = 0;
             object->action = 0x1f;
-            object->extra_40.raw = frame_count +
+            object->extra_40.next_sound_frame = frame_count +
                 object->tail.fields.unknown_3e.value * 6;
             break;
         case 0xf0:
@@ -408,7 +408,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 0x12:
             object->action = 0x12;
-            object->extra_40.raw = frame_count + 30;
+            object->extra_40.next_sound_frame = frame_count + 30;
             break;
         case 0xf:
             object->action = 0xf;
@@ -613,7 +613,7 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
         }
         break;
     }
-    object->tail.fields.unknown_3e.value = 0;
+    object->tail.motion.motion_velocity.value = 0;
     object->tail.fields.unknown_38 = 0xff;
 }
 
@@ -646,7 +646,7 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
     object->rotation.vy = rand() >> 3;
     object->tail.fields.unknown_38 = 0xff;
     map_object_start_action_if_idle(object, 0x62);
-    object->tail.fields.unknown_3e.signed_value = -120;
+    object->tail.motion.motion_velocity.signed_value = -120;
 }
 
 ADDRESS(0x800366fc, 0x1b8)
@@ -827,9 +827,9 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
             return 0;
         }
         if (target->tail.fields.unknown_38 == 0) {
-            source->extra_40.bytes[0] = 0;
+            source->extra_40.offset_motion.elapsed_frames = 0;
         } else {
-            source->extra_40.bytes[0] = duration - 1;
+            source->extra_40.offset_motion.elapsed_frames = duration - 1;
         }
         source->action_timer = 1;
         map_object_reset(target);
@@ -862,15 +862,15 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
                       start_offset, &start_position);
     vector_rotate_yxz((const struct KfEulerAngles *)&source->rotation,
                       end_offset, &end_position);
-    source->extra_40.bytes[0]++;
-    fraction = ((s32)source->extra_40.bytes[0] << 12) / duration;
+    source->extra_40.offset_motion.elapsed_frames++;
+    fraction = ((s32)source->extra_40.offset_motion.elapsed_frames << 12) / duration;
     target->position.vx = source->position.vx +
         fixed_lerp_q12(start_position.vx, end_position.vx, fraction);
     target->position.vy = source->position.vy +
         fixed_lerp_q12(start_position.vy, end_position.vy, fraction);
     target->position.vz = source->position.vz +
         fixed_lerp_q12(start_position.vz, end_position.vz, fraction);
-    if (source->extra_40.bytes[0] >= duration) {
+    if (source->extra_40.offset_motion.elapsed_frames >= duration) {
         if (brighten) {
             target->phase_q12 = KF_MAP_OBJECT_MOTION_LIMIT;
         }

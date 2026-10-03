@@ -92,7 +92,7 @@ void event_scene_command_dispatch(const VECTOR *position,
                 event_state.state_word = 1;
                 goto invoke_callback;
             case 3:
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+                notify_enqueue(object->tail.notification.linked_notification);
                 event_state.state_word = 1;
                 goto invoke_callback;
             case 4:
@@ -135,7 +135,7 @@ object_control_action:
                 object->extra_40.bytes[0] = 0;
                 event_spawn_effect_object((KfEventObjectView *)object, command);
             } else if (map_object_check_and_consume_marker(object, command) == 3) {
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+                notify_enqueue(object->tail.notification.linked_notification);
                 event_state.state_word = 1;
             }
         }
@@ -222,7 +222,7 @@ transition_action: {
                     event_spawn_effect_object((KfEventObjectView *)object, command);
                 }
             } else if (map_object_check_and_consume_marker(object, command) == 3) {
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
+                notify_enqueue(object->tail.notification.linked_notification);
                 event_state.state_word = 1;
             }
         }
@@ -408,8 +408,8 @@ decay_update:
                                        rotation->angles[0], 8000, 500, 500,
                                        &actor_distance, -1);
 
-        if (actor != 0 && actor->unknown_03 == side) {
-            menu_show_transition_image(6, actor->unknown_01 + 240);
+        if (actor != 0 && actor->current_map_layer == side) {
+            menu_show_transition_image(6, actor->definition_id + 240);
             event_state.state_word = 1;
             break;
         }
@@ -748,8 +748,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
         switch (kind) {
         case 0xa5:
         case 0xff:
-            if (object->tail.fields.unknown_3e.bytes.high != 0xff) {
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+            if (object->tail.notification.default_notification != 0xff) {
+                notify_enqueue(object->tail.notification.default_notification);
             }
             break;
         case 0x40:
@@ -763,7 +763,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             u16 linked_index = object->tail.fields.unknown_3a.value;
             if (linked_index == 0xffff ||
                 objects[linked_index].object_id == 0xff) {
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                notify_enqueue(object->tail.notification.default_notification);
                 break;
             }
             {
@@ -792,7 +792,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 if (object->tail.fields.unknown_38 == 0xff) {
                     object->action_timer = 1;
                 } else {
-                    notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                    notify_enqueue(object->tail.notification.default_notification);
                 }
             }
             break;
@@ -818,7 +818,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                     object->action_timer = 1;
                     break;
                 }
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                notify_enqueue(object->tail.notification.default_notification);
             }
             break;
         case 0x51:
@@ -854,7 +854,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 object->tail.fields.unknown_38 = 0xfe;
                 break;
             default:
-                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                notify_enqueue(object->tail.notification.default_notification);
                 break;
             }
             break;

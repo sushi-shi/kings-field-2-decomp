@@ -166,7 +166,7 @@ void map_object_update_actions(void)
                     s32 bearing = vector_xz_to_angle(
                         player_state.camera_position.vx - object->position.vx,
                         player_state.camera_position.vz - object->position.vz);
-                    if ((u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800) {
+                    if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
                         object->unknown_0e = -200;
                     } else {
                         object->unknown_0e = 0xf0;
@@ -178,7 +178,7 @@ void map_object_update_actions(void)
                         s32 bearing = vector_xz_to_angle(
                             player_state.camera_position.vx - linked->position.vx,
                             player_state.camera_position.vz - linked->position.vz);
-                        if ((u32)((bearing - object->extra_40.halfwords[1]) & 0xfff) <= 0x800) {
+                        if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
                             linked->unknown_0e = 0xf0;
                         } else {
                             linked->unknown_0e = -200;
@@ -189,10 +189,10 @@ void map_object_update_actions(void)
                 }
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
-                    object->extra_40.halfwords[0] = 0;
+                    object->extra_40.hinge.progress_ticks = 0;
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
-                previous = object->extra_40.halfwords[0]++;
+                previous = object->extra_40.hinge.progress_ticks++;
                 if (previous < 32) {
                     object->asset_clip_selector = 0x81;
                     object->rotation.vy += 32;
@@ -208,7 +208,7 @@ void map_object_update_actions(void)
                                       object->tail.fields.unknown_3a.bytes.low,
                                       2, 2, 0, 0x2d);
                     } else if (previous == 31) {
-                        object->extra_40.halfwords[0] = 0x118;
+                        object->extra_40.hinge.progress_ticks = 0x118;
                     }
                 } else if (previous >= 300) {
                     if (previous < 332) {
@@ -219,13 +219,13 @@ void map_object_update_actions(void)
                             offset.vx = -1792;
                             offset.vy = 0;
                             offset.vz = 0;
-                            matrix_set_rotation_y((s16)object->extra_40.halfwords[1], &rotation);
+                            matrix_set_rotation_y((s16)object->extra_40.hinge.base_yaw, &rotation);
                             ApplyMatrix(&rotation, &offset, &target);
                             target.vx += object->position.vx;
                             target.vz += object->position.vz;
                             if (collision_query_world(target.vx, object->position.vy, target.vz,
                                                3000, object->collision_height, 0xc0)) {
-                                object->extra_40.halfwords[0] = 300;
+                                object->extra_40.hinge.progress_ticks = 300;
                                 break;
                             }
                             map_cell_copy_rotated_fields(object->layer_mask,
@@ -560,7 +560,7 @@ void map_object_update_actions(void)
 
         case 16:
             object->rotation.vy += 128;
-            object->position.vy = object->extra_40.raw +
+            object->position.vy = object->extra_40.bob_base_y +
                                   (rsin((s16)object->rotation.vy) >> 6);
             break;
 
@@ -630,14 +630,14 @@ void map_object_update_actions(void)
         case 224:
             if (player_camera_within_map_region(object->position.vx >> 11,
                                object->position.vz >> 11,
-                               object->tail.fields.unknown_38,
-                               object->tail.fields.unknown_39,
+                               object->tail.resource_trigger.region_width,
+                               object->tail.resource_trigger.region_depth,
                                object->position.vy)) {
-                resource_request_transition(object->tail.fields.unknown_3a.bytes.low,
-                              object->tail.fields.unknown_3a.bytes.high,
-                              object->tail.spawn_bytes.spawn_sequence.low,
-                              object->tail.spawn_bytes.spawn_sequence.high,
-                              object->tail.fields.unknown_3e.bytes.low,
+                resource_request_transition(object->tail.resource_trigger.resource_selectors[0],
+                              object->tail.resource_trigger.resource_selectors[1],
+                              object->tail.resource_trigger.resource_selectors[2],
+                              object->tail.resource_trigger.resource_selectors[3],
+                              object->tail.resource_trigger.resource_selectors[4],
                               (s8)object->extra_40.bytes[0],
                               (s8)object->extra_40.bytes[1],
                               (s8)object->extra_40.bytes[2]);
@@ -801,8 +801,8 @@ void map_object_update_actions(void)
         }
 
         case 18:
-            if ((s32)(object->extra_40.raw - cd_state.frame_count) < 0) {
-                object->extra_40.raw = cd_state.frame_count + 30;
+            if ((s32)(object->extra_40.next_sound_frame - cd_state.frame_count) < 0) {
+                object->extra_40.next_sound_frame = cd_state.frame_count + 30;
                 map_object_play_spatial_sound(object, 0xee);
             }
             break;
@@ -867,18 +867,18 @@ void map_object_update_actions(void)
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-                object->position.vy += object->tail.fields.unknown_3e.signed_value;
-                object->tail.fields.unknown_3e.value += 20;
+                object->position.vy += object->tail.motion.motion_velocity.signed_value;
+                object->tail.motion.motion_velocity.value += 20;
                 if (object->position.vy >= floor_y) {
                     object->position.vy = floor_y;
-                    object->tail.fields.unknown_3e.value = 16;
+                    object->tail.motion.motion_velocity.value = 16;
                     object->action_timer = 1;
                 }
                 break;
             }
             case 1:
-                object->rotation.vz += object->tail.fields.unknown_3e.value;
-                object->tail.fields.unknown_3e.value += 16;
+                object->rotation.vz += object->tail.motion.motion_velocity.value;
+                object->tail.motion.motion_velocity.value += 16;
                 if (object->rotation.vz >= 0x400) {
                     object->rotation.vz = 0x400;
                     object->action_timer = 99;
@@ -909,21 +909,21 @@ void map_object_update_actions(void)
                                              template->interaction_height);
                 s16 velocity;
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-                object->position.vy += object->tail.fields.unknown_3e.signed_value;
+                object->position.vy += object->tail.motion.motion_velocity.signed_value;
                 effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
                 {
                     s32 angle = object->rotation.vx +
                         (object->action_timer == 0 ? 0xa0 : -0xa0);
                     object->rotation.vx = angle & 0xfff;
                 }
-                object->tail.fields.unknown_3e.value += 30;
-                velocity = object->tail.fields.unknown_3e.signed_value;
+                object->tail.motion.motion_velocity.value += 30;
+                velocity = object->tail.motion.motion_velocity.signed_value;
                 if (velocity >= 0 && object->position.vy >= floor_y) {
                     if (velocity < 80) {
                         object->position.vy = floor_y;
                         object->action_timer = 2;
                     } else {
-                        object->tail.fields.unknown_3e.value = -(velocity >> 1);
+                        object->tail.motion.motion_velocity.value = -(velocity >> 1);
                         object->action_timer = object->action_timer == 0 ? 1 : 0;
                     }
                 }
@@ -966,10 +966,10 @@ void map_object_update_actions(void)
             break;
 
         case 34:
-            if (player_camera_within_map_region(object->tail.fields.unknown_38,
-                               object->tail.fields.unknown_39,
-                               object->tail.fields.unknown_3a.bytes.low,
-                               object->tail.fields.unknown_3a.bytes.high,
+            if (player_camera_within_map_region(object->tail.transition.region_x,
+                               object->tail.transition.region_z,
+                               object->tail.transition.region_width,
+                               object->tail.transition.region_depth,
                                object->position.vy)) {
                 if (object->extra_40.bytes[0] == 0) {
                     KfMapObject *candidate = map_object_state.objects;
@@ -985,19 +985,19 @@ void map_object_update_actions(void)
                     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                                    player_state.camera_position.vz, 800, -1);
                     player_state.camera_position.vx =
-                        object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
+                        object->tail.transition.destination_cell_x * 0x800 + 0x400;
                     player_state.camera_position.vz =
-                        object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
+                        object->tail.transition.destination_cell_z * 0x800 + 0x400;
                     player_state.map_layer_index =
-                        object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
+                        object->tail.transition.destination_layer_code == 1 ? 0 : 5;
                     player_state.camera_rotation_target.angles[1] =
-                        -((u32)object->tail.fields.unknown_3e.bytes.high * 16);
+                        -((u32)object->tail.transition.destination_yaw_code * 16);
                     player_sync_position_to_map();
                     player_state.camera_rotation.angles[1] =
                         player_state.camera_rotation_target.angles[1] +
                         player_state.reaction_rotation_offset[1] +
                         player_state.view_rotation_offset.components[1] +
-                        player_state.unknown_110[1];
+                        player_state.unknown_112[0];
                     render_frames_with_color_overlay(1, 0x1000, 0, -0x100);
                     render_set_color_overlay(0xff, 0, 0, 0);
                 }

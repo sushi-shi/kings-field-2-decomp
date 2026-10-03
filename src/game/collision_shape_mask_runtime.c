@@ -503,8 +503,8 @@ void collision_cache_load_hit_bounds(void)
     } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
         KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
         COLLISION_CACHE_POSITION = actor->position;
-        COLLISION_CACHE_RADIUS = actor->unknown_1c;
-        COLLISION_CACHE_INTERACTION_HEIGHT = actor->unknown_1e;
+        COLLISION_CACHE_RADIUS = actor->collision_radius;
+        COLLISION_CACHE_INTERACTION_HEIGHT = actor->collision_height;
     } else {
         KfMapObject *object;
         KfMapObjectTemplate *object_template;

@@ -34,15 +34,15 @@ enum { ACTOR_HOME_CELL_SHIFT = 11 };
 ADDRESS(0x80038d04, 0xc0)
 void actor_set_home_position(KfActor *actor)
 {
-    actor->position.vx = (actor->unknown_07[1] << ACTOR_HOME_CELL_SHIFT)
+    actor->position.vx = (actor->home_cell_x << ACTOR_HOME_CELL_SHIFT)
                        + actor->unknown_24;
-    actor->position.vz = (actor->unknown_07[0] << ACTOR_HOME_CELL_SHIFT)
+    actor->position.vz = (actor->home_cell_z << ACTOR_HOME_CELL_SHIFT)
                        + actor->unknown_22;
-    actor->position.vy = collision_sample_map_layer_height(actor->unknown_06,
+    actor->position.vy = collision_sample_map_layer_height(actor->home_map_layer,
                                         actor->position.vx,
                                         actor->position.vz,
-                                        actor->unknown_1c,
-                                        actor->unknown_1e);
+                                        actor->collision_radius,
+                                        actor->collision_height);
     if (actor->position.vy >= 0) {
         actor->position.vy = 0;
     }
@@ -60,10 +60,10 @@ void actor_copy_group_defaults(KfActor *actor)
     const KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
     u16 value;
 
-    actor->unknown_01 = group->unknown_00;
-    actor->unknown_1a = group->unknown_1a;
-    actor->unknown_1c = group->collision_radius;
-    actor->unknown_1e = group->collision_height;
+    actor->definition_id = group->definition_id;
+    actor->health = group->unknown_1a;
+    actor->collision_radius = group->collision_radius;
+    actor->collision_height = group->collision_height;
     actor->unknown_28 = group->unknown_34;
     value = group->unknown_32;
     actor->unknown_4c = value;
@@ -76,10 +76,10 @@ void actor_initialize_from_group(KfActor *actor)
 {
     actor_copy_group_defaults(actor);
     actor->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
-    actor->unknown_0c = 0;
+    actor->animation_id = 0;
     actor->animation_phase = 0;
     actor->unknown_11 = 0;
-    actor->unknown_0d = 0;
+    actor->vertical_motion_state = 0;
     actor->target_type = 0;
     actor->unknown_0f = 0xff;
     actor->target = NULL;
@@ -90,14 +90,14 @@ void actor_initialize_from_group(KfActor *actor)
     actor->unknown_52 = 0;
     actor->unknown_50 = 0;
     actor->unknown_58 = 0;
-    actor->unknown_14 = 0x47;
-    actor->unknown_16 = 0x800;
+    actor->lighting_override = 0x47;
+    actor->lighting_blend = 0x800;
     if (actor->unknown_28 & 0x80) {
-        actor->unknown_13 = 1;
+        actor->render_mode = 1;
     } else {
-        actor->unknown_13 = 0xff;
+        actor->render_mode = 0xff;
     }
-    map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->unknown_1c, 1);
+    map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->collision_radius, 1);
 }
 
 ADDRESS(0x80038efc, 0x24)
@@ -116,7 +116,7 @@ void actor_disable_type3_transition_actors(void)
     do {
         if (actor->slot_state == 1 &&
             actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE &&
-            ((*(u32 *)&actor->unknown_0c & 0xffff0000) == 0xf0030000) &&
+            ((*(u32 *)&actor->animation_id & 0xffff0000) == 0xf0030000) &&
             (actor->state_70.signed_state != 0 || actor->animation_phase > 2048)) {
             state_8017d118.active_table[19](actor);
             actor_set_lifecycle_and_home_position(actor);
@@ -130,12 +130,12 @@ void actor_prepare_and_initialize(KfActor *actor)
 {
     actor->rotation.z = 0;
     actor->rotation.x = 0;
-    actor->unknown_03 = actor->unknown_06;
+    actor->current_map_layer = actor->home_map_layer;
     actor->rotation.y = actor->unknown_20;
     actor_set_home_position(actor);
     actor_initialize_from_group(actor);
     if (actor->slot_state == 3) {
-        actor->unknown_03 = 0;
+        actor->current_map_layer = 0;
     }
 }
 

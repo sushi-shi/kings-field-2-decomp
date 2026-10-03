@@ -87,7 +87,7 @@ void actor_update_lifecycle_for_player_range(void)
             return;
         }
         map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
-                       actor->unknown_1c, -1);
+                       actor->collision_radius, -1);
         actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor_set_home_position(actor);
         return;

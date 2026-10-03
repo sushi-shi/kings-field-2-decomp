@@ -119,7 +119,7 @@ GAME.EXE	0x8006d718	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archiv
 GAME.EXE	0x8006d71c	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
 GAME.EXE	0x8006d778	0x20	DAT_8006d778	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata eight-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7a0	0x18	DAT_8006d7a0	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata six-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d7b8	0x4	DAT_8006d7b8	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+GAME.EXE	0x8006d7b8	0x4	DAT_8006d7b8	unknown	load	u32	LIBCD ISO9660.OBJ	supported	exact archive .sdata+0 scalar initialized to 1;CdSearchFile section patch +0 matches both retail xrefs	vendor new-media check flag cleared after CD_newmedia succeeds; original static name and signedness unresolved
 GAME.EXE	0x8006d7c4	0x2	DAT_8006d7c4	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7c8	0x3	DAT_8006d7c8	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7cc	0x60	DAT_8006d7cc	unknown	load	u32[24]		address-only	Psy-Q 3.0 LIBCD CDROM .sdata 96-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
@@ -196,8 +196,8 @@ GAME.EXE	0x8006db60	0x4	DAT_8006db60	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006db68	0x4	DAT_8006db68	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db70	0x4	DAT_8006db70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db78	0x4	DAT_8006db78	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db80	0x4	DAT_8006db80	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db88	0x4	DAT_8006db88	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006db80	0x4	spu_mem_mode	static	load	undefined4	LIBSPU S_M_INT.OBJ	supported	Psy-Q 3.0 LIBSPU S_M_INT.OBJ local spu_mem_mode at .sbss+0;exact allocator section patches and retail xrefs	SPU allocation mode computed during SpuInitMalloc; original signedness unresolved
+GAME.EXE	0x8006db88	0x4	_SpuMemList	static	load	pointer	LIBSPU S_M_INT.OBJ	supported	Psy-Q 3.0 LIBSPU S_M_INT.OBJ local _SpuMemList at .sbss+8;exact allocator section patches and retail xrefs	SPU allocation-list pointer registered by SpuInitMalloc
 GAME.EXE	0x8006db90	0x4	EV	static	load	s32	LIBSND SSINIT.OBJ	supported	Psy-Q 3.0 LIBSND SSINIT.OBJ local EV at .sbss+0;exact _SsStart/SsEnd section patches and retail lw/sw	OpenEvent handle stored by _SsStart and passed to DisableEvent/CloseEvent by SsEnd
 GAME.EXE	0x8006db98	0x4	_svm_envx_ptr	static	load	undefined4	LIBSND VMANAGER.OBJ	supported	Psy-Q 3.0 LIBSND VMANAGER.OBJ local _svm_envx_ptr at .sbss+0;exact SpuVmFlush section patches and retail lw/sw	16-slot envelope-index cursor incremented and masked with 0xf; original signedness unresolved
 GAME.EXE	0x8006dba0	0x4	VBLNKCallback	static	load	pointer	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB.OBJ local VBLNKCallback at .sbss+0;exact VBLNKInit/Stop text and section patches	VBlank callback pointer initialized to zero; original C signature unresolved
@@ -337,7 +337,7 @@ OPEN.EXE	0x8003de1c	0x4	DAT_8003de1c	unknown	load	undefined4		address-only	data.
 OPEN.EXE	0x8003de20	0x4	DAT_8003de20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de24	0x4	DAT_8003de24	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de28	0x2	DAT_8003de28	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de30	0x4	DAT_8003de30	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de30	0x4	DAT_8003de30	unknown	load	u32	LIBCD ISO9660.OBJ	supported	exact archive .sdata+0 scalar initialized to 1;CdSearchFile section patch +0 matches both retail xrefs	vendor new-media check flag cleared after CD_newmedia succeeds; original static name and signedness unresolved
 OPEN.EXE	0x8003de3c	0x2	DAT_8003de3c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de40	0x3	DAT_8003de40	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de48	0x4	DAT_8003de48	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -362,11 +362,9 @@ OPEN.EXE	0x8003de9c	0x4	DAT_8003de9c	unknown	load	pointer	LIBSPU SPU.OBJ	support
 OPEN.EXE	0x8003dea0	0x4	DAT_8003dea0	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 OPEN.EXE	0x8003dea4	0x4	DAT_8003dea4	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 OPEN.EXE	0x8003dea8	0x4	DAT_8003dea8	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
-OPEN.EXE	0x8003deac	0x4	DAT_8003deac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003deb0	0x4	DAT_8003deb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003deb4	0x4	DAT_8003deb4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003deb8	0x4	DAT_8003deb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003debc	0x4	DAT_8003debc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003deac	0x4	DAT_8003deac	unknown	load	pointer	LIBSPU S_SRMP.OBJ	supported	exact archive .sdata bytes;SpuSetReverbModeParam section patches +0 match retail xrefs	SDK SPU register pointer; original declaration and name unresolved
+OPEN.EXE	0x8003deb0	0xc	DAT_8003deb0	unknown	load	u32[3]	LIBSPU S_M_INT.OBJ	supported	exact archive .sdata bytes;_gcSPU/SpuInitMalloc section patches +0/+4/+8 match retail xrefs	SDK allocator state record; original declaration, boundaries and names unresolved
+OPEN.EXE	0x8003debc	0x4	DAT_8003debc	unknown	load	pointer	LIBSPU S_CRWA.OBJ	supported	exact archive .sdata bytes;SpuClearReverbWorkArea section patch +0 matches retail xref	SDK SPU register pointer; original declaration and name unresolved
 OPEN.EXE	0x8003dec0	0x4	Rewind_Switch	global	load	int	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	set when the stream reaches the last frame; cleared by strInit
 OPEN.EXE	0x8003dec8	0x4	StrFrame	global	load	long	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	frame number of the most recent STR frame
 OPEN.EXE	0x8003ded0	0x4	DAT_8003ded0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -499,7 +497,7 @@ END.EXE	0x8003ac3c	0x4	DAT_8003ac3c	unknown	load	undefined4		address-only	data.t
 END.EXE	0x8003ac40	0x4	DAT_8003ac40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac44	0x4	DAT_8003ac44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac48	0x2	DAT_8003ac48	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac50	0x4	DAT_8003ac50	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+END.EXE	0x8003ac50	0x4	DAT_8003ac50	unknown	load	u32	LIBCD ISO9660.OBJ	supported	exact archive .sdata+0 scalar initialized to 1;CdSearchFile section patch +0 matches both retail xrefs	vendor new-media check flag cleared after CD_newmedia succeeds; original static name and signedness unresolved
 END.EXE	0x8003ac5c	0x2	DAT_8003ac5c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac60	0x3	DAT_8003ac60	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac68	0x4	DAT_8003ac68	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -524,11 +522,9 @@ END.EXE	0x8003acbc	0x4	DAT_8003acbc	unknown	load	pointer	LIBSPU SPU.OBJ	supporte
 END.EXE	0x8003acc0	0x4	DAT_8003acc0	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 END.EXE	0x8003acc4	0x4	DAT_8003acc4	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 END.EXE	0x8003acc8	0x4	DAT_8003acc8	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
-END.EXE	0x8003accc	0x4	DAT_8003accc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acd0	0x4	DAT_8003acd0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acd4	0x4	DAT_8003acd4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acd8	0x4	DAT_8003acd8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acdc	0x4	DAT_8003acdc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003accc	0x4	DAT_8003accc	unknown	load	pointer	LIBSPU S_SRMP.OBJ	supported	exact archive .sdata bytes;SpuSetReverbModeParam section patches +0 match retail xrefs	SDK SPU register pointer; original declaration and name unresolved
+END.EXE	0x8003acd0	0xc	DAT_8003acd0	unknown	load	u32[3]	LIBSPU S_M_INT.OBJ	supported	exact archive .sdata bytes;_gcSPU/SpuInitMalloc section patches +0/+4/+8 match retail xrefs	SDK allocator state record; original declaration, boundaries and names unresolved
+END.EXE	0x8003acdc	0x4	DAT_8003acdc	unknown	load	pointer	LIBSPU S_CRWA.OBJ	supported	exact archive .sdata bytes;SpuClearReverbWorkArea section patch +0 matches retail xref	SDK SPU register pointer; original declaration and name unresolved
 END.EXE	0x8003ace0	0x4	Rewind_Switch	global	load	int	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	set when the stream reaches the last frame; cleared by strInit
 END.EXE	0x8003ace8	0x4	StrFrame	global	load	long	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	frame number of the most recent STR frame
 END.EXE	0x8003acf0	0x4	DAT_8003acf0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

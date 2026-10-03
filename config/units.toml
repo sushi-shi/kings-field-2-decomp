@@ -174,15 +174,9 @@ source = "src/game/player_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_action_motion"
+unit = "game.player_action_runtime"
 image = "GAME.EXE"
-source = "src/game/player_action_motion.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.player_reaction"
-image = "GAME.EXE"
-source = "src/game/player_reaction.c"
+source = "src/game/player_action_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

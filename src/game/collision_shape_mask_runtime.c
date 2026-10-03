@@ -298,19 +298,21 @@ LAB_8002b168:
     case 0x32:
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
       next_record = record + 6;
-      if (record_value == 1) {
+      switch (record_value) {
+      case 1:
         candidate_height = x_plus_z;
-      }
-      else if (record_value < 2) {
-        if (record_value != 0) break;
+        break;
+      case 0:
         candidate_height = z_plus_cell - (s32)x_fraction;
-      }
-      else if (record_value == 2) {
+        break;
+      case 2:
         candidate_height = x_plus_cell - (s32)z_fraction;
-      }
-      else {
-        if (record_value != 3) break;
+        break;
+      case 3:
         candidate_height = (0x1000 - z_fraction) - x_fraction;
+        break;
+      default:
+        goto LAB_8002b5c8;
       }
       quotient = (int)(s16)operand[1];
       if (candidate_height < quotient) {

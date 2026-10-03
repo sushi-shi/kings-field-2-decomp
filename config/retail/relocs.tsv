@@ -14110,6 +14110,8 @@ OPEN.EXE	0x80020cb4	0x104b4		mips26	instruction-word	0x80022d68	load		jal		range
 OPEN.EXE	0x80020df0	0x105f0		mips26	instruction-word	0x80020e68	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80020e5c	0x1065c		mips26	instruction-word	0x80020e68	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80020e98	0x10698		mips26	instruction-word	0x800204b4	load		jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80020f30	0x10730	0x80020f34	mips_hi16_lo16	reachable-code	0x8003e000	bss	_svm_envx_ptr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBSND VMANAGER.OBJ local .sbss+0;SpuVmFlush archive patch +0x1a80;retail raw pair
+OPEN.EXE	0x80020f50	0x10750	0x80020f54	mips_hi16_lo16	reachable-code	0x8003e000	bss	_svm_envx_ptr	lui+sw	at	paired-reviewed	reviewed	manual:LIBSND VMANAGER.OBJ local .sbss+0;SpuVmFlush archive patch +0x1aa0;retail raw pair
 OPEN.EXE	0x80020f7c	0x1077c	0x80020f80	mips_hi16_lo16	reachable-code	0x8003de88	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800210c8	0x108c8	0x800210cc	mips_hi16_lo16	reachable-code	0x8003de88	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800210fc	0x108fc	0x80021100	mips_hi16_lo16	reachable-code	0x8003de88	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv

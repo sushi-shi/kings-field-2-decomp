@@ -210,7 +210,7 @@ GAME.EXE	0x8006dba0	0x4	DAT_8006dba0	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006dba8	0x4	DAT_8006dba8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbb0	0x4	DAT_8006dbb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbb8	0x4	DAT_8006dbb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbc0	0x4	DAT_8006dbc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006dbc0	0x4	tim	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local tim at .sbss+0;exact OpenTIM/ReadTIM text and section patches	TIM word cursor: OpenTIM stores its argument; ReadTIM advances it by a word count
 GAME.EXE	0x8006dbe8	0x18	menu_saved_primitive_buffers	global	bss	KfPrimitiveBuffer[2]	menu_render_primitives	supported	asm;menu entry and exit;CPE zero tail	two saved primitive-buffer triples restored when leaving the menu; original defining TU unresolved
 GAME.EXE	0x8006dc00	0x4000	memory_card_buffer_storage	global	bss	u8[0x4000]	memory_card_events	supported	asm;memory_card_initialize;0x4000-byte card reads into it	memory-card file I/O buffer
 GAME.EXE	0x800758c0	0x8	_spu_rev_reserve_wa	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved

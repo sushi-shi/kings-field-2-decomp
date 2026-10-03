@@ -883,7 +883,7 @@ GAME.EXE	0x8006dba8	0x5d3a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006dbac	0x5d3ac	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dbb0	0x5d3b0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006dbb4	0x5d3b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dbb8	0x5d3b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006dbb8	0x5d3b8	0x4	defined	reviewed	target	s32	Psy-Q 3.0 LIBGPU SYS.OBJ local .sbss+0;retail set_alarm/get_alarm xrefs	private signed GPU alarm frame deadline; physical linked bytes are zero
 GAME.EXE	0x8006dbbc	0x5d3bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dbc0	0x5d3c0	0x4	defined	reviewed	tim	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0;retail OpenTIM/ReadTIM xrefs	private TIM word cursor; physical linked bytes are zero
 GAME.EXE	0x8006dbc4	0x5d3c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

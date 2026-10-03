@@ -17,7 +17,7 @@ void func_8001dc64(void)
         menu_draw_window(4, 3, cursor, confirmed);
         menu_present_frame();
     }
-    func_80022300(16);
+    menu_play_sound_cue(16);
     input_wait_release();
     for (;;) {
         if (selection != -1 || result != -99)

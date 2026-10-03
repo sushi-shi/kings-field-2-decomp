@@ -20,7 +20,7 @@ void func_8001ddd0(void)
     s32 cost;
     u8 selected_item;
 
-    count = func_80018d08(menu_item_mask_pages[5], rows, values, indices,
+    count = menu_collect_masked_item_rows(menu_item_mask_pages[5], rows, values, indices,
         0, 119);
     menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, 5);
     menu_list_init(&menu.list, 4, 0);
@@ -51,19 +51,19 @@ void func_8001ddd0(void)
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
             if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
-                    * DAT_8006d694)
-                    || counters[selected_item] + DAT_8006d694 >= 100) {
-                func_80022300(18);
+                    * menu_item_quantity)
+                    || counters[selected_item] + menu_item_quantity >= 100) {
+                menu_play_sound_cue(18);
                 selection = 0;
             } else {
-                func_80022300(17);
+                menu_play_sound_cue(17);
             }
         }
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c(selected_item);
+                menu_update_item_preview(selected_item);
             func_8001fc94(&menu, 13);
             menu_present_frame();
         }
@@ -71,8 +71,8 @@ void func_8001ddd0(void)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * DAT_8006d694;
+        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
         player_state.gold -= cost;
-        counters[result] += (u8)DAT_8006d694;
+        counters[result] += (u8)menu_item_quantity;
     }
 }

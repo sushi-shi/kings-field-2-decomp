@@ -175,7 +175,7 @@ extern u_long *menu_frame_upload_pixels;
 extern RECT menu_frame_upload_rect;
 extern s32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
-extern s32 DAT_8006d694;
+extern s32 menu_item_quantity;
 extern SVECTOR menu_item_preview_translation;
 extern SVECTOR menu_item_preview_rotation;
 extern s32 menu_item_preview_rotation_step;
@@ -202,8 +202,8 @@ void menu_blit_sprite_fixed_clut(const KfMenuSpriteDef *sprite, const KfMenuPoin
 void menu_blit_sprite_translucent(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_draw_string(const KfMenuSpriteDef *font, const KfMenuGlyphString *string);
 void menu_draw_number(const KfMenuSpriteDef *font, const KfMenuGlyphString *string);
-void func_8002083c(s32 item_id);
-void func_80020990(s32 kind);
+void menu_update_item_preview(s32 item_id);
+void menu_draw_status_counters(s32 kind);
 void menu_render_item_model(void);
 void menu_present_frame(void);
 void menu_frame_begin(void);
@@ -212,12 +212,12 @@ void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
     const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);
 void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmation);
-void func_8001a7fc(void);
-s32 func_80018d08(const u8 *mask, KfMenuGlyphRow *rows,
+void menu_show_combat_attributes(void);
+s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
-s32 func_80018dec(const u8 *mask, KfMenuGlyphRow *rows,
+s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
-void func_80018f8c(s32 item_id);
+void menu_apply_item_effect(s32 item_id);
 s32 func_80018ac8(void);
 s32 func_80019834(void);
 void func_80019ac4(void);
@@ -225,7 +225,7 @@ void func_8001a898(void);
 s32 func_8001aa9c(void);
 void func_8001b2dc(void);
 void func_8001e94c(void);
-void func_800189f0(void);
+void menu_draw_location_number(void);
 s32 func_800199d0(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
 void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
@@ -247,22 +247,22 @@ void menu_enter_display_state(s32 mode);
 void menu_exit_display_state(s32 stop_sequence);
 s32 menu_load_item_model(u8 item_id);
 void menu_release_item_model(void);
-void func_80022300(s32 cue);
+void menu_play_sound_cue(s32 cue);
 void func_800223cc(void);
 s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
     s32 *cancelled);
 void menu_card_save_browser(void);
 void func_8001ceb8(s32 kind);
 s32 menu_choose_inventory_item(void);
-void func_8001d8d0(void);
+void menu_item_trade_controller(void);
 void func_8001dc64(void);
-s32 func_8001876c(void);
+s32 menu_run_root_controller(void);
 void func_80019240(void);
 void func_800192ac(void);
 void func_800192dc(void);
 void func_80019ed4(s32 category);
 void func_8001a2f4(void);
-void func_8001a4f0(void);
+void menu_item_magic_controller(void);
 s32 menu_card_load_browser(void);
 s32 func_8001b14c(void);
 void menu_card_save_slot(s32 slot);

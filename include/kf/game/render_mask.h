@@ -41,9 +41,9 @@ extern KfMapMaskShapePair map_mask_pitch_shape_pairs[7];
 void clear_map_cell_layer_masks(void);
 void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value);
-void func_8002c1d4(u8 value);
-void func_8002c290(s32 cursor_offset);
-void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
+void fill_map_cell_layer_mask_interior(u8 value);
+void update_current_map_cell_layer_mask(s32 cursor_offset);
+void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map_step,
                    s8 window_step, s32 mask_stride, s32 count);
 
 #endif

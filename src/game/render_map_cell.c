@@ -27,8 +27,8 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
     u16 object_index;
     s32 orientation;
 
-    orientation = shape->quarter_turns & KF_MAP_CELL_ORIENTATION_MASK;
     SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
+    orientation = shape->quarter_turns & KF_MAP_CELL_ORIENTATION_MASK;
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     RotTrans(position, (VECTOR *)&cell_matrix.t, &gte_flags);
     matrix_rotate_quarter_turns(&game_graphics_runtime.render_state.view_matrix,
@@ -56,7 +56,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
             if (tmd_get_object(object_index)->primitive_count < KF_MAP_CELL_PREPARED_LIMIT) {
                 KfTmdPreparedAsset prepared_asset;
 
-                func_8002ff5c(game_graphics_runtime.tmd_state.current_asset,
+                tmd_prepare_subdivided_object(game_graphics_runtime.tmd_state.current_asset,
                               object_index, &prepared_asset);
                 render_enqueue_tmd_with_clipping(object_index, 240, &prepared_asset);
                 return;
@@ -216,7 +216,7 @@ void render_active_model_rows(void)
                 tmd_select_object_vertices(0);
             }
             tmd_transform_vertices(object->vertex_count);
-            func_8002e4dc(0, 0);
+            render_enqueue_textured_tmd(0, 0);
         }
         entry++;
     } while (entry->state != KF_RENDER_MODEL_END);

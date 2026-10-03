@@ -3,7 +3,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x800157ac, 0x4c)
-s32 func_800157ac(s32 amplitude)
+s32 random_triangular_scaled(s32 amplitude)
 {
     s32 first = rand();
     s32 second = rand();
@@ -12,7 +12,7 @@ s32 func_800157ac(s32 amplitude)
 }
 
 ADDRESS(0x800157f8, 0x54)
-s32 func_800157f8(s32 amplitude)
+s32 random_centered_triangular_scaled(s32 amplitude)
 {
     s32 first = rand();
     s32 second = rand();

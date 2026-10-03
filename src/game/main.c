@@ -20,7 +20,7 @@
 #include <psyq/pad.h>
 
 DATA(0x80198630, 0x4)
-u32 DAT_80198630;
+u32 game_main_exit_flag;
 
 /*
  * GCC inserts the `__main` hook call for a function named main; the SDK
@@ -93,7 +93,7 @@ void game_main_loop(void)
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
     func_80036e24(0x82, 0x1000, 0, -128);
-    DAT_80198630 = 0;
+    game_main_exit_flag = 0;
 
     do {
         reset_collision_rows_and_overlay();
@@ -109,8 +109,8 @@ void game_main_loop(void)
         refresh_collision_row_rotations();
         cd_request_service_stream();
         cd_request_service_vab();
-        func_800335a0(&camera_position, &camera_rotation);
-    } while (DAT_80198630 != 1);
+        render_game_frame(&camera_position, &camera_rotation);
+    } while (game_main_exit_flag != 1);
 
     game_shutdown();
     /* PSX.EXE owns the fixed next-overlay mailbox. */

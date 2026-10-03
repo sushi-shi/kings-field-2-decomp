@@ -58,7 +58,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         model.t[1] = position->vy;
         model.t[2] = position->vz;
         {
-            u16 layer_offset = player_state.unknown_128;
+            u16 layer_offset = player_state.map_layer_index;
             u8 lighting_index = *(
                 &bss_801c7540.map_cells[
                     game_graphics_runtime.render_state.view_position.vz >> 11][
@@ -85,7 +85,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     if (lighting_override != 0xff) {
         override = &game_graphics_runtime.collision_rows[lighting_override];
         if (override->motion.values[0] != -1) {
-            func_800158b4((const u16 *)lighting->motion.values,
+            fixed_lerp_nine_halfwords_q12((const u16 *)lighting->motion.values,
                           (const u16 *)override->motion.values,
                           (u16 *)&color_matrix, lighting_blend);
             SetColorMatrix(&color_matrix);
@@ -99,18 +99,18 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         MulMatrix0((MATRIX *)&light_rotation->rotations[0], &model,
                    &light_matrix);
         if (override->filter.angle != -1) {
-            fog_set_near(func_8001584c(lighting->filter.angle,
+            fog_set_near(fixed_lerp_q12(lighting->filter.angle,
                                        override->filter.angle,
                                        lighting_blend));
         } else {
             fog_set_near(lighting->filter.angle);
         }
         if (override->filter.kinds.types[0] != 0xff) {
-            red = func_8001584c(lighting->filter.kinds.types[0],
+            red = fixed_lerp_q12(lighting->filter.kinds.types[0],
                                 override->filter.kinds.types[0], lighting_blend);
-            green = func_8001584c(lighting->filter.kinds.types[1],
+            green = fixed_lerp_q12(lighting->filter.kinds.types[1],
                                   override->filter.kinds.types[1], lighting_blend);
-            blue = func_8001584c(lighting->filter.kinds.types[2],
+            blue = fixed_lerp_q12(lighting->filter.kinds.types[2],
                                  override->filter.kinds.types[2], lighting_blend);
             SetBackColor(red, green, blue);
         } else {
@@ -147,16 +147,16 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         object = tmd_get_object(object_index);
     }
     if (world_matrix != 0) {
-        func_8002d918(object->vertex_count);
+        tmd_project_vertices_with_fog(object->vertex_count);
     } else {
         tmd_transform_vertices_depth(object->vertex_count, depth);
     }
     if (render_mode == 0xff) {
-        func_8002e4dc(object_index, depth);
+        render_enqueue_textured_tmd(object_index, depth);
     } else if (render_mode == 0xfe) {
         render_enqueue_tmd_with_clipping(object_index, depth, 0);
     } else {
-        func_8002ddb4(object_index, depth, render_mode);
+        render_enqueue_blended_tmd(object_index, depth, render_mode);
     }
 }
 
@@ -210,5 +210,5 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
     } else {
         tmd_project_vertices(object->vertex_count);
     }
-    func_8002ebe0(0, blend_mode, depth);
+    render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
 }

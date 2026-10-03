@@ -120,7 +120,7 @@ void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast
 }
 
 ADDRESS(0x8003c3e0, 0x234)
-s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
+s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 step,
                   const VECTOR *target, SVECTOR *direction,
                   s32 pitch_override, u16 yaw_limit, s32 iterations)
 {
@@ -148,14 +148,14 @@ s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
         if (yaw_fraction > KF_FIXED12_ONE) {
             yaw_fraction = KF_FIXED12_ONE;
         }
-        angles.y = func_8001586c(angles.y, actor->rotation.y, yaw_fraction);
+        angles.y = angle_lerp_shortest_q12(angles.y, actor->rotation.y, yaw_fraction);
 
         if ((s16)pitch == -1) {
             pitch_error = ((s16)angles.x - (s16)actor->rotation.x) & KF_ANGLE_WRAP_MASK;
             if (pitch_error >= KF_ANGLE_HALF_TURN) {
                 pitch_error = KF_ANGLE_FULL_TURN - pitch_error;
             }
-            angles.x = func_8001586c(angles.x, actor->rotation.x, pitch_error);
+            angles.x = angle_lerp_shortest_q12(angles.x, actor->rotation.x, pitch_error);
         } else {
             angles.x = pitch;
         }

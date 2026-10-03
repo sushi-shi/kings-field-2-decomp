@@ -43,7 +43,7 @@ typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
 } while (0)
 
 ADDRESS(0x8002ff5c, 0xcbc)
-void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
+void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
                    KfTmdPreparedAsset *prepared_asset)
 {
     u8 *base;

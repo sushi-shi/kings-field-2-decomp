@@ -155,9 +155,9 @@ void func_8001fc94(const void *list_state, s32 render_mode)
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     if (((u32)render_mode - 10u) < 2u || ((u32)render_mode - 13u) < 2u)
-        func_80020990(1);
+        menu_draw_status_counters(1);
     else if (render_mode == 15)
-        func_80020990(3);
+        menu_draw_status_counters(3);
     if (((u32)render_mode - 8u) < 2u)
         func_80021a60();
 }

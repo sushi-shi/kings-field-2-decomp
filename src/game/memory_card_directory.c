@@ -43,7 +43,7 @@ KfCardAssets memory_card_assets = {
 };
 
 DATA(0x8006d6a8, 0x7)
-char DAT_8006d6a8[7] = "bu00:*";
+char memory_card_search_pattern[7] = "bu00:*";
 
 ADDRESS(0x800226ec, 0x1dc)
 s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
@@ -60,7 +60,7 @@ s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
     entry = entries;
     memset(entries, 0, sizeof(ordered));
     *matching_count = 0;
-    if (firstfile(DAT_8006d6a8, entry) == entry) {
+    if (firstfile(memory_card_search_pattern, entry) == entry) {
         do {
             total_size += entry->size;
             if (strncmp(entry->name, memory_card_file_prefix, 12) == 0) {

@@ -41,7 +41,7 @@ void menu_draw_two_option(const KfMenuGlyphString *accept_label,
 }
 
 ADDRESS(0x8002083c, 0x154)
-void func_8002083c(s32 item_id)
+void menu_update_item_preview(s32 item_id)
 {
     MATRIX rotation;
     MATRIX light;
@@ -90,7 +90,7 @@ void func_8002083c(s32 item_id)
 }
 
 ADDRESS(0x80020990, 0x1c0)
-void func_80020990(s32 kind)
+void menu_draw_status_counters(s32 kind)
 {
     KfMenuGlyphString heading;
     KfMenuGlyphString amount;
@@ -131,7 +131,7 @@ void func_80020990(s32 kind)
         menu_draw_string(&menu_sprite_defs[1], &heading);
         amount.position.x = heading.position.x + 91;
         amount.position.y = heading.position.y;
-        menu_format_number(DAT_8006d694, 2, 0, 1, amount.glyphs.codes);
+        menu_format_number(menu_item_quantity, 2, 0, 1, amount.glyphs.codes);
         menu_draw_number(&menu_sprite_defs[0], &amount);
     }
 }

@@ -404,11 +404,11 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     source->extra_40.bytes[0]++;
     fraction = ((s32)source->extra_40.bytes[0] << 12) / duration;
     target->position.vx = source->position.vx +
-        func_8001584c(start_position.vx, end_position.vx, fraction);
+        fixed_lerp_q12(start_position.vx, end_position.vx, fraction);
     target->position.vy = source->position.vy +
-        func_8001584c(start_position.vy, end_position.vy, fraction);
+        fixed_lerp_q12(start_position.vy, end_position.vy, fraction);
     target->position.vz = source->position.vz +
-        func_8001584c(start_position.vz, end_position.vz, fraction);
+        fixed_lerp_q12(start_position.vz, end_position.vz, fraction);
     if (source->extra_40.bytes[0] >= duration) {
         if (brighten) {
             target->unknown_0a = KF_MAP_OBJECT_MOTION_LIMIT;

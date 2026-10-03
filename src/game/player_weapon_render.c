@@ -26,7 +26,7 @@ void render_player_weapon(void)
     row = &game_graphics_runtime.collision_rows[
         layer[cell_x * sizeof(KfMapOccupancyCell) +
               cell_z * sizeof(bss_801c7540.map_cells[0]) +
-              player_state.unknown_128] & 0x3f];
+              player_state.map_layer_index] & 0x3f];
     SetColorMatrix((MATRIX *)&row->motion);
     SetLightMatrix((MATRIX *)&row->rotations[0]);
     fog_set_near(row->filter.angle);
@@ -46,7 +46,7 @@ void render_player_weapon(void)
                       player_state.weapon_attack_mode,
                       player_state.weapon_attack_phase,
                       object->vertex_count) != 0) {
-        func_8002d918(object->vertex_count);
-        func_8002e4dc(0, 100);
+        tmd_project_vertices_with_fog(object->vertex_count);
+        render_enqueue_textured_tmd(0, 100);
     }
 }

@@ -12,7 +12,7 @@ typedef struct KfCardPlayerSnapshot {
     s32 experience;
     s32 next_level_experience;
     u32 gold;
-    u16 unknown_128;
+    u16 map_layer_index;
     KfPlayerVitals vitals;
     u16 base_physical_power;
     u16 base_magic;
@@ -36,9 +36,9 @@ typedef struct KfCardPlayerSnapshot {
     u8 level;
     u8 unknown_09;
     u8 equipped_ids[7];
-    u8 unknown_97;
-    u8 unknown_98;
-    u8 unknown_99;
+    u8 primary_magic_shortcut_id;
+    u8 secondary_magic_shortcut_id;
+    u8 secondary_item_shortcut_id;
     u8 equipped_weapon_id;
     u8 audio_effects_enabled;
     u8 audio_music_enabled;

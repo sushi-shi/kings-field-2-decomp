@@ -30,11 +30,11 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
         actor->animation_phase = (step + actor->animation_phase) & 0xfff;
-        func_800335a0(0, 0);
+        render_game_frame(0, 0);
     }
 
     actor->animation_phase = final_phase & 0xfff;
-    func_800335a0(0, 0);
+    render_game_frame(0, 0);
 }
 
 ADDRESS(0x80046144, 0x5c)
@@ -203,7 +203,7 @@ execute:
             actor_animation_seek_phase(actor, candidate->unknown_01[0], 0, 0xfff,
                           candidate->animation_step);
         }
-        func_80034e10(3, candidate->word_0c.value + *cursor);
+        menu_show_transition_image(3, candidate->word_0c.value + *cursor);
 
 advance:
         cursor++;
@@ -228,14 +228,14 @@ after_script:
         break;
     case 0x20:
         func_80028fa8();
-        func_8001d8d0();
+        menu_item_trade_controller();
         break;
     case 0x30:
         func_80028fa8();
         choice = menu_choose_inventory_item();
         if (choice != -1) {
-            func_800335a0(0, 0);
-            func_80034e10(6, choice + 360);
+            render_game_frame(0, 0);
+            menu_show_transition_image(6, choice + 360);
         }
         break;
     }

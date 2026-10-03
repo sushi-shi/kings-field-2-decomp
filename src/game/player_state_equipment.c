@@ -22,7 +22,7 @@ SVECTOR DAT_800667a0[5] = {
 };
 
 DATA(0x800667c8, 0x20)
-SVECTOR DAT_800667c8[4] = {
+SVECTOR player_magic_square_offsets[4] = {
     {-400, -400, 200, 0},
     {-400, 400, 200, 0},
     {400, -400, 200, 0},
@@ -30,7 +30,7 @@ SVECTOR DAT_800667c8[4] = {
 };
 
 DATA(0x800667e8, 0x14)
-KfPlayerMagicIdSequence DAT_800667e8 = {
+KfPlayerMagicIdSequence player_magic_id_sequence = {
     {39, 40, 60, 66, 84, 86, 39, 40, 60, 66, 84, 86},
     {0x20, 0x10, 0x80, 0xffff}
 };
@@ -115,17 +115,17 @@ void player_initialize_state(void)
     player_state.next_level_experience = player_level_growth_table[0].experience_threshold;
     player_set_equipment_slot(KF_EQUIPMENT_NONE, KF_EQUIPMENT_NONE);
     player_state.selected_magic_record = NULL;
-    player_set_unknown_97(KF_EQUIPMENT_NONE);
+    player_set_primary_magic_shortcut_id(KF_EQUIPMENT_NONE);
     player_equip_weapon(0);
-    player_set_unknown_98(KF_EQUIPMENT_NONE);
-    player_set_unknown_99(KF_EQUIPMENT_NONE);
+    player_set_secondary_magic_shortcut_id(KF_EQUIPMENT_NONE);
+    player_set_secondary_item_shortcut_id(KF_EQUIPMENT_NONE);
     player_state.camera_rotation_target.angles[0] = 0;
     player_state.camera_rotation_target.angles[1] = PLAYER_INITIAL_CAMERA_PITCH;
     player_state.camera_rotation_target.angles[2] = 0;
     player_state.camera_position.vy = PLAYER_INITIAL_CAMERA_Y;
     player_state.camera_position.vx = PLAYER_INITIAL_CAMERA_X;
     player_state.camera_position.vz = PLAYER_INITIAL_CAMERA_Z;
-    player_state.unknown_128 = PLAYER_INITIAL_MAP_LAYER;
+    player_state.map_layer_index = PLAYER_INITIAL_MAP_LAYER;
     entry = effect_state.magic_records;
     for (i = 63; i != -1; i--) {
         entry->menu_available = 0;
@@ -171,7 +171,7 @@ void player_sync_position_to_map(void)
 
     player_state.equipment_effect_ticks = 0;
     layer = 2;
-    if (player_state.unknown_128 == 0) {
+    if (player_state.map_layer_index == 0) {
         layer = 1;
     }
     player_state.camera_position.vy =
@@ -221,26 +221,26 @@ s32 player_distance_to_point(
 RODATA(0x80011168, 0xf4)
 
 ADDRESS(0x800253fc, 0x10)
-void player_set_unknown_97(u8 value)
+void player_set_primary_magic_shortcut_id(u8 value)
 {
-    player_state.unknown_97 = value;
+    player_state.primary_magic_shortcut_id = value;
 }
 
 ADDRESS(0x8002540c, 0x28)
-void player_set_unknown_98(u8 value)
+void player_set_secondary_magic_shortcut_id(u8 value)
 {
-    player_state.unknown_98 = value;
+    player_state.secondary_magic_shortcut_id = value;
     if (value != KF_EQUIPMENT_NONE) {
-        player_state.unknown_99 = KF_EQUIPMENT_NONE;
+        player_state.secondary_item_shortcut_id = KF_EQUIPMENT_NONE;
     }
 }
 
 ADDRESS(0x80025434, 0x28)
-void player_set_unknown_99(u8 value)
+void player_set_secondary_item_shortcut_id(u8 value)
 {
-    player_state.unknown_99 = value;
+    player_state.secondary_item_shortcut_id = value;
     if (value != KF_EQUIPMENT_NONE) {
-        player_state.unknown_98 = KF_EQUIPMENT_NONE;
+        player_state.secondary_magic_shortcut_id = KF_EQUIPMENT_NONE;
     }
 }
 
@@ -374,7 +374,7 @@ void player_begin_weapon_attack(s32 mode)
 }
 
 ADDRESS(0x80025878, 0x1a0)
-KfActor *func_80025878(s32 scale, VECTOR *position, SVECTOR *direction,
+KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECTOR *direction,
                        s32 *distance)
 {
     struct KfEulerAngles angles;
@@ -386,14 +386,14 @@ KfActor *func_80025878(s32 scale, VECTOR *position, SVECTOR *direction,
         angles.x = -player_state.camera_rotation.angles[0];
         angles.y = player_state.camera_rotation.angles[1];
         angles.z = player_state.camera_rotation.angles[2];
-        vector_rotate_yxz(&angles, &player_state.unknown_118, position);
+        vector_rotate_yxz(&angles, &player_state.magic_origin_offset, position);
         position->vx += player_state.camera_position.vx;
         height = position->vy - 1600;
         position->vy = height + player_state.camera_position.vy;
         position->vz += player_state.camera_position.vz;
     }
 
-    actor = func_8003a778(&player_state.camera_position,
+    actor = actor_find_best_in_cone(&player_state.camera_position,
                           (s16)player_state.camera_rotation.angles[1],
                           (s16)player_state.camera_rotation.angles[0], 0x55f0,
                           0x200, 0x200, distance, 0);
@@ -417,7 +417,7 @@ KfActor *func_80025878(s32 scale, VECTOR *position, SVECTOR *direction,
 }
 
 ADDRESS(0x80025a18, 0x918)
-void func_80025a18(s32 effect_id, ...)
+void player_dispatch_magic_effect(s32 effect_id, ...)
 {
     VECTOR position;
     SVECTOR direction;
@@ -440,7 +440,7 @@ void func_80025a18(s32 effect_id, ...)
     case 7:
         simple_scale = 1000;
 simple_probe:
-        func_80025878(simple_scale, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(simple_scale, &position, &direction, &distance);
 emit_simple_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction);
         break;
@@ -449,7 +449,7 @@ emit_simple_effect:
                        0, 0x1000, 0x100, 0x1000);
         break;
     case 3:
-        actor = func_80025878(5000, &position, &direction, &distance);
+        actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == 0) {
             position.vx += direction.vx;
             position.vy = player_state.camera_position.vy;
@@ -473,7 +473,7 @@ case3_emit:
         effect_construct_record(10, 0x12, 0x72, &position, 0);
         break;
     case 0:
-        actor = func_80025878(5000, &position, &direction, &distance);
+        actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == 0) {
             kind = 255;
         } else {
@@ -484,10 +484,10 @@ case3_emit:
         effect_construct_record(10, 0x12, 0x6f, &position, 0, kind);
         break;
     case 13: {
-        const SVECTOR *sequence = DAT_800667c8;
+        const SVECTOR *sequence = player_magic_square_offsets;
         for (i = 3; i != -1; i--) {
-            player_state.unknown_118 = *sequence;
-            func_80025878(800, &position, &direction, &distance);
+            player_state.magic_origin_offset = *sequence;
+            player_probe_view_target_and_vectors(800, &position, &direction, &distance);
             sequence++;
             direction.vx += -32 + (rand() >> 9);
             direction.vy += -32 + (rand() >> 9);
@@ -506,12 +506,12 @@ case3_emit:
 simple_effect:
         rotation_scale = 700;
 probe_rotation_effect:
-        func_80025878(rotation_scale, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(rotation_scale, &position, &direction, &distance);
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
     case 11:
-        func_80025878(600, &position, &direction, &adjusted_distance);
+        player_probe_view_target_and_vectors(600, &position, &direction, &adjusted_distance);
         if (adjusted_distance != -1) {
             adjusted_distance = adjusted_distance / 600 - 8;
             if (adjusted_distance < 2) {
@@ -526,7 +526,7 @@ probe_rotation_effect:
     case 5:
         target_scale = 200;
 select_actor_effect:
-        actor = func_80025878(target_scale, &position, &direction, &distance);
+        actor = player_probe_view_target_and_vectors(target_scale, &position, &direction, &distance);
         if (actor == 0) {
             kind = 255;
         } else {
@@ -538,7 +538,7 @@ select_actor_effect:
         target_scale = 500;
         goto select_actor_effect;
     case 8:
-        func_80025878(700, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(700, &position, &direction, &distance);
         effect_construct_record(10, 0x12, 0x6a, &position, &direction,
                        &player_state.camera_rotation);
         break;
@@ -551,9 +551,9 @@ select_actor_effect:
     case 12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];
         player_state.camera_rotation.angles[1] -=
-            (u16)player_state.unknown_118.vx * 2;
-        func_80025878(150, &position, &direction, &distance);
-        player_state.unknown_118.vx += 100;
+            (u16)player_state.magic_origin_offset.vx * 2;
+        player_probe_view_target_and_vectors(150, &position, &direction, &distance);
+        player_state.magic_origin_offset.vx += 100;
         player_state.camera_rotation.angles[1] = old_yaw;
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation, 600, 60, 128, 140, 160);
@@ -569,16 +569,16 @@ select_actor_effect:
         effect_id = 0x71;
 sequence_effect: {
         const SVECTOR *record = DAT_800667a0;
-        player_state.unknown_118 = *record;
-        func_80025878(600, &position, &direction, &distance);
+        player_state.magic_origin_offset = *record;
+        player_probe_view_target_and_vectors(600, &position, &direction, &distance);
         effect = effect_construct_record(10, 0x12, effect_id,
                                &position, &direction, &player_state.camera_rotation);
         if (effect != 0) {
             s32 index = effect - effect_state.records;
             record++;
             for (i = 3; i != -1; i--) {
-                player_state.unknown_118 = *record;
-                func_80025878(600, &position, &direction, &distance);
+                player_state.magic_origin_offset = *record;
+                player_probe_view_target_and_vectors(600, &position, &direction, &distance);
                 effect_construct_record(10, 0x12, record->pad, &position, &direction, index);
                 record++;
             }
@@ -586,25 +586,25 @@ sequence_effect: {
         break;
     }
     case 44:
-        func_80025878(1000, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(1000, &position, &direction, &distance);
         effect_id = 0x75;
         goto emit_rotation_effect;
     case 45:
-        func_80025878(1000, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(1000, &position, &direction, &distance);
         effect_id = 0x74;
         goto emit_simple_effect;
     case 40:
         rotation_scale = 1000;
         goto probe_rotation_effect;
     case 39:
-        func_80025878(50, 0, &direction, &distance);
+        player_probe_view_target_and_vectors(50, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
         goto emit_rotation_effect;
     case 49: {
         const VECTOR *override_position;
         /* Cases 49 and 50 omit the rotation argument. */
-        func_80025878(550, 0, &direction, &distance);
+        player_probe_view_target_and_vectors(550, 0, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
         goto emit_simple_effect;
@@ -618,7 +618,7 @@ sequence_effect: {
     case 34:
     case 35:
     case 38:
-        func_80025878(900, &position, &direction, &distance);
+        player_probe_view_target_and_vectors(900, &position, &direction, &distance);
         goto emit_rotation_effect;
 emit_rotation_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction,

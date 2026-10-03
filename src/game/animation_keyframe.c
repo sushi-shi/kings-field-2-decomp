@@ -140,29 +140,24 @@ void animation_apply_sparse_morph(SVECTOR *vertices, const s16 *encoded, s32 ble
             *delta_write++ = *encoded++ - cursor->vz;
             cursor++;
 
-            if (pending != 2) {
-                goto increment_pending;
+            if (pending == 2) {
+                ScaleMatrix(&deltas, &scale);
+                group_start[0].vx += deltas.m[0][0];
+                group_start[0].vy += deltas.m[0][1];
+                group_start[0].vz += deltas.m[0][2];
+                group_start[1].vx += deltas.m[1][0];
+                group_start[1].vy += deltas.m[1][1];
+                group_start[1].vz += deltas.m[1][2];
+                group_start[2].vx += deltas.m[2][0];
+                pending = 0;
+                group_start[2].vy += deltas.m[2][1];
+                group_start[2].vz += deltas.m[2][2];
+                delta_write = &deltas.m[0][0];
+                group_start = cursor;
+            } else {
+                ++pending;
             }
-            ScaleMatrix(&deltas, &scale);
-            group_start[0].vx += deltas.m[0][0];
-            group_start[0].vy += deltas.m[0][1];
-            group_start[0].vz += deltas.m[0][2];
-            group_start[1].vx += deltas.m[1][0];
-            group_start[1].vy += deltas.m[1][1];
-            group_start[1].vz += deltas.m[1][2];
-            group_start[2].vx += deltas.m[2][0];
-            pending = 0;
-            group_start[2].vy += deltas.m[2][1];
-            group_start[2].vz += deltas.m[2][2];
-            delta_write = &deltas.m[0][0];
-            group_start = cursor;
-            goto next_vertex;
-
-        increment_pending:
-            ++pending;
         }
-    next_vertex:
-        ;
     }
 
     if (pending != 0) {
@@ -283,21 +278,20 @@ allocate_vertices:
     record->clip_index = clip;
     record->keyframe_index = keyframe_index;
 
-    /* The destination begins four bytes into an otherwise unresolved graphics span. */
     {
         u16 copy_count = vertex_count;
         const u32 *source = (const u32 *)record->cached_vertices;
-        u32 *destination = (u32 *)&game_graphics_runtime.unknown_12a50[4];
+        u32 *destination = (u32 *)game_graphics_runtime.animation_vertex_scratch;
 
         do {
             *destination++ = *source++;
             *destination++ = *source++;
         } while (--copy_count != 0);
     }
-    animation_apply_sparse_morph((SVECTOR *)&game_graphics_runtime.unknown_12a50[4],
+    animation_apply_sparse_morph(game_graphics_runtime.animation_vertex_scratch,
                    (const s16 *)((u8 *)asset + record->rest_morph_offset),
                    blend_fraction);
-    tmd_set_current_vertices((SVECTOR *)&game_graphics_runtime.unknown_12a50[4]);
+    tmd_set_current_vertices(game_graphics_runtime.animation_vertex_scratch);
     record->state = KF_ANIMATION_CACHE_LIVE;
     return (s32)record;
 }

@@ -58,7 +58,7 @@ void func_80019ed4(s32 category)
         break;
     }
 
-    count = func_80018d08(game_counter_bytes, rows, values, item_ids,
+    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, item_ids,
         first, last);
     memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
     values[count] = 0xff;
@@ -93,11 +93,11 @@ void func_80019ed4(s32 category)
         menu_update_list_input(&menu.list, item_ids, &selection, &result);
         selected_item = item_ids[menu.list.selected_index];
         if (selection == 1)
-            func_80022300(17);
+            menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c(selected_item);
+                menu_update_item_preview(selected_item);
             func_8001fc94(&menu, 5);
             menu_present_frame();
         }

@@ -8,7 +8,7 @@
 RODATA(0x80011298, 0x64)
 
 ADDRESS(0x8002722c, 0x2c0)
-void func_8002722c(s32 magic_id)
+void player_select_magic_action(s32 magic_id)
 {
     KfMagicRecord *record;
     u16 mp_cost;
@@ -70,17 +70,17 @@ charge_gate:
     player_state.magic_charge = 0;
     mp_cost = record->mp_cost;
     player_state.unknown_d1[0] = magic_id;
-    player_state.unknown_118.vx = -200;
-    player_state.unknown_118.vy = 200;
-    player_state.unknown_118.vz = 400;
+    player_state.magic_origin_offset.vx = -200;
+    player_state.magic_origin_offset.vy = 200;
+    player_state.magic_origin_offset.vz = 400;
     player_state.unknown_d1[3] = 1;
     player_state.vitals.current_mp -= mp_cost;
 
     switch (magic_id) {
     case 10:
-        player_state.unknown_118.vx = 0;
-        player_state.unknown_118.vy = -512;
-        player_state.unknown_118.vz = 2000;
+        player_state.magic_origin_offset.vx = 0;
+        player_state.magic_origin_offset.vy = -512;
+        player_state.magic_origin_offset.vz = 2000;
         /* Retail falls through to the shared action-byte stores. */
     case 1:
     case 4:
@@ -94,7 +94,7 @@ charge_gate:
         player_state.unknown_d1[2] = 1;
         break;
     case 12:
-        player_state.unknown_118.vx = -200;
+        player_state.magic_origin_offset.vx = -200;
         player_state.unknown_d1[1] = 5;
         player_state.unknown_d1[2] = 2;
         break;
@@ -106,9 +106,9 @@ charge_gate:
     case 2:
         player_state.unknown_d1[1] = 1;
         player_state.unknown_d1[2] = 1;
-        player_state.unknown_118.vz = 0;
-        player_state.unknown_118.vy = 0;
-        player_state.unknown_118.vx = 0;
+        player_state.magic_origin_offset.vz = 0;
+        player_state.magic_origin_offset.vy = 0;
+        player_state.magic_origin_offset.vx = 0;
         break;
     case 13:
         player_state.unknown_d1[1] = 7;
@@ -162,7 +162,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         accept_position:
             player_state.camera_position.vx = next.vx;
             player_state.camera_position.vz = next.vz;
-            player_state.unknown_128 = KF_COLLISION_CACHE_LAYER;
+            player_state.map_layer_index = KF_COLLISION_CACHE_LAYER;
             result = 1;
             break;
         }

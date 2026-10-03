@@ -5,7 +5,7 @@
 #include <psyq/sdk.h>
 
 ADDRESS(0x8002c670, 0x7bc)
-void func_8002c670(void)
+void build_camera_map_cell_layer_masks(void)
 {
     s16 shape[7];
     KfCollisionMaskPoint corners[4];
@@ -89,7 +89,7 @@ void func_8002c670(void)
                   render_mask_scan_state.first_layer_mask | 0x20);
     rasterize_map_cell_layer_mask_line(&corners[2], &corners[0],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002c1d4(render_mask_scan_state.first_layer_mask | 0x20);
+    fill_map_cell_layer_mask_interior(render_mask_scan_state.first_layer_mask | 0x20);
 
     lighting_offset = render_mask_scan_state.map_z * sizeof(bss_801c7540.map_cells[0]) +
         render_mask_scan_state.map_x * sizeof(bss_801c7540.map_cells[0][0]) +
@@ -108,50 +108,50 @@ void func_8002c670(void)
         render_mask_scan_state.map_z++;
         render_mask_scan_state.mask_cursor += 24;
         render_mask_scan_state.window_z++;
-        func_8002c290(-24);
+        update_current_map_cell_layer_mask(-24);
         render_mask_scan_state.map_x--;
         render_mask_scan_state.window_x--;
         render_mask_scan_state.mask_cursor--;
-        func_8002c424(-24, -23, -1, 0, -1, index);
-        func_8002c290(-23);
+        sweep_map_cell_layer_mask_line(-24, -23, -1, 0, -1, index);
+        update_current_map_cell_layer_mask(-23);
 
         render_mask_scan_state.map_z--;
         render_mask_scan_state.mask_cursor -= 24;
         render_mask_scan_state.window_z--;
-        func_8002c424(1, -23, 0, -1, -24, index);
-        func_8002c290(1);
+        sweep_map_cell_layer_mask_line(1, -23, 0, -1, -24, index);
+        update_current_map_cell_layer_mask(1);
         render_mask_scan_state.map_z--;
         render_mask_scan_state.mask_cursor -= 24;
         render_mask_scan_state.window_z--;
-        func_8002c424(1, 25, 0, -1, -24, index);
-        func_8002c290(25);
+        sweep_map_cell_layer_mask_line(1, 25, 0, -1, -24, index);
+        update_current_map_cell_layer_mask(25);
 
         render_mask_scan_state.map_x++;
         render_mask_scan_state.window_x++;
         render_mask_scan_state.mask_cursor++;
-        func_8002c424(24, 25, 1, 0, 1, index);
-        func_8002c290(24);
+        sweep_map_cell_layer_mask_line(24, 25, 1, 0, 1, index);
+        update_current_map_cell_layer_mask(24);
         render_mask_scan_state.map_x++;
         render_mask_scan_state.window_x++;
         render_mask_scan_state.mask_cursor++;
-        func_8002c424(24, 23, 1, 0, 1, index);
-        func_8002c290(23);
+        sweep_map_cell_layer_mask_line(24, 23, 1, 0, 1, index);
+        update_current_map_cell_layer_mask(23);
 
         render_mask_scan_state.map_z++;
         render_mask_scan_state.mask_cursor += 24;
         render_mask_scan_state.window_z++;
-        func_8002c424(-1, 23, 0, 1, 24, index);
-        func_8002c290(-1);
+        sweep_map_cell_layer_mask_line(-1, 23, 0, 1, 24, index);
+        update_current_map_cell_layer_mask(-1);
         render_mask_scan_state.map_z++;
         render_mask_scan_state.mask_cursor += 24;
         render_mask_scan_state.window_z++;
-        func_8002c424(-1, -25, 0, 1, 24, index);
-        func_8002c290(-25);
+        sweep_map_cell_layer_mask_line(-1, -25, 0, 1, 24, index);
+        update_current_map_cell_layer_mask(-25);
 
         render_mask_scan_state.map_x--;
         render_mask_scan_state.window_x--;
         render_mask_scan_state.mask_cursor--;
-        func_8002c424(-24, -25, -1, 0, -1, index);
+        sweep_map_cell_layer_mask_line(-24, -25, -1, 0, -1, index);
     }
 
     mask[-25] |= 0x80;

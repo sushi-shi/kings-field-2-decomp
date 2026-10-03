@@ -15,7 +15,7 @@
 
 /* The two flag ranges are consumed as byte arrays by the resource updaters. */
 ADDRESS(0x8003247c, 0xb70)
-void func_8003247c(void)
+void render_scene_and_update_resources(void)
 {
     struct KfEulerAngles rotation;
     VECTOR actor_position;

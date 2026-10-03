@@ -67,8 +67,8 @@ KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190
 KfMapObjectTemplatePoseView	0x18	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes in the 24-byte template
 KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
 KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
-KfMapPlacedEntry	0x18	supported	asm;func_80034818;map resource caller	128 runtime rows at graphics runtime +0x170f0
-KfMapPlacedSource	0x10	supported	asm;func_80034818;map resource caller	16-byte map resource rows
+KfMapPlacedEntry	0x18	supported	asm;map_placed_expand_sources;map resource caller	128 runtime rows at graphics runtime +0x170f0
+KfMapPlacedSource	0x10	supported	asm;map_placed_expand_sources;map resource caller	16-byte map resource rows
 KfMemoryBlock	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfMenuGlyphRow	0x18	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	twelve halfword codes in a positioned menu row
 KfMenuGlyphString	0x1c	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
@@ -94,9 +94,9 @@ KfPlayerViewRotation	0x08	supported	asm;player_get_camera_pose;player_reset_view
 KfPlayerVitals	0x08	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
-KfRenderGridState	0x24c	supported	asm;func_8002c670;func_80030f5c	scan origin, fog threshold, and contiguous 24-by-24 map mask grid
-KfRenderMaskScanState	0x20	supported	asm;func_8002c290;func_8002c670	observed 32-byte window and layer-mask scan state
-KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;func_800335a0	36-byte mutable model render row
+KfRenderGridState	0x24c	supported	asm;build_camera_map_cell_layer_masks;func_80030f5c	scan origin, fog threshold, and contiguous 24-by-24 map mask grid
+KfRenderMaskScanState	0x20	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	observed 32-byte window and layer-mask scan state
+KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_frame	36-byte mutable model render row
 KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
 KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-pose view through angle_z; trailing alignment padding
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header

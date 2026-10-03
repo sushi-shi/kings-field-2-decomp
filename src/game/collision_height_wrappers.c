@@ -89,17 +89,15 @@ s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height)
 ADDRESS(0x8002b874, 0x160)
 void func_8002b874(void)
 {
-    u16 interaction_height;
-
     if (COLLISION_CACHE_FLAGS & 0x80) {
         COLLISION_CACHE_POSITION = player_state.camera_position;
         COLLISION_CACHE_RADIUS = 800;
-        interaction_height = 1700;
+        COLLISION_CACHE_INTERACTION_HEIGHT = 1700;
     } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
         KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
         COLLISION_CACHE_POSITION = actor->position;
         COLLISION_CACHE_RADIUS = actor->unknown_1c;
-        interaction_height = actor->unknown_1e;
+        COLLISION_CACHE_INTERACTION_HEIGHT = actor->unknown_1e;
     } else {
         KfMapObject *object;
         KfMapObjectTemplate *object_template;
@@ -111,9 +109,8 @@ void func_8002b874(void)
         object_template = &map_object_state.templates[object->object_id];
         COLLISION_CACHE_POSITION = object->position;
         COLLISION_CACHE_RADIUS = object_template->collision_radius;
-        interaction_height = object_template->interaction_height;
+        COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
     }
-    COLLISION_CACHE_INTERACTION_HEIGHT = interaction_height;
 }
 
 ADDRESS(0x8002b9d4, 0x244)
@@ -134,13 +131,13 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
     height &= 0x0fffffff;
     if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if (mode & 0x10) {
-            COLLISION_CACHE_ACTOR_INDEX = func_8003a9f4(x, y, z, radius, height);
+            COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
             if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= 0x10;
             }
         } else {
             if (mode & 0x40) {
-                COLLISION_CACHE_ACTOR_INDEX = func_8003ab5c(x, y, z, radius, height);
+                COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
                 if (COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= 0x10;
                 }
@@ -306,25 +303,25 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
                    KfCollisionRow *row, s32 amount)
 {
     if (flags & 2) {
-        func_800158b4((const u16 *)row->motion.values,
+        fixed_lerp_nine_halfwords_q12((const u16 *)row->motion.values,
                       (const u16 *)&payload->unknown_00[20],
                       (u16 *)row->motion.values, amount);
     }
     if (flags & 1) {
-        func_800158b4((const u16 *)&row->rotations[0],
+        fixed_lerp_nine_halfwords_q12((const u16 *)&row->rotations[0],
                       (const u16 *)payload->unknown_00,
                       (u16 *)&row->rotations[0], amount);
     }
     if (flags & 4) {
-        row->filter.kinds.types[0] = func_8001584c(
+        row->filter.kinds.types[0] = fixed_lerp_q12(
             row->filter.kinds.types[0], payload->filter.kinds.types[0], amount);
-        row->filter.kinds.types[1] = func_8001584c(
+        row->filter.kinds.types[1] = fixed_lerp_q12(
             row->filter.kinds.types[1], payload->filter.kinds.types[1], amount);
-        row->filter.kinds.types[2] = func_8001584c(
+        row->filter.kinds.types[2] = fixed_lerp_q12(
             row->filter.kinds.types[2], payload->filter.kinds.types[2], amount);
     }
     if (flags & 8) {
-        row->filter.angle = func_8001584c(row->filter.angle, payload->filter.angle, amount);
+        row->filter.angle = fixed_lerp_q12(row->filter.angle, payload->filter.angle, amount);
     }
 }
 
@@ -385,8 +382,10 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
     u16 origin_z = (u16)game_graphics_runtime.render_state.cell_origin_z;
     s32 x = ((u32)start->x >> 12) + origin_x;
     s32 z = ((u32)start->z >> 12) + origin_z;
-    s32 dx = (((u32)end->x >> 12) + origin_x) - x;
-    s32 dz = (((u32)end->z >> 12) + origin_z) - z;
+    s32 end_x = ((u32)end->x >> 12) + origin_x;
+    s32 end_z = ((u32)end->z >> 12) + origin_z;
+    s32 dx = end_x - x;
+    s32 dz = end_z - z;
     s32 step_x;
     s32 step_z;
     s32 count;
@@ -442,7 +441,7 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
 }
 
 ADDRESS(0x8002c170, 0x64)
-s32 func_8002c170(const u8 *row, s32 index, s32 step, u8 value)
+s32 find_map_cell_layer_mask_run_boundary(const u8 *row, s32 index, s32 step, u8 value)
 {
     s32 state = 0;
 
@@ -469,14 +468,14 @@ s32 func_8002c170(const u8 *row, s32 index, s32 step, u8 value)
 }
 
 ADDRESS(0x8002c1d4, 0xbc)
-void func_8002c1d4(u8 value)
+void fill_map_cell_layer_mask_interior(u8 value)
 {
     u8 *row = &game_graphics_runtime.render_grid.map_cell_layer_masks[0][0];
     s32 row_index = KF_MAP_CELL_GRID_SIDE - 1;
 
     do {
-        s32 first = func_8002c170(row, 0, 1, value);
-        s32 last = func_8002c170(row, KF_MAP_CELL_GRID_SIDE - 1, -1, value);
+        s32 first = find_map_cell_layer_mask_run_boundary(row, 0, 1, value);
+        s32 last = find_map_cell_layer_mask_run_boundary(row, KF_MAP_CELL_GRID_SIDE - 1, -1, value);
 
         if (last >= first) {
             u8 *cell = row + first;
@@ -493,7 +492,7 @@ void func_8002c1d4(u8 value)
 }
 
 ADDRESS(0x8002c290, 0x194)
-void func_8002c290(s32 cursor_offset)
+void update_current_map_cell_layer_mask(s32 cursor_offset)
 {
     KfMapOccupancyCell *cell;
     KfMapOccupancyLayer *first_layer;
@@ -547,7 +546,7 @@ check_second_layer:
 }
 
 ADDRESS(0x8002c424, 0x24c)
-void func_8002c424(s32 first_offset, s32 second_offset, s32 map_step,
+void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map_step,
                    s8 window_step, s32 mask_stride, s32 count)
 {
     s32 window_x = render_mask_scan_state.window_x;

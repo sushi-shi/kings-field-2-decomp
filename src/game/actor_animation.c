@@ -5,7 +5,8 @@
 #include <kf/game/collision_cache.h>
 
 ADDRESS(0x8003a9f4, 0x168)
-s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height)
+s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
+                                             s32 radius, s32 height)
 {
     KfActor *actor = actor_state.actors;
     s32 index;
@@ -40,7 +41,7 @@ s32 func_8003a9f4(s32 x, s32 y, s32 z, s32 radius, s32 height)
 }
 
 ADDRESS(0x8003ab5c, 0x158)
-s32 func_8003ab5c(s32 x, s32 y, s32 z, s32 radius, s32 height)
+s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
     KfActor *actor = actor_state.actors;
     s32 index;
@@ -137,7 +138,7 @@ KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase)
 }
 
 ADDRESS(0x8003ae50, 0x4ec)
-s32 func_8003ae50(SVECTOR *motion, s32 flags)
+s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags)
 {
     KfActor *actor = actor_state.current;
     s32 motion_x;

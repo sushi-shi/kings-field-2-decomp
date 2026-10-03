@@ -79,11 +79,11 @@ void func_800154fc(s32 x, s32 y, s32 z, struct KfEulerAngles *angles);
 KfBool func_80015574(s32 first, s32 first_width, s32 second, s32 second_width);
 s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VECTOR *second,
                   s32 offset, s32 height);
-s32 func_800157ac(s32 amplitude);
-s32 func_800157f8(s32 amplitude);
-s32 func_8001584c(s32 start, s32 end, s32 fraction);
-s32 func_8001586c(s32 start, s32 end, s32 fraction);
-void func_800158b4(const u16 *start, const u16 *end, u16 *output, s16 fraction);
+s32 random_triangular_scaled(s32 amplitude);
+s32 random_centered_triangular_scaled(s32 amplitude);
+s32 fixed_lerp_q12(s32 start, s32 end, s32 fraction);
+s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction);
+void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction);
 s32 func_80015918(s32 mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle);

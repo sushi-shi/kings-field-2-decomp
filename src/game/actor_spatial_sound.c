@@ -4,7 +4,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x8003d084, 0x64)
-s32 func_8003d084(KfActor *actor)
+s32 actor_sound_note_offset(KfActor *actor)
 {
     s32 offset = 16 - actor->unknown_4a.bytes.high;
 
@@ -17,16 +17,16 @@ s32 func_8003d084(KfActor *actor)
 }
 
 ADDRESS(0x8003d0e8, 0x9c)
-void func_8003d0e8(KfActor *actor)
+void actor_play_target_sound(KfActor *actor)
 {
     KfTargetCandidate *target = actor->target;
 
     if (target->sound_code & 0x80) {
         audio_play_spatial_range((target->sound_code & 0x7f) + 96,
             &actor->position, 0x7f, 0x6000, 0x7800,
-            func_8003d084(actor));
+            actor_sound_note_offset(actor));
     } else {
         audio_play_spatial_default_range(target->sound_code + 96,
-            &actor->position, 0x6e, func_8003d084(actor));
+            &actor->position, 0x6e, actor_sound_note_offset(actor));
     }
 }

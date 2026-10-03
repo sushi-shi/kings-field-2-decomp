@@ -5,7 +5,7 @@
 #include <psyq/libc.h>
 
 ADDRESS(0x8003a318, 0x2fc)
-void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
+void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
                    u16 magic_10, u16 magic_12, u16 magic_14,
@@ -66,7 +66,7 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
 }
 
 ADDRESS(0x8003a614, 0x164)
-s32 func_8003a614(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
+s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
                   s32 angle_tolerance, u16 damage0, u16 damage1,
                   u16 damage2, u16 damage3)
 {
@@ -103,7 +103,7 @@ s32 func_8003a614(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
 }
 
 ADDRESS(0x8003a778, 0x27c)
-KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
+KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
                        s32 max_distance, s32 yaw_limit, s32 pitch_limit,
                        s32 *distance, s32 variation)
 {

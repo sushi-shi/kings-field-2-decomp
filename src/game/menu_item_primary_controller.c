@@ -164,7 +164,7 @@ void menu_item_buy_controller(s32 kind)
         menu_item_mask_pages[3][51] = 1;
     else
         menu_item_mask_pages[3][51] = 0;
-    count = func_80018d08(menu_item_mask_pages[kind], rows, values, indices,
+    count = menu_collect_masked_item_rows(menu_item_mask_pages[kind], rows, values, indices,
         0, 119);
     menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, kind);
     menu_list_init(&menu.list, 3, 0);
@@ -195,19 +195,19 @@ void menu_item_buy_controller(s32 kind)
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
             if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
-                    * DAT_8006d694)
-                    || counters[selected_item] + DAT_8006d694 >= 100) {
-                func_80022300(18);
+                    * menu_item_quantity)
+                    || counters[selected_item] + menu_item_quantity >= 100) {
+                menu_play_sound_cue(18);
                 selection = 0;
             } else {
-                func_80022300(17);
+                menu_play_sound_cue(17);
             }
         }
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c(selected_item);
+                menu_update_item_preview(selected_item);
             func_8001fc94(&menu, 10);
             menu_present_frame();
         }
@@ -215,9 +215,9 @@ void menu_item_buy_controller(s32 kind)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * DAT_8006d694;
+        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
         player_state.gold -= cost;
-        counters[result] += (u8)DAT_8006d694;
+        counters[result] += (u8)menu_item_quantity;
     }
 }
 
@@ -253,7 +253,7 @@ void menu_item_sell_controller(s32 kind)
     s32 payment;
     u8 selected_item;
 
-    count = func_80018dec(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
     menu_fill_item_prices(codes, indices, 0, count, kind);
     menu_list_init(&menu.list, 3, 1);
     menu.list.entry_count = count;
@@ -283,18 +283,18 @@ void menu_item_sell_controller(s32 kind)
         menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            if (values[menu.list.selected_index] < DAT_8006d694) {
-                func_80022300(18);
+            if (values[menu.list.selected_index] < menu_item_quantity) {
+                menu_play_sound_cue(18);
                 selection = 0;
             } else {
-                func_80022300(17);
+                menu_play_sound_cue(17);
             }
         }
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c(selected_item);
+                menu_update_item_preview(selected_item);
             func_8001fc94(&menu, 11);
             menu_present_frame();
         }
@@ -302,9 +302,9 @@ void menu_item_sell_controller(s32 kind)
 
     menu_release_item_model();
     if (result != -1) {
-        payment = (s32)menu.codes[menu.list.selected_index] * DAT_8006d694;
+        payment = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
         player_state.gold += payment;
-        game_counter_bytes[result] -= (u8)DAT_8006d694;
+        game_counter_bytes[result] -= (u8)menu_item_quantity;
     }
 }
 
@@ -337,7 +337,7 @@ s32 menu_choose_inventory_item(void)
     s32 frame;
 
     menu_enter_display_state(1);
-    count = func_80018d08(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
     menu_list_init(&menu.list, 5, 0);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -350,11 +350,11 @@ s32 menu_choose_inventory_item(void)
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         if (menu.list.entry_count != 0)
-            func_8002083c((u8)selected_item);
+            menu_update_item_preview((u8)selected_item);
         func_8001fc94(&menu, 12);
         menu_present_frame();
     }
-    func_80022300(16);
+    menu_play_sound_cue(16);
     input_wait_release();
 
     for (;;) {
@@ -374,11 +374,11 @@ s32 menu_choose_inventory_item(void)
         menu_update_list_input(&menu.list, indices, &mode, &result);
         selected_item = indices[menu.list.selected_index];
         if (mode == 1)
-            func_80022300(17);
+            menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c((u8)selected_item);
+                menu_update_item_preview((u8)selected_item);
             func_8001fc94(&menu, 12);
             menu_present_frame();
         }

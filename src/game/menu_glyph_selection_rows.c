@@ -10,7 +10,7 @@ void func_80019ce4(KfMenuLabelSuffix *rows)
     s32 i;
 
     selected[0] = player_state.equipped_weapon_id;
-    selected[1] = player_state.unknown_97;
+    selected[1] = player_state.primary_magic_shortcut_id;
     selected[2] = player_state.equipped_arm_id;
     selected[3] = player_state.equipped_head_id;
     selected[4] = player_state.equipped_body_id;
@@ -18,10 +18,10 @@ void func_80019ce4(KfMenuLabelSuffix *rows)
     selected[6] = player_state.equipped_shield_id;
     selected[7] = player_state.equipped_accessory_id;
     selected[8] = player_state.equipped_extra_id;
-    if (player_state.unknown_98 == 0xff)
-        selected[9] = player_state.unknown_99;
+    if (player_state.secondary_magic_shortcut_id == 0xff)
+        selected[9] = player_state.secondary_item_shortcut_id;
     else
-        selected[9] = player_state.unknown_98;
+        selected[9] = player_state.secondary_magic_shortcut_id;
 
     entry = selected;
     for (i = 0; i < 10; rows++, i++, entry++) {
@@ -33,7 +33,7 @@ void func_80019ce4(KfMenuLabelSuffix *rows)
             goto extra;
         if (i != 9)
             goto base;
-        if (player_state.unknown_98 == 0xff)
+        if (player_state.secondary_magic_shortcut_id == 0xff)
             goto base;
     extra:
         *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;

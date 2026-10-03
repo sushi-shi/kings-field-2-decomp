@@ -27,7 +27,7 @@ void render_enqueue_map(u16 object_index)
     object = tmd_get_object(object_index);
     normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
         (object->normal_offset + KF_TMD_HEADER_BYTES);
-    func_8002d918(object->vertex_count);
+    tmd_project_vertices_with_fog(object->vertex_count);
     packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
         (object->primitive_offset + KF_TMD_HEADER_BYTES);
     remaining = object->primitive_count;
@@ -230,7 +230,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
             (object->normal_offset + KF_TMD_HEADER_BYTES);
     }
     original_vertices = game_graphics_runtime.current_tmd_vertices;
-    func_8002da94(object->vertex_count);
+    tmd_project_vertices_mark_clipped(object->vertex_count);
     if (prepared_asset != 0) {
         packet = (u8 *)prepared_asset +
             (object->primitive_offset + KF_TMD_HEADER_BYTES);

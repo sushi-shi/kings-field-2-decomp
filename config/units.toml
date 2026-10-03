@@ -210,18 +210,6 @@ source = "src/game/menu_item_selection.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_glyph_rows"
-image = "GAME.EXE"
-source = "src/game/menu_glyph_rows.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_player_clamps"
-image = "GAME.EXE"
-source = "src/game/menu_player_clamps.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_map_preview"
 image = "GAME.EXE"
 source = "src/game/menu_map_preview.c"
@@ -255,12 +243,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_magic_list"
 image = "GAME.EXE"
 source = "src/game/menu_magic_list.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_magic_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_magic_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -537,12 +519,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.display"
 image = "GAME.EXE"
 source = "src/game/display.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.tmd_prepare_primitive_indices"
-image = "GAME.EXE"
-source = "src/game/tmd_prepare_primitive_indices.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

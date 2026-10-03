@@ -94,23 +94,23 @@ labels_ready:
         confirmed = 0;
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = 0;
-            func_80022300(16);
+            menu_play_sound_cue(16);
             if (choice != 0)
                 choice = 0;
             else
                 choice = 1;
         } else if (buttons & PADRright) {
-            func_80022300(17);
+            menu_play_sound_cue(17);
             confirmed = 1;
             result = -choice;
         } else if (buttons & PADRdown) {
-            func_80022300(18);
+            menu_play_sound_cue(18);
             result = -1;
         }
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8002083c((u8)item_id);
+            menu_update_item_preview((u8)item_id);
             func_8001fc94(list_state, render_mode);
             menu_draw_two_option(&labels[0], &labels[1], choice, confirmed);
             menu_present_frame();

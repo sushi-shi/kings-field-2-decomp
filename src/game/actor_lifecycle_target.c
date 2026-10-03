@@ -54,7 +54,7 @@ void actor_update_lifecycle_for_player_range(void)
         }
 
     check_actor_overlap:
-        if (func_8003a9f4(actor->position.vx, actor->position.vy,
+        if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
                           actor->position.vz, group->unknown_12,
                           group->unknown_14) != -1) {
             goto set_dormant;

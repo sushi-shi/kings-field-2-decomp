@@ -42,6 +42,6 @@ typedef char kf_map_placed_entry_world_z_offset[
     KF_MAP_PLACED_OFFSET(KfMapPlacedEntry, position.vz) == 16 ? 1 : -1];
 #undef KF_MAP_PLACED_OFFSET
 
-void func_80034818(const KfMapPlacedSource *sources);
+void map_placed_expand_sources(const KfMapPlacedSource *sources);
 
 #endif

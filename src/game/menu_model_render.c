@@ -18,6 +18,6 @@ void menu_render_item_model(void)
     tmd_select(KF_TMD_SLOT_MENU_ITEM);
     tmd_select_object_vertices(0);
     fog_set_near(KF_MENU_MODEL_FOG_NEAR);
-    func_8002d918(tmd_get_object(0)->vertex_count);
-    func_8002e4dc(0, 0);
+    tmd_project_vertices_with_fog(tmd_get_object(0)->vertex_count);
+    render_enqueue_textured_tmd(0, 0);
 }

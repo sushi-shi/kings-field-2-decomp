@@ -10,7 +10,7 @@ DATA(0x8006d68c, 0x4)
 s32 menu_item_model_allocation_pending = 0;
 
 DATA(0x8006d694, 0x4)
-s32 DAT_8006d694 = 1;
+s32 menu_item_quantity = 1;
 
 DATA(0x8006da00, 0x8)
 SVECTOR menu_item_preview_translation = {0};
@@ -26,7 +26,7 @@ s32 menu_load_item_model(u8 item_id)
 {
     u8 *allocation;
 
-    DAT_8006d694 = 1;
+    menu_item_quantity = 1;
     if (player_state.unknown_c9[2] == 0)
         return 0;
 

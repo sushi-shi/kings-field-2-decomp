@@ -49,7 +49,7 @@ no_file:
         return -1;
     }
 
-    func_80022300(16);
+    menu_play_sound_cue(16);
     input_wait_release();
     for (;;) {
         if (selection != -1)
@@ -73,13 +73,13 @@ no_file:
         buttons = input_read_mark_active();
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = 0;
-            func_80022300(16);
+            menu_play_sound_cue(16);
             if (cursor == 0)
                 cursor = 1;
             else
                 cursor = 0;
         } else if (buttons & PADRright) {
-            func_80022300(17);
+            menu_play_sound_cue(17);
             confirmed = 1;
             selection = cursor;
         }
@@ -138,7 +138,7 @@ s32 menu_card_load_slot_browser(void)
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
         if (mode == 1)
-            func_80022300(16);
+            menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             func_8001fc94(&menu, 8);

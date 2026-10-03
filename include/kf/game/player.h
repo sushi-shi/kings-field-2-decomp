@@ -292,9 +292,9 @@ typedef struct KfPlayerState {
     s16 weapon_attack_window;
     s16 weapon_attack_recovery;
     u8 weapon_magic_shots_remaining;
-    u8 unknown_97;
-    u8 unknown_98;
-    u8 unknown_99;
+    u8 primary_magic_shortcut_id;
+    u8 secondary_magic_shortcut_id;
+    u8 secondary_item_shortcut_id;
     u8 weapon_attack_mode;
     u8 equipped_weapon_id;
     u8 unknown_9c[2];
@@ -335,10 +335,10 @@ typedef struct KfPlayerState {
     KfPlayerUnknown108 unknown_108;
     s16 unknown_110[3];
     u8 unknown_116[2];
-    SVECTOR unknown_118;
+    SVECTOR magic_origin_offset;
     s32 collision_lower_clearance;
     s32 collision_upper_clearance;
-    u16 unknown_128;
+    u16 map_layer_index;
     s16 strafe_velocity;
     s16 forward_velocity;
     KfPlayerMovementSpeed movement_speed;
@@ -358,7 +358,7 @@ typedef struct KfPlayerState {
 
 typedef char kf_player_state_size[sizeof(KfPlayerState) == 0x160 ? 1 : -1];
 typedef char kf_player_unknown_97_offset[
-    (u32)&((KfPlayerState *)0)->unknown_97 == 0x97 ? 1 : -1];
+    (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
     (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
 typedef char kf_player_unknown_78_offset[
@@ -384,7 +384,7 @@ typedef char kf_player_movement_step_limit_offset[
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;
-extern KfPlayerMagicIdSequence DAT_800667e8;
+extern KfPlayerMagicIdSequence player_magic_id_sequence;
 extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 
@@ -420,22 +420,22 @@ void player_cap_status_components(u32 mask);
 void player_death_begin(const SVECTOR *rotation);
 void player_adjust_hp(s32 delta);
 void player_adjust_mp(s32 delta);
-void player_set_unknown_97(u8 value);
-void player_set_unknown_98(u8 value);
-void player_set_unknown_99(u8 value);
+void player_set_primary_magic_shortcut_id(u8 value);
+void player_set_secondary_magic_shortcut_id(u8 value);
+void player_set_secondary_item_shortcut_id(u8 value);
 void player_set_equipment_slot(u8 item_id, u8 slot);
 void player_equip_weapon(u8 weapon_id);
-struct KfActor *func_80025878(s32 scale, VECTOR *position,
+struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
-void func_80025a18(s32 effect_id, ...);
+void player_dispatch_magic_effect(s32 effect_id, ...);
 void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
 void func_8002665c(void);
-void func_8002722c(s32 magic_id);
+void player_select_magic_action(s32 magic_id);
 void player_update_vertical_motion(void);
 s32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
-s32 func_8002897c(s32 value);
+s32 item_id_is_71_to_80(s32 value);
 void func_80028998(void);
 void func_80028fa8(void);
 void func_800293d4(u8 mode);

@@ -132,14 +132,14 @@ void func_8001b2dc(void)
         confirmed = 0;
         if (buttons & PADLup) {
             menu_cursor_animation_direction = 0;
-            func_80022300(16);
+            menu_play_sound_cue(16);
             if (choice != 0)
                 choice--;
             else
                 choice = last_row;
         } else if (buttons & PADLdown) {
             menu_cursor_animation_direction = 0;
-            func_80022300(16);
+            menu_play_sound_cue(16);
             if (choice != last_row)
                 choice++;
             else
@@ -147,16 +147,16 @@ void func_8001b2dc(void)
         } else if ((buttons & PADRright) || (buttons & PADLright)
             || (buttons & PADLleft)) {
             if (choice < last_row) {
-                func_80022300(17);
+                menu_play_sound_cue(17);
                 confirmed = 1;
                 selected[choice] = selected[choice] == 0;
             } else if (buttons & PADRright) {
-                func_80022300(17);
+                menu_play_sound_cue(17);
                 result = -1;
                 confirmed = 1;
             }
         } else if (buttons & PADRdown) {
-            func_80022300(18);
+            menu_play_sound_cue(18);
             result = -1;
         }
 

@@ -11,7 +11,7 @@
 RODATA(0x800120d8, 0x3c4)
 
 ADDRESS(0x8003d184, 0x248c)
-void func_8003d184(void)
+void actor_update_behavior(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
@@ -52,7 +52,7 @@ void func_8003d184(void)
     goto dispatch_action;
 
 play_sound:
-    func_8003d0e8(actor);
+    actor_play_target_sound(actor);
 
 dispatch_action:
 
@@ -88,7 +88,7 @@ dispatch_action:
             actor_advance_animation_clamped(actor, target->animation_step);
             if (actor_animation_crossed_phase(actor, 0x800)) {
                 u16 effect_id = group->unknown_30 +
-                    func_800157f8(group->unknown_30);
+                    random_centered_triangular_scaled(group->unknown_30);
 
                 if (effect_id != 0) {
                     map_object_spawn_scattered_effect(effect_id, &actor->position,
@@ -464,7 +464,7 @@ case3_motion:
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
+            actor_try_damage_player_in_cone(0, target->word_0e.bytes.low,
                            target->word_0e.bytes.high,
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
@@ -488,7 +488,7 @@ case3_motion:
             if (target->word_26.unsigned_value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;
             }
-            func_8003a614(0, target->word_0e.bytes.low,
+            actor_try_damage_player_in_cone(0, target->word_0e.bytes.low,
                            target->word_0e.bytes.high,
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
@@ -497,7 +497,7 @@ case3_motion:
         }
         if (target->unknown_2a != 0 &&
             actor_animation_crossed_phase(actor, target->unknown_2a)) {
-            func_8003a614(0, target->word_1c.bytes[0],
+            actor_try_damage_player_in_cone(0, target->word_1c.bytes[0],
                            target->word_1c.bytes[1],
                            target->word_1e.bytes[0], target->unknown_20,
                            target->unknown_22, target->word_24.unsigned_value,
@@ -535,7 +535,7 @@ case3_motion:
                       target->word_1e.value, step,
                       group->unknown_01[3], 4);
         if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
+            actor_try_damage_player_in_cone(0, target->word_0e.bytes.low,
                            target->word_0e.bytes.high,
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
@@ -644,7 +644,7 @@ case3_motion:
                       group->unknown_01[3], 6);
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, target->word_18.value)) {
-            func_8003a614(0, target->word_0e.bytes.low,
+            actor_try_damage_player_in_cone(0, target->word_0e.bytes.low,
                            target->word_0e.bytes.high,
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
@@ -780,9 +780,9 @@ case3_motion:
             break;
         case 1:
             actor_advance_animation_clamped(actor, target->animation_step);
-            actor->unknown_1c = func_8001584c(target->word_14.value,
+            actor->unknown_1c = fixed_lerp_q12(target->word_14.value,
                 group->unknown_12, actor->animation_phase);
-            actor->unknown_1e = func_8001584c(target->word_16.value,
+            actor->unknown_1e = fixed_lerp_q12(target->word_16.value,
                 group->unknown_14, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {
                 actor->unknown_1c = group->unknown_12;
@@ -968,10 +968,10 @@ case3_motion:
         case 2: {
             KfTargetCandidate *next_target;
             actor_advance_animation_clamped(actor, target->animation_step);
-            actor->unknown_1c = func_8001584c(
+            actor->unknown_1c = fixed_lerp_q12(
                 group->unknown_12,
                 target->word_12.value, actor->animation_phase);
-            actor->unknown_1e = func_8001584c(
+            actor->unknown_1e = fixed_lerp_q12(
                 group->unknown_14,
                 target->word_14.value, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {

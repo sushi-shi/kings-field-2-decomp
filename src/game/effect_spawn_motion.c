@@ -29,7 +29,7 @@ void effect_spawn_motion(KfEffectRecord *record, s32 position_mode,
                       (const SVECTOR *)args[3]);
         copyVector(&motion, &transformed);
         motion_mode = args[1];
-        goto add_direction;
+        break;
     case -2:
         motion.vx = (rand() * args[1] >> 15) + (u16)args[2];
         motion.vy = (rand() * args[3] >> 15) + (u16)args[4];
@@ -38,19 +38,17 @@ void effect_spawn_motion(KfEffectRecord *record, s32 position_mode,
     case -3:
         motion.vx = motion.vy = motion.vz = 0;
         motion_mode = args[1];
-        goto add_direction;
+        break;
     default:
+        pitch_yaw_to_forward_vector((const struct KfEulerAngles *)&record->rotation,
+                                    &motion);
+        vector3s_scale_shift12(30, &motion);
+        motion.vx = -(u16)motion.vx;
+        motion.vy = -(u16)motion.vy;
+        motion.vz = -(u16)motion.vz;
         break;
     }
 
-    pitch_yaw_to_forward_vector((const struct KfEulerAngles *)&record->rotation,
-                                &motion);
-    vector3s_scale_shift12(30, &motion);
-    motion.vx = -(u16)motion.vx;
-    motion.vy = -(u16)motion.vy;
-    motion.vz = -(u16)motion.vz;
-
-add_direction:
     motion.vx = (u16)motion.vx + ((record->direction.vx * motion_mode) >> 12);
     motion.vy = (u16)motion.vy + ((record->direction.vy * motion_mode) >> 12);
     motion.vz = (u16)motion.vz + ((record->direction.vz * motion_mode) >> 12);
@@ -83,7 +81,7 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
             position.vx = origin->vx + offset_x;
             position.vz = origin->vz + offset_z;
             position.vy = KF_COLLISION_CACHE_LOWER_BOUND;
-            magnitude = func_800157f8(variation) + 4096;
+            magnitude = random_centered_triangular_scaled(variation) + 4096;
             effect_construct_record(10, 0, 0x66, &position, &direction,
                           scale_x * magnitude >> 12,
                           scale_z * magnitude >> 12);

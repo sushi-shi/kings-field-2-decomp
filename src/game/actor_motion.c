@@ -195,7 +195,7 @@ s32 actor_damp_horizontal_motion(s32 decay, s32 target)
         actor->unknown_54 = value_approach(actor->unknown_54, 0,
             (actor->unknown_54 * decay * 2) / length);
     }
-    return func_8003ae50((SVECTOR *)&actor->unknown_50, target);
+    return actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target);
 }
 
 ADDRESS(0x8003bae4, 0xbc)
@@ -213,7 +213,7 @@ s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target)
                                         direction.x, step_direction.x);
     actor->unknown_54 = value_approach(actor->unknown_54,
                                         direction.z, step_direction.z);
-    return func_8003ae50((SVECTOR *)&actor->unknown_50, target);
+    return actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target);
 }
 
 ADDRESS(0x8003bba0, 0x130)
@@ -308,7 +308,7 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
                                         direction.vy, step_direction.vy);
     actor->unknown_54 = value_approach(actor->unknown_54,
                                         direction.vz, step_direction.vz);
-    moved = func_8003ae50((SVECTOR *)&actor->unknown_50, target) != 0;
+    moved = actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target) != 0;
     proposed_y = actor->position.vy + actor->unknown_52;
     radius = actor->unknown_1c;
     height_and_flags = actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16);

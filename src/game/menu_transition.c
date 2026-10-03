@@ -36,7 +36,7 @@ void tim_upload_images(u8 *tim_data)
 } while (0)
 
 ADDRESS(0x800349bc, 0x454)
-s32 func_800349bc(s32 level, s32 step)
+s32 menu_fade_transition(s32 level, s32 step)
 {
     POLY_FT4 *quad;
     s32 state = -1;
@@ -104,7 +104,7 @@ present:
 #undef MENU_FADE_NEXT_QUAD
 
 ADDRESS(0x80034e10, 0x180)
-void func_80034e10(u16 archive_slot, u16 archive_entry)
+void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
 {
     s32 frame;
     u32 buttons;
@@ -129,7 +129,7 @@ void func_80034e10(u16 archive_slot, u16 archive_entry)
         menu_transition_rect.x, menu_transition_rect.y);
     DrawSync(0);
 
-    frame = func_800349bc(0, 12);
+    frame = menu_fade_transition(0, 12);
     if (frame < 0) {
         for (;;) {
             buttons = PadRead(1);
@@ -145,7 +145,7 @@ void func_80034e10(u16 archive_slot, u16 archive_entry)
             break;
         }
     }
-    func_800349bc(frame, -12);
+    menu_fade_transition(frame, -12);
     LoadImage(&menu_transition_rect,
         (u_long *)game_graphics_runtime.display_state.primitive_buffers[1].end);
     game_graphics_runtime.display_state.primitive_buffers[0].end =

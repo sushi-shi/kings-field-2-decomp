@@ -51,7 +51,7 @@ void func_80028fa8(void)
 
     player_state.unknown_c9[0] = 0;
     player_state.unknown_c9[1] = 0;
-    func_800335a0(0, 0);
+    render_game_frame(0, 0);
     player_state.unknown_c9[0] = saved_c9;
     player_state.unknown_c9[1] = saved_ca;
     pool_release_all();
@@ -76,10 +76,10 @@ void func_80029014(void)
     }
 
     func_80028fa8();
-    value = func_8001876c();
+    value = menu_run_root_controller();
     if (value >= 0) {
-        if (func_8002897c(value) == 0) {
-            func_800335a0(0, 0);
+        if (item_id_is_71_to_80(value) == 0) {
+            render_game_frame(0, 0);
             event_scene_command_dispatch(&player_state.camera_position,
                                          &player_state.camera_rotation_target,
                                          value);
@@ -437,20 +437,20 @@ update_reaction_view:
         object = &map_object_state.objects[object_index];
         func_80028998();
         fraction = player_state.reaction.view.step << 7;
-        player_state.camera_position.vx = func_8001584c(
+        player_state.camera_position.vx = fixed_lerp_q12(
             player_state.camera_position.vx, object->position.vx, fraction);
-        player_state.camera_position.vy = func_8001584c(
+        player_state.camera_position.vy = fixed_lerp_q12(
             player_state.camera_position.vy, object->position.vy, fraction);
-        player_state.camera_position.vz = func_8001584c(
+        player_state.camera_position.vz = fixed_lerp_q12(
             player_state.camera_position.vz, object->position.vz, fraction);
-        player_state.unknown_108.components[0] = func_8001586c(0, object->rotation.vx, fraction);
-        player_state.unknown_108.components[1] = func_8001586c(0, object->rotation.vy, fraction);
-        player_state.unknown_108.components[2] = func_8001586c(0, object->rotation.vz, fraction);
-        player_state.camera_rotation_target.angles[0] = func_8001586c(
+        player_state.unknown_108.components[0] = angle_lerp_shortest_q12(0, object->rotation.vx, fraction);
+        player_state.unknown_108.components[1] = angle_lerp_shortest_q12(0, object->rotation.vy, fraction);
+        player_state.unknown_108.components[2] = angle_lerp_shortest_q12(0, object->rotation.vz, fraction);
+        player_state.camera_rotation_target.angles[0] = angle_lerp_shortest_q12(
             player_state.reaction.view.rotation.angles[0], 0, fraction);
-        player_state.camera_rotation_target.angles[1] = func_8001586c(
+        player_state.camera_rotation_target.angles[1] = angle_lerp_shortest_q12(
             player_state.reaction.view.rotation.angles[1], 0, fraction);
-        player_state.camera_rotation_target.angles[2] = func_8001586c(
+        player_state.camera_rotation_target.angles[2] = angle_lerp_shortest_q12(
             player_state.reaction.view.rotation.angles[2], 0, fraction);
         step = player_state.reaction.view.step++;
         if (step > 31) {
@@ -460,13 +460,13 @@ update_reaction_view:
     case 5:
         ++player_state.reaction.position.mode;
         fraction = player_state.reaction.position.mode << 8;
-        player_state.camera_position.vx = func_8001584c(
+        player_state.camera_position.vx = fixed_lerp_q12(
             player_state.camera_position.vx,
             player_state.reaction.position.position.vx, fraction);
-        player_state.camera_position.vy = func_8001584c(
+        player_state.camera_position.vy = fixed_lerp_q12(
             player_state.camera_position.vy,
             player_state.reaction.position.position.vy, fraction);
-        player_state.camera_position.vz = func_8001584c(
+        player_state.camera_position.vz = fixed_lerp_q12(
             player_state.camera_position.vz,
             player_state.reaction.position.position.vz, fraction);
         if (player_state.reaction.position.mode > 15) {
@@ -544,7 +544,7 @@ update_reaction_pose:
         }
         if (player_state.unknown_106 > 31) {
             if (player_state.unknown_106 < 65) {
-                s32 shade = func_8001584c(0, 255,
+                s32 shade = fixed_lerp_q12(0, 255,
                                             (player_state.unknown_106 - 32) * 128);
                 render_set_color_overlay(0x82, shade, shade, shade);
             } else {
@@ -562,7 +562,7 @@ update_reaction_pose:
                     player_state.camera_position.vy = -0x2480;
                     player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vz = 0x22000;
-                    player_state.unknown_128 = 5;
+                    player_state.map_layer_index = 5;
                     game_counter_bytes[0x4c]--;
                     event_world_state_save_slot(state_8017d118.values_04[0]);
                     player_reset_status();
@@ -650,7 +650,7 @@ after_reaction:
     func_8002b73c(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);
     actor_state.unknown_93a0 = 0;
-    index = func_8003a9f4(player_state.camera_position.vx,
+    index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, 1700);
     if (index != -1 && (actor_state.actors[index].unknown_28 & 8) != 0) {
@@ -691,10 +691,10 @@ after_reaction:
         func_800297b4(player_state.equipped_extra_record);
     }
     if (player_state.equipped_head_id == 25 && rand() < 36) {
-        player_state.unknown_118.vx = 0;
-        player_state.unknown_118.vy = -300;
-        player_state.unknown_118.vz = 400;
-        func_80025a18(11);
+        player_state.magic_origin_offset.vx = 0;
+        player_state.magic_origin_offset.vy = -300;
+        player_state.magic_origin_offset.vz = 400;
+        player_dispatch_magic_effect(11);
     }
     if (player_state.equipped_body_id == 31) {
         interpolate_collision_filter_rows(20, 20, 20, 5000, 0x800);

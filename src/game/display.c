@@ -144,7 +144,7 @@ void tmd_select_object_vertices(u16 index)
 }
 
 ADDRESS(0x8002d4f4, 0xe8)
-void func_8002d4f4(const VECTOR *position, const SVECTOR *rotation)
+void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation)
 {
     struct KfEulerAngles angles;
 

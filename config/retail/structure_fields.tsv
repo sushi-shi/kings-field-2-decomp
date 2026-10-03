@@ -280,7 +280,8 @@ KfGraphicsRuntimeGame	0x1011c	0x900	asset_registry_entries	KfAssetHeader *[576]	
 KfGraphicsRuntimeGame	0x10a1c	0x04	current_tmd_vertices	SVECTOR *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x10a20	0xf0	pool_records	KfPoolRecord[12]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x10b10	0x1f40	tmd_projected_vertices	KfScreenVertex[1000]	supported	game headers;asm;xrefs	member used by reconstructed code
-KfGraphicsRuntimeGame	0x12a50	0x1f44	unknown_12a50	u8[8004]	opaque	game headers;asm;xrefs	not yet modelled
+KfGraphicsRuntimeGame	0x12a50	0x04	unknown_12a50	u8[4]	opaque	asm;xrefs	four-byte prefix before animation vertex scratch, purpose unresolved
+KfGraphicsRuntimeGame	0x12a54	0x1f40	animation_vertex_scratch	SVECTOR[1000]	supported	animation_prepare_asset_vertices;animation_apply_sparse_morph;tmd_set_current_vertices	copies cached vertices, applies sparse morph, and binds the resulting TMD vertex buffer
 KfGraphicsRuntimeGame	0x14994	0x40	clip_result_vertices	EVECTOR *[16]	candidate	asm;Clip3FTP;Clip4FTP;func_8002f5b0	SDK clip result pointers; first three proven, larger extent provisional
 KfGraphicsRuntimeGame	0x149d4	0x10	unknown_149d4	u8[16]	opaque	game headers;asm;xrefs	not yet modelled
 KfGraphicsRuntimeGame	0x149e4	0x2c0	clip_edges	EVECTOR[16]	supported	game headers;asm;xrefs	InitClip edge buffer
@@ -298,11 +299,11 @@ KfGraphicsRuntimeGame	0x14ccc	0x04	frame_counter_a	u32	supported	game headers;as
 KfGraphicsRuntimeGame	0x14cd0	0x04	frame_counter_b	u32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cd4	0xc0	floor_items	KfFloorItem[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14d94	0x88	render_state	KfRenderState	supported	game headers;asm;xrefs	view transforms and cell origins
-KfGraphicsRuntimeGame	0x14e1c	0x24c	render_grid	KfRenderGridState	supported	asm;func_8002c670;func_80030f5c	contiguous scan origin, fog threshold, and 24-by-24 mask grid
+KfGraphicsRuntimeGame	0x14e1c	0x24c	render_grid	KfRenderGridState	supported	asm;build_camera_map_cell_layer_masks;func_80030f5c	contiguous scan origin, fog threshold, and 24-by-24 mask grid
 KfGraphicsRuntimeGame	0x15068	0x04	collision_rotation_dirty	s32	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations	reset by collision-default initialization and checked before row rotation
 KfGraphicsRuntimeGame	0x1506c	0x2080	collision_rows	KfCollisionRow[80]	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations;interpolate_collision_row_fields;interpolate_collision_rows	80 runtime rows at 104-byte stride
-KfGraphicsRuntimeGame	0x170ec	0x04	map_placed_frame_counter	s32	supported	asm;func_8003247c	drives each placed row's frame-period update
-KfGraphicsRuntimeGame	0x170f0	0xc00	map_placed_entries	KfMapPlacedEntry[128]	supported	asm;func_80034818;map resource caller	128 runtime rows of 24 bytes
+KfGraphicsRuntimeGame	0x170ec	0x04	map_placed_frame_counter	s32	supported	asm;render_scene_and_update_resources	drives each placed row's frame-period update
+KfGraphicsRuntimeGame	0x170f0	0xc00	map_placed_entries	KfMapPlacedEntry[128]	supported	asm;map_placed_expand_sources;map resource caller	128 runtime rows of 24 bytes
 KfItemMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;func_8001d6a8;func_80018ac8	shared menu list prefix
 KfItemMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	func_8001d6a8;func_80018ac8	pointer to 24-byte glyph rows
 KfItemMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;func_8001d6a8	layout bytes with unresolved meaning
@@ -365,7 +366,7 @@ KfMapObjectStateGame	0x8740	0x02	unknown_8740	u16	candidate	asm;map_object_pool_
 KfMapObjectStateGame	0x8742	0x02	unknown_8742	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
 KfMapObjectTail	0x0	0xc	fields	KfMapObjectTailFields	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
-KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;func_8003247c	byte view of the packed spawn sequence
+KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;render_scene_and_update_resources	byte view of the packed spawn sequence
 KfMapObjectTail	0x0	0xc	reset_words	u32[3]	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTailFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
@@ -377,7 +378,7 @@ KfMapObjectTailSpawnByteFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;a
 KfMapObjectTailSpawnByteFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm	preceding tail byte
 KfMapObjectTailSpawnByteFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm	preceding tail byte
 KfMapObjectTailSpawnByteFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	preceding tail halfword
-KfMapObjectTailSpawnByteFields	0x8	0x2	spawn_sequence	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;func_8003247c	retail reads both sequence bytes separately
+KfMapObjectTailSpawnByteFields	0x8	0x2	spawn_sequence	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;render_scene_and_update_resources	retail reads both sequence bytes separately
 KfMapObjectTailSpawnByteFields	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	following tail halfword
 KfMapObjectTailHalfword	0x0	0x2	value	u16	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfword	0x0	0x2	bytes	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
@@ -406,23 +407,23 @@ KfMapOccupancyLayer	0x01	0x01	elevation	u8	supported	asm;render_map_cell_grid	ma
 KfMapOccupancyLayer	0x02	0x01	quarter_turns	u8	supported	asm;render_map_cell_object;collision_occupancy_add	low two bits select lighting orientation
 KfMapOccupancyLayer	0x03	0x01	unknown_03	u8	opaque	asm;map cell grid	meaning unresolved
 KfMapOccupancyLayer	0x04	0x01	lighting_index	u8	supported	asm;render_map_cell_object	low six bits select collision lighting row
-KfMapPlacedEntry	0x00	0x02	id	u16	supported	asm;func_80034818	entry id or 0xffff
-KfMapPlacedEntry	0x02	0x01	layer	u8	supported	asm;func_80034818	first argument to func_8002b67c
-KfMapPlacedEntry	0x03	0x01	frame_count	u8	supported	asm;func_80034818;func_8003247c	phase wraps at this count
-KfMapPlacedEntry	0x04	0x01	frame_period	u8	supported	asm;func_80034818;func_8003247c	global frame counter divisor
-KfMapPlacedEntry	0x05	0x01	frame_index	u8	supported	asm;func_80034818;func_8003247c	initial randomized phase, then incremented and wrapped
-KfMapPlacedEntry	0x06	0x02	unknown_06	u8[2]	opaque	asm;func_80034818	not yet modelled
-KfMapPlacedEntry	0x08	0x10	position	VECTOR	supported	asm;func_80034818;func_8003247c	X/Z region coordinates and map height; caller passes this vector to func_80032040
-KfMapPlacedSource	0x00	0x02	id	u16	supported	asm;func_80034818	entry id or 0xffff
-KfMapPlacedSource	0x02	0x01	frame_count	u8	supported	asm;func_80034818;func_8003247c	phase wraps at this count
-KfMapPlacedSource	0x03	0x01	frame_period	u8	supported	asm;func_80034818;func_8003247c	copied to runtime +4
-KfMapPlacedSource	0x04	0x01	layer	u8	supported	asm;func_80034818	first argument to func_8002b67c
-KfMapPlacedSource	0x05	0x01	region_z	u8	supported	asm;func_80034818	map Z region shifted by 11
-KfMapPlacedSource	0x06	0x01	region_x	u8	supported	asm;func_80034818	map X region shifted by 11
-KfMapPlacedSource	0x07	0x03	unknown_07	u8[3]	opaque	asm;func_80034818	not yet modelled
-KfMapPlacedSource	0x0a	0x02	local_z	s16	supported	asm;func_80034818	local Z coordinate
-KfMapPlacedSource	0x0c	0x02	local_x	s16	supported	asm;func_80034818	local X coordinate
-KfMapPlacedSource	0x0e	0x02	height_offset	s16	supported	asm;func_80034818	added to map result
+KfMapPlacedEntry	0x00	0x02	id	u16	supported	asm;map_placed_expand_sources	entry id or 0xffff
+KfMapPlacedEntry	0x02	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to func_8002b67c
+KfMapPlacedEntry	0x03	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
+KfMapPlacedEntry	0x04	0x01	frame_period	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	global frame counter divisor
+KfMapPlacedEntry	0x05	0x01	frame_index	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	initial randomized phase, then incremented and wrapped
+KfMapPlacedEntry	0x06	0x02	unknown_06	u8[2]	opaque	asm;map_placed_expand_sources	not yet modelled
+KfMapPlacedEntry	0x08	0x10	position	VECTOR	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	X/Z region coordinates and map height; caller passes this vector to func_80032040
+KfMapPlacedSource	0x00	0x02	id	u16	supported	asm;map_placed_expand_sources	entry id or 0xffff
+KfMapPlacedSource	0x02	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
+KfMapPlacedSource	0x03	0x01	frame_period	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	copied to runtime +4
+KfMapPlacedSource	0x04	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to func_8002b67c
+KfMapPlacedSource	0x05	0x01	region_z	u8	supported	asm;map_placed_expand_sources	map Z region shifted by 11
+KfMapPlacedSource	0x06	0x01	region_x	u8	supported	asm;map_placed_expand_sources	map X region shifted by 11
+KfMapPlacedSource	0x07	0x03	unknown_07	u8[3]	opaque	asm;map_placed_expand_sources	not yet modelled
+KfMapPlacedSource	0x0a	0x02	local_z	s16	supported	asm;map_placed_expand_sources	local Z coordinate
+KfMapPlacedSource	0x0c	0x02	local_x	s16	supported	asm;map_placed_expand_sources	local X coordinate
+KfMapPlacedSource	0x0e	0x02	height_offset	s16	supported	asm;map_placed_expand_sources	added to map result
 KfMemoryBlock	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfMemoryBlock	0x01	0x01	flags	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfMemoryBlock	0x02	0x02	tag	u16	supported	game headers;asm;xrefs	member used by reconstructed code
@@ -538,9 +539,9 @@ KfPlayerState	0x90	0x02	weapon_attack_phase	s16	supported	asm;player_equip_weapo
 KfPlayerState	0x92	0x02	weapon_attack_window	u16	supported	asm;player_begin_weapon_attack	weapon record dependent attack parameter
 KfPlayerState	0x94	0x02	weapon_attack_recovery	u16	supported	asm;player_begin_weapon_attack	weapon record dependent attack parameter
 KfPlayerState	0x96	0x01	weapon_magic_shots_remaining	u8	supported	asm;player_equip_weapon;KF1 player_core.c	cleared after equip
-KfPlayerState	0x97	0x01	unknown_97	u8	opaque	asm;player_set_unknown_97	purpose unresolved
-KfPlayerState	0x98	0x01	unknown_98	u8	opaque	asm;player_set_unknown_98	purpose unresolved
-KfPlayerState	0x99	0x01	unknown_99	u8	opaque	asm;player_set_unknown_99	purpose unresolved
+KfPlayerState	0x97	0x01	primary_magic_shortcut_id	u8	supported	asm;player_set_primary_magic_shortcut_id;player_interval_71_80;menu_magic_list	magic ID selected by the first input mask and glyph slot 1
+KfPlayerState	0x98	0x01	secondary_magic_shortcut_id	u8	supported	asm;player_set_secondary_magic_shortcut_id;player_interval_71_80;menu_magic_list	magic ID selected by the second input mask and glyph slot 9
+KfPlayerState	0x99	0x01	secondary_item_shortcut_id	u8	supported	asm;player_set_secondary_item_shortcut_id;player_interval_71_80;menu_magic_list	item/event ID selected by the second input mask, mutually exclusive with magic
 KfPlayerState	0x9a	0x01	weapon_attack_mode	u8	supported	asm;player_begin_weapon_attack	zero selects first pair of weapon parameters
 KfPlayerState	0x9b	0x01	equipped_weapon_id	u8	supported	asm;player_recalculate_combat_stats	weapon index into 68-byte table
 KfPlayerState	0x9c	0x02	unknown_9c	u8[2]	opaque	asm;player_begin_weapon_attack	first byte reset at attack begin
@@ -582,10 +583,10 @@ KfPlayerState	0x108	0x06	unknown_108	u16[3]	opaque	asm;player_reset_view	cleared
 KfPlayerState	0x10e	0x02	unknown_10e	u8[2]	opaque	asm;player_reset_view	not yet modelled
 KfPlayerState	0x110	0x06	unknown_110	s16[3]	supported	asm;player_update_vertical_motion	landing motion uses signed halfword compare and negative decrement
 KfPlayerState	0x116	0x02	unknown_116	u8[2]	opaque	asm;player_reset_view	not yet modelled
-KfPlayerState	0x118	0x08	unknown_118	SVECTOR	supported	asm;func_80025878	rotated into optional attack origin
+KfPlayerState	0x118	0x08	magic_origin_offset	SVECTOR	supported	asm;player_probe_view_target_and_vectors;player_select_magic_action;player_dispatch_magic_effect	magic effect origin offset rotated by the player camera orientation
 KfPlayerState	0x120	0x04	collision_lower_clearance	s32	supported	asm;player_update_collision_bounds;player_reset_view	lower collision clearance; set to 10000 by view reset
 KfPlayerState	0x124	0x04	collision_upper_clearance	s32	supported	asm;player_update_collision_bounds;player_reset_view	upper collision clearance; set to 10000 by view reset
-KfPlayerState	0x128	0x02	unknown_128	u16	opaque	asm;player_sync_position_to_map	selects map height probe layer
+KfPlayerState	0x128	0x02	map_layer_index	u16	supported	asm;player_move_horizontal;player_sync_position_to_map;render_world_model;player_weapon_render;event_state save/restore	map-cell layer selected from collision result and used by map probes, rendering and save snapshots
 KfPlayerState	0x12a	0x02	strafe_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x12c	0x02	forward_velocity	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x12e	0x02	movement_speed	KfPlayerMovementSpeed	supported	asm;player_update_vertical_motion;KF1 player.h counterpart	dual signed and unsigned reads of one motion-speed halfword
@@ -621,20 +622,20 @@ KfPoolRecord	0x10	0x04	owner_slot	KfPoolRecord **	supported	game headers;asm;xre
 KfPrimitiveBuffer	0x00	0x04	start	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPrimitiveBuffer	0x04	0x04	end	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPrimitiveBuffer	0x08	0x04	cursor	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
-KfRenderGridState	0x00	0x04	map_scan_start_x	s32	supported	asm;func_8002c670;func_80030f5c	start column for 24-by-24 map-cell mask scan
-KfRenderGridState	0x04	0x04	map_scan_start_z	s32	supported	asm;func_8002c670;func_80030f5c	start row for 24-by-24 map-cell mask scan
+KfRenderGridState	0x00	0x04	map_scan_start_x	s32	supported	asm;build_camera_map_cell_layer_masks;func_80030f5c	start column for 24-by-24 map-cell mask scan
+KfRenderGridState	0x04	0x04	map_scan_start_z	s32	supported	asm;build_camera_map_cell_layer_masks;func_80030f5c	start row for 24-by-24 map-cell mask scan
 KfRenderGridState	0x08	0x04	fog_near_distance	s32	supported	game headers;asm;xrefs	fog threshold adjacent to scan origin
-KfRenderGridState	0x0c	0x240	map_cell_layer_masks	u8[24][24]	supported	asm;func_80032040;func_8003247c;func_80030f5c	24-by-24 byte layer-mask grid
-KfRenderMaskScanState	0x00	0x04	first_layer_byte_offset	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x04	0x04	second_layer_byte_offset	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x08	0x01	first_layer_mask	u8	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x09	0x01	second_layer_mask	u8	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x0a	0x02	unknown_0a	u8[2]	opaque	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x0c	0x04	map_x	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x10	0x04	map_z	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x14	0x04	window_x	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x18	0x04	window_z	s32	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
-KfRenderMaskScanState	0x1c	0x04	mask_cursor	u8 *	supported	asm;func_8002c290;func_8002c670	24-by-24 window scan state
+KfRenderGridState	0x0c	0x240	map_cell_layer_masks	u8[24][24]	supported	asm;func_80032040;render_scene_and_update_resources;func_80030f5c	24-by-24 byte layer-mask grid
+KfRenderMaskScanState	0x00	0x04	first_layer_byte_offset	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x04	0x04	second_layer_byte_offset	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x08	0x01	first_layer_mask	u8	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x09	0x01	second_layer_mask	u8	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x0a	0x02	unknown_0a	u8[2]	opaque	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x0c	0x04	map_x	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x10	0x04	map_z	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x14	0x04	window_x	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x18	0x04	window_z	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
+KfRenderMaskScanState	0x1c	0x04	mask_cursor	u8 *	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderModelRow	0x00	0x01	state	u8	supported	asm;retail row bytes;func_80031024	36-byte render-model row
 KfRenderModelRow	0x01	0x01	animation_clip	u8	supported	asm;retail row bytes;func_80031024	36-byte render-model row
 KfRenderModelRow	0x02	0x01	lighting_index	u8	supported	asm;retail row bytes;func_80031024	36-byte render-model row

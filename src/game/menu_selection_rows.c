@@ -42,7 +42,7 @@ s32 func_80019834(void)
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
         if (mode == 1)
-            func_80022300(17);
+            menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             func_8001fc94(&menu, 2);

@@ -21,6 +21,7 @@ enum {
     KF_ASSET_REGISTRY_EXTENT = 0x240,
     /* Extent from the projection loops' base; the original capacity is unproven. */
     KF_PROJECTED_VERTEX_EXTENT = 1000,
+    KF_ANIMATION_VERTEX_SCRATCH_EXTENT = 1000,
     KF_NOTIFICATION_CAPACITY = 8,
     KF_CLIP_EDGE_COUNT = 16,
     KF_FLOOR_ITEM_CAPACITY = 8,
@@ -145,7 +146,7 @@ typedef struct KfCollisionDefaultRow {
 void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *payload,
                     s32 value);
 void reset_collision_rows_and_overlay(void);
-void func_8002c670(void);
+void build_camera_map_cell_layer_masks(void);
 void floor_item_update_textures(void);
 void render_map_cell_window(void);
 void render_active_model_rows(void);
@@ -156,14 +157,14 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
                               s32 target_third);
 void render_player_weapon(void);
 void accumulate_color_overlay(s32 first, s32 second, s32 third, s32 scale);
-void func_8003247c(void);
+void render_scene_and_update_resources(void);
 void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
                    u8 texture_u, u8 texture_v, u8 texture_width,
                    u8 texture_height, u8 semitrans, u16 tpage,
                    u16 clut, u8 red, u8 green, u8 blue, s32 depth);
 void render_sliding_panel_primary(void);
 void render_sliding_panel_secondary(void);
-void func_800335a0(const VECTOR *position, const SVECTOR *rotation);
+void render_game_frame(const VECTOR *position, const SVECTOR *rotation);
 
 typedef struct KfGraphicsRuntimeGame {
     KfDisplayState display_state;
@@ -174,7 +175,8 @@ typedef struct KfGraphicsRuntimeGame {
     SVECTOR *current_tmd_vertices;
     KfPoolRecord pool_records[KF_ANIMATION_CACHE_CAPACITY];
     KfScreenVertex tmd_projected_vertices[KF_PROJECTED_VERTEX_EXTENT];
-    u8 unknown_12a50[0x1f44];
+    u8 unknown_12a50[4];
+    SVECTOR animation_vertex_scratch[KF_ANIMATION_VERTEX_SCRATCH_EXTENT];
     /* First three are consumed by GAME; capacity beyond those is provisional. */
     EVECTOR *clip_result_vertices[KF_CLIP_EDGE_COUNT];
     u8 unknown_149d4[0x10];
@@ -220,6 +222,8 @@ typedef char kf_collision_rows_offset[
 typedef char kf_collision_control_offset[
     (u32)&((KfGraphicsRuntimeGame *)0)->color_overlay_red_sum == 0x14cc6 ? 1 : -1];
 typedef char kf_graphics_runtime_size[sizeof(KfGraphicsRuntimeGame) == 0x17cf0 ? 1 : -1];
+typedef char kf_animation_vertex_scratch_offset[
+    (u32)&((KfGraphicsRuntimeGame *)0)->animation_vertex_scratch == 0x12a54 ? 1 : -1];
 typedef char kf_clip_result_vertices_offset[
     (u32)&((KfGraphicsRuntimeGame *)0)->clip_result_vertices == 0x14994 ? 1 : -1];
 /* The SDK clip result is a complete EVECTOR, including its trailing window fields. */
@@ -245,7 +249,7 @@ extern u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_B
 /* Cleared with the per-frame counters; no other reference is known yet. */
 extern s32 display_frame_cleared_word;
 extern RECT menu_transition_rect;
-s32 func_800349bc(s32 level, s32 step);
+s32 menu_fade_transition(s32 level, s32 step);
 
 enum {
     KF_NOTIFICATION_NONE = 0xff,
@@ -255,7 +259,7 @@ enum {
 
 void fog_set_near(s32 distance);
 void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue);
-void func_80034e10(u16 archive_slot, u16 archive_entry);
+void menu_show_transition_image(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);
 void refresh_collision_row_rotations(void);
@@ -263,7 +267,7 @@ void floor_item_capture_image(s32 x, s32 y, u8 value_01, u8 value_03,
                    s32 kind, s32 width_bytes, u16 height);
 void display_begin_frame(void);
 void display_present_frame(void);
-void func_8002d4f4(const VECTOR *position, const SVECTOR *rotation);
+void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation);
 void primitive_buffer_begin_poly_ft4(void);
 void primitive_buffer_commit_poly_ft4(s32 depth);
 

@@ -55,13 +55,13 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         actor_sample_rotated_animation_vertex(current, second, &offset);
         arguments += 3;
         third = *arguments;
-        predicted.vx = func_8001584c(player->vx,
+        predicted.vx = fixed_lerp_q12(player->vx,
             (s32)((((u32)offset.vx - (u32)target.vx) << 8) +
                   (u32)current->position.vx), third);
-        predicted.vy = func_8001584c(player->vy,
+        predicted.vy = fixed_lerp_q12(player->vy,
             (s32)((((u32)offset.vy - (u32)target.vy) << 8) +
                   (u32)current->position.vy), third);
-        predicted.vz = func_8001584c(player->vz,
+        predicted.vz = fixed_lerp_q12(player->vz,
             (s32)((((u32)offset.vz - (u32)target.vz) << 8) +
                   (u32)current->position.vz), third);
         player = &predicted;
@@ -84,12 +84,12 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
     case 0x20:
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
-        func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 500, &position, &direction, -1, 0x400, 1);
         effect = effect_construct_record(effect_id, 0x23, kind, &position, &direction);
         if (effect != 0) effect->cooldown = 3;
         break;
     case 0x79:
-        func_8003c3e0(current, player, 600, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 600, &position, &direction, -1, 0x400, 1);
         distance = fixed_vector3_length(position.vx - player->vx,
                                         position.vy - player->vy,
                                         position.vz - player->vz);
@@ -97,7 +97,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         if (travel_time < 0) travel_time = 0;
         goto simple_direction_effect;
     case 4:
-        func_8003c3e0(current, player, 800, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 800, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x28: {
@@ -117,11 +117,11 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
     }
     case 9:
     case 0x21:
-        func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 400, &position, &direction, -1, 0x400, 1);
         travel_time = 0xfe;
         goto simple_direction_effect;
     case 0x18:
-        func_8003c3e0(current, player, 250, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 250, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 2:
@@ -129,7 +129,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
                       0x1000, 0x100, 0x1000);
         break;
     case 0x16:
-        func_8003c3e0(current, player, 400, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 400, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x17:
@@ -145,12 +145,12 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         break;
     case 1:
     case 0x1c:
-        func_8003c3e0(current, player, 500, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 500, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x1a:
     case 0x1b:
-        func_8003c3e0(current, player, 300, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 300, &position, &direction, -1, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0xc:
@@ -179,7 +179,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {
-            func_8003c3e0(current, player, 400,
+            actor_compute_target_direction(current, player, 400,
                           &position, &direction, -1, 0x400, 1);
             spawned->slot_state = 5;
             spawned->group_index = group_index;
@@ -204,7 +204,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         group_index = parameters[2];
         spawned = actor_pool_find_free();
         if (spawned != 0) {
-            func_8003c3e0(current, player, 250,
+            actor_compute_target_direction(current, player, 250,
                           &position, &direction, -1, 0x400, 1);
             spawned->slot_state = 5;
             spawned->group_index = group_index;
@@ -242,7 +242,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
                               travel_time >> 6, &trajectory_target);
             }
         } while (count != 0);
-        orientation.motion.vy = func_8003c3e0(current, &trajectory_target,
+        orientation.motion.vy = actor_compute_target_direction(current, &trajectory_target,
                                               800, &position, &direction,
                                               trajectory_angle, 0xc00, 1);
         orientation.motion.vx = trajectory_angle;

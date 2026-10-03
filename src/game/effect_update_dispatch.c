@@ -165,7 +165,7 @@ void effect_update_dispatch(void)
             effect_spawn_motion(record, -1, -700, (s16)record->scale_x,
                            -300, 3, 8, 0);
             if (actor->animation_phase >= *(u16 *)&record->unknown_3c[8]) {
-                func_8003c3e0(actor, &player_state.camera_position,
+                actor_compute_target_direction(actor, &player_state.camera_position,
                                650, &record->position, &record->direction,
                                -1, 0x400, 5);
                 record->phase = 0;
@@ -289,7 +289,7 @@ void effect_update_dispatch(void)
             break;
         }
         case 1: {
-            record->scale_y = func_8001584c(
+            record->scale_y = fixed_lerp_q12(
                 (s16)*(u16 *)&record->unknown_32[0], 0,
                 (s16)*(u16 *)&record->unknown_3c[6]);
             age = *(u16 *)&record->unknown_3c[6] + 512;
@@ -333,7 +333,7 @@ void effect_update_dispatch(void)
         elevated.vx = record->position.vx;
         elevated.vy = record->position.vy + 5000;
         elevated.vz = record->position.vz;
-        actor_index = func_8003a9f4(elevated.vx, elevated.vy, elevated.vz,
+        actor_index = actor_find_overlap_excluding_target_type3(elevated.vx, elevated.vy, elevated.vz,
                                     100, 10000);
         if (actor_index != -1) {
             effect_construct_record(10, record->type, 0x2d,
@@ -406,7 +406,7 @@ void effect_update_dispatch(void)
             player_sample_weapon_world_vertex(0, &record->position);
             if ((s16)record->scale_x >= 256) {
                 record->unknown_3c[4] = 1;
-                func_80025878(1000, 0, &record->direction, &distance);
+                player_probe_view_target_and_vectors(1000, 0, &record->direction, &distance);
             }
             break;
         case 1:
@@ -500,9 +500,9 @@ void effect_update_dispatch(void)
             spawn_position.vx = record->position.vx;
             spawn_position.vy = record->position.vy;
             spawn_position.vz = record->position.vz;
-            spawn_direction.vx = 0;
-            spawn_direction.vy = 0;
             spawn_direction.vz = 0;
+            spawn_direction.vy = 0;
+            spawn_direction.vx = 0;
             spread = 1000;
         } else {
             const KfActor *actor =
@@ -515,8 +515,8 @@ void effect_update_dispatch(void)
             spawn_direction = *(const SVECTOR *)&actor->unknown_50;
         }
         spawn_position.vx += ((rand() * spread) >> 14) - spread;
-        spawn_position.vy -= 2000;
         spawn_position.vz += ((rand() * spread) >> 14) - spread;
+        spawn_position.vy -= 2000;
         effect_construct_record(10, record->type | 3, 0,
                        &spawn_position, &spawn_direction);
         break;
@@ -591,9 +591,9 @@ void effect_update_dispatch(void)
         }
         if (prior_phase == 1) {
             record->direction.vy = (u16)record->direction.vy - 70;
-            record->direction.vx = func_8001584c(
+            record->direction.vx = fixed_lerp_q12(
                 0, (s16)record->direction.vx, 3000);
-            record->direction.vz = func_8001584c(
+            record->direction.vz = fixed_lerp_q12(
                 0, (s16)record->direction.vz, 3000);
             if (KF_COLLISION_CACHE_RESULT <
                 KF_COLLISION_CACHE_LOWER_BOUND) {
@@ -1212,7 +1212,7 @@ void effect_update_dispatch(void)
                                   (((s16)record->direction.vz * forward.x) >> 12);
             record->position.vz = parent->position.vz +
                                   (((s16)record->direction.vz * forward.z) >> 12);
-            record->direction.vz = func_8001584c(
+            record->direction.vz = fixed_lerp_q12(
                 (s16)record->direction.vy, 0, (s16)record->scale_z);
             record->scale_y = ((u32)(rsin((s16)record->scale_z >> 1) * 25)) >> 5;
             record->scale_z = (u16)record->scale_z + 64;
@@ -1296,7 +1296,7 @@ void effect_update_dispatch(void)
             record->unknown_3c[5]--;
         } else if (rand() < 2048) {
             s32 distance;
-            KfActor *actor = func_8003a778(
+            KfActor *actor = actor_find_best_in_cone(
                 &record->position, record->rotation.vy,
                 record->rotation.vx, 25000, 800, 800,
                 &distance, 512);
@@ -1309,7 +1309,7 @@ void effect_update_dispatch(void)
         if (rand() < 1024) {
             s32 distance;
 
-            if (func_8003a778(&record->position, record->rotation.vy,
+            if (actor_find_best_in_cone(&record->position, record->rotation.vy,
                                record->rotation.vx, 30000, 800, 800,
                                &distance, 512) != 0) {
                 effect_spawn_zero_direction(record, 0x2f);
@@ -1428,12 +1428,12 @@ void effect_update_dispatch(void)
             record->position = *position;
             record->position.vy -= actor->unknown_1e >> 1;
             if (record->unknown_3c[9] < 17) {
-                s32 scale = func_8001584c(
+                s32 scale = fixed_lerp_q12(
                     0, actor_extent, record->unknown_3c[9] << 9);
 
                 record->scale_z = scale;
                 record->scale_x = scale;
-                record->scale_y = func_8001584c(
+                record->scale_y = fixed_lerp_q12(
                     0, actor->unknown_1e, record->unknown_3c[9] * 350);
             } else if (record->unknown_3c[9] >= 60) {
                 record->phase = 4;

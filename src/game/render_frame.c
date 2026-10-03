@@ -16,7 +16,7 @@ void display_toggle_buffer_index(void)
 }
 
 ADDRESS(0x800335a0, 0x3f4)
-void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
+void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
 {
     s32 remainder;
     s32 hp_hundreds;
@@ -30,10 +30,10 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     s32 yaw_delta;
     u8 row_state;
 
-    func_8002d4f4(position, rotation);
+    display_set_view_transform(position, rotation);
     floor_item_update_textures();
     notification_update();
-    func_8002c670();
+    build_camera_map_cell_layer_masks();
     display_begin_frame();
     pool_mark_allocated();
     render_player_weapon();
@@ -90,7 +90,7 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     render_active_model_rows();
     notification_draw();
     render_map_cell_window();
-    func_8003247c();
+    render_scene_and_update_resources();
     render_sliding_panel_primary();
     render_sliding_panel_secondary();
     render_color_overlay();

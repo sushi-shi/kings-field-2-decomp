@@ -41,7 +41,7 @@ void func_80019ac4(void)
             if (choice == 1)
                 func_8001a2f4();
             else if (choice == 9)
-                func_8001a4f0();
+                menu_item_magic_controller();
             else
                 func_80019ed4(choice);
             func_80019ce4(current_rows);
@@ -52,7 +52,7 @@ void func_80019ac4(void)
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
         if (mode == 1)
-            func_80022300(17);
+            menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             func_8001fc94(&menu, 3);

@@ -8,7 +8,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x8002897c, 0x1c)
-s32 func_8002897c(s32 value)
+s32 item_id_is_71_to_80(s32 value)
 {
     s32 result = 0;
     if (value < 81) {
@@ -27,21 +27,21 @@ void func_80028998(void)
     if (player_state.weapon_magic_shots_configured == 0
         && (player_state.flags_140.word & 0x00800080) == 0x80
         && player_state.weapon_magic_shots_remaining == 0) {
-        func_8002722c(player_state.unknown_97);
+        player_select_magic_action(player_state.primary_magic_shortcut_id);
     }
 
     if ((player_state.flags_140.word & 0x08000800) == 0x800) {
-        if (player_state.unknown_98 != 0xff) {
-            func_8002722c(player_state.unknown_98);
+        if (player_state.secondary_magic_shortcut_id != 0xff) {
+            player_select_magic_action(player_state.secondary_magic_shortcut_id);
         }
-        if (player_state.unknown_99 != 0xff) {
-            if (game_counter_bytes[player_state.unknown_99] != 0) {
-                if (func_8002897c(player_state.unknown_99) != 0) {
-                    func_80018f8c(player_state.unknown_99);
+        if (player_state.secondary_item_shortcut_id != 0xff) {
+            if (game_counter_bytes[player_state.secondary_item_shortcut_id] != 0) {
+                if (item_id_is_71_to_80(player_state.secondary_item_shortcut_id) != 0) {
+                    menu_apply_item_effect(player_state.secondary_item_shortcut_id);
                 } else {
                     event_scene_command_dispatch(&player_state.camera_position,
                                   &player_state.camera_rotation_target,
-                                  player_state.unknown_99);
+                                  player_state.secondary_item_shortcut_id);
                 }
             } else {
                 notify_enqueue(20);
@@ -53,7 +53,7 @@ void func_80028998(void)
         timer = player_state.unknown_d1[3] - 1;
         player_state.unknown_d1[3] = timer;
         if (timer == 0) {
-            func_80025a18(player_state.unknown_d1[0]);
+            player_dispatch_magic_effect(player_state.unknown_d1[0]);
             timer = player_state.unknown_d1[1] - 1;
             player_state.unknown_d1[1] = timer;
             if (timer == 0) {
@@ -108,7 +108,7 @@ void func_80028998(void)
     if (player_state.weapon_magic_shots_remaining != 0) {
         player_state.weapon_magic_shots_remaining--;
     } else {
-        player_state.unknown_78 = DAT_800667e8.attack_masks;
+        player_state.unknown_78 = player_magic_id_sequence.attack_masks;
     }
 
     if ((player_state.flags_140.low & 0xb0) != 0
@@ -121,7 +121,7 @@ void func_80028998(void)
         if ((player_state.flags_140.low & attack_mask[0]) == 0) {
             goto cancel_weapon_attack;
         }
-        if (attack_mask == DAT_800667e8.attack_masks
+        if (attack_mask == player_magic_id_sequence.attack_masks
             && (player_state.attack_charge_current != 5000
                 || player_state.magic_charge != 5000)) {
             goto cancel_weapon_attack;

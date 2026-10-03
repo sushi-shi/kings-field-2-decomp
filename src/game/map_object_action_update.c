@@ -16,13 +16,13 @@
 #include <psyq/sdk.h>
 
 DATA(0x8006d6e4, 0x8)
-SVECTOR DAT_8006d6e4 = {0, -1424, 0, 0};
+SVECTOR map_object_motion_action15_start_offset = {0, -1424, 0, 0};
 DATA(0x8006d6ec, 0x8)
-SVECTOR DAT_8006d6ec = {0, -912, 0, 0};
+SVECTOR map_object_motion_action15_end_offset = {0, -912, 0, 0};
 DATA(0x8006d6f4, 0x8)
-SVECTOR DAT_8006d6f4 = {0, -100, 300, 0};
+SVECTOR map_object_motion_action17_start_offset = {0, -100, 300, 0};
 DATA(0x8006d6fc, 0x8)
-SVECTOR DAT_8006d6fc = {0, 0, 64, 0};
+SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
@@ -779,7 +779,7 @@ void func_80036ed4(void)
                 object->tail.fields.unknown_38 = 0xff;
                 object->action_timer = 0;
             }
-            map_object_step_offset_motion(object, target, &DAT_8006d6e4, &DAT_8006d6ec, 1, 32);
+            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, 1, 32);
             break;
         }
 
@@ -791,8 +791,8 @@ void func_80036ed4(void)
                 object->action_timer = 0;
                 linked->tail.fields.unknown_38 &= ~object->tail.fields.unknown_3a.bytes.low;
             }
-            if (map_object_step_offset_motion(object, target, &DAT_8006d6f4,
-                              &DAT_8006d6fc, 0, 20)) {
+            if (map_object_step_offset_motion(object, target, &map_object_motion_action17_start_offset,
+                              &map_object_motion_action17_end_offset, 0, 20)) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
                 linked->tail.fields.unknown_38 |= object->tail.fields.unknown_3a.bytes.low;
             }
@@ -990,7 +990,7 @@ void func_80036ed4(void)
                         object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
                     player_state.camera_position.vz =
                         object->tail.spawn_bytes.spawn_sequence.high * 0x800 + 0x400;
-                    player_state.unknown_128 =
+                    player_state.map_layer_index =
                         object->tail.fields.unknown_3e.bytes.low == 1 ? 0 : 5;
                     player_state.camera_rotation_target.angles[1] =
                         -((u32)object->tail.fields.unknown_3e.bytes.high * 16);

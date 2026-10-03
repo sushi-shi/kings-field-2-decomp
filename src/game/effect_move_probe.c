@@ -42,7 +42,7 @@ s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
     if (!(record->type & KF_EFFECT_USE_PLAYER_MAGIC)) {
         goto player_target;
     }
-    target = func_8003a778(&record->position, record->rotation.vy,
+    target = actor_find_best_in_cone(&record->position, record->rotation.vy,
                            record->rotation.vx, 24000, target_filter,
                            target_filter, &distance, 0);
     if (target == 0) {
@@ -66,13 +66,12 @@ aim:
 player_target:
     distance = player_distance_to_point_in_cone(
         &record->position, record->rotation.vy, 24000, 0x1000);
-    if (distance == -1) {
-        goto move;
+    if (distance != -1) {
+        target_position.vx = player_state.camera_position.vx;
+        target_position.vy = player_state.camera_position.vy - 1600;
+        target_position.vz = player_state.camera_position.vz;
+        goto aim;
     }
-    target_position.vx = player_state.camera_position.vx;
-    target_position.vy = player_state.camera_position.vy - 1600;
-    target_position.vz = player_state.camera_position.vz;
-    goto aim;
 
 move:
     pitch_yaw_to_forward_vector((const struct KfEulerAngles *)&record->rotation,
@@ -101,9 +100,9 @@ s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
         return -2;
     }
     if (length <= settle_distance) {
-        record->direction.vx = func_8001584c(0, record->direction.vx, 0xc00);
-        record->direction.vy = func_8001584c(0, record->direction.vy, 0xc00);
-        record->direction.vz = func_8001584c(0, record->direction.vz, 0xc00);
+        record->direction.vx = fixed_lerp_q12(0, record->direction.vx, 0xc00);
+        record->direction.vy = fixed_lerp_q12(0, record->direction.vy, 0xc00);
+        record->direction.vz = fixed_lerp_q12(0, record->direction.vz, 0xc00);
     }
     motion.vx = (delta.vx << KF_FIXED12_BITS) / length;
     motion.vy = (delta.vy << KF_FIXED12_BITS) / length;

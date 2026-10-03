@@ -106,7 +106,7 @@ void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
     if (record->type & 2) {
         u16 power = effect_magic_power(record);
 
-        func_8003a318(position, start, end, arg3, arg4,
+        actor_apply_area_magic(position, start, end, arg3, arg4,
                       power, magic->unknown_06,
                       magic->unknown_08, magic->unknown_0a, magic->unknown_0c,
                       magic->unknown_0e, magic->unknown_10, magic->unknown_12,

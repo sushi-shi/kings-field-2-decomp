@@ -7,6 +7,104 @@ enum {
     KF_TMD_DEPTH_SHIFT = 2
 };
 
+RODATA(0x80011410, 0x74)
+
+ADDRESS(0x8002d5dc, 0x2d4)
+void tmd_prepare_primitive_indices(KfTmdHeader *tmd)
+{
+    KfTmdObject *object;
+    u8 *packet;
+    KfTmdPrimitive *primitive;
+    u32 objects_left;
+    u32 primitives_left;
+    KfTmdPacketHeader header;
+
+    objects_left = tmd->object_count;
+    object = TMD_OBJECTS(tmd);
+    while (--objects_left != (u32)-1) {
+        primitives_left = object->primitive_count;
+        packet = (u8 *)tmd + (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        while (--primitives_left != (u32)-1) {
+            primitive = (KfTmdPrimitive *)TMD_PACKET_BODY(packet);
+            header.word = *(u32 *)packet;
+            packet = (u8 *)primitive + header.bytes.input_length * KF_TMD_WORD_BYTES;
+            switch (tmd_packet_kind(header.word)) {
+            case KF_TMD_MODE_F3: {
+                primitive->f3.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f3.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f3.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f3.normal <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_G3: {
+                primitive->g3.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g3.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g3.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g3.normal0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g3.normal1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g3.normal2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_FT3: {
+                primitive->ft3.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft3.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft3.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft3.normal <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_GT3: {
+                primitive->gt3.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt3.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt3.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt3.normal0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt3.normal1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt3.normal2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_F4: {
+                primitive->f4.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f4.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f4.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f4.vertex3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->f4.normal <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_G4: {
+                primitive->g4.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.vertex3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.normal0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.normal1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.normal2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->g4.normal3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_FT4: {
+                primitive->ft4.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft4.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft4.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft4.vertex3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->ft4.normal <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            case KF_TMD_MODE_GT4: {
+                primitive->gt4.vertex0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.vertex1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.vertex2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.vertex3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.normal0 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.normal1 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.normal2 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                primitive->gt4.normal3 <<= KF_TMD_VECTOR_OFFSET_SHIFT;
+                break;
+            }
+            }
+        }
+        object++;
+    }
+}
+
 ADDRESS(0x8002d8b0, 0x40)
 void tmd_register(u16 slot, KfTmdHeader *tmd)
 {
@@ -27,7 +125,7 @@ void tmd_release_slot(void)
 }
 
 ADDRESS(0x8002d918, 0x17c)
-void func_8002d918(s32 count)
+void tmd_project_vertices_with_fog(s32 count)
 {
     KfScreenVertex *projected;
     SVECTOR *vertex;
@@ -73,7 +171,7 @@ void func_8002d918(s32 count)
 }
 
 ADDRESS(0x8002da94, 0x144)
-void func_8002da94(s32 count)
+void tmd_project_vertices_mark_clipped(s32 count)
 {
     KfScreenVertex *projected;
     SVECTOR *vertex;
@@ -179,7 +277,7 @@ void tmd_project_vertices(s32 count)
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
-void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
+void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode)
 {
     KfTmdObject *object;
     u8 *normals;
@@ -369,7 +467,7 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode)
 }
 
 ADDRESS(0x8002e4dc, 0x704)
-void func_8002e4dc(u16 object_index, s32 depth_bias)
+void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
 {
     KfTmdObject *object;
     u8 *normals;
@@ -558,7 +656,7 @@ void func_8002e4dc(u16 object_index, s32 depth_bias)
 }
 
 ADDRESS(0x8002ebe0, 0x5b4)
-void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth)
+void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s16 fixed_depth)
 {
     KfTmdObject *object;
     u8 *normals;

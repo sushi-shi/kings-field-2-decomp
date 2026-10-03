@@ -10,7 +10,7 @@ DATA(0x8006d704, 0x4)
 u32 effect_trail_next_slot = 0;
 
 DATA(0x8009a5a8, 0x4)
-s32 DAT_8009a5a8;
+s32 effect_kind102_sound_cooldown_frame;
 
 DATA(0x801d9628, 0x900)
 KfEffectTrailRow effect_trail_rows[4][24];
@@ -615,11 +615,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->scale_z = scale;
         record->scale_x = scale;
         *(s16 *)&record->unknown_3c[4] = va[2];
-        if ((s32)(DAT_8009a5a8 - cd_state.frame_count) >= 0) {
+        if ((s32)(effect_kind102_sound_cooldown_frame - cd_state.frame_count) >= 0) {
             break;
         }
         volume = *(s16 *)&record->unknown_3c[4] / 90;
-        DAT_8009a5a8 = cd_state.frame_count + 30;
+        effect_kind102_sound_cooldown_frame = cd_state.frame_count + 30;
         if (volume >= 128) {
             volume = 127;
         }

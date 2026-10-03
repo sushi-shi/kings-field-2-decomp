@@ -7,7 +7,7 @@
 enum { KF_MAP_PLACED_REGION_SHIFT = 11, KF_MAP_PLACED_RANDOM_SHIFT = 15 };
 
 ADDRESS(0x80034818, 0x134)
-void func_80034818(const KfMapPlacedSource *sources)
+void map_placed_expand_sources(const KfMapPlacedSource *sources)
 {
     KfMapPlacedEntry *entry = game_graphics_runtime.map_placed_entries;
     s32 remaining;

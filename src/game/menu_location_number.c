@@ -8,7 +8,7 @@
 RODATA(0x80011098, 0x1c)
 
 ADDRESS(0x8001876c, 0x284)
-s32 func_8001876c(void)
+s32 menu_run_root_controller(void)
 {
     s32 cursor = 0;
     s32 confirmed = 0;
@@ -25,7 +25,7 @@ s32 func_8001876c(void)
         menu_draw_window(0, 8, cursor, confirmed);
         menu_present_frame();
     }
-    func_80022300(16);
+    menu_play_sound_cue(16);
     input_wait_release();
 
     for (;;) {
@@ -43,7 +43,7 @@ s32 func_8001876c(void)
             func_80019ac4();
             break;
         case 3:
-            func_8001a7fc();
+            menu_show_combat_attributes();
             break;
         case 4:
             func_8001a898();
@@ -68,7 +68,7 @@ selection_result:
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
-                func_800189f0();
+                menu_draw_location_number();
             func_8001e94c();
             menu_draw_window(0, 8, cursor, confirmed);
             menu_present_frame();
@@ -76,20 +76,20 @@ selection_result:
     }
 
     if (result == -1)
-        func_80022300(0);
+        menu_play_sound_cue(0);
     if (result == -3)
         menu_exit_display_state(1);
     else
         menu_exit_display_state(0);
     if (result != -1 && result != -3 && (result & 0x1000) != 0) {
-        func_8002722c(result & 0xfff);
+        player_select_magic_action(result & 0xfff);
         result = -1;
     }
     return result;
 }
 
 ADDRESS(0x800189f0, 0xd8)
-void func_800189f0(void)
+void menu_draw_location_number(void)
 {
     KfMenuGlyphString row;
     s32 camera_x;
@@ -103,7 +103,7 @@ void func_800189f0(void)
     row.position.y = 205;
     camera_x = player_state.camera_position.vx;
     camera_z = player_state.camera_position.vz;
-    map_layer = player_state.unknown_128;
+    map_layer = player_state.map_layer_index;
     grid_z = camera_z >> 11;
     prefix = state_8017d118.unknown_09[0] * 100000
            + map_layer * 10000

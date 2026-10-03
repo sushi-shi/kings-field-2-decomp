@@ -27,7 +27,7 @@ void actor_update_frame(void)
                     (actor_state.active_actor_count & 3)) {
                     actor_select_target_for_player_distance();
                 }
-                func_8003d184();
+                actor_update_behavior();
                 actor_state.active_actor_count++;
             }
 

@@ -17,7 +17,7 @@ void func_8001a898(void)
     s32 frame;
     u8 selected_item;
 
-    count = func_80018dec(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
     menu_list_init(&menu.list, 0, 4);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -46,11 +46,11 @@ void func_8001a898(void)
         menu_update_list_input(&menu.list, indices, &mode, &result);
         selected_item = indices[menu.list.selected_index];
         if (mode == 1)
-            func_80022300(17);
+            menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                func_8002083c(selected_item);
+                menu_update_item_preview(selected_item);
             func_8001fc94(&menu, 7);
             menu_present_frame();
         }

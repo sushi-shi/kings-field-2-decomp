@@ -202,7 +202,7 @@ void func_8001ceb8(s32 kind)
         menu_draw_window(3, 3, cursor, confirmed);
         menu_present_frame();
     }
-    func_80022300(16);
+    menu_play_sound_cue(16);
     input_wait_release();
     for (;;) {
         if (selection != -1 || result != -99)

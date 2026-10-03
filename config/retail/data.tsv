@@ -45,7 +45,7 @@ GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	fin
 GAME.EXE	0x80011058	0x858	0x1c	pointer	manual:resource-transition-switch		pointer[7]	retail words;func_80016820 bounded jr table	seven consecutive phase case pointers within resource transition controller
 GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
 GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011098	0x898	0x1c	pointer	manual:menu-root-switch		pointer[7]	retail words;func_8001876c jr table	seven consecutive case pointers within the menu controller
+GAME.EXE	0x80011098	0x898	0x1c	pointer	manual:menu-root-switch		pointer[7]	retail words;menu_run_root_controller jr table	seven consecutive case pointers within the menu controller
 GAME.EXE	0x800110b4	0x8b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800110b8	0x8b8	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;func_80019ed4 bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x800110dc	0x8dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -63,7 +63,7 @@ GAME.EXE	0x80011168	0x968	0xf4	defined	manual:player-state-equipment-rodata		u32
 GAME.EXE	0x8001125c	0xa5c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011260	0xa60	0x34	pointer	manual:player-magic-switch		pointer[13]	retail words;func_80026498 jr table	13 rows indexed by magic ID minus 38, all targeting branches in func_80026498
 GAME.EXE	0x80011294	0xa94	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011298	0xa98	0x64	pointer	manual:player-action-switch		pointer[25]	retail words;func_8002722c two contiguous bounded jr tables	6 preliminary-case pointers followed by 19 action-case pointers within func_8002722c
+GAME.EXE	0x80011298	0xa98	0x64	pointer	manual:player-action-switch		pointer[25]	retail words;player_select_magic_action two contiguous bounded jr tables	6 preliminary-case pointers followed by 19 action-case pointers within player_select_magic_action
 GAME.EXE	0x800112fc	0xafc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011300	0xb00	0x4c	pointer	manual:player-update-switch		pointer[19]	retail words;func_8002985c bounded jr table	19 case targets inside contiguous func_8002985c body
 GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	func_8002aaa4 jump-table dispatch;retail words	49 opcode rows, all targets within func_8002aaa4
@@ -759,7 +759,7 @@ GAME.EXE	0x8006361c	0x52e1c	0x1b	unclassified	coverage-gap			payload-complement	
 GAME.EXE	0x80063637	0x52e37	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: <UUB4
 GAME.EXE	0x8006363c	0x52e3c	0x37c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80063bf0	0x533f0	0x148	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80063dcc	0x535cc	0x20	defined	manual:render world identity matrix	render_world_identity_matrix	MATRIX	retail bytes;func_8003247c+0x114/+0x8f4 xrefs;SDK layout	initialized 32-byte identity matrix passed as world transform to func_80031850
+GAME.EXE	0x80063dcc	0x535cc	0x20	defined	manual:render world identity matrix	render_world_identity_matrix	MATRIX	retail bytes;render_scene_and_update_resources+0x114/+0x8f4 xrefs;SDK layout	initialized 32-byte identity matrix passed as world transform to func_80031850
 GAME.EXE	0x80063dec	0x535ec	0x14	unclassified	coverage-gap			payload-complement	remaining bytes after the matrix; owner unresolved
 GAME.EXE	0x80063e00	0x53600	0x80	pointer	manual:callback default table		KfCallback[32]	retail words;func_80016820 initialized-table address	32 callback pointers, all to no-op stub 0x80015d50; original TU unresolved
 GAME.EXE	0x80063e80	0x53680	0xf0	defined	manual-reviewed	menu_sprite_defs	KfMenuSpriteDef[20]	asm;xrefs;load bytes;KF1 counterpart	20 contiguous 12-byte menu sprite descriptors; nine-grid reaches next table at 0x80063f70
@@ -778,16 +778,16 @@ GAME.EXE	0x800661c0	0x559c0	0x4b0	defined	manual:menu item code pages		u16[5][12
 GAME.EXE	0x80066670	0x55e70	0x10	defined	manual:card save prefix		char[16]	retail bytes;four card-file xrefs	12-character save prefix, NUL and alignment zeros
 GAME.EXE	0x80066680	0x55e80	0x120	defined	manual:card title and icon palettes		KfCardAssets	retail title bytes;card-writer indexed palette copy	Shift-JIS title and seven 16-color icon palettes
 GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records		SVECTOR[5]	retail bytes;func_80025a18 eight-byte copy stride;source DATA claim	current C uses five SVECTOR records; fourth signed halfword is read as an effect parameter at 0x800260fc; original C type and TU unresolved
-GAME.EXE	0x800667c8	0x55fc8	0x20	defined	manual:player effect vector templates		SVECTOR[4]	retail bytes;func_80025a18 eight-byte copy stride	four signed corner records read by the bounded effect-spawn loop; defining TU unresolved
-GAME.EXE	0x800667e8	0x55fe8	0x14	defined	manual:player magic IDs and attack masks		KfPlayerMagicIdSequence	retail bytes;func_80026498 indexed lbu;func_80028998 halfword sequence	12 effect IDs followed by 0x20,0x10,0x80,0xffff masks; source owner unresolved
+GAME.EXE	0x800667c8	0x55fc8	0x20	defined	manual:player effect vector templates	player_magic_square_offsets	SVECTOR[4]	retail bytes;func_80025a18 eight-byte copy stride	four signed corner records read by the bounded effect-spawn loop; defining TU unresolved
+GAME.EXE	0x800667e8	0x55fe8	0x14	defined	manual:player magic IDs and attack masks	player_magic_id_sequence	KfPlayerMagicIdSequence	retail bytes;func_80026498 indexed lbu;func_80028998 halfword sequence	12 effect IDs followed by 0x20,0x10,0x80,0xffff masks; source owner unresolved
 GAME.EXE	0x800667fc	0x55ffc	0xa	defined	manual:collision grid sample		KfMapOccupancyCell	retail bytes;func_8002a988 fallback pointer	two five-byte layers with object index 0xff and flags 0x3f
 GAME.EXE	0x80066806	0x56006	0x2	unclassified	coverage-gap			payload-complement	padding before notification quads
 GAME.EXE	0x80066808	0x56008	0x7e	defined	manual:notification quads		KfNotificationQuad[7]	retail bytes;func_80033140;notification mutation xrefs	six textured rectangles followed by 0xff terminator
 GAME.EXE	0x80066886	0x56086	0x2	unclassified	coverage-gap			payload-complement	padding before next datum
-GAME.EXE	0x80066888	0x56088	0x21c	defined	manual:render model rows	render_model_rows	KfRenderModelRow[15]	retail bytes;func_80031024 scan;func_800335a0 writes	14 active 36-byte rows and one complete 0xff sentinel
+GAME.EXE	0x80066888	0x56088	0x21c	defined	manual:render model rows	render_model_rows	KfRenderModelRow[15]	retail bytes;func_80031024 scan;render_game_frame writes	14 active 36-byte rows and one complete 0xff sentinel
 GAME.EXE	0x80066aa4	0x562a4	0x10	unclassified	coverage-gap			payload-complement	distinct bytes before collision defaults
 GAME.EXE	0x80066ab4	0x562b4	0xdc0	defined	manual:collision defaults		KfCollisionDefaultRow[80]	retail bytes;func_8002bc18 row copy;startup archive write	mutable default collision rows copied into the graphics runtime
-GAME.EXE	0x80067874	0x57074	0x1c	defined	reviewed-asm		KfMapMaskShapePair[7]	func_8002c670 table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
+GAME.EXE	0x80067874	0x57074	0x1c	defined	reviewed-asm		KfMapMaskShapePair[7]	build_camera_map_cell_layer_masks table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
 GAME.EXE	0x80067890	0x57090	0x10e	defined	reviewed-asm		KfMapCellPattern[9][3]	map_object_initialize_from_placements and func_80034f90 pattern argument;retail bytes	nine groups of three 10-byte patterns
 GAME.EXE	0x8006799e	0x5719e	0x2	unclassified	coverage-gap			payload-complement	two trailing zero alignment bytes after pattern family
 GAME.EXE	0x800679a0	0x571a0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f00 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
@@ -872,17 +872,17 @@ GAME.EXE	0x8006d6a1	0x5cea1	0x3	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	manual:card slot seed		s8	retail 0x20;three reviewed lui+lb pairs in card directory/header/writer	first signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	manual:card slot seed		s8	retail 0x00;three reviewed lui+lb pairs in card directory/header/writer	second signed-byte view of adjacent slot seed; original object extent and TU unproved
 GAME.EXE	0x8006d6a6	0x5cea6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard	DAT_8006d6a8	char[7]	retail bytes;firstfile argument at 0x80022744;source DATA claim	bu00:* plus NUL terminator; original TU boundary WIP
+GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard	memory_card_search_pattern	char[7]	retail bytes;firstfile argument at 0x80022744;source DATA claim	bu00:* plus NUL terminator; original TU boundary WIP
 GAME.EXE	0x8006d6af	0x5ceaf	0x1	unclassified	coverage-gap			payload-complement	zero alignment before player texture row rectangles
 GAME.EXE	0x8006d6b0	0x5ceb0	0x20	defined	manual:player status texture rows	player_status_texture_rows	RECT[4]	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM rows at x=0x240
 GAME.EXE	0x8006d6d0	0x5ced0	0x4	defined	manual:map TMD color		CVECTOR	retail bytes;NormalColorCol xrefs;KF1 counterpart	initialized neutral RGB 128,128,128,0
-GAME.EXE	0x8006d6d4	0x5ced4	0x4	defined	manual:render frame yaw accumulator	render_model_yaw_smoothing_accumulator	s32	retail zero word;four func_800335a0 read-write xrefs;angle_shortest_delta	initialized yaw-delta accumulator eased by one eighth per frame
+GAME.EXE	0x8006d6d4	0x5ced4	0x4	defined	manual:render frame yaw accumulator	render_model_yaw_smoothing_accumulator	s32	retail zero word;four render_game_frame read-write xrefs;angle_shortest_delta	initialized yaw-delta accumulator eased by one eighth per frame
 GAME.EXE	0x8006d6d8	0x5ced8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d6dc	0x5cedc	0x8	defined	manual:menu transition		RECT	retail bytes;StoreImage;MoveImage;LoadImage	initialized 320 by 240 image transfer rectangle
-GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6e4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	first motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6ec	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	second motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	third motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	fourth motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	map_object_motion_action15_start_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	first motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	map_object_motion_action15_end_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	second motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	map_object_motion_action17_start_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	third motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	map_object_motion_action17_end_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	fourth motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	DAT_8006d704	u32	retail zero bytes;func_80040308 raw read/write pairs	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;effect_spawn_zero_direction xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none

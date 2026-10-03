@@ -349,14 +349,14 @@ magic_action: {
             object->unknown_10 = (rsin(fraction << 6) >> 2) + 1024;
             cd_request_service_vab();
             cd_request_service_stream();
-            func_800335a0(0, 0);
+            render_game_frame(0, 0);
         }
         /* The first decay step precedes service; later steps follow it. */
         goto decay_update;
         for (;;) {
             cd_request_service_vab();
             cd_request_service_stream();
-            func_800335a0(0, 0);
+            render_game_frame(0, 0);
 decay_update:
             object->unknown_10 -= 64;
             object->rotation.vy += spin;
@@ -375,7 +375,7 @@ decay_update:
             }
             cd_request_service_vab();
             cd_request_service_stream();
-            func_800335a0(0, 0);
+            render_game_frame(0, 0);
         } while (1);
         object->object_id = 0xff;
         notify_enqueue(1);
@@ -401,14 +401,14 @@ decay_update:
         event_state.state_word = 1;
         break;
     case 0x55: {
-        s32 side = player_state.unknown_128 == 0 ? 1 : 2;
+        s32 side = player_state.map_layer_index == 0 ? 1 : 2;
         s32 actor_distance;
-        KfActor *actor = func_8003a778(position, rotation->angles[1],
+        KfActor *actor = actor_find_best_in_cone(position, rotation->angles[1],
                                        rotation->angles[0], 8000, 500, 500,
                                        &actor_distance, -1);
 
         if (actor != 0 && actor->unknown_03 == side) {
-            func_80034e10(6, actor->unknown_01 + 240);
+            menu_show_transition_image(6, actor->unknown_01 + 240);
             event_state.state_word = 1;
             break;
         }
@@ -429,7 +429,7 @@ decay_update:
                                   object->position.vz >> 11,
                                   object->tail.fields.unknown_38,
                                   object->tail.fields.unknown_39, 0x8000)) {
-                    func_80034e10(6, object->tail.fields.unknown_3a.value + 510);
+                    menu_show_transition_image(6, object->tail.fields.unknown_3a.value + 510);
                     event_state.state_word = 1;
                     break;
                 }
@@ -496,17 +496,17 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
         s32 current_third;
 
         reset_collision_rows_and_overlay();
-        current_first = func_8001584c(first, target_first, fraction);
-        current_second = func_8001584c(second, target_second, fraction);
-        current_third = func_8001584c(third, target_third, fraction);
+        current_first = fixed_lerp_q12(first, target_first, fraction);
+        current_second = fixed_lerp_q12(second, target_second, fraction);
+        current_third = fixed_lerp_q12(third, target_third, fraction);
         accumulate_color_overlay(current_first, current_second, current_third, 0x800);
-        func_800335a0(0, 0);
+        render_game_frame(0, 0);
         fraction += step;
     } while (fraction < 4096);
 
     reset_collision_rows_and_overlay();
     accumulate_color_overlay(target_first, target_second, target_third, 0x800);
-    func_800335a0(0, 0);
+    render_game_frame(0, 0);
 }
 ADDRESS(0x800475d8, 0x6c0)
 void event_map_object_interact(KfMapObject *object, ...)
@@ -609,11 +609,11 @@ void event_map_object_interact(KfMapObject *object, ...)
                           fraction);
             object->unknown_0e = value_approach(
                 (s16)first_pitch, target_pitch, fraction);
-            player_state.camera_rotation.angles[0] = func_8001586c(
+            player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
                 first_yaw, target_yaw, fraction);
             cd_request_service_vab();
             cd_request_service_stream();
-            func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
+            render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
         }
     }
     object->unknown_0e = target_pitch;
@@ -626,7 +626,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->rotation.vy += 0x40;
         cd_request_service_vab();
         cd_request_service_stream();
-        func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
         previous_buttons = buttons;
     }
 
@@ -671,7 +671,7 @@ return_pose:
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
         object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
-        func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
     }
     object->rotation.vy = first_angles.vy;
 
@@ -683,11 +683,11 @@ interpolate_back:
         scene_pose_interpolate((KfScenePoseView *)object, &next_position,
                       &first_position, &next_angles, &first_angles,
                       fraction);
-        player_state.camera_rotation.angles[0] = func_8001586c(
+        player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
             current_yaw, first_yaw, fraction);
         object->unknown_0e = value_approach(
             target_pitch, (s16)first_pitch, fraction);
-        func_800335a0(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
     }
     if (remove_object) {
         object->object_id = 0xff;
@@ -717,7 +717,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         color_overlay_transition(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);
     }
 
-    object_index = func_8003a9f4(probe.vx, probe.vy, probe.vz, 0x578, 0xc80);
+    object_index = actor_find_overlap_excluding_target_type3(probe.vx, probe.vy, probe.vz, 0x578, 0xc80);
     if (object_index != -1) {
         KfActor *actor = &actor_state.actors[object_index];
         s32 angle = vector_xz_to_angle(actor->position.vx - probe.vx,
@@ -874,7 +874,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case 0x0d:
         case 0x14:
-            func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
+            menu_show_transition_image(6, object->tail.pair_38.value_38 + 0x78);
             break;
         case 0x12:
             color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);

@@ -27,34 +27,34 @@ void func_80026498(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 
     switch (magic_id - 38) {
     case 1:
-        player_sample_weapon_world_vertex(DAT_800667e8.effect_ids[effect_parameter], &position);
-        func_80025a18(magic_id, &position);
+        player_sample_weapon_world_vertex(player_magic_id_sequence.effect_ids[effect_parameter], &position);
+        player_dispatch_magic_effect(magic_id, &position);
         break;
     case 11:
     case 12:
         player_sample_weapon_world_vertex(0, &position);
-        func_80025a18(magic_id, &position);
+        player_dispatch_magic_effect(magic_id, &position);
         break;
     case 2:
         effect_parameter <<= 9;
-        player_state.unknown_118.vx = rcos(effect_parameter) >> 3;
-        player_state.unknown_118.vy = rsin(effect_parameter) >> 3;
-        player_state.unknown_118.vz = 600;
-        func_80025a18(magic_id);
+        player_state.magic_origin_offset.vx = rcos(effect_parameter) >> 3;
+        player_state.magic_origin_offset.vy = rsin(effect_parameter) >> 3;
+        player_state.magic_origin_offset.vz = 600;
+        player_dispatch_magic_effect(magic_id);
         break;
     case 0:
         for (effect_parameter = 0; effect_parameter < 4095; effect_parameter += 684) {
-            player_state.unknown_118.vx = rcos(effect_parameter) >> 3;
-            player_state.unknown_118.vy = rsin(effect_parameter) >> 3;
-            player_state.unknown_118.vz = 400;
-            func_80025a18(magic_id);
+            player_state.magic_origin_offset.vx = rcos(effect_parameter) >> 3;
+            player_state.magic_origin_offset.vy = rsin(effect_parameter) >> 3;
+            player_state.magic_origin_offset.vz = 400;
+            player_dispatch_magic_effect(magic_id);
         }
         break;
     default:
-        player_state.unknown_118.vx = 200;
-        player_state.unknown_118.vy = 200;
-        player_state.unknown_118.vz = 400;
-        func_80025a18(magic_id);
+        player_state.magic_origin_offset.vx = 200;
+        player_state.magic_origin_offset.vy = 200;
+        player_state.magic_origin_offset.vz = 400;
+        player_dispatch_magic_effect(magic_id);
         break;
     }
 }
@@ -258,7 +258,7 @@ regular_weapon:
         }
     }
 
-    if (player_state.weapon_attack_recovery <= player_state.weapon_attack_phase
+    if (player_state.weapon_attack_phase >= player_state.weapon_attack_recovery
         && player_state.weapon_attack_phase
              < player_state.weapon_attack_recovery + phase_step) {
         audio_play_sound(weapon->sound_id, 80);
@@ -321,7 +321,7 @@ regular_weapon:
             world_position.vx += step.vx;
             world_position.vy += step.vy;
             world_position.vz += step.vz;
-            index = func_8003a9f4(world_position.vx, world_position.vy,
+            index = actor_find_overlap_excluding_target_type3(world_position.vx, world_position.vy,
                                    world_position.vz, 400, 600);
             if (index != -1) {
                 KfActor *actor = &actor_state.actors[index];

@@ -33,13 +33,13 @@ void scene_pose_interpolate(
     const SVECTOR *end_angles, s32 fraction)
 {
     if (start_position != 0) {
-        destination->position_x = func_8001584c(start_position->vx, end_position->vx, fraction);
-        destination->position_y = func_8001584c(start_position->vy, end_position->vy, fraction);
-        destination->position_z = func_8001584c(start_position->vz, end_position->vz, fraction);
+        destination->position_x = fixed_lerp_q12(start_position->vx, end_position->vx, fraction);
+        destination->position_y = fixed_lerp_q12(start_position->vy, end_position->vy, fraction);
+        destination->position_z = fixed_lerp_q12(start_position->vz, end_position->vz, fraction);
     }
 
     if (start_angles != 0) {
-        destination->angle_x = func_8001586c(start_angles->vx, end_angles->vx, fraction);
-        destination->angle_z = func_8001586c(start_angles->vz, end_angles->vz, fraction);
+        destination->angle_x = angle_lerp_shortest_q12(start_angles->vx, end_angles->vx, fraction);
+        destination->angle_z = angle_lerp_shortest_q12(start_angles->vz, end_angles->vz, fraction);
     }
 }

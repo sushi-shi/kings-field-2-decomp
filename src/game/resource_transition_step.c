@@ -133,7 +133,7 @@ phase_three:
             stream += *(u32 *)stream + 4;
             map_object_initialize_from_placements((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;
-            func_80034818((KfMapPlacedSource *)(stream + 4));
+            map_placed_expand_sources((KfMapPlacedSource *)(stream + 4));
             event_world_state_restore_slot(state_8017d118.values_10[0]);
             state_8017d118.active_table[5]();
             player_state.unknown_09[1] = 1;

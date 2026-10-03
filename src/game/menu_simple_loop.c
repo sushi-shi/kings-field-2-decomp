@@ -3,7 +3,7 @@
 #include <kf/game/menu.h>
 
 ADDRESS(0x8001a7fc, 0x9c)
-void func_8001a7fc(void)
+void menu_show_combat_attributes(void)
 {
     s32 current = -99;
     s32 previous = -99;
@@ -16,7 +16,7 @@ void func_8001a7fc(void)
         }
         func_800223cc();
         if (input_read_mark_active()) {
-            func_80022300(18);
+            menu_play_sound_cue(18);
             current = -1;
         }
         for (frame = 0; frame < 2; frame++) {

@@ -15,27 +15,27 @@ s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
     buttons = input_read_mark_active();
     if (buttons & PADLup) {
         menu_cursor_animation_direction = 0;
-        func_80022300(16);
+        menu_play_sound_cue(16);
         if (index != 0)
             index--;
         else
             index = last;
     } else if (buttons & PADLdown) {
         menu_cursor_animation_direction = 0;
-        func_80022300(16);
+        menu_play_sound_cue(16);
         if (index != last)
             index++;
         else
             index = 0;
     } else if (buttons & PADRright) {
-        func_80022300(17);
+        menu_play_sound_cue(17);
         *confirmed = 1;
         if (index < last)
             *selection = index;
         else
             *cancelled = -1;
     } else if (buttons & PADRdown) {
-        func_80022300(18);
+        menu_play_sound_cue(18);
         *cancelled = -1;
     }
     return index;
@@ -53,11 +53,11 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
 
     if (list->entry_count == 0) {
         if (buttons != 0) {
-            func_80022300(18);
+            menu_play_sound_cue(18);
             *result = -1;
         }
     } else if (buttons & PADLup) {
-        func_80022300(16);
+        menu_play_sound_cue(16);
         if (list->selected_index != 0) {
             list->selected_index--;
             if (list->cursor_row == 0)
@@ -77,7 +77,7 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
         if (item_ids != 0 && menu_load_item_model(item_ids[list->selected_index]) != 0)
             *result = -1;
     } else if (buttons & PADLdown) {
-        func_80022300(16);
+        menu_play_sound_cue(16);
         if (list->selected_index < list->entry_count - 1) {
             list->selected_index++;
             if (list->cursor_row == list->visible_rows - 1)
@@ -92,19 +92,19 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
         if (item_ids != 0 && menu_load_item_model(item_ids[list->selected_index]) != 0)
             *result = -1;
     } else if (buttons & PADLright) {
-        if (DAT_8006d694 < 99) {
-            func_80022300(16);
-            DAT_8006d694++;
+        if (menu_item_quantity < 99) {
+            menu_play_sound_cue(16);
+            menu_item_quantity++;
         }
     } else if (buttons & PADLleft) {
-        if (DAT_8006d694 > 1) {
-            func_80022300(16);
-            DAT_8006d694--;
+        if (menu_item_quantity > 1) {
+            menu_play_sound_cue(16);
+            menu_item_quantity--;
         }
     } else if (buttons & PADRright) {
         *selection = 1;
     } else if (buttons & PADRdown) {
-        func_80022300(18);
+        menu_play_sound_cue(18);
         *result = -1;
     }
 

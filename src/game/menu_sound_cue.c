@@ -8,7 +8,7 @@ DATA(0x8006d690, 0x4)
 s32 input_idle_counter = 0;
 
 ADDRESS(0x80022300, 0x94)
-void func_80022300(s32 cue)
+void menu_play_sound_cue(s32 cue)
 {
     if (cue == 16) {
         audio_key_on(16, 48, 48, 0);

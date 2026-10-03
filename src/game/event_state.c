@@ -410,7 +410,7 @@ void card_payload_capture_game_state(u8 *buffer)
     saved->experience = player_state.experience;
     saved->next_level_experience = player_state.next_level_experience;
     saved->gold = player_state.gold;
-    saved->unknown_128 = player_state.unknown_128;
+    saved->map_layer_index = player_state.map_layer_index;
     saved->vitals.maximum_hp = player_state.vitals.maximum_hp;
     saved->vitals.current_hp = player_state.vitals.current_hp;
     saved->vitals.maximum_mp = player_state.vitals.maximum_mp;
@@ -442,9 +442,9 @@ void card_payload_capture_game_state(u8 *buffer)
     saved->equipped_ids[4] = player_state.equipped_shield_id;
     saved->equipped_ids[5] = player_state.equipped_accessory_id;
     saved->equipped_ids[6] = player_state.equipped_extra_id;
-    saved->unknown_97 = player_state.unknown_97;
-    saved->unknown_98 = player_state.unknown_98;
-    saved->unknown_99 = player_state.unknown_99;
+    saved->primary_magic_shortcut_id = player_state.primary_magic_shortcut_id;
+    saved->secondary_magic_shortcut_id = player_state.secondary_magic_shortcut_id;
+    saved->secondary_item_shortcut_id = player_state.secondary_item_shortcut_id;
     saved->equipped_weapon_id = player_state.equipped_weapon_id;
     saved->audio_effects_enabled = player_state.audio_effects_enabled;
     saved->audio_music_enabled = player_state.audio_music_enabled;
@@ -488,7 +488,7 @@ void card_payload_restore_game_state(const u8 *buffer)
     player_state.experience = saved->experience;
     player_state.next_level_experience = saved->next_level_experience;
     player_state.gold = saved->gold;
-    player_state.unknown_128 = saved->unknown_128;
+    player_state.map_layer_index = saved->map_layer_index;
     player_state.vitals.maximum_hp = saved->vitals.maximum_hp;
     player_state.vitals.current_hp = saved->vitals.current_hp;
     player_state.vitals.maximum_mp = saved->vitals.maximum_mp;
@@ -520,9 +520,9 @@ void card_payload_restore_game_state(const u8 *buffer)
     player_state.equipped_shield_id = saved->equipped_ids[4];
     player_state.equipped_accessory_id = saved->equipped_ids[5];
     player_state.equipped_extra_id = saved->equipped_ids[6];
-    player_state.unknown_97 = saved->unknown_97;
-    player_state.unknown_98 = saved->unknown_98;
-    player_state.unknown_99 = saved->unknown_99;
+    player_state.primary_magic_shortcut_id = saved->primary_magic_shortcut_id;
+    player_state.secondary_magic_shortcut_id = saved->secondary_magic_shortcut_id;
+    player_state.secondary_item_shortcut_id = saved->secondary_item_shortcut_id;
     player_state.equipped_weapon_id = saved->equipped_weapon_id;
     player_state.audio_effects_enabled = saved->audio_effects_enabled;
     player_state.audio_music_enabled = saved->audio_music_enabled;

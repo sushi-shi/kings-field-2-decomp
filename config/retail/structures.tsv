@@ -22,6 +22,7 @@ KfCardSlotGlyphRow	0x14	supported	game/menu.h;menu_card_build_slot_rows;menu_car
 KfCdArchive	0x0c	supported	game/cd.h;cd_archive_open;cd_archive_entry_extent	sector-offset table and file extent
 KfCdExtent	0x08	supported	game/cd.h;cd_file_load;cd_archive_open	CD location and byte extent
 KfCdRequest	0x28	supported	game/cd.h;asm;cd_initialize;func_80017d54	one queued asynchronous CD request
+KfCollisionCache	0x44	candidate	game/collision_cache.h;GAME 0x8002b67c and 0x8002b874 direct field references;focused strict matches	Typed interior view at bss_801c7540+0x11800; equipment-record boundary and original object ownership unresolved
 KfCdRequestPayload	0x08	supported	game/cd.h;cd_request_service_stream;audio_vab_stream_callback	overlaid image rectangle and VAB stream payload
 KfCdRequestPayloadVab	0x08	supported	game/cd.h;audio_vab_stream_callback	VAB stream phase and slot state
 KfCdRequestStreamChunk	0x04	supported	game/cd.h;cd_stream_limit_chunk	two halfword stream counters

@@ -11,9 +11,9 @@ enum {
 };
 
 DATA(0x800a5a90, 0x4)
-u8 *audio_title_sequence_data;
+u_long *audio_title_sequence_data;
 DATA(0x800a5a98, 0x4)
-u8 *audio_movie_sequence_data;
+u_long *audio_movie_sequence_data;
 DATA(0x800a5ab8, 0x2)
 short audio_vab_id;
 DATA(0x800a5ac8, 0x4)
@@ -40,8 +40,8 @@ void opening_open_audio(void)
     memcpy(audio_title_sequence_data, cursor, KF_OPENING_TITLE_SEQUENCE_BYTES);
     cursor += KF_OPENING_TITLE_SEQUENCE_BYTES;
     memcpy(audio_movie_sequence_data, cursor, KF_OPENING_MOVIE_SEQUENCE_BYTES);
-    audio_title_sequence_id = SsSeqOpen((u_long *)audio_title_sequence_data, audio_vab_id);
-    audio_movie_sequence_id = SsSeqOpen((u_long *)audio_movie_sequence_data, audio_vab_id);
+    audio_title_sequence_id = SsSeqOpen(audio_title_sequence_data, audio_vab_id);
+    audio_movie_sequence_id = SsSeqOpen(audio_movie_sequence_data, audio_vab_id);
     DrawSync(0);
     free(opening_data);
 }

@@ -12,6 +12,7 @@
 #include <kf/game/resources.h>
 #include <psyq/sdk.h>
 #include <kf/game/effect.h>
+#include <kf/lib/math.h>
 
 RODATA(0x80011098, 0x1c)
 
@@ -21,8 +22,16 @@ enum {
     MENU_LOCATION_LAYER_PLACE = 10000,
     MENU_LOCATION_CELL_X_PLACE = 100,
     MENU_MAP_ITEM_FIRST = 67,
+    MENU_ITEM_LAST_GLYPH_INDEX = 119,
+    MENU_MAGIC_ACTION_FIRST = 14,
+    MENU_MAGIC_ACTION_LAST = 19,
+    MENU_MAGIC_ACTION_VISIBLE_ROWS = MENU_MAGIC_ACTION_LAST - MENU_MAGIC_ACTION_FIRST + 1,
     MENU_MAP_ARCHIVE_FIRST_ENTRY = 480,
     MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM = 8,
+    MENU_MAP_FACING_TILE_COUNT = 8,
+    MENU_MAP_FACING_TILE_SHIFT = 9,
+    MENU_MAP_FACING_TILE_HALF_ANGLE = 1 << (MENU_MAP_FACING_TILE_SHIFT - 1),
+    MENU_MAP_FACING_TILE_U_STRIDE = 16,
     MENU_EFFECT_RELIEVE_AILMENTS = 71,
     MENU_EFFECT_RESTORE_MP_40 = 72,
     MENU_EFFECT_RAISE_BASE_MAGIC = 73,
@@ -358,12 +367,13 @@ s32 menu_item_selection_controller(void)
     s32 frame;
     u8 selected_item;
 
-    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices, 67, 119);
+    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices,
+                                          MENU_MAP_ITEM_FIRST, MENU_ITEM_LAST_GLYPH_INDEX);
     menu_list_init(&menu.list, 0, 0);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
     if (menu.list.entry_count != 0
         && menu_load_item_model(indices[menu.list.selected_index]) != 0)
         return KF_MENU_RESULT_CANCELLED;
@@ -580,8 +590,8 @@ void menu_show_map_preview(s32 menu_code)
     map_index = (menu_code - MENU_MAP_ITEM_FIRST) & 0xff;
     map_offset = state_8017d118.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
     entry = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
-    image = memory_allocate(cd_archive_entry_extent(6, entry, 0));
-    cd_archive_read(6, entry, (u_long *)image);
+    image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, entry, 0));
+    cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, entry, (u_long *)image);
     tim_upload_images(image);
 
     for (frame = 0; frame < 2; frame++) {
@@ -606,10 +616,12 @@ void menu_show_map_preview(s32 menu_code)
             212 - player_state.camera_position.vz / 819,
             15, 15);
 
-        facing_tile = ((player_state.camera_rotation.angles[1] & 0xfff) + 256) >> 9;
-        if (facing_tile == 8)
+        facing_tile = ((player_state.camera_rotation.angles[1] & KF_ANGLE_WRAP_MASK)
+                       + MENU_MAP_FACING_TILE_HALF_ANGLE) >> MENU_MAP_FACING_TILE_SHIFT;
+        if (facing_tile == MENU_MAP_FACING_TILE_COUNT)
             facing_tile = 0;
-        u0 = facing_tile * 16 - 128;
+        u0 = facing_tile * MENU_MAP_FACING_TILE_U_STRIDE
+             - MENU_MAP_FACING_TILE_COUNT * MENU_MAP_FACING_TILE_U_STRIDE;
         setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
         primitive_buffer_commit_poly_ft4(9);
 
@@ -635,14 +647,15 @@ s32 menu_choose_magic_action(void)
     s32 count;
     s32 frame;
 
-    count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 14, 19);
+    count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices,
+                                              MENU_MAGIC_ACTION_FIRST, MENU_MAGIC_ACTION_LAST);
     menu_list_init(&menu.list, 0, 1);
     menu.list.entry_count = count;
-    menu.list.visible_rows = 6;
+    menu.list.visible_rows = MENU_MAGIC_ACTION_VISIBLE_ROWS;
     menu.rows = rows;
     menu.values = values;
     menu.list.list_y = 0x83;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     for (;;) {
         if (mode != 0 || result != KF_MENU_RESULT_PENDING)

@@ -11,7 +11,7 @@ enum {
 };
 
 DATA(0x800a2888, 0x4)
-u8 *audio_sequence_data;
+u_long *audio_sequence_data;
 DATA(0x800a2988, 0x2)
 short audio_vab_id;
 DATA(0x800a31a8, 0x4)
@@ -31,10 +31,10 @@ void ending_open_audio(void)
         SsVabTransCompleted(SS_WAIT_COMPLETED);
     }
     cursor += ENDING_VAB_BODY_BYTES;
-    audio_sequence_data = cursor;
+    audio_sequence_data = (u_long *)cursor;
     /* Unused advance past the last section, as OPEN's loader walks every
      * section; retail reloads audio_sequence_data because of it. */
     cursor += ENDING_SEQUENCE_BYTES;
-    audio_sequence_id = SsSeqOpen((u_long *)audio_sequence_data, audio_vab_id);
+    audio_sequence_id = SsSeqOpen(audio_sequence_data, audio_vab_id);
     DrawSync(0);
 }

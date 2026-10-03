@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/lib/null.h>
+#include <kf/lib/overlay.h>
 #include <kf/lib/types.h>
 #include <psyq/kernel.h>
 
@@ -31,7 +32,7 @@ void main(void)
     SetMem(2);
     _96_remove();
     _96_init();
-    *overlay_next_request = 0;
+    *overlay_next_request = KF_OVERLAY_OPEN;
     for (;;) {
         if (Load(overlay_path_table[overlay_index], &overlay_header) == 1) {
             _96_remove();

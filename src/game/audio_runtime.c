@@ -16,7 +16,14 @@ enum {
     AUDIO_PRIORITY_ABOVE_MAX = 1 << 16,
     AUDIO_NOTE_MAX = 0x7f,
     AUDIO_VOLUME_MAX = 0x7f,
-    AUDIO_VAB_TRANSFER_MORE_DATA = -2
+    AUDIO_VAB_TRANSFER_MORE_DATA = -2,
+    AUDIO_REVERB_DEPTH = 0x28,
+    AUDIO_SEQUENCE_VOLUME = 0x3c,
+    AUDIO_MAIN_VAB_SLOT = 0,
+    AUDIO_SEQUENCE_VAB_SLOT = 1,
+    AUDIO_SPATIAL_MIN_LEVEL = 20,
+    AUDIO_SPATIAL_PAN_ATTENUATION_THRESHOLD = 64,
+    AUDIO_SPATIAL_PAN_DIVISOR = 0xd48
 };
 
 /* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
@@ -55,7 +62,7 @@ void audio_initialize_runtime(void)
     SsStart2();
     SsUtSetReverbType(SS_REV_TYPE_STUDIO_C);
     SsUtReverbOn();
-    SsUtSetReverbDepth(0x28, 0x28);
+    SsUtSetReverbDepth(AUDIO_REVERB_DEPTH, AUDIO_REVERB_DEPTH);
 
     audio_state.sequence_buffer = (u_long *)audio_sequence_buffer;
     audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
@@ -97,8 +104,8 @@ void audio_start_sequence(void)
 {
     if (player_state.audio_music_enabled != 0 && audio_state.sequence_ready != 0) {
         audio_state.sequence_id = SsSeqOpen(
-            audio_state.sequence_buffer, audio_state.vab_slots[1].vab_id);
-        SsSeqSetVol(audio_state.sequence_id, 0x3c, 0x3c);
+            audio_state.sequence_buffer, audio_state.vab_slots[AUDIO_SEQUENCE_VAB_SLOT].vab_id);
+        SsSeqSetVol(audio_state.sequence_id, AUDIO_SEQUENCE_VOLUME, AUDIO_SEQUENCE_VOLUME);
         SsSeqPlay(audio_state.sequence_id, SSPLAY_PLAY, SSPLAY_INFINITY);
         audio_state.sequence_active = KF_AUDIO_SEQUENCE_ACTIVE;
         SsSetMVol(AUDIO_VOLUME_MAX, AUDIO_VOLUME_MAX);
@@ -168,7 +175,7 @@ KfAudioPlaybackResult audio_play_spatial(
     if ((u16)KF_COLLISION_CACHE_LAYER != audio_state.listener_layer) {
         level = (attenuation * volume) >> 8;
     }
-    if (level < 20) {
+    if (level < AUDIO_SPATIAL_MIN_LEVEL) {
         return KF_AUDIO_NOT_PLAYED;
     }
     if (level >= AUDIO_VOLUME_MAX + 1) {
@@ -184,15 +191,15 @@ KfAudioPlaybackResult audio_play_spatial(
         angle = KF_ANGLE_FULL_TURN - angle;
     }
     angle >>= 1;
-    if (attenuation >= 64 && !alternate_pan) {
+    if (attenuation >= AUDIO_SPATIAL_PAN_ATTENUATION_THRESHOLD && !alternate_pan) {
         angle = (((angle - 512) * (256 - 2 * attenuation)) >> 7) + 512;
     }
 
-    left = (level * rsin(angle)) / 0xd48;
+    left = (level * rsin(angle)) / AUDIO_SPATIAL_PAN_DIVISOR;
     if (left >= AUDIO_VOLUME_MAX + 1) {
         left = AUDIO_VOLUME_MAX;
     }
-    right = (level * rcos(angle)) / 0xd48;
+    right = (level * rcos(angle)) / AUDIO_SPATIAL_PAN_DIVISOR;
     if (right >= AUDIO_VOLUME_MAX + 1) {
         right = AUDIO_VOLUME_MAX;
     }
@@ -483,10 +490,10 @@ void audio_queue_vab_stream(s32 archive_slot, s32 entry, s32 vab_slot_index)
 
     vab_slot = &audio_state.vab_slots[vab_slot_index];
     switch (vab_slot_index) {
-    case 0:
+    case AUDIO_MAIN_VAB_SLOT:
         stream_slot = &audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_0];
         break;
-    case 1:
+    case AUDIO_SEQUENCE_VAB_SLOT:
         stream_slot = &audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1];
         break;
     default:

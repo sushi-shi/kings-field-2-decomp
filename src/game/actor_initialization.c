@@ -33,6 +33,7 @@ enum {
     ACTOR_HOME_CELL_SHIFT = 11,
     ACTOR_RENDER_TEXTURED = 0xff,
     ACTOR_RENDER_BLEND_MODE_1 = 1,
+    ACTOR_LIGHTING_DEFAULT = 0x47,
     ACTOR_LIGHTING_BLEND_HALF = KF_FIXED12_ONE / 2
 };
 
@@ -95,7 +96,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->motion.vector.vy = 0;
     actor->motion.vector.vx = 0;
     actor->turn_rate = 0;
-    actor->lighting_override = 0x47;
+    actor->lighting_override = ACTOR_LIGHTING_DEFAULT;
     actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
     if (actor->unknown_28 & KF_ACTOR_FLAG_BLENDED_MODEL) {
         actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
@@ -122,8 +123,9 @@ void actor_disable_type3_transition_actors(void)
         if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
             actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE &&
             actor->target_type == 3 &&
-            actor->target_action_state == 0xf0 &&
-            (actor->state_70.signed_state != 0 || actor->animation_phase > 2048)) {
+            actor->target_action_state == KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED &&
+            (actor->state_70.signed_state != 0 ||
+             actor->animation_phase > KF_ACTOR_ANIMATION_PHASE_PERIOD / 2)) {
             state_8017d118.active_table[19](actor);
             actor_set_lifecycle_and_home_position(actor);
         }

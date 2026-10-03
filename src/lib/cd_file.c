@@ -6,8 +6,9 @@
 
 enum {
     KF_CD_SECTOR_BYTES = 0x800,
-    KF_CD_SECTOR_WORDS = 512,
-    KF_CD_SECTOR_SHIFT = 11
+    KF_CD_SECTOR_WORDS = KF_CD_SECTOR_BYTES / sizeof(u_long),
+    KF_CD_SECTOR_SHIFT = 11,
+    KF_CD_DATA_START_SECOND = 2
 };
 
 DATA_AT("OPEN", 0x8003dbb0, 0x5)
@@ -29,7 +30,7 @@ int cd_file_load_into(u_long *destination, const char *relative_path)
     s32 sectors;
 
     start.minute = 0;
-    start.second = 2;
+    start.second = KF_CD_DATA_START_SECOND;
     start.sector = 0;
     start.track = 0;
     memcpy(path, cd_path_prefix, sizeof cd_path_prefix);

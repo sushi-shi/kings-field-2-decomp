@@ -137,7 +137,7 @@ void player_update_actions_and_charge(void)
     if ((player_state.flags_140.low & 0xb0) != 0
         && (player_state.flags_140.halves.high & 0xb0) == 0
         && player_state.equipped_weapon_record->alternate_attack_phase_step != 0) {
-        if (player_has_power_and_magic_60() == 0) {
+        if (player_meets_weapon_magic_power_requirement() == 0) {
             goto cancel_weapon_attack;
         }
         attack_mask = player_state.magic_attack_mask_cursor;

@@ -54,8 +54,8 @@ void main(void)
     PadInit(0);
     ExitCriticalSection();
     audio_vab_header = (u8 *)malloc(KF_OPENING_VAB_HEADER_BYTES);
-    audio_title_sequence_data = (u8 *)malloc(KF_OPENING_TITLE_SEQUENCE_BYTES);
-    audio_movie_sequence_data = (u8 *)malloc(KF_OPENING_MOVIE_SEQUENCE_BYTES);
+    audio_title_sequence_data = (u_long *)malloc(KF_OPENING_TITLE_SEQUENCE_BYTES);
+    audio_movie_sequence_data = (u_long *)malloc(KF_OPENING_MOVIE_SEQUENCE_BYTES);
     audio_initialize();
     opening_load_data();
     display_initialize();

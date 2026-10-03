@@ -13,27 +13,32 @@ enum {
     PROMPT_PULSE_HIGH = 101,
     PROMPT_PULSE_LOW = 48,
     TITLE_BACKDROP_LEVEL = 32,
+    TITLE_BACKDROP_WIDTH = 640,
     TITLE_BACKDROP_OT_DEPTH = 100,
     TITLE_OT_DEPTH = 200,
     PRIMITIVE_BRIGHTNESS = 64,
     /* Voice played when a title choice is made. */
     CHOICE_VOICE_PROGRAM = 10,
     CHOICE_VOICE_NOTE = 60,
-    CHOICE_VOICE_VOLUME = 64
+    CHOICE_VOICE_VOLUME = 64,
+    TITLE_PHASE_FADE_IN = 0,
+    TITLE_PHASE_SETTLE = 1,
+    PROMPT_PHASE_BRIGHTEN = 0,
+    PROMPT_PHASE_DIM = 1
 };
 
 DATA(0x8003db94, 0x4)
 s32 title_level = 0;
 DATA(0x8003db98, 0x4)
-s32 title_phase = 0;
+s32 title_phase = TITLE_PHASE_FADE_IN;
 DATA(0x8003db9c, 0x4)
 s32 banner_level = 0;
 DATA(0x8003dba0, 0x4)
-s32 banner_phase = 0;
+s32 banner_phase = TITLE_PHASE_FADE_IN;
 DATA(0x8003dba4, 0x4)
 s32 prompt_level = PROMPT_PULSE_LOW;
 DATA(0x8003dba8, 0x4)
-s32 prompt_phase = 0;
+s32 prompt_phase = PROMPT_PHASE_BRIGHTEN;
 DATA(0x8003dbac, 0x4)
 u32 pad_previous_buttons = 0;
 
@@ -44,23 +49,23 @@ s32 opening_draw_title(s32 mode)
     s32 settled = 0;
 
     if (mode == KF_TITLE_SHOW) {
-        title_phase = 1;
+        title_phase = TITLE_PHASE_SETTLE;
         title_level = TITLE_REST_LEVEL;
     } else if (mode == KF_TITLE_RESET) {
         title_level = 0;
-        title_phase = 0;
+        title_phase = TITLE_PHASE_FADE_IN;
         return 0;
     }
     primitive_buffer_begin_poly_ft4();
     setRGB0(current_poly_ft4, TITLE_BACKDROP_LEVEL, TITLE_BACKDROP_LEVEL, TITLE_BACKDROP_LEVEL);
     setTPage(current_poly_ft4, 2, 0, 640, 0);
-    setXYWH(current_poly_ft4, 0, 0, 640, KF_DISPLAY_HEIGHT);
+    setXYWH(current_poly_ft4, 0, 0, TITLE_BACKDROP_WIDTH, KF_DISPLAY_HEIGHT);
     setUVWH(current_poly_ft4, 0, 0, 242, 239);
     primitive_buffer_commit_poly_ft4(TITLE_BACKDROP_OT_DEPTH);
-    if (title_phase == 0) {
+    if (title_phase == TITLE_PHASE_FADE_IN) {
         title_level += TITLE_FADE_STEP;
         if (title_level >= TITLE_PEAK_LEVEL) {
-            title_phase = 1;
+            title_phase = TITLE_PHASE_SETTLE;
         }
     } else if (title_level > TITLE_REST_LEVEL) {
         title_level -= TITLE_FADE_STEP;
@@ -101,17 +106,17 @@ s32 opening_draw_banner(s32 mode)
     s32 settled = 0;
 
     if (mode == KF_TITLE_SHOW) {
-        banner_phase = 1;
+        banner_phase = TITLE_PHASE_SETTLE;
         banner_level = TITLE_REST_LEVEL;
     } else if (mode == KF_TITLE_RESET) {
         banner_level = 0;
-        banner_phase = 0;
+        banner_phase = TITLE_PHASE_FADE_IN;
         return 0;
     }
-    if (banner_phase == 0) {
+    if (banner_phase == TITLE_PHASE_FADE_IN) {
         banner_level += TITLE_FADE_STEP;
         if (banner_level >= TITLE_PEAK_LEVEL) {
-            banner_phase = 1;
+            banner_phase = TITLE_PHASE_SETTLE;
         }
     } else if (banner_level > TITLE_REST_LEVEL) {
         banner_level -= TITLE_FADE_STEP;
@@ -133,15 +138,15 @@ s32 opening_draw_banner(s32 mode)
 ADDRESS(0x80012d7c, 0x1c0)
 void opening_draw_prompt(s32 mode)
 {
-    if (prompt_phase == 0) {
+    if (prompt_phase == PROMPT_PHASE_BRIGHTEN) {
         prompt_level += PROMPT_PULSE_STEP;
         if (prompt_level >= PROMPT_PULSE_HIGH) {
-            prompt_phase = 1;
+            prompt_phase = PROMPT_PHASE_DIM;
         }
     } else {
         prompt_level -= PROMPT_PULSE_STEP;
         if (prompt_level < PROMPT_PULSE_LOW) {
-            prompt_phase = 0;
+            prompt_phase = PROMPT_PHASE_BRIGHTEN;
         }
     }
     primitive_buffer_begin_poly_ft4();

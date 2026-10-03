@@ -31,11 +31,11 @@ void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output)
     }
 }
 
-enum { PLAYER_SPECIAL_ATTACK_POWER_MINIMUM = 60 };
+enum { PLAYER_WEAPON_MAGIC_POWER_MINIMUM = 60 };
 
 ADDRESS(0x80026464, 0x34)
-s32 player_has_power_and_magic_60(void)
+s32 player_meets_weapon_magic_power_requirement(void)
 {
-    return player_state.physical_power >= PLAYER_SPECIAL_ATTACK_POWER_MINIMUM
-        && player_state.magic >= PLAYER_SPECIAL_ATTACK_POWER_MINIMUM;
+    return player_state.physical_power >= PLAYER_WEAPON_MAGIC_POWER_MINIMUM
+        && player_state.magic >= PLAYER_WEAPON_MAGIC_POWER_MINIMUM;
 }

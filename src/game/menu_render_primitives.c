@@ -1938,6 +1938,7 @@ ADDRESS(0x800217f0, 0x270)
 void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y)
 {
+    enum { MENU_PANEL_BASE_SPAN = 94 };
     const KfMenuSpriteDef *tile;
     u16 clut;
     s32 row;
@@ -1948,10 +1949,10 @@ void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 draw_width;
     s32 draw_height;
 
-    width -= 94;
-    height -= 94;
+    width -= MENU_PANEL_BASE_SPAN;
+    height -= MENU_PANEL_BASE_SPAN;
     tile_index = 9;
-    tile = &menu_sprite_defs[11];
+    tile = &menu_sprite_defs[KF_MENU_SPRITE_PANEL_TOP_LEFT];
     draw_y = y;
     for (row = 0; row < 3; row++) {
         draw_height = tile->height;

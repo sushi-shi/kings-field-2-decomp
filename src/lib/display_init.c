@@ -1,6 +1,12 @@
 #include <kf/lib/address.h>
 #include <kf/lib/display.h>
 
+enum {
+    DISPLAY_PROJECTION_DISTANCE = 320,
+    DISPLAY_DITHERING_ENABLED = 1,
+    DISPLAY_OUTPUT_ENABLED = 1
+};
+
 /* OPEN clears a 640-pixel frame to black; END keeps its 320-pixel frame. */
 #ifdef KF_END
 #define DISPLAY_WIDTH 320
@@ -32,19 +38,19 @@ void display_initialize(void)
     SetGraphDebug(0);
     InitGeom();
     SetGeomOffset(DISPLAY_WIDTH / 2, KF_DISPLAY_HEIGHT / 2);
-    SetGeomScreen(320);
+    SetGeomScreen(DISPLAY_PROJECTION_DISTANCE);
     SetBackColor(DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     SetDefDispEnv(&display_buffers[1].disp, 0, 0, DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
-    display_buffers[0].draw.dtd = display_buffers[1].draw.dtd = 1;
+    display_buffers[0].draw.dtd = display_buffers[1].draw.dtd = DISPLAY_DITHERING_ENABLED;
     display_buffers[0].draw.isbg = display_buffers[1].draw.isbg = DISPLAY_CLEARS_BACKGROUND;
     setRGB0(&display_buffers[0].draw,
         DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL);
     setRGB0(&display_buffers[1].draw,
         DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL, DISPLAY_BACKGROUND_LEVEL);
-    SetDispMask(1);
+    SetDispMask(DISPLAY_OUTPUT_ENABLED);
     display_buffers[0].primitives = (POLY_FT4 *)display_primitives[0];
     display_buffers[1].primitives = (POLY_FT4 *)display_primitives[1];
 }

@@ -540,7 +540,7 @@ void player_get_camera_pose(VECTOR *position, SVECTOR *angles);
 void player_reset_view(void);
 void player_restore_equipment_effects(void);
 void player_sync_position_to_map(void);
-s32 player_has_power_and_magic_60(void);
+s32 player_meets_weapon_magic_power_requirement(void);
 void player_initialize_state(void);
 void game_initialize_session(void);
 

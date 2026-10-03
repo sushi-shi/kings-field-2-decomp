@@ -246,7 +246,7 @@ s32 menu_prompt_two_option(void)
             result = 0;
             break;
         case 1:
-            result = -1;
+            result = KF_MENU_RESULT_CANCELLED;
             break;
         }
 
@@ -266,8 +266,14 @@ s32 menu_prompt_two_option(void)
     return result;
 }
 enum {
+    KF_MENU_OPTION_EFFECTS_ROW = 0,
+    KF_MENU_OPTION_MUSIC_ROW = 1,
+    KF_MENU_OPTION_GAUGES_ROW = 2,
+    KF_MENU_OPTION_COMPASS_ROW = 3,
+    KF_MENU_OPTION_ITEM_PREVIEW_ROW = 4,
+    KF_MENU_OPTION_WALKING_BOB_ROW = 5,
     KF_MENU_OPTION_COUNT = 6,
-    KF_MENU_OPTION_CANCEL_ROW = 6
+    KF_MENU_OPTION_CANCEL_ROW = KF_MENU_OPTION_COUNT
 };
 
 ADDRESS(0x8001b2dc, 0x278)
@@ -277,7 +283,7 @@ void menu_options_controller(void)
     KfMenuGlyphString labels[2];
     s32 choice = 0;
     s32 result = KF_MENU_RESULT_PENDING;
-    s32 last_row = KF_MENU_OPTION_COUNT;
+    s32 last_row = KF_MENU_OPTION_CANCEL_ROW;
     s32 confirmed;
     s32 frame;
     u32 buttons;
@@ -294,12 +300,12 @@ void menu_options_controller(void)
     labels[1].glyphs.codes[2] = 244;
     labels[1].glyphs.codes[3] = KF_MENU_TEXT_END;
 
-    selected[0] = player_state.audio_effects_enabled;
-    selected[1] = player_state.audio_music_enabled;
-    selected[2] = player_state.hud_gauges_enabled;
-    selected[3] = player_state.compass_enabled;
-    selected[4] = player_state.item_preview_enabled;
-    selected[5] = player_state.walking_bob_enabled;
+    selected[KF_MENU_OPTION_EFFECTS_ROW] = player_state.audio_effects_enabled;
+    selected[KF_MENU_OPTION_MUSIC_ROW] = player_state.audio_music_enabled;
+    selected[KF_MENU_OPTION_GAUGES_ROW] = player_state.hud_gauges_enabled;
+    selected[KF_MENU_OPTION_COMPASS_ROW] = player_state.compass_enabled;
+    selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW] = player_state.item_preview_enabled;
+    selected[KF_MENU_OPTION_WALKING_BOB_ROW] = player_state.walking_bob_enabled;
 
     for (;;) {
         if (result != KF_MENU_RESULT_PENDING) {
@@ -332,12 +338,12 @@ void menu_options_controller(void)
                 selected[choice] = selected[choice] == 0;
             } else if (buttons & PADRright) {
                 menu_play_sound_cue(17);
-                result = -1;
+                result = KF_MENU_RESULT_CANCELLED;
                 confirmed = 1;
             }
         } else if (buttons & PADRdown) {
             menu_play_sound_cue(18);
-            result = -1;
+            result = KF_MENU_RESULT_CANCELLED;
         }
 
         for (frame = 0; frame < 2; frame++) {
@@ -348,12 +354,12 @@ void menu_options_controller(void)
         }
     }
 
-    player_state.audio_effects_enabled = selected[0];
-    player_state.audio_music_enabled = selected[1];
-    player_state.hud_gauges_enabled = selected[2];
-    player_state.compass_enabled = selected[3];
-    player_state.item_preview_enabled = selected[4];
-    player_state.walking_bob_enabled = selected[5];
+    player_state.audio_effects_enabled = selected[KF_MENU_OPTION_EFFECTS_ROW];
+    player_state.audio_music_enabled = selected[KF_MENU_OPTION_MUSIC_ROW];
+    player_state.hud_gauges_enabled = selected[KF_MENU_OPTION_GAUGES_ROW];
+    player_state.compass_enabled = selected[KF_MENU_OPTION_COMPASS_ROW];
+    player_state.item_preview_enabled = selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW];
+    player_state.walking_bob_enabled = selected[KF_MENU_OPTION_WALKING_BOB_ROW];
 }
 
 ADDRESS(0x8001b554, 0x2e0)
@@ -397,7 +403,7 @@ s32 menu_card_browser(void)
 no_file:
         memory_card_stop();
         menu_exit_display_state(0);
-        return -1;
+        return KF_MENU_RESULT_CANCELLED;
     }
 
     menu_play_sound_cue(16);
@@ -407,7 +413,7 @@ no_file:
             input_wait_release();
         switch (selection) {
         case 0:
-            result = -1;
+            result = KF_MENU_RESULT_CANCELLED;
             break;
         case 1:
             result = menu_card_load_slot_browser();
@@ -497,7 +503,7 @@ s32 menu_card_load_slot_browser(void)
         }
     }
 
-    if (result != -1) {
+    if (result != KF_MENU_RESULT_CANCELLED) {
         menu_prepare_card_read_row(dialog_rows);
         menu_show_dialog_panel(9, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
         read_result = memory_card_read_slot(result);
@@ -644,7 +650,7 @@ void menu_card_save_browser(void)
         }
     }
 
-    if (result != -1)
+    if (result != KF_MENU_RESULT_CANCELLED)
         menu_card_save_slot(slot_ids[result]);
     memory_card_stop();
     menu_exit_display_state(0);
@@ -742,7 +748,7 @@ s32 menu_confirm_card_format(s32 kind)
             result = 0;
             break;
         case 1:
-            result = -1;
+            result = KF_MENU_RESULT_CANCELLED;
             break;
         }
         if (result != KF_MENU_RESULT_PENDING)

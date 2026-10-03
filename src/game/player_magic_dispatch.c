@@ -250,7 +250,7 @@ regular_weapon:
     if (player_state.weapon_attack_mode == 0
         && weapon->initial_effect_id != WEAPON_MAGIC_EFFECT_NONE
         && player_state.weapon_attack_fully_charged != 0
-        && player_has_power_and_magic_60() != 0
+        && player_meets_weapon_magic_power_requirement() != 0
         && (player_state.flags_140.low & 0x80) != 0) {
         if (player_state.weapon_attack_phase >= weapon->magic_window_start
             && player_state.weapon_attack_phase <= weapon->magic_window_end) {

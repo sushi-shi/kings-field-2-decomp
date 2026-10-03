@@ -14,16 +14,6 @@
 
 RODATA(0x80011000, 0x53)
 
-enum {
-    RESOURCE_ARCHIVE_MO = 0,
-    RESOURCE_ARCHIVE_RTMD = 1,
-    RESOURCE_ARCHIVE_RTIM = 2,
-    RESOURCE_ARCHIVE_TALK = 3,
-    RESOURCE_ARCHIVE_VAB = 4,
-    RESOURCE_ARCHIVE_FDAT = 5,
-    RESOURCE_ARCHIVE_ITEM = 6
-};
-
 ADDRESS(0x80015d50, 0x8)
 /* The default table serves callback slots with different caller arguments. */
 void resource_noop_callback()
@@ -48,18 +38,18 @@ void resource_initialize_game_assets(void)
     state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = 0;
     state_8017d118.current_map_region_id = 0;
 
-    cd_archive_open(RESOURCE_ARCHIVE_MO, "COM\\MO.T");
-    cd_archive_open(RESOURCE_ARCHIVE_TALK, "COM\\TALK.T");
-    cd_archive_open(RESOURCE_ARCHIVE_VAB, "COM\\VAB.T");
-    cd_archive_open(RESOURCE_ARCHIVE_FDAT, "COM\\FDAT.T");
-    cd_archive_open(RESOURCE_ARCHIVE_RTIM, "COM\\RTIM.T");
-    cd_archive_open(RESOURCE_ARCHIVE_RTMD, "COM\\RTMD.T");
-    cd_archive_open(RESOURCE_ARCHIVE_ITEM, "COM\\ITEM.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_MO, "COM\\MO.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_TALK, "COM\\TALK.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_VAB, "COM\\VAB.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_FDAT, "COM\\FDAT.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_RTIM, "COM\\RTIM.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_RTMD, "COM\\RTMD.T");
+    cd_archive_open(KF_RESOURCE_ARCHIVE_ITEM, "COM\\ITEM.T");
 
     /* The read arena and three copy destinations still lack full source owners. */
-    cd_archive_read(RESOURCE_ARCHIVE_FDAT, 0x30, (u_long *)source);
-    cd_map_stream_read(RESOURCE_ARCHIVE_FDAT, 0x2f);
-    audio_queue_vab_stream(RESOURCE_ARCHIVE_VAB, 0, 0);
+    cd_archive_read(KF_RESOURCE_ARCHIVE_FDAT, 0x30, (u_long *)source);
+    cd_map_stream_read(KF_RESOURCE_ARCHIVE_FDAT, 0x2f);
+    audio_queue_vab_stream(KF_RESOURCE_ARCHIVE_VAB, 0, 0);
 
     resource_copy_words((u32 *)&map_object_state, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;

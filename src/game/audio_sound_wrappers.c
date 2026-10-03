@@ -5,16 +5,18 @@
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
+enum { AUDIO_WRAPPER_VOLUME = 100 };
+
 ADDRESS(0x80045e18, 0x24)
 void audio_play_sound_64(void)
 {
-    audio_play_sound(0x40, 100);
+    audio_play_sound(0x40, AUDIO_WRAPPER_VOLUME);
 }
 
 ADDRESS(0x80045e3c, 0x20)
 void audio_play_sound_at_volume_100(s32 sound)
 {
-    audio_play_sound(sound, 100);
+    audio_play_sound(sound, AUDIO_WRAPPER_VOLUME);
 }
 
 ADDRESS(0x80045e5c, 0xb4)
@@ -26,6 +28,6 @@ s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEu
 
     collision_probe_floor_height(x, position->vy, z,
         KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
-    selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
+    selected_layer = KF_COLLISION_CACHE_SHAPE;
     return selected_layer->object_index == 0x20;
 }

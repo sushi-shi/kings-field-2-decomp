@@ -30,7 +30,11 @@ enum {
     CARD_TITLE_EXPERIENCE_DIGITS = 6,
     CARD_TITLE_LEVEL_FIRST_BYTE = 0x3a,
     CARD_TITLE_LEVEL_LAST_PAIR = 30,
-    CARD_TITLE_LEVEL_DIGITS = 2
+    CARD_TITLE_LEVEL_DIGITS = 2,
+    CARD_ICON_VRAM_X = 800,
+    CARD_ICON_VRAM_Y = 240,
+    CARD_ICON_VRAM_WIDTH = 4,
+    CARD_ICON_VRAM_HEIGHT = 16
 };
 
 typedef struct KfCardAssets {
@@ -87,6 +91,7 @@ enum {
 enum {
     CARD_READ_IO_FAILURE = 1,
     CARD_READ_CHECKSUM_FAILURE = 2,
+    CARD_READ_MAX_RETRIES = 2,
     CARD_WRITE_IO_FAILURE = 1,
     CARD_WRITE_NO_SPACE = 2
 };
@@ -293,7 +298,7 @@ s32 memory_card_read_slot(s32 slot)
             }
             status = CARD_READ_CHECKSUM_FAILURE;
         }
-        if (attempt >= 2) {
+        if (attempt >= CARD_READ_MAX_RETRIES) {
             break;
         }
         attempt++;
@@ -358,11 +363,13 @@ s32 memory_card_write_slot(s32 slot)
     memcpy(header.icon_palette, memory_card_assets.icon_palette[slot - 1],
         sizeof(header.icon_palette));
 
-    setRECT(&icon_rect, 800, 240 + slot * 16, 4, 16);
+    setRECT(&icon_rect, CARD_ICON_VRAM_X,
+            CARD_ICON_VRAM_Y + slot * CARD_ICON_VRAM_HEIGHT,
+            CARD_ICON_VRAM_WIDTH, CARD_ICON_VRAM_HEIGHT);
     StoreImage(&icon_rect, (u_long *)header.icon_frames[0]);
-    icon_rect.x = 804;
+    icon_rect.x = CARD_ICON_VRAM_X + CARD_ICON_VRAM_WIDTH;
     StoreImage(&icon_rect, (u_long *)header.icon_frames[1]);
-    icon_rect.x = 808;
+    icon_rect.x = CARD_ICON_VRAM_X + CARD_ICON_VRAM_WIDTH * 2;
     StoreImage(&icon_rect, (u_long *)header.icon_frames[2]);
 
     memset(memory_card_buffer, 0, KF_CARD_BLOCK_BYTES);

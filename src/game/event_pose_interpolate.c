@@ -140,7 +140,6 @@ u8 *event_target_stream_resolve_cursor(KfActor *actor)
     KfTargetCandidate *candidate =
         actor_state.target_groups[actor->group_index].targets[0].pointer;
     u8 *cursor = candidate->word_14.bytes;
-    u8 *marker = cursor + 3;
 
     for (;;) {
         u8 code = *cursor;
@@ -162,7 +161,7 @@ use_fallback:
 
 marker_record:
         if (event_state.control.bytes[cursor[1]] == cursor[2]) {
-            u8 offset = event_target_stream_find_marker(candidate, *marker);
+            u8 offset = event_target_stream_find_marker(candidate, cursor[3]);
             if (candidate->word_10.bytes.fallback_offset < offset) {
                 candidate->word_10.bytes.fallback_offset = offset;
             }
@@ -170,7 +169,6 @@ marker_record:
             candidate->word_12.bytes.marker_state = 0;
             goto use_fallback;
         }
-        marker += 4;
         cursor += 4;
     }
 }

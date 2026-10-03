@@ -10,7 +10,6 @@ typedef struct KfRenderMaskScanState {
     s32 second_layer_byte_offset;
     u8 first_layer_mask;
     u8 second_layer_mask;
-    u8 unknown_0a[2];
     s32 map_x;
     s32 map_z;
     s32 window_x;
@@ -20,6 +19,8 @@ typedef struct KfRenderMaskScanState {
 
 typedef char kf_render_mask_scan_state_size[
     sizeof(KfRenderMaskScanState) == 0x20 ? 1 : -1];
+typedef char kf_render_mask_scan_map_x_offset[
+    (u32)&((KfRenderMaskScanState *)0)->map_x == 0x0c ? 1 : -1];
 typedef char kf_render_mask_scan_cursor_offset[
     (u32)&((KfRenderMaskScanState *)0)->mask_cursor == 0x1c ? 1 : -1];
 

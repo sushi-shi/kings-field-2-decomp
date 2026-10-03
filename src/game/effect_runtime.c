@@ -367,7 +367,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x20;
         record->render_id = 0x20;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.kind1.collision_stage = 0;
         record->updates_remaining = 70;
         effect_play_spatial_sound(record, 0x1b);
         break;
@@ -1823,7 +1823,7 @@ void effect_update_dispatch(void)
     case 1:
         radius = 500;
     kind_one_update:
-        phase = record->cache_tail.payload.raw[0];
+        phase = record->cache_tail.payload.kind1.collision_stage;
         if (phase == 2) {
             record->lighting_blend_q12 += 256;
             if (record->lighting_blend_q12 >= 4096) {
@@ -1838,15 +1838,15 @@ void effect_update_dispatch(void)
         collision = effect_collision_step(radius, radius * 2, 250);
         if (collision != 0) {
             effect_apply_current_magic_backstep(collision);
-            if (record->cache_tail.payload.raw[0] == 1) {
-                record->cache_tail.payload.raw[0] = 2;
+            if (record->cache_tail.payload.kind1.collision_stage == 1) {
+                record->cache_tail.payload.kind1.collision_stage = 2;
                 record->render_queue_mode = 1;
                 record->lighting_override_index = 0x42;
                 record->lighting_blend_q12 = 0x400;
                 break;
             }
             effect_collision_backtrack();
-            record->cache_tail.payload.raw[0] = 1;
+            record->cache_tail.payload.kind1.collision_stage = 1;
             record->direction.vz = 0;
             record->direction.vx = 0;
             record->direction.vy = -100;

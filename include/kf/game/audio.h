@@ -49,20 +49,22 @@ struct KfEulerAngles;
 
 typedef struct KfAudioVabStreamSlot {
     s16 state;
-    u8 unknown_02[2];
     u8 *buffer;
 } KfAudioVabStreamSlot;
 
 typedef char kf_audio_vab_stream_slot_size[
     sizeof(KfAudioVabStreamSlot) == 8 ? 1 : -1];
+typedef char kf_audio_vab_stream_slot_buffer_offset[
+    (u32)&((KfAudioVabStreamSlot *)0)->buffer == 4 ? 1 : -1];
 
 typedef struct {
     s16 vab_id;
-    u8 unknown_02[2];
     KfAudioVabStreamSlot *stream_slot;
 } KfAudioVabSlot;
 
 typedef char kf_audio_vab_slot_size[sizeof(KfAudioVabSlot) == 8 ? 1 : -1];
+typedef char kf_audio_vab_slot_stream_slot_offset[
+    (u32)&((KfAudioVabSlot *)0)->stream_slot == 4 ? 1 : -1];
 
 typedef struct {
     s16 voice_id;
@@ -92,19 +94,19 @@ typedef struct {
 typedef struct {
     u_long *sequence_buffer;
     s16 sequence_id;
-    u8 unknown_06[2];
     s32 sequence_active;
     s32 sequence_ready;
     VECTOR listener_position;
     u16 listener_layer;
     SVECTOR listener_rotation;
-    u8 unknown_2a[2];
     KfAudioVabSlot vab_slots[KF_AUDIO_VAB_SLOT_COUNT];
     KfAudioVoiceState voices;
     KfAudioVabStreamSlot vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_COUNT];
 } KfGameAudioState;
 
 typedef char kf_game_audio_state_size[sizeof(KfGameAudioState) == 0xe9c ? 1 : -1];
+typedef char kf_game_audio_sequence_active_offset[
+    (u32)&((KfGameAudioState *)0)->sequence_active == 8 ? 1 : -1];
 typedef char kf_game_audio_vab_offset[
     (u32)&((KfGameAudioState *)0)->vab_slots == 0x2c ? 1 : -1];
 typedef char kf_game_audio_listener_position_offset[

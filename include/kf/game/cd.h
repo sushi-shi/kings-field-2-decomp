@@ -90,7 +90,6 @@ struct KfCdRequest {
     u8 phase;
     CdlLOC location;
     CdlLOC initial_location;
-    u8 unknown_0a[2];
     u_long *destination;
     s32 sector_count;
     KfCdRequestCallback on_complete;
@@ -101,6 +100,8 @@ struct KfCdRequest {
 };
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
+typedef char kf_cd_request_destination_offset[
+    (u32)&((KfCdRequest *)0)->destination == 0x0c ? 1 : -1];
 typedef char kf_cd_request_stream_complete_offset[
     (u32)&((KfCdRequest *)0)->stream_complete == 0x24 ? 1 : -1];
 

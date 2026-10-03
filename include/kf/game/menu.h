@@ -19,7 +19,13 @@ enum {
     KF_MENU_SPRITE_GLYPH_ATLAS = 1,
     KF_MENU_SPRITE_SELECTION_CURSOR = 2,
     KF_MENU_SPRITE_OPTION_BACKGROUND = 3,
-    KF_MENU_SPRITE_OPTION_HIGHLIGHT = 4
+    KF_MENU_SPRITE_OPTION_HIGHLIGHT = 4,
+    KF_MENU_SPRITE_PANEL_BACKGROUND = 5,
+    KF_MENU_SPRITE_CONFIRMED_ROW = 6,
+    KF_MENU_SPRITE_LIST_TOP = 7,
+    KF_MENU_SPRITE_LIST_ROW = 8,
+    KF_MENU_SPRITE_LIST_BOTTOM = 9,
+    KF_MENU_SPRITE_LIST_SELECTED_ROW = 10
 };
 
 enum {
@@ -231,7 +237,7 @@ void menu_draw_status_counters(s32 kind);
 void menu_render_item_model(void);
 void menu_present_frame(void);
 void menu_frame_begin(void);
-void func_80021a60(void);
+void menu_render_list_mode_8_9_noop(void);
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
     const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);

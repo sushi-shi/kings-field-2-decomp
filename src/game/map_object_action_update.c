@@ -31,6 +31,8 @@ enum {
     FRAME_COLOR_LEVELS = 256,
     FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1,
     MAP_OBJECT_EVENT_TRIGGERED = 0xfe,
+    MAP_OBJECT_RENDERED_PREVIOUS_FRAME = 0x80,
+    MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE = 0xc18,
     MAP_OBJECT_CELL_COPY_FIELDS = KF_MAP_CELL_COPY_OBJECT_INDEX |
                                   KF_MAP_CELL_COPY_ROTATED_ORIENTATION |
                                   KF_MAP_CELL_COPY_COLLISION_SHAPE |
@@ -83,7 +85,7 @@ void map_object_update_actions(void)
                     map_object_play_spatial_sound(object, template->sound_id);
                 }
                 object->phase_q12 += 72;
-                if (object->phase_q12 == 0xc18) {
+                if (object->phase_q12 == MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE) {
                     map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 1, 0xff);
@@ -142,7 +144,7 @@ void map_object_update_actions(void)
                     map_object_play_spatial_sound(object, cell_template->sound_id);
                 }
                 object->phase_q12 += 72;
-                if (object->phase_q12 == 0xc18) {
+                if (object->phase_q12 == MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE) {
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.cell_copy.source_x,
                                   object->tail.cell_copy.source_z,
@@ -200,7 +202,7 @@ void map_object_update_actions(void)
             if (object->action_timer != 0) {
                 KfMapObject *linked;
                 s16 previous;
-                if (object->collision_flags & 0x80) {
+                if (object->collision_flags & MAP_OBJECT_RENDERED_PREVIOUS_FRAME) {
                     s32 bearing = vector_xz_to_angle(
                         player_state.camera_position.vx - object->position.vx,
                         player_state.camera_position.vz - object->position.vz);
@@ -212,7 +214,7 @@ void map_object_update_actions(void)
                 }
                 if (object->tail.cell_copy.linked_object_index != 0xff) {
                     linked = &map_object_state.objects[object->tail.cell_copy.linked_object_index];
-                    if (linked->collision_flags & 0x80) {
+                    if (linked->collision_flags & MAP_OBJECT_RENDERED_PREVIOUS_FRAME) {
                         s32 bearing = vector_xz_to_angle(
                             player_state.camera_position.vx - linked->position.vx,
                             player_state.camera_position.vz - linked->position.vz);
@@ -380,7 +382,7 @@ void map_object_update_actions(void)
             switch (object->action_timer) {
             case 0: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
-                if (linked_index != 0xffff) {
+                if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                     KfMapObject *linked = &map_object_state.objects[linked_index];
                     linked->render_depth_offset += 200;
                 }
@@ -684,7 +686,7 @@ void map_object_update_actions(void)
 
         case 9: {
             u16 linked_index = object->tail.fields.unknown_3a.value;
-            if (linked_index != 0xffff) {
+            if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
                 if (linked->object_id != 0xff) {
                     linked->layer_mask = 0;

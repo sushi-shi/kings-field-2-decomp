@@ -28,7 +28,7 @@ void actor_set_target(KfActor *actor, KfTargetCandidate *target)
         actor->target_type = target_type;
     } else {
         actor->target = NULL;
-        actor->target_type = 0xff;
+        actor->target_type = KF_ACTOR_TARGET_TYPE_NONE;
         actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     }
 }
@@ -40,7 +40,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     s32 score;
     s32 angle;
 
-    if (target->type == 0xff) {
+    if (target->type == KF_TARGET_CANDIDATE_DISABLED) {
         return 0;
     }
 
@@ -89,7 +89,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 23:
     case 24:
     case 132:
-        if ((actor->unknown_28 & 0x100) || target->word_1a.value < player_distance ||
+        if ((actor->unknown_28 & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
+            target->word_1a.value < player_distance ||
             !directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
             goto done;
@@ -118,7 +119,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         goto done;
 
     case 25:
-        if ((actor->unknown_28 & 0x100) || target->word_16.value < player_distance ||
+        if ((actor->unknown_28 & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
+            target->word_16.value < player_distance ||
             target->word_14.value > player_distance) {
             goto done;
         }
@@ -277,7 +279,7 @@ void actor_reset_target_and_reselect(void)
 ADDRESS(0x800397d8, 0x2c)
 void actor_set_animation(u8 animation_id)
 {
-    if (animation_id != 0xff) {
+    if (animation_id != KF_ACTOR_ANIMATION_NO_CHANGE) {
         KfActor *actor = actor_state.current;
 
         actor->animation_id = animation_id;
@@ -290,7 +292,8 @@ void actor_set_animation_if_changed(u8 animation_id)
 {
     KfActor *actor = actor_state.current;
 
-    if (animation_id != 0xff && actor->animation_id != animation_id) {
+    if (animation_id != KF_ACTOR_ANIMATION_NO_CHANGE &&
+        actor->animation_id != animation_id) {
         actor->animation_id = animation_id;
         actor->animation_phase = 0;
     }

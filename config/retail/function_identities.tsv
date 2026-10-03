@@ -198,7 +198,7 @@ GAME.EXE	0x80020ef8	menu_blit_sprite_fixed_clut			void	const KfMenuSpriteDef *sp
 GAME.EXE	0x800210ac	menu_draw_string			void	const KfMenuSpriteDef *font;const KfMenuGlyphString *string	supported	supported	asm;cfg;callers;KF1 counterpart	draws positioned menu glyph row
 GAME.EXE	0x80021510	menu_draw_number			void	const KfMenuSpriteDef *font;const KfMenuGlyphString *string	supported	supported	asm;cfg;callers;KF1 counterpart	fixed-width number glyphs from two 11-row atlas columns
 GAME.EXE	0x800217f0	menu_draw_nine_slice_panel			void	s32 x;s32 y;s32 width;s32 height;s32 overlap_x;s32 overlap_y	semantic	supported	asm;callers;nine-slice table;exact-C-match	draws a three-by-three translucent menu panel from descriptors 11 through 19
-GAME.EXE	0x80021a60	func_80021a60			void		address-only	candidate	mips-live-in-heuristic	initial static signature seed; requires call-site review
+GAME.EXE	0x80021a60	menu_render_list_mode_8_9_noop	menu	render_list_mode_8_9_noop	void		supported	supported	asm;two-instruction no-op;sole menu_render_list caller for modes 8 and 9	Empty renderer branch hook; original purpose unresolved
 GAME.EXE	0x80021a68	menu_frame_begin			void		supported	supported	asm;cfg;callers;KF1 counterpart	flips display buffer, clears OT, updates upload rect and cursor animation
 GAME.EXE	0x80021be0	menu_present_frame			void		supported	supported	asm;cfg;callers;KF1 counterpart	GPU sync and retrace, install active environments, upload image, submit ordering table
 GAME.EXE	0x80021c8c	menu_enter_display_state			void	s32 mode	supported	supported	asm;cfg;callers;display state	entry snapshots primitive buffers, configures the menu display upload, and pauses active music; mode is unused and the 32-byte retail stack frame remains unexplained

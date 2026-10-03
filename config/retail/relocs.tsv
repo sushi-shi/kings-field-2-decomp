@@ -3905,7 +3905,7 @@ GAME.EXE	0x800206bc	0xfebc		mips26	reachable-code	0x80021f60	load	primitive_buff
 GAME.EXE	0x800206e0	0xfee0		mips26	reachable-code	0x80020990	load	menu_draw_status_counters	jal		control-flow	reviewed	manual:decoded GAME menu renderer direct jal with kind 1 delay slot
 GAME.EXE	0x800206e8	0xfee8		mips26	reachable-code	0x80020704	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800206f8	0xfef8		mips26	reachable-code	0x80020990	load	menu_draw_status_counters	jal		control-flow	reviewed	manual:decoded GAME menu renderer direct jal with kind 3 delay slot
-GAME.EXE	0x80020710	0xff10		mips26	reachable-code	0x80021a60	load	func_80021a60	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
+GAME.EXE	0x80020710	0xff10		mips26	reachable-code	0x80021a60	load	menu_render_list_mode_8_9_noop	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x80020774	0xff74	0x80020778	mips_hi16_lo16	reachable-code	0x80063e98	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002077c	0xff7c		mips26	reachable-code	0x80020d20	load	menu_blit_sprite	jal		control-flow	reviewed	manual:raw decoded GAME menu option direct jal and curated target identity
 GAME.EXE	0x80020784	0xff84		mips26	reachable-code	0x800207a0	load		j		control-flow	candidate	investigation:relocs.tsv

@@ -33,7 +33,16 @@ RODATA(0x8001249c, 0x3f4)
 enum {
     EFFECT_SPATIAL_VOLUME = 110,
     EFFECT_SPATIAL_MAX_DISTANCE = 0x6d60,
-    EFFECT_SPATIAL_ATTENUATION_DISTANCE = 0x7148
+    EFFECT_SPATIAL_ATTENUATION_DISTANCE = 0x7148,
+    EFFECT_COLLISION_HEIGHT_MASK = 0xfff,
+    EFFECT_COLLISION_TARGET_MASK = 7,
+    EFFECT_COLLISION_TARGET_PLAYER = 1,
+    EFFECT_COLLISION_TARGET_ACTORS = 2,
+    EFFECT_COLLISION_TARGET_BOTH = 3,
+    EFFECT_COLLISION_TARGET_SHAPES_ONLY = 4,
+    EFFECT_IMPACT_HOLD_ACTOR_ANIMATION = 0x10000,
+    EFFECT_IMPACT_COUNTS_AS_PHYSICAL = 0x20000,
+    EFFECT_ANIMATION_PHASE_MASK = KF_FIXED12_ONE - 1
 };
 
 ADDRESS(0x8003fa2c, 0x3c)
@@ -52,21 +61,21 @@ s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
     KfEffectRecord *record = effect_state.current_record;
     s32 y;
     if (record->cooldown == 0) {
-        y = position->vy + ((height_flags & 0xfff) >> 1);
-        switch (record->type & 7) {
-        case 2:
+        y = position->vy + ((height_flags & EFFECT_COLLISION_HEIGHT_MASK) >> 1);
+        switch (record->type & EFFECT_COLLISION_TARGET_MASK) {
+        case EFFECT_COLLISION_TARGET_ACTORS:
             return collision_query_world(position->vx, y, position->vz, radius,
                 height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS |
                                   KF_COLLISION_QUERY_MAP_OBJECTS);
-        case 1:
+        case EFFECT_COLLISION_TARGET_PLAYER:
             return collision_query_world(position->vx, y, position->vz, radius,
                 height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_MAP_OBJECTS |
                                   KF_COLLISION_QUERY_PLAYER);
-        case 3:
+        case EFFECT_COLLISION_TARGET_BOTH:
             return collision_query_world(position->vx, y, position->vz, radius,
                 height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS |
                                   KF_COLLISION_QUERY_MAP_OBJECTS | KF_COLLISION_QUERY_PLAYER);
-        case 4:
+        case EFFECT_COLLISION_TARGET_SHAPES_ONLY:
             return collision_query_world(position->vx, y, position->vz, radius,
                 height_flags, KF_COLLISION_QUERY_SHAPES);
         }
@@ -107,7 +116,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
         }
 
         record_type &= 0x30;
-        if (options & 0x20000) {
+        if (options & EFFECT_IMPACT_COUNTS_AS_PHYSICAL) {
             record_type |= 1;
         } else {
             record_type |= 2;
@@ -115,7 +124,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
         actor_apply_magic_to_actor(KF_COLLISION_CACHE_ACTOR_INDEX, power, magic_06,
                       magic_08, magic_0a, magic_0c, magic_0e, magic_10,
                       magic_12, magic_14, radius, record_type, position);
-        if (options & 0x10000) {
+        if (options & EFFECT_IMPACT_HOLD_ACTOR_ANIMATION) {
             actor->unknown_28 |= KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
         }
     }
@@ -165,14 +174,14 @@ void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
 
-    if (record->type & 1) {
+    if (record->type & EFFECT_COLLISION_TARGET_PLAYER) {
         player_apply_radial_damage(position, start, end, arg3, arg4,
                       magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
                       magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
                       magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
                       arg5, record->damage_multiplier_tenths);
     }
-    if (record->type & 2) {
+    if (record->type & EFFECT_COLLISION_TARGET_ACTORS) {
         u16 power = effect_magic_power(record);
 
         actor_apply_area_magic(position, start, end, arg3, arg4,
@@ -906,10 +915,10 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         }
         break;
     }
-    case 15:
+    case KF_EFFECT_KIND_DEFENSE_BOOST:
         effect_pool_initialize_fixed(record, 0x19);
         break;
-    case 17:
+    case KF_EFFECT_KIND_ATTACK_BOOST:
         effect_pool_initialize_fixed(record, 0x1a);
         break;
     case 16:
@@ -1454,7 +1463,7 @@ void effect_update_dispatch(void)
         record->position.vz = projected.vz;
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         if (collision != 0) {
-            effect_apply_current_magic_backstep(collision | 0x20000);
+            effect_apply_current_magic_backstep(collision | EFFECT_IMPACT_COUNTS_AS_PHYSICAL);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
             u8 layer = 2;
@@ -2587,7 +2596,7 @@ void effect_update_dispatch(void)
             record->position.vy = next.vy;
             record->position.vz = next.vz;
             record->map_layer_mask = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
-            record->rotation.vz = ((u16)record->rotation.vz + 300) & 0xfff;
+            record->rotation.vz = ((u16)record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
             shared_position_mode = -1;
             shared_motion_mode = 0x400;
             shared_motion_scale = 0x1000;
@@ -2682,7 +2691,8 @@ void effect_update_dispatch(void)
         record->type |= 3;
         goto kind10_phase1;
     kind10_normal:
-        record->animation_phase_q12 = ((u16)record->animation_phase_q12 + 128) & 0xfff;
+        record->animation_phase_q12 = ((u16)record->animation_phase_q12 + 128)
+                                      & EFFECT_ANIMATION_PHASE_MASK;
         if (targeting->emissions_remaining != 0) {
             VECTOR origin;
             VECTOR target;
@@ -2779,7 +2789,8 @@ void effect_update_dispatch(void)
                     u8 actor_index;
                     KfActor *actor;
 
-                    effect_apply_current_magic(0x10000 | KF_COLLISION_HIT_ACTOR, 5000, 0);
+                    effect_apply_current_magic(EFFECT_IMPACT_HOLD_ACTOR_ANIMATION |
+                                               KF_COLLISION_HIT_ACTOR, 5000, 0);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
                     trail->actor_index = actor_index;
                     actor = &actor_state.actors[trail->actor_index];
@@ -2952,13 +2963,13 @@ void effect_update_dispatch(void)
         }
         break;
     }
-    case 15:
+    case KF_EFFECT_KIND_DEFENSE_BOOST:
         if (player_state.defense_boost_timer == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         record->rotation.vy += 128;
         break;
-    case 17:
+    case KF_EFFECT_KIND_ATTACK_BOOST:
         if (player_state.attack_boost_timer == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }

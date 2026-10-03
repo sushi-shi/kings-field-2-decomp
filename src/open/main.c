@@ -16,13 +16,9 @@
 enum {
     OPENING_DATA_BYTES = 0x96000,
     OPENING_LOAD_ATTEMPTS = 3,
-    OPENING_VAB_HEADER_BYTES = 0x1a20,
-    OPENING_TITLE_SEQUENCE_BYTES = 0x670,
-    OPENING_MOVIE_SEQUENCE_BYTES = 0x1c68,
     /* The title demo plays the movie after this many idle frames. */
     OPENING_IDLE_FRAMES = 931,
     OPENING_MASTER_VOLUME = 127,
-    OPENING_SEQUENCE_VOLUME = 64,
     /* opening_fade_out darkens by FADE_STEP per frame up to FADE_END; the
      * prompt stops pulsing at PROMPT_STEADY_LEVEL. */
     OPENING_FADE_STEP = 2,
@@ -57,9 +53,9 @@ void main(void)
     CdInit();
     PadInit(0);
     ExitCriticalSection();
-    audio_vab_header = (u8 *)malloc(OPENING_VAB_HEADER_BYTES);
-    audio_title_sequence_data = (u8 *)malloc(OPENING_TITLE_SEQUENCE_BYTES);
-    audio_movie_sequence_data = (u8 *)malloc(OPENING_MOVIE_SEQUENCE_BYTES);
+    audio_vab_header = (u8 *)malloc(KF_OPENING_VAB_HEADER_BYTES);
+    audio_title_sequence_data = (u8 *)malloc(KF_OPENING_TITLE_SEQUENCE_BYTES);
+    audio_movie_sequence_data = (u8 *)malloc(KF_OPENING_MOVIE_SEQUENCE_BYTES);
     audio_initialize();
     opening_load_data();
     display_initialize();
@@ -73,7 +69,7 @@ void main(void)
     opening_open_audio();
 restart:
     SsSetMVol(OPENING_MASTER_VOLUME, OPENING_MASTER_VOLUME);
-    SsSeqSetVol(audio_title_sequence_id, OPENING_SEQUENCE_VOLUME, OPENING_SEQUENCE_VOLUME);
+    SsSeqSetVol(audio_title_sequence_id, KF_OPENING_SEQUENCE_VOLUME, KF_OPENING_SEQUENCE_VOLUME);
     SsSeqPlay(audio_title_sequence_id, SSPLAY_PLAY, 1);
     for (;;) {
         display_begin_frame();

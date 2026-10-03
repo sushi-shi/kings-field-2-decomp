@@ -1481,16 +1481,16 @@ void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmatio
     s32 index;
 
     if (layout->title.position.x != 0) {
-        menu_blit_sprite_translucent(&menu_sprite_defs[5], &layout->title.position);
+        menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &layout->title.position);
         menu_draw_string(&menu_sprite_defs[1], &layout->title);
     }
     if (count > 0) {
         index = 0;
         do {
             if (index == highlight && confirmation == KF_MENU_CONFIRM_REQUESTED)
-                menu_blit_sprite_translucent(&menu_sprite_defs[6], &row->position);
+                menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_CONFIRMED_ROW], &row->position);
             else
-                menu_blit_sprite_translucent(&menu_sprite_defs[5], &row->position);
+                menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &row->position);
             if (index == highlight)
                 menu_blit_sprite(&menu_sprite_defs[2], &row->position);
             menu_draw_string(&menu_sprite_defs[1], row);
@@ -1517,7 +1517,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
     s32 y;
 
     if (list->title.position.x != 0) {
-        menu_blit_sprite_translucent(&menu_sprite_defs[5], &list->title.position);
+        menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &list->title.position);
         menu_draw_string(&menu_sprite_defs[1], &list->title);
     }
 
@@ -1605,7 +1605,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
         }
     }
 
-    sprite = &menu_sprite_defs[7];
+    sprite = &menu_sprite_defs[KF_MENU_SPRITE_LIST_TOP];
     primitive_buffer_begin_poly_ft4();
     setRGB0(current_poly_ft4, 255, 255, 255);
     current_poly_ft4->tpage = sprite->tpage;
@@ -1621,8 +1621,9 @@ void menu_render_list(const void *list_state, s32 render_mode)
     if (row < list->visible_rows) {
         y = 0;
         do {
-            sprite = row == list->cursor_row ? &menu_sprite_defs[10]
-                : &menu_sprite_defs[8];
+            sprite = row == list->cursor_row
+                ? &menu_sprite_defs[KF_MENU_SPRITE_LIST_SELECTED_ROW]
+                : &menu_sprite_defs[KF_MENU_SPRITE_LIST_ROW];
             row++;
             primitive_buffer_begin_poly_ft4();
             setRGB0(current_poly_ft4, 255, 255, 255);
@@ -1638,7 +1639,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
         } while (row < list->visible_rows);
     }
 
-    sprite = &menu_sprite_defs[9];
+    sprite = &menu_sprite_defs[KF_MENU_SPRITE_LIST_BOTTOM];
     primitive_buffer_begin_poly_ft4();
     setRGB0(current_poly_ft4, 255, 255, 255);
     current_poly_ft4->tpage = sprite->tpage;
@@ -1656,7 +1657,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
     else if (render_mode == 15)
         menu_draw_status_counters(3);
     if (((u32)render_mode - 8u) < 2u)
-        func_80021a60();
+        menu_render_list_mode_8_9_noop();
 }
 enum { KF_PREVIEW_ANGLE_MASK = 0xfff };
 
@@ -1763,7 +1764,7 @@ void menu_draw_status_counters(s32 kind)
         heading.glyphs.codes[2] = 209;
         heading.glyphs.codes[3] = KF_MENU_TEXT_END;
     }
-    menu_blit_sprite_translucent(&menu_sprite_defs[5], &heading.position);
+    menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &heading.position);
     menu_draw_string(&menu_sprite_defs[1], &heading);
 
     amount.position.x = heading.position.x + 56;
@@ -1780,7 +1781,7 @@ void menu_draw_status_counters(s32 kind)
         heading.glyphs.codes[0] = 202;
         heading.glyphs.codes[1] = 203;
         heading.glyphs.codes[2] = KF_MENU_TEXT_END;
-        menu_blit_sprite_translucent(&menu_sprite_defs[5], &heading.position);
+        menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &heading.position);
         menu_draw_string(&menu_sprite_defs[1], &heading);
         amount.position.x = heading.position.x + 91;
         amount.position.y = heading.position.y;
@@ -1985,7 +1986,7 @@ void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
 }
 
 ADDRESS(0x80021a60, 0x8)
-void func_80021a60(void)
+void menu_render_list_mode_8_9_noop(void)
 {
 }
 

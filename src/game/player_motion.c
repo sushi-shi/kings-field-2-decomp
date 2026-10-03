@@ -10,7 +10,11 @@ enum {
     COLLISION_DEPTH_ARM_HEIGHT = 200,
     COLLISION_DEPTH_DEATH_LIMIT = 32000,
     PLAYER_MOTION_COLLISION_MASK = KF_COLLISION_QUERY_SHAPES |
-        KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS
+        KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS,
+    PLAYER_LANDING_SOUND_ID = 12,
+    PLAYER_LANDING_SOUND_MIN_MAGNITUDE = 320,
+    PLAYER_LANDING_SOUND_MAX_EXCESS = 896,
+    PLAYER_LANDING_SOUND_BASE_VOLUME = 32
 };
 
 ADDRESS(0x80027928, 0x60)
@@ -29,12 +33,13 @@ void player_play_landing_sound(s32 magnitude)
 {
     s32 volume = magnitude;
 
-    if (volume >= 320) {
-        volume -= 320;
-        if (volume >= 897) {
-            volume = 896;
+    if (volume >= PLAYER_LANDING_SOUND_MIN_MAGNITUDE) {
+        volume -= PLAYER_LANDING_SOUND_MIN_MAGNITUDE;
+        if (volume > PLAYER_LANDING_SOUND_MAX_EXCESS) {
+            volume = PLAYER_LANDING_SOUND_MAX_EXCESS;
         }
-        audio_play_sound(12, (volume >> 3) + 32);
+        audio_play_sound(PLAYER_LANDING_SOUND_ID,
+                         (volume >> 3) + PLAYER_LANDING_SOUND_BASE_VOLUME);
     }
 }
 
@@ -200,7 +205,8 @@ finish:
     if (player_state.vertical_motion_state == KF_PLAYER_VERTICAL_GROUNDED) {
         if (player_state.walking_bob_enabled != 0) {
             player_state.walking_bob_phase =
-                (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value) & 0xfff;
+                (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value)
+                & KF_ANGLE_WRAP_MASK;
             bob = rsin(player_state.walking_bob_phase) >> 5;
             if (bob < 0) {
                 bob = -bob;

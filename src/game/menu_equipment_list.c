@@ -8,6 +8,20 @@
 
 RODATA(0x800110b8, 0x4c)
 
+enum {
+    MENU_CATEGORY_WEAPON = 0,
+    MENU_CATEGORY_PRIMARY_MAGIC = 1,
+    MENU_CATEGORY_ARM = 2,
+    MENU_CATEGORY_HEAD = 3,
+    MENU_CATEGORY_BODY = 4,
+    MENU_CATEGORY_LEG = 5,
+    MENU_CATEGORY_SHIELD = 6,
+    MENU_CATEGORY_ACCESSORY = 7,
+    MENU_CATEGORY_EXTRA = 8,
+    MENU_CATEGORY_SECONDARY_SHORTCUT = 9,
+    MENU_CATEGORY_COUNT = 10
+};
+
 typedef struct KfMenuEquipmentList {
     KfMenuList list;
     KfMenuLabelSuffix *initial_rows;
@@ -21,8 +35,8 @@ ADDRESS(0x80019ac4, 0x220)
 void menu_equipment_list_controller(void)
 {
     KfMenuEquipmentList menu;
-    KfMenuLabelSuffix initial_rows[10];
-    KfMenuLabelSuffix current_rows[10];
+    KfMenuLabelSuffix initial_rows[MENU_CATEGORY_COUNT];
+    KfMenuLabelSuffix current_rows[MENU_CATEGORY_COUNT];
     s32 mode = 0;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 frame;
@@ -31,8 +45,8 @@ void menu_equipment_list_controller(void)
     memcpy(initial_rows, menu_equipment_labels_64910, sizeof initial_rows);
     menu_build_equipped_label_rows(current_rows);
     menu_list_init(&menu.list, 0, 2);
-    menu.list.entry_count = 10;
-    menu.list.visible_rows = 10;
+    menu.list.entry_count = MENU_CATEGORY_COUNT;
+    menu.list.visible_rows = MENU_CATEGORY_COUNT;
     menu.initial_rows = initial_rows;
     menu.current_rows = current_rows;
     menu.list.list_y = 39;
@@ -43,9 +57,9 @@ void menu_equipment_list_controller(void)
 
         if (mode == 1) {
             choice = menu.list.selected_index;
-            if (choice == 1)
+            if (choice == MENU_CATEGORY_PRIMARY_MAGIC)
                 menu_choose_primary_magic_shortcut();
-            else if (choice == 9)
+            else if (choice == MENU_CATEGORY_SECONDARY_SHORTCUT)
                 menu_item_magic_controller();
             else
                 menu_equipment_category_controller(choice);
@@ -70,33 +84,33 @@ void menu_equipment_list_controller(void)
 ADDRESS(0x80019ce4, 0x1f0)
 void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
 {
-    u8 selected[10];
+    u8 selected[MENU_CATEGORY_COUNT];
     u8 *entry;
     s32 i;
 
-    selected[0] = player_state.equipped_weapon_id;
-    selected[1] = player_state.primary_magic_shortcut_id;
-    selected[2] = player_state.equipped_arm_id;
-    selected[3] = player_state.equipped_head_id;
-    selected[4] = player_state.equipped_body_id;
-    selected[5] = player_state.equipped_leg_id;
-    selected[6] = player_state.equipped_shield_id;
-    selected[7] = player_state.equipped_accessory_id;
-    selected[8] = player_state.equipped_extra_id;
+    selected[MENU_CATEGORY_WEAPON] = player_state.equipped_weapon_id;
+    selected[MENU_CATEGORY_PRIMARY_MAGIC] = player_state.primary_magic_shortcut_id;
+    selected[MENU_CATEGORY_ARM] = player_state.equipped_arm_id;
+    selected[MENU_CATEGORY_HEAD] = player_state.equipped_head_id;
+    selected[MENU_CATEGORY_BODY] = player_state.equipped_body_id;
+    selected[MENU_CATEGORY_LEG] = player_state.equipped_leg_id;
+    selected[MENU_CATEGORY_SHIELD] = player_state.equipped_shield_id;
+    selected[MENU_CATEGORY_ACCESSORY] = player_state.equipped_accessory_id;
+    selected[MENU_CATEGORY_EXTRA] = player_state.equipped_extra_id;
     if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
-        selected[9] = player_state.secondary_item_shortcut_id;
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = player_state.secondary_item_shortcut_id;
     else
-        selected[9] = player_state.secondary_magic_shortcut_id;
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = player_state.secondary_magic_shortcut_id;
 
     entry = selected;
-    for (i = 0; i < 10; rows++, i++, entry++) {
+    for (i = 0; i < MENU_CATEGORY_COUNT; rows++, i++, entry++) {
         u32 id = *entry;
 
         if (id == KF_EQUIPMENT_NONE)
             goto missing;
-        if (i == 1)
+        if (i == MENU_CATEGORY_PRIMARY_MAGIC)
             goto extra;
-        if (i != 9)
+        if (i != MENU_CATEGORY_SECONDARY_SHORTCUT)
             goto base;
         if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
             goto base;
@@ -129,33 +143,33 @@ void menu_equipment_category_controller(s32 category)
     u8 equipped_id;
 
     switch (category) {
-    case 0:
+    case MENU_CATEGORY_WEAPON:
         first = 0;
         last = 20;
         break;
-    case 2:
+    case MENU_CATEGORY_ARM:
         first = 34;
         last = 40;
         break;
-    case 3:
+    case MENU_CATEGORY_HEAD:
         first = 21;
         last = 27;
         break;
-    case 4:
+    case MENU_CATEGORY_BODY:
         first = 28;
         last = 33;
         break;
-    case 5:
+    case MENU_CATEGORY_LEG:
         first = 41;
         last = 46;
         break;
-    case 6:
+    case MENU_CATEGORY_SHIELD:
         first = 47;
         last = 52;
         break;
-    case 7:
-    case 8:
-        equipped_id = category == 7 ? player_state.equipped_extra_id
+    case MENU_CATEGORY_ACCESSORY:
+    case MENU_CATEGORY_EXTRA:
+        equipped_id = category == MENU_CATEGORY_ACCESSORY ? player_state.equipped_extra_id
                                     : player_state.equipped_accessory_id;
         first = 53;
         if (equipped_id != KF_EQUIPMENT_NONE)
@@ -175,7 +189,7 @@ void menu_equipment_category_controller(s32 category)
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     if (menu.list.entry_count != 0
         && menu_load_item_model(item_ids[menu.list.selected_index]) != 0)
@@ -212,34 +226,34 @@ void menu_equipment_category_controller(s32 category)
     menu_release_item_model();
     if (result != KF_MENU_RESULT_CANCELLED) {
         switch (category) {
-        case 0:
+        case MENU_CATEGORY_WEAPON:
             player_equip_weapon((u8)result);
             break;
-        case 2:
+        case MENU_CATEGORY_ARM:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ARM);
             break;
-        case 3:
+        case MENU_CATEGORY_HEAD:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_HEAD);
             break;
-        case 4:
+        case MENU_CATEGORY_BODY:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_BODY);
             break;
-        case 5:
+        case MENU_CATEGORY_LEG:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_LEG);
             break;
-        case 6:
+        case MENU_CATEGORY_SHIELD:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_SHIELD);
             break;
-        case 7:
+        case MENU_CATEGORY_ACCESSORY:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ACCESSORY);
             break;
-        case 8:
+        case MENU_CATEGORY_EXTRA:
             player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_EXTRA);
             break;
         }
     }
 
-    if ((u32)(category - 7) < 2 && equipped_id != KF_EQUIPMENT_NONE)
+    if ((u32)(category - MENU_CATEGORY_ACCESSORY) < 2 && equipped_id != KF_EQUIPMENT_NONE)
         game_counter_bytes[equipped_id]++;
 }
 
@@ -267,7 +281,7 @@ void menu_choose_primary_magic_shortcut(void)
     menu.rows = rows;
     menu.values = values;
     menu.list.list_y = 0x83;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     for (;;) {
         if (mode != 0 || result != KF_MENU_RESULT_PENDING)
@@ -341,7 +355,7 @@ void menu_item_magic_controller(void)
     menu.row_glyphs = rows[0].codes;
     menu.byte_values = counts;
     menu.number_values = numbers;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     if (menu.list.entry_count != 0
         && menu_load_item_model(item_ids[menu.list.selected_index]) != 0)
@@ -441,7 +455,7 @@ void menu_item_use_controller(void)
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.list.glyphs_per_entry = 12;
+    menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
     if (menu.list.entry_count != 0
         && menu_load_item_model(indices[menu.list.selected_index]) != 0)
         return;

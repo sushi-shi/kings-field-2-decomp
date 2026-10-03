@@ -2,6 +2,7 @@
 #include <kf/lib/null.h>
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
+#include <kf/game/animation.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/asset.h>
 #include <kf/game/cd.h>
@@ -172,11 +173,6 @@ void player_clear_motion(void)
     player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;
 }
 
-enum {
-    PLAYER_MAP_PROBE_RADIUS = 800,
-    PLAYER_MAP_PROBE_HEIGHT = 1700
-};
-
 ADDRESS(0x80025234, 0xb0)
 void player_sync_position_to_map(void)
 {
@@ -190,15 +186,15 @@ void player_sync_position_to_map(void)
     player_state.camera_position.vy =
         collision_sample_map_layer_height(layer, player_state.camera_position.vx,
                       player_state.camera_position.vz,
-                      PLAYER_MAP_PROBE_RADIUS, PLAYER_MAP_PROBE_HEIGHT);
+                      KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
     player_update_collision_bounds();
     player_state.force_actor_lifecycle_refresh = 1;
-    player_state.vertical_motion_state = 0;
+    player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
     player_state.vertical_velocity = 0;
-    player_state.death_state = 0;
+    player_state.death_state = KF_PLAYER_REACTION_NORMAL;
     player_clear_motion();
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
-                  player_state.camera_position.vz, PLAYER_MAP_PROBE_RADIUS, 1);
+                  player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, 1);
 }
 
 ADDRESS(0x800252e4, 0xc8)
@@ -325,8 +321,7 @@ void player_set_equipment_slot(u8 item_id, u8 slot)
 enum {
     PLAYER_WEAPON_CHARGE_DELAY_UPDATES = 10,
     PLAYER_WEAPON_ARCHIVE_SLOT = 5,
-    PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY = 49,
-    PLAYER_WEAPON_ASSET_INDEX = 32
+    PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY = 49
 };
 
 ADDRESS(0x8002569c, 0xb8)
@@ -341,7 +336,7 @@ void player_equip_weapon(u8 weapon_id)
         cd_archive_read(PLAYER_WEAPON_ARCHIVE_SLOT,
                         weapon_id + PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY,
                         (u_long *)player_state.weapon_asset_buffer);
-        asset_registry_set(PLAYER_WEAPON_ASSET_INDEX,
+        asset_registry_set(KF_PLAYER_WEAPON_ASSET_INDEX,
                            player_state.weapon_asset_buffer);
     }
     player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
@@ -396,7 +391,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
         angles.z = player_state.camera_rotation.angles[2];
         vector_rotate_yxz(&angles, &player_state.magic_origin_offset, position);
         position->vx += player_state.camera_position.vx;
-        height = position->vy - 1600;
+        height = position->vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         position->vy = height + player_state.camera_position.vy;
         position->vz += player_state.camera_position.vz;
     }

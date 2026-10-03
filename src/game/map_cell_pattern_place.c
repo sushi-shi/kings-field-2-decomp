@@ -14,7 +14,9 @@ enum {
     KF_PATTERN_ORIENTATION_MASK = 0x03,
     KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
     KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
-    KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0
+    KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0,
+    KF_PATTERN_SELECT_FIRST_LAYER = 1,
+    KF_PATTERN_SELECT_SECOND_LAYER = 2
 };
 
 ADDRESS(0x80034f90, 0x204)
@@ -124,7 +126,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
         columns_remaining = width - 1;
         if (columns_remaining != -1) {
             do {
-            if (layer_select & 1) {
+            if (layer_select & KF_PATTERN_SELECT_FIRST_LAYER) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[0].object_index = source->layer[0].object_index;
                 }
@@ -157,7 +159,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[0].lighting_index & 0x7f);
                 }
             }
-            if (layer_select & 2) {
+            if (layer_select & KF_PATTERN_SELECT_SECOND_LAYER) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[1].object_index = source->layer[1].object_index;
                 }

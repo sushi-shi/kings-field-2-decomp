@@ -21,27 +21,30 @@ void player_restore_equipment_effects(void)
     player_equip_weapon(player_state.equipped_weapon_id);
     player_reset_view();
     if (player_state.defense_boost_timer != 0) {
-        effect_construct_record(10, 16, 15, &player_state.camera_position, NULL);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_DEFENSE_BOOST,
+                                &player_state.camera_position, NULL);
     }
     if (player_state.attack_boost_timer != 0) {
-        effect_construct_record(10, 16, 17, &player_state.camera_position, NULL);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_ATTACK_BOOST,
+                                &player_state.camera_position, NULL);
     }
     player_recalculate_combat_stats();
 }
-
-enum { PLAYER_RELOAD_INVALID_RESOURCE_ID = 99 };
 
 ADDRESS(0x8002360c, 0x208)
 void player_reload_map_resources(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)
 {
     cd_request_wait_idle();
-    state_8017d118.active_resource_ids[0] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
-    state_8017d118.active_resource_ids[1] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
-    state_8017d118.active_resource_ids[2] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
-    state_8017d118.active_resource_ids[3] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
-    state_8017d118.active_resource_ids[4] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
-    resource_request_transition(first, second, third, 255, 255, 127, 127, 127);
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_request_transition(first, second, third,
+                                KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
+                                KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT,
+                                KF_RESOURCE_OFFSET_NO_SHIFT);
     do {
         cd_request_yield();
         resource_advance_transition();
@@ -51,8 +54,11 @@ void player_reload_map_resources(
     VSync(0);
     DrawSync(0);
     VSync(0);
-    if (optional_resource != 255) {
-        resource_request_transition(255, 255, optional_resource, 255, 255, 127, 127, 127);
+    if (optional_resource != KF_RESOURCE_REQUEST_KEEP) {
+        resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
+                                    optional_resource, KF_RESOURCE_REQUEST_KEEP,
+                                    KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_OFFSET_NO_SHIFT,
+                                    KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         do {
             cd_request_yield();
             resource_advance_transition();
@@ -72,7 +78,10 @@ void player_reload_map_resources(
     }
     cd_request_wait_idle();
     render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
-    resource_request_transition(255, 255, 255, fourth, fifth, 127, 127, 127);
+    resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
+                                KF_RESOURCE_REQUEST_KEEP, fourth, fifth,
+                                KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT,
+                                KF_RESOURCE_OFFSET_NO_SHIFT);
 }
 
 enum {
@@ -118,7 +127,7 @@ enum {
     PLAYER_ACCESSORY_MAGIC_BONUS = 0x38,
     PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS = 0x39,
     PLAYER_BONUS_OVERFLOW_LIMIT = 0x7fff,
-    PLAYER_POWER_CAP_THRESHOLD = 1000
+    PLAYER_POWER_CAP_THRESHOLD = KF_PLAYER_POWER_MAX + 1
 };
 
 ADDRESS(0x80023984, 0x6b0)

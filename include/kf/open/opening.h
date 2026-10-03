@@ -18,6 +18,13 @@ enum {
     KF_OPENING_PLAY_MOVIE = 2
 };
 
+enum {
+    KF_OPENING_VAB_HEADER_BYTES = 0x1a20,
+    KF_OPENING_TITLE_SEQUENCE_BYTES = 0x670,
+    KF_OPENING_MOVIE_SEQUENCE_BYTES = 0x1c68,
+    KF_OPENING_SEQUENCE_VOLUME = 64
+};
+
 extern u8 *opening_data;
 extern char opening_data_file[5];
 extern u8 *audio_title_sequence_data;

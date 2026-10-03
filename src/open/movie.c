@@ -11,7 +11,6 @@ enum {
     OPENING_LAST_FRAME = 1085,
     OPENING_MASTER_VOLUME = 128,
     OPENING_VOLUME_STEP = 2,
-    OPENING_SEQUENCE_VOLUME = 64,
     /* Frames held after an unskipped movie before the music fades. */
     OPENING_HOLD_FRAMES = 90
 };
@@ -37,7 +36,7 @@ void opening_play_movie(void)
         VSync(0);
         SsSetMVol(volume, volume);
     }
-    SsSeqSetVol(audio_movie_sequence_id, OPENING_SEQUENCE_VOLUME, OPENING_SEQUENCE_VOLUME);
+    SsSeqSetVol(audio_movie_sequence_id, KF_OPENING_SEQUENCE_VOLUME, KF_OPENING_SEQUENCE_VOLUME);
     SsSeqPlay(audio_movie_sequence_id, SSPLAY_PLAY, 1);
     strSetDefDecEnv();
     strInit(&file.pos);
@@ -69,7 +68,7 @@ void opening_play_movie(void)
             VSync(0);
         }
     }
-    for (volume = OPENING_SEQUENCE_VOLUME; volume >= 0; volume--) {
+    for (volume = KF_OPENING_SEQUENCE_VOLUME; volume >= 0; volume--) {
         VSync(0);
         SsSeqSetVol(audio_movie_sequence_id, volume, volume);
     }

@@ -7,19 +7,35 @@
  * remains open. Callback signatures are resolved at their individual uses. */
 typedef void (*KfCallback)();
 
+enum {
+    KF_RESOURCE_SLOT_MAP_REGION = 0,
+    KF_RESOURCE_SLOT_TMD = 1,
+    KF_RESOURCE_SLOT_TIM = 2,
+    KF_RESOURCE_SLOT_VAB = 3,
+    KF_RESOURCE_SLOT_SEQUENCE = 4,
+    KF_RESOURCE_SLOT_COUNT = 5
+};
+
+typedef struct KfResourceTransitionOffset {
+    s8 x;
+    s8 z;
+    s8 y;
+} KfResourceTransitionOffset;
+typedef char kf_resource_transition_offset_size[
+    sizeof(KfResourceTransitionOffset) == 3 ? 1 : -1];
+
 /* Startup clears this 0x1c-byte runtime state. Its active table pointer is
  * replaced by both an initialized table and a BSS table. */
 typedef struct KfState8017d118 {
     s16 transition_active;
     s16 transition_phase;
-    u8 active_resource_ids[5];
+    u8 active_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 current_map_region_id;
-    u8 unknown_0a[2];
     KfCallback *active_table;
-    u8 requested_resource_ids[5];
+    u8 requested_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 world_shift_applied;
     u8 tmd_object_limit_active;
-    s8 transition_offset_xzy[3];
+    KfResourceTransitionOffset transition_offset;
     s16 sequence_fade_volume;
 } KfState8017d118;
 
@@ -30,7 +46,7 @@ typedef char kf_state_8017d118_current_map_region_id_offset[(u32)&((KfState8017d
 typedef char kf_state_8017d118_requested_resource_ids_offset[(u32)&((KfState8017d118 *)0)->requested_resource_ids == 0x10 ? 1 : -1];
 typedef char kf_state_8017d118_world_shift_applied_offset[(u32)&((KfState8017d118 *)0)->world_shift_applied == 0x15 ? 1 : -1];
 typedef char kf_state_8017d118_tmd_object_limit_active_offset[(u32)&((KfState8017d118 *)0)->tmd_object_limit_active == 0x16 ? 1 : -1];
-typedef char kf_state_8017d118_transition_offset_xzy_offset[(u32)&((KfState8017d118 *)0)->transition_offset_xzy == 0x17 ? 1 : -1];
+typedef char kf_state_8017d118_transition_offset_offset[(u32)&((KfState8017d118 *)0)->transition_offset == 0x17 ? 1 : -1];
 typedef char kf_state_8017d118_sequence_fade_volume_offset[(u32)&((KfState8017d118 *)0)->sequence_fade_volume == 0x1a ? 1 : -1];
 
 extern KfState8017d118 state_8017d118;

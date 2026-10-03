@@ -8,7 +8,9 @@
 
 enum {
     COLLISION_DEPTH_ARM_HEIGHT = 200,
-    COLLISION_DEPTH_DEATH_LIMIT = 32000
+    COLLISION_DEPTH_DEATH_LIMIT = 32000,
+    PLAYER_MOTION_COLLISION_MASK = KF_COLLISION_QUERY_SHAPES |
+        KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS
 };
 
 ADDRESS(0x80027928, 0x60)
@@ -48,14 +50,14 @@ void player_update_vertical_motion(void)
 
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
-                  player_state.camera_position.vz, 800, 1700);
+                  player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
     player_state.frame_displacement.vy = 0;
 
     switch (player_state.vertical_motion_state) {
-    case 0:
+    case KF_PLAYER_VERTICAL_GROUNDED:
         break;
 
-    case 0x10:
+    case KF_PLAYER_VERTICAL_FALLING:
         player_check_fall_death();
         next_y = player_state.camera_position.vy + player_state.vertical_velocity;
         player_state.camera_position.vy = next_y;
@@ -63,11 +65,11 @@ void player_update_vertical_motion(void)
         player_state.vertical_velocity += 40;
         if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
-            player_state.vertical_motion_state = 0;
+            player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
         }
         goto finish;
 
-    case 0x20:
+    case KF_PLAYER_VERTICAL_STEP_UP:
         player_check_fall_death();
         player_state.camera_position.vy += player_state.vertical_velocity;
         if (player_state.camera_position.vy <= KF_COLLISION_CACHE_RESULT
@@ -76,17 +78,18 @@ void player_update_vertical_motion(void)
                 < player_state.camera_position.vy - player_state.vertical_velocity) {
                 player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             }
-            player_state.vertical_motion_state = 0;
+            player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
         }
         player_state.frame_displacement.vy = player_state.vertical_velocity;
         player_state.vertical_velocity += 5;
         goto finish;
 
-    case 0x40:
+    case KF_PLAYER_VERTICAL_DEEP_FALL:
         player_check_fall_death();
         next_y = player_state.camera_position.vy + player_state.vertical_velocity;
         collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
-                                         player_state.camera_position.vz, 800, 1700, 0x31);
+                                         player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
+                                         KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
         if (collision_flags == 0) {
             player_state.frame_displacement.vy = player_state.vertical_velocity;
             player_state.vertical_velocity += 40;
@@ -103,23 +106,24 @@ void player_update_vertical_motion(void)
             impact = (player_state.vertical_velocity * player_state.vertical_velocity) >> 12;
             player_apply_damage_reaction(NULL, (impact * impact * impact) / 0x1ccf0, 0);
         }
-        if ((collision_flags & 4) != 0) {
+        if ((collision_flags & KF_COLLISION_HIT_FLOOR) != 0) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
         } else {
             collision_cache_load_hit_bounds();
             next_y = KF_COLLISION_CACHE_POSITION.vy
                    - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
             if (collision_query_world(player_state.camera_position.vx, next_y,
-                               player_state.camera_position.vz, 800, 1700, 0x31) == 0) {
+                               player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
+                               KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) == 0) {
                 player_state.camera_position.vy = next_y;
             }
         }
         player_state.landing_vertical_offset = 1;
-        player_state.vertical_motion_state = 0x50;
+        player_state.vertical_motion_state = KF_PLAYER_VERTICAL_LANDING;
         /* Enter the landing response in the same frame. */
         goto landing;
 
-    case 0x50:
+    case KF_PLAYER_VERTICAL_LANDING:
 landing:
         if (player_state.landing_vertical_offset > 0) {
             player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
@@ -132,7 +136,7 @@ landing:
         }
         if (player_state.landing_vertical_offset <= 0
             && player_state.vertical_motion_pitch_offset <= 0) {
-            player_state.vertical_motion_state = 0;
+            player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
             player_state.vertical_velocity = 0;
             player_state.landing_vertical_offset = 0;
             player_state.vertical_motion_pitch_offset = 0;
@@ -158,7 +162,7 @@ landing:
             goto finish;
         }
         movement_speed = player_state.movement_speed.signed_value;
-        player_state.vertical_motion_state = 0x20;
+        player_state.vertical_motion_state = KF_PLAYER_VERTICAL_STEP_UP;
         player_state.vertical_velocity = movement_speed > 200 ? -300 : -150;
     } else {
         if (height_difference <= 0) {
@@ -166,7 +170,8 @@ landing:
         }
         if (collision_query_world(player_state.camera_position.vx,
                            player_state.camera_position.vy + 1,
-                           player_state.camera_position.vz, 800, 1700, 0x31) != 0) {
+                           player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
+                           KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) != 0) {
             goto finish;
         }
         if (height_difference <= 256) {
@@ -181,14 +186,15 @@ landing:
             player_state.camera_position.vy += 256;
             goto finish;
         }
-        player_state.vertical_motion_state = height_difference > 1024 ? 0x40 : 0x10;
+        player_state.vertical_motion_state = height_difference > 1024
+            ? KF_PLAYER_VERTICAL_DEEP_FALL : KF_PLAYER_VERTICAL_FALLING;
         player_state.vertical_velocity = 40;
     }
     player_state.landing_vertical_offset = 0;
     player_state.vertical_motion_pitch_offset = 0;
 
 finish:
-    if (player_state.vertical_motion_state == 0) {
+    if (player_state.vertical_motion_state == KF_PLAYER_VERTICAL_GROUNDED) {
         if (player_state.walking_bob_enabled != 0) {
             player_state.walking_bob_phase =
                 (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value) & 0xfff;
@@ -218,11 +224,14 @@ s32 player_move_reaction_with_collision(void)
     next.vy = player_state.camera_position.vy + player_state.reaction.damage.rotation.vy;
     next.vz = player_state.camera_position.vz + player_state.reaction.damage.rotation.vz;
 
-    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+    flags = collision_query_world(next.vx, next.vy, next.vz,
+                                  KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
+                                  PLAYER_MOTION_COLLISION_MASK);
     if (flags == 0) {
     accept:
         if (player_state.reaction.damage.rotation.vy >= 160
-            && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy > 32000) {
+            && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy
+                   > COLLISION_DEPTH_DEATH_LIMIT) {
             player_death_begin(NULL);
             player_state.fatal_fall_latch = 1;
         }
@@ -234,10 +243,14 @@ s32 player_move_reaction_with_collision(void)
     }
 
     next.vy = player_state.camera_position.vy;
-    flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+    flags = collision_query_world(next.vx, next.vy, next.vz,
+                                  KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
+                                  PLAYER_MOTION_COLLISION_MASK);
     if (flags == 0) {
         player_state.reaction.damage.rotation.vy = 1;
-        flags = collision_query_world(next.vx, next.vy, next.vz, 800, 1700, 49);
+        flags = collision_query_world(next.vx, next.vy, next.vz,
+                                      KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
+                                      PLAYER_MOTION_COLLISION_MASK);
         if (flags == 0) {
             minimum_length = 32;
         scale_motion:
@@ -255,7 +268,7 @@ s32 player_move_reaction_with_collision(void)
         }
     }
 
-    if (flags & -6) {
+    if (flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) {
         return 1;
     }
     if (KF_COLLISION_CACHE_RESULT + 256 < player_state.camera_position.vy) {
@@ -283,12 +296,12 @@ enum {
 ADDRESS(0x80028224, 0x2f8)
 void player_update_camera_rotation(void)
 {
-    if (player_state.flags_140.low & 0x8000) {
+    if (player_state.flags_140.low & PADLleft) {
         player_state.yaw_step += player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
         if (player_state.yaw_step > player_state.turn_step_limit) {
             player_state.yaw_step = player_state.turn_step_limit;
         }
-    } else if (player_state.flags_140.low & 0x2000) {
+    } else if (player_state.flags_140.low & PADLright) {
         player_state.yaw_step -= player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
         if (player_state.yaw_step < -player_state.turn_step_limit) {
             player_state.yaw_step = -player_state.turn_step_limit;
@@ -309,12 +322,12 @@ void player_update_camera_rotation(void)
         (player_state.camera_rotation_target.angles[1] + player_state.yaw_step)
         & KF_ANGLE_WRAP_MASK;
 
-    if (player_state.flags_140.low & 2) {
+    if (player_state.flags_140.low & PADR2) {
         player_state.pitch_step += PLAYER_PITCH_STEP;
         if (player_state.pitch_step > PLAYER_PITCH_STEP_LIMIT) {
             player_state.pitch_step = PLAYER_PITCH_STEP_LIMIT;
         }
-    } else if (player_state.flags_140.low & 1) {
+    } else if (player_state.flags_140.low & PADL2) {
         player_state.pitch_step -= PLAYER_PITCH_STEP;
         if (player_state.pitch_step < -PLAYER_PITCH_STEP_LIMIT) {
             player_state.pitch_step = -PLAYER_PITCH_STEP_LIMIT;
@@ -359,14 +372,14 @@ void player_update_horizontal_motion(void)
     s32 strafe_square;
     s16 magnitude;
 
-    if (player_state.flags_140.low & 0x1000) {
+    if (player_state.flags_140.low & PADLup) {
         forward = player_state.forward_velocity + (player_state.movement_step_limit >> 2);
         if (forward > player_state.movement_step_limit) {
             player_state.forward_velocity = player_state.movement_step_limit;
         } else {
             player_state.forward_velocity = forward;
         }
-    } else if (player_state.flags_140.low & 0x4000) {
+    } else if (player_state.flags_140.low & PADLdown) {
         forward = player_state.forward_velocity - (player_state.movement_step_limit >> 2);
         if (forward >= -player_state.movement_step_limit) {
             player_state.forward_velocity = forward;
@@ -385,14 +398,14 @@ void player_update_horizontal_motion(void)
         }
     }
 
-    if (player_state.flags_140.low & 8) {
+    if (player_state.flags_140.low & PADR1) {
         strafe = player_state.strafe_velocity + (player_state.movement_step_limit >> 2);
         if (strafe > player_state.movement_step_limit) {
             player_state.strafe_velocity = player_state.movement_step_limit;
         } else {
             player_state.strafe_velocity = strafe;
         }
-    } else if (player_state.flags_140.low & 4) {
+    } else if (player_state.flags_140.low & PADL1) {
         strafe = player_state.strafe_velocity - (player_state.movement_step_limit >> 2);
         if (strafe >= -player_state.movement_step_limit) {
             player_state.strafe_velocity = strafe;

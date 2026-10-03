@@ -9,6 +9,7 @@
 enum {
     KF_ACTOR_ANIMATION_PHASE_PERIOD = 0x1000,
     KF_ACTOR_ANIMATION_PHASE_MAX = KF_ACTOR_ANIMATION_PHASE_PERIOD - 1,
+    KF_TARGET_CANDIDATE_EVENT_STREAM = 0x70,
     KF_ACTOR_CAPACITY = 200,
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
@@ -73,7 +74,7 @@ typedef char kf_target_candidate_word0e_size[
 
 typedef struct KfTargetCandidateWord10Bytes {
     u8 fallback_offset;
-    u8 unknown_11;
+    u8 completion_animation_id;
 } KfTargetCandidateWord10Bytes;
 typedef char kf_target_candidate_word10_bytes_size[
     sizeof(KfTargetCandidateWord10Bytes) == 2 ? 1 : -1];
@@ -90,7 +91,7 @@ typedef char kf_target_candidate_word10_size[
     sizeof(KfTargetCandidateWord10) == 2 ? 1 : -1];
 
 typedef struct KfTargetCandidateWord12Bytes {
-    u8 unknown_12;
+    u8 post_stream_menu_action;
     u8 marker_state;
 } KfTargetCandidateWord12Bytes;
 typedef char kf_target_candidate_word12_bytes_size[
@@ -231,8 +232,8 @@ typedef char kf_target_candidate_sound_trigger_offset[(u32)&((KfTargetCandidate 
 typedef char kf_target_candidate_word_0c_offset[(u32)&((KfTargetCandidate *)0)->word_0c == 0x0c ? 1 : -1];
 typedef char kf_target_candidate_word_0e_offset[(u32)&((KfTargetCandidate *)0)->word_0e == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_word_0e_low_offset[(u32)&((KfTargetCandidate *)0)->word_0e.bytes.low == 0x0e ? 1 : -1];
-typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->unknown_11 == 1 ? 1 : -1];
-typedef char kf_target_candidate_unknown_11_total_offset[(u32)&((KfTargetCandidate *)0)->word_10.bytes.unknown_11 == 0x11 ? 1 : -1];
+typedef char kf_target_candidate_completion_animation_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->completion_animation_id == 1 ? 1 : -1];
+typedef char kf_target_candidate_completion_animation_total_offset[(u32)&((KfTargetCandidate *)0)->word_10.bytes.completion_animation_id == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_attack_damage_component3_offset[
     (u32)&((KfTargetCandidate *)0)->word_10.attack.damage_component3 == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_word_12_offset[(u32)&((KfTargetCandidate *)0)->word_12 == 0x12 ? 1 : -1];
@@ -717,7 +718,7 @@ void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
                    s32 acceleration);
 void actor_update_motion_animation(s32 first, s32 reverse, s32 forward,
                                    s32 fast, s32 slow, s32 phase_step);
-void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...);
+void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 position_mode, ...);
 void actor_update_vertical_motion(void);
 void actor_update_frame(void);
 

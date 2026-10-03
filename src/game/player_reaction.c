@@ -694,7 +694,8 @@ update_reaction_pose:
                     effect++;
                 }
                 if (game_counter_bytes[0x4c] != 0
-                    && (event_state.control.bytes[1] & 8) != 0) {
+                    && (event_state.control.fields.post_death_reload_flags &
+                        KF_EVENT_POST_DEATH_RELOAD_ENABLED) != 0) {
                     actor_disable_type3_transition_actors();
                     player_state.camera_rotation_target.angles[0] = 0;
                     player_state.camera_rotation_target.angles[1] = 0xc00;

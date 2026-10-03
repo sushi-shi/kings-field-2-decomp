@@ -10,10 +10,6 @@
 #include <kf/lib/math.h>
 #include <kf/game/animation.h>
 
-enum {
-    KF_MAP_OBJECT_LOAD_COUNT = 0x15e
-};
-
 RODATA(0x80011484, 0x494)
 
 ADDRESS(0x80035504, 0x30)
@@ -39,15 +35,15 @@ void map_object_pool_reset(void)
         object++;
     } while (remaining-- != 0);
 
-    map_object_state.spawn_sequence_pool_172 = 0;
-    map_object_state.spawn_sequence_pool_168 = 0;
+    map_object_state.placement_drop_sequence = 0;
+    map_object_state.definition_drop_sequence = 0;
     map_object_state.spawn_sequence_pool_15e = 0;
 }
 
 ADDRESS(0x80035590, 0x48)
 void map_object_reset(KfMapObject *object)
 {
-    object->asset_clip_selector = 0x80;
+    object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
     object->phase_q12 = 0;
     object->render_queue_mode = 0xff;
     object->layer_mask = 0;
@@ -68,7 +64,7 @@ void map_object_set_property(s32 index, s32 property, ...)
     KfMapObjectTemplate *template;
     va_list arguments;
 
-    if (index == 0xffff) {
+    if (index == KF_MAP_OBJECT_INDEX_NONE) {
         return;
     }
 
@@ -76,20 +72,20 @@ void map_object_set_property(s32 index, s32 property, ...)
     template = &map_object_state.templates[object->object_id];
     va_start(arguments, property);
     switch (property) {
-    case 0:
+    case KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE:
         object->layer_mask = 0;
         object->tail.fields.unknown_38 = 0;
         if (template->kind == 0x10) {
             object->rotation.vz = 0x400;
         }
         break;
-    case 1:
+    case KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK:
         object->layer_mask = va_arg(arguments, u8);
         break;
     case 2:
         object->tail.fields.unknown_38 = 0xff;
         break;
-    case 3:
+    case KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH:
         object->render_depth_offset = va_arg(arguments, u16);
         break;
     }
@@ -164,7 +160,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
     u32 frame_count = cd_state.frame_count;
     s32 index;
 
-    for (index = KF_MAP_OBJECT_LOAD_COUNT - 1; index != -1; placements++, object++, index--) {
+    for (index = KF_MAP_OBJECT_PLACED_COUNT - 1; index != -1; placements++, object++, index--) {
         const KfMapObjectTemplate *template;
         KfMapOccupancyCell *cell;
         KfMapOccupancyCell *row;
@@ -182,7 +178,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
 
         template = &map_object_state.templates[object->object_id];
         object->action_timer = 0;
-        object->asset_clip_selector = 0x80;
+        object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
         object->phase_q12 = 0;
         object->render_queue_mode = 0xff;
         object->rotation.vz = 0;
@@ -516,7 +512,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
                                          template->interaction_height, point_height) == -1) {
                 continue;
             }
-            if (object->collision_flags & 4) {
+            if (object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE) {
                 return index;
             }
             direction = vector_xz_to_angle(
@@ -575,15 +571,15 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
     u16 *sequence;
     s32 first_index;
 
-    if (source == 0) {
-        sequence = &map_object_state.spawn_sequence_pool_172;
-        first_index = 0x172;
+    if (source == KF_MAP_OBJECT_DROP_FROM_PLACEMENT) {
+        sequence = &map_object_state.placement_drop_sequence;
+        first_index = KF_MAP_OBJECT_PLACEMENT_DROP_FIRST;
     } else {
-        first_index = 0x168;
-        sequence = &map_object_state.spawn_sequence_pool_168;
+        first_index = KF_MAP_OBJECT_DEFINITION_DROP_FIRST;
+        sequence = &map_object_state.definition_drop_sequence;
     }
 
-    object = map_object_effect_pool_acquire(first_index, 10, *sequence);
+    object = map_object_effect_pool_acquire(first_index, KF_MAP_OBJECT_EFFECT_POOL_SIZE, *sequence);
     object->tail.fields.spawn_sequence = (*sequence)++;
     object->object_id = object_id;
     map_object_reset(object);
@@ -633,7 +629,8 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
     u16 sequence;
     u16 angle;
 
-    object = map_object_effect_pool_acquire(0x15e, 10,
+    object = map_object_effect_pool_acquire(KF_MAP_OBJECT_SCATTER_POOL_FIRST,
+                                            KF_MAP_OBJECT_EFFECT_POOL_SIZE,
                                             map_object_state.spawn_sequence_pool_15e);
     map_object_reset(object);
     sequence = map_object_state.spawn_sequence_pool_15e;
@@ -797,7 +794,7 @@ s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 heig
         camera_z < z || camera_z >= z + depth) {
         goto outside;
     }
-    if (height == 0x8000) {
+    if (height == KF_MAP_REGION_HEIGHT_ANY) {
         return 1;
     }
     if (height + 2048 < player_state.camera_position.vy ||
@@ -842,7 +839,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
         if (brighten) {
             target->asset_clip_selector = 0;
         } else {
-            target->asset_clip_selector = 0x80;
+            target->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
         }
         vector_rotate_yxz((const struct KfEulerAngles *)&source->rotation,
                           start_offset, &target->position);

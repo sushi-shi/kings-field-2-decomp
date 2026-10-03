@@ -116,7 +116,7 @@ LAB_8002ab5c:
         candidate_height = cache->result;
 LAB_8002b3b8:
         if (candidate_height < y) {
-          result_flags = result_flags | 4;
+          result_flags = result_flags | KF_COLLISION_HIT_FLOOR;
         }
       }
       break;
@@ -126,7 +126,7 @@ LAB_8002b3b8:
       if (bottom_y < saved_height_limit) {
         candidate_height = (s16)operand[1] + cache->height;
         if (candidate_height < bottom_y) {
-          result_flags = result_flags | 8;
+          result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
         }
         else {
           if (candidate_height < cache->result) {
@@ -141,7 +141,7 @@ LAB_8002b3b8:
     case 0x20:
       next_record = record + 4;
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = 5;
+      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
       if (record_value != 1) {
         if (record_value < 2) {
           if (record_value == 0 &&
@@ -159,18 +159,18 @@ LAB_8002b3b8:
       candidate_height = radius_complement - (s16)*operand;
 LAB_8002af70:
       next_record = record + 4;
-      case_value = 5;
+      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
       if (candidate_height <= (int)z_fraction) goto LAB_8002ada4;
       break;
 LAB_8002afc4:
       next_record = record + 4;
-      case_value = 5;
+      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
       if ((int)z_fraction <= candidate_height) goto LAB_8002ada4;
       break;
     case 0x21:
       next_record = record + 4;
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = 5;
+      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
       switch (record_value) {
       case 1:
         candidate_height = radius_complement - (s16)*operand;
@@ -210,7 +210,7 @@ LAB_8002ada4:
     case 0x22:
       next_record = record + 4;
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = 5;
+      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
       switch (record_value) {
       case 1:
         candidate_height = radius_complement - (s16)*operand;
@@ -241,7 +241,7 @@ LAB_8002aff0:
     case 0x23:
       next_record = record + 4;
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = 6;
+      case_value = KF_COLLISION_HIT_DIAGONAL | KF_COLLISION_HIT_FLOOR;
       switch (record_value) {
       case 1:
         candidate_height = (int)(s16)*operand + radius + -0x1000;
@@ -338,7 +338,7 @@ LAB_8002b38c:
       if (candidate_height < cache->result) {
         cache->result = candidate_height;
         if (candidate_height < y) {
-          result_flags |= 4;
+          result_flags |= KF_COLLISION_HIT_FLOOR;
         }
       }
       break;
@@ -365,10 +365,10 @@ LAB_8002b450:
           saved_height_limit = (s16)operand[3] + KF_COLLISION_CACHE_HEIGHT;
           KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
           if (bottom_y < saved_height_limit) {
-            result_flags = result_flags | 8;
+            result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
           }
           if (y <= KF_COLLISION_CACHE_RESULT) {
-            result_flags = result_flags & 0xfffffffa;
+            result_flags &= ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR);
           }
         }
       }
@@ -390,14 +390,14 @@ LAB_8002b450:
       if ((s32)height_flags < 0) {
         KF_COLLISION_CACHE_RESULT = candidate_height;
         if (candidate_height < y) {
-          result_flags |= 4;
+          result_flags |= KF_COLLISION_HIT_FLOOR;
           special_floor_found = 1;
         }
       }
       if (height_flags & 0x40000000) {
         KF_COLLISION_CACHE_HEIGHT_LIMIT = candidate_height;
         if (bottom_y <= candidate_height) {
-          result_flags |= 8;
+          result_flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
         }
       }
       break;
@@ -851,7 +851,7 @@ check_first_layer:
         if (first_layer->object_index == 0xff) {
             goto clear_first_layer;
         }
-        if (!(first_layer->lighting_index & 0x80)) {
+        if (!(first_layer->lighting_index & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER)) {
             goto check_second_layer;
         }
 set_second_layer:
@@ -911,7 +911,7 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
                     if (first_layer->object_index == 0xff) {
                         goto clear_first_layer;
                     }
-                    if (!(first_layer->lighting_index & 0x80)) {
+                    if (!(first_layer->lighting_index & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER)) {
                         goto check_second_layer;
                     }
     set_second_layer:
@@ -1044,7 +1044,7 @@ void build_camera_map_cell_layer_masks(void)
      * address it from the complete grid using the typed field offset. */
     first_lighting = (u8 *)&bss_801c7540.map_cells + lighting_offset +
         (u32)&((KfMapOccupancyCell *)0)->layer[0].lighting_index;
-    if (*first_lighting & 0x80) {
+    if (*first_lighting & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {
         *render_mask_scan_state.mask_cursor = render_mask_scan_state.first_layer_mask;

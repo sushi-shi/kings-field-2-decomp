@@ -24,7 +24,7 @@ void menu_equipment_list_controller(void)
     KfMenuLabelSuffix initial_rows[10];
     KfMenuLabelSuffix current_rows[10];
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 frame;
     u32 choice;
 
@@ -38,7 +38,7 @@ void menu_equipment_list_controller(void)
     menu.list.list_y = 39;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
@@ -52,7 +52,7 @@ void menu_equipment_list_controller(void)
             menu_build_equipped_label_rows(current_rows);
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -83,7 +83,7 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     selected[6] = player_state.equipped_shield_id;
     selected[7] = player_state.equipped_accessory_id;
     selected[8] = player_state.equipped_extra_id;
-    if (player_state.secondary_magic_shortcut_id == 0xff)
+    if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
         selected[9] = player_state.secondary_item_shortcut_id;
     else
         selected[9] = player_state.secondary_magic_shortcut_id;
@@ -92,13 +92,13 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     for (i = 0; i < 10; rows++, i++, entry++) {
         u32 id = *entry;
 
-        if (id == 0xff)
+        if (id == KF_EQUIPMENT_NONE)
             goto missing;
         if (i == 1)
             goto extra;
         if (i != 9)
             goto base;
-        if (player_state.secondary_magic_shortcut_id == 0xff)
+        if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
             goto base;
     extra:
         *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;
@@ -120,7 +120,7 @@ void menu_equipment_category_controller(s32 category)
     u8 values[32];
     u8 item_ids[32];
     s32 selection = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 first;
     s32 last;
     s32 count;
@@ -158,7 +158,7 @@ void menu_equipment_category_controller(s32 category)
         equipped_id = category == 7 ? player_state.equipped_extra_id
                                     : player_state.equipped_accessory_id;
         first = 53;
-        if (equipped_id != 0xff)
+        if (equipped_id != KF_EQUIPMENT_NONE)
             game_counter_bytes[equipped_id]--;
         last = 59;
         break;
@@ -182,18 +182,18 @@ void menu_equipment_category_controller(s32 category)
         return;
 
     for (;;) {
-        if (selection != 0 || result != -99)
+        if (selection != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (selection == 1) {
             result = menu_preview_choice(&menu, 5, 5, selected_item);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = selected_item;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, item_ids, &selection, &result);
@@ -210,36 +210,36 @@ void menu_equipment_category_controller(s32 category)
     }
 
     menu_release_item_model();
-    if (result != -1) {
+    if (result != KF_MENU_RESULT_CANCELLED) {
         switch (category) {
         case 0:
             player_equip_weapon((u8)result);
             break;
         case 2:
-            player_set_equipment_slot((u8)result, 4);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ARM);
             break;
         case 3:
-            player_set_equipment_slot((u8)result, 0);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_HEAD);
             break;
         case 4:
-            player_set_equipment_slot((u8)result, 1);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_BODY);
             break;
         case 5:
-            player_set_equipment_slot((u8)result, 2);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_LEG);
             break;
         case 6:
-            player_set_equipment_slot((u8)result, 3);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_SHIELD);
             break;
         case 7:
-            player_set_equipment_slot((u8)result, 5);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ACCESSORY);
             break;
         case 8:
-            player_set_equipment_slot((u8)result, 6);
+            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_EXTRA);
             break;
         }
     }
 
-    if ((u32)(category - 7) < 2 && equipped_id != 0xff)
+    if ((u32)(category - 7) < 2 && equipped_id != KF_EQUIPMENT_NONE)
         game_counter_bytes[equipped_id]++;
 }
 
@@ -251,7 +251,7 @@ void menu_choose_primary_magic_shortcut(void)
     s32 values[20];
     u8 indices[20];
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
 
@@ -270,18 +270,18 @@ void menu_choose_primary_magic_shortcut(void)
     menu.list.glyphs_per_entry = 12;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
             result = menu_preview_choice(&menu, 5, 4, 0xff);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = indices[menu.list.selected_index];
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -294,7 +294,7 @@ void menu_choose_primary_magic_shortcut(void)
         }
     }
 
-    if (result != -1)
+    if (result != KF_MENU_RESULT_CANCELLED)
         player_set_primary_magic_shortcut_id(result);
 }
 
@@ -308,7 +308,7 @@ void menu_item_magic_controller(void)
     u8 item_ids[74];
     u8 magic_ids[74];
     s32 selection = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 index;
     s32 frame;
@@ -348,18 +348,18 @@ void menu_item_magic_controller(void)
         return;
 
     for (;;) {
-        if (selection != 0 || result != -99)
+        if (selection != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (selection == 1) {
             result = menu_preview_choice(&menu, 5, 16, selected_item);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = menu.list.selected_index;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, item_ids, &selection, &result);
@@ -376,7 +376,7 @@ void menu_item_magic_controller(void)
         }
     }
 
-    if (result != -1) {
+    if (result != KF_MENU_RESULT_CANCELLED) {
         player_set_secondary_magic_shortcut_id(magic_ids[result]);
         player_set_secondary_item_shortcut_id(item_ids[result]);
     }
@@ -401,8 +401,8 @@ s16 menu_row_prefix_649ec[4] = {89, 4172, 76, -1};
 ADDRESS(0x8001a7fc, 0x9c)
 void menu_show_combat_attributes(void)
 {
-    s32 current = -99;
-    s32 previous = -99;
+    s32 current = KF_MENU_RESULT_PENDING;
+    s32 previous = KF_MENU_RESULT_PENDING;
     s32 frame;
 
     for (;;) {
@@ -413,7 +413,7 @@ void menu_show_combat_attributes(void)
         input_wait_brief_release();
         if (input_read_mark_active()) {
             menu_play_sound_cue(18);
-            current = -1;
+            current = KF_MENU_RESULT_CANCELLED;
         }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
@@ -431,7 +431,7 @@ void menu_item_use_controller(void)
     u8 values[120];
     u8 indices[120];
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
     u8 selected_item;
@@ -447,19 +447,19 @@ void menu_item_use_controller(void)
         return;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
             result = menu_preview_choice(&menu, 1, 7,
                 indices[menu.list.selected_index]);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = selected_item;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, indices, &mode, &result);
@@ -476,6 +476,6 @@ void menu_item_use_controller(void)
     }
 
     menu_release_item_model();
-    if (result != -1)
+    if (result != KF_MENU_RESULT_CANCELLED)
         game_counter_bytes[result]--;
 }

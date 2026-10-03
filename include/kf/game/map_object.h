@@ -9,9 +9,26 @@ enum {
     KF_MAP_OBJECT_ACTION_NONE = 0xff,
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
     KF_MAP_OBJECT_ID_NONE = 0xff,
+    KF_MAP_OBJECT_INDEX_NONE = 0xffff,
+    KF_MAP_OBJECT_STATIC_OBJECT_ZERO = 0x80,
     KF_MAP_OBJECT_SPAWN_SEQUENCE_MODULUS = 0x10000,
     KF_MAP_OBJECT_TEMPLATE_CAPACITY = 320,
+    KF_MAP_OBJECT_PLACED_COUNT = 0x15e,
+    KF_MAP_OBJECT_SCATTER_POOL_FIRST = 0x15e,
+    KF_MAP_OBJECT_DEFINITION_DROP_FIRST = 0x168,
+    KF_MAP_OBJECT_PLACEMENT_DROP_FIRST = 0x172,
+    KF_MAP_OBJECT_EFFECT_POOL_SIZE = 10,
+    KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
+    KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1,
+    KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
+    KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
+};
+
+enum {
+    KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE = 0,
+    KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK = 1,
+    KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH = 3
 };
 
 typedef struct KfMapObjectTemplate {
@@ -134,13 +151,11 @@ typedef struct KfMapObjectPlacement {
     u8 layer_mask;
     u8 region_z;
     u8 region_x;
-    u8 unknown_03;
     u16 object_id;
     s16 rotation_y;
     s16 local_z;
     s16 local_x;
     s16 height;
-    u16 unknown_0e;
     KfMapObjectTailCopyWords tail_words;
 } KfMapObjectPlacement;
 
@@ -589,7 +604,6 @@ typedef struct KfMapObject {
     u16 collision_height;
     s16 render_depth_offset;
     u16 lighting_blend_q12;
-    u8 unknown_12[2];
     VECTOR position;
     SVECTOR rotation;
     SVECTOR scale;
@@ -630,8 +644,8 @@ typedef struct KfMapObjectStateGame {
     KfMapObject *current_collision_object;
     u8 unknown_873c[2];
     u16 spawn_sequence_pool_15e;
-    u16 spawn_sequence_pool_168;
-    u16 spawn_sequence_pool_172;
+    u16 definition_drop_sequence;
+    u16 placement_drop_sequence;
 } KfMapObjectStateGame;
 
 typedef char kf_map_object_state_size[sizeof(KfMapObjectStateGame) == 0x8744 ? 1 : -1];
@@ -643,7 +657,7 @@ typedef char kf_map_object_state_current_collision_offset[
 typedef char kf_map_object_state_counter_873e_offset[
     (u32)&((KfMapObjectStateGame *)0)->spawn_sequence_pool_15e == 0x873e ? 1 : -1];
 typedef char kf_map_object_state_counter_8742_offset[
-    (u32)&((KfMapObjectStateGame *)0)->spawn_sequence_pool_172 == 0x8742 ? 1 : -1];
+    (u32)&((KfMapObjectStateGame *)0)->placement_drop_sequence == 0x8742 ? 1 : -1];
 
 extern KfMapObjectStateGame map_object_state;
 

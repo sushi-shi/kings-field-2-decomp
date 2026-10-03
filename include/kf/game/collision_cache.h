@@ -22,10 +22,16 @@ enum {
     KF_COLLISION_QUERY_PLAYER = 0x80,
     KF_COLLISION_HIT_AXIS = 0x01,
     KF_COLLISION_HIT_DIAGONAL = 0x02,
+    KF_COLLISION_HIT_FLOOR = 0x04,
+    KF_COLLISION_HIT_HEIGHT_LIMIT = 0x08,
     KF_COLLISION_HIT_ACTOR = 0x10,
     KF_COLLISION_HIT_MAP_OBJECT = 0x20,
     KF_COLLISION_HIT_PLAYER = 0x80
 };
+
+/* A layer with this lighting byte flag brings the other cell layer into the
+ * camera mask when its own map object is present. */
+enum { KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80 };
 
 /* Phase-one resource loading copies 0x600 words to this interior BSS range.
  * The variable-length shape records within it remain untyped. */

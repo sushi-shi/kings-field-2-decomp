@@ -55,13 +55,20 @@ s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
         y = position->vy + ((height_flags & 0xfff) >> 1);
         switch (record->type & 7) {
         case 2:
-            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0x31);
+            return collision_query_world(position->vx, y, position->vz, radius,
+                height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS |
+                                  KF_COLLISION_QUERY_MAP_OBJECTS);
         case 1:
-            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0xa1);
+            return collision_query_world(position->vx, y, position->vz, radius,
+                height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_MAP_OBJECTS |
+                                  KF_COLLISION_QUERY_PLAYER);
         case 3:
-            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 0xb1);
+            return collision_query_world(position->vx, y, position->vz, radius,
+                height_flags, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS |
+                                  KF_COLLISION_QUERY_MAP_OBJECTS | KF_COLLISION_QUERY_PLAYER);
         case 4:
-            return collision_query_world(position->vx, y, position->vz, radius, height_flags, 1);
+            return collision_query_world(position->vx, y, position->vz, radius,
+                height_flags, KF_COLLISION_QUERY_SHAPES);
         }
     } else {
         record->cooldown--;
@@ -80,11 +87,11 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
     s32 options = kind & 0xf0000;
     kind &= ~0xf0000;
 
-    if (kind == 0x80) {
+    if (kind == KF_COLLISION_HIT_PLAYER) {
         player_apply_damage(magic_06, magic_08, magic_0a, magic_04,
                       magic_0c, magic_0e, magic_10, magic_12,
                       magic_14, radius, damage_multiplier_tenths, position);
-    } else if (kind == 0x10) {
+    } else if (kind == KF_COLLISION_HIT_ACTOR) {
         s32 actor_index = KF_COLLISION_CACHE_ACTOR_INDEX;
         KfActor *actor = &actor_state.actors[actor_index];
         KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
@@ -2772,7 +2779,7 @@ void effect_update_dispatch(void)
                     u8 actor_index;
                     KfActor *actor;
 
-                    effect_apply_current_magic(0x10010, 5000, 0);
+                    effect_apply_current_magic(0x10000 | KF_COLLISION_HIT_ACTOR, 5000, 0);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
                     trail->actor_index = actor_index;
                     actor = &actor_state.actors[trail->actor_index];

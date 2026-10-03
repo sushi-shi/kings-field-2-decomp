@@ -164,7 +164,7 @@ void event_world_state_save_slot(s32 save_slot)
             break;
         }
         candidate = group->targets[0].pointer;
-        if (candidate != 0 && candidate->type == 0x70) {
+        if (candidate != 0 && candidate->type == KF_TARGET_CANDIDATE_EVENT_STREAM) {
             *write++ = index;
             *write++ = candidate->word_10.bytes.fallback_offset;
             *write++ = candidate->word_12.bytes.marker_state;

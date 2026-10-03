@@ -7,6 +7,7 @@ enum {
     KF_PATTERN_END = 0xff,
     KF_PATTERN_SKIP_BYTE = 0xfe,
     KF_PATTERN_SKIP_OBJECT = 0xff,
+    KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
     KF_PATTERN_MODE_FIRST_LAYER = 1
 };
@@ -51,7 +52,7 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
         if (variant->second_object_index != KF_PATTERN_SKIP_OBJECT) {
             second_layer->object_index = variant->second_object_index;
         }
-        if (layer_flag != KF_PATTERN_END) {
+        if (layer_flag != KF_PATTERN_LIGHTING_UNCHANGED) {
             first_layer->lighting_index =
                 (first_layer->lighting_index & KF_PATTERN_LAYER_FLAG_MASK) |
                 layer_flag;
@@ -62,6 +63,8 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
         patterns++;
     }
 }
+
+enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
 void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
@@ -75,7 +78,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     s32 quarter_turns;
     s32 rows_remaining;
 
-    if (width == 0xff) {
+    if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;
     }
     quarter_turns = -(rotation >> 10) & 3;

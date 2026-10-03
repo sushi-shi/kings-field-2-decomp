@@ -7,11 +7,16 @@
 
 RODATA(0x80011ee8, 0x1ec)
 
+enum {
+    ACTOR_EFFECT_POSITION_ROTATED_OFFSET = -1,
+    ACTOR_EFFECT_POSITION_TWO_VERTICES = -2
+};
+
 /* The script gives either three signed coordinates, two vertex indices and a
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
 ADDRESS(0x8003c614, 0xa70)
-void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...)
+void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 position_mode, ...)
 {
     /* Retail walks O32 argument home slots from the last named word. */
     const s32 *arguments = &position_mode;
@@ -41,14 +46,14 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
     u16 group_index;
     KfTargetGroup *group;
 
-    if (position_mode == -1) {
+    if (position_mode == ACTOR_EFFECT_POSITION_ROTATED_OFFSET) {
         /* Each coordinate occupies an O32 word slot but is read as u16. */
         arguments += 3;
         rotated.vx = *(const u16 *)(arguments - 2);
         rotated.vy = *(const u16 *)(arguments - 1);
         rotated.vz = *(const u16 *)arguments;
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
-    } else if (position_mode == -2) {
+    } else if (position_mode == ACTOR_EFFECT_POSITION_TWO_VERTICES) {
         first = arguments[1];
         actor_sample_rotated_animation_vertex(current, first, &target);
         second = arguments[2];
@@ -85,7 +90,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
         actor_compute_target_direction(current, player, 500, &position, &direction, -1, 0x400, 1);
-        effect = effect_construct_record(effect_id, 0x23, kind, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         if (effect != 0) effect->cooldown = 3;
         break;
     case 0x79:
@@ -111,7 +116,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         position.vx = (s32)((u32)position.vx + (u32)direction.vx);
         position.vy = (s32)((u32)position.vy + (u32)direction.vy);
         position.vz = (s32)((u32)position.vz + (u32)direction.vz);
-        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       &orientation.angles);
         break;
     }
@@ -125,7 +130,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         travel_time = -1;
         goto simple_direction_effect;
     case 2:
-        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
     case 0x16:
@@ -134,13 +139,13 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         goto simple_direction_effect;
     case 0x17:
         parameters = (const u16 *)arguments[1];
-        effect_construct_record(effect_id, 0x23, kind, &position, 0,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0,
                       actor_state.current_actor_slot_index, position_mode, parameters[2]);
         break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
-        effect = effect_construct_record(effect_id, 0x23, 7, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, 0x23, 7, &position, &direction);
         if (effect != 0) effect->cooldown = 5;
         break;
     case 1:
@@ -160,18 +165,18 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
-        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case 0x78:
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
-        effect_construct_record(effect_id, 0x23, kind, &position, 0);
-        effect_construct_record(effect_id, 0x23, kind, &position, 0);
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0);
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0);
         break;
     simple_direction_effect:
-        effect_construct_record(effect_id, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       travel_time, 0x400, 1);
         break;
     case 0x6e:
@@ -186,7 +191,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
-            spawned->lifecycle = 1;
+            spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
             group = &actor_state.target_groups[group_index];
             spawned->unknown_28 = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
@@ -211,7 +216,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
-            spawned->lifecycle = 1;
+            spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
             group = &actor_state.target_groups[group_index];
             spawned->unknown_28 = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
@@ -247,7 +252,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
                                               trajectory_angle, 0xc00, 1);
         orientation.motion.vx = trajectory_angle;
         orientation.motion.vz = 0;
-        effect = effect_construct_record(effect_id, 0x23, kind, &position, &direction,
+        effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                               &orientation.motion);
         if (effect != 0) {
             effect->updates_remaining = 0x32;

@@ -9,6 +9,7 @@
 #include <kf/game/map_object.h>
 #include <kf/game/memory.h>
 #include <kf/game/player.h>
+#include <kf/game/resources.h>
 #include <kf/game/tmd.h>
 
 RODATA(0x80011000, 0x53)
@@ -23,18 +24,18 @@ ADDRESS(0x80015d58, 0x27c)
 void resource_initialize_game_assets(void)
 {
     u8 *source = (u8 *)KF_GAME_RESOURCE_ARENA_BASE;
-    u8 *second_value = &state_8017d118.active_resource_ids[1];
+    u8 *second_value = &state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD];
 
-    state_8017d118.active_resource_ids[3] = 255;
-    state_8017d118.active_resource_ids[2] = 255;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] = 255;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] = 255;
     *second_value = 255;
     state_8017d118.transition_active = 0;
     state_8017d118.transition_phase = 0;
-    state_8017d118.active_resource_ids[0] = 0;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = 0;
     *second_value = 0;
-    state_8017d118.active_resource_ids[2] = 0;
-    state_8017d118.active_resource_ids[3] = 0;
-    state_8017d118.active_resource_ids[4] = 0;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] = 0;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] = 0;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = 0;
     state_8017d118.current_map_region_id = 0;
 
     cd_archive_open(0, "COM\\MO.T");
@@ -83,24 +84,24 @@ void resource_run_initial_transition(void)
 
     state_8017d118.transition_active = 1;
     state_8017d118.transition_phase = 0;
-    first = state_8017d118.active_resource_ids[0];
-    second = state_8017d118.active_resource_ids[1];
-    third = state_8017d118.active_resource_ids[2];
-    fourth = state_8017d118.active_resource_ids[3];
-    fifth = state_8017d118.active_resource_ids[4];
-    state_8017d118.active_resource_ids[0] = 99;
-    state_8017d118.active_resource_ids[1] = 99;
-    state_8017d118.active_resource_ids[2] = 99;
-    state_8017d118.active_resource_ids[3] = 99;
-    state_8017d118.active_resource_ids[4] = 99;
-    state_8017d118.transition_offset_xzy[0] = 127;
-    state_8017d118.transition_offset_xzy[1] = 127;
-    state_8017d118.transition_offset_xzy[2] = 127;
-    state_8017d118.requested_resource_ids[0] = first;
-    state_8017d118.requested_resource_ids[1] = second;
-    state_8017d118.requested_resource_ids[2] = third;
-    state_8017d118.requested_resource_ids[3] = fourth;
-    state_8017d118.requested_resource_ids[4] = fifth;
+    first = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    second = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD];
+    third = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM];
+    fourth = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB];
+    fifth = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    state_8017d118.transition_offset.x = KF_RESOURCE_OFFSET_NO_SHIFT;
+    state_8017d118.transition_offset.z = KF_RESOURCE_OFFSET_NO_SHIFT;
+    state_8017d118.transition_offset.y = KF_RESOURCE_OFFSET_NO_SHIFT;
+    state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = first;
+    state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] = second;
+    state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM] = third;
+    state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] = fourth;
+    state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = fifth;
     do {
         cd_request_yield();
         resource_advance_transition();

@@ -133,6 +133,7 @@ KfRenderGridState	0x24c	supported	asm;build_camera_map_cell_layer_masks;func_800
 KfRenderMaskScanState	0x20	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	observed 32-byte window and layer-mask scan state
 KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_frame	36-byte mutable model render row
 KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
+KfResourceTransitionOffset	0x03	supported	GAME resource_request_transition;resource_advance_transition;resource_run_initial_transition	signed X/Z/Y transition offsets stored in three bytes
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x8003e1b4	minimum observed view through unsigned halfword +0x2a; full extent and stride unknown

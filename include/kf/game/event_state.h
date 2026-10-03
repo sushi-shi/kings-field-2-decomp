@@ -9,6 +9,8 @@ struct KfPlayerViewRotation;
 
 enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
 
+enum { KF_EVENT_POST_DEATH_RELOAD_ENABLED = 0x08 };
+
 /* The startup clear and the event initializer bound one BSS object. The
  * control bytes are still mostly unclassified; the arena and saved offset
  * table are used together by the save/restore routines. */
@@ -23,7 +25,8 @@ typedef char kf_event_control_object_slot_resource_offset[
 
 typedef struct KfEventControlFields {
     u8 highest_requested_map_region_id;
-    u8 unknown_01[0x1b];
+    u8 post_death_reload_flags;
+    u8 unknown_02[0x1a];
     u8 counter_53_decreased;
     u8 unknown_1d[0x0b];
     KfEventControlObjectSlot object_slots[3];
@@ -32,6 +35,8 @@ typedef struct KfEventControlFields {
 } KfEventControlFields;
 typedef char kf_event_control_fields_size[
     sizeof(KfEventControlFields) == 0x40 ? 1 : -1];
+typedef char kf_event_control_post_death_reload_offset[
+    (u32)&((KfEventControlFields *)0)->post_death_reload_flags == 1 ? 1 : -1];
 typedef char kf_event_control_object_slots_offset[
     (u32)&((KfEventControlFields *)0)->object_slots == 0x28 ? 1 : -1];
 typedef char kf_event_control_counter_53_decreased_offset[

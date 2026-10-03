@@ -29,16 +29,18 @@ void player_restore_equipment_effects(void)
     player_recalculate_combat_stats();
 }
 
+enum { PLAYER_RELOAD_INVALID_RESOURCE_ID = 99 };
+
 ADDRESS(0x8002360c, 0x208)
 void player_reload_map_resources(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)
 {
     cd_request_wait_idle();
-    state_8017d118.active_resource_ids[0] = 99;
-    state_8017d118.active_resource_ids[1] = 99;
-    state_8017d118.active_resource_ids[2] = 99;
-    state_8017d118.active_resource_ids[3] = 99;
-    state_8017d118.active_resource_ids[4] = 99;
+    state_8017d118.active_resource_ids[0] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
+    state_8017d118.active_resource_ids[1] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
+    state_8017d118.active_resource_ids[2] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
+    state_8017d118.active_resource_ids[3] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
+    state_8017d118.active_resource_ids[4] = PLAYER_RELOAD_INVALID_RESOURCE_ID;
     resource_request_transition(first, second, third, 255, 255, 127, 127, 127);
     do {
         cd_request_yield();
@@ -74,16 +76,15 @@ void player_reload_map_resources(
 }
 
 enum {
-    KF_PLAYER_VALUE_SCALE_BITS = 6,
-    KF_PLAYER_VALUE_LIMIT = 5000
+    KF_PLAYER_VALUE_SCALE_BITS = 6
 };
 
 ADDRESS(0x80023814, 0x54)
 s32 player_charge_gain_for_rank(s32 value, s32 rank)
 {
     s32 scaled = ((value << KF_PLAYER_VALUE_SCALE_BITS) / (rank + 1)) + 1;
-    if (scaled >= KF_PLAYER_VALUE_LIMIT) {
-        return KF_PLAYER_VALUE_LIMIT;
+    if (scaled >= KF_PLAYER_CHARGE_FULL) {
+        return KF_PLAYER_CHARGE_FULL;
     }
     return scaled;
 }
@@ -113,9 +114,9 @@ enum {
     PLAYER_STATUS_DEFENSE_BONUS = 50,
     PLAYER_STATUS_POWER_BONUS = 30,
     PLAYER_WEAPON_ATTACK_PENALTY = 10,
-    PLAYER_ACCESSORY_FIRST = 0x37,
-    PLAYER_ACCESSORY_SECOND = 0x38,
-    PLAYER_ACCESSORY_THIRD = 0x39,
+    PLAYER_ACCESSORY_ATTACK_BONUS = 0x37,
+    PLAYER_ACCESSORY_MAGIC_BONUS = 0x38,
+    PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS = 0x39,
     PLAYER_BONUS_OVERFLOW_LIMIT = 0x7fff,
     PLAYER_POWER_CAP_THRESHOLD = 1000
 };
@@ -196,19 +197,19 @@ void player_recalculate_combat_stats(void)
         player_state.combat_components[7] -= PLAYER_WEAPON_ATTACK_PENALTY;
         player_state.combat_components[8] -= PLAYER_WEAPON_ATTACK_PENALTY;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_FIRST
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_FIRST) {
+    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_ATTACK_BONUS
+        || player_state.equipped_extra_id == PLAYER_ACCESSORY_ATTACK_BONUS) {
         player_state.attack_components[1] += 5;
         player_state.attack_components[2] += 5;
         player_state.attack_components[3] += 22;
         player_state.attack_components[7] += 12;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_SECOND
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_SECOND) {
+    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_MAGIC_BONUS
+        || player_state.equipped_extra_id == PLAYER_ACCESSORY_MAGIC_BONUS) {
         player_state.magic += 8;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_THIRD
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_THIRD) {
+    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS
+        || player_state.equipped_extra_id == PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS) {
         player_state.physical_power += 8;
     }
 

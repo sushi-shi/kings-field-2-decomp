@@ -4,6 +4,14 @@
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
+enum {
+    KF_RESOURCE_REQUEST_KEEP = 0xff,
+    KF_RESOURCE_REQUEST_START_SEQUENCE = 200,
+    KF_RESOURCE_ACTIVE_UNINITIALIZED = 99,
+    KF_RESOURCE_OFFSET_NO_SHIFT = 127,
+    KF_RESOURCE_TRANSITION_PHASE_PENDING_IO = 0xf0
+};
+
 u32 map_cell_layer_mask(const VECTOR *position);
 u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius);
 s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);

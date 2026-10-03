@@ -23,12 +23,21 @@ enum {
  * KF_COLLISION_PLAYER_HEIGHT). */
 enum {
     KF_PLAYER_HEIGHT = 1700,
+    KF_PLAYER_COLLISION_RADIUS = 800,
     KF_PLAYER_CAMERA_EYE_OFFSET = 1600
 };
 
 enum {
     KF_PLAYER_CHARGE_FULL = 5000,
     KF_WEAPON_ATTACK_INACTIVE = -1
+};
+
+enum {
+    KF_PLAYER_VERTICAL_GROUNDED = 0,
+    KF_PLAYER_VERTICAL_FALLING = 0x10,
+    KF_PLAYER_VERTICAL_STEP_UP = 0x20,
+    KF_PLAYER_VERTICAL_DEEP_FALL = 0x40,
+    KF_PLAYER_VERTICAL_LANDING = 0x50
 };
 
 /* The byte at player +0xcd selects the camera, overlap, damage, and death

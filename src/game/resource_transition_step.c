@@ -10,6 +10,7 @@
 #include <kf/game/memory.h>
 #include <kf/game/player.h>
 #include <kf/game/pool.h>
+#include <kf/game/resources.h>
 #include <psyq/audio.h>
 
 ADDRESS(0x800167bc, 0x14)
@@ -64,46 +65,46 @@ void resource_advance_transition(void)
 
     switch (phase) {
     case 0:
-        if (state_8017d118.requested_resource_ids[0] == 255) {
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == KF_RESOURCE_REQUEST_KEEP) {
             goto phase_three;
         }
-        state_8017d118.transition_phase = 0xf0;
+        state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
         object = map_object_state.objects;
         index = KF_MAP_OBJECT_CAPACITY - 1;
         do {
-            object->action = 255;
+            object->action = KF_MAP_OBJECT_ACTION_NONE;
             index--;
             object++;
         } while (index != -1);
-        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3,
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3,
             (u_long *)cd_stream_work_buffer,
             (KfCdRequestCallback)resource_transition_set_phase_1);
         return;
 
     case 1:
         buffer = cd_stream_work_buffer;
-        state_8017d118.transition_phase = 0xf0;
+        state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
         /* Retail's default table contains 32 pointers to the no-op callback. */
         state_8017d118.active_table = callback_default_table;
-        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3 + 2,
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 2,
             (u_long *)0x8019e138,
             (KfCdRequestCallback)resource_transition_set_phase_2);
         resource_copy_words((u32 *)&bss_801c7540, (u32 *)(buffer + 4), 0x3e80);
         buffer += *(u32 *)buffer + 4;
         resource_copy_words((u32 *)((u8 *)&bss_801c7540 + 0x10000),
             (u32 *)(buffer + 4), 0x600);
-        if (state_8017d118.transition_offset_xzy[0] != 127) {
+        if (state_8017d118.transition_offset.x != KF_RESOURCE_OFFSET_NO_SHIFT) {
             state_8017d118.world_shift_applied = 1;
-            translate_active_world_positions(state_8017d118.transition_offset_xzy[0] << 11,
-                -state_8017d118.transition_offset_xzy[2] * 128,
-                state_8017d118.transition_offset_xzy[1] << 11);
+            translate_active_world_positions(state_8017d118.transition_offset.x << 11,
+                -state_8017d118.transition_offset.y * 128,
+                state_8017d118.transition_offset.z << 11);
         }
-        state_8017d118.current_map_region_id = state_8017d118.requested_resource_ids[0];
+        state_8017d118.current_map_region_id = state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
         return;
 
     case 2:
-        state_8017d118.transition_phase = 0xf0;
-        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3 + 1,
+        state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
             (KfCdRequestCallback)resource_transition_set_phase_3);
         state_8017d118.active_table = (KfCallback *)0x8019e138;
@@ -111,13 +112,13 @@ void resource_advance_transition(void)
 
     case 3:
 phase_three:
-        if (state_8017d118.requested_resource_ids[1] != 255) {
-            state_8017d118.transition_phase = 0xf0;
-            cd_archive_queue_read(1, state_8017d118.requested_resource_ids[1],
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) {
+            state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+            cd_archive_queue_read(1, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD],
                 (u_long *)0x8012da68,
                 (KfCdRequestCallback)resource_transition_set_phase_4);
         }
-        if (state_8017d118.requested_resource_ids[0] != 255) {
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP) {
             stream = cd_stream_work_buffer;
             actor = actor_state.actors;
             index = KF_ACTOR_CAPACITY - 1;
@@ -137,13 +138,13 @@ phase_three:
                 }
                 if (object->action == 0x20) {
                     memory_free((u8 *)object->extra_40.record);
-                    object->action = 255;
+                    object->action = KF_MAP_OBJECT_ACTION_NONE;
                 }
-                object->object_id = 255;
+                object->object_id = KF_MAP_OBJECT_ID_NONE;
                 index--;
                 object++;
             } while (index != -1);
-            if (state_8017d118.transition_offset_xzy[0] != 127) {
+            if (state_8017d118.transition_offset.x != KF_RESOURCE_OFFSET_NO_SHIFT) {
                 KfMapOccupancyCell *cell = &bss_801c7540.map_cells[0][0];
                 index = 0x1900;
                 do {
@@ -153,7 +154,7 @@ phase_three:
                     cell++;
                 } while (index != 0);
                 map_cell_add_layer_occupancy(player_state.camera_position.vx,
-                    player_state.camera_position.vz, 800, 1);
+                    player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, 1);
             }
             resource_copy_words((u32 *)actor_state.target_groups,
                 (u32 *)(stream + 4), 0xcb0);
@@ -164,34 +165,39 @@ phase_three:
             map_object_initialize_from_placements((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;
             map_placed_expand_sources((KfMapPlacedSource *)(stream + 4));
-            event_world_state_restore_slot(state_8017d118.requested_resource_ids[0]);
+            event_world_state_restore_slot(state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]);
             state_8017d118.active_table[5]();
             player_state.force_actor_lifecycle_refresh = 1;
         }
-        if (state_8017d118.requested_resource_ids[1] != 255) return;
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) return;
 
     case 4:
-        if (state_8017d118.requested_resource_ids[2] != 255) {
-            cd_map_stream_read(2, state_8017d118.requested_resource_ids[2]);
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP) {
+            cd_map_stream_read(2, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM]);
         }
         state_8017d118.tmd_object_limit_active = 0;
-        if (state_8017d118.requested_resource_ids[3] != 255 ||
-            state_8017d118.requested_resource_ids[4] != 255) {
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP ||
+            state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP) {
             goto begin_phase_five;
         }
         goto complete;
 
 complete:
-        if (state_8017d118.requested_resource_ids[0] != 255)
-            state_8017d118.active_resource_ids[0] = state_8017d118.requested_resource_ids[0];
-        if (state_8017d118.requested_resource_ids[1] != 255)
-            state_8017d118.active_resource_ids[1] = state_8017d118.requested_resource_ids[1];
-        if (state_8017d118.requested_resource_ids[2] != 255)
-            state_8017d118.active_resource_ids[2] = state_8017d118.requested_resource_ids[2];
-        if (state_8017d118.requested_resource_ids[3] != 255)
-            state_8017d118.active_resource_ids[3] = state_8017d118.requested_resource_ids[3];
-        if (state_8017d118.requested_resource_ids[4] != 255)
-            state_8017d118.active_resource_ids[4] = state_8017d118.requested_resource_ids[4];
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP)
+            state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] =
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP)
+            state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD] =
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD];
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP)
+            state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] =
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM];
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP)
+            state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] =
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB];
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP)
+            state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] =
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
         state_8017d118.transition_active = 0;
         return;
 
@@ -217,21 +223,21 @@ begin_phase_five:
         if (audio_state.vab_slots[1].vab_id != -1) {
             audio_state.vab_slots[1].stream_slot = 0;
         }
-        if (state_8017d118.requested_resource_ids[3] != 255) {
-            audio_queue_vab_stream(4, state_8017d118.requested_resource_ids[3] + 1, 1);
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP) {
+            audio_queue_vab_stream(4, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] + 1, 1);
         }
-        if (state_8017d118.requested_resource_ids[4] != 255) {
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP) {
             cd_archive_queue_read(4,
-                state_8017d118.requested_resource_ids[4] % 100 + 320,
+                state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] % 100 + 320,
                 audio_state.sequence_buffer,
                 (KfCdRequestCallback)resource_transition_set_phase_6);
-            state_8017d118.transition_phase = 0xf0;
+            state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
             return;
         }
         goto complete;
 
     case 6:
-        if (state_8017d118.requested_resource_ids[4] < 100) {
+        if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] < 100) {
             audio_state.sequence_ready = 1;
             audio_start_sequence();
         }

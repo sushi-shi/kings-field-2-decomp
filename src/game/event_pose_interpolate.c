@@ -59,7 +59,7 @@ void scene_position_from_camera_offset(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
     angles.z = 0;
     vector_rotate_yxz(&angles, &offset, output);
     output->vx += player_state.camera_position.vx;
-    y_position = output->vy - 1600;
+    y_position = output->vy - KF_PLAYER_CAMERA_EYE_OFFSET;
     camera_y = height_offset + player_state.camera_position.vy;
     output->vy = y_position + camera_y;
     output->vz += player_state.camera_position.vz;
@@ -101,11 +101,11 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
     actor->animation_phase = phase;
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
-        actor->animation_phase = (step + actor->animation_phase) & 0xfff;
+        actor->animation_phase = (step + actor->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX;
         render_game_frame(0, 0);
     }
 
-    actor->animation_phase = final_phase & 0xfff;
+    actor->animation_phase = final_phase & KF_ACTOR_ANIMATION_PHASE_MAX;
     render_game_frame(0, 0);
 }
 
@@ -190,7 +190,7 @@ void event_target_stream_execute(KfActor *actor)
     if (candidate == 0) {
         return;
     }
-    if (candidate->type != 0x70) {
+    if (candidate->type != KF_TARGET_CANDIDATE_EVENT_STREAM) {
         return;
     }
     restore_state = 0;
@@ -272,7 +272,8 @@ execute:
                 actor_animation_seek_phase(actor, actor->animation_id,
                               phase, 0, actor->animation_step);
             }
-            actor_animation_seek_phase(actor, candidate->animation_id, 0, 0xfff,
+            actor_animation_seek_phase(actor, candidate->animation_id, 0,
+                          KF_ACTOR_ANIMATION_PHASE_MAX,
                           candidate->animation_step);
         }
         menu_show_transition_image(3, candidate->word_0c.value + *cursor);
@@ -289,10 +290,10 @@ advance:
 
 after_script:
     old_counter = game_counter_bytes[0x53];
-    switch (candidate->word_12.bytes.unknown_12 & 0xf0) {
+    switch (candidate->word_12.bytes.post_stream_menu_action & 0xf0) {
     case 0:
         player_render_frame_and_release_pool();
-        menu_item_buy_sell_controller(candidate->word_12.bytes.unknown_12 & 0xf);
+        menu_item_buy_sell_controller(candidate->word_12.bytes.post_stream_menu_action & 0xf);
         break;
     case 0x10:
         player_render_frame_and_release_pool();
@@ -315,8 +316,9 @@ after_script:
         event_state.control.fields.counter_53_decreased = 1;
     }
     event_state.control.fields.stream_actor_definition_id = actor->definition_id;
-    if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
-        actor_animation_seek_phase(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
+    if (restore_state != 0 && candidate->word_10.bytes.completion_animation_id != 0xff) {
+        actor_animation_seek_phase(actor, candidate->word_10.bytes.completion_animation_id, 0,
+                      KF_ACTOR_ANIMATION_PHASE_MAX,
                       candidate->word_0e.value);
         actor->animation_id = saved_state;
     }

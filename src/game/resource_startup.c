@@ -28,7 +28,7 @@ void resource_initialize_game_assets(void)
     state_8017d118.active_resource_ids[2] = 0;
     state_8017d118.active_resource_ids[3] = 0;
     state_8017d118.active_resource_ids[4] = 0;
-    state_8017d118.unknown_09[0] = 0;
+    state_8017d118.current_map_region_id = 0;
 
     cd_archive_open(0, "COM\\MO.T");
     cd_archive_open(3, "COM\\TALK.T");

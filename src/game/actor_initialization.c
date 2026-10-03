@@ -86,10 +86,10 @@ void actor_initialize_from_group(KfActor *actor)
     if ((actor->unknown_05 & 1) == 0) {
         actor->rotation.y = rand() >> 3;
     }
-    actor->unknown_54 = 0;
-    actor->unknown_52 = 0;
-    actor->unknown_50 = 0;
-    actor->unknown_58 = 0;
+    actor->motion.vector.vz = 0;
+    actor->motion.vector.vy = 0;
+    actor->motion.vector.vx = 0;
+    actor->turn_rate = 0;
     actor->lighting_override = 0x47;
     actor->lighting_blend = 0x800;
     if (actor->unknown_28 & 0x80) {
@@ -151,7 +151,7 @@ void actor_pool_clear(void)
     KfActor *actor;
     u16 index;
 
-    actor_state.unknown_93c4 = 0;
+    actor_state.actor_update_frame_count = 0;
     actor = actor_state.actors;
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         actor->slot_state = KF_ACTOR_SLOT_FREE;

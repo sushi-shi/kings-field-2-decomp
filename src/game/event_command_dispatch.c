@@ -524,8 +524,8 @@ void event_map_object_interact(KfMapObject *object, ...)
     s32 first_yaw;
     s32 current_yaw;
     s32 target_yaw;
-    u16 first_pitch;
-    s16 target_pitch;
+    u16 initial_render_depth_offset;
+    s16 target_render_depth_offset;
     s32 fraction;
     u32 previous_buttons;
     u32 buttons;
@@ -550,7 +550,7 @@ void event_map_object_interact(KfMapObject *object, ...)
 
     template = &map_object_state.templates[object->object_id];
     pose = (const KfMapObjectTemplatePoseView *)template;
-    first_pitch = object->unknown_0e;
+    initial_render_depth_offset = object->render_depth_offset;
     if (object->tail.fields.unknown_38 != 0xff) {
         return;
     }
@@ -583,7 +583,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         target_yaw = 0xf00;
     }
     previous_buttons = PadRead(1);
-    target_pitch = (-pose->depth_offset) / 4 - 200;
+    target_render_depth_offset = (-pose->depth_offset) / 4 - 200;
 
     if (spawned_id != -1) {
         scene_position_from_camera_offset(0, 500, 1500, target_yaw,
@@ -608,8 +608,8 @@ void event_map_object_interact(KfMapObject *object, ...)
             scene_pose_interpolate((KfScenePoseView *)object, &first_position,
                           &next_position, &first_angles, &next_angles,
                           fraction);
-            object->unknown_0e = value_approach(
-                (s16)first_pitch, target_pitch, fraction);
+            object->render_depth_offset = value_approach(
+                (s16)initial_render_depth_offset, target_render_depth_offset, fraction);
             player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
                 first_yaw, target_yaw, fraction);
             cd_request_service_vab();
@@ -617,7 +617,7 @@ void event_map_object_interact(KfMapObject *object, ...)
             render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
         }
     }
-    object->unknown_0e = target_pitch;
+    object->render_depth_offset = target_render_depth_offset;
 
     for (;;) {
         buttons = PadRead(1);
@@ -659,7 +659,7 @@ button_pressed:
                       player_state.camera_rotation.angles[1], 0, 0,
                       &first_position);
         first_angles = object->rotation;
-        first_pitch = 0;
+        initial_render_depth_offset = 0;
         goto interpolate_back;
     }
     if (spawned_id != -1) {
@@ -686,8 +686,8 @@ interpolate_back:
                       fraction);
         player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
             current_yaw, first_yaw, fraction);
-        object->unknown_0e = value_approach(
-            target_pitch, (s16)first_pitch, fraction);
+        object->render_depth_offset = value_approach(
+            target_render_depth_offset, (s16)initial_render_depth_offset, fraction);
         render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
     }
     if (remove_object) {

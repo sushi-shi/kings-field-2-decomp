@@ -269,7 +269,8 @@ typedef struct KfPlayerState {
     s32 experience;
     s32 next_level_experience;
     u8 level;
-    u8 unknown_09[2];
+    u8 unknown_09;
+    u8 force_actor_lifecycle_refresh;
     u8 weapon_charge_delay;
     u8 unknown_0c[2];
     u16 movement_speed_adjustment_q12;
@@ -382,6 +383,8 @@ typedef struct KfPlayerState {
 } KfPlayerState;
 
 typedef char kf_player_state_size[sizeof(KfPlayerState) == 0x160 ? 1 : -1];
+typedef char kf_player_lifecycle_refresh_offset[
+    (u32)&((KfPlayerState *)0)->force_actor_lifecycle_refresh == 0x0a ? 1 : -1];
 typedef char kf_player_unknown_97_offset[
     (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[

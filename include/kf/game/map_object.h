@@ -22,7 +22,7 @@ typedef struct KfMapObjectTemplate {
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
-    u16 unknown_0a;
+    u16 initial_render_depth_offset;
     u8 marker_action_05;
     u8 unknown_0d[10];
     u8 marker_action_51;
@@ -39,8 +39,8 @@ typedef char kf_map_object_template_interaction_radius_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_radius == 6 ? 1 : -1];
 typedef char kf_map_object_template_interaction_height_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_height == 8 ? 1 : -1];
-typedef char kf_map_object_template_unknown_0a_offset[
-    (u32)&((KfMapObjectTemplate *)0)->unknown_0a == 0x0a ? 1 : -1];
+typedef char kf_map_object_template_initial_render_depth_offset_offset[
+    (u32)&((KfMapObjectTemplate *)0)->initial_render_depth_offset == 0x0a ? 1 : -1];
 
 /* The scene pose path reads two signed offsets through the same template bytes
  * used by marker actions. Keep both interpretations of the 24-byte record. */
@@ -60,6 +60,25 @@ typedef char kf_map_object_template_pose_depth_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
 typedef char kf_map_object_template_pose_unknown_10_offset[
     (u32)&((KfMapObjectTemplatePoseView *)0)->unknown_10 == 0x10 ? 1 : -1];
+
+/* The collision-probe action interprets the same template bytes as unsigned
+ * vertex, reach, and height values. */
+typedef struct KfMapObjectTemplateCollisionView {
+    u8 unknown_00[0x0c];
+    u16 vertex_index;
+    u16 reach;
+    u16 height;
+    u8 unknown_12[6];
+} KfMapObjectTemplateCollisionView;
+
+typedef char kf_map_object_template_collision_view_size[
+    sizeof(KfMapObjectTemplateCollisionView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
+typedef char kf_map_object_template_collision_vertex_offset[
+    (u32)&((KfMapObjectTemplateCollisionView *)0)->vertex_index == 0x0c ? 1 : -1];
+typedef char kf_map_object_template_collision_reach_offset[
+    (u32)&((KfMapObjectTemplateCollisionView *)0)->reach == 0x0e ? 1 : -1];
+typedef char kf_map_object_template_collision_height_offset[
+    (u32)&((KfMapObjectTemplateCollisionView *)0)->height == 0x10 ? 1 : -1];
 
 /* The placement's final two words copy together into the object tail. */
 typedef struct KfMapObjectTailCopyWords {
@@ -282,7 +301,7 @@ typedef struct KfMapObject {
     u16 action_timer;
     u16 phase_q12;
     u16 collision_height;
-    s16 unknown_0e;
+    s16 render_depth_offset;
     u16 lighting_blend_q12;
     u8 unknown_12[2];
     VECTOR position;

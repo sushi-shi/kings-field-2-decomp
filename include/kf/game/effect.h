@@ -12,6 +12,13 @@ enum {
     KF_EFFECT_USE_PLAYER_MAGIC = 0x10
 };
 
+typedef union KfEffectScaleThreshold {
+    s16 interpolation_start_y;
+    s16 next_probe_phase;
+} KfEffectScaleThreshold;
+
+typedef char kf_effect_scale_threshold_size[sizeof(KfEffectScaleThreshold) == 2 ? 1 : -1];
+
 /* The pool scan and reset visit 128 records at a 72-byte stride. */
 typedef struct KfEffectRecord {
     u8 type;
@@ -36,7 +43,7 @@ typedef struct KfEffectRecord {
     u16 scale_x;
     u16 scale_y;
     u16 scale_z;
-    u8 unknown_32[2];
+    KfEffectScaleThreshold scale_threshold;
     SVECTOR direction;
     u8 unknown_3c[12];
 } KfEffectRecord;
@@ -52,6 +59,7 @@ typedef char kf_effect_lighting_blend_offset[(u32)&((KfEffectRecord *)0)->lighti
 typedef char kf_effect_animation_phase_offset[(u32)&((KfEffectRecord *)0)->animation_phase_q12 == 0x12 ? 1 : -1];
 typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 0x14 ? 1 : -1];
 typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
+typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale_threshold == 0x32 ? 1 : -1];
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
 
 /* Kind 6 copies a position and rotation into each 24-byte trail row. */
@@ -85,6 +93,57 @@ typedef struct KfEffectTrailChildLink {
 
 typedef char kf_effect_trail_child_link_size[sizeof(KfEffectTrailChildLink) == 2 ? 1 : -1];
 typedef char kf_effect_trail_child_lag_offset[(u32)&((KfEffectTrailChildLink *)0)->lag_index == 1 ? 1 : -1];
+
+/* Kind 46 tracks a linked effect before fading its captured Y scale. */
+typedef struct KfEffectKind46State {
+    s8 phase;
+    s8 linked_effect_index;
+    u16 age_q12;
+} KfEffectKind46State;
+
+typedef char kf_effect_kind46_state_size[sizeof(KfEffectKind46State) == 4 ? 1 : -1];
+typedef char kf_effect_kind46_age_offset[(u32)&((KfEffectKind46State *)0)->age_q12 == 2 ? 1 : -1];
+
+/* Kind 8 follows a parent effect and applies a per-tick vertical step. */
+typedef struct KfEffectKind8State {
+    u8 parent_index;
+    u8 unknown_01;
+    u16 vertical_step;
+} KfEffectKind8State;
+
+typedef char kf_effect_kind8_state_size[sizeof(KfEffectKind8State) == 4 ? 1 : -1];
+typedef char kf_effect_kind8_vertical_step_offset[(u32)&((KfEffectKind8State *)0)->vertical_step == 2 ? 1 : -1];
+
+typedef struct KfEffectKind101Motion {
+    u16 scale_step;
+    u16 vertical_step;
+} KfEffectKind101Motion;
+
+typedef char kf_effect_kind101_motion_size[sizeof(KfEffectKind101Motion) == 4 ? 1 : -1];
+typedef char kf_effect_kind101_vertical_step_offset[(u32)&((KfEffectKind101Motion *)0)->vertical_step == 2 ? 1 : -1];
+
+typedef struct KfEffectKind10Targeting {
+    u8 actor_index;
+    u8 emissions_remaining;
+} KfEffectKind10Targeting;
+
+typedef char kf_effect_kind10_targeting_size[sizeof(KfEffectKind10Targeting) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind102Payload {
+    s16 amplitude;
+} KfEffectKind102Payload;
+
+typedef char kf_effect_kind102_payload_size[sizeof(KfEffectKind102Payload) == 2 ? 1 : -1];
+
+/* Kind 105 follows an animation vertex and reports to its parent effect. */
+typedef struct KfEffectKind105Attachment {
+    u8 parent_index;
+    u8 actor_index;
+    s16 vertex_index;
+} KfEffectKind105Attachment;
+
+typedef char kf_effect_kind105_attachment_size[sizeof(KfEffectKind105Attachment) == 4 ? 1 : -1];
+typedef char kf_effect_kind105_vertex_offset[(u32)&((KfEffectKind105Attachment *)0)->vertex_index == 2 ? 1 : -1];
 
 /* The effect sweep indexes this 26-byte row family by the record kind. */
 typedef struct KfMagicRecord {

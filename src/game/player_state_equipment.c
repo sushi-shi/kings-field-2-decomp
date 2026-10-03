@@ -160,7 +160,7 @@ void game_initialize_session(void)
     player_state.compass_enabled = 1;
     player_state.item_preview_enabled = 1;
     player_state.walking_bob_enabled = 1;
-    player_state.unknown_09[1] = 0;
+    player_state.force_actor_lifecycle_refresh = 0;
 }
 
 ADDRESS(0x800251f0, 0x44)
@@ -194,7 +194,7 @@ void player_sync_position_to_map(void)
                       player_state.camera_position.vz,
                       PLAYER_MAP_PROBE_RADIUS, PLAYER_MAP_PROBE_HEIGHT);
     player_update_collision_bounds();
-    player_state.unknown_09[1] = 1;
+    player_state.force_actor_lifecycle_refresh = 1;
     player_state.vertical_motion_state = 0;
     player_state.vertical_velocity = 0;
     player_state.death_state = 0;
@@ -471,9 +471,9 @@ emit_simple_effect:
             case3_z = position.vz + direction.vz;
             goto case3_store_z;
         }
-        position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
-        position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
-        position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
+        position.vx = ((s32)actor->motion.vector.vx << 14) / 600 + actor->position.vx;
+        position.vy = ((s32)actor->motion.vector.vy << 14) / 600 + actor->position.vy;
+        position.vz = ((s32)actor->motion.vector.vz << 14) / 600 + actor->position.vz;
         if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10)) {
             position.vx = actor->position.vx;
             position.vy = actor->position.vy;

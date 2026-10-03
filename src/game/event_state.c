@@ -434,7 +434,7 @@ void card_payload_capture_game_state(u8 *buffer)
     saved->full_mp_timer = player_state.full_mp_timer;
     saved->magic_boost_timer = player_state.magic_boost_timer;
     saved->level = player_state.level;
-    saved->unknown_09 = player_state.unknown_09[0];
+    saved->unknown_09 = player_state.unknown_09;
     saved->equipped_ids[0] = player_state.equipped_head_id;
     saved->equipped_ids[1] = player_state.equipped_body_id;
     saved->equipped_ids[2] = player_state.equipped_arm_id;
@@ -512,7 +512,7 @@ void card_payload_restore_game_state(const u8 *buffer)
     player_state.full_mp_timer = saved->full_mp_timer;
     player_state.magic_boost_timer = saved->magic_boost_timer;
     player_state.level = saved->level;
-    player_state.unknown_09[0] = saved->unknown_09;
+    player_state.unknown_09 = saved->unknown_09;
     player_state.equipped_head_id = saved->equipped_ids[0];
     player_state.equipped_body_id = saved->equipped_ids[1];
     player_state.equipped_arm_id = saved->equipped_ids[2];

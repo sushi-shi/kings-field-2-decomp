@@ -105,7 +105,7 @@ void menu_draw_location_number(void)
     camera_z = player_state.camera_position.vz;
     map_layer = player_state.map_layer_index;
     grid_z = camera_z >> 11;
-    prefix = state_8017d118.unknown_09[0] * 100000
+    prefix = state_8017d118.current_map_region_id * 100000
            + map_layer * 10000
            + (camera_x >> 11) * 100;
     value = prefix + grid_z;

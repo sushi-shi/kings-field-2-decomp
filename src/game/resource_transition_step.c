@@ -68,7 +68,7 @@ void resource_advance_transition(void)
                 -state_8017d118.transition_offset_xzy[2] * 128,
                 state_8017d118.transition_offset_xzy[1] << 11);
         }
-        state_8017d118.unknown_09[0] = state_8017d118.requested_resource_ids[0];
+        state_8017d118.current_map_region_id = state_8017d118.requested_resource_ids[0];
         return;
 
     case 2:
@@ -136,7 +136,7 @@ phase_three:
             map_placed_expand_sources((KfMapPlacedSource *)(stream + 4));
             event_world_state_restore_slot(state_8017d118.requested_resource_ids[0]);
             state_8017d118.active_table[5]();
-            player_state.unknown_09[1] = 1;
+            player_state.force_actor_lifecycle_refresh = 1;
         }
         if (state_8017d118.requested_resource_ids[1] != 255) return;
 
@@ -144,7 +144,7 @@ phase_three:
         if (state_8017d118.requested_resource_ids[2] != 255) {
             cd_map_stream_read(2, state_8017d118.requested_resource_ids[2]);
         }
-        state_8017d118.flag_16 = 0;
+        state_8017d118.tmd_object_limit_active = 0;
         if (state_8017d118.requested_resource_ids[3] != 255 ||
             state_8017d118.requested_resource_ids[4] != 255) {
             goto begin_phase_five;

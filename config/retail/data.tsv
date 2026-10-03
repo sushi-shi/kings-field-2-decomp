@@ -638,10 +638,14 @@ GAME.EXE	0x800679a8	0x571a8	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f1
 GAME.EXE	0x800679b0	0x571b0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f20 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
 GAME.EXE	0x800679b8	0x571b8	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f30 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
 GAME.EXE	0x800679c0	0x571c0	0x8	defined	reviewed-asm		u8[8]	func_8004678c 0x46f40 pointer and retail bytes	four magic IDs then 0xff terminator and padding; source TU WIP
-GAME.EXE	0x800679c8	0x571c8	0x80	unclassified	coverage-gap			payload-complement	unclassified after the five bounded magic-ID lists
-GAME.EXE	0x80067a48	0x57248	0x74	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .data pointer record		u32[29]	29 archive 32-bit section patches;all 29 retail words	contiguous vendor pointer record; original C declaration and linkage unresolved
-GAME.EXE	0x80067abc	0x572bc	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .data pointer record		u32[8]	8 archive 32-bit section patches;all 8 retail words	second contiguous vendor pointer record; original C declaration and linkage unresolved
-GAME.EXE	0x80067adc	0x572dc	0x600	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x800679c8	0x571c8	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
+GAME.EXE	0x80067a48	0x57248	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
+GAME.EXE	0x80067abc	0x572bc	0x20	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[8]	archive CD_intstr XDEF at .data+0x74;8 section patches;retail words exact	32-byte exported CD interrupt string pointer table
+GAME.EXE	0x80067adc	0x572dc	0x100	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[64]	archive section +0x94;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+GAME.EXE	0x80067bdc	0x573dc	0x80	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[32]	archive section +0x194;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+GAME.EXE	0x80067c5c	0x5745c	0x64	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[25]	archive section +0x214;512 Code bytes exact;CD_cw indexes selector*4	SDK CD status table; original static identity unresolved
+GAME.EXE	0x80067cc0	0x574c0	0x1c	unclassified	coverage-gap			payload-complement	exact BIOS.OBJ tail but separate static-object extent unresolved
+GAME.EXE	0x80067cdc	0x574dc	0x400	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800680dc	0x578dc	0x10	defined	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .data		u8[16]	archive 16-byte Code section;retail exact;_spu_init passes 0x10 bytes	SDK initialized fill bytes; original static name unresolved
 GAME.EXE	0x800680ec	0x578ec	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_startaddr at +0;760 archive bytes match retail	reverb mode start-address table, indexed by mode 0..9
 GAME.EXE	0x80068114	0x57914	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_workareasize at +0x28;760 archive bytes match retail	reverb mode work-area-size table, indexed by mode 0..9
@@ -729,8 +733,8 @@ GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	effect_trail_next_slot	u32	reta
 GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;effect_spawn_zero_direction xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 GAME.EXE	0x8006d714	0x5cf14	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d718	0x5cf18	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d71c	0x5cf1c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d718	0x5cf18	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_debug XDEF .sdata+0;unique retail CdlInit prefix	32-bit exported CD debug state
+GAME.EXE	0x8006d71c	0x5cf1c	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_isopen XDEF .sdata+4;unique retail CdlInit prefix	32-bit exported CD open state
 GAME.EXE	0x8006d720	0x5cf20	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlInit
 GAME.EXE	0x8006d727	0x5cf27	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d728	0x5cf28	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlId
@@ -1461,9 +1465,14 @@ OPEN.EXE	0x8003ca84	0x2c284	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .
 OPEN.EXE	0x8003cac4	0x2c2c4	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
 OPEN.EXE	0x8003cb24	0x2c324	0x297	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003cdbb	0x2c5bb	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-OPEN.EXE	0x8003cdda	0x2c5da	0x102	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003cedc	0x2c6dc	0x94	pointer	manual:LIBCD BIOS command/status name pointer table		pointer[37]	37 NUL-terminated ASCII targets;get_alarm,pollintr,CD_cw base-index consumers;OPEN/END strings identical	vendor table; original static name unresolved
-OPEN.EXE	0x8003cf70	0x2c770	0x200	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003cdda	0x2c5da	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003ce5c	0x2c65c	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
+OPEN.EXE	0x8003cedc	0x2c6dc	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
+OPEN.EXE	0x8003cf50	0x2c750	0x20	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[8]	archive CD_intstr XDEF at .data+0x74;8 section patches;retail words exact	32-byte exported CD interrupt string pointer table
+OPEN.EXE	0x8003cf70	0x2c770	0x100	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[64]	archive section +0x94;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+OPEN.EXE	0x8003d070	0x2c870	0x80	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[32]	archive section +0x194;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+OPEN.EXE	0x8003d0f0	0x2c8f0	0x64	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[25]	archive section +0x214;512 Code bytes exact;CD_cw indexes selector*4	SDK CD status table; original static identity unresolved
+OPEN.EXE	0x8003d154	0x2c954	0x1c	unclassified	coverage-gap			payload-complement	exact BIOS.OBJ tail but separate static-object extent unresolved
 OPEN.EXE	0x8003d170	0x2c970	0x30	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: pad.c,v 1.33 1995/03/14 04:44:13 suzu Exp $
 OPEN.EXE	0x8003d1a0	0x2c9a0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003d1a4	0x2c9a4	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data record		u32[6]	archive patches at +0,+8,+c,+10;two zero words and all retail pointer targets exact in OPEN/END	vendor INTR callback record; original C declaration unresolved
@@ -1552,8 +1561,8 @@ OPEN.EXE	0x8003dd09	0x2d509	0x4	string	byte-pattern		ascii	investigation:string-
 OPEN.EXE	0x8003dd0d	0x2d50d	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dd1c	0x2d51c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 OPEN.EXE	0x8003dd20	0x2d520	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dd24	0x2d524	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd28	0x2d528	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dd24	0x2d524	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_debug XDEF .sdata+0;unique retail CdlInit prefix	32-bit exported CD debug state
+OPEN.EXE	0x8003dd28	0x2d528	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_isopen XDEF .sdata+4;unique retail CdlInit prefix	32-bit exported CD open state
 OPEN.EXE	0x8003dd2c	0x2d52c	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlInit
 OPEN.EXE	0x8003dd33	0x2d533	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dd34	0x2d534	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlId
@@ -2248,9 +2257,14 @@ END.EXE	0x80039930	0x29130	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .d
 END.EXE	0x80039970	0x29170	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
 END.EXE	0x800399d0	0x291d0	0x297	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80039c67	0x29467	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-END.EXE	0x80039c86	0x29486	0x102	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80039d88	0x29588	0x94	pointer	manual:LIBCD BIOS command/status name pointer table		pointer[37]	37 NUL-terminated ASCII targets;get_alarm,pollintr,CD_cw base-index consumers;OPEN/END strings identical	vendor table; original static name unresolved
-END.EXE	0x80039e1c	0x2961c	0x200	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x80039c86	0x29486	0x82	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x80039d08	0x29508	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
+END.EXE	0x80039d88	0x29588	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
+END.EXE	0x80039dfc	0x295fc	0x20	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[8]	archive CD_intstr XDEF at .data+0x74;8 section patches;retail words exact	32-byte exported CD interrupt string pointer table
+END.EXE	0x80039e1c	0x2961c	0x100	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[64]	archive section +0x94;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+END.EXE	0x80039f1c	0x2971c	0x80	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[32]	archive section +0x194;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
+END.EXE	0x80039f9c	0x2979c	0x64	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[25]	archive section +0x214;512 Code bytes exact;CD_cw indexes selector*4	SDK CD status table; original static identity unresolved
+END.EXE	0x8003a000	0x29800	0x1c	unclassified	coverage-gap			payload-complement	exact BIOS.OBJ tail but separate static-object extent unresolved
 END.EXE	0x8003a01c	0x2981c	0x30	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: pad.c,v 1.33 1995/03/14 04:44:13 suzu Exp $
 END.EXE	0x8003a04c	0x2984c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003a050	0x29850	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data record		u32[6]	archive patches at +0,+8,+c,+10;two zero words and all retail pointer targets exact in OPEN/END	vendor INTR callback record; original C declaration unresolved
@@ -2309,8 +2323,8 @@ END.EXE	0x8003ab29	0x2a329	0x4	string	byte-pattern		ascii	investigation:string-c
 END.EXE	0x8003ab2d	0x2a32d	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ab3c	0x2a33c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
 END.EXE	0x8003ab40	0x2a340	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ab44	0x2a344	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ab48	0x2a348	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ab44	0x2a344	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_debug XDEF .sdata+0;unique retail CdlInit prefix	32-bit exported CD debug state
+END.EXE	0x8003ab48	0x2a348	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_isopen XDEF .sdata+4;unique retail CdlInit prefix	32-bit exported CD open state
 END.EXE	0x8003ab4c	0x2a34c	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlInit
 END.EXE	0x8003ab53	0x2a353	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ab54	0x2a354	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlId

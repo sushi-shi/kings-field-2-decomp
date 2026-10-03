@@ -207,7 +207,7 @@ map_ordinary_visible:
                                object->asset_clip_selector, object->phase_q12,
                                object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
-                               (s16)object->unknown_0e);
+                               (s16)object->render_depth_offset);
                 object->collision_flags |= 0x80;
             }
             goto map_object_next;

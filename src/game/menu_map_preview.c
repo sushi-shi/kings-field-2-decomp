@@ -21,7 +21,7 @@ void menu_show_map_preview(s32 menu_code)
     s32 u0;
 
     map_index = (menu_code - 0x43) & 0xff;
-    map_offset = state_8017d118.unknown_09[0] + 480;
+    map_offset = state_8017d118.current_map_region_id + 480;
     entry = map_index * 8 + map_offset;
     image = memory_allocate(cd_archive_entry_extent(6, entry, 0));
     cd_archive_read(6, entry, (u_long *)image);

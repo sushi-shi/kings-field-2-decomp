@@ -49,13 +49,13 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
     if (trajectory_solve_motion_between_points(mode, actor->position.vx, actor->position.vy,
         actor->position.vz, target_x, target_y, target_z,
         trajectory_parameter, trajectory_speed, &result,
-        &actor->unknown_68, &actor->unknown_6a) != 0) {
+        &actor->ballistic_horizontal_speed, &actor->ballistic_launch_speed_y) != 0) {
         return -1;
     }
     actor->vertical_motion_state = 0x30;
-    actor->unknown_52 = 1;
-    actor->unknown_6c = trajectory_parameter;
-    actor->unknown_3c = actor->position.vy;
+    actor->motion.ballistic.phase = 1;
+    actor->ballistic_acceleration = trajectory_parameter;
+    actor->ballistic_origin_y = actor->position.vy;
     return result;
 }
 
@@ -95,10 +95,10 @@ state_0: {
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
             actor->vertical_motion_state = 0x20;
-            actor->unknown_52 = -100;
+            actor->motion.vector.vy = -100;
         } else if (next_y > 0) {
             actor->vertical_motion_state = 0x10;
-            actor->unknown_52 = 0;
+            actor->motion.vector.vy = 0;
         }
         return;
     }
@@ -106,7 +106,7 @@ state_0: {
 state_10: {
         s32 next_y;
         s32 collision;
-        next_y = actor->position.vy + actor->unknown_52;
+        next_y = actor->position.vy + actor->motion.vector.vy;
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
@@ -115,10 +115,10 @@ state_10: {
         if (collision == 0) {
         advance_rise:
             actor->position.vy = next_y;
-            actor->unknown_52 += group->unknown_05;
+            actor->motion.vector.vy += group->unknown_05;
             return;
         }
-        if (collision == 0x80 && actor->unknown_52 > 40) {
+        if (collision == 0x80 && actor->motion.vector.vy > 40) {
             player_apply_damage(0, group->unknown_06, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
@@ -130,7 +130,7 @@ state_10: {
             } else {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
-            actor->unknown_52 = 0;
+            actor->motion.vector.vy = 0;
             actor->vertical_motion_state = 0;
             return;
         }
@@ -140,10 +140,10 @@ state_10: {
     }
 
 state_20:
-        actor->position.vy += actor->unknown_52;
-        actor->unknown_52 += 5;
+        actor->position.vy += actor->motion.vector.vy;
+        actor->motion.vector.vy += 5;
         if (KF_COLLISION_CACHE_RESULT < actor->position.vy &&
-            actor->unknown_52 < 0) {
+            actor->motion.vector.vy < 0) {
             return;
         }
         actor->position.vy = KF_COLLISION_CACHE_RESULT;
@@ -154,9 +154,9 @@ state_30: {
         s32 phase;
         s32 next_y;
         s32 collision;
-        phase = actor->unknown_52;
-        next_y = actor->unknown_3c - actor->unknown_6a * phase +
-                 ((actor->unknown_6c * phase * phase) >> 1);
+        phase = actor->motion.ballistic.phase;
+        next_y = actor->ballistic_origin_y - actor->ballistic_launch_speed_y * phase +
+                 ((actor->ballistic_acceleration * phase * phase) >> 1);
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
@@ -164,7 +164,7 @@ state_30: {
                                   actor_state.unknown_93a4);
         if (collision == 0) {
             actor->position.vy = next_y;
-            actor->unknown_52++;
+            actor->motion.ballistic.phase++;
             actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
             return;
         }
@@ -173,7 +173,7 @@ state_30: {
                           0x1000, 10, &actor->position);
         }
         actor->vertical_motion_state = 0x10;
-        actor->unknown_52 = 0;
+        actor->motion.ballistic.phase = 0;
         return;
     }
 }
@@ -185,17 +185,17 @@ s32 actor_damp_horizontal_motion(s32 decay, s32 target)
     s32 length;
 
     if (actor->vertical_motion_state == 0) {
-        length = SquareRoot0(actor->unknown_50 * actor->unknown_50
-                           + actor->unknown_54 * actor->unknown_54);
+        length = SquareRoot0(actor->motion.vector.vx * actor->motion.vector.vx
+                           + actor->motion.vector.vz * actor->motion.vector.vz);
         if (length == 0) {
             return 0;
         }
-        actor->unknown_50 = value_approach(actor->unknown_50, 0,
-            (actor->unknown_50 * decay * 2) / length);
-        actor->unknown_54 = value_approach(actor->unknown_54, 0,
-            (actor->unknown_54 * decay * 2) / length);
+        actor->motion.vector.vx = value_approach(actor->motion.vector.vx, 0,
+            (actor->motion.vector.vx * decay * 2) / length);
+        actor->motion.vector.vz = value_approach(actor->motion.vector.vz, 0,
+            (actor->motion.vector.vz * decay * 2) / length);
     }
-    return actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target);
+    return actor_move_horizontal_with_collision(&actor->motion.vector, target);
 }
 
 ADDRESS(0x8003bae4, 0xbc)
@@ -209,11 +209,11 @@ s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target)
     step_direction = direction;
     vector2i_scale_shift11(speed, &direction);
     vector2i_scale_shift11(step, &step_direction);
-    actor->unknown_50 = value_approach(actor->unknown_50,
+    actor->motion.vector.vx = value_approach(actor->motion.vector.vx,
                                         direction.x, step_direction.x);
-    actor->unknown_54 = value_approach(actor->unknown_54,
+    actor->motion.vector.vz = value_approach(actor->motion.vector.vz,
                                         direction.z, step_direction.z);
-    return actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target);
+    return actor_move_horizontal_with_collision(&actor->motion.vector, target);
 }
 
 ADDRESS(0x8003bba0, 0x130)
@@ -224,20 +224,20 @@ void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
         s32 old_angle;
 
         if (angle_mod_delta_le_half_turn(target_angle, actor->rotation.y)) {
-            actor->unknown_58 += acceleration;
-            if (max_speed < (s16)actor->unknown_58) {
-                actor->unknown_58 = max_speed;
+            actor->turn_rate += acceleration;
+            if (max_speed < (s16)actor->turn_rate) {
+                actor->turn_rate = max_speed;
             }
         } else {
-            actor->unknown_58 -= acceleration;
-            if ((s16)actor->unknown_58 < -max_speed) {
-                actor->unknown_58 = -max_speed;
+            actor->turn_rate -= acceleration;
+            if ((s16)actor->turn_rate < -max_speed) {
+                actor->turn_rate = -max_speed;
             }
         }
 
         old_angle = actor->rotation.y;
-        actor->rotation.y += actor->unknown_58;
-        if ((s16)actor->unknown_58 > 0) {
+        actor->rotation.y += actor->turn_rate;
+        if ((s16)actor->turn_rate > 0) {
             if (angle_mod_delta_le_half_turn(target_angle, old_angle) &&
                 !angle_mod_delta_le_half_turn(target_angle, actor->rotation.y)) {
                 actor->rotation.y = target_angle;
@@ -249,7 +249,7 @@ void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
             }
         }
     } else {
-        actor->unknown_58 = 0;
+        actor->turn_rate = 0;
     }
 }
 
@@ -302,14 +302,14 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
     step_direction = direction;
     vector3s_scale_shift12(speed, &direction);
     vector3s_scale_shift12(step, &step_direction);
-    actor->unknown_50 = value_approach(actor->unknown_50,
+    actor->motion.vector.vx = value_approach(actor->motion.vector.vx,
                                         direction.vx, step_direction.vx);
-    actor->unknown_52 = value_approach(actor->unknown_52,
+    actor->motion.vector.vy = value_approach(actor->motion.vector.vy,
                                         direction.vy, step_direction.vy);
-    actor->unknown_54 = value_approach(actor->unknown_54,
+    actor->motion.vector.vz = value_approach(actor->motion.vector.vz,
                                         direction.vz, step_direction.vz);
-    moved = actor_move_horizontal_with_collision((SVECTOR *)&actor->unknown_50, target) != 0;
-    proposed_y = actor->position.vy + actor->unknown_52;
+    moved = actor_move_horizontal_with_collision(&actor->motion.vector, target) != 0;
+    proposed_y = actor->position.vy + actor->motion.vector.vy;
     radius = actor->collision_radius;
     height_and_flags = actor->collision_height | ((actor->unknown_28 & 0xc000) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,

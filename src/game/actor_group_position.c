@@ -56,7 +56,7 @@ void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast
     KfActor *actor = actor_state.current;
     s32 selected = first;
     s32 magnitude = 0;
-    s16 motion = (s16)actor->unknown_58;
+    s16 motion = (s16)actor->turn_rate;
 
     if (motion > 0) {
         selected = forward;
@@ -65,12 +65,12 @@ void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast
         selected = reverse;
         magnitude = -motion;
     }
-    if (actor->unknown_52 >= 11) {
-        if (magnitude < actor->unknown_52) {
+    if (actor->motion.vector.vy >= 11) {
+        if (magnitude < actor->motion.vector.vy) {
             selected = fast;
         }
-    } else if (actor->unknown_52 < 10) {
-        if (magnitude < -actor->unknown_52) {
+    } else if (actor->motion.vector.vy < 10) {
+        if (magnitude < -actor->motion.vector.vy) {
             selected = slow;
         }
     }

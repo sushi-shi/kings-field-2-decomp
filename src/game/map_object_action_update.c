@@ -167,9 +167,9 @@ void map_object_update_actions(void)
                         player_state.camera_position.vx - object->position.vx,
                         player_state.camera_position.vz - object->position.vz);
                     if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
-                        object->unknown_0e = -200;
+                        object->render_depth_offset = -200;
                     } else {
-                        object->unknown_0e = 0xf0;
+                        object->render_depth_offset = 0xf0;
                     }
                 }
                 if (object->tail.spawn_bytes.spawn_sequence.high != 0xff) {
@@ -179,9 +179,9 @@ void map_object_update_actions(void)
                             player_state.camera_position.vx - linked->position.vx,
                             player_state.camera_position.vz - linked->position.vz);
                         if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
-                            linked->unknown_0e = 0xf0;
+                            linked->render_depth_offset = 0xf0;
                         } else {
-                            linked->unknown_0e = -200;
+                            linked->render_depth_offset = -200;
                         }
                     }
                 } else {
@@ -243,10 +243,10 @@ void map_object_update_actions(void)
                     } else {
                         object->action_timer = 0;
                         object->asset_clip_selector = 0x80;
-                        object->unknown_0e = -50;
+                        object->render_depth_offset = -50;
                         if (linked != 0) {
                             linked->asset_clip_selector = 0x80;
-                            linked->unknown_0e = -50;
+                            linked->render_depth_offset = -50;
                         }
                     }
                 }
@@ -344,7 +344,7 @@ void map_object_update_actions(void)
                 u16 linked_index = object->tail.fields.unknown_3a.value;
                 if (linked_index != 0xffff) {
                     KfMapObject *linked = &map_object_state.objects[linked_index];
-                    linked->unknown_0e += 200;
+                    linked->render_depth_offset += 200;
                 }
                 if (object->tail.fields.unknown_38 == 0xfe) {
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
@@ -712,16 +712,16 @@ void map_object_update_actions(void)
                     object->phase_q12 &= 0xfff;
                 }
                 {
-                    const KfMapObjectTemplatePoseView *pose_template =
-                        (const KfMapObjectTemplatePoseView *)template;
+                    const KfMapObjectTemplateCollisionView *probe_template =
+                        (const KfMapObjectTemplateCollisionView *)template;
                     VECTOR position;
-                    u16 vertex_index = (u16)pose_template->height_offset;
+                    u16 vertex_index = probe_template->vertex_index;
                     u16 reach;
                     u16 height;
                     s32 kind;
                     map_object_sample_world_vertex(object, vertex_index, &position);
-                    reach = (u16)pose_template->depth_offset;
-                    height = pose_template->unknown_10;
+                    reach = probe_template->reach;
+                    height = probe_template->height;
                     kind = collision_query_world(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {

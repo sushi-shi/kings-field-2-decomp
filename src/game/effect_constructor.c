@@ -187,14 +187,17 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 105: {
+        KfEffectKind105Attachment *attachment =
+            (KfEffectKind105Attachment *)&record->unknown_3c[4];
+
         effect_pool_initialize_scaled(record, 0xe, 0x1000);
         record->rotation.vz = rand();
         record->direction.vx += (rand() >> 9) - 32;
         record->direction.vy += (rand() >> 9) - 32;
         record->direction.vz += (rand() >> 9) - 32;
-        record->unknown_3c[4] = va[1];
-        record->unknown_3c[5] = va[2];
-        *(u16 *)&record->unknown_3c[6] = va[3];
+        attachment->parent_index = va[1];
+        attachment->actor_index = va[2];
+        attachment->vertex_index = va[3];
         record->updates_remaining = 70;
         break;
     }
@@ -233,13 +236,18 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->updates_remaining = 100;
         break;
     case 8: {
+        KfEffectKind8State *kind8 =
+            (KfEffectKind8State *)&record->unknown_3c[4];
+
         effect_pool_initialize_scaled(record, 8, 0x1000);
-        record->unknown_3c[4] = va[1];
-        *(u16 *)&record->unknown_3c[6] = va[2];
+        kind8->parent_index = va[1];
+        kind8->vertical_step = va[2];
         record->updates_remaining = 50;
         break;
     }
     case 10: {
+        KfEffectKind10Targeting *targeting =
+            (KfEffectKind10Targeting *)&record->unknown_3c[4];
         const SVECTOR *angles;
 
         record->render_flags = 1;
@@ -254,7 +262,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_x = 3000;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
-        record->unknown_3c[5] = 0;
+        targeting->emissions_remaining = 0;
         record->updates_remaining = 150;
         effect_play_spatial_sound(record, 0x27);
         break;
@@ -480,14 +488,16 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 46: {
+        KfEffectKind46State *kind46 =
+            (KfEffectKind46State *)&record->unknown_3c[4];
         u8 parameter;
 
         effect_pool_initialize_scaled(record, 0x10, 0x1000);
         record->scale_y = 0;
-        record->unknown_3c[4] = 0;
+        kind46->phase = 0;
         parameter = va[1];
         record->direction.vy = 0;
-        record->unknown_3c[5] = parameter;
+        kind46->linked_effect_index = parameter;
         break;
     }
     case 45: {
@@ -597,16 +607,20 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         effect_play_spatial_sound(record, 0x18);
         break;
     case 101: {
+        KfEffectKind101Motion *motion =
+            (KfEffectKind101Motion *)&record->unknown_3c[4];
         s32 scale = va[1];
         s32 render_id = va[4];
 
         effect_pool_initialize_scaled(record, render_id, scale);
-        *(u16 *)&record->unknown_3c[4] = *(u16 *)(va + 2);
+        motion->scale_step = *(u16 *)(va + 2);
         record->updates_remaining = *(u16 *)(va + 3);
-        *(u16 *)&record->unknown_3c[6] = *(u16 *)(va + 5);
+        motion->vertical_step = *(u16 *)(va + 5);
         break;
     }
     case 102: {
+        KfEffectKind102Payload *kind102 =
+            (KfEffectKind102Payload *)&record->unknown_3c[4];
         u16 scale;
         s32 volume;
         s16 slot;
@@ -619,11 +633,11 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         scale = va[1];
         record->scale_z = scale;
         record->scale_x = scale;
-        *(s16 *)&record->unknown_3c[4] = va[2];
+        kind102->amplitude = va[2];
         if ((s32)(effect_kind102_sound_cooldown_frame - cd_state.frame_count) >= 0) {
             break;
         }
-        volume = *(s16 *)&record->unknown_3c[4] / 90;
+        volume = kind102->amplitude / 90;
         effect_kind102_sound_cooldown_frame = cd_state.frame_count + 30;
         if (volume >= 128) {
             volume = 127;

@@ -194,7 +194,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->position.vy = position.vy + 4096;
             spawned->position.vz = position.vz;
             actor_initialize_from_group(spawned);
-            *(SVECTOR *)&spawned->unknown_50 = direction;
+            spawned->motion.vector = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
             actor_select_target_type_in_own_group(spawned, 0x1d);
         }
@@ -219,7 +219,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->position.vy = position.vy + (group->collision_height >> 1);
             spawned->position.vz = position.vz;
             actor_initialize_from_group(spawned);
-            *(SVECTOR *)&spawned->unknown_50 = direction;
+            spawned->motion.vector = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
             actor_select_target_type_in_own_group(spawned, 0x1e);
         }

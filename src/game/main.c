@@ -101,7 +101,7 @@ void game_main_loop(void)
         player_update_frame();
         actor_update_frame();
         effect_pool_sweep();
-        player_state.unknown_09[1] = 0;
+        player_state.force_actor_lifecycle_refresh = 0;
         callback_invoke_slot_04_zero();
         resource_advance_transition();
         player_get_camera_pose(&camera_position, &camera_rotation);

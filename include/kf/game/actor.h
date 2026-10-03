@@ -346,6 +346,23 @@ typedef char kf_actor_tail_72_size[sizeof(KfActorTail72) == 8 ? 1 : -1];
 typedef char kf_actor_tail_72_baseline_offset[
     (u32)&((KfActorTail72 *)0)->motion.baseline == 6 ? 1 : -1];
 
+typedef struct KfActorBallisticPhaseView {
+    s16 motion_x;
+    s16 phase;
+    s16 motion_z;
+    s16 pad;
+} KfActorBallisticPhaseView;
+typedef char kf_actor_ballistic_phase_view_size[
+    sizeof(KfActorBallisticPhaseView) == 8 ? 1 : -1];
+
+typedef union KfActorMotion {
+    SVECTOR vector;
+    KfActorBallisticPhaseView ballistic;
+} KfActorMotion;
+typedef char kf_actor_motion_size[sizeof(KfActorMotion) == 8 ? 1 : -1];
+typedef char kf_actor_ballistic_phase_offset[
+    (u32)&((KfActorMotion *)0)->ballistic.phase == 2 ? 1 : -1];
+
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
 typedef struct KfActor {
@@ -382,26 +399,23 @@ typedef struct KfActor {
     s16 unknown_26;
     u32 unknown_28;
     VECTOR position;
-    s32 unknown_3c;
+    s32 ballistic_origin_y;
     struct KfEulerAngles rotation;
     u8 unknown_46[2];
     u16 unknown_48;
     KfActorHalfword4a unknown_4a;
     u16 unknown_4c;
     u8 unknown_4e[2];
-    s16 unknown_50;
-    s16 unknown_52;
-    s16 unknown_54;
-    u8 unknown_56[2];
-    u16 unknown_58;
+    KfActorMotion motion;
+    u16 turn_rate;
     u8 unknown_5a[2];
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
     s16 unknown_64;
     s16 animation_step;
-    s16 unknown_68;
-    s16 unknown_6a;
-    s16 unknown_6c;
+    s16 ballistic_horizontal_speed;
+    s16 ballistic_launch_speed_y;
+    s16 ballistic_acceleration;
     u8 unknown_6e[2];
     KfActorState70 state_70;
     KfActorTail72 tail_72;
@@ -442,18 +456,24 @@ typedef char kf_actor_collision_height_offset[
     (u32)&((KfActor *)0)->collision_height == 0x1e ? 1 : -1];
 typedef char kf_actor_phase_offset[(u32)&((KfActor *)0)->animation_phase == 0x18 ? 1 : -1];
 typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1 : -1];
-typedef char kf_actor_previous_y_offset[(u32)&((KfActor *)0)->unknown_3c == 0x3c ? 1 : -1];
+typedef char kf_actor_ballistic_origin_y_offset[
+    (u32)&((KfActor *)0)->ballistic_origin_y == 0x3c ? 1 : -1];
 typedef char kf_actor_home_offset_x[(u32)&((KfActor *)0)->unknown_24 == 0x24 ? 1 : -1];
 typedef char kf_actor_home_offset_y[(u32)&((KfActor *)0)->unknown_26 == 0x26 ? 1 : -1];
-typedef char kf_actor_motion_x_offset[(u32)&((KfActor *)0)->unknown_50 == 0x50 ? 1 : -1];
-typedef char kf_actor_motion_z_offset[(u32)&((KfActor *)0)->unknown_54 == 0x54 ? 1 : -1];
+typedef char kf_actor_motion_offset[(u32)&((KfActor *)0)->motion == 0x50 ? 1 : -1];
+typedef char kf_actor_motion_x_offset[(u32)&((KfActor *)0)->motion.vector.vx == 0x50 ? 1 : -1];
+typedef char kf_actor_motion_z_offset[(u32)&((KfActor *)0)->motion.vector.vz == 0x54 ? 1 : -1];
+typedef char kf_actor_turn_rate_offset[(u32)&((KfActor *)0)->turn_rate == 0x58 ? 1 : -1];
 typedef char kf_actor_cache_offset[(u32)&((KfActor *)0)->animation_cache == 0x5c ? 1 : -1];
 typedef char kf_actor_target_offset[(u32)&((KfActor *)0)->target == 0x60 ? 1 : -1];
 typedef char kf_actor_unknown_64_offset[(u32)&((KfActor *)0)->unknown_64 == 0x64 ? 1 : -1];
 typedef char kf_actor_step_offset[(u32)&((KfActor *)0)->animation_step == 0x66 ? 1 : -1];
-typedef char kf_actor_motion_result_68_offset[(u32)&((KfActor *)0)->unknown_68 == 0x68 ? 1 : -1];
-typedef char kf_actor_motion_result_6a_offset[(u32)&((KfActor *)0)->unknown_6a == 0x6a ? 1 : -1];
-typedef char kf_actor_motion_result_6c_offset[(u32)&((KfActor *)0)->unknown_6c == 0x6c ? 1 : -1];
+typedef char kf_actor_ballistic_horizontal_speed_offset[
+    (u32)&((KfActor *)0)->ballistic_horizontal_speed == 0x68 ? 1 : -1];
+typedef char kf_actor_ballistic_launch_speed_y_offset[
+    (u32)&((KfActor *)0)->ballistic_launch_speed_y == 0x6a ? 1 : -1];
+typedef char kf_actor_ballistic_acceleration_offset[
+    (u32)&((KfActor *)0)->ballistic_acceleration == 0x6c ? 1 : -1];
 typedef char kf_actor_state_70_offset[(u32)&((KfActor *)0)->state_70 == 0x70 ? 1 : -1];
 typedef char kf_actor_state_71_offset[(u32)&((KfActor *)0)->state_70.bytes.high == 0x71 ? 1 : -1];
 typedef char kf_actor_tail_72_offset[(u32)&((KfActor *)0)->tail_72 == 0x72 ? 1 : -1];
@@ -483,7 +503,7 @@ typedef struct KfActorStateGame {
     s32 unknown_93b8;
     u32 current_group_index;
     u32 active_actor_count;
-    u32 unknown_93c4;
+    u32 actor_update_frame_count;
     KfActor *actor_93c8;
 } KfActorStateGame;
 
@@ -497,6 +517,8 @@ typedef char kf_actor_state_unknown_93b8_offset[
     (u32)&((KfActorStateGame *)0)->unknown_93b8 == 0x93b8 ? 1 : -1];
 typedef char kf_actor_state_active_actor_count_offset[
     (u32)&((KfActorStateGame *)0)->active_actor_count == 0x93c0 ? 1 : -1];
+typedef char kf_actor_state_update_frame_count_offset[
+    (u32)&((KfActorStateGame *)0)->actor_update_frame_count == 0x93c4 ? 1 : -1];
 
 extern KfActorStateGame actor_state;
 

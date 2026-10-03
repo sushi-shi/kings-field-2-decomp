@@ -43,7 +43,7 @@ void actor_update_behavior(void)
             break;
         case 0x4000:
             if ((interval * actor_state.unknown_93b8 / 3) % interval ==
-                (s32)actor_state.unknown_93c4 % interval) {
+                (s32)actor_state.actor_update_frame_count % interval) {
                 goto play_sound;
             }
             break;
@@ -208,10 +208,10 @@ case3_motion:
             }
             if (actor->tail_72.motion.baseline + target->word_10.value <
                 actor->position.vy) {
-                actor->unknown_52 -= target->word_12.bytes.unknown_12;
+                actor->motion.vector.vy -= target->word_12.bytes.unknown_12;
             } else if (actor->position.vy <
                        actor->tail_72.motion.baseline - target->word_10.value) {
-                actor->unknown_52 += target->word_12.bytes.unknown_12;
+                actor->motion.vector.vy += target->word_12.bytes.unknown_12;
             }
         }
         if (motion_flags & 1) {
@@ -391,8 +391,9 @@ case3_motion:
                 actor->state_70.signed_state = 3;
                 actor_set_animation(target->word_14.bytes[1]);
             } else {
-                actor_turn_and_move_along_heading(actor->rotation.y, actor->unknown_68, 0,
-                              actor->unknown_68,
+                actor_turn_and_move_along_heading(actor->rotation.y,
+                              actor->ballistic_horizontal_speed, 0,
+                              actor->ballistic_horizontal_speed,
                               group->unknown_01[3], 10);
             }
             break;
@@ -401,7 +402,7 @@ case3_motion:
             if (actor->animation_phase >= 0xfff) {
                 actor_reset_target_and_reselect();
             }
-            actor_damp_horizontal_motion(actor->unknown_68 >> 4, 10);
+            actor_damp_horizontal_motion(actor->ballistic_horizontal_speed >> 4, 10);
             break;
         }
         break;
@@ -415,44 +416,44 @@ case3_motion:
         }
         random_value = rand();
         if (random_value < 2048) {
-            actor->unknown_50 += target->word_10.value;
-            if (actor->unknown_50 > target->word_0c.value) {
-                actor->unknown_50 = target->word_0c.value;
+            actor->motion.vector.vx += target->word_10.value;
+            if (actor->motion.vector.vx > target->word_0c.value) {
+                actor->motion.vector.vx = target->word_0c.value;
             }
         } else if (random_value < 4096) {
-            actor->unknown_50 -= target->word_10.value;
-            if (actor->unknown_50 < -(s32)target->word_0c.value) {
-                actor->unknown_50 = -target->word_0c.value;
+            actor->motion.vector.vx -= target->word_10.value;
+            if (actor->motion.vector.vx < -(s32)target->word_0c.value) {
+                actor->motion.vector.vx = -target->word_0c.value;
             }
         }
         random_value = rand();
         if (random_value < 2048) {
-            actor->unknown_54 += target->word_10.value;
-            if (actor->unknown_54 > target->word_0c.value) {
-                actor->unknown_54 = target->word_0c.value;
+            actor->motion.vector.vz += target->word_10.value;
+            if (actor->motion.vector.vz > target->word_0c.value) {
+                actor->motion.vector.vz = target->word_0c.value;
             }
         } else if (random_value < 4096) {
-            actor->unknown_54 -= target->word_10.value;
-            if (actor->unknown_54 < -(s32)target->word_0c.value) {
-                actor->unknown_54 = -target->word_0c.value;
+            actor->motion.vector.vz -= target->word_10.value;
+            if (actor->motion.vector.vz < -(s32)target->word_0c.value) {
+                actor->motion.vector.vz = -target->word_0c.value;
             }
         }
         random_value = rand();
         if (random_value < 2048) {
-            actor->unknown_52 += target->word_10.value;
-            if (actor->unknown_52 > target->word_0c.value) {
-                actor->unknown_52 = target->word_0c.value;
+            actor->motion.vector.vy += target->word_10.value;
+            if (actor->motion.vector.vy > target->word_0c.value) {
+                actor->motion.vector.vy = target->word_0c.value;
             }
         } else if (random_value < 4096) {
-            actor->unknown_52 -= target->word_10.value;
-            if (actor->unknown_52 < -(s32)target->word_0c.value) {
-                actor->unknown_52 = -target->word_0c.value;
+            actor->motion.vector.vy -= target->word_10.value;
+            if (actor->motion.vector.vy < -(s32)target->word_0c.value) {
+                actor->motion.vector.vy = -target->word_0c.value;
             }
         }
-        actor_move_with_collision((SVECTOR *)&actor->unknown_50);
+        actor_move_with_collision(&actor->motion.vector);
         actor_advance_animation_wrapped(actor, target->animation_step);
-        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->unknown_50,
-                                                actor->unknown_54),
+        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->motion.vector.vx,
+                                                actor->motion.vector.vz),
                         target->word_0e.value,
                         group->unknown_01[3]);
         break;
@@ -578,13 +579,13 @@ case3_motion:
             outer = forward;
             vector3s_scale_shift12(target->word_14.value, &forward);
             vector3s_scale_shift12(target->word_18.value, &outer);
-            actor->unknown_50 = value_approach(actor->unknown_50,
+            actor->motion.vector.vx = value_approach(actor->motion.vector.vx,
                                                 forward.vx, outer.vx);
-            actor->unknown_52 = value_approach(actor->unknown_52,
+            actor->motion.vector.vy = value_approach(actor->motion.vector.vy,
                                                 forward.vy, outer.vy);
-            actor->unknown_54 = value_approach(actor->unknown_54,
+            actor->motion.vector.vz = value_approach(actor->motion.vector.vz,
                                                 forward.vz, outer.vz);
-            collision = actor_move_with_collision((SVECTOR *)&actor->unknown_50);
+            collision = actor_move_with_collision(&actor->motion.vector);
             if (collision != 0) {
                 if (collision & 0x80) {
                     player_apply_damage(target->word_0e.value,
@@ -616,10 +617,10 @@ case3_motion:
         default:
             goto case11_turn;
         }
-        actor_move_with_collision((SVECTOR *)&actor->unknown_50);
+        actor_move_with_collision(&actor->motion.vector);
     case11_turn:
-        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->unknown_50,
-                                                actor->unknown_54),
+        actor_turn_toward_angle(actor, vector_xz_to_angle(actor->motion.vector.vx,
+                                                actor->motion.vector.vz),
                         target->word_16.value,
                         group->unknown_01[3]);
         break;
@@ -664,10 +665,10 @@ case3_motion:
         }
         switch (actor->state_70.signed_state) {
         case 0:
-            if ((s16)other->unknown_58 > 0) {
+            if ((s16)other->turn_rate > 0) {
                 actor_set_animation(target->word_0c.bytes.high);
                 actor->state_70.signed_state = 1;
-            } else if ((s16)other->unknown_58 < 0) {
+            } else if ((s16)other->turn_rate < 0) {
                 actor_set_animation(target->word_0c.bytes.low);
                 actor->state_70.signed_state = 2;
             }
@@ -675,14 +676,14 @@ case3_motion:
         case 1:
             if (actor->animation_phase < 2048) {
                 actor->animation_phase += 128;
-            } else if ((s16)other->unknown_58 <= 0) {
+            } else if ((s16)other->turn_rate <= 0) {
                 actor->state_70.signed_state = 3;
             }
             break;
         case 2:
             if (actor->animation_phase < 2048) {
                 actor->animation_phase += 128;
-            } else if ((s16)other->unknown_58 >= 0) {
+            } else if ((s16)other->turn_rate >= 0) {
                 actor->state_70.signed_state = 3;
             }
             break;
@@ -1019,7 +1020,7 @@ case3_motion:
         }
         actor->rotation.x += 128;
         actor->rotation.y += 64;
-        collision = actor_move_with_collision((SVECTOR *)&actor->unknown_50);
+        collision = actor_move_with_collision(&actor->motion.vector);
         if (collision != 0) {
             if (collision & 0x80) {
                 player_apply_damage(target->word_0e.value, target->word_10.value,
@@ -1029,9 +1030,9 @@ case3_motion:
                                target->word_1c.value, 0x1000, 10, &actor->position);
             }
             actor_select_target_type_in_own_group(actor, 3);
-            actor->unknown_54 = 0;
-            actor->unknown_52 = 0;
-            actor->unknown_50 = 0;
+            actor->motion.vector.vz = 0;
+            actor->motion.vector.vy = 0;
+            actor->motion.vector.vx = 0;
             actor->vertical_motion_state = 16;
         }
         break;
@@ -1045,9 +1046,9 @@ case3_motion:
             actor_set_animation(target->unknown_01[0]);
             actor_suspend_vertical_motion();
         }
-        next.vx = actor->position.vx + actor->unknown_50;
-        next.vy = actor->position.vy + actor->unknown_52;
-        next.vz = actor->position.vz + actor->unknown_54;
+        next.vx = actor->position.vx + actor->motion.vector.vx;
+        next.vy = actor->position.vy + actor->motion.vector.vy;
+        next.vz = actor->position.vz + actor->motion.vector.vz;
         collision = collision_query_world(
             next.vx, next.vy, next.vz, actor->collision_radius,
             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
@@ -1066,9 +1067,9 @@ case3_motion:
                            target->word_1c.value, 0x1000, 10, &actor->position);
             goto case30_position;
         } else {
-            actor->unknown_54 = 0;
-            actor->unknown_52 = 0;
-            actor->unknown_50 = 0;
+            actor->motion.vector.vz = 0;
+            actor->motion.vector.vy = 0;
+            actor->motion.vector.vx = 0;
         }
     case30_advance:
         actor_advance_animation_clamped(actor, target->animation_step);
@@ -1124,9 +1125,9 @@ case3_motion:
                 if (actor->unknown_28 & 0x200) {
                     actor_select_target_type_in_own_group(actor, 3);
                 }
-                actor->unknown_50 = other->unknown_50;
-                actor->unknown_52 = other->unknown_52;
-                actor->unknown_54 = other->unknown_54;
+                actor->motion.vector.vx = other->motion.vector.vx;
+                actor->motion.vector.vy = other->motion.vector.vy;
+                actor->motion.vector.vz = other->motion.vector.vz;
                 goto behavior_done;
             }
         }

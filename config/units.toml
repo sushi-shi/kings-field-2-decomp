@@ -540,15 +540,9 @@ source = "src/game/actor_lifecycle_target.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_fixed_curve"
+unit = "game.actor_magic_damage"
 image = "GAME.EXE"
-source = "src/game/actor_fixed_curve.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_player_damage"
-image = "GAME.EXE"
-source = "src/game/actor_player_damage.c"
+source = "src/game/actor_magic_damage.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

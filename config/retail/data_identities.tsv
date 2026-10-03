@@ -69,8 +69,12 @@ GAME.EXE	0x800679a8	0x8	event_magic_unlock_ids_5b	global	load	u8[8]	event_comman
 GAME.EXE	0x800679b0	0x8	event_magic_unlock_ids_5c	global	load	u8[8]	event_command_dispatch	supported	asm;event_scene_command_dispatch command 0x5c;retail bytes	Ordered magic IDs unlocked by scene command 0x5c; 0xff terminator
 GAME.EXE	0x800679b8	0x8	event_magic_unlock_ids_5d	global	load	u8[8]	event_command_dispatch	supported	asm;event_scene_command_dispatch command 0x5d;retail bytes	Ordered magic IDs unlocked by scene command 0x5d; 0xff terminator
 GAME.EXE	0x800679c0	0x8	event_magic_unlock_ids_5e	global	load	u8[8]	event_command_dispatch	supported	asm;event_scene_command_dispatch command 0x5e;retail bytes	Ordered magic IDs unlocked by scene command 0x5e; 0xff terminator
-GAME.EXE	0x80067a48	0x74	DAT_80067a48	unknown	load	u32[29]		address-only	Psy-Q 3.0 LIBCD BIOS .data 116-byte pointer record;29 exact archive section patches;retail words	vendor pointer record; original C declaration and linkage unresolved
-GAME.EXE	0x80067abc	0x20	DAT_80067abc	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS second .data 32-byte pointer record;8 exact archive section patches;retail words	vendor pointer record; original C declaration and linkage unresolved
+GAME.EXE	0x800679c8	0x80	DAT_800679c8	static	load	u32[32]	LIBCD SYS.OBJ	supported	archive .data 128 bytes exact;cd_cw indexed xref	vendor CD selector table; original static name unresolved
+GAME.EXE	0x80067a48	0x74	CD_comstr	global	load	pointer[29]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0;29 section patches;retail pointer words exact	Psy-Q CD command string pointer table
+GAME.EXE	0x80067abc	0x20	CD_intstr	global	load	pointer[8]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0x74;8 section patches;retail pointer words exact	Psy-Q CD interrupt string pointer table
+GAME.EXE	0x80067adc	0x100	DAT_80067adc	static	load	u32[64]	LIBCD BIOS.OBJ	supported	archive .data section +0x94;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+GAME.EXE	0x80067bdc	0x80	DAT_80067bdc	static	load	u32[32]	LIBCD BIOS.OBJ	supported	archive .data section +0x194;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+GAME.EXE	0x80067c5c	0x64	DAT_80067c5c	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
 GAME.EXE	0x800680dc	0x10	DAT_800680dc	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
 GAME.EXE	0x800680ec	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses
 GAME.EXE	0x80068114	0x28	_spu_rev_workareasize	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0x28;exact 760-byte .data;SDK ten modes	reverb mode work-area sizes
@@ -115,8 +119,8 @@ GAME.EXE	0x8006d6f4	0x8	map_object_motion_action17_start_offset	global	load	SVEC
 GAME.EXE	0x8006d6fc	0x8	map_object_motion_action17_end_offset	global	load	SVECTOR	map_object_action_update	supported	retail bytes;independent HI/LO pair 0x8003858c/0x80038590;map_object_step_offset_motion end offset	fourth of four adjacent motion offsets; original linkage and TU WIP
 GAME.EXE	0x8006d704	0x4	effect_trail_next_slot	global	load	u32	effect_constructor	candidate	retail zero word;func_80040308 reads and writes modulo four	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x8	effect_zero_direction	static	load	SVECTOR	effect_spawn_zero_direction	supported	asm;single xref;retail zero bytes;constructor argument	zero vector passed as initial direction by effect_spawn_zero_direction
-GAME.EXE	0x8006d718	0x4	DAT_8006d718	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d71c	0x4	DAT_8006d71c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d718	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
+GAME.EXE	0x8006d71c	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
 GAME.EXE	0x8006d778	0x20	DAT_8006d778	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata eight-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7a0	0x18	DAT_8006d7a0	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata six-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d7b8	0x4	DAT_8006d7b8	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
@@ -244,7 +248,12 @@ OPEN.EXE	0x8002ba50	0x10000	CF_DVLC	global	load	u8[0x10000]	LIBPRESS DVLC.OBJ	su
 OPEN.EXE	0x8003ba50	0x1000	CF2_DVLC	global	load	u8[0x1000]	LIBPRESS DVLC.OBJ	supported	archive XDEF +0x11000;exact 0x12000 bytes;MDEC indexed xrefs	VLC decoder table with 8-byte records
 OPEN.EXE	0x8003ca84	0x40	DAT_8003ca84	unknown	load	pointer[16]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ .data 16 ordered 32-bit patches;retail words match	vendor SYS pointer record; original C declaration unresolved
 OPEN.EXE	0x8003cac4	0x60	DAT_8003cac4	unknown	load	pointer[24]		address-only	Psy-Q 3.0 LIBGPU OTAG.OBJ .data 24 ordered 32-bit patches;retail words exact	vendor OTAG pointer record; original C declaration unresolved
-OPEN.EXE	0x8003cedc	0x94	DAT_8003cedc	unknown	load	pointer[37]		address-only	LIBCD BIOS get_alarm,pollintr,CD_cw base-index uses;37 valid ASCII targets;OPEN/END order identical	CD command/status name table; original static name unresolved
+OPEN.EXE	0x8003ce5c	0x80	DAT_8003ce5c	static	load	u32[32]	LIBCD SYS.OBJ	supported	archive .data 128 bytes exact;cd_cw indexed xref	vendor CD selector table; original static name unresolved
+OPEN.EXE	0x8003cedc	0x74	CD_comstr	global	load	pointer[29]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0;29 section patches;retail pointer words exact	Psy-Q CD command string pointer table
+OPEN.EXE	0x8003cf50	0x20	CD_intstr	global	load	pointer[8]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0x74;8 section patches;retail pointer words exact	Psy-Q CD interrupt string pointer table
+OPEN.EXE	0x8003cf70	0x100	DAT_8003cf70	static	load	u32[64]	LIBCD BIOS.OBJ	supported	archive .data section +0x94;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+OPEN.EXE	0x8003d070	0x80	DAT_8003d070	static	load	u32[32]	LIBCD BIOS.OBJ	supported	archive .data section +0x194;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+OPEN.EXE	0x8003d0f0	0x64	DAT_8003d0f0	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
 OPEN.EXE	0x8003d1a4	0x18	DAT_8003d1a4	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 24-byte record;four archive patches and two zero words match retail	vendor INTR callback record; original C declaration unresolved
 OPEN.EXE	0x8003d1bc	0x2c	DAT_8003d1bc	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
 OPEN.EXE	0x8003d1e8	0x4	DAT_8003d1e8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -291,8 +300,8 @@ OPEN.EXE	0x8003dc38	0x4	DAT_8003dc38	unknown	load	pointer		address-only	data.tsv
 OPEN.EXE	0x8003dc3c	0x4	DAT_8003dc3c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dc40	0x4	DAT_8003dc40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dc44	0x4	DAT_8003dc44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd24	0x4	DAT_8003dd24	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd28	0x4	DAT_8003dd28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003dd24	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
+OPEN.EXE	0x8003dd28	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
 OPEN.EXE	0x8003dd84	0x4	DAT_8003dd84	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dd88	0x4	DAT_8003dd88	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dd8c	0x4	DAT_8003dd8c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -425,7 +434,12 @@ END.EXE	0x800288fc	0x10000	CF_DVLC	global	load	u8[0x10000]	LIBPRESS DVLC.OBJ	sup
 END.EXE	0x800388fc	0x1000	CF2_DVLC	global	load	u8[0x1000]	LIBPRESS DVLC.OBJ	supported	archive XDEF +0x11000;exact 0x12000 bytes;MDEC indexed xrefs	VLC decoder table with 8-byte records
 END.EXE	0x80039930	0x40	DAT_80039930	unknown	load	pointer[16]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ .data 16 ordered 32-bit patches;retail words match	vendor SYS pointer record; original C declaration unresolved
 END.EXE	0x80039970	0x60	DAT_80039970	unknown	load	pointer[24]		address-only	Psy-Q 3.0 LIBGPU OTAG.OBJ .data 24 ordered 32-bit patches;retail words exact	vendor OTAG pointer record; original C declaration unresolved
-END.EXE	0x80039d88	0x94	DAT_80039d88	unknown	load	pointer[37]		address-only	LIBCD BIOS get_alarm,pollintr,CD_cw base-index uses;37 valid ASCII targets;OPEN/END order identical	CD command/status name table; original static name unresolved
+END.EXE	0x80039d08	0x80	DAT_80039d08	static	load	u32[32]	LIBCD SYS.OBJ	supported	archive .data 128 bytes exact;cd_cw indexed xref	vendor CD selector table; original static name unresolved
+END.EXE	0x80039d88	0x74	CD_comstr	global	load	pointer[29]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0;29 section patches;retail pointer words exact	Psy-Q CD command string pointer table
+END.EXE	0x80039dfc	0x20	CD_intstr	global	load	pointer[8]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0x74;8 section patches;retail pointer words exact	Psy-Q CD interrupt string pointer table
+END.EXE	0x80039e1c	0x100	DAT_80039e1c	static	load	u32[64]	LIBCD BIOS.OBJ	supported	archive .data section +0x94;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+END.EXE	0x80039f1c	0x80	DAT_80039f1c	static	load	u32[32]	LIBCD BIOS.OBJ	supported	archive .data section +0x194;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
+END.EXE	0x80039f9c	0x64	DAT_80039f9c	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
 END.EXE	0x8003a050	0x18	DAT_8003a050	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 24-byte record;four archive patches and two zero words match retail	vendor INTR callback record; original C declaration unresolved
 END.EXE	0x8003a068	0x2c	DAT_8003a068	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
 END.EXE	0x8003a094	0x4	DAT_8003a094	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -465,8 +479,8 @@ END.EXE	0x8003aac8	0x4	DAT_8003aac8	unknown	load	pointer		address-only	data.tsv:
 END.EXE	0x8003aacc	0x4	DAT_8003aacc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aad0	0x4	DAT_8003aad0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aad4	0x4	DAT_8003aad4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ab44	0x4	DAT_8003ab44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ab48	0x4	DAT_8003ab48	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ab44	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
+END.EXE	0x8003ab48	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
 END.EXE	0x8003aba4	0x4	DAT_8003aba4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aba8	0x4	DAT_8003aba8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003abac	0x4	DAT_8003abac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

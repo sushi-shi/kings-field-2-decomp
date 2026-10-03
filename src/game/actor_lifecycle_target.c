@@ -38,7 +38,7 @@ void actor_update_lifecycle_for_player_range(void)
             }
         } else {
             if (distance < (group->activation_range_cells << KF_FIXED11_BITS) &&
-                player_state.unknown_09[1] == 0) {
+                player_state.force_actor_lifecycle_refresh == 0) {
                 goto set_dormant;
             }
             if (slot_state != 1) {

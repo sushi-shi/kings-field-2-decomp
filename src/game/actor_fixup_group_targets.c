@@ -15,15 +15,15 @@ void actor_update_frame(void)
     do {
         if (actor->slot_state != KF_ACTOR_SLOT_FREE) {
             actor_bind_current(actor);
-            if (((actor_state.unknown_93c4 & 3) ==
+            if (((actor_state.actor_update_frame_count & 3) ==
                  (actor_state.unknown_93b8 & 3)) ||
-                player_state.unknown_09[1] != 0 ||
+                player_state.force_actor_lifecycle_refresh != 0 ||
                 player_state.death_state == 1) {
                 actor_update_lifecycle_for_player_range();
             }
 
             if (actor->lifecycle == 1) {
-                if ((actor_state.unknown_93c4 & 3) ==
+                if ((actor_state.actor_update_frame_count & 3) ==
                     (actor_state.active_actor_count & 3)) {
                     actor_select_target_for_player_distance();
                 }
@@ -51,7 +51,7 @@ void actor_update_frame(void)
         actor_state.unknown_93b8++;
     } while (actor_state.unknown_93b8 < KF_ACTOR_CAPACITY);
 
-    actor_state.unknown_93c4++;
+    actor_state.actor_update_frame_count++;
     actor_bind_current(NULL);
 }
 

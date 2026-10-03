@@ -106,9 +106,9 @@ apply:
     state_8017d118.world_shift_applied = 0;
     state_8017d118.transition_offset_xzy[2] = offset_y;
     if (second == 255) {
-        state_8017d118.flag_16 = 0;
+        state_8017d118.tmd_object_limit_active = 0;
     } else {
-        state_8017d118.flag_16 = 1;
+        state_8017d118.tmd_object_limit_active = 1;
     }
     return;
 

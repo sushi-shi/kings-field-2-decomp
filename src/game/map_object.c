@@ -56,7 +56,7 @@ void map_object_reset(KfMapObject *object)
     object->rotation.vy = 0;
     object->scale.vx = object->scale.vy = object->scale.vz = 0x1000;
     object->action = KF_MAP_OBJECT_ACTION_NONE;
-    object->unknown_0e = 0;
+    object->render_depth_offset = 0;
     object->lighting_override_index = 0xff;
     object->lighting_blend_q12 = 0;
 }
@@ -90,7 +90,7 @@ void map_object_set_property(s32 index, s32 property, ...)
         object->tail.fields.unknown_38 = 0xff;
         break;
     case 3:
-        object->unknown_0e = va_arg(arguments, u16);
+        object->render_depth_offset = va_arg(arguments, u16);
         break;
     }
     va_end(arguments);
@@ -192,7 +192,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->scale.vx = 0x1000;
         object->layer_mask = placements->layer_mask;
         object->collision_flags = template->collision_flags;
-        object->unknown_0e = template->unknown_0a;
+        object->render_depth_offset = template->initial_render_depth_offset;
         object->lighting_override_index = 0xff;
         object->lighting_blend_q12 = 0;
         if (object->collision_flags & 0x20) {

@@ -948,8 +948,9 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s16 fixed_
     u32 remaining;
     u32 blend_bits;
 
+    blend_bits = (u32)blend_mode;
     object = tmd_get_object(object_index);
-    blend_bits = (u32)blend_mode << 5;
+    blend_bits <<= 5;
     packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
              (object->primitive_offset + KF_TMD_HEADER_BYTES);
     normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +

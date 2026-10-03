@@ -622,12 +622,7 @@ GAME.EXE	0x80068114	0x57914	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OB
 GAME.EXE	0x8006813c	0x5793c	0x2a8	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u8[10][0x44]	archive 760-byte Code section;retail mode*0x44 memcpy from +0x50	ten reverb preset records; original static symbol unresolved
 GAME.EXE	0x800683e4	0x57be4	0x6f	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: s_crwa.c,v 1.8 1995/03/11 08:24:16 kaol Exp $ : \tCopyright (C) by 1994-95 Sony Computer Entertainment Inc.
 GAME.EXE	0x80068453	0x57c53	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068454	0x57c54	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068456	0x57c56	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068458	0x57c58	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068464	0x57c64	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068466	0x57c66	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068468	0x57c68	0x1c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80068454	0x57c54	0x30	defined	manual:exact Psy-Q 3.0 LIBSND SSINIT.OBJ .data		u8[0x30]	archive 48-byte Code section matches retail exactly;_SsInit relocations to section +0 and +0x10	vendor section fragment; original static-object split unresolved
 GAME.EXE	0x80068484	0x57c84	0x182	defined	manual:exact Psy-Q 3.0 LIBSPU S_N2P.OBJ .data		u16[193]	archive 386-byte Code section exact in retail;note-to-pitch indexed lhu	static note-to-pitch ratio table; original static symbol unresolved
 GAME.EXE	0x80068606	0x57e06	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80068608	0x57e08	0x30	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[12]	archive K_cor_tbl XDEF .data+0;unique exact 100-byte retail section	first correlation coefficient table; original element signedness unresolved
@@ -875,7 +870,7 @@ GAME.EXE	0x8006db88	0x5d388	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006db8c	0x5d38c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db90	0x5d390	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006db94	0x5d394	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db98	0x5d398	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db98	0x5d398	0x4	defined	reviewed	_svm_envx_ptr	undefined4	Psy-Q 3.0 LIBSND VMANAGER.OBJ local .sbss+0;retail SpuVmFlush xrefs	private 16-slot envelope-index cursor; physical linked bytes are zero
 GAME.EXE	0x8006db9c	0x5d39c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dba0	0x5d3a0	0x4	defined	reviewed	VBLNKCallback	pointer	Psy-Q 3.0 LIBETC INTR_VB.OBJ local .sbss+0;retail VBLNKInit/Stop xrefs	private VBlank callback pointer; physical linked bytes are zero
 GAME.EXE	0x8006dba4	0x5d3a4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

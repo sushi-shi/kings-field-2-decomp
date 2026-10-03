@@ -80,10 +80,7 @@ GAME.EXE	0x800680dc	0x10	DAT_800680dc	static	load	u8[16]	LIBSPU SPU.OBJ	supporte
 GAME.EXE	0x800680ec	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses
 GAME.EXE	0x80068114	0x28	_spu_rev_workareasize	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0x28;exact 760-byte .data;SDK ten modes	reverb mode work-area sizes
 GAME.EXE	0x8006813c	0x2a8	DAT_8006813c	static	load	u8[10][0x44]	LIBSPU S_SRMP.OBJ	supported	exact archive bytes;retail mode*0x44 memcpy	ten mode preset records; original static identity unresolved
-GAME.EXE	0x80068454	0x2	DAT_80068454	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80068456	0x2	DAT_80068456	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80068464	0x2	DAT_80068464	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x80068466	0x2	DAT_80068466	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80068454	0x30	DAT_80068454	unknown	load	u8[0x30]	LIBSND SSINIT.OBJ	supported	exact 48-byte archive .data section;_SsInit section-relative relocations at +0 and +0x10	vendor section fragment; original static-object split and names unresolved
 GAME.EXE	0x80068484	0x182	DAT_80068484	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
 GAME.EXE	0x80068608	0x30	K_cor_tbl	global	load	u32[12]	LIBGTE COR.OBJ	supported	archive XDEF .data+0;unique exact 100-byte retail section	Psy-Q correlation coefficient table; original element signedness unresolved
 GAME.EXE	0x80068638	0x18	H_cor_tbl	global	load	u32[6]	LIBGTE COR.OBJ	supported	archive XDEF .data+0x30;text relocation to base	Psy-Q correlation coefficient table; original element signedness unresolved
@@ -205,7 +202,7 @@ GAME.EXE	0x8006db78	0x4	DAT_8006db78	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006db80	0x4	DAT_8006db80	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db88	0x4	DAT_8006db88	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db90	0x4	DAT_8006db90	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006db98	0x4	DAT_8006db98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006db98	0x4	_svm_envx_ptr	static	load	undefined4	LIBSND VMANAGER.OBJ	supported	Psy-Q 3.0 LIBSND VMANAGER.OBJ local _svm_envx_ptr at .sbss+0;exact SpuVmFlush section patches and retail lw/sw	16-slot envelope-index cursor incremented and masked with 0xf; original signedness unresolved
 GAME.EXE	0x8006dba0	0x4	VBLNKCallback	static	load	pointer	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB.OBJ local VBLNKCallback at .sbss+0;exact VBLNKInit/Stop text and section patches	VBlank callback pointer initialized to zero; original C signature unresolved
 GAME.EXE	0x8006dba8	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_buf at .sbss+0;exact PadInit/PadRead text and section patches	raw pad word set to -1, passed by address to PAD_init, and read by PadRead
 GAME.EXE	0x8006dbb0	0x4	pad_status	static	load	undefined4	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_status at .sbss+8;exact PadInit text and section patch	pad status word set to zero on init; further use and signedness unresolved

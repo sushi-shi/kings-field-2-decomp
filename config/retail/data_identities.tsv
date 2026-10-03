@@ -376,7 +376,11 @@ OPEN.EXE	0x8003ded8	0x4	DAT_8003ded8	unknown	load	undefined4		address-only	data.
 OPEN.EXE	0x8003dee0	0x4	DAT_8003dee0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dee8	0x4	DAT_8003dee8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003def0	0x4	DAT_8003def0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003def8	0x4	DAT_8003def8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003def8	0x4	tim	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local tim at .sbss+0;exact OpenTIM text and retail store	TIM word cursor: OpenTIM stores its argument; ReadTIM advances it by a word count
+OPEN.EXE	0x8003df00	0x4	v_ofs	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local v_ofs at .sbss+8;retail TMD parser xrefs	current TMD vertex-table pointer; original C pointer type unresolved
+OPEN.EXE	0x8003df08	0x4	n_ofs	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local n_ofs at .sbss+0x10;retail TMD parser xrefs	current TMD normal-table pointer; original C pointer type unresolved
+OPEN.EXE	0x8003df10	0x4	t_prim	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local t_prim at .sbss+0x18;retail TMD parser xrefs	current TMD primitive-table pointer; original C pointer type unresolved
+OPEN.EXE	0x8003df18	0x4	n_prim	static	load	u32	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local n_prim at .sbss+0x20;retail TMD parser store	current TMD primitive count returned by get_tmd_addr
 OPEN.EXE	0x8003df20	0x1	DAT_8003df20	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003df21	0x1	DAT_8003df21	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003df28	0x1	DAT_8003df28	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

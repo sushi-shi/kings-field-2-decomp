@@ -1587,8 +1587,16 @@ OPEN.EXE	0x8003dee8	0x2d6e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 OPEN.EXE	0x8003deec	0x2d6ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003def0	0x2d6f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003def4	0x2d6f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003def8	0x2d6f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003defc	0x2d6fc	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003def8	0x2d6f8	0x4	defined	reviewed	tim	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0;retail OpenTIM/ReadTIM xrefs	private TIM word cursor; physical linked bytes are zero
+OPEN.EXE	0x8003defc	0x2d6fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003df00	0x2d700	0x4	defined	reviewed	v_ofs	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+8;retail TMD parser xrefs	private current TMD vertex-table pointer; physical linked bytes are zero
+OPEN.EXE	0x8003df04	0x2d704	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003df08	0x2d708	0x4	defined	reviewed	n_ofs	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x10;retail TMD parser xrefs	private current TMD normal-table pointer; physical linked bytes are zero
+OPEN.EXE	0x8003df0c	0x2d70c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003df10	0x2d710	0x4	defined	reviewed	t_prim	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x18;retail TMD parser xrefs	private current TMD primitive-table pointer; physical linked bytes are zero
+OPEN.EXE	0x8003df14	0x2d714	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003df18	0x2d718	0x4	defined	reviewed	n_prim	u32	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x20;retail TMD parser store	private current TMD primitive count; physical linked bytes are zero
+OPEN.EXE	0x8003df1c	0x2d71c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003df20	0x2d720	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003df21	0x2d721	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003df22	0x2d722	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

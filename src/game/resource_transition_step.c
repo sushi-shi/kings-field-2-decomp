@@ -122,7 +122,7 @@ phase_three:
                     index--;
                     cell++;
                 } while (index != 0);
-                func_8002b73c(player_state.camera_position.vx,
+                map_cell_add_layer_occupancy(player_state.camera_position.vx,
                     player_state.camera_position.vz, 800, 1);
             }
             resource_copy_words((u32 *)actor_state.target_groups,
@@ -148,9 +148,8 @@ phase_three:
         if (state_8017d118.values_10[3] != 255 ||
             state_8017d118.values_10[4] != 255) {
             goto begin_phase_five;
-        } else {
-            goto complete;
         }
+        goto complete;
 
 complete:
         if (state_8017d118.values_10[0] != 255)
@@ -212,12 +211,12 @@ begin_phase_five:
 
 DATA(0x80063e00, 0x80)
 KfCallback callback_default_table[32] = {
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
-    func_80015d50, func_80015d50, func_80015d50, func_80015d50,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
 };

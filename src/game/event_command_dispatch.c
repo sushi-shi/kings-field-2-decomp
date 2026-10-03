@@ -3,6 +3,7 @@
 #include <kf/game/audio.h>
 #include <kf/game/callback.h>
 #include <kf/game/cd.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/effect.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
@@ -160,7 +161,7 @@ transition_action: {
             break;
         }
         player_state.vitals.current_mp -= 10;
-        func_80036e24(1, 0, 4096, 256);
+        render_frames_with_color_overlay(1, 0, 4096, 256);
         actor_disable_type3_transition_actors();
         previous_value = event_state.control.bytes[object_control_offset + 2];
         do {
@@ -196,11 +197,11 @@ transition_action: {
         event_state.state_word = 1;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
-        func_80036e24(1, 4096, 4096, 0);
+        render_frames_with_color_overlay(1, 4096, 4096, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == 0) {
             resource_tmd_queue_read(0, 0x101, 0x181);
         }
-        func_80036e24(1, 4096, 0, -256);
+        render_frames_with_color_overlay(1, 4096, 0, -256);
         render_set_color_overlay(0xff, 0, 0, 0);
         resource_request_transition(0xff, 0xff, 0xff, previous_value, previous_value,
                       0x7f, 0x7f, 0x7f);
@@ -383,7 +384,7 @@ decay_update:
         break;
     }
     case 0x52:
-        if (func_80045e5c(position,
+        if (collision_probe_forward_shape_0x20(position,
                            (const struct KfEulerAngles *)rotation) == 0) {
             index = map_object_find_interaction_target(0, position, 800, 1700,
                                    rotation->angles[1], 512);
@@ -711,7 +712,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
     probe.vy = position->vy + 500;
     probe.vz = position->vz;
     event_state.state_word = 0;
-    if (func_80045e5c(&probe, (const struct KfEulerAngles *)rotation) != 0) {
+    if (collision_probe_forward_shape_0x20(&probe, (const struct KfEulerAngles *)rotation) != 0) {
         color_overlay_transition(0x400, 0, 0, 0, 0x80, 0xa0, 0xff);
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
         color_overlay_transition(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);

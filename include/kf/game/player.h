@@ -429,23 +429,24 @@ struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position
                               SVECTOR *direction, s32 *distance);
 void player_dispatch_magic_effect(s32 effect_id, ...);
 void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
-void func_8002665c(void);
+void player_update_weapon_attack(void);
 void player_select_magic_action(s32 magic_id);
 void player_update_vertical_motion(void);
 s32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
 s32 item_id_is_71_to_80(s32 value);
-void func_80028998(void);
+void player_update_actions_and_charge(void);
 void player_render_frame_and_release_pool(void);
 void player_begin_view_reaction(u8 mode);
 void player_begin_rotation_reaction(const SVECTOR *rotation);
-void func_80029464(const SVECTOR *rotation, const SVECTOR *motion,
+void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);
-void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion,
+void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);
-void func_8002985c(void);
-void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step);
+void player_update_frame(void);
+void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+    s32 step);
 void player_begin_weapon_attack(s32 mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);

@@ -103,7 +103,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
             angles.z = -intensity;
         }
         angles.y = 0;
-        func_800294f8((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
+        player_begin_rotation_only_damage_reaction((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
         return;
     }
 
@@ -145,7 +145,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
         break;
     }
     angles.y = 0;
-    func_80029464((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
+    player_begin_moving_damage_reaction((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
 }
 
 enum {

@@ -33,11 +33,11 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
         s32 cell_z = ((local_z * cosine + local_x * sine) >> 12) +
                      cell_origin_z;
         KfMapOccupancyCell *cell = &bss_801c7540.map_cells[cell_z][cell_x];
+        const KfMapCellPatternVariant *variant = &patterns->variant[variant_index];
         KfMapOccupancyLayer *first_layer =
             (KfMapOccupancyLayer *)((u8 *)cell + first_layer_offset);
         KfMapOccupancyLayer *second_layer =
             (KfMapOccupancyLayer *)((u8 *)cell + second_layer_offset);
-        const KfMapCellPatternVariant *variant = &patterns->variant[variant_index];
 
         if (variant->first_unknown_03 != KF_PATTERN_SKIP_BYTE) {
             first_layer->unknown_03 = variant->first_unknown_03;
@@ -103,16 +103,17 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     }
     source_row = &bss_801c7540.map_cells[source_z][source_x];
     destination_row = &bss_801c7540.map_cells[destination_z][destination_x];
+    rows_remaining = height - 1;
     if (height == 0) {
         return;
     }
-    rows_remaining = height - 1;
     do {
         KfMapOccupancyCell *source = source_row;
         KfMapOccupancyCell *destination = destination_row;
-        s32 columns_remaining = width - 1;
+        s32 columns_remaining;
         source_row += 80;
         destination_row += row_step;
+        columns_remaining = width - 1;
         if (columns_remaining != -1) {
             do {
             if (layer_select & 1) {

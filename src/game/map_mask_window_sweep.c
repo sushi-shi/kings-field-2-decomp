@@ -60,7 +60,7 @@ void build_camera_map_cell_layer_masks(void)
 
     center_z = (s32)((u32)game_graphics_runtime.render_state.view_position.vz
                      << 1);
-    func_8002a988(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
+    collision_sample_map_cell_layer(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
     layer = KF_COLLISION_CACHE_LAYER;
     render_mask_scan_state.first_layer_byte_offset = layer;

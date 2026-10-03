@@ -64,12 +64,12 @@ void player_reload_map_resources(
 
     player_sync_position_to_map();
     reset_collision_rows_and_overlay();
-    func_80036e24(0x82, 0x1000, 0x1000, 0);
+    render_frames_with_color_overlay(0x82, 0x1000, 0x1000, 0);
     if (game_graphics_runtime.asset_registry_entries[0x181] == 0) {
         resource_tmd_queue_read(0, 0x101, 0x181);
     }
     cd_request_wait_idle();
-    func_80036e24(0x82, 0x1000, 0, -128);
+    render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
     resource_request_transition(255, 255, 255, fourth, fifth, 127, 127, 127);
 }
 

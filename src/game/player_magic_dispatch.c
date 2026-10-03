@@ -60,7 +60,7 @@ void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_param
 }
 
 ADDRESS(0x8002665c, 0xbd0)
-void func_8002665c(void)
+void player_update_weapon_attack(void)
 {
     s32 weapon_id = player_state.equipped_weapon_id;
     KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;

@@ -8,7 +8,7 @@
 
 
 ADDRESS(0x8001a2f4, 0x1fc)
-void func_8001a2f4(void)
+void menu_choose_primary_magic_shortcut(void)
 {
     KfMagicMenuList menu;
     KfMenuGlyphRow rows[20];

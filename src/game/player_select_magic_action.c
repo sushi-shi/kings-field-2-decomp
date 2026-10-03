@@ -184,7 +184,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             if (collision_retry == 2) {
                 break;
             }
-            func_8002b874();
+            collision_cache_load_hit_bounds();
             delta.vx = (u16)KF_COLLISION_CACHE_POSITION.vx
                      - (u16)player_state.camera_position.vx;
             delta.vz = (u16)KF_COLLISION_CACHE_POSITION.vz

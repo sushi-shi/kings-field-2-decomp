@@ -50,11 +50,9 @@ GAME.EXE	0x800110b4	0x8b4	0x4	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x800110b8	0x8b8	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;menu_equipment_category_controller bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x800110dc	0x8dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800110e0	0x8e0	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;menu_equipment_category_controller bounded jr table	nine in-function case pointers within the equipment category controller
-GAME.EXE	0x80011104	0x904	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:BISLPS-00069TEMP\x20\x20\x20\x20
-GAME.EXE	0x8001111d	0x91d	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x80011104	0x904	0x1a	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:BISLPS-00069TEMP\x20\x20\x20\x20\x00
 GAME.EXE	0x8001111e	0x91e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011120	0x920	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:
-GAME.EXE	0x80011125	0x925	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x80011120	0x920	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:\x00
 GAME.EXE	0x80011126	0x926	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011128	0x928	0x20	pointer	manual:player-damage-switch		pointer[8]	retail words;bounded indirect jr	8 direct case pointers within func_80024498
 GAME.EXE	0x80011148	0x948	0x1c	pointer	manual:player-damage-switch		pointer[7]	retail words;bounded indirect jr	7 direct case pointers within func_800248a8
@@ -66,7 +64,7 @@ GAME.EXE	0x80011294	0xa94	0x4	unclassified	coverage-gap			payload-complement	may
 GAME.EXE	0x80011298	0xa98	0x64	pointer	manual:player-action-switch		pointer[25]	retail words;player_select_magic_action two contiguous bounded jr tables	6 preliminary-case pointers followed by 19 action-case pointers within player_select_magic_action
 GAME.EXE	0x800112fc	0xafc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011300	0xb00	0x4c	pointer	manual:player-update-switch		pointer[19]	retail words;func_8002985c bounded jr table	19 case targets inside contiguous func_8002985c body
-GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	func_8002aaa4 jump-table dispatch;retail words	49 opcode rows, all targets within func_8002aaa4
+GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	collision_evaluate_shape_records jump-table dispatch;retail words	49 opcode rows, all targets within collision_evaluate_shape_records
 GAME.EXE	0x80011410	0xc10	0x74	pointer	manual:switch-table		pointer[29]	retail switch-table words	29 mode-index rows in tmd_prepare_primitive_indices
 GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	map_object_initialize_from_placements jump-table dispatch;retail words	254 opcode rows, all targets within map_object_initialize_from_placements
 GAME.EXE	0x8001187c	0x107c	0x44	pointer	manual:switch-table		pointer[17]	retail jump-table words	map_object_spawn_effect 17-case template-kind jump table

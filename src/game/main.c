@@ -66,7 +66,7 @@ void game_main_loop(void)
 
     cd_initialize();
     display_initialize();
-    func_800139c4();
+    audio_initialize_runtime();
     map_object_pool_reset();
     actor_pool_clear();
     effect_pool_reset();
@@ -92,13 +92,13 @@ void game_main_loop(void)
     /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
-    func_80036e24(0x82, 0x1000, 0, -128);
+    render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
     game_main_exit_flag = 0;
 
     do {
         reset_collision_rows_and_overlay();
-        func_80036ed4();
-        func_8002985c();
+        map_object_update_actions();
+        player_update_frame();
         actor_update_frame();
         effect_pool_sweep();
         player_state.unknown_09[1] = 0;

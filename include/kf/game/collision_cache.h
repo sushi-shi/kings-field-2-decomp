@@ -3,11 +3,12 @@
 
 #include <kf/game/player.h>
 
-s32 func_8002a988(s32 x, s32 y, s32 z);
-s32 func_8002aaa4(s32 x, s32 y, s32 z, s32 radius, s32 height);
-s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
-void func_8002b874(void);
-s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
+s32 collision_sample_map_cell_layer(s32 x, s32 y, s32 z);
+s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height);
+s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height);
+void collision_cache_load_hit_bounds(void);
+s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
+s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
 s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle, u16 value);
 

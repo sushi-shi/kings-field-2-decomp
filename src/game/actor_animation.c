@@ -189,13 +189,13 @@ retry_move:
             } else {
                 probe_z = -(s32)actor->unknown_1c * 2;
             }
-            func_8002b7f8(actor->position.vx, actor->position.vy,
+            collision_query_shapes_with_layer_sample(actor->position.vx, actor->position.vy,
                 actor->position.vz + probe_z, actor->unknown_1c,
                 actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
-            func_8002b7f8(actor->position.vx + probe_x, actor->position.vy,
+            collision_query_shapes_with_layer_sample(actor->position.vx + probe_x, actor->position.vy,
                 actor->position.vz, actor->unknown_1c,
                 actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
@@ -226,7 +226,7 @@ retry_move:
         if (retry_count == 2) {
             goto finish;
         }
-        func_8002b874();
+        collision_cache_load_hit_bounds();
         obstacle_angle = vector_xz_to_angle(
             KF_COLLISION_CACHE_POSITION.vx - actor->position.vx,
             KF_COLLISION_CACHE_POSITION.vz - actor->position.vz);

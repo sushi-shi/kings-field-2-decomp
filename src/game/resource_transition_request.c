@@ -31,29 +31,29 @@ void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
         return;
     }
 
-    if ((u8)first == 255) {
+    if (first == 255) {
         current_first = state_8017d118.values_04[0];
         prior_first = state_8017d118.values_10[0];
-        if ((u8)second == 255) {
+        if (second == 255) {
             current_second = state_8017d118.values_04[1];
             prior_second = state_8017d118.values_10[1];
         } else {
-            current_second = (u8)second;
-            prior_second = (u8)second;
+            current_second = second;
+            prior_second = second;
         }
-        if ((u8)third == 255) {
+        if (third == 255) {
             current_third = state_8017d118.values_04[2];
             prior_third = state_8017d118.values_10[2];
         } else {
-            current_third = (u8)third;
-            prior_third = (u8)third;
+            current_third = third;
+            prior_third = third;
         }
-        if ((u8)fourth == 255) {
+        if (fourth == 255) {
             current_fourth = state_8017d118.values_04[3];
             prior_fourth = state_8017d118.values_10[3];
         } else {
-            current_fourth = (u8)fourth;
-            prior_fourth = (u8)fourth;
+            current_fourth = fourth;
+            prior_fourth = fourth;
         }
         if (fifth == 255) {
             current_fifth = state_8017d118.values_04[4];
@@ -75,16 +75,15 @@ void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
         current_fifth = state_8017d118.values_04[4];
     }
 
-    if (state_8017d118.transition_active == 0) {
-        if (state_8017d118.values_04[0] == current_first &&
-            state_8017d118.values_04[1] == current_second &&
-            state_8017d118.values_04[2] == current_third &&
-            state_8017d118.values_04[3] == current_fourth &&
-            state_8017d118.values_04[4] == current_fifth) {
-            return;
-        }
-    } else {
+    if (state_8017d118.transition_active != 0) {
         goto handle_active;
+    }
+    if (state_8017d118.values_04[0] == current_first &&
+        state_8017d118.values_04[1] == current_second &&
+        state_8017d118.values_04[2] == current_third &&
+        state_8017d118.values_04[3] == current_fourth &&
+        state_8017d118.values_04[4] == current_fifth) {
+        return;
     }
 
 apply:
@@ -97,16 +96,16 @@ apply:
     }
     state_8017d118.transition_active = 1;
     state_8017d118.transition_phase = 0;
-    state_8017d118.values_10[0] = (u8)first;
-    state_8017d118.values_10[1] = (u8)second;
-    state_8017d118.values_10[2] = (u8)third;
-    state_8017d118.values_10[3] = (u8)fourth;
+    state_8017d118.values_10[0] = first;
+    state_8017d118.values_10[1] = second;
+    state_8017d118.values_10[2] = third;
+    state_8017d118.values_10[3] = fourth;
     state_8017d118.values_10[4] = fifth;
     state_8017d118.values_17[0] = offset_x;
     state_8017d118.values_17[1] = offset_z;
     state_8017d118.unknown_15 = 0;
     state_8017d118.values_17[2] = offset_y;
-    if ((u8)second == 255) {
+    if (second == 255) {
         state_8017d118.flag_16 = 0;
     } else {
         state_8017d118.flag_16 = 1;
@@ -122,21 +121,23 @@ handle_active:
         state_8017d118.values_10[4] == prior_fifth) {
         return;
     }
-    if (state_8017d118.values_10[0] == 255 &&
-        state_8017d118.values_04[0] == current_first) return;
-    if (state_8017d118.values_10[1] == 255 &&
-        state_8017d118.values_04[1] == (u8)second) return;
-    if (state_8017d118.values_10[2] == 255 &&
-        state_8017d118.values_04[2] == (u8)third) return;
-    if (state_8017d118.values_10[3] == 255 &&
-        state_8017d118.values_04[3] == (u8)fourth) return;
-    if (state_8017d118.values_10[4] == 255 &&
-        state_8017d118.values_04[4] == fifth) return;
+    if ((state_8017d118.values_10[0] == 255 &&
+         state_8017d118.values_04[0] == current_first) ||
+        (state_8017d118.values_10[1] == 255 &&
+         state_8017d118.values_04[1] == second) ||
+        (state_8017d118.values_10[2] == 255 &&
+         state_8017d118.values_04[2] == third) ||
+        (state_8017d118.values_10[3] == 255 &&
+         state_8017d118.values_04[3] == fourth) ||
+        (state_8017d118.values_10[4] == 255 &&
+         state_8017d118.values_04[4] == fifth)) {
+        return;
+    }
 
-    if ((state_8017d118.values_10[0] != 255 && (u8)first == 255) ||
-        (state_8017d118.values_10[1] != 255 && (u8)second == 255) ||
-        (state_8017d118.values_10[2] != 255 && (u8)third == 255) ||
-        (state_8017d118.values_10[3] != 255 && (u8)fourth == 255) ||
+    if ((state_8017d118.values_10[0] != 255 && first == 255) ||
+        (state_8017d118.values_10[1] != 255 && second == 255) ||
+        (state_8017d118.values_10[2] != 255 && third == 255) ||
+        (state_8017d118.values_10[3] != 255 && fourth == 255) ||
         (state_8017d118.values_10[4] != 255 && fifth == 255)) {
         while (state_8017d118.transition_active != 0) {
             cd_request_yield();
@@ -151,7 +152,7 @@ handle_active:
         } while (1);
     }
     ExitCriticalSection();
-    if (state_8017d118.unknown_15 != 0 && (u8)first != 255 &&
+    if (state_8017d118.unknown_15 != 0 && first != 255 &&
         offset_x == 127) {
         offset_x = -state_8017d118.values_17[0];
         offset_z = -state_8017d118.values_17[1];

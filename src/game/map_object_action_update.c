@@ -28,7 +28,7 @@ SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
 RODATA(0x8001191c, 0x3bc)
 
 ADDRESS(0x80036ed4, 0x1df4)
-void func_80036ed4(void)
+void map_object_update_actions(void)
 {
     KfMapObject *object = map_object_state.objects;
     s32 remaining = KF_MAP_OBJECT_CAPACITY;
@@ -862,7 +862,7 @@ void func_80036ed4(void)
         case 96:
             switch (object->action_timer) {
             case 0: {
-                s32 floor_y = func_8002b604(object->position.vx, object->position.vy,
+                s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
@@ -888,7 +888,7 @@ void func_80036ed4(void)
 
         case 97:
             if (object->action_timer == 0) {
-                s32 floor_y = func_8002b604(object->position.vx, object->position.vy,
+                s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
@@ -903,7 +903,7 @@ void func_80036ed4(void)
 
         case 98:
             if (object->action_timer < 2) {
-                s32 floor_y = func_8002b604(object->position.vx, object->position.vy,
+                s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 s16 velocity;
@@ -974,14 +974,14 @@ void func_80036ed4(void)
                     KfMapObject *candidate = map_object_state.objects;
                     s32 count = KF_MAP_OBJECT_CAPACITY;
                     audio_play_sound(0x14, 0x6e);
-                    func_80036e24(1, 0, 0x1000, 0x100);
+                    render_frames_with_color_overlay(1, 0, 0x1000, 0x100);
                     do {
                         if (candidate->action == 34) {
                             candidate->extra_40.bytes[0] = 1;
                         }
                         candidate++;
                     } while (--count != 0);
-                    func_8002b73c(player_state.camera_position.vx,
+                    map_cell_add_layer_occupancy(player_state.camera_position.vx,
                                    player_state.camera_position.vz, 800, -1);
                     player_state.camera_position.vx =
                         object->tail.spawn_bytes.spawn_sequence.low * 0x800 + 0x400;
@@ -997,7 +997,7 @@ void func_80036ed4(void)
                         player_state.unknown_100[1] +
                         player_state.unknown_108.components[1] +
                         player_state.unknown_110[1];
-                    func_80036e24(1, 0x1000, 0, -0x100);
+                    render_frames_with_color_overlay(1, 0x1000, 0, -0x100);
                     render_set_color_overlay(0xff, 0, 0, 0);
                 }
             } else {

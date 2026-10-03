@@ -21,7 +21,7 @@ void menu_show_combat_attributes(void)
         }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8001f008();
+            menu_draw_combat_attributes();
             menu_present_frame();
         }
     }

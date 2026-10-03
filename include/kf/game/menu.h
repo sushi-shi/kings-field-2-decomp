@@ -222,7 +222,7 @@ s32 menu_item_selection_controller(void);
 s32 menu_choose_magic_action(void);
 void menu_equipment_list_controller(void);
 void menu_item_use_controller(void);
-s32 func_8001aa9c(void);
+s32 menu_run_card_choice(void);
 void menu_options_controller(void);
 void menu_draw_player_status(void);
 void menu_draw_location_number(void);
@@ -261,27 +261,27 @@ void func_80019240(void);
 void func_800192ac(void);
 void func_800192dc(void);
 void menu_equipment_category_controller(s32 category);
-void func_8001a2f4(void);
+void menu_choose_primary_magic_shortcut(void);
 void menu_item_magic_controller(void);
 s32 menu_card_load_browser(void);
 s32 menu_prompt_two_option(void);
 void menu_card_save_slot(s32 slot);
 s32 menu_confirm_card_format(s32 kind);
-void func_8001c62c(KfMenuGlyphString *rows);
-void func_8001c770(KfMenuGlyphString *rows);
-void func_8001c8b0(KfMenuGlyphString *rows);
+void menu_prepare_card_io_error_rows(KfMenuGlyphString *rows);
+void menu_prepare_card_format_declined_rows(KfMenuGlyphString *rows);
+void menu_prepare_card_write_full_rows(KfMenuGlyphString *rows);
 void menu_prepare_card_write_rows(KfMenuGlyphString *rows);
 void menu_prepare_card_read_row(KfMenuGlyphString *rows);
 void menu_prepare_card_read_failure_rows(KfMenuGlyphString *rows, s32 kind);
-void func_8001ccd4(KfMenuGlyphString *rows);
+void menu_prepare_card_exit_rows(KfMenuGlyphString *rows);
 void menu_draw_card_dialog_rows(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
 void menu_item_buy_controller(s32 kind);
 void menu_item_sell_controller(s32 kind);
-void func_8001ddd0(void);
-void func_8001e0a8(void);
-void func_8001f008(void);
-void func_8001f798(KfMenuGlyphString *left, KfMenuGlyphString *right,
+void menu_buy_masked_stock_items(void);
+void menu_buy_owned_items(void);
+void menu_draw_combat_attributes(void);
+void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
     const u8 *selected);
 
 #endif

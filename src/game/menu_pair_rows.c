@@ -2,7 +2,7 @@
 #include <kf/game/menu.h>
 
 ADDRESS(0x8001f798, 0x120)
-void func_8001f798(KfMenuGlyphString *left, KfMenuGlyphString *right,
+void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
     const u8 *selected)
 {
     s32 left_y = left->position.y;

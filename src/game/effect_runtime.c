@@ -351,7 +351,7 @@ void effect_update_dispatch(void)
                                       record->position.vz, 10,
                                       (s16)record->scale_y, 0x30);
             effect_apply_current_magic_backstep(collision);
-            func_8002b604(record->position.vx, selected->position.vy,
+            collision_probe_floor_height(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
             record->position.vy = KF_COLLISION_CACHE_RESULT;
             height = KF_COLLISION_CACHE_RESULT - KF_COLLISION_CACHE_HEIGHT_LIMIT;
@@ -394,8 +394,8 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
-        if (func_8002b7f8(midpoint.vx, midpoint.vy, midpoint.vz, 5, 10) ||
-            func_8002b7f8(record->position.vx, record->position.vy,
+        if (collision_query_shapes_with_layer_sample(midpoint.vx, midpoint.vy, midpoint.vz, 5, 10) ||
+            collision_query_shapes_with_layer_sample(record->position.vx, record->position.vy,
                            record->position.vz, 5, 10)) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
@@ -653,7 +653,7 @@ void effect_update_dispatch(void)
                     record->direction.vx = 0;
                 } else {
                     effect_collision_backtrack();
-                    func_8002b604(record->position.vx,
+                    collision_probe_floor_height(record->position.vx,
                                   record->position.vy,
                                   record->position.vz, 50, 0);
                     if (KF_COLLISION_CACHE_RESULT <
@@ -1717,7 +1717,7 @@ void effect_update_dispatch(void)
         if (collision == 0) {
             /* The kind-114 constructor saves its original Y at +0x44.
              * Other effect kinds use this tail differently. */
-            func_8002b604(record->position.vx,
+            collision_probe_floor_height(record->position.vx,
                           *(s32 *)&record->unknown_3c[8],
                           record->position.vz, 0, 0);
             if (record->position.vy < KF_COLLISION_CACHE_RESULT) {

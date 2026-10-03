@@ -211,7 +211,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         memset(&object->extra_40, 0xff, sizeof object->extra_40);
 
         if (template->collision_radius != 0) {
-            func_8002b73c(object->position.vx, object->position.vz,
+            map_cell_add_layer_occupancy(object->position.vx, object->position.vz,
                           template->collision_radius, 1);
         }
 
@@ -257,7 +257,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->action_timer = 2;
             object->extra_40.halfwords[0] = 999;
             object->extra_40.halfwords[1] = object->rotation.vy;
-            func_8002b73c(object->position.vx, object->position.vz, 3000, 1);
+            map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 3000, 1);
             break;
         case 3:
             object->unknown_01 = 0;
@@ -270,7 +270,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           template->unknown_0d[0], template->unknown_0d[1],
                           object->rotation.vy, 0x2d);
             object->action = 3;
-            func_8002b73c(object->position.vx, object->position.vz, 0x1130, 1);
+            map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 0x1130, 1);
             break;
         case 0x53:
             object->unknown_01 = 0;

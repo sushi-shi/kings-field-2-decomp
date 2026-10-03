@@ -42,7 +42,7 @@ void menu_equipment_list_controller(void)
         if (mode == 1) {
             choice = menu.list.selected_index;
             if (choice == 1)
-                func_8001a2f4();
+                menu_choose_primary_magic_shortcut();
             else if (choice == 9)
                 menu_item_magic_controller();
             else

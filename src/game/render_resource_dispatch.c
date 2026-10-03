@@ -269,7 +269,7 @@ map_object_next:
         case 12:
             goto effect_special_draw;
         default:
-            goto effect_next;
+            break;
         }
         effect++;
         goto effect_count_tail;
@@ -299,21 +299,21 @@ effect_count_tail:
     remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
     while (remaining != -1) {
         u32 visibility;
-        if (placed->id == 0xffff) goto placed_next;
-        visibility = map_cell_layer_mask(&placed->position);
-        if (visibility & placed->layer) {
-            render_world_model(placed->layer, placed->id + 0x28,
-                           &placed->position, &rotation, 0, 0,
-                           &game_graphics_runtime.render_state.pitch_matrix,
-                           placed->frame_index + 0x80, 0, 0x46,
-                           0x1000, 1, 0);
+        if (placed->id != 0xffff) {
+            visibility = map_cell_layer_mask(&placed->position);
+            if (visibility & placed->layer) {
+                render_world_model(placed->layer, placed->id + 0x28,
+                               &placed->position, &rotation, 0, 0,
+                               &game_graphics_runtime.render_state.pitch_matrix,
+                               placed->frame_index + 0x80, 0, 0x46,
+                               0x1000, 1, 0);
+            }
+            if (placed->frame_period != 0 &&
+                game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
+                placed->frame_index++;
+                if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
+            }
         }
-        if (placed->frame_period != 0 &&
-            game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
-            placed->frame_index++;
-            if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
-        }
-placed_next:
         placed++;
         remaining--;
     }

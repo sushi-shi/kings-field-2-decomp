@@ -16,7 +16,7 @@ DATA(0x80197630, 0xe9c)
 KfGameAudioState audio_state;
 
 ADDRESS(0x800139c4, 0x120)
-void func_800139c4(void)
+void audio_initialize_runtime(void)
 {
     KfAudioVabSlot *vab_slot;
     KfAudioVoiceHandle *voice;
@@ -140,7 +140,7 @@ KfAudioPlaybackResult audio_play_spatial(
     attenuation = ((attenuation_distance - attenuation) << 7) /
                   attenuation_distance;
     level = (attenuation * volume) >> 7;
-    func_8002a988(position->vx, position->vy, position->vz);
+    collision_sample_map_cell_layer(position->vx, position->vy, position->vz);
     if ((u16)KF_COLLISION_CACHE_LAYER != audio_state.listener_layer) {
         level = (attenuation * volume) >> 8;
     }
@@ -213,7 +213,7 @@ void audio_update_listener(const VECTOR *position, const SVECTOR *rotation)
 {
     if (position != 0) {
         audio_state.listener_position = *position;
-        func_8002a988(position->vx, position->vy, position->vz);
+        collision_sample_map_cell_layer(position->vx, position->vy, position->vz);
         audio_state.listener_layer = KF_COLLISION_CACHE_LAYER;
     }
     if (rotation != 0) {

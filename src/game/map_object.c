@@ -284,7 +284,7 @@ s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker)
 }
 
 ADDRESS(0x80036944, 0x74)
-void func_80036944(u8 marker)
+void map_object_process_marker_all(u8 marker)
 {
     KfMapObject *object = map_object_state.objects;
     u16 remaining;

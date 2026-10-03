@@ -246,45 +246,9 @@ source = "src/game/menu_card_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_card_panel"
+unit = "game.menu_item_buy_sell_controller"
 image = "GAME.EXE"
-source = "src/game/menu_card_panel.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_card_browser"
-image = "GAME.EXE"
-source = "src/game/menu_card_browser.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_card_save_browser"
-image = "GAME.EXE"
-source = "src/game/menu_card_save_browser.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_label_templates"
-image = "GAME.EXE"
-source = "src/game/menu_label_templates.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_primary_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_primary_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_trade_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_trade_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_list_choice_controller"
-image = "GAME.EXE"
-source = "src/game/menu_list_choice_controller.c"
+source = "src/game/menu_item_buy_sell_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -297,12 +261,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_status_render"
 image = "GAME.EXE"
 source = "src/game/menu_status_render.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_attribute_render"
-image = "GAME.EXE"
-source = "src/game/menu_attribute_render.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

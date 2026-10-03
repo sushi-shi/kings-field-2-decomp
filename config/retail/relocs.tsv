@@ -180,25 +180,25 @@ GAME.EXE	0x800112ec	0xaec		mips32_candidate	raw-word	0x800274dc	load		.word		poi
 GAME.EXE	0x800112f0	0xaf0		mips32_candidate	raw-word	0x800274dc	load		.word		pointer-reviewed	reviewed	manual:player_select_magic_action bounded jr and decoded case targets
 GAME.EXE	0x800112f4	0xaf4		mips32_candidate	raw-word	0x800274dc	load		.word		pointer-reviewed	reviewed	manual:player_select_magic_action bounded jr and decoded case targets
 GAME.EXE	0x800112f8	0xaf8		mips32_candidate	raw-word	0x80027440	load		.word		pointer-reviewed	reviewed	manual:player_select_magic_action bounded jr and decoded case targets
-GAME.EXE	0x80011300	0xb00		mips32_candidate	raw-word	0x80029c10	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011304	0xb04		mips32_candidate	raw-word	0x80029c30	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011308	0xb08		mips32_candidate	raw-word	0x80029d18	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x8001130c	0xb0c		mips32_candidate	raw-word	0x80029f10	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011310	0xb10		mips32_candidate	raw-word	0x80029f30	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011314	0xb14		mips32_candidate	raw-word	0x80029e74	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011318	0xb18		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x8001131c	0xb1c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011320	0xb20		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011324	0xb24		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011328	0xb28		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x8001132c	0xb2c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011330	0xb30		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011334	0xb34		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011338	0xb38		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x8001133c	0xb3c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011340	0xb40		mips32_candidate	raw-word	0x80029fcc	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011344	0xb44		mips32_candidate	raw-word	0x8002a080	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
-GAME.EXE	0x80011348	0xb48		mips32_candidate	raw-word	0x8002a040	load		.word		pointer-reviewed	reviewed	manual:func_8002985c bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011300	0xb00		mips32_candidate	raw-word	0x80029c10	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011304	0xb04		mips32_candidate	raw-word	0x80029c30	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011308	0xb08		mips32_candidate	raw-word	0x80029d18	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x8001130c	0xb0c		mips32_candidate	raw-word	0x80029f10	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011310	0xb10		mips32_candidate	raw-word	0x80029f30	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011314	0xb14		mips32_candidate	raw-word	0x80029e74	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011318	0xb18		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x8001131c	0xb1c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011320	0xb20		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011324	0xb24		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011328	0xb28		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x8001132c	0xb2c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011330	0xb30		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011334	0xb34		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011338	0xb38		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x8001133c	0xb3c		mips32_candidate	raw-word	0x8002a360	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011340	0xb40		mips32_candidate	raw-word	0x80029fcc	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011344	0xb44		mips32_candidate	raw-word	0x8002a080	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
+GAME.EXE	0x80011348	0xb48		mips32_candidate	raw-word	0x8002a040	load		.word		pointer-reviewed	reviewed	manual:player_update_frame bounded 19-entry jr and decoded case targets
 GAME.EXE	0x8001134c	0xb4c		mips32_candidate	raw-word	0x8002ac70	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
 GAME.EXE	0x80011350	0xb50		mips32_candidate	raw-word	0x8002acb0	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
 GAME.EXE	0x80011354	0xb54		mips32_candidate	raw-word	0x8002b5c4	load		.word		pointer-reviewed	reviewed	manual:raw-verified 49-entry collision-shape opcode switch; indirect jr remains unresolved
@@ -1973,7 +1973,7 @@ GAME.EXE	0x80013750	0x2f50	0x80013754	mips_hi16_lo16	reachable-code	0x80197630	b
 GAME.EXE	0x8001375c	0x2f5c		mips26	reachable-code	0x80017228	load	repeat_store_word	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x80013764	0x2f64		mips26	reachable-code	0x800185c0	load	cd_initialize	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x8001376c	0x2f6c		mips26	reachable-code	0x8002d0d4	load	display_initialize	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x80013774	0x2f74		mips26	reachable-code	0x800139c4	load	func_800139c4	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
+GAME.EXE	0x80013774	0x2f74		mips26	reachable-code	0x800139c4	load	audio_initialize_runtime	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x8001377c	0x2f7c		mips26	reachable-code	0x80035534	load	map_object_pool_reset	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x80013784	0x2f84		mips26	reachable-code	0x80039080	load	actor_pool_clear	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x8001378c	0x2f8c		mips26	reachable-code	0x80045cc0	load	effect_pool_reset	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
@@ -1995,11 +1995,11 @@ GAME.EXE	0x80013874	0x3074		mips26	reachable-code	0x8002ce68	load	floor_item_cap
 GAME.EXE	0x80013894	0x3094		mips26	reachable-code	0x8002ce68	load	floor_item_capture_image	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x8001389c	0x309c	0x800138a0	mips_hi16_lo16	reachable-code	0x8009b0a0	bss	game_resource_arena	lui+addiu	a0	paired-reviewed	reviewed	manual:raw GAME arena initializer base and signed-low pair
 GAME.EXE	0x800138a8	0x30a8		mips26	reachable-code	0x800175e8	load	memory_arena_initialize_blocks	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x800138bc	0x30bc		mips26	reachable-code	0x80036e24	load	func_80036e24	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
+GAME.EXE	0x800138bc	0x30bc		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800138c4	0x30c4	0x800138c8	mips_hi16_lo16	reachable-code	0x80198630	bss	game_main_exit_flag	lui+sw	at	paired-reviewed	reviewed	manual:game_main_loop raw zero initialization of bounded exit word
 GAME.EXE	0x800138d0	0x30d0		mips26	reachable-code	0x8002bc18	load	reset_collision_rows_and_overlay	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x800138d8	0x30d8		mips26	reachable-code	0x80036ed4	load	func_80036ed4	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x800138e0	0x30e0		mips26	reachable-code	0x8002985c	load	func_8002985c	jal		control-flow	reviewed	manual:raw main-loop direct jal with nop delay slot
+GAME.EXE	0x800138d8	0x30d8		mips26	reachable-code	0x80036ed4	load	map_object_update_actions	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
+GAME.EXE	0x800138e0	0x30e0		mips26	reachable-code	0x8002985c	load	player_update_frame	jal		control-flow	reviewed	manual:raw main-loop direct jal with nop delay slot
 GAME.EXE	0x800138e8	0x30e8		mips26	reachable-code	0x8003f610	load	actor_update_frame	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800138f0	0x30f0		mips26	reachable-code	0x80045d1c	load	effect_pool_sweep	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800138f8	0x30f8	0x800138fc	mips_hi16_lo16	reachable-code	0x801984da	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:game_main_loop player_state+0xa byte
@@ -3002,7 +3002,7 @@ GAME.EXE	0x8001a830	0xa030		mips26	instruction-word	0x800223cc	load		jal		contro
 GAME.EXE	0x8001a838	0xa038		mips26	instruction-word	0x80022394	load		jal		control-flow	reviewed	manual:menu loop direct call
 GAME.EXE	0x8001a848	0xa048		mips26	instruction-word	0x80022300	load		jal		control-flow	reviewed	manual:menu loop direct call
 GAME.EXE	0x8001a854	0xa054		mips26	instruction-word	0x80021a68	load		jal		control-flow	reviewed	manual:menu loop direct call
-GAME.EXE	0x8001a85c	0xa05c		mips26	instruction-word	0x8001f008	load		jal		control-flow	reviewed	manual:menu loop direct call
+GAME.EXE	0x8001a85c	0xa05c		mips26	instruction-word	0x8001f008	load	menu_draw_combat_attributes	jal		control-flow	reviewed	manual:menu loop direct call
 GAME.EXE	0x8001a864	0xa064		mips26	instruction-word	0x80021be0	load		jal		control-flow	reviewed	manual:menu loop direct call
 GAME.EXE	0x8001a878	0xa078		mips26	instruction-word	0x8001a818	load		j		control-flow	reviewed	manual:menu loop decoded back branch
 GAME.EXE	0x8001a8d0	0xa0d0	0x8001a8d4	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:menu item controller decoded signed-low game counter base
@@ -3108,7 +3108,7 @@ GAME.EXE	0x8001b480	0xac80		mips26	reachable-code	0x8001b4a0	load		j		control-fl
 GAME.EXE	0x8001b494	0xac94		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
 GAME.EXE	0x8001b4a4	0xaca4		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
 GAME.EXE	0x8001b4b8	0xacb8		mips26	reachable-code	0x8001fb8c	load		jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
-GAME.EXE	0x8001b4c8	0xacc8		mips26	reachable-code	0x8001f798	load		jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
+GAME.EXE	0x8001b4c8	0xacc8		mips26	reachable-code	0x8001f798	load	menu_draw_options_rows	jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
 GAME.EXE	0x8001b4d0	0xacd0		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded menu option direct control/data pair
 GAME.EXE	0x8001b4e4	0xace4		mips26	reachable-code	0x8001b3a0	load		j		control-flow	reviewed	manual:decoded menu option direct control/data pair
 GAME.EXE	0x8001b504	0xad04	0x8001b508	mips_hi16_lo16	reachable-code	0x80198597	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:decoded menu option player-state six-byte save/restore
@@ -3200,7 +3200,7 @@ GAME.EXE	0x8001bf34	0xb734		mips26	reachable-code	0x8001bf68	load	menu_card_save
 GAME.EXE	0x8001bf3c	0xb73c		mips26	reachable-code	0x800225d8	load		jal		control-flow	reviewed	manual:retail card-save browser decoded control flow
 GAME.EXE	0x8001bf44	0xb744		mips26	reachable-code	0x80021e00	load		jal		control-flow	reviewed	manual:retail card-save browser decoded control flow
 GAME.EXE	0x8001bf7c	0xb77c		mips26	reachable-code	0x80022600	load		jal		control-flow	reviewed	manual:decoded card-dialog call
-GAME.EXE	0x8001bf98	0xb798		mips26	reachable-code	0x8001c62c	load		jal		control-flow	reviewed	manual:decoded card-dialog call
+GAME.EXE	0x8001bf98	0xb798		mips26	reachable-code	0x8001c62c	load	menu_prepare_card_io_error_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001bfc4	0xb7c4		mips26	reachable-code	0x8001cdb0	load	menu_draw_card_dialog_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001bfcc	0xb7cc		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001bfd4	0xb7d4		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:decoded card-dialog call
@@ -3208,7 +3208,7 @@ GAME.EXE	0x8001bfe4	0xb7e4		mips26	reachable-code	0x8001c10c	load		j		control-fl
 GAME.EXE	0x8001bfec	0xb7ec		mips26	reachable-code	0x8001c12c	load	menu_confirm_card_format	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001bffc	0xb7fc		mips26	reachable-code	0x80022b48	load		jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c004	0xb804		mips26	reachable-code	0x8001c060	load		j		control-flow	reviewed	manual:decoded card-dialog branch
-GAME.EXE	0x8001c00c	0xb80c		mips26	reachable-code	0x8001c770	load		jal		control-flow	reviewed	manual:decoded card-dialog call
+GAME.EXE	0x8001c00c	0xb80c		mips26	reachable-code	0x8001c770	load	menu_prepare_card_format_declined_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c038	0xb838		mips26	reachable-code	0x8001cdb0	load	menu_draw_card_dialog_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c040	0xb840		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c048	0xb848		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:decoded card-dialog call
@@ -3216,9 +3216,9 @@ GAME.EXE	0x8001c058	0xb858		mips26	reachable-code	0x8001c10c	load		j		control-fl
 GAME.EXE	0x8001c060	0xb860		mips26	reachable-code	0x8001c9f4	load	menu_prepare_card_write_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c090	0xb890		mips26	reachable-code	0x8001cdb0	load	menu_draw_card_dialog_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c098	0xb898		mips26	reachable-code	0x80022ca0	load	memory_card_write_slot	jal		control-flow	reviewed	manual:decoded card-dialog call
-GAME.EXE	0x8001c0b4	0xb8b4		mips26	reachable-code	0x8001c62c	load		jal		control-flow	reviewed	manual:decoded card-dialog call
+GAME.EXE	0x8001c0b4	0xb8b4		mips26	reachable-code	0x8001c62c	load	menu_prepare_card_io_error_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c0bc	0xb8bc		mips26	reachable-code	0x8001c0d0	load		j		control-flow	reviewed	manual:decoded card-dialog branch
-GAME.EXE	0x8001c0c4	0xb8c4		mips26	reachable-code	0x8001c8b0	load		jal		control-flow	reviewed	manual:decoded card-dialog call
+GAME.EXE	0x8001c0c4	0xb8c4		mips26	reachable-code	0x8001c8b0	load	menu_prepare_card_write_full_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c0ec	0xb8ec		mips26	reachable-code	0x8001cdb0	load	menu_draw_card_dialog_rows	jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c0f4	0xb8f4		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-dialog call
 GAME.EXE	0x8001c0fc	0xb8fc		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:decoded card-dialog call
@@ -3422,9 +3422,9 @@ GAME.EXE	0x8001dcd0	0xd4d0		mips26	reachable-code	0x80022300	load		jal		control-
 GAME.EXE	0x8001dcd8	0xd4d8		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd04	0xd504		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd24	0xd524		mips26	reachable-code	0x8001dd44	load		j		control-flow	reviewed	manual:decoded menu-choice branch
-GAME.EXE	0x8001dd2c	0xd52c		mips26	reachable-code	0x8001ddd0	load		jal		control-flow	reviewed	manual:decoded menu-choice call
+GAME.EXE	0x8001dd2c	0xd52c		mips26	reachable-code	0x8001ddd0	load	menu_buy_masked_stock_items	jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd34	0xd534		mips26	reachable-code	0x8001dd44	load		j		control-flow	reviewed	manual:decoded menu-choice branch
-GAME.EXE	0x8001dd3c	0xd53c		mips26	reachable-code	0x8001e0a8	load		jal		control-flow	reviewed	manual:decoded menu-choice call
+GAME.EXE	0x8001dd3c	0xd53c		mips26	reachable-code	0x8001e0a8	load	menu_buy_owned_items	jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd64	0xd564		mips26	reachable-code	0x8001e378	load		jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd74	0xd574		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded menu-choice call
 GAME.EXE	0x8001dd88	0xd588		mips26	reachable-code	0x8001fb8c	load		jal		control-flow	reviewed	manual:decoded menu-choice call
@@ -4426,11 +4426,11 @@ GAME.EXE	0x80023758	0x12f58		mips26	reachable-code	0x8005f840	load	DrawSync	jal	
 GAME.EXE	0x80023760	0x12f60		mips26	reachable-code	0x8005ef64	load	VSync	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023768	0x12f68		mips26	reachable-code	0x80025234	load	player_sync_position_to_map	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023770	0x12f70		mips26	reachable-code	0x8002bc18	load	reset_collision_rows_and_overlay	jal		control-flow	reviewed	manual:player_resource_transition
-GAME.EXE	0x80023784	0x12f84		mips26	reachable-code	0x80036e24	load	func_80036e24	jal		control-flow	reviewed	manual:player_resource_transition
+GAME.EXE	0x80023784	0x12f84		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x8002378c	0x12f8c	0x80023790	mips_hi16_lo16	reachable-code	0x8018d860	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800237a4	0x12fa4		mips26	reachable-code	0x800321d8	load	resource_tmd_queue_read	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x800237ac	0x12fac		mips26	reachable-code	0x80017c2c	load	cd_request_wait_idle	jal		control-flow	reviewed	manual:player_resource_transition
-GAME.EXE	0x800237c0	0x12fc0		mips26	reachable-code	0x80036e24	load	func_80036e24	jal		control-flow	reviewed	manual:player_resource_transition
+GAME.EXE	0x800237c0	0x12fc0		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x800237e8	0x12fe8		mips26	reachable-code	0x80016260	load	resource_request_transition	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023874	0x13074	0x80023878	mips_hi16_lo16	reachable-code	0x801d8ae8	bss		lui+addiu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
 GAME.EXE	0x80023880	0x13080	0x80023884	mips_hi16_lo16	reachable-code	0x80198512	bss		lui+addiu	a1	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
@@ -4610,7 +4610,7 @@ GAME.EXE	0x80024670	0x13e70		mips26	reachable-code	0x8005ab2c	load	SquareRoot0	j
 GAME.EXE	0x80024688	0x13e88		mips26	reachable-code	0x8002469c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800246b4	0x13eb4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:player-damage-proven-calls
 GAME.EXE	0x800246c8	0x13ec8		mips26	reachable-code	0x800246d4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800246e4	0x13ee4		mips26	reachable-code	0x800294f8	load	func_800294f8	jal		control-flow	reviewed	manual:player-damage-proven-calls
+GAME.EXE	0x800246e4	0x13ee4		mips26	reachable-code	0x800294f8	load	player_begin_rotation_only_damage_reaction	jal		control-flow	reviewed	manual:player-damage-proven-calls
 GAME.EXE	0x800246ec	0x13eec		mips26	reachable-code	0x800247c0	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800246f8	0x13ef8	0x800246fc	mips_hi16_lo16	reachable-code	0x801985c2	bss		lui+lh		paired-reviewed	reviewed	manual:player_damage_reaction direct player-state field
 GAME.EXE	0x80024724	0x13f24	0x80024728	mips_hi16_lo16	reachable-code	0x80011128	load	player_damage_reaction_switch_table	lui+addiu	at	paired-reviewed	reviewed	manual:bounded player-damage jr table base
@@ -4621,7 +4621,7 @@ GAME.EXE	0x80024770	0x13f70		mips26	reachable-code	0x800247a8	load		j		control-f
 GAME.EXE	0x8002477c	0x13f7c		mips26	reachable-code	0x800247a8	load		j		control-flow	reviewed	manual:player_damage_reaction decoded switch-case jump
 GAME.EXE	0x80024788	0x13f88		mips26	reachable-code	0x800247a4	load		j		control-flow	reviewed	manual:player_damage_reaction decoded switch-case jump
 GAME.EXE	0x80024794	0x13f94		mips26	reachable-code	0x800247a4	load		j		control-flow	reviewed	manual:player_damage_reaction decoded switch-case jump
-GAME.EXE	0x800247b8	0x13fb8		mips26	reachable-code	0x80029464	load	func_80029464	jal		control-flow	reviewed	manual:player-damage-proven-calls
+GAME.EXE	0x800247b8	0x13fb8		mips26	reachable-code	0x80029464	load	player_begin_moving_damage_reaction	jal		control-flow	reviewed	manual:player-damage-proven-calls
 GAME.EXE	0x800247f0	0x13ff0	0x800247f4	mips_hi16_lo16	reachable-code	0x80198526	bss		lui+addiu		paired-reviewed	reviewed	manual:player_status_cap
 GAME.EXE	0x80024810	0x14010	0x80024814	mips_hi16_lo16	reachable-code	0x80198528	bss		lui+sh		paired-reviewed	reviewed	manual:player_status_cap
 GAME.EXE	0x80024824	0x14024	0x80024828	mips_hi16_lo16	reachable-code	0x8019852a	bss		lui+addiu		paired-reviewed	reviewed	manual:player_status_cap
@@ -5025,134 +5025,134 @@ GAME.EXE	0x8002661c	0x15e1c	0x80026620	mips_hi16_lo16	reachable-code	0x801985e8	
 GAME.EXE	0x80026624	0x15e24	0x80026628	mips_hi16_lo16	reachable-code	0x801985ea	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x80026630	0x15e30	0x80026634	mips_hi16_lo16	reachable-code	0x801985ec	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x80026638	0x15e38		mips26	reachable-code	0x80025a18	load		jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
-GAME.EXE	0x80026688	0x15e88	0x8002668c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	a0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026690	0x15e90	0x80026694	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	s2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026688	0x15e88	0x8002668c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026690	0x15e90	0x80026694	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	s2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800266b8	0x15eb8		mips26	reachable-code	0x80026b7c	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x800266c0	0x15ec0	0x800266c4	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800266d4	0x15ed4	0x800266d8	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800266c0	0x15ec0	0x800266c4	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800266d4	0x15ed4	0x800266d8	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800266f0	0x15ef0		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
 GAME.EXE	0x80026710	0x15f10		mips26	reachable-code	0x8002672c	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
 GAME.EXE	0x8002671c	0x15f1c		mips26	reachable-code	0x8002672c	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x8002672c	0x15f2c	0x80026730	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026740	0x15f40	0x80026744	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026758	0x15f58	0x8002675c	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026778	0x15f78	0x8002677c	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026780	0x15f80	0x80026784	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026798	0x15f98	0x8002679c	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x8002672c	0x15f2c	0x80026730	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026740	0x15f40	0x80026744	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026758	0x15f58	0x8002675c	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026778	0x15f78	0x8002677c	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026780	0x15f80	0x80026784	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026798	0x15f98	0x8002679c	mips_hi16_lo16	instruction-word	0x8009a5e8	bss	game_counter_bytes	lui+addiu	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800267ac	0x15fac		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x800267b4	0x15fb4	0x800267b8	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800267b4	0x15fb4	0x800267b8	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800267c8	0x15fc8		mips26	reachable-code	0x800267d8	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x800267d0	0x15fd0	0x800267d4	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800267d8	0x15fd8	0x800267dc	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026824	0x16024	0x80026828	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026838	0x16038	0x8002683c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800267d0	0x15fd0	0x800267d4	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800267d8	0x15fd8	0x800267dc	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026824	0x16024	0x80026828	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026838	0x16038	0x8002683c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x8002684c	0x1604c		mips26	reachable-code	0x800140dc	load	audio_play_sound	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026854	0x16054	0x80026858	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800268bc	0x160bc	0x800268c0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026854	0x16054	0x80026858	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800268bc	0x160bc	0x800268c0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800268c4	0x160c4		mips26	reachable-code	0x800268d4	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x800268cc	0x160cc	0x800268d0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800268d4	0x160d4	0x800268d8	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+lw	s3	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800268e8	0x160e8	0x800268ec	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026900	0x16100	0x80026904	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x8002690c	0x1610c	0x80026910	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	a1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x8002691c	0x1611c	0x80026920	mips_hi16_lo16	instruction-word	0x801985c4	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026928	0x16128	0x8002692c	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800268cc	0x160cc	0x800268d0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800268d4	0x160d4	0x800268d8	mips_hi16_lo16	instruction-word	0x8019855c	bss	player_state	lui+lw	s3	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800268e8	0x160e8	0x800268ec	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026900	0x16100	0x80026904	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x8002690c	0x1610c	0x80026910	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	a1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x8002691c	0x1611c	0x80026920	mips_hi16_lo16	instruction-word	0x801985c4	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026928	0x16128	0x8002692c	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026940	0x16140		mips26	reachable-code	0x80034344	load	animation_sample_vertex	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80026984	0x16184		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x8002698c	0x1618c	0x80026990	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269a4	0x161a4	0x800269a8	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269bc	0x161bc	0x800269c0	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269d0	0x161d0	0x800269d4	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269d8	0x161d8	0x800269dc	mips_hi16_lo16	instruction-word	0x80198608	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269f4	0x161f4	0x800269f8	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	a1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800269fc	0x161fc	0x80026a00	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x8002698c	0x1618c	0x80026990	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269a4	0x161a4	0x800269a8	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269bc	0x161bc	0x800269c0	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269d0	0x161d0	0x800269d4	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269d8	0x161d8	0x800269dc	mips_hi16_lo16	instruction-word	0x80198608	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269f4	0x161f4	0x800269f8	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	a1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800269fc	0x161fc	0x80026a00	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026a08	0x16208		mips26	reachable-code	0x80034344	load	animation_sample_vertex	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80026a48	0x16248		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80026a74	0x16274		mips26	reachable-code	0x800154fc	load	vector_displacement_to_pitch_yaw	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026a7c	0x1627c	0x80026a80	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026a7c	0x1627c	0x80026a80	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026aa4	0x162a4		mips26	reachable-code	0x80015034	load	pitch_yaw_to_forward_vector	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026aac	0x162ac	0x80026ab0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026aac	0x162ac	0x80026ab0	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026afc	0x162fc		mips26	reachable-code	0x80015188	load	vector3s_scale_shift12	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026b18	0x16318	0x80026b1c	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026b20	0x16320	0x80026b24	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026b18	0x16318	0x80026b1c	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026b20	0x16320	0x80026b24	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026b28	0x16328		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026b30	0x16330	0x80026b34	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026b4c	0x1634c	0x80026b50	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026b54	0x16354	0x80026b58	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026b30	0x16330	0x80026b34	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026b4c	0x1634c	0x80026b50	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026b54	0x16354	0x80026b58	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026b5c	0x1635c		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026b64	0x16364	0x80026b68	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026b6c	0x1636c	0x80026b70	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026b64	0x16364	0x80026b68	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026b6c	0x1636c	0x80026b70	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026b74	0x16374		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026b7c	0x1637c	0x80026b80	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026b90	0x16390	0x80026b94	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026b7c	0x1637c	0x80026b80	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026b90	0x16390	0x80026b94	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026bb0	0x163b0		mips26	reachable-code	0x80026bcc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026bcc	0x163cc	0x80026bd0	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026bd8	0x163d8	0x80026bdc	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026bfc	0x163fc	0x80026c00	mips_hi16_lo16	instruction-word	0x8019856f	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026bcc	0x163cc	0x80026bd0	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026bd8	0x163d8	0x80026bdc	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026bfc	0x163fc	0x80026c00	mips_hi16_lo16	instruction-word	0x8019856f	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026c10	0x16410		mips26	reachable-code	0x80026464	load	player_has_power_and_magic_60	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026c20	0x16420	0x80026c24	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026c64	0x16464	0x80026c68	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+lbu	a2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026c20	0x16420	0x80026c24	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026c64	0x16464	0x80026c68	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+lbu	a2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026c84	0x16484		mips26	reachable-code	0x80026498	load	player_dispatch_weapon_magic	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026c8c	0x1648c	0x80026c90	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026c9c	0x1649c	0x80026ca0	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026c8c	0x1648c	0x80026c90	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026c9c	0x1649c	0x80026ca0	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026ca4	0x164a4		mips26	reachable-code	0x80026cb4	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026cac	0x164ac	0x80026cb0	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026cb4	0x164b4	0x80026cb8	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026cbc	0x164bc	0x80026cc0	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026cac	0x164ac	0x80026cb0	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026cb4	0x164b4	0x80026cb8	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026cbc	0x164bc	0x80026cc0	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026ce4	0x164e4		mips26	reachable-code	0x800140dc	load	audio_play_sound	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026cec	0x164ec	0x80026cf0	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d0c	0x1650c	0x80026d10	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d14	0x16514	0x80026d18	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	a2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d20	0x16520	0x80026d24	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d48	0x16548	0x80026d4c	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d50	0x16550	0x80026d54	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d64	0x16564	0x80026d68	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d78	0x16578	0x80026d7c	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026d98	0x16598	0x80026d9c	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026cec	0x164ec	0x80026cf0	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d0c	0x1650c	0x80026d10	mips_hi16_lo16	instruction-word	0x80198564	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d14	0x16514	0x80026d18	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	a2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d20	0x16520	0x80026d24	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d48	0x16548	0x80026d4c	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d50	0x16550	0x80026d54	mips_hi16_lo16	instruction-word	0x8019856a	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d64	0x16564	0x80026d68	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d78	0x16578	0x80026d7c	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026d98	0x16598	0x80026d9c	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026da0	0x165a0		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026db8	0x165b8	0x80026dbc	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026db8	0x165b8	0x80026dbc	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026dfc	0x165fc		mips26	reachable-code	0x80026498	load	player_dispatch_weapon_magic	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026e04	0x16604	0x80026e08	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e1c	0x1661c	0x80026e20	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e28	0x16628	0x80026e2c	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e30	0x16630	0x80026e34	mips_hi16_lo16	instruction-word	0x801984ec	bss	player_state	lui+lhu	s8	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e38	0x16638	0x80026e3c	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e40	0x16640	0x80026e44	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e50	0x16650	0x80026e54	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026e5c	0x1665c	0x80026e60	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026e04	0x16604	0x80026e08	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e1c	0x1661c	0x80026e20	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e28	0x16628	0x80026e2c	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e30	0x16630	0x80026e34	mips_hi16_lo16	instruction-word	0x801984ec	bss	player_state	lui+lhu	s8	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e38	0x16638	0x80026e3c	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e40	0x16640	0x80026e44	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e50	0x16650	0x80026e54	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026e5c	0x1665c	0x80026e60	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026e6c	0x1666c		mips26	reachable-code	0x80026ef4	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
 GAME.EXE	0x80026ec0	0x166c0		mips26	reachable-code	0x80039c94	load	actor_apply_magic_to_actor	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80026ec8	0x166c8		mips26	reachable-code	0x800270e4	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80026ed4	0x166d4	0x80026ed8	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026edc	0x166dc	0x80026ee0	mips_hi16_lo16	instruction-word	0x801984ec	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026ee8	0x166e8	0x80026eec	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026f0c	0x1670c	0x80026f10	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026f14	0x16714	0x80026f18	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026ed4	0x166d4	0x80026ed8	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026edc	0x166dc	0x80026ee0	mips_hi16_lo16	instruction-word	0x801984ec	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026ee8	0x166e8	0x80026eec	mips_hi16_lo16	instruction-word	0x80198562	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026f0c	0x1670c	0x80026f10	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026f14	0x16714	0x80026f18	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026f30	0x16730		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80026fd4	0x167d4	0x80026fd8	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026fdc	0x167dc	0x80026fe0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026fe4	0x167e4	0x80026fe8	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu	s7	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80026ff0	0x167f0	0x80026ff4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80026fd4	0x167d4	0x80026fd8	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026fdc	0x167dc	0x80026fe0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026fe4	0x167e4	0x80026fe8	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu	s7	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80026ff0	0x167f0	0x80026ff4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x8002704c	0x1684c		mips26	reachable-code	0x8003a9f4	load	actor_find_overlap_excluding_target_type3	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x80027070	0x16870	0x80027074	mips_hi16_lo16	instruction-word	0x801716e0	bss	actor_state	lui+addiu	t2	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80027070	0x16870	0x80027074	mips_hi16_lo16	instruction-word	0x801716e0	bss	actor_state	lui+addiu	t2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800270a0	0x168a0		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x800270b4	0x168b4		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x800270cc	0x168cc		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
-GAME.EXE	0x800270e4	0x168e4	0x800270e8	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80027104	0x16904	0x80027108	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800270e4	0x168e4	0x800270e8	mips_hi16_lo16	instruction-word	0x80198560	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80027104	0x16904	0x80027108	mips_hi16_lo16	instruction-word	0x8019856e	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x8002710c	0x1690c		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x80027114	0x16914	0x80027118	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x8002712c	0x1692c	0x80027130	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80027140	0x16940	0x80027144	mips_hi16_lo16	instruction-word	0x801984f8	bss	player_state	lui+lhu	a0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80027114	0x16914	0x80027118	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x8002712c	0x1692c	0x80027130	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80027140	0x16940	0x80027144	mips_hi16_lo16	instruction-word	0x801984f8	bss	player_state	lui+lhu	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x8002714c	0x1694c		mips26	reachable-code	0x80023814	load	player_charge_gain_for_rank	jal		control-flow	reviewed	manual:player_scaled_value
-GAME.EXE	0x80027158	0x16958	0x8002715c	mips_hi16_lo16	instruction-word	0x80198593	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80027170	0x16970	0x80027174	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80027184	0x16984	0x80027188	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x80027198	0x16998	0x8002719c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800271b0	0x169b0	0x800271b4	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x80027158	0x16958	0x8002715c	mips_hi16_lo16	instruction-word	0x80198593	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80027170	0x16970	0x80027174	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80027184	0x16984	0x80027188	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x80027198	0x16998	0x8002719c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800271b0	0x169b0	0x800271b4	mips_hi16_lo16	instruction-word	0x801984ea	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x800271dc	0x169dc		mips26	reachable-code	0x800271fc	load		j		control-flow	reviewed	manual:player_magic_dispatch_raw_j
-GAME.EXE	0x800271e4	0x169e4	0x800271e8	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
-GAME.EXE	0x800271f4	0x169f4	0x800271f8	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002665c raw HI/LO pair;typed owner
+GAME.EXE	0x800271e4	0x169e4	0x800271e8	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
+GAME.EXE	0x800271f4	0x169f4	0x800271f8	mips_hi16_lo16	instruction-word	0x801984db	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80027230	0x16a30	0x80027234	mips_hi16_lo16	reachable-code	0x801985a1	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
 GAME.EXE	0x8002725c	0x16a5c	0x80027260	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low effect_state pair
 GAME.EXE	0x80027268	0x16a68	0x8002726c	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
@@ -5213,7 +5213,7 @@ GAME.EXE	0x8002760c	0x16e0c	0x80027610	mips_hi16_lo16	reachable-code	0x801d8d50	
 GAME.EXE	0x80027614	0x16e14	0x80027618	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
 GAME.EXE	0x8002762c	0x16e2c	0x80027630	mips_hi16_lo16	reachable-code	0x8019859d	bss		lui+lbu		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
 GAME.EXE	0x80027640	0x16e40	0x80027644	mips_hi16_lo16	reachable-code	0x801d8d54	bss		lui+lw		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
-GAME.EXE	0x8002767c	0x16e7c		mips26	reachable-code	0x8002b874	load		jal		control-flow	reviewed	manual:player_move_horizontal raw decoded direct jump/call
+GAME.EXE	0x8002767c	0x16e7c		mips26	reachable-code	0x8002b874	load	collision_cache_load_hit_bounds	jal		control-flow	reviewed	manual:player_move_horizontal raw decoded direct jump/call
 GAME.EXE	0x80027684	0x16e84	0x80027688	mips_hi16_lo16	reachable-code	0x801d8d70	bss		lui+lhu		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
 GAME.EXE	0x8002768c	0x16e8c	0x80027690	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lhu		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
 GAME.EXE	0x80027694	0x16e94	0x80027698	mips_hi16_lo16	reachable-code	0x801d8d78	bss		lui+lhu		paired-reviewed	reviewed	manual:player_move_horizontal raw decoded same-object pair
@@ -5247,7 +5247,7 @@ GAME.EXE	0x80027964	0x17164		mips26	reachable-code	0x80029570	load	player_death_
 GAME.EXE	0x80027970	0x17170	0x80027974	mips_hi16_lo16	reachable-code	0x801985a5	bss		lui+sb		paired-reviewed	reviewed	manual:player_collision_depth
 GAME.EXE	0x800279b4	0x171b4		mips26	reachable-code	0x800140dc	load	audio_play_sound	jal		control-flow	reviewed	manual:player_sound_from_magnitude
 GAME.EXE	0x800279f0	0x171f0	0x800279f4	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:raw GAME player collision mode direct pair
-GAME.EXE	0x80027a04	0x17204		mips26	reachable-code	0x8002b604	load	func_8002b604	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
+GAME.EXE	0x80027a04	0x17204		mips26	reachable-code	0x8002b604	load	collision_probe_floor_height	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80027a10	0x17210	0x80027a14	mips_hi16_lo16	reachable-code	0x801985a0	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:raw GAME player collision mode direct pair
 GAME.EXE	0x80027a3c	0x1723c		mips26	reachable-code	0x80027ecc	load		j		control-flow	reviewed	manual:raw direct j and proven unfragmented player CFG
 GAME.EXE	0x80027a58	0x17258		mips26	reachable-code	0x80027ecc	load		j		control-flow	reviewed	manual:raw direct j and proven unfragmented player CFG
@@ -5280,7 +5280,7 @@ GAME.EXE	0x80027bd4	0x173d4	0x80027bd8	mips_hi16_lo16	reachable-code	0x8019860a	
 GAME.EXE	0x80027c54	0x17454		mips26	reachable-code	0x80024498	load	player_apply_damage_reaction	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80027c68	0x17468	0x80027c6c	mips_hi16_lo16	reachable-code	0x801d8d50	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:raw GAME player collision mode direct pair
 GAME.EXE	0x80027c70	0x17470		mips26	reachable-code	0x80027cc0	load		j		control-flow	reviewed	manual:raw direct j and proven unfragmented player CFG
-GAME.EXE	0x80027c78	0x17478		mips26	reachable-code	0x8002b874	load	func_8002b874	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
+GAME.EXE	0x80027c78	0x17478		mips26	reachable-code	0x8002b874	load	collision_cache_load_hit_bounds	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
 GAME.EXE	0x80027c90	0x17490	0x80027c94	mips_hi16_lo16	reachable-code	0x801d8d82	bss	bss_801c7540	lui+lhu		paired-reviewed	reviewed	manual:raw GAME player collision mode direct pair
 GAME.EXE	0x80027c98	0x17498	0x80027c9c	mips_hi16_lo16	reachable-code	0x801d8d74	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:raw GAME player collision mode direct pair
 GAME.EXE	0x80027cac	0x174ac		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:raw decoded GAME player controller direct jal
@@ -5666,301 +5666,301 @@ GAME.EXE	0x800297d4	0x18fd4	0x800297d8	mips_hi16_lo16	reachable-code	0x80198544	
 GAME.EXE	0x80029800	0x19000		mips26	reachable-code	0x800296e8	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80029818	0x19018	0x8002981c	mips_hi16_lo16	reachable-code	0x80198544	bss		lui+lw		paired-reviewed	reviewed	manual:player_equipment_hp_effect
 GAME.EXE	0x80029844	0x19044		mips26	reachable-code	0x800296e8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80029874	0x19074	0x80029878	mips_hi16_lo16	instruction-word	0x801749a0	bss	actor_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029880	0x19080	0x80029884	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002988c	0x1908c	0x80029890	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029894	0x19094		mips26	reachable-code	0x8002b73c	load	func_8002b73c	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x800298a8	0x190a8		mips26	reachable-code	0x80029624	load	func_80029624	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x80029874	0x19074	0x80029878	mips_hi16_lo16	instruction-word	0x801749a0	bss	actor_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029880	0x19080	0x80029884	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002988c	0x1908c	0x80029890	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029894	0x19094		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x800298a8	0x190a8		mips26	reachable-code	0x80029624	load	status_phase_step_scaled	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x800298d0	0x190d0		mips26	reachable-code	0x8002bf38	load	interpolate_collision_filter_rows	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x800298e4	0x190e4		mips26	reachable-code	0x80029624	load	func_80029624	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x800298e4	0x190e4		mips26	reachable-code	0x80029624	load	status_phase_step_scaled	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x80029908	0x19108		mips26	reachable-code	0x8002bf38	load	interpolate_collision_filter_rows	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x80029910	0x19110	0x80029914	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029924	0x19124	0x80029928	mips_hi16_lo16	instruction-word	0x8019860e	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029934	0x19134	0x80029938	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029948	0x19148	0x8002994c	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029950	0x19150	0x80029954	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029910	0x19110	0x80029914	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029924	0x19124	0x80029928	mips_hi16_lo16	instruction-word	0x8019860e	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029934	0x19134	0x80029938	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029948	0x19148	0x8002994c	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029950	0x19150	0x80029954	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029980	0x19180		mips26	reachable-code	0x80031634	load	accumulate_color_overlay	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x80029988	0x19188		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x80029990	0x19190	0x80029994	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029990	0x19190	0x80029994	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x800299a8	0x191a8		mips26	reachable-code	0x800180f8	load	cd_report_error	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x800299d0	0x191d0	0x800299d4	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x800299dc	0x191dc	0x800299e0	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x800299f0	0x191f0	0x800299f4	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x800299f8	0x191f8	0x800299fc	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a14	0x19214	0x80029a18	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a24	0x19224	0x80029a28	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a38	0x19238	0x80029a3c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x800299d0	0x191d0	0x800299d4	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x800299dc	0x191dc	0x800299e0	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x800299f0	0x191f0	0x800299f4	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x800299f8	0x191f8	0x800299fc	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a14	0x19214	0x80029a18	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a24	0x19224	0x80029a28	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a38	0x19238	0x80029a3c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029a40	0x19240		mips26	reachable-code	0x80029a7c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80029a48	0x19248	0x80029a4c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a58	0x19258	0x80029a5c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a74	0x19274	0x80029a78	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a7c	0x1927c	0x80029a80	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a88	0x19288	0x80029a8c	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+lhu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029a9c	0x1929c	0x80029aa0	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029a48	0x19248	0x80029a4c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a58	0x19258	0x80029a5c	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a74	0x19274	0x80029a78	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a7c	0x1927c	0x80029a80	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a88	0x19288	0x80029a8c	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+lhu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029a9c	0x1929c	0x80029aa0	mips_hi16_lo16	instruction-word	0x8019852e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029aa4	0x192a4		mips26	reachable-code	0x80029b2c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80029aac	0x192ac	0x80029ab0	mips_hi16_lo16	instruction-word	0x801984dd	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ac0	0x192c0	0x80029ac4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ad0	0x192d0	0x80029ad4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029af0	0x192f0	0x80029af4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029aac	0x192ac	0x80029ab0	mips_hi16_lo16	instruction-word	0x801984dd	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ac0	0x192c0	0x80029ac4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ad0	0x192d0	0x80029ad4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029af0	0x192f0	0x80029af4	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029af8	0x192f8		mips26	reachable-code	0x80029b2c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80029b00	0x19300	0x80029b04	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b10	0x19310	0x80029b14	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b24	0x19324	0x80029b28	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b2c	0x1932c	0x80029b30	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b34	0x19334	0x80029b38	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b50	0x19350	0x80029b54	mips_hi16_lo16	instruction-word	0x80198530	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b70	0x19370	0x80029b74	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029b7c	0x1937c	0x80029b80	mips_hi16_lo16	instruction-word	0x80198530	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029b00	0x19300	0x80029b04	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b10	0x19310	0x80029b14	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b24	0x19324	0x80029b28	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b2c	0x1932c	0x80029b30	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b34	0x19334	0x80029b38	mips_hi16_lo16	instruction-word	0x801984de	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b50	0x19350	0x80029b54	mips_hi16_lo16	instruction-word	0x80198530	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b70	0x19370	0x80029b74	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029b7c	0x1937c	0x80029b80	mips_hi16_lo16	instruction-word	0x80198530	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029b98	0x19398		mips26	reachable-code	0x80031634	load	accumulate_color_overlay	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x80029ba0	0x193a0	0x80029ba4	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bb4	0x193b4	0x80029bb8	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bbc	0x193bc	0x80029bc0	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bc8	0x193c8	0x80029bcc	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bd4	0x193d4	0x80029bd8	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bdc	0x193dc	0x80029be0	mips_hi16_lo16	instruction-word	0x8019859d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029bf4	0x193f4	0x80029bf8	mips_hi16_lo16	reachable-code	0x80011300	load		lui+addiu	at	paired-reviewed	reviewed	manual:func_8002985c bounded jr table base;raw lui/addiu pair
-GAME.EXE	0x80029c10	0x19410		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:func_8002985c reviewed 19-case table entry;raw JAL target
-GAME.EXE	0x80029c18	0x19418		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029c20	0x19420		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029c28	0x19428		mips26	instruction-word	0x8002a030	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029c30	0x19430	0x80029c34	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c48	0x19448	0x80029c4c	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c50	0x19450		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029c58	0x19458		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029c64	0x19464	0x80029c68	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c74	0x19474	0x80029c78	mips_hi16_lo16	instruction-word	0x801985b8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c80	0x19480	0x80029c84	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c90	0x19490	0x80029c94	mips_hi16_lo16	instruction-word	0x801985ba	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029c9c	0x1949c	0x80029ca0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029cac	0x194ac	0x80029cb0	mips_hi16_lo16	instruction-word	0x801985bc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029cb4	0x194b4	0x80029cb8	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ce0	0x194e0	0x80029ce4	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d08	0x19508		mips26	instruction-word	0x80029014	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d10	0x19510		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d18	0x19518	0x80029d1c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+addiu	s2	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d34	0x19534	0x80029d38	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d3c	0x1953c		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d44	0x19544	0x80029d48	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d4c	0x1954c	0x80029d50	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+lbu	s1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d5c	0x1955c		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d64	0x19564	0x80029d68	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d6c	0x1956c	0x80029d70	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d78	0x19578		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d80	0x19580	0x80029d84	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d88	0x19588	0x80029d8c	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029d94	0x19594		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029d9c	0x1959c	0x80029da0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029dac	0x195ac		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029db4	0x195b4	0x80029db8	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029dc4	0x195c4		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029dcc	0x195cc	0x80029dd0	mips_hi16_lo16	instruction-word	0x801985da	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ddc	0x195dc		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029de4	0x195e4	0x80029de8	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029df0	0x195f0	0x80029df4	mips_hi16_lo16	instruction-word	0x8019861e	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029df8	0x195f8		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029e00	0x19600	0x80029e04	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e0c	0x1960c	0x80029e10	mips_hi16_lo16	instruction-word	0x80198620	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e14	0x19614		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029e1c	0x1961c	0x80029e20	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e28	0x19628	0x80029e2c	mips_hi16_lo16	instruction-word	0x80198622	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e30	0x19630		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029e38	0x19638	0x80029e3c	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e40	0x19640	0x80029e44	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e4c	0x1964c	0x80029e50	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e64	0x19664		mips26	instruction-word	0x800291d0	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029e6c	0x1966c		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029e74	0x19674	0x80029e78	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+addiu	s1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e80	0x19680	0x80029e84	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029e94	0x19694	0x80029e98	mips_hi16_lo16	instruction-word	0x80198620	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ea0	0x196a0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029ea8	0x196a8	0x80029eac	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029eb0	0x196b0	0x80029eb4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029eb8	0x196b8	0x80029ebc	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ec0	0x196c0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029ec8	0x196c8	0x80029ecc	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ed0	0x196d0	0x80029ed4	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ed8	0x196d8	0x80029edc	mips_hi16_lo16	instruction-word	0x80198628	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ee0	0x196e0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029eec	0x196ec	0x80029ef0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029f00	0x19700		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f08	0x19708		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f10	0x19710		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f20	0x19720		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f28	0x19728		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f30	0x19730		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f38	0x19738		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f40	0x19740		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f48	0x19748	0x80029f4c	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029f50	0x19750		mips26	instruction-word	0x800279cc	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f58	0x19758	0x80029f5c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029f60	0x19760		mips26	instruction-word	0x8005deac	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f70	0x19770	0x80029f74	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029f80	0x19780		mips26	instruction-word	0x8005dda4	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029f88	0x19788	0x80029f8c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029f94	0x19794	0x80029f98	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029fa4	0x197a4	0x80029fa8	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029fb4	0x197b4	0x80029fb8	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029fbc	0x197bc		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029fc4	0x197c4		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029fcc	0x197cc		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029fd4	0x197d4		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029fdc	0x197dc		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029fe8	0x197e8	0x80029fec	mips_hi16_lo16	instruction-word	0x8019861e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x80029ff0	0x197f0		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x80029ff8	0x197f8		mips26	instruction-word	0x80028ec0	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a000	0x19800	0x8002a004	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a014	0x19814	0x8002a018	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a028	0x19828		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a030	0x19830		mips26	instruction-word	0x800279cc	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a038	0x19838		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a040	0x19840		mips26	instruction-word	0x80028ec0	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a048	0x19848	0x8002a04c	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a05c	0x1985c	0x8002a060	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a070	0x19870		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a078	0x19878		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a080	0x19880	0x8002a084	mips_hi16_lo16	instruction-word	0x801984e4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a094	0x19894	0x8002a098	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a09c	0x1989c	0x8002a0a0	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a0a4	0x198a4		mips26	instruction-word	0x80014a08	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a0ac	0x198ac	0x8002a0b0	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a0c8	0x198c8	0x8002a0cc	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a0d0	0x198d0	0x8002a0d4	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a0dc	0x198dc	0x8002a0e0	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a0f8	0x198f8	0x8002a0fc	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a100	0x19900		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a108	0x19908	0x8002a10c	mips_hi16_lo16	instruction-word	0x801985d6	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a134	0x19934	0x8002a138	mips_hi16_lo16	instruction-word	0x801985f0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a14c	0x1994c	0x8002a150	mips_hi16_lo16	instruction-word	0x801985f4	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a160	0x19960	0x8002a164	mips_hi16_lo16	instruction-word	0x801985a5	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a174	0x19974	0x8002a178	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a188	0x19988	0x8002a18c	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a19c	0x1999c	0x8002a1a0	mips_hi16_lo16	instruction-word	0x8009a63b	bss	game_counter_bytes	lui+addiu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a1c8	0x199c8		mips26	instruction-word	0x80036e24	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a1d0	0x199d0		mips26	instruction-word	0x80024f4c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a1e4	0x199e4		mips26	instruction-word	0x80036e24	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a1ec	0x199ec	0x8002a1f0	mips_hi16_lo16	instruction-word	0x801985d6	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a214	0x19a14		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a228	0x19a28		mips26	instruction-word	0x800314d4	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a230	0x19a30		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a238	0x19a38	0x8002a23c	mips_hi16_lo16	instruction-word	0x8019bd28	bss	effect_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a258	0x19a58	0x8002a25c	mips_hi16_lo16	instruction-word	0x8009a634	bss	game_counter_bytes	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a270	0x19a70	0x8002a274	mips_hi16_lo16	instruction-word	0x801b2145	bss	event_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a288	0x19a88		mips26	instruction-word	0x80038f20	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a290	0x19a90	0x8002a294	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a29c	0x19a9c	0x8002a2a0	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2a4	0x19aa4	0x8002a2a8	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2b0	0x19ab0	0x8002a2b4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2c0	0x19ac0	0x8002a2c4	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2d0	0x19ad0	0x8002a2d4	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2dc	0x19adc	0x8002a2e0	mips_hi16_lo16	instruction-word	0x801985f8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2e8	0x19ae8	0x8002a2ec	mips_hi16_lo16	instruction-word	0x8017d11c	bss	state_8017d118	lui+lbu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a2f4	0x19af4		mips26	instruction-word	0x80048554	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a2fc	0x19afc		mips26	instruction-word	0x80024f4c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a320	0x19b20		mips26	instruction-word	0x8002360c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a328	0x19b28		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a330	0x19b30		mips26	instruction-word	0x80025004	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a338	0x19b38		mips26	instruction-word	0x800482f8	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a358	0x19b58		mips26	instruction-word	0x8002360c	load		jal		control-reviewed	reviewed	manual:func_8002985c bounded 19-case table CFG;raw J/JAL target
-GAME.EXE	0x8002a360	0x19b60	0x8002a364	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a368	0x19b68	0x8002a36c	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a370	0x19b70	0x8002a374	mips_hi16_lo16	instruction-word	0x80198612	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a3b8	0x19bb8	0x8002a3bc	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a3c4	0x19bc4	0x8002a3c8	mips_hi16_lo16	instruction-word	0x8019860e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x80029ba0	0x193a0	0x80029ba4	mips_hi16_lo16	instruction-word	0x80198570	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bb4	0x193b4	0x80029bb8	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bbc	0x193bc	0x80029bc0	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bc8	0x193c8	0x80029bcc	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bd4	0x193d4	0x80029bd8	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bdc	0x193dc	0x80029be0	mips_hi16_lo16	instruction-word	0x8019859d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029bf4	0x193f4	0x80029bf8	mips_hi16_lo16	reachable-code	0x80011300	load		lui+addiu	at	paired-reviewed	reviewed	manual:player_update_frame bounded jr table base;raw lui/addiu pair
+GAME.EXE	0x80029c10	0x19410		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:player_update_frame reviewed 19-case table entry;raw JAL target
+GAME.EXE	0x80029c18	0x19418		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029c20	0x19420		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029c28	0x19428		mips26	instruction-word	0x8002a030	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029c30	0x19430	0x80029c34	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c48	0x19448	0x80029c4c	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c50	0x19450		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029c58	0x19458		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029c64	0x19464	0x80029c68	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c74	0x19474	0x80029c78	mips_hi16_lo16	instruction-word	0x801985b8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c80	0x19480	0x80029c84	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c90	0x19490	0x80029c94	mips_hi16_lo16	instruction-word	0x801985ba	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029c9c	0x1949c	0x80029ca0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029cac	0x194ac	0x80029cb0	mips_hi16_lo16	instruction-word	0x801985bc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029cb4	0x194b4	0x80029cb8	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ce0	0x194e0	0x80029ce4	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d08	0x19508		mips26	instruction-word	0x80029014	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d10	0x19510		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d18	0x19518	0x80029d1c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+addiu	s2	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d34	0x19534	0x80029d38	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d3c	0x1953c		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d44	0x19544	0x80029d48	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d4c	0x1954c	0x80029d50	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+lbu	s1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d5c	0x1955c		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d64	0x19564	0x80029d68	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d6c	0x1956c	0x80029d70	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d78	0x19578		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d80	0x19580	0x80029d84	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d88	0x19588	0x80029d8c	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029d94	0x19594		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029d9c	0x1959c	0x80029da0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029dac	0x195ac		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029db4	0x195b4	0x80029db8	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029dc4	0x195c4		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029dcc	0x195cc	0x80029dd0	mips_hi16_lo16	instruction-word	0x801985da	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ddc	0x195dc		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029de4	0x195e4	0x80029de8	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029df0	0x195f0	0x80029df4	mips_hi16_lo16	instruction-word	0x8019861e	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029df8	0x195f8		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029e00	0x19600	0x80029e04	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e0c	0x1960c	0x80029e10	mips_hi16_lo16	instruction-word	0x80198620	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e14	0x19614		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029e1c	0x1961c	0x80029e20	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e28	0x19628	0x80029e2c	mips_hi16_lo16	instruction-word	0x80198622	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e30	0x19630		mips26	instruction-word	0x8001586c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029e38	0x19638	0x80029e3c	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e40	0x19640	0x80029e44	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e4c	0x1964c	0x80029e50	mips_hi16_lo16	instruction-word	0x8019861d	bss	player_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e64	0x19664		mips26	instruction-word	0x800291d0	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029e6c	0x1966c		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029e74	0x19674	0x80029e78	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+addiu	s1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e80	0x19680	0x80029e84	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029e94	0x19694	0x80029e98	mips_hi16_lo16	instruction-word	0x80198620	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ea0	0x196a0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029ea8	0x196a8	0x80029eac	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029eb0	0x196b0	0x80029eb4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029eb8	0x196b8	0x80029ebc	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ec0	0x196c0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029ec8	0x196c8	0x80029ecc	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ed0	0x196d0	0x80029ed4	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ed8	0x196d8	0x80029edc	mips_hi16_lo16	instruction-word	0x80198628	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ee0	0x196e0		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029eec	0x196ec	0x80029ef0	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029f00	0x19700		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f08	0x19708		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f10	0x19710		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f20	0x19720		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f28	0x19728		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f30	0x19730		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f38	0x19738		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f40	0x19740		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f48	0x19748	0x80029f4c	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029f50	0x19750		mips26	instruction-word	0x800279cc	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f58	0x19758	0x80029f5c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029f60	0x19760		mips26	instruction-word	0x8005deac	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f70	0x19770	0x80029f74	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029f80	0x19780		mips26	instruction-word	0x8005dda4	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029f88	0x19788	0x80029f8c	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029f94	0x19794	0x80029f98	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029fa4	0x197a4	0x80029fa8	mips_hi16_lo16	instruction-word	0x8019861c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029fb4	0x197b4	0x80029fb8	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029fbc	0x197bc		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029fc4	0x197c4		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029fcc	0x197cc		mips26	instruction-word	0x80028998	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029fd4	0x197d4		mips26	instruction-word	0x80028224	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029fdc	0x197dc		mips26	instruction-word	0x8002851c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029fe8	0x197e8	0x80029fec	mips_hi16_lo16	instruction-word	0x8019861e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x80029ff0	0x197f0		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x80029ff8	0x197f8		mips26	instruction-word	0x80028ec0	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a000	0x19800	0x8002a004	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a014	0x19814	0x8002a018	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a028	0x19828		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a030	0x19830		mips26	instruction-word	0x800279cc	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a038	0x19838		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a040	0x19840		mips26	instruction-word	0x80028ec0	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a048	0x19848	0x8002a04c	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a05c	0x1985c	0x8002a060	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a070	0x19870		mips26	instruction-word	0x80029168	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a078	0x19878		mips26	instruction-word	0x80029d08	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a080	0x19880	0x8002a084	mips_hi16_lo16	instruction-word	0x801984e4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a094	0x19894	0x8002a098	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lh	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a09c	0x1989c	0x8002a0a0	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a0a4	0x198a4		mips26	instruction-word	0x80014a08	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a0ac	0x198ac	0x8002a0b0	mips_hi16_lo16	instruction-word	0x80198624	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a0c8	0x198c8	0x8002a0cc	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a0d0	0x198d0	0x8002a0d4	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+lh	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a0dc	0x198dc	0x8002a0e0	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a0f8	0x198f8	0x8002a0fc	mips_hi16_lo16	instruction-word	0x80198604	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a100	0x19900		mips26	instruction-word	0x80027f78	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a108	0x19908	0x8002a10c	mips_hi16_lo16	instruction-word	0x801985d6	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a134	0x19934	0x8002a138	mips_hi16_lo16	instruction-word	0x801985f0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a14c	0x1994c	0x8002a150	mips_hi16_lo16	instruction-word	0x801985f4	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a160	0x19960	0x8002a164	mips_hi16_lo16	instruction-word	0x801985a5	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a174	0x19974	0x8002a178	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a188	0x19988	0x8002a18c	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a19c	0x1999c	0x8002a1a0	mips_hi16_lo16	instruction-word	0x8009a63b	bss	game_counter_bytes	lui+addiu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a1c8	0x199c8		mips26	instruction-word	0x80036e24	load	render_frames_with_color_overlay	jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a1d0	0x199d0		mips26	instruction-word	0x80024f4c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a1e4	0x199e4		mips26	instruction-word	0x80036e24	load	render_frames_with_color_overlay	jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a1ec	0x199ec	0x8002a1f0	mips_hi16_lo16	instruction-word	0x801985d6	bss	player_state	lui+lh	a2	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a214	0x19a14		mips26	instruction-word	0x8001584c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a228	0x19a28		mips26	instruction-word	0x800314d4	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a230	0x19a30		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a238	0x19a38	0x8002a23c	mips_hi16_lo16	instruction-word	0x8019bd28	bss	effect_state	lui+addiu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a258	0x19a58	0x8002a25c	mips_hi16_lo16	instruction-word	0x8009a634	bss	game_counter_bytes	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a270	0x19a70	0x8002a274	mips_hi16_lo16	instruction-word	0x801b2145	bss	event_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a288	0x19a88		mips26	instruction-word	0x80038f20	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a290	0x19a90	0x8002a294	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a29c	0x19a9c	0x8002a2a0	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2a4	0x19aa4	0x8002a2a8	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2b0	0x19ab0	0x8002a2b4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2c0	0x19ac0	0x8002a2c4	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2d0	0x19ad0	0x8002a2d4	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2dc	0x19adc	0x8002a2e0	mips_hi16_lo16	instruction-word	0x801985f8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2e8	0x19ae8	0x8002a2ec	mips_hi16_lo16	instruction-word	0x8017d11c	bss	state_8017d118	lui+lbu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a2f4	0x19af4		mips26	instruction-word	0x80048554	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a2fc	0x19afc		mips26	instruction-word	0x80024f4c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a320	0x19b20		mips26	instruction-word	0x8002360c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a328	0x19b28		mips26	instruction-word	0x8002a360	load		j		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a330	0x19b30		mips26	instruction-word	0x80025004	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a338	0x19b38		mips26	instruction-word	0x800482f8	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a358	0x19b58		mips26	instruction-word	0x8002360c	load		jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
+GAME.EXE	0x8002a360	0x19b60	0x8002a364	mips_hi16_lo16	instruction-word	0x80198610	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a368	0x19b68	0x8002a36c	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+lh	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a370	0x19b70	0x8002a374	mips_hi16_lo16	instruction-word	0x80198612	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a3b8	0x19bb8	0x8002a3bc	mips_hi16_lo16	instruction-word	0x8019860c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a3c4	0x19bc4	0x8002a3c8	mips_hi16_lo16	instruction-word	0x8019860e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a3cc	0x19bcc		mips26	reachable-code	0x80024448	load	player_adjust_hp_unclamped	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a3d4	0x19bd4	0x8002a3d8	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a3e4	0x19be4	0x8002a3e8	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a3ec	0x19bec	0x8002a3f0	mips_hi16_lo16	instruction-word	0x80198532	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a3d4	0x19bd4	0x8002a3d8	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a3e4	0x19be4	0x8002a3e8	mips_hi16_lo16	instruction-word	0x80198524	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a3ec	0x19bec	0x8002a3f0	mips_hi16_lo16	instruction-word	0x80198532	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a418	0x19c18		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a420	0x19c20	0x8002a424	mips_hi16_lo16	instruction-word	0x80198534	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a420	0x19c20	0x8002a424	mips_hi16_lo16	instruction-word	0x80198534	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a44c	0x19c4c		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a454	0x19c54	0x8002a458	mips_hi16_lo16	instruction-word	0x8019853c	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a46c	0x19c6c	0x8002a470	mips_hi16_lo16	instruction-word	0x801984e6	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a480	0x19c80	0x8002a484	mips_hi16_lo16	instruction-word	0x801984e8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a454	0x19c54	0x8002a458	mips_hi16_lo16	instruction-word	0x8019853c	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a46c	0x19c6c	0x8002a470	mips_hi16_lo16	instruction-word	0x801984e6	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a480	0x19c80	0x8002a484	mips_hi16_lo16	instruction-word	0x801984e8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a490	0x19c90		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a498	0x19c98	0x8002a49c	mips_hi16_lo16	instruction-word	0x8019853e	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a498	0x19c98	0x8002a49c	mips_hi16_lo16	instruction-word	0x8019853e	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a4c4	0x19cc4		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a4cc	0x19ccc		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a4d4	0x19cd4	0x8002a4d8	mips_hi16_lo16	instruction-word	0x8019853a	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a4f8	0x19cf8	0x8002a4fc	mips_hi16_lo16	instruction-word	0x8006d6b0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c first 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a4d4	0x19cd4	0x8002a4d8	mips_hi16_lo16	instruction-word	0x8019853a	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a4f8	0x19cf8	0x8002a4fc	mips_hi16_lo16	instruction-word	0x8006d6b0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame first 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a504	0x19d04		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a50c	0x19d0c	0x8002a510	mips_hi16_lo16	instruction-word	0x8006d6c0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c third 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a50c	0x19d0c	0x8002a510	mips_hi16_lo16	instruction-word	0x8006d6c0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame third 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a518	0x19d18		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a520	0x19d20		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a52c	0x19d2c		mips26	reachable-code	0x800357a0	load	map_object_refresh_cell_markers	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a534	0x19d34		mips26	reachable-code	0x8002a5a4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002a544	0x19d44	0x8002a548	mips_hi16_lo16	instruction-word	0x8006d6b8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c second 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a544	0x19d44	0x8002a548	mips_hi16_lo16	instruction-word	0x8006d6b8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame second 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a54c	0x19d4c		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a568	0x19d68	0x8002a56c	mips_hi16_lo16	instruction-word	0x8006d6c8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c fourth 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a568	0x19d68	0x8002a56c	mips_hi16_lo16	instruction-word	0x8006d6c8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame fourth 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a570	0x19d70		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a58c	0x19d8c		mips26	reachable-code	0x800357a0	load	map_object_refresh_cell_markers	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a5a4	0x19da4	0x8002a5a8	mips_hi16_lo16	instruction-word	0x80198526	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a5b4	0x19db4		mips26	reachable-code	0x80029624	load	func_80029624	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a5d0	0x19dd0	0x8002a5d4	mips_hi16_lo16	instruction-word	0x80198526	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a5a4	0x19da4	0x8002a5a8	mips_hi16_lo16	instruction-word	0x80198526	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a5b4	0x19db4		mips26	reachable-code	0x80029624	load	status_phase_step_scaled	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a5d0	0x19dd0	0x8002a5d4	mips_hi16_lo16	instruction-word	0x80198526	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a5e4	0x19de4		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a5f8	0x19df8		mips26	reachable-code	0x80031634	load	accumulate_color_overlay	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a604	0x19e04	0x8002a608	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a60c	0x19e0c	0x8002a610	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a614	0x19e14	0x8002a618	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a61c	0x19e1c	0x8002a620	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a624	0x19e24	0x8002a628	mips_hi16_lo16	instruction-word	0x801985e0	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a630	0x19e30	0x8002a634	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a638	0x19e38	0x8002a63c	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lhu	t1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a648	0x19e48	0x8002a64c	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a650	0x19e50	0x8002a654	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a658	0x19e58	0x8002a65c	mips_hi16_lo16	instruction-word	0x801985d2	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a660	0x19e60	0x8002a664	mips_hi16_lo16	instruction-word	0x801985da	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a670	0x19e70	0x8002a674	mips_hi16_lo16	instruction-word	0x801985e2	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a678	0x19e78	0x8002a67c	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a684	0x19e84	0x8002a688	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a690	0x19e90	0x8002a694	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a698	0x19e98	0x8002a69c	mips_hi16_lo16	instruction-word	0x801985e4	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a6a8	0x19ea8	0x8002a6ac	mips_hi16_lo16	instruction-word	0x801985c4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a6b0	0x19eb0		mips26	reachable-code	0x8002b73c	load	func_8002b73c	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a6b8	0x19eb8	0x8002a6bc	mips_hi16_lo16	instruction-word	0x801749a0	bss	actor_state	lui+sb	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a6c8	0x19ec8	0x8002a6cc	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a6d0	0x19ed0	0x8002a6d4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a6d8	0x19ed8	0x8002a6dc	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a2	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a604	0x19e04	0x8002a608	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a60c	0x19e0c	0x8002a610	mips_hi16_lo16	instruction-word	0x801985c8	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a614	0x19e14	0x8002a618	mips_hi16_lo16	instruction-word	0x801985d0	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a61c	0x19e1c	0x8002a620	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a624	0x19e24	0x8002a628	mips_hi16_lo16	instruction-word	0x801985e0	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a630	0x19e30	0x8002a634	mips_hi16_lo16	instruction-word	0x801985d8	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a638	0x19e38	0x8002a63c	mips_hi16_lo16	instruction-word	0x801985d4	bss	player_state	lui+lhu	t1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a648	0x19e48	0x8002a64c	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a650	0x19e50	0x8002a654	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a658	0x19e58	0x8002a65c	mips_hi16_lo16	instruction-word	0x801985d2	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a660	0x19e60	0x8002a664	mips_hi16_lo16	instruction-word	0x801985da	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a670	0x19e70	0x8002a674	mips_hi16_lo16	instruction-word	0x801985e2	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a678	0x19e78	0x8002a67c	mips_hi16_lo16	instruction-word	0x801985cc	bss	player_state	lui+lhu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a684	0x19e84	0x8002a688	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a690	0x19e90	0x8002a694	mips_hi16_lo16	instruction-word	0x801985dc	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a698	0x19e98	0x8002a69c	mips_hi16_lo16	instruction-word	0x801985e4	bss	player_state	lui+lhu	t0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a6a8	0x19ea8	0x8002a6ac	mips_hi16_lo16	instruction-word	0x801985c4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a6b0	0x19eb0		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a6b8	0x19eb8	0x8002a6bc	mips_hi16_lo16	instruction-word	0x801749a0	bss	actor_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a6c8	0x19ec8	0x8002a6cc	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a6d0	0x19ed0	0x8002a6d4	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a6d8	0x19ed8	0x8002a6dc	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a2	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a6e0	0x19ee0		mips26	reachable-code	0x8003a9f4	load	actor_find_overlap_excluding_target_type3	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a700	0x19f00	0x8002a704	mips_hi16_lo16	instruction-word	0x8016b628	bss	actor_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a720	0x19f20		mips26	reachable-code	0x800295f8	load	func_800295f8	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a728	0x19f28		mips26	reachable-code	0x8002665c	load	func_8002665c	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a730	0x19f30	0x8002a734	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a744	0x19f44	0x8002a748	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a760	0x19f60	0x8002a764	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a700	0x19f00	0x8002a704	mips_hi16_lo16	instruction-word	0x8016b628	bss	actor_state	lui+addiu	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a720	0x19f20		mips26	reachable-code	0x800295f8	load	player_begin_actor_overlap_bob	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a728	0x19f28		mips26	reachable-code	0x8002665c	load	player_update_weapon_attack	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a730	0x19f30	0x8002a734	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a744	0x19f44	0x8002a748	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a760	0x19f60	0x8002a764	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a78c	0x19f8c		mips26	reachable-code	0x800296e8	load	player_adjust_hp	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a794	0x19f94	0x8002a798	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a7b0	0x19fb0	0x8002a7b4	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a794	0x19f94	0x8002a798	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a7b0	0x19fb0	0x8002a7b4	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a7dc	0x19fdc		mips26	reachable-code	0x8002975c	load	player_adjust_mp	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a7e4	0x19fe4	0x8002a7e8	mips_hi16_lo16	instruction-word	0x80198590	bss	player_state	lui+addiu	s1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a7fc	0x19ffc	0x8002a800	mips_hi16_lo16	instruction-word	0x80198574	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a804	0x1a004		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a80c	0x1a00c	0x8002a810	mips_hi16_lo16	instruction-word	0x80198591	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a820	0x1a020	0x8002a824	mips_hi16_lo16	instruction-word	0x80198578	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a828	0x1a028		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a830	0x1a030	0x8002a834	mips_hi16_lo16	instruction-word	0x80198592	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a844	0x1a044	0x8002a848	mips_hi16_lo16	instruction-word	0x8019857c	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a84c	0x1a04c		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a854	0x1a054	0x8002a858	mips_hi16_lo16	instruction-word	0x80198593	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a868	0x1a068	0x8002a86c	mips_hi16_lo16	instruction-word	0x80198580	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a870	0x1a070		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a878	0x1a078	0x8002a87c	mips_hi16_lo16	instruction-word	0x80198594	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a88c	0x1a08c	0x8002a890	mips_hi16_lo16	instruction-word	0x80198584	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a894	0x1a094		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a89c	0x1a09c	0x8002a8a0	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a8b0	0x1a0b0	0x8002a8b4	mips_hi16_lo16	instruction-word	0x80198588	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a8b8	0x1a0b8		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a8c0	0x1a0c0	0x8002a8c4	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a8d4	0x1a0d4	0x8002a8d8	mips_hi16_lo16	instruction-word	0x8019858c	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a8dc	0x1a0dc		mips26	reachable-code	0x800297b4	load	func_800297b4	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a7e4	0x19fe4	0x8002a7e8	mips_hi16_lo16	instruction-word	0x80198590	bss	player_state	lui+addiu	s1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a7fc	0x19ffc	0x8002a800	mips_hi16_lo16	instruction-word	0x80198574	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a804	0x1a004		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a80c	0x1a00c	0x8002a810	mips_hi16_lo16	instruction-word	0x80198591	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a820	0x1a020	0x8002a824	mips_hi16_lo16	instruction-word	0x80198578	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a828	0x1a028		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a830	0x1a030	0x8002a834	mips_hi16_lo16	instruction-word	0x80198592	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a844	0x1a044	0x8002a848	mips_hi16_lo16	instruction-word	0x8019857c	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a84c	0x1a04c		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a854	0x1a054	0x8002a858	mips_hi16_lo16	instruction-word	0x80198593	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a868	0x1a068	0x8002a86c	mips_hi16_lo16	instruction-word	0x80198580	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a870	0x1a070		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a878	0x1a078	0x8002a87c	mips_hi16_lo16	instruction-word	0x80198594	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a88c	0x1a08c	0x8002a890	mips_hi16_lo16	instruction-word	0x80198584	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a894	0x1a094		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a89c	0x1a09c	0x8002a8a0	mips_hi16_lo16	instruction-word	0x80198595	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a8b0	0x1a0b0	0x8002a8b4	mips_hi16_lo16	instruction-word	0x80198588	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a8b8	0x1a0b8		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
+GAME.EXE	0x8002a8c0	0x1a0c0	0x8002a8c4	mips_hi16_lo16	instruction-word	0x80198596	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a8d4	0x1a0d4	0x8002a8d8	mips_hi16_lo16	instruction-word	0x8019858c	bss	player_state	lui+lw	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a8dc	0x1a0dc		mips26	reachable-code	0x800297b4	load	player_apply_equipment_hp_tick	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a8f4	0x1a0f4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a908	0x1a108	0x8002a90c	mips_hi16_lo16	instruction-word	0x801985e8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a910	0x1a110	0x8002a914	mips_hi16_lo16	instruction-word	0x801985ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a91c	0x1a11c	0x8002a920	mips_hi16_lo16	instruction-word	0x801985ec	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a908	0x1a108	0x8002a90c	mips_hi16_lo16	instruction-word	0x801985e8	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a910	0x1a110	0x8002a914	mips_hi16_lo16	instruction-word	0x801985ea	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a91c	0x1a11c	0x8002a920	mips_hi16_lo16	instruction-word	0x801985ec	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a924	0x1a124		mips26	reachable-code	0x80025a18	load	player_dispatch_magic_effect	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a92c	0x1a12c	0x8002a930	mips_hi16_lo16	instruction-word	0x80198591	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a92c	0x1a12c	0x8002a930	mips_hi16_lo16	instruction-word	0x80198591	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a950	0x1a150		mips26	reachable-code	0x8002bf38	load	interpolate_collision_filter_rows	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a958	0x1a158	0x8002a95c	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
-GAME.EXE	0x8002a968	0x1a168	0x8002a96c	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8002985c raw HI/LO pair;typed owner
+GAME.EXE	0x8002a958	0x1a158	0x8002a95c	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
+GAME.EXE	0x8002a968	0x1a168	0x8002a96c	mips_hi16_lo16	instruction-word	0x80198544	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002a9c8	0x1a1c8	0x8002a9cc	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_grid_sample
 GAME.EXE	0x8002aa10	0x1a210	0x8002aa14	mips_hi16_lo16	reachable-code	0x801d8d4a	bss		lui+sh		paired-reviewed	reviewed	manual:collision_grid_sample
 GAME.EXE	0x8002aa1c	0x1a21c		mips26	reachable-code	0x8002aa3c	load		j		control-flow	reviewed	manual:collision_grid_sample
@@ -6045,7 +6045,7 @@ GAME.EXE	0x8002b59c	0x1ad9c		mips26	instruction-word	0x8002b5c4	load		j		decoded
 GAME.EXE	0x8002b5ac	0x1adac	0x8002b5b0	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
 GAME.EXE	0x8002b5bc	0x1adbc	0x8002b5c0	mips_hi16_lo16	instruction-word	0x801d8d5c	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
 GAME.EXE	0x8002b634	0x1ae34		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002b64c	0x1ae4c		mips26	reachable-code	0x8002aaa4	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002b64c	0x1ae4c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b654	0x1ae54	0x8002b658	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b6b0	0x1aeb0	0x8002b6b4	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b6d4	0x1aed4	0x8002b6d8	mips_hi16_lo16	reachable-code	0x801d8d4a	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -6054,11 +6054,11 @@ GAME.EXE	0x8002b6e8	0x1aee8	0x8002b6ec	mips_hi16_lo16	reachable-code	0x801d8d4a	
 GAME.EXE	0x8002b700	0x1af00	0x8002b704	mips_hi16_lo16	reachable-code	0x801d8d4c	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b708	0x1af08	0x8002b70c	mips_hi16_lo16	reachable-code	0x801d8d40	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b714	0x1af14	0x8002b718	mips_hi16_lo16	reachable-code	0x801d8d4c	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002b71c	0x1af1c		mips26	reachable-code	0x8002aaa4	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002b71c	0x1af1c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b724	0x1af24	0x8002b728	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b788	0x1af88	0x8002b78c	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_occupancy_add
 GAME.EXE	0x8002b834	0x1b034		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002b84c	0x1b04c		mips26	reachable-code	0x8002aaa4	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002b84c	0x1b04c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002b874	0x1b074	0x8002b878	mips_hi16_lo16	reachable-code	0x801d8d60	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b88c	0x1b08c	0x8002b890	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b894	0x1b094	0x8002b898	mips_hi16_lo16	reachable-code	0x801d8d70	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -7209,7 +7209,7 @@ GAME.EXE	0x80036f18	0x26718	0x80036f1c	mips_hi16_lo16	reachable-code	0x801985a8	
 GAME.EXE	0x80036f38	0x26738	0x80036f3c	mips_hi16_lo16	reachable-code	0x8017d108	bss	map_object_state	lui+sw	at	paired-reviewed	reviewed	manual:map_object_dispatch_outer_loop_struct
 GAME.EXE	0x80036f54	0x26754	0x80036f58	mips_hi16_lo16	reachable-code	0x801749d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_dispatch_outer_loop_struct
 GAME.EXE	0x80036f60	0x26760	0x80036f64	mips_hi16_lo16	reachable-code	0x8017d104	bss	map_object_state	lui+sw	at	paired-reviewed	reviewed	manual:map_object_dispatch_outer_loop_struct
-GAME.EXE	0x80036f84	0x26784	0x80036f88	mips_hi16_lo16	reachable-code	0x8001191c	load	func_80036ed4_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_primary_switch_table
+GAME.EXE	0x80036f84	0x26784	0x80036f88	mips_hi16_lo16	reachable-code	0x8001191c	load	map_object_update_actions_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_primary_switch_table
 GAME.EXE	0x80036fc0	0x267c0		mips26	instruction-word	0x8003807c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80036fdc	0x267dc		mips26	instruction-word	0x8003807c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80036ff8	0x267f8		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7286,7 +7286,7 @@ GAME.EXE	0x8003799c	0x2719c		mips26	instruction-word	0x800356ac	load		jal		range
 GAME.EXE	0x800379a4	0x271a4		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800379d8	0x271d8		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800379e0	0x271e0		mips26	instruction-word	0x8003841c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037a04	0x27204	0x80037a08	mips_hi16_lo16	instruction-word	0x80011c9c	load	func_80036ed4_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_secondary_switch_table
+GAME.EXE	0x80037a04	0x27204	0x80037a08	mips_hi16_lo16	instruction-word	0x80011c9c	load	map_object_update_actions_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_secondary_switch_table
 GAME.EXE	0x80037a24	0x27224		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a4c	0x2724c		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a5c	0x2725c		mips26	instruction-word	0x800389b0	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7308,7 +7308,7 @@ GAME.EXE	0x80037c08	0x27408		mips26	instruction-word	0x80037c5c	load		j		range-f
 GAME.EXE	0x80037c70	0x27470		mips26	instruction-word	0x80035194	load	map_cell_copy_rotated_fields	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037c78	0x27478		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037ca4	0x274a4		mips26	instruction-word	0x80038a00	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037cc8	0x274c8	0x80037ccc	mips_hi16_lo16	instruction-word	0x80011cc4	load	func_80036ed4_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_tertiary_switch_table
+GAME.EXE	0x80037cc8	0x274c8	0x80037ccc	mips_hi16_lo16	instruction-word	0x80011cc4	load	map_object_update_actions_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_tertiary_switch_table
 GAME.EXE	0x80037cf8	0x274f8		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037d48	0x27548	0x80037d4c	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_action89_first_cell_base_raw_pair
 GAME.EXE	0x80037d78	0x27578		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7410,11 +7410,11 @@ GAME.EXE	0x80038af0	0x282f0		mips26	instruction-word	0x80038c7c	load		j		range-f
 GAME.EXE	0x80038af8	0x282f8		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038b14	0x28314		mips26	instruction-word	0x80036ad8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038b38	0x28338		mips26	instruction-word	0x800140dc	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038b4c	0x2834c		mips26	instruction-word	0x80036e24	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038b4c	0x2834c		mips26	instruction-word	0x80036e24	load	render_frames_with_color_overlay	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038b58	0x28358	0x80038b5c	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_dispatch_action_225_object_pool_start
 GAME.EXE	0x80038b8c	0x2838c		mips26	instruction-word	0x8002b73c	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038be8	0x283e8		mips26	instruction-word	0x80025234	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038c1c	0x2841c		mips26	instruction-word	0x80036e24	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038c1c	0x2841c		mips26	instruction-word	0x80036e24	load	render_frames_with_color_overlay	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038c30	0x28430		mips26	instruction-word	0x800314d4	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038c38	0x28438		mips26	instruction-word	0x80038c44	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038c54	0x28454		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7427,7 +7427,7 @@ GAME.EXE	0x80038dd8	0x285d8	0x80038ddc	mips_hi16_lo16	reachable-code	0x801716e0	
 GAME.EXE	0x80038e4c	0x2864c		mips26	reachable-code	0x80038dc4	load	actor_copy_group_defaults	jal		control-flow	reviewed	manual:actor_initialize_from_group
 GAME.EXE	0x80038e88	0x28688		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:actor_initialize_from_group
 GAME.EXE	0x80038ec4	0x286c4		mips26	reachable-code	0x80038ed0	load		j		control-flow	reviewed	manual:actor_initialize_from_group
-GAME.EXE	0x80038edc	0x286dc		mips26	reachable-code	0x8002b73c	load	func_8002b73c	jal		control-flow	reviewed	manual:actor_initialize_from_group
+GAME.EXE	0x80038edc	0x286dc		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	reviewed	manual:actor_initialize_from_group
 GAME.EXE	0x80038f08	0x28708		mips26	instruction-word	0x80038d04	load		jal		range-filtered	reviewed	manual:actor_home_wrapper
 GAME.EXE	0x80038f34	0x28734	0x80038f38	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	s1	paired-reviewed	reviewed	manual:actor_scan_callback
 GAME.EXE	0x80038fa0	0x287a0	0x80038fa4	mips_hi16_lo16	reachable-code	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:actor_scan_callback
@@ -7631,12 +7631,12 @@ GAME.EXE	0x8003af18	0x2a718		mips26	reachable-code	0x8002b9d4	load	collision_que
 GAME.EXE	0x8003af44	0x2a744	0x8003af48	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003af60	0x2a760		mips26	reachable-code	0x8003af78	load		j		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003af8c	0x2a78c		mips26	reachable-code	0x8003afa4	load		j		control-flow	reviewed	manual:actor_collision_motion
-GAME.EXE	0x8003afd0	0x2a7d0		mips26	reachable-code	0x8002b7f8	load	func_8002b7f8	jal		control-flow	reviewed	manual:actor_collision_motion
+GAME.EXE	0x8003afd0	0x2a7d0		mips26	reachable-code	0x8002b7f8	load	collision_query_shapes_with_layer_sample	jal		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003afd8	0x2a7d8	0x8003afdc	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
-GAME.EXE	0x8003b01c	0x2a81c		mips26	reachable-code	0x8002b7f8	load	func_8002b7f8	jal		control-flow	reviewed	manual:actor_collision_motion
+GAME.EXE	0x8003b01c	0x2a81c		mips26	reachable-code	0x8002b7f8	load	collision_query_shapes_with_layer_sample	jal		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b024	0x2a824	0x8003b028	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b078	0x2a878		mips26	reachable-code	0x8003b2ec	load		j		control-flow	reviewed	manual:actor_collision_motion
-GAME.EXE	0x8003b0b4	0x2a8b4		mips26	reachable-code	0x8002b874	load	func_8002b874	jal		control-flow	reviewed	manual:actor_collision_motion
+GAME.EXE	0x8003b0b4	0x2a8b4		mips26	reachable-code	0x8002b874	load	collision_cache_load_hit_bounds	jal		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b0bc	0x2a8bc	0x8003b0c0	mips_hi16_lo16	reachable-code	0x801d8d70	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b0c8	0x2a8c8	0x8003b0cc	mips_hi16_lo16	reachable-code	0x801d8d78	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b0d8	0x2a8d8		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:actor_collision_motion
@@ -8353,7 +8353,7 @@ GAME.EXE	0x80041448	0x30c48		mips26	control-flow	0x8003fa2c	load	effect_play_spa
 GAME.EXE	0x80041450	0x30c50		mips26	control-flow	0x800416c8	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80041480	0x30c80		mips26	control-flow	0x8005f480	load	rand	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x80041498	0x30c98		mips26	control-flow	0x8005f480	load	rand	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
-GAME.EXE	0x800414c8	0x30cc8		mips26	control-flow	0x8002b7f8	load	func_8002b7f8	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
+GAME.EXE	0x800414c8	0x30cc8		mips26	control-flow	0x8002b7f8	load	collision_query_shapes_with_layer_sample	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
 GAME.EXE	0x80041534	0x30d34		mips26	control-flow	0x800416c4	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x8004153c	0x30d3c		mips26	control-flow	0x80041558	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
 GAME.EXE	0x80041544	0x30d44		mips26	control-flow	0x80041558	load		j		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct in-body jump
@@ -8858,10 +8858,10 @@ GAME.EXE	0x80045dc4	0x355c4		mips26	reachable-code	0x80045dd4	load		j		control-f
 GAME.EXE	0x80045dcc	0x355cc		mips26	reachable-code	0x80042650	load		jal		control-flow	reviewed	manual:effect_sweep
 GAME.EXE	0x80045e24	0x35624		mips26	instruction-word	0x800140dc	load		jal		range-filtered	reviewed	manual:audio_sound_wrappers
 GAME.EXE	0x80045e44	0x35644		mips26	instruction-word	0x800140dc	load		jal		range-filtered	reviewed	manual:audio_sound_wrappers
-GAME.EXE	0x80045e78	0x35678		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:func_80045e5c direct call
-GAME.EXE	0x80045ea0	0x356a0		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:func_80045e5c direct call
-GAME.EXE	0x80045ed8	0x356d8		mips26	reachable-code	0x8002b604	load	func_8002b604	jal		control-flow	reviewed	manual:func_80045e5c direct call
-GAME.EXE	0x80045ee0	0x356e0	0x80045ee4	mips_hi16_lo16	reachable-code	0x801d8d44	bss	bss_801c7540	lui+lw	v0	paired-reviewed	reviewed	manual:func_80045e5c provisional collision-cache pointer within startup BSS
+GAME.EXE	0x80045e78	0x35678		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
+GAME.EXE	0x80045ea0	0x356a0		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
+GAME.EXE	0x80045ed8	0x356d8		mips26	reachable-code	0x8002b604	load	collision_probe_floor_height	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
+GAME.EXE	0x80045ee0	0x356e0	0x80045ee4	mips_hi16_lo16	reachable-code	0x801d8d44	bss	bss_801c7540	lui+lw	v0	paired-reviewed	reviewed	manual:collision_probe_forward_shape_0x20 provisional collision-cache pointer within startup BSS
 GAME.EXE	0x80045f6c	0x3576c		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:event_pose_project
 GAME.EXE	0x80045f78	0x35778	0x80045f7c	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:event_pose_project
 GAME.EXE	0x80045f90	0x35790	0x80045f94	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:event_pose_project
@@ -8965,7 +8965,7 @@ GAME.EXE	0x80046a04	0x36204		mips26	control-flow	0x80046a10	load		j		reviewed	re
 GAME.EXE	0x80046a10	0x36210	0x80046a14	mips_hi16_lo16	instruction-word	0x8017d11c	bss	state_8017d118	lui+lbu	v1	paired-reviewed	reviewed	manual:func_8004678c tests transition value byte at callback state +4
 GAME.EXE	0x80046a24	0x36224	0x80046a28	mips_hi16_lo16	instruction-word	0x801b2144	bss	event_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_8004678c indexes event control bytes
 GAME.EXE	0x80046a40	0x36240	0x80046a44	mips_hi16_lo16	instruction-word	0x801984e8	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_8004678c reads and reduces player state halfword at +0x18
-GAME.EXE	0x80046a70	0x36270		mips26	control-flow	0x80036e24	load	func_80036e24	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
+GAME.EXE	0x80046a70	0x36270		mips26	control-flow	0x80036e24	load	render_frames_with_color_overlay	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046a78	0x36278		mips26	control-flow	0x80038f20	load	actor_disable_type3_transition_actors	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046a80	0x36280	0x80046a84	mips_hi16_lo16	instruction-word	0x801b2146	bss	event_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_8004678c indexes event control bytes
 GAME.EXE	0x80046a90	0x36290		mips26	instruction-word	0x8001779c	load	cd_request_yield	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
@@ -8994,10 +8994,10 @@ GAME.EXE	0x80046c08	0x36408	0x80046c0c	mips_hi16_lo16	instruction-word	0x801985a
 GAME.EXE	0x80046c18	0x36418	0x80046c1c	mips_hi16_lo16	instruction-word	0x801b2140	bss	event_state	lui+sw	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established event_state owner
 GAME.EXE	0x80046c24	0x36424	0x80046c28	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established player_state owner
 GAME.EXE	0x80046c2c	0x3642c	0x80046c30	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established player_state owner
-GAME.EXE	0x80046c34	0x36434		mips26	control-flow	0x80036e24	load	func_80036e24	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
+GAME.EXE	0x80046c34	0x36434		mips26	control-flow	0x80036e24	load	render_frames_with_color_overlay	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046c3c	0x3643c	0x80046c40	mips_hi16_lo16	reachable-code	0x8018d860	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80046c58	0x36458		mips26	instruction-word	0x800321d8	load	resource_tmd_queue_read	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
-GAME.EXE	0x80046c6c	0x3646c		mips26	control-flow	0x80036e24	load	func_80036e24	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
+GAME.EXE	0x80046c6c	0x3646c		mips26	control-flow	0x80036e24	load	render_frames_with_color_overlay	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046c80	0x36480		mips26	instruction-word	0x800314d4	load	render_set_color_overlay	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
 GAME.EXE	0x80046ca8	0x364a8		mips26	control-flow	0x80016260	load	resource_request_transition	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046cb0	0x364b0		mips26	control-flow	0x80047374	load		j		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct in-body jump
@@ -9059,7 +9059,7 @@ GAME.EXE	0x8004711c	0x3691c		mips26	control-flow	0x80016f4c	load	cd_request_serv
 GAME.EXE	0x80047128	0x36928		mips26	control-flow	0x800335a0	load	render_game_frame	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80047164	0x36964		mips26	control-flow	0x800331d0	load	notify_enqueue	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x8004716c	0x3696c		mips26	control-flow	0x80047338	load		j		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct in-body jump
-GAME.EXE	0x80047178	0x36978		mips26	instruction-word	0x80045e5c	load	func_80045e5c	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
+GAME.EXE	0x80047178	0x36978		mips26	instruction-word	0x80045e5c	load	collision_probe_forward_shape_0x20	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
 GAME.EXE	0x800471a0	0x369a0		mips26	control-flow	0x80036190	load	map_object_find_interaction_target	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x800471c0	0x369c0	0x800471c4	mips_hi16_lo16	instruction-word	0x801767d6	bss	map_object_state	lui+addiu	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established map_object_state owner
 GAME.EXE	0x800471dc	0x369dc		mips26	instruction-word	0x80047434	load	game_counter_increment	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
@@ -9158,7 +9158,7 @@ GAME.EXE	0x80047c18	0x37418		mips26	reachable-code	0x800335a0	load		jal		control
 GAME.EXE	0x80047c3c	0x3743c		mips26	reachable-code	0x80047c60	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047c60	0x37460		mips26	reachable-code	0x800251f0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047ce4	0x374e4	0x80047ce8	mips_hi16_lo16	instruction-word	0x801b2140	bss	event_state	lui+sw	at	paired-reviewed	reviewed	manual:0x80047c98 event-state control clear
-GAME.EXE	0x80047cec	0x374ec		mips26	reachable-code	0x80045e5c	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047cec	0x374ec		mips26	reachable-code	0x80045e5c	load	collision_probe_forward_shape_0x20	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047d1c	0x3751c		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047d3c	0x3753c	0x80047d40	mips_hi16_lo16	instruction-word	0x801984e2	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:0x80047c98 player maximum HP
 GAME.EXE	0x80047d48	0x37548	0x80047d4c	mips_hi16_lo16	instruction-word	0x801984e4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:0x80047c98 player current HP

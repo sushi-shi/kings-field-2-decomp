@@ -33,7 +33,7 @@ extern KfState8017d118 state_8017d118;
 extern KfCallback callback_default_table[32];
 
 void callback_invoke_slot_04_zero(void);
-void func_80015d50();
+void resource_noop_callback();
 void resource_transition_set_phase_1(void);
 void resource_transition_set_phase_2(void);
 void resource_transition_set_phase_3(void);

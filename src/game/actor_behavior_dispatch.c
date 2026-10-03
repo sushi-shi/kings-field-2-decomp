@@ -24,7 +24,7 @@ void actor_update_behavior(void)
     } else {
         actor_state.unknown_93a4 = 0x93;
     }
-    func_8002b73c(actor->position.vx, actor->position.vz,
+    map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                    actor->unknown_1c, -1);
 
     if (target->sound_code != 0xff) {
@@ -1158,7 +1158,7 @@ case3_motion:
 
 behavior_done:
     if (actor->lifecycle == 1) {
-        func_8002b73c(actor->position.vx, actor->position.vz,
+        map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                        actor->unknown_1c, 1);
     }
 }

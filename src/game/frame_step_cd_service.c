@@ -9,7 +9,8 @@ enum {
 };
 
 ADDRESS(0x80036e24, 0xb0)
-void func_80036e24(s32 mode, s32 phase, s32 last_phase, s32 step)
+void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+    s32 step)
 {
     VECTOR position;
     SVECTOR angles;

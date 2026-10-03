@@ -97,7 +97,7 @@ void actor_initialize_from_group(KfActor *actor)
     } else {
         actor->unknown_13 = 0xff;
     }
-    func_8002b73c(actor->position.vx, actor->position.vz, actor->unknown_1c, 1);
+    map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->unknown_1c, 1);
 }
 
 ADDRESS(0x80038efc, 0x24)

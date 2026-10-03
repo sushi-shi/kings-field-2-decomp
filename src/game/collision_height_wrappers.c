@@ -20,10 +20,10 @@
 #define COLLISION_CACHE_INTERACTION_HEIGHT KF_COLLISION_CACHE_INTERACTION_HEIGHT
 
 ADDRESS(0x8002b604, 0x78)
-s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height)
+s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
-    func_8002a988(x, y - 1280, z);
-    func_8002aaa4(x, y, z, radius, height);
+    collision_sample_map_cell_layer(x, y - 1280, z);
+    collision_evaluate_shape_records(x, y, z, radius, height);
     return COLLISION_CACHE_RESULT;
 }
 
@@ -42,12 +42,12 @@ s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 hei
     }
     COLLISION_CACHE_HEIGHT = elevation * 128;
     COLLISION_CACHE_CELL = cell;
-    func_8002aaa4(x, COLLISION_CACHE_HEIGHT, z, radius, height);
+    collision_evaluate_shape_records(x, COLLISION_CACHE_HEIGHT, z, radius, height);
     return COLLISION_CACHE_RESULT;
 }
 
 ADDRESS(0x8002b73c, 0xbc)
-void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
+void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
 {
     s32 expanded = radius + 2048;
     s32 first_x = (x - expanded) >> 11;
@@ -80,14 +80,14 @@ void func_8002b73c(s32 x, s32 z, s32 radius, s32 amount)
 }
 
 ADDRESS(0x8002b7f8, 0x7c)
-s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height)
+s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
-    func_8002a988(x, y - (((u32)height << 4) >> 5), z);
-    return func_8002aaa4(x, y, z, radius, height);
+    collision_sample_map_cell_layer(x, y - (((u32)height << 4) >> 5), z);
+    return collision_evaluate_shape_records(x, y, z, radius, height);
 }
 
 ADDRESS(0x8002b874, 0x160)
-void func_8002b874(void)
+void collision_cache_load_hit_bounds(void)
 {
     if (COLLISION_CACHE_FLAGS & 0x80) {
         COLLISION_CACHE_POSITION = player_state.camera_position;
@@ -119,7 +119,7 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
     s32 result = 0;
 
     if (mode & 1) {
-        result = func_8002b7f8(x, y, z, radius, height);
+        result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
         if ((mode & 2) && (COLLISION_CACHE_SHAPE[4] & 0x40)) {
             COLLISION_CACHE_RESULT = -100000;
             result |= 1;

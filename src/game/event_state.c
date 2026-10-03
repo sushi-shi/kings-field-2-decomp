@@ -346,11 +346,11 @@ apply_position:
             object->position.vz = z << 2;
             object->position.vy = (s16)y;
             object->action_timer = 0x63;
-            func_8002a988(object->position.vx, object->position.vy,
+            collision_sample_map_cell_layer(object->position.vx, object->position.vy,
                            object->position.vz);
             object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
             object->tail.fields.unknown_38 = 0xff;
-            continue;
+            break;
         }
         case 1:
             map_object_reset(object);

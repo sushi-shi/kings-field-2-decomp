@@ -49,7 +49,7 @@ s32 menu_run_root_controller(void)
             menu_item_use_controller();
             break;
         case 5:
-            choice_result = func_8001aa9c();
+            choice_result = menu_run_card_choice();
 selection_result:
             result = choice_result;
             if (choice_result == -1)

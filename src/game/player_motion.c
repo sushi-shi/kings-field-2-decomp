@@ -46,7 +46,7 @@ void player_update_vertical_motion(void)
     s32 bob;
     s32 movement_speed;
 
-    func_8002b604(player_state.camera_position.vx,
+    collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
                   player_state.camera_position.vz, 800, 1700);
     player_state.unknown_ea = 0;
@@ -106,7 +106,7 @@ void player_update_vertical_motion(void)
         if ((collision_flags & 4) != 0) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
         } else {
-            func_8002b874();
+            collision_cache_load_hit_bounds();
             next_y = KF_COLLISION_CACHE_POSITION.vy
                    - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
             if (collision_query_world(player_state.camera_position.vx, next_y,

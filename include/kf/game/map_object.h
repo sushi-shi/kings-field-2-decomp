@@ -239,7 +239,7 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset);
 void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
                              s32 height_offset);
-void func_80036ed4(void);
+void map_object_update_actions(void);
 void map_object_refresh_cell_markers(s32 mode);
 s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);

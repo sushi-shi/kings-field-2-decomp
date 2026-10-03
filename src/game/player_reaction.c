@@ -41,7 +41,7 @@ s32 item_id_is_71_to_80(s32 value)
 }
 
 ADDRESS(0x80028998, 0x528)
-void func_80028998(void)
+void player_update_actions_and_charge(void)
 {
     const u16 *attack_mask;
     s32 charge_gain;
@@ -251,7 +251,7 @@ void player_reset_reaction_state(void)
 }
 
 ADDRESS(0x800291d0, 0x1c)
-void func_800291d0(u8 mode)
+void player_begin_map_object_view_follow(u8 mode)
 {
     player_state.death_state = 1;
     player_state.reaction.view.mode = mode;
@@ -326,7 +326,7 @@ void player_begin_rotation_reaction(const SVECTOR *rotation)
 }
 
 ADDRESS(0x80029464, 0x94)
-void func_80029464(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
+void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
 {
     player_state.death_state = 0x10;
     player_state.reaction.damage.rotation = *rotation;
@@ -338,7 +338,7 @@ void func_80029464(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
 }
 
 ADDRESS(0x800294f8, 0x78)
-void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
+void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
 {
     player_state.death_state = 0x12;
     player_state.reaction.damage.rotation = *rotation;
@@ -368,7 +368,7 @@ void player_death_begin(const SVECTOR *rotation)
 }
 
 ADDRESS(0x800295f8, 0x2c)
-void func_800295f8(void)
+void player_begin_actor_overlap_bob(void)
 {
     if (player_state.death_state == 0) {
         player_state.death_state = 4;
@@ -377,7 +377,7 @@ void func_800295f8(void)
 }
 
 ADDRESS(0x80029624, 0xc4)
-s16 func_80029624(u16 *phase, u16 *secondary, s32 duration, s32 scale)
+s16 status_phase_step_scaled(u16 *phase, u16 *secondary, s32 duration, s32 scale)
 {
     s16 current = *phase;
     s16 other = 0;
@@ -445,7 +445,7 @@ void player_adjust_mp(s32 delta)
 }
 
 ADDRESS(0x800297b4, 0xa8)
-void func_800297b4(const KfEquipmentRecord *equipment)
+void player_apply_equipment_hp_tick(const KfEquipmentRecord *equipment)
 {
     if (equipment->hp_regen_interval != 0
         && player_state.equipment_effect_ticks % equipment->hp_regen_interval == 0) {
@@ -458,7 +458,7 @@ void func_800297b4(const KfEquipmentRecord *equipment)
 }
 
 ADDRESS(0x8002985c, 0x112c)
-void func_8002985c(void)
+void player_update_frame(void)
 {
     s16 value;
     s32 index;
@@ -468,14 +468,14 @@ void func_8002985c(void)
     KfMapObject *object;
 
     actor_state.unknown_93a0 = 4;
-    func_8002b73c(player_state.camera_position.vx,
+    map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, -1);
-    value = func_80029624((u16 *)&player_state.unknown_5a,
+    value = status_phase_step_scaled((u16 *)&player_state.unknown_5a,
                            &player_state.unknown_5c, 64, 0xc00);
     if (value != -1) {
         interpolate_collision_filter_rows(10, 10, 10, 0xef9, value);
     }
-    value = func_80029624((u16 *)&player_state.unknown_66,
+    value = status_phase_step_scaled((u16 *)&player_state.unknown_66,
                            (u16 *)&player_state.unknown_68, 64, 0xe10);
     if (value != -1) {
         interpolate_collision_filter_rows(220, 220, 160, 18000, value);
@@ -550,14 +550,14 @@ void func_8002985c(void)
 
     switch (player_state.death_state) {
     case 0:
-        func_80028998();
+        player_update_actions_and_charge();
         player_update_camera_rotation();
         player_update_horizontal_motion();
         goto update_reaction_pose;
     case 1:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
-        func_80028998();
+        player_update_actions_and_charge();
         player_update_camera_rotation();
         player_state.unknown_e8 = (s16)object->position.vx
                                 - (s16)player_state.camera_position.vx;
@@ -573,7 +573,7 @@ update_reaction_view:
     case 2:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
-        func_80028998();
+        player_update_actions_and_charge();
         fraction = player_state.reaction.view.step << 7;
         player_state.camera_position.vx = fixed_lerp_q12(
             player_state.camera_position.vx, object->position.vx, fraction);
@@ -592,7 +592,7 @@ update_reaction_view:
             player_state.reaction.view.rotation.angles[2], 0, fraction);
         step = player_state.reaction.view.step++;
         if (step > 31) {
-            func_800291d0(player_state.reaction.view.mode);
+            player_begin_map_object_view_follow(player_state.reaction.view.mode);
         }
         goto after_reaction;
     case 5:
@@ -619,7 +619,7 @@ update_reaction_view:
     case 4: {
         u16 angle_phase;
 
-        func_80028998();
+        player_update_actions_and_charge();
         player_update_camera_rotation();
         player_update_horizontal_motion();
         player_state.camera_vertical_offset = 0;
@@ -636,7 +636,7 @@ update_reaction_view:
         goto update_reaction_view;
     }
     case 16:
-        func_80028998();
+        player_update_actions_and_charge();
         player_update_camera_rotation();
         player_update_horizontal_motion();
         player_state.reaction.damage.rotation.vy = 1;
@@ -676,9 +676,9 @@ update_reaction_pose:
                 || player_state.equipped_extra_id == 54)
             && game_counter_bytes[0x53] != 0) {
             game_counter_bytes[0x53]--;
-            func_80036e24(1, 0, 4096, 512);
+            render_frames_with_color_overlay(1, 0, 4096, 512);
             player_reset_status();
-            func_80036e24(1, 4096, 0, -512);
+            render_frames_with_color_overlay(1, 4096, 0, -512);
         }
         if (player_state.unknown_106 > 31) {
             if (player_state.unknown_106 < 65) {
@@ -764,7 +764,7 @@ after_reaction:
             player_state.unknown_6a--;
         }
     }
-    value = func_80029624((u16 *)&player_state.curse_strength,
+    value = status_phase_step_scaled((u16 *)&player_state.curse_strength,
                            &player_state.unknown_58, 64, 0xc00);
     if (value != -1) {
         if (player_state.curse_strength == 0) {
@@ -785,16 +785,16 @@ after_reaction:
         player_state.camera_rotation_target.angles[2]
         + player_state.unknown_100[2] + player_state.unknown_108.components[2]
         + player_state.unknown_110[2];
-    func_8002b73c(player_state.camera_position.vx,
+    map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);
     actor_state.unknown_93a0 = 0;
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, 1700);
     if (index != -1 && (actor_state.actors[index].unknown_28 & 8) != 0) {
-        func_800295f8();
+        player_begin_actor_overlap_bob();
     }
-    func_8002665c();
+    player_update_weapon_attack();
     if (player_state.equipped_weapon_id != 0xff) {
         KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
         if (weapon->unknown_16 != 0
@@ -808,25 +808,25 @@ after_reaction:
         }
     }
     if (player_state.equipped_head_id != 0xff) {
-        func_800297b4(player_state.equipped_head_record);
+        player_apply_equipment_hp_tick(player_state.equipped_head_record);
     }
     if (player_state.equipped_body_id != 0xff) {
-        func_800297b4(player_state.equipped_body_record);
+        player_apply_equipment_hp_tick(player_state.equipped_body_record);
     }
     if (player_state.equipped_arm_id != 0xff) {
-        func_800297b4(player_state.equipped_arm_record);
+        player_apply_equipment_hp_tick(player_state.equipped_arm_record);
     }
     if (player_state.equipped_leg_id != 0xff) {
-        func_800297b4(player_state.equipped_leg_record);
+        player_apply_equipment_hp_tick(player_state.equipped_leg_record);
     }
     if (player_state.equipped_shield_id != 0xff) {
-        func_800297b4(player_state.equipped_shield_record);
+        player_apply_equipment_hp_tick(player_state.equipped_shield_record);
     }
     if (player_state.equipped_accessory_id != 0xff) {
-        func_800297b4(player_state.equipped_accessory_record);
+        player_apply_equipment_hp_tick(player_state.equipped_accessory_record);
     }
     if (player_state.equipped_extra_id != 0xff) {
-        func_800297b4(player_state.equipped_extra_record);
+        player_apply_equipment_hp_tick(player_state.equipped_extra_record);
     }
     if (player_state.equipped_head_id == 25 && rand() < 36) {
         player_state.magic_origin_offset.vx = 0;

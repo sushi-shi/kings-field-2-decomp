@@ -184,7 +184,7 @@ void player_sync_position_to_map(void)
     player_state.vertical_velocity = 0;
     player_state.death_state = 0;
     player_clear_motion();
-    func_8002b73c(player_state.camera_position.vx,
+    map_cell_add_layer_occupancy(player_state.camera_position.vx,
                   player_state.camera_position.vz, PLAYER_MAP_PROBE_RADIUS, 1);
 }
 
@@ -459,7 +459,7 @@ emit_simple_effect:
             position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
             position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
             position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
-            if (func_8002b7f8(position.vx, position.vy, position.vz, 10, 10)) {
+            if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10)) {
                 position.vx = actor->position.vx;
                 position.vy = actor->position.vy;
                 case3_z = actor->position.vz;

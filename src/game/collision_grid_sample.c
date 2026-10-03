@@ -11,7 +11,7 @@ KfMapOccupancyCell collision_default_cell = {
 #define COLLISION_CACHE_HEIGHT KF_COLLISION_CACHE_HEIGHT
 
 ADDRESS(0x8002a988, 0x11c)
-s32 func_8002a988(s32 x, s32 y, s32 z)
+s32 collision_sample_map_cell_layer(s32 x, s32 y, s32 z)
 {
     KfMapOccupancyCell *cell;
     s32 elevation;

@@ -691,7 +691,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         *(s32 *)&record->unknown_3c[8] = record->position.vy;
         candidate_position.vx = record->position.vx + (rand() >> 5) - 512;
         candidate_position.vz = record->position.vz + (rand() >> 5) - 512;
-        if (func_8002b7f8(candidate_position.vx, record->position.vy,
+        if (collision_query_shapes_with_layer_sample(candidate_position.vx, record->position.vy,
                           candidate_position.vz, 10, 10) != 0) {
             candidate_position.vx = record->position.vx;
             candidate_position.vz = record->position.vz;

@@ -72,7 +72,7 @@ void actor_update_vertical_motion(void)
     KfTargetGroup *group = actor_state.active_group;
     s32 vertical_state;
 
-    func_8002b604(actor->position.vx, actor->position.vy, actor->position.vz,
+    collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->unknown_1c,
                    actor->unknown_1e | ((actor->unknown_28 & 0xc000) << 16));
     actor->unknown_03 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;

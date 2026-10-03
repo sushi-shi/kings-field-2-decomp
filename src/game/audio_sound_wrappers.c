@@ -18,13 +18,13 @@ void audio_play_sound_at_volume_100(s32 sound)
 }
 
 ADDRESS(0x80045e5c, 0xb4)
-s32 func_80045e5c(const VECTOR *position, const struct KfEulerAngles *angles)
+s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles)
 {
     s32 x = position->vx - ((rsin(angles->y) * 800) >> 12);
     s32 z = position->vz + ((rcos(angles->y) * 800) >> 12);
     u8 *shape;
 
-    func_8002b604(x, position->vy, z, 800, 1700);
+    collision_probe_floor_height(x, position->vy, z, 800, 1700);
     shape = KF_COLLISION_CACHE_SHAPE;
     return *shape == 0x20;
 }

@@ -86,7 +86,7 @@ void actor_update_lifecycle_for_player_range(void)
         if (distance != KF_DISTANCE_NONE) {
             return;
         }
-        func_8002b73c(actor->position.vx, actor->position.vz,
+        map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                        actor->unknown_1c, -1);
         actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor_set_home_position(actor);

@@ -22,9 +22,9 @@ s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEu
 {
     s32 x = position->vx - ((rsin(angles->y) * 800) >> 12);
     s32 z = position->vz + ((rcos(angles->y) * 800) >> 12);
-    u8 *shape;
+    KfMapOccupancyLayer *selected_layer;
 
     collision_probe_floor_height(x, position->vy, z, 800, 1700);
-    shape = KF_COLLISION_CACHE_SHAPE;
-    return *shape == 0x20;
+    selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
+    return selected_layer->object_index == 0x20;
 }

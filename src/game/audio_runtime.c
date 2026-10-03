@@ -47,7 +47,7 @@ void audio_initialize_runtime(void)
     SsUtSetReverbDepth(0x28, 0x28);
 
     audio_state.sequence_buffer = (u_long *)audio_sequence_buffer;
-    audio_state.sequence_active = 0;
+    audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
     audio_state.sequence_ready = 0;
     vab_slot = audio_state.vab_slots;
     index = 129;
@@ -69,14 +69,16 @@ void audio_initialize_runtime(void)
     stream_slot = audio_state.vab_stream_slots;
     index = 0;
     stream_buffer = audio_vab_stream_buffers[1];
-    for (; index < 7; index++) {
-        stream_slot->state = 0;
+    for (; index < KF_AUDIO_VAB_STREAM_SLOT_COUNT; index++) {
+        stream_slot->state = KF_AUDIO_VAB_STREAM_FREE;
         stream_slot->buffer = stream_buffer;
         stream_slot++;
         stream_buffer += 0x1000;
     }
-    audio_state.vab_stream_slots[5].buffer = audio_main_vab_header_buffer;
-    audio_state.vab_stream_slots[6].buffer = audio_vab_stream_buffers[0];
+    audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1].buffer =
+        audio_main_vab_header_buffer;
+    audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_0].buffer =
+        audio_vab_stream_buffers[0];
 }
 
 ADDRESS(0x80013ae4, 0x98)
@@ -87,7 +89,7 @@ void audio_start_sequence(void)
             audio_state.sequence_buffer, audio_state.vab_slots[1].vab_id);
         SsSeqSetVol(audio_state.sequence_id, 0x3c, 0x3c);
         SsSeqPlay(audio_state.sequence_id, 1, 0);
-        audio_state.sequence_active = 1;
+        audio_state.sequence_active = KF_AUDIO_SEQUENCE_ACTIVE;
         SsSetMVol(0x7f, 0x7f);
     }
 }
@@ -95,10 +97,10 @@ void audio_start_sequence(void)
 ADDRESS(0x80013b7c, 0x58)
 void audio_stop_sequence(void)
 {
-    if (audio_state.sequence_active == 1) {
+    if (audio_state.sequence_active == KF_AUDIO_SEQUENCE_ACTIVE) {
         SsSeqStop(audio_state.sequence_id);
         SsSeqClose(audio_state.sequence_id);
-        audio_state.sequence_active = 0;
+        audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
     }
 }
 
@@ -109,7 +111,7 @@ void audio_shutdown(void)
     s32 index;
 
     SsSetMVol(0, 0);
-    if (audio_state.sequence_active == 1) {
+    if (audio_state.sequence_active == KF_AUDIO_SEQUENCE_ACTIVE) {
         SsSeqSetVol(audio_state.sequence_id, 0, 0);
         SsSeqStop(audio_state.sequence_id);
         SsSeqClose(audio_state.sequence_id);
@@ -141,8 +143,8 @@ KfAudioPlaybackResult audio_play_spatial(
     s32 listener_angle;
     s32 left;
     s32 right;
-    s32 alternate_pan = sound & 0x8000;
-    sound &= 0xfff;
+    s32 alternate_pan = sound & KF_AUDIO_ALTERNATE_PAN_FLAG;
+    sound &= KF_AUDIO_SOUND_INDEX_MASK;
 
     if (attenuation >= max_distance) {
         return KF_AUDIO_NOT_PLAYED;
@@ -214,7 +216,7 @@ void audio_key_off_handle(KfAudioVoiceHandle *handle)
     state = &audio_state;
     vab = &state->vab_slots[voice->vab_slot_index];
 
-    if (vab->vab_id != -1 && vab->vab_id != 0xfe) {
+    if (vab->vab_id != -1 && vab->vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
         SsUtKeyOff(handle->voice_id, vab->vab_id, voice->program, voice->tone, voice->note);
     }
 }
@@ -261,10 +263,10 @@ ADDRESS(0x80014164, 0x114)
 KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
 {
     KfAudioVoiceHandle *handle;
-    KfAudioVoiceHandle *oldest;
+    KfAudioVoiceHandle *lowest_priority_handle;
     KfAudioVoiceState *voices;
     KfAudioVoiceParams *params;
-    s32 lowest_age;
+    s32 lowest_priority;
     s32 index;
 
     audio_refresh_voice_handles();
@@ -290,24 +292,24 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
         index--;
     } while (index != -1);
 
-    lowest_age = 0x10000;
+    lowest_priority = 0x10000;
     voices = &audio_state.voices;
     handle = voices->handles;
     index = 9;
     params = voices->params;
     do {
-        u16 age = params[(u8)handle->sound_id].age;
+        u16 priority = params[(u8)handle->sound_id].priority;
 
-        if (age < lowest_age) {
-            lowest_age = age;
-            oldest = handle;
+        if (priority < lowest_priority) {
+            lowest_priority = priority;
+            lowest_priority_handle = handle;
         }
         handle++;
         index--;
     } while (index != -1);
-    audio_key_off_handle(oldest);
-    oldest->voice_id = -1;
-    return oldest;
+    audio_key_off_handle(lowest_priority_handle);
+    lowest_priority_handle->voice_id = -1;
+    return lowest_priority_handle;
 }
 
 ADDRESS(0x80014278, 0x11c)
@@ -325,7 +327,7 @@ void audio_key_on(s32 sound, s32 left_volume, s32 right_volume, s32 note_offset)
         return;
     }
     vab = &audio_state.vab_slots[voice->vab_slot_index];
-    if (vab->vab_id == -1 || vab->vab_id == 0xfe) {
+    if (vab->vab_id == -1 || vab->vab_id == KF_AUDIO_VAB_ID_STREAM_PENDING) {
         return;
     }
     handle = audio_allocate_voice_handle(sound);
@@ -408,7 +410,8 @@ void cd_request_service_vab(void)
         } else if (result == vab_slot->vab_id) {
             cd_request_advance(request);
             SsVabTransCompleted(1);
-            request->payload.vab.stream_state.vab_stream_slot->state = 1;
+            request->payload.vab.stream_state.vab_stream_slot->state =
+                KF_AUDIO_VAB_STREAM_IN_USE;
             request->sector_count = 0;
         }
     } else {
@@ -424,9 +427,9 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
     s32 index;
 
     stream_slot = audio_state.vab_stream_slots;
-    index = 4;
+    index = KF_AUDIO_VAB_STREAM_POOL_COUNT - 1;
     do {
-        if (stream_slot->state == 0) {
+        if (stream_slot->state == KF_AUDIO_VAB_STREAM_FREE) {
             return stream_slot;
         }
         index--;
@@ -434,9 +437,9 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
     } while (index != -1);
 
     stream_slot = audio_state.vab_stream_slots;
-    index = 4;
+    index = KF_AUDIO_VAB_STREAM_POOL_COUNT - 1;
     do {
-        if (stream_slot->state == 2) {
+        if (stream_slot->state == KF_AUDIO_VAB_STREAM_RECLAIMABLE) {
             vab_slot = audio_state.vab_slots;
             index = 129;
             do {
@@ -449,7 +452,7 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
                 index--;
                 vab_slot++;
             } while (index != -1);
-            stream_slot->state = 0;
+            stream_slot->state = KF_AUDIO_VAB_STREAM_FREE;
             return stream_slot;
         }
         index--;
@@ -468,21 +471,21 @@ void audio_queue_vab_stream(s32 archive_slot, s32 entry, s32 vab_slot_index)
     vab_slot = &audio_state.vab_slots[vab_slot_index];
     switch (vab_slot_index) {
     case 0:
-        stream_slot = &audio_state.vab_stream_slots[6];
+        stream_slot = &audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_0];
         break;
     case 1:
-        stream_slot = &audio_state.vab_stream_slots[5];
+        stream_slot = &audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1];
         break;
     default:
         stream_slot = audio_acquire_vab_stream_slot();
         if (stream_slot == 0) {
             return;
         }
-        vab_slot->vab_id = 0xfe;
+        vab_slot->vab_id = KF_AUDIO_VAB_ID_STREAM_PENDING;
         break;
     }
     vab_slot->stream_slot = stream_slot;
-    stream_slot->state = 3;
+    stream_slot->state = KF_AUDIO_VAB_STREAM_LOADING;
     request = cd_state.tail;
     cd_request_wait_done(request);
     request->payload.vab.phase = 0;

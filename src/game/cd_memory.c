@@ -132,7 +132,7 @@ void cd_request_service_stream(void)
             request->remaining_sectors = request->chunk_sectors;
             request->location = request->initial_location;
             cd_stream_limit_chunk(request);
-            request->phase = 0;
+            request->phase = KF_CD_REQUEST_PHASE_SEEK;
             goto seek;
         }
 
@@ -149,7 +149,7 @@ next_read:
     cd_location_add(&request->location, request->sector_count,
         &request->location);
     cd_stream_limit_chunk(request);
-    request->phase = 0;
+    request->phase = KF_CD_REQUEST_PHASE_SEEK;
     DrawSync(0);
 
 seek:
@@ -474,7 +474,7 @@ void cd_request_advance(KfCdRequest *request)
     KfCdRequest *next = request;
 
     next->kind = KF_CD_REQUEST_IDLE;
-    next->phase = 0;
+    next->phase = KF_CD_REQUEST_PHASE_SEEK;
     next++;
     if (next == cd_state.requests + KF_CD_REQUEST_CAPACITY) {
         next -= KF_CD_REQUEST_CAPACITY;
@@ -499,15 +499,15 @@ void cd_complete_handler(void)
     case KF_CD_REQUEST_VAB_READ:
     case KF_CD_REQUEST_IMAGE_STREAM:
         switch (request->phase) {
-        case 0:
+        case KF_CD_REQUEST_PHASE_SEEK:
             CdRead(request->sector_count, request->destination, CdlModeSpeed);
-            request->phase = 1;
+            request->phase = KF_CD_REQUEST_PHASE_READ;
             break;
-        case 1:
+        case KF_CD_REQUEST_PHASE_READ:
             if (request->kind == KF_CD_REQUEST_CHECKSUM_READ) {
                 if (cd_sectors_corrupt((u32 *)request->destination,
                         request->sector_count)) {
-                    request->phase = 0;
+                    request->phase = KF_CD_REQUEST_PHASE_SEEK;
                     CdSeekP(&request->initial_location);
                     break;
                 }
@@ -522,9 +522,9 @@ void cd_complete_handler(void)
         }
         break;
     case KF_CD_REQUEST_SECTOR_CALLBACK:
-        if (request->phase == 0) {
+        if (request->phase == KF_CD_REQUEST_PHASE_SEEK) {
             CdRead2(CdlModeSpeed);
-            request->phase = 1;
+            request->phase = KF_CD_REQUEST_PHASE_READ;
         }
         break;
     }
@@ -650,7 +650,7 @@ KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
     cd_request_wait_done(request);
     EnterCriticalSection();
     request->kind = kind;
-    request->phase = 0;
+    request->phase = KF_CD_REQUEST_PHASE_SEEK;
     request->location = *location;
     request->initial_location = request->location;
     request->destination = destination;
@@ -907,7 +907,7 @@ void cd_initialize(void)
     request = cd_state.requests;
     for (index = 0; index < KF_CD_REQUEST_CAPACITY; index++) {
         request->kind = KF_CD_REQUEST_IDLE;
-        request->phase = 0;
+        request->phase = KF_CD_REQUEST_PHASE_SEEK;
         request++;
     }
     cd_state.tail = cd_state.current = cd_state.requests;

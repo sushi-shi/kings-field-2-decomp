@@ -269,14 +269,16 @@ KfEventControl	0x00	0x100	clear_words	u32[64]	supported	game/event_state.h;func_
 KfEventControl	0x00	0x100	bytes	u8[256]	supported	game/event_state.h;func_800461a0	byte-addressed control view
 KfEventControl	0x00	0x40	fields	KfEventControlFields	supported	game/event_state.h;event_state_initialize;event_scene_command_dispatch;event_target_stream_execute	control prefix with three object slots and stream actor ID
 KfEventControlFields	0x00	0x01	highest_requested_map_region_id	u8	supported	GAME 0x80016488 lbu;resource_request_transition	maximum effective first map-region ID requested by resource transition
-KfEventControlFields	0x01	0x27	unknown_05	u8[39]	opaque	game/event_state.h	unclassified control bytes
+KfEventControlFields	0x01	0x1b	unknown_01	u8[27]	opaque	game/event_state.h	unclassified control bytes before the counter 0x53 change marker
+KfEventControlFields	0x1c	0x01	counter_53_decreased	u8	supported	event_target_stream_execute;GAME 0x80046684	set when counter 0x53 falls during a scripted menu
+KfEventControlFields	0x1d	0x0b	unknown_1d	u8[11]	opaque	game/event_state.h	unclassified control bytes before object slots
 KfEventControlFields	0x28	0x0c	object_slots	KfEventControlObjectSlot[3]	supported	game/event_state.h;event_scene_command_dispatch;map_object_update_actions	three four-byte object slots at control +0x28/+0x2c/+0x30
 KfEventControlFields	0x34	0x0b	unknown_34	u8[11]	opaque	game/event_state.h	unclassified control bytes
 KfEventControlFields	0x3f	0x01	stream_actor_definition_id	u8	supported	event_target_stream_execute;GAME 0x800462bc	last actor definition ID used by target-stream cursor
 KfEventControlObjectSlot	0x00	0x02	object_index	u16	supported	event_state_initialize;event_scene_command_dispatch;map_object_update_actions	map-object pool index or 0xffff sentinel
 KfEventControlObjectSlot	0x02	0x01	resource_id	u8	supported	event_scene_command_dispatch	resource ID saved on object-control command and restored on transition
 KfEventControlObjectSlot	0x03	0x01	unknown_03	u8	opaque	game/event_state.h	unclassified slot byte
-KfEventState	0x00	0x04	state_word	u32	supported	game_main_loop;func_800462bc;func_8004678c	word before the reset control region
+KfEventState	0x00	0x04	interaction_handled	u32	supported	event_scene_command_dispatch;event_target_stream_execute	set when an event command or target stream handles an interaction
 KfEventState	0x04	0x100	control	KfEventControl	supported	func_800482f8;game_main_loop	word-cleared control region with three observed sentinel halfwords
 KfEventState	0x104	0x3800	arena	KfEventArena	supported	func_800482f8;memory_arena_initialize_blocks;pointer rebasing	memory block chain and saved stream data
 KfEventState	0x3904	0x14	saved_offsets	u16[10]	supported	func_800482f8;func_800483d8;func_80048498	ten halfword offsets relative to the arena base; 0xffff means absent
@@ -735,7 +737,7 @@ KfPlayerState	0x2a	0x02	magic	u16	supported	asm;effect_magic_power	player magic 
 KfPlayerState	0x2c	0x04	gold	u32	supported	asm;player_initialize_state;KF1 player.h	cleared on new state
 KfPlayerState	0x30	0x10	attack_components	u16[8]	supported	asm;player_recalculate_combat_stats	weapon attack totals
 KfPlayerState	0x40	0x02	unknown_40	u16	opaque	asm;player_recalculate_combat_stats	not yet modelled
-KfPlayerState	0x42	0x12	combat_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats	nine unsigned additive totals
+KfPlayerState	0x42	0x12	combat_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats;player_apply_damage	nine unsigned additive totals; component 3 resists poison application
 KfPlayerState	0x54	0x02	poison_timer	s16	supported	asm;player_apply_damage;player_update_frame;menu_draw_player_status	status case 3 starts duration; loses one HP every 30 frames until zero
 KfPlayerState	0x56	0x02	curse_strength	s16	supported	asm;player_recalculate_combat_stats;player_cap_status_components	nonzero reduces physical power by 20; capped at 64
 KfPlayerState	0x58	0x02	curse_phase_limit	u16	supported	asm;player_apply_damage;status_phase_step_scaled;player_cap_curse_strength	curse phase rises to this limit, then the limit clears and phase falls

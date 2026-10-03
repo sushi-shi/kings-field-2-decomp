@@ -12,6 +12,18 @@ s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEu
 s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
 void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle, u16 value);
 
+/* collision_query_world uses the same bit positions to request and report
+ * actor and map-object checks. Shape records only report bits below 0x10. */
+enum {
+    KF_COLLISION_QUERY_SHAPES = 0x01,
+    KF_COLLISION_QUERY_ACTORS = 0x10,
+    KF_COLLISION_QUERY_MAP_OBJECTS = 0x20,
+    KF_COLLISION_HIT_AXIS = 0x01,
+    KF_COLLISION_HIT_DIAGONAL = 0x02,
+    KF_COLLISION_HIT_ACTOR = 0x10,
+    KF_COLLISION_HIT_MAP_OBJECT = 0x20
+};
+
 /* Phase-one resource loading copies 0x600 words to this interior BSS range.
  * The variable-length shape records within it remain untyped. */
 #define KF_COLLISION_SHAPE_BANK \

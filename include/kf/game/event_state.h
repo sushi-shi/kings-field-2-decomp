@@ -24,7 +24,9 @@ typedef char kf_event_control_object_slot_resource_offset[
 
 typedef struct KfEventControlFields {
     u8 highest_requested_map_region_id;
-    u8 unknown_05[0x27];
+    u8 unknown_01[0x1b];
+    u8 counter_53_decreased;
+    u8 unknown_1d[0x0b];
     KfEventControlObjectSlot object_slots[3];
     u8 unknown_34[0x0b];
     u8 stream_actor_definition_id;
@@ -33,6 +35,8 @@ typedef char kf_event_control_fields_size[
     sizeof(KfEventControlFields) == 0x40 ? 1 : -1];
 typedef char kf_event_control_object_slots_offset[
     (u32)&((KfEventControlFields *)0)->object_slots == 0x28 ? 1 : -1];
+typedef char kf_event_control_counter_53_decreased_offset[
+    (u32)&((KfEventControlFields *)0)->counter_53_decreased == 0x1c ? 1 : -1];
 typedef char kf_event_control_last_slot_resource_offset[
     (u32)&((KfEventControlFields *)0)->object_slots[2].resource_id == 0x32 ? 1 : -1];
 typedef char kf_event_control_stream_actor_definition_offset[
@@ -51,7 +55,7 @@ typedef union KfEventArena {
 } KfEventArena;
 
 typedef struct KfEventState {
-    u32 state_word;
+    u32 interaction_handled;
     KfEventControl control;
     KfEventArena arena;
     u16 saved_offsets[KF_EVENT_SAVED_SLOT_COUNT];

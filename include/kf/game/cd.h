@@ -44,6 +44,12 @@ enum {
     KF_CD_REQUEST_IMAGE_STREAM = 0x40
 };
 
+/* Completion callbacks first acknowledge the seek, then the sector read. */
+enum {
+    KF_CD_REQUEST_PHASE_SEEK = 0,
+    KF_CD_REQUEST_PHASE_READ = 1
+};
+
 typedef struct KfCdRequest KfCdRequest;
 typedef void (*KfCdRequestCallback)(KfCdRequest *request);
 struct KfAudioVabStreamSlot;

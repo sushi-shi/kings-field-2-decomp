@@ -218,7 +218,7 @@ void event_world_state_save_slot(s32 save_slot)
             }
             break;
         case 83:
-            if (object->tail.fields.unknown_38 < 2) {
+            if (object->tail.action_83.transition_mode < 2) {
                 break;
             }
         case 0:
@@ -243,8 +243,8 @@ void event_world_state_save_slot(s32 save_slot)
         case 15:
         case 17:
             *write++ = 0xf4;
-            *write++ = object->tail.fields.unknown_38;
-            *write++ = object->tail.fields.unknown_39;
+            *write++ = object->tail.event_effect.pending_event_command;
+            *write++ = object->tail.event_effect.effect_object_index;
             break;
         default:
             *write++ = 0xfe;
@@ -317,8 +317,8 @@ void event_world_state_restore_slot(s32 save_slot)
             object->object_id = 0xff;
             break;
         case 4:
-            object->tail.fields.unknown_38 = *stream++;
-            object->tail.fields.unknown_39 = *stream++;
+            object->tail.event_effect.pending_event_command = *stream++;
+            object->tail.event_effect.effect_object_index = *stream++;
             break;
         case 0: {
             s32 x_high;

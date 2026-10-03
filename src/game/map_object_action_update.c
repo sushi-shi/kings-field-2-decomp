@@ -1,16 +1,16 @@
 #include <kf/lib/address.h>
-#include <kf/game/callback.h>
 #include <kf/game/cd.h>
+#include <kf/game/graphics.h>
+#include <kf/game/player.h>
+#include <kf/game/callback.h>
 #include <kf/game/collision_cache.h>
 #include <kf/game/audio.h>
 #include <kf/game/event_state.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/effect.h>
-#include <kf/game/graphics.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/map_object.h>
-#include <kf/game/player.h>
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
@@ -26,6 +26,36 @@ SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
+
+enum {
+    FRAME_COLOR_LEVELS = 256,
+    FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1
+};
+
+ADDRESS(0x80036e24, 0xb0)
+void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+    s32 step)
+{
+    VECTOR position;
+    SVECTOR angles;
+
+    for (;;) {
+        s32 brightness = (phase * phase) >> 16;
+
+        if (brightness >= FRAME_COLOR_LEVELS) {
+            brightness = FRAME_COLOR_MAX;
+        }
+        render_set_color_overlay(mode, brightness, brightness, brightness);
+        cd_request_service_vab();
+        cd_request_service_stream();
+        player_get_camera_pose(&position, &angles);
+        render_game_frame(&position, &angles);
+        if (phase == last_phase) {
+            break;
+        }
+        phase += step;
+    }
+}
 
 ADDRESS(0x80036ed4, 0x1df4)
 void map_object_update_actions(void)

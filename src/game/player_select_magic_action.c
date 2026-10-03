@@ -126,7 +126,9 @@ charge_gate:
 enum {
     PLAYER_MOVE_RADIUS = 800,
     PLAYER_MOVE_HEIGHT = 1700,
-    PLAYER_MOVE_COLLISION_MODE = 49,
+    PLAYER_MOVE_COLLISION_MODE = KF_COLLISION_QUERY_SHAPES |
+                                 KF_COLLISION_QUERY_ACTORS |
+                                 KF_COLLISION_QUERY_MAP_OBJECTS,
     PLAYER_MOVE_SLIDE_RADIUS = 880,
     PLAYER_MOVE_DEFLECTION_ANGLE = 32,
     PLAYER_MOVE_STEP = 22
@@ -179,7 +181,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             }
         }
 
-        if (flags & 0x30) {
+        if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
             collision_retry++;
             if (collision_retry == 2) {
                 break;
@@ -226,7 +228,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             slide_attempted = 1;
         }
 
-        if (high_collision || (flags & 1)) {
+        if (high_collision || (flags & KF_COLLISION_HIT_AXIS)) {
         axis_retry:
             if (dx != 0) {
                 dx = 0;
@@ -238,12 +240,13 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                 continue;
             }
         }
-        if (flags & 2) {
+        if (flags & KF_COLLISION_HIT_DIAGONAL) {
             if (diagonal_retry) {
                 goto axis_retry;
             } else {
                 diagonal_retry = 1;
-                diagonal_kind = KF_COLLISION_CACHE_SHAPE[2] & 3;
+                diagonal_kind =
+                    ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
                 if (diagonal_kind == 0 || diagonal_kind == 2) {
                     dx = (initial_dx + initial_dz) >> 1;
                     dz = dx;

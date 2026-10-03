@@ -13,7 +13,27 @@ enum {
 
 enum {
     KF_AUDIO_DEFAULT_MAX_DISTANCE = 0x4800,
-    KF_AUDIO_DEFAULT_ATTENUATION_DISTANCE = 0x6000
+    KF_AUDIO_DEFAULT_ATTENUATION_DISTANCE = 0x6000,
+    KF_AUDIO_ALTERNATE_PAN_FLAG = 0x8000,
+    KF_AUDIO_SOUND_INDEX_MASK = 0xfff
+};
+
+enum {
+    KF_AUDIO_SEQUENCE_INACTIVE = 0,
+    KF_AUDIO_SEQUENCE_ACTIVE = 1
+};
+
+/* Stream slots are queued, retained while requested, then made reclaimable. */
+enum {
+    KF_AUDIO_VAB_STREAM_FREE = 0,
+    KF_AUDIO_VAB_STREAM_IN_USE = 1,
+    KF_AUDIO_VAB_STREAM_RECLAIMABLE = 2,
+    KF_AUDIO_VAB_STREAM_LOADING = 3,
+    KF_AUDIO_VAB_ID_STREAM_PENDING = 0xfe,
+    KF_AUDIO_VAB_STREAM_POOL_COUNT = 5,
+    KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1 = 5,
+    KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_0 = 6,
+    KF_AUDIO_VAB_STREAM_SLOT_COUNT = 7
 };
 
 typedef s32 KfAudioPlaybackResult;
@@ -46,10 +66,12 @@ typedef struct {
     s16 program;
     s16 tone;
     s16 note;
-    u16 age;
+    u16 priority;
 } KfAudioVoiceParams;
 
 typedef char kf_audio_voice_params_size[sizeof(KfAudioVoiceParams) == 10 ? 1 : -1];
+typedef char kf_audio_voice_priority_offset[
+    (u32)&((KfAudioVoiceParams *)0)->priority == 8 ? 1 : -1];
 
 typedef struct {
     KfAudioVoiceHandle handles[10];
@@ -71,7 +93,7 @@ typedef struct {
     u8 unknown_2a[2];
     KfAudioVabSlot vab_slots[130];
     KfAudioVoiceState voices;
-    KfAudioVabStreamSlot vab_stream_slots[7];
+    KfAudioVabStreamSlot vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_COUNT];
 } KfGameAudioState;
 
 typedef char kf_game_audio_state_size[sizeof(KfGameAudioState) == 0xe9c ? 1 : -1];

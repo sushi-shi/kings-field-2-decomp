@@ -33,7 +33,7 @@ first_layer:
         elevation = -(s32)cell->layer[0].elevation;
         goto scale_height;
 second_layer:
-        COLLISION_CACHE_LAYER = 5;
+        COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
         elevation = -(s32)cell->layer[1].elevation;
 scale_height:
         COLLISION_CACHE_HEIGHT = elevation * 128;

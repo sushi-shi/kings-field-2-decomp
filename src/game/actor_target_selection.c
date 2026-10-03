@@ -1015,7 +1015,7 @@ retry_move:
             goto try_axis;
         }
     }
-    if (!(collision & 1)) {
+    if (!(collision & KF_COLLISION_HIT_AXIS)) {
         goto check_diagonal;
     }
 
@@ -1055,13 +1055,13 @@ try_axis:
         goto retry_move;
     }
 check_diagonal:
-    if (!(collision & 2)) {
+    if (!(collision & KF_COLLISION_HIT_DIAGONAL)) {
         goto finish;
     }
     if (diagonal_attempted) {
         goto try_axis;
     }
-    switch (KF_COLLISION_CACHE_SHAPE[2] & 3) {
+    switch (((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3) {
     case 0:
     case 2:
         motion_x = (original_x + original_z) >> 1;

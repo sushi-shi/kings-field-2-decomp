@@ -126,12 +126,6 @@ source = "src/game/resource_transition_request.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.resource_transition_phase"
-image = "GAME.EXE"
-source = "src/game/resource_transition_phase.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.resource_transition_step"
 image = "GAME.EXE"
 source = "src/game/resource_transition_step.c"
@@ -150,45 +144,15 @@ source = "src/game/return_stub_18764.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_location_number"
+unit = "game.menu_root"
 image = "GAME.EXE"
-source = "src/game/menu_location_number.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_selection"
-image = "GAME.EXE"
-source = "src/game/menu_item_selection.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_map_preview"
-image = "GAME.EXE"
-source = "src/game/menu_map_preview.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_selection_rows"
-image = "GAME.EXE"
-source = "src/game/menu_selection_rows.c"
+source = "src/game/menu_root.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
 unit = "game.menu_equipment_list"
 image = "GAME.EXE"
 source = "src/game/menu_equipment_list.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_simple_loop"
-image = "GAME.EXE"
-source = "src/game/menu_simple_loop.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_equipment"
-image = "GAME.EXE"
-source = "src/game/menu_item_equipment.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -300,12 +264,6 @@ source = "src/game/map_object.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.frame_step_cd_service"
-image = "GAME.EXE"
-source = "src/game/frame_step_cd_service.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.map_object_action_update"
 image = "GAME.EXE"
 source = "src/game/map_object_action_update.c"
@@ -330,21 +288,9 @@ source = "src/game/actor_group_effects.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_spatial_sound"
-image = "GAME.EXE"
-source = "src/game/actor_spatial_sound.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.actor_behavior_dispatch"
 image = "GAME.EXE"
 source = "src/game/actor_behavior_dispatch.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_fixup_group_targets"
-image = "GAME.EXE"
-source = "src/game/actor_fixup_group_targets.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -369,12 +315,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.event_pose_interpolate"
 image = "GAME.EXE"
 source = "src/game/event_pose_interpolate.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.event_command_dispatch"
-image = "GAME.EXE"
-source = "src/game/event_command_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

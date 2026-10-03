@@ -2415,11 +2415,11 @@ void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
         if (*flags++) {
             if (state == 0) {
                 audio_queue_vab_stream(archive_slot, entry, vab_slot);
-            } else if (state->state == 2) {
-                state->state = 1;
+            } else if (state->state == KF_AUDIO_VAB_STREAM_RECLAIMABLE) {
+                state->state = KF_AUDIO_VAB_STREAM_IN_USE;
             }
-        } else if (state != 0 && state->state == 1) {
-            state->state = 2;
+        } else if (state != 0 && state->state == KF_AUDIO_VAB_STREAM_IN_USE) {
+            state->state = KF_AUDIO_VAB_STREAM_RECLAIMABLE;
         }
         entry++;
         vab_slot++;
@@ -2486,17 +2486,17 @@ void render_scene_and_update_resources(void)
         if (actor->lifecycle != 1) {
             goto actor_next;
         }
-        if (actor->unknown_28 & 0x2000) {
+        if (actor->unknown_28 & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) {
             layer = actor->current_map_layer | 0x20;
         } else {
             layer = actor->current_map_layer;
         }
-        if (actor->unknown_28 & 0x80000) goto actor_radius_check;
+        if (actor->unknown_28 & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
         if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != 0) {
             position = actor_resolve_group_position(actor, &actor_position);
-            if (actor->unknown_28 & 0x20) {
+            if (actor->unknown_28 & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) {
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;

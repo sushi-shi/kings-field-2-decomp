@@ -245,7 +245,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
                 break;
             }
         }
-        if (player_state.combat_components[3]
+        if (player_state.combat_components[KF_PLAYER_COMBAT_POISON_RESISTANCE]
             < ((rand() * KF_PLAYER_POISON_ROLL_SCALE) >> KF_PLAYER_POISON_ROLL_SHIFT)) {
             player_state.poison_timer = poison_duration;
         }

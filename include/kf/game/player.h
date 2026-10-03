@@ -82,6 +82,9 @@ typedef char kf_equipment_record_hp_regen_offset[
 typedef char kf_equipment_record_hp_drain_offset[
     (u32)&((KfEquipmentRecord *)0)->hp_drain_interval == 0x16 ? 1 : -1];
 
+/* The fourth equipment defense component resists poison application. */
+enum { KF_PLAYER_COMBAT_POISON_RESISTANCE = 3 };
+
 typedef struct KfWeaponRecordGame {
     u8 sound_id;
     u8 charge_rank;

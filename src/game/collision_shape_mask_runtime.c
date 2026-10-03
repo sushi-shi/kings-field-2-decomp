@@ -342,7 +342,7 @@ LAB_8002b38c:
       }
       break;
     case 0x31:
-      if ((result_flags & 1) != 0) {
+      if ((result_flags & KF_COLLISION_HIT_AXIS) != 0) {
         next_record = operand + 5;
         record_value = (u16)selected_layer->quarter_turns + operand[4] & 3;
         case_value = x_fraction;
@@ -376,7 +376,8 @@ LAB_8002b450:
       if (visited_second_layer) {
         return result_flags;
       }
-      KF_COLLISION_CACHE_LAYER = KF_COLLISION_CACHE_LAYER == 0 ? 5 : 0;
+      KF_COLLISION_CACHE_LAYER = KF_COLLISION_CACHE_LAYER == 0 ?
+          sizeof(KfMapOccupancyLayer) : 0;
       selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
       KF_COLLISION_CACHE_HEIGHT = -(s32)selected_layer->elevation * 0x80;
       visited_second_layer = 1;
@@ -441,7 +442,7 @@ s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 hei
     s32 elevation;
 
     if (kind == 2) {
-        COLLISION_CACHE_LAYER = 5;
+        COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
         elevation = -(s32)cell->layer[1].elevation;
     } else {
         COLLISION_CACHE_LAYER = 0;
@@ -527,7 +528,8 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 
     if (mode & 1) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
-        if ((mode & 2) && (COLLISION_CACHE_SHAPE[4] & 0x40)) {
+        if ((mode & 2) &&
+            (((KfMapOccupancyLayer *)COLLISION_CACHE_SHAPE)->lighting_index & 0x40)) {
             COLLISION_CACHE_RESULT = -100000;
             result |= 1;
         }
@@ -1006,7 +1008,8 @@ void build_camera_map_cell_layer_masks(void)
                   game_graphics_runtime.render_state.view_position.vz);
     layer = KF_COLLISION_CACHE_LAYER;
     render_mask_scan_state.first_layer_byte_offset = layer;
-    render_mask_scan_state.second_layer_byte_offset = 5 - layer;
+    render_mask_scan_state.second_layer_byte_offset =
+        sizeof(KfMapOccupancyLayer) - layer;
     if (layer == 0) {
         render_mask_scan_state.first_layer_mask = 1;
         render_mask_scan_state.second_layer_mask = 2;

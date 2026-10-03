@@ -1,14 +1,43 @@
 #include <kf/lib/address.h>
 #include <kf/game/actor.h>
-#include <kf/game/collision_cache.h>
 #include <kf/game/audio.h>
+#include <psyq/libc.h>
+#include <kf/game/collision_cache.h>
 #include <kf/game/callback.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
-#include <psyq/libc.h>
+#include <kf/lib/null.h>
 
 RODATA(0x800120d8, 0x3c4)
+
+ADDRESS(0x8003d084, 0x64)
+s32 actor_sound_note_offset(KfActor *actor)
+{
+    s32 offset = 16 - actor->model_scale_y.bytes.high;
+
+    if (offset > 12) {
+        offset = 12;
+    } else if (offset < -12) {
+        offset = -12;
+    }
+    return offset + (((rand() * 5) >> 15) - 2);
+}
+
+ADDRESS(0x8003d0e8, 0x9c)
+void actor_play_target_sound(KfActor *actor)
+{
+    KfTargetCandidate *target = actor->target;
+
+    if (target->sound_code & 0x80) {
+        audio_play_spatial_range((target->sound_code & 0x7f) + 96,
+            &actor->position, 0x7f, 0x6000, 0x7800,
+            actor_sound_note_offset(actor));
+    } else {
+        audio_play_spatial_default_range(target->sound_code + 96,
+            &actor->position, 0x6e, actor_sound_note_offset(actor));
+    }
+}
 
 ADDRESS(0x8003d184, 0x248c)
 void actor_update_behavior(void)
@@ -1162,4 +1191,156 @@ behavior_done:
         map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                        actor->collision_radius, 1);
     }
+}
+
+ADDRESS(0x8003f610, 0x1dc)
+void actor_update_frame(void)
+{
+    KfActor *actor;
+
+    actor_state.active_actor_count = 0;
+    actor = actor_state.actors;
+    actor_state.current_actor_slot_index = 0;
+    do {
+        if (actor->slot_state != KF_ACTOR_SLOT_FREE) {
+            actor_bind_current(actor);
+            if (((actor_state.actor_update_frame_count & 3) ==
+                 (actor_state.current_actor_slot_index & 3)) ||
+                player_state.force_actor_lifecycle_refresh != 0 ||
+                player_state.death_state == 1) {
+                actor_update_lifecycle_for_player_range();
+            }
+
+            if (actor->lifecycle == 1) {
+                if ((actor_state.actor_update_frame_count & 3) ==
+                    (actor_state.active_actor_count & 3)) {
+                    actor_select_target_for_player_distance();
+                }
+                actor_update_behavior();
+                actor_state.active_actor_count++;
+            }
+
+            if ((actor_state.active_group->initial_actor_flags &
+                 KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) != 0) {
+                KfMapObject *object =
+                    &map_object_state.objects[actor->word_22.linked_map_object_slot];
+                s32 object_z;
+
+                actor->position.vx = object->position.vx;
+                actor->position.vy = object->position.vy - 500;
+                object_z = object->position.vz;
+                actor->position.vz = object_z;
+                if (actor->lifecycle == 1) {
+                    actor->rotation.y = vector_xz_to_angle(
+                        player_state.camera_position.vx - actor->position.vx,
+                        player_state.camera_position.vz - object_z);
+                }
+            }
+        }
+        actor++;
+        actor_state.current_actor_slot_index++;
+    } while (actor_state.current_actor_slot_index < KF_ACTOR_CAPACITY);
+
+    actor_state.actor_update_frame_count++;
+    actor_bind_current(NULL);
+}
+
+ADDRESS(0x8003f7ec, 0x74)
+void actor_fixup_group_targets(void)
+{
+    KfTargetGroup *group = actor_state.target_groups;
+    KfTargetCandidate *base;
+    s32 group_index;
+    s32 slot_index;
+    KfTargetReference *slot;
+    s32 empty_offset;
+
+    group_index = 0;
+    empty_offset = -1;
+    base = (KfTargetCandidate *)actor_state.unknown_73a0;
+    while (group_index < 40) {
+        if (group->definition_id == 0xff) {
+            break;
+        }
+        slot = group->targets;
+        for (slot_index = 0; slot_index < 16; slot_index++, slot++) {
+            if (slot->relative_offset == empty_offset) {
+                slot->pointer = NULL;
+            } else {
+                slot->pointer = (KfTargetCandidate *)((u8 *)base + slot->relative_offset);
+            }
+        }
+        group_index++;
+        group++;
+    }
+}
+
+/* The archive loader at 0x80016820 advances across 16-byte records. */
+typedef struct KfActorLoadRecord {
+    u8 slot_state;
+    u8 group_index;
+    u8 placement_flags;
+    u8 cell_z;
+    u8 cell_x;
+    u8 spawn_chance;
+    u8 death_drop_object_id;
+    u8 home_map_layer;
+    u16 unknown_08;
+    u16 unknown_0a;
+    u16 unknown_0c;
+    u16 vertical_anchor_offset;
+} KfActorLoadRecord;
+typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
+
+ADDRESS(0x8003f860, 0x1cc)
+void actor_load_records(const KfActorLoadRecord *records)
+{
+    KfActor *actor = actor_state.actors;
+    u16 remaining = KF_ACTOR_CAPACITY - 1;
+
+    do {
+        actor->slot_state = records->slot_state;
+        if (actor->slot_state != 0xff) {
+            const KfTargetGroup *group;
+
+            actor->group_index = records->group_index;
+            actor->unknown_04 = 0;
+            actor->placement_flags = records->placement_flags;
+            actor->home_map_layer = records->home_map_layer;
+            actor->home_cell_z = records->cell_z;
+            actor->home_cell_x = records->cell_x;
+            actor->spawn_chance = records->spawn_chance;
+            actor->death_drop_object_id = records->death_drop_object_id;
+            actor->word_20.value = records->unknown_08;
+            actor->word_22.value = records->unknown_0a;
+            actor->word_24.value = records->unknown_0c;
+            actor->vertical_anchor_offset = records->vertical_anchor_offset;
+            actor->lifecycle = 0;
+            actor->target_type = 0;
+            actor->target_action_state = 0xff;
+            actor->target = NULL;
+
+            group = &actor_state.target_groups[actor->group_index];
+            actor_copy_group_defaults(actor);
+            actor_set_home_position(actor);
+            actor->render_depth = group->render_depth;
+            if ((actor->unknown_28 & KF_ACTOR_FLAG_LINKED) != 0) {
+                if (actor->slot_state == 3) {
+                    if (actor->word_24.value == -1) {
+                        actor->word_24.value = group->word_1a.slot3_home_x_fallback;
+                    }
+                    if (actor->vertical_anchor_offset == -1) {
+                        actor->vertical_anchor_offset = group->default_vertical_anchor_offset;
+                    }
+                } else {
+                    actor->slot_state = 4;
+                    actor->vertical_anchor_offset = 0;
+                }
+            }
+        } else {
+            actor->lifecycle = 0;
+        }
+        records++;
+        actor++;
+    } while (remaining-- != 0);
 }

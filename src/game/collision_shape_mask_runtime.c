@@ -13,18 +13,10 @@ typedef struct KfCollisionShapeHeader {
   s16 command_count;
 } KfCollisionShapeHeader;
 
-typedef struct KfCollisionHeightState {
-  s32 height;
-  s32 result;
-  s32 height_limit;
-} KfCollisionHeightState;
-
 typedef char kf_collision_shape_header_size[
     sizeof(KfCollisionShapeHeader) == 4 ? 1 : -1];
 typedef char kf_collision_shape_count_offset[
     (u32)&((KfCollisionShapeHeader *)0)->command_count == 2 ? 1 : -1];
-typedef char kf_collision_height_state_size[
-    sizeof(KfCollisionHeightState) == 12 ? 1 : -1];
 
 /* The runtime shape bank remains a WIP ownership view. */
 
@@ -62,7 +54,7 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
   s32 z_plus_cell;
   KfMapOccupancyLayer *selected_layer;
   KfCollisionShapeHeader *shape;
-  KfCollisionHeightState *cache;
+  KfCollisionCache *cache;
   u8 *shape_bank;
 
   result_flags = 0;
@@ -99,8 +91,7 @@ LAB_8002ab5c:
   neg_x_minus_z = -(s32)x_fraction - (s32)z_fraction;
   x_plus_cell = (s32)x_fraction + 0x800;
   z_plus_cell = (s32)z_fraction + 0x800;
-  /* The cache height begins 12 bytes past the copied shape-bank range. */
-  cache = (KfCollisionHeightState *)(shape_bank + KF_COLLISION_SHAPE_BANK_BYTES + 0xc);
+  cache = &KF_COLLISION_CACHE;
   record = (u16 *)(shape + 1);
   do {
     operand = record + 1;

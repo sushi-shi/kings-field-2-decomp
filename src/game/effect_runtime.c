@@ -858,7 +858,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.kind50.stage = 0;
         effect_play_spatial_sound(record, 0x18);
         break;
     case 101: {
@@ -1783,7 +1783,7 @@ void effect_update_dispatch(void)
     case 50: {
         s32 distance;
 
-        switch ((s8)record->cache_tail.payload.raw[0]) {
+        switch (record->cache_tail.payload.kind50.stage) {
         case 0:
             step = (u16)record->scale_z + 64;
             record->scale_z = step;
@@ -1791,13 +1791,13 @@ void effect_update_dispatch(void)
             record->scale_x = step;
             player_sample_weapon_world_vertex(0, &record->position);
             if ((s16)record->scale_x >= 256) {
-                record->cache_tail.payload.raw[0] = 1;
+                record->cache_tail.payload.kind50.stage = 1;
                 player_probe_view_target_and_vectors(1000, 0, &record->direction, &distance);
             }
             break;
         case 1:
             if (effect_collision_step(512, (s32)0x80000200, 0) != 0) {
-                record->cache_tail.payload.raw[0] = 2;
+                record->cache_tail.payload.kind50.stage = 2;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
                                0x8000, 0x1000, 0x1000);
             }

@@ -2502,7 +2502,7 @@ void effect_update_dispatch(void)
             effect_spawn_radial_ring(6, 60, -330, 56);
             effect_spawn_radial_ring(8, 140, -170, 40);
             effect_play_spatial_sound(record, 0x25);
-            record->cache_tail.payload.raw[0] = 15;
+            record->cache_tail.payload.kind106.children_remaining = 15;
             record->phase = 1;
             record->render_flags = 0;
         } else {
@@ -2511,7 +2511,7 @@ void effect_update_dispatch(void)
         }
         break;
     kind106_phase1:
-        if (record->cache_tail.payload.raw[0] == 0) {
+        if (record->cache_tail.payload.kind106.children_remaining == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -2570,8 +2570,8 @@ void effect_update_dispatch(void)
                         record->updates_remaining = 100;
                         break;
                     }
-                    if (parent->cache_tail.payload.raw[0] != 0) {
-                        parent->cache_tail.payload.raw[0]--;
+                    if (parent->cache_tail.payload.kind106.children_remaining != 0) {
+                        parent->cache_tail.payload.kind106.children_remaining--;
                     }
                     record->type = KF_EFFECT_SLOT_FREE;
                     break;
@@ -2629,8 +2629,8 @@ void effect_update_dispatch(void)
             }
             if ((s16)record->scale_z >= 4096) {
                 record->type = KF_EFFECT_SLOT_FREE;
-                if (parent->cache_tail.payload.raw[0] != 0) {
-                    parent->cache_tail.payload.raw[0]--;
+                if (parent->cache_tail.payload.kind106.children_remaining != 0) {
+                    parent->cache_tail.payload.kind106.children_remaining--;
                 }
                 break;
             }

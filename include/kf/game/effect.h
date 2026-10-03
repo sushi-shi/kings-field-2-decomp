@@ -94,6 +94,13 @@ typedef struct KfEffectKind5Fanout {
 typedef char kf_effect_kind5_fanout_size[sizeof(KfEffectKind5Fanout) == 4 ? 1 : -1];
 typedef char kf_effect_kind5_remaining_offset[(u32)&((KfEffectKind5Fanout *)0)->children_remaining == 2 ? 1 : -1];
 
+/* Kind 111 follows an actor, with 0xff selecting the effect's own position. */
+typedef struct KfEffectKind111Target {
+    s16 actor_index;
+} KfEffectKind111Target;
+
+typedef char kf_effect_kind111_target_size[sizeof(KfEffectKind111Target) == 2 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -175,6 +182,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind23Attachment kind23;
     KfEffectKind46State kind46;
     KfEffectKind5Fanout kind5;
+    KfEffectKind111Target kind111;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

@@ -397,7 +397,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         u16 value = va[1];
         record->render_flags = 0;
         record->updates_remaining = 50;
-        *(u16 *)&record->cache_tail.payload.raw[0] = value;
+        record->cache_tail.payload.kind111.actor_index = value;
         effect_play_spatial_sound(record, 0x21);
         break;
     }
@@ -1882,7 +1882,7 @@ void effect_update_dispatch(void)
         SVECTOR spawn_direction;
         s32 spread;
 
-        if ((s16)*(u16 *)&record->cache_tail.payload.raw[0] == 0xff) {
+        if (record->cache_tail.payload.kind111.actor_index == 0xff) {
             spawn_position.vx = record->position.vx;
             spawn_position.vy = record->position.vy;
             spawn_position.vz = record->position.vz;
@@ -1892,7 +1892,7 @@ void effect_update_dispatch(void)
             spread = 1000;
         } else {
             const KfActor *actor =
-                &actor_state.actors[(s16)*(u16 *)&record->cache_tail.payload.raw[0]];
+                &actor_state.actors[record->cache_tail.payload.kind111.actor_index];
 
             spread = actor->collision_radius;
             spawn_position.vx = actor->position.vx;

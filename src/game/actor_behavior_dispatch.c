@@ -1264,13 +1264,13 @@ ADDRESS(0x8003f7ec, 0x74)
 void actor_fixup_group_targets(void)
 {
     KfTargetGroup *group = actor_state.target_groups;
-    KfTargetCandidate *base;
+    u8 *base;
     s32 group_index;
     s32 slot_index;
     KfTargetReference *slot;
 
     group_index = 0;
-    base = (KfTargetCandidate *)actor_state.target_candidate_blob;
+    base = actor_state.target_candidate_blob;
     while (group_index < 40) {
         if (group->definition_id == 0xff) {
             break;
@@ -1280,7 +1280,7 @@ void actor_fixup_group_targets(void)
             if (slot->relative_offset == -1) {
                 slot->pointer = NULL;
             } else {
-                slot->pointer = (KfTargetCandidate *)((u8 *)base + slot->relative_offset);
+                slot->pointer = (KfTargetCandidate *)(base + slot->relative_offset);
             }
         }
         group_index++;

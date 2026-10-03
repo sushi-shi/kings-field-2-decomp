@@ -292,7 +292,7 @@ typedef struct KfTargetCandidateAction25 {
     u8 type;
     u8 unknown_01[3];
     u8 unknown_04;
-    u8 unknown_05[3];
+    u8 unknown_05[2];
     u16 unknown_08;
     u16 unknown_0a;
     KfTargetCandidateWord0c word_0c;
@@ -306,6 +306,8 @@ typedef struct KfTargetCandidateAction25 {
 } KfTargetCandidateAction25;
 typedef char kf_target_candidate_action25_prefix_size[
     sizeof(KfTargetCandidateAction25) == 0x1c ? 1 : -1];
+typedef char kf_target_candidate_action25_word_08_offset[
+    (u32)&((KfTargetCandidateAction25 *)0)->unknown_08 == 0x08 ? 1 : -1];
 typedef char kf_target_candidate_action25_stream_offset[
     (u32)&((KfTargetCandidateAction25 *)0)->stream == 0x1a ? 1 : -1];
 

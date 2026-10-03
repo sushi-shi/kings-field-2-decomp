@@ -429,8 +429,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 5: {
-        KfEffectKind5Fanout *fanout =
-            (KfEffectKind5Fanout *)&record->cache_tail.payload.raw[0];
+        KfEffectKind5Fanout *fanout = &record->cache_tail.payload.kind5;
         u8 parameter;
 
         record->render_flags = 0;
@@ -745,8 +744,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 46: {
-        KfEffectKind46State *kind46 =
-            (KfEffectKind46State *)&record->cache_tail.payload.raw[0];
+        KfEffectKind46State *kind46 = &record->cache_tail.payload.kind46;
         u8 parameter;
 
         effect_pool_initialize_scaled(record, 0x10, 0x1000);
@@ -1646,8 +1644,7 @@ void effect_update_dispatch(void)
         }
         break;
     case 46: {
-        KfEffectKind46State *kind46 =
-            (KfEffectKind46State *)&record->cache_tail.payload.raw[0];
+        KfEffectKind46State *kind46 = &record->cache_tail.payload.kind46;
         KfEffectRecord *selected =
             &effect_state.records[kind46->linked_effect_index];
         s32 height;
@@ -2230,8 +2227,7 @@ void effect_update_dispatch(void)
         goto shared_phase_increment;
     }
     case 5: {
-        KfEffectKind5Fanout *fanout =
-            (KfEffectKind5Fanout *)&record->cache_tail.payload.raw[0];
+        KfEffectKind5Fanout *fanout = &record->cache_tail.payload.kind5;
         s32 count;
         s32 step_size;
         s32 progress;
@@ -2372,8 +2368,7 @@ void effect_update_dispatch(void)
         if (collision == -2) {
             KfEffectRecord *linked =
                 &effect_state.records[attachment->parent_index];
-            KfEffectKind5Fanout *linked_fanout =
-                (KfEffectKind5Fanout *)&linked->cache_tail.payload.raw[0];
+            KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
             if (linked_fanout->children_remaining != 0) {
                 --linked_fanout->children_remaining;
             }
@@ -2383,8 +2378,7 @@ void effect_update_dispatch(void)
                 (KF_COLLISION_CACHE_FLAGS & 0xf) != 0) {
                 KfEffectRecord *linked =
                     &effect_state.records[attachment->parent_index];
-                KfEffectKind5Fanout *linked_fanout =
-                    (KfEffectKind5Fanout *)&linked->cache_tail.payload.raw[0];
+                KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
                 if (linked_fanout->children_remaining != 0) {
                     --linked_fanout->children_remaining;
                 }

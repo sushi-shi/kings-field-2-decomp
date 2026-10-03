@@ -74,12 +74,34 @@ typedef char kf_effect_kind23_attachment_size[sizeof(KfEffectKind23Attachment) =
 typedef char kf_effect_kind23_vertex_offset[(u32)&((KfEffectKind23Attachment *)0)->vertex_index == 2 ? 1 : -1];
 typedef char kf_effect_kind23_phase_offset[(u32)&((KfEffectKind23Attachment *)0)->release_animation_phase == 4 ? 1 : -1];
 
+/* Kind 46 tracks a linked effect before fading its captured Y scale. */
+typedef struct KfEffectKind46State {
+    s8 phase;
+    s8 linked_effect_index;
+    u16 age_q12;
+} KfEffectKind46State;
+
+typedef char kf_effect_kind46_state_size[sizeof(KfEffectKind46State) == 4 ? 1 : -1];
+typedef char kf_effect_kind46_age_offset[(u32)&((KfEffectKind46State *)0)->age_q12 == 2 ? 1 : -1];
+
+/* Kind 5 fans out into kind-105 children attached to one actor. */
+typedef struct KfEffectKind5Fanout {
+    u8 initial_child_count;
+    u8 actor_index;
+    s16 children_remaining;
+} KfEffectKind5Fanout;
+
+typedef char kf_effect_kind5_fanout_size[sizeof(KfEffectKind5Fanout) == 4 ? 1 : -1];
+typedef char kf_effect_kind5_remaining_offset[(u32)&((KfEffectKind5Fanout *)0)->children_remaining == 2 ? 1 : -1];
+
 typedef union KfEffectKindPayload {
     u8 raw[8];
     KfEffectTrailState trail;
     KfEffectKind102Payload kind102;
     KfEffectBallisticState ballistic;
     KfEffectKind23Attachment kind23;
+    KfEffectKind46State kind46;
+    KfEffectKind5Fanout kind5;
 } KfEffectKindPayload;
 
 typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
@@ -147,26 +169,6 @@ typedef struct KfEffectTrailChildLink {
 
 typedef char kf_effect_trail_child_link_size[sizeof(KfEffectTrailChildLink) == 2 ? 1 : -1];
 typedef char kf_effect_trail_child_lag_offset[(u32)&((KfEffectTrailChildLink *)0)->lag_index == 1 ? 1 : -1];
-
-/* Kind 46 tracks a linked effect before fading its captured Y scale. */
-typedef struct KfEffectKind46State {
-    s8 phase;
-    s8 linked_effect_index;
-    u16 age_q12;
-} KfEffectKind46State;
-
-typedef char kf_effect_kind46_state_size[sizeof(KfEffectKind46State) == 4 ? 1 : -1];
-typedef char kf_effect_kind46_age_offset[(u32)&((KfEffectKind46State *)0)->age_q12 == 2 ? 1 : -1];
-
-/* Kind 5 fans out into kind-105 children attached to one actor. */
-typedef struct KfEffectKind5Fanout {
-    u8 initial_child_count;
-    u8 actor_index;
-    s16 children_remaining;
-} KfEffectKind5Fanout;
-
-typedef char kf_effect_kind5_fanout_size[sizeof(KfEffectKind5Fanout) == 4 ? 1 : -1];
-typedef char kf_effect_kind5_remaining_offset[(u32)&((KfEffectKind5Fanout *)0)->children_remaining == 2 ? 1 : -1];
 
 /* Kind 8 follows a parent effect and applies a per-tick vertical step. */
 typedef struct KfEffectKind8State {

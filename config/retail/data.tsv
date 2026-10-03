@@ -890,7 +890,11 @@ GAME.EXE	0x8006dbc4	0x5d3c4	0x4	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006dbc8	0x5d3c8	0x4	defined	reviewed	v_ofs	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+8;retail OpenTMD/ReadTMD xrefs	private current TMD vertex-table pointer; physical linked bytes are zero
 GAME.EXE	0x8006dbcc	0x5d3cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dbd0	0x5d3d0	0x4	defined	reviewed	n_ofs	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x10;retail OpenTMD/ReadTMD xrefs	private current TMD normal-table pointer; physical linked bytes are zero
-GAME.EXE	0x8006dbd4	0x5d3d4	0x14	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006dbd4	0x5d3d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006dbd8	0x5d3d8	0x4	defined	reviewed	t_prim	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x18;retail OpenTMD/ReadTMD xrefs	private current TMD primitive-table pointer; physical linked bytes are zero
+GAME.EXE	0x8006dbdc	0x5d3dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006dbe0	0x5d3e0	0x4	defined	reviewed	n_prim	u32	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x20;retail OpenTMD store	private current TMD primitive count; physical linked bytes are zero
+GAME.EXE	0x8006dbe4	0x5d3e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dbe8	0x5d3e8	0x18	bss	reviewed	menu_saved_primitive_buffers	KfPrimitiveBuffer[2]	manual:menu display transition	zero-initialized snapshots of both display primitive buffers
 GAME.EXE	0x8006dc00	0x5d400	0x400	bss	reviewed	memory_card_buffer_storage	u8[0x400]	manual:memory_card	first 0x400 bytes of the 0x4000-byte buffer occupy the padded load payload
 OPEN.EXE	0x80011000	0x800	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: \\OP\\OP.S;1

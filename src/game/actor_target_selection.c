@@ -71,7 +71,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case 9:
         if (target->word_0c.value < player_distance) {
-            goto done;
+            goto zero_score;
         }
         if ((u32)(player_state.camera_position.vy - actor->position.vy + 1023) < 2047 &&
             rand() >= 4096) {
@@ -90,10 +90,12 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 24:
     case 132:
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
-            target->word_1a.value < player_distance ||
-            !directed_intervals_overlap(actor->position.vy, actor->collision_height,
+            target->word_1a.value < player_distance) {
+            goto zero_score;
+        }
+        if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
-            goto done;
+            goto zero_score;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
@@ -167,6 +169,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 2:
     case 3:
     case 22:
+zero_score:
         score = 0;
         goto done;
     default:

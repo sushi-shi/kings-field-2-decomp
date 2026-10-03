@@ -66,9 +66,9 @@ void cd_map_stream_read(s32 slot, s32 entry)
 ADDRESS(0x80016f10, 0x3c)
 void cd_stream_limit_chunk(KfCdRequest *request)
 {
-    if (request->remaining_sectors > 16) {
-        request->sector_count = 16;
-        request->remaining_sectors -= 16;
+    if (request->remaining_sectors > KF_CD_STREAM_CHUNK_SECTORS) {
+        request->sector_count = KF_CD_STREAM_CHUNK_SECTORS;
+        request->remaining_sectors -= KF_CD_STREAM_CHUNK_SECTORS;
     } else {
         request->sector_count = request->remaining_sectors;
         request->remaining_sectors = 0;
@@ -96,7 +96,7 @@ void cd_request_service_stream(void)
     ExitCriticalSection();
 
     for (;;) {
-        s32 available = 0x8000 - consumed;
+        s32 available = KF_CD_STREAM_CHUNK_BYTES - consumed;
         s16 height = request->payload.image_rect.h;
 
         if (height != 0) {
@@ -121,7 +121,7 @@ void cd_request_service_stream(void)
             continue;
         }
 
-        if ((u32)available < 16) {
+        if ((u32)available < KF_CD_IMAGE_RECORD_HEADER_BYTES) {
             goto next_read;
         }
         if (source[0] != source[4] || source[1] != source[5] ||
@@ -136,7 +136,7 @@ void cd_request_service_stream(void)
             goto seek;
         }
 
-        consumed += 16;
+        consumed += KF_CD_IMAGE_RECORD_HEADER_BYTES;
         if (source[0] == 0xffff) {
             goto complete;
         }
@@ -725,13 +725,13 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
     size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;
-    if (request->remaining_sectors < 17) {
+    if (request->remaining_sectors < KF_CD_STREAM_CHUNK_SECTORS + 1) {
         request->remaining_sectors = 0;
         cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, size,
             (u_long *)destination, on_complete);
     } else {
-        request->remaining_sectors -= 16;
-        cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, 0x8000,
+        request->remaining_sectors -= KF_CD_STREAM_CHUNK_SECTORS;
+        cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, KF_CD_STREAM_CHUNK_BYTES,
             (u_long *)destination, on_complete);
     }
 }

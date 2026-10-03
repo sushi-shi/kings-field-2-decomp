@@ -64,7 +64,7 @@ void player_select_magic_action(s32 magic_id)
     player_state.queued_magic_action.repeat_interval = 1;
 
 charge_gate:
-    if (player_state.magic_charge < 5000) {
+    if (player_state.magic_charge < KF_PLAYER_CHARGE_FULL) {
         return;
     }
     player_state.magic_charge = 0;

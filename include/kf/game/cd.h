@@ -10,6 +10,9 @@ enum {
     KF_CD_SECTOR_BYTES = 0x800,
     KF_CD_SECTOR_SHIFT = 11,
     KF_CD_SECTOR_WORDS = KF_CD_SECTOR_BYTES / 4,
+    KF_CD_STREAM_CHUNK_SECTORS = 16,
+    KF_CD_STREAM_CHUNK_BYTES = KF_CD_STREAM_CHUNK_SECTORS * KF_CD_SECTOR_BYTES,
+    KF_CD_IMAGE_RECORD_HEADER_BYTES = 16,
     KF_CD_ARCHIVE_SLOTS = 8,
     /* Seed of the per-entry archive checksum held in each entry's last word. */
     KF_CD_CHECKSUM_SEED = 0x12345678
@@ -50,25 +53,23 @@ enum {
     KF_CD_REQUEST_PHASE_READ = 1
 };
 
+/* VAB request payload phases, advanced by the CD completion callback. */
+enum {
+    KF_CD_VAB_PHASE_HEAD = 0,
+    KF_CD_VAB_PHASE_BODY_READ = 1,
+    KF_CD_VAB_PHASE_BODY_READY = 2,
+    KF_CD_VAB_BODY_CHUNK_SECTORS = 18,
+    KF_CD_VAB_BODY_CHUNK_BYTES = KF_CD_VAB_BODY_CHUNK_SECTORS * KF_CD_SECTOR_BYTES
+};
+
 typedef struct KfCdRequest KfCdRequest;
 typedef void (*KfCdRequestCallback)(KfCdRequest *request);
 struct KfAudioVabStreamSlot;
 
-typedef struct KfCdRequestStreamChunk {
-    u16 unknown_1c;
-    u16 unknown_1e;
-} KfCdRequestStreamChunk;
-
-typedef union KfCdRequestStreamState {
-    struct KfAudioVabStreamSlot *vab_stream_slot;
-    KfCdRequestStreamChunk chunk;
-} KfCdRequestStreamState;
-
 typedef struct KfCdRequestPayloadVab {
     u8 phase;
-    u8 unknown_19;
     s16 slot_index;
-    KfCdRequestStreamState stream_state;
+    struct KfAudioVabStreamSlot *stream_slot;
 } KfCdRequestPayloadVab;
 
 typedef union KfCdRequestPayload {
@@ -78,6 +79,10 @@ typedef union KfCdRequestPayload {
 
 typedef char kf_cd_request_payload_size[
     sizeof(KfCdRequestPayload) == 8 ? 1 : -1];
+typedef char kf_cd_vab_slot_index_offset[
+    (u32)&((KfCdRequestPayloadVab *)0)->slot_index == 2 ? 1 : -1];
+typedef char kf_cd_vab_stream_slot_offset[
+    (u32)&((KfCdRequestPayloadVab *)0)->stream_slot == 4 ? 1 : -1];
 
 /* One queued asynchronous CD request. */
 struct KfCdRequest {
@@ -93,7 +98,6 @@ struct KfCdRequest {
     s16 chunk_sectors;
     s16 remaining_sectors;
     u8 stream_complete;
-    u8 unknown_25[3];
 };
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];

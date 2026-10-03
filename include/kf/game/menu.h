@@ -27,6 +27,16 @@ enum {
     KF_MENU_CONFIRM_REQUESTED = 1
 };
 
+/* Signed menu controls and the root controller's encoded magic action. */
+enum {
+    KF_MENU_RESULT_PENDING = -99,
+    KF_MENU_RESULT_GAME_LOADED = -3,
+    KF_MENU_RESULT_CANCELLED = -1,
+    KF_MENU_SELECTION_NONE = -1,
+    KF_MENU_MAGIC_ACTION_TAG = 0x1000,
+    KF_MENU_MAGIC_ACTION_ID_MASK = 0x0fff
+};
+
 enum {
     KF_MENU_TRANSLUCENT_SPRITE_OFFSET = 6,
     KF_MENU_WIDGET_OT_DEPTH = 20,

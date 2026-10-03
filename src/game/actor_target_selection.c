@@ -997,8 +997,7 @@ retry_move:
         movement_angle = vector_xz_to_angle(motion_x, motion_z);
         obstacle_angle = (angle_mod_delta_le_half_turn(
             movement_angle, obstacle_angle)
-            ? obstacle_angle + 1024 : obstacle_angle - 1024);
-        obstacle_angle &= KF_ANGLE_WRAP_MASK;
+            ? obstacle_angle + 1024 : obstacle_angle - 1024) & KF_ANGLE_WRAP_MASK;
         length = SquareRoot0(motion_x * motion_x + motion_z * motion_z);
         motion_x = -(rsin(obstacle_angle) * length) >> 13;
         motion_z = (rcos(obstacle_angle) * length) >> 13;
@@ -1351,12 +1350,8 @@ s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 ra
     s32 dz = (s32)((u32)world_z - (u32)actor->position.vz);
     s32 angle = vector_xz_to_angle(dx, dz);
 
-    if (dx < 0) {
-        dx = (s32)(0u - (u32)dx);
-    }
-    if (dz < 0) {
-        dz = (s32)(0u - (u32)dz);
-    }
+    dx = dx < 0 ? (s32)(0u - (u32)dx) : dx;
+    dz = dz < 0 ? (s32)(0u - (u32)dz) : dz;
     if (reference_angle != -1 && (s32)((u32)dx + (u32)dz) <= 600
         && !angle_within_tolerance(angle, reference_angle, 0x320)) {
         return -1;

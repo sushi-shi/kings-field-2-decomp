@@ -4,14 +4,20 @@
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
-enum { KF_MAP_PLACED_ENTRY_COUNT = 128 };
+enum {
+    KF_MAP_PLACED_ENTRY_COUNT = 128,
+    KF_MAP_PLACED_NONE = 0xffff,
+    KF_MAP_PLACED_ASSET_BASE = 0x28,
+    KF_MAP_PLACED_CLIP_BASE = 0x80,
+    KF_MAP_PLACED_ANIMATION_DISABLED = 0
+};
 
 /* Sixteen-byte rows loaded from a map resource section. */
 typedef struct KfMapPlacedSource {
-    u16 id;
+    u16 model_index;
     u8 frame_count;
     u8 frame_period;
-    u8 layer;
+    u8 layer_mask;
     u8 region_z;
     u8 region_x;
     u8 unknown_07[3];
@@ -22,8 +28,8 @@ typedef struct KfMapPlacedSource {
 
 /* Twenty-four-byte runtime rows at game_graphics_runtime +0x170f0. */
 typedef struct KfMapPlacedEntry {
-    u16 id;
-    u8 layer;
+    u16 model_index;
+    u8 layer_mask;
     u8 frame_count;
     u8 frame_period;
     u8 frame_index;

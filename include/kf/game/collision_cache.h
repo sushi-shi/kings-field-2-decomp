@@ -18,10 +18,13 @@ enum {
     KF_COLLISION_QUERY_SHAPES = 0x01,
     KF_COLLISION_QUERY_ACTORS = 0x10,
     KF_COLLISION_QUERY_MAP_OBJECTS = 0x20,
+    KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 = 0x40,
+    KF_COLLISION_QUERY_PLAYER = 0x80,
     KF_COLLISION_HIT_AXIS = 0x01,
     KF_COLLISION_HIT_DIAGONAL = 0x02,
     KF_COLLISION_HIT_ACTOR = 0x10,
-    KF_COLLISION_HIT_MAP_OBJECT = 0x20
+    KF_COLLISION_HIT_MAP_OBJECT = 0x20,
+    KF_COLLISION_HIT_PLAYER = 0x80
 };
 
 /* Phase-one resource loading copies 0x600 words to this interior BSS range.
@@ -42,7 +45,7 @@ typedef char kf_collision_shape_offset_table_size[
 #define KF_COLLISION_CACHE_CELL \
     (*(KfMapOccupancyCell **)((u8 *)&bss_801c7540 + 0x11800))
 #define KF_COLLISION_CACHE_SHAPE \
-    (*(u8 **)((u8 *)&bss_801c7540 + 0x11804))
+    (*(KfMapOccupancyLayer **)((u8 *)&bss_801c7540 + 0x11804))
 #define KF_COLLISION_CACHE_LAYER \
     (*(u16 *)((u8 *)&bss_801c7540 + 0x1180a))
 #define KF_COLLISION_CACHE_HEIGHT \

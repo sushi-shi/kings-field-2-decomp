@@ -25,6 +25,17 @@ enum {
     KF_MAP_OBJECT_PATTERN_ROWS = 3
 };
 
+/* map_cell_copy_rotated_fields copies these occupancy-layer components. */
+enum {
+    KF_MAP_CELL_COPY_OBJECT_INDEX = 0x01,
+    KF_MAP_CELL_COPY_ELEVATION = 0x02,
+    KF_MAP_CELL_COPY_ROTATED_ORIENTATION = 0x04,
+    KF_MAP_CELL_COPY_COLLISION_SHAPE = 0x08,
+    KF_MAP_CELL_COPY_LIGHTING_INDEX = 0x10,
+    KF_MAP_CELL_COPY_LIGHTING_BIT_40 = 0x20,
+    KF_MAP_CELL_COPY_LIGHTING_BIT_80 = 0x40
+};
+
 extern KfMapCellPattern map_object_cell_patterns
     [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS];
 

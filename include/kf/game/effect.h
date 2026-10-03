@@ -11,7 +11,8 @@ enum {
     KF_EFFECT_CAPACITY = 128,
     KF_MAGIC_RECORD_COUNT = 64,
     KF_EFFECT_SLOT_FREE = 0xff,
-    KF_EFFECT_USE_PLAYER_MAGIC = 0x10
+    KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
+    KF_EFFECT_STATIC_OBJECT_ZERO = 0x80
 };
 
 typedef union KfEffectScaleThreshold {
@@ -137,6 +138,11 @@ typedef char kf_effect_kind8_state_size[sizeof(KfEffectKind8State) == 4 ? 1 : -1
 typedef char kf_effect_kind8_vertical_step_offset[(u32)&((KfEffectKind8State *)0)->vertical_step == 2 ? 1 : -1];
 
 /* Kind 9 targets an actor; 0xfe selects the player camera, 0xff no target. */
+enum {
+    KF_EFFECT_KIND9_TARGET_PLAYER = 0xfe,
+    KF_EFFECT_KIND9_TARGET_NONE = 0xff
+};
+
 typedef struct KfEffectKind9Target {
     u8 actor_index;
 } KfEffectKind9Target;

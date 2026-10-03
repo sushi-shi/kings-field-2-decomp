@@ -22,7 +22,13 @@ enum {
 /* Vertical extent of the player in distance tests (King's Field's
  * KF_COLLISION_PLAYER_HEIGHT). */
 enum {
-    KF_PLAYER_HEIGHT = 1700
+    KF_PLAYER_HEIGHT = 1700,
+    KF_PLAYER_CAMERA_EYE_OFFSET = 1600
+};
+
+enum {
+    KF_PLAYER_CHARGE_FULL = 5000,
+    KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
 /* The byte at player +0xcd selects the camera, overlap, damage, and death
@@ -118,6 +124,13 @@ typedef struct KfWeaponRecordGame {
     s16 final_vertex_index;
 } KfWeaponRecordGame;
 
+typedef char kf_weapon_record_game_magic_window_offset[
+    (u32)&((KfWeaponRecordGame *)0)->magic_window_start == 0x20 ? 1 : -1];
+typedef char kf_weapon_record_game_initial_vertex_offset[
+    (u32)&((KfWeaponRecordGame *)0)->initial_vertex_index == 0x3a ? 1 : -1];
+typedef char kf_weapon_record_game_final_vertex_offset[
+    (u32)&((KfWeaponRecordGame *)0)->final_vertex_index == 0x42 ? 1 : -1];
+
 typedef struct KfWeaponAssetBuffer {
     u8 bytes[0xc000];
 } KfWeaponAssetBuffer;
@@ -149,14 +162,14 @@ typedef struct KfPlayerDamageReaction {
 } KfPlayerDamageReaction;
 
 typedef struct KfPlayerViewReaction {
-    u8 mode;
-    u8 step;
+    u8 map_object_index;
+    u8 approach_step;
     KfPlayerViewRotation rotation;
     u8 unknown_0a[6];
 } KfPlayerViewReaction;
 
 typedef struct KfPlayerPositionReaction {
-    u8 mode;
+    u8 recovery_step;
     u8 unknown_01[3];
     VECTOR position;
 } KfPlayerPositionReaction;
@@ -498,7 +511,7 @@ void player_update_horizontal_motion(void);
 s32 item_id_is_71_to_80(s32 value);
 void player_update_actions_and_charge(void);
 void player_render_frame_and_release_pool(void);
-void player_begin_view_reaction(u8 mode);
+void player_begin_view_reaction(u8 map_object_index);
 void player_begin_rotation_reaction(const SVECTOR *rotation);
 void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);

@@ -117,62 +117,62 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
         if (columns_remaining != -1) {
             do {
             if (layer_select & 1) {
-                if (field_mask & 1) {
+                if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[0].object_index = source->layer[0].object_index;
                 }
-                if (field_mask & 2) {
+                if (field_mask & KF_MAP_CELL_COPY_ELEVATION) {
                     destination->layer[0].elevation = source->layer[0].elevation;
                 }
-                if (field_mask & 4) {
+                if (field_mask & KF_MAP_CELL_COPY_ROTATED_ORIENTATION) {
                     destination->layer[0].quarter_turns =
                         (destination->layer[0].quarter_turns & 0xfc) |
                         ((source->layer[0].quarter_turns + quarter_turns) & 3);
                 }
-                if (field_mask & 8) {
+                if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[0].collision_shape_id = source->layer[0].collision_shape_id;
                 }
-                if (field_mask & 0x10) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[0].lighting_index =
                         (source->layer[0].lighting_index & 0x3f) |
                         (destination->layer[0].lighting_index & 0xc0);
                 }
-                if (field_mask & 0x20) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
                     destination->layer[0].lighting_index =
                         (source->layer[0].lighting_index & 0x40) |
                         (destination->layer[0].lighting_index & 0xbf);
                 }
-                if (field_mask & 0x40) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_80) {
                     destination->layer[0].lighting_index =
                         (source->layer[0].lighting_index & 0x80) |
                         (destination->layer[0].lighting_index & 0x7f);
                 }
             }
             if (layer_select & 2) {
-                if (field_mask & 1) {
+                if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[1].object_index = source->layer[1].object_index;
                 }
-                if (field_mask & 2) {
+                if (field_mask & KF_MAP_CELL_COPY_ELEVATION) {
                     destination->layer[1].elevation = source->layer[1].elevation;
                 }
-                if (field_mask & 4) {
+                if (field_mask & KF_MAP_CELL_COPY_ROTATED_ORIENTATION) {
                     destination->layer[1].quarter_turns =
                         (destination->layer[1].quarter_turns & 0xfc) |
                         ((source->layer[1].quarter_turns + quarter_turns) & 3);
                 }
-                if (field_mask & 8) {
+                if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[1].collision_shape_id = source->layer[1].collision_shape_id;
                 }
-                if (field_mask & 0x10) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[1].lighting_index =
                         (source->layer[1].lighting_index & 0x3f) |
                         (destination->layer[1].lighting_index & 0xc0);
                 }
-                if (field_mask & 0x20) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
                     destination->layer[1].lighting_index =
                         (source->layer[1].lighting_index & 0x40) |
                         (destination->layer[1].lighting_index & 0xbf);
                 }
-                if (field_mask & 0x40) {
+                if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_80) {
                     destination->layer[1].lighting_index =
                         (source->layer[1].lighting_index & 0x80) |
                         (destination->layer[1].lighting_index & 0x7f);

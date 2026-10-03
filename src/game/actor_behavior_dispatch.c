@@ -1253,10 +1253,8 @@ void actor_fixup_group_targets(void)
     s32 group_index;
     s32 slot_index;
     KfTargetReference *slot;
-    s32 empty_offset;
 
     group_index = 0;
-    empty_offset = -1;
     base = (KfTargetCandidate *)actor_state.unknown_73a0;
     while (group_index < 40) {
         if (group->definition_id == 0xff) {
@@ -1264,7 +1262,7 @@ void actor_fixup_group_targets(void)
         }
         slot = group->targets;
         for (slot_index = 0; slot_index < 16; slot_index++, slot++) {
-            if (slot->relative_offset == empty_offset) {
+            if (slot->relative_offset == -1) {
                 slot->pointer = NULL;
             } else {
                 slot->pointer = (KfTargetCandidate *)((u8 *)base + slot->relative_offset);

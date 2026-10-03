@@ -348,12 +348,12 @@ void audio_vab_stream_callback(KfCdRequest *request)
     KfAudioVabSlot *vab_slot;
 
     switch (request->payload.vab.phase) {
-    case 0:
+    case KF_CD_VAB_PHASE_HEAD:
         vab_slot = &audio_state.vab_slots[request->payload.vab.slot_index];
         if (cd_sectors_corrupt(
-                (u32 *)request->payload.vab.stream_state.vab_stream_slot->buffer,
+                (u32 *)request->payload.vab.stream_slot->buffer,
                 request->sector_count)) {
-            request->phase = 0;
+            request->phase = KF_CD_REQUEST_PHASE_SEEK;
             CdSeekP(&request->initial_location);
             return;
         }
@@ -361,20 +361,20 @@ void audio_vab_stream_callback(KfCdRequest *request)
             SsVabClose(vab_slot->vab_id);
         }
         vab_slot->vab_id = SsVabOpenHead(
-            request->payload.vab.stream_state.vab_stream_slot->buffer, -1);
+            request->payload.vab.stream_slot->buffer, -1);
         if (vab_slot->vab_id == -1) {
             cd_request_advance(request);
             return;
         }
         cd_location_add(&request->location, request->sector_count, &request->location);
-        request->payload.vab.phase = 1;
-        request->phase = 0;
+        request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READ;
+        request->phase = KF_CD_REQUEST_PHASE_SEEK;
         request->destination = (u_long *)cd_stream_work_buffer;
-        request->sector_count = 0x12;
+        request->sector_count = KF_CD_VAB_BODY_CHUNK_SECTORS;
         CdSeekP(&request->location);
         break;
-    case 1:
-        request->payload.vab.phase = 2;
+    case KF_CD_VAB_PHASE_BODY_READ:
+        request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READY;
         break;
     }
 }
@@ -389,12 +389,14 @@ void cd_request_service_vab(void)
 
     EnterCriticalSection();
     request = cd_state.current;
-    if (request->kind == KF_CD_REQUEST_VAB_READ && request->payload.vab.phase == 2) {
+    if (request->kind == KF_CD_REQUEST_VAB_READ &&
+        request->payload.vab.phase == KF_CD_VAB_PHASE_BODY_READY) {
         ExitCriticalSection();
         location = &request->location;
         vab_slot = &audio_state.vab_slots[request->payload.vab.slot_index];
         for (;;) {
-            result = SsVabTransBodyPartly(request->destination, 0x9000, vab_slot->vab_id);
+            result = SsVabTransBodyPartly(request->destination,
+                KF_CD_VAB_BODY_CHUNK_BYTES, vab_slot->vab_id);
             if (result != -1) {
                 break;
             }
@@ -402,15 +404,15 @@ void cd_request_service_vab(void)
             cd_request_advance(request);
         }
         if (result == -2) {
-            request->phase = 0;
-            request->payload.vab.phase = 1;
+            request->phase = KF_CD_REQUEST_PHASE_SEEK;
+            request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READ;
             cd_location_add(location, request->sector_count, location);
             CdSeekP(location);
             SsVabTransCompleted(1);
         } else if (result == vab_slot->vab_id) {
             cd_request_advance(request);
             SsVabTransCompleted(1);
-            request->payload.vab.stream_state.vab_stream_slot->state =
+            request->payload.vab.stream_slot->state =
                 KF_AUDIO_VAB_STREAM_IN_USE;
             request->sector_count = 0;
         }
@@ -488,8 +490,8 @@ void audio_queue_vab_stream(s32 archive_slot, s32 entry, s32 vab_slot_index)
     stream_slot->state = KF_AUDIO_VAB_STREAM_LOADING;
     request = cd_state.tail;
     cd_request_wait_done(request);
-    request->payload.vab.phase = 0;
-    request->payload.vab.stream_state.vab_stream_slot = stream_slot;
+    request->payload.vab.phase = KF_CD_VAB_PHASE_HEAD;
+    request->payload.vab.stream_slot = stream_slot;
     request->payload.vab.slot_index = vab_slot_index;
     cd_archive_queue_stream_read(
         archive_slot, entry * 2, (u_long *)stream_slot->buffer,

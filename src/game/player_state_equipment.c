@@ -50,15 +50,13 @@ KfPlayerMagicIdSequence player_magic_id_sequence = {
     {0x20, 0x10, 0x80, 0xffff}
 };
 
-enum { PLAYER_CAMERA_HEIGHT_OFFSET = 1600 };
-
 ADDRESS(0x80024ed4, 0x78)
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles)
 {
     position->vx = player_state.camera_position.vx;
     position->vz = player_state.camera_position.vz;
     position->vy = player_state.camera_vertical_offset + player_state.camera_position.vy
-                 + player_state.landing_vertical_offset - PLAYER_CAMERA_HEIGHT_OFFSET;
+                 + player_state.landing_vertical_offset - KF_PLAYER_CAMERA_EYE_OFFSET;
     angles->vx = player_state.camera_rotation.angles[0];
     angles->vy = player_state.camera_rotation.angles[1];
     angles->vz = player_state.camera_rotation.angles[2];
@@ -328,8 +326,7 @@ enum {
     PLAYER_WEAPON_CHARGE_DELAY_UPDATES = 10,
     PLAYER_WEAPON_ARCHIVE_SLOT = 5,
     PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY = 49,
-    PLAYER_WEAPON_ASSET_INDEX = 32,
-    PLAYER_WEAPON_ATTACK_INACTIVE = -1
+    PLAYER_WEAPON_ASSET_INDEX = 32
 };
 
 ADDRESS(0x8002569c, 0xb8)
@@ -347,21 +344,17 @@ void player_equip_weapon(u8 weapon_id)
         asset_registry_set(PLAYER_WEAPON_ASSET_INDEX,
                            player_state.weapon_asset_buffer);
     }
-    player_state.weapon_attack_phase = PLAYER_WEAPON_ATTACK_INACTIVE;
+    player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
     player_state.weapon_animation_cache = NULL;
     player_state.weapon_magic_shots_remaining = 0;
     player_state.weapon_guard_active = 0;
     player_recalculate_combat_stats();
 }
 
-enum {
-    PLAYER_CHARGE_FULL = 5000
-};
-
 ADDRESS(0x80025754, 0x124)
 void player_begin_weapon_attack(s32 mode)
 {
-    if (player_state.weapon_attack_phase != PLAYER_WEAPON_ATTACK_INACTIVE
+    if (player_state.weapon_attack_phase != KF_WEAPON_ATTACK_INACTIVE
         || player_state.equipped_weapon_id == KF_EQUIPMENT_NONE
         || player_state.paralysis_timer != 0) {
         return;
@@ -377,8 +370,8 @@ void player_begin_weapon_attack(s32 mode)
         player_state.weapon_next_sound_phase = player_state.equipped_weapon_record->alternate_attack_sound_start_phase;
     }
     player_state.attack_charge_committed = player_state.attack_charge_current;
-    if (player_state.attack_charge_current == PLAYER_CHARGE_FULL
-        && player_state.magic_charge == PLAYER_CHARGE_FULL) {
+    if (player_state.attack_charge_current == KF_PLAYER_CHARGE_FULL
+        && player_state.magic_charge == KF_PLAYER_CHARGE_FULL) {
         player_state.weapon_attack_fully_charged = 1;
         player_state.weapon_magic_shots_configured = player_state.equipped_weapon_record->magic_shots;
     } else {

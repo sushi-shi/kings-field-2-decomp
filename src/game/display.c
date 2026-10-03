@@ -2732,16 +2732,17 @@ effect_next:
     remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
     while (remaining != -1) {
         u32 visibility;
-        if (placed->id != 0xffff) {
+        if (placed->model_index != KF_MAP_PLACED_NONE) {
             visibility = map_cell_layer_mask(&placed->position);
-            if (visibility & placed->layer) {
-                render_world_model(placed->layer, placed->id + 0x28,
+            if (visibility & placed->layer_mask) {
+                render_world_model(placed->layer_mask,
+                               placed->model_index + KF_MAP_PLACED_ASSET_BASE,
                                &placed->position, &rotation, 0, 0,
                                &game_graphics_runtime.render_state.pitch_matrix,
-                               placed->frame_index + 0x80, 0, 0x46,
+                               placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, 0x46,
                                0x1000, 1, 0);
             }
-            if (placed->frame_period != 0 &&
+            if (placed->frame_period != KF_MAP_PLACED_ANIMATION_DISABLED &&
                 game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
                 placed->frame_index++;
                 if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
@@ -3532,18 +3533,18 @@ void map_placed_expand_sources(const KfMapPlacedSource *sources)
     s32 remaining;
 
     for (remaining = KF_MAP_PLACED_ENTRY_COUNT - 1; remaining != -1; --remaining) {
-        if (sources->id != 0xffff) {
-            entry->id = sources->id;
-            entry->layer = sources->layer;
+        if (sources->model_index != KF_MAP_PLACED_NONE) {
+            entry->model_index = sources->model_index;
+            entry->layer_mask = sources->layer_mask;
             entry->frame_count = sources->frame_count;
             entry->frame_period = sources->frame_period;
             entry->position.vx = (sources->region_x << KF_MAP_PLACED_REGION_SHIFT) + sources->local_x;
             entry->position.vz = (sources->region_z << KF_MAP_PLACED_REGION_SHIFT) + sources->local_z;
-            entry->position.vy = collision_sample_map_layer_height(entry->layer, entry->position.vx, entry->position.vz, 0, 0)
+            entry->position.vy = collision_sample_map_layer_height(entry->layer_mask, entry->position.vx, entry->position.vz, 0, 0)
                 + sources->height_offset;
             entry->frame_index = (rand() * entry->frame_count) >> KF_MAP_PLACED_RANDOM_SHIFT;
         } else {
-            entry->id = 0xffff;
+            entry->model_index = KF_MAP_PLACED_NONE;
         }
         entry++;
         sources++;

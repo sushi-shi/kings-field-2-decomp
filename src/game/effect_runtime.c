@@ -222,7 +222,7 @@ ADDRESS(0x80040264, 0x40)
 void effect_pool_initialize_scaled(KfEffectRecord *record, u8 render_id, u16 scale)
 {
     record->render_flags = 5;
-    record->animation_clip = 0x80;
+    record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
     record->base_render_id = render_id;
     record->render_id = render_id;
     record->render_queue_mode = 1;
@@ -237,7 +237,7 @@ ADDRESS(0x800402a4, 0x64)
 void effect_pool_initialize_fixed(KfEffectRecord *record, u8 render_id)
 {
     record->render_flags = 14;
-    record->animation_clip = 0x80;
+    record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
     record->base_render_id = render_id;
     record->render_id = render_id;
     record->render_queue_mode = 1;
@@ -328,7 +328,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     case 4:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0x1f;
         record->render_id = 0x1f;
@@ -349,7 +349,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         /* fall through */
     case 1:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x20;
         record->render_id = 0x20;
         record->unknown_3c[4] = 0;
@@ -358,18 +358,18 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     case 26:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x24;
         record->render_id = 0x24;
-        record->unknown_3c[4] = 0;
         record->updates_remaining = 70;
         record->scale_z = 600;
         record->scale_y = 600;
         record->scale_x = 600;
+        record->unknown_3c[4] = 0;
         break;
     case 27:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x25;
         record->render_id = 0x25;
         record->unknown_3c[4] = 0;
@@ -400,7 +400,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         const SVECTOR *angles;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0xd;
         record->render_id = 0xd;
@@ -516,7 +516,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         u32 slot;
 
         record->render_flags = 0;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0;
         record->render_id = 0;
@@ -528,8 +528,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         slot = effect_trail_next_slot;
-        rows = effect_trail_rows[slot];
-        trail->rows = rows;
+        rows = trail->rows = effect_trail_rows[slot];
         effect_trail_next_slot = (slot + 1) & 3;
         for (index = 23; index != -1; index--, rows++) {
             rows->position = record->position;
@@ -545,7 +544,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         const SVECTOR *angles;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0x23;
         record->render_id = 0x23;
@@ -591,7 +590,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = render_id;
         record->render_id = render_id;
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
@@ -607,7 +606,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         const SVECTOR *angles;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x13;
         record->render_id = 0x13;
         record->updates_remaining = 0x23;
@@ -619,7 +618,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     case 51:
     case 52:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x25;
         record->render_id = 0x25;
         record->unknown_3c[4] = 0;
@@ -630,7 +629,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     case 2: {
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 9;
         record->render_id = 9;
         record->lighting_override_index = 0x44;
@@ -645,7 +644,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     }
     case 20:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
@@ -662,7 +661,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
 
         record->render_flags = 1;
         record->render_queue_mode = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x22;
         record->render_id = 0x22;
         record->lighting_override_index = 0x49;
@@ -683,7 +682,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         const SVECTOR *angles;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x22;
         record->render_id = 0x22;
         record->lighting_override_index = 0x44;
@@ -698,7 +697,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     }
     case 42: {
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0x11;
         record->render_id = 0x11;
@@ -715,7 +714,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         const SVECTOR *angles;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0xd;
         record->render_id = 0xd;
@@ -745,7 +744,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     }
     case 45: {
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0x30;
         record->render_id = 0x30;
@@ -766,7 +765,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = 0x31;
         record->render_id = 0x31;
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
@@ -778,7 +777,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = 0xa;
         record->render_id = 0xa;
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
@@ -794,7 +793,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         s32 random_x;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x2c;
         record->render_id = 0x2c;
         record->updates_remaining = 50;
@@ -823,7 +822,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = render_id;
         record->render_id = render_id;
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
@@ -837,7 +836,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     }
     case 50:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
@@ -869,7 +868,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         s16 slot;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0xc;
         record->render_id = 0xc;
         record->scale_y = 0;
@@ -927,7 +926,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     case 3:
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->render_queue_mode = 1;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
@@ -942,7 +941,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         VECTOR candidate_position;
 
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x26;
         record->render_id = 0x26;
         record->updates_remaining = 45;
@@ -983,7 +982,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     setup_render_id:
         record->base_render_id = render_id;
         record->render_flags = 1;
-        record->animation_clip = 0x80;
+        record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->lighting_override_index = 0xff;
         record->render_id = record->base_render_id;
         angles = (const SVECTOR *)va[1];
@@ -1119,7 +1118,7 @@ player_target:
         &record->position, record->rotation.vy, 24000, 0x1000);
     if (distance != -1) {
         target_position.vx = player_state.camera_position.vx;
-        target_position.vy = player_state.camera_position.vy - 1600;
+        target_position.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         target_position.vz = player_state.camera_position.vz;
         goto aim;
     }
@@ -2399,18 +2398,18 @@ void effect_update_dispatch(void)
             (const KfEffectKind9Target *)&record->unknown_3c[4];
         u8 actor_index = target->actor_index;
 
-        if (actor_index == 0xfe) {
+        if (actor_index == KF_EFFECT_KIND9_TARGET_PLAYER) {
             VECTOR target;
 
             target.vx = player_state.camera_position.vx;
-            target.vy = player_state.camera_position.vy - 1600;
+            target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
             target.vz = player_state.camera_position.vz;
             collision = effect_target_motion(&target, 400, 60,
                                        3000, 0, 10, (s32)0x80000000);
             if (collision != -1) {
                 goto kind9_no_collision;
             }
-        } else if (actor_index != 0xff) {
+        } else if (actor_index != KF_EFFECT_KIND9_TARGET_NONE) {
             VECTOR target;
             const KfActor *actor = &actor_state.actors[actor_index];
 
@@ -2462,7 +2461,7 @@ void effect_update_dispatch(void)
         motion_scale = 3800;
     kind33_update:
         target.vx = player_state.camera_position.vx;
-        target.vy = player_state.camera_position.vy - 1600;
+        target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         target.vz = player_state.camera_position.vz;
         result = effect_target_motion(&target, 400, 60, 3000, 0, 10, 0);
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
@@ -3069,7 +3068,7 @@ void effect_update_dispatch(void)
         s32 count;
 
         target.vx = player_state.camera_position.vx;
-        target.vy = player_state.camera_position.vy - 1600;
+        target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         target.vz = player_state.camera_position.vz;
         result = effect_target_motion(&target, 300, 40, 2000, 0, 10, 0);
         if (result == -1) {

@@ -219,8 +219,8 @@ s32 menu_run_root_controller(void)
 {
     s32 cursor = 0;
     s32 confirmed = 0;
-    s32 result = -99;
-    s32 selection = -1;
+    s32 result = KF_MENU_RESULT_PENDING;
+    s32 selection = KF_MENU_SELECTION_NONE;
     s32 choice_result;
     s32 frame;
     u32 buttons;
@@ -236,7 +236,7 @@ s32 menu_run_root_controller(void)
     input_wait_release();
 
     for (;;) {
-        if (selection != -1 || result != -99)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         switch (selection) {
@@ -259,15 +259,15 @@ s32 menu_run_root_controller(void)
             choice_result = menu_run_card_choice();
 selection_result:
             result = choice_result;
-            if (choice_result == -1)
-                result = -99;
+            if (choice_result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             break;
         case 6:
             menu_options_controller();
             break;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         cursor = menu_poll_choice_input(cursor, 7, &selection, &confirmed, &result);
@@ -282,15 +282,17 @@ selection_result:
         }
     }
 
-    if (result == -1)
+    if (result == KF_MENU_RESULT_CANCELLED)
         menu_play_sound_cue(0);
-    if (result == -3)
+    if (result == KF_MENU_RESULT_GAME_LOADED)
         menu_exit_display_state(1);
     else
         menu_exit_display_state(0);
-    if (result != -1 && result != -3 && (result & 0x1000) != 0) {
-        player_select_magic_action(result & 0xfff);
-        result = -1;
+    if (result != KF_MENU_RESULT_CANCELLED &&
+        result != KF_MENU_RESULT_GAME_LOADED &&
+        (result & KF_MENU_MAGIC_ACTION_TAG) != 0) {
+        player_select_magic_action(result & KF_MENU_MAGIC_ACTION_ID_MASK);
+        result = KF_MENU_RESULT_CANCELLED;
     }
     return result;
 }
@@ -328,7 +330,7 @@ s32 menu_item_selection_controller(void)
     u8 values[56];
     u8 indices[56];
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
     u8 selected_item;
@@ -341,21 +343,21 @@ s32 menu_item_selection_controller(void)
     menu.list.glyphs_per_entry = 12;
     if (menu.list.entry_count != 0
         && menu_load_item_model(indices[menu.list.selected_index]) != 0)
-        return -1;
+        return KF_MENU_RESULT_CANCELLED;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
             result = menu_preview_choice(&menu, 0, 1, selected_item);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = selected_item;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, indices, &mode, &result);
@@ -367,7 +369,7 @@ s32 menu_item_selection_controller(void)
                 menu_show_map_preview(selected_item);
                 menu_play_sound_cue(18);
                 if (menu_load_item_model(selected_item) != 0)
-                    return -1;
+                    return KF_MENU_RESULT_CANCELLED;
                 mode = 0;
             }
         }
@@ -603,7 +605,7 @@ s32 menu_choose_magic_action(void)
     s32 values[20];
     u8 indices[20];
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
 
@@ -617,18 +619,18 @@ s32 menu_choose_magic_action(void)
     menu.list.glyphs_per_entry = 12;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
             result = menu_preview_choice(&menu, 0, 2, 0xff);
-            if (result == -1)
-                result = -99;
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = indices[menu.list.selected_index];
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -641,8 +643,8 @@ s32 menu_choose_magic_action(void)
         }
     }
 
-    if (result != -1)
-        result |= 0x1000;
+    if (result != KF_MENU_RESULT_CANCELLED)
+        result |= KF_MENU_MAGIC_ACTION_TAG;
     return result;
 }
 

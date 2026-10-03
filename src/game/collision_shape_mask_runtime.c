@@ -72,8 +72,9 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
   KF_COLLISION_CACHE_LOWER_BOUND = 100000;
   KF_COLLISION_CACHE_UPPER_BOUND = 100000;
   KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
-  KF_COLLISION_CACHE_SHAPE = (u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER;
-  selected_layer = (KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE;
+  KF_COLLISION_CACHE_SHAPE = (KfMapOccupancyLayer *)
+      ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+  selected_layer = KF_COLLISION_CACHE_SHAPE;
   height_flags = (u32)height & 0xf0000000;
   height &= 0x0fffffff;
 LAB_8002ab5c:
@@ -497,10 +498,10 @@ s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s3
 ADDRESS(0x8002b874, 0x160)
 void collision_cache_load_hit_bounds(void)
 {
-    if (COLLISION_CACHE_FLAGS & 0x80) {
+    if (COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
         COLLISION_CACHE_POSITION = player_state.camera_position;
         COLLISION_CACHE_RADIUS = 800;
-        COLLISION_CACHE_INTERACTION_HEIGHT = 1700;
+        COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
     } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
         KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
         COLLISION_CACHE_POSITION = actor->position;
@@ -526,10 +527,10 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 {
     s32 result = 0;
 
-    if (mode & 1) {
+    if (mode & KF_COLLISION_QUERY_SHAPES) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
         if ((mode & 2) &&
-            (((KfMapOccupancyLayer *)COLLISION_CACHE_SHAPE)->lighting_index & 0x40)) {
+            (COLLISION_CACHE_SHAPE->lighting_index & 0x40)) {
             COLLISION_CACHE_RESULT = -100000;
             result |= 1;
         }
@@ -539,33 +540,33 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 
     height &= 0x0fffffff;
     if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
-        if (mode & 0x10) {
+        if (mode & KF_COLLISION_QUERY_ACTORS) {
             COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
             if (COLLISION_CACHE_ACTOR_INDEX != -1) {
-                result |= 0x10;
+                result |= KF_COLLISION_HIT_ACTOR;
             }
         } else {
-            if (mode & 0x40) {
+            if (mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) {
                 COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
                 if (COLLISION_CACHE_ACTOR_INDEX != -1) {
-                    result |= 0x10;
+                    result |= KF_COLLISION_HIT_ACTOR;
                 }
             }
             COLLISION_CACHE_ACTOR_INDEX = -1;
         }
 
-        if (mode & 0x20) {
+        if (mode & KF_COLLISION_QUERY_MAP_OBJECTS) {
             COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
             if (COLLISION_CACHE_OBJECT_INDEX != -1) {
-                result |= 0x20;
+                result |= KF_COLLISION_HIT_MAP_OBJECT;
             }
         } else {
             COLLISION_CACHE_OBJECT_INDEX = -1;
         }
 
-        if ((mode & 0x80) &&
+        if ((mode & KF_COLLISION_QUERY_PLAYER) &&
             player_distance_to_point_with_margin(x, y, z, radius, height) != -1) {
-            result |= 0x80;
+            result |= KF_COLLISION_HIT_PLAYER;
         }
     } else {
         COLLISION_CACHE_ACTOR_INDEX = -1;

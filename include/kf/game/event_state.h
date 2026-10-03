@@ -15,7 +15,6 @@ enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
 typedef struct KfEventControlObjectSlot {
     u16 object_index;
     u8 resource_id;
-    u8 unknown_03;
 } KfEventControlObjectSlot;
 typedef char kf_event_control_object_slot_size[
     sizeof(KfEventControlObjectSlot) == 4 ? 1 : -1];

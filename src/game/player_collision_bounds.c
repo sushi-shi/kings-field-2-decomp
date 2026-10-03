@@ -5,7 +5,6 @@
 #include <kf/game/player.h>
 
 enum {
-    COLLISION_CACHE_BIAS = 1600,
     COLLISION_LOWER_DEATH_LIMIT = -1000
 };
 
@@ -15,7 +14,7 @@ void player_update_collision_bounds(void)
     s32 lower;
     s32 upper;
 
-    lower = KF_COLLISION_CACHE_LOWER_BOUND + COLLISION_CACHE_BIAS;
+    lower = KF_COLLISION_CACHE_LOWER_BOUND + KF_PLAYER_CAMERA_EYE_OFFSET;
     lower -= player_state.camera_vertical_offset + player_state.camera_position.vy
            + player_state.landing_vertical_offset;
     player_state.collision_lower_clearance = lower;
@@ -23,7 +22,7 @@ void player_update_collision_bounds(void)
         player_death_begin(NULL);
     }
 
-    upper = KF_COLLISION_CACHE_UPPER_BOUND + COLLISION_CACHE_BIAS;
+    upper = KF_COLLISION_CACHE_UPPER_BOUND + KF_PLAYER_CAMERA_EYE_OFFSET;
     upper -= player_state.camera_vertical_offset + player_state.camera_position.vy
            + player_state.landing_vertical_offset;
     player_state.collision_upper_clearance = upper;
@@ -48,8 +47,8 @@ s32 player_distance_to_point_with_margin(
 }
 
 enum {
-    PLAYER_VIEW_SCALE_INITIAL = 0x1000,
-    PLAYER_VIEW_TIMER_INITIAL = 10000
+    PLAYER_DAMAGE_SCALE_INITIAL_Q12 = 0x1000,
+    PLAYER_COLLISION_CLEARANCE_INITIAL = 10000
 };
 
 ADDRESS(0x80023484, 0xec)
@@ -73,8 +72,8 @@ void player_reset_view(void)
     player_state.camera_rotation = player_state.camera_rotation_target;
     player_state.movement_speed_adjustment_q12 = 0;
     player_state.movement_speed_adjustment_decay_latch = 0;
-    player_state.damage_scale = PLAYER_VIEW_SCALE_INITIAL;
+    player_state.damage_scale = PLAYER_DAMAGE_SCALE_INITIAL_Q12;
     player_state.queued_magic_action.magic_id = 0xff;
-    player_state.collision_lower_clearance = PLAYER_VIEW_TIMER_INITIAL;
-    player_state.collision_upper_clearance = PLAYER_VIEW_TIMER_INITIAL;
+    player_state.collision_lower_clearance = PLAYER_COLLISION_CLEARANCE_INITIAL;
+    player_state.collision_upper_clearance = PLAYER_COLLISION_CLEARANCE_INITIAL;
 }

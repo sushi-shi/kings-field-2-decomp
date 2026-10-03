@@ -11,6 +11,17 @@
 #include <psyq/libc.h>
 #include <psyq/sdk.h>
 
+enum {
+    KF_EVENT_WORLD_SAVE_ACTION_60 = 0xf0,
+    KF_EVENT_WORLD_SAVE_ACTION_61 = 0xf1,
+    KF_EVENT_WORLD_SAVE_ACTION_62 = 0xf2,
+    KF_EVENT_WORLD_SAVE_ACTION_70 = 0xf3,
+    KF_EVENT_WORLD_SAVE_EFFECT = 0xf4,
+    KF_EVENT_WORLD_SAVE_STATE_BYTE = 0xfd,
+    KF_EVENT_WORLD_SAVE_UNCHANGED = 0xfe,
+    KF_EVENT_WORLD_SAVE_EMPTY = 0xff,
+};
+
 RODATA(0x80012960, 0x2d8)
 
 DATA(0x801b2140, 0x3918)
@@ -166,7 +177,7 @@ void event_world_state_save_slot(s32 save_slot)
         s32 object_id = object->object_id;
         s32 kind;
         if (object_id == 0xff) {
-            *write++ = 0xff;
+            *write++ = KF_EVENT_WORLD_SAVE_EMPTY;
             continue;
         }
         kind = map_object_state.templates[object_id].collision_kind;
@@ -175,7 +186,7 @@ void event_world_state_save_slot(s32 save_slot)
         case 64:
             switch (object->action) {
             case 0x60:
-                *write++ = 0xf0;
+                *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
@@ -186,7 +197,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = object->rotation.vy >> 4;
                 break;
             case 0x61:
-                *write++ = 0xf1;
+                *write++ = KF_EVENT_WORLD_SAVE_ACTION_61;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
@@ -196,7 +207,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = (u32)object->position.vy >> 8;
                 break;
             case 0x62:
-                *write++ = 0xf2;
+                *write++ = KF_EVENT_WORLD_SAVE_ACTION_62;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
@@ -207,12 +218,12 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = object->tail.fields.unknown_3a.value >> 2;
                 break;
             case 0x70:
-                *write++ = 0xf3;
+                *write++ = KF_EVENT_WORLD_SAVE_ACTION_70;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = object->tail.fields.unknown_38;
                 break;
             default:
-                *write++ = 0xfd;
+                *write++ = KF_EVENT_WORLD_SAVE_STATE_BYTE;
                 *write++ = object->tail.fields.unknown_38;
                 break;
             }
@@ -237,17 +248,17 @@ void event_world_state_save_slot(s32 save_slot)
         case 161:
         case 163:
         case 164:
-            *write++ = 0xfd;
+            *write++ = KF_EVENT_WORLD_SAVE_STATE_BYTE;
             *write++ = object->tail.fields.unknown_38;
             break;
         case 15:
         case 17:
-            *write++ = 0xf4;
+            *write++ = KF_EVENT_WORLD_SAVE_EFFECT;
             *write++ = object->tail.event_effect.pending_event_command;
             *write++ = object->tail.event_effect.effect_object_index;
             break;
         default:
-            *write++ = 0xfe;
+            *write++ = KF_EVENT_WORLD_SAVE_UNCHANGED;
             break;
         }
     }
@@ -312,15 +323,15 @@ void event_world_state_restore_slot(s32 save_slot)
         u16 y;
         u16 z;
 
-        switch (opcode - 0xf0) {
-        case 15:
+        switch (opcode - KF_EVENT_WORLD_SAVE_ACTION_60) {
+        case KF_EVENT_WORLD_SAVE_EMPTY - KF_EVENT_WORLD_SAVE_ACTION_60:
             object->object_id = 0xff;
             break;
-        case 4:
+        case KF_EVENT_WORLD_SAVE_EFFECT - KF_EVENT_WORLD_SAVE_ACTION_60:
             object->tail.event_effect.pending_event_command = *stream++;
             object->tail.event_effect.effect_object_index = *stream++;
             break;
-        case 0: {
+        case KF_EVENT_WORLD_SAVE_ACTION_60 - KF_EVENT_WORLD_SAVE_ACTION_60: {
             s32 x_high;
             s32 z_high;
             s32 y_high;
@@ -352,7 +363,7 @@ apply_position:
             object->tail.fields.unknown_38 = 0xff;
             break;
         }
-        case 1:
+        case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
             object->action = 0x61;
             object->object_id = *stream++;
@@ -363,7 +374,7 @@ apply_position:
             y = *stream++;
             y |= *stream++ << 8;
             goto apply_position;
-        case 2:
+        case KF_EVENT_WORLD_SAVE_ACTION_62 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
             object->action = 0x62;
             object->object_id = *stream++;
@@ -379,12 +390,12 @@ apply_position:
                 object->rotation.vx = 0x400;
             }
             goto apply_position;
-        case 3:
+        case KF_EVENT_WORLD_SAVE_ACTION_70 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
             object->action = 0x70;
             object->object_id = *stream++;
             /* The next byte is also the body of opcode 0xfd. */
-        case 13:
+        case KF_EVENT_WORLD_SAVE_STATE_BYTE - KF_EVENT_WORLD_SAVE_ACTION_60:
             object->tail.fields.unknown_38 = *stream++;
             break;
         default:

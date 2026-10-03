@@ -204,7 +204,8 @@ void player_handle_interaction_and_menu(void)
 
     if ((player_state.flags_140.word & 0x00200020) == 0x20) {
         if (player_state.death_state == KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
-            player_apply_map_object_reaction(&map_object_state.objects[player_state.reaction.view.mode]);
+            player_apply_map_object_reaction(
+                &map_object_state.objects[player_state.reaction.view.map_object_index]);
         } else {
             event_world_dispatch_interaction(&player_state.camera_position,
                                              &player_state.camera_rotation_target);
@@ -251,10 +252,10 @@ void player_reset_reaction_state(void)
 }
 
 ADDRESS(0x800291d0, 0x1c)
-void player_begin_map_object_view_follow(u8 mode)
+void player_begin_map_object_view_follow(u8 map_object_index)
 {
     player_state.death_state = KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW;
-    player_state.reaction.view.mode = mode;
+    player_state.reaction.view.map_object_index = map_object_index;
 }
 
 struct KfMapObjectRecord40 {
@@ -281,7 +282,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
     if (player_state.death_state != KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
         return;
     }
-    if (player_state.reaction.view.mode != object - map_object_state.objects) {
+    if (player_state.reaction.view.map_object_index != object - map_object_state.objects) {
         return;
     }
 
@@ -304,7 +305,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
         angle_to_forward_xz(object->rotation.vy + 1024, &offset);
         vector2i_scale_shift11(900, &offset);
         player_state.death_state = KF_PLAYER_REACTION_POSITION_RECOVERY;
-        player_state.reaction.position.mode = 0;
+        player_state.reaction.position.recovery_step = 0;
         player_state.reaction.position.position.vx = object->position.vx + offset.x;
         player_state.reaction.position.position.vz = object->position.vz + offset.z;
         player_state.reaction.position.position.vy = object->position.vy;
@@ -312,11 +313,11 @@ void player_apply_map_object_reaction(KfMapObject *object)
 }
 
 ADDRESS(0x800293d4, 0x54)
-void player_begin_view_reaction(u8 mode)
+void player_begin_view_reaction(u8 map_object_index)
 {
     player_state.death_state = KF_PLAYER_REACTION_MAP_OBJECT_APPROACH;
-    player_state.reaction.view.mode = mode;
-    player_state.reaction.view.step = 0;
+    player_state.reaction.view.map_object_index = map_object_index;
+    player_state.reaction.view.approach_step = 0;
     player_state.reaction.view.rotation = player_state.camera_rotation_target;
 }
 
@@ -556,7 +557,7 @@ void player_update_frame(void)
         player_update_horizontal_motion();
         goto update_reaction_pose;
     case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW:
-        object_index = player_state.reaction.view.mode;
+        object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
         player_update_camera_rotation();
@@ -572,10 +573,10 @@ update_reaction_view:
         player_handle_interaction_and_menu();
         goto after_reaction;
     case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH:
-        object_index = player_state.reaction.view.mode;
+        object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
-        fraction = player_state.reaction.view.step << 7;
+        fraction = player_state.reaction.view.approach_step << 7;
         player_state.camera_position.vx = fixed_lerp_q12(
             player_state.camera_position.vx, object->position.vx, fraction);
         player_state.camera_position.vy = fixed_lerp_q12(
@@ -591,14 +592,14 @@ update_reaction_view:
             player_state.reaction.view.rotation.angles[1], 0, fraction);
         player_state.camera_rotation_target.angles[2] = angle_lerp_shortest_q12(
             player_state.reaction.view.rotation.angles[2], 0, fraction);
-        step = player_state.reaction.view.step++;
+        step = player_state.reaction.view.approach_step++;
         if (step > 31) {
-            player_begin_map_object_view_follow(player_state.reaction.view.mode);
+            player_begin_map_object_view_follow(player_state.reaction.view.map_object_index);
         }
         goto after_reaction;
     case KF_PLAYER_REACTION_POSITION_RECOVERY:
-        ++player_state.reaction.position.mode;
-        fraction = player_state.reaction.position.mode << 8;
+        ++player_state.reaction.position.recovery_step;
+        fraction = player_state.reaction.position.recovery_step << 8;
         player_state.camera_position.vx = fixed_lerp_q12(
             player_state.camera_position.vx,
             player_state.reaction.position.position.vx, fraction);
@@ -608,7 +609,7 @@ update_reaction_view:
         player_state.camera_position.vz = fixed_lerp_q12(
             player_state.camera_position.vz,
             player_state.reaction.position.position.vz, fraction);
-        if (player_state.reaction.position.mode > 15) {
+        if (player_state.reaction.position.recovery_step > 15) {
             player_reset_reaction_state();
         }
         goto after_reaction;

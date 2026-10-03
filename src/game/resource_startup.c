@@ -28,8 +28,8 @@ u8 resource_tmd_workspace[0x37000];
 DATA(0x8017d118, 0x1c)
 KfState8017d118 state_8017d118;
 
-DATA(0x801d8d88, 0x880)
-static u8 resource_fdat_segment_801d8d88[0x880];
+DATA(0x801d8d88, 0x800)
+KfEquipmentRecord player_equipment_records[KF_EQUIPMENT_RECORD_COUNT];
 
 ADDRESS(0x80015d50, 0x8)
 /* The default table serves callback slots with different caller arguments. */
@@ -72,7 +72,7 @@ void resource_initialize_game_assets(void)
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)player_weapon_records, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
-    resource_copy_words((u32 *)resource_fdat_segment_801d8d88, (u32 *)(source + 4), *(u32 *)source >> 2);
+    resource_copy_words((u32 *)player_equipment_records, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)player_level_growth_table, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;

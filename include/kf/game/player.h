@@ -282,16 +282,13 @@ enum { KF_MAP_WORLD_GRID_SIDE = 80 };
  * clears the complete BSS region, whose later storage remains partly opaque. */
 typedef struct KfBss801c7540 {
     KfMapOccupancyCell map_cells[KF_MAP_WORLD_GRID_SIDE][KF_MAP_WORLD_GRID_SIDE];
-    u8 unknown_fa00[0x1ba8];
-    KfEquipmentRecord equipment_records[20];
-    u8 unknown_11828[0x1c];
+    u8 unknown_fa00[0x1e44];
 } KfBss801c7540;
 
 typedef char kf_map_cells_loaded_size[
     sizeof(((KfBss801c7540 *)0)->map_cells) == 0xfa00 ? 1 : -1];
 typedef char kf_bss_801c7540_size[sizeof(KfBss801c7540) == 0x11844 ? 1 : -1];
-typedef char kf_bss_801c7540_equipment_offset[
-    (u32)&((KfBss801c7540 *)0)->equipment_records == 0x115a8 ? 1 : -1];
+enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
 enum {
     KF_EQUIPMENT_SLOT_HEAD = 0,
@@ -474,6 +471,7 @@ extern KfPlayerState player_state;
 extern KfPlayerMagicIdSequence player_magic_id_sequence;
 extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
+extern KfEquipmentRecord player_equipment_records[KF_EQUIPMENT_RECORD_COUNT];
 
 s32 player_move_horizontal(s32 heading, s32 distance);
 void player_recalculate_combat_stats(void);

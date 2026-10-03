@@ -2124,8 +2124,6 @@ void effect_update_dispatch(void)
         shared_increment = 0x20;
         goto shared_scale_step;
     case 12: {
-        const KfEffectKind12Aim *aim =
-            &record->cache_tail.payload.kind12;
         s32 prior_phase = initial_phase;
 
         switch (prior_phase) {
@@ -2156,11 +2154,11 @@ void effect_update_dispatch(void)
         }
         record->phase++;
         collision = effect_aim_and_move(
-            aim->max_length,
-            aim->scale,
-            aim->turn_step,
+            record->cache_tail.payload.kind12.max_length,
+            record->cache_tail.payload.kind12.scale,
+            record->cache_tail.payload.kind12.turn_step,
             0xa0,
-            0, 6000, aim->close_scale, 0x800);
+            0, 6000, record->cache_tail.payload.kind12.close_scale, 0x800);
         if (collision != -1) {
             goto kind12_collision;
         }

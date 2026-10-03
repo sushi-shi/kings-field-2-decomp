@@ -409,7 +409,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     case 0:
         effect_pool_initialize_scaled(record, 0xe, 0x200);
         record->updates_remaining = 50;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         break;
     case 25: {
         const SVECTOR *angles;
@@ -1917,11 +1917,11 @@ void effect_update_dispatch(void)
         }
         collision = effect_collision_step(180, 0, -300);
         if (collision != 0) {
-            if (record->cache_tail.payload.raw[0] == 0 && rand() < 3000) {
+            if (record->cache_tail.payload.collision_latch.impact_handled == 0 && rand() < 3000) {
                 effect_apply_current_magic_backstep(collision);
             }
             if (collision & 0x10) {
-                record->cache_tail.payload.raw[0] = 1;
+                record->cache_tail.payload.collision_latch.impact_handled = 1;
             }
             if (collision & 5) {
                 if (initial_phase == 1) {

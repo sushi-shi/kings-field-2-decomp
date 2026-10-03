@@ -1644,15 +1644,14 @@ void effect_update_dispatch(void)
         }
         break;
     case 46: {
-        KfEffectKind46State *kind46 = &record->cache_tail.payload.kind46;
         KfEffectRecord *selected =
-            &effect_state.records[kind46->linked_effect_index];
+            &effect_state.records[record->cache_tail.payload.kind46.linked_effect_index];
         s32 height;
         s32 age;
 
         record->position.vx += record->direction.vx;
         record->position.vz += record->direction.vz;
-        switch (kind46->phase) {
+        switch (record->cache_tail.payload.kind46.phase) {
         case 0: {
             collision = collision_query_world(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
@@ -1668,8 +1667,8 @@ void effect_update_dispatch(void)
                 record->scale_y = 32767;
             }
             if (selected->type == KF_EFFECT_SLOT_FREE) {
-                kind46->phase = 1;
-                kind46->age_q12 = 0;
+                record->cache_tail.payload.kind46.phase = 1;
+                record->cache_tail.payload.kind46.age_q12 = 0;
                 record->scale_threshold.interpolation_start_y = record->scale_y;
             }
             break;
@@ -1677,9 +1676,9 @@ void effect_update_dispatch(void)
         case 1: {
             record->scale_y = fixed_lerp_q12(
                 record->scale_threshold.interpolation_start_y, 0,
-                (s16)kind46->age_q12);
-            age = kind46->age_q12 + 512;
-            kind46->age_q12 = age;
+                (s16)record->cache_tail.payload.kind46.age_q12);
+            age = record->cache_tail.payload.kind46.age_q12 + 512;
+            record->cache_tail.payload.kind46.age_q12 = age;
             if ((s16)age >= 4096) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }

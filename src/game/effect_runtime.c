@@ -649,10 +649,10 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_x = 0;
-        *(u16 *)&record->cache_tail.payload.raw[0] = va[1];
-        *(u16 *)&record->cache_tail.payload.raw[2] = va[2];
+        record->cache_tail.payload.kind2.max_scale = va[1];
+        record->cache_tail.payload.kind2.scale_step = va[2];
         third_parameter = va[3];
-        *(u16 *)&record->cache_tail.payload.raw[4] = third_parameter;
+        record->cache_tail.payload.kind2.radial_damage_parameter = third_parameter;
         effect_play_spatial_sound(record, 0x1e);
         break;
     }
@@ -2098,7 +2098,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 2:
-        step = (u16)record->scale_x + *(u16 *)&record->cache_tail.payload.raw[2];
+        step = (u16)record->scale_x + record->cache_tail.payload.kind2.scale_step;
         record->scale_x = step;
         record->scale_z = step;
         if ((s16)record->scale_x >= 0x300) {
@@ -2109,12 +2109,12 @@ void effect_update_dispatch(void)
             elevated.vz = record->position.vz;
             effect_apply_radial_magic_damage(&elevated,
                            ((s16)record->scale_x -
-                            (s16)*(u16 *)&record->cache_tail.payload.raw[2]) * 4,
+                            (s16)record->cache_tail.payload.kind2.scale_step) * 4,
                            (s16)record->scale_x * 4 - 1,
                            2000, 0x1000,
-                           (s16)*(u16 *)&record->cache_tail.payload.raw[4]);
+                           (s16)record->cache_tail.payload.kind2.radial_damage_parameter);
         }
-        if ((s16)record->scale_x > (s16)*(u16 *)&record->cache_tail.payload.raw[0]) {
+        if ((s16)record->scale_x > (s16)record->cache_tail.payload.kind2.max_scale) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;

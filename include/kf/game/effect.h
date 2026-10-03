@@ -108,6 +108,17 @@ typedef struct KfEffectKind103Counter {
 
 typedef char kf_effect_kind103_counter_size[sizeof(KfEffectKind103Counter) == 2 ? 1 : -1];
 
+/* Kind 2 grows a radial effect until it reaches the requested scale. */
+typedef struct KfEffectKind2Scale {
+    u16 max_scale;
+    u16 scale_step;
+    u16 radial_damage_parameter;
+} KfEffectKind2Scale;
+
+typedef char kf_effect_kind2_scale_size[sizeof(KfEffectKind2Scale) == 6 ? 1 : -1];
+typedef char kf_effect_kind2_step_offset[(u32)&((KfEffectKind2Scale *)0)->scale_step == 2 ? 1 : -1];
+typedef char kf_effect_kind2_damage_offset[(u32)&((KfEffectKind2Scale *)0)->radial_damage_parameter == 4 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -191,6 +202,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind5Fanout kind5;
     KfEffectKind111Target kind111;
     KfEffectKind103Counter kind103;
+    KfEffectKind2Scale kind2;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

@@ -52,6 +52,7 @@ void player_update_vertical_motion(void)
     s32 impact;
     s32 bob;
     s32 movement_speed;
+    const s32 *floor_result;
 
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
@@ -155,13 +156,14 @@ landing:
         goto finish;
     }
 
-    height_difference = KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy;
+    floor_result = &KF_COLLISION_CACHE_RESULT;
+    height_difference = *floor_result - player_state.camera_position.vy;
     if (height_difference < 0) {
         if (height_difference >= -256) {
             if (height_difference < -128) {
                 player_state.camera_position.vy -= 128;
             } else {
-                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+                player_state.camera_position.vy = *floor_result;
             }
             goto finish;
         }
@@ -186,7 +188,7 @@ landing:
             if (height_difference >= 129) {
                 player_state.camera_position.vy += 128;
             } else {
-                player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
+                player_state.camera_position.vy = *floor_result;
             }
             goto finish;
         }

@@ -425,7 +425,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         record->rotation.vz = rand() >> KF_RANDOM_ANGLE_SHIFT;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         break;
     }
     case 5: {
@@ -815,7 +815,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->rotation.vy += (rand() >> 6) - 256;
         random_x = rand();
         record->rotation.vz = 0;
-        record->cache_tail.payload.collision_latch.impact_handled = 0;
+        record->cache_tail.payload.raw[0] = 0;
         record->scale_z = 0x2000;
         record->scale_y = 0x2000;
         record->scale_x = 0x2000;

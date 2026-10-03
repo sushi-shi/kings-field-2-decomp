@@ -24,7 +24,7 @@ s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius, s32 probe_ang
     if (probe_angle == -1) {
         return 0;
     }
-    return -!!func_8003fa68(&record->position, probe_radius, probe_angle);
+    return -!!effect_probe_collision_by_type(&record->position, probe_radius, probe_angle);
 }
 
 ADDRESS(0x8004195c, 0x1b8)

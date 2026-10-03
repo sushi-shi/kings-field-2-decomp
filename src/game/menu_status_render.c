@@ -113,15 +113,15 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[1], &heading);
     amount.position.x = heading.position.x + 56;
     amount.position.y += row_step;
-    if (player_state.unknown_60 != 0)
+    if (player_state.paralysis_timer != 0)
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[5].codes);
     else if (player_state.curse_strength != 0)
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[6].codes);
-    else if (player_state.unknown_5e != 0)
+    else if (player_state.slow_timer != 0)
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[7].codes);
-    else if (player_state.unknown_54 != 0)
+    else if (player_state.poison_timer != 0)
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[8].codes);
-    else if (player_state.unknown_5a != 0)
+    else if (player_state.darkness_phase != 0)
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[9].codes);
     else
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[10].codes);

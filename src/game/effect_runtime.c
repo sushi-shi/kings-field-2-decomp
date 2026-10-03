@@ -21,7 +21,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
     u8 next_kind;
 
     addVector(&record->position, &record->direction);
-    result = func_8003fa68(&record->position, radius, angle);
+    result = effect_probe_collision_by_type(&record->position, radius, angle);
     if (record->unknown_0d != 0) {
         effect_collision_motion_step.vx = record->direction.vx >> 1;
         effect_collision_motion_step.vy = record->direction.vy >> 1;
@@ -30,7 +30,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
             previous.vx = record->position.vx - effect_collision_motion_step.vx;
             previous.vy = record->position.vy - effect_collision_motion_step.vy;
             previous.vz = record->position.vz - effect_collision_motion_step.vz;
-            result = func_8003fa68(&previous, radius, angle);
+            result = effect_probe_collision_by_type(&previous, radius, angle);
             if (result != 0) {
                 copyVector(&effect_collision_motion_step, &record->direction);
             }
@@ -139,12 +139,12 @@ void effect_update_dispatch(void)
                        ((acceleration * age * age) >> 1);
         projected.vx = record->position.vx + record->direction.vx;
         projected.vz = record->position.vz + record->direction.vz;
-        collision = func_8003fa68(&projected, 20, 20);
+        collision = effect_probe_collision_by_type(&projected, 20, 20);
         if (collision == 0) {
             midpoint.vx = (projected.vx + record->position.vx) >> 1;
             midpoint.vy = (projected.vy + record->position.vy) >> 1;
             midpoint.vz = (projected.vz + record->position.vz) >> 1;
-            collision = func_8003fa68(&midpoint, 20, 20);
+            collision = effect_probe_collision_by_type(&midpoint, 20, 20);
         }
         record->position.vx = projected.vx;
         record->position.vy = projected.vy;
@@ -1214,11 +1214,11 @@ void effect_update_dispatch(void)
             next.vx = record->position.vx + (s16)record->direction.vx;
             next.vy = record->position.vy + (s16)record->direction.vy;
             next.vz = record->position.vz + (s16)record->direction.vz;
-            first_collision = func_8003fa68(&next, 140, (s32)0x80000000);
+            first_collision = effect_probe_collision_by_type(&next, 140, (s32)0x80000000);
             if (first_collision != 0 && (first_collision & 0xf) != 0) {
                 next.vx = record->position.vx;
                 next.vz = record->position.vz;
-                if ((func_8003fa68(&next, 140, (s32)0x80000000) & 0xf) == 0) {
+                if ((effect_probe_collision_by_type(&next, 140, (s32)0x80000000) & 0xf) == 0) {
                     goto kind8_reset_axes;
                 }
                 if ((s16)record->direction.vy < 0) {
@@ -1619,13 +1619,13 @@ void effect_update_dispatch(void)
         }
         break;
     case 15:
-        if (player_state.unknown_62 == 0) {
+        if (player_state.defense_boost_timer == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         record->rotation.vy += 128;
         break;
     case 17:
-        if (player_state.unknown_64 == 0) {
+        if (player_state.attack_boost_timer == 0) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         record->rotation.vy -= 128;
@@ -1648,7 +1648,7 @@ void effect_update_dispatch(void)
         KfEffectRecord *spawned;
 
         if (record->updates_remaining == 12) {
-            player_state.unknown_54 = 0;
+            player_state.poison_timer = 0;
         }
         spawn_position.vx = (rand() >> 5) - 512;
         spawn_position.vy = (rand() >> 8) + 200;

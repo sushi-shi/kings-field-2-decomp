@@ -323,7 +323,7 @@ magic_action: {
             }
         }
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.unknown_873e);
+            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         game_counter_decrement(command);
         object->object_id = command;
@@ -440,12 +440,12 @@ decay_update:
     }
     case 0x56:
         game_counter_decrement(0x56);
-        player_state.unknown_6c = 900;
+        player_state.full_mp_timer = 900;
         event_state.state_word = 1;
         break;
     case 0x57:
         game_counter_decrement(0x57);
-        player_state.unknown_6e = 900;
+        player_state.magic_boost_timer = 900;
         event_state.state_word = 1;
         player_recalculate_combat_stats();
         break;
@@ -537,7 +537,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         va_end(arguments);
         spawned_id = spawn_object_id;
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.unknown_873e);
+            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         object->object_id = spawn_object_id;
         object->unknown_00 = 3;

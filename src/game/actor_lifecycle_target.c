@@ -113,7 +113,7 @@ void actor_update_lifecycle_for_player_range(void)
 }
 
 ADDRESS(0x80039b58, 0xbc)
-void func_80039b58(s32 group_index)
+void actor_retarget_or_disable_group_members(s32 group_index)
 {
     KfActor *actor = actor_state.actors;
     s16 remaining = KF_ACTOR_CAPACITY - 1;

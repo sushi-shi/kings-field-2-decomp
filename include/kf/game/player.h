@@ -250,7 +250,7 @@ typedef struct KfPlayerState {
     u8 unknown_09[2];
     u8 weapon_charge_delay;
     u8 unknown_0c[2];
-    u16 unknown_0e;
+    u16 movement_speed_adjustment_q12;
     s16 damage_scale;
     KfPlayerVitals vitals;
     u16 attack_charge_current;
@@ -266,23 +266,23 @@ typedef struct KfPlayerState {
     u16 attack_components[8];
     u16 unknown_40;
     u16 combat_components[9];
-    s16 unknown_54;
+    s16 poison_timer;
     s16 curse_strength;
     u16 unknown_58;
-    s16 unknown_5a;
+    s16 darkness_phase;
     u16 unknown_5c;
-    s16 unknown_5e;
-    s16 unknown_60;
-    s16 unknown_62;
-    s16 unknown_64;
+    s16 slow_timer;
+    s16 paralysis_timer;
+    s16 defense_boost_timer;
+    s16 attack_boost_timer;
     s16 unknown_66;
     s16 unknown_68;
     s16 unknown_6a;
-    s16 unknown_6c;
-    s16 unknown_6e;
+    s16 full_mp_timer;
+    s16 magic_boost_timer;
     u8 unknown_70[4];
     u32 equipment_effect_ticks;
-    const u16 *unknown_78;
+    const u16 *magic_attack_mask_cursor;
     struct KfMagicRecord *selected_magic_record;
     KfWeaponRecordGame *equipped_weapon_record;
     struct KfAssetHeader *weapon_asset_buffer;
@@ -361,8 +361,8 @@ typedef char kf_player_unknown_97_offset[
     (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
     (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
-typedef char kf_player_unknown_78_offset[
-    (u32)&((KfPlayerState *)0)->unknown_78 == 0x78 ? 1 : -1];
+typedef char kf_player_magic_attack_mask_cursor_offset[
+    (u32)&((KfPlayerState *)0)->magic_attack_mask_cursor == 0x78 ? 1 : -1];
 typedef char kf_player_selected_magic_record_offset[
     (u32)&((KfPlayerState *)0)->selected_magic_record == 0x7c ? 1 : -1];
 typedef char kf_player_equipped_head_record_offset[

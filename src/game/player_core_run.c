@@ -20,10 +20,10 @@ void player_restore_equipment_effects(void)
     player_set_equipment_slot(KF_EQUIPMENT_NONE, KF_EQUIPMENT_NONE);
     player_equip_weapon(player_state.equipped_weapon_id);
     player_reset_view();
-    if (player_state.unknown_62 != 0) {
+    if (player_state.defense_boost_timer != 0) {
         effect_construct_record(10, 16, 15, &player_state.camera_position, NULL);
     }
-    if (player_state.unknown_64 != 0) {
+    if (player_state.attack_boost_timer != 0) {
         effect_construct_record(10, 16, 17, &player_state.camera_position, NULL);
     }
     player_recalculate_combat_stats();
@@ -174,15 +174,15 @@ void player_recalculate_combat_stats(void)
     player_add_equipment_bonuses(player_state.equipped_accessory_id);
     player_add_equipment_bonuses(player_state.equipped_extra_id);
 
-    if (player_state.unknown_62 != 0) {
+    if (player_state.defense_boost_timer != 0) {
         player_state.combat_components[5] += PLAYER_STATUS_DEFENSE_BONUS;
     }
-    if (player_state.unknown_64 != 0) {
+    if (player_state.attack_boost_timer != 0) {
         player_state.combat_components[1] += PLAYER_STATUS_POWER_BONUS;
         player_state.combat_components[0] += PLAYER_STATUS_POWER_BONUS;
         player_state.combat_components[2] += PLAYER_STATUS_POWER_BONUS;
     }
-    if (player_state.unknown_6e != 0) {
+    if (player_state.magic_boost_timer != 0) {
         player_state.magic += PLAYER_STATUS_POWER_BONUS;
     }
 

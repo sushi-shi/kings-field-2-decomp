@@ -165,21 +165,21 @@ void player_cap_status_components(u32 mask)
         player_state.unknown_58 = 0;
     }
     if (mask & KF_PLAYER_STATUS_SECOND) {
-        if (player_state.unknown_5a >= KF_PLAYER_STATUS_CAP + 1) {
-            player_state.unknown_5a = KF_PLAYER_STATUS_CAP;
+        if (player_state.darkness_phase >= KF_PLAYER_STATUS_CAP + 1) {
+            player_state.darkness_phase = KF_PLAYER_STATUS_CAP;
         }
         player_state.unknown_5c = 0;
     }
     if (mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_SECOND)) {
-        player_state.unknown_54 = 0;
+        player_state.poison_timer = 0;
     }
     if (mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_THIRD)) {
-        if (player_state.unknown_5e >= KF_PLAYER_STATUS_CAP + 1) {
-            player_state.unknown_5e = KF_PLAYER_STATUS_CAP;
+        if (player_state.slow_timer >= KF_PLAYER_STATUS_CAP + 1) {
+            player_state.slow_timer = KF_PLAYER_STATUS_CAP;
         }
     }
     if (mask & KF_PLAYER_STATUS_THIRD) {
-        player_state.unknown_60 = 0;
+        player_state.paralysis_timer = 0;
     }
 }
 
@@ -200,9 +200,9 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     s32 damage_loss;
     s32 timer_58;
     s32 timer_5c;
-    s32 timer_60;
-    s32 timer_5e;
-    s32 timer_54;
+    s32 paralysis_duration;
+    s32 slow_duration;
+    s32 poison_duration;
     u16 flags = status_flags;
 
     if (player_state.unknown_a0 != 0) {
@@ -218,15 +218,15 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
         || player_state.equipped_extra_id == 0x3a) {
         timer_58 = 300;
         timer_5c = 250;
-        timer_54 = 300;
-        timer_60 = 100;
-        timer_5e = 300;
+        poison_duration = 300;
+        paralysis_duration = 100;
+        slow_duration = 300;
     } else {
         timer_58 = 600;
         timer_5c = 500;
-        timer_54 = 600;
-        timer_60 = 200;
-        timer_5e = 600;
+        poison_duration = 600;
+        paralysis_duration = 200;
+        slow_duration = 600;
     }
 
     switch ((flags & 0xf) - 1) {
@@ -247,17 +247,17 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
         }
         if (player_state.combat_components[3]
             < ((rand() * KF_PLAYER_POISON_ROLL_SCALE) >> KF_PLAYER_POISON_ROLL_SHIFT)) {
-            player_state.unknown_54 = timer_54;
+            player_state.poison_timer = poison_duration;
         }
         break;
     case 3:
-        player_state.unknown_60 = timer_60;
+        player_state.paralysis_timer = paralysis_duration;
         break;
     case 4:
-        player_state.unknown_5e = timer_5e;
+        player_state.slow_timer = slow_duration;
         break;
     case 6:
-        player_state.unknown_54 = 0;
+        player_state.poison_timer = 0;
         break;
     case 5:
         mp_loss = player_state.vitals.maximum_mp / 6;

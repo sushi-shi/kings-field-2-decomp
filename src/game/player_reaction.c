@@ -131,7 +131,7 @@ void player_update_actions_and_charge(void)
     if (player_state.weapon_magic_shots_remaining != 0) {
         player_state.weapon_magic_shots_remaining--;
     } else {
-        player_state.unknown_78 = player_magic_id_sequence.attack_masks;
+        player_state.magic_attack_mask_cursor = player_magic_id_sequence.attack_masks;
     }
 
     if ((player_state.flags_140.low & 0xb0) != 0
@@ -140,7 +140,7 @@ void player_update_actions_and_charge(void)
         if (player_has_power_and_magic_60() == 0) {
             goto cancel_weapon_attack;
         }
-        attack_mask = player_state.unknown_78;
+        attack_mask = player_state.magic_attack_mask_cursor;
         if ((player_state.flags_140.low & attack_mask[0]) == 0) {
             goto cancel_weapon_attack;
         }
@@ -149,7 +149,7 @@ void player_update_actions_and_charge(void)
                 || player_state.magic_charge != 5000)) {
             goto cancel_weapon_attack;
         }
-        player_state.unknown_78 = attack_mask + 1;
+        player_state.magic_attack_mask_cursor = attack_mask + 1;
         if (attack_mask[1] == 0xffff) {
             player_begin_weapon_attack(1);
             return;
@@ -470,7 +470,7 @@ void player_update_frame(void)
     actor_state.unknown_93a0 = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, -1);
-    value = status_phase_step_scaled((u16 *)&player_state.unknown_5a,
+    value = status_phase_step_scaled((u16 *)&player_state.darkness_phase,
                            &player_state.unknown_5c, 64, 0xc00);
     if (value != -1) {
         interpolate_collision_filter_rows(10, 10, 10, 0xef9, value);
@@ -506,40 +506,40 @@ void player_update_frame(void)
     if ((player_state.flags_140.low & 0x5000) == 0) {
         player_state.turn_step_limit = 35;
     }
-    if (player_state.unknown_5e != 0) {
-        if (player_state.unknown_5e < 64) {
-            player_state.unknown_0e += 100;
-            if ((s16)player_state.unknown_0e > 0) {
-                player_state.unknown_0e = 0;
+    if (player_state.slow_timer != 0) {
+        if (player_state.slow_timer < 64) {
+            player_state.movement_speed_adjustment_q12 += 100;
+            if ((s16)player_state.movement_speed_adjustment_q12 > 0) {
+                player_state.movement_speed_adjustment_q12 = 0;
             }
         } else {
-            player_state.unknown_0e -= 100;
-            if ((s16)player_state.unknown_0e < -3300) {
-                player_state.unknown_0e = -3300;
+            player_state.movement_speed_adjustment_q12 -= 100;
+            if ((s16)player_state.movement_speed_adjustment_q12 < -3300) {
+                player_state.movement_speed_adjustment_q12 = -3300;
             }
         }
         player_state.turn_step_limit >>= 1;
-        player_state.unknown_5e--;
+        player_state.slow_timer--;
     } else {
         if (player_state.unknown_0c[1] == 0) {
-            player_state.unknown_0e += 800;
-            if ((s16)player_state.unknown_0e > 2800) {
-                player_state.unknown_0e = 2800;
+            player_state.movement_speed_adjustment_q12 += 800;
+            if ((s16)player_state.movement_speed_adjustment_q12 > 2800) {
+                player_state.movement_speed_adjustment_q12 = 2800;
             }
         } else {
-            player_state.unknown_0e -= 800;
-            if ((s16)player_state.unknown_0e < 0) {
-                player_state.unknown_0e = 0;
+            player_state.movement_speed_adjustment_q12 -= 800;
+            if ((s16)player_state.movement_speed_adjustment_q12 < 0) {
+                player_state.movement_speed_adjustment_q12 = 0;
             }
         }
     }
     player_state.movement_step_limit +=
-        ((s16)player_state.unknown_0e * player_state.movement_step_limit) >> 12;
-    if (player_state.unknown_60 != 0) {
+        ((s16)player_state.movement_speed_adjustment_q12 * player_state.movement_step_limit) >> 12;
+    if (player_state.paralysis_timer != 0) {
         player_state.movement_step_limit = 0;
         player_state.turn_step_limit = 0;
-        player_state.unknown_60--;
-        if ((player_state.unknown_60 & 3) == 0) {
+        player_state.paralysis_timer--;
+        if ((player_state.paralysis_timer & 3) == 0) {
             accumulate_color_overlay(60, 30, 0, 0xc00);
         }
     }
@@ -719,28 +719,28 @@ update_reaction_pose:
 
 after_reaction:
     player_state.flags_140.halves.high = player_state.flags_140.low;
-    if (player_state.unknown_54 != 0) {
-        if (player_state.unknown_54 % 30 == 0) {
+    if (player_state.poison_timer != 0) {
+        if (player_state.poison_timer % 30 == 0) {
             player_state.damage_red_overlay_scale = 2400;
             player_state.damage_red_overlay_decay = 60;
             player_adjust_hp_unclamped(-1);
         }
-        player_state.unknown_54--;
+        player_state.poison_timer--;
     }
-    if (player_state.unknown_62 != 0 && --player_state.unknown_62 == 0) {
+    if (player_state.defense_boost_timer != 0 && --player_state.defense_boost_timer == 0) {
         player_recalculate_combat_stats();
     }
-    if (player_state.unknown_64 != 0 && --player_state.unknown_64 == 0) {
+    if (player_state.attack_boost_timer != 0 && --player_state.attack_boost_timer == 0) {
         player_recalculate_combat_stats();
     }
-    if (player_state.unknown_6c != 0) {
-        player_state.unknown_6c--;
+    if (player_state.full_mp_timer != 0) {
+        player_state.full_mp_timer--;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
-        if (player_state.unknown_6c == 0) {
+        if (player_state.full_mp_timer == 0) {
             notify_enqueue(34);
         }
     }
-    if (player_state.unknown_6e != 0 && --player_state.unknown_6e == 0) {
+    if (player_state.magic_boost_timer != 0 && --player_state.magic_boost_timer == 0) {
         player_recalculate_combat_stats();
         notify_enqueue(34);
     }

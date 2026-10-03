@@ -52,20 +52,20 @@ void player_get_camera_pose(VECTOR *position, SVECTOR *angles)
 ADDRESS(0x80024f4c, 0xb8)
 void player_reset_status(void)
 {
-    player_state.unknown_6e = 0;
-    player_state.unknown_6c = 0;
+    player_state.magic_boost_timer = 0;
+    player_state.full_mp_timer = 0;
     player_state.unknown_6a = 0;
     player_state.unknown_68 = 0;
     player_state.unknown_66 = 0;
-    player_state.unknown_64 = 0;
-    player_state.unknown_62 = 0;
-    player_state.unknown_60 = 0;
-    player_state.unknown_5e = 0;
+    player_state.attack_boost_timer = 0;
+    player_state.defense_boost_timer = 0;
+    player_state.paralysis_timer = 0;
+    player_state.slow_timer = 0;
     player_state.unknown_5c = 0;
-    player_state.unknown_5a = 0;
+    player_state.darkness_phase = 0;
     player_state.unknown_58 = 0;
     player_state.curse_strength = 0;
-    player_state.unknown_54 = 0;
+    player_state.poison_timer = 0;
     player_state.unknown_ce[7] = 0;
     player_state.vitals.current_hp = player_state.vitals.maximum_hp;
     player_state.vitals.current_mp = player_state.vitals.maximum_mp;
@@ -348,7 +348,7 @@ void player_begin_weapon_attack(s32 mode)
 {
     if (player_state.weapon_attack_phase != PLAYER_WEAPON_ATTACK_INACTIVE
         || player_state.equipped_weapon_id == KF_EQUIPMENT_NONE
-        || player_state.unknown_60 != 0) {
+        || player_state.paralysis_timer != 0) {
         return;
     }
 
@@ -455,16 +455,15 @@ emit_simple_effect:
             position.vy = player_state.camera_position.vy;
             case3_z = position.vz + direction.vz;
             goto case3_store_z;
-        } else {
-            position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
-            position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
-            position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
-            if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10)) {
-                position.vx = actor->position.vx;
-                position.vy = actor->position.vy;
-                case3_z = actor->position.vz;
-                goto case3_store_z;
-            }
+        }
+        position.vx = ((s32)actor->unknown_50 << 14) / 600 + actor->position.vx;
+        position.vy = ((s32)actor->unknown_52 << 14) / 600 + actor->position.vy;
+        position.vz = ((s32)actor->unknown_54 << 14) / 600 + actor->position.vz;
+        if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10)) {
+            position.vx = actor->position.vx;
+            position.vy = actor->position.vy;
+            case3_z = actor->position.vz;
+            goto case3_store_z;
         }
         goto case3_emit;
 case3_store_z:
@@ -627,13 +626,13 @@ emit_rotation_effect:
     case 15:
         effect_construct_record(10, 0x10, 15, &player_state.camera_position,
                        &direction);
-        player_state.unknown_62 = 900;
+        player_state.defense_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
     case 17:
         effect_construct_record(10, 0x10, 17, &player_state.camera_position,
                        &direction);
-        player_state.unknown_64 = 900;
+        player_state.attack_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
     case 14:

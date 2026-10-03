@@ -71,7 +71,7 @@ void player_reset_view(void)
     player_state.unknown_100[1] = 0;
     player_state.unknown_100[0] = 0;
     player_state.camera_rotation = player_state.camera_rotation_target;
-    player_state.unknown_0e = 0;
+    player_state.movement_speed_adjustment_q12 = 0;
     player_state.unknown_0c[1] = 0;
     player_state.damage_scale = PLAYER_VIEW_SCALE_INITIAL;
     player_state.unknown_ce[3] = 0xff;

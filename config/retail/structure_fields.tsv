@@ -361,9 +361,9 @@ KfMapObjectStateGame	0x8730	0x04	unknown_8730	u8[4]	opaque	game_main_loop startu
 KfMapObjectStateGame	0x8734	0x04	current_template	KfMapObjectTemplate *	supported	asm;func_80036ed4 0x36f40..0x36f64	current object's 24-byte indexed template pointer during dispatch
 KfMapObjectStateGame	0x8738	0x04	current_collision_object	KfMapObject *	supported	asm;func_80036078	excludes the current map object from collision-distance scans
 KfMapObjectStateGame	0x873c	0x02	unknown_873c	u8[2]	opaque	game_main_loop startup clear	unresolved tail bytes
-KfMapObjectStateGame	0x873e	0x02	unknown_873e	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
-KfMapObjectStateGame	0x8740	0x02	unknown_8740	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
-KfMapObjectStateGame	0x8742	0x02	unknown_8742	u16	candidate	asm;map_object_pool_reset	cleared after object pool pass
+KfMapObjectStateGame	0x873e	0x02	spawn_sequence_pool_15e	u16	supported	asm;map_object_pool_reset;map_object_spawn_scattered_effect;event_scene_command_dispatch	sequence counter for objects 0x15e..0x167
+KfMapObjectStateGame	0x8740	0x02	spawn_sequence_pool_168	u16	supported	asm;map_object_pool_reset;map_object_spawn_effect	sequence counter for source-nonzero objects 0x168..0x171
+KfMapObjectStateGame	0x8742	0x02	spawn_sequence_pool_172	u16	supported	asm;map_object_pool_reset;map_object_spawn_effect	sequence counter for source-zero objects 0x172..0x17b
 KfMapObjectTail	0x0	0xc	fields	KfMapObjectTailFields	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
 KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;render_scene_and_update_resources	byte view of the packed spawn sequence
@@ -497,7 +497,7 @@ KfPlayerState	0x08	0x01	level	u8	supported	asm;xrefs;KF1 player.h counterpart	me
 KfPlayerState	0x09	0x02	unknown_09	u8[2]	opaque	asm;player_equip_weapon	not yet modelled
 KfPlayerState	0x0b	0x01	weapon_charge_delay	u8	supported	asm;player_equip_weapon;KF1 player_core.c	set to ten on weapon equip
 KfPlayerState	0x0c	0x02	unknown_0c	u8[2]	opaque	asm;player_reset_view	second byte cleared by view reset
-KfPlayerState	0x0e	0x02	unknown_0e	u16	opaque	asm;player_reset_view	cleared by view reset
+KfPlayerState	0x0e	0x02	movement_speed_adjustment_q12	u16	supported	asm;player_reset_view;player_update_frame	stored 16-bit movement-step adjustment, interpreted signed and scaled by 1/4096
 KfPlayerState	0x10	0x02	damage_scale	s16	supported	asm;player_calculate_damage_component	signed multiplier for damage threshold
 KfPlayerState	0x12	0x08	vitals	KfPlayerVitals	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x1a	0x02	attack_charge_current	u16	supported	asm;player_equip_weapon;KF1 player_core.c	reset on weapon equip
@@ -513,23 +513,23 @@ KfPlayerState	0x2c	0x04	gold	u32	supported	asm;player_initialize_state;KF1 playe
 KfPlayerState	0x30	0x10	attack_components	u16[8]	supported	asm;player_recalculate_combat_stats	weapon attack totals
 KfPlayerState	0x40	0x02	unknown_40	u16	opaque	asm;player_recalculate_combat_stats	not yet modelled
 KfPlayerState	0x42	0x12	combat_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats	nine unsigned additive totals
-KfPlayerState	0x54	0x02	unknown_54	s16	opaque	asm;GAME 0x8001e94c lh;player_cap_status_components	signed halfword read by menu status; cleared for mask bits 1 or 2
+KfPlayerState	0x54	0x02	poison_timer	s16	supported	asm;player_apply_damage;player_update_frame;menu_draw_player_status	status case 3 starts duration; loses one HP every 30 frames until zero
 KfPlayerState	0x56	0x02	curse_strength	s16	supported	asm;player_recalculate_combat_stats;player_cap_status_components	nonzero reduces physical power by 20; capped at 64
 KfPlayerState	0x58	0x02	unknown_58	u16	opaque	asm;player_cap_status_components	cleared for mask bit 1
-KfPlayerState	0x5a	0x02	unknown_5a	s16	opaque	asm;player_cap_status_components	capped at 64 for mask bit 2
+KfPlayerState	0x5a	0x02	darkness_phase	s16	supported	asm;player_apply_damage;player_update_frame;player_cap_darkness_phase	status case 2 fades a near-black screen filter in and out; phase capped at 64 on recovery
 KfPlayerState	0x5c	0x02	unknown_5c	u16	opaque	asm;player_cap_status_components	cleared for mask bit 2
-KfPlayerState	0x5e	0x02	unknown_5e	s16	opaque	asm;player_cap_status_components	capped at 64 for mask bits 1 or 4
-KfPlayerState	0x60	0x02	unknown_60	s16	opaque	asm;player_cap_status_components	cleared for mask bit 4
-KfPlayerState	0x62	0x02	unknown_62	s16	opaque	asm;player_recalculate_combat_stats	nonzero raises component 5 by 50
-KfPlayerState	0x64	0x02	unknown_64	s16	opaque	asm;player_recalculate_combat_stats	nonzero raises three components by 30
+KfPlayerState	0x5e	0x02	slow_timer	s16	supported	asm;player_apply_damage;player_update_frame;menu_draw_player_status	status case 5 starts duration; reduces movement and turn limits until zero
+KfPlayerState	0x60	0x02	paralysis_timer	s16	supported	asm;player_apply_damage;player_update_frame;player_begin_weapon_attack	status case 4 starts duration; movement and turn limits zero; blocks weapon attack
+KfPlayerState	0x62	0x02	defense_boost_timer	s16	supported	asm;player_dispatch_magic_effect;player_recalculate_combat_stats;player_update_frame	900-frame effect; raises combat component 5 by 50
+KfPlayerState	0x64	0x02	attack_boost_timer	s16	supported	asm;player_dispatch_magic_effect;player_recalculate_combat_stats;player_update_frame	900-frame effect; raises combat components 0 through 2 by 30
 KfPlayerState	0x66	0x02	unknown_66	s16	opaque	asm;player_reset_status	cleared by status reset
 KfPlayerState	0x68	0x02	unknown_68	s16	opaque	asm;player_reset_status	cleared by status reset
 KfPlayerState	0x6a	0x02	unknown_6a	s16	opaque	asm;player_reset_status	cleared by status reset
-KfPlayerState	0x6c	0x02	unknown_6c	s16	opaque	asm;player_reset_status	cleared by status reset
-KfPlayerState	0x6e	0x02	unknown_6e	s16	opaque	asm;player_recalculate_combat_stats	nonzero raises magic by 30
+KfPlayerState	0x6c	0x02	full_mp_timer	s16	supported	asm;event_world_dispatch_interaction;player_update_frame	900-frame effect; holds current MP at maximum each frame
+KfPlayerState	0x6e	0x02	magic_boost_timer	s16	supported	asm;event_world_dispatch_interaction;player_recalculate_combat_stats;player_update_frame	900-frame effect; raises magic by 30
 KfPlayerState	0x70	0x04	unknown_70	u8[4]	opaque	asm;player_sync_position_to_map	not yet modelled
 KfPlayerState	0x74	0x04	equipment_effect_ticks	u32	supported	asm;func_800297b4;KF1 player_update	unsigned modulo clock for equipment HP effects
-KfPlayerState	0x78	0x04	unknown_78	const u16 *	supported	asm;GAME 0x80028d64 sw and 0x80028dcc/0x80028e28 lw+lhu	pointer to consecutive halfwords; target datum extent remains unresolved
+KfPlayerState	0x78	0x04	magic_attack_mask_cursor	const u16 *	supported	asm;player_update_actions_and_charge;player_magic_id_sequence.attack_masks	cursor through consecutive weapon-magic button masks; resets to first mask and advances after a matched input
 KfPlayerState	0x7c	0x04	selected_magic_record	KfMagicRecord *	supported	asm;func_80026498;player_initialize_state	26-byte magic row pointer stored after the MP check; cleared during initialization
 KfPlayerState	0x80	0x04	equipped_weapon_record	KfWeaponRecordGame *	supported	asm;player_equip_weapon;KF1 player_core.c	68-byte weapon record index
 KfPlayerState	0x84	0x04	weapon_asset_buffer	KfAssetHeader *	supported	asm;player_equip_weapon;KF1 player_core.c	archive read destination and registry asset

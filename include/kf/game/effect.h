@@ -97,7 +97,8 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
                    u8 record_id, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position);
-s32 func_8003fa68(const VECTOR *position, s32 arg1, s32 angle);
+s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
+    s32 height_flags);
 void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position);
 void effect_apply_current_magic_backstep(s32 kind);
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,

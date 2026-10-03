@@ -44,12 +44,12 @@ void player_select_magic_action(s32 magic_id)
     case 5:
         break;
     case 1:
-        if (player_state.unknown_62 != 0) {
+        if (player_state.defense_boost_timer != 0) {
             return;
         }
         break;
     case 3:
-        if (player_state.unknown_64 != 0) {
+        if (player_state.attack_boost_timer != 0) {
             return;
         }
         break;

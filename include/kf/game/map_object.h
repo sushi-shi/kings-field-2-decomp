@@ -201,9 +201,9 @@ typedef struct KfMapObjectStateGame {
     KfMapObjectTemplate *current_template;
     KfMapObject *current_collision_object;
     u8 unknown_873c[2];
-    u16 unknown_873e;
-    u16 unknown_8740;
-    u16 unknown_8742;
+    u16 spawn_sequence_pool_15e;
+    u16 spawn_sequence_pool_168;
+    u16 spawn_sequence_pool_172;
 } KfMapObjectStateGame;
 
 typedef char kf_map_object_state_size[sizeof(KfMapObjectStateGame) == 0x8744 ? 1 : -1];
@@ -213,9 +213,9 @@ typedef char kf_map_object_state_current_template_offset[
 typedef char kf_map_object_state_current_collision_offset[
     (u32)&((KfMapObjectStateGame *)0)->current_collision_object == 0x8738 ? 1 : -1];
 typedef char kf_map_object_state_counter_873e_offset[
-    (u32)&((KfMapObjectStateGame *)0)->unknown_873e == 0x873e ? 1 : -1];
+    (u32)&((KfMapObjectStateGame *)0)->spawn_sequence_pool_15e == 0x873e ? 1 : -1];
 typedef char kf_map_object_state_counter_8742_offset[
-    (u32)&((KfMapObjectStateGame *)0)->unknown_8742 == 0x8742 ? 1 : -1];
+    (u32)&((KfMapObjectStateGame *)0)->spawn_sequence_pool_172 == 0x8742 ? 1 : -1];
 
 extern KfMapObjectStateGame map_object_state;
 

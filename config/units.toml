@@ -414,15 +414,9 @@ source = "src/game/collision_grid_sample.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.collision_shape_dispatch"
+unit = "game.collision_shape_runtime"
 image = "GAME.EXE"
-source = "src/game/collision_shape_dispatch.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.collision_height_wrappers"
-image = "GAME.EXE"
-source = "src/game/collision_height_wrappers.c"
+source = "src/game/collision_shape_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -537,18 +531,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.map_cell_pattern_place"
 image = "GAME.EXE"
 source = "src/game/map_cell_pattern_place.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_object_reset"
-image = "GAME.EXE"
-source = "src/game/map_object_reset.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_object_collision_query"
-image = "GAME.EXE"
-source = "src/game/map_object_collision_query.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

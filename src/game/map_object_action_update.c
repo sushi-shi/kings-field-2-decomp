@@ -726,7 +726,8 @@ void map_object_update_actions(void)
                                          reach, height, 0x90);
                     if (kind == 0) {
                         goto clear_action_trigger;
-                    } else if (object->extra_40.bytes[0] == 0) {
+                    }
+                    if (object->extra_40.bytes[0] == 0) {
                         object->extra_40.bytes[0] = 1;
                         effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
                                       object->tail.fields.unknown_39,

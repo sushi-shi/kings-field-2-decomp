@@ -267,24 +267,18 @@ map_object_next:
                            effect->unknown_09, -60);
             break;
         case 12:
-            goto effect_special_draw;
-        default:
+            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
+                           &effect->position,
+                           effect_rotation_ptr,
+                           effect_scale_ptr,
+                           effect_cache, 0,
+                           effect->animation_clip, effect->unknown_12,
+                           effect->unknown_0c, effect->unknown_10,
+                           effect->unknown_09, 0x14);
             break;
         }
-        effect++;
-        goto effect_count_tail;
-effect_special_draw:
-        render_world_model(effect->unknown_0a, effect->render_id + 0x28,
-                       &effect->position,
-                       effect_rotation_ptr,
-                       effect_scale_ptr,
-                       effect_cache, 0,
-                       effect->animation_clip, effect->unknown_12,
-                       effect->unknown_0c, effect->unknown_10,
-                       effect->unknown_09, 0x14);
 effect_next:
         effect++;
-effect_count_tail:
         effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
         effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
         effect_rotation_ptr = (const struct KfEulerAngles *)(

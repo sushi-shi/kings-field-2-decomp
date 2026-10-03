@@ -2730,8 +2730,6 @@ void effect_update_dispatch(void)
         record->phase++;
         break;
     case 6: {
-        KfEffectTrailState *trail = &record->cache_tail.payload.trail;
-
         switch (initial_phase) {
         case 0: {
             s32 index;
@@ -2761,7 +2759,7 @@ void effect_update_dispatch(void)
             kind6_phase3:
                 record->phase = 3;
                 record->updates_remaining = -1;
-                trail->phase_counter = 24;
+                record->cache_tail.payload.trail.phase_counter = 24;
                 break;
             }
             if (effect_aim_and_move(250, 25, 32, 200,
@@ -2777,13 +2775,13 @@ void effect_update_dispatch(void)
                     effect_apply_current_magic(EFFECT_IMPACT_HOLD_ACTOR_ANIMATION |
                                                KF_COLLISION_HIT_ACTOR, 5000, 0);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
-                    trail->actor_index = actor_index;
-                    actor = &actor_state.actors[trail->actor_index];
+                    record->cache_tail.payload.trail.actor_index = actor_index;
+                    actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
                     if (actor->target_type == 2 || actor->target_type == 3) {
                         record->render_flags = 1;
                         record->render_id = 22;
                         record->phase = 2;
-                        trail->phase_counter = 0;
+                        record->cache_tail.payload.trail.phase_counter = 0;
                         record->rotation.vz = 0;
                         record->rotation.vx = 0;
                         record->rotation.pad = -vector_xz_to_angle(
@@ -2794,17 +2792,17 @@ void effect_update_dispatch(void)
                 }
                 goto kind6_phase3;
             } else {
-                KfEffectTrailRow *rows = trail->rows;
+                KfEffectTrailRow *rows = record->cache_tail.payload.trail.rows;
                 KfEffectTrailRow *row;
-                u8 frame = trail->frame_index + 1;
-                s32 angle = trail->phase_counter << 4;
+                u8 frame = record->cache_tail.payload.trail.frame_index + 1;
+                s32 angle = record->cache_tail.payload.trail.phase_counter << 4;
 
-                trail->frame_index = frame;
+                record->cache_tail.payload.trail.frame_index = frame;
                 if (frame >= 24) {
-                    trail->frame_index = 0;
+                    record->cache_tail.payload.trail.frame_index = 0;
                 }
-                row = &rows[trail->frame_index];
-                trail->phase_counter += 8;
+                row = &rows[record->cache_tail.payload.trail.frame_index];
+                record->cache_tail.payload.trail.phase_counter += 8;
                 row->position.vx = record->position.vx;
                 row->position.vz = record->position.vz;
                 row->position.vy = record->position.vy + (rsin(angle) >> 3);
@@ -2815,40 +2813,41 @@ void effect_update_dispatch(void)
             break;
         case 2:
         phase_two: {
-            KfActor *actor = &actor_state.actors[trail->actor_index];
+            KfActor *actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
             VECTOR scratch;
             VECTOR *position;
-            u8 frame = trail->frame_index + 1;
+            u8 frame = record->cache_tail.payload.trail.frame_index + 1;
             s32 actor_extent;
 
             actor->flags |= KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
             actor_extent = actor->collision_radius;
-            trail->frame_index = frame;
+            record->cache_tail.payload.trail.frame_index = frame;
             if (frame >= 24) {
-                trail->frame_index = 0;
+                record->cache_tail.payload.trail.frame_index = 0;
             }
             position = actor_resolve_group_position(actor, &scratch);
             record->position = *position;
             record->position.vy -= actor->collision_height >> 1;
-            if (trail->phase_counter < 17) {
+            if (record->cache_tail.payload.trail.phase_counter < 17) {
                 s32 scale = fixed_lerp_q12(
-                    0, actor_extent, trail->phase_counter << 9);
+                    0, actor_extent, record->cache_tail.payload.trail.phase_counter << 9);
 
                 record->scale_z = scale;
                 record->scale_x = scale;
                 record->scale_y = fixed_lerp_q12(
-                    0, actor->collision_height, trail->phase_counter * 350);
-            } else if (trail->phase_counter >= 60) {
+                    0, actor->collision_height,
+                    record->cache_tail.payload.trail.phase_counter * 350);
+            } else if (record->cache_tail.payload.trail.phase_counter >= 60) {
                 record->phase = 4;
                 break;
             }
             {
-                KfEffectTrailRow *rows = trail->rows;
-                KfEffectTrailRow *row = &rows[trail->frame_index];
+                KfEffectTrailRow *rows = record->cache_tail.payload.trail.rows;
+                KfEffectTrailRow *row = &rows[record->cache_tail.payload.trail.frame_index];
                 s32 radius = ((s32)actor_extent * 25 << 8) >> 12;
                 s32 angle = (s16)record->rotation.pad;
 
-                trail->phase_counter++;
+                record->cache_tail.payload.trail.phase_counter++;
                 record->rotation.pad = angle + 100000 / actor_extent;
                 row->position.vx = record->position.vx +
                                    ((rsin(angle) * radius) >> 12);
@@ -2863,13 +2862,13 @@ void effect_update_dispatch(void)
             break;
         }
         case 3: {
-            u8 frame = ++trail->frame_index;
+            u8 frame = ++record->cache_tail.payload.trail.frame_index;
 
             if (frame >= 24) {
-                trail->frame_index = 0;
+                record->cache_tail.payload.trail.frame_index = 0;
             }
-            if (trail->phase_counter != 0) {
-                trail->phase_counter--;
+            if (record->cache_tail.payload.trail.phase_counter != 0) {
+                record->cache_tail.payload.trail.phase_counter--;
                 break;
             }
             goto kind6_release_actor;
@@ -2887,7 +2886,7 @@ void effect_update_dispatch(void)
         }
         break;
     kind6_release_actor: {
-        KfActor *actor = &actor_state.actors[trail->actor_index];
+        KfActor *actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
 
         actor->flags &= ~KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
         record->type = KF_EFFECT_SLOT_FREE;

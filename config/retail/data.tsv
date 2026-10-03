@@ -1615,31 +1615,31 @@ OPEN.EXE	0x8003df50	0x2d750	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4
 OPEN.EXE	0x8003df51	0x2d751	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003df58	0x2d758	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003df5c	0x2d75c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df60	0x2d760	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df60	0x2d760	0x4	defined	reviewed		undefined4	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df64	0x2d764	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df68	0x2d768	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df68	0x2d768	0x4	defined	reviewed	Rgb24	undefined4	native LIBCD CDROM.OBJ local Rgb24 at .sbss+0x8;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df6c	0x2d76c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df70	0x2d770	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df70	0x2d770	0x4	defined	reviewed	Emu_Addr	undefined4	native LIBCD CDROM.OBJ local Emu_Addr at .sbss+0x10;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df74	0x2d774	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df78	0x2d778	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df78	0x2d778	0x4	defined	reviewed	Emu_Idx	undefined4	native LIBCD CDROM.OBJ local Emu_Idx at .sbss+0x18;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df7c	0x2d77c	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df88	0x2d788	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df88	0x2d788	0x4	defined	reviewed	RingSize	undefined4	native LIBCD CDROM.OBJ local RingSize at .sbss+0x28;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df8c	0x2d78c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df90	0x2d790	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df90	0x2d790	0x4	defined	reviewed	RingIdx1	undefined4	native LIBCD CDROM.OBJ local RingIdx1 at .sbss+0x30;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df94	0x2d794	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df98	0x2d798	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df98	0x2d798	0x4	defined	reviewed	RingIdx2	undefined4	native LIBCD CDROM.OBJ local RingIdx2 at .sbss+0x38;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df9c	0x2d79c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfa0	0x2d7a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfa0	0x2d7a0	0x4	defined	reviewed	RingIdx3	undefined4	native LIBCD CDROM.OBJ local RingIdx3 at .sbss+0x40;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfa4	0x2d7a4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfa8	0x2d7a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfa8	0x2d7a8	0x4	defined	reviewed	START_FLAG	undefined4	native LIBCD CDROM.OBJ local START_FLAG at .sbss+0x48;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfac	0x2d7ac	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfb0	0x2d7b0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfb0	0x2d7b0	0x4	defined	reviewed	StartFlame	undefined4	native LIBCD CDROM.OBJ local StartFlame at .sbss+0x50;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfb4	0x2d7b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfb8	0x2d7b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfb8	0x2d7b8	0x4	defined	reviewed	EndFlame	undefined4	native LIBCD CDROM.OBJ local EndFlame at .sbss+0x58;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfbc	0x2d7bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfc0	0x2d7c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfc0	0x2d7c0	0x4	defined	reviewed	Func1	undefined4	native LIBCD CDROM.OBJ local Func1 at .sbss+0x60;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfc4	0x2d7c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfc8	0x2d7c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfc8	0x2d7c8	0x4	defined	reviewed	Func2	undefined4	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfcc	0x2d7cc	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dfd8	0x2d7d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003dfdc	0x2d7dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2330,31 +2330,31 @@ END.EXE	0x8003ad48	0x2a548	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/
 END.EXE	0x8003ad49	0x2a549	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ad50	0x2a550	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ad54	0x2a554	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad58	0x2a558	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad58	0x2a558	0x4	defined	reviewed		undefined4	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad5c	0x2a55c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad60	0x2a560	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad60	0x2a560	0x4	defined	reviewed	Rgb24	undefined4	native LIBCD CDROM.OBJ local Rgb24 at .sbss+0x8;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad64	0x2a564	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad68	0x2a568	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad68	0x2a568	0x4	defined	reviewed	Emu_Addr	undefined4	native LIBCD CDROM.OBJ local Emu_Addr at .sbss+0x10;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad6c	0x2a56c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad70	0x2a570	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad70	0x2a570	0x4	defined	reviewed	Emu_Idx	undefined4	native LIBCD CDROM.OBJ local Emu_Idx at .sbss+0x18;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad74	0x2a574	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad80	0x2a580	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad80	0x2a580	0x4	defined	reviewed	RingSize	undefined4	native LIBCD CDROM.OBJ local RingSize at .sbss+0x28;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad84	0x2a584	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad88	0x2a588	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad88	0x2a588	0x4	defined	reviewed	RingIdx1	undefined4	native LIBCD CDROM.OBJ local RingIdx1 at .sbss+0x30;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad8c	0x2a58c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad90	0x2a590	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad90	0x2a590	0x4	defined	reviewed	RingIdx2	undefined4	native LIBCD CDROM.OBJ local RingIdx2 at .sbss+0x38;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad94	0x2a594	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad98	0x2a598	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad98	0x2a598	0x4	defined	reviewed	RingIdx3	undefined4	native LIBCD CDROM.OBJ local RingIdx3 at .sbss+0x40;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad9c	0x2a59c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ada0	0x2a5a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ada0	0x2a5a0	0x4	defined	reviewed	START_FLAG	undefined4	native LIBCD CDROM.OBJ local START_FLAG at .sbss+0x48;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ada4	0x2a5a4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ada8	0x2a5a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ada8	0x2a5a8	0x4	defined	reviewed	StartFlame	undefined4	native LIBCD CDROM.OBJ local StartFlame at .sbss+0x50;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003adac	0x2a5ac	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003adb0	0x2a5b0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003adb0	0x2a5b0	0x4	defined	reviewed	EndFlame	undefined4	native LIBCD CDROM.OBJ local EndFlame at .sbss+0x58;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003adb4	0x2a5b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003adb8	0x2a5b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003adb8	0x2a5b8	0x4	defined	reviewed	Func1	undefined4	native LIBCD CDROM.OBJ local Func1 at .sbss+0x60;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003adbc	0x2a5bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003adc0	0x2a5c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003adc0	0x2a5c0	0x4	defined	reviewed	Func2	undefined4	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003adc4	0x2a5c4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003add0	0x2a5d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003add4	0x2a5d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

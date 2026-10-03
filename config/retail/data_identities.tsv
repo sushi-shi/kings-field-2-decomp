@@ -395,19 +395,19 @@ OPEN.EXE	0x8003df40	0x4	DAT_8003df40	unknown	load	undefined4		address-only	data.
 OPEN.EXE	0x8003df48	0x1	DAT_8003df48	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003df50	0x1	DAT_8003df50	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003df58	0x4	DAT_8003df58	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df60	0x4	DAT_8003df60	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df68	0x4	DAT_8003df68	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df70	0x4	DAT_8003df70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df78	0x4	DAT_8003df78	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df88	0x4	DAT_8003df88	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df90	0x4	DAT_8003df90	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003df98	0x4	DAT_8003df98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfa0	0x4	DAT_8003dfa0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfa8	0x4	DAT_8003dfa8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfb0	0x4	DAT_8003dfb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfb8	0x4	DAT_8003dfb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfc0	0x4	DAT_8003dfc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dfc8	0x4	DAT_8003dfc8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003df60	0x4	DAT_8003df60	unknown	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df68	0x4	Rgb24	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Rgb24 at .sbss+0x8;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df70	0x4	Emu_Addr	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Emu_Addr at .sbss+0x10;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df78	0x4	Emu_Idx	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Emu_Idx at .sbss+0x18;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df88	0x4	RingSize	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingSize at .sbss+0x28;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df90	0x4	RingIdx1	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx1 at .sbss+0x30;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003df98	0x4	RingIdx2	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx2 at .sbss+0x38;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfa0	0x4	RingIdx3	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx3 at .sbss+0x40;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfa8	0x4	START_FLAG	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local START_FLAG at .sbss+0x48;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfb0	0x4	StartFlame	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local StartFlame at .sbss+0x50;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfb8	0x4	EndFlame	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local EndFlame at .sbss+0x58;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfc0	0x4	Func1	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Func1 at .sbss+0x60;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+OPEN.EXE	0x8003dfc8	0x4	Func2	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfd8	0x4	DAT_8003dfd8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dfe0	0x4	VBLNKCallback	static	load	pointer	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB.OBJ local VBLNKCallback at .sbss+0;exact VBLNKInit/Stop text and section patches	VBlank callback pointer initialized to zero; original C signature unresolved
 OPEN.EXE	0x8003dfe8	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_buf at .sbss+0;exact PadInit/PadRead text and section patches	raw pad word set to -1, passed by address to PAD_init, and read by PadRead
@@ -571,19 +571,19 @@ END.EXE	0x8003ad38	0x4	DAT_8003ad38	unknown	load	undefined4		address-only	data.t
 END.EXE	0x8003ad40	0x1	DAT_8003ad40	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ad48	0x1	DAT_8003ad48	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ad50	0x4	DAT_8003ad50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad58	0x4	DAT_8003ad58	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad60	0x4	DAT_8003ad60	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad68	0x4	DAT_8003ad68	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad70	0x4	DAT_8003ad70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad80	0x4	DAT_8003ad80	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad88	0x4	DAT_8003ad88	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad90	0x4	DAT_8003ad90	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ad98	0x4	DAT_8003ad98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ada0	0x4	DAT_8003ada0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ada8	0x4	DAT_8003ada8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003adb0	0x4	DAT_8003adb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003adb8	0x4	DAT_8003adb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003adc0	0x4	DAT_8003adc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ad58	0x4	DAT_8003ad58	unknown	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad60	0x4	Rgb24	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Rgb24 at .sbss+0x8;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad68	0x4	Emu_Addr	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Emu_Addr at .sbss+0x10;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad70	0x4	Emu_Idx	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Emu_Idx at .sbss+0x18;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad80	0x4	RingSize	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingSize at .sbss+0x28;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad88	0x4	RingIdx1	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx1 at .sbss+0x30;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad90	0x4	RingIdx2	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx2 at .sbss+0x38;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ad98	0x4	RingIdx3	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local RingIdx3 at .sbss+0x40;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ada0	0x4	START_FLAG	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local START_FLAG at .sbss+0x48;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003ada8	0x4	StartFlame	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local StartFlame at .sbss+0x50;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003adb0	0x4	EndFlame	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local EndFlame at .sbss+0x58;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003adb8	0x4	Func1	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Func1 at .sbss+0x60;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
+END.EXE	0x8003adc0	0x4	Func2	static	load	undefined4	LIBCD CDROM.OBJ	supported	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003add0	0x4	DAT_8003add0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003add8	0x4	VBLNKCallback	static	load	pointer	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB.OBJ local VBLNKCallback at .sbss+0;exact VBLNKInit/Stop text and section patches	VBlank callback pointer initialized to zero; original C signature unresolved
 END.EXE	0x8003ade0	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_buf at .sbss+0;exact PadInit/PadRead text and section patches	raw pad word set to -1, passed by address to PAD_init, and read by PadRead

@@ -228,12 +228,6 @@ source = "src/game/actor_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_group_effects"
-image = "GAME.EXE"
-source = "src/game/actor_group_effects.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.actor_behavior_dispatch"
 image = "GAME.EXE"
 source = "src/game/actor_behavior_dispatch.c"

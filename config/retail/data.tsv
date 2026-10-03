@@ -660,9 +660,10 @@ GAME.EXE	0x80068466	0x57c66	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4
 GAME.EXE	0x80068468	0x57c68	0x1c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80068484	0x57c84	0x182	defined	manual:exact Psy-Q 3.0 LIBSPU S_N2P.OBJ .data		u16[193]	archive 386-byte Code section exact in retail;note-to-pitch indexed lhu	static note-to-pitch ratio table; original static symbol unresolved
 GAME.EXE	0x80068606	0x57e06	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068608	0x57e08	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006860c	0x57e0c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x80068610	0x57e10	0x60	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80068608	0x57e08	0x30	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[12]	archive K_cor_tbl XDEF .data+0;unique exact 100-byte retail section	first correlation coefficient table; original element signedness unresolved
+GAME.EXE	0x80068638	0x57e38	0x18	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[6]	archive H_cor_tbl XDEF .data+0x30;text relocation to base	second correlation coefficient table; original element signedness unresolved
+GAME.EXE	0x80068650	0x57e50	0x1c	defined	manual:exact Psy-Q 3.0 LIBGTE COR .data XDEF		u32[7]	archive H_ln_tbl XDEF .data+0x48;text relocations to base and +4	line coefficient table; original element signedness unresolved
+GAME.EXE	0x8006866c	0x57e6c	0x4	unclassified	coverage-gap			payload-complement	outside exact COR .data Code100; ownership unresolved
 GAME.EXE	0x80068670	0x57e70	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80068674	0x57e74	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80068678	0x57e78	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -675,17 +676,9 @@ GAME.EXE	0x80068c4b	0x5844b	0x2	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x80068c4d	0x5844d	0x27	string	byte-pattern		ascii	investigation:string-census	escaped text: Error: Can't pop matrix,stack is empty!
 GAME.EXE	0x80068c74	0x58474	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80068c76	0x58476	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: This function is not implemented.
-GAME.EXE	0x80068c97	0x58497	0x31c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068fb3	0x587b3	0x27	string	byte-pattern		ascii	investigation:string-census	"escaped text: \t""\t'\t,\t1\t7\t<\tA\tF\tK\tP\tU\tZ\t_\te\tj\to\tt\ty\t~\t"
-GAME.EXE	0x80068fda	0x587da	0x1dd3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006adad	0x5a5ad	0x7	string	byte-pattern		shift_jis	investigation:string-census	escaped text: \n汀\t\n受
-GAME.EXE	0x8006adb4	0x5a5b4	0x9ba	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006b76e	0x5af6e	0x8	string	byte-pattern		shift_jis	investigation:string-census	escaped text: 晰暾溟練
-GAME.EXE	0x8006b776	0x5af76	0xa4c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006c1c2	0x5b9c2	0x8	string	byte-pattern		shift_jis	investigation:string-census	escaped text: 練溟暾晰
-GAME.EXE	0x8006c1ca	0x5b9ca	0x9b9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006cb83	0x5c383	0x7	string	byte-pattern		shift_jis	investigation:string-census	escaped text: \n受\t\n汀
-GAME.EXE	0x8006cb8a	0x5c38a	0x912	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80068c97	0x58497	0x5	unclassified	coverage-gap			payload-complement	outside exact LIBGTE GEO .data section; ownership unresolved
+GAME.EXE	0x80068c9c	0x5849c	0x800	defined	manual:exact Psy-Q 3.0 LIBGTE GEO .data XDEF		s16[1024]	archive rsin_tbl XDEF .data+0;full 0x4800 section exact unique;sin_1 signed halfword reads	Psy-Q sine table
+GAME.EXE	0x8006949c	0x58c9c	0x4000	defined	manual:exact Psy-Q 3.0 LIBGTE GEO .data XDEF		s16[8192]	archive rcossin_tbl XDEF .data+0x800;full 0x4800 section exact unique	4096 interleaved signed sine/cosine pairs
 GAME.EXE	0x8006d49c	0x5cc9c	0x30	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: pad.c,v 1.33 1995/03/14 04:44:13 suzu Exp $
 GAME.EXE	0x8006d4cc	0x5cccc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d4d0	0x5ccd0	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR .data fragment		u32[6]	archive code record and four section patches;retail words	contiguous vendor section fragment; individual C object and linkage remain unresolved
@@ -791,7 +784,9 @@ GAME.EXE	0x8006d8a8	0x5d0a8	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdat
 GAME.EXE	0x8006d8ac	0x5d0ac	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte hardware pointer;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8b0	0x5d0b0	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA .sdata record		u32	archive four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8b4	0x5d0b4	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d8c4	0x5d0c4	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[6]	24 archive bytes;pointer patches to SYS .data+0x34 and printf;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8c4	0x5d0c4	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata fragment		pointer	archive .sdata+0 patch to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
+GAME.EXE	0x8006d8c8	0x5d0c8	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
+GAME.EXE	0x8006d8cc	0x5d0cc	0x10	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata fragment		u32[4]	archive .sdata+8..+0x18;retail zeros exact	anonymous vendor tail; original C object boundaries unresolved
 GAME.EXE	0x8006d8dc	0x5d0dc	0x24	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[9]	archive 36-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d900	0x5d100	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata record		u32[3]	archive 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d90c	0x5d10c	0x5	string	manual:exact Psy-Q 3.0 LIBGPU TMD .sdata literal		ascii	archive 109-byte label record;retail exact	F3L label including NUL; original C literal provenance unresolved
@@ -1516,7 +1511,7 @@ OPEN.EXE	0x8003dbb8	0x2d3b8	0x3	string	reviewed		ascii	manual:display	escaped te
 OPEN.EXE	0x8003dbbb	0x2d3bb	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dbc4	0x2d3c4	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
 OPEN.EXE	0x8003dc00	0x2d400	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc04	0x2d404	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dc04	0x2d404	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
 OPEN.EXE	0x8003dc08	0x2d408	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003dc0c	0x2d40c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003dc10	0x2d410	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -1639,7 +1634,7 @@ OPEN.EXE	0x8003de43	0x2d643	0x5	unclassified	coverage-gap			payload-complement	m
 OPEN.EXE	0x8003de48	0x2d648	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de4c	0x2d64c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de50	0x2d650	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de54	0x2d654	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003de54	0x2d654	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB .sdata XDEF		u32	archive Vcount XDEF .sdata+0x10;unique hardware-prefix retail match	32-bit exported vertical-blank counter
 OPEN.EXE	0x8003de58	0x2d658	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de5c	0x2d65c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de60	0x2d660	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -2301,7 +2296,7 @@ END.EXE	0x8003aa48	0x2a248	0x3	string	reviewed		ascii	manual:display	escaped tex
 END.EXE	0x8003aa4b	0x2a24b	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003aa54	0x2a254	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
 END.EXE	0x8003aa90	0x2a290	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aa94	0x2a294	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003aa94	0x2a294	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
 END.EXE	0x8003aa98	0x2a298	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003aa9c	0x2a29c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003aaa0	0x2a2a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -2401,7 +2396,7 @@ END.EXE	0x8003ac63	0x2a463	0x5	unclassified	coverage-gap			payload-complement	ma
 END.EXE	0x8003ac68	0x2a468	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac6c	0x2a46c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac70	0x2a470	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac74	0x2a474	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ac74	0x2a474	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB .sdata XDEF		u32	archive Vcount XDEF .sdata+0x10;unique hardware-prefix retail match	32-bit exported vertical-blank counter
 END.EXE	0x8003ac78	0x2a478	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac7c	0x2a47c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac80	0x2a480	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

@@ -140,7 +140,7 @@ void tmd_project_vertices_with_fog(s32 count)
         for (remaining--; remaining != -1; remaining--) {
             projected->sz = RotTransPers(vertex, (long *)projected,
                                          &perspective, &gte_flags);
-            projected->p2 = 0;
+            projected->depth_cue = 0;
             projected++;
             vertex++;
         }
@@ -152,7 +152,7 @@ void tmd_project_vertices_with_fog(s32 count)
             if (perspective < 0) {
                 perspective = 0;
             }
-            projected->p2 = (u16)perspective << 1;
+            projected->depth_cue = (u16)perspective << 1;
             projected++;
             vertex++;
         }
@@ -163,7 +163,7 @@ void tmd_project_vertices_with_fog(s32 count)
             if (perspective >= 2800) {
                 perspective += (perspective - 2800) * 2;
             }
-            projected->p2 = perspective;
+            projected->depth_cue = perspective;
             projected++;
             vertex++;
         }
@@ -189,7 +189,7 @@ void tmd_project_vertices_mark_clipped(s32 count)
             if (gte_flags != 0x1000) {
                 projected->sz = -1;
             }
-            projected->p2 = 0;
+            projected->depth_cue = 0;
             projected++;
             vertex++;
         }
@@ -203,7 +203,7 @@ void tmd_project_vertices_mark_clipped(s32 count)
             if (perspective >= 2800) {
                 perspective += (perspective - 2800) * 2;
             }
-            projected->p2 = perspective;
+            projected->depth_cue = perspective;
             projected++;
             vertex++;
         }
@@ -225,7 +225,7 @@ void tmd_transform_vertices(s32 count)
         RotTrans(vertex, &transformed, &gte_flags);
         projected->x = transformed.vx;
         projected->y = transformed.vy;
-        projected->p2 = transformed.vz;
+        projected->depth_cue = transformed.vz;
         projected->sz = transformed.vz >> KF_TMD_DEPTH_SHIFT;
         projected++;
         vertex++;
@@ -247,7 +247,7 @@ void tmd_transform_vertices_depth(s32 count, s16 depth)
         RotTrans(vertex, &transformed, &gte_flags);
         projected->x = transformed.vx;
         projected->y = transformed.vy;
-        projected->p2 = transformed.vz;
+        projected->depth_cue = transformed.vz;
         projected->sz = depth;
         projected++;
         vertex++;
@@ -267,7 +267,7 @@ void tmd_project_vertices(s32 count)
     vertex = game_graphics_runtime.current_tmd_vertices;
     for (remaining = count - 1; remaining != -1; remaining--) {
         projected->sz = RotTransPers(vertex, (long *)projected, &perspective, &gte_flags);
-        projected->p2 = 0;
+        projected->depth_cue = 0;
         projected++;
         vertex++;
     }
@@ -330,7 +330,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u2 = face->ft3.uv2;
             NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
                            &map_textured_primitive_color,
-                           (va->p2 + vb->p2 + vc->p2) / 3,
+                           (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 7;
             prim->code = 0x26;
@@ -367,7 +367,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
                             (SVECTOR *)(normals + face->gt3.normal1),
                             (SVECTOR *)(normals + face->gt3.normal2),
-                            &map_textured_primitive_color, va->p2,
+                            &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             ((u8 *)&prim->sdk.tag)[3] = 9;
@@ -407,11 +407,11 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
                             (SVECTOR *)(normals + face->gt4.normal1),
                             (SVECTOR *)(normals + face->gt4.normal2),
-                            &map_textured_primitive_color, va->p2,
+                            &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
-                           &map_textured_primitive_color, va->p2,
+                           &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = 0x3e;
@@ -449,7 +449,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u3 = face->ft4.uv3;
             NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
                            &map_textured_primitive_color,
-                           (va->p2 + vb->p2 + vc->p2 + vd->p2) >> 2,
+                           (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = 0x2e;
@@ -519,7 +519,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u2 = face->ft3.uv2;
             NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
                            &map_textured_primitive_color,
-                           (va->p2 + vb->p2 + vc->p2) / 3,
+                           (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 7;
             prim->code = mode;
@@ -556,7 +556,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
                             (SVECTOR *)(normals + face->gt3.normal1),
                             (SVECTOR *)(normals + face->gt3.normal2),
-                            &map_textured_primitive_color, va->p2,
+                            &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             ((u8 *)&prim->sdk.tag)[3] = 9;
@@ -596,11 +596,11 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
                             (SVECTOR *)(normals + face->gt4.normal1),
                             (SVECTOR *)(normals + face->gt4.normal2),
-                            &map_textured_primitive_color, va->p2,
+                            &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
-                           &map_textured_primitive_color, va->p2,
+                           &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = mode;
@@ -638,7 +638,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u3 = face->ft4.uv3;
             NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
                            &map_textured_primitive_color,
-                           (va->p2 + vb->p2 + vc->p2 + vd->p2) >> 2,
+                           (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = mode;
@@ -894,10 +894,10 @@ void render_enqueue_map(u16 object_index)
             prim->packed.uv3 = face->uv3;
             NormalColorCol((SVECTOR *)(normals + face->normal),
                            &map_textured_primitive_color, &shade);
-            DpqColor(&shade, va->p2, &prim->packed.color0);
-            DpqColor(&shade, vb->p2, &prim->packed.color1);
-            DpqColor(&shade, vc->p2, &prim->packed.color2);
-            DpqColor(&shade, vd->p2, &prim->packed.color3);
+            DpqColor(&shade, va->depth_cue, &prim->packed.color0);
+            DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
+            DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
+            DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 0x0c;
             prim->sdk.code = header.bytes.mode | 0x3c;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
@@ -935,9 +935,9 @@ void render_enqueue_map(u16 object_index)
             prim->packed.uv2 = face->uv2;
             NormalColorCol((SVECTOR *)(normals + face->normal),
                            &map_textured_primitive_color, &shade);
-            DpqColor(&shade, va->p2, &prim->packed.color0);
-            DpqColor(&shade, vb->p2, &prim->packed.color1);
-            DpqColor(&shade, vc->p2, &prim->packed.color2);
+            DpqColor(&shade, va->depth_cue, &prim->packed.color0);
+            DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
+            DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             ((u8 *)&prim->sdk.tag)[3] = 0x09;
             prim->sdk.code = header.bytes.mode | 0x34;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
@@ -1129,10 +1129,10 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     prim->packed.uv3 = face->uv3;
                     NormalColorCol((SVECTOR *)(normals + face->normal),
                                    &map_textured_primitive_color, &shade);
-                    DpqColor(&shade, va->p2, &prim->packed.color0);
-                    DpqColor(&shade, vb->p2, &prim->packed.color1);
-                    DpqColor(&shade, vc->p2, &prim->packed.color2);
-                    DpqColor(&shade, vd->p2, &prim->packed.color3);
+                    DpqColor(&shade, va->depth_cue, &prim->packed.color0);
+                    DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
+                    DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
+                    DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
                     ((u8 *)&prim->sdk.tag)[3] = 12;
                     prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
                     depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
@@ -1204,9 +1204,9 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     prim->packed.uv2 = face->uv2;
                     NormalColorCol((SVECTOR *)(normals + face->normal),
                                    &map_textured_primitive_color, &shade);
-                    DpqColor(&shade, va->p2, &prim->packed.color0);
-                    DpqColor(&shade, vb->p2, &prim->packed.color1);
-                    DpqColor(&shade, vc->p2, &prim->packed.color2);
+                    DpqColor(&shade, va->depth_cue, &prim->packed.color0);
+                    DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
+                    DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     ((u8 *)&prim->sdk.tag)[3] = 9;
                     prim->sdk.code = (header.bytes.mode & 2) | 0x34;
                     depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;

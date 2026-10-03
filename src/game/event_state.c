@@ -21,14 +21,14 @@ void event_state_initialize(void)
 {
     u16 *offset;
     s32 index;
-    KfEventControlSentinels *sentinels;
+    KfEventControlObjectSlot *object_slots;
 
     repeat_store_word(event_state.control.clear_words, 0, 0x40);
     repeat_store_word(event_state.arena.clear_words, 0, 0xe00);
-    sentinels = &event_state.control.fields.sentinels;
-    sentinels->unknown_08 = 0xffff;
-    sentinels->unknown_04 = 0xffff;
-    sentinels->unknown_00 = 0xffff;
+    object_slots = event_state.control.fields.object_slots;
+    object_slots[2].object_index = 0xffff;
+    object_slots[1].object_index = 0xffff;
+    object_slots[0].object_index = 0xffff;
     memory_arena_initialize_blocks(&event_state.arena.first_block, 0x3800);
     offset = event_state.saved_offsets;
     for (index = KF_EVENT_SAVED_SLOT_COUNT - 1; index != -1; index--) {

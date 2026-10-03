@@ -15,9 +15,9 @@ s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index, VECT
         offset.vy = -(s32)actor->collision_height >> 1;
         offset.vz = -(s32)actor->collision_radius;
     } else {
-        offset.vx = ((s32)offset.vx * (s16)actor->unknown_48) >> KF_FIXED12_BITS;
-        offset.vy = ((s32)offset.vy * (s16)actor->unknown_4a.value) >> KF_FIXED12_BITS;
-        offset.vz = ((s32)offset.vz * (s16)actor->unknown_4c) >> KF_FIXED12_BITS;
+        offset.vx = ((s32)offset.vx * (s16)actor->model_scale_x) >> KF_FIXED12_BITS;
+        offset.vy = ((s32)offset.vy * (s16)actor->model_scale_y.value) >> KF_FIXED12_BITS;
+        offset.vz = ((s32)offset.vz * (s16)actor->model_scale_z) >> KF_FIXED12_BITS;
     }
     rotation.x = actor->rotation.x;
     rotation.y = actor->rotation.y + KF_ANGLE_HALF_TURN;
@@ -35,14 +35,14 @@ VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
         return &actor->position;
     case 1:
         group = &actor_state.target_groups[actor->group_index];
-        setVector(output, actor->position.vx + group->unknown_0c,
-                  actor->position.vy + group->unknown_0e,
-                  actor->position.vz + group->unknown_10);
+        setVector(output, actor->position.vx + group->position_offset_x,
+                  actor->position.vy + group->position_offset_y,
+                  actor->position.vz + group->position_offset_z);
         return output;
     case 2:
         group = &actor_state.target_groups[actor->group_index];
         vector_rotate_yxz(&actor->rotation,
-                          (SVECTOR *)&group->unknown_0c, output);
+                          (SVECTOR *)&group->position_offset_x, output);
         addVector(output, &actor->position);
         return output;
     }

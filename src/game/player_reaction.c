@@ -467,7 +467,7 @@ void player_update_frame(void)
     u8 step;
     KfMapObject *object;
 
-    actor_state.unknown_93a0 = 4;
+    actor_state.actor_overlap_exclusion_flags = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, -1);
     value = status_phase_step_scaled((u16 *)&player_state.darkness_phase,
@@ -787,7 +787,7 @@ after_reaction:
         + player_state.unknown_112[1];
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, 800, 1);
-    actor_state.unknown_93a0 = 0;
+    actor_state.actor_overlap_exclusion_flags = 0;
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, 1700);

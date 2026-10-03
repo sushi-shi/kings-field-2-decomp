@@ -6,7 +6,7 @@
 ADDRESS(0x8003d084, 0x64)
 s32 actor_sound_note_offset(KfActor *actor)
 {
-    s32 offset = 16 - actor->unknown_4a.bytes.high;
+    s32 offset = 16 - actor->model_scale_y.bytes.high;
 
     if (offset > 12) {
         offset = 12;

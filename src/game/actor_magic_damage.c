@@ -137,7 +137,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
                 break;
             }
             if (candidate->type == 2 && candidate->word_0c.value <= applied) {
-                u8 chance = candidate->unknown_01[1];
+                u8 chance = candidate->unknown_02[0];
                 if (chance == 0xff || (rand() >> 7) < chance) {
                     actor_set_target(actor, candidate);
                     actor->health = remaining;
@@ -153,9 +153,9 @@ update_motion:
         KfActorStateGame *state = &actor_state;
         linked = &state->actors[actor->unknown_22];
         motion_divisor =
-            state->target_groups[linked->group_index].unknown_01[1];
+            state->target_groups[linked->group_index].knockback_divisor;
     } else {
-        motion_divisor = group->unknown_01[1];
+        motion_divisor = group->knockback_divisor;
     }
     if (position != 0 && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;

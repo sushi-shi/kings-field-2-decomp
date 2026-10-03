@@ -1,4 +1,5 @@
 #include <kf/game/event_stream.h>
+#include <kf/game/map_object.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
 #include <kf/lib/math.h>
@@ -28,18 +29,18 @@ void scene_position_from_camera_offset(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
 
 ADDRESS(0x80045fd4, 0xcc)
 void scene_pose_interpolate(
-    KfScenePoseView *destination, const VECTOR *start_position,
+    KfMapObject *destination, const VECTOR *start_position,
     const VECTOR *end_position, const SVECTOR *start_angles,
     const SVECTOR *end_angles, s32 fraction)
 {
     if (start_position != 0) {
-        destination->position_x = fixed_lerp_q12(start_position->vx, end_position->vx, fraction);
-        destination->position_y = fixed_lerp_q12(start_position->vy, end_position->vy, fraction);
-        destination->position_z = fixed_lerp_q12(start_position->vz, end_position->vz, fraction);
+        destination->position.vx = fixed_lerp_q12(start_position->vx, end_position->vx, fraction);
+        destination->position.vy = fixed_lerp_q12(start_position->vy, end_position->vy, fraction);
+        destination->position.vz = fixed_lerp_q12(start_position->vz, end_position->vz, fraction);
     }
 
     if (start_angles != 0) {
-        destination->angle_x = angle_lerp_shortest_q12(start_angles->vx, end_angles->vx, fraction);
-        destination->angle_z = angle_lerp_shortest_q12(start_angles->vz, end_angles->vz, fraction);
+        destination->rotation.vx = angle_lerp_shortest_q12(start_angles->vx, end_angles->vx, fraction);
+        destination->rotation.vz = angle_lerp_shortest_q12(start_angles->vz, end_angles->vz, fraction);
     }
 }

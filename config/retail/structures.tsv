@@ -3,8 +3,8 @@
 name	size	layout_confidence	evidence	note
 KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfActorBallisticPhaseView	0x8	supported	actor_update_vertical_motion state 0x30	Vector extent with Y halfword interpreted as ballistic phase
-KfActorHalfword4a	0x2	supported	game/actor.h;asm;actor motion	halfword and byte views of actor +0x4a
-KfActorHalfword4aBytes	0x2	supported	game/actor.h;asm;actor motion	low and signed high bytes at actor +0x4a
+KfActorModelScaleY	0x2	supported	game/actor.h;actor_group_position;actor_spatial_sound	Q12 Y model scale and signed high-byte sound-note view
+KfActorModelScaleYBytes	0x2	supported	game/actor.h;actor_spatial_sound	low and signed high bytes of Y model scale
 KfActorMotion	0x8	supported	actor_motion.c;actor_behavior_dispatch.c;effect_runtime.c	SVECTOR movement view with ballistic phase overlay
 KfActorState70	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003d934;GAME 0x80038f7c	Signed halfword and two byte action-state views at actor +0x70
 KfActorState70Bytes	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003da98	Two byte action-state view at actor +0x70/+0x71
@@ -39,7 +39,9 @@ KfEffectKind101Motion	0x04	supported	GAME 0x80045584/0x800455ac;effect_construct
 KfEffectKind10Targeting	0x02	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Kind-10 actor index and remaining emissions at record +0x40
 KfEffectKind102Payload	0x02	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Signed amplitude at effect record +0x40
 KfEffectKind105Attachment	0x04	supported	GAME 0x800441e8-0x80044364;effect_construct_record kind 105	Parent effect slot, actor slot, and signed animation vertex at record +0x40
+KfEffectKind12Aim	0x08	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Four signed aiming parameters at record +0x40
 KfEffectKind46State	0x04	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Signed phase and linked-effect index, then unsigned Q12 age, at record +0x40
+KfEffectKind5Fanout	0x04	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Kind-5 initial child count, actor index, and signed remaining count at record +0x40
 KfEffectKind8State	0x04	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Parent effect index and unsigned vertical step at record +0x40
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
 KfEffectScaleThreshold	0x02	supported	GAME 0x80042ec8-0x80042ecc;GAME 0x800449f0-0x80044b8c	Two signed halfword views of effect record +0x32 used by different effect kinds
@@ -51,9 +53,8 @@ KfEquipmentRecord	0x20	supported	asm;player_set_equipment_slot;game_main_loop st
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
 KfEventArena	0x3800	supported	game/event_state.h;func_800482f8;save pointer helpers	memory-block arena and word/byte clear views
 KfEventControl	0x100	supported	game/event_state.h;func_800482f8;func_800461a0	word and byte views of event control storage
-KfEventControlFields	0x32	candidate	game/event_state.h;func_800482f8	observed control halfwords through +0x34
-KfEventControlSentinels	0x0a	supported	game/event_state.h;func_800482f8	three ordered 0xffff sentinel halfwords and intervening opaque bytes
-KfEventObjectView	0x3a	candidate	game/event_stream.h;func_80046700	partial event-object view through effect index
+KfEventControlFields	0x40	supported	game/event_state.h;event_state_initialize;event_scene_command_dispatch;event_target_stream_execute	control prefix with three object slots and stream actor ID
+KfEventControlObjectSlot	0x04	supported	game/event_state.h;event_scene_command_dispatch;map_object_update_actions	object index, resource ID, and unresolved final byte
 KfEventState	0x3918	supported	game/event_state.h;game_main_loop startup clear;func_800482f8;save pointer helpers	control region, memory arena and ten saved offsets
 KfFloorItem	0x18	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfGpuGT3	0x28	supported	game/tmd_packets.h;SDK POLY_GT3;render_enqueue_map	SDK and packed views of one GT3 GPU packet
@@ -70,12 +71,16 @@ KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte views of map-object +0x40
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
+KfMapObjectTailAmbientSoundView	0xc	supported	GAME 0x80032858..0x80032a5c;map_object action 0x1f	ambient-sound action uses region, volume, range, attenuation, and repeat period bytes
+KfMapObjectTailEventEffectView	0xc	supported	game/map_object.h;event_spawn_effect_object	event effect-object index at map-object tail +0x39
 KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
 KfMapObjectTailPair38View	0xc	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
 KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
+KfMapObjectTemplateCellActionView	0x18	supported	GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	rotated map-cell action reads template width, height, and spatial sound selector
 KfMapObjectTemplateCollisionView	0x18	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height
+KfMapObjectTemplatePatternView	0x18	supported	GAME 0x80035e48;0x80037f40;0x80038024;map_object_cell_patterns	action 0x54 selects one of two adjacent map-cell pattern rows
 KfMapObjectTemplatePoseView	0x18	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes in the 24-byte template
 KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
 KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
@@ -111,7 +116,6 @@ KfRenderGridState	0x24c	supported	asm;build_camera_map_cell_layer_masks;func_800
 KfRenderMaskScanState	0x20	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	observed 32-byte window and layer-mask scan state
 KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_frame	36-byte mutable model render row
 KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
-KfScenePoseView	0x2c	candidate	game/event_stream.h;func_800460a0	partial scene-pose view through angle_z; trailing alignment padding
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x8003e1b4	minimum observed view through unsigned halfword +0x2a; full extent and stride unknown

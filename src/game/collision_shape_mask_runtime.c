@@ -626,12 +626,12 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
 {
     if (flags & 2) {
         fixed_lerp_nine_halfwords_q12((const u16 *)row->motion.values,
-                      (const u16 *)&payload->unknown_00[20],
+                      (const u16 *)payload->motion.values,
                       (u16 *)row->motion.values, amount);
     }
     if (flags & 1) {
         fixed_lerp_nine_halfwords_q12((const u16 *)&row->rotations[0],
-                      (const u16 *)payload->unknown_00,
+                      (const u16 *)&payload->rotation,
                       (u16 *)&row->rotations[0], amount);
     }
     if (flags & 4) {

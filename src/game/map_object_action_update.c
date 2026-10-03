@@ -45,7 +45,7 @@ void map_object_update_actions(void)
             switch (object->action_timer) {
             case 1:
                 if (object->phase_q12 == 0) {
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                 }
                 object->phase_q12 += 72;
                 if (object->phase_q12 == 0xc18) {
@@ -65,7 +65,7 @@ void map_object_update_actions(void)
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                 }
                 break;
             case 21:
@@ -83,7 +83,9 @@ void map_object_update_actions(void)
             }
             break;
 
-        case 3:
+        case 3: {
+            const KfMapObjectTemplateCellActionView *cell_template =
+                (const KfMapObjectTemplateCellActionView *)template;
             switch (object->action_timer) {
             case 0: {
                 u8 phase_byte = object->tail.fields.unknown_38;
@@ -96,13 +98,13 @@ void map_object_update_actions(void)
                 if (object->phase_q12 == 0) {
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
-                                      template->unknown_0d[0],
+                                      cell_template->cell_width,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
-                                  template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                                  cell_template->cell_width,
+                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                    map_object_play_spatial_sound(object, cell_template->sound_id);
                 }
                 object->phase_q12 += 72;
                 if (object->phase_q12 == 0xc18) {
@@ -111,8 +113,8 @@ void map_object_update_actions(void)
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
-                                  template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
+                                  cell_template->cell_width,
+                                  cell_template->cell_height, object->rotation.vy, 0x2d);
                 }
                 if (object->phase_q12 > 0xfff) {
                     object->phase_q12 = 0xfff;
@@ -127,13 +129,13 @@ void map_object_update_actions(void)
                     object->action_timer = 21;
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
-                                      template->unknown_0d[0],
+                                      cell_template->cell_width,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
-                                  template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                                  cell_template->cell_width,
+                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                    map_object_play_spatial_sound(object, cell_template->sound_id);
                 }
                 break;
             }
@@ -144,12 +146,12 @@ void map_object_update_actions(void)
                     object->action_timer = 0;
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
-                                      template->unknown_0d[0] * 2,
+                                      cell_template->cell_width * 2,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
                                   object->tail.fields.unknown_3a.bytes.low,
-                                  template->unknown_0d[0],
-                                  template->unknown_0d[1], object->rotation.vy, 0x2d);
+                                  cell_template->cell_width,
+                                  cell_template->cell_height, object->rotation.vy, 0x2d);
                 }
                 break;
             default:
@@ -157,6 +159,7 @@ void map_object_update_actions(void)
                 break;
             }
             break;
+        }
 
         case 4:
             if (object->action_timer != 0) {
@@ -190,7 +193,7 @@ void map_object_update_actions(void)
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
                     object->extra_40.hinge.progress_ticks = 0;
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                 }
                 previous = object->extra_40.hinge.progress_ticks++;
                 if (previous < 32) {
@@ -234,7 +237,7 @@ void map_object_update_actions(void)
                                           object->tail.fields.unknown_39,
                                           object->tail.fields.unknown_3a.bytes.low,
                                           2, 2, 0, 0x2d);
-                            map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                            map_object_play_spatial_sound(object, template->sound_id);
                         }
                         object->rotation.vy -= 32;
                         if (linked != 0) {
@@ -271,7 +274,7 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                 }
                 break;
             case 2: {
@@ -314,7 +317,7 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                 }
                 break;
             case 2: {
@@ -362,7 +365,7 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
                 }
                 break;
@@ -380,7 +383,7 @@ void map_object_update_actions(void)
         case 83:
             switch (object->action_timer) {
             case 1:
-                map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                map_object_play_spatial_sound(object, template->sound_id);
                 switch (object->tail.fields.unknown_38) {
                 case 0:
                 case 1:
@@ -411,7 +414,7 @@ void map_object_update_actions(void)
                     object->action_timer = 99;
                     break;
                 case 1:
-                    map_object_play_spatial_sound(object, template->unknown_0d[2]);
+                    map_object_play_spatial_sound(object, template->sound_id);
                     object->action_timer = 4;
                     break;
                 case 2:
@@ -579,7 +582,7 @@ void map_object_update_actions(void)
                     map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
-                                      template->unknown_0d[1] * 2 +
+                                      ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
                                       (object->tail.fields.unknown_3e.bytes.low & 1)],
                                   1, 0x80);
                     object->action_timer = 1;
@@ -611,7 +614,7 @@ void map_object_update_actions(void)
                     map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
-                                      template->unknown_0d[1] * 2 +
+                                      ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
                                       (object->tail.fields.unknown_3e.bytes.low & 1)],
                                   0, 0);
                     object->scale.vz = 0;
@@ -678,15 +681,15 @@ void map_object_update_actions(void)
                     object->phase_q12 = 0;
                     object->asset_clip_selector = 0;
                     object->extra_40.bytes[0] = 0;
-                    map_object_play_spatial_sound(object, template->unknown_0d[9]);
+                    map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
                 }
                 break;
             case 1:
                 if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                     if (object->phase_q12 == 0) {
                         map_object_set_cell_marker(object, 1,
-                                                   template->marker_action_51);
-                        map_object_play_spatial_sound(object, template->unknown_0d[9]);
+                                                   ((const KfMapObjectTemplateCollisionView *)template)->marker_action_51);
+                        map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
                     } else if (object->phase_q12 >= 1500 &&
                                object->phase_q12 < 1500 + increment) {
                         map_object_play_spatial_sound(object, 0x4e);
@@ -705,10 +708,10 @@ void map_object_update_actions(void)
                         object->phase_q12 = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, 0,
-                                                   template->marker_action_51);
+                                                   ((const KfMapObjectTemplateCollisionView *)template)->marker_action_51);
                         break;
                     }
-                    map_object_play_spatial_sound(object, template->unknown_0d[9]);
+                    map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
                     object->phase_q12 &= 0xfff;
                 }
                 {
@@ -731,8 +734,10 @@ void map_object_update_actions(void)
                         object->extra_40.bytes[0] = 1;
                         effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
                                       object->tail.fields.unknown_39,
-                                      template->unknown_0d[5], template->unknown_0d[6],
-                                      template->unknown_0d[7], template->unknown_0d[8],
+                                      probe_template->impact_magic_values[0],
+                                      probe_template->impact_magic_values[1],
+                                      probe_template->impact_magic_values[2],
+                                      probe_template->impact_magic_values[3],
                                       0, 0, 0, 0, 0, &position);
                     }
                 }
@@ -759,25 +764,25 @@ void map_object_update_actions(void)
         }
 
         case 15: {
-            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
+            KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
             if (object->action_timer != 0 && target->object_id == 0xff) {
                 u32 sentinel_offset;
-                switch (object->tail.fields.unknown_38) {
+                switch (object->tail.event_effect.pending_event_command) {
                 case 0x72:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_00;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[0].object_index;
                     break;
                 case 0x73:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_04;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[1].object_index;
                     break;
                 case 0x74:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->sentinels.unknown_08;
+                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[2].object_index;
                     break;
                 default:
                     goto no_sentinel;
                 }
-                *(u16 *)&event_state.control.bytes[sentinel_offset] = 0xffff;
+                ((KfEventControlObjectSlot *)&event_state.control.bytes[sentinel_offset])->object_index = 0xffff;
             no_sentinel:
-                object->tail.fields.unknown_38 = 0xff;
+                object->tail.event_effect.pending_event_command = 0xff;
                 object->action_timer = 0;
             }
             map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, 1, 32);
@@ -785,17 +790,17 @@ void map_object_update_actions(void)
         }
 
         case 17: {
-            KfMapObject *target = &map_object_state.objects[380 + object->tail.fields.unknown_39];
+            KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
             if (object->action_timer != 0 && target->object_id == 0xff) {
-                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
-                object->tail.fields.unknown_38 = 0xff;
+                KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
+                object->tail.event_effect.pending_event_command = 0xff;
                 object->action_timer = 0;
-                linked->tail.fields.unknown_38 &= ~object->tail.fields.unknown_3a.bytes.low;
+                linked->tail.fields.unknown_38 &= ~object->tail.event_effect.linked_object_flag_mask;
             }
             if (map_object_step_offset_motion(object, target, &map_object_motion_action17_start_offset,
                               &map_object_motion_action17_end_offset, 0, 20)) {
-                KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
-                linked->tail.fields.unknown_38 |= object->tail.fields.unknown_3a.bytes.low;
+                KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
+                linked->tail.fields.unknown_38 |= object->tail.event_effect.linked_object_flag_mask;
             }
             break;
         }

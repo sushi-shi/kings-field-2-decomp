@@ -47,12 +47,12 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 13:
         if (target == actor->target) {
             if (target->word_12.value >= player_distance) {
-                score = random_triangular_scaled(target->unknown_01[2]);
+                score = random_triangular_scaled(target->unknown_02[1]);
             }
             goto done;
         }
         if (target->word_10.value >= player_distance) {
-            score = random_triangular_scaled(target->unknown_01[1]);
+            score = random_triangular_scaled(target->unknown_02[0]);
         }
         switch (actor->target_type) {
         case 4:
@@ -97,10 +97,10 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
             goto done;
         }
         if (target == actor->target) {
-            score = random_triangular_scaled(target->unknown_01[2]);
+            score = random_triangular_scaled(target->unknown_02[1]);
             goto done;
         }
-        score = target->unknown_01[1];
+        score = target->unknown_02[0];
         {
             s32 near_distance = target->word_0e.bytes.low << 6;
             s32 middle_distance = (near_distance + target->word_1a.value) >> 1;
@@ -174,9 +174,9 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
 score_target:
     if (target == actor->target) {
-        score = random_triangular_scaled(target->unknown_01[2]);
+        score = random_triangular_scaled(target->unknown_02[1]);
     } else {
-        score = random_triangular_scaled(target->unknown_01[1]);
+        score = random_triangular_scaled(target->unknown_02[0]);
     }
 done:
     return score;

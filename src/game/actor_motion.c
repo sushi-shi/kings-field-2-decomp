@@ -17,23 +17,23 @@ s32 actor_move_with_collision(SVECTOR *motion)
     result = collision_query_world(proposed.vx, proposed.vy, proposed.vz,
         actor->collision_radius,
         actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
-        actor_state.unknown_93a4);
+        actor_state.actor_collision_query_flags);
     if (result == 0) {
         copyVector(&actor->position, &proposed);
     } else if (collision_query_world(proposed.vx, actor->position.vy,
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
-                             actor_state.unknown_93a4) != 0) {
+                             actor_state.actor_collision_query_flags) != 0) {
         motion->vx = -(u16)motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
-                             actor_state.unknown_93a4) != 0) {
+                             actor_state.actor_collision_query_flags) != 0) {
         motion->vy = -(u16)motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->collision_radius,
                              actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
-                             actor_state.unknown_93a4) != 0) {
+                             actor_state.actor_collision_query_flags) != 0) {
         motion->vz = -(u16)motion->vz;
     }
     return result;
@@ -111,11 +111,11 @@ state_10: {
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
                                       ((actor->unknown_28 & 0xc000) << 16),
-                                  actor_state.unknown_93a4);
+                                  actor_state.actor_collision_query_flags);
         if (collision == 0) {
         advance_rise:
             actor->position.vy = next_y;
-            actor->motion.vector.vy += group->unknown_05;
+            actor->motion.vector.vy += group->vertical_acceleration;
             return;
         }
         if (collision == 0x80 && actor->motion.vector.vy > 40) {
@@ -161,7 +161,7 @@ state_30: {
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
                                       ((actor->unknown_28 & 0xc000) << 16),
-                                  actor_state.unknown_93a4);
+                                  actor_state.actor_collision_query_flags);
         if (collision == 0) {
             actor->position.vy = next_y;
             actor->motion.ballistic.phase++;
@@ -314,7 +314,7 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
     height_and_flags = actor->collision_height | ((actor->unknown_28 & 0xc000) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
-                      actor_state.unknown_93a4) == 0) {
+                      actor_state.actor_collision_query_flags) == 0) {
         actor->position.vy = proposed_y;
     } else {
         moved |= 2;

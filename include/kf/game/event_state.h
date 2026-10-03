@@ -12,24 +12,30 @@ enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
 /* The startup clear and the event initializer bound one BSS object. The
  * control bytes are still mostly unclassified; the arena and saved offset
  * table are used together by the save/restore routines. */
-typedef struct KfEventControlSentinels {
-    u16 unknown_00;
-    u8 unknown_02[2];
-    u16 unknown_04;
-    u8 unknown_06[2];
-    u16 unknown_08;
-} KfEventControlSentinels;
-typedef char kf_event_control_sentinels_size[
-    sizeof(KfEventControlSentinels) == 0x0a ? 1 : -1];
-typedef char kf_event_control_sentinels_last_offset[
-    (u32)&((KfEventControlSentinels *)0)->unknown_08 == 0x08 ? 1 : -1];
+typedef struct KfEventControlObjectSlot {
+    u16 object_index;
+    u8 resource_id;
+    u8 unknown_03;
+} KfEventControlObjectSlot;
+typedef char kf_event_control_object_slot_size[
+    sizeof(KfEventControlObjectSlot) == 4 ? 1 : -1];
+typedef char kf_event_control_object_slot_resource_offset[
+    (u32)&((KfEventControlObjectSlot *)0)->resource_id == 2 ? 1 : -1];
 
 typedef struct KfEventControlFields {
     u8 unknown_04[0x28];
-    KfEventControlSentinels sentinels;
+    KfEventControlObjectSlot object_slots[3];
+    u8 unknown_34[0x0b];
+    u8 stream_actor_definition_id;
 } KfEventControlFields;
-typedef char kf_event_control_sentinels_offset[
-    (u32)&((KfEventControlFields *)0)->sentinels == 0x28 ? 1 : -1];
+typedef char kf_event_control_fields_size[
+    sizeof(KfEventControlFields) == 0x40 ? 1 : -1];
+typedef char kf_event_control_object_slots_offset[
+    (u32)&((KfEventControlFields *)0)->object_slots == 0x28 ? 1 : -1];
+typedef char kf_event_control_last_slot_resource_offset[
+    (u32)&((KfEventControlFields *)0)->object_slots[2].resource_id == 0x32 ? 1 : -1];
+typedef char kf_event_control_stream_actor_definition_offset[
+    (u32)&((KfEventControlFields *)0)->stream_actor_definition_id == 0x3f ? 1 : -1];
 
 typedef union KfEventControl {
     u32 clear_words[0x40];

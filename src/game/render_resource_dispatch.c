@@ -63,7 +63,7 @@ actor_visible:
                 rotation.x = 0;
                 position = actor_position_ptr;
                 render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
-                               position, &rotation, (SVECTOR *)&actor->unknown_48,
+                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
                                &actor->animation_cache, &render_world_identity_matrix,
                                actor->animation_id, actor->animation_phase,
                                actor->lighting_override, actor->lighting_blend,
@@ -73,7 +73,7 @@ actor_visible:
                 rotation.y = actor->rotation.y + 0x800;
                 rotation.z = actor->rotation.z;
                 render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
-                               position, &rotation, (SVECTOR *)&actor->unknown_48,
+                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
                                &actor->animation_cache,
                                &game_graphics_runtime.render_state.view_matrix,
                                actor->animation_id, actor->animation_phase,
@@ -139,37 +139,37 @@ map_sound_action: {
 
             if (player_camera_within_map_region(object->position.vx >> 11,
                               object->position.vz >> 11,
-                              object->tail.fields.unknown_38,
-                              object->tail.fields.unknown_39, 0x8000) == 0)
+                              object->tail.ambient_sound.region_width,
+                              object->tail.ambient_sound.region_depth, 0x8000) == 0)
                 goto map_sound_outside;
-            sound = object->tail.fields.unknown_3a.bytes.low;
+            sound = object->tail.ambient_sound.sound_id;
             if ((u16)(audio_state.voices.params[sound].vab_slot_index - 0x42) < 0x40) {
                 /* This update starts at VAB slot 0x42. */
                 vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = 1;
             }
             if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
                 object->extra_40.next_sound_frame = frame +
-                    object->tail.fields.unknown_3e.value * 6;
+                    object->tail.ambient_sound.repeat_delay_units * 6;
                 distance = camera_position->vx -
-                    (object->tail.fields.unknown_38 * 0x400 + object->position.vx);
+                    (object->tail.ambient_sound.region_width * 0x400 + object->position.vx);
                 if (distance < 0) distance = -distance;
-                volume = object->tail.fields.unknown_38 * 0x400 - distance;
+                volume = object->tail.ambient_sound.region_width * 0x400 - distance;
                 distance = camera_position->vz -
-                    (object->tail.fields.unknown_39 * 0x400 + object->position.vz);
+                    (object->tail.ambient_sound.region_depth * 0x400 + object->position.vz);
                 if (distance < 0) distance = -distance;
-                distance = object->tail.fields.unknown_39 * 0x400 - distance;
+                distance = object->tail.ambient_sound.region_depth * 0x400 - distance;
                 if (distance < volume) volume = distance;
-                radius = object->tail.spawn_bytes.spawn_sequence.low << 11;
+                radius = object->tail.ambient_sound.audible_radius_code << 11;
                 if (volume >= radius) {
-                    volume = object->tail.fields.unknown_3a.bytes.high;
+                    volume = object->tail.ambient_sound.maximum_volume;
                 } else {
                     if (radius == 0) goto map_object_next;
-                    volume = object->tail.fields.unknown_3a.bytes.high * volume / radius;
+                    volume = object->tail.ambient_sound.maximum_volume * volume / radius;
                 }
-                if (object->tail.spawn_bytes.spawn_sequence.high & 1) {
+                if (object->tail.ambient_sound.vertical_attenuation_flags & 1) {
                     distance = camera_position->vy - object->position.vy;
                     if (distance < 0) distance = -distance;
-                    volume -= object->tail.fields.unknown_3a.bytes.high * distance >> 13;
+                    volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
                 }
                 if (volume > 19) {
                     audio_play_sound(sound, volume);
@@ -178,7 +178,7 @@ map_sound_action: {
             goto map_object_next;
 map_sound_outside:
             object->extra_40.next_sound_frame = frame +
-                object->tail.fields.unknown_3e.value * 6;
+                object->tail.ambient_sound.repeat_delay_units * 6;
             goto map_object_next;
         }
 map_ordinary_object: {

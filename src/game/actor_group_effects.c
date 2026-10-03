@@ -135,7 +135,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
     case 0x17:
         parameters = (const u16 *)arguments[1];
         effect_construct_record(effect_id, 0x23, kind, &position, 0,
-                      actor_state.unknown_93b8, position_mode, parameters[2]);
+                      actor_state.current_actor_slot_index, position_mode, parameters[2]);
         break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
@@ -188,7 +188,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];
-            spawned->unknown_28 = group->unknown_34;
+            spawned->unknown_28 = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
             spawned->position.vy = position.vy + 4096;
@@ -213,7 +213,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];
-            spawned->unknown_28 = group->unknown_34;
+            spawned->unknown_28 = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
             spawned->position.vy = position.vy + (group->collision_height >> 1);

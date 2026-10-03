@@ -50,7 +50,7 @@ void actor_set_home_position(KfActor *actor)
         actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
     if (!(actor->unknown_28 & 0x10)) {
-        actor->position.vy += actor->unknown_26;
+        actor->position.vy += actor->vertical_anchor_offset;
     }
 }
 
@@ -64,11 +64,11 @@ void actor_copy_group_defaults(KfActor *actor)
     actor->health = group->unknown_1a;
     actor->collision_radius = group->collision_radius;
     actor->collision_height = group->collision_height;
-    actor->unknown_28 = group->unknown_34;
-    value = group->unknown_32;
-    actor->unknown_4c = value;
-    actor->unknown_4a.value = value;
-    actor->unknown_48 = value;
+    actor->unknown_28 = group->initial_actor_flags;
+    value = group->initial_model_scale_q12;
+    actor->model_scale_z = value;
+    actor->model_scale_y.value = value;
+    actor->model_scale_x = value;
 }
 
 ADDRESS(0x80038e38, 0xc4)
@@ -158,5 +158,5 @@ void actor_pool_clear(void)
         actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor->animation_cache = NULL;
     }
-    actor_state.unknown_93a0 = 0;
+    actor_state.actor_overlap_exclusion_flags = 0;
 }

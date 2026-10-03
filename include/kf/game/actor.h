@@ -150,7 +150,8 @@ typedef char kf_target_candidate_word24_size[
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
-    u8 unknown_01[3];
+    u8 animation_id;
+    u8 unknown_02[2];
     u8 sound_code;
     u8 unknown_05[3];
     u16 animation_step;
@@ -173,6 +174,8 @@ typedef struct KfTargetCandidate {
     u16 unknown_2a;
 } KfTargetCandidate;
 typedef char kf_target_candidate_view_size[sizeof(KfTargetCandidate) == 0x2c ? 1 : -1];
+typedef char kf_target_candidate_animation_id_offset[(u32)&((KfTargetCandidate *)0)->animation_id == 1 ? 1 : -1];
+typedef char kf_target_candidate_unknown_02_offset[(u32)&((KfTargetCandidate *)0)->unknown_02 == 2 ? 1 : -1];
 typedef char kf_target_candidate_sound_code_offset[(u32)&((KfTargetCandidate *)0)->sound_code == 4 ? 1 : -1];
 typedef char kf_target_candidate_word_10_offset[(u32)&((KfTargetCandidate *)0)->word_10 == 0x10 ? 1 : -1];
 typedef char kf_target_candidate_fallback_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->fallback_offset == 0 ? 1 : -1];
@@ -234,27 +237,30 @@ typedef char kf_target_reference_size[sizeof(KfTargetReference) == 4 ? 1 : -1];
 
 typedef struct KfTargetGroup {
     u8 definition_id;
-    u8 unknown_01[4];
-    u8 unknown_05;
+    u8 unknown_01;
+    u8 knockback_divisor;
+    u8 movement_step;
+    u8 turn_acceleration;
+    u8 vertical_acceleration;
     u8 unknown_06;
     u8 vab_resource_indices[2];
     u8 render_depth;
     u8 activation_range_cells;
     u8 deactivation_range_cells;
-    s16 unknown_0c;
-    s16 unknown_0e;
-    s16 unknown_10;
+    s16 position_offset_x;
+    s16 position_offset_y;
+    s16 position_offset_z;
     u16 collision_radius;
     u16 collision_height;
     u16 player_facing_tolerance;
     u16 actor_facing_tolerance;
     u16 unknown_1a;
-    u16 unknown_1c;
+    u16 default_vertical_anchor_offset;
     u16 experience_reward;
     u16 magic_component_divisors[8];
-    u16 unknown_30;
-    u16 unknown_32;
-    u32 unknown_34;
+    u16 scattered_effect_id_center;
+    u16 initial_model_scale_q12;
+    u32 initial_actor_flags;
     KfTargetReference targets[16];
 } KfTargetGroup;
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
@@ -278,27 +284,42 @@ typedef char kf_target_group_actor_facing_tolerance_offset[
     (u32)&((KfTargetGroup *)0)->actor_facing_tolerance == 0x18 ? 1 : -1];
 typedef char kf_target_group_experience_reward_offset[
     (u32)&((KfTargetGroup *)0)->experience_reward == 0x1e ? 1 : -1];
-typedef char kf_target_group_byte_05_offset[(u32)&((KfTargetGroup *)0)->unknown_05 == 0x05 ? 1 : -1];
+typedef char kf_target_group_vertical_acceleration_offset[
+    (u32)&((KfTargetGroup *)0)->vertical_acceleration == 0x05 ? 1 : -1];
+typedef char kf_target_group_movement_step_offset[
+    (u32)&((KfTargetGroup *)0)->movement_step == 0x03 ? 1 : -1];
+typedef char kf_target_group_turn_acceleration_offset[
+    (u32)&((KfTargetGroup *)0)->turn_acceleration == 0x04 ? 1 : -1];
+typedef char kf_target_group_knockback_divisor_offset[
+    (u32)&((KfTargetGroup *)0)->knockback_divisor == 0x02 ? 1 : -1];
 typedef char kf_target_group_byte_06_offset[(u32)&((KfTargetGroup *)0)->unknown_06 == 0x06 ? 1 : -1];
 typedef char kf_target_group_offset_x[
-    (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
+    (u32)&((KfTargetGroup *)0)->position_offset_x == 0x0c ? 1 : -1];
+typedef char kf_target_group_offset_y[
+    (u32)&((KfTargetGroup *)0)->position_offset_y == 0x0e ? 1 : -1];
+typedef char kf_target_group_offset_z[
+    (u32)&((KfTargetGroup *)0)->position_offset_z == 0x10 ? 1 : -1];
 typedef char kf_target_group_curve_offset[
     (u32)&((KfTargetGroup *)0)->magic_component_divisors == 0x20 ? 1 : -1];
-typedef char kf_target_group_unknown_30_offset[
-    (u32)&((KfTargetGroup *)0)->unknown_30 == 0x30 ? 1 : -1];
+typedef char kf_target_group_scattered_effect_id_center_offset[
+    (u32)&((KfTargetGroup *)0)->scattered_effect_id_center == 0x30 ? 1 : -1];
+typedef char kf_target_group_initial_model_scale_offset[
+    (u32)&((KfTargetGroup *)0)->initial_model_scale_q12 == 0x32 ? 1 : -1];
+typedef char kf_target_group_initial_actor_flags_offset[
+    (u32)&((KfTargetGroup *)0)->initial_actor_flags == 0x34 ? 1 : -1];
 
-typedef struct KfActorHalfword4aBytes {
+typedef struct KfActorModelScaleYBytes {
     u8 low;
     s8 high;
-} KfActorHalfword4aBytes;
-typedef char kf_actor_halfword_4a_bytes_size[
-    sizeof(KfActorHalfword4aBytes) == 2 ? 1 : -1];
+} KfActorModelScaleYBytes;
+typedef char kf_actor_model_scale_y_bytes_size[
+    sizeof(KfActorModelScaleYBytes) == 2 ? 1 : -1];
 
-typedef union KfActorHalfword4a {
+typedef union KfActorModelScaleY {
     u16 value;
-    KfActorHalfword4aBytes bytes;
-} KfActorHalfword4a;
-typedef char kf_actor_halfword_4a_size[sizeof(KfActorHalfword4a) == 2 ? 1 : -1];
+    KfActorModelScaleYBytes bytes;
+} KfActorModelScaleY;
+typedef char kf_actor_model_scale_y_size[sizeof(KfActorModelScaleY) == 2 ? 1 : -1];
 
 typedef struct KfActorState70Bytes {
     u8 low;
@@ -396,22 +417,22 @@ typedef struct KfActor {
     u16 unknown_20;
     s16 unknown_22;
     s16 unknown_24;
-    s16 unknown_26;
+    s16 vertical_anchor_offset;
     u32 unknown_28;
     VECTOR position;
     s32 ballistic_origin_y;
     struct KfEulerAngles rotation;
     u8 unknown_46[2];
-    u16 unknown_48;
-    KfActorHalfword4a unknown_4a;
-    u16 unknown_4c;
+    u16 model_scale_x;
+    KfActorModelScaleY model_scale_y;
+    u16 model_scale_z;
     u8 unknown_4e[2];
     KfActorMotion motion;
     u16 turn_rate;
     u8 unknown_5a[2];
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
-    s16 unknown_64;
+    s16 movement_yaw;
     s16 animation_step;
     s16 ballistic_horizontal_speed;
     s16 ballistic_launch_speed_y;
@@ -459,14 +480,21 @@ typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1
 typedef char kf_actor_ballistic_origin_y_offset[
     (u32)&((KfActor *)0)->ballistic_origin_y == 0x3c ? 1 : -1];
 typedef char kf_actor_home_offset_x[(u32)&((KfActor *)0)->unknown_24 == 0x24 ? 1 : -1];
-typedef char kf_actor_home_offset_y[(u32)&((KfActor *)0)->unknown_26 == 0x26 ? 1 : -1];
+typedef char kf_actor_vertical_anchor_offset[
+    (u32)&((KfActor *)0)->vertical_anchor_offset == 0x26 ? 1 : -1];
+typedef char kf_actor_model_scale_x_offset[
+    (u32)&((KfActor *)0)->model_scale_x == 0x48 ? 1 : -1];
+typedef char kf_actor_model_scale_y_offset[
+    (u32)&((KfActor *)0)->model_scale_y == 0x4a ? 1 : -1];
+typedef char kf_actor_model_scale_z_offset[
+    (u32)&((KfActor *)0)->model_scale_z == 0x4c ? 1 : -1];
 typedef char kf_actor_motion_offset[(u32)&((KfActor *)0)->motion == 0x50 ? 1 : -1];
 typedef char kf_actor_motion_x_offset[(u32)&((KfActor *)0)->motion.vector.vx == 0x50 ? 1 : -1];
 typedef char kf_actor_motion_z_offset[(u32)&((KfActor *)0)->motion.vector.vz == 0x54 ? 1 : -1];
 typedef char kf_actor_turn_rate_offset[(u32)&((KfActor *)0)->turn_rate == 0x58 ? 1 : -1];
 typedef char kf_actor_cache_offset[(u32)&((KfActor *)0)->animation_cache == 0x5c ? 1 : -1];
 typedef char kf_actor_target_offset[(u32)&((KfActor *)0)->target == 0x60 ? 1 : -1];
-typedef char kf_actor_unknown_64_offset[(u32)&((KfActor *)0)->unknown_64 == 0x64 ? 1 : -1];
+typedef char kf_actor_movement_yaw_offset[(u32)&((KfActor *)0)->movement_yaw == 0x64 ? 1 : -1];
 typedef char kf_actor_step_offset[(u32)&((KfActor *)0)->animation_step == 0x66 ? 1 : -1];
 typedef char kf_actor_ballistic_horizontal_speed_offset[
     (u32)&((KfActor *)0)->ballistic_horizontal_speed == 0x68 ? 1 : -1];
@@ -493,14 +521,14 @@ typedef struct KfActorStateGame {
     /* 0x16820 loads the groups and this opaque tail as one 0x32c0-byte span;
      * 0x3f7ec fixes group target offsets after the copy. */
     u8 unknown_73a0[0x2000];
-    u8 unknown_93a0;
+    u8 actor_overlap_exclusion_flags;
     u8 unknown_93a1[3];
-    s32 unknown_93a4;
+    s32 actor_collision_query_flags;
     KfTargetGroup *active_group;
     KfActor *current;
     KfTargetGroup *other_group;
     KfActor *other_actor;
-    s32 unknown_93b8;
+    s32 current_actor_slot_index;
     u32 current_group_index;
     u32 active_actor_count;
     u32 actor_update_frame_count;
@@ -511,10 +539,12 @@ typedef char kf_actor_state_size[sizeof(KfActorStateGame) == 0x93cc ? 1 : -1];
 typedef char kf_actor_state_groups_offset[(u32)&((KfActorStateGame *)0)->target_groups == 0x60e0 ? 1 : -1];
 typedef char kf_actor_state_active_group_offset[(u32)&((KfActorStateGame *)0)->active_group == 0x93a8 ? 1 : -1];
 typedef char kf_actor_state_current_offset[(u32)&((KfActorStateGame *)0)->current == 0x93ac ? 1 : -1];
-typedef char kf_actor_state_unknown_93a4_offset[
-    (u32)&((KfActorStateGame *)0)->unknown_93a4 == 0x93a4 ? 1 : -1];
-typedef char kf_actor_state_unknown_93b8_offset[
-    (u32)&((KfActorStateGame *)0)->unknown_93b8 == 0x93b8 ? 1 : -1];
+typedef char kf_actor_state_overlap_exclusion_flags_offset[
+    (u32)&((KfActorStateGame *)0)->actor_overlap_exclusion_flags == 0x93a0 ? 1 : -1];
+typedef char kf_actor_state_collision_query_flags_offset[
+    (u32)&((KfActorStateGame *)0)->actor_collision_query_flags == 0x93a4 ? 1 : -1];
+typedef char kf_actor_state_current_actor_slot_index_offset[
+    (u32)&((KfActorStateGame *)0)->current_actor_slot_index == 0x93b8 ? 1 : -1];
 typedef char kf_actor_state_active_actor_count_offset[
     (u32)&((KfActorStateGame *)0)->active_actor_count == 0x93c0 ? 1 : -1];
 typedef char kf_actor_state_update_frame_count_offset[

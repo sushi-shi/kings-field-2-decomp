@@ -819,6 +819,8 @@ void effect_update_dispatch(void)
         shared_increment = 0x20;
         goto shared_scale_step;
     case 12: {
+        const KfEffectKind12Aim *aim =
+            (const KfEffectKind12Aim *)&record->unknown_3c[4];
         s32 prior_phase = initial_phase;
 
         switch (prior_phase) {
@@ -849,11 +851,11 @@ void effect_update_dispatch(void)
         }
         record->phase++;
         collision = effect_aim_and_move(
-            *(s16 *)&record->unknown_3c[4],
-            *(s16 *)&record->unknown_3c[6],
-            *(s16 *)&record->unknown_3c[8],
+            aim->max_length,
+            aim->scale,
+            aim->turn_step,
             0xa0,
-            0, 6000, *(s16 *)&record->unknown_3c[10], 0x800);
+            0, 6000, aim->close_scale, 0x800);
         if (collision != -1) {
             goto kind12_collision;
         }
@@ -920,6 +922,8 @@ void effect_update_dispatch(void)
         goto shared_phase_increment;
     }
     case 5: {
+        KfEffectKind5Fanout *fanout =
+            (KfEffectKind5Fanout *)&record->unknown_3c[4];
         s32 count;
         s32 step_size;
         s32 progress;
@@ -931,7 +935,7 @@ void effect_update_dispatch(void)
             const KfActor *actor;
 
             progress = 0;
-            if (record->unknown_3c[5] != 0xff) {
+            if (fanout->actor_index != 0xff) {
                 goto kind5_actor_count;
             }
         kind5_default_count:
@@ -940,7 +944,7 @@ void effect_update_dispatch(void)
             record->updates_remaining = 1;
             goto kind5_count_ready;
         kind5_actor_count:
-            actor = &actor_state.actors[record->unknown_3c[5]];
+            actor = &actor_state.actors[fanout->actor_index];
             count = asset_vertex_count(actor->definition_id + 128,
                                        actor->animation_id);
             if (count == 0) {
@@ -953,13 +957,13 @@ void effect_update_dispatch(void)
             step_size = (count << 12) / 32;
             count = 32;
         kind5_count_ready:
-            *(u16 *)&record->unknown_3c[6] = count;
-            record->unknown_3c[4] = count;
+            fanout->children_remaining = count;
+            fanout->initial_child_count = count;
             for (index = count - 1; index != -1; index--) {
                 effect_construct_record(10, record->type, 105,
                                &record->position, &record->direction,
                                effect_state.current_index,
-                               record->unknown_3c[5], progress >> 12);
+                               fanout->actor_index, progress >> 12);
                 progress += step_size;
             }
             record->phase = 1;
@@ -970,7 +974,7 @@ void effect_update_dispatch(void)
             KfEffectRecord *child;
 
             if (record->updates_remaining >= 2 &&
-                *(s16 *)&record->unknown_3c[6] != 0) {
+                fanout->children_remaining != 0) {
                 break;
             }
             matches = 0;
@@ -992,15 +996,15 @@ void effect_update_dispatch(void)
                     child->phase = 2;
                 }
             }
-            actor = &actor_state.actors[record->unknown_3c[5]];
-            if (record->unknown_3c[4] != 0) {
+            actor = &actor_state.actors[fanout->actor_index];
+            if (fanout->initial_child_count != 0) {
                 step = (u16)effect_magic_power(record);
-                actor_apply_magic_to_actor(record->unknown_3c[5], step,
+                actor_apply_magic_to_actor(fanout->actor_index, step,
                               magic->damage_components[0], magic->damage_components[1],
                               magic->damage_components[2], magic->damage_components[3],
                               magic->damage_components[4], magic->damage_components[5],
                               magic->damage_components[6], magic->damage_components[7],
-                              (matches << 12) / record->unknown_3c[4],
+                              (matches << 12) / fanout->initial_child_count,
                               (record->type & 0x30) | 2,
                               &actor->position);
             }
@@ -1060,9 +1064,10 @@ void effect_update_dispatch(void)
         if (collision == -2) {
             KfEffectRecord *linked =
                 &effect_state.records[attachment->parent_index];
-            s16 *linked_count = (s16 *)&linked->unknown_3c[6];
-            if (*linked_count != 0) {
-                --*linked_count;
+            KfEffectKind5Fanout *linked_fanout =
+                (KfEffectKind5Fanout *)&linked->unknown_3c[4];
+            if (linked_fanout->children_remaining != 0) {
+                --linked_fanout->children_remaining;
             }
             record->phase = 1;
         } else {
@@ -1070,9 +1075,10 @@ void effect_update_dispatch(void)
                 (KF_COLLISION_CACHE_FLAGS & 0xf) != 0) {
                 KfEffectRecord *linked =
                     &effect_state.records[attachment->parent_index];
-                s16 *linked_count = (s16 *)&linked->unknown_3c[6];
-                if (*linked_count != 0) {
-                    --*linked_count;
+                KfEffectKind5Fanout *linked_fanout =
+                    (KfEffectKind5Fanout *)&linked->unknown_3c[4];
+                if (linked_fanout->children_remaining != 0) {
+                    --linked_fanout->children_remaining;
                 }
                 record->type = KF_EFFECT_SLOT_FREE;
             }

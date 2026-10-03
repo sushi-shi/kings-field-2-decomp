@@ -45,11 +45,12 @@ typedef void (*KfEventCommandCallback)(const VECTOR *position,
 RODATA(0x800128d0, 0x8c)
 
 ADDRESS(0x80046700, 0x8c)
-void event_spawn_effect_object(KfEventObjectView *event, s32 object_id)
+void event_spawn_effect_object(KfMapObject *event, s32 object_id)
 {
     KfMapObject *object = map_object_effect_pool_acquire(0x17c, 0x10, -1);
 
-    event->effect_object_index = (object - map_object_state.objects) - 0x7c;
+    /* The byte store wraps pool slots 0x17c..0x18b to offsets 0..15. */
+    event->tail.event_effect.effect_object_index = (object - map_object_state.objects) - 0x7c;
     object->object_id = object_id;
     object->tail.fields.unknown_38 = 0;
 }
@@ -121,19 +122,19 @@ object_control_action:
             KfMapObject *object = &map_object_state.objects[index];
 
             if (object->object_id == 0xbd) {
-                if (object->tail.fields.unknown_38 != 0xff) {
+                if (object->tail.event_effect.pending_event_command != 0xff) {
                     break;
                 }
-                object->tail.fields.unknown_38 = command;
+                object->tail.event_effect.pending_event_command = command;
                 object->action_timer = 0;
-                *(u16 *)&event_state.control.bytes[object_control_offset] =
+                ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index =
                     object - map_object_state.objects;
-                event_state.control.bytes[object_control_offset + 2] =
+                ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
                     state_8017d118.active_resource_ids[0];
                 event_state.state_word = 1;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
-                event_spawn_effect_object((KfEventObjectView *)object, command);
+                event_spawn_effect_object(object, command);
             } else if (map_object_check_and_consume_marker(object, command) == 3) {
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.state_word = 1;
@@ -155,6 +156,7 @@ transition_action: {
         u16 object_index;
         s16 yaw;
 
+        /* The retail gate checks only the low byte of the saved object index. */
         if (state_8017d118.active_resource_ids[0] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
@@ -163,7 +165,7 @@ transition_action: {
         player_state.vitals.current_mp -= 10;
         render_frames_with_color_overlay(1, 0, 4096, 256);
         actor_disable_type3_transition_actors();
-        previous_value = event_state.control.bytes[object_control_offset + 2];
+        previous_value = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id;
         do {
             cd_request_yield();
             resource_advance_transition();
@@ -181,7 +183,7 @@ transition_action: {
         } while (state_8017d118.transition_active != 0);
         cd_request_wait_idle();
 
-        object_index = *(u16 *)&event_state.control.bytes[object_control_offset];
+        object_index = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index;
         object = &map_object_state.objects[object_index];
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);
@@ -214,12 +216,12 @@ transition_action: {
             KfMapObject *object = &map_object_state.objects[index];
 
             if (object->object_id == 0xb8) {
-                if (object->tail.fields.unknown_38 == 0xff) {
-                    object->tail.fields.unknown_38 = command;
+                if (object->tail.event_effect.pending_event_command == 0xff) {
+                    object->tail.event_effect.pending_event_command = command;
                     object->action_timer = 0;
                     event_state.state_word = 1;
                     game_counter_decrement(command);
-                    event_spawn_effect_object((KfEventObjectView *)object, command);
+                    event_spawn_effect_object(object, command);
                 }
             } else if (map_object_check_and_consume_marker(object, command) == 3) {
                 notify_enqueue(object->tail.notification.linked_notification);
@@ -343,7 +345,7 @@ magic_action: {
                       &near_position);
         spin = 0;
         for (fraction = 0; fraction < 4096; fraction += 64) {
-            scene_pose_interpolate((KfScenePoseView *)object, &near_position,
+            scene_pose_interpolate(object, &near_position,
                           &far_position, 0, 0, fraction);
             object->rotation.vy += spin;
             spin += 4;
@@ -605,7 +607,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                 goto button_pressed;
             }
             previous_buttons = buttons;
-            scene_pose_interpolate((KfScenePoseView *)object, &first_position,
+            scene_pose_interpolate(object, &first_position,
                           &next_position, &first_angles, &next_angles,
                           fraction);
             object->render_depth_offset = value_approach(
@@ -681,7 +683,7 @@ interpolate_back:
     next_position = object->position;
     current_yaw = player_state.camera_rotation.angles[0];
     for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
-        scene_pose_interpolate((KfScenePoseView *)object, &next_position,
+        scene_pose_interpolate(object, &next_position,
                       &first_position, &next_angles, &first_angles,
                       fraction);
         player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(

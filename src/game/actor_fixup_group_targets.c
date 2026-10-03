@@ -11,12 +11,12 @@ void actor_update_frame(void)
 
     actor_state.active_actor_count = 0;
     actor = actor_state.actors;
-    actor_state.unknown_93b8 = 0;
+    actor_state.current_actor_slot_index = 0;
     do {
         if (actor->slot_state != KF_ACTOR_SLOT_FREE) {
             actor_bind_current(actor);
             if (((actor_state.actor_update_frame_count & 3) ==
-                 (actor_state.unknown_93b8 & 3)) ||
+                 (actor_state.current_actor_slot_index & 3)) ||
                 player_state.force_actor_lifecycle_refresh != 0 ||
                 player_state.death_state == 1) {
                 actor_update_lifecycle_for_player_range();
@@ -31,7 +31,7 @@ void actor_update_frame(void)
                 actor_state.active_actor_count++;
             }
 
-            if ((actor_state.active_group->unknown_34 & 0x10000) != 0) {
+            if ((actor_state.active_group->initial_actor_flags & 0x10000) != 0) {
                 KfMapObject *object =
                     &map_object_state.objects[actor->unknown_22];
                 s32 object_z;
@@ -48,8 +48,8 @@ void actor_update_frame(void)
             }
         }
         actor++;
-        actor_state.unknown_93b8++;
-    } while (actor_state.unknown_93b8 < KF_ACTOR_CAPACITY);
+        actor_state.current_actor_slot_index++;
+    } while (actor_state.current_actor_slot_index < KF_ACTOR_CAPACITY);
 
     actor_state.actor_update_frame_count++;
     actor_bind_current(NULL);
@@ -98,7 +98,7 @@ typedef struct KfActorLoadRecord {
     u16 unknown_08;
     u16 unknown_0a;
     u16 unknown_0c;
-    u16 unknown_0e;
+    u16 vertical_anchor_offset;
 } KfActorLoadRecord;
 typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
 
@@ -124,7 +124,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->unknown_20 = records->unknown_08;
             actor->unknown_22 = records->unknown_0a;
             actor->unknown_24 = records->unknown_0c;
-            actor->unknown_26 = records->unknown_0e;
+            actor->vertical_anchor_offset = records->vertical_anchor_offset;
             actor->lifecycle = 0;
             actor->target_type = 0;
             actor->unknown_0f = 0xff;
@@ -139,12 +139,12 @@ void actor_load_records(const KfActorLoadRecord *records)
                     if (actor->unknown_24 == -1) {
                         actor->unknown_24 = group->unknown_1a;
                     }
-                    if (actor->unknown_26 == -1) {
-                        actor->unknown_26 = group->unknown_1c;
+                    if (actor->vertical_anchor_offset == -1) {
+                        actor->vertical_anchor_offset = group->default_vertical_anchor_offset;
                     }
                 } else {
                     actor->slot_state = 4;
-                    actor->unknown_26 = 0;
+                    actor->vertical_anchor_offset = 0;
                 }
             }
         } else {

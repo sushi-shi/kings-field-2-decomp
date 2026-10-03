@@ -260,19 +260,22 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->extra_40.hinge.base_yaw = object->rotation.vy;
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 3000, 1);
             break;
-        case 3:
+        case 3: {
+            const KfMapObjectTemplateCellActionView *cell_template =
+                (const KfMapObjectTemplateCellActionView *)template;
             object->asset_clip_selector = 0;
             map_cell_copy_rotated_fields(object->layer_mask,
                           (u8)object->tail.fields.unknown_3a.bytes.high +
-                              template->unknown_0d[0] * 2,
+                              cell_template->cell_width * 2,
                           (u8)object->tail.fields.spawn_sequence,
                           object->tail.fields.unknown_39,
                           object->tail.fields.unknown_3a.bytes.low,
-                          template->unknown_0d[0], template->unknown_0d[1],
+                          cell_template->cell_width, cell_template->cell_height,
                           object->rotation.vy, 0x2d);
             object->action = 3;
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 0x1130, 1);
             break;
+        }
         case 0x53:
             object->asset_clip_selector = 0;
             object->action = 0x53;
@@ -338,7 +341,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->layer_mask = 0;
             object->action = 0x1f;
             object->extra_40.next_sound_frame = frame_count +
-                object->tail.fields.unknown_3e.value * 6;
+                object->tail.ambient_sound.repeat_delay_units * 6;
             break;
         case 0xf0:
             object->action = 0xf0;
@@ -351,7 +354,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[
-                              template->unknown_0d[1] * 2 +
+                              ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
                               (object->tail.fields.unknown_3e.bytes.low & 1)],
                           0, 0);
             object->scale.vz = 0;

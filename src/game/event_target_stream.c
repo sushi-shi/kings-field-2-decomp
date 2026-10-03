@@ -94,7 +94,7 @@ marker_record:
             if (candidate->word_10.bytes.fallback_offset < offset) {
                 candidate->word_10.bytes.fallback_offset = offset;
             }
-            event_state.control.bytes[0x3f] = actor->definition_id;
+            event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             candidate->word_12.bytes.marker_state = 0;
             goto use_fallback;
         }
@@ -124,10 +124,10 @@ void event_target_stream_execute(KfActor *actor)
     restore_state = 0;
     repeat = 0;
     if (candidate->word_10.bytes.fallback_offset == 0) {
-        event_state.control.bytes[0x3f] = actor->definition_id;
+        event_state.control.fields.stream_actor_definition_id = actor->definition_id;
     }
     cursor = event_target_stream_resolve_cursor(actor);
-    if (event_state.control.bytes[0x3f] != actor->definition_id &&
+    if (event_state.control.fields.stream_actor_definition_id != actor->definition_id &&
         candidate->word_12.bytes.marker_state == 1) {
         while (*cursor++ != 0xf0) {
         }
@@ -174,7 +174,7 @@ void event_target_stream_execute(KfActor *actor)
             repeat = *cursor;
             goto advance;
         case 6:
-            event_state.control.bytes[0x3f] = actor->definition_id;
+            event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
@@ -192,7 +192,7 @@ void event_target_stream_execute(KfActor *actor)
         continue;
 
 execute:
-        if (restore_state == 0 && candidate->unknown_01[0] != 0xff) {
+        if (restore_state == 0 && candidate->animation_id != 0xff) {
             u16 phase = actor->animation_phase;
             saved_state = actor->animation_id;
             restore_state = 1;
@@ -200,7 +200,7 @@ execute:
                 actor_animation_seek_phase(actor, actor->animation_id,
                               phase, 0, actor->animation_step);
             }
-            actor_animation_seek_phase(actor, candidate->unknown_01[0], 0, 0xfff,
+            actor_animation_seek_phase(actor, candidate->animation_id, 0, 0xfff,
                           candidate->animation_step);
         }
         menu_show_transition_image(3, candidate->word_0c.value + *cursor);
@@ -242,7 +242,7 @@ after_script:
     if (game_counter_bytes[0x53] < old_counter) {
         event_state.control.bytes[0x1c] = 1;
     }
-    event_state.control.bytes[0x3f] = actor->definition_id;
+    event_state.control.fields.stream_actor_definition_id = actor->definition_id;
     if (restore_state != 0 && candidate->word_10.bytes.unknown_11 != 0xff) {
         actor_animation_seek_phase(actor, candidate->word_10.bytes.unknown_11, 0, 0xfff,
                       candidate->word_0e.value);

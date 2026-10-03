@@ -59,8 +59,11 @@ typedef struct KfScreenVertex {
     s16 x;
     s16 y;
     s16 sz;
-    s16 p2;
+    s16 depth_cue;
 } KfScreenVertex;
+typedef char kf_screen_vertex_size[sizeof(KfScreenVertex) == 8 ? 1 : -1];
+typedef char kf_screen_vertex_depth_cue_offset[
+    (u32)&((KfScreenVertex *)0)->depth_cue == 6 ? 1 : -1];
 
 typedef struct KfNotificationControl {
     u8 queue_tail;
@@ -133,7 +136,8 @@ typedef struct KfCollisionRow {
 } KfCollisionRow;
 
 typedef struct KfCollisionFilterPayload {
-    u8 unknown_00[38];
+    KfCollisionRotation rotation;
+    KfCollisionMotion motion;
     KfCollisionTail filter;
 } KfCollisionFilterPayload;
 
@@ -223,6 +227,12 @@ typedef char kf_collision_row_types_offset[
     (u32)&((KfCollisionRow *)0)->filter.kinds.types == 98 ? 1 : -1];
 typedef char kf_collision_row_angle_offset[
     (u32)&((KfCollisionRow *)0)->filter.angle == 102 ? 1 : -1];
+typedef char kf_collision_filter_payload_size[
+    sizeof(KfCollisionFilterPayload) == 44 ? 1 : -1];
+typedef char kf_collision_filter_payload_motion_offset[
+    (u32)&((KfCollisionFilterPayload *)0)->motion == 20 ? 1 : -1];
+typedef char kf_collision_filter_payload_filter_offset[
+    (u32)&((KfCollisionFilterPayload *)0)->filter == 38 ? 1 : -1];
 typedef char kf_collision_default_row_size[
     sizeof(KfCollisionDefaultRow) == 44 ? 1 : -1];
 typedef char kf_collision_rows_offset[

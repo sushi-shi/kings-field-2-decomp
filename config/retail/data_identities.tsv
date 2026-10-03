@@ -84,11 +84,14 @@ GAME.EXE	0x80068456	0x2	DAT_80068456	unknown	load	undefined2		address-only	data.
 GAME.EXE	0x80068464	0x2	DAT_80068464	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80068466	0x2	DAT_80068466	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80068484	0x182	DAT_80068484	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
-GAME.EXE	0x80068608	0x4	DAT_80068608	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006860c	0x4	DAT_8006860c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80068608	0x30	K_cor_tbl	global	load	u32[12]	LIBGTE COR.OBJ	supported	archive XDEF .data+0;unique exact 100-byte retail section	Psy-Q correlation coefficient table; original element signedness unresolved
+GAME.EXE	0x80068638	0x18	H_cor_tbl	global	load	u32[6]	LIBGTE COR.OBJ	supported	archive XDEF .data+0x30;text relocation to base	Psy-Q correlation coefficient table; original element signedness unresolved
+GAME.EXE	0x80068650	0x1c	H_ln_tbl	global	load	u32[7]	LIBGTE COR.OBJ	supported	archive XDEF .data+0x48;text relocations to base and +4	Psy-Q line coefficient table; original element signedness unresolved
 GAME.EXE	0x80068670	0x4	DAT_80068670	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80068678	0x4	DAT_80068678	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006867c	0x4	DAT_8006867c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x80068c9c	0x800	rsin_tbl	global	load	s16[1024]	LIBGTE GEO.OBJ	supported	archive XDEF .data+0;0x4800 exact unique retail section;sin_1 signed halfword loads	Psy-Q sine table
+GAME.EXE	0x8006949c	0x4000	rcossin_tbl	global	load	s16[8192]	LIBGTE GEO.OBJ	supported	archive XDEF .data+0x800;0x4800 exact unique retail section	4096 interleaved signed sine/cosine pairs
 GAME.EXE	0x8006d4d0	0x18	DAT_8006d4d0	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR .data 24-byte code fragment;four exact archive pointer patches;retail words	vendor section fragment; individual original C object and linkage remain unresolved
 GAME.EXE	0x8006d4e8	0x2c	DAT_8006d4e8	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
 GAME.EXE	0x8006d514	0x4	DAT_8006d514	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -141,14 +144,16 @@ GAME.EXE	0x8006d874	0x2	DAT_8006d874	unknown	load	undefined2		address-only	data.
 GAME.EXE	0x8006d878	0x4	DAT_8006d878	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d87c	0x4	DAT_8006d87c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d880	0x10	DAT_8006d880	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBETC INTR_VB .sdata 16-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d890	0x4	Vcount	global	load	u32		supported	Psy-Q 3.0 LIBETC INTR_VB XDEF .sdata+0x10;VSync XREF;retail zero word	vendored 32-bit counter; original C signedness and current C owner unresolved
+GAME.EXE	0x8006d890	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB XDEF .sdata+0x10;VSync XREF;retail zero word	vendored 32-bit counter; original C signedness unresolved
 GAME.EXE	0x8006d894	0xc	DAT_8006d894	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBETC INTR .sdata 12-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8a0	0x8	DAT_8006d8a0	unknown	load	u32[2]		address-only	Psy-Q 3.0 LIBETC INTR .sdata eight-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8a8	0x4	DAT_8006d8a8	unknown	load	u32		address-only	Psy-Q 3.0 LIBETC INTR .sdata four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8ac	0x4	DAT_8006d8ac	unknown	load	u32		address-only	Psy-Q 3.0 LIBETC INTR_DMA .sdata four-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8b0	0x4	DAT_8006d8b0	unknown	load	u32		address-only	Psy-Q 3.0 LIBETC INTR_DMA .sdata four-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d8b4	0x10	DAT_8006d8b4	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBETC VSYNC .sdata 16-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d8c4	0x18	DAT_8006d8c4	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 24-byte record;two exact archive pointer patches;retail words	vendor record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d8c4	0x4	DAT_8006d8c4	unknown	load	pointer		address-only	Psy-Q 3.0 LIBGPU SYS .sdata+0 patch to .data+0x34;retail exact	anonymous vendor pointer; original C declaration unresolved
+GAME.EXE	0x8006d8c8	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
+GAME.EXE	0x8006d8cc	0x10	DAT_8006d8cc	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata+8..+0x18;retail zeros exact	anonymous vendor tail; original C object boundaries unresolved
 GAME.EXE	0x8006d8dc	0x24	DAT_8006d8dc	unknown	load	u32[9]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 36-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d900	0xc	DAT_8006d900	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS .sdata 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d97c	0x47	DAT_8006d97c	unknown	load	u8[71]		address-only	Psy-Q 3.0 LIBGPU OTAG .sdata 71-byte Code record;retail exact	vendor section record; original C declarations and linkage unresolved
@@ -283,7 +288,7 @@ OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm
 OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 OPEN.EXE	0x8003dbc4	0x3c	DAT_8003dbc4	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
 OPEN.EXE	0x8003dc00	0x4	DAT_8003dc00	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc04	0x4	DAT_8003dc04	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003dc04	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
 OPEN.EXE	0x8003dc08	0x4	DAT_8003dc08	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dc0c	0x4	DAT_8003dc0c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003dc10	0x4	DAT_8003dc10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -346,7 +351,7 @@ OPEN.EXE	0x8003de42	0x1	DAT_8003de42	unknown	load	undefined1		address-only	data.
 OPEN.EXE	0x8003de48	0x4	DAT_8003de48	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de4c	0x4	DAT_8003de4c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de50	0x4	DAT_8003de50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de54	0x4	DAT_8003de54	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003de54	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	archive XDEF .sdata+0x10;unique exact hardware-prefix retail match	Psy-Q vertical-blank counter
 OPEN.EXE	0x8003de58	0x4	DAT_8003de58	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de5c	0x4	DAT_8003de5c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de60	0x4	DAT_8003de60	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -462,7 +467,7 @@ END.EXE	0x8003aa40	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;
 END.EXE	0x8003aa48	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 END.EXE	0x8003aa54	0x3c	DAT_8003aa54	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
 END.EXE	0x8003aa90	0x4	DAT_8003aa90	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aa94	0x4	DAT_8003aa94	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003aa94	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
 END.EXE	0x8003aa98	0x4	DAT_8003aa98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aa9c	0x4	DAT_8003aa9c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003aaa0	0x4	DAT_8003aaa0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -525,7 +530,7 @@ END.EXE	0x8003ac62	0x1	DAT_8003ac62	unknown	load	undefined1		address-only	data.t
 END.EXE	0x8003ac68	0x4	DAT_8003ac68	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac6c	0x4	DAT_8003ac6c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac70	0x4	DAT_8003ac70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac74	0x4	DAT_8003ac74	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ac74	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	archive XDEF .sdata+0x10;unique exact hardware-prefix retail match	Psy-Q vertical-blank counter
 END.EXE	0x8003ac78	0x4	DAT_8003ac78	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac7c	0x4	DAT_8003ac7c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac80	0x4	DAT_8003ac80	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

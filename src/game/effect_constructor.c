@@ -177,12 +177,14 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         break;
     }
     case 5: {
+        KfEffectKind5Fanout *fanout =
+            (KfEffectKind5Fanout *)&record->unknown_3c[4];
         u8 parameter;
 
         record->render_flags = 0;
         parameter = va[1];
         record->updates_remaining = 70;
-        record->unknown_3c[5] = parameter;
+        fanout->actor_index = parameter;
         effect_play_spatial_sound(record, 0x21);
         break;
     }
@@ -415,6 +417,8 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_x = 0;
         break;
     case 12: {
+        KfEffectKind12Aim *aim =
+            (KfEffectKind12Aim *)&record->unknown_3c[4];
         const SVECTOR *angles;
 
         record->render_flags = 1;
@@ -429,10 +433,10 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_z = 30000;
         record->scale_y = 30000;
         record->scale_x = 30000;
-        *(u16 *)&record->unknown_3c[4] = va[2];
-        *(u16 *)&record->unknown_3c[6] = va[3];
-        *(u16 *)&record->unknown_3c[8] = va[4];
-        *(u16 *)&record->unknown_3c[10] = va[5];
+        aim->max_length = va[2];
+        aim->scale = va[3];
+        aim->turn_step = va[4];
+        aim->close_scale = va[5];
         record->updates_remaining = va[6];
         break;
     }

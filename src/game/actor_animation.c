@@ -15,17 +15,17 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3
-            || (actor_state.unknown_93a0 & actor->unknown_28)
+            || (actor_state.actor_overlap_exclusion_flags & actor->unknown_28)
             || actor == actor_state.current) {
             continue;
         }
         if (actor->unknown_28 & 0x10) {
-            if (actor->unknown_22 == actor_state.unknown_93b8) {
+            if (actor->unknown_22 == actor_state.current_actor_slot_index) {
                 continue;
             }
             alternate.vx = actor->position.vx;
             alternate.vz = actor->position.vz;
-            alternate.vy = actor->position.vy + actor->unknown_26;
+            alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
                 actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
@@ -50,17 +50,17 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE
-            || (actor_state.unknown_93a0 & actor->unknown_28)
+            || (actor_state.actor_overlap_exclusion_flags & actor->unknown_28)
             || actor == actor_state.current) {
             continue;
         }
         if (actor->unknown_28 & 0x10) {
-            if (actor->unknown_22 == actor_state.unknown_93b8) {
+            if (actor->unknown_22 == actor_state.current_actor_slot_index) {
                 continue;
             }
             alternate.vx = actor->position.vx;
             alternate.vz = actor->position.vz;
-            alternate.vy = actor->position.vy + actor->unknown_26;
+            alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
                 actor->collision_radius + radius, actor->collision_height, height) != -1) {
                 return index;
@@ -86,7 +86,7 @@ void actor_bind_current(KfActor *actor)
         group = &actor_state.target_groups[actor->group_index];
         actor_state.active_group = group;
         actor_state.current_group_index = actor->group_index;
-        if (group->unknown_34 & 0x10) {
+        if (group->initial_actor_flags & 0x10) {
             other = &actor_state.actors[actor->unknown_22];
             actor_state.other_actor = other;
             actor_state.other_group = &actor_state.target_groups[other->group_index];
@@ -167,7 +167,7 @@ retry_move:
     collision = collision_query_world(proposed.vx, actor->position.vy, proposed.vz,
         actor->collision_radius,
         actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
-        actor_state.unknown_93a4);
+        actor_state.actor_collision_query_flags);
     if (collision == 0) {
     check_floor:
         if (actor->vertical_motion_state == 0 && (flags & 0x24)) {

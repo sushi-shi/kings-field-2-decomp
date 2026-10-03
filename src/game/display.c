@@ -2612,7 +2612,7 @@ map_sound_action: {
                     volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
                 }
                 if (volume > 19) {
-                    audio_play_sound(sound, volume);
+                    audio_play_sound(object->tail.ambient_sound.sound_id, volume);
                 }
             }
             goto map_object_next;

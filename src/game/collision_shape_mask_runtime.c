@@ -430,7 +430,8 @@ s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height)
 ADDRESS(0x8002b67c, 0xc0)
 s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 height)
 {
-    KfMapOccupancyCell *cell = &bss_801c7540.map_cells[z >> 11][x >> 11];
+    KfMapOccupancyCell *cell = &bss_801c7540.map_cells
+        [z >> KF_MAP_CELL_POSITION_SHIFT][x >> KF_MAP_CELL_POSITION_SHIFT];
     s32 elevation;
 
     if (kind == 2) {
@@ -440,7 +441,7 @@ s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 hei
         COLLISION_CACHE_LAYER = 0;
         elevation = -(s32)cell->layer[0].elevation;
     }
-    COLLISION_CACHE_HEIGHT = elevation * 128;
+    COLLISION_CACHE_HEIGHT = elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
     COLLISION_CACHE_CELL = cell;
     collision_evaluate_shape_records(x, COLLISION_CACHE_HEIGHT, z, radius, height);
     return COLLISION_CACHE_RESULT;

@@ -58,7 +58,7 @@ void actor_update_behavior(void)
     u16 trigger;
     s32 interval;
 
-    if ((actor->unknown_28 & 4) != 0) {
+    if ((actor->flags & 4) != 0) {
         actor_state.actor_collision_query_flags = 3;
     } else {
         actor_state.actor_collision_query_flags = 0x93;
@@ -102,7 +102,7 @@ dispatch_action:
             actor_set_animation(target->animation_id);
         }
         if (actor->animation_phase < 0x800 ||
-            (actor->unknown_28 & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) == 0) {
+            (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) == 0) {
             actor_advance_animation_clamped(actor, target->animation_step);
         }
         if (actor->animation_phase > 0xffe) {
@@ -117,11 +117,11 @@ dispatch_action:
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation(target->animation_id);
             actor->state_70.signed_state = 0;
-            actor->unknown_28 &= ~KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED;
+            actor->flags &= ~KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED;
         }
         if (actor->state_70.signed_state == 0) {
             if (actor->animation_phase >= 0x400 &&
-                (actor->unknown_28 & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) != 0) {
+                (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) != 0) {
                 break;
             }
             actor_advance_animation_clamped(actor, target->animation_step);
@@ -133,7 +133,7 @@ dispatch_action:
                     map_object_spawn_scattered_effect(effect_id, &actor->position,
                                    -(actor->collision_height >> 1));
                 }
-                if (actor->slot_state == 0 || actor->slot_state == 4) {
+                if (actor->slot_state == 0 || actor->slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
                     if (target->word_0c.bytes.low != 0xff &&
                         (rand() >> 7) < target->word_0c.bytes.high) {
                         map_object_spawn_effect(
@@ -1091,7 +1091,7 @@ case3_motion:
         next.vz = actor->position.vz + actor->motion.vector.vz;
         collision = collision_query_world(
             next.vx, next.vy, next.vz, actor->collision_radius,
-            actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+            actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
             actor_state.actor_collision_query_flags);
         if (collision == 0) {
         case30_position:
@@ -1130,7 +1130,7 @@ case3_motion:
         break;
     }
 
-    if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
+    if (actor->flags & KF_ACTOR_FLAG_LINKED) {
         KfActor *other = actor_state.other_actor;
         u8 slot_state = actor->slot_state;
 
@@ -1151,7 +1151,7 @@ case3_motion:
 
             actor->current_map_layer = other->current_map_layer;
             if (other->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
-                actor->unknown_28 = (actor->unknown_28 & ~KF_ACTOR_FLAG_LINKED) |
+                actor->flags = (actor->flags & ~KF_ACTOR_FLAG_LINKED) |
                     KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING;
                 collision = collision_query_world(
                     actor->position.vx, actor->position.vy,
@@ -1161,9 +1161,9 @@ case3_motion:
                     actor->position.vx += 800 + actor->collision_radius;
                 }
                 if (collision & 0xf) {
-                    actor->unknown_28 |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
+                    actor->flags |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
-                if (actor->unknown_28 & 0x200) {
+                if (actor->flags & 0x200) {
                     actor_select_target_type_in_own_group(actor, 3);
                 }
                 actor->motion.vector.vx = other->motion.vector.vx;
@@ -1194,7 +1194,7 @@ case3_motion:
             actor->position.vz = other->position.vz + vertex_offset.vz -
                                  group_offset.vz;
         }
-    } else if ((actor->unknown_28 & KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) == 0) {
+    } else if ((actor->flags & KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) == 0) {
         actor_update_vertical_motion();
     }
 
@@ -1334,7 +1334,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor_copy_group_defaults(actor);
             actor_set_home_position(actor);
             actor->render_depth = group->render_depth;
-            if ((actor->unknown_28 & KF_ACTOR_FLAG_LINKED) != 0) {
+            if ((actor->flags & KF_ACTOR_FLAG_LINKED) != 0) {
                 if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
                     if (actor->word_24.value == -1) {
                         actor->word_24.value = group->word_1a.slot3_home_x_fallback;
@@ -1343,7 +1343,7 @@ void actor_load_records(const KfActorLoadRecord *records)
                         actor->vertical_anchor_offset = group->default_vertical_anchor_offset;
                     }
                 } else {
-                    actor->slot_state = 4;
+                    actor->slot_state = KF_ACTOR_SLOT_LINKED_COMPANION;
                     actor->vertical_anchor_offset = 0;
                 }
             }

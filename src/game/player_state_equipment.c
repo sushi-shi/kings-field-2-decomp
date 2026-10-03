@@ -404,7 +404,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
     if (actor != 0) {
         target = actor_find_target_of_type(&actor_state.target_groups[actor->group_index],
                                            0x82);
-        if (target != 0 && !(actor->unknown_28 & 0x100)) {
+        if (target != 0 && !(actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING)) {
             actor_set_target(actor, target);
         }
     }

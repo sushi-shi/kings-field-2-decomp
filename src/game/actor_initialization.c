@@ -52,10 +52,10 @@ void actor_set_home_position(KfActor *actor)
     if (actor->position.vy >= 0) {
         actor->position.vy = 0;
     }
-    if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+    if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
-    if (!(actor->unknown_28 & KF_ACTOR_FLAG_LINKED)) {
+    if (!(actor->flags & KF_ACTOR_FLAG_LINKED)) {
         actor->position.vy += actor->vertical_anchor_offset;
     }
 }
@@ -70,7 +70,7 @@ void actor_copy_group_defaults(KfActor *actor)
     actor->health = group->word_1a.initial_health;
     actor->collision_radius = group->collision_radius;
     actor->collision_height = group->collision_height;
-    actor->unknown_28 = group->initial_actor_flags;
+    actor->flags = group->initial_actor_flags;
     value = group->initial_model_scale_q12;
     actor->model_scale_z = value;
     actor->model_scale_y.value = value;
@@ -98,7 +98,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->turn_rate = 0;
     actor->lighting_override = ACTOR_LIGHTING_DEFAULT;
     actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
-    if (actor->unknown_28 & KF_ACTOR_FLAG_BLENDED_MODEL) {
+    if (actor->flags & KF_ACTOR_FLAG_BLENDED_MODEL) {
         actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
     } else {
         actor->render_mode = ACTOR_RENDER_TEXTURED;

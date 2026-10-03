@@ -166,7 +166,7 @@ phase_three:
                 if (object->tail.animated.animation_cache != 0) {
                     pool_record_release(object->tail.animated.animation_cache);
                 }
-                if (object->action == 0x20) {
+                if (object->action == KF_MAP_OBJECT_ACTION_PLAYER_REACTION) {
                     memory_free((u8 *)object->extra_40.record);
                     object->action = KF_MAP_OBJECT_ACTION_NONE;
                 }

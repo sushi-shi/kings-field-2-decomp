@@ -89,7 +89,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 23:
     case 24:
     case 132:
-        if ((actor->unknown_28 & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
+        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_1a.value < player_distance ||
             !directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
@@ -119,7 +119,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         goto done;
 
     case 25:
-        if ((actor->unknown_28 & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
+        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_16.value < player_distance ||
             target->word_14.value > player_distance) {
             goto done;
@@ -318,7 +318,7 @@ void actor_update_lifecycle_for_player_range(void)
             return;
         }
 
-        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == 4) {
+        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
             if (actor_state.other_actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
@@ -389,7 +389,7 @@ void actor_update_lifecycle_for_player_range(void)
         return;
 
     case KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT:
-        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == 4) {
+        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
             if (actor_state.other_actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
@@ -490,7 +490,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
 
     kind = effect_flags & 0x30;
     mode = effect_flags & 3;
-    if (kind == 0x20 && (actor->unknown_28 & 0x100000)) {
+    if (kind == 0x20 && (actor->flags & 0x100000)) {
         return;
     }
 
@@ -526,7 +526,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
             goto update_motion;
         }
     } else if (mode == 2) {
-        if (actor->unknown_28 & 0x40000) {
+        if (actor->flags & 0x40000) {
             goto update_motion;
         }
         candidate = actor_find_target_of_type(group, 0x16);
@@ -570,7 +570,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     actor->health = remaining;
 
 update_motion:
-    if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
+    if (actor->flags & KF_ACTOR_FLAG_LINKED) {
         KfActorStateGame *state = &actor_state;
         linked = &state->actors[actor->word_22.linked_actor_slot];
         motion_divisor =
@@ -596,7 +596,7 @@ update_motion:
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;
-        if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
+        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
             linked->motion.vector.vx = actor->motion.vector.vx;
             linked->motion.vector.vy = actor->motion.vector.vy;
             linked->motion.vector.vz = actor->motion.vector.vz;
@@ -735,7 +735,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
         }
 
         reach = max_distance;
-        if ((actor->unknown_28 & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0) {
+        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0) {
             reach <<= 1;
         }
         actor_distance = vector_distance_to_point(
@@ -757,7 +757,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
             direction.x = KF_ANGLE_FULL_TURN - direction.x;
         }
 
-        if ((actor->unknown_28 & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0 && variation >= 0) {
+        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0 && variation >= 0) {
             actor_distance >>= 2;
             direction.x -= 512;
             direction.y -= 512;
@@ -791,11 +791,11 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3
-            || (actor_state.actor_overlap_exclusion_flags & actor->unknown_28)
+            || (actor_state.actor_overlap_exclusion_flags & actor->flags)
             || actor == actor_state.current) {
             continue;
         }
-        if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
+        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
             if (actor->word_22.linked_actor_slot == actor_state.current_actor_slot_index) {
                 continue;
             }
@@ -826,11 +826,11 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE
-            || (actor_state.actor_overlap_exclusion_flags & actor->unknown_28)
+            || (actor_state.actor_overlap_exclusion_flags & actor->flags)
             || actor == actor_state.current) {
             continue;
         }
-        if (actor->unknown_28 & KF_ACTOR_FLAG_LINKED) {
+        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
             if (actor->word_22.linked_actor_slot == actor_state.current_actor_slot_index) {
                 continue;
             }
@@ -942,7 +942,7 @@ retry_move:
     proposed.vz = actor->position.vz + motion_z;
     collision = collision_query_world(proposed.vx, actor->position.vy, proposed.vz,
         actor->collision_radius,
-        actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+        actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
     if (collision == 0) {
     check_floor:
@@ -967,13 +967,13 @@ retry_move:
             }
             collision_query_shapes_with_layer_sample(actor->position.vx, actor->position.vy,
                 actor->position.vz + probe_z, actor->collision_radius,
-                actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
+                actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
             collision_query_shapes_with_layer_sample(actor->position.vx + probe_x, actor->position.vy,
                 actor->position.vz, actor->collision_radius,
-                actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
+                actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
@@ -1016,7 +1016,7 @@ retry_move:
         goto retry_move;
     }
     if (!(flags & 0x10)) {
-        if (actor->unknown_28 & 0x4000) {
+        if (actor->flags & 0x4000) {
             goto try_axis;
         }
         if (!(collision & ~5)) {
@@ -1106,23 +1106,23 @@ s32 actor_move_with_collision(SVECTOR *motion)
     proposed.vz = actor->position.vz + motion->vz;
     result = collision_query_world(proposed.vx, proposed.vy, proposed.vz,
         actor->collision_radius,
-        actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+        actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
     if (result == 0) {
         copyVector(&actor->position, &proposed);
     } else if (collision_query_world(proposed.vx, actor->position.vy,
                              actor->position.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
         motion->vx = -(u16)motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
         motion->vy = -(u16)motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->unknown_28 & 0xc000) << 16),
+                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
         motion->vz = -(u16)motion->vz;
     }
@@ -1165,9 +1165,9 @@ void actor_update_vertical_motion(void)
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
-                   actor->collision_height | ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
+                   actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
     actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
-    if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+    if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
@@ -1201,7 +1201,7 @@ state_10: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                                      ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == 0) {
         advance_rise:
@@ -1214,7 +1214,7 @@ state_10: {
                           0x1000, 10, &actor->position);
         }
         if (collision & 4) {
-            if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+            if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
                 if (actor->position.vy < floor_y) goto advance_rise;
                 actor->position.vy = floor_y;
@@ -1225,7 +1225,7 @@ state_10: {
             actor->vertical_motion_state = 0;
             return;
         }
-        if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) goto advance_rise;
+        if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) goto advance_rise;
         actor->vertical_motion_state = 0;
         return;
     }
@@ -1251,7 +1251,7 @@ state_30: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->unknown_28 & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                                      ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == 0) {
             actor->position.vy = next_y;
@@ -1398,7 +1398,7 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
     moved = actor_move_horizontal_with_collision(&actor->motion.vector, target) != 0;
     proposed_y = actor->position.vy + actor->motion.vector.vy;
     radius = actor->collision_radius;
-    height_and_flags = actor->collision_height | ((actor->unknown_28 & 0xc000) << 16);
+    height_and_flags = actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
                       actor_state.actor_collision_query_flags) == 0) {
@@ -1447,7 +1447,7 @@ ADDRESS(0x8003c10c, 0x114)
 VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
 {
     KfTargetGroup *group;
-    switch (actor->unknown_28 & 3) {
+    switch (actor->flags & 3) {
     case 0:
         return &actor->position;
     case 1:

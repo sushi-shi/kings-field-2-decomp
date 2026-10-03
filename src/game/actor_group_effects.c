@@ -201,7 +201,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
             group = &actor_state.target_groups[group_index];
-            spawned->unknown_28 = group->initial_actor_flags;
+            spawned->flags = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
             spawned->position.vy = position.vy + 4096;
@@ -226,7 +226,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
             group = &actor_state.target_groups[group_index];
-            spawned->unknown_28 = group->initial_actor_flags;
+            spawned->flags = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
             spawned->position.vy = position.vy + (group->collision_height >> 1);
@@ -265,7 +265,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         if (effect != 0) {
             effect->updates_remaining = 0x32;
             effect->phase = 0;
-            ((KfEffectBallisticState *)&effect->cache_tail.kind_payload[0])->origin_y = position.vy;
+            ((KfEffectBallisticState *)&effect->cache_tail.payload.raw[0])->origin_y = position.vy;
         }
         break;
     }

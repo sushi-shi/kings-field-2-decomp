@@ -794,7 +794,7 @@ after_reaction:
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, KF_PLAYER_HEIGHT);
-    if (index != -1 && (actor_state.actors[index].unknown_28 & 8) != 0) {
+    if (index != -1 && (actor_state.actors[index].flags & 8) != 0) {
         player_begin_actor_overlap_bob();
     }
     player_update_weapon_attack();

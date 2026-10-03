@@ -1146,7 +1146,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 notify_enqueue(0x10);
             }
             break;
-        case 0x20:
+        case KF_MAP_OBJECT_ACTION_PLAYER_REACTION:
             if (player_state.death_state == 0) {
                 u8 *linked_state;
                 player_begin_view_reaction(object_index);

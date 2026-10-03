@@ -26,14 +26,50 @@ typedef union KfEffectScaleThreshold {
 
 typedef char kf_effect_scale_threshold_size[sizeof(KfEffectScaleThreshold) == 2 ? 1 : -1];
 
+/* Kind 6 copies a position and rotation into each 24-byte trail row. */
+typedef struct KfEffectTrailRow {
+    VECTOR position;
+    SVECTOR rotation;
+} KfEffectTrailRow;
+
+typedef char kf_effect_trail_row_size[sizeof(KfEffectTrailRow) == 24 ? 1 : -1];
+typedef char kf_effect_trail_rotation_offset[(u32)&((KfEffectTrailRow *)0)->rotation == 16 ? 1 : -1];
+
+/* Kinds 6 and 107 share this view of kind 6's payload at record +0x40. */
+typedef struct KfEffectTrailState {
+    KfEffectTrailRow *rows;
+    u8 frame_index;
+    u8 phase_counter;
+    u8 actor_index;
+    u8 unknown_07;
+} KfEffectTrailState;
+
+typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];
+typedef char kf_effect_trail_state_frame_offset[(u32)&((KfEffectTrailState *)0)->frame_index == 4 ? 1 : -1];
+typedef char kf_effect_trail_state_actor_offset[(u32)&((KfEffectTrailState *)0)->actor_index == 6 ? 1 : -1];
+
+typedef struct KfEffectKind102Payload {
+    s16 amplitude;
+} KfEffectKind102Payload;
+
+typedef char kf_effect_kind102_payload_size[sizeof(KfEffectKind102Payload) == 2 ? 1 : -1];
+
+typedef union KfEffectKindPayload {
+    u8 raw[8];
+    KfEffectTrailState trail;
+    KfEffectKind102Payload kind102;
+} KfEffectKindPayload;
+
+typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
+
 /* Renderer-owned cache slot followed by the effect kind's variant payload. */
 typedef struct KfEffectCacheTail {
     struct KfPoolRecord *animation_cache;
-    u8 kind_payload[8];
+    KfEffectKindPayload payload;
 } KfEffectCacheTail;
 
 typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
-typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->kind_payload == 4 ? 1 : -1];
+typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->payload == 4 ? 1 : -1];
 
 /* The pool scan and reset visit 128 records at a 72-byte stride. */
 typedef struct KfEffectRecord {
@@ -88,28 +124,7 @@ typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
 typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->cache_tail == 0x3c ? 1 : -1];
 
-/* Kind 6 copies a position and rotation into each 24-byte trail row. */
-typedef struct KfEffectTrailRow {
-    VECTOR position;
-    SVECTOR rotation;
-} KfEffectTrailRow;
-
-typedef char kf_effect_trail_row_size[sizeof(KfEffectTrailRow) == 24 ? 1 : -1];
-typedef char kf_effect_trail_rotation_offset[(u32)&((KfEffectTrailRow *)0)->rotation == 16 ? 1 : -1];
-
-/* Kinds 6 and 107 share this view of kind 6's payload at record +0x40. */
-typedef struct KfEffectTrailState {
-    KfEffectTrailRow *rows;
-    u8 frame_index;
-    u8 phase_counter;
-    u8 actor_index;
-    u8 unknown_07;
-} KfEffectTrailState;
-
-typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];
-typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->cache_tail.kind_payload == 0x40 ? 1 : -1];
-typedef char kf_effect_trail_state_frame_offset[(u32)&((KfEffectTrailState *)0)->frame_index == 4 ? 1 : -1];
-typedef char kf_effect_trail_state_actor_offset[(u32)&((KfEffectTrailState *)0)->actor_index == 6 ? 1 : -1];
+typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->cache_tail.payload.trail == 0x40 ? 1 : -1];
 
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
@@ -183,12 +198,6 @@ typedef struct KfEffectKind10Targeting {
 } KfEffectKind10Targeting;
 
 typedef char kf_effect_kind10_targeting_size[sizeof(KfEffectKind10Targeting) == 2 ? 1 : -1];
-
-typedef struct KfEffectKind102Payload {
-    s16 amplitude;
-} KfEffectKind102Payload;
-
-typedef char kf_effect_kind102_payload_size[sizeof(KfEffectKind102Payload) == 2 ? 1 : -1];
 
 /* Kind 105 follows an animation vertex and reports to its parent effect. */
 typedef struct KfEffectKind105Attachment {

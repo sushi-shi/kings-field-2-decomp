@@ -18,6 +18,7 @@ enum {
     KF_ACTOR_SLOT_PERSISTENT = 1,
     KF_ACTOR_SLOT_RESPAWNING = 2,
     KF_ACTOR_SLOT_HOMEBOUND = 3,
+    KF_ACTOR_SLOT_LINKED_COMPANION = 4,
     KF_ACTOR_SLOT_EFFECT_SPAWNED = 5,
     KF_ACTOR_SLOT_FREE = 0xff,
     KF_ACTOR_TARGET_TYPE_NONE = 0xff,
@@ -523,7 +524,7 @@ typedef struct KfActor {
     KfActorWord22 word_22;
     KfActorWord24 word_24;
     s16 vertical_anchor_offset;
-    u32 unknown_28;
+    u32 flags;
     VECTOR position;
     s32 ballistic_origin_y;
     struct KfEulerAngles rotation;

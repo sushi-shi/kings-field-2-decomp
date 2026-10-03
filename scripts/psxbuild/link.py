@@ -16,13 +16,19 @@ LIBRARIES = {
     'PSX.EXE': ('LIBSN', 'LIBAPI'),
     'GAME.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
                  'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBCARD', 'LIBC'),
-    'OPEN.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                 'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBC'),
-    'END.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBC'),
+    # Retail overlay RODATA and first SDK text runs place these archives in
+    # PRESS, GPU, GTE, CD, ETC, SND, SPU order after the API/C helpers.
+    'OPEN.EXE': ('LIBSN', 'LIBAPI', 'LIBC', 'LIBPRESS', 'LIBGPU', 'LIBGTE',
+                 'LIBCD', 'LIBETC', 'LIBSND', 'LIBSPU'),
+    'END.EXE': ('LIBSN', 'LIBAPI', 'LIBC', 'LIBPRESS', 'LIBGPU', 'LIBGTE',
+                'LIBCD', 'LIBETC', 'LIBSND', 'LIBSPU'),
 }
 ENTRY = '__SN_ENTRY_POINT'
+BOOT_STARTUP = '2MBYTE.OBJ'
 OVERLAY_STARTUP = 'NONE2.OBJ'
+# The retail OPEN/END text puts NONE2 immediately before the movie units.
+# GAME's startup placement is still unresolved and keeps the append order.
+OVERLAY_STARTUP_AFTER_UNITS = {'OPEN.EXE': 8, 'END.EXE': 6}
 
 
 def file_hash(path: Path) -> str:
@@ -36,7 +42,7 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
         shutil.rmtree(root)
     root.mkdir(parents=True)
     report = {'image': name, 'linked': False, 'phase': 'compile', 'units': [],
-              'libraries': [], 'startup': None, 'tools': {}}
+              'libraries': [], 'startup': None, 'boot_startup': None, 'tools': {}}
     try:
         tools = {'ASPSX.EXE': Path(os.environ['PSYQ_ASPSX']),
                  **{tool: Path(os.environ['PSYQ_BIN']) / tool
@@ -50,7 +56,14 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
             report['units'].append(compile_one(unit, root, index))
         assembler_commands = [u['assembler_command'] for u in report['units']
                               if 'assembler_command' in u]
-        if name != 'PSX.EXE':
+        if name == 'PSX.EXE':
+            source = Path(os.environ['PSYQ_LIB']) / BOOT_STARTUP
+            shutil.copyfile(source, root / BOOT_STARTUP)
+            report['boot_startup'] = {
+                'file': BOOT_STARTUP, 'path': str(source), 'sha256': file_hash(source),
+                'provenance': 'retail stup1/stup0 offsets match the pinned 2MBYTE object',
+            }
+        else:
             assembler = Path(os.environ['PSYQ_ASMPSX'])
             shutil.copyfile(assembler, root / 'ASMPSX.EXE')
             report['tools']['ASMPSX.EXE'] = {
@@ -82,6 +95,8 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
             unit['object_sha256'] = file_hash(root / unit['object'])
         if report['startup'] and not (root / OVERLAY_STARTUP).read_bytes().startswith(b'LNK\x02'):
             raise ValueError(f'{OVERLAY_STARTUP}: expected a Psy-Q LNK object')
+        if report['boot_startup'] and not (root / BOOT_STARTUP).read_bytes().startswith(b'LNK\x02'):
+            raise ValueError(f'{BOOT_STARTUP}: expected a Psy-Q LNK object')
         if report['startup']:
             tool_succeeded(root, 'BOUNDS.TXT', 'BOUNDS.OBJ', b'LNK\x02')
             report['boundaries']['object_sha256'] = file_hash(root / 'BOUNDS.OBJ')
@@ -97,9 +112,15 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
             })
         report['phase'] = 'link'
         stem = name.removesuffix('.EXE')
+        object_inputs = [f'\tinclude "{u["object"]}"' for u in report['units']]
+        if report['boot_startup']:
+            object_inputs.append(f'\tinclude "{BOOT_STARTUP}"')
+        if report['startup']:
+            startup_after = OVERLAY_STARTUP_AFTER_UNITS.get(name, len(object_inputs))
+            object_inputs.insert(startup_after, f'\tinclude "{OVERLAY_STARTUP}"')
+            report['startup']['after_source_units'] = startup_after
         commands = [f'\torg ${load_address:08x}',
-                    *(f'\tinclude "{u["object"]}"' for u in report['units']),
-                    *([f'\tinclude "{OVERLAY_STARTUP}"'] if report['startup'] else []),
+                    *object_inputs,
                     *(['\tinclude "BOUNDS.OBJ"'] if report['startup'] else []),
                     *(f'\tinclib "{library["file"]}"' for library in report['libraries']),
                     'bssdata group bss', '\tsection .sbss,bssdata',

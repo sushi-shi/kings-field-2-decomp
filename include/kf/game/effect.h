@@ -5,6 +5,8 @@
 #include <kf/game/audio.h>
 #include <psyq/sdk.h>
 
+struct KfPoolRecord;
+
 enum {
     KF_EFFECT_CAPACITY = 128,
     KF_MAGIC_RECORD_COUNT = 64,
@@ -48,6 +50,15 @@ typedef struct KfEffectRecord {
     u8 unknown_3c[12];
 } KfEffectRecord;
 
+/* Renderer-owned cache slot followed by the effect kind's variant payload. */
+typedef struct KfEffectCacheTail {
+    struct KfPoolRecord *animation_cache;
+    u8 kind_payload[8];
+} KfEffectCacheTail;
+
+typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
+typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->kind_payload == 4 ? 1 : -1];
+
 typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
 typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];
 typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];
@@ -61,6 +72,7 @@ typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 
 typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
 typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale_threshold == 0x32 ? 1 : -1];
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
+typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->unknown_3c == 0x3c ? 1 : -1];
 
 /* Kind 6 copies a position and rotation into each 24-byte trail row. */
 typedef struct KfEffectTrailRow {
@@ -168,7 +180,8 @@ typedef char kf_effect_kind12_close_scale_offset[(u32)&((KfEffectKind12Aim *)0)-
 /* The effect sweep indexes this 26-byte row family by the record kind. */
 typedef struct KfMagicRecord {
     u8 menu_available;
-    u8 unknown_01[3];
+    u8 charge_rate;
+    u8 unknown_02[2];
     u8 player_status_flags;
     u8 unknown_05;
     u16 damage_components[8];
@@ -177,6 +190,7 @@ typedef struct KfMagicRecord {
 } KfMagicRecord;
 
 typedef char kf_magic_record_size[sizeof(KfMagicRecord) == 26 ? 1 : -1];
+typedef char kf_magic_record_charge_rate_offset[(u32)&((KfMagicRecord *)0)->charge_rate == 1 ? 1 : -1];
 typedef char kf_magic_record_damage_components_offset[(u32)&((KfMagicRecord *)0)->damage_components == 0x06 ? 1 : -1];
 typedef char kf_magic_record_status_flags_offset[(u32)&((KfMagicRecord *)0)->player_status_flags == 0x04 ? 1 : -1];
 typedef char kf_magic_record_mp_cost_offset[(u32)&((KfMagicRecord *)0)->mp_cost == 0x16 ? 1 : -1];

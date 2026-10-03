@@ -89,8 +89,8 @@ void player_update_actions_and_charge(void)
 
     if ((player_state.flags_140.word & 0x00200020) == 0x00200020
         && player_state.equipped_shield_id != 50) {
-        if (player_state.unknown_0c[1] != 0) {
-            player_state.unknown_0c[1]--;
+        if (player_state.movement_speed_adjustment_decay_latch != 0) {
+            player_state.movement_speed_adjustment_decay_latch--;
         }
         player_state.weapon_charge_delay = 1;
         player_state.attack_charge_current -= 500;
@@ -113,7 +113,7 @@ void player_update_actions_and_charge(void)
         player_state.magic_charge += player_charge_gain_for_rank(player_state.magic, 0);
     } else {
         charge_gain = player_charge_gain_for_rank(player_state.magic,
-                                    player_state.selected_magic_record->unknown_01[0]);
+                                    player_state.selected_magic_record->charge_rate);
         if (player_state.equipped_head_id == 24) {
             charge_gain >>= 1;
         }
@@ -126,7 +126,7 @@ void player_update_actions_and_charge(void)
     if (player_state.damage_scale > 4096) {
         player_state.damage_scale = 4096;
     }
-    player_state.unknown_0c[1] = 1;
+    player_state.movement_speed_adjustment_decay_latch = 1;
 
     if (player_state.weapon_magic_shots_remaining != 0) {
         player_state.weapon_magic_shots_remaining--;
@@ -521,7 +521,7 @@ void player_update_frame(void)
         player_state.turn_step_limit >>= 1;
         player_state.slow_timer--;
     } else {
-        if (player_state.unknown_0c[1] == 0) {
+        if (player_state.movement_speed_adjustment_decay_latch == 0) {
             player_state.movement_speed_adjustment_q12 += 800;
             if ((s16)player_state.movement_speed_adjustment_q12 > 2800) {
                 player_state.movement_speed_adjustment_q12 = 2800;

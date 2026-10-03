@@ -598,6 +598,7 @@ GAME.EXE	0x8004d354	0x3cb54	0xe0	0xe0	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x8004d434	0x3cc34	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d454	0x3cc54	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d474	0x3cc74	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004d4f0	0x3ccf0	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 GAME.EXE	0x8004d560	0x3cd60	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d5c0	0x3cdc0	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d848	0x3d048	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1158,6 +1159,7 @@ OPEN.EXE	0x80027340	0x16b40	0xe0	0xe0	1	function	ghidra-analysis			Ghidra-12.0.4
 OPEN.EXE	0x80027420	0x16c20	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80027440	0x16c40	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80027460	0x16c60	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x800274dc	0x16cdc	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 OPEN.EXE	0x8002754c	0x16d4c	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800275ac	0x16dac	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80027834	0x17034	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1443,6 +1445,7 @@ END.EXE	0x800241ec	0x139ec	0xe0	0xe0	1	function	ghidra-analysis			Ghidra-12.0.4/
 END.EXE	0x800242cc	0x13acc	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800242ec	0x13aec	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8002430c	0x13b0c	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80024388	0x13b88	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 END.EXE	0x800243f8	0x13bf8	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80024458	0x13c58	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800246e0	0x13ee0	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

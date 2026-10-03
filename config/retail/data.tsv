@@ -645,7 +645,7 @@ GAME.EXE	0x80067adc	0x572dc	0x100	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ 
 GAME.EXE	0x80067bdc	0x573dc	0x80	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[32]	archive section +0x194;512 Code bytes exact;getintr indexes selector*4	SDK CD status table; original static identity unresolved
 GAME.EXE	0x80067c5c	0x5745c	0x64	defined	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .data tail		u32[25]	archive section +0x214;512 Code bytes exact;CD_cw indexes selector*4	SDK CD status table; original static identity unresolved
 GAME.EXE	0x80067cc0	0x574c0	0x1c	unclassified	coverage-gap			payload-complement	exact BIOS.OBJ tail but separate static-object extent unresolved
-GAME.EXE	0x80067cdc	0x574dc	0x400	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80067cdc	0x574dc	0x400	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .data XDEF		u8[1024]	archive XDEF _spu_zerobuf at .data+0;1024 zero bytes exact;SpuClearReverbWorkArea archive xref and retail address	SDK SPU transfer buffer
 GAME.EXE	0x800680dc	0x578dc	0x10	defined	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .data		u8[16]	archive 16-byte Code section;retail exact;_spu_init passes 0x10 bytes	SDK initialized fill bytes; original static name unresolved
 GAME.EXE	0x800680ec	0x578ec	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_startaddr at +0;760 archive bytes match retail	reverb mode start-address table, indexed by mode 0..9
 GAME.EXE	0x80068114	0x57914	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_workareasize at +0x28;760 archive bytes match retail	reverb mode work-area-size table, indexed by mode 0..9
@@ -670,12 +670,13 @@ GAME.EXE	0x80068678	0x57e78	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006867c	0x57e7c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x80068680	0x57e80	0x26b	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800688eb	0x580eb	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: \t|\tv\to\ti\tb\t\\\tU\tO\tI\tC\t<\t6\t0\t*\t$\t
-GAME.EXE	0x8006890a	0x5810a	0x312	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068c1c	0x5841c	0x2f	string	byte-pattern		ascii	investigation:string-census	escaped text: Error: Can't push matrix,stack(max 20) is full!
+GAME.EXE	0x8006890a	0x5810a	0x82	unclassified	coverage-gap			payload-complement	before exact LIBGTE MTX.OBJ .data section; ownership unresolved
+GAME.EXE	0x8006898c	0x5818c	0x290	defined	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data working state		u8[0x290]	archive section +0..+0x290 exact;PushMatrix and PopMatrix section-base xrefs;diagnostics follow	vendor matrix working state; original static subobjects unresolved
+GAME.EXE	0x80068c1c	0x5841c	0x2f	string	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data literal		ascii	archive section +0x290;full 0x310-byte section exact unique	escaped text: Error: Can't push matrix,stack(max 20) is full!
 GAME.EXE	0x80068c4b	0x5844b	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068c4d	0x5844d	0x27	string	byte-pattern		ascii	investigation:string-census	escaped text: Error: Can't pop matrix,stack is empty!
+GAME.EXE	0x80068c4d	0x5844d	0x27	string	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data literal		ascii	archive section +0x2c1;full 0x310-byte section exact unique	escaped text: Error: Can't pop matrix,stack is empty!
 GAME.EXE	0x80068c74	0x58474	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80068c76	0x58476	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: This function is not implemented.
+GAME.EXE	0x80068c76	0x58476	0x21	string	manual:exact Psy-Q 3.0 LIBGTE MTX.OBJ .data literal		ascii	archive section +0x2ea;full 0x310-byte section exact unique	escaped text: This function is not implemented.
 GAME.EXE	0x80068c97	0x58497	0x5	unclassified	coverage-gap			payload-complement	outside exact LIBGTE GEO .data section; ownership unresolved
 GAME.EXE	0x80068c9c	0x5849c	0x800	defined	manual:exact Psy-Q 3.0 LIBGTE GEO .data XDEF		s16[1024]	archive rsin_tbl XDEF .data+0;full 0x4800 section exact unique;sin_1 signed halfword reads	Psy-Q sine table
 GAME.EXE	0x8006949c	0x58c9c	0x4000	defined	manual:exact Psy-Q 3.0 LIBGTE GEO .data XDEF		s16[8192]	archive rcossin_tbl XDEF .data+0x800;full 0x4800 section exact unique	4096 interleaved signed sine/cosine pairs
@@ -683,11 +684,7 @@ GAME.EXE	0x8006d49c	0x5cc9c	0x30	string	byte-pattern		ascii	investigation:string
 GAME.EXE	0x8006d4cc	0x5cccc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d4d0	0x5ccd0	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR .data fragment		u32[6]	archive code record and four section patches;retail words	contiguous vendor section fragment; individual C object and linkage remain unresolved
 GAME.EXE	0x8006d4e8	0x5cce8	0x2c	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data callback array		pointer[11]	44-byte archive zero block exact in GAME/OPEN/END;setIntCallback indexes base by interrupt slot	vendor callback pointer array; original static name unresolved
-GAME.EXE	0x8006d514	0x5cd14	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d518	0x5cd18	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d51c	0x5cd1c	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d528	0x5cd28	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d52c	0x5cd2c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d514	0x5cd14	0x1c	pointer	manual:LIBETC INTR_DMA bounded callback table		pointer[7]	archive .data+0 and +0x18 xrefs;exact vendored DMAInit/intDMA indexed loop 0..6	seven DMA callback pointers; original static name unresolved
 GAME.EXE	0x8006d530	0x5cd30	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d534	0x5cd34	0x31	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: vsync.c,v 1.7 1995/03/14 04:44:17 suzu Exp $
 GAME.EXE	0x8006d565	0x5cd65	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -708,8 +705,7 @@ GAME.EXE	0x8006d698	0x5ce98	0x4	defined	manual:menu cursor frame		s32	retail zer
 GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	manual:menu cursor direction		s32	retail zero word;9 validated xrefs;menu_frame_begin stores 1 or -1 on bounds	cursor animation direction; original containing object and TU unproved
 GAME.EXE	0x8006d6a0	0x5cea0	0x1	defined	manual:card loaded slot		u8	retail zero byte;2 validated card reader/writer stores;source DATA owner in memory_card_events	last successful card slot byte
 GAME.EXE	0x8006d6a1	0x5cea1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d6a4	0x5cea4	0x1	defined	manual:card slot seed		s8	retail 0x20;three reviewed lui+lb pairs in card directory/header/writer	first signed-byte view of adjacent slot seed; original object extent and TU unproved
-GAME.EXE	0x8006d6a5	0x5cea5	0x1	defined	manual:card slot seed		s8	retail 0x00;three reviewed lui+lb pairs in card directory/header/writer	second signed-byte view of adjacent slot seed; original object extent and TU unproved
+GAME.EXE	0x8006d6a4	0x5cea4	0x2	defined	manual:card slot digit seed	memory_card_slot_digit_seed	s8[2]	retail bytes 0x20,0x00;both adjacent signed bytes feed card slot-digit strings in three functions	two-byte NUL-terminated slot-digit seed; defining TU modeled with its only consumers
 GAME.EXE	0x8006d6a6	0x5cea6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d6a8	0x5cea8	0x7	string	manual:card wildcard	memory_card_search_pattern	char[7]	retail bytes;firstfile argument at 0x80022744;source DATA claim	bu00:* plus NUL terminator; original TU boundary WIP
 GAME.EXE	0x8006d6af	0x5ceaf	0x1	unclassified	coverage-gap			payload-complement	zero alignment before player texture row rectangles
@@ -764,7 +760,7 @@ GAME.EXE	0x8006d7cb	0x5cfcb	0x1	unclassified	manual:LIBCD ISO9660 .sdata alignme
 GAME.EXE	0x8006d7cc	0x5cfcc	0x60	defined	manual:exact Psy-Q 3.0 LIBCD CDROM .sdata record		u32[24]	archive 96-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d82c	0x5d02c	0xc	defined	manual:exact Psy-Q 3.0 LIBCD CDROM .sdata record		u32[3]	archive 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d838	0x5d038	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d83c	0x5d03c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d83c	0x5d03c	0x4	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .sdata		u32	archive 4-byte zero section exact;SpuStart/SpuQuit section-relative HI16/LO16 pairs	SDK start-state flag; original C declaration unresolved
 GAME.EXE	0x8006d840	0x5d040	0x1c	defined	manual:exact Psy-Q 3.0 LIBSPU SPU .sdata record		u32[7]	archive 28-byte hardware-pointer record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d85c	0x5d05c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d860	0x5d060	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -775,7 +771,7 @@ GAME.EXE	0x8006d870	0x5d070	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006d874	0x5d074	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8006d876	0x5d076	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d878	0x5d078	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006d87c	0x5d07c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006d87c	0x5d07c	0x4	pointer	manual:exact Psy-Q 3.0 LIBGTE CLIP_INI.OBJ .sdata XDEF	CLIPEvbf	EVECTOR *	archive XDEF at .sdata+0;InitClip XREF +0xdc;retail initializer points to _tmp_evbf	SDK clipping edge-buffer pointer
 GAME.EXE	0x8006d880	0x5d080	0x10	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d890	0x5d090	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_VB export	Vcount	u32	archive XDEF at .sdata+0x10;separate four-byte zero record;retail exact	vendored 32-bit counter; original C signedness unresolved
 GAME.EXE	0x8006d894	0x5d094	0xc	defined	manual:exact Psy-Q 3.0 LIBETC INTR .sdata record		u32[3]	archive 12-byte pointer-and-zero record;retail exact	vendor section record; original C declaration and linkage unresolved
@@ -1472,11 +1468,7 @@ OPEN.EXE	0x8003d170	0x2c970	0x30	string	byte-pattern		ascii	investigation:string
 OPEN.EXE	0x8003d1a0	0x2c9a0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003d1a4	0x2c9a4	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data record		u32[6]	archive patches at +0,+8,+c,+10;two zero words and all retail pointer targets exact in OPEN/END	vendor INTR callback record; original C declaration unresolved
 OPEN.EXE	0x8003d1bc	0x2c9bc	0x2c	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data callback array		pointer[11]	44-byte archive zero block exact in OPEN/END;setIntCallback indexes base by interrupt slot	vendor callback pointer array; original static name unresolved
-OPEN.EXE	0x8003d1e8	0x2c9e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003d1ec	0x2c9ec	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003d1f0	0x2c9f0	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003d1fc	0x2c9fc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003d200	0x2ca00	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003d1e8	0x2c9e8	0x1c	pointer	manual:LIBETC INTR_DMA bounded callback table		pointer[7]	archive .data+0 and +0x18 xrefs;exact vendored DMAInit/intDMA indexed loop 0..6	seven DMA callback pointers; original static name unresolved
 OPEN.EXE	0x8003d204	0x2ca04	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003d208	0x2ca08	0x31	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: vsync.c,v 1.7 1995/03/14 04:44:17 suzu Exp $
 OPEN.EXE	0x8003d239	0x2ca39	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1488,7 +1480,8 @@ OPEN.EXE	0x8003d24e	0x2ca4e	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4
 OPEN.EXE	0x8003d250	0x2ca50	0x1c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003d26c	0x2ca6c	0x20	defined	manual:exact Psy-Q 3.0 LIBAPI COUNTER.OBJ .data record		u32[8]	all 32 archive bytes match OPEN/END;StartRCnt base and field accesses	vendor counter data record; original C declaration unresolved
 OPEN.EXE	0x8003d28c	0x2ca8c	0x182	defined	manual:exact Psy-Q 3.0 LIBSPU S_N2P.OBJ .data		u16[193]	archive 386-byte Code section exact in retail;note-to-pitch indexed lhu	static note-to-pitch ratio table; original static symbol unresolved
-OPEN.EXE	0x8003d40e	0x2cc0e	0x402	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003d40e	0x2cc0e	0x2	unclassified	coverage-gap			payload-complement	2-byte alignment before LIBSPU S_INI.OBJ .data
+OPEN.EXE	0x8003d410	0x2cc10	0x400	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .data XDEF		u8[1024]	archive XDEF _spu_zerobuf at .data+0;1024 zero bytes exact;SpuClearReverbWorkArea archive xref and retail address	SDK SPU transfer buffer
 OPEN.EXE	0x8003d810	0x2d010	0x10	defined	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .data		u8[16]	archive 16-byte Code section;retail exact;_spu_init passes 0x10 bytes	SDK initialized fill bytes; original static name unresolved
 OPEN.EXE	0x8003d820	0x2d020	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_startaddr at +0;760 archive bytes match retail	reverb mode start-address table, indexed by mode 0..9
 OPEN.EXE	0x8003d848	0x2d048	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_workareasize at +0x28;760 archive bytes match retail	reverb mode work-area-size table, indexed by mode 0..9
@@ -1645,14 +1638,14 @@ OPEN.EXE	0x8003de70	0x2d670	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/gh
 OPEN.EXE	0x8003de74	0x2d674	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de78	0x2d678	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de88	0x2d688	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de8c	0x2d68c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de90	0x2d690	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de94	0x2d694	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de98	0x2d698	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de9c	0x2d69c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dea0	0x2d6a0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dea4	0x2d6a4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dea8	0x2d6a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003de8c	0x2d68c	0x4	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .sdata		u32	archive 4-byte zero section exact;SpuStart/SpuQuit section-relative HI16/LO16 pairs	SDK start-state flag; original C declaration unresolved
+OPEN.EXE	0x8003de90	0x2d690	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de94	0x2d694	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de98	0x2d698	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x8;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de9c	0x2d69c	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0xc;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea0	0x2d6a0	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea4	0x2d6a4	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea8	0x2d6a8	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 OPEN.EXE	0x8003deac	0x2d6ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003deb0	0x2d6b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003deb4	0x2d6b4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -2264,11 +2257,7 @@ END.EXE	0x8003a01c	0x2981c	0x30	string	byte-pattern		ascii	investigation:string-
 END.EXE	0x8003a04c	0x2984c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003a050	0x29850	0x18	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data record		u32[6]	archive patches at +0,+8,+c,+10;two zero words and all retail pointer targets exact in OPEN/END	vendor INTR callback record; original C declaration unresolved
 END.EXE	0x8003a068	0x29868	0x2c	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .data callback array		pointer[11]	44-byte archive zero block exact in OPEN/END;setIntCallback indexes base by interrupt slot	vendor callback pointer array; original static name unresolved
-END.EXE	0x8003a094	0x29894	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003a098	0x29898	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003a09c	0x2989c	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003a0a8	0x298a8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003a0ac	0x298ac	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003a094	0x29894	0x1c	pointer	manual:LIBETC INTR_DMA bounded callback table		pointer[7]	archive .data+0 and +0x18 xrefs;exact vendored DMAInit/intDMA indexed loop 0..6	seven DMA callback pointers; original static name unresolved
 END.EXE	0x8003a0b0	0x298b0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003a0b4	0x298b4	0x31	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: vsync.c,v 1.7 1995/03/14 04:44:17 suzu Exp $
 END.EXE	0x8003a0e5	0x298e5	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2280,7 +2269,8 @@ END.EXE	0x8003a0fa	0x298fa	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/
 END.EXE	0x8003a0fc	0x298fc	0x1c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003a118	0x29918	0x20	defined	manual:exact Psy-Q 3.0 LIBAPI COUNTER.OBJ .data record		u32[8]	all 32 archive bytes match OPEN/END;StartRCnt base and field accesses	vendor counter data record; original C declaration unresolved
 END.EXE	0x8003a138	0x29938	0x182	defined	manual:exact Psy-Q 3.0 LIBSPU S_N2P.OBJ .data		u16[193]	archive 386-byte Code section exact in retail;note-to-pitch indexed lhu	static note-to-pitch ratio table; original static symbol unresolved
-END.EXE	0x8003a2ba	0x29aba	0x402	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8003a2ba	0x29aba	0x2	unclassified	coverage-gap			payload-complement	2-byte alignment before LIBSPU S_INI.OBJ .data
+END.EXE	0x8003a2bc	0x29abc	0x400	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .data XDEF		u8[1024]	archive XDEF _spu_zerobuf at .data+0;1024 zero bytes exact;SpuClearReverbWorkArea archive xref and retail address	SDK SPU transfer buffer
 END.EXE	0x8003a6bc	0x29ebc	0x10	defined	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .data		u8[16]	archive 16-byte Code section;retail exact;_spu_init passes 0x10 bytes	SDK initialized fill bytes; original static name unresolved
 END.EXE	0x8003a6cc	0x29ecc	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_startaddr at +0;760 archive bytes match retail	reverb mode start-address table, indexed by mode 0..9
 END.EXE	0x8003a6f4	0x29ef4	0x28	defined	manual:exact Psy-Q 3.0 LIBSPU S_SRMP.OBJ .data		u32[10]	archive XDEF _spu_rev_workareasize at +0x28;760 archive bytes match retail	reverb mode work-area-size table, indexed by mode 0..9
@@ -2407,14 +2397,14 @@ END.EXE	0x8003ac90	0x2a490	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghi
 END.EXE	0x8003ac94	0x2a494	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac98	0x2a498	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
 END.EXE	0x8003aca8	0x2a4a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acac	0x2a4ac	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acb0	0x2a4b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acb4	0x2a4b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acb8	0x2a4b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acbc	0x2a4bc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acc0	0x2a4c0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acc4	0x2a4c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003acc8	0x2a4c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003acac	0x2a4ac	0x4	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .sdata		u32	archive 4-byte zero section exact;SpuStart/SpuQuit section-relative HI16/LO16 pairs	SDK start-state flag; original C declaration unresolved
+END.EXE	0x8003acb0	0x2a4b0	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acb4	0x2a4b4	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acb8	0x2a4b8	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x8;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acbc	0x2a4bc	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0xc;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc0	0x2a4c0	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc4	0x2a4c4	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc8	0x2a4c8	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 END.EXE	0x8003accc	0x2a4cc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003acd0	0x2a4d0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003acd4	0x2a4d4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

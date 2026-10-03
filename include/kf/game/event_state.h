@@ -23,7 +23,8 @@ typedef char kf_event_control_object_slot_resource_offset[
     (u32)&((KfEventControlObjectSlot *)0)->resource_id == 2 ? 1 : -1];
 
 typedef struct KfEventControlFields {
-    u8 unknown_04[0x28];
+    u8 highest_requested_map_region_id;
+    u8 unknown_05[0x27];
     KfEventControlObjectSlot object_slots[3];
     u8 unknown_34[0x0b];
     u8 stream_actor_definition_id;

@@ -254,6 +254,120 @@ typedef char kf_map_object_tail_ambient_sound_id_offset[
 typedef char kf_map_object_tail_ambient_repeat_delay_offset[
     (u32)&((KfMapObjectTailAmbientSoundView *)0)->repeat_delay_units == 10 ? 1 : -1];
 
+/* Actions 3 and 4 copy a rotated region between map-cell coordinates. */
+typedef struct KfMapObjectTailCellCopyView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 destination_x;
+    u8 destination_z;
+    u8 source_x;
+    u8 source_z;
+    u8 unknown_3d;
+    u16 unknown_3e;
+} KfMapObjectTailCellCopyView;
+typedef char kf_map_object_tail_cell_copy_size[
+    sizeof(KfMapObjectTailCellCopyView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_cell_copy_destination_offset[
+    (u32)&((KfMapObjectTailCellCopyView *)0)->destination_x == 5 ? 1 : -1];
+typedef char kf_map_object_tail_cell_copy_source_offset[
+    (u32)&((KfMapObjectTailCellCopyView *)0)->source_x == 7 ? 1 : -1];
+
+/* Action 88 stores its copy coordinates and dimensions at different offsets. */
+typedef struct KfMapObjectTailAction88CellCopyView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    u8 destination_x;
+    u8 destination_z;
+    u8 source_x;
+    u8 source_z;
+    u8 width;
+    u8 height;
+} KfMapObjectTailAction88CellCopyView;
+typedef char kf_map_object_tail_action88_cell_copy_size[
+    sizeof(KfMapObjectTailAction88CellCopyView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action88_source_offset[
+    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->source_x == 8 ? 1 : -1];
+typedef char kf_map_object_tail_action88_width_offset[
+    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->width == 10 ? 1 : -1];
+
+/* Action 84 checks a camera region and alternates two pattern rows. */
+typedef struct KfMapObjectTailAction84PatternView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 center_x;
+    u8 center_z;
+    u8 region_width;
+    u8 region_depth;
+    u8 depth_code;
+    u8 pattern_flags;
+    u8 unknown_3f;
+} KfMapObjectTailAction84PatternView;
+typedef char kf_map_object_tail_action84_pattern_size[
+    sizeof(KfMapObjectTailAction84PatternView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action84_region_width_offset[
+    (u32)&((KfMapObjectTailAction84PatternView *)0)->region_width == 7 ? 1 : -1];
+typedef char kf_map_object_tail_action84_pattern_flags_offset[
+    (u32)&((KfMapObjectTailAction84PatternView *)0)->pattern_flags == 10 ? 1 : -1];
+
+/* Action 81 uses a camera gate and dispatches a magic impact on collision. */
+typedef struct KfMapObjectTailCollisionProbeView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 damage_multiplier_tenths;
+    u8 phase_step_code;
+    u8 camera_region_width;
+    u8 camera_region_depth;
+    u8 unknown_3d;
+    u16 unknown_3e;
+} KfMapObjectTailCollisionProbeView;
+typedef char kf_map_object_tail_collision_probe_size[
+    sizeof(KfMapObjectTailCollisionProbeView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_collision_damage_offset[
+    (u32)&((KfMapObjectTailCollisionProbeView *)0)->damage_multiplier_tenths == 5 ? 1 : -1];
+typedef char kf_map_object_tail_collision_region_offset[
+    (u32)&((KfMapObjectTailCollisionProbeView *)0)->camera_region_width == 7 ? 1 : -1];
+
+/* Actions 5, 8, and 22 direct property changes to a linked map object. */
+typedef struct KfMapObjectTailLinkedPropertyView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    u16 linked_object_index;
+    u32 unknown_3c;
+} KfMapObjectTailLinkedPropertyView;
+typedef char kf_map_object_tail_linked_property_size[
+    sizeof(KfMapObjectTailLinkedPropertyView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_linked_property_index_offset[
+    (u32)&((KfMapObjectTailLinkedPropertyView *)0)->linked_object_index == 6 ? 1 : -1];
+
+/* Action 83 emits its marker after each opening or closing phase. */
+typedef struct KfMapObjectTailAction83View {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 completion_marker;
+    u8 unknown_3a[6];
+} KfMapObjectTailAction83View;
+typedef char kf_map_object_tail_action83_size[
+    sizeof(KfMapObjectTailAction83View) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action83_marker_offset[
+    (u32)&((KfMapObjectTailAction83View *)0)->completion_marker == 5 ? 1 : -1];
+
+/* Action 19 grows and animates a linked map object in 1/32-scale steps. */
+typedef struct KfMapObjectTailScaleLinkView {
+    u32 unknown_34;
+    u8 scale_step_code;
+    u8 unknown_39;
+    u16 linked_object_index;
+    u32 unknown_3c;
+} KfMapObjectTailScaleLinkView;
+typedef char kf_map_object_tail_scale_link_size[
+    sizeof(KfMapObjectTailScaleLinkView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_scale_step_offset[
+    (u32)&((KfMapObjectTailScaleLinkView *)0)->scale_step_code == 4 ? 1 : -1];
+typedef char kf_map_object_tail_scale_link_index_offset[
+    (u32)&((KfMapObjectTailScaleLinkView *)0)->linked_object_index == 6 ? 1 : -1];
+
 /* Event archive commands read the two state bytes at +0x38 as one halfword. */
 typedef struct KfMapObjectTailPair38View {
     u32 unknown_34;
@@ -306,6 +420,13 @@ typedef union KfMapObjectTail {
     KfMapObjectTailResourceTriggerView resource_trigger;
     KfMapObjectTailAnimatedView animated;
     KfMapObjectTailAmbientSoundView ambient_sound;
+    KfMapObjectTailCellCopyView cell_copy;
+    KfMapObjectTailAction88CellCopyView action_88_cell_copy;
+    KfMapObjectTailAction84PatternView action_84_pattern;
+    KfMapObjectTailCollisionProbeView collision_probe;
+    KfMapObjectTailLinkedPropertyView linked_property;
+    KfMapObjectTailAction83View action_83;
+    KfMapObjectTailScaleLinkView scale_link;
     KfMapObjectTailPair38View pair_38;
     KfMapObjectTailEventEffectView event_effect;
     KfMapObjectTailSpawnByteFields spawn_bytes;

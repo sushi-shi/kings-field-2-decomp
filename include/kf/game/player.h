@@ -272,7 +272,8 @@ typedef struct KfPlayerState {
     u8 unknown_09;
     u8 force_actor_lifecycle_refresh;
     u8 weapon_charge_delay;
-    u8 unknown_0c[2];
+    u8 unknown_0c;
+    u8 movement_speed_adjustment_decay_latch;
     u16 movement_speed_adjustment_q12;
     s16 damage_scale;
     KfPlayerVitals vitals;
@@ -383,6 +384,8 @@ typedef struct KfPlayerState {
 } KfPlayerState;
 
 typedef char kf_player_state_size[sizeof(KfPlayerState) == 0x160 ? 1 : -1];
+typedef char kf_player_movement_speed_adjustment_decay_latch_offset[
+    (u32)&((KfPlayerState *)0)->movement_speed_adjustment_decay_latch == 0x0d ? 1 : -1];
 typedef char kf_player_lifecycle_refresh_offset[
     (u32)&((KfPlayerState *)0)->force_actor_lifecycle_refresh == 0x0a ? 1 : -1];
 typedef char kf_player_unknown_97_offset[

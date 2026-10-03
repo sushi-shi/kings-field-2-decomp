@@ -149,7 +149,8 @@ void map_object_refresh_cell_markers(s32 mode)
             if (object->tail.fields.unknown_38 == 0xfe) {
                 continue;
             }
-            map_object_set_property(object->tail.fields.unknown_3a.value, mode, object->layer_mask);
+            map_object_set_property(object->tail.linked_property.linked_object_index, mode,
+                                    object->layer_mask);
             template = &map_object_state.templates[object->object_id];
             map_object_set_cell_marker(object, mode, template->marker_action_05);
         }
@@ -249,10 +250,10 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 4:
             map_cell_copy_rotated_fields(object->layer_mask,
-                          (u8)object->tail.fields.unknown_3a.bytes.high + 2,
-                          (u8)object->tail.fields.spawn_sequence,
-                          object->tail.fields.unknown_39,
-                          object->tail.fields.unknown_3a.bytes.low,
+                          (u8)object->tail.cell_copy.source_x + 2,
+                          object->tail.cell_copy.source_z,
+                          object->tail.cell_copy.destination_x,
+                          object->tail.cell_copy.destination_z,
                           2, 2, 0, 0x2d);
             object->action = 4;
             object->action_timer = 2;
@@ -265,11 +266,11 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                 (const KfMapObjectTemplateCellActionView *)template;
             object->asset_clip_selector = 0;
             map_cell_copy_rotated_fields(object->layer_mask,
-                          (u8)object->tail.fields.unknown_3a.bytes.high +
+                          (u8)object->tail.cell_copy.source_x +
                               cell_template->cell_width * 2,
-                          (u8)object->tail.fields.spawn_sequence,
-                          object->tail.fields.unknown_39,
-                          object->tail.fields.unknown_3a.bytes.low,
+                          object->tail.cell_copy.source_z,
+                          object->tail.cell_copy.destination_x,
+                          object->tail.cell_copy.destination_z,
                           cell_template->cell_width, cell_template->cell_height,
                           object->rotation.vy, 0x2d);
             object->action = 3;
@@ -355,7 +356,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[
                               ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
-                              (object->tail.fields.unknown_3e.bytes.low & 1)],
+                              (object->tail.action_84_pattern.pattern_flags & 1)],
                           0, 0);
             object->scale.vz = 0;
             object->scale.vy = 0;

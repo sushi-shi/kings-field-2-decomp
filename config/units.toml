@@ -222,12 +222,6 @@ source = "src/game/menu_equipment_list.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_magic_list"
-image = "GAME.EXE"
-source = "src/game/menu_magic_list.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_simple_loop"
 image = "GAME.EXE"
 source = "src/game/menu_simple_loop.c"
@@ -252,21 +246,9 @@ source = "src/game/menu_item_buy_sell_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_input_poll"
-image = "GAME.EXE"
-source = "src/game/menu_input_poll.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_status_render"
 image = "GAME.EXE"
 source = "src/game/menu_status_render.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_pair_rows"
-image = "GAME.EXE"
-source = "src/game/menu_pair_rows.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -435,12 +417,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.resource_runtime"
 image = "GAME.EXE"
 source = "src/game/resource_runtime.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_resource_dispatch"
-image = "GAME.EXE"
-source = "src/game/render_resource_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

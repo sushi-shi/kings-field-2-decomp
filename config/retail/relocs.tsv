@@ -4243,8 +4243,8 @@ GAME.EXE	0x80022694	0x11e94		mips26	reachable-code	0x800232ac	load	memory_card_w
 GAME.EXE	0x800226b4	0x11eb4		mips26	reachable-code	0x8005f3b0	load	open	jal		control-flow	reviewed	manual:memory_card_probe
 GAME.EXE	0x800226c0	0x11ec0		mips26	reachable-code	0x8005f120	load	close	jal		control-flow	reviewed	manual:memory_card_probe
 GAME.EXE	0x800226c8	0x11ec8		mips26	reachable-code	0x8005f150	load	delete	jal		control-flow	reviewed	manual:memory_card_probe
-GAME.EXE	0x80022714	0x11f14	0x80022718	mips_hi16_lo16	reachable-code	0x8006d6a4	load	DAT_8006d6a4	lui+lb	v0	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
-GAME.EXE	0x8002271c	0x11f1c	0x80022720	mips_hi16_lo16	reachable-code	0x8006d6a5	load	DAT_8006d6a5	lui+lb	v1	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x80022714	0x11f14	0x80022718	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x8002271c	0x11f1c	0x80022720	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
 GAME.EXE	0x80022738	0x11f38		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:decoded card-directory direct call
 GAME.EXE	0x80022744	0x11f44	0x80022748	mips_hi16_lo16	reachable-code	0x8006d6a8	load	memory_card_search_pattern	lui+addiu	a0	paired-reviewed	reviewed	manual:decoded card-directory firstfile wildcard pointer; exact bu00:* NUL bytes
 GAME.EXE	0x8002274c	0x11f4c		mips26	reachable-code	0x8005f3d0	load	firstfile	jal		control-flow	reviewed	manual:decoded card-directory direct call
@@ -4257,8 +4257,8 @@ GAME.EXE	0x800227c4	0x11fc4		mips26	reachable-code	0x8005f470	load	strncmp	jal		
 GAME.EXE	0x800227dc	0x11fdc		mips26	reachable-code	0x8005f490	load	atoi	jal		control-flow	reviewed	manual:decoded card-directory direct call
 GAME.EXE	0x800228f4	0x120f4	0x800228f8	mips_hi16_lo16	reachable-code	0x80011120	load		lui+addiu	a1	paired-reviewed	reviewed	manual:decoded card path literal owned by directory RODATA
 GAME.EXE	0x80022924	0x12124		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
-GAME.EXE	0x8002292c	0x1212c	0x80022930	mips_hi16_lo16	reachable-code	0x8006d6a4	load	DAT_8006d6a4	lui+lb	v0	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
-GAME.EXE	0x80022934	0x12134	0x80022938	mips_hi16_lo16	reachable-code	0x8006d6a5	load	DAT_8006d6a5	lui+lb	v1	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x8002292c	0x1212c	0x80022930	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x80022934	0x12134	0x80022938	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
 GAME.EXE	0x80022948	0x12148	0x8002294c	mips_hi16_lo16	reachable-code	0x80066670	load	memory_card_file_prefix	lui+addiu	a1	paired-reviewed	reviewed	manual:retail card header prefix address and owned initialized datum
 GAME.EXE	0x80022954	0x12154		mips26	reachable-code	0x8005f470	load	strncmp	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
 GAME.EXE	0x80022968	0x12168		mips26	reachable-code	0x8005f420	load	strcat	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
@@ -4286,8 +4286,8 @@ GAME.EXE	0x80022c64	0x12464	0x80022c68	mips_hi16_lo16	reachable-code	0x8006d6a0	
 GAME.EXE	0x80022c6c	0x1246c		mips26	reachable-code	0x80022c84	load		j		control-flow	reviewed	manual:retail card-writer success tail and source guard
 GAME.EXE	0x80022cc4	0x124c4	0x80022cc8	mips_hi16_lo16	reachable-code	0x80011120	load		lui+addiu	a1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022cf4	0x124f4		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022cfc	0x124fc	0x80022d00	mips_hi16_lo16	reachable-code	0x8006d6a4	load	DAT_8006d6a4	lui+lb	v0	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022d04	0x12504	0x80022d08	mips_hi16_lo16	reachable-code	0x8006d6a5	load	DAT_8006d6a5	lui+lb	v1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022cfc	0x124fc	0x80022d00	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022d04	0x12504	0x80022d08	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d1c	0x1251c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d2c	0x1252c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d3c	0x1253c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
@@ -10022,21 +10022,25 @@ GAME.EXE	0x8004d32c	0x3cb2c		mips26	reachable-code	0x8004d338	load		j		control-f
 GAME.EXE	0x8004d360	0x3cb60		mips26	reachable-code	0x8005e848	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d368	0x3cb68		mips26	reachable-code	0x8004d5c0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d370	0x3cb70		mips26	reachable-code	0x8004d474	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d3b8	0x3cbb8	0x8004d3bc	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x64;retail raw pair
 GAME.EXE	0x8004d3c4	0x3cbc4	0x8004d3c8	mips_hi16_lo16	reachable-code	0x800680ec	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d3e4	0x3cbe4		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d3f4	0x3cbf4	0x8004d3f8	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0xa0;retail raw pair
 GAME.EXE	0x8004d404	0x3cc04		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d43c	0x3cc3c		mips26	reachable-code	0x8004d354	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d45c	0x3cc5c		mips26	reachable-code	0x8004d354	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d474	0x3cc74	0x8004d478	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d48c	0x3cc8c	0x8004d490	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d474	0x3cc74	0x8004d478	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+lw	v0	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x120 section-relative .sdata+0;retail raw pair
+GAME.EXE	0x8004d48c	0x3cc8c	0x8004d490	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x138 section-relative .sdata+0;retail raw pair
 GAME.EXE	0x8004d494	0x3cc94		mips26	reachable-code	0x8005f110	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d4a0	0x3cca0		mips26	reachable-code	0x8004d848	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d4a8	0x3cca8	0x8004d4ac	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x154;retail raw pair
 GAME.EXE	0x8004d4c0	0x3ccc0		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d4d0	0x3ccd0		mips26	reachable-code	0x8005f140	load	EnableEvent	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d4d8	0x3ccd8		mips26	reachable-code	0x8005f390	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d4f0	0x3ccf0	0x8004d4f4	mips_hi16_lo16	instruction-word	0x8006d83c	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d508	0x3cd08	0x8004d50c	mips_hi16_lo16	instruction-word	0x8006d83c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d4f0	0x3ccf0	0x8004d4f4	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+lw	v1	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0 section-relative .sdata+0;retail raw pair
+GAME.EXE	0x8004d508	0x3cd08	0x8004d50c	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0x18 section-relative .sdata+0;retail raw pair
 GAME.EXE	0x8004d510	0x3cd10		mips26	instruction-word	0x8005f110	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d518	0x3cd18	0x8004d51c	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x1c4;retail raw pair
 GAME.EXE	0x8004d520	0x3cd20		mips26	instruction-word	0x8004d820	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d530	0x3cd30		mips26	instruction-word	0x8005f0f0	load	CloseEvent	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d540	0x3cd40		mips26	instruction-word	0x8005f2f0	load	DisableEvent	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -10444,7 +10448,7 @@ GAME.EXE	0x800505f8	0x3fdf8		mips26	reachable-code	0x8004def0	load		jal		control
 GAME.EXE	0x80050624	0x3fe24		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050638	0x3fe38		mips26	reachable-code	0x80050644	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050644	0x3fe44		mips26	reachable-code	0x8005079c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005064c	0x3fe4c	0x80050650	mips_hi16_lo16	reachable-code	0x80067cdc	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005064c	0x3fe4c	0x80050650	mips_hi16_lo16	reachable-code	0x80067cdc	load		lui+addiu	a0	paired-reachable	reviewed	manual:LIBSPU S_CRWA.OBJ XREF _spu_zerobuf at +0xe4;retail raw pair
 GAME.EXE	0x80050654	0x3fe54		mips26	reachable-code	0x800507ec	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005065c	0x3fe5c		mips26	reachable-code	0x800506b0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050680	0x3fe80		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -11013,18 +11017,20 @@ GAME.EXE	0x8005aac4	0x4a2c4		mips26	instruction-word	0x8005ac44	load		jal		range
 GAME.EXE	0x8005aacc	0x4a2cc	0x8005aad0	mips_hi16_lo16	instruction-word	0x80068670	load		lui+lw	ra	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005aad8	0x4a2d8	0x8005aadc	mips_hi16_lo16	instruction-word	0x80068678	load		lui+lw	t4	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005aae0	0x4a2e0	0x8005aae4	mips_hi16_lo16	instruction-word	0x8006867c	load		lui+lw	t5	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bacc	0x4b2cc	0x8005bad0	mips_hi16_lo16	instruction-word	0x80068998	load		lui+lw	t6	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bae0	0x4b2e0	0x8005bae4	mips_hi16_lo16	instruction-word	0x8006898c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bae8	0x4b2e8	0x8005baf0	mips_hi16_lo16	instruction-word	0x80068c1c	load		lui+addiu	a0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005bacc	0x4b2cc	0x8005bad0	mips_hi16_lo16	instruction-word	0x80068998	load	DAT_8006898c	lui+lw	t6	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PushMatrix +0xcb8 .data+0xc XREF;retail raw pair
+GAME.EXE	0x8005bae0	0x4b2e0	0x8005bae4	mips_hi16_lo16	instruction-word	0x8006898c	load	DAT_8006898c	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PushMatrix +0xccc .data base XREF;retail raw pair
+GAME.EXE	0x8005bae8	0x4b2e8	0x8005baf0	mips_hi16_lo16	instruction-word	0x80068c1c	load		lui+addiu	a0	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PushMatrix +0xcd4 diagnostic literal XREF;retail raw pair
 GAME.EXE	0x8005baec	0x4b2ec		mips26	instruction-word	0x8005f430	load	printf	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005baf4	0x4b2f4	0x8005baf8	mips_hi16_lo16	instruction-word	0x8006898c	load		lui+lw	ra	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bb5c	0x4b35c	0x8005bb60	mips_hi16_lo16	instruction-word	0x80068998	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bb6c	0x4b36c	0x8005bb70	mips_hi16_lo16	instruction-word	0x80068998	load		lui+lw	t6	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bb7c	0x4b37c	0x8005bb80	mips_hi16_lo16	instruction-word	0x8006898c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bb84	0x4b384	0x8005bb8c	mips_hi16_lo16	instruction-word	0x80068c4d	load		lui+addiu	a0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005baf4	0x4b2f4	0x8005baf8	mips_hi16_lo16	instruction-word	0x8006898c	load	DAT_8006898c	lui+lw	ra	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PushMatrix +0xce0 .data base XREF;retail raw pair
+GAME.EXE	0x8005bb08	0x4b308	0x8005bb10	mips_hi16_lo16	instruction-word	0x8006899c	load	DAT_8006898c	lui+addiu	t7	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PushMatrix +0xcf4 .data+0x10 XREF;retail raw pair
+GAME.EXE	0x8005bb5c	0x4b35c	0x8005bb60	mips_hi16_lo16	instruction-word	0x80068998	load	DAT_8006898c	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd48 .data+0xc XREF;retail raw pair
+GAME.EXE	0x8005bb6c	0x4b36c	0x8005bb70	mips_hi16_lo16	instruction-word	0x80068998	load	DAT_8006898c	lui+lw	t6	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd58 .data+0xc XREF;retail raw pair
+GAME.EXE	0x8005bb7c	0x4b37c	0x8005bb80	mips_hi16_lo16	instruction-word	0x8006898c	load	DAT_8006898c	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd68 .data base XREF;retail raw pair
+GAME.EXE	0x8005bb84	0x4b384	0x8005bb8c	mips_hi16_lo16	instruction-word	0x80068c4d	load		lui+addiu	a0	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd70 diagnostic literal XREF;retail raw pair
 GAME.EXE	0x8005bb88	0x4b388		mips26	instruction-word	0x8005f430	load	printf	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bb90	0x4b390	0x8005bb94	mips_hi16_lo16	instruction-word	0x8006898c	load		lui+lw	ra	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005bba8	0x4b3a8	0x8005bbac	mips_hi16_lo16	instruction-word	0x80068998	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005bb90	0x4b390	0x8005bb94	mips_hi16_lo16	instruction-word	0x8006898c	load	DAT_8006898c	lui+lw	ra	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd7c .data base XREF;retail raw pair
+GAME.EXE	0x8005bba8	0x4b3a8	0x8005bbac	mips_hi16_lo16	instruction-word	0x80068998	load	DAT_8006898c	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd94 .data+0xc XREF;retail raw pair
+GAME.EXE	0x8005bbb0	0x4b3b0	0x8005bbb8	mips_hi16_lo16	instruction-word	0x8006899c	load	DAT_8006898c	lui+addiu	t7	paired-reviewed	reviewed	manual:LIBGTE MTX.OBJ PopMatrix +0xd9c .data+0x10 XREF;retail raw pair
 GAME.EXE	0x8005bd10	0x4b510		mips26	reachable-code	0x8005bdf4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005bd38	0x4b538		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005bda0	0x4b5a0		mips26	reachable-code	0x8005bf74	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -11086,7 +11092,13 @@ GAME.EXE	0x8005c980	0x4c180		mips26	reachable-code	0x8005c9b8	load		j		control-f
 GAME.EXE	0x8005c9cc	0x4c1cc		mips26	reachable-code	0x8005a7bc	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005c9e8	0x4c1e8		mips26	reachable-code	0x8005a8cc	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005c9f8	0x4c1f8		mips26	reachable-code	0x8005cc04	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005cb44	0x4c344	0x8005cb48	mips_hi16_lo16	reachable-code	0x8006d87c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005cb44	0x4c344	0x8005cb48	mips_hi16_lo16	reachable-code	0x8006d87c	load	CLIPEvbf	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xdc XREF .sdata CLIPEvbf;retail raw pair
+GAME.EXE	0x8005cb4c	0x4c34c	0x8005cb50	mips_hi16_lo16	reachable-code	0x8017d138	bss	CLIPNearz	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xe4 XREF XBSS CLIPNearz;retail raw pair
+GAME.EXE	0x8005cb54	0x4c354	0x8005cb58	mips_hi16_lo16	reachable-code	0x8012da58	bss	CLIPFarz	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xec XREF XBSS CLIPFarz;retail raw pair
+GAME.EXE	0x8005cb5c	0x4c35c	0x8005cb60	mips_hi16_lo16	reachable-code	0x800fba40	bss	CLIPHdkx	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xf4 XREF XBSS CLIPHdkx;retail raw pair
+GAME.EXE	0x8005cb64	0x4c364	0x8005cb68	mips_hi16_lo16	reachable-code	0x800fba50	bss	CLIPHdky	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0xfc XREF XBSS CLIPHdky;retail raw pair
+GAME.EXE	0x8005cb6c	0x4c36c	0x8005cb70	mips_hi16_lo16	reachable-code	0x800fba38	bss	CLIPKdhx	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0x104 XREF XBSS CLIPKdhx;retail raw pair
+GAME.EXE	0x8005cb74	0x4c374	0x8005cb78	mips_hi16_lo16	reachable-code	0x800fba48	bss	CLIPKdhy	lui+sw	at	paired-reviewed	reviewed	manual:LIBGTE CLIP_INI.OBJ InitClip +0x10c XREF XBSS CLIPKdhy;retail raw pair
 GAME.EXE	0x8005d100	0x4c900		mips26	reachable-code	0x8005d128	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005d164	0x4c964		mips26	reachable-code	0x8005d190	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005d1f0	0x4c9f0		mips26	reachable-code	0x8005d224	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -11882,6 +11894,7 @@ GAME.EXE	0x8006d64c	0x5ce4c		mips32_candidate	raw-word	0x8006d988	load		.word		r
 GAME.EXE	0x8006d650	0x5ce50		mips32_candidate	raw-word	0x8006d984	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006d654	0x5ce54		mips32_candidate	raw-word	0x8006d980	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006d658	0x5ce58		mips32_candidate	raw-word	0x8006d97c	load		.word		range-only	candidate	investigation:relocs.tsv
+GAME.EXE	0x8006d87c	0x5d07c		mips32_candidate	raw-word	0x801b5aa0	bss	_tmp_evbf	.word		range-only	reviewed	manual:LIBGTE CLIP_INI.OBJ .sdata+0 XDEF CLIPEvbf pointer patch to XBSS _tmp_evbf;retail raw word
 GAME.EXE	0x8006d894	0x5d094		mips32_candidate	raw-word	0x8006d4d0	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006d8c4	0x5d0c4		mips32_candidate	raw-word	0x8006d5bc	load		.word		range-only	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006d8c8	0x5d0c8		mips32_candidate	raw-word	0x8005f430	load	printf	.word		range-only	candidate	investigation:relocs.tsv
@@ -14378,21 +14391,25 @@ OPEN.EXE	0x80027200	0x16a00		mips26	instruction-word	0x80021b8c	load		jal		range
 OPEN.EXE	0x8002734c	0x16b4c		mips26	reachable-code	0x8001db04	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80027354	0x16b54		mips26	reachable-code	0x800275ac	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002735c	0x16b5c		mips26	reachable-code	0x80027460	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800273a4	0x16ba4	0x800273a8	mips_hi16_lo16	reachable-code	0x800a6418	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x64;retail raw pair
 OPEN.EXE	0x800273b0	0x16bb0	0x800273b4	mips_hi16_lo16	reachable-code	0x8003d820	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800273d0	0x16bd0		mips26	reachable-code	0x80027edc	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800273e0	0x16be0	0x800273e4	mips_hi16_lo16	reachable-code	0x800a6418	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0xa0;retail raw pair
 OPEN.EXE	0x800273f0	0x16bf0		mips26	reachable-code	0x80027edc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80027428	0x16c28		mips26	reachable-code	0x80027340	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80027448	0x16c48		mips26	reachable-code	0x80027340	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80027460	0x16c60	0x80027464	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80027478	0x16c78	0x8002747c	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80027460	0x16c60	0x80027464	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+lw	v0	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x120 section-relative .sdata+0;retail raw pair
+OPEN.EXE	0x80027478	0x16c78	0x8002747c	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x138 section-relative .sdata+0;retail raw pair
 OPEN.EXE	0x80027480	0x16c80		mips26	reachable-code	0x8001cbd8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002748c	0x16c8c		mips26	reachable-code	0x80027834	load		jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80027494	0x16c94	0x80027498	mips_hi16_lo16	reachable-code	0x800a6418	bss	_spu_fd	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x154;retail raw pair
 OPEN.EXE	0x800274ac	0x16cac		mips26	reachable-code	0x8001ed98	load	OpenEvent	jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800274bc	0x16cbc		mips26	reachable-code	0x8001ec08	load	EnableEvent	jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x800274c4	0x16cc4		mips26	reachable-code	0x80014284	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800274dc	0x16cdc	0x800274e0	mips_hi16_lo16	instruction-word	0x8003de8c	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800274f4	0x16cf4	0x800274f8	mips_hi16_lo16	instruction-word	0x8003de8c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800274dc	0x16cdc	0x800274e0	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+lw	v1	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0 section-relative .sdata+0;retail raw pair
+OPEN.EXE	0x800274f4	0x16cf4	0x800274f8	mips_hi16_lo16	reachable-code	0x8003de8c	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0x18 section-relative .sdata+0;retail raw pair
 OPEN.EXE	0x800274fc	0x16cfc		mips26	instruction-word	0x8001cbd8	load		jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80027504	0x16d04	0x80027508	mips_hi16_lo16	reachable-code	0x800a6418	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x1c4;retail raw pair
 OPEN.EXE	0x8002750c	0x16d0c		mips26	instruction-word	0x8002780c	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002751c	0x16d1c		mips26	instruction-word	0x8001ebf8	load	CloseEvent	jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002752c	0x16d2c		mips26	instruction-word	0x8001ed88	load	DisableEvent	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -14725,7 +14742,7 @@ OPEN.EXE	0x8002a5e4	0x19de4		mips26	reachable-code	0x80027edc	load		jal		control
 OPEN.EXE	0x8002a610	0x19e10		mips26	reachable-code	0x80027edc	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002a624	0x19e24		mips26	reachable-code	0x8002a630	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002a630	0x19e30		mips26	reachable-code	0x8002a898	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8002a638	0x19e38	0x8002a63c	mips_hi16_lo16	reachable-code	0x8003d410	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8002a638	0x19e38	0x8002a63c	mips_hi16_lo16	reachable-code	0x8003d410	load		lui+addiu	a0	paired-reachable	reviewed	manual:LIBSPU S_CRWA.OBJ XREF _spu_zerobuf at +0xe4;retail raw pair
 OPEN.EXE	0x8002a640	0x19e40		mips26	reachable-code	0x8002a8e8	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002a648	0x19e48		mips26	reachable-code	0x8002a748	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8002a66c	0x19e6c		mips26	reachable-code	0x80027edc	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -16900,21 +16917,25 @@ END.EXE	0x800240cc	0x138cc		mips26	instruction-word	0x800240ec	load		j		range-fi
 END.EXE	0x800241f8	0x139f8		mips26	reachable-code	0x8001ad68	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80024200	0x13a00		mips26	reachable-code	0x80024458	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80024208	0x13a08		mips26	reachable-code	0x8002430c	load		jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80024250	0x13a50	0x80024254	mips_hi16_lo16	reachable-code	0x800a52e8	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x64;retail raw pair
 END.EXE	0x8002425c	0x13a5c	0x80024260	mips_hi16_lo16	reachable-code	0x8003a6cc	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8002427c	0x13a7c		mips26	reachable-code	0x80024d88	load		jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8002428c	0x13a8c	0x80024290	mips_hi16_lo16	reachable-code	0x800a52e8	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0xa0;retail raw pair
 END.EXE	0x8002429c	0x13a9c		mips26	reachable-code	0x80024d88	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800242d4	0x13ad4		mips26	reachable-code	0x800241ec	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800242f4	0x13af4		mips26	reachable-code	0x800241ec	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8002430c	0x13b0c	0x80024310	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80024324	0x13b24	0x80024328	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8002430c	0x13b0c	0x80024310	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+lw	v0	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x120 section-relative .sdata+0;retail raw pair
+END.EXE	0x80024324	0x13b24	0x80024328	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x138 section-relative .sdata+0;retail raw pair
 END.EXE	0x8002432c	0x13b2c		mips26	reachable-code	0x80019e3c	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80024338	0x13b38		mips26	reachable-code	0x800246e0	load		jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80024340	0x13b40	0x80024344	mips_hi16_lo16	reachable-code	0x800a52e8	bss	_spu_fd	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x154;retail raw pair
 END.EXE	0x80024358	0x13b58		mips26	reachable-code	0x8001bffc	load	OpenEvent	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80024368	0x13b68		mips26	reachable-code	0x8001be6c	load	EnableEvent	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80024370	0x13b70		mips26	reachable-code	0x80012c34	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80024388	0x13b88	0x8002438c	mips_hi16_lo16	instruction-word	0x8003acac	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x800243a0	0x13ba0	0x800243a4	mips_hi16_lo16	instruction-word	0x8003acac	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x80024388	0x13b88	0x8002438c	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+lw	v1	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0 section-relative .sdata+0;retail raw pair
+END.EXE	0x800243a0	0x13ba0	0x800243a4	mips_hi16_lo16	reachable-code	0x8003acac	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ SpuQuit+0x18 section-relative .sdata+0;retail raw pair
 END.EXE	0x800243a8	0x13ba8		mips26	instruction-word	0x80019e3c	load		jal		range-filtered	candidate	investigation:relocs.tsv
+END.EXE	0x800243b0	0x13bb0	0x800243b4	mips_hi16_lo16	reachable-code	0x800a52e8	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x1c4;retail raw pair
 END.EXE	0x800243b8	0x13bb8		mips26	instruction-word	0x800246b8	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x800243c8	0x13bc8		mips26	instruction-word	0x8001be5c	load	CloseEvent	jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x800243d8	0x13bd8		mips26	instruction-word	0x8001bfec	load	DisableEvent	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -17322,7 +17343,7 @@ END.EXE	0x80027490	0x16c90		mips26	reachable-code	0x80024d88	load		jal		control-
 END.EXE	0x800274bc	0x16cbc		mips26	reachable-code	0x80024d88	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800274d0	0x16cd0		mips26	reachable-code	0x800274dc	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800274dc	0x16cdc		mips26	reachable-code	0x80027744	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x800274e4	0x16ce4	0x800274e8	mips_hi16_lo16	reachable-code	0x8003a2bc	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x800274e4	0x16ce4	0x800274e8	mips_hi16_lo16	reachable-code	0x8003a2bc	load		lui+addiu	a0	paired-reachable	reviewed	manual:LIBSPU S_CRWA.OBJ XREF _spu_zerobuf at +0xe4;retail raw pair
 END.EXE	0x800274ec	0x16cec		mips26	reachable-code	0x80027794	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800274f4	0x16cf4		mips26	reachable-code	0x800275f4	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80027518	0x16d18		mips26	reachable-code	0x80024d88	load		jal		control-flow	candidate	investigation:relocs.tsv

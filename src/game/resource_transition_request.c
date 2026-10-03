@@ -91,8 +91,8 @@ apply:
         state_8017d118.active_resource_ids[0] != current_first) {
         event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
     }
-    if (event_state.control.fields.unknown_04[0] < current_first) {
-        event_state.control.fields.unknown_04[0] = current_first;
+    if (event_state.control.fields.highest_requested_map_region_id < current_first) {
+        event_state.control.fields.highest_requested_map_region_id = current_first;
     }
     state_8017d118.transition_active = 1;
     state_8017d118.transition_phase = 0;

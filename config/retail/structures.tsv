@@ -35,6 +35,7 @@ KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collis
 KfCollisionShapeOffsetTable	0x200	supported	game/collision_cache.h;GAME 0x2ab5c..0x2ab80	256 halfword offsets at the start of the loaded collision-shape bank; record layout unresolved
 KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfEffectCacheTail	0x0c	supported	GAME 0x80032c4c effect+0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg;animation_prepare_asset_vertices owner_slot	Renderer animation-cache slot followed by eight bytes of kind-specific state
 KfEffectKind101Motion	0x04	supported	GAME 0x80045584/0x800455ac;effect_construct_record kind 101	Two unsigned halfword steps at effect record +0x40
 KfEffectKind10Targeting	0x02	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Kind-10 actor index and remaining emissions at record +0x40
 KfEffectKind102Payload	0x02	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Signed amplitude at effect record +0x40
@@ -71,12 +72,19 @@ KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte views of map-object +0x40
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
+KfMapObjectTailAction83View	0xc	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	action 83 emits a marker after each opening or closing phase
+KfMapObjectTailAction84PatternView	0xc	supported	GAME 0x80037ee4..0x80037f84;map_cell_apply_rotated_pattern	action 84 checks camera region and chooses one of two map-cell patterns
+KfMapObjectTailAction88CellCopyView	0xc	supported	GAME 0x80037c34..0x80037c74;map_cell_copy_rotated_fields	action 88 carries rotated copy coordinates and dimensions at its own tail offsets
 KfMapObjectTailAmbientSoundView	0xc	supported	GAME 0x80032858..0x80032a5c;map_object action 0x1f	ambient-sound action uses region, volume, range, attenuation, and repeat period bytes
+KfMapObjectTailCellCopyView	0xc	supported	GAME 0x80035c08..0x80035c48;map_cell_copy_rotated_fields	actions 3 and 4 carry source and destination map-cell coordinates
+KfMapObjectTailCollisionProbeView	0xc	supported	GAME 0x80038148..0x800383c8;effect_dispatch_magic_impact	action 81 uses a camera-region gate and dispatches magic collision damage
 KfMapObjectTailEventEffectView	0xc	supported	game/map_object.h;event_spawn_effect_object	event effect-object index at map-object tail +0x39
 KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
+KfMapObjectTailLinkedPropertyView	0xc	supported	GAME 0x800355d8;map_object_update_actions actions 5/8/22	linked map-object index used by property updates
 KfMapObjectTailPair38View	0xc	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTailScaleLinkView	0xc	supported	GAME 0x8003860c..0x800386dc;map_object_update_actions	action 19 controls a linked object's scale in 1/32 units
 KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
 KfMapObjectTemplateCellActionView	0x18	supported	GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	rotated map-cell action reads template width, height, and spatial sound selector
 KfMapObjectTemplateCollisionView	0x18	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height

@@ -42,6 +42,9 @@ KfCardAssets memory_card_assets = {
     }
 };
 
+DATA(0x8006d6a4, 0x2)
+static s8 memory_card_slot_digit_seed[2] = {0x20, 0};
+
 DATA(0x8006d6a8, 0x7)
 char memory_card_search_pattern[7] = "bu00:*";
 
@@ -55,8 +58,8 @@ s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
     s32 i;
     s32 slot;
 
-    slot_digit[0] = DAT_8006d6a4;
-    slot_digit[1] = DAT_8006d6a5;
+    slot_digit[0] = memory_card_slot_digit_seed[0];
+    slot_digit[1] = memory_card_slot_digit_seed[1];
     entry = entries;
     memset(entries, 0, sizeof(ordered));
     *matching_count = 0;
@@ -96,8 +99,8 @@ s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     s32 weight;
     s32 i;
 
-    slot_digit[0] = DAT_8006d6a4;
-    slot_digit[1] = DAT_8006d6a5;
+    slot_digit[0] = memory_card_slot_digit_seed[0];
+    slot_digit[1] = memory_card_slot_digit_seed[1];
     if (strncmp(filename, memory_card_file_prefix, 12) != 0) {
         return 1;
     }
@@ -203,8 +206,8 @@ s32 memory_card_write_slot(s32 slot)
     s32 entry_slot;
     s32 handle;
 
-    slot_digit[0] = DAT_8006d6a4;
-    slot_digit[1] = DAT_8006d6a5;
+    slot_digit[0] = memory_card_slot_digit_seed[0];
+    slot_digit[1] = memory_card_slot_digit_seed[1];
     memset(slot_digit + 2, 0, 8);
     memset(occupied, 0, sizeof(occupied));
     memset(entries, 0, sizeof(entries));

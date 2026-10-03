@@ -40,12 +40,12 @@ GAME.EXE	0x80012dd8	0x14	DAT_80012dd8	unknown	load	pointer[5]		address-only	geti
 GAME.EXE	0x80013110	0x1e8	DAT_80013110	unknown	load	pointer[122]		address-only	SetControlChange selector 0..0x79;122 targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
 GAME.EXE	0x800132f8	0x5c	DAT_800132f8	unknown	load	pointer[23]		address-only	Snd_setVabAttr selector 0..0x16;23 targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
 GAME.EXE	0x80013354	0x24	DAT_80013354	unknown	load	pointer[9]		address-only	bounded selector 0..8;all nine targets at 0x8005e31c..0x8005e350	code owner at 0x8005e300 remains uncarved
-GAME.EXE	0x80063dcc	0x20	render_world_identity_matrix	global	load	MATRIX	render_resource_dispatch	supported	retail bytes;two direct render_scene_and_update_resources address references;source DATA claim;SDK MATRIX layout	identity world matrix, original TU/static linkage unresolved
+GAME.EXE	0x80063dcc	0x20	render_world_identity_matrix	global	load	MATRIX	resource_runtime	supported	retail bytes;two direct render_scene_and_update_resources address references;source DATA claim;SDK MATRIX layout	identity world matrix, original TU/static linkage unresolved
 GAME.EXE	0x80063e00	0x80	callback_default_table	unknown	load	KfCallback[32]	resource_transition_step	supported	retail words;func_80016820 table assignment;source DATA claim	32 initialized no-op callbacks; original TU/static linkage unresolved
 GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]	menu_render_primitives	supported	asm;xrefs;20 aligned 12-byte load records;KF1 counterpart	20 contiguous menu sprite descriptors through the nine-grid; original TU owner unresolved
 GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]	menu_render_primitives	supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; original TU owner unresolved
 GAME.EXE	0x80064910	0xc8	menu_equipment_labels_64910	global	load	KfMenuLabelSuffix[10]	menu_equipment_list	supported	retail 200-byte copy at 0x80019af0;loaded glyph words	ten 20-byte menu label rows; original TU owner provisional
-GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	menu_magic_list	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
+GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	menu_equipment_list	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
 GAME.EXE	0x80064a00	0xf0	menu_header_labels	global	load	KfMenuLabelSuffix[12]	menu_status_render	supported	retail bytes;20-byte row stride;menu render xrefs	twelve menu header glyph suffix rows
 GAME.EXE	0x80064af0	0x140	menu_label_suffixes	global	load	KfMenuLabelSuffix[16]	menu_card_choice_controller	supported	retail bytes;label builder xrefs	sixteen 20-byte glyph suffix templates
 GAME.EXE	0x80064c30	0xb40	menu_glyph_rows	global	load	KfMenuGlyphRow[120]	menu_item_selection	supported	retail bytes;selector xrefs	120 rows copied by menu selectors
@@ -75,6 +75,7 @@ GAME.EXE	0x80067abc	0x20	CD_intstr	global	load	pointer[8]	LIBCD BIOS.OBJ	support
 GAME.EXE	0x80067adc	0x100	DAT_80067adc	static	load	u32[64]	LIBCD BIOS.OBJ	supported	archive .data section +0x94;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
 GAME.EXE	0x80067bdc	0x80	DAT_80067bdc	static	load	u32[32]	LIBCD BIOS.OBJ	supported	archive .data section +0x194;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
 GAME.EXE	0x80067c5c	0x64	DAT_80067c5c	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
+GAME.EXE	0x80067cdc	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 GAME.EXE	0x800680dc	0x10	DAT_800680dc	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
 GAME.EXE	0x800680ec	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses
 GAME.EXE	0x80068114	0x28	_spu_rev_workareasize	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0x28;exact 760-byte .data;SDK ten modes	reverb mode work-area sizes
@@ -90,14 +91,12 @@ GAME.EXE	0x80068650	0x1c	H_ln_tbl	global	load	u32[7]	LIBGTE COR.OBJ	supported	ar
 GAME.EXE	0x80068670	0x4	DAT_80068670	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80068678	0x4	DAT_80068678	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006867c	0x4	DAT_8006867c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006898c	0x290	DAT_8006898c	unknown	load	u8[0x290]	LIBGTE MTX.OBJ	candidate	archive .data +0..+0x290 exact;PushMatrix and PopMatrix section-base xrefs	vendor matrix working-state subrecord; original static symbol and object split unresolved
 GAME.EXE	0x80068c9c	0x800	rsin_tbl	global	load	s16[1024]	LIBGTE GEO.OBJ	supported	archive XDEF .data+0;0x4800 exact unique retail section;sin_1 signed halfword loads	Psy-Q sine table
 GAME.EXE	0x8006949c	0x4000	rcossin_tbl	global	load	s16[8192]	LIBGTE GEO.OBJ	supported	archive XDEF .data+0x800;0x4800 exact unique retail section	4096 interleaved signed sine/cosine pairs
 GAME.EXE	0x8006d4d0	0x18	DAT_8006d4d0	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR .data 24-byte code fragment;four exact archive pointer patches;retail words	vendor section fragment; individual original C object and linkage remain unresolved
 GAME.EXE	0x8006d4e8	0x2c	DAT_8006d4e8	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
-GAME.EXE	0x8006d514	0x4	DAT_8006d514	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d518	0x4	DAT_8006d518	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d528	0x4	DAT_8006d528	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d52c	0x4	DAT_8006d52c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d514	0x1c	DAT_8006d514	unknown	load	pointer[7]	LIBETC INTR_DMA.OBJ	supported	archive .data+0/+0x18 xrefs;exact vendored DMAInit/intDMA loop 0..6	seven DMA callback pointers; original static name unresolved
 GAME.EXE	0x8006d568	0x20	DAT_8006d568	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes exact in GAME/OPEN/END;StartRCnt xrefs	vendor counter data record; original C declaration unresolved
 GAME.EXE	0x8006d5bc	0x40	DAT_8006d5bc	unknown	load	u32[16]		address-only	Psy-Q 3.0 LIBGPU SYS .data 16-pointer fragment;16 exact archive section patches;retail words	vendor pointer record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d5fc	0x60	DAT_8006d5fc	unknown	load	u32[24]		address-only	Psy-Q 3.0 LIBGPU OTAG .data 96-byte pointer record;24 exact archive section patches;retail words	vendor record; original C declaration and linkage unresolved
@@ -109,8 +108,7 @@ GAME.EXE	0x8006d694	0x4	menu_item_quantity	global	load	s32	menu_item_model	suppo
 GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32	menu_frame_begin	supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; original TU owner unresolved
 GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32	menu_frame_begin	supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; original TU owner unresolved
 GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
-GAME.EXE	0x8006d6a4	0x1	DAT_8006d6a4	unknown	load	s8		candidate	retail byte 0x20;three reviewed GAME lui+lb references;card slot-digit seed	first signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
-GAME.EXE	0x8006d6a5	0x1	DAT_8006d6a5	unknown	load	s8		candidate	retail byte 0x00;three reviewed GAME lui+lb references;card slot-digit seed	second signed-byte view of adjacent two-byte seed; original extent and defining TU unresolved
+GAME.EXE	0x8006d6a4	0x2	memory_card_slot_digit_seed	static	load	s8[2]	memory_card_directory	supported	retail 0x20,0x00;three pairs of signed byte loads;all consumers form NUL-terminated slot-digit strings	two-byte card slot-digit seed; original TU boundary remains WIP
 GAME.EXE	0x8006d6a8	0x7	memory_card_search_pattern	global	load	char[7]	memory_card_directory	supported	retail bytes;firstfile argument at 0x80022744;reviewed HI16/LO16 pair;source DATA claim	seven-byte bu00:* NUL wildcard; original TU boundary and padding beyond NUL remain WIP
 GAME.EXE	0x8006d6b0	0x20	player_status_texture_rows	static	load	RECT[4]	player_reaction	supported	retail bytes;four MoveImage pairs in func_8002985c	four 16x1 VRAM copy rows
 GAME.EXE	0x8006d6d0	0x4	map_textured_primitive_color	global	load	CVECTOR	tmd_pipeline	supported	retail bytes;TMD renderer xrefs;KF1 counterpart	initialized neutral RGB for NormalColorCol
@@ -132,8 +130,8 @@ GAME.EXE	0x8006d7c8	0x3	DAT_8006d7c8	unknown	load	char[3]		address-only	Psy-Q 3.
 GAME.EXE	0x8006d7cc	0x60	DAT_8006d7cc	unknown	load	u32[24]		address-only	Psy-Q 3.0 LIBCD CDROM .sdata 96-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d82c	0xc	DAT_8006d82c	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBCD CDROM .sdata 12-byte zero record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d838	0x4	DAT_8006d838	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d83c	0x4	DAT_8006d83c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d840	0x1c	DAT_8006d840	unknown	load	u32[7]		address-only	Psy-Q 3.0 LIBSPU SPU .sdata 28-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
+GAME.EXE	0x8006d83c	0x4	DAT_8006d83c	unknown	load	u32	LIBSPU S_INI.OBJ	supported	archive .sdata 4-byte zero section;SpuStart/SpuQuit section-relative xrefs	SDK start-state flag; original local identity/linkage unresolved
+GAME.EXE	0x8006d840	0x1c	DAT_8006d840	unknown	load	u32[7]	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact;retail hardware pointer words	vendor section record; original C object boundaries unresolved
 GAME.EXE	0x8006d85c	0x4	DAT_8006d85c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d860	0x4	DAT_8006d860	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d864	0x4	DAT_8006d864	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -142,7 +140,7 @@ GAME.EXE	0x8006d86c	0x4	DAT_8006d86c	unknown	load	pointer		address-only	data.tsv
 GAME.EXE	0x8006d870	0x4	DAT_8006d870	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d874	0x2	DAT_8006d874	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006d878	0x4	DAT_8006d878	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006d87c	0x4	DAT_8006d87c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006d87c	0x4	CLIPEvbf	global	load	EVECTOR *	LIBGTE CLIP_INI.OBJ	supported	archive .sdata XDEF;InitClip patch +0xdc;retail pointer to _tmp_evbf	SDK clipping edge-buffer pointer
 GAME.EXE	0x8006d880	0x10	DAT_8006d880	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBETC INTR_VB .sdata 16-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d890	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	Psy-Q 3.0 LIBETC INTR_VB XDEF .sdata+0x10;VSync XREF;retail zero word	vendored 32-bit counter; original C signedness unresolved
 GAME.EXE	0x8006d894	0xc	DAT_8006d894	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBETC INTR .sdata 12-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
@@ -223,10 +221,17 @@ GAME.EXE	0x8009a5a8	0x4	effect_kind102_sound_cooldown_frame	global	bss	s32	effec
 GAME.EXE	0x8009a5e8	0x78	game_counter_bytes	global	bss	u8[0x78]	event_command_dispatch	supported	asm;event_state_initialize 0x1e-word clear;event counter callers;menu numeric overlay	contiguous byte counters; menu display reads byte +0x60; original TU remains WIP
 GAME.EXE	0x8009a6a0	0x158	audio_sequence_table	global	bss	char[SS_SEQ_TABSIZ*2]	audio	candidate	SsSetTableSize(2,1) sole direct GAME use;Psy-Q 3.0 LIBSND.H SS_SEQ_TABSIZ=172;OPEN/END homologs size 0x158;probe emits 344-byte COMMON	SDK-required sequence-table workspace; target BSS is a carving model and original allocation class or larger extent remains unproved
 GAME.EXE	0x8009b0a0	0x5f000	game_resource_arena	global	bss	u8[0x5f000]	cd_memory	candidate	game_main_loop initializes 0x5f000 bytes;func_80015d58 staging read;resource_tmd_queue_read allocator base;three raw signed-low address pairs	Resource arena minimum extent is its initialized capacity; original owner and allocation mechanism remain unresolved
+GAME.EXE	0x800fba38	0x8	CLIPKdhx	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0x104/+0x108 raw store pair	SDK clipping parameter pair
+GAME.EXE	0x800fba40	0x8	CLIPHdkx	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0xf4/+0xf8 raw store pair	SDK clipping parameter pair
+GAME.EXE	0x800fba48	0x8	CLIPKdhy	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0x10c/+0x110 raw store pair	SDK clipping parameter pair
+GAME.EXE	0x800fba50	0x8	CLIPHdky	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0xfc/+0x100 raw store pair	SDK clipping parameter pair
 GAME.EXE	0x800fba58	0x32000	display_primitive_memory	global	bss	u8[0x32000]	display	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members;source DATA claim	split into the two 0x19000-byte primitive buffers by display_reset
+GAME.EXE	0x8012da58	0x8	CLIPFarz	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0xec/+0xf0 raw store pair	SDK clipping parameter pair
+GAME.EXE	0x8016aa70	0x8	_spu_fd	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 8;four _SpuInit/SpuStart/SpuQuit raw HI16/LO16 pairs	SDK SPU descriptor workspace; first word read and written, tail use unresolved
 GAME.EXE	0x8016b600	0x93cc	actor_state	global	bss	KfActorStateGame	actor_initialization	supported	asm;game_main_loop startup clear;actor pool 0x7c stride	200 actors followed by unresolved runtime fields; original TU remains WIP
 GAME.EXE	0x801749d0	0x8744	map_object_state	global	bss	KfMapObjectStateGame	map_object	supported	asm;callers;game_main_loop startup clear;0x18c records at +0x1e00	map-object runtime with 396 records of 68 bytes and 20-byte trailer; original TU remains WIP
 GAME.EXE	0x8017d118	0x1c	state_8017d118	global	bss	KfState8017d118	resource_transition_request	supported	game_main_loop clears seven words;active table written from load/BSS;func_80015fd4 byte writes;source DATA claim	callback table at +0xc; five current/prior bytes and three +0x17 bytes have proven extents
+GAME.EXE	0x8017d138	0x8	CLIPNearz	global	bss	s32[2]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 8;InitClip +0xe4/+0xe8 raw store pair	SDK clipping parameter pair
 GAME.EXE	0x8017d140	0x17cf0	game_graphics_runtime	global	bss	KfGraphicsRuntimeGame	display	supported	asm;xrefs;game_main_loop clears 0x5f3c words at the base;display/tmd/pool/registry members;source DATA claim	display, TMD, asset, pool, notification and render state
 GAME.EXE	0x80197630	0xe9c	audio_state	global	bss	KfGameAudioState	audio_runtime	supported	asm;xrefs;game_main_loop clears 0x3a7 words at the base;sequence fields at +0x4/+0x8	GAME audio sequence, listener and voice state; original TU remains WIP
 GAME.EXE	0x801984d0	0x160	player_state	global	bss	KfPlayerState	player_core_run	supported	asm;xrefs;game_main_loop clears 0x58 words at the base;experience routine addresses members from a registered base	experience, level, vitals, training and base stats, camera position and motion; original TU remains WIP
@@ -234,6 +239,7 @@ GAME.EXE	0x80198630	0x4	game_main_exit_flag	global	bss	u32	main	candidate	game_m
 GAME.EXE	0x8019b6a8	0x2a8c	effect_state	global	bss	KfEffectState	effect_reset	supported	asm;xrefs;game_main_loop clears 0xaa3 words at the base;effect pool scan/reset at +0x680	128 effect slots at 72-byte stride within the startup-cleared effect region; original TU remains WIP; compiled COMMON allocation is 4 bytes larger
 GAME.EXE	0x801b2140	0x3918	event_state	global	bss	KfEventState	event_state	supported	game_main_loop 0xe46-word clear;event_state_initialize control and arena clears;save offset table;source DATA claim	0x100-byte control region, 0x3800-byte memory arena and ten saved halfword offsets
 GAME.EXE	0x801b5a70	0x20	render_mask_scan_state	global	bss	KfRenderMaskScanState	collision_shape_mask_runtime	candidate	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks;render_scene_and_update_resources	observed 32-byte scan cursor extent; original allocation owner and TU unresolved
+GAME.EXE	0x801b5aa0	0x2c0	_tmp_evbf	global	bss	EVECTOR[16]	LIBGTE CLIP_INI.OBJ	supported	archive XBSS size 0x2c0;CLIPEvbf pointer relocation;retail pointer 0x801b5aa0	SDK default clipping edge buffer;16 complete EVECTOR entries
 GAME.EXE	0x801b5d60	0x2a4	cd_state	global	bss	KfCdState	cd_memory	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	CD events, VSync counters and the 16-request ring; original TU remains WIP
 GAME.EXE	0x801b6004	0x60	cd_archives	global	bss	KfCdArchive[8]	cd_memory	supported	asm;xrefs;related-address CSE in cd_initialize;ring end compared with the tail field	open CD\\COM\\*.T archives by slot; original TU remains WIP
 GAME.EXE	0x801b6064	0x4	cd_stream_work_buffer	global	bss	u8[]	cd	candidate	asm;map load xrefs;adjacent cd_archives	first referenced word of map resource stream storage; full extent unresolved
@@ -261,16 +267,14 @@ OPEN.EXE	0x8003d070	0x80	DAT_8003d070	static	load	u32[32]	LIBCD BIOS.OBJ	support
 OPEN.EXE	0x8003d0f0	0x64	DAT_8003d0f0	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
 OPEN.EXE	0x8003d1a4	0x18	DAT_8003d1a4	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 24-byte record;four archive patches and two zero words match retail	vendor INTR callback record; original C declaration unresolved
 OPEN.EXE	0x8003d1bc	0x2c	DAT_8003d1bc	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
-OPEN.EXE	0x8003d1e8	0x4	DAT_8003d1e8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003d1ec	0x4	DAT_8003d1ec	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003d1fc	0x4	DAT_8003d1fc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003d200	0x4	DAT_8003d200	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003d1e8	0x1c	DAT_8003d1e8	unknown	load	pointer[7]	LIBETC INTR_DMA.OBJ	supported	archive .data+0/+0x18 xrefs;exact vendored DMAInit/intDMA loop 0..6	seven DMA callback pointers; original static name unresolved
 OPEN.EXE	0x8003d23c	0x2	DAT_8003d23c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d23e	0x2	DAT_8003d23e	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d24c	0x2	DAT_8003d24c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d24e	0x2	DAT_8003d24e	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d26c	0x20	DAT_8003d26c	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes exact in OPEN/END;StartRCnt xrefs	vendor counter data record; original C declaration unresolved
 OPEN.EXE	0x8003d28c	0x182	DAT_8003d28c	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
+OPEN.EXE	0x8003d410	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 OPEN.EXE	0x8003d810	0x10	DAT_8003d810	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
 OPEN.EXE	0x8003d820	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses
 OPEN.EXE	0x8003d848	0x28	_spu_rev_workareasize	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0x28;exact 760-byte .data;SDK ten modes	reverb mode work-area sizes
@@ -362,14 +366,14 @@ OPEN.EXE	0x8003de70	0x4	DAT_8003de70	unknown	load	pointer		address-only	data.tsv
 OPEN.EXE	0x8003de74	0x4	DAT_8003de74	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de78	0x10	DAT_8003de78	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBETC VSYNC .sdata 16-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de88	0x4	DAT_8003de88	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de8c	0x4	DAT_8003de8c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de90	0x4	DAT_8003de90	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de94	0x4	DAT_8003de94	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de98	0x4	DAT_8003de98	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de9c	0x4	DAT_8003de9c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dea0	0x4	DAT_8003dea0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dea4	0x4	DAT_8003dea4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dea8	0x4	DAT_8003dea8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003de8c	0x4	DAT_8003de8c	unknown	load	u32	LIBSPU S_INI.OBJ	supported	archive .sdata 4-byte zero section;SpuStart/SpuQuit section-relative xrefs	SDK start-state flag; original local identity/linkage unresolved
+OPEN.EXE	0x8003de90	0x4	DAT_8003de90	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de94	0x4	DAT_8003de94	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de98	0x4	DAT_8003de98	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x8;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003de9c	0x4	DAT_8003de9c	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0xc;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea0	0x4	DAT_8003dea0	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea4	0x4	DAT_8003dea4	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+OPEN.EXE	0x8003dea8	0x4	DAT_8003dea8	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 OPEN.EXE	0x8003deac	0x4	DAT_8003deac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003deb0	0x4	DAT_8003deb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003deb4	0x4	DAT_8003deb4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -423,6 +427,7 @@ OPEN.EXE	0x800a5ad0	0x4	display_current	global	bss	KfDisplayBuffer *	display	sup
 OPEN.EXE	0x800a63c0	0x2	audio_title_sequence_id	global	bss	short	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	SsSeqOpen result for the title music
 OPEN.EXE	0x800a63c8	0x2	audio_movie_sequence_id	global	bss	short	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	SsSeqOpen result for the movie music
 OPEN.EXE	0x800a6410	0x4	opening_data	global	bss	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	malloc'd OP.D image
+OPEN.EXE	0x800a6418	0x8	_spu_fd	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 8;four _SpuInit/SpuStart/SpuQuit raw HI16/LO16 pairs	SDK SPU descriptor workspace; first word read and written, tail use unresolved
 OPEN.EXE	0x800a6438	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display	supported	asm;xrefs;display_initialize/display_begin_frame	double-buffered draw/display environments and ordering tables
 OPEN.EXE	0x800a8540	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 OPEN.EXE	0x800ac540	0x1	display_fade_level	global	bss	u8	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	darkening applied by primitive_buffer_commit_poly_ft4; cleared per frame
@@ -447,16 +452,14 @@ END.EXE	0x80039f1c	0x80	DAT_80039f1c	static	load	u32[32]	LIBCD BIOS.OBJ	supporte
 END.EXE	0x80039f9c	0x64	DAT_80039f9c	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
 END.EXE	0x8003a050	0x18	DAT_8003a050	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 24-byte record;four archive patches and two zero words match retail	vendor INTR callback record; original C declaration unresolved
 END.EXE	0x8003a068	0x2c	DAT_8003a068	unknown	load	pointer[11]		address-only	Psy-Q 3.0 LIBETC INTR.OBJ .data 44-byte zero block;setIntCallback indexed pointer accesses	vendor callback pointer array; original static name unresolved
-END.EXE	0x8003a094	0x4	DAT_8003a094	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003a098	0x4	DAT_8003a098	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003a0a8	0x4	DAT_8003a0a8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003a0ac	0x4	DAT_8003a0ac	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003a094	0x1c	DAT_8003a094	unknown	load	pointer[7]	LIBETC INTR_DMA.OBJ	supported	archive .data+0/+0x18 xrefs;exact vendored DMAInit/intDMA loop 0..6	seven DMA callback pointers; original static name unresolved
 END.EXE	0x8003a0e8	0x2	DAT_8003a0e8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a0ea	0x2	DAT_8003a0ea	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a0f8	0x2	DAT_8003a0f8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a0fa	0x2	DAT_8003a0fa	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a118	0x20	DAT_8003a118	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes exact in OPEN/END;StartRCnt xrefs	vendor counter data record; original C declaration unresolved
 END.EXE	0x8003a138	0x182	DAT_8003a138	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
+END.EXE	0x8003a2bc	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 END.EXE	0x8003a6bc	0x10	DAT_8003a6bc	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
 END.EXE	0x8003a6cc	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses
 END.EXE	0x8003a6f4	0x28	_spu_rev_workareasize	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0x28;exact 760-byte .data;SDK ten modes	reverb mode work-area sizes
@@ -541,14 +544,14 @@ END.EXE	0x8003ac90	0x4	DAT_8003ac90	unknown	load	pointer		address-only	data.tsv:
 END.EXE	0x8003ac94	0x4	DAT_8003ac94	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac98	0x10	DAT_8003ac98	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBETC VSYNC .sdata 16-byte record;retail exact	vendor section record; original C declaration and linkage unresolved
 END.EXE	0x8003aca8	0x4	DAT_8003aca8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acac	0x4	DAT_8003acac	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acb0	0x4	DAT_8003acb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acb4	0x4	DAT_8003acb4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acb8	0x4	DAT_8003acb8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acbc	0x4	DAT_8003acbc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acc0	0x4	DAT_8003acc0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acc4	0x4	DAT_8003acc4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003acc8	0x4	DAT_8003acc8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003acac	0x4	DAT_8003acac	unknown	load	u32	LIBSPU S_INI.OBJ	supported	archive .sdata 4-byte zero section;SpuStart/SpuQuit section-relative xrefs	SDK start-state flag; original local identity/linkage unresolved
+END.EXE	0x8003acb0	0x4	DAT_8003acb0	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acb4	0x4	DAT_8003acb4	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acb8	0x4	DAT_8003acb8	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x8;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acbc	0x4	DAT_8003acbc	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0xc;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc0	0x4	DAT_8003acc0	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x10;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc4	0x4	DAT_8003acc4	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x14;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
+END.EXE	0x8003acc8	0x4	DAT_8003acc8	unknown	load	pointer	LIBSPU SPU.OBJ	supported	archive .sdata 28-byte section exact at +0x18;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 END.EXE	0x8003accc	0x4	DAT_8003accc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003acd0	0x4	DAT_8003acd0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003acd4	0x4	DAT_8003acd4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -611,6 +614,7 @@ END.EXE	0x800a31a8	0x4	audio_vab_header	global	bss	u8 *	audio	supported	asm;xref
 END.EXE	0x800a31b0	0x2	audio_sequence_id	global	bss	short	audio	supported	asm;xrefs;ending_open_audio	SsSeqOpen result
 END.EXE	0x800a31f0	0x4	ending_data	global	bss	u8 *	ending	supported	asm;xrefs;main	malloc'd ED.D image
 END.EXE	0x800a31f8	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display	supported	asm;xrefs;display_initialize/display_begin_frame	double-buffered draw/display environments and ordering tables
+END.EXE	0x800a52e8	0x8	_spu_fd	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 8;four _SpuInit/SpuStart/SpuQuit raw HI16/LO16 pairs	SDK SPU descriptor workspace; first word read and written, tail use unresolved
 END.EXE	0x800a52f8	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 END.EXE	0x800a93b8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
 END.EXE	0x800a93f8	0x158	audio_sequence_table	global	bss	char[344]	audio	supported	asm;xrefs;audio_initialize	SsSetTableSize work area: 2 sequences x 1 track

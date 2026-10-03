@@ -60,9 +60,6 @@ extern u8 *memory_card_buffer;
 extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
-/* The adjacent slot-digit seed bytes still have unresolved storage ownership. */
-extern s8 DAT_8006d6a4;
-extern s8 DAT_8006d6a5;
 
 struct DIRENTRY;
 s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count);

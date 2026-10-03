@@ -72,7 +72,7 @@ void player_reset_view(void)
     player_state.reaction_rotation_offset[0] = 0;
     player_state.camera_rotation = player_state.camera_rotation_target;
     player_state.movement_speed_adjustment_q12 = 0;
-    player_state.unknown_0c[1] = 0;
+    player_state.movement_speed_adjustment_decay_latch = 0;
     player_state.damage_scale = PLAYER_VIEW_SCALE_INITIAL;
     player_state.queued_magic_action.magic_id = 0xff;
     player_state.collision_lower_clearance = PLAYER_VIEW_TIMER_INITIAL;

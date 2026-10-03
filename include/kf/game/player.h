@@ -318,7 +318,7 @@ typedef struct KfPlayerState {
     u8 weapon_charge_delay;
     u8 unknown_0c;
     u8 movement_speed_adjustment_decay_latch;
-    u16 movement_speed_adjustment_q12;
+    s16 movement_speed_adjustment_q12;
     s16 damage_scale;
     KfPlayerVitals vitals;
     u16 attack_charge_current;

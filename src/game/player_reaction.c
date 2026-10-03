@@ -511,12 +511,12 @@ void player_update_frame(void)
     if (player_state.slow_timer != 0) {
         if (player_state.slow_timer < 64) {
             player_state.movement_speed_adjustment_q12 += 100;
-            if ((s16)player_state.movement_speed_adjustment_q12 > 0) {
+            if (player_state.movement_speed_adjustment_q12 > 0) {
                 player_state.movement_speed_adjustment_q12 = 0;
             }
         } else {
             player_state.movement_speed_adjustment_q12 -= 100;
-            if ((s16)player_state.movement_speed_adjustment_q12 < -3300) {
+            if (player_state.movement_speed_adjustment_q12 < -3300) {
                 player_state.movement_speed_adjustment_q12 = -3300;
             }
         }
@@ -525,18 +525,18 @@ void player_update_frame(void)
     } else {
         if (player_state.movement_speed_adjustment_decay_latch == 0) {
             player_state.movement_speed_adjustment_q12 += 800;
-            if ((s16)player_state.movement_speed_adjustment_q12 > 2800) {
+            if (player_state.movement_speed_adjustment_q12 > 2800) {
                 player_state.movement_speed_adjustment_q12 = 2800;
             }
         } else {
             player_state.movement_speed_adjustment_q12 -= 800;
-            if ((s16)player_state.movement_speed_adjustment_q12 < 0) {
+            if (player_state.movement_speed_adjustment_q12 < 0) {
                 player_state.movement_speed_adjustment_q12 = 0;
             }
         }
     }
     player_state.movement_step_limit +=
-        ((s16)player_state.movement_speed_adjustment_q12 * player_state.movement_step_limit) >> 12;
+        (player_state.movement_speed_adjustment_q12 * player_state.movement_step_limit) >> 12;
     if (player_state.paralysis_timer != 0) {
         player_state.movement_step_limit = 0;
         player_state.turn_step_limit = 0;

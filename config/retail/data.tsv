@@ -845,21 +845,21 @@ GAME.EXE	0x8006db28	0x5d328	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006db2c	0x5d32c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db30	0x5d330	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006db34	0x5d334	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db40	0x5d340	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db40	0x5d340	0x4	defined	reviewed	tcount	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0;retail SPU transfer xrefs	private SPU transfer counter; physical linked bytes are zero
 GAME.EXE	0x8006db44	0x5d344	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db48	0x5d348	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db48	0x5d348	0x2	defined	reviewed	spu_tsa	u16	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+8;retail sh/lhu transfer-address xrefs	private SPU transfer start-address halfword; physical linked bytes are zero
 GAME.EXE	0x8006db4a	0x5d34a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db50	0x5d350	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db50	0x5d350	0x4	defined	reviewed	spu_transMode	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x10;retail SPU transfer xrefs	private SPU transfer mode word; physical linked bytes are zero
 GAME.EXE	0x8006db54	0x5d354	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db58	0x5d358	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db58	0x5d358	0x4	defined	reviewed	spu_addrMode	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x18;retail SPU transfer xrefs	private SPU address mode word; physical linked bytes are zero
 GAME.EXE	0x8006db5c	0x5d35c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db60	0x5d360	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db60	0x5d360	0x4	defined	reviewed	spu_dma_mode	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x20;retail SPU transfer xrefs	private SPU DMA mode word; physical linked bytes are zero
 GAME.EXE	0x8006db64	0x5d364	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db68	0x5d368	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db68	0x5d368	0x4	defined	reviewed	spu_transfer_startaddr	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x28;retail _spu_w/_spu_r xrefs	private SPU transfer start address; physical linked bytes are zero
 GAME.EXE	0x8006db6c	0x5d36c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db70	0x5d370	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db70	0x5d370	0x4	defined	reviewed	spu_transfer_size	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x30;retail _spu_w/_spu_r xrefs	private SPU transfer size word; physical linked bytes are zero
 GAME.EXE	0x8006db74	0x5d374	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006db78	0x5d378	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+GAME.EXE	0x8006db78	0x5d378	0x4	defined	reviewed	spu_transfer_time	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x38;retail _spu_w/_spu_r xrefs	private SPU transfer time word; physical linked bytes are zero
 GAME.EXE	0x8006db7c	0x5d37c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db80	0x5d380	0x4	defined	reviewed	spu_mem_mode	undefined4	Psy-Q 3.0 LIBSPU S_M_INT.OBJ local .sbss+0;retail SpuInitMalloc/SpuMalloc xrefs	private SPU allocation mode word; physical linked bytes are zero
 GAME.EXE	0x8006db84	0x5d384	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1637,7 +1637,7 @@ OPEN.EXE	0x8003dfe8	0x2d7e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 OPEN.EXE	0x8003dfec	0x2d7ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dff0	0x2d7f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003dff4	0x2d7f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dff8	0x2d7f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dff8	0x2d7f8	0x4	defined	reviewed	EV	s32	Psy-Q 3.0 LIBSND SSINIT.OBJ local .sbss+0;retail _SsStart/SsEnd section patches	private sound sequence event handle; physical linked bytes are zero
 OPEN.EXE	0x8003dffc	0x2d7fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80011000	0x800	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: \\OP\\ED.S;1
 END.EXE	0x8001100a	0x80a	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2350,7 +2350,7 @@ END.EXE	0x8003ade0	0x2a5e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/
 END.EXE	0x8003ade4	0x2a5e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ade8	0x2a5e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003adec	0x2a5ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003adf0	0x2a5f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003adf0	0x2a5f0	0x4	defined	reviewed	EV	s32	Psy-Q 3.0 LIBSND SSINIT.OBJ local .sbss+0;retail _SsStart/SsEnd section patches	private sound sequence event handle; physical linked bytes are zero
 END.EXE	0x8003adf4	0x2a5f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003adf8	0x2a5f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003adfc	0x2a5fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

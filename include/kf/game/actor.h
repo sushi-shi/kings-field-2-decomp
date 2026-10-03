@@ -639,7 +639,6 @@ typedef struct KfActorStateGame {
      * 0x3f7ec fixes group target offsets after the copy. */
     u8 target_candidate_blob[0x2000];
     u8 actor_overlap_exclusion_flags;
-    u8 unknown_93a1[3];
     s32 actor_collision_query_flags;
     KfTargetGroup *active_group;
     KfActor *current;

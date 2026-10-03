@@ -33,7 +33,7 @@ void menu_equipment_list_controller(void)
     s32 frame;
     u32 choice;
 
-    memcpy(initial_rows, menu_equipment_labels_64910, sizeof initial_rows);
+    memcpy(initial_rows, menu_equipment_category_labels, sizeof initial_rows);
     menu_build_equipped_label_rows(current_rows);
     menu_list_init(&menu.list, 0, 2);
     menu.list.entry_count = MENU_CATEGORY_COUNT;
@@ -389,7 +389,7 @@ void menu_item_magic_controller(void)
 }
 
 DATA(0x80064910, 0xc8)
-KfMenuLabelSuffix menu_equipment_labels_64910[10] = {
+KfMenuLabelSuffix menu_equipment_category_labels[10] = {
     {{118, 119, -1, 0, 0, 0, 0, 0, 0, 0}},
     {{120, 121, -1, 0, 0, 0, 0, 0, 0, 0}},
     {{122, 123, 57, 124, -1, 0, 0, 0, 0, 0}},

@@ -2879,7 +2879,7 @@ GAME.EXE	0x8001997c	0x917c		mips26	reachable-code	0x8001fc94	load		jal		control-
 GAME.EXE	0x80019984	0x9184		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:magic list controller decoded direct call
 GAME.EXE	0x80019998	0x9198		mips26	reachable-code	0x800198c4	load		j		control-flow	reviewed	manual:magic list controller decoded direct jump
 GAME.EXE	0x800199dc	0x91dc	0x800199e0	mips_hi16_lo16	instruction-word	0x80065770	load	menu_glyph_rows_extra	lui+addiu	v1	paired-pattern	reviewed	manual:20-row glyph table base, retail pair and source referent
-GAME.EXE	0x80019ae8	0x92e8	0x80019aec	mips_hi16_lo16	reachable-code	0x80064910	load	menu_equipment_labels_64910	lui+addiu	a2	paired-reviewed	reviewed	manual:decoded 200-byte menu glyph table address
+GAME.EXE	0x80019ae8	0x92e8	0x80019aec	mips_hi16_lo16	reachable-code	0x80064910	load	menu_equipment_category_labels	lui+addiu	a2	paired-reviewed	reviewed	manual:decoded 200-byte menu glyph table address
 GAME.EXE	0x80019b4c	0x934c		mips26	reachable-code	0x80019b80	load		j		control-flow	reviewed	manual:decoded GAME 0x80019ac4 direct jump/call
 GAME.EXE	0x80019ba4	0x93a4		mips26	reachable-code	0x80019ce4	load	menu_build_equipped_label_rows	jal		control-flow	reviewed	manual:decoded GAME 0x80019ac4 direct jump/call
 GAME.EXE	0x80019bb4	0x93b4		mips26	reachable-code	0x80021fb0	load		jal		control-flow	reviewed	manual:decoded GAME 0x80019ac4 direct jump/call

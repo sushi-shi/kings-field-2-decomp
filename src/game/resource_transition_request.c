@@ -10,7 +10,7 @@ DATA(0x8017d118, 0x1c)
 KfState8017d118 state_8017d118;
 
 ADDRESS(0x80016260, 0x55c)
-void func_80016260(u8 first, u8 second, u8 third, u8 fourth,
+void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
                     u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y)
 {
     u8 current_first;
@@ -140,7 +140,7 @@ handle_active:
         (state_8017d118.values_10[4] != 255 && fifth == 255)) {
         while (state_8017d118.transition_active != 0) {
             cd_request_yield();
-            func_80016820();
+            resource_advance_transition();
         }
     } else {
         do {

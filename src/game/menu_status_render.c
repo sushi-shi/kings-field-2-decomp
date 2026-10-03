@@ -36,7 +36,7 @@ KfMenuLabelSuffix menu_header_labels[12] = {
 };
 
 ADDRESS(0x8001e94c, 0x6bc)
-void func_8001e94c(void)
+void menu_draw_player_status(void)
 {
     KfMenuGlyphString heading;
     KfMenuGlyphString amount;
@@ -134,5 +134,5 @@ void func_8001e94c(void)
     amount.position.y += row_step;
     menu_format_number(player_state.gold, 7, 0, 0, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[0], &amount);
-    func_800217f0(161, 14, 140, 205, 1, 2);
+    menu_draw_nine_slice_panel(161, 14, 140, 205, 1, 2);
 }

@@ -39,10 +39,10 @@ void player_reload_map_resources(
     state_8017d118.values_04[2] = 99;
     state_8017d118.values_04[3] = 99;
     state_8017d118.values_04[4] = 99;
-    func_80016260(first, second, third, 255, 255, 127, 127, 127);
+    resource_request_transition(first, second, third, 255, 255, 127, 127, 127);
     do {
         cd_request_yield();
-        func_80016820();
+        resource_advance_transition();
     } while (state_8017d118.transition_active != 0);
     cd_request_wait_idle();
     DrawSync(0);
@@ -50,10 +50,10 @@ void player_reload_map_resources(
     DrawSync(0);
     VSync(0);
     if (optional_resource != 255) {
-        func_80016260(255, 255, optional_resource, 255, 255, 127, 127, 127);
+        resource_request_transition(255, 255, optional_resource, 255, 255, 127, 127, 127);
         do {
             cd_request_yield();
-            func_80016820();
+            resource_advance_transition();
         } while (state_8017d118.transition_active != 0);
         cd_request_wait_idle();
         DrawSync(0);
@@ -70,7 +70,7 @@ void player_reload_map_resources(
     }
     cd_request_wait_idle();
     func_80036e24(0x82, 0x1000, 0, -128);
-    func_80016260(255, 255, 255, fourth, fifth, 127, 127, 127);
+    resource_request_transition(255, 255, 255, fourth, fifth, 127, 127, 127);
 }
 
 enum {

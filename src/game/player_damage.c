@@ -42,7 +42,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     if (origin != NULL) {
         magnitude = intensity >> 2;
         origin_height = origin->vy + KF_PLAYER_DAMAGE_ORIGIN_HEIGHT;
-        func_800154fc(
+        vector_displacement_to_pitch_yaw(
             player_state.camera_position.vx - origin->vx,
             player_state.camera_position.vy - origin_height,
             player_state.camera_position.vz - origin->vz, &angles);

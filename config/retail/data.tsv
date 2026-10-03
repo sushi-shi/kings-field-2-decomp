@@ -42,14 +42,14 @@ GAME.EXE	0x8001103c	0x83c	0xa	string	byte-pattern		ascii	investigation:string-ce
 GAME.EXE	0x80011046	0x846	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011048	0x848	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: COM\\ITEM.T
 GAME.EXE	0x80011052	0x852	0x6	unclassified	coverage-gap			payload-complement	final archive-path NUL followed by five unreferenced zero bytes before the next switch table; only the NUL is source-claimed
-GAME.EXE	0x80011058	0x858	0x1c	pointer	manual:resource-transition-switch		pointer[7]	retail words;func_80016820 bounded jr table	seven consecutive phase case pointers within resource transition controller
+GAME.EXE	0x80011058	0x858	0x1c	pointer	manual:resource-transition-switch		pointer[7]	retail words;resource_advance_transition bounded jr table	seven consecutive phase case pointers within resource transition controller
 GAME.EXE	0x80011074	0x874	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile error  FileName=%s
 GAME.EXE	0x80011095	0x895	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011098	0x898	0x1c	pointer	manual:menu-root-switch		pointer[7]	retail words;menu_run_root_controller jr table	seven consecutive case pointers within the menu controller
 GAME.EXE	0x800110b4	0x8b4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800110b8	0x8b8	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;func_80019ed4 bounded jr table	nine in-function case pointers within the equipment category controller
+GAME.EXE	0x800110b8	0x8b8	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;menu_equipment_category_controller bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x800110dc	0x8dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800110e0	0x8e0	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;func_80019ed4 bounded jr table	nine in-function case pointers within the equipment category controller
+GAME.EXE	0x800110e0	0x8e0	0x24	pointer	manual:menu-equipment-switch		pointer[9]	retail words;menu_equipment_category_controller bounded jr table	nine in-function case pointers within the equipment category controller
 GAME.EXE	0x80011104	0x904	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: bu00:BISLPS-00069TEMP\x20\x20\x20\x20
 GAME.EXE	0x8001111d	0x91d	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 GAME.EXE	0x8001111e	0x91e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -77,7 +77,7 @@ GAME.EXE	0x8001191c	0x111c	0x380	pointer	manual:switch-table		pointer[224]	retai
 GAME.EXE	0x80011c9c	0x149c	0x24	pointer	manual:switch-table		pointer[9]	retail words;func_80036ed4 bounded secondary jr table	nine subaction-1 rows target func_80036ed4; zero separator at 0x80011cc0
 GAME.EXE	0x80011cc0	0x14c0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011cc4	0x14c4	0x14	pointer	manual:switch-table		pointer[5]	retail words;func_80036ed4 bounded tertiary jr table	five subaction-1 rows target func_80036ed4; actor table begins at 0x80011cd8
-GAME.EXE	0x80011cd8	0x14d8	0x20c	pointer	manual:switch-table		pointer[131]	retail words;func_80039108 bounded type-minus-2 jr table	131 in-function case pointers; next word at 0x80011ee4 is zero
+GAME.EXE	0x80011cd8	0x14d8	0x20c	pointer	manual:switch-table		pointer[131]	retail words;actor_score_target_candidate bounded type-minus-2 jr table	131 in-function case pointers; next word at 0x80011ee4 is zero
 GAME.EXE	0x80011ee4	0x16e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011ee8	0x16e8	0x1ec	pointer	manual:actor-group-effect-switch		pointer[123]	retail words;bounded indirect jr	123 words;all targets inside func_8003c614;next 0x120d4 is a gap
 GAME.EXE	0x800120d4	0x18d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -761,7 +761,7 @@ GAME.EXE	0x8006363c	0x52e3c	0x37c	unclassified	coverage-gap			payload-complement
 GAME.EXE	0x80063bf0	0x533f0	0x148	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80063dcc	0x535cc	0x20	defined	manual:render world identity matrix	render_world_identity_matrix	MATRIX	retail bytes;render_scene_and_update_resources+0x114/+0x8f4 xrefs;SDK layout	initialized 32-byte identity matrix passed as world transform to func_80031850
 GAME.EXE	0x80063dec	0x535ec	0x14	unclassified	coverage-gap			payload-complement	remaining bytes after the matrix; owner unresolved
-GAME.EXE	0x80063e00	0x53600	0x80	pointer	manual:callback default table		KfCallback[32]	retail words;func_80016820 initialized-table address	32 callback pointers, all to no-op stub 0x80015d50; original TU unresolved
+GAME.EXE	0x80063e00	0x53600	0x80	pointer	manual:callback default table		KfCallback[32]	retail words;resource_advance_transition initialized-table address	32 callback pointers, all to no-op stub 0x80015d50; original TU unresolved
 GAME.EXE	0x80063e80	0x53680	0xf0	defined	manual-reviewed	menu_sprite_defs	KfMenuSpriteDef[20]	asm;xrefs;load bytes;KF1 counterpart	20 contiguous 12-byte menu sprite descriptors; nine-grid reaches next table at 0x80063f70
 GAME.EXE	0x80063f70	0x53770	0x9a0	defined	manual-reviewed	menu_window_layouts	KfMenuWindowLayout[8]	manual:menu_list	loaded menu window title and selectable glyph rows; eight 308-byte layouts
 GAME.EXE	0x80064910	0x54110	0xc8	defined	manual-reviewed		KfMenuLabelSuffix[10]	retail bytes;200-byte menu copy at 0x80019af0	ten 20-byte initialized glyph rows
@@ -777,7 +777,7 @@ GAME.EXE	0x80065c20	0x55420	0x5a0	defined	manual:menu item code pages		u16[6][12
 GAME.EXE	0x800661c0	0x559c0	0x4b0	defined	manual:menu item code pages		u16[5][120]	retail bytes;func_8001d654 indexed halfword lookup	five 240-byte pages ending at card-file prefix
 GAME.EXE	0x80066670	0x55e70	0x10	defined	manual:card save prefix		char[16]	retail bytes;four card-file xrefs	12-character save prefix, NUL and alignment zeros
 GAME.EXE	0x80066680	0x55e80	0x120	defined	manual:card title and icon palettes		KfCardAssets	retail title bytes;card-writer indexed palette copy	Shift-JIS title and seven 16-color icon palettes
-GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records		SVECTOR[5]	retail bytes;func_80025a18 eight-byte copy stride;source DATA claim	current C uses five SVECTOR records; fourth signed halfword is read as an effect parameter at 0x800260fc; original C type and TU unresolved
+GAME.EXE	0x800667a0	0x55fa0	0x28	defined	manual:player effect spawn records	player_magic_spawn_records	SVECTOR[5]	retail bytes;func_80025a18 eight-byte copy stride;source DATA claim	current C uses five SVECTOR records; fourth signed halfword is read as an effect parameter at 0x800260fc; original C type and TU unresolved
 GAME.EXE	0x800667c8	0x55fc8	0x20	defined	manual:player effect vector templates	player_magic_square_offsets	SVECTOR[4]	retail bytes;func_80025a18 eight-byte copy stride	four signed corner records read by the bounded effect-spawn loop; defining TU unresolved
 GAME.EXE	0x800667e8	0x55fe8	0x14	defined	manual:player magic IDs and attack masks	player_magic_id_sequence	KfPlayerMagicIdSequence	retail bytes;func_80026498 indexed lbu;func_80028998 halfword sequence	12 effect IDs followed by 0x20,0x10,0x80,0xffff masks; source owner unresolved
 GAME.EXE	0x800667fc	0x55ffc	0xa	defined	manual:collision grid sample		KfMapOccupancyCell	retail bytes;func_8002a988 fallback pointer	two five-byte layers with object index 0xff and flags 0x3f
@@ -863,7 +863,7 @@ GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68b	0x5ce8b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	manual:menu item model flag		s32	retail zero word;3 validated xrefs in menu_load_item_model and menu_release_item_model	allocation pending flag; original containing object and TU unproved
-GAME.EXE	0x8006d690	0x5ce90	0x4	defined	manual:input active latch		s32	retail zero word;16 validated xrefs;input_read_mark_active writes 1 after nonzero PadRead	input active latch cleared by release/menu handlers; original containing object and TU unproved
+GAME.EXE	0x8006d690	0x5ce90	0x4	defined	manual:input active latch	input_press_pending	s32	retail zero word;16 validated xrefs;input_read_mark_active writes 1 after nonzero PadRead	input active latch cleared by release/menu handlers; original containing object and TU unproved
 GAME.EXE	0x8006d694	0x5ce94	0x4	defined	manual:menu item quantity		s32	retail initialized word 1;24 validated xrefs;0x8001e484 full-word bounded increment/decrement	menu quantity scalar view; original containing object and TU remain unproved
 GAME.EXE	0x8006d698	0x5ce98	0x4	defined	manual:menu cursor frame		s32	retail zero word;12 validated xrefs;menu_frame_begin bounds frame at 0..7	cursor animation frame; original containing object and TU unproved
 GAME.EXE	0x8006d69c	0x5ce9c	0x4	defined	manual:menu cursor direction		s32	retail zero word;9 validated xrefs;menu_frame_begin stores 1 or -1 on bounds	cursor animation direction; original containing object and TU unproved

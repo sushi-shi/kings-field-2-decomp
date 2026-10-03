@@ -162,7 +162,7 @@ update_motion:
         SVECTOR *motion = (SVECTOR *)&actor->unknown_50;
         s32 speed;
 
-        func_800154fc(actor->position.vx - position->vx,
+        vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - (actor->unknown_1e >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
         pitch_yaw_to_forward_vector(&angles, motion);

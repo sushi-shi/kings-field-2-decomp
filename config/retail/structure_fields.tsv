@@ -309,11 +309,11 @@ KfItemMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	func_8001d6a8;func_8001
 KfItemMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;func_8001d6a8	layout bytes with unresolved meaning
 KfItemMenuList	0x2c	0x04	values	u8 *	supported	func_8001d6a8;func_80018ac8	pointer to parallel byte values
 KfItemMenuList	0x30	0x04	codes	u32 *	supported	asm;func_8001d030;func_8001d3b4	pointer to 120 indexed item-code words
-KfMagicMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;func_80019834;func_8001a2f4	shared menu list prefix
-KfMagicMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	func_80019834;func_8001a2f4	pointer to 24-byte glyph rows
-KfMagicMenuList	0x28	0x08	unknown_28	u8[8]	opaque	game/menu.h;func_80019834;func_8001a2f4	layout bytes with unresolved meaning
-KfMagicMenuList	0x30	0x04	values	s32 *	supported	func_80019834;func_8001a2f4	pointer to parallel selection values
-KfMagicRecord	0x0	0x1	menu_available	u8	supported	game/effect.h;asm;func_800199d0;player_state_equipment	Magic menu filter checks one; equipment reset clears the byte
+KfMagicMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_choose_magic_action;func_8001a2f4	shared menu list prefix
+KfMagicMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	menu_choose_magic_action;func_8001a2f4	pointer to 24-byte glyph rows
+KfMagicMenuList	0x28	0x08	unknown_28	u8[8]	opaque	game/menu.h;menu_choose_magic_action;func_8001a2f4	layout bytes with unresolved meaning
+KfMagicMenuList	0x30	0x04	values	s32 *	supported	menu_choose_magic_action;func_8001a2f4	pointer to parallel selection values
+KfMagicRecord	0x0	0x1	menu_available	u8	supported	game/effect.h;asm;menu_collect_available_magic_rows;player_state_equipment	Magic menu filter checks one; equipment reset clears the byte
 KfMagicRecord	0x1	0x3	unknown_01	u8[3]	opaque	game/effect.h;asm;magic_load_records	Remaining opaque bytes before +4
 KfMagicRecord	0x4	0x1	unknown_04	u8	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
 KfMagicRecord	0x5	0x1	unknown_05	u8	opaque	game/effect.h;asm;magic_load_records	26-byte archive magic record
@@ -408,7 +408,7 @@ KfMapOccupancyLayer	0x02	0x01	quarter_turns	u8	supported	asm;render_map_cell_obj
 KfMapOccupancyLayer	0x03	0x01	unknown_03	u8	opaque	asm;map cell grid	meaning unresolved
 KfMapOccupancyLayer	0x04	0x01	lighting_index	u8	supported	asm;render_map_cell_object	low six bits select collision lighting row
 KfMapPlacedEntry	0x00	0x02	id	u16	supported	asm;map_placed_expand_sources	entry id or 0xffff
-KfMapPlacedEntry	0x02	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to func_8002b67c
+KfMapPlacedEntry	0x02	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to collision_sample_map_layer_height
 KfMapPlacedEntry	0x03	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
 KfMapPlacedEntry	0x04	0x01	frame_period	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	global frame counter divisor
 KfMapPlacedEntry	0x05	0x01	frame_index	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	initial randomized phase, then incremented and wrapped
@@ -417,7 +417,7 @@ KfMapPlacedEntry	0x08	0x10	position	VECTOR	supported	asm;map_placed_expand_sourc
 KfMapPlacedSource	0x00	0x02	id	u16	supported	asm;map_placed_expand_sources	entry id or 0xffff
 KfMapPlacedSource	0x02	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
 KfMapPlacedSource	0x03	0x01	frame_period	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	copied to runtime +4
-KfMapPlacedSource	0x04	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to func_8002b67c
+KfMapPlacedSource	0x04	0x01	layer	u8	supported	asm;map_placed_expand_sources	first argument to collision_sample_map_layer_height
 KfMapPlacedSource	0x05	0x01	region_z	u8	supported	asm;map_placed_expand_sources	map Z region shifted by 11
 KfMapPlacedSource	0x06	0x01	region_x	u8	supported	asm;map_placed_expand_sources	map X region shifted by 11
 KfMapPlacedSource	0x07	0x03	unknown_07	u8[3]	opaque	asm;map_placed_expand_sources	not yet modelled

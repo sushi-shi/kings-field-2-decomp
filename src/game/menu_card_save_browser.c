@@ -22,8 +22,8 @@ void menu_card_save_browser(void)
     s32 frame;
 
     menu_enter_display_state(1);
-    func_8001c550(dialog_rows);
-    func_8001cdb0(dialog_rows, 2, 70, 87, 178, 66, 2, 0);
+    menu_prepare_card_browser_rows(dialog_rows);
+    menu_draw_card_dialog_rows(dialog_rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
     memory_card_probe_temporary_file();
     memory_card_scan_save_entries(entries, &matching_count);
@@ -66,7 +66,7 @@ void menu_card_save_browser(void)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8001fc94(&menu, 9);
+            menu_render_list(&menu, 9);
             menu_present_frame();
         }
     }
@@ -87,7 +87,7 @@ void menu_card_save_slot(s32 slot)
     if (probe != 0) {
         if (probe != 2) {
             func_8001c62c(rows);
-            func_8001cdb0(rows, 3, 70, 87, 178, 81, 2, 0);
+            menu_draw_card_dialog_rows(rows, 3, 70, 87, 178, 81, 2, 0);
             input_wait_release();
             while (PadRead(1) == 0) {}
             goto wait_release;
@@ -97,15 +97,15 @@ void menu_card_save_slot(s32 slot)
             goto write_file;
         }
         func_8001c770(rows);
-        func_8001cdb0(rows, 3, 70, 87, 192, 66, 2, 0);
+        menu_draw_card_dialog_rows(rows, 3, 70, 87, 192, 66, 2, 0);
         input_wait_release();
         while (PadRead(1) == 0) {}
         goto wait_release;
     }
 
 write_file:
-    func_8001c9f4(rows);
-    func_8001cdb0(rows, 2, 70, 87, 178, 66, 2, 0);
+    menu_prepare_card_write_rows(rows);
+    menu_draw_card_dialog_rows(rows, 2, 70, 87, 178, 66, 2, 0);
     result = memory_card_write_slot(slot);
     if (result == 0)
         return;
@@ -113,7 +113,7 @@ write_file:
         func_8001c62c(rows);
     else
         func_8001c8b0(rows);
-    func_8001cdb0(rows, 3, 70, 87, 178, 81, 2, 0);
+    menu_draw_card_dialog_rows(rows, 3, 70, 87, 178, 81, 2, 0);
     input_wait_release();
     while (PadRead(1) == 0) {}
 
@@ -188,7 +188,7 @@ s32 menu_confirm_card_format(s32 kind)
                 menu_draw_string(&menu_sprite_defs[1], &labels[4]);
                 menu_draw_string(&menu_sprite_defs[1], &labels[5]);
                 menu_draw_string(&menu_sprite_defs[1], &labels[6]);
-                func_800217f0(70, 92, 220, 81, 2, 0);
+                menu_draw_nine_slice_panel(70, 92, 220, 81, 2, 0);
             }
             menu_present_frame();
         }

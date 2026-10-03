@@ -219,19 +219,19 @@ after_script:
     old_counter = game_counter_bytes[0x53];
     switch (candidate->word_12.bytes.unknown_12 & 0xf0) {
     case 0:
-        func_80028fa8();
-        func_8001ceb8(candidate->word_12.bytes.unknown_12 & 0xf);
+        player_render_frame_and_release_pool();
+        menu_item_buy_sell_controller(candidate->word_12.bytes.unknown_12 & 0xf);
         break;
     case 0x10:
-        func_80028fa8();
-        func_8001dc64();
+        player_render_frame_and_release_pool();
+        menu_item_stock_choice_controller();
         break;
     case 0x20:
-        func_80028fa8();
+        player_render_frame_and_release_pool();
         menu_item_trade_controller();
         break;
     case 0x30:
-        func_80028fa8();
+        player_render_frame_and_release_pool();
         choice = menu_choose_inventory_item();
         if (choice != -1) {
             render_game_frame(0, 0);

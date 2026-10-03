@@ -12,7 +12,7 @@ enum {
 };
 
 ADDRESS(0x80034f90, 0x204)
-void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag)
 {
@@ -64,7 +64,7 @@ void func_80034f90(s32 mode, s32 world_x, s32 world_z, s32 angle,
 }
 
 ADDRESS(0x80035194, 0x370)
-void func_80035194(u32 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z,
                    s32 width, s32 height, s32 rotation, u32 field_mask)
 {

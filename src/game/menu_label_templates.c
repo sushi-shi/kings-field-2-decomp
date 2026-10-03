@@ -24,7 +24,7 @@ KfMenuLabelSuffix menu_label_suffixes[16] = {
 };
 
 ADDRESS(0x8001c550, 0xdc)
-void func_8001c550(KfMenuGlyphString *row)
+void menu_prepare_card_browser_rows(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
@@ -98,7 +98,7 @@ void func_8001c8b0(KfMenuGlyphString *row)
 }
 
 ADDRESS(0x8001c9f4, 0xe0)
-void func_8001c9f4(KfMenuGlyphString *row)
+void menu_prepare_card_write_rows(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 105;
@@ -113,7 +113,7 @@ void func_8001c9f4(KfMenuGlyphString *row)
 }
 
 ADDRESS(0x8001cad4, 0x70)
-void func_8001cad4(KfMenuGlyphString *row)
+void menu_prepare_card_read_row(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 112;
@@ -122,7 +122,7 @@ void func_8001cad4(KfMenuGlyphString *row)
 }
 
 ADDRESS(0x8001cb44, 0x190)
-void func_8001cb44(KfMenuGlyphString *row, s32 kind)
+void menu_prepare_card_read_failure_rows(KfMenuGlyphString *row, s32 kind)
 {
     row->position.x = 90;
     row->position.y = 105;
@@ -167,7 +167,7 @@ void func_8001ccd4(KfMenuGlyphString *row)
 }
 
 ADDRESS(0x8001cdb0, 0x108)
-void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
+void menu_draw_card_dialog_rows(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y)
 {
     const KfMenuGlyphString *current;
@@ -182,13 +182,13 @@ void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
         current = rows;
         for (row = 0; row < count; row++, current++)
             menu_draw_string(&menu_sprite_defs[1], current);
-        func_800217f0(x, y, width, height, overlap_x, overlap_y);
+        menu_draw_nine_slice_panel(x, y, width, height, overlap_x, overlap_y);
         menu_present_frame();
     }
 }
 
 ADDRESS(0x8001ceb8, 0x178)
-void func_8001ceb8(s32 kind)
+void menu_item_buy_sell_controller(s32 kind)
 {
     s32 cursor = 0;
     s32 confirmed = 0;

@@ -38,7 +38,7 @@ void actor_set_home_position(KfActor *actor)
                        + actor->unknown_24;
     actor->position.vz = (actor->unknown_07[0] << ACTOR_HOME_CELL_SHIFT)
                        + actor->unknown_22;
-    actor->position.vy = func_8002b67c(actor->unknown_06,
+    actor->position.vy = collision_sample_map_layer_height(actor->unknown_06,
                                         actor->position.vx,
                                         actor->position.vz,
                                         actor->unknown_1c,

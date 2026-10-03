@@ -25,7 +25,7 @@ enum {
 ADDRESS(0x80022438, 0x30)
 void input_wait_release(void)
 {
-    input_idle_counter = 0;
+    input_press_pending = 0;
     while (PadRead(1) != 0) {
     }
 }

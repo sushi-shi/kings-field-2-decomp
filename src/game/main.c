@@ -70,7 +70,7 @@ void game_main_loop(void)
     map_object_pool_reset();
     actor_pool_clear();
     effect_pool_reset();
-    func_80015d58();
+    resource_initialize_game_assets();
     event_state_initialize();
     memory_card_initialize();
     reset_collision_rows_and_overlay();
@@ -80,7 +80,7 @@ void game_main_loop(void)
     if (menu_card_browser() != -1) {
         player_restore_equipment_effects();
     }
-    func_80015fd4();
+    resource_run_initial_transition();
     player_sync_position_to_map();
 
     floor_item_capture_image(0x140, 0x100, 0, 1, 1, 0x40, 0x40);
@@ -103,7 +103,7 @@ void game_main_loop(void)
         effect_pool_sweep();
         player_state.unknown_09[1] = 0;
         callback_invoke_slot_04_zero();
-        func_80016820();
+        resource_advance_transition();
         player_get_camera_pose(&camera_position, &camera_rotation);
         audio_update_listener(&camera_position, &camera_rotation);
         refresh_collision_row_rotations();

@@ -41,26 +41,23 @@ void actor_update_lifecycle_for_player_range(void)
                 player_state.unknown_09[1] == 0) {
                 goto set_dormant;
             }
-            if (slot_state == 1) {
-                goto check_actor_overlap;
-            }
-            if (slot_state != 0) {
-                goto set_dormant;
-            }
-            if (actor->unknown_0a[0] == 0 ||
-                actor->unknown_0a[0] < (rand() >> 7)) {
-                goto set_dormant;
+            if (slot_state != 1) {
+                if (slot_state != 0) {
+                    goto set_dormant;
+                }
+                if (actor->unknown_0a[0] == 0 ||
+                    actor->unknown_0a[0] < (rand() >> 7)) {
+                    goto set_dormant;
+                }
             }
         }
 
-    check_actor_overlap:
         if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
                           actor->position.vz, group->unknown_12,
                           group->unknown_14) != -1) {
             goto set_dormant;
         }
 
-    activate:
         actor_prepare_and_initialize(actor_state.current);
         {
             KfTargetCandidate *target = actor_find_target_of_type(group, 0x15);

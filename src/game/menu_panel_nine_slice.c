@@ -3,7 +3,7 @@
 #include <kf/game/menu.h>
 
 ADDRESS(0x800217f0, 0x270)
-void func_800217f0(s32 x, s32 y, s32 width, s32 height,
+void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y)
 {
     const KfMenuSpriteDef *tile;

@@ -14,7 +14,7 @@ void menu_show_combat_attributes(void)
             input_wait_release();
             return;
         }
-        func_800223cc();
+        input_wait_brief_release();
         if (input_read_mark_active()) {
             menu_play_sound_cue(18);
             current = -1;

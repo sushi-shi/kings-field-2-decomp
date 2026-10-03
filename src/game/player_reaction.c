@@ -17,6 +17,8 @@
 #include <kf/game/pool.h>
 #include <psyq/libc.h>
 #include <psyq/sdk.h>
+#include <kf/lib/types.h>
+#include <kf/game/notify.h>
 
 DATA(0x8006d6b0, 0x20)
 static RECT player_status_texture_rows[4] = {
@@ -28,8 +30,146 @@ static RECT player_status_texture_rows[4] = {
 
 RODATA(0x80011300, 0x4c)
 
+ADDRESS(0x8002897c, 0x1c)
+s32 item_id_is_71_to_80(s32 value)
+{
+    s32 result = 0;
+    if (value < 81) {
+        result = value >= 71;
+    }
+    return result;
+}
+
+ADDRESS(0x80028998, 0x528)
+void func_80028998(void)
+{
+    const u16 *attack_mask;
+    s32 charge_gain;
+    u8 timer;
+
+    if (player_state.weapon_magic_shots_configured == 0
+        && (player_state.flags_140.word & 0x00800080) == 0x80
+        && player_state.weapon_magic_shots_remaining == 0) {
+        player_select_magic_action(player_state.primary_magic_shortcut_id);
+    }
+
+    if ((player_state.flags_140.word & 0x08000800) == 0x800) {
+        if (player_state.secondary_magic_shortcut_id != 0xff) {
+            player_select_magic_action(player_state.secondary_magic_shortcut_id);
+        }
+        if (player_state.secondary_item_shortcut_id != 0xff) {
+            if (game_counter_bytes[player_state.secondary_item_shortcut_id] != 0) {
+                if (item_id_is_71_to_80(player_state.secondary_item_shortcut_id) != 0) {
+                    menu_apply_item_effect(player_state.secondary_item_shortcut_id);
+                } else {
+                    event_scene_command_dispatch(&player_state.camera_position,
+                                  &player_state.camera_rotation_target,
+                                  player_state.secondary_item_shortcut_id);
+                }
+            } else {
+                notify_enqueue(20);
+            }
+        }
+    }
+
+    if (player_state.unknown_d1[0] != 0xff) {
+        timer = player_state.unknown_d1[3] - 1;
+        player_state.unknown_d1[3] = timer;
+        if (timer == 0) {
+            player_dispatch_magic_effect(player_state.unknown_d1[0]);
+            timer = player_state.unknown_d1[1] - 1;
+            player_state.unknown_d1[1] = timer;
+            if (timer == 0) {
+                player_state.unknown_d1[0] = 0xff;
+            } else {
+                player_state.unknown_d1[3] = player_state.unknown_d1[2];
+            }
+        }
+    }
+
+    if ((player_state.flags_140.word & 0x00200020) == 0x00200020
+        && player_state.equipped_shield_id != 50) {
+        if (player_state.unknown_0c[1] != 0) {
+            player_state.unknown_0c[1]--;
+        }
+        player_state.weapon_charge_delay = 1;
+        player_state.attack_charge_current -= 500;
+        if ((s16)player_state.attack_charge_current <= 0) {
+            player_state.attack_charge_current = 0;
+            player_state.weapon_charge_delay = 40;
+        }
+        player_state.magic_charge -= 500;
+        if ((s16)player_state.magic_charge <= 0) {
+            player_state.magic_charge = 0;
+        }
+        player_state.damage_scale -= 128;
+        if (player_state.damage_scale < 1024) {
+            player_state.damage_scale = 1024;
+        }
+        return;
+    }
+
+    if (player_state.selected_magic_record == 0) {
+        player_state.magic_charge += player_charge_gain_for_rank(player_state.magic, 0);
+    } else {
+        charge_gain = player_charge_gain_for_rank(player_state.magic,
+                                    player_state.selected_magic_record->unknown_01[0]);
+        if (player_state.equipped_head_id == 24) {
+            charge_gain >>= 1;
+        }
+        player_state.magic_charge += charge_gain;
+    }
+    if (player_state.magic_charge > 5000) {
+        player_state.magic_charge = 5000;
+    }
+    player_state.damage_scale += 128;
+    if (player_state.damage_scale > 4096) {
+        player_state.damage_scale = 4096;
+    }
+    player_state.unknown_0c[1] = 1;
+
+    if (player_state.weapon_magic_shots_remaining != 0) {
+        player_state.weapon_magic_shots_remaining--;
+    } else {
+        player_state.unknown_78 = player_magic_id_sequence.attack_masks;
+    }
+
+    if ((player_state.flags_140.low & 0xb0) != 0
+        && (player_state.flags_140.halves.high & 0xb0) == 0
+        && player_state.equipped_weapon_record->unknown_24 != 0) {
+        if (player_has_power_and_magic_60() == 0) {
+            goto cancel_weapon_attack;
+        }
+        attack_mask = player_state.unknown_78;
+        if ((player_state.flags_140.low & attack_mask[0]) == 0) {
+            goto cancel_weapon_attack;
+        }
+        if (attack_mask == player_magic_id_sequence.attack_masks
+            && (player_state.attack_charge_current != 5000
+                || player_state.magic_charge != 5000)) {
+            goto cancel_weapon_attack;
+        }
+        player_state.unknown_78 = attack_mask + 1;
+        if (attack_mask[1] == 0xffff) {
+            player_begin_weapon_attack(1);
+            return;
+        }
+        player_state.weapon_magic_shots_remaining = 20;
+        goto after_weapon_attack;
+cancel_weapon_attack:
+        player_state.weapon_magic_shots_remaining = 0;
+    }
+
+after_weapon_attack:
+    if (player_state.weapon_charge_delay == 0
+        && player_state.weapon_magic_shots_remaining == 0
+        && (player_state.flags_140.word & 0x00100010) == 0x10) {
+        player_begin_weapon_attack(0);
+    }
+}
+
 ADDRESS(0x80028ec0, 0xe8)
-void func_80028ec0(void)
+void player_update_reaction_rotation_offsets(void)
 {
     player_state.reaction.damage.motion.vx = angle_velocity_step(
         0, (s16)player_state.unknown_100[0], player_state.reaction.damage.motion.vx, 8, 4);
@@ -44,7 +184,7 @@ void func_80028ec0(void)
 }
 
 ADDRESS(0x80028fa8, 0x6c)
-void func_80028fa8(void)
+void player_render_frame_and_release_pool(void)
 {
     u8 saved_c9 = player_state.unknown_c9[0];
     u8 saved_ca = player_state.unknown_c9[1];
@@ -58,13 +198,13 @@ void func_80028fa8(void)
 }
 
 ADDRESS(0x80029014, 0x154)
-void func_80029014(void)
+void player_handle_interaction_and_menu(void)
 {
     s32 value;
 
     if ((player_state.flags_140.word & 0x00200020) == 0x20) {
         if (player_state.death_state == 1) {
-            func_800291ec(&map_object_state.objects[player_state.reaction.view.mode]);
+            player_apply_map_object_reaction(&map_object_state.objects[player_state.reaction.view.mode]);
         } else {
             event_world_dispatch_interaction(&player_state.camera_position,
                                              &player_state.camera_rotation_target);
@@ -75,7 +215,7 @@ void func_80029014(void)
         return;
     }
 
-    func_80028fa8();
+    player_render_frame_and_release_pool();
     value = menu_run_root_controller();
     if (value >= 0) {
         if (item_id_is_71_to_80(value) == 0) {
@@ -94,7 +234,7 @@ void func_80029014(void)
 }
 
 ADDRESS(0x80029168, 0x68)
-void func_80029168(void)
+void player_reset_reaction_state(void)
 {
     player_state.death_state = 0;
     player_state.forward_velocity = 0;
@@ -131,10 +271,8 @@ typedef char kf_player_map_object_vector_offset[
 typedef char kf_player_map_object_halfword_offset[
     (u32)&((KfMapObjectRecord40 *)0)->unknown_38 == 0x38 ? 1 : -1];
 
-void func_80029428(const SVECTOR *rotation);
-
 ADDRESS(0x800291ec, 0x1e8)
-void func_800291ec(KfMapObject *object)
+void player_apply_map_object_reaction(KfMapObject *object)
 {
     KfMapObjectRecord40 *record;
 
@@ -158,7 +296,7 @@ void func_800291ec(KfMapObject *object)
         rotation.vx = (record->unknown_0c.vx * record->unknown_38) >> 15;
         rotation.vy = ((record->unknown_0c.vy * record->unknown_38) >> 15) + 512;
         rotation.vz = (record->unknown_0c.vz * record->unknown_38) >> 15;
-        func_80029428(&rotation);
+        player_begin_rotation_reaction(&rotation);
     } else {
         struct KfVecXZi offset;
         angle_to_forward_xz(object->rotation.vy + 1024, &offset);
@@ -172,7 +310,7 @@ void func_800291ec(KfMapObject *object)
 }
 
 ADDRESS(0x800293d4, 0x54)
-void func_800293d4(u8 mode)
+void player_begin_view_reaction(u8 mode)
 {
     player_state.death_state = 2;
     player_state.reaction.view.mode = mode;
@@ -181,7 +319,7 @@ void func_800293d4(u8 mode)
 }
 
 ADDRESS(0x80029428, 0x3c)
-void func_80029428(const SVECTOR *rotation)
+void player_begin_rotation_reaction(const SVECTOR *rotation)
 {
     player_state.death_state = 3;
     player_state.reaction.damage.rotation = *rotation;
@@ -430,7 +568,7 @@ void func_8002985c(void)
         player_state.camera_position = object->position;
         player_state.unknown_108.vector = object->rotation;
 update_reaction_view:
-        func_80029014();
+        player_handle_interaction_and_menu();
         goto after_reaction;
     case 2:
         object_index = player_state.reaction.view.mode;
@@ -470,12 +608,12 @@ update_reaction_view:
             player_state.camera_position.vz,
             player_state.reaction.position.position.vz, fraction);
         if (player_state.reaction.position.mode > 15) {
-            func_80029168();
+            player_reset_reaction_state();
         }
         goto after_reaction;
     case 3:
         if (player_move_reaction_with_collision() != 0) {
-            func_80029168();
+            player_reset_reaction_state();
         }
         goto update_reaction_view;
     case 4: {
@@ -493,7 +631,7 @@ update_reaction_view:
         player_state.reaction.angle_phase = angle_phase;
         if (angle_phase == 0) {
             player_state.unknown_108.components[2] = 0;
-            func_80029168();
+            player_reset_reaction_state();
         }
         goto update_reaction_view;
     }
@@ -503,21 +641,21 @@ update_reaction_view:
         player_update_horizontal_motion();
         player_state.reaction.damage.rotation.vy = 1;
         player_move_reaction_with_collision();
-        func_80028ec0();
+        player_update_reaction_rotation_offsets();
         if (player_state.unknown_100[0] == 0
             && player_state.unknown_100[1] == 0
             && player_state.unknown_100[2] == 0) {
-            func_80029168();
+            player_reset_reaction_state();
         }
 update_reaction_pose:
         player_update_vertical_motion();
         goto update_reaction_view;
     case 18:
-        func_80028ec0();
+        player_update_reaction_rotation_offsets();
         if (player_state.unknown_100[0] == 0
             && player_state.unknown_100[1] == 0
             && player_state.unknown_100[2] == 0) {
-            func_80029168();
+            player_reset_reaction_state();
         }
         goto update_reaction_view;
     case 17:

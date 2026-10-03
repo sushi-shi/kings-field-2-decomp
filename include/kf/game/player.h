@@ -437,8 +437,9 @@ void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
 s32 item_id_is_71_to_80(s32 value);
 void func_80028998(void);
-void func_80028fa8(void);
-void func_800293d4(u8 mode);
+void player_render_frame_and_release_pool(void);
+void player_begin_view_reaction(u8 mode);
+void player_begin_rotation_reaction(const SVECTOR *rotation);
 void func_80029464(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);
 void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion,

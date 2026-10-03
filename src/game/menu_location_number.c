@@ -21,7 +21,7 @@ s32 menu_run_root_controller(void)
     menu_enter_display_state(1);
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
-        func_8001e94c();
+        menu_draw_player_status();
         menu_draw_window(0, 8, cursor, confirmed);
         menu_present_frame();
     }
@@ -34,19 +34,19 @@ s32 menu_run_root_controller(void)
 
         switch (selection) {
         case 0:
-            choice_result = func_80018ac8();
+            choice_result = menu_item_selection_controller();
             goto selection_result;
         case 1:
-            choice_result = func_80019834();
+            choice_result = menu_choose_magic_action();
             goto selection_result;
         case 2:
-            func_80019ac4();
+            menu_equipment_list_controller();
             break;
         case 3:
             menu_show_combat_attributes();
             break;
         case 4:
-            func_8001a898();
+            menu_item_use_controller();
             break;
         case 5:
             choice_result = func_8001aa9c();
@@ -56,7 +56,7 @@ selection_result:
                 result = -99;
             break;
         case 6:
-            func_8001b2dc();
+            menu_options_controller();
             break;
         }
 
@@ -69,7 +69,7 @@ selection_result:
             menu_frame_begin();
             if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
                 menu_draw_location_number();
-            func_8001e94c();
+            menu_draw_player_status();
             menu_draw_window(0, 8, cursor, confirmed);
             menu_present_frame();
         }

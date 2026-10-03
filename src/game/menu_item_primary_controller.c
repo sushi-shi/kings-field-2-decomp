@@ -208,7 +208,7 @@ void menu_item_buy_controller(s32 kind)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 10);
+            menu_render_list(&menu, 10);
             menu_present_frame();
         }
     }
@@ -295,7 +295,7 @@ void menu_item_sell_controller(s32 kind)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 11);
+            menu_render_list(&menu, 11);
             menu_present_frame();
         }
     }
@@ -351,7 +351,7 @@ s32 menu_choose_inventory_item(void)
         menu_frame_begin();
         if (menu.list.entry_count != 0)
             menu_update_item_preview((u8)selected_item);
-        func_8001fc94(&menu, 12);
+        menu_render_list(&menu, 12);
         menu_present_frame();
     }
     menu_play_sound_cue(16);
@@ -379,7 +379,7 @@ s32 menu_choose_inventory_item(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview((u8)selected_item);
-            func_8001fc94(&menu, 12);
+            menu_render_list(&menu, 12);
             menu_present_frame();
         }
     }

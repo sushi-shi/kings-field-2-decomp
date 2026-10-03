@@ -5,7 +5,7 @@
 #include <psyq/pad.h>
 
 ADDRESS(0x8001b030, 0x11c)
-void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
+void menu_show_dialog_panel(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,
     s32 detail5)
 {
@@ -23,14 +23,14 @@ void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
         current = rows;
         for (row = 0; row < count; row++, current++)
             menu_draw_string(&menu_sprite_defs[1], current);
-        func_800217f0(detail0, detail1, detail2, detail3, detail4, detail5);
+        menu_draw_nine_slice_panel(detail0, detail1, detail2, detail3, detail4, detail5);
         menu_present_frame();
         frame++;
     } while (frame < 2);
 }
 
 ADDRESS(0x8001b14c, 0x190)
-s32 func_8001b14c(void)
+s32 menu_prompt_two_option(void)
 {
     KfMenuGlyphString labels[2];
     s32 choice;
@@ -91,7 +91,7 @@ enum {
 };
 
 ADDRESS(0x8001b2dc, 0x278)
-void func_8001b2dc(void)
+void menu_options_controller(void)
 {
     u8 selected[KF_MENU_OPTION_COUNT];
     KfMenuGlyphString labels[2];
@@ -127,7 +127,7 @@ void func_8001b2dc(void)
             break;
         }
 
-        func_800223cc();
+        input_wait_brief_release();
         buttons = input_read_mark_active();
         confirmed = 0;
         if (buttons & PADLup) {

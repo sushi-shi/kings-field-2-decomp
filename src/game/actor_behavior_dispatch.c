@@ -187,7 +187,7 @@ case3_motion:
             actor->tail_72.angles.y = 0;
             actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = (u16)actor->unknown_26 +
-                func_8002b67c(actor->unknown_06,
+                collision_sample_map_layer_height(actor->unknown_06,
                     (actor->unknown_07[1] << 11) + actor->unknown_24,
                     (actor->unknown_07[0] << 11) + actor->unknown_22,
                     actor->unknown_1c, actor->unknown_1e);
@@ -311,7 +311,7 @@ case3_motion:
         delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
         delta_z = player_state.camera_position.vz - actor->position.vz;
         distance = fixed_vector3_length(delta_x, delta_y, delta_z);
-        func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
+        vector_displacement_to_pitch_yaw(delta_x, delta_y, delta_z, &actor->tail_72.angles);
         if (actor->tail_72.angles.x >= 3585) {
             actor->tail_72.angles.x = 3584;
         } else if (actor->tail_72.angles.x > 512) {
@@ -563,7 +563,7 @@ case3_motion:
         case 0:
             actor_advance_animation_clamped(actor, target->animation_step);
             if (actor->animation_phase >= 0xfff) {
-                func_800154fc(
+                vector_displacement_to_pitch_yaw(
                     player_state.camera_position.vx - actor->position.vx,
                     player_state.camera_position.vy - actor->position.vy,
                     player_state.camera_position.vz - actor->position.vz,
@@ -637,7 +637,7 @@ case3_motion:
         delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
         delta_z = player_state.camera_position.vz - actor->position.vz;
         fixed_vector3_length(delta_x, delta_y, delta_z);
-        func_800154fc(delta_x, delta_y, delta_z, &actor->tail_72.angles);
+        vector_displacement_to_pitch_yaw(delta_x, delta_y, delta_z, &actor->tail_72.angles);
         actor_turn_and_move_along_euler_angles(&actor->tail_72.angles, target->word_1c.value,
                       target->word_1e.value,
                       target->word_0c.bytes.high,

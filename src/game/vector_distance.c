@@ -56,15 +56,15 @@ s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VEC
     s32 distance;
 
     if (x < -limit || limit < x) {
-        goto out_of_range;
+        return KF_DISTANCE_OUTSIDE_REACH;
     }
     z = second->vz - first->vz;
     if (z < -limit || limit < z) {
-        goto out_of_range;
+        return KF_DISTANCE_OUTSIDE_REACH;
     }
     y = second->vy - first->vy - (height >> 1);
     if (y < -limit || limit < y) {
-        goto out_of_range;
+        return KF_DISTANCE_OUTSIDE_REACH;
     }
     x >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     z >>= KF_LENGTH_SQUARE_DOWNSHIFT;

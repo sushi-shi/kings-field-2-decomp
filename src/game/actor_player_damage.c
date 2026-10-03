@@ -134,7 +134,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
             continue;
         }
 
-        func_800154fc(actor->position.vx - position->vx,
+        vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - position->vy,
                       actor->position.vz - position->vz, &direction);
         direction.y = (direction.y - (u16)yaw) & KF_ANGLE_WRAP_MASK;

@@ -8,7 +8,7 @@
 RODATA(0x8001187c, 0x9c)
 
 ADDRESS(0x80036190, 0x22c)
-s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
+s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,
                    s32 point_height, s32 angle, s32 tolerance)
 {
     KfMapObject *object;
@@ -332,13 +332,12 @@ s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 heig
         goto outside;
     }
     if (height == 0x8000) {
-        goto inside;
+        return 1;
     }
     if (height + 2048 < player_state.camera_position.vy ||
         player_state.camera_position.vy < height - 3200) {
         goto outside;
     }
-inside:
     return 1;
 outside:
     return 0;

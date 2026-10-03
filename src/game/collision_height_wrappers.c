@@ -28,7 +28,7 @@ s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height)
 }
 
 ADDRESS(0x8002b67c, 0xc0)
-s32 func_8002b67c(u8 kind, s32 x, s32 z, s32 radius, s32 height)
+s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 height)
 {
     KfMapOccupancyCell *cell = &bss_801c7540.map_cells[z >> 11][x >> 11];
     s32 elevation;
@@ -146,7 +146,7 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
         }
 
         if (mode & 0x20) {
-            COLLISION_CACHE_OBJECT_INDEX = func_80036078(x, y, z, radius, height);
+            COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
             if (COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= 0x20;
             }

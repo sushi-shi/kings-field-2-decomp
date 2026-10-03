@@ -242,12 +242,12 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case 2:
             object->action = 2;
             object->unknown_01 = 0;
-            func_80034f90(object->unknown_00, object->position.vx,
+            map_cell_apply_rotated_pattern(object->unknown_00, object->position.vx,
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[8], 0, 0xff);
             break;
         case 4:
-            func_80035194(object->unknown_00,
+            map_cell_copy_rotated_fields(object->unknown_00,
                           (u8)object->tail.fields.unknown_3a.bytes.high + 2,
                           (u8)object->tail.fields.spawn_sequence,
                           object->tail.fields.unknown_39,
@@ -261,7 +261,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 3:
             object->unknown_01 = 0;
-            func_80035194(object->unknown_00,
+            map_cell_copy_rotated_fields(object->unknown_00,
                           (u8)object->tail.fields.unknown_3a.bytes.high +
                               template->unknown_0d[0] * 2,
                           (u8)object->tail.fields.spawn_sequence,
@@ -347,7 +347,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->extra_40.bytes[0] = object->unknown_00;
             object->unknown_00 = 3;
             object->action = 0x54;
-            func_80034f90(object->extra_40.bytes[0], object->position.vx,
+            map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[
                               template->unknown_0d[1] * 2 +

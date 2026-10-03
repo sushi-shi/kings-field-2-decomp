@@ -89,7 +89,7 @@ labels_ready:
         if (result != -99) {
             goto finished;
         }
-        func_800223cc();
+        input_wait_brief_release();
         buttons = input_read_mark_active();
         confirmed = 0;
         if ((buttons & PADLup) || (buttons & PADLdown)) {
@@ -111,7 +111,7 @@ labels_ready:
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_update_item_preview((u8)item_id);
-            func_8001fc94(list_state, render_mode);
+            menu_render_list(list_state, render_mode);
             menu_draw_two_option(&labels[0], &labels[1], choice, confirmed);
             menu_present_frame();
         }

@@ -11,7 +11,7 @@ s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
 
     *selection = -1;
     *confirmed = 0;
-    func_800223cc();
+    input_wait_brief_release();
     buttons = input_read_mark_active();
     if (buttons & PADLup) {
         menu_cursor_animation_direction = 0;
@@ -48,7 +48,7 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     u32 buttons;
 
     *selection = 0;
-    func_800223cc();
+    input_wait_brief_release();
     buttons = input_read_mark_active();
 
     if (list->entry_count == 0) {
@@ -110,56 +110,56 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
 
     if (buttons & PADselect) {
         if (buttons & PADR1) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation.vx += 16;
         }
         if (buttons & PADR2) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation.vx -= 16;
         }
         if (buttons & PADL1) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation.vz += 16;
         }
         if (buttons & PADL2) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation.vz -= 16;
         }
         if (buttons & PADRup) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation_step++;
         }
         if (buttons & PADRleft) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_rotation_step--;
         }
     }
 
     if (buttons & PADstart) {
         if (buttons & PADR1) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_translation.vx += 16;
         }
         if (buttons & PADR2) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_translation.vx -= 16;
         }
         if (buttons & PADL1) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_translation.vy += 16;
         }
         if (buttons & PADL2) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_translation.vy -= 16;
         }
         if (buttons & PADRup) {
-            input_idle_counter = 0;
+            input_press_pending = 0;
             menu_item_preview_translation.vz += 16;
         }
         if (buttons & PADRleft) {
             if (menu_item_preview_translation.vz > 500)
                 menu_item_preview_translation.vz -= 16;
-            input_idle_counter = 0;
+            input_press_pending = 0;
         }
     }
 

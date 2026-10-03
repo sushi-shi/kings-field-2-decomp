@@ -135,7 +135,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
 
     for (;;) {
         target_y = target->vy + 1600;
-        func_800154fc(position.vx - target->vx,
+        vector_displacement_to_pitch_yaw(position.vx - target->vx,
                       position.vy - target_y,
                       position.vz - target->vz, &angles);
         yaw_error = ((s16)angles.y - (s16)actor->rotation.y) & KF_ANGLE_WRAP_MASK;
@@ -169,7 +169,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         distance = fixed_vector3_length(target->vx - position.vx,
                                         target->vy - position.vy,
                                         target->vz - position.vz);
-        func_80015ce0(origin, (const SVECTOR *)&player_state.unknown_e8,
+        vector_add_scaled_delta(origin, (const SVECTOR *)&player_state.unknown_e8,
                       distance / step, &position);
     }
     return angles.y;

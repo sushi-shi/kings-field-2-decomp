@@ -2,7 +2,7 @@
 #include <kf/lib/math.h>
 
 ADDRESS(0x80015918, 0x2b0)
-s32 func_80015918(s32 mode, s32 horizontal_distance,
+s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle)
 {
@@ -53,7 +53,7 @@ s32 func_80015918(s32 mode, s32 horizontal_distance,
 }
 
 ADDRESS(0x80015bc8, 0x118)
-s32 func_80015bc8(s32 mode, s32 source_x, s32 source_y,
+s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
     s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
 {
@@ -66,7 +66,7 @@ s32 func_80015bc8(s32 mode, s32 source_x, s32 source_y,
     s32 distance = fixed_vector2_length(target_x - source_x,
                                        target_z - source_z);
 
-    status = func_80015918(mode, distance, source_y - target_y,
+    status = trajectory_solve_time_angle(mode, distance, source_y - target_y,
                            speed, amplitude, &result_value.word, &angle);
     if (status == 0) {
         *motion_x = (amplitude * rcos(angle)) >> KF_FIXED12_BITS;
@@ -77,7 +77,7 @@ s32 func_80015bc8(s32 mode, s32 source_x, s32 source_y,
 }
 
 ADDRESS(0x80015ce0, 0x70)
-void func_80015ce0(const VECTOR *origin, const SVECTOR *delta, s32 scale,
+void vector_add_scaled_delta(const VECTOR *origin, const SVECTOR *delta, s32 scale,
     VECTOR *output)
 {
     setVector(output, delta->vx * scale + origin->vx,

@@ -5,7 +5,7 @@
 
 
 ADDRESS(0x8001a898, 0x204)
-void func_8001a898(void)
+void menu_item_use_controller(void)
 {
     KfItemMenuList menu;
     KfMenuGlyphRow rows[120];
@@ -51,7 +51,7 @@ void func_8001a898(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 7);
+            menu_render_list(&menu, 7);
             menu_present_frame();
         }
     }

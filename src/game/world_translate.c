@@ -5,7 +5,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x800160e8, 0x178)
-void func_800160e8(s32 dx, s32 dy, s32 dz)
+void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
 {
     KfEffectRecord *effect = effect_state.records;
     KfMapObject *object;

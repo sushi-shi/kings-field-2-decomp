@@ -32,7 +32,7 @@ s32 func_8001aa9c(void)
                 result = -3;
             break;
         case 1:
-            result = func_8001b14c();
+            result = menu_prompt_two_option();
             if (result == 0)
                 result = -2;
             break;
@@ -59,7 +59,7 @@ s32 func_8001aa9c(void)
         volume = 60;
         func_8001ccd4(labels);
         for (;;) {
-            func_8001b030(5, labels, 2, 70, 87, 178, 66, 2, 0);
+            menu_show_dialog_panel(5, labels, 2, 70, 87, 178, 66, 2, 0);
             if (volume > 0) {
                 volume--;
                 SsSeqSetVol(audio_state.sequence_id, volume, volume);
@@ -86,8 +86,8 @@ s32 menu_card_load_browser(void)
     s32 read_result;
     s32 frame;
 
-    func_8001c550(dialog_rows);
-    func_8001b030(4, dialog_rows, 2, 70, 87, 178, 66, 2, 0);
+        menu_prepare_card_browser_rows(dialog_rows);
+    menu_show_dialog_panel(4, dialog_rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
     memory_card_scan_save_entries(entries, &matching_count);
     count = menu_card_build_slot_rows(entries, glyph_rows[0].codes,
@@ -119,18 +119,18 @@ s32 menu_card_load_browser(void)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8001fc94(&menu, 8);
+            menu_render_list(&menu, 8);
             menu_present_frame();
         }
     }
 
     if (result != -1) {
-        func_8001cad4(dialog_rows);
-        func_8001b030(4, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
+        menu_prepare_card_read_row(dialog_rows);
+        menu_show_dialog_panel(4, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
         read_result = memory_card_read_slot(result);
         if (read_result != 0) {
-            func_8001cb44(dialog_rows, read_result);
-            func_8001b030(4, dialog_rows, 3, 70, 87, 178, 81, 2, 0);
+            menu_prepare_card_read_failure_rows(dialog_rows, read_result);
+            menu_show_dialog_panel(4, dialog_rows, 3, 70, 87, 178, 81, 2, 0);
             input_wait_release();
             while (PadRead(1) == 0) {}
             input_wait_release();

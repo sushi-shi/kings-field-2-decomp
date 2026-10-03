@@ -184,7 +184,7 @@ extern KfMenuGlyphRow menu_glyph_rows_extra[20];
 extern KfMenuLabelSuffix menu_equipment_labels_64910[10];
 extern s16 menu_row_prefix_649ec[4];
 extern u8 menu_item_mask_pages[6][120];
-void func_80019ce4(KfMenuLabelSuffix *rows);
+void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];
 extern u16 menu_item_code_secondary[5][120];
 
@@ -196,7 +196,7 @@ s32 menu_preview_choice(void *list_state, s32 label_kind,
 void menu_show_map_preview(s32 menu_code);
 s32 menu_card_browser(void);
 /* Menu modes reinterpret the four payload words after the common list prefix. */
-void func_8001fc94(const void *list_state, s32 render_mode);
+void menu_render_list(const void *list_state, s32 render_mode);
 void menu_blit_sprite(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_fixed_clut(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_translucent(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
@@ -218,15 +218,15 @@ s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
 s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
 void menu_apply_item_effect(s32 item_id);
-s32 func_80018ac8(void);
-s32 func_80019834(void);
-void func_80019ac4(void);
-void func_8001a898(void);
+s32 menu_item_selection_controller(void);
+s32 menu_choose_magic_action(void);
+void menu_equipment_list_controller(void);
+void menu_item_use_controller(void);
 s32 func_8001aa9c(void);
-void func_8001b2dc(void);
-void func_8001e94c(void);
+void menu_options_controller(void);
+void menu_draw_player_status(void);
 void menu_draw_location_number(void);
-s32 func_800199d0(const struct KfMagicRecord *records,
+s32 menu_collect_available_magic_rows(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
 void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group);
@@ -234,47 +234,47 @@ void menu_fill_item_prices(u32 *prices, const u8 *indices,
     s32 first, s32 last, s32 group);
 s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);
-void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
+void menu_show_dialog_panel(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,
     s32 detail5);
-void func_8001ba80(KfMenuGlyphString *rows);
-void func_8001bb94(KfMenuGlyphString *rows);
+void menu_build_card_probe_error_rows(KfMenuGlyphString *rows);
+void menu_build_card_full_rows(KfMenuGlyphString *rows);
 s32 menu_card_load_slot_browser(void);
-void func_8001c550(KfMenuGlyphString *rows);
-void func_800217f0(s32 x, s32 y, s32 width, s32 height,
+void menu_prepare_card_browser_rows(KfMenuGlyphString *rows);
+void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y);
 void menu_enter_display_state(s32 mode);
 void menu_exit_display_state(s32 stop_sequence);
 s32 menu_load_item_model(u8 item_id);
 void menu_release_item_model(void);
 void menu_play_sound_cue(s32 cue);
-void func_800223cc(void);
+void input_wait_brief_release(void);
 s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
     s32 *cancelled);
 void menu_card_save_browser(void);
-void func_8001ceb8(s32 kind);
+void menu_item_buy_sell_controller(s32 kind);
 s32 menu_choose_inventory_item(void);
 void menu_item_trade_controller(void);
-void func_8001dc64(void);
+void menu_item_stock_choice_controller(void);
 s32 menu_run_root_controller(void);
 void func_80019240(void);
 void func_800192ac(void);
 void func_800192dc(void);
-void func_80019ed4(s32 category);
+void menu_equipment_category_controller(s32 category);
 void func_8001a2f4(void);
 void menu_item_magic_controller(void);
 s32 menu_card_load_browser(void);
-s32 func_8001b14c(void);
+s32 menu_prompt_two_option(void);
 void menu_card_save_slot(s32 slot);
 s32 menu_confirm_card_format(s32 kind);
 void func_8001c62c(KfMenuGlyphString *rows);
 void func_8001c770(KfMenuGlyphString *rows);
 void func_8001c8b0(KfMenuGlyphString *rows);
-void func_8001c9f4(KfMenuGlyphString *rows);
-void func_8001cad4(KfMenuGlyphString *rows);
-void func_8001cb44(KfMenuGlyphString *rows, s32 kind);
+void menu_prepare_card_write_rows(KfMenuGlyphString *rows);
+void menu_prepare_card_read_row(KfMenuGlyphString *rows);
+void menu_prepare_card_read_failure_rows(KfMenuGlyphString *rows, s32 kind);
 void func_8001ccd4(KfMenuGlyphString *rows);
-void func_8001cdb0(const KfMenuGlyphString *rows, s32 count,
+void menu_draw_card_dialog_rows(const KfMenuGlyphString *rows, s32 count,
     s32 x, s32 y, s32 width, s32 height, s32 overlap_x, s32 overlap_y);
 void menu_item_buy_controller(s32 kind);
 void menu_item_sell_controller(s32 kind);

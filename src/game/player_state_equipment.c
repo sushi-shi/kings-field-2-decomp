@@ -13,7 +13,7 @@
 
 
 DATA(0x800667a0, 0x28)
-SVECTOR DAT_800667a0[5] = {
+SVECTOR player_magic_spawn_records[5] = {
     {0, 0, 100, 0},
     {-1000, 0, 0, 46},
     {-2000, 0, -2000, 46},
@@ -175,7 +175,7 @@ void player_sync_position_to_map(void)
         layer = 1;
     }
     player_state.camera_position.vy =
-        func_8002b67c(layer, player_state.camera_position.vx,
+        collision_sample_map_layer_height(layer, player_state.camera_position.vx,
                       player_state.camera_position.vz,
                       PLAYER_MAP_PROBE_RADIUS, PLAYER_MAP_PROBE_HEIGHT);
     player_update_collision_bounds();
@@ -568,7 +568,7 @@ select_actor_effect:
     case 42:
         effect_id = 0x71;
 sequence_effect: {
-        const SVECTOR *record = DAT_800667a0;
+        const SVECTOR *record = player_magic_spawn_records;
         player_state.magic_origin_offset = *record;
         player_probe_view_target_and_vectors(600, &position, &direction, &distance);
         effect = effect_construct_record(10, 0x12, effect_id,

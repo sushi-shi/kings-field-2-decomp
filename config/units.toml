@@ -120,12 +120,6 @@ source = "src/game/vector_math.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.vector_actor_helpers"
-image = "GAME.EXE"
-source = "src/game/vector_actor_helpers.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.vector_distance"
 image = "GAME.EXE"
 source = "src/game/vector_distance.c"
@@ -228,18 +222,6 @@ source = "src/game/menu_equipment_list.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_glyph_selection_rows"
-image = "GAME.EXE"
-source = "src/game/menu_glyph_selection_rows.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_equipment_category_controller"
-image = "GAME.EXE"
-source = "src/game/menu_equipment_category_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_magic_list"
 image = "GAME.EXE"
 source = "src/game/menu_magic_list.c"
@@ -303,18 +285,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_list_choice_controller"
 image = "GAME.EXE"
 source = "src/game/menu_list_choice_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_stock_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_stock_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_secondary_stock_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_secondary_stock_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -474,12 +444,6 @@ source = "src/game/player_motion.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_interval_71_80"
-image = "GAME.EXE"
-source = "src/game/player_interval_71_80.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.player_reaction"
 image = "GAME.EXE"
 source = "src/game/player_reaction.c"
@@ -525,18 +489,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.tmd_pipeline"
 image = "GAME.EXE"
 source = "src/game/tmd_pipeline.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_map"
-image = "GAME.EXE"
-source = "src/game/render_map.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.tmd_prepared_subdivide"
-image = "GAME.EXE"
-source = "src/game/tmd_prepared_subdivide.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -792,15 +744,9 @@ source = "src/game/effect_spawn_motion.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.effect_scatter"
+unit = "game.effect_runtime"
 image = "GAME.EXE"
-source = "src/game/effect_scatter.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.effect_update_dispatch"
-image = "GAME.EXE"
-source = "src/game/effect_update_dispatch.c"
+source = "src/game/effect_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

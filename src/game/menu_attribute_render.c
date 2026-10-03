@@ -182,6 +182,6 @@ void func_8001f008(void)
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[0], &number);
 
-    func_800217f0(17, 14, 140, 205, 1, 2);
-    func_800217f0(161, 14, 140, 205, 1, 2);
+    menu_draw_nine_slice_panel(17, 14, 140, 205, 1, 2);
+    menu_draw_nine_slice_panel(161, 14, 140, 205, 1, 2);
 }

@@ -11,7 +11,7 @@
 RODATA(0x80011260, 0x34)
 
 ADDRESS(0x80026498, 0x1c4)
-void func_80026498(s32 magic_id, s32 consume_mp, s32 effect_parameter)
+void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 {
     KfMagicRecord *record = &effect_state.magic_records[magic_id];
     VECTOR position;
@@ -181,7 +181,7 @@ special_mode_zero: {
                 initial_vertex.vy += weapon->position_offset_y;
                 initial_vertex.vz -= weapon->position_offset_z;
                 vector_rotate_yxz(&rotation, &initial_vertex, &last_world);
-                func_800154fc(world_position.vx - last_world.vx,
+                vector_displacement_to_pitch_yaw(world_position.vx - last_world.vx,
                               world_position.vy - last_world.vy,
                               world_position.vz - last_world.vz,
                               (struct KfEulerAngles *)&effect->rotation);
@@ -248,7 +248,7 @@ regular_weapon:
         if (player_state.weapon_attack_phase >= weapon->magic_window_start
             && player_state.weapon_attack_phase <= weapon->magic_window_end) {
             if (player_state.weapon_magic_shots_configured != 0) {
-                func_80026498(weapon->initial_effect_id,
+                player_dispatch_weapon_magic(weapon->initial_effect_id,
                                player_state.weapon_magic_shots_configured == weapon->magic_shots,
                                player_state.weapon_magic_shots_configured);
                 player_state.weapon_magic_shots_configured--;
@@ -281,7 +281,7 @@ regular_weapon:
                 return;
             }
             if (weapon->release_effect_id != 0xff) {
-                func_80026498(weapon->release_effect_id,
+                player_dispatch_weapon_magic(weapon->release_effect_id,
                                player_state.weapon_attack_phase >= phase_end,
                                (player_state.weapon_attack_phase - weapon->unknown_26)
                                    / hit_step);

@@ -19,7 +19,7 @@ void func_8001a2f4(void)
     s32 count;
     s32 frame;
 
-    count = func_800199d0(effect_state.magic_records, rows, values, indices, 0, 13);
+    count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 0, 13);
     memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
     values[count] = -1;
     indices[count] = 0xff;
@@ -53,7 +53,7 @@ void func_8001a2f4(void)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8001fc94(&menu, 4);
+            menu_render_list(&menu, 4);
             menu_present_frame();
         }
     }
@@ -95,7 +95,7 @@ void menu_item_magic_controller(void)
     game_counter_bytes[0x60] = saved_count_60;
     game_counter_bytes[0x61] = saved_count_61;
 
-    count += func_800199d0(effect_state.magic_records, &rows[count],
+    count += menu_collect_available_magic_rows(effect_state.magic_records, &rows[count],
         &numbers[count], &magic_ids[count], 0, 19);
     memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
     count++;
@@ -135,7 +135,7 @@ void menu_item_magic_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 16);
+            menu_render_list(&menu, 16);
             menu_present_frame();
         }
     }

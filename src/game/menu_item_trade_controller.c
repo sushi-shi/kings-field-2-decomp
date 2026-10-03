@@ -38,7 +38,7 @@ void menu_item_trade_controller(void)
         menu_frame_begin();
         if (menu.list.entry_count != 0)
             menu_update_item_preview(selected_item);
-        func_8001fc94(&menu, 15);
+        menu_render_list(&menu, 15);
         menu_present_frame();
     }
     menu_play_sound_cue(16);
@@ -77,7 +77,7 @@ void menu_item_trade_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 15);
+            menu_render_list(&menu, 15);
             menu_present_frame();
         }
     }

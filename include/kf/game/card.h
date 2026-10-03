@@ -53,7 +53,7 @@ extern long memory_card_timeout_event;
 extern long memory_card_new_device_event;
 extern long memory_card_error_event;
 /* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
-extern s32 input_idle_counter;
+extern s32 input_press_pending;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */
 extern u8 *memory_card_buffer;

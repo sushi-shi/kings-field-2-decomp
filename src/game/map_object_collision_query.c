@@ -3,7 +3,7 @@
 #include <kf/game/map_object.h>
 
 ADDRESS(0x80036078, 0x118)
-s32 func_80036078(s32 x, s32 y, s32 z, s32 radius, s32 point_height)
+s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 point_height)
 {
     KfMapObject *object = map_object_state.objects;
     s32 index;

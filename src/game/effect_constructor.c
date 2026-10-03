@@ -137,7 +137,10 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->render_id = 0x25;
         record->unknown_3c[4] = 0;
         record->updates_remaining = 70;
-        goto zero_scale_27_51_52;
+        record->scale_z = 0;
+        record->scale_y = 0;
+        record->scale_x = 0;
+        break;
     case 111: {
         u16 value = va[1];
         record->unknown_08 = 0;
@@ -317,10 +320,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     case 122:
         effect_pool_initialize_scaled(record, 0x2f, 0x1000);
-        goto initialize_104_122;
+        record->scale_y = va[1];
+        record->updates_remaining = 15;
+        break;
     case 104:
         effect_pool_initialize_scaled(record, 0x10, 0x1000);
-    initialize_104_122:
         record->scale_y = va[1];
         record->updates_remaining = 15;
         break;
@@ -647,12 +651,12 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 16:
         record->unknown_08 = 0;
         record->updates_remaining = 8;
-        goto play_short_sound;
+        audio_play_sound(0x2b, 120);
+        break;
     case 14:
     case 19:
         record->unknown_08 = 0;
         record->updates_remaining = 16;
-    play_short_sound:
         audio_play_sound(0x2b, 120);
         break;
     case 22:

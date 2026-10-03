@@ -49,7 +49,7 @@ void func_80036ed4(void)
                 }
                 object->unknown_0a += 72;
                 if (object->unknown_0a == 0xc18) {
-                    func_80034f90(object->unknown_00, object->position.vx,
+                    map_cell_apply_rotated_pattern(object->unknown_00, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 1, 0xff);
                 }
@@ -61,7 +61,7 @@ void func_80036ed4(void)
             case 20:
                 if (collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
-                    func_80034f90(object->unknown_00, object->position.vx,
+                    map_cell_apply_rotated_pattern(object->unknown_00, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
@@ -94,7 +94,7 @@ void func_80036ed4(void)
             }
             case 1:
                 if (object->unknown_0a == 0) {
-                    func_80035194(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -106,7 +106,7 @@ void func_80036ed4(void)
                 }
                 object->unknown_0a += 72;
                 if (object->unknown_0a == 0xc18) {
-                    func_80035194(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
@@ -125,7 +125,7 @@ void func_80036ed4(void)
                     collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x1130, 0xc80, 0xc0) == 0) {
                     object->action_timer = 21;
-                    func_80035194(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -142,7 +142,7 @@ void func_80036ed4(void)
                 if ((s16)object->unknown_0a <= 0) {
                     object->unknown_0a = 0;
                     object->action_timer = 0;
-                    func_80035194(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->unknown_00,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0] * 2,
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -201,7 +201,7 @@ void func_80036ed4(void)
                         linked->rotation.vy -= 32;
                     }
                     if (previous == 24) {
-                        func_80035194(object->unknown_00,
+                        map_cell_copy_rotated_fields(object->unknown_00,
                                       object->tail.fields.unknown_3a.bytes.high,
                                       object->tail.spawn_bytes.spawn_sequence.low,
                                       object->tail.fields.unknown_39,
@@ -228,7 +228,7 @@ void func_80036ed4(void)
                                 object->extra_40.halfwords[0] = 300;
                                 break;
                             }
-                            func_80035194(object->unknown_00,
+                            map_cell_copy_rotated_fields(object->unknown_00,
                                           object->tail.fields.unknown_3a.bytes.high + 2,
                                           object->tail.spawn_bytes.spawn_sequence.low,
                                           object->tail.fields.unknown_39,
@@ -459,7 +459,7 @@ void func_80036ed4(void)
                 default:
                     break;
                 }
-                func_80035194(object->unknown_00,
+                map_cell_copy_rotated_fields(object->unknown_00,
                               object->tail.spawn_bytes.spawn_sequence.low +
                                   object->tail.fields.unknown_3e.bytes.low,
                               object->tail.spawn_bytes.spawn_sequence.high,
@@ -474,7 +474,7 @@ void func_80036ed4(void)
                 if ((s16)object->unknown_0a <= 0) {
                     object->unknown_0a = 0;
                     object->action_timer = 99;
-                    func_80035194(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->unknown_00,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.spawn_bytes.spawn_sequence.high,
                                   object->tail.fields.unknown_3a.bytes.low,
@@ -576,7 +576,7 @@ void func_80036ed4(void)
                 s32 source_z = center_z - ((height - 1) >> 1);
                 if (player_camera_within_map_region(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
-                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
+                    map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
                                       template->unknown_0d[1] * 2 +
@@ -608,7 +608,7 @@ void func_80036ed4(void)
                     object->unknown_01 = 0;
                     object->unknown_0a = 0;
                     object->action_timer = 0;
-                    func_80034f90(object->extra_40.bytes[0], object->position.vx,
+                    map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
                                       template->unknown_0d[1] * 2 +
@@ -633,7 +633,7 @@ void func_80036ed4(void)
                                object->tail.fields.unknown_38,
                                object->tail.fields.unknown_39,
                                object->position.vy)) {
-                func_80016260(object->tail.fields.unknown_3a.bytes.low,
+                resource_request_transition(object->tail.fields.unknown_3a.bytes.low,
                               object->tail.fields.unknown_3a.bytes.high,
                               object->tail.spawn_bytes.spawn_sequence.low,
                               object->tail.spawn_bytes.spawn_sequence.high,
@@ -911,11 +911,8 @@ void func_80036ed4(void)
                 object->position.vy += object->tail.fields.unknown_3e.signed_value;
                 effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
                 {
-                    s32 base_angle = object->rotation.vx;
-                    s32 angle = base_angle - 0xa0;
-                    if (object->action_timer == 0) {
-                        angle = base_angle + 0xa0;
-                    }
+                    s32 angle = object->rotation.vx +
+                        (object->action_timer == 0 ? 0xa0 : -0xa0);
                     object->rotation.vx = angle & 0xfff;
                 }
                 object->tail.fields.unknown_3e.value += 30;

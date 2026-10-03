@@ -5,7 +5,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x80018ac8, 0x240)
-s32 func_80018ac8(void)
+s32 menu_item_selection_controller(void)
 {
     KfItemMenuList menu;
     KfMenuGlyphRow rows[54];
@@ -59,7 +59,7 @@ s32 func_80018ac8(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            func_8001fc94(&menu, 1);
+            menu_render_list(&menu, 1);
             menu_present_frame();
         }
     }

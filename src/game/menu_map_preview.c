@@ -56,7 +56,7 @@ void menu_show_map_preview(s32 menu_code)
         setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
         primitive_buffer_commit_poly_ft4(9);
 
-        func_800217f0(0x36, 0xe, 0xd4, 0xd4, 2, 2);
+        menu_draw_nine_slice_panel(0x36, 0xe, 0xd4, 0xd4, 2, 2);
         menu_present_frame();
     }
 

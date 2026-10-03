@@ -5,7 +5,7 @@
 
 
 ADDRESS(0x80019834, 0x19c)
-s32 func_80019834(void)
+s32 menu_choose_magic_action(void)
 {
     KfMagicMenuList menu;
     KfMenuGlyphRow rows[20];
@@ -16,7 +16,7 @@ s32 func_80019834(void)
     s32 count;
     s32 frame;
 
-    count = func_800199d0(effect_state.magic_records, rows, values, indices, 14, 19);
+    count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 14, 19);
     menu_list_init(&menu.list, 0, 1);
     menu.list.entry_count = count;
     menu.list.visible_rows = 6;
@@ -45,7 +45,7 @@ s32 func_80019834(void)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            func_8001fc94(&menu, 2);
+            menu_render_list(&menu, 2);
             menu_present_frame();
         }
     }
@@ -56,7 +56,7 @@ s32 func_80019834(void)
 }
 
 ADDRESS(0x800199d0, 0xf4)
-s32 func_800199d0(const KfMagicRecord *records,
+s32 menu_collect_available_magic_rows(const KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last)
 {
     const KfMenuGlyphRow *glyph = &menu_glyph_rows_extra[first];

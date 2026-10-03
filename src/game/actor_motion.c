@@ -46,7 +46,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
     KfActor *actor = actor_state.current;
     s16 result;
 
-    if (func_80015bc8(mode, actor->position.vx, actor->position.vy,
+    if (trajectory_solve_motion_between_points(mode, actor->position.vx, actor->position.vy,
         actor->position.vz, target_x, target_y, target_z,
         trajectory_parameter, trajectory_speed, &result,
         &actor->unknown_68, &actor->unknown_6a) != 0) {

@@ -53,7 +53,7 @@ s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
     target_position.vz = target->position.vz;
 
 aim:
-    func_800154fc(target_position.vx - record->position.vx,
+    vector_displacement_to_pitch_yaw(target_position.vx - record->position.vx,
                   target_position.vy - record->position.vy,
                   target_position.vz - record->position.vz,
                   &target_angles);

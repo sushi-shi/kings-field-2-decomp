@@ -20,7 +20,7 @@ void map_placed_expand_sources(const KfMapPlacedSource *sources)
             entry->frame_period = sources->frame_period;
             entry->position.vx = (sources->region_x << KF_MAP_PLACED_REGION_SHIFT) + sources->local_x;
             entry->position.vz = (sources->region_z << KF_MAP_PLACED_REGION_SHIFT) + sources->local_z;
-            entry->position.vy = func_8002b67c(entry->layer, entry->position.vx, entry->position.vz, 0, 0)
+            entry->position.vy = collision_sample_map_layer_height(entry->layer, entry->position.vx, entry->position.vz, 0, 0)
                 + sources->height_offset;
             entry->frame_index = (rand() * entry->frame_count) >> KF_MAP_PLACED_RANDOM_SHIFT;
         } else {

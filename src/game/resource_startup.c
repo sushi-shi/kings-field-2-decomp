@@ -13,7 +13,7 @@
 RODATA(0x80011000, 0x53)
 
 ADDRESS(0x80015d58, 0x27c)
-void func_80015d58(void)
+void resource_initialize_game_assets(void)
 {
     u8 *source = (u8 *)KF_GAME_RESOURCE_ARENA_BASE;
     u8 *second_value = &state_8017d118.values_04[1];
@@ -66,7 +66,7 @@ void func_80015d58(void)
 }
 
 ADDRESS(0x80015fd4, 0x114)
-void func_80015fd4(void)
+void resource_run_initial_transition(void)
 {
     u8 first;
     u8 second;
@@ -96,7 +96,7 @@ void func_80015fd4(void)
     state_8017d118.values_10[4] = fifth;
     do {
         cd_request_yield();
-        func_80016820();
+        resource_advance_transition();
     } while (state_8017d118.transition_active != 0);
     tmd_set_slot(0, (KfTmdHeader *)0x8012da68);
     state_8017d118.active_table[5]();

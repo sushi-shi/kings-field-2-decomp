@@ -221,7 +221,7 @@ extern KfMapObjectStateGame map_object_state;
 
 void map_object_start_action_if_idle(KfMapObject *object, u8 action);
 void map_object_initialize_from_placements(const KfMapObjectPlacement *placements);
-s32 func_80036078(s32 x, s32 y, s32 z, s32 radius, s32 height);
+s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 height);
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence);
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound);
 void map_object_reset(KfMapObject *object);
@@ -241,7 +241,7 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
                              s32 height_offset);
 void func_80036ed4(void);
 void map_object_refresh_cell_markers(s32 mode);
-s32 func_80036190(s32 first_index, const VECTOR *position, s32 radius,
+s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);
 
 #endif

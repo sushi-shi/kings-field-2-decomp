@@ -15,7 +15,7 @@
 RODATA(0x80011058, 0x1c)
 
 ADDRESS(0x80016820, 0x6b4)
-void func_80016820(void)
+void resource_advance_transition(void)
 {
     u8 *buffer;
     u8 *stream;
@@ -64,7 +64,7 @@ void func_80016820(void)
             (u32 *)(buffer + 4), 0x600);
         if (state_8017d118.values_17[0] != 127) {
             state_8017d118.unknown_15 = 1;
-            func_800160e8(state_8017d118.values_17[0] << 11,
+            translate_active_world_positions(state_8017d118.values_17[0] << 11,
                 -state_8017d118.values_17[2] * 128,
                 state_8017d118.values_17[1] << 11);
         }

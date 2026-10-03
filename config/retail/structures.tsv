@@ -51,7 +51,7 @@ KfGpuGT4	0x34	supported	game/tmd_packets.h;SDK POLY_GT4;render_enqueue_map	SDK a
 KfGpuGT4Packed	0x34	supported	game/tmd_packets.h;SDK POLY_GT4;render_enqueue_map	52-byte packed GT4 GPU packet view
 KfGraphicsRuntimeGame	0x17cf0	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfItemMenuList	0x34	supported	game/menu.h;func_8001d030;func_8001d3b4;func_8001d6a8;func_80018ac8	item list prefix with glyph-row, byte-value, and code-word pointers
-KfMagicMenuList	0x34	supported	game/menu.h;func_80019834;func_8001a2f4	menu list prefix plus row and value pointers
+KfMagicMenuList	0x34	supported	game/menu.h;menu_choose_magic_action;func_8001a2f4	menu list prefix plus row and value pointers
 KfMagicRecord	0x1a	supported	game/effect.h;asm;magic_load_records	26-byte archive magic record
 KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants and signed cell offsets
 KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant

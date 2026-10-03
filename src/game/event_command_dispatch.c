@@ -78,7 +78,7 @@ void event_scene_command_dispatch(const VECTOR *position,
             KfMapObject *object;
             s32 status;
 
-            index = func_80036190(index, position, 800, 1700,
+            index = map_object_find_interaction_target(index, position, 800, 1700,
                                    rotation->angles[1], 512);
             if (index == -1) {
                 break;
@@ -114,7 +114,7 @@ void event_scene_command_dispatch(const VECTOR *position,
     case 0x74:
         object_control_offset = 0x30;
 object_control_action:
-        index = func_80036190(0, position, 800, 1700,
+        index = map_object_find_interaction_target(0, position, 800, 1700,
                                rotation->angles[1], 512);
         if (index != -1) {
             KfMapObject *object = &map_object_state.objects[index];
@@ -165,18 +165,18 @@ transition_action: {
         previous_value = event_state.control.bytes[object_control_offset + 2];
         do {
             cd_request_yield();
-            func_80016820();
+            resource_advance_transition();
         } while (state_8017d118.transition_active != 0);
         if (previous_value != state_8017d118.values_04[0]) {
-            func_80016260(previous_value, previous_value, previous_value,
+            resource_request_transition(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
         } else {
-            func_80016260(0xff, 0xff, previous_value, 0xff, 0xff,
+            resource_request_transition(0xff, 0xff, previous_value, 0xff, 0xff,
                           0x7f, 0x7f, 0x7f);
         }
         do {
             cd_request_yield();
-            func_80016820();
+            resource_advance_transition();
         } while (state_8017d118.transition_active != 0);
         cd_request_wait_idle();
 
@@ -202,12 +202,12 @@ transition_action: {
         }
         func_80036e24(1, 4096, 0, -256);
         render_set_color_overlay(0xff, 0, 0, 0);
-        func_80016260(0xff, 0xff, 0xff, previous_value, previous_value,
+        resource_request_transition(0xff, 0xff, 0xff, previous_value, previous_value,
                       0x7f, 0x7f, 0x7f);
         break;
     }
     case 0x67:
-        index = func_80036190(0, position, 800, 1700,
+        index = map_object_find_interaction_target(0, position, 800, 1700,
                                rotation->angles[1], 512);
         if (index != -1) {
             KfMapObject *object = &map_object_state.objects[index];
@@ -232,7 +232,7 @@ transition_action: {
         event_state.state_word = 1;
         break;
     case 0x58:
-        index = func_80036190(0, position, 800, 1700,
+        index = map_object_find_interaction_target(0, position, 800, 1700,
                                rotation->angles[1], 512);
         if (index != -1) {
             KfMapObject *object = &map_object_state.objects[index];
@@ -385,7 +385,7 @@ decay_update:
     case 0x52:
         if (func_80045e5c(position,
                            (const struct KfEulerAngles *)rotation) == 0) {
-            index = func_80036190(0, position, 800, 1700,
+            index = map_object_find_interaction_target(0, position, 800, 1700,
                                    rotation->angles[1], 512);
             if (index == -1) {
                 break;
@@ -735,7 +735,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         u16 object_id;
         s32 kind;
 
-        object_index = func_80036190(object_index, &probe, 800, 2500,
+        object_index = map_object_find_interaction_target(object_index, &probe, 800, 2500,
                                       rotation->angles[1], 512);
         if (object_index == -1) {
             break;
@@ -865,7 +865,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case 0x20:
             if (player_state.death_state == 0) {
                 u8 *linked_state;
-                func_800293d4(object_index);
+                player_begin_view_reaction(object_index);
                 linked_state = (u8 *)object->extra_40.record;
                 if (linked_state[1] == 1) {
                     linked_state[1] = 5;
@@ -883,7 +883,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case 0x0e:
             event_world_state_save_slot(state_8017d118.values_04[0]);
-            func_80028fa8();
+            player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;
         }

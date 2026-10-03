@@ -46,12 +46,12 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 5:
     case 13:
         if (target == actor->target) {
-            if (target->word_12.value < player_distance) {
-                goto done;
+            if (target->word_12.value >= player_distance) {
+                score = random_triangular_scaled(target->unknown_01[2]);
             }
-            score = random_triangular_scaled(target->unknown_01[2]);
             goto done;
-        } else if (target->word_10.value >= player_distance) {
+        }
+        if (target->word_10.value >= player_distance) {
             score = random_triangular_scaled(target->unknown_01[1]);
         }
         switch (actor->target_type) {
@@ -86,7 +86,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 24:
     case 132:
         if ((actor->unknown_28 & 0x100) || target->word_1a.value < player_distance ||
-            !func_80015574(actor->position.vy, actor->unknown_1e,
+            !directed_intervals_overlap(actor->position.vy, actor->unknown_1e,
                             player_state.camera_position.vy + 200, 0x834)) {
             goto done;
         }

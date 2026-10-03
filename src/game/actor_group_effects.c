@@ -102,7 +102,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         goto simple_direction_effect;
     case 0x28: {
         s32 raised_y = position.vy + 1600;
-        func_800154fc(player->vx - position.vx,
+        vector_displacement_to_pitch_yaw(player->vx - position.vx,
                       player->vy - raised_y,
                       player->vz - position.vz,
                       &orientation.angles);
@@ -154,7 +154,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         travel_time = -1;
         goto simple_direction_effect;
     case 0xc:
-        func_800154fc(player->vx - position.vx,
+        vector_displacement_to_pitch_yaw(player->vx - position.vx,
                       player->vy - position.vy,
                       player->vz - position.vz,
                       &orientation.angles);
@@ -231,14 +231,14 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
         do {
             distance = fixed_vector2_length(trajectory_target.vx - position.vx,
                                             trajectory_target.vz - position.vz);
-            if (func_80015918(0, distance,
+            if (trajectory_solve_time_angle(0, distance,
                     position.vy + 1400 - trajectory_target.vy, 10, 800,
                     &travel_time, &trajectory_angle) != 0) {
                 trajectory_angle = 0x100;
             }
             count--;
             if (count != 0) {
-                func_80015ce0(player, (SVECTOR *)&player_state.unknown_e8,
+                vector_add_scaled_delta(player, (SVECTOR *)&player_state.unknown_e8,
                               travel_time >> 6, &trajectory_target);
             }
         } while (count != 0);

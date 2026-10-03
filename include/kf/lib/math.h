@@ -75,8 +75,8 @@ s32 fixed_vector3_length(s32 x, s32 y, s32 z);
 s32 vector_distance_to_point(
     const VECTOR *position, s32 point_x, s32 point_y, s32 point_z,
     s32 max_distance, s32 height, s32 point_height);
-void func_800154fc(s32 x, s32 y, s32 z, struct KfEulerAngles *angles);
-KfBool func_80015574(s32 first, s32 first_width, s32 second, s32 second_width);
+void vector_displacement_to_pitch_yaw(s32 x, s32 y, s32 z, struct KfEulerAngles *angles);
+KfBool directed_intervals_overlap(s32 first, s32 first_width, s32 second, s32 second_width);
 s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VECTOR *second,
                   s32 offset, s32 height);
 s32 random_triangular_scaled(s32 amplitude);
@@ -84,13 +84,13 @@ s32 random_centered_triangular_scaled(s32 amplitude);
 s32 fixed_lerp_q12(s32 start, s32 end, s32 fraction);
 s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction);
 void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction);
-s32 func_80015918(s32 mode, s32 horizontal_distance,
+s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle);
-s32 func_80015bc8(s32 mode, s32 source_x, s32 source_y,
+s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
     s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z);
-void func_80015ce0(const VECTOR *origin, const SVECTOR *delta, s32 scale,
+void vector_add_scaled_delta(const VECTOR *origin, const SVECTOR *delta, s32 scale,
     VECTOR *output);
 
 static inline s16 angle_error_magnitude(s16 difference)

@@ -5,7 +5,7 @@
 #include <psyq/pad.h>
 
 DATA(0x8006d690, 0x4)
-s32 input_idle_counter = 0;
+s32 input_press_pending = 0;
 
 ADDRESS(0x80022300, 0x94)
 void menu_play_sound_cue(s32 cue)
@@ -29,18 +29,18 @@ u32 input_read_mark_active(void)
 {
     u32 buttons = PadRead(1);
     if (buttons != 0) {
-        input_idle_counter = 1;
+        input_press_pending = 1;
     }
     return buttons;
 }
 
 ADDRESS(0x800223cc, 0x6c)
-void func_800223cc(void)
+void input_wait_brief_release(void)
 {
     s32 polls;
 
-    if (input_idle_counter == 1) {
-        input_idle_counter = 0;
+    if (input_press_pending == 1) {
+        input_press_pending = 0;
         for (polls = 0; PadRead(1) != 0;) {
             if (polls++ < 6) {
                 VSync(0);

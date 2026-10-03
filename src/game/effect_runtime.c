@@ -2225,7 +2225,6 @@ void effect_update_dispatch(void)
         goto shared_phase_increment;
     }
     case 5: {
-        KfEffectKind5Fanout *fanout = &record->cache_tail.payload.kind5;
         s32 count;
         s32 step_size;
         s32 progress;
@@ -2237,7 +2236,7 @@ void effect_update_dispatch(void)
             const KfActor *actor;
 
             progress = 0;
-            if (fanout->actor_index != 0xff) {
+            if (record->cache_tail.payload.kind5.actor_index != 0xff) {
                 goto kind5_actor_count;
             }
         kind5_default_count:
@@ -2246,7 +2245,7 @@ void effect_update_dispatch(void)
             record->updates_remaining = 1;
             goto kind5_count_ready;
         kind5_actor_count:
-            actor = &actor_state.actors[fanout->actor_index];
+            actor = &actor_state.actors[record->cache_tail.payload.kind5.actor_index];
             count = asset_vertex_count(actor->definition_id + 128,
                                        actor->animation_id);
             if (count == 0) {
@@ -2259,13 +2258,13 @@ void effect_update_dispatch(void)
             step_size = (count << 12) / 32;
             count = 32;
         kind5_count_ready:
-            fanout->children_remaining = count;
-            fanout->initial_child_count = count;
+            record->cache_tail.payload.kind5.children_remaining = count;
+            record->cache_tail.payload.kind5.initial_child_count = count;
             for (index = count - 1; index != -1; index--) {
                 effect_construct_record(10, record->type, 105,
                                &record->position, &record->direction,
                                effect_state.current_index,
-                               fanout->actor_index, progress >> 12);
+                               record->cache_tail.payload.kind5.actor_index, progress >> 12);
                 progress += step_size;
             }
             record->phase = 1;
@@ -2276,7 +2275,7 @@ void effect_update_dispatch(void)
             KfEffectRecord *child;
 
             if (record->updates_remaining >= 2 &&
-                fanout->children_remaining != 0) {
+                record->cache_tail.payload.kind5.children_remaining != 0) {
                 break;
             }
             matches = 0;
@@ -2298,15 +2297,15 @@ void effect_update_dispatch(void)
                     child->phase = 2;
                 }
             }
-            actor = &actor_state.actors[fanout->actor_index];
-            if (fanout->initial_child_count != 0) {
+            actor = &actor_state.actors[record->cache_tail.payload.kind5.actor_index];
+            if (record->cache_tail.payload.kind5.initial_child_count != 0) {
                 step = (u16)effect_magic_power(record);
-                actor_apply_magic_to_actor(fanout->actor_index, step,
+                actor_apply_magic_to_actor(record->cache_tail.payload.kind5.actor_index, step,
                               magic->damage_components[0], magic->damage_components[1],
                               magic->damage_components[2], magic->damage_components[3],
                               magic->damage_components[4], magic->damage_components[5],
                               magic->damage_components[6], magic->damage_components[7],
-                              (matches << 12) / fanout->initial_child_count,
+                              (matches << 12) / record->cache_tail.payload.kind5.initial_child_count,
                               (record->type & 0x30) | 2,
                               &actor->position);
             }

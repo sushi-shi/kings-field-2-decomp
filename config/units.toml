@@ -96,12 +96,6 @@ source = "src/game/main.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.game"
-image = "GAME.EXE"
-source = "src/game/game.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.audio_runtime"
 image = "GAME.EXE"
 source = "src/game/audio_runtime.c"

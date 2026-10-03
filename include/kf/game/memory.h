@@ -11,6 +11,14 @@ typedef struct KfMemoryBlock {
     u8 **owner;
 } KfMemoryBlock;
 
+enum {
+    KF_MEMORY_BLOCK_FREE = 0,
+    KF_MEMORY_BLOCK_RECLAIMABLE = 1,
+    KF_MEMORY_BLOCK_OWNED = 2,
+    KF_MEMORY_BLOCK_PENDING = 3,
+    KF_MEMORY_BLOCK_END = 0xff
+};
+
 typedef char kf_memory_block_size[sizeof(KfMemoryBlock) == 12 ? 1 : -1];
 
 #define KF_GAME_RESOURCE_ARENA_CAPACITY 0x5f000

@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/memory_layout.h>
 #include <kf/lib/null.h>
 #include <kf/game/cd.h>
 #include <kf/game/memory.h>
@@ -6,10 +7,6 @@
 #include <psyq/libc.h>
 #include <psyq/pad.h>
 #include <psyq/sdk.h>
-
-enum {
-    MEMORY_RAM_BYTES = 0x200000
-};
 
 /* KSEG0 base of main RAM, which malloc results must fall within. */
 #define MEMORY_RAM_BASE 0x80000000u
@@ -20,7 +17,10 @@ enum {
 enum {
     CD_READ_ATTEMPTS = 3,
     CD_READ_SYNC_POLL = 1,
-    CD_PATH_BYTES = 64
+    CD_PATH_BYTES = 64,
+    CD_STREAM_WAITING = 0,
+    CD_STREAM_CHUNK_READY = 1,
+    MEMORY_ARENA_END_MARKER_BYTES = sizeof(u32)
 };
 
 /* LIBAPI's HwCdRom, RCntCNT3, EvSpINT, EvSpCOMP, EvSpDR, EvSpERROR and
@@ -53,7 +53,7 @@ KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
 ADDRESS(0x80016ed4, 0xc)
 void cd_stream_mark_complete(KfCdRequest *request)
 {
-    request->stream_complete = 1;
+    request->stream_complete = CD_STREAM_CHUNK_READY;
 }
 
 ADDRESS(0x80016ee0, 0x30)
@@ -87,12 +87,12 @@ void cd_request_service_stream(void)
     if (request->kind != KF_CD_REQUEST_IMAGE_STREAM) {
         goto leave_critical;
     }
-    if (request->stream_complete != 1) {
+    if (request->stream_complete != CD_STREAM_CHUNK_READY) {
         goto leave_critical;
     }
     consumed = 0;
     source = (u16 *)request->destination;
-    request->stream_complete = 0;
+    request->stream_complete = CD_STREAM_WAITING;
     ExitCriticalSection();
 
     for (;;) {
@@ -128,7 +128,7 @@ void cd_request_service_stream(void)
             source[2] != source[6] || source[3] != source[7] ||
             source[2] == 0 || source[3] == 0) {
             request->payload.image_rect.h = 0;
-            request->stream_complete = 0;
+            request->stream_complete = CD_STREAM_WAITING;
             request->remaining_sectors = request->chunk_sectors;
             request->location = request->initial_location;
             cd_stream_limit_chunk(request);
@@ -210,20 +210,20 @@ void memory_arena_coalesce_free(KfMemoryBlock *block)
 {
     KfMemoryBlock *first = block;
 
-    if (block->kind == 0xff) {
+    if (block->kind == KF_MEMORY_BLOCK_END) {
         return;
     }
     do {
-        if (block->kind == 0) {
+        if (block->kind == KF_MEMORY_BLOCK_FREE) {
             block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
-            if (block->kind != 0) {
+            if (block->kind != KF_MEMORY_BLOCK_FREE) {
                 return;
             }
             first->size += sizeof(KfMemoryBlock) + block->size;
         } else {
             block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
         }
-    } while (block->kind != 0xff);
+    } while (block->kind != KF_MEMORY_BLOCK_END);
 }
 
 ADDRESS(0x800172f4, 0x20)
@@ -231,7 +231,7 @@ void memory_arena_free(KfMemoryBlock *block)
 {
     u8 **owner = block->owner;
 
-    block->kind = 0;
+    block->kind = KF_MEMORY_BLOCK_FREE;
     if (owner != 0) {
         *owner = 0;
         block->owner = 0;
@@ -244,23 +244,23 @@ KfMemoryBlock *memory_arena_find_block(KfMemoryBlock *arena, u32 size)
     KfMemoryBlock *block = arena;
     KfMemoryBlock *first;
 
-    while (block->kind != 0xff) {
-        if (block->kind == 0 && block->size >= size) {
+    while (block->kind != KF_MEMORY_BLOCK_END) {
+        if (block->kind == KF_MEMORY_BLOCK_FREE && block->size >= size) {
             return block;
         }
         block = NEXT_BLOCK(block);
     }
 
     block = arena;
-    while (block->kind != 0xff) {
-        if (block->kind == 1) {
+    while (block->kind != KF_MEMORY_BLOCK_END) {
+        if (block->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
             first = block;
-            while (block->kind == 1) {
+            while (block->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
                 block = NEXT_BLOCK(block);
             }
             if ((u32)((u8 *)block - (u8 *)first - sizeof(KfMemoryBlock)) >= size) {
                 block = first;
-                while (block->kind == 1) {
+                while (block->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
                     memory_arena_free(block);
                     block = NEXT_BLOCK(block);
                 }
@@ -279,8 +279,8 @@ void memory_arena_wait_pending(KfMemoryBlock *arena)
 {
     KfMemoryBlock *block = arena;
 
-    while (block->kind != 0xff) {
-        while (block->kind == 3) {
+    while (block->kind != KF_MEMORY_BLOCK_END) {
+        while (block->kind == KF_MEMORY_BLOCK_PENDING) {
             cd_request_wait_idle();
         }
         block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
@@ -294,14 +294,14 @@ void memory_arena_compact(KfMemoryBlock *arena)
     KfMemoryBlock *write = arena;
 
     memory_arena_wait_pending(arena);
-    if (read->kind != 0xff) {
+    if (read->kind != KF_MEMORY_BLOCK_END) {
         do {
             KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read + read->size + sizeof(KfMemoryBlock));
 
-            if (read->kind == 1) {
+            if (read->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
                 memory_arena_free(read);
             }
-            if (read->kind == 2) {
+            if (read->kind == KF_MEMORY_BLOCK_OWNED) {
                 if (read != write) {
                     u32 *source = (u32 *)read;
                     u32 *destination = (u32 *)write;
@@ -317,20 +317,20 @@ void memory_arena_compact(KfMemoryBlock *arena)
                 }
             }
             read = next;
-        } while (read->kind != 0xff);
+        } while (read->kind != KF_MEMORY_BLOCK_END);
     }
-    write->kind = 0;
+    write->kind = KF_MEMORY_BLOCK_FREE;
     write->size = (u8 *)read - (u8 *)write - sizeof(KfMemoryBlock);
 }
 
 ADDRESS(0x800175e8, 0x20)
 void memory_arena_initialize_blocks(KfMemoryBlock *arena, u32 capacity)
 {
-    arena->kind = 0;
-    arena->size = capacity - 16;
-    capacity -= 4;
+    arena->kind = KF_MEMORY_BLOCK_FREE;
+    arena->size = capacity - sizeof(KfMemoryBlock) - MEMORY_ARENA_END_MARKER_BYTES;
+    capacity -= MEMORY_ARENA_END_MARKER_BYTES;
     arena = (KfMemoryBlock *)((u8 *)arena + capacity);
-    arena->kind = 0xff;
+    arena->kind = KF_MEMORY_BLOCK_END;
 }
 
 ADDRESS(0x80017608, 0xb8)
@@ -353,13 +353,13 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
     remainder -= size;
     if ((s32)remainder >= 2060) {
         KfMemoryBlock *payload_end = (KfMemoryBlock *)((u8 *)block + size);
-        payload_end[1].kind = 0;
+        payload_end[1].kind = KF_MEMORY_BLOCK_FREE;
         payload_end[1].size = remainder;
         payload_end[1].owner = 0;
     } else {
         size = available;
     }
-    block->kind = 2;
+    block->kind = KF_MEMORY_BLOCK_OWNED;
     block->size = size;
     block->owner = owner;
     data = (u8 *)(block + 1);
@@ -416,7 +416,7 @@ u8 *memory_malloc_checked(u32 size)
 {
     u8 *block = malloc(size);
 
-    if ((u32)block + MEMORY_RAM_BASE > MEMORY_RAM_BYTES - 1) {
+    if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
         return NULL;
     }
     return block;
@@ -721,7 +721,7 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
 
     cd_request_wait_done(request);
     request->payload.image_rect.h = 0;
-    request->stream_complete = 0;
+    request->stream_complete = CD_STREAM_WAITING;
     size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;

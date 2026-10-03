@@ -29,7 +29,12 @@ RODATA(0x8001191c, 0x3bc)
 
 enum {
     FRAME_COLOR_LEVELS = 256,
-    FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1
+    FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1,
+    MAP_OBJECT_EVENT_TRIGGERED = 0xfe,
+    MAP_OBJECT_CELL_COPY_FIELDS = KF_MAP_CELL_COPY_OBJECT_INDEX |
+                                  KF_MAP_CELL_COPY_ROTATED_ORIENTATION |
+                                  KF_MAP_CELL_COPY_COLLISION_SHAPE |
+                                  KF_MAP_CELL_COPY_LIGHTING_BIT_40
 };
 
 ADDRESS(0x80036e24, 0xb0)
@@ -133,7 +138,7 @@ void map_object_update_actions(void)
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
                                   cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                     map_object_play_spatial_sound(object, cell_template->sound_id);
                 }
                 object->phase_q12 += 72;
@@ -144,7 +149,7 @@ void map_object_update_actions(void)
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
                                   cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                 }
                 if (object->phase_q12 > 0xfff) {
                     object->phase_q12 = 0xfff;
@@ -164,7 +169,7 @@ void map_object_update_actions(void)
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
                                   cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                     map_object_play_spatial_sound(object, cell_template->sound_id);
                 }
                 break;
@@ -181,7 +186,7 @@ void map_object_update_actions(void)
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
                                   cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, 0x2d);
+                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                 }
                 break;
             default:
@@ -239,7 +244,7 @@ void map_object_update_actions(void)
                                       object->tail.cell_copy.source_z,
                                       object->tail.cell_copy.destination_x,
                                       object->tail.cell_copy.destination_z,
-                                      2, 2, 0, 0x2d);
+                                      2, 2, 0, MAP_OBJECT_CELL_COPY_FIELDS);
                     } else if (previous == 31) {
                         object->extra_40.hinge.progress_ticks = 0x118;
                     }
@@ -266,7 +271,7 @@ void map_object_update_actions(void)
                                           object->tail.cell_copy.source_z,
                                           object->tail.cell_copy.destination_x,
                                           object->tail.cell_copy.destination_z,
-                                          2, 2, 0, 0x2d);
+                                          2, 2, 0, MAP_OBJECT_CELL_COPY_FIELDS);
                             map_object_play_spatial_sound(object, template->sound_id);
                         }
                         object->rotation.vy -= 32;
@@ -289,7 +294,7 @@ void map_object_update_actions(void)
         case 8:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->rotation.vx = 0xa00;
                     object->action_timer = 3;
                 } else {
@@ -299,7 +304,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->extra_40.angular_velocity_x = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -327,7 +332,7 @@ void map_object_update_actions(void)
         case 22:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     struct KfVecXZi displacement;
                     object->rotation.vx = 0xd44;
                     angle_to_forward_xz(object->rotation.vy + 0x800, &displacement);
@@ -342,7 +347,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->extra_40.movement_frames_left = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -379,7 +384,7 @@ void map_object_update_actions(void)
                     KfMapObject *linked = &map_object_state.objects[linked_index];
                     linked->render_depth_offset += 200;
                 }
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
                     object->phase_q12 = 0xfff;
                     object->action_timer = 3;
@@ -391,7 +396,7 @@ void map_object_update_actions(void)
                 break;
             }
             case 1:
-                if (object->tail.fields.unknown_38 == 0xfe) {
+                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             1, object->layer_mask);
@@ -500,7 +505,7 @@ void map_object_update_actions(void)
                               object->tail.action_88_cell_copy.destination_z,
                               object->tail.action_88_cell_copy.width,
                               object->tail.action_88_cell_copy.height,
-                              object->rotation.vy, 0x2d);
+                              object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                 break;
             case 2:
                 object->phase_q12 -= 64;
@@ -514,7 +519,7 @@ void map_object_update_actions(void)
                                   object->tail.action_88_cell_copy.destination_z,
                                   object->tail.action_88_cell_copy.width,
                                   object->tail.action_88_cell_copy.height,
-                                  object->rotation.vy, 0x2d);
+                                  object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
                 }
                 break;
             case 3:

@@ -18,9 +18,17 @@
 #include <psyq/cd.h>
 #include <psyq/kernel.h>
 #include <psyq/pad.h>
+#include <psyq/sdk.h>
 
 DATA(0x80198630, 0x4)
 u32 game_main_exit_flag;
+
+enum {
+    GAME_MAIN_RUNNING = 0,
+    GAME_MAIN_EXIT_REQUESTED = 1,
+    GAME_INITIAL_MASTER_VOLUME = 0x7f,
+    KF_GPU_RESET_KEEP_DISPLAY = 3
+};
 
 /*
  * GCC inserts the `__main` hook call for a function named main; the SDK
@@ -76,24 +84,24 @@ void game_main_loop(void)
     reset_collision_rows_and_overlay();
     game_graphics_runtime.collision_rotation_dirty = 1;
     refresh_collision_row_rotations();
-    SsSetMVol(0x7f, 0x7f);
+    SsSetMVol(GAME_INITIAL_MASTER_VOLUME, GAME_INITIAL_MASTER_VOLUME);
     if (menu_card_browser() != -1) {
         player_restore_equipment_effects();
     }
     resource_run_initial_transition();
     player_sync_position_to_map();
 
-    floor_item_capture_image(0x140, 0x100, 0, 1, 1, 0x40, 0x40);
-    floor_item_capture_image(0x198, 0x1c0, 0, 1, 1, 0x20, 0x20);
-    floor_item_capture_image(0x1a0, 0x1c0, 0, 4, 1, 0x20, 0x20);
-    floor_item_capture_image(0x150, 0x140, 0, 2, 1, 0x40, 0x40);
-    floor_item_capture_image(0x150, 0x100, 0, 4, 1, 0x40, 0x40);
+    floor_item_capture_image(0x140, 0x100, 0, 1, KF_FLOOR_ITEM_SCROLLING_IMAGE, 0x40, 0x40);
+    floor_item_capture_image(0x198, 0x1c0, 0, 1, KF_FLOOR_ITEM_SCROLLING_IMAGE, 0x20, 0x20);
+    floor_item_capture_image(0x1a0, 0x1c0, 0, 4, KF_FLOOR_ITEM_SCROLLING_IMAGE, 0x20, 0x20);
+    floor_item_capture_image(0x150, 0x140, 0, 2, KF_FLOOR_ITEM_SCROLLING_IMAGE, 0x40, 0x40);
+    floor_item_capture_image(0x150, 0x100, 0, 4, KF_FLOOR_ITEM_SCROLLING_IMAGE, 0x40, 0x40);
 
     /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
     render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
-    game_main_exit_flag = 0;
+    game_main_exit_flag = GAME_MAIN_RUNNING;
 
     do {
         reset_collision_rows_and_overlay();
@@ -110,9 +118,18 @@ void game_main_loop(void)
         cd_request_service_stream();
         cd_request_service_vab();
         render_game_frame(&camera_position, &camera_rotation);
-    } while (game_main_exit_flag != 1);
+    } while (game_main_exit_flag != GAME_MAIN_EXIT_REQUESTED);
 
     game_shutdown();
     /* PSX.EXE owns the fixed next-overlay mailbox. */
     *(u8 *)0x800102f0 = KF_OVERLAY_END;
+}
+
+ADDRESS(0x8001398c, 0x38)
+void game_shutdown(void)
+{
+    audio_shutdown();
+    cd_close_events();
+    PadStop();
+    ResetGraph(KF_GPU_RESET_KEEP_DISPLAY);
 }

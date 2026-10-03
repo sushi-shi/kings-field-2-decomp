@@ -29,7 +29,7 @@ void actor_set_target(KfActor *actor, KfTargetCandidate *target)
     } else {
         actor->target = NULL;
         actor->target_type = 0xff;
-        actor->target_action_state = 0xff;
+        actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     }
 }
 
@@ -219,7 +219,8 @@ void actor_select_best_target(s32 player_distance)
     } while (--remaining != -1);
 
     if (best_target != NULL &&
-        (best_target != actor->target || actor->target_action_state == 0xff)) {
+        (best_target != actor->target ||
+         actor->target_action_state == KF_ACTOR_TARGET_ACTION_UNSELECTED)) {
         actor_set_target(actor, best_target);
     }
 }
@@ -269,7 +270,7 @@ void actor_reset_target_and_reselect(void)
     KfActor *actor = actor_state.current;
 
     actor->target = NULL;
-    actor->target_action_state = 0xff;
+    actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     actor_select_target_for_player_distance();
 }
 
@@ -313,7 +314,7 @@ void actor_update_lifecycle_for_player_range(void)
             return;
         }
 
-        if (slot_state == 3 || slot_state == 4) {
+        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == 4) {
             if (actor_state.other_actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
@@ -322,7 +323,7 @@ void actor_update_lifecycle_for_player_range(void)
             return;
         }
 
-        if (slot_state == 2) {
+        if (slot_state == KF_ACTOR_SLOT_RESPAWNING) {
             u8 chance = actor->spawn_chance;
             if (chance != 0xff && chance < (rand() >> 4)) {
                 return;
@@ -332,7 +333,7 @@ void actor_update_lifecycle_for_player_range(void)
                 player_state.force_actor_lifecycle_refresh == 0) {
                 goto set_dormant;
             }
-            if (slot_state != 1) {
+            if (slot_state != KF_ACTOR_SLOT_PERSISTENT) {
                 if (slot_state != 0) {
                     goto set_dormant;
                 }
@@ -364,7 +365,7 @@ void actor_update_lifecycle_for_player_range(void)
         return;
 
     set_dormant:
-        if (slot_state != 2) {
+        if (slot_state != KF_ACTOR_SLOT_RESPAWNING) {
             actor->lifecycle = KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT;
         }
         return;
@@ -384,7 +385,7 @@ void actor_update_lifecycle_for_player_range(void)
         return;
 
     case KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT:
-        if (slot_state == 3 || slot_state == 4) {
+        if (slot_state == KF_ACTOR_SLOT_HOMEBOUND || slot_state == 4) {
             if (actor_state.other_actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 return;
             }
@@ -410,7 +411,7 @@ void actor_retarget_or_disable_group_members(s32 group_index)
     s16 remaining = KF_ACTOR_CAPACITY - 1;
 
     do {
-        if (actor->slot_state != 0xff &&
+        if (actor->slot_state != KF_ACTOR_SLOT_FREE &&
             actor->group_index == (u16)group_index) {
             if (actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 actor_select_target_type_in_own_group(actor, 3);
@@ -465,7 +466,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     KfTargetReference *target_slot;
     s32 motion_divisor;
 
-    if (actor->slot_state == 3) {
+    if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
         actor = &actor_state.actors[actor->word_22.linked_actor_slot];
     }
     group = &actor_state.target_groups[actor->group_index];

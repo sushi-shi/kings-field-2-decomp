@@ -140,7 +140,7 @@ void player_initialize_state(void)
     player_state.camera_position.vz = PLAYER_INITIAL_CAMERA_Z;
     player_state.map_layer_index = PLAYER_INITIAL_MAP_LAYER;
     entry = effect_state.magic_records;
-    for (i = 63; i != -1; i--) {
+    for (i = KF_MAGIC_RECORD_COUNT - 1; i != -1; i--) {
         entry->menu_available = 0;
         entry++;
     }

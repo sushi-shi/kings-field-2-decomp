@@ -16,6 +16,7 @@ void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle,
  * actor and map-object checks. Shape records only report bits below 0x10. */
 enum {
     KF_COLLISION_QUERY_SHAPES = 0x01,
+    KF_COLLISION_QUERY_LAYER_FLAG_40 = 0x02,
     KF_COLLISION_QUERY_ACTORS = 0x10,
     KF_COLLISION_QUERY_MAP_OBJECTS = 0x20,
     KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 = 0x40,
@@ -29,9 +30,13 @@ enum {
     KF_COLLISION_HIT_PLAYER = 0x80
 };
 
-/* A layer with this lighting byte flag brings the other cell layer into the
- * camera mask when its own map object is present. */
-enum { KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80 };
+/* With both shape-query bits set, layer flag 0x40 forces an axis hit and a
+ * cache result of -100000. Flag 0x80 reveals the other layer to the camera
+ * mask when this layer's map object is present. */
+enum {
+    KF_MAP_CELL_LAYER_COLLISION_FLAG_40 = 0x40,
+    KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80
+};
 
 /* Phase-one resource loading copies 0x600 words to this interior BSS range.
  * The variable-length shape records within it remain untyped. */

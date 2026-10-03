@@ -59,9 +59,12 @@ void actor_update_behavior(void)
     s32 interval;
 
     if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != 0) {
-        actor_state.actor_collision_query_flags = 3;
+        actor_state.actor_collision_query_flags =
+            KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_LAYER_FLAG_40;
     } else {
-        actor_state.actor_collision_query_flags = 0x93;
+        actor_state.actor_collision_query_flags =
+            KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_LAYER_FLAG_40 |
+            KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_PLAYER;
     }
     map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                    actor->collision_radius, -1);

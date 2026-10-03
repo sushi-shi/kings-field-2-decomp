@@ -523,10 +523,10 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
 
     if (mode & KF_COLLISION_QUERY_SHAPES) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
-        if ((mode & 2) &&
-            (COLLISION_CACHE_SHAPE->lighting_index & 0x40)) {
+        if ((mode & KF_COLLISION_QUERY_LAYER_FLAG_40) &&
+            (COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
             COLLISION_CACHE_RESULT = -100000;
-            result |= 1;
+            result |= KF_COLLISION_HIT_AXIS;
         }
     } else {
         COLLISION_CACHE_CELL = &bss_801c7540.map_cells[z >> 11][x >> 11];

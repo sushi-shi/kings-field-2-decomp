@@ -198,12 +198,6 @@ source = "src/game/player_magic_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.player_select_magic_action"
-image = "GAME.EXE"
-source = "src/game/player_select_magic_action.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.player_motion"
 image = "GAME.EXE"
 source = "src/game/player_motion.c"

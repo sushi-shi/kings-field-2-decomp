@@ -336,12 +336,12 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case 0x1f:
             object->layer_mask = 0;
-            object->action = 0x1f;
+            object->action = KF_MAP_OBJECT_ACTION_AMBIENT_SOUND;
             object->extra_40.next_sound_frame = frame_count +
                 object->tail.ambient_sound.repeat_delay_units * 6;
             break;
         case 0xf0:
-            object->action = 0xf0;
+            object->action = KF_MAP_OBJECT_ACTION_ANIMATED_MODEL;
             break;
         case 0x54:
             object->asset_clip_selector = 0;

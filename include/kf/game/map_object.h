@@ -8,12 +8,14 @@
 enum {
     KF_MAP_OBJECT_ACTION_NONE = 0xff,
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
+    KF_MAP_OBJECT_ACTION_AMBIENT_SOUND = 0x1f,
     KF_MAP_OBJECT_ACTION_PLAYER_REACTION = 0x20,
     KF_MAP_OBJECT_ACTION_FALL_AND_TIP = 0x60,
     KF_MAP_OBJECT_ACTION_FALL_AND_SPIN = 0x61,
     KF_MAP_OBJECT_ACTION_BOUNCE = 0x62,
     KF_MAP_OBJECT_MOTION_ACTION = 0x70,
     KF_MAP_OBJECT_ACTION_REGION_TRIGGER = 0xe1,
+    KF_MAP_OBJECT_ACTION_ANIMATED_MODEL = 0xf0,
     KF_MAP_OBJECT_ID_NONE = 0xff,
     KF_MAP_OBJECT_INDEX_NONE = 0xffff,
     KF_MAP_OBJECT_PLACEMENT_ID_NONE = 0xffff,
@@ -265,7 +267,7 @@ typedef struct KfMapObjectTailAnimatedView {
 typedef char kf_map_object_tail_animated_size[
     sizeof(KfMapObjectTailAnimatedView) == 12 ? 1 : -1];
 
-/* Action 0x1f schedules an ambient sound for a rectangular map region. */
+/* The ambient-sound action schedules playback for a rectangular map region. */
 typedef struct KfMapObjectTailAmbientSoundView {
     u32 unknown_34;
     u8 region_width;

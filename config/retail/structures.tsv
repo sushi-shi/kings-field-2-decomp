@@ -35,7 +35,9 @@ KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtim
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
 KfEffectState	0x2a8c	supported	asm;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEffectTrailChildLink	0x02	supported	GAME 0x80044fd0-0x80044fd8;GAME 0x80045504-0x8004552c	Kind-107 parent record and trail lag indices
 KfEffectTrailRow	0x18	supported	game/effect.h;GAME 0x80040a80-0x80040ac8;GAME 0x8004513c-0x800451bc	kind-6 position and rotation row copied into a four-bank provisional trail buffer
+KfEffectTrailState	0x08	supported	game/effect.h;GAME 0x80045094-0x8004552c	kind-6 payload view at effect record +0x40; other effect kinds use variant payloads
 KfEquipmentRecord	0x20	supported	asm;player_set_equipment_slot;game_main_loop startup clear	layout from the reconstructed header
 KfEulerAngles	0x06	supported	lib/math.h;asm;xrefs	three signed halfword angles
 KfEventArena	0x3800	supported	game/event_state.h;func_800482f8;save pointer helpers	memory-block arena and word/byte clear views
@@ -85,6 +87,7 @@ KfPlayerFlags140	0x04	supported	asm;func_80029014;player_clear_motion	word and l
 KfPlayerFlags140Halves	0x04	supported	asm;func_80028998	separate low and high flag halfwords
 KfPlayerLevelGrowth	0x0c	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPlayerMagicIdSequence	0x14	supported	asm;func_80026498;func_80028998;retail bytes	12 effect IDs followed by four u16 attack masks
+KfPlayerMagicSpawnRecord	0x08	supported	asm;player_dispatch_magic_effect;retail bytes	Eight-byte offset copied as SVECTOR with signed effect kind at +6; original typedef spelling unresolved
 KfPlayerMovementSpeed	0x02	supported	asm;player_update_vertical_motion	one halfword read with both lh and lhu in vertical motion
 KfPlayerPositionReaction	0x14	supported	asm;func_800291ec	mode and three signed position words in the player reaction overlay
 KfPlayerReactionOverlay	0x14	supported	asm;func_800291ec;func_800293d4;func_80029464	three overlapping player reaction views

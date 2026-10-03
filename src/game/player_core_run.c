@@ -34,11 +34,11 @@ void player_reload_map_resources(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)
 {
     cd_request_wait_idle();
-    state_8017d118.values_04[0] = 99;
-    state_8017d118.values_04[1] = 99;
-    state_8017d118.values_04[2] = 99;
-    state_8017d118.values_04[3] = 99;
-    state_8017d118.values_04[4] = 99;
+    state_8017d118.active_resource_ids[0] = 99;
+    state_8017d118.active_resource_ids[1] = 99;
+    state_8017d118.active_resource_ids[2] = 99;
+    state_8017d118.active_resource_ids[3] = 99;
+    state_8017d118.active_resource_ids[4] = 99;
     resource_request_transition(first, second, third, 255, 255, 127, 127, 127);
     do {
         cd_request_yield();

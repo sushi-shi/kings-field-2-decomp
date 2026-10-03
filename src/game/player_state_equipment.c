@@ -12,13 +12,28 @@
 #include <stdarg.h>
 
 
+typedef union KfPlayerMagicSpawnRecord {
+    SVECTOR offset;
+    struct {
+        s16 x;
+        s16 y;
+        s16 z;
+        s16 effect_kind;
+    } fields;
+} KfPlayerMagicSpawnRecord;
+
+typedef char kf_player_magic_spawn_record_size[
+    sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
+typedef char kf_player_magic_spawn_effect_kind_offset[
+    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
+
 DATA(0x800667a0, 0x28)
-SVECTOR player_magic_spawn_records[5] = {
-    {0, 0, 100, 0},
-    {-1000, 0, 0, 46},
-    {-2000, 0, -2000, 46},
-    {1000, 0, 0, 46},
-    {2000, 0, -2000, 46}
+KfPlayerMagicSpawnRecord player_magic_spawn_records[5] = {
+    {{0, 0, 100, 0}},
+    {{-1000, 0, 0, 46}},
+    {{-2000, 0, -2000, 46}},
+    {{1000, 0, 0, 46}},
+    {{2000, 0, -2000, 46}}
 };
 
 DATA(0x800667c8, 0x20)
@@ -355,11 +370,11 @@ void player_begin_weapon_attack(s32 mode)
     player_state.weapon_attack_mode = mode;
     player_state.weapon_attack_phase = 0;
     if (mode == 0) {
-        player_state.weapon_attack_window = player_state.equipped_weapon_record->unknown_1e;
-        player_state.weapon_attack_recovery = player_state.equipped_weapon_record->unknown_2c;
+        player_state.weapon_attack_window = player_state.equipped_weapon_record->normal_attack_end_phase;
+        player_state.weapon_next_sound_phase = player_state.equipped_weapon_record->normal_attack_sound_phase;
     } else {
-        player_state.weapon_attack_window = player_state.equipped_weapon_record->unknown_26;
-        player_state.weapon_attack_recovery = player_state.equipped_weapon_record->unknown_2e;
+        player_state.weapon_attack_window = player_state.equipped_weapon_record->alternate_attack_window_start;
+        player_state.weapon_next_sound_phase = player_state.equipped_weapon_record->alternate_attack_sound_start_phase;
     }
     player_state.attack_charge_committed = player_state.attack_charge_current;
     if (player_state.attack_charge_current == PLAYER_CHARGE_FULL
@@ -567,8 +582,8 @@ select_actor_effect:
     case 42:
         effect_id = 0x71;
 sequence_effect: {
-        const SVECTOR *record = player_magic_spawn_records;
-        player_state.magic_origin_offset = *record;
+        const KfPlayerMagicSpawnRecord *record = player_magic_spawn_records;
+        player_state.magic_origin_offset = record->offset;
         player_probe_view_target_and_vectors(600, &position, &direction, &distance);
         effect = effect_construct_record(10, 0x12, effect_id,
                                &position, &direction, &player_state.camera_rotation);
@@ -576,9 +591,10 @@ sequence_effect: {
             s32 index = effect - effect_state.records;
             record++;
             for (i = 3; i != -1; i--) {
-                player_state.magic_origin_offset = *record;
+                player_state.magic_origin_offset = record->offset;
                 player_probe_view_target_and_vectors(600, &position, &direction, &distance);
-                effect_construct_record(10, 0x12, record->pad, &position, &direction, index);
+                effect_construct_record(10, 0x12, record->fields.effect_kind,
+                                        &position, &direction, index);
                 record++;
             }
         }

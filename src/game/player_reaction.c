@@ -136,7 +136,7 @@ void player_update_actions_and_charge(void)
 
     if ((player_state.flags_140.low & 0xb0) != 0
         && (player_state.flags_140.halves.high & 0xb0) == 0
-        && player_state.equipped_weapon_record->unknown_24 != 0) {
+        && player_state.equipped_weapon_record->alternate_attack_phase_step != 0) {
         if (player_has_power_and_magic_60() == 0) {
             goto cancel_weapon_attack;
         }
@@ -227,7 +227,7 @@ void player_handle_interaction_and_menu(void)
     } else if (value == -3) {
         s32 resource;
         player_restore_equipment_effects();
-        resource = state_8017d118.values_04[0];
+        resource = state_8017d118.active_resource_ids[0];
         player_reload_map_resources(resource, resource, resource, resource, resource, 255);
     }
     player_clear_motion();
@@ -702,7 +702,7 @@ update_reaction_pose:
                     player_state.camera_position.vz = 0x22000;
                     player_state.map_layer_index = 5;
                     game_counter_bytes[0x4c]--;
-                    event_world_state_save_slot(state_8017d118.values_04[0]);
+                    event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
                     player_reset_status();
                     player_reload_map_resources(1, 1, 1, 1, 1, 0x43);
                 } else {
@@ -797,13 +797,13 @@ after_reaction:
     player_update_weapon_attack();
     if (player_state.equipped_weapon_id != 0xff) {
         KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
-        if (weapon->unknown_16 != 0
-            && player_state.equipment_effect_ticks % weapon->unknown_16 == 0) {
+        if (weapon->hp_regen_interval != 0
+            && player_state.equipment_effect_ticks % weapon->hp_regen_interval == 0) {
             player_adjust_hp(1);
         }
         weapon = player_state.equipped_weapon_record;
-        if (weapon->unknown_18 != 0
-            && player_state.equipment_effect_ticks % weapon->unknown_18 == 0) {
+        if (weapon->mp_regen_interval != 0
+            && player_state.equipment_effect_ticks % weapon->mp_regen_interval == 0) {
             player_adjust_mp(1);
         }
     }

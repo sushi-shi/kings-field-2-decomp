@@ -262,6 +262,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     case 6: {
         const SVECTOR *angles;
         KfEffectTrailRow *rows;
+        KfEffectTrailState *trail = (KfEffectTrailState *)&record->unknown_3c[4];
         s32 index;
         u32 slot;
 
@@ -279,14 +280,14 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->rotation = *angles;
         slot = effect_trail_next_slot;
         rows = effect_trail_rows[slot];
-        *(KfEffectTrailRow **)&record->unknown_3c[4] = rows;
+        trail->rows = rows;
         effect_trail_next_slot = (slot + 1) & 3;
         for (index = 23; index != -1; index--, rows++) {
             rows->position = record->position;
             rows->rotation = record->rotation;
         }
-        record->unknown_3c[8] = 0;
-        record->unknown_3c[9] = 0;
+        trail->frame_index = 0;
+        trail->phase_counter = 0;
         record->updates_remaining = 150;
         effect_play_spatial_sound(record, 0x22);
         break;

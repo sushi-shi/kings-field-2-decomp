@@ -32,32 +32,32 @@ void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
     }
 
     if (first == 255) {
-        current_first = state_8017d118.values_04[0];
-        prior_first = state_8017d118.values_10[0];
+        current_first = state_8017d118.active_resource_ids[0];
+        prior_first = state_8017d118.requested_resource_ids[0];
         if (second == 255) {
-            current_second = state_8017d118.values_04[1];
-            prior_second = state_8017d118.values_10[1];
+            current_second = state_8017d118.active_resource_ids[1];
+            prior_second = state_8017d118.requested_resource_ids[1];
         } else {
             current_second = second;
             prior_second = second;
         }
         if (third == 255) {
-            current_third = state_8017d118.values_04[2];
-            prior_third = state_8017d118.values_10[2];
+            current_third = state_8017d118.active_resource_ids[2];
+            prior_third = state_8017d118.requested_resource_ids[2];
         } else {
             current_third = third;
             prior_third = third;
         }
         if (fourth == 255) {
-            current_fourth = state_8017d118.values_04[3];
-            prior_fourth = state_8017d118.values_10[3];
+            current_fourth = state_8017d118.active_resource_ids[3];
+            prior_fourth = state_8017d118.requested_resource_ids[3];
         } else {
             current_fourth = fourth;
             prior_fourth = fourth;
         }
         if (fifth == 255) {
-            current_fifth = state_8017d118.values_04[4];
-            prior_fifth = state_8017d118.values_10[4];
+            current_fifth = state_8017d118.active_resource_ids[4];
+            prior_fifth = state_8017d118.requested_resource_ids[4];
         } else {
             current_fifth = fifth;
             prior_fifth = fifth;
@@ -69,42 +69,42 @@ void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
         prior_third = first;
         prior_fourth = first;
         prior_fifth = first;
-        current_second = state_8017d118.values_04[1];
-        current_third = state_8017d118.values_04[2];
-        current_fourth = state_8017d118.values_04[3];
-        current_fifth = state_8017d118.values_04[4];
+        current_second = state_8017d118.active_resource_ids[1];
+        current_third = state_8017d118.active_resource_ids[2];
+        current_fourth = state_8017d118.active_resource_ids[3];
+        current_fifth = state_8017d118.active_resource_ids[4];
     }
 
     if (state_8017d118.transition_active != 0) {
         goto handle_active;
     }
-    if (state_8017d118.values_04[0] == current_first &&
-        state_8017d118.values_04[1] == current_second &&
-        state_8017d118.values_04[2] == current_third &&
-        state_8017d118.values_04[3] == current_fourth &&
-        state_8017d118.values_04[4] == current_fifth) {
+    if (state_8017d118.active_resource_ids[0] == current_first &&
+        state_8017d118.active_resource_ids[1] == current_second &&
+        state_8017d118.active_resource_ids[2] == current_third &&
+        state_8017d118.active_resource_ids[3] == current_fourth &&
+        state_8017d118.active_resource_ids[4] == current_fifth) {
         return;
     }
 
 apply:
-    if (state_8017d118.values_04[0] != 99 &&
-        state_8017d118.values_04[0] != current_first) {
-        event_world_state_save_slot(state_8017d118.values_04[0]);
+    if (state_8017d118.active_resource_ids[0] != 99 &&
+        state_8017d118.active_resource_ids[0] != current_first) {
+        event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
     }
     if (event_state.control.fields.unknown_04[0] < current_first) {
         event_state.control.fields.unknown_04[0] = current_first;
     }
     state_8017d118.transition_active = 1;
     state_8017d118.transition_phase = 0;
-    state_8017d118.values_10[0] = first;
-    state_8017d118.values_10[1] = second;
-    state_8017d118.values_10[2] = third;
-    state_8017d118.values_10[3] = fourth;
-    state_8017d118.values_10[4] = fifth;
-    state_8017d118.values_17[0] = offset_x;
-    state_8017d118.values_17[1] = offset_z;
-    state_8017d118.unknown_15 = 0;
-    state_8017d118.values_17[2] = offset_y;
+    state_8017d118.requested_resource_ids[0] = first;
+    state_8017d118.requested_resource_ids[1] = second;
+    state_8017d118.requested_resource_ids[2] = third;
+    state_8017d118.requested_resource_ids[3] = fourth;
+    state_8017d118.requested_resource_ids[4] = fifth;
+    state_8017d118.transition_offset_xzy[0] = offset_x;
+    state_8017d118.transition_offset_xzy[1] = offset_z;
+    state_8017d118.world_shift_applied = 0;
+    state_8017d118.transition_offset_xzy[2] = offset_y;
     if (second == 255) {
         state_8017d118.flag_16 = 0;
     } else {
@@ -114,31 +114,31 @@ apply:
 
 handle_active:
     if ((state_8017d118.transition_active != 1 ||
-         state_8017d118.values_10[0] == prior_first) &&
-        state_8017d118.values_10[1] == prior_second &&
-        state_8017d118.values_10[2] == prior_third &&
-        state_8017d118.values_10[3] == prior_fourth &&
-        state_8017d118.values_10[4] == prior_fifth) {
+         state_8017d118.requested_resource_ids[0] == prior_first) &&
+        state_8017d118.requested_resource_ids[1] == prior_second &&
+        state_8017d118.requested_resource_ids[2] == prior_third &&
+        state_8017d118.requested_resource_ids[3] == prior_fourth &&
+        state_8017d118.requested_resource_ids[4] == prior_fifth) {
         return;
     }
-    if ((state_8017d118.values_10[0] == 255 &&
-         state_8017d118.values_04[0] == current_first) ||
-        (state_8017d118.values_10[1] == 255 &&
-         state_8017d118.values_04[1] == second) ||
-        (state_8017d118.values_10[2] == 255 &&
-         state_8017d118.values_04[2] == third) ||
-        (state_8017d118.values_10[3] == 255 &&
-         state_8017d118.values_04[3] == fourth) ||
-        (state_8017d118.values_10[4] == 255 &&
-         state_8017d118.values_04[4] == fifth)) {
+    if ((state_8017d118.requested_resource_ids[0] == 255 &&
+         state_8017d118.active_resource_ids[0] == current_first) ||
+        (state_8017d118.requested_resource_ids[1] == 255 &&
+         state_8017d118.active_resource_ids[1] == second) ||
+        (state_8017d118.requested_resource_ids[2] == 255 &&
+         state_8017d118.active_resource_ids[2] == third) ||
+        (state_8017d118.requested_resource_ids[3] == 255 &&
+         state_8017d118.active_resource_ids[3] == fourth) ||
+        (state_8017d118.requested_resource_ids[4] == 255 &&
+         state_8017d118.active_resource_ids[4] == fifth)) {
         return;
     }
 
-    if ((state_8017d118.values_10[0] != 255 && first == 255) ||
-        (state_8017d118.values_10[1] != 255 && second == 255) ||
-        (state_8017d118.values_10[2] != 255 && third == 255) ||
-        (state_8017d118.values_10[3] != 255 && fourth == 255) ||
-        (state_8017d118.values_10[4] != 255 && fifth == 255)) {
+    if ((state_8017d118.requested_resource_ids[0] != 255 && first == 255) ||
+        (state_8017d118.requested_resource_ids[1] != 255 && second == 255) ||
+        (state_8017d118.requested_resource_ids[2] != 255 && third == 255) ||
+        (state_8017d118.requested_resource_ids[3] != 255 && fourth == 255) ||
+        (state_8017d118.requested_resource_ids[4] != 255 && fifth == 255)) {
         while (state_8017d118.transition_active != 0) {
             cd_request_yield();
             resource_advance_transition();
@@ -152,11 +152,11 @@ handle_active:
         } while (1);
     }
     ExitCriticalSection();
-    if (state_8017d118.unknown_15 != 0 && first != 255 &&
+    if (state_8017d118.world_shift_applied != 0 && first != 255 &&
         offset_x == 127) {
-        offset_x = -state_8017d118.values_17[0];
-        offset_z = -state_8017d118.values_17[1];
-        offset_y = -state_8017d118.values_17[2];
+        offset_x = -state_8017d118.transition_offset_xzy[0];
+        offset_z = -state_8017d118.transition_offset_xzy[1];
+        offset_y = -state_8017d118.transition_offset_xzy[2];
     }
     goto apply;
 }

@@ -145,14 +145,14 @@ special_mode_zero: {
             if (player_state.weapon_attack_phase >= 4095) {
                 player_state.weapon_attack_phase = 4095;
             }
-            if (player_state.weapon_attack_phase >= weapon->unknown_1e) {
+            if (player_state.weapon_attack_phase >= weapon->normal_attack_end_phase) {
                 if (player_state.attack_charge_current == 0
                     && player_state.equipped_weapon_id == 16) {
                     audio_play_sound(3, 110);
                 }
                 player_state.attack_charge_current =
-                    ((player_state.weapon_attack_phase - weapon->unknown_1e) * 5000)
-                    / (4095 - weapon->unknown_1e);
+                    ((player_state.weapon_attack_phase - weapon->normal_attack_end_phase) * 5000)
+                    / (4095 - weapon->normal_attack_end_phase);
             } else {
                 player_state.attack_charge_current = 0;
             }
@@ -227,16 +227,16 @@ regular_weapon:
 
     if (player_state.weapon_attack_mode == 0) {
         phase_step = weapon->attack_phase_step;
-        phase_end = weapon->unknown_1e;
-        sound_end = weapon->unknown_2c;
+        phase_end = weapon->normal_attack_end_phase;
+        sound_end = weapon->normal_attack_sound_phase;
         sound_step = 0;
         hit_step = 0;
     } else {
-        phase_step = weapon->unknown_24;
-        phase_end = weapon->unknown_28;
+        phase_step = weapon->alternate_attack_phase_step;
+        phase_end = weapon->alternate_attack_end_phase;
         hit_step = weapon->magic_phase_step;
-        sound_end = weapon->unknown_30;
-        sound_step = weapon->release_phase_step;
+        sound_end = weapon->alternate_attack_sound_end_phase;
+        sound_step = weapon->alternate_attack_sound_phase_step;
     }
     player_state.weapon_attack_phase += phase_step;
 
@@ -258,14 +258,14 @@ regular_weapon:
         }
     }
 
-    if (player_state.weapon_attack_phase >= player_state.weapon_attack_recovery
+    if (player_state.weapon_attack_phase >= player_state.weapon_next_sound_phase
         && player_state.weapon_attack_phase
-             < player_state.weapon_attack_recovery + phase_step) {
+             < player_state.weapon_next_sound_phase + phase_step) {
         audio_play_sound(weapon->sound_id, 80);
-        if (player_state.weapon_attack_recovery >= sound_end) {
-            player_state.weapon_attack_recovery = 5000;
+        if (player_state.weapon_next_sound_phase >= sound_end) {
+            player_state.weapon_next_sound_phase = 5000;
         } else {
-            player_state.weapon_attack_recovery += sound_step;
+            player_state.weapon_next_sound_phase += sound_step;
         }
     }
 
@@ -283,7 +283,7 @@ regular_weapon:
             if (weapon->release_effect_id != 0xff) {
                 player_dispatch_weapon_magic(weapon->release_effect_id,
                                player_state.weapon_attack_phase >= phase_end,
-                               (player_state.weapon_attack_phase - weapon->unknown_26)
+                               (player_state.weapon_attack_phase - weapon->alternate_attack_window_start)
                                    / hit_step);
             }
         }

@@ -402,7 +402,7 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(buffer, state_8017d118.values_04, 5);
+    memcpy(buffer, state_8017d118.active_resource_ids, 5);
     memcpy(&payload->camera_position, &player_state.camera_position, 16);
     memcpy(buffer + KF_CARD_SAVE_ROTATION_OFFSET,
         &player_state.camera_rotation_target, 8);
@@ -476,11 +476,11 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(state_8017d118.values_04, buffer, 5);
-    state_8017d118.values_04[1] = state_8017d118.values_04[0];
-    state_8017d118.values_04[2] = state_8017d118.values_04[0];
-    state_8017d118.values_04[3] = state_8017d118.values_04[0];
-    state_8017d118.values_04[4] = state_8017d118.values_04[0];
+    memcpy(state_8017d118.active_resource_ids, buffer, 5);
+    state_8017d118.active_resource_ids[1] = state_8017d118.active_resource_ids[0];
+    state_8017d118.active_resource_ids[2] = state_8017d118.active_resource_ids[0];
+    state_8017d118.active_resource_ids[3] = state_8017d118.active_resource_ids[0];
+    state_8017d118.active_resource_ids[4] = state_8017d118.active_resource_ids[0];
     memcpy(&player_state.camera_position, &payload->camera_position, 16);
     memcpy(&player_state.camera_rotation_target,
         buffer + KF_CARD_SAVE_ROTATION_OFFSET, 8);

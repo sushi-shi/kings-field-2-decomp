@@ -12,11 +12,11 @@ s32 vector_distance_to_point(
 
     dx = position->vx - point_x;
     if (dx < -max_distance || max_distance < dx) {
-        goto reject;
+        return KF_DISTANCE_NONE;
     }
     dz = position->vz - point_z;
     if (dz < -max_distance || max_distance < dz) {
-        goto reject;
+        return KF_DISTANCE_NONE;
     }
     if (point_y != KF_DISTANCE_IGNORE_HEIGHT) {
         if (position->vy < point_y) {

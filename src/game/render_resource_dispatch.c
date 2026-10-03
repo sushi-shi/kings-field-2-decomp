@@ -115,17 +115,17 @@ actor_next:
         if (object->action == 0x1f) goto map_sound_action;
         if (object->action != 0xf0) goto map_ordinary_object;
         if (map_cell_visible(&object->position,
-                             object->tail.visibility.radius_x,
-                             object->tail.visibility.radius_z) != 0 &&
+                             object->tail.animated.radius_x,
+                             object->tail.animated.radius_z) != 0 &&
             (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
             if (resource_registry_get(object->object_id + 0x100) != 0) {
                 render_animated_object(object->object_id + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
-                               (KfPoolRecord **)&object->tail,
+                               &object->tail.animated.animation_cache,
                                object->asset_clip_selector, object->phase_q12,
-                               (u8)object->tail.fields.spawn_sequence,
-                               object->tail.fields.unknown_3a.bytes.high,
-                               0x1fff - object->tail.fields.unknown_3a.bytes.low);
+                               object->tail.animated.blend_mode,
+                               object->tail.animated.lighting_flags,
+                               0x1fff - object->tail.animated.depth_code);
                 object->collision_flags |= 0x80;
             }
             tmd_flags[object->object_id] = 1;

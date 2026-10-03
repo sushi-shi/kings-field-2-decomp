@@ -16,18 +16,18 @@ ADDRESS(0x80015d58, 0x27c)
 void resource_initialize_game_assets(void)
 {
     u8 *source = (u8 *)KF_GAME_RESOURCE_ARENA_BASE;
-    u8 *second_value = &state_8017d118.values_04[1];
+    u8 *second_value = &state_8017d118.active_resource_ids[1];
 
-    state_8017d118.values_04[3] = 255;
-    state_8017d118.values_04[2] = 255;
+    state_8017d118.active_resource_ids[3] = 255;
+    state_8017d118.active_resource_ids[2] = 255;
     *second_value = 255;
     state_8017d118.transition_active = 0;
     state_8017d118.transition_phase = 0;
-    state_8017d118.values_04[0] = 0;
+    state_8017d118.active_resource_ids[0] = 0;
     *second_value = 0;
-    state_8017d118.values_04[2] = 0;
-    state_8017d118.values_04[3] = 0;
-    state_8017d118.values_04[4] = 0;
+    state_8017d118.active_resource_ids[2] = 0;
+    state_8017d118.active_resource_ids[3] = 0;
+    state_8017d118.active_resource_ids[4] = 0;
     state_8017d118.unknown_09[0] = 0;
 
     cd_archive_open(0, "COM\\MO.T");
@@ -76,24 +76,24 @@ void resource_run_initial_transition(void)
 
     state_8017d118.transition_active = 1;
     state_8017d118.transition_phase = 0;
-    first = state_8017d118.values_04[0];
-    second = state_8017d118.values_04[1];
-    third = state_8017d118.values_04[2];
-    fourth = state_8017d118.values_04[3];
-    fifth = state_8017d118.values_04[4];
-    state_8017d118.values_04[0] = 99;
-    state_8017d118.values_04[1] = 99;
-    state_8017d118.values_04[2] = 99;
-    state_8017d118.values_04[3] = 99;
-    state_8017d118.values_04[4] = 99;
-    state_8017d118.values_17[0] = 127;
-    state_8017d118.values_17[1] = 127;
-    state_8017d118.values_17[2] = 127;
-    state_8017d118.values_10[0] = first;
-    state_8017d118.values_10[1] = second;
-    state_8017d118.values_10[2] = third;
-    state_8017d118.values_10[3] = fourth;
-    state_8017d118.values_10[4] = fifth;
+    first = state_8017d118.active_resource_ids[0];
+    second = state_8017d118.active_resource_ids[1];
+    third = state_8017d118.active_resource_ids[2];
+    fourth = state_8017d118.active_resource_ids[3];
+    fifth = state_8017d118.active_resource_ids[4];
+    state_8017d118.active_resource_ids[0] = 99;
+    state_8017d118.active_resource_ids[1] = 99;
+    state_8017d118.active_resource_ids[2] = 99;
+    state_8017d118.active_resource_ids[3] = 99;
+    state_8017d118.active_resource_ids[4] = 99;
+    state_8017d118.transition_offset_xzy[0] = 127;
+    state_8017d118.transition_offset_xzy[1] = 127;
+    state_8017d118.transition_offset_xzy[2] = 127;
+    state_8017d118.requested_resource_ids[0] = first;
+    state_8017d118.requested_resource_ids[1] = second;
+    state_8017d118.requested_resource_ids[2] = third;
+    state_8017d118.requested_resource_ids[3] = fourth;
+    state_8017d118.requested_resource_ids[4] = fifth;
     do {
         cd_request_yield();
         resource_advance_transition();

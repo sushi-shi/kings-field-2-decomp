@@ -267,7 +267,7 @@ void map_object_update_actions(void)
                 break;
             case 1:
                 if (object->tail.fields.unknown_38 == 0xfe) {
-                    object->extra_40.signed_halfwords[0] = -16;
+                    object->extra_40.angular_velocity_x = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->layer_mask);
@@ -276,14 +276,14 @@ void map_object_update_actions(void)
                 break;
             case 2: {
                 s32 velocity = angle_velocity_step(0xa00, object->rotation.vx,
-                                                    object->extra_40.signed_halfwords[0], 8, 4);
+                                                    object->extra_40.angular_velocity_x, 8, 4);
                 s32 angle = ((u16)object->rotation.vx + velocity) & 0xfff;
-                object->extra_40.signed_halfwords[0] = velocity;
+                object->extra_40.angular_velocity_x = velocity;
                 object->rotation.vx = angle;
                 if (angle < 0xc00) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                 }
-                if (object->extra_40.signed_halfwords[0] == 0 && object->rotation.vx == 0xa00) {
+                if (object->extra_40.angular_velocity_x == 0 && object->rotation.vx == 0xa00) {
                     object->action_timer = 3;
                 }
                 break;
@@ -310,7 +310,7 @@ void map_object_update_actions(void)
                 break;
             case 1:
                 if (object->tail.fields.unknown_38 == 0xfe) {
-                    object->extra_40.halfwords[0] = 16;
+                    object->extra_40.movement_frames_left = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
                                             1, object->layer_mask);
@@ -323,7 +323,7 @@ void map_object_update_actions(void)
                 vector2i_scale_shift11(10, &displacement);
                 object->position.vx += displacement.x;
                 object->position.vz += displacement.z;
-                if (--object->extra_40.halfwords[0] == 0) {
+                if (--object->extra_40.movement_frames_left == 0) {
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                     object->action_timer = 3;
                 }
@@ -497,13 +497,13 @@ void map_object_update_actions(void)
         case 89:
             switch (object->action_timer) {
             case 1:
-                object->extra_40.halfwords[0] = object->tail.fields.unknown_3a.value;
+                object->extra_40.layer_fade.delay_frames_left = object->tail.fields.unknown_3a.value;
                 object->action_timer = 2;
-                object->layer_mask = object->extra_40.bytes[2];
+                object->layer_mask = object->extra_40.layer_fade.original_layer_mask;
                 break;
             case 2: {
-                u16 previous = object->extra_40.halfwords[0];
-                object->extra_40.halfwords[0] = previous - 1;
+                u16 previous = object->extra_40.layer_fade.delay_frames_left;
+                object->extra_40.layer_fade.delay_frames_left = previous - 1;
                 if (previous == 0) {
                     KfMapOccupancyCell *row =
                         bss_801c7540.map_cells[object->position.vz >> 11];
@@ -524,12 +524,12 @@ void map_object_update_actions(void)
                 if ((s16)object->lighting_blend_q12 <= 0) {
                     object->lighting_blend_q12 = 0;
                     object->action_timer = 4;
-                    object->extra_40.halfwords[0] = object->tail.fields.spawn_sequence;
+                    object->extra_40.layer_fade.delay_frames_left = object->tail.fields.spawn_sequence;
                 }
                 break;
             case 4: {
-                u16 previous = object->extra_40.halfwords[0];
-                object->extra_40.halfwords[0] = previous - 1;
+                u16 previous = object->extra_40.layer_fade.delay_frames_left;
+                object->extra_40.layer_fade.delay_frames_left = previous - 1;
                 if (previous == 0) {
                     map_object_play_spatial_sound(object, 0xe3);
                     object->action_timer = 5;
@@ -638,9 +638,9 @@ void map_object_update_actions(void)
                               object->tail.resource_trigger.resource_selectors[2],
                               object->tail.resource_trigger.resource_selectors[3],
                               object->tail.resource_trigger.resource_selectors[4],
-                              (s8)object->extra_40.bytes[0],
-                              (s8)object->extra_40.bytes[1],
-                              (s8)object->extra_40.bytes[2]);
+                              object->extra_40.resource_offsets.offset_x,
+                              object->extra_40.resource_offsets.offset_z,
+                              object->extra_40.resource_offsets.offset_y);
             }
             break;
 
@@ -911,11 +911,8 @@ void map_object_update_actions(void)
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
                 effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
-                {
-                    s32 angle = object->rotation.vx +
-                        (object->action_timer == 0 ? 0xa0 : -0xa0);
-                    object->rotation.vx = angle & 0xfff;
-                }
+                object->rotation.vx = (object->rotation.vx +
+                    (object->action_timer == 0 ? 0xa0 : -0xa0)) & 0xfff;
                 object->tail.motion.motion_velocity.value += 30;
                 velocity = object->tail.motion.motion_velocity.signed_value;
                 if (velocity >= 0 && object->position.vy >= floor_y) {

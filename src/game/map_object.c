@@ -296,15 +296,15 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->position.vz -= placements->local_z;
             object->position.vy -= placements->height;
             if (placements->local_x == 0xff) {
-                object->extra_40.bytes[2] = 0x7f;
-                object->extra_40.bytes[1] = 0x7f;
-                object->extra_40.bytes[0] = 0x7f;
+                object->extra_40.resource_offsets.offset_y = 0x7f;
+                object->extra_40.resource_offsets.offset_z = 0x7f;
+                object->extra_40.resource_offsets.offset_x = 0x7f;
             } else {
-                object->extra_40.bytes[0] =
+                object->extra_40.resource_offsets.offset_x =
                     (s8)placements->local_x - (s8)placements->region_x;
-                object->extra_40.bytes[1] =
+                object->extra_40.resource_offsets.offset_z =
                     (s8)placements->local_z - (s8)placements->region_z;
-                object->extra_40.bytes[2] =
+                object->extra_40.resource_offsets.offset_y =
                     (s8)placements->height -
                     (s8)(-object->position.vy >> 7);
             }
@@ -389,7 +389,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                 kind59_layer++;
             }
             kind59_layer->collision_shape_id = 0x75;
-            object->extra_40.bytes[2] = object->layer_mask;
+            object->extra_40.layer_fade.original_layer_mask = object->layer_mask;
             object->layer_mask = 0;
             break;
         }

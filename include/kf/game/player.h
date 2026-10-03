@@ -76,21 +76,21 @@ typedef struct KfWeaponRecordGame {
     u8 release_effect_id;
     u8 magic_shots;
     u16 attack_components[8];
-    u16 unknown_16;
-    u16 unknown_18;
+    u16 hp_regen_interval;
+    u16 mp_regen_interval;
     u16 attack_angle;
     u16 attack_phase_step;
-    u16 unknown_1e;
+    u16 normal_attack_end_phase;
     u16 magic_window_start;
     u16 magic_window_end;
-    u16 unknown_24;
-    u16 unknown_26;
-    u16 unknown_28;
+    u16 alternate_attack_phase_step;
+    u16 alternate_attack_window_start;
+    u16 alternate_attack_end_phase;
     u16 magic_phase_step;
-    u16 unknown_2c;
-    u16 unknown_2e;
-    u16 unknown_30;
-    u16 release_phase_step;
+    u16 normal_attack_sound_phase;
+    u16 alternate_attack_sound_start_phase;
+    u16 alternate_attack_sound_end_phase;
+    u16 alternate_attack_sound_phase_step;
     u16 position_offset_x;
     u16 position_offset_y;
     u16 position_offset_z;
@@ -186,10 +186,24 @@ typedef char kf_player_movement_speed_size[
     sizeof(KfPlayerMovementSpeed) == 2 ? 1 : -1];
 
 typedef char kf_weapon_record_game_size[sizeof(KfWeaponRecordGame) == 0x44 ? 1 : -1];
+typedef char kf_weapon_record_game_hp_regen_offset[
+    (u32)&((KfWeaponRecordGame *)0)->hp_regen_interval == 0x16 ? 1 : -1];
+typedef char kf_weapon_record_game_mp_regen_offset[
+    (u32)&((KfWeaponRecordGame *)0)->mp_regen_interval == 0x18 ? 1 : -1];
+typedef char kf_weapon_record_game_normal_end_offset[
+    (u32)&((KfWeaponRecordGame *)0)->normal_attack_end_phase == 0x1e ? 1 : -1];
+typedef char kf_weapon_record_game_alternate_end_offset[
+    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_end_phase == 0x28 ? 1 : -1];
 typedef char kf_weapon_record_game_attacks_offset[
     (u32)&((KfWeaponRecordGame *)0)->attack_components == 6 ? 1 : -1];
-typedef char kf_weapon_record_game_unknown_24_offset[
-    (u32)&((KfWeaponRecordGame *)0)->unknown_24 == 0x24 ? 1 : -1];
+typedef char kf_weapon_record_game_alternate_phase_step_offset[
+    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_phase_step == 0x24 ? 1 : -1];
+typedef char kf_weapon_record_game_alternate_window_offset[
+    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_window_start == 0x26 ? 1 : -1];
+typedef char kf_weapon_record_game_normal_sound_offset[
+    (u32)&((KfWeaponRecordGame *)0)->normal_attack_sound_phase == 0x2c ? 1 : -1];
+typedef char kf_weapon_record_game_alternate_sound_step_offset[
+    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_sound_phase_step == 0x32 ? 1 : -1];
 
 typedef struct KfPlayerMagicIdSequence {
     u8 effect_ids[12];
@@ -298,7 +312,7 @@ typedef struct KfPlayerState {
     struct KfEffectRecord *weapon_effect;
     s16 weapon_attack_phase;
     s16 weapon_attack_window;
-    s16 weapon_attack_recovery;
+    s16 weapon_next_sound_phase;
     u8 weapon_magic_shots_remaining;
     u8 primary_magic_shortcut_id;
     u8 secondary_magic_shortcut_id;
@@ -374,6 +388,8 @@ typedef char kf_player_combat_components_offset[
     (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
 typedef char kf_player_magic_attack_mask_cursor_offset[
     (u32)&((KfPlayerState *)0)->magic_attack_mask_cursor == 0x78 ? 1 : -1];
+typedef char kf_player_weapon_next_sound_phase_offset[
+    (u32)&((KfPlayerState *)0)->weapon_next_sound_phase == 0x94 ? 1 : -1];
 typedef char kf_player_selected_magic_record_offset[
     (u32)&((KfPlayerState *)0)->selected_magic_record == 0x7c ? 1 : -1];
 typedef char kf_player_equipped_head_record_offset[

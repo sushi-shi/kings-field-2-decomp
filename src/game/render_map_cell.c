@@ -283,8 +283,8 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
     u16 object_index;
     s32 orientation;
 
-    SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
     orientation = shape->quarter_turns & KF_MAP_CELL_ORIENTATION_MASK;
+    SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     RotTrans(position, (VECTOR *)&cell_matrix.t, &gte_flags);
     matrix_rotate_quarter_turns(&game_graphics_runtime.render_state.view_matrix,

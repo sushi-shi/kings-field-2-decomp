@@ -207,6 +207,14 @@ typedef char kf_render_state_size[sizeof(KfRenderState) == 0x88 ? 1 : -1];
 typedef char kf_render_grid_size[sizeof(KfRenderGridState) == 0x24c ? 1 : -1];
 typedef char kf_collision_row_size[sizeof(KfCollisionRow) == 104 ? 1 : -1];
 typedef char kf_floor_item_size[sizeof(KfFloorItem) == 24 ? 1 : -1];
+typedef char kf_floor_item_update_interval_offset[
+    (u32)&((KfFloorItem *)0)->update_interval == 1 ? 1 : -1];
+typedef char kf_floor_item_frames_until_update_offset[
+    (u32)&((KfFloorItem *)0)->frames_until_update == 2 ? 1 : -1];
+typedef char kf_floor_item_row_step_offset[
+    (u32)&((KfFloorItem *)0)->row_step == 3 ? 1 : -1];
+typedef char kf_floor_item_row_offset_offset[
+    (u32)&((KfFloorItem *)0)->row_offset == 4 ? 1 : -1];
 typedef char kf_floor_item_rect_offset[
     (u32)&((KfFloorItem *)0)->rect == 6 ? 1 : -1];
 typedef char kf_floor_item_pixels_offset[

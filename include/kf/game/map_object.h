@@ -3,6 +3,7 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
+#include <kf/game/pool.h>
 
 enum {
     KF_MAP_OBJECT_ACTION_NONE = 0xff,
@@ -162,6 +163,19 @@ typedef struct KfMapObjectTailResourceTriggerView {
 typedef char kf_map_object_tail_resource_trigger_size[
     sizeof(KfMapObjectTailResourceTriggerView) == 12 ? 1 : -1];
 
+typedef struct KfMapObjectTailAnimatedView {
+    KfPoolRecord *animation_cache;
+    u8 radius_x;
+    u8 radius_z;
+    u8 depth_code;
+    u8 lighting_flags;
+    u8 blend_mode;
+    u8 unknown_3d;
+    u16 unknown_3e;
+} KfMapObjectTailAnimatedView;
+typedef char kf_map_object_tail_animated_size[
+    sizeof(KfMapObjectTailAnimatedView) == 12 ? 1 : -1];
+
 /* Event archive commands read the two state bytes at +0x38 as one halfword. */
 typedef struct KfMapObjectTailPair38View {
     u32 unknown_34;
@@ -173,20 +187,6 @@ typedef char kf_map_object_tail_pair38_size[
     sizeof(KfMapObjectTailPair38View) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_pair38_offset[
     (u32)&((KfMapObjectTailPair38View *)0)->value_38 == 4 ? 1 : -1];
-
-/* Action 0xf0 uses the two copied tail bytes as a view-cell radius. */
-typedef struct KfMapObjectTailVisibilityView {
-    u32 unknown_34;
-    u8 radius_x;
-    u8 radius_z;
-    u8 unknown_3a[6];
-} KfMapObjectTailVisibilityView;
-typedef char kf_map_object_tail_visibility_size[
-    sizeof(KfMapObjectTailVisibilityView) == 12 ? 1 : -1];
-typedef char kf_map_object_tail_visibility_radius_x_offset[
-    (u32)&((KfMapObjectTailVisibilityView *)0)->radius_x == 4 ? 1 : -1];
-typedef char kf_map_object_tail_visibility_radius_z_offset[
-    (u32)&((KfMapObjectTailVisibilityView *)0)->radius_z == 5 ? 1 : -1];
 
 typedef struct KfMapObjectTailSpawnByteFields {
     u32 unknown_34;
@@ -207,8 +207,8 @@ typedef union KfMapObjectTail {
     KfMapObjectTailNotificationView notification;
     KfMapObjectTailTransitionView transition;
     KfMapObjectTailResourceTriggerView resource_trigger;
+    KfMapObjectTailAnimatedView animated;
     KfMapObjectTailPair38View pair_38;
-    KfMapObjectTailVisibilityView visibility;
     KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
     struct {
@@ -236,6 +236,23 @@ typedef struct KfMapObjectOffsetMotionState {
 typedef char kf_map_object_offset_motion_state_size[
     sizeof(KfMapObjectOffsetMotionState) == 4 ? 1 : -1];
 
+typedef struct KfMapObjectResourceOffsets {
+    s8 offset_x;
+    s8 offset_z;
+    s8 offset_y;
+    u8 unknown_43;
+} KfMapObjectResourceOffsets;
+typedef char kf_map_object_resource_offsets_size[
+    sizeof(KfMapObjectResourceOffsets) == 4 ? 1 : -1];
+
+typedef struct KfMapObjectLayerFadeState {
+    u16 delay_frames_left;
+    u8 original_layer_mask;
+    u8 unknown_43;
+} KfMapObjectLayerFadeState;
+typedef char kf_map_object_layer_fade_state_size[
+    sizeof(KfMapObjectLayerFadeState) == 4 ? 1 : -1];
+
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
     u32 raw;
@@ -243,10 +260,12 @@ typedef union KfMapObjectExtra40 {
     u32 next_sound_frame;
     u8 bytes[4];
     u16 object_index;
-    u16 halfwords[2];
-    s16 signed_halfwords[2];
+    s16 angular_velocity_x;
+    u16 movement_frames_left;
     KfMapObjectHingeMotion hinge;
     KfMapObjectOffsetMotionState offset_motion;
+    KfMapObjectResourceOffsets resource_offsets;
+    KfMapObjectLayerFadeState layer_fade;
 } KfMapObjectExtra40;
 
 typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1];

@@ -63,6 +63,29 @@ typedef struct KfEffectTrailRow {
 typedef char kf_effect_trail_row_size[sizeof(KfEffectTrailRow) == 24 ? 1 : -1];
 typedef char kf_effect_trail_rotation_offset[(u32)&((KfEffectTrailRow *)0)->rotation == 16 ? 1 : -1];
 
+/* Kinds 6 and 107 share this view of kind 6's payload at record +0x40. */
+typedef struct KfEffectTrailState {
+    KfEffectTrailRow *rows;
+    u8 frame_index;
+    u8 phase_counter;
+    u8 actor_index;
+    u8 unknown_07;
+} KfEffectTrailState;
+
+typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];
+typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->unknown_3c[4] == 0x40 ? 1 : -1];
+typedef char kf_effect_trail_state_frame_offset[(u32)&((KfEffectTrailState *)0)->frame_index == 4 ? 1 : -1];
+typedef char kf_effect_trail_state_actor_offset[(u32)&((KfEffectTrailState *)0)->actor_index == 6 ? 1 : -1];
+
+/* Kind 107 follows one kind-6 record at an offset of three frames per row. */
+typedef struct KfEffectTrailChildLink {
+    u8 parent_index;
+    u8 lag_index;
+} KfEffectTrailChildLink;
+
+typedef char kf_effect_trail_child_link_size[sizeof(KfEffectTrailChildLink) == 2 ? 1 : -1];
+typedef char kf_effect_trail_child_lag_offset[(u32)&((KfEffectTrailChildLink *)0)->lag_index == 1 ? 1 : -1];
+
 /* The effect sweep indexes this 26-byte row family by the record kind. */
 typedef struct KfMagicRecord {
     u8 menu_available;

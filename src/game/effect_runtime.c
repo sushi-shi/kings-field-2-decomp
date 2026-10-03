@@ -1410,10 +1410,13 @@ void effect_update_dispatch(void)
         record->phase++;
         break;
     case 6: {
+        KfEffectTrailState *trail = (KfEffectTrailState *)&record->unknown_3c[4];
+
         switch (initial_phase) {
         case 0: {
             s32 index;
             KfEffectRecord *child;
+            KfEffectTrailChildLink *link;
             u8 parent_index;
 
             for (index = 0; index < 8; index++) {
@@ -1425,8 +1428,9 @@ void effect_update_dispatch(void)
                     child->render_id = 0x17;
                 }
                 parent_index = effect_state.current_index;
-                child->unknown_3c[5] = index;
-                child->unknown_3c[4] = parent_index;
+                link = (KfEffectTrailChildLink *)&child->unknown_3c[4];
+                link->lag_index = index;
+                link->parent_index = parent_index;
             }
             child->render_id = 0x18;
             record->phase = 1;
@@ -1437,7 +1441,7 @@ void effect_update_dispatch(void)
             kind6_phase3:
                 record->phase = 3;
                 record->updates_remaining = -1;
-                record->unknown_3c[9] = 24;
+                trail->phase_counter = 24;
                 break;
             }
             if (effect_aim_and_move(250, 25, 32, 200,
@@ -1452,13 +1456,13 @@ void effect_update_dispatch(void)
 
                     effect_apply_current_magic(0x10010, 5000, 0);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
-                    record->unknown_3c[10] = actor_index;
-                    actor = &actor_state.actors[record->unknown_3c[10]];
+                    trail->actor_index = actor_index;
+                    actor = &actor_state.actors[trail->actor_index];
                     if (actor->target_type == 2 || actor->target_type == 3) {
                         record->render_flags = 1;
                         record->render_id = 22;
                         record->phase = 2;
-                        record->unknown_3c[9] = 0;
+                        trail->phase_counter = 0;
                         record->rotation.vz = 0;
                         record->rotation.vx = 0;
                         record->rotation.pad = -vector_xz_to_angle(
@@ -1469,18 +1473,17 @@ void effect_update_dispatch(void)
                 }
                 goto kind6_phase3;
             } else {
-                KfEffectTrailRow *rows =
-                    *(KfEffectTrailRow **)&record->unknown_3c[4];
+                KfEffectTrailRow *rows = trail->rows;
                 KfEffectTrailRow *row;
-                u8 frame = record->unknown_3c[8] + 1;
-                s32 angle = record->unknown_3c[9] << 4;
+                u8 frame = trail->frame_index + 1;
+                s32 angle = trail->phase_counter << 4;
 
-                record->unknown_3c[8] = frame;
+                trail->frame_index = frame;
                 if (frame >= 24) {
-                    record->unknown_3c[8] = 0;
+                    trail->frame_index = 0;
                 }
-                row = &rows[record->unknown_3c[8]];
-                record->unknown_3c[9] += 8;
+                row = &rows[trail->frame_index];
+                trail->phase_counter += 8;
                 row->position.vx = record->position.vx;
                 row->position.vz = record->position.vz;
                 row->position.vy = record->position.vy + (rsin(angle) >> 3);
@@ -1491,41 +1494,40 @@ void effect_update_dispatch(void)
             break;
         case 2:
         phase_two: {
-            KfActor *actor = &actor_state.actors[record->unknown_3c[10]];
+            KfActor *actor = &actor_state.actors[trail->actor_index];
             VECTOR scratch;
             VECTOR *position;
-            u8 frame = record->unknown_3c[8] + 1;
+            u8 frame = trail->frame_index + 1;
             s32 actor_extent;
 
             actor->unknown_28 |= 0x800;
             actor_extent = actor->collision_radius;
-            record->unknown_3c[8] = frame;
+            trail->frame_index = frame;
             if (frame >= 24) {
-                record->unknown_3c[8] = 0;
+                trail->frame_index = 0;
             }
             position = actor_resolve_group_position(actor, &scratch);
             record->position = *position;
             record->position.vy -= actor->collision_height >> 1;
-            if (record->unknown_3c[9] < 17) {
+            if (trail->phase_counter < 17) {
                 s32 scale = fixed_lerp_q12(
-                    0, actor_extent, record->unknown_3c[9] << 9);
+                    0, actor_extent, trail->phase_counter << 9);
 
                 record->scale_z = scale;
                 record->scale_x = scale;
                 record->scale_y = fixed_lerp_q12(
-                    0, actor->collision_height, record->unknown_3c[9] * 350);
-            } else if (record->unknown_3c[9] >= 60) {
+                    0, actor->collision_height, trail->phase_counter * 350);
+            } else if (trail->phase_counter >= 60) {
                 record->phase = 4;
                 break;
             }
             {
-                KfEffectTrailRow *rows =
-                    *(KfEffectTrailRow **)&record->unknown_3c[4];
-                KfEffectTrailRow *row = &rows[record->unknown_3c[8]];
+                KfEffectTrailRow *rows = trail->rows;
+                KfEffectTrailRow *row = &rows[trail->frame_index];
                 s32 radius = ((s32)actor_extent * 25 << 8) >> 12;
                 s32 angle = (s16)record->rotation.pad;
 
-                record->unknown_3c[9]++;
+                trail->phase_counter++;
                 record->rotation.pad = angle + 100000 / actor_extent;
                 row->position.vx = record->position.vx +
                                    ((rsin(angle) * radius) >> 12);
@@ -1540,13 +1542,13 @@ void effect_update_dispatch(void)
             break;
         }
         case 3: {
-            u8 frame = ++record->unknown_3c[8];
+            u8 frame = ++trail->frame_index;
 
             if (frame >= 24) {
-                record->unknown_3c[8] = 0;
+                trail->frame_index = 0;
             }
-            if (record->unknown_3c[9] != 0) {
-                record->unknown_3c[9]--;
+            if (trail->phase_counter != 0) {
+                trail->phase_counter--;
                 break;
             }
             goto kind6_release_actor;
@@ -1564,7 +1566,7 @@ void effect_update_dispatch(void)
         }
         break;
     kind6_release_actor: {
-        KfActor *actor = &actor_state.actors[record->unknown_3c[10]];
+        KfActor *actor = &actor_state.actors[trail->actor_index];
 
         actor->unknown_28 &= ~0x800;
         record->type = KF_EFFECT_SLOT_FREE;
@@ -1572,31 +1574,30 @@ void effect_update_dispatch(void)
     }
     }
     case 107: {
-        KfEffectRecord *selected =
-            &effect_state.records[record->unknown_3c[4]];
-        const u8 *snapshots;
-        const u8 *snapshot;
+        const KfEffectTrailChildLink *link =
+            (const KfEffectTrailChildLink *)&record->unknown_3c[4];
+        KfEffectRecord *selected = &effect_state.records[link->parent_index];
+        const KfEffectTrailState *trail =
+            (const KfEffectTrailState *)&selected->unknown_3c[4];
+        const KfEffectTrailRow *snapshot;
         s32 frame_index;
 
         if (initial_phase == 0 && selected->phase >= 3) {
             record->phase = 1;
-            record->updates_remaining = record->unknown_3c[5] * 3;
+            record->updates_remaining = link->lag_index * 3;
         }
         if (selected->phase == 4) {
             record->type = KF_EFFECT_SLOT_FREE;
             break;
         }
-        frame_index = selected->unknown_3c[8] -
-                      record->unknown_3c[5] * 3;
+        frame_index = trail->frame_index -
+                      link->lag_index * 3;
         if (frame_index < 0) {
             frame_index += 24;
         }
-        /* The selected variant's +0x40 word points to 24-byte snapshots;
-         * its allocation and complete tail layout are not yet owned. */
-        snapshots = *(const u8 *const *)&selected->unknown_3c[4];
-        snapshot = snapshots + frame_index * 24;
-        record->position = *(const VECTOR *)snapshot;
-        record->rotation = *(const SVECTOR *)(snapshot + 16);
+        snapshot = &trail->rows[frame_index];
+        record->position = snapshot->position;
+        record->rotation = snapshot->rotation;
         break;
     }
     case 101:

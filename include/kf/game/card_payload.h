@@ -49,7 +49,7 @@ typedef struct KfCardPlayerSnapshot {
 } KfCardPlayerSnapshot;
 
 typedef struct KfCardSavePayload {
-    u8 callback_values[5];
+    u8 active_resource_ids[5];
     u8 event_control[0x100];
     u8 event_arena[0x3800];
     u8 unused_3905;

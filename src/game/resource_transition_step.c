@@ -34,7 +34,7 @@ void resource_advance_transition(void)
 
     switch (phase) {
     case 0:
-        if (state_8017d118.values_10[0] == 255) {
+        if (state_8017d118.requested_resource_ids[0] == 255) {
             goto phase_three;
         }
         state_8017d118.transition_phase = 0xf0;
@@ -45,7 +45,7 @@ void resource_advance_transition(void)
             index--;
             object++;
         } while (index != -1);
-        cd_archive_queue_read(5, state_8017d118.values_10[0] * 3,
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3,
             (u_long *)cd_stream_work_buffer,
             (KfCdRequestCallback)resource_transition_set_phase_1);
         return;
@@ -55,25 +55,25 @@ void resource_advance_transition(void)
         state_8017d118.transition_phase = 0xf0;
         /* Retail's default table contains 32 pointers to the no-op callback. */
         state_8017d118.active_table = callback_default_table;
-        cd_archive_queue_read(5, state_8017d118.values_10[0] * 3 + 2,
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3 + 2,
             (u_long *)0x8019e138,
             (KfCdRequestCallback)resource_transition_set_phase_2);
         resource_copy_words((u32 *)&bss_801c7540, (u32 *)(buffer + 4), 0x3e80);
         buffer += *(u32 *)buffer + 4;
         resource_copy_words((u32 *)((u8 *)&bss_801c7540 + 0x10000),
             (u32 *)(buffer + 4), 0x600);
-        if (state_8017d118.values_17[0] != 127) {
-            state_8017d118.unknown_15 = 1;
-            translate_active_world_positions(state_8017d118.values_17[0] << 11,
-                -state_8017d118.values_17[2] * 128,
-                state_8017d118.values_17[1] << 11);
+        if (state_8017d118.transition_offset_xzy[0] != 127) {
+            state_8017d118.world_shift_applied = 1;
+            translate_active_world_positions(state_8017d118.transition_offset_xzy[0] << 11,
+                -state_8017d118.transition_offset_xzy[2] * 128,
+                state_8017d118.transition_offset_xzy[1] << 11);
         }
-        state_8017d118.unknown_09[0] = state_8017d118.values_10[0];
+        state_8017d118.unknown_09[0] = state_8017d118.requested_resource_ids[0];
         return;
 
     case 2:
         state_8017d118.transition_phase = 0xf0;
-        cd_archive_queue_read(5, state_8017d118.values_10[0] * 3 + 1,
+        cd_archive_queue_read(5, state_8017d118.requested_resource_ids[0] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
             (KfCdRequestCallback)resource_transition_set_phase_3);
         state_8017d118.active_table = (KfCallback *)0x8019e138;
@@ -81,13 +81,13 @@ void resource_advance_transition(void)
 
     case 3:
 phase_three:
-        if (state_8017d118.values_10[1] != 255) {
+        if (state_8017d118.requested_resource_ids[1] != 255) {
             state_8017d118.transition_phase = 0xf0;
-            cd_archive_queue_read(1, state_8017d118.values_10[1],
+            cd_archive_queue_read(1, state_8017d118.requested_resource_ids[1],
                 (u_long *)0x8012da68,
                 (KfCdRequestCallback)resource_transition_set_phase_4);
         }
-        if (state_8017d118.values_10[0] != 255) {
+        if (state_8017d118.requested_resource_ids[0] != 255) {
             stream = cd_stream_work_buffer;
             actor = actor_state.actors;
             index = KF_ACTOR_CAPACITY - 1;
@@ -102,8 +102,8 @@ phase_three:
             object = map_object_state.objects;
             index = KF_MAP_OBJECT_CAPACITY - 1;
             do {
-                if (object->tail.fields.unknown_34 != 0) {
-                    pool_record_release((KfPoolRecord *)object->tail.fields.unknown_34);
+                if (object->tail.animated.animation_cache != 0) {
+                    pool_record_release(object->tail.animated.animation_cache);
                 }
                 if (object->action == 0x20) {
                     memory_free((u8 *)object->extra_40.record);
@@ -113,7 +113,7 @@ phase_three:
                 index--;
                 object++;
             } while (index != -1);
-            if (state_8017d118.values_17[0] != 127) {
+            if (state_8017d118.transition_offset_xzy[0] != 127) {
                 KfMapOccupancyCell *cell = &bss_801c7540.map_cells[0][0];
                 index = 0x1900;
                 do {
@@ -134,52 +134,52 @@ phase_three:
             map_object_initialize_from_placements((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;
             map_placed_expand_sources((KfMapPlacedSource *)(stream + 4));
-            event_world_state_restore_slot(state_8017d118.values_10[0]);
+            event_world_state_restore_slot(state_8017d118.requested_resource_ids[0]);
             state_8017d118.active_table[5]();
             player_state.unknown_09[1] = 1;
         }
-        if (state_8017d118.values_10[1] != 255) return;
+        if (state_8017d118.requested_resource_ids[1] != 255) return;
 
     case 4:
-        if (state_8017d118.values_10[2] != 255) {
-            cd_map_stream_read(2, state_8017d118.values_10[2]);
+        if (state_8017d118.requested_resource_ids[2] != 255) {
+            cd_map_stream_read(2, state_8017d118.requested_resource_ids[2]);
         }
         state_8017d118.flag_16 = 0;
-        if (state_8017d118.values_10[3] != 255 ||
-            state_8017d118.values_10[4] != 255) {
+        if (state_8017d118.requested_resource_ids[3] != 255 ||
+            state_8017d118.requested_resource_ids[4] != 255) {
             goto begin_phase_five;
         }
         goto complete;
 
 complete:
-        if (state_8017d118.values_10[0] != 255)
-            state_8017d118.values_04[0] = state_8017d118.values_10[0];
-        if (state_8017d118.values_10[1] != 255)
-            state_8017d118.values_04[1] = state_8017d118.values_10[1];
-        if (state_8017d118.values_10[2] != 255)
-            state_8017d118.values_04[2] = state_8017d118.values_10[2];
-        if (state_8017d118.values_10[3] != 255)
-            state_8017d118.values_04[3] = state_8017d118.values_10[3];
-        if (state_8017d118.values_10[4] != 255)
-            state_8017d118.values_04[4] = state_8017d118.values_10[4];
+        if (state_8017d118.requested_resource_ids[0] != 255)
+            state_8017d118.active_resource_ids[0] = state_8017d118.requested_resource_ids[0];
+        if (state_8017d118.requested_resource_ids[1] != 255)
+            state_8017d118.active_resource_ids[1] = state_8017d118.requested_resource_ids[1];
+        if (state_8017d118.requested_resource_ids[2] != 255)
+            state_8017d118.active_resource_ids[2] = state_8017d118.requested_resource_ids[2];
+        if (state_8017d118.requested_resource_ids[3] != 255)
+            state_8017d118.active_resource_ids[3] = state_8017d118.requested_resource_ids[3];
+        if (state_8017d118.requested_resource_ids[4] != 255)
+            state_8017d118.active_resource_ids[4] = state_8017d118.requested_resource_ids[4];
         state_8017d118.transition_active = 0;
         return;
 
 begin_phase_five:
         state_8017d118.transition_phase = 5;
-        state_8017d118.unknown_1a = 60;
+        state_8017d118.sequence_fade_volume = 60;
         audio_state.sequence_ready = 0;
 
     case 5:
         if (audio_state.sequence_active != 0) {
-            state_8017d118.unknown_1a -= 2;
-            if ((s16)state_8017d118.unknown_1a <= 0) {
-                state_8017d118.unknown_1a = 0;
+            state_8017d118.sequence_fade_volume -= 2;
+            if (state_8017d118.sequence_fade_volume <= 0) {
+                state_8017d118.sequence_fade_volume = 0;
             }
             SsSeqSetVol(audio_state.sequence_id,
-                (s16)state_8017d118.unknown_1a,
-                (s16)state_8017d118.unknown_1a);
-            if (state_8017d118.unknown_1a != 0) return;
+                state_8017d118.sequence_fade_volume,
+                state_8017d118.sequence_fade_volume);
+            if (state_8017d118.sequence_fade_volume != 0) return;
             SsSeqStop(audio_state.sequence_id);
             SsSeqClose(audio_state.sequence_id);
             audio_state.sequence_active = 0;
@@ -187,12 +187,12 @@ begin_phase_five:
         if (audio_state.vab_slots[1].vab_id != -1) {
             audio_state.vab_slots[1].stream_slot = 0;
         }
-        if (state_8017d118.values_10[3] != 255) {
-            audio_queue_vab_stream(4, state_8017d118.values_10[3] + 1, 1);
+        if (state_8017d118.requested_resource_ids[3] != 255) {
+            audio_queue_vab_stream(4, state_8017d118.requested_resource_ids[3] + 1, 1);
         }
-        if (state_8017d118.values_10[4] != 255) {
+        if (state_8017d118.requested_resource_ids[4] != 255) {
             cd_archive_queue_read(4,
-                state_8017d118.values_10[4] % 100 + 320,
+                state_8017d118.requested_resource_ids[4] % 100 + 320,
                 audio_state.sequence_buffer,
                 (KfCdRequestCallback)resource_transition_set_phase_6);
             state_8017d118.transition_phase = 0xf0;
@@ -201,7 +201,7 @@ begin_phase_five:
         goto complete;
 
     case 6:
-        if (state_8017d118.values_10[4] < 100) {
+        if (state_8017d118.requested_resource_ids[4] < 100) {
             audio_state.sequence_ready = 1;
             audio_start_sequence();
         }

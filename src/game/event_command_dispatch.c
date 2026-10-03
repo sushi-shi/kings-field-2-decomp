@@ -129,7 +129,7 @@ object_control_action:
                 *(u16 *)&event_state.control.bytes[object_control_offset] =
                     object - map_object_state.objects;
                 event_state.control.bytes[object_control_offset + 2] =
-                    state_8017d118.values_04[0];
+                    state_8017d118.active_resource_ids[0];
                 event_state.state_word = 1;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
@@ -155,7 +155,7 @@ transition_action: {
         u16 object_index;
         s16 yaw;
 
-        if (state_8017d118.values_04[0] == 7 ||
+        if (state_8017d118.active_resource_ids[0] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
@@ -168,7 +168,7 @@ transition_action: {
             cd_request_yield();
             resource_advance_transition();
         } while (state_8017d118.transition_active != 0);
-        if (previous_value != state_8017d118.values_04[0]) {
+        if (previous_value != state_8017d118.active_resource_ids[0]) {
             resource_request_transition(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
         } else {
@@ -883,7 +883,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
         case 0x0e:
-            event_world_state_save_slot(state_8017d118.values_04[0]);
+            event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;

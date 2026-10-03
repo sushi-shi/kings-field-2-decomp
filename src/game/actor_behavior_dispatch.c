@@ -903,7 +903,7 @@ case3_motion:
             actor->tail_72.script.word_index = 0;
             actor->tail_72.script.effect_cycle_index = 0;
             if (target->start_vertical_motion_on_entry == 1) {
-                actor->vertical_motion_state = 16;
+                actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
             }
         }
         actor_advance_animation_clamped(actor, target->animation_step);
@@ -1073,7 +1073,7 @@ case3_motion:
             actor->motion.vector.vz = 0;
             actor->motion.vector.vy = 0;
             actor->motion.vector.vx = 0;
-            actor->vertical_motion_state = 16;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         }
         break;
     }
@@ -1115,7 +1115,7 @@ case3_motion:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_select_target_type_in_own_group(actor, 3);
-            actor->vertical_motion_state = 16;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         }
         break;
     }

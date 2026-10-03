@@ -605,7 +605,7 @@ update_motion:
             }
         }
     }
-    actor->vertical_motion_state = 0x10;
+    actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
 }
 
 enum {
@@ -1172,10 +1172,10 @@ void actor_update_vertical_motion(void)
     }
 
     vertical_state = actor->vertical_motion_state;
-    if (vertical_state == 0x20) goto state_20;
+    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) goto state_20;
     if (vertical_state < 33) {
         if (vertical_state == 0) goto state_0;
-        if (vertical_state == 0x10) goto state_10;
+        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) goto state_10;
         return;
     }
     if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) goto state_30;
@@ -1185,10 +1185,10 @@ state_0: {
         s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
-            actor->vertical_motion_state = 0x20;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_FALLING;
             actor->motion.vector.vy = -100;
         } else if (next_y > 0) {
-            actor->vertical_motion_state = 0x10;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
             actor->motion.vector.vy = 0;
         }
         return;
@@ -1263,7 +1263,7 @@ state_30: {
             player_apply_damage(0, group->contact_damage_component1, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
-        actor->vertical_motion_state = 0x10;
+        actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         actor->motion.ballistic.phase = 0;
         return;
     }

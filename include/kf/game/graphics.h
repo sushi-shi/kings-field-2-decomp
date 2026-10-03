@@ -41,7 +41,6 @@ typedef struct KfOrderingTable {
 
 typedef struct KfDisplayState {
     u8 buffer_index;
-    u8 unknown_01[3];
     u8 *asset_load_buffer;
     KfPrimitiveBuffer primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
     KfPrimitiveBuffer *primitive_buffer;
@@ -206,6 +205,8 @@ typedef struct KfGraphicsRuntimeGame {
 } KfGraphicsRuntimeGame;
 
 typedef char kf_display_state_size[sizeof(KfDisplayState) == 0x10028 ? 1 : -1];
+typedef char kf_display_asset_load_buffer_offset[
+    (u32)&((KfDisplayState *)0)->asset_load_buffer == 4 ? 1 : -1];
 typedef char kf_render_state_size[sizeof(KfRenderState) == 0x88 ? 1 : -1];
 typedef char kf_render_grid_size[sizeof(KfRenderGridState) == 0x24c ? 1 : -1];
 typedef char kf_collision_row_size[sizeof(KfCollisionRow) == 104 ? 1 : -1];

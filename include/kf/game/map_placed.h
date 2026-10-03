@@ -33,7 +33,6 @@ typedef struct KfMapPlacedEntry {
     u8 frame_count;
     u8 frame_period;
     u8 frame_index;
-    u8 unknown_06[2];
     VECTOR position;
 } KfMapPlacedEntry;
 

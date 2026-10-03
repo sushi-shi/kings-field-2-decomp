@@ -2900,27 +2900,26 @@ void effect_update_dispatch(void)
     }
     }
     case 107: {
-        const KfEffectTrailChildLink *link =
-            &record->cache_tail.payload.trail_child;
-        KfEffectRecord *selected = &effect_state.records[link->parent_index];
-        const KfEffectTrailState *trail = &selected->cache_tail.payload.trail;
+        KfEffectRecord *selected = &effect_state.records[
+            record->cache_tail.payload.trail_child.parent_index];
         const KfEffectTrailRow *snapshot;
         s32 frame_index;
 
         if (initial_phase == 0 && selected->phase >= 3) {
             record->phase = 1;
-            record->updates_remaining = link->lag_index * 3;
+            record->updates_remaining =
+                record->cache_tail.payload.trail_child.lag_index * 3;
         }
         if (selected->phase == 4) {
             record->type = KF_EFFECT_SLOT_FREE;
             break;
         }
-        frame_index = trail->frame_index -
-                      link->lag_index * 3;
+        frame_index = selected->cache_tail.payload.trail.frame_index -
+                      record->cache_tail.payload.trail_child.lag_index * 3;
         if (frame_index < 0) {
             frame_index += 24;
         }
-        snapshot = &trail->rows[frame_index];
+        snapshot = &selected->cache_tail.payload.trail.rows[frame_index];
         record->position = snapshot->position;
         record->rotation = snapshot->rotation;
         break;

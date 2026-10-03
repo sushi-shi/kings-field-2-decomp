@@ -1,10 +1,7 @@
 #include <kf/lib/address.h>
+#include <kf/lib/types.h>
 #include <kf/lib/math.h>
-
-/*
- * Fixed-point angle and rotation-matrix builders. The direction and angle
- * helpers continue in vector_math.c; the module boundary remains WIP.
- */
+#include <psyq/libc.h>
 
 /*
  * Angles are 12-bit (0..0xfff). Within a half turn the step is applied
@@ -280,4 +277,383 @@ void matrix_set_rotation_xzy(const struct KfEulerAngles *angles, MATRIX *matrix)
     MulMatrix(matrix, &temporary);
     matrix_set_rotation_x(angles->x, &temporary);
     MulMatrix2(&temporary, matrix);
+}
+
+ADDRESS(0x80015034, 0xd0)
+void pitch_yaw_to_forward_vector(const struct KfEulerAngles *angles, SVECTOR *direction)
+{
+    MATRIX pitch_matrix;
+    MATRIX yaw_matrix;
+    SVECTOR source;
+    VECTOR result;
+
+    setVector(&source, 0, 0, KF_FIXED12_ONE);
+    matrix_set_rotation_x(-angles->x, &pitch_matrix);
+    ApplyMatrix(&pitch_matrix, &source, &result);
+    copyVector(&source, &result);
+    matrix_set_rotation_y(angles->y, &yaw_matrix);
+    ApplyMatrix(&yaw_matrix, &source, &result);
+    copyVector(direction, &result);
+}
+
+ADDRESS(0x80015104, 0x44)
+void vector_rotate_yxz(const struct KfEulerAngles *angles, SVECTOR *vector, VECTOR *result)
+{
+    MATRIX rotation;
+
+    matrix_set_rotation_yxz(angles, &rotation);
+    ApplyMatrix(&rotation, vector, result);
+}
+
+ADDRESS(0x80015148, 0x40)
+void vector2i_scale_shift11(s16 scale, struct KfVecXZi *vector)
+{
+    s32 x = scale * vector->x;
+    s32 z = scale * vector->z;
+
+    vector->x = x >> KF_FIXED11_BITS;
+    vector->z = z >> KF_FIXED11_BITS;
+}
+
+ADDRESS(0x80015188, 0x5c)
+void vector3s_scale_shift12(s16 scale, SVECTOR *vector)
+{
+    s32 x = vector->vx * scale;
+    s32 y = vector->vy * scale;
+    s32 z = vector->vz * scale;
+
+    setVector(vector, x >> KF_FIXED12_BITS, y >> KF_FIXED12_BITS, z >> KF_FIXED12_BITS);
+}
+
+ADDRESS(0x800151e4, 0x40)
+void vector2i_scale_shift12(s16 scale, s32 *vector)
+{
+    s32 x = scale * vector[0];
+    s32 y = scale * vector[1];
+
+    vector[0] = x >> KF_FIXED12_BITS;
+    vector[1] = y >> KF_FIXED12_BITS;
+}
+
+ADDRESS(0x80015224, 0x5c)
+void vector3s_scale_shift12_alt(s16 scale, s16 *vector)
+{
+    s32 x = vector[0] * scale;
+    s32 y = vector[1] * scale;
+    s32 z = vector[2] * scale;
+
+    vector[0] = x >> KF_FIXED12_BITS;
+    vector[1] = y >> KF_FIXED12_BITS;
+    vector[2] = z >> KF_FIXED12_BITS;
+}
+
+ADDRESS(0x80015280, 0x2c)
+void vector3i_add_xz(VECTOR *destination, const struct KfVecXZi *delta)
+{
+    destination->vx += delta->x;
+    destination->vz += delta->z;
+}
+
+ADDRESS(0x800152ac, 0x3c)
+KfBool angle_within_tolerance(int lhs, int rhs, s16 range)
+{
+    int delta = (lhs - rhs) & KF_ANGLE_WRAP_MASK;
+
+    return delta <= range || KF_ANGLE_FULL_TURN - range <= delta;
+}
+
+ADDRESS(0x800152e8, 0x10)
+KfBool angle_mod_delta_le_half_turn(int lhs, int rhs)
+{
+    return ((lhs - rhs) & KF_ANGLE_WRAP_MASK) < (KF_ANGLE_HALF_TURN + 1);
+}
+
+/* Signed turn from FROM to TO in -0x7ff..0x800. */
+ADDRESS(0x800152f8, 0x20)
+s32 angle_shortest_delta(s32 from, s32 to)
+{
+    s32 difference = (to - from) & KF_ANGLE_WRAP_MASK;
+
+    if (difference > KF_ANGLE_HALF_TURN) {
+        return difference - KF_ANGLE_FULL_TURN;
+    }
+    return difference;
+}
+
+/* Psy-Q LIBGTE: catan(long) returns a 12-bit angle for a 12-bit fixed ratio.
+ * The larger component is the divisor, keeping the ratio within one. */
+ADDRESS(0x80015318, 0x150)
+s32 vector_xz_to_angle(s32 x, s32 z)
+{
+    if (abs(x) <= abs(z)) {
+        if (z > 0) {
+            return -catan((x << KF_FIXED12_BITS) / z) & KF_ANGLE_WRAP_MASK;
+        }
+        if (z < 0) {
+            return KF_ANGLE_HALF_TURN - catan((x << KF_FIXED12_BITS) / z);
+        }
+        return 0;
+    }
+    if (x >= 0) {
+        return catan((z << KF_FIXED12_BITS) / x) + KF_ANGLE_THREE_QUARTER_TURN;
+    }
+    return catan((z << KF_FIXED12_BITS) / x) + KF_ANGLE_QUARTER_TURN;
+}
+
+ADDRESS(0x80015468, 0x40)
+s32 fixed_vector2_length(s32 x, s32 y)
+{
+    x >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    y >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    return SquareRoot0(x * x + y * y) << KF_LENGTH_SQUARE_DOWNSHIFT;
+}
+
+ADDRESS(0x800154a8, 0x54)
+s32 fixed_vector3_length(s32 x, s32 y, s32 z)
+{
+    x >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    y >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    z >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    return SquareRoot0(x * x + y * y + z * z) << KF_LENGTH_SQUARE_DOWNSHIFT;
+}
+
+ADDRESS(0x800154fc, 0x78)
+void vector_displacement_to_pitch_yaw(s32 x, s32 y, s32 z, struct KfEulerAngles *angles)
+{
+    angles->y = vector_xz_to_angle(x, z);
+    angles->x = -vector_xz_to_angle(y, fixed_vector2_length(x, z)) & KF_ANGLE_WRAP_MASK;
+    angles->z = 0;
+}
+
+ADDRESS(0x80015574, 0x30)
+KfBool directed_intervals_overlap(s32 first, s32 first_width, s32 second, s32 second_width)
+{
+    if (second < first) {
+        if (second < first - first_width) {
+            return 0;
+        }
+    } else {
+        if (first < second - second_width) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+ADDRESS(0x800155a4, 0xf4)
+s32 vector_distance_to_point(
+    const VECTOR *position, s32 point_x, s32 point_y, s32 point_z,
+    s32 max_distance, s32 height, s32 point_height)
+{
+    s32 dx;
+    s32 dz;
+    s32 distance;
+
+    dx = position->vx - point_x;
+    if (dx < -max_distance || max_distance < dx) {
+        return KF_DISTANCE_NONE;
+    }
+    dz = position->vz - point_z;
+    if (dz < -max_distance || max_distance < dz) {
+        return KF_DISTANCE_NONE;
+    }
+    if (point_y != KF_DISTANCE_IGNORE_HEIGHT) {
+        if (position->vy < point_y) {
+            if (position->vy >= point_y - point_height) {
+                goto horizontal_distance;
+            }
+            goto reject;
+        }
+        if (point_y < position->vy - height) {
+            goto reject;
+        }
+    }
+horizontal_distance:
+    dx >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    dz >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    distance = SquareRoot0(dx * dx + dz * dz) << KF_LENGTH_SQUARE_DOWNSHIFT;
+    if (max_distance < distance) {
+        goto reject;
+    }
+    return distance;
+reject:
+    return KF_DISTANCE_NONE;
+}
+
+enum {
+    KF_DISTANCE_OUTSIDE_REACH = -9999999
+};
+
+ADDRESS(0x80015698, 0x114)
+s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VECTOR *second,
+                  s32 offset, s32 height)
+{
+    s32 limit = reach + offset;
+    s32 x = second->vx - first->vx;
+    s32 z;
+    s32 y;
+    s32 distance;
+
+    if (x < -limit || limit < x) {
+        return KF_DISTANCE_OUTSIDE_REACH;
+    }
+    z = second->vz - first->vz;
+    if (z < -limit || limit < z) {
+        return KF_DISTANCE_OUTSIDE_REACH;
+    }
+    y = second->vy - first->vy - (height >> 1);
+    if (y < -limit || limit < y) {
+        return KF_DISTANCE_OUTSIDE_REACH;
+    }
+    x >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    z >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    y >>= KF_LENGTH_SQUARE_DOWNSHIFT;
+    distance = SquareRoot0(x * x + z * z + y * y)
+             << KF_LENGTH_SQUARE_DOWNSHIFT;
+    if (limit < distance) {
+        goto out_of_range;
+    }
+    if (distance > offset) {
+        return distance - offset;
+    }
+    return 0;
+
+out_of_range:
+    return KF_DISTANCE_OUTSIDE_REACH;
+}
+
+ADDRESS(0x800157ac, 0x4c)
+s32 random_triangular_scaled(s32 amplitude)
+{
+    s32 first = rand();
+    s32 second = rand();
+
+    return ((first + second) * amplitude) >> 15;
+}
+
+ADDRESS(0x800157f8, 0x54)
+s32 random_centered_triangular_scaled(s32 amplitude)
+{
+    s32 first = rand();
+    s32 second = rand();
+
+    return ((first + second - 0x8000) * amplitude) >> 15;
+}
+
+ADDRESS(0x8001584c, 0x20)
+s32 fixed_lerp_q12(s32 start, s32 end, s32 fraction)
+{
+    return (((end - start) * fraction) >> KF_FIXED12_BITS) + start;
+}
+
+ADDRESS(0x8001586c, 0x48)
+s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction)
+{
+    s32 delta = ((s16)end - (s16)start) & KF_ANGLE_WRAP_MASK;
+
+    if (delta > KF_ANGLE_HALF_TURN) {
+        delta -= KF_ANGLE_FULL_TURN;
+    }
+    return (start + ((delta * fraction) >> KF_FIXED12_BITS)) & KF_ANGLE_WRAP_MASK;
+}
+
+ADDRESS(0x800158b4, 0x64)
+void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction)
+{
+    const u16 *source = start;
+    const u16 *target = end;
+    u16 *destination = output;
+    s32 index;
+
+    for (index = 8; index != -1; index--) {
+        u16 value = *source++;
+        u16 next = *target++;
+        s32 delta = (s16)next - (s16)value;
+
+        *destination++ = value + ((delta * fraction) >> KF_FIXED12_BITS);
+    }
+}
+
+ADDRESS(0x80015918, 0x2b0)
+s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
+    s32 vertical_distance, s32 speed, s32 amplitude,
+    s32 *travel_time, s32 *angle)
+{
+    s32 amplitude_squared = amplitude * amplitude;
+    s32 speed_squared = speed * speed;
+    s32 acceleration = amplitude_squared >> 6;
+    s32 discriminant = acceleration * acceleration
+        - (((speed_squared * horizontal_distance) >> 10)
+           * (horizontal_distance >> 2))
+        - (((speed * acceleration) >> 3) * (vertical_distance >> 2));
+    s32 square_root;
+    s32 midpoint;
+    s32 longer_time;
+    s32 shorter_time;
+    s32 chosen_time;
+    s32 result_time;
+    s32 horizontal_component;
+    s32 vertical_component;
+
+    if (discriminant < 0) {
+        return -1;
+    }
+    square_root = SquareRoot0(discriminant << 4) << 2;
+    midpoint = (amplitude_squared >> 2) - ((vertical_distance * speed) >> 2);
+    longer_time = ((midpoint + square_root) << 1) / speed_squared;
+    shorter_time = ((midpoint - square_root) << 1) / speed_squared;
+    if (longer_time <= 0 && shorter_time <= 0) {
+        return -1;
+    }
+    if (mode == 0) {
+        chosen_time = shorter_time;
+        if (longer_time > 0 && longer_time <= shorter_time) {
+            chosen_time = longer_time;
+        }
+    } else {
+        chosen_time = shorter_time;
+        if (shorter_time <= longer_time) {
+            chosen_time = longer_time;
+        }
+    }
+    result_time = SquareRoot0(chosen_time << 14);
+    horizontal_component = ((horizontal_distance << 14) / amplitude) / result_time;
+    vertical_component = (((vertical_distance + ((speed * chosen_time) << 1)) << 12)
+        / (amplitude >> 1)) / (result_time >> 1);
+    *travel_time = result_time;
+    *angle = vector_xz_to_angle(vertical_component, horizontal_component);
+    return 0;
+}
+
+ADDRESS(0x80015bc8, 0x118)
+s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
+    s32 source_z, s32 target_x, s32 target_y, s32 target_z,
+    s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
+{
+    union {
+        s32 word;
+        u16 half;
+    } result_value;
+    s32 angle;
+    s32 status;
+    s32 distance = fixed_vector2_length(target_x - source_x,
+                                       target_z - source_z);
+
+    status = trajectory_solve_time_angle(mode, distance, source_y - target_y,
+                           speed, amplitude, &result_value.word, &angle);
+    if (status == 0) {
+        *motion_x = (amplitude * rcos(angle)) >> KF_FIXED12_BITS;
+        *motion_z = (amplitude * -rsin(angle)) >> KF_FIXED12_BITS;
+        *result = result_value.half;
+    }
+    return status;
+}
+
+ADDRESS(0x80015ce0, 0x70)
+void vector_add_scaled_delta(const VECTOR *origin, const SVECTOR *delta, s32 scale,
+    VECTOR *output)
+{
+    setVector(output, delta->vx * scale + origin->vx,
+              delta->vy * scale + origin->vy,
+              delta->vz * scale + origin->vz);
 }

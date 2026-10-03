@@ -114,51 +114,9 @@ source = "src/game/matrix_rotation.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.vector_math"
-image = "GAME.EXE"
-source = "src/game/vector_math.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.vector_distance"
-image = "GAME.EXE"
-source = "src/game/vector_distance.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_random_scalar"
-image = "GAME.EXE"
-source = "src/game/actor_random_scalar.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_fixed_interpolation"
-image = "GAME.EXE"
-source = "src/game/actor_fixed_interpolation.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_trajectory_math"
-image = "GAME.EXE"
-source = "src/game/actor_trajectory_math.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.callback_default_noop"
-image = "GAME.EXE"
-source = "src/game/callback_default_noop.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.resource_startup"
 image = "GAME.EXE"
 source = "src/game/resource_startup.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.world_translate"
-image = "GAME.EXE"
-source = "src/game/world_translate.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -240,51 +198,9 @@ source = "src/game/menu_card_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_item_buy_sell_controller"
-image = "GAME.EXE"
-source = "src/game/menu_item_buy_sell_controller.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_status_render"
-image = "GAME.EXE"
-source = "src/game/menu_status_render.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_preview_choice"
-image = "GAME.EXE"
-source = "src/game/menu_preview_choice.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_render_primitives"
 image = "GAME.EXE"
 source = "src/game/menu_render_primitives.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_frame_begin"
-image = "GAME.EXE"
-source = "src/game/menu_frame_begin.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.primitive_buffer"
-image = "GAME.EXE"
-source = "src/game/primitive_buffer.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_format_number"
-image = "GAME.EXE"
-source = "src/game/menu_format_number.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_item_model"
-image = "GAME.EXE"
-source = "src/game/menu_item_model.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

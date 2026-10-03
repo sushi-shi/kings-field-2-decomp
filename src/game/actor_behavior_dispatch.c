@@ -58,7 +58,7 @@ void actor_update_behavior(void)
     u16 trigger;
     s32 interval;
 
-    if ((actor->flags & 4) != 0) {
+    if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != 0) {
         actor_state.actor_collision_query_flags = 3;
     } else {
         actor_state.actor_collision_query_flags = 0x93;

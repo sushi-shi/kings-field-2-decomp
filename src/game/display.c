@@ -2607,7 +2607,7 @@ map_sound_action: {
                     volume = object->tail.ambient_sound.maximum_volume * volume / radius;
                 }
                 if (object->tail.ambient_sound.vertical_attenuation_flags & 1) {
-                    distance = camera_position->vy - object->position.vy;
+                    distance = player_state.camera_position.vy - object->position.vy;
                     if (distance < 0) distance = -distance;
                     volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
                 }

@@ -168,15 +168,9 @@ source = "src/game/player_collision_bounds.c"
 profile = "probe-gcc257-o2-no-cse-skip-blocks"
 
 [[unit]]
-unit = "game.player_core_run"
+unit = "game.player_core_damage"
 image = "GAME.EXE"
-source = "src/game/player_core_run.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.player_damage"
-image = "GAME.EXE"
-source = "src/game/player_damage.c"
+source = "src/game/player_core_damage.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

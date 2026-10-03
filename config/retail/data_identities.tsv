@@ -445,10 +445,13 @@ OPEN.EXE	0x800a6438	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display
 OPEN.EXE	0x800a8540	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 OPEN.EXE	0x800ac540	0x1	display_fade_level	global	bss	u8	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	darkening applied by primitive_buffer_commit_poly_ft4; cleared per frame
 OPEN.EXE	0x800ac560	0x8	_spu_keystat	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
+OPEN.EXE	0x800ac578	0x8	CD_cbread	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbread requests eight bytes;two BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 OPEN.EXE	0x800ac5b0	0x8	_spu_rev_flag	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
+OPEN.EXE	0x800ac5d0	0x8	CD_cbsync	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbsync requests eight bytes;two BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 OPEN.EXE	0x800ac5d8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
 OPEN.EXE	0x800ac5e8	0x18	_spu_rev_attr	global	bss	u8[0x18]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x18;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 OPEN.EXE	0x800ac618	0x158	audio_sequence_table	global	bss	char[344]	audio	supported	asm;xrefs;audio_initialize	SsSetTableSize work area: 2 sequences x 1 track
+OPEN.EXE	0x800ac7f0	0x8	CD_cbready	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbready requests eight bytes;six BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 OPEN.EXE	0x800ac850	0x8	_spu_keyon_bit	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 OPEN.EXE	0x800ac898	0x8	_spu_EVdma	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 OPEN.EXE	0x800ac8e8	0x8	_spu_rev_offsetaddr	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
@@ -618,10 +621,13 @@ END.EXE	0x800a31f8	0x20e8	display_buffers	global	bss	KfDisplayBuffer[2]	display	
 END.EXE	0x800a52e8	0x8	_spu_fd	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 8;four _SpuInit/SpuStart/SpuQuit raw HI16/LO16 pairs	SDK SPU descriptor workspace; first word read and written, tail use unresolved
 END.EXE	0x800a52f8	0x4000	display_primitives	global	bss	u8[2][0x2000]	display	supported	asm;xrefs;display_initialize/display_begin_frame	per-buffer primitive storage
 END.EXE	0x800a9340	0x8	_spu_keystat	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
+END.EXE	0x800a9358	0x8	CD_cbread	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbread requests eight bytes;two BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 END.EXE	0x800a9390	0x8	_spu_rev_flag	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
+END.EXE	0x800a93b0	0x8	CD_cbsync	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbsync requests eight bytes;two BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 END.EXE	0x800a93b8	0x4	current_poly_ft4	global	bss	POLY_FT4 *	display	supported	asm;xrefs;display_initialize/display_begin_frame	next primitive slot in the current buffer
 END.EXE	0x800a93c8	0x18	_spu_rev_attr	global	bss	u8[0x18]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x18;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 END.EXE	0x800a93f8	0x158	audio_sequence_table	global	bss	char[344]	audio	supported	asm;xrefs;audio_initialize	SsSetTableSize work area: 2 sequences x 1 track
+END.EXE	0x800a95d0	0x8	CD_cbready	global	bss	u8[8]	LIBCD BIOS.OBJ	supported	native XDEF COMMON CD_cbready requests eight bytes;six BIOS text HI16/LO16 pairs decode retail address	SDK CD callback state; original member types unresolved
 END.EXE	0x800a9630	0x8	_spu_keyon_bit	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 END.EXE	0x800a9678	0x8	_spu_EVdma	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 END.EXE	0x800a96c8	0x8	_spu_rev_offsetaddr	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved

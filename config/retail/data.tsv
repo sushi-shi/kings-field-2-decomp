@@ -823,15 +823,15 @@ GAME.EXE	0x8006dac0	0x5d2c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006dac4	0x5d2c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dac8	0x5d2c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
 GAME.EXE	0x8006dacc	0x5d2cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dad0	0x5d2d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dad0	0x5d2d0	0x4	defined	reviewed	Rgb24	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x8;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dad4	0x5d2d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dad8	0x5d2d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dad8	0x5d2d8	0x4	defined	reviewed	Emu_Addr	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x10;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dadc	0x5d2dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dae0	0x5d2e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dae0	0x5d2e0	0x4	defined	reviewed	Emu_Idx	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x18;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dae4	0x5d2e4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daf0	0x5d2f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daf0	0x5d2f0	0x4	defined	reviewed	RingSize	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x28;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006daf4	0x5d2f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daf8	0x5d2f8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006daf8	0x5d2f8	0x4	defined	reviewed	RingIdx1	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x30;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dafc	0x5d2fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db00	0x5d300	0x4	defined	reviewed	RingIdx2	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x38;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006db04	0x5d304	0x4	unclassified	coverage-gap			payload-complement within LIBCD CDROM.OBJ .sbss	gap between archive-named words; original object extent unresolved
@@ -1633,11 +1633,11 @@ OPEN.EXE	0x8003dfc8	0x2d7c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 OPEN.EXE	0x8003dfcc	0x2d7cc	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dfd8	0x2d7d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003dfdc	0x2d7dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfe0	0x2d7e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfe0	0x2d7e0	0x4	defined	reviewed	VBLNKCallback	pointer	Psy-Q 3.0 LIBETC INTR_VB.OBJ local .sbss+0;retail VBLNKInit/Stop xrefs	private VBlank callback pointer; physical linked bytes are zero
 OPEN.EXE	0x8003dfe4	0x2d7e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfe8	0x2d7e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfe8	0x2d7e8	0x4	defined	reviewed	pad_buf	u32	Psy-Q 3.0 LIBETC PAD.OBJ local .sbss+0;retail PadInit/PadRead xrefs	private raw pad word passed to PAD_init; physical linked bytes are zero
 OPEN.EXE	0x8003dfec	0x2d7ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dff0	0x2d7f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dff0	0x2d7f0	0x4	defined	reviewed	pad_status	undefined4	Psy-Q 3.0 LIBETC PAD.OBJ local .sbss+8;retail PadInit xref	private pad status word set to zero on init; status semantics and signedness unresolved
 OPEN.EXE	0x8003dff4	0x2d7f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dff8	0x2d7f8	0x4	defined	reviewed	EV	s32	Psy-Q 3.0 LIBSND SSINIT.OBJ local .sbss+0;retail _SsStart/SsEnd section patches	private sound sequence event handle; physical linked bytes are zero
 OPEN.EXE	0x8003dffc	0x2d7fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2346,11 +2346,11 @@ END.EXE	0x8003adc0	0x2a5c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/
 END.EXE	0x8003adc4	0x2a5c4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003add0	0x2a5d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003add4	0x2a5d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003add8	0x2a5d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003add8	0x2a5d8	0x4	defined	reviewed	VBLNKCallback	pointer	Psy-Q 3.0 LIBETC INTR_VB.OBJ local .sbss+0;retail VBLNKInit/Stop xrefs	private VBlank callback pointer; physical linked bytes are zero
 END.EXE	0x8003addc	0x2a5dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ade0	0x2a5e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ade0	0x2a5e0	0x4	defined	reviewed	pad_buf	u32	Psy-Q 3.0 LIBETC PAD.OBJ local .sbss+0;retail PadInit/PadRead xrefs	private raw pad word passed to PAD_init; physical linked bytes are zero
 END.EXE	0x8003ade4	0x2a5e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ade8	0x2a5e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ade8	0x2a5e8	0x4	defined	reviewed	pad_status	undefined4	Psy-Q 3.0 LIBETC PAD.OBJ local .sbss+8;retail PadInit xref	private pad status word set to zero on init; status semantics and signedness unresolved
 END.EXE	0x8003adec	0x2a5ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003adf0	0x2a5f0	0x4	defined	reviewed	EV	s32	Psy-Q 3.0 LIBSND SSINIT.OBJ local .sbss+0;retail _SsStart/SsEnd section patches	private sound sequence event handle; physical linked bytes are zero
 END.EXE	0x8003adf4	0x2a5f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

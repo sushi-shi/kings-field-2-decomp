@@ -44,6 +44,7 @@ KfEffectKind102Payload	0x02	supported	GAME 0x800455f8 lh;effect_construct_record
 KfEffectKind105Attachment	0x04	supported	GAME 0x800441e8-0x80044364;effect_construct_record kind 105	Parent effect slot, actor slot, and signed animation vertex at record +0x40
 KfEffectKind109Target	0x01	observed	GAME 0x8004162c/0x80041638;GAME 0x80045b6c	Kind-109 linked effect record index at +0x40
 KfEffectKind12Aim	0x08	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Four signed aiming parameters at record +0x40
+KfEffectKind23Attachment	0x06	supported	GAME 0x800415dc/0x800415e8/0x800415f8;GAME 0x80042940/0x80042984/0x80042a88	Signed actor and vertex indices followed by an unsigned animation-phase threshold at record +0x40
 KfEffectKind46State	0x04	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Signed phase and linked-effect index, then unsigned Q12 age, at record +0x40
 KfEffectKind5Fanout	0x04	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Kind-5 initial child count, actor index, and signed remaining count at record +0x40
 KfEffectKind8State	0x04	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Parent effect index and unsigned vertical step at record +0x40

@@ -16,6 +16,8 @@ enum {
     KF_ANGLE_THREE_QUARTER_TURN = 0xc00,
     KF_ANGLE_FULL_TURN = 0x1000,
     KF_ANGLE_WRAP_MASK = 0xfff,
+    /* Psy-Q rand() supplies 15 bits; three discarded bits yield a full-turn angle. */
+    KF_RANDOM_ANGLE_SHIFT = 3,
     KF_LENGTH_SQUARE_DOWNSHIFT = 3
 };
 

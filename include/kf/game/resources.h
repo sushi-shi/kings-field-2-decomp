@@ -24,8 +24,8 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius);
 s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);
 
 void translate_active_world_positions(s32 dx, s32 dy, s32 dz);
-void resource_request_transition(u8 first, u8 second, u8 third, u8 fourth,
-    u8 fifth, s8 offset_x, s8 offset_z, s8 offset_y);
+void resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
+    u8 sequence_id, s8 offset_x, s8 offset_z, s8 offset_y);
 void resource_advance_transition(void);
 void resource_initialize_game_assets(void);
 void resource_run_initial_transition(void);

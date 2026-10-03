@@ -90,7 +90,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     actor->target = NULL;
     if ((actor->placement_flags & KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW) == 0) {
-        actor->rotation.y = rand() >> 3;
+        actor->rotation.y = rand() >> KF_RANDOM_ANGLE_SHIFT;
     }
     actor->motion.vector.vz = 0;
     actor->motion.vector.vy = 0;

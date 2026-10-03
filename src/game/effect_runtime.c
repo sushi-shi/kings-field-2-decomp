@@ -425,7 +425,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->updates_remaining = 45;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
-        record->rotation.vz = rand() >> 3;
+        record->rotation.vz = rand() >> KF_RANDOM_ANGLE_SHIFT;
         record->unknown_3c[4] = 0;
         break;
     }

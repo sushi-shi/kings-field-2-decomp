@@ -196,6 +196,9 @@ KfEffectKind12Aim	0x00	0x02	max_length	s16	supported	GAME 0x80040d90 sh;GAME 0x8
 KfEffectKind12Aim	0x02	0x02	scale	s16	supported	GAME 0x80040d9c sh;GAME 0x80043d48 lh	Motion scale passed to effect_aim_and_move
 KfEffectKind12Aim	0x04	0x02	turn_step	s16	supported	GAME 0x80040da8 sh;GAME 0x80043d4c lh	Angular step passed to effect_aim_and_move
 KfEffectKind12Aim	0x06	0x02	close_scale	s16	supported	GAME 0x80040db4 sh;GAME 0x80043d64 lh	Close-range scale passed to effect_aim_and_move
+KfEffectKind23Attachment	0x00	0x02	actor_index	s16	supported	GAME 0x800415dc sh;GAME 0x80042940 lh	Signed actor index selecting actor_state.actors during kind-23 attachment
+KfEffectKind23Attachment	0x02	0x02	vertex_index	s16	supported	GAME 0x800415e8 sh;GAME 0x80042984 lh	Signed animation vertex index passed to actor_sample_rotated_animation_vertex
+KfEffectKind23Attachment	0x04	0x02	release_animation_phase	u16	supported	GAME 0x800415f8 sh;GAME 0x80042a88 lhu	Unsigned actor animation phase threshold releasing the attached effect
 KfEffectKind46State	0x00	0x01	phase	s8	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
 KfEffectKind46State	0x01	0x01	linked_effect_index	s8	supported	GAME 0x80042dc8 lb;effect_construct_record kind 46	Signed index into effect_state.records
 KfEffectKind46State	0x02	0x02	age_q12	u16	supported	GAME 0x80042ec0 sh;GAME 0x80042ed0 lh;GAME 0x80042edc lhu	Fade interpolation age advanced by 512 to 4096

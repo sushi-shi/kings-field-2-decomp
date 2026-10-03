@@ -114,12 +114,6 @@ source = "src/game/resource_startup.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.resource_transition_request"
-image = "GAME.EXE"
-source = "src/game/resource_transition_request.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.resource_transition_step"
 image = "GAME.EXE"
 source = "src/game/resource_transition_step.c"

@@ -193,6 +193,17 @@ enum {
     KF_PLAYER_POISON_ROLL_SHIFT = 15
 };
 
+/* The encoded low-nibble status kind is one greater than this switch index. */
+enum {
+    PLAYER_DAMAGE_STATUS_CURSE = 0,
+    PLAYER_DAMAGE_STATUS_DARKNESS = 1,
+    PLAYER_DAMAGE_STATUS_POISON = 2,
+    PLAYER_DAMAGE_STATUS_PARALYSIS = 3,
+    PLAYER_DAMAGE_STATUS_SLOW = 4,
+    PLAYER_DAMAGE_STATUS_MP_DRAIN = 5,
+    PLAYER_DAMAGE_STATUS_POISON_CLEAR = 6
+};
+
 ADDRESS(0x800248a8, 0x3fc)
 void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
@@ -234,15 +245,15 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     }
 
     switch ((flags & 0xf) - 1) {
-    case 0:
+    case PLAYER_DAMAGE_STATUS_CURSE:
         player_state.curse_phase_limit = curse_phase_limit;
         player_state.curse_strength = 1;
         player_recalculate_combat_stats();
         break;
-    case 1:
+    case PLAYER_DAMAGE_STATUS_DARKNESS:
         player_state.darkness_phase_limit = darkness_phase_limit;
         break;
-    case 2:
+    case PLAYER_DAMAGE_STATUS_POISON:
         if (player_state.equipped_accessory_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID
             || player_state.equipped_extra_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID) {
             if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
@@ -254,16 +265,16 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
             player_state.poison_timer = poison_duration;
         }
         break;
-    case 3:
+    case PLAYER_DAMAGE_STATUS_PARALYSIS:
         player_state.paralysis_timer = paralysis_duration;
         break;
-    case 4:
+    case PLAYER_DAMAGE_STATUS_SLOW:
         player_state.slow_timer = slow_duration;
         break;
-    case 6:
+    case PLAYER_DAMAGE_STATUS_POISON_CLEAR:
         player_state.poison_timer = 0;
         break;
-    case 5:
+    case PLAYER_DAMAGE_STATUS_MP_DRAIN:
         mp_loss = player_state.vitals.maximum_mp / 6;
         if (mp_loss < player_state.vitals.current_mp) {
             player_state.vitals.current_mp -= mp_loss;

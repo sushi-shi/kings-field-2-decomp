@@ -589,7 +589,7 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
     object->position.vx = position->vx;
     object->position.vy = height_offset + position->vy;
     object->position.vz = position->vz;
-    object->rotation.vy = rand() >> 3;
+    object->rotation.vy = rand() >> KF_RANDOM_ANGLE_SHIFT;
 
     switch (template->kind) {
     case 0x10:
@@ -640,13 +640,13 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
     object->tail.fields.spawn_sequence = sequence;
     object->object_id = 0x46;
     object->tail.fields.unknown_3a.value = effect_id;
-    angle = (u16)(rand() >> 3);
+    angle = (u16)(rand() >> KF_RANDOM_ANGLE_SHIFT);
     object->position.vx = origin->vx +
         ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
     object->position.vy = origin->vy + height_offset;
     object->position.vz = origin->vz +
         ((rcos(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
-    object->rotation.vy = rand() >> 3;
+    object->rotation.vy = rand() >> KF_RANDOM_ANGLE_SHIFT;
     object->tail.fields.unknown_38 = 0xff;
     map_object_start_action_if_idle(object, KF_MAP_OBJECT_ACTION_BOUNCE);
     object->tail.motion.motion_velocity.signed_value = -120;

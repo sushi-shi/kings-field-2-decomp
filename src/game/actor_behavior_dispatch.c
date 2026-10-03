@@ -207,13 +207,13 @@ case3_motion:
         if (actor->target_action_state == 0) {
             actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
-            actor->movement_yaw = rand() >> 3;
+            actor->movement_yaw = rand() >> KF_RANDOM_ANGLE_SHIFT;
         } else if (actor_turn_and_move_along_heading(actor->movement_yaw,
                                   target->word_0c.value, target->word_0e.value,
                                   group->movement_step,
                                   group->turn_acceleration, 5) != 0 ||
                    (rand() >> 5) < target->word_10.bytes.fallback_offset) {
-            actor->movement_yaw = rand() >> 3;
+            actor->movement_yaw = rand() >> KF_RANDOM_ANGLE_SHIFT;
         }
         actor_advance_animation_wrapped(actor, target->animation_step);
         break;
@@ -255,7 +255,7 @@ case3_motion:
             }
         }
         if (motion_flags & 1) {
-            actor->tail_72.angles.y = rand() >> 3;
+            actor->tail_72.angles.y = rand() >> KF_RANDOM_ANGLE_SHIFT;
         }
         if (motion_flags & 2) {
             actor->tail_72.angles.x = (rand() >> 5) - 512;

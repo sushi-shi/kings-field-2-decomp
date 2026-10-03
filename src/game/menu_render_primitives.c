@@ -1361,7 +1361,7 @@ void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
 
 ADDRESS(0x8001f8b8, 0x2d4)
 s32 menu_preview_choice(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id)
+    s32 render_mode, u8 item_id)
 {
     KfMenuGlyphString labels[2];
     s32 choice = 0;

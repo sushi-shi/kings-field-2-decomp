@@ -223,7 +223,7 @@ void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
 s32 menu_preview_choice(void *list_state, s32 label_kind,
-    s32 render_mode, s32 item_id);
+    s32 render_mode, u8 item_id);
 void menu_show_map_preview(s32 menu_code);
 s32 menu_card_browser(void);
 /* Menu modes reinterpret the four payload words after the common list prefix. */

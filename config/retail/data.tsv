@@ -1641,7 +1641,7 @@ OPEN.EXE	0x8003dfc0	0x2d7c0	0x4	defined	reviewed	Func1	undefined4	native LIBCD C
 OPEN.EXE	0x8003dfc4	0x2d7c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dfc8	0x2d7c8	0x4	defined	reviewed	Func2	undefined4	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003dfcc	0x2d7cc	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dfd8	0x2d7d8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dfd8	0x2d7d8	0x4	defined	reviewed	current	undefined4	native LIBCD ISO9660.OBJ local current at .sbss+0;three retail HI16/LO16 pairs and lw/sw word accesses	private CD search state; adjacent 4-byte section tail has unresolved ownership
 OPEN.EXE	0x8003dfdc	0x2d7dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dfe0	0x2d7e0	0x4	defined	reviewed	VBLNKCallback	pointer	Psy-Q 3.0 LIBETC INTR_VB.OBJ local .sbss+0;retail VBLNKInit/Stop xrefs	private VBlank callback pointer; physical linked bytes are zero
 OPEN.EXE	0x8003dfe4	0x2d7e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2356,7 +2356,7 @@ END.EXE	0x8003adb8	0x2a5b8	0x4	defined	reviewed	Func1	undefined4	native LIBCD CD
 END.EXE	0x8003adbc	0x2a5bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003adc0	0x2a5c0	0x4	defined	reviewed	Func2	undefined4	native LIBCD CDROM.OBJ local Func2 at .sbss+0x68;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003adc4	0x2a5c4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003add0	0x2a5d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003add0	0x2a5d0	0x4	defined	reviewed	current	undefined4	native LIBCD ISO9660.OBJ local current at .sbss+0;three retail HI16/LO16 pairs and lw/sw word accesses	private CD search state; adjacent 4-byte section tail has unresolved ownership
 END.EXE	0x8003add4	0x2a5d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003add8	0x2a5d8	0x4	defined	reviewed	VBLNKCallback	pointer	Psy-Q 3.0 LIBETC INTR_VB.OBJ local .sbss+0;retail VBLNKInit/Stop xrefs	private VBlank callback pointer; physical linked bytes are zero
 END.EXE	0x8003addc	0x2a5dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

@@ -341,9 +341,10 @@ OPEN.EXE	0x8003de28	0x2	DAT_8003de28	unknown	load	undefined2		address-only	data.
 OPEN.EXE	0x8003de30	0x4	DAT_8003de30	unknown	load	u32	LIBCD ISO9660.OBJ	supported	exact archive .sdata+0 scalar initialized to 1;CdSearchFile section patch +0 matches both retail xrefs	vendor new-media check flag cleared after CD_newmedia succeeds; original static name and signedness unresolved
 OPEN.EXE	0x8003de3c	0x2	DAT_8003de3c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de40	0x3	DAT_8003de40	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
-OPEN.EXE	0x8003de48	0x4	DAT_8003de48	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de4c	0x4	DAT_8003de4c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de50	0x4	DAT_8003de50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003de44	0x4	DAT_8003de44	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x0 hardware pointer byte-exact in retail	SDK initialized section word; original object boundary and name unresolved
+OPEN.EXE	0x8003de48	0x4	DAT_8003de48	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x4 hardware pointer byte-exact in retail; text patch +0x18 references it	SDK initialized section word; original object boundary and name unresolved
+OPEN.EXE	0x8003de4c	0x4	DAT_8003de4c	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x8 hardware pointer byte-exact in retail; text patch +0 references it	SDK initialized section word; original object boundary and name unresolved
+OPEN.EXE	0x8003de50	0x4	DAT_8003de50	unknown	load	u32	LIBETC INTR_VB.OBJ	supported	archive .sdata+0xc zero word byte-exact in retail; text patch +0x5c references it	SDK initialized section word; original object boundary and name unresolved
 OPEN.EXE	0x8003de54	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	archive XDEF .sdata+0x10;unique exact hardware-prefix retail match	Psy-Q vertical-blank counter
 OPEN.EXE	0x8003de58	0x4	DAT_8003de58	unknown	load	pointer	LIBETC INTR.OBJ	supported	archive .sdata 24-byte section at +0x0; first word relocates to INTR .data 0x8003d1a4; remaining retail bytes and section-relative text patches agree at .sdata+0x0	SDK initialized section word; original object boundary and name unresolved
 OPEN.EXE	0x8003de5c	0x4	DAT_8003de5c	unknown	load	undefined4	LIBETC INTR.OBJ	supported	archive .sdata 24-byte section at +0x0; first word relocates to INTR .data 0x8003d1a4; remaining retail bytes and section-relative text patches agree at .sdata+0x4	SDK initialized section word; original object boundary and name unresolved
@@ -402,6 +403,14 @@ OPEN.EXE	0x8003dfe8	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3
 OPEN.EXE	0x8003dff0	0x4	pad_status	static	load	undefined4	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_status at .sbss+8;exact PadInit text and section patch	pad status word set to zero on init; further use and signedness unresolved
 OPEN.EXE	0x8003dff8	0x4	EV	static	load	s32	LIBSND SSINIT.OBJ	supported	Psy-Q 3.0 LIBSND SSINIT.OBJ local EV at .sbss+0;exact _SsStart/SsEnd section patches and retail lw/sw	OpenEvent handle stored by _SsStart and passed to DisableEvent/CloseEvent by SsEnd
 OPEN.EXE	0x8003e000	0x4	_svm_envx_ptr	static	bss	undefined4	LIBSND VMANAGER.OBJ	supported	Psy-Q 3.0 LIBSND VMANAGER.OBJ local _svm_envx_ptr at .sbss+0;SpuVmFlush archive patches +0x1a80/+0x1aa0 and retail raw lw/sw	16-slot envelope-index cursor incremented and masked with 0xf; original signedness unresolved
+OPEN.EXE	0x8003e008	0x4	tcount	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local tcount at .sbss+0;_spu_init retail lw/sw	SPU transfer counter; original signedness unresolved
+OPEN.EXE	0x8003e010	0x2	spu_tsa	static	bss	u16	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_tsa at .sbss+8;_spu_init/_spu_w retail sh/lhu	SPU transfer start-address halfword
+OPEN.EXE	0x8003e018	0x4	spu_transMode	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transMode at .sbss+0x10;_spu_init retail sw	SPU transfer mode; original signedness unresolved
+OPEN.EXE	0x8003e020	0x4	spu_addrMode	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_addrMode at .sbss+0x18;_spu_init retail sw	SPU address mode; original signedness unresolved
+OPEN.EXE	0x8003e028	0x4	spu_dma_mode	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_dma_mode at .sbss+0x20;_spu_w retail sw	SPU DMA mode; original signedness unresolved
+OPEN.EXE	0x8003e030	0x4	spu_transfer_startaddr	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_startaddr at .sbss+0x28;_spu_w retail lw/sw	SPU transfer start address; original signedness unresolved
+OPEN.EXE	0x8003e038	0x4	spu_transfer_size	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_size at .sbss+0x30;_spu_w retail sw	SPU transfer size; original signedness unresolved
+OPEN.EXE	0x8003e040	0x4	spu_transfer_time	static	bss	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_time at .sbss+0x38;_spu_w retail lw/sw	SPU transfer time; original signedness unresolved
 OPEN.EXE	0x8003e058	0x28000	vlcbuf0	global	bss	u_long[40960]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	VLC buffer 0
 OPEN.EXE	0x80066058	0x28000	vlcbuf1	global	bss	u_long[40960]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	VLC buffer 1
 OPEN.EXE	0x8008e058	0x3c00	imgbuf	global	bss	u_short[]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	decoded slice buffer; extent measured to Ring_Buff (twice one 16x240 slice), declaration unknown
@@ -502,9 +511,10 @@ END.EXE	0x8003ac48	0x2	DAT_8003ac48	unknown	load	undefined2		address-only	data.t
 END.EXE	0x8003ac50	0x4	DAT_8003ac50	unknown	load	u32	LIBCD ISO9660.OBJ	supported	exact archive .sdata+0 scalar initialized to 1;CdSearchFile section patch +0 matches both retail xrefs	vendor new-media check flag cleared after CD_newmedia succeeds; original static name and signedness unresolved
 END.EXE	0x8003ac5c	0x2	DAT_8003ac5c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac60	0x3	DAT_8003ac60	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
-END.EXE	0x8003ac68	0x4	DAT_8003ac68	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac6c	0x4	DAT_8003ac6c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac70	0x4	DAT_8003ac70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ac64	0x4	DAT_8003ac64	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x0 hardware pointer byte-exact in retail	SDK initialized section word; original object boundary and name unresolved
+END.EXE	0x8003ac68	0x4	DAT_8003ac68	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x4 hardware pointer byte-exact in retail; text patch +0x18 references it	SDK initialized section word; original object boundary and name unresolved
+END.EXE	0x8003ac6c	0x4	DAT_8003ac6c	unknown	load	pointer	LIBETC INTR_VB.OBJ	supported	archive .sdata+0x8 hardware pointer byte-exact in retail; text patch +0 references it	SDK initialized section word; original object boundary and name unresolved
+END.EXE	0x8003ac70	0x4	DAT_8003ac70	unknown	load	u32	LIBETC INTR_VB.OBJ	supported	archive .sdata+0xc zero word byte-exact in retail; text patch +0x5c references it	SDK initialized section word; original object boundary and name unresolved
 END.EXE	0x8003ac74	0x4	Vcount	global	load	u32	LIBETC INTR_VB.OBJ	supported	archive XDEF .sdata+0x10;unique exact hardware-prefix retail match	Psy-Q vertical-blank counter
 END.EXE	0x8003ac78	0x4	DAT_8003ac78	unknown	load	pointer	LIBETC INTR.OBJ	supported	archive .sdata 24-byte section at +0x0; first word relocates to INTR .data 0x8003a050; remaining retail bytes and section-relative text patches agree at .sdata+0x0	SDK initialized section word; original object boundary and name unresolved
 END.EXE	0x8003ac7c	0x4	DAT_8003ac7c	unknown	load	undefined4	LIBETC INTR.OBJ	supported	archive .sdata 24-byte section at +0x0; first word relocates to INTR .data 0x8003a050; remaining retail bytes and section-relative text patches agree at .sdata+0x4	SDK initialized section word; original object boundary and name unresolved
@@ -562,14 +572,14 @@ END.EXE	0x8003ade0	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3.
 END.EXE	0x8003ade8	0x4	pad_status	static	load	undefined4	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_status at .sbss+8;exact PadInit text and section patch	pad status word set to zero on init; further use and signedness unresolved
 END.EXE	0x8003adf0	0x4	EV	static	load	s32	LIBSND SSINIT.OBJ	supported	Psy-Q 3.0 LIBSND SSINIT.OBJ local EV at .sbss+0;exact _SsStart/SsEnd section patches and retail lw/sw	OpenEvent handle stored by _SsStart and passed to DisableEvent/CloseEvent by SsEnd
 END.EXE	0x8003adf8	0x4	_svm_envx_ptr	static	load	undefined4	LIBSND VMANAGER.OBJ	supported	Psy-Q 3.0 LIBSND VMANAGER.OBJ local _svm_envx_ptr at .sbss+0;exact SpuVmFlush section patches and retail lw/sw	16-slot envelope-index cursor incremented and masked with 0xf; original signedness unresolved
-END.EXE	0x8003ae00	0x4	DAT_8003ae00	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae08	0x2	DAT_8003ae08	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae10	0x4	DAT_8003ae10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae18	0x4	DAT_8003ae18	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae20	0x4	DAT_8003ae20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae28	0x4	DAT_8003ae28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae30	0x4	DAT_8003ae30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ae38	0x4	DAT_8003ae38	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ae00	0x4	tcount	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local tcount at .sbss+0;retail _spu_init lw/sw	SPU transfer counter; original signedness unresolved
+END.EXE	0x8003ae08	0x2	spu_tsa	static	load	u16	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_tsa at .sbss+8;retail _spu_init/_spu_w sh/lhu	SPU transfer start-address halfword
+END.EXE	0x8003ae10	0x4	spu_transMode	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transMode at .sbss+0x10;retail _spu_init/_spu_ioctl sw/lw	SPU transfer mode; original signedness unresolved
+END.EXE	0x8003ae18	0x4	spu_addrMode	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_addrMode at .sbss+0x18;retail _spu_init sw	SPU address mode; original signedness unresolved
+END.EXE	0x8003ae20	0x4	spu_dma_mode	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_dma_mode at .sbss+0x20;retail _spu_w/_spu_r_ sw/lw	SPU DMA mode; original signedness unresolved
+END.EXE	0x8003ae28	0x4	spu_transfer_startaddr	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_startaddr at .sbss+0x28;retail _spu_w lw/sw	SPU transfer start address; original signedness unresolved
+END.EXE	0x8003ae30	0x4	spu_transfer_size	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_size at .sbss+0x30;retail _spu_w sw	SPU transfer size; original signedness unresolved
+END.EXE	0x8003ae38	0x4	spu_transfer_time	static	load	undefined4	LIBSPU SPU.OBJ	supported	Psy-Q 3.0 LIBSPU SPU.OBJ local spu_transfer_time at .sbss+0x38;retail _spu_w lw/sw	SPU transfer time; original signedness unresolved
 END.EXE	0x8003ae40	0x4	DAT_8003ae40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ae48	0x4	DAT_8003ae48	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ae50	0x28000	vlcbuf0	global	bss	u_long[40960]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	VLC buffer 0

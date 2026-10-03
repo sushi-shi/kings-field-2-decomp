@@ -258,24 +258,24 @@ LAB_8002aff0:
     case 0x30:
       record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
       next_record = record + 6;
-      if (record_value == 1) {
+      switch (record_value) {
+      case 1:
         if (((int)z_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
            (radius_complement - (s16)operand[2] <= (int)z_fraction)) {
           candidate_height = (int)(s16)operand[5];
           quotient = (int)x_fraction / candidate_height;
           goto LAB_8002b168;
         }
-      }
-      else if (record_value < 2) {
-        if (record_value != 0) break;
+        break;
+      case 0:
         if (((s16)operand[1] - radius <= (int)x_fraction) &&
            ((int)x_fraction <= (s16)operand[2] + radius)) {
           candidate_height = (int)(s16)operand[5];
           quotient = (int)z_fraction / candidate_height;
           goto LAB_8002b168;
         }
-      }
-      else if (record_value == 2) {
+        break;
+      case 2:
         if (((int)x_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
            (radius_complement - (s16)operand[2] <= (int)x_fraction)) {
           candidate_height = (int)(s16)operand[5];
@@ -284,15 +284,15 @@ LAB_8002b168:
           candidate_height = (quotient + 1) * (int)(s16)operand[4];
           goto LAB_8002b38c;
         }
-      }
-      else {
-        if (record_value != 3) break;
+        break;
+      case 3:
         if (((s16)operand[1] - radius <= (int)z_fraction) &&
            ((int)z_fraction <= (s16)operand[2] + radius)) {
           candidate_height = (int)(s16)operand[5];
           quotient = (int)x_remaining / candidate_height;
           goto LAB_8002b168;
         }
+        break;
       }
       break;
     case 0x32:

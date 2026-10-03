@@ -350,7 +350,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->lighting_override_index = 0x44;
         record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 0x2d;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         record->scale_z = 0x32c8;
         record->scale_y = 0x32c8;
         record->scale_x = 0x32c8;
@@ -815,7 +815,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->rotation.vy += (rand() >> 6) - 256;
         random_x = rand();
         record->rotation.vz = 0;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         record->scale_z = 0x2000;
         record->scale_y = 0x2000;
         record->scale_x = 0x2000;
@@ -1569,13 +1569,13 @@ void effect_update_dispatch(void)
         if (collision & 0xf) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
-        if (record->cache_tail.payload.raw[0] == 0) {
-            record->cache_tail.payload.raw[0] = 1;
+        if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
+            record->cache_tail.payload.collision_latch.impact_handled = 1;
             effect_apply_current_magic_backstep(collision);
         }
         goto kind4_rotate;
     kind4_zero_collision:
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
     kind4_rotate:
         record->rotation.vy += 750;
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
@@ -1594,12 +1594,12 @@ void effect_update_dispatch(void)
             if (collision & 0xf) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
-            if (record->cache_tail.payload.raw[0] == 0) {
-                record->cache_tail.payload.raw[0] = 1;
+            if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
+                record->cache_tail.payload.collision_latch.impact_handled = 1;
                 effect_apply_current_magic_backstep(collision);
             }
         } else {
-            record->cache_tail.payload.raw[0] = 0;
+            record->cache_tail.payload.collision_latch.impact_handled = 0;
         }
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         break;

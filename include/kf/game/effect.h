@@ -119,6 +119,13 @@ typedef char kf_effect_kind2_scale_size[sizeof(KfEffectKind2Scale) == 6 ? 1 : -1
 typedef char kf_effect_kind2_step_offset[(u32)&((KfEffectKind2Scale *)0)->scale_step == 2 ? 1 : -1];
 typedef char kf_effect_kind2_damage_offset[(u32)&((KfEffectKind2Scale *)0)->radial_damage_parameter == 4 ? 1 : -1];
 
+/* Several collision effects apply the current magic once per contact. */
+typedef struct KfEffectCollisionLatch {
+    u8 impact_handled;
+} KfEffectCollisionLatch;
+
+typedef char kf_effect_collision_latch_size[sizeof(KfEffectCollisionLatch) == 1 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -203,6 +210,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind111Target kind111;
     KfEffectKind103Counter kind103;
     KfEffectKind2Scale kind2;
+    KfEffectCollisionLatch collision_latch;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

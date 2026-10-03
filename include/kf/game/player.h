@@ -345,11 +345,11 @@ typedef struct KfPlayerState {
     s16 yaw_step;
     s16 pitch_step;
     s16 camera_vertical_offset;
-    s16 unknown_136;
+    s16 walking_bob_phase;
     s16 landing_vertical_offset;
-    s16 unknown_13a;
-    s16 unknown_13c;
-    s16 unknown_13e;
+    s16 vertical_velocity;
+    s16 damage_red_overlay_scale;
+    s16 damage_red_overlay_decay;
     KfPlayerFlags140 flags_140;
     s32 movement_step_limit;
     s32 turn_step_limit;
@@ -428,7 +428,7 @@ void player_equip_weapon(u8 weapon_id);
 struct KfActor *func_80025878(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
 void func_80025a18(s32 effect_id, ...);
-void func_80026330(s32 mode, VECTOR *output);
+void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
 void func_8002665c(void);
 void func_8002722c(s32 magic_id);
 void player_update_vertical_motion(void);

@@ -450,7 +450,7 @@ struct KfActorLoadRecord;
 
 KfActor *actor_pool_find_free(void);
 void actor_set_home_position(KfActor *actor);
-void func_80038f20(void);
+void actor_disable_type3_transition_actors(void);
 void actor_set_lifecycle_and_home_position(KfActor *actor);
 void actor_pool_clear(void);
 void actor_set_target(KfActor *actor, KfTargetCandidate *target);
@@ -459,8 +459,8 @@ void actor_initialize_from_group(KfActor *actor);
 void actor_prepare_and_initialize(KfActor *actor);
 void actor_bind_current(KfActor *actor);
 void actor_fixup_group_targets(void);
-void func_8003f860(const struct KfActorLoadRecord *records);
-void func_8003983c(void);
+void actor_load_records(const struct KfActorLoadRecord *records);
+void actor_update_lifecycle_for_player_range(void);
 void func_8003d184(void);
 KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type);
 u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker);
@@ -469,7 +469,7 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase,
                    s32 target_phase, s32 phase_step);
 void actor_select_target_type_in_own_group(KfActor *actor, u8 type);
 void actor_select_best_target(s32 player_distance);
-s32 func_80039108(KfTargetCandidate *target, s32 player_distance);
+s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance);
 void actor_select_target_for_player_distance(void);
 KfActor *func_8003a778(const VECTOR *position, s16 yaw, s16 pitch,
                        s32 max_distance, s32 yaw_limit, s32 pitch_limit,
@@ -486,14 +486,15 @@ void func_8003a318(VECTOR *position, s32 minimum_distance, s32 reach,
                    u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
                    u16 magic_10, u16 magic_12, u16 magic_14,
                    s32 amount_and_flags, u16 effect_flags);
-VECTOR *func_8003c10c(KfActor *actor, VECTOR *output);
-s32 func_8003c000(KfActor *actor, s32 vertex_index, VECTOR *output);
+VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output);
+s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index,
+                                          VECTOR *output);
 s32 func_8003c3e0(KfActor *actor, const VECTOR *origin, s32 step,
                   const VECTOR *target, SVECTOR *direction,
                   s32 pitch_override, u16 yaw_limit, s32 iterations);
 void actor_reset_target_and_reselect(void);
-void func_800397d8(u8 value);
-void func_80039804(u8 value);
+void actor_set_animation(u8 animation_id);
+void actor_set_animation_if_changed(u8 animation_id);
 void actor_advance_animation_wrapped(KfActor *actor, s16 delta);
 void actor_advance_animation_clamped(KfActor *actor, s16 delta);
 KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase);
@@ -517,10 +518,10 @@ s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 ra
                   s16 reference_angle, s32 step, s32 mode, s32 target);
 void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
                    s32 acceleration);
-void func_8003c220(s32 first, s32 reverse, s32 forward, s32 fast,
-                   s32 slow, s32 phase_step);
-void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...);
+void actor_update_motion_animation(s32 first, s32 reverse, s32 forward,
+                                   s32 fast, s32 slow, s32 phase_step);
+void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...);
 void actor_update_vertical_motion(void);
-void func_8003f610(void);
+void actor_update_frame(void);
 
 #endif

@@ -147,9 +147,9 @@ void effect_update_dispatch(void)
                 record->type = KF_EFFECT_SLOT_FREE;
                 break;
             }
-            func_8003c000(actor, *(s16 *)&record->unknown_3c[6],
+            actor_sample_rotated_animation_vertex(actor, *(s16 *)&record->unknown_3c[6],
                           &vertex_offset);
-            position = func_8003c10c(actor, &actor_position);
+            position = actor_resolve_group_position(actor, &actor_position);
             old_position = record->position;
             record->position.vx = vertex_offset.vx + position->vx;
             record->position.vy = vertex_offset.vy + position->vy;
@@ -403,7 +403,7 @@ void effect_update_dispatch(void)
             record->scale_z = step;
             record->scale_y = step;
             record->scale_x = step;
-            func_80026330(0, &record->position);
+            player_sample_weapon_world_vertex(0, &record->position);
             if ((s16)record->scale_x >= 256) {
                 record->unknown_3c[4] = 1;
                 func_80025878(1000, 0, &record->direction, &distance);
@@ -670,7 +670,7 @@ void effect_update_dispatch(void)
                     s32 strength = (((rsin(record->phase << 8) >> 1) + 1024) *
                                     (32000 - distance)) / 32000;
 
-                    func_8002bf38(200, 180, 160, 32000, strength);
+                    interpolate_collision_filter_rows(200, 180, 160, 32000, strength);
                 }
             }
             goto shared_phase_increment;
@@ -942,9 +942,9 @@ void effect_update_dispatch(void)
         }
         actor = &actor_state.actors[record->unknown_3c[5]];
 
-        func_8003c000(actor, *(s16 *)&record->unknown_3c[6],
+        actor_sample_rotated_animation_vertex(actor, *(s16 *)&record->unknown_3c[6],
                       &vertex_offset);
-        position = func_8003c10c(actor, &actor_position);
+        position = actor_resolve_group_position(actor, &actor_position);
         next_position.vx = vertex_offset.vx + position->vx;
         next_position.vy = vertex_offset.vy + position->vy;
         next_position.vz = vertex_offset.vz + position->vz;
@@ -1424,7 +1424,7 @@ void effect_update_dispatch(void)
             if (frame >= 24) {
                 record->unknown_3c[8] = 0;
             }
-            position = func_8003c10c(actor, &scratch);
+            position = actor_resolve_group_position(actor, &scratch);
             record->position = *position;
             record->position.vy -= actor->unknown_1e >> 1;
             if (record->unknown_3c[9] < 17) {
@@ -1560,7 +1560,7 @@ void effect_update_dispatch(void)
                     player_state.vitals.maximum_hp;
             }
         }
-        func_8002bf38(0xe6, 0xc8, 0xa0, 0x59d8,
+        interpolate_collision_filter_rows(0xe6, 0xc8, 0xa0, 0x59d8,
                        rsin(record->updates_remaining << 8));
         break;
     case 14: {
@@ -1581,7 +1581,7 @@ void effect_update_dispatch(void)
                                 &spawn_direction, 700, -30, 10, 14, -10);
         spawned->unknown_0a = 3;
         spawned->unknown_08 = 14;
-        func_8002bf38(160, 180, 220, 18000,
+        interpolate_collision_filter_rows(160, 180, 220, 18000,
                        rsin(record->updates_remaining << 7));
         break;
     }
@@ -1612,7 +1612,7 @@ void effect_update_dispatch(void)
             spawned->unknown_0a = 3;
             spawned->unknown_08 = 14;
         }
-        func_8002bf38(240, 240, 160, 18000,
+        interpolate_collision_filter_rows(240, 240, 160, 18000,
                        rsin(record->updates_remaining << 7));
         break;
     }

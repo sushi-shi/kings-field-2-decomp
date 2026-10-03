@@ -6,7 +6,7 @@
 #include <kf/game/tmd_packets.h>
 
 ADDRESS(0x800316c8, 0x188)
-void func_800316c8(void)
+void render_player_weapon(void)
 {
     s32 cell_x;
     s32 cell_z;

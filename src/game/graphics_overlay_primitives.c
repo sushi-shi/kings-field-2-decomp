@@ -94,3 +94,28 @@ void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue)
     game_graphics_runtime.color_overlay_rgb[1] = green;
     game_graphics_runtime.color_overlay_rgb[2] = blue;
 }
+
+ADDRESS(0x800314fc, 0x138)
+void render_accumulated_color_overlay(void)
+{
+    if (game_graphics_runtime.color_overlay_sample_count != 0) {
+        render_textured_quad(0, 0, 0x140, 0xf0,
+                      0x80, 0xd0, 0xf, 0xf, 1, 0x37, 0x7bdc,
+                      *(s16 *)&game_graphics_runtime.color_overlay_red_sum /
+                          game_graphics_runtime.color_overlay_sample_count,
+                      *(s16 *)&game_graphics_runtime.color_overlay_green_sum /
+                          game_graphics_runtime.color_overlay_sample_count,
+                      *(s16 *)&game_graphics_runtime.color_overlay_blue_sum /
+                          game_graphics_runtime.color_overlay_sample_count,
+                      0x40);
+    }
+}
+
+ADDRESS(0x80031634, 0x94)
+void accumulate_color_overlay(s32 first, s32 second, s32 third, s32 scale)
+{
+    game_graphics_runtime.color_overlay_sample_count++;
+    game_graphics_runtime.color_overlay_red_sum += (first * scale) >> 12;
+    game_graphics_runtime.color_overlay_green_sum += (second * scale) >> 12;
+    game_graphics_runtime.color_overlay_blue_sum += (third * scale) >> 12;
+}

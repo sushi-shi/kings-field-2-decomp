@@ -65,10 +65,10 @@ extern s8 DAT_8006d6a4;
 extern s8 DAT_8006d6a5;
 
 struct DIRENTRY;
-s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count);
-s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
+s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count);
+s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
     s32 *slot_id);
-s32 func_80022ca0(s32 slot);
+s32 memory_card_write_slot(s32 slot);
 void input_wait_release(void);
 u32 input_read_mark_active(void);
 void memory_card_initialize(void);
@@ -77,8 +77,8 @@ void memory_card_start(void);
 void memory_card_stop(void);
 s32 memory_card_probe_temporary_file(void);
 s32 memory_card_format(void);
-s32 func_80022b74(s32 slot);
-void func_80023178(KfCardHeader *header, s32 slot_glyph);
+s32 memory_card_read_slot(s32 slot);
+void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph);
 u32 memory_card_payload_byte_sum(const u8 *payload);
 s32 memory_card_wait_event(void);
 void memory_card_clear_events(void);

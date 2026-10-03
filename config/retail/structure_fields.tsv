@@ -290,17 +290,17 @@ KfGraphicsRuntimeGame	0x14cbc	0x04	notification_control	KfNotificationControl	su
 KfGraphicsRuntimeGame	0x14cc0	0x01	notification_brightness	u8	supported	asm;func_80033140;notification_draw_quad	brightness replicated into notification RGB
 KfGraphicsRuntimeGame	0x14cc1	0x01	color_overlay_control	u8	supported	asm;render_set_color_overlay;render_color_overlay;display init	0xff disables the overlay; low bits select texture page and bit 7 selects ordering depth
 KfGraphicsRuntimeGame	0x14cc2	0x03	color_overlay_rgb	u8[3]	supported	asm;render_set_color_overlay;render_color_overlay	three RGB color bytes set by the overlay setter and read by its draw path
-KfGraphicsRuntimeGame	0x14cc5	0x01	unknown_14cc5	u8	supported	asm;func_80031634;func_8002bc18	incremented by channel accumulator and cleared by collision defaults
-KfGraphicsRuntimeGame	0x14cc6	0x02	unknown_14cc6	u16	supported	asm;func_80031634;func_8002bc18	first unsigned accumulated channel
-KfGraphicsRuntimeGame	0x14cc8	0x02	unknown_14cc8	u16	supported	asm;func_80031634;func_8002bc18	second unsigned accumulated channel
-KfGraphicsRuntimeGame	0x14cca	0x02	unknown_14cca	u16	supported	asm;func_80031634;func_8002bc18	third unsigned accumulated channel
+KfGraphicsRuntimeGame	0x14cc5	0x01	color_overlay_sample_count	u8	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	incremented per color sample and used as RGB-sum divisor
+KfGraphicsRuntimeGame	0x14cc6	0x02	color_overlay_red_sum	u16	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	Q12-scaled red sum displayed as signed average
+KfGraphicsRuntimeGame	0x14cc8	0x02	color_overlay_green_sum	u16	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	Q12-scaled green sum displayed as signed average
+KfGraphicsRuntimeGame	0x14cca	0x02	color_overlay_blue_sum	u16	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	Q12-scaled blue sum displayed as signed average
 KfGraphicsRuntimeGame	0x14ccc	0x04	frame_counter_a	u32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cd0	0x04	frame_counter_b	u32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cd4	0xc0	floor_items	KfFloorItem[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14d94	0x88	render_state	KfRenderState	supported	game headers;asm;xrefs	view transforms and cell origins
 KfGraphicsRuntimeGame	0x14e1c	0x24c	render_grid	KfRenderGridState	supported	asm;func_8002c670;func_80030f5c	contiguous scan origin, fog threshold, and 24-by-24 mask grid
-KfGraphicsRuntimeGame	0x15068	0x04	collision_rotation_dirty	s32	supported	asm;func_8002bc18;func_8002bd3c	reset by collision-default initialization and changed after row rotation
-KfGraphicsRuntimeGame	0x1506c	0x2080	collision_rows	KfCollisionRow[80]	supported	asm;func_8002bc18;func_8002bd3c;func_8002bdbc;func_8002be9c	80 runtime rows at 104-byte stride
+KfGraphicsRuntimeGame	0x15068	0x04	collision_rotation_dirty	s32	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations	reset by collision-default initialization and checked before row rotation
+KfGraphicsRuntimeGame	0x1506c	0x2080	collision_rows	KfCollisionRow[80]	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations;interpolate_collision_row_fields;interpolate_collision_rows	80 runtime rows at 104-byte stride
 KfGraphicsRuntimeGame	0x170ec	0x04	map_placed_frame_counter	s32	supported	asm;func_8003247c	drives each placed row's frame-period update
 KfGraphicsRuntimeGame	0x170f0	0xc00	map_placed_entries	KfMapPlacedEntry[128]	supported	asm;func_80034818;map resource caller	128 runtime rows of 24 bytes
 KfItemMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;func_8001d6a8;func_80018ac8	shared menu list prefix
@@ -350,10 +350,10 @@ KfMapObject	0x14	0x10	position	VECTOR	supported	asm;map_object_start_action_if_i
 KfMapObject	0x24	0x08	rotation	SVECTOR	supported	asm;func_80035590;transform callers	three angles cleared by map-object reset
 KfMapObject	0x2c	0x08	scale	SVECTOR	supported	asm;func_80035590;transform callers	three scale axes initialized to 0x1000
 KfMapObject	0x34	0xc	tail	KfMapObjectTail	supported	game/map_object.h;asm;map_object_pool_reset	twelve-byte tail with field and three-word reset views
-KfMapObject	0x40	0x04	extra_40	KfMapObjectExtra40	supported	asm;func_800291ec;func_80036b68	pointer and byte state views of map-object +0x40
+KfMapObject	0x40	0x04	extra_40	KfMapObjectExtra40	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte state views of map-object +0x40
 KfMapObjectExtra40	0x00	0x04	record	KfMapObjectRecord40 *	candidate	asm;func_800291ec	pointer read by player map-object reaction; pointed object's extent unresolved
-KfMapObjectExtra40	0x00	0x04	bytes	u8[4]	supported	asm;func_80036b68	low byte is map-object motion progress
-KfMapObjectExtra40	0x00	0x02	object_index	u16	supported	asm;func_80036b68	index of a source map object stored in target +0x40
+KfMapObjectExtra40	0x00	0x04	bytes	u8[4]	supported	asm;map_object_step_offset_motion	low byte is map-object motion progress
+KfMapObjectExtra40	0x00	0x02	object_index	u16	supported	asm;map_object_step_offset_motion	index of a source map object stored in target +0x40
 KfMapObjectStateGame	0x00	0x1e00	templates	KfMapObjectTemplate[320]	supported	asm;func_800355d8;24-byte indexing	object template records preceding the pool
 KfMapObjectStateGame	0x1e00	0x6930	objects	KfMapObject[396]	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	member used by reconstructed code
 KfMapObjectStateGame	0x8730	0x04	unknown_8730	u8[4]	opaque	game_main_loop startup clear	unresolved tail bytes
@@ -372,7 +372,7 @@ KfMapObjectTailFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm;map obj
 KfMapObjectTailFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x8	0x2	spawn_sequence	u16	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
-KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;func_80036464;func_800365d8	signed spawn parameter initialized to zero or -120
+KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;func_80036464;map_object_spawn_scattered_effect	signed spawn parameter initialized to zero or -120
 KfMapObjectTailSpawnByteFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
 KfMapObjectTailSpawnByteFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm	preceding tail byte
 KfMapObjectTailSpawnByteFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm	preceding tail byte
@@ -592,11 +592,11 @@ KfPlayerState	0x12e	0x02	movement_speed	KfPlayerMovementSpeed	supported	asm;play
 KfPlayerState	0x130	0x02	yaw_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x132	0x02	pitch_step	s16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x134	0x02	camera_vertical_offset	s16	supported	asm;player_update_vertical_motion;player_reaction;player_get_camera_pose	walking bob and reaction height offset added to camera position
-KfPlayerState	0x136	0x02	unknown_136	s16	opaque	asm;player_reset_view	cleared by view reset
+KfPlayerState	0x136	0x02	walking_bob_phase	s16	supported	asm;player_update_vertical_motion;player_reset_view	movement-speed phase wrapped to 0xfff and passed to rsin for walking bob
 KfPlayerState	0x138	0x02	landing_vertical_offset	s16	supported	asm;player_update_vertical_motion;player_get_camera_pose	landing-response offset added to camera position
-KfPlayerState	0x13a	0x02	unknown_13a	s16	opaque	asm;player_reset_view	cleared by view reset
-KfPlayerState	0x13c	0x02	unknown_13c	s16	opaque	asm;player_initialize_state	cleared on new state
-KfPlayerState	0x13e	0x02	unknown_13e	s16	opaque	asm;player_initialize_state	cleared on new state
+KfPlayerState	0x13a	0x02	vertical_velocity	s16	supported	asm;player_update_vertical_motion;player_reaction;player_reset_view	signed vertical motion increment and landing-impact magnitude
+KfPlayerState	0x13c	0x02	damage_red_overlay_scale	s16	supported	asm;player_apply_damage_reaction;player_reaction;player_initialize_state	fading red overlay scale fed to RGB accumulator
+KfPlayerState	0x13e	0x02	damage_red_overlay_decay	s16	supported	asm;player_apply_damage_reaction;player_reaction;player_initialize_state	per-frame decrement of red overlay scale
 KfPlayerState	0x140	0x04	flags_140	KfPlayerFlags140	supported	asm;func_80029014;player_clear_motion	full-word and low-halfword flag views
 KfPlayerState	0x144	0x04	movement_step_limit	s32	supported	asm;player_update_horizontal_motion;KF1 player_update.c	signed full-word movement acceleration limit
 KfPlayerState	0x148	0x04	turn_step_limit	s32	supported	asm;player_update_camera_rotation;KF1 player_update.c	signed full-word turn step and low-halfword clamp value

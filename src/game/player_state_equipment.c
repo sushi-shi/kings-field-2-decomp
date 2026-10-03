@@ -99,8 +99,8 @@ void player_initialize_state(void)
     player_state.experience = 0;
     player_state.level = PLAYER_INITIAL_LEVEL;
     player_state.gold = 0;
-    player_state.unknown_13c = 0;
-    player_state.unknown_13e = 0;
+    player_state.damage_red_overlay_scale = 0;
+    player_state.damage_red_overlay_decay = 0;
     player_state.equipped_head_id = KF_EQUIPMENT_NONE;
     player_state.equipped_body_id = KF_EQUIPMENT_NONE;
     player_state.equipped_leg_id = KF_EQUIPMENT_NONE;
@@ -181,7 +181,7 @@ void player_sync_position_to_map(void)
     player_update_collision_bounds();
     player_state.unknown_09[1] = 1;
     player_state.unknown_ce[2] = 0;
-    player_state.unknown_13a = 0;
+    player_state.vertical_velocity = 0;
     player_state.death_state = 0;
     player_clear_motion();
     func_8002b73c(player_state.camera_position.vx,

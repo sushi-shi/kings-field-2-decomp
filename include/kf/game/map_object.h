@@ -228,14 +228,15 @@ void map_object_reset(KfMapObject *object);
 void map_object_pool_reset(void);
 void map_object_set_property(s32 index, s32 property, ...);
 void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker);
-void func_800366fc(u8 identifier);
-s32 func_800368b4(KfMapObject *object, s32 marker);
-s32 func_80036ad8(s32 x, s32 z, s32 width, s32 depth, s32 height);
-s32 func_80036b68(KfMapObject *source, KfMapObject *target,
+void map_object_apply_marker_signal(u8 identifier);
+s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
+s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height);
+s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
                   SVECTOR *start_offset, SVECTOR *end_offset,
                   s32 brighten, s32 duration);
-void func_800369b8(KfMapObject *object, s32 vertex_index, VECTOR *result);
-void func_800365d8(u16 parameter, const VECTOR *origin, s32 height_offset);
+void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTOR *result);
+void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
+                                       s32 height_offset);
 void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
                              s32 height_offset);
 void func_80036ed4(void);

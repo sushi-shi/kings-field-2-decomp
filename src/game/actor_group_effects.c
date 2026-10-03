@@ -11,7 +11,7 @@ RODATA(0x80011ee8, 0x1ec)
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
 ADDRESS(0x8003c614, 0xa70)
-void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
+void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...)
 {
     /* Retail walks O32 argument home slots from the last named word. */
     const s32 *arguments = &position_mode;
@@ -50,9 +50,9 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
         vector_rotate_yxz(&current->rotation, &rotated, &offset);
     } else if (position_mode == -2) {
         first = arguments[1];
-        func_8003c000(current, first, &target);
+        actor_sample_rotated_animation_vertex(current, first, &target);
         second = arguments[2];
-        func_8003c000(current, second, &offset);
+        actor_sample_rotated_animation_vertex(current, second, &offset);
         arguments += 3;
         third = *arguments;
         predicted.vx = func_8001584c(player->vx,
@@ -66,7 +66,7 @@ void func_8003c614(s32 kind, s32 effect_id, s32 position_mode, ...)
                   (u32)current->position.vz), third);
         player = &predicted;
     } else {
-        func_8003c000(current, position_mode, &offset);
+        actor_sample_rotated_animation_vertex(current, position_mode, &offset);
     }
 
     position.vx = (s32)((u32)current->position.vx + (u32)offset.vx);

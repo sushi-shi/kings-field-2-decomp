@@ -32,16 +32,14 @@ s32 func_80015918(s32 mode, s32 horizontal_distance,
     if (longer_time <= 0 && shorter_time <= 0) {
         return -1;
     }
-    if (mode == 0 && longer_time <= 0) {
+    if (mode == 0) {
         chosen_time = shorter_time;
-    } else if (mode == 0) {
-        chosen_time = shorter_time;
-        if (shorter_time >= longer_time) {
+        if (longer_time > 0 && longer_time < shorter_time) {
             chosen_time = longer_time;
         }
     } else {
         chosen_time = shorter_time;
-        if (longer_time >= shorter_time) {
+        if (shorter_time < longer_time) {
             chosen_time = longer_time;
         }
     }

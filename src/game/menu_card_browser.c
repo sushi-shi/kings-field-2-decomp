@@ -34,7 +34,7 @@ s32 menu_card_browser(void)
         goto no_file;
     }
 
-    card_full = func_800226ec(entries, &matching_count);
+    card_full = memory_card_scan_save_entries(entries, &matching_count);
     if (matching_count == 0) {
         if (card_full == 1) {
             func_8001bb94(rows);
@@ -111,8 +111,8 @@ s32 menu_card_load_slot_browser(void)
     s32 read_result;
     s32 frame;
 
-    func_800226ec(entries, &matching_count);
-    count = func_8001af30(entries, glyph_rows[0].codes,
+    memory_card_scan_save_entries(entries, &matching_count);
+    count = menu_card_build_slot_rows(entries, glyph_rows[0].codes,
         experience_values, levels, slot_ids);
     menu_list_init(&menu.list, 1, 0);
     menu.list.visible_rows = 6;
@@ -149,7 +149,7 @@ s32 menu_card_load_slot_browser(void)
     if (result != -1) {
         func_8001cad4(dialog_rows);
         func_8001b030(9, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
-        read_result = func_80022b74(result);
+        read_result = memory_card_read_slot(result);
         if (read_result != 0) {
             func_8001cb44(dialog_rows, read_result);
             func_8001b030(9, dialog_rows, 3, 70, 87, 178, 81, 2, 0);

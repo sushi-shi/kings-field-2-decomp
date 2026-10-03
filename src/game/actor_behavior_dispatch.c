@@ -60,7 +60,7 @@ dispatch_action:
     case 2:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
         }
         if (actor->animation_phase < 0x800 ||
             (actor->unknown_28 & 0x800) == 0) {
@@ -76,7 +76,7 @@ dispatch_action:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor->state_70.signed_state = 0;
             actor->unknown_28 &= ~0x10000;
         }
@@ -91,7 +91,7 @@ dispatch_action:
                     func_800157f8(group->unknown_30);
 
                 if (effect_id != 0) {
-                    func_800365d8(effect_id, &actor->position,
+                    map_object_spawn_scattered_effect(effect_id, &actor->position,
                                    -(actor->unknown_1e >> 1));
                 }
                 if (actor->slot_state == 0 || actor->slot_state == 4) {
@@ -154,7 +154,7 @@ case3_motion:
     case 0:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
         }
         actor_advance_animation_wrapped(actor, target->animation_step);
         if (angle_within_tolerance(actor->animation_phase, 0,
@@ -166,7 +166,7 @@ case3_motion:
     case 1:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             actor->unknown_64 = rand() >> 3;
         } else if (actor_turn_and_move_along_heading(actor->unknown_64,
                                   target->word_0c.value, target->word_0e.value,
@@ -191,7 +191,7 @@ case3_motion:
                     (actor->unknown_07[1] << 11) + actor->unknown_24,
                     (actor->unknown_07[0] << 11) + actor->unknown_22,
                     actor->unknown_1c, actor->unknown_1e);
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             actor_suspend_vertical_motion();
             motion_flags = 3;
         } else {
@@ -221,7 +221,7 @@ case3_motion:
             actor->tail_72.angles.x = (rand() >> 5) - 512;
         }
         if (actor->target_type == 16) {
-            func_8003c220(target->unknown_01[0], target->word_14.bytes[0],
+            actor_update_motion_animation(target->unknown_01[0], target->word_14.bytes[0],
                            target->word_14.bytes[1], target->word_16.bytes.low,
                            target->word_16.bytes.high, target->animation_step);
         } else {
@@ -237,7 +237,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             switch (actor->previous_target_type) {
             case 4:
             case 18:
@@ -304,7 +304,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             actor->state_70.signed_state = 0;
         }
         delta_x = player_state.camera_position.vx - actor->position.vx;
@@ -339,7 +339,7 @@ case3_motion:
                           group->unknown_01[3], 17);
         }
         if (actor->target_type == 17) {
-            func_8003c220(target->unknown_01[0], target->word_18.bytes.low,
+            actor_update_motion_animation(target->unknown_01[0], target->word_18.bytes.low,
                            target->word_18.bytes.high, target->word_1a.bytes[0],
                            target->word_1a.bytes[1], target->animation_step);
         } else {
@@ -351,7 +351,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = 0;
-            func_800397d8(target->word_14.bytes[0]);
+            actor_set_animation(target->word_14.bytes[0]);
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -367,7 +367,7 @@ case3_motion:
                 }
             }
             actor->state_70.signed_state = 1;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             break;
         case 1:
             actor_advance_animation_clamped(actor, target->word_16.bytes.low);
@@ -379,7 +379,7 @@ case3_motion:
                         target->word_16.bytes.high,
                         target->word_10.value) <= 0) {
                     actor->state_70.signed_state = 3;
-                    func_800397d8(target->word_14.bytes[1]);
+                    actor_set_animation(target->word_14.bytes[1]);
                     break;
                 }
                 actor->state_70.signed_state = 2;
@@ -389,7 +389,7 @@ case3_motion:
         case 2:
             if (actor->unknown_0d == 0) {
                 actor->state_70.signed_state = 3;
-                func_800397d8(target->word_14.bytes[1]);
+                actor_set_animation(target->word_14.bytes[1]);
             } else {
                 actor_turn_and_move_along_heading(actor->rotation.y, actor->unknown_68, 0,
                               actor->unknown_68,
@@ -410,7 +410,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf1;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             actor_suspend_vertical_motion();
         }
         random_value = rand();
@@ -460,7 +460,7 @@ case3_motion:
     case 4:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, target->word_18.value)) {
@@ -480,7 +480,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = target->word_18.value;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, actor->state_70.signed_state)) {
@@ -514,7 +514,7 @@ case3_motion:
         s32 angle;
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= target->unknown_22) {
@@ -555,7 +555,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
             actor->state_70.signed_state = 0;
             actor_suspend_vertical_motion();
         }
@@ -631,7 +631,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
         }
         delta_x = player_state.camera_position.vx - actor->position.vx;
         delta_y = player_state.camera_position.vy - actor->position.vy - 1600;
@@ -665,10 +665,10 @@ case3_motion:
         switch (actor->state_70.signed_state) {
         case 0:
             if ((s16)other->unknown_58 > 0) {
-                func_800397d8(target->word_0c.bytes.high);
+                actor_set_animation(target->word_0c.bytes.high);
                 actor->state_70.signed_state = 1;
             } else if ((s16)other->unknown_58 < 0) {
-                func_800397d8(target->word_0c.bytes.low);
+                actor_set_animation(target->word_0c.bytes.low);
                 actor->state_70.signed_state = 2;
             }
             break;
@@ -698,7 +698,7 @@ case3_motion:
     case 15:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
         }
         actor_turn_and_move_along_heading(actor->unknown_64,
                       target->word_0c.value, target->word_0e.value,
@@ -713,7 +713,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = 0;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -741,7 +741,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = target->word_12.value;
-            func_80039804(target->unknown_01[0]);
+            actor_set_animation_if_changed(target->unknown_01[0]);
         }
         if (actor_move_along_heading(actor->rotation.y + 2048,
                           target->word_10.value, 1000, 5) != 0) {
@@ -759,14 +759,14 @@ case3_motion:
     case 22:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
         }
         goto case19_clamped;
     case 21:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = 0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor->unknown_1c = target->word_14.value;
             actor->unknown_1e = target->word_16.value;
         }
@@ -789,7 +789,7 @@ case3_motion:
                 actor->unknown_1e = group->unknown_14;
                 actor->state_70.signed_state = 2;
                 actor->tail_72.signed_state = target->word_10.value;
-                func_800397d8(target->word_18.bytes.low);
+                actor_set_animation(target->word_18.bytes.low);
             }
             if (actor->animation_phase >= target->word_12.value) {
                 s32 saved_flags = actor_state.unknown_93a4;
@@ -820,7 +820,7 @@ case3_motion:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
             actor->state_70.signed_state = 0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor->unknown_4c = 0;
             actor->unknown_4a.value = 0;
             actor->unknown_48 = 0;
@@ -857,7 +857,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor->state_70.signed_state = target->word_0e.value;
             actor->tail_72.script.word_index = 0;
             actor->tail_72.script.unknown_74 = 0;
@@ -904,18 +904,18 @@ case3_motion:
                     actor->tail_72.script.word_index = index + 3;
                     z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    func_8003c614(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.bytes.low,
                                    target->word_18.value, -1, x, y, z, cursor);
                 } else if (opcode == 0x8004) {
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    func_8003c614(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.bytes.low,
                                    target->word_18.value, -2,
                                    first, second, third);
                 } else {
-                    func_8003c614(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.bytes.low,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
                                    (s16)actor->tail_72.script.unknown_74);
@@ -937,7 +937,7 @@ case3_motion:
             actor->unknown_0f = 0xf1;
             actor->state_70.signed_state = 0;
             actor->tail_72.signed_state = -1;
-            func_800397d8(target->word_16.bytes.low);
+            actor_set_animation(target->word_16.bytes.low);
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -961,7 +961,7 @@ case3_motion:
             actor_turn_toward_angle(actor, actor->unknown_20, target->word_10.value,
                           group->unknown_01[3]);
             if (actor->rotation.y == actor->unknown_20) {
-                func_800397d8(target->unknown_01[0]);
+                actor_set_animation(target->unknown_01[0]);
                 actor->state_70.signed_state = 2;
             }
             break;
@@ -991,7 +991,7 @@ case3_motion:
     case 29:
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor_suspend_vertical_motion();
             actor->tail_72.signed_state = 16;
         }
@@ -1013,7 +1013,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor_suspend_vertical_motion();
             audio_play_spatial_default_range(0x1b, &actor->position, 120, 0);
         }
@@ -1042,7 +1042,7 @@ case3_motion:
 
         if (actor->unknown_0f == 0) {
             actor->unknown_0f = 0xf0;
-            func_800397d8(target->unknown_01[0]);
+            actor_set_animation(target->unknown_01[0]);
             actor_suspend_vertical_motion();
         }
         next.vx = actor->position.vx + actor->unknown_50;
@@ -1144,7 +1144,7 @@ case3_motion:
             rotation.z = actor->rotation.z;
             vector_rotate_yxz(&rotation, (SVECTOR *)&group->unknown_0c,
                               &group_offset);
-            func_8003c000(other, actor->unknown_24, &vertex_offset);
+            actor_sample_rotated_animation_vertex(other, actor->unknown_24, &vertex_offset);
             actor->position.vx = other->position.vx + vertex_offset.vx -
                                  group_offset.vx;
             actor->position.vy = other->position.vy + vertex_offset.vy -

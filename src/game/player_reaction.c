@@ -193,10 +193,10 @@ void func_80029464(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
     player_state.death_state = 0x10;
     player_state.reaction.damage.rotation = *rotation;
     player_state.reaction.damage.motion = *motion;
-    player_state.unknown_13c = 3500;
-    player_state.unknown_13e = duration;
+    player_state.damage_red_overlay_scale = 3500;
+    player_state.damage_red_overlay_decay = duration;
     player_state.unknown_d0 = 0x40;
-    player_state.unknown_13a = player_state.reaction.damage.rotation.vy;
+    player_state.vertical_velocity = player_state.reaction.damage.rotation.vy;
 }
 
 ADDRESS(0x800294f8, 0x78)
@@ -205,8 +205,8 @@ void func_800294f8(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
     player_state.death_state = 0x12;
     player_state.reaction.damage.rotation = *rotation;
     player_state.reaction.damage.motion = *motion;
-    player_state.unknown_13c = 3500;
-    player_state.unknown_13e = duration;
+    player_state.damage_red_overlay_scale = 3500;
+    player_state.damage_red_overlay_decay = duration;
 }
 
 enum {
@@ -335,24 +335,24 @@ void func_8002985c(void)
     value = func_80029624((u16 *)&player_state.unknown_5a,
                            &player_state.unknown_5c, 64, 0xc00);
     if (value != -1) {
-        func_8002bf38(10, 10, 10, 0xef9, value);
+        interpolate_collision_filter_rows(10, 10, 10, 0xef9, value);
     }
     value = func_80029624((u16 *)&player_state.unknown_66,
                            (u16 *)&player_state.unknown_68, 64, 0xe10);
     if (value != -1) {
-        func_8002bf38(220, 220, 160, 18000, value);
+        interpolate_collision_filter_rows(220, 220, 160, 18000, value);
     }
 
-    if (player_state.unknown_13c != 0) {
-        player_state.unknown_13c -= player_state.unknown_13e;
-        if (player_state.unknown_13c < 0) {
-            player_state.unknown_13c = 0;
+    if (player_state.damage_red_overlay_scale != 0) {
+        player_state.damage_red_overlay_scale -= player_state.damage_red_overlay_decay;
+        if (player_state.damage_red_overlay_scale < 0) {
+            player_state.damage_red_overlay_scale = 0;
         }
-        value = player_state.unknown_13c;
+        value = player_state.damage_red_overlay_scale;
         if (value > 4095) {
             value = 4096;
         }
-        func_80031634(60, 0, 0, value);
+        accumulate_color_overlay(60, 0, 0, value);
     }
 
     player_state.flags_140.low = PadRead(1);
@@ -402,7 +402,7 @@ void func_8002985c(void)
         player_state.turn_step_limit = 0;
         player_state.unknown_60--;
         if ((player_state.unknown_60 & 3) == 0) {
-            func_80031634(60, 30, 0, 0xc00);
+            accumulate_color_overlay(60, 30, 0, 0xc00);
         }
     }
     if (player_state.unknown_a0 != 0) {
@@ -555,7 +555,7 @@ update_reaction_pose:
                 }
                 if (game_counter_bytes[0x4c] != 0
                     && (event_state.control.bytes[1] & 8) != 0) {
-                    func_80038f20();
+                    actor_disable_type3_transition_actors();
                     player_state.camera_rotation_target.angles[0] = 0;
                     player_state.camera_rotation_target.angles[1] = 0xc00;
                     player_state.camera_rotation_target.angles[2] = 0;
@@ -583,8 +583,8 @@ after_reaction:
     player_state.flags_140.halves.high = player_state.flags_140.low;
     if (player_state.unknown_54 != 0) {
         if (player_state.unknown_54 % 30 == 0) {
-            player_state.unknown_13c = 2400;
-            player_state.unknown_13e = 60;
+            player_state.damage_red_overlay_scale = 2400;
+            player_state.damage_red_overlay_decay = 60;
             player_adjust_hp_unclamped(-1);
         }
         player_state.unknown_54--;
@@ -632,7 +632,7 @@ after_reaction:
         if (player_state.curse_strength == 0) {
             player_recalculate_combat_stats();
         }
-        func_80031634(0x46, 0x46, 30, value);
+        accumulate_color_overlay(0x46, 0x46, 30, value);
     }
 
     player_state.camera_rotation.angles[0] =
@@ -697,7 +697,7 @@ after_reaction:
         func_80025a18(11);
     }
     if (player_state.equipped_body_id == 31) {
-        func_8002bf38(20, 20, 20, 5000, 0x800);
+        interpolate_collision_filter_rows(20, 20, 20, 5000, 0x800);
     }
     player_state.equipment_effect_ticks++;
 }

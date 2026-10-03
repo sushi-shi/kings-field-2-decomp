@@ -129,7 +129,7 @@ phase_three:
                 (u32 *)(stream + 4), 0xcb0);
             actor_fixup_group_targets();
             stream += *(u32 *)stream + 4;
-            func_8003f860((const struct KfActorLoadRecord *)(stream + 4));
+            actor_load_records((const struct KfActorLoadRecord *)(stream + 4));
             stream += *(u32 *)stream + 4;
             map_object_initialize_from_placements((KfMapObjectPlacement *)(stream + 4));
             stream += *(u32 *)stream + 4;

@@ -5,7 +5,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x8003983c, 0x31c)
-void func_8003983c(void)
+void actor_update_lifecycle_for_player_range(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;

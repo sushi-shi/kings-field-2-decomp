@@ -256,7 +256,7 @@ KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT] = {
 };
 
 ADDRESS(0x8002bc18, 0x124)
-void func_8002bc18(void)
+void reset_collision_rows_and_overlay(void)
 {
     KfCollisionDefaultRow *defaults = collision_default_rows;
     KfCollisionRow *row = game_graphics_runtime.collision_rows;
@@ -273,14 +273,14 @@ void func_8002bc18(void)
     } while (index != -1);
 
     game_graphics_runtime.collision_rotation_dirty = 0;
-    game_graphics_runtime.unknown_14cc5 = 0;
-    game_graphics_runtime.unknown_14cca = 0;
-    game_graphics_runtime.unknown_14cc8 = 0;
-    game_graphics_runtime.unknown_14cc6 = 0;
+    game_graphics_runtime.color_overlay_sample_count = 0;
+    game_graphics_runtime.color_overlay_blue_sum = 0;
+    game_graphics_runtime.color_overlay_green_sum = 0;
+    game_graphics_runtime.color_overlay_red_sum = 0;
 }
 
 ADDRESS(0x8002bd3c, 0x80)
-void func_8002bd3c(void)
+void refresh_collision_row_rotations(void)
 {
     KfCollisionRow *row;
     s32 index;
@@ -302,7 +302,7 @@ void func_8002bd3c(void)
 }
 
 ADDRESS(0x8002bdbc, 0xe0)
-void func_8002bdbc(s32 flags, const KfCollisionFilterPayload *payload,
+void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload *payload,
                    KfCollisionRow *row, s32 amount)
 {
     if (flags & 2) {
@@ -329,14 +329,14 @@ void func_8002bdbc(s32 flags, const KfCollisionFilterPayload *payload,
 }
 
 ADDRESS(0x8002be9c, 0x9c)
-void func_8002be9c(s32 flags, const KfCollisionFilterPayload *payload, s32 amount)
+void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *payload, s32 amount)
 {
     KfCollisionRow *row = game_graphics_runtime.collision_rows;
     s32 index;
 
     for (index = 0; index < 62; index++, row++) {
         if (index != 38) {
-            func_8002bdbc(flags, payload, row, amount);
+            interpolate_collision_row_fields(flags, payload, row, amount);
         }
     }
     if (flags & 1) {
@@ -345,7 +345,7 @@ void func_8002be9c(s32 flags, const KfCollisionFilterPayload *payload, s32 amoun
 }
 
 ADDRESS(0x8002bf38, 0x74)
-void func_8002bf38(u8 arg0, u8 arg1, u8 arg2, s32 angle, u16 value)
+void interpolate_collision_filter_rows(u8 arg0, u8 arg1, u8 arg2, s32 angle, u16 value)
 {
     KfCollisionFilterPayload payload;
     s32 flags = 0;
@@ -360,11 +360,11 @@ void func_8002bf38(u8 arg0, u8 arg1, u8 arg2, s32 angle, u16 value)
         payload.filter.angle = angle;
         flags |= 8;
     }
-    func_8002be9c(flags, &payload, (s16)value);
+    interpolate_collision_rows(flags, &payload, (s16)value);
 }
 
 ADDRESS(0x8002bfac, 0x28)
-void func_8002bfac(void)
+void clear_map_cell_layer_masks(void)
 {
     u32 *mask = (u32 *)game_graphics_runtime.render_grid.map_cell_layer_masks;
     s32 index = 143;
@@ -377,7 +377,7 @@ void func_8002bfac(void)
 }
 
 ADDRESS(0x8002bfd4, 0x19c)
-void func_8002bfd4(const KfCollisionMaskPoint *start,
+void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
     /* The rasterizer uses 16-bit origins and truncates grid coordinates. */

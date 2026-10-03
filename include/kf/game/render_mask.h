@@ -38,8 +38,8 @@ typedef char kf_map_mask_shape_pair_size[sizeof(KfMapMaskShapePair) == 4 ? 1 : -
 extern KfRenderMaskScanState render_mask_scan_state;
 extern KfMapMaskShapePair map_mask_pitch_shape_pairs[7];
 
-void func_8002bfac(void);
-void func_8002bfd4(const KfCollisionMaskPoint *start,
+void clear_map_cell_layer_masks(void);
+void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value);
 void func_8002c1d4(u8 value);
 void func_8002c290(s32 cursor_offset);

@@ -288,9 +288,9 @@ void func_8002ddb4(u16 object_index, s32 depth_bias, s32 render_mode);
 void func_8002e4dc(u16 object_index, s32 depth_bias);
 void func_8002ebe0(u16 object_index, s32 blend_mode, s16 fixed_depth);
 void render_enqueue_map(u16 object_index);
-void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
+void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
                    u32 mode, s32 depth_bias);
-void func_8002f808(u16 object_index, s32 depth_bias,
+void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                    KfTmdPreparedAsset *prepared_asset);
 void func_8002ff5c(KfTmdHeader *asset, s32 object_index,
                    KfTmdPreparedAsset *prepared_asset);

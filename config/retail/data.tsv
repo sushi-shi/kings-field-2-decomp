@@ -71,7 +71,7 @@ GAME.EXE	0x80011410	0xc10	0x74	pointer	manual:switch-table		pointer[29]	retail s
 GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	map_object_initialize_from_placements jump-table dispatch;retail words	254 opcode rows, all targets within map_object_initialize_from_placements
 GAME.EXE	0x8001187c	0x107c	0x44	pointer	manual:switch-table		pointer[17]	retail jump-table words	map_object_spawn_effect 17-case template-kind jump table
 GAME.EXE	0x800118c0	0x10c0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800118c4	0x10c4	0x54	pointer	manual:switch-table		pointer[21]	retail jump-table words	func_800368b4 21-action dispatch table
+GAME.EXE	0x800118c4	0x10c4	0x54	pointer	manual:switch-table		pointer[21]	retail jump-table words	map_object_check_and_consume_marker 21-action dispatch table
 GAME.EXE	0x80011918	0x1118	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8001191c	0x111c	0x380	pointer	manual:switch-table		pointer[224]	retail words;func_80036ed4 bounded jr table	224 opcode-2 rows all target func_80036ed4; 201 use default 0x80038c5c
 GAME.EXE	0x80011c9c	0x149c	0x24	pointer	manual:switch-table		pointer[9]	retail words;func_80036ed4 bounded secondary jr table	nine subaction-1 rows target func_80036ed4; zero separator at 0x80011cc0
@@ -879,10 +879,10 @@ GAME.EXE	0x8006d6d0	0x5ced0	0x4	defined	manual:map TMD color		CVECTOR	retail byt
 GAME.EXE	0x8006d6d4	0x5ced4	0x4	defined	manual:render frame yaw accumulator	render_model_yaw_smoothing_accumulator	s32	retail zero word;four func_800335a0 read-write xrefs;angle_shortest_delta	initialized yaw-delta accumulator eased by one eighth per frame
 GAME.EXE	0x8006d6d8	0x5ced8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d6dc	0x5cedc	0x8	defined	manual:menu transition		RECT	retail bytes;StoreImage;MoveImage;LoadImage	initialized 320 by 240 image transfer rectangle
-GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6e4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	first motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6ec	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	second motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 start-offset argument	third motion offset; defining TU and linkage remain WIP
-GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;func_80036b68 end-offset argument	fourth motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6e4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	first motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6ec	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	second motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6f4	0x5cef4	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6f4	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	third motion offset; defining TU and linkage remain WIP
+GAME.EXE	0x8006d6fc	0x5cefc	0x8	defined	manual:map_object_motion_offsets	DAT_8006d6fc	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	fourth motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d704	0x5cf04	0x4	defined	reviewed	DAT_8006d704	u32	retail zero bytes;func_80040308 raw read/write pairs	four-slot effect trail ring index; original defining TU unproved
 GAME.EXE	0x8006d708	0x5cf08	0x8	defined	manual:effect_spawn_zero_direction		SVECTOR	retail bytes;effect_spawn_zero_direction xref;effect constructor argument	eight-byte zero vector passed to effect constructor
 GAME.EXE	0x8006d710	0x5cf10	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none

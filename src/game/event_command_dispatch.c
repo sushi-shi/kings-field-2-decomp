@@ -9,6 +9,7 @@
 #include <kf/game/event_stream.h>
 #include <kf/game/graphics.h>
 #include <kf/game/map_object.h>
+#include <kf/game/menu.h>
 #include <kf/game/notify.h>
 #include <kf/game/player.h>
 #include <kf/game/resources.h>
@@ -42,6 +43,16 @@ typedef void (*KfEventCommandCallback)(const VECTOR *position,
 
 RODATA(0x800128d0, 0x8c)
 
+ADDRESS(0x80046700, 0x8c)
+void event_spawn_effect_object(KfEventObjectView *event, s32 object_id)
+{
+    KfMapObject *object = map_object_effect_pool_acquire(0x17c, 0x10, -1);
+
+    event->effect_object_index = (object - map_object_state.objects) - 0x7c;
+    object->object_id = object_id;
+    object->tail.fields.unknown_38 = 0;
+}
+
 ADDRESS(0x8004678c, 0xc54)
 void event_scene_command_dispatch(const VECTOR *position,
                                   const KfPlayerViewRotation *rotation,
@@ -73,7 +84,7 @@ void event_scene_command_dispatch(const VECTOR *position,
                 break;
             }
             object = &map_object_state.objects[index];
-            status = func_800368b4(object, command);
+            status = map_object_check_and_consume_marker(object, command);
             switch (status) {
             case 1:
                 audio_play_sound_64();
@@ -122,7 +133,7 @@ object_control_action:
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
                 event_spawn_effect_object((KfEventObjectView *)object, command);
-            } else if (func_800368b4(object, command) == 3) {
+            } else if (map_object_check_and_consume_marker(object, command) == 3) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
                 event_state.state_word = 1;
             }
@@ -150,7 +161,7 @@ transition_action: {
         }
         player_state.vitals.current_mp -= 10;
         func_80036e24(1, 0, 4096, 256);
-        func_80038f20();
+        actor_disable_type3_transition_actors();
         previous_value = event_state.control.bytes[object_control_offset + 2];
         do {
             cd_request_yield();
@@ -209,7 +220,7 @@ transition_action: {
                     game_counter_decrement(command);
                     event_spawn_effect_object((KfEventObjectView *)object, command);
                 }
-            } else if (func_800368b4(object, command) == 3) {
+            } else if (map_object_check_and_consume_marker(object, command) == 3) {
                 notify_enqueue(object->tail.fields.unknown_3e.bytes.low);
                 event_state.state_word = 1;
             }
@@ -227,7 +238,7 @@ transition_action: {
             KfMapObject *object = &map_object_state.objects[index];
 
             if (object->object_id == 0x9d) {
-                func_800366fc(object->tail.fields.unknown_38);
+                map_object_apply_marker_signal(object->tail.fields.unknown_38);
             }
             event_state.state_word = 1;
         }
@@ -414,7 +425,7 @@ decay_update:
                     object->extra_40.bytes[0] != side) {
                     continue;
                 }
-                if (func_80036ad8(object->position.vx >> 11,
+                if (player_camera_within_map_region(object->position.vx >> 11,
                                   object->position.vz >> 11,
                                   object->tail.fields.unknown_38,
                                   object->tail.fields.unknown_39, 0x8000)) {
@@ -484,17 +495,17 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
         s32 current_second;
         s32 current_third;
 
-        func_8002bc18();
+        reset_collision_rows_and_overlay();
         current_first = func_8001584c(first, target_first, fraction);
         current_second = func_8001584c(second, target_second, fraction);
         current_third = func_8001584c(third, target_third, fraction);
-        func_80031634(current_first, current_second, current_third, 0x800);
+        accumulate_color_overlay(current_first, current_second, current_third, 0x800);
         func_800335a0(0, 0);
         fraction += step;
     } while (fraction < 4096);
 
-    func_8002bc18();
-    func_80031634(target_first, target_second, target_third, 0x800);
+    reset_collision_rows_and_overlay();
+    accumulate_color_overlay(target_first, target_second, target_third, 0x800);
     func_800335a0(0, 0);
 }
 ADDRESS(0x800475d8, 0x6c0)
@@ -685,4 +696,200 @@ interpolate_back:
     }
 finish:
     player_clear_motion();
+}
+
+ADDRESS(0x80047c98, 0x660)
+void event_world_dispatch_interaction(const VECTOR *position,
+                                      const KfPlayerViewRotation *rotation)
+{
+    VECTOR probe;
+    s32 object_index;
+    KfMapObject *objects;
+    KfMapObjectTemplate *templates;
+
+    probe.vx = position->vx;
+    probe.vy = position->vy + 500;
+    probe.vz = position->vz;
+    event_state.state_word = 0;
+    if (func_80045e5c(&probe, (const struct KfEulerAngles *)rotation) != 0) {
+        color_overlay_transition(0x400, 0, 0, 0, 0x80, 0xa0, 0xff);
+        player_state.vitals.current_hp = player_state.vitals.maximum_hp;
+        color_overlay_transition(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);
+    }
+
+    object_index = func_8003a9f4(probe.vx, probe.vy, probe.vz, 0x578, 0xc80);
+    if (object_index != -1) {
+        KfActor *actor = &actor_state.actors[object_index];
+        s32 angle = vector_xz_to_angle(actor->position.vx - probe.vx,
+                                       actor->position.vz - probe.vz);
+        if (angle_within_tolerance(rotation->angles[1], angle, 300)) {
+            event_target_stream_execute(actor);
+        }
+    }
+
+    object_index = 0;
+    objects = map_object_state.objects;
+    templates = map_object_state.templates;
+    for (;; object_index++) {
+        KfMapObject *object;
+        u16 object_id;
+        s32 kind;
+
+        object_index = func_80036190(object_index, &probe, 800, 2500,
+                                      rotation->angles[1], 512);
+        if (object_index == -1) {
+            break;
+        }
+        object = &objects[object_index];
+        object_id = object->object_id;
+        event_state.state_word = 1;
+        kind = templates[object_id].collision_kind;
+        switch (kind) {
+        case 0xa5:
+        case 0xff:
+            if (object->tail.fields.unknown_3e.bytes.high != 0xff) {
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+            }
+            break;
+        case 0x40:
+            event_map_object_interact(object);
+            if (object->object_id == 0xff) {
+                goto invoke_callback;
+            }
+            break;
+        case 9:
+        case 0x15: {
+            u16 linked_index = object->tail.fields.unknown_3a.value;
+            if (linked_index == 0xffff ||
+                objects[linked_index].object_id == 0xff) {
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                break;
+            }
+            {
+                KfMapObject *linked = &objects[linked_index];
+                u8 linked_state = object->extra_40.bytes[0];
+                u16 result_id;
+                linked->tail.fields.unknown_38 = 0xff;
+                linked->unknown_00 = linked_state;
+                event_map_object_interact(linked);
+                result_id = linked->object_id;
+                linked->unknown_00 = 0;
+                linked->tail.fields.unknown_38 = 0;
+                if (result_id == 0xff) {
+                    object->tail.fields.unknown_3a.value = 0xffff;
+                }
+            }
+            break;
+        }
+        case 0x53:
+            if (object->action_timer == 0) {
+                object->action_timer = 1;
+            }
+            break;
+        case 2:
+            if (object->action_timer == 0) {
+                if (object->tail.fields.unknown_38 == 0xff) {
+                    object->action_timer = 1;
+                } else {
+                    notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                }
+            }
+            break;
+        case 3:
+        case 4:
+            if (object->action_timer == 0) {
+                if (object->tail.fields.unknown_38 >= 0xfc) {
+                    if ((object->tail.fields.unknown_38 & 1) &&
+                        angle_within_tolerance(rotation->angles[1],
+                                               object->rotation.vy, 900)) {
+                        object->action_timer = 1;
+                        break;
+                    }
+                    if ((object->tail.fields.unknown_38 & 2) &&
+                        angle_within_tolerance(rotation->angles[1],
+                                               object->rotation.vy + 0x800,
+                                               900)) {
+                        object->action_timer = 1;
+                        break;
+                    }
+                }
+                if (object->tail.fields.unknown_38 == 0x0f && game_counter_bytes[0x0f] != 0) {
+                    object->action_timer = 1;
+                    break;
+                }
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+            }
+            break;
+        case 0x51:
+            if (object->action_timer == 0 &&
+                object->tail.fields.unknown_38 == 0xff) {
+                object->action_timer = 1;
+            }
+            break;
+        case 8:
+        case 0x16:
+            if (!angle_within_tolerance(rotation->angles[1],
+                                        object->rotation.vy + 0x800, 0x155)) {
+                break;
+            }
+            /* Kind five enters the same state handler without the angle gate. */
+        case 5:
+            switch (object->tail.fields.unknown_38) {
+            case 0xfe: {
+                u16 linked_index = object->tail.fields.unknown_3a.value;
+                if (linked_index != 0xffff) {
+                    goto check_linked_object;
+                }
+            notify_six:
+                notify_enqueue(6);
+                break;
+            check_linked_object:
+                if (objects[linked_index].object_id == 0xff) {
+                    goto notify_six;
+                }
+                break;
+            }
+            case 0xff:
+                object->tail.fields.unknown_38 = 0xfe;
+                break;
+            default:
+                notify_enqueue(object->tail.fields.unknown_3e.bytes.high);
+                break;
+            }
+            break;
+        case 0x0f:
+            if (object->tail.fields.unknown_38 == 0xff) {
+                notify_enqueue(0x10);
+            }
+            break;
+        case 0x20:
+            if (player_state.death_state == 0) {
+                u8 *linked_state;
+                func_800293d4(object_index);
+                linked_state = (u8 *)object->extra_40.record;
+                if (linked_state[1] == 1) {
+                    linked_state[1] = 5;
+                }
+            }
+            break;
+        case 0x0d:
+        case 0x14:
+            func_80034e10(6, object->tail.pair_38.value_38 + 0x78);
+            break;
+        case 0x12:
+            color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
+            player_state.vitals.current_hp = player_state.vitals.maximum_hp;
+            color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
+            break;
+        case 0x0e:
+            event_world_state_save_slot(state_8017d118.values_04[0]);
+            func_80028fa8();
+            menu_card_save_browser();
+            break;
+        }
+    }
+
+invoke_callback:
+    ((void (*)(const VECTOR *, const KfPlayerViewRotation *))
+        state_8017d118.active_table[0])(&probe, rotation);
 }

@@ -56,10 +56,10 @@ ADDRESS(0x80023484, 0xec)
 void player_reset_view(void)
 {
     player_state.camera_vertical_offset = 0;
-    player_state.unknown_136 = 0;
+    player_state.walking_bob_phase = 0;
     player_state.landing_vertical_offset = 0;
     player_state.unknown_ce[2] = 0;
-    player_state.unknown_13a = 0;
+    player_state.vertical_velocity = 0;
     player_state.death_state = 0;
     player_state.unknown_110[2] = 0;
     player_state.unknown_110[1] = 0;

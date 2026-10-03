@@ -36,7 +36,7 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     func_8002c670();
     display_begin_frame();
     pool_mark_allocated();
-    func_800316c8();
+    render_player_weapon();
 
     render_model_rows[0].state = player_state.unknown_c9[1];
     row_state = player_state.unknown_c9[0];
@@ -87,9 +87,9 @@ void func_800335a0(const VECTOR *position, const SVECTOR *rotation)
     render_model_rows[9].scale.vx = attack_width;
     render_model_rows[10].scale.vx = magic_width;
 
-    func_80031024();
+    render_active_model_rows();
     notification_draw();
-    func_80030f5c();
+    render_map_cell_window();
     func_8003247c();
     render_sliding_panel_primary();
     render_sliding_panel_secondary();

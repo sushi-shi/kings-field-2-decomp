@@ -282,18 +282,6 @@ source = "src/game/menu_card_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_card_load_browser"
-image = "GAME.EXE"
-source = "src/game/menu_card_load_browser.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_card_rows"
-image = "GAME.EXE"
-source = "src/game/menu_card_rows.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_card_panel"
 image = "GAME.EXE"
 source = "src/game/menu_card_panel.c"
@@ -309,12 +297,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.menu_card_save_browser"
 image = "GAME.EXE"
 source = "src/game/menu_card_save_browser.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.menu_card_format_flow"
-image = "GAME.EXE"
-source = "src/game/menu_card_format_flow.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -462,12 +444,6 @@ source = "src/game/memory_card_directory.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.memory_card_wait"
-image = "GAME.EXE"
-source = "src/game/memory_card_wait.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.player_collision_bounds"
 image = "GAME.EXE"
 source = "src/game/player_collision_bounds.c"
@@ -600,18 +576,6 @@ source = "src/game/graphics_overlay_primitives.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.collision_channel_draw"
-image = "GAME.EXE"
-source = "src/game/collision_channel_draw.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.collision_channel_add"
-image = "GAME.EXE"
-source = "src/game/collision_channel_add.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.player_weapon_render"
 image = "GAME.EXE"
 source = "src/game/player_weapon_render.c"
@@ -621,12 +585,6 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.render_world_model"
 image = "GAME.EXE"
 source = "src/game/render_world_model.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.render_animated_object"
-image = "GAME.EXE"
-source = "src/game/render_animated_object.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -714,24 +672,6 @@ source = "src/game/map_object.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.map_object_spawn_scatter"
-image = "GAME.EXE"
-source = "src/game/map_object_spawn_scatter.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_object_vertex_world"
-image = "GAME.EXE"
-source = "src/game/map_object_vertex_world.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_object_motion"
-image = "GAME.EXE"
-source = "src/game/map_object_motion.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.frame_step_cd_service"
 image = "GAME.EXE"
 source = "src/game/frame_step_cd_service.c"
@@ -750,51 +690,15 @@ source = "src/game/actor_initialization.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_home_wrapper"
-image = "GAME.EXE"
-source = "src/game/actor_home_wrapper.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_prepare_initialize"
-image = "GAME.EXE"
-source = "src/game/actor_prepare_initialize.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_pool_clear"
-image = "GAME.EXE"
-source = "src/game/actor_pool_clear.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_set_target"
-image = "GAME.EXE"
-source = "src/game/actor_set_target.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_candidate_score"
-image = "GAME.EXE"
-source = "src/game/actor_candidate_score.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.actor_target_selection"
 image = "GAME.EXE"
 source = "src/game/actor_target_selection.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_byte_0c_set"
+unit = "game.actor_animation_selection"
 image = "GAME.EXE"
-source = "src/game/actor_byte_0c_set.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_byte_0c_set_changed"
-image = "GAME.EXE"
-source = "src/game/actor_byte_0c_set_changed.c"
+source = "src/game/actor_animation_selection.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
@@ -954,33 +858,15 @@ source = "src/game/event_target_stream.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.event_map_object_spawn"
-image = "GAME.EXE"
-source = "src/game/event_map_object_spawn.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.event_command_dispatch"
 image = "GAME.EXE"
 source = "src/game/event_command_dispatch.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.event_world_dispatch"
-image = "GAME.EXE"
-source = "src/game/event_world_dispatch.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.event_state"
 image = "GAME.EXE"
 source = "src/game/event_state.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_payload"
-image = "GAME.EXE"
-source = "src/game/memory_card_payload.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

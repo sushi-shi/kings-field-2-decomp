@@ -3,7 +3,7 @@
 #include <kf/game/memory.h>
 
 ADDRESS(0x8002ce2c, 0x3c)
-KfFloorItem *func_8002ce2c(void)
+KfFloorItem *floor_item_find_free(void)
 {
     KfFloorItem *item = game_graphics_runtime.floor_items;
     s32 remaining = KF_FLOOR_ITEM_CAPACITY;
@@ -19,10 +19,10 @@ KfFloorItem *func_8002ce2c(void)
 }
 
 ADDRESS(0x8002ce68, 0xd8)
-void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
+void floor_item_capture_image(s32 x, s32 y, u8 value_01, u8 value_03,
                    s32 kind, s32 width_bytes, u16 height)
 {
-    KfFloorItem *item = func_8002ce2c();
+    KfFloorItem *item = floor_item_find_free();
 
     if (item != 0) {
         item->unknown_04 = 0;

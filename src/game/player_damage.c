@@ -76,13 +76,13 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     }
     if (remaining == 0) {
         player_death_begin(&direction);
-        player_state.unknown_13c = 3500;
-        player_state.unknown_13e = duration;
+        player_state.damage_red_overlay_scale = 3500;
+        player_state.damage_red_overlay_decay = duration;
         return;
     }
     if (origin == NULL) {
-        player_state.unknown_13c = 3500;
-        player_state.unknown_13e = duration;
+        player_state.damage_red_overlay_scale = 3500;
+        player_state.damage_red_overlay_decay = duration;
         return;
     }
 

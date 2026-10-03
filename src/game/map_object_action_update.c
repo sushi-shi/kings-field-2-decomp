@@ -405,7 +405,7 @@ void func_80036ed4(void)
                 }
                 object->unknown_0a = 0xfff;
             action83_complete:
-                func_800366fc(object->tail.fields.unknown_39);
+                map_object_apply_marker_signal(object->tail.fields.unknown_39);
                 switch (object->tail.fields.unknown_38) {
                 case 0:
                     object->action_timer = 99;
@@ -574,7 +574,7 @@ void func_80036ed4(void)
                 s32 height = object->tail.spawn_bytes.spawn_sequence.low;
                 s32 source_x = center_x - ((width - 1) >> 1);
                 s32 source_z = center_z - ((height - 1) >> 1);
-                if (func_80036ad8(source_x, source_z, width, height, depth) ||
+                if (player_camera_within_map_region(source_x, source_z, width, height, depth) ||
                     object->tail.fields.unknown_38 == 0xff) {
                     func_80034f90(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
@@ -628,7 +628,7 @@ void func_80036ed4(void)
             break;
 
         case 224:
-            if (func_80036ad8(object->position.vx >> 11,
+            if (player_camera_within_map_region(object->position.vx >> 11,
                                object->position.vz >> 11,
                                object->tail.fields.unknown_38,
                                object->tail.fields.unknown_39,
@@ -669,7 +669,7 @@ void func_80036ed4(void)
                     object->unknown_0a = 0xfff;
                 } else if (object->tail.fields.unknown_3a.bytes.high != 0xfe &&
                            (object->tail.fields.unknown_3a.bytes.high == 0xff ||
-                            func_80036ad8(object->position.vx >> 11,
+                            player_camera_within_map_region(object->position.vx >> 11,
                                             object->position.vz >> 11,
                                             object->tail.fields.unknown_3a.bytes.high,
                                             object->tail.spawn_bytes.spawn_sequence.low,
@@ -719,7 +719,7 @@ void func_80036ed4(void)
                     u16 reach;
                     u16 height;
                     s32 kind;
-                    func_800369b8(object, vertex_index, &position);
+                    map_object_sample_world_vertex(object, vertex_index, &position);
                     reach = (u16)pose_template->depth_offset;
                     height = pose_template->unknown_10;
                     kind = collision_query_world(position.vx, position.vy, position.vz,
@@ -728,7 +728,7 @@ void func_80036ed4(void)
                         goto clear_action_trigger;
                     } else if (object->extra_40.bytes[0] == 0) {
                         object->extra_40.bytes[0] = 1;
-                        func_8003fb94(kind, 0x20, 5000, 5,
+                        effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
                                       object->tail.fields.unknown_39,
                                       template->unknown_0d[5], template->unknown_0d[6],
                                       template->unknown_0d[7], template->unknown_0d[8],
@@ -779,7 +779,7 @@ void func_80036ed4(void)
                 object->tail.fields.unknown_38 = 0xff;
                 object->action_timer = 0;
             }
-            func_80036b68(object, target, &DAT_8006d6e4, &DAT_8006d6ec, 1, 32);
+            map_object_step_offset_motion(object, target, &DAT_8006d6e4, &DAT_8006d6ec, 1, 32);
             break;
         }
 
@@ -791,7 +791,7 @@ void func_80036ed4(void)
                 object->action_timer = 0;
                 linked->tail.fields.unknown_38 &= ~object->tail.fields.unknown_3a.bytes.low;
             }
-            if (func_80036b68(object, target, &DAT_8006d6f4,
+            if (map_object_step_offset_motion(object, target, &DAT_8006d6f4,
                               &DAT_8006d6fc, 0, 20)) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.bytes.high];
                 linked->tail.fields.unknown_38 |= object->tail.fields.unknown_3a.bytes.low;
@@ -810,7 +810,7 @@ void func_80036ed4(void)
             KfMapObject *linked = &map_object_state.objects[object->tail.fields.unknown_3a.value];
             switch (object->action_timer) {
             case 0:
-                func_800369b8(object, 2, &linked->position);
+                map_object_sample_world_vertex(object, 2, &linked->position);
                 if (linked->position.vy != object->position.vy) {
                     s16 scale;
                     linked->rotation = object->rotation;
@@ -939,7 +939,7 @@ void func_80036ed4(void)
             break;
 
         case 225:
-            if (func_80036ad8(object->position.vx >> 11,
+            if (player_camera_within_map_region(object->position.vx >> 11,
                                object->position.vz >> 11,
                                object->tail.fields.unknown_38,
                                object->tail.fields.unknown_39,
@@ -953,7 +953,7 @@ void func_80036ed4(void)
                         ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
                         break;
                     case 1:
-                        func_800366fc(object->tail.fields.unknown_3a.bytes.high);
+                        map_object_apply_marker_signal(object->tail.fields.unknown_3a.bytes.high);
                         break;
                     case 2:
                         event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
@@ -968,7 +968,7 @@ void func_80036ed4(void)
             break;
 
         case 34:
-            if (func_80036ad8(object->tail.fields.unknown_38,
+            if (player_camera_within_map_region(object->tail.fields.unknown_38,
                                object->tail.fields.unknown_39,
                                object->tail.fields.unknown_3a.bytes.low,
                                object->tail.fields.unknown_3a.bytes.high,

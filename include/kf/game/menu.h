@@ -232,7 +232,7 @@ void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group);
 void menu_fill_item_prices(u32 *prices, const u8 *indices,
     s32 first, s32 last, s32 group);
-s32 func_8001af30(const struct DIRENTRY *card_entries, s16 *glyph_rows,
+s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);
 void func_8001b030(s32 panel, const KfMenuGlyphString *rows, s32 count,
     s32 detail0, s32 detail1, s32 detail2, s32 detail3, s32 detail4,
@@ -251,7 +251,7 @@ void func_80022300(s32 cue);
 void func_800223cc(void);
 s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
     s32 *cancelled);
-void func_8001bcfc(void);
+void menu_card_save_browser(void);
 void func_8001ceb8(s32 kind);
 s32 menu_choose_inventory_item(void);
 void func_8001d8d0(void);
@@ -263,10 +263,10 @@ void func_800192dc(void);
 void func_80019ed4(s32 category);
 void func_8001a2f4(void);
 void func_8001a4f0(void);
-s32 func_8001ac80(void);
+s32 menu_card_load_browser(void);
 s32 func_8001b14c(void);
-void func_8001bf68(s32 slot);
-s32 func_8001c12c(s32 kind);
+void menu_card_save_slot(s32 slot);
+s32 menu_confirm_card_format(s32 kind);
 void func_8001c62c(KfMenuGlyphString *rows);
 void func_8001c770(KfMenuGlyphString *rows);
 void func_8001c8b0(KfMenuGlyphString *rows);

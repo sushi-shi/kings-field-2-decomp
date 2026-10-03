@@ -39,7 +39,7 @@ void func_8002c670(void)
 
     sine = rsin(game_graphics_runtime.render_state.view_rotation.vy);
     cosine = rcos(game_graphics_runtime.render_state.view_rotation.vy);
-    func_8002bfac();
+    clear_map_cell_layer_masks();
 
     render_mask_scan_state.map_x = game_graphics_runtime.render_state.view_cell_x;
     render_mask_scan_state.map_z = game_graphics_runtime.render_state.view_cell_z;
@@ -81,13 +81,13 @@ void func_8002c670(void)
     corners[3].x = ((shape[5] * cosine - shape[6] * sine) >> 8) + center_x;
     corners[3].z = ((shape[5] * sine + shape[6] * cosine) >> 8) + center_z;
 
-    func_8002bfd4(&corners[0], &corners[1],
+    rasterize_map_cell_layer_mask_line(&corners[0], &corners[1],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[1], &corners[3],
+    rasterize_map_cell_layer_mask_line(&corners[1], &corners[3],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[3], &corners[2],
+    rasterize_map_cell_layer_mask_line(&corners[3], &corners[2],
                   render_mask_scan_state.first_layer_mask | 0x20);
-    func_8002bfd4(&corners[2], &corners[0],
+    rasterize_map_cell_layer_mask_line(&corners[2], &corners[0],
                   render_mask_scan_state.first_layer_mask | 0x20);
     func_8002c1d4(render_mask_scan_state.first_layer_mask | 0x20);
 

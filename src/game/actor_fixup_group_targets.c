@@ -5,7 +5,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x8003f610, 0x1dc)
-void func_8003f610(void)
+void actor_update_frame(void)
 {
     KfActor *actor;
 
@@ -19,7 +19,7 @@ void func_8003f610(void)
                  (actor_state.unknown_93b8 & 3)) ||
                 player_state.unknown_09[1] != 0 ||
                 player_state.death_state == 1) {
-                func_8003983c();
+                actor_update_lifecycle_for_player_range();
             }
 
             if (actor->lifecycle == 1) {
@@ -103,7 +103,7 @@ typedef struct KfActorLoadRecord {
 typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
 
 ADDRESS(0x8003f860, 0x1cc)
-void func_8003f860(const KfActorLoadRecord *records)
+void actor_load_records(const KfActorLoadRecord *records)
 {
     KfActor *actor = actor_state.actors;
     u16 remaining = KF_ACTOR_CAPACITY - 1;

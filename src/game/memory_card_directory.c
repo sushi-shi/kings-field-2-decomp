@@ -1,5 +1,6 @@
 #include <kf/lib/address.h>
 #include <kf/game/card.h>
+#include <kf/game/player.h>
 #include <psyq/kernel.h>
 #include <psyq/libc.h>
 #include <CONVERT.H>
@@ -45,7 +46,7 @@ DATA(0x8006d6a8, 0x7)
 char DAT_8006d6a8[7] = "bu00:*";
 
 ADDRESS(0x800226ec, 0x1dc)
-s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count)
+s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 {
     struct DIRENTRY ordered[15];
     struct DIRENTRY *entry;
@@ -84,7 +85,7 @@ s32 func_800226ec(struct DIRENTRY *entries, s32 *matching_count)
 }
 
 ADDRESS(0x800228c8, 0x280)
-s32 func_800228c8(const char *filename, s32 *experience, s32 *level,
+s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
     s32 *slot)
 {
     KfCardHeader header;
@@ -143,7 +144,7 @@ s32 memory_card_format(void)
 }
 
 ADDRESS(0x80022b74, 0x12c)
-s32 func_80022b74(s32 slot)
+s32 memory_card_read_slot(s32 slot)
 {
     char path[40] = "bu00:";
     s32 attempt;
@@ -177,7 +178,7 @@ s32 func_80022b74(s32 slot)
 }
 
 ADDRESS(0x80022ca0, 0x4d8)
-s32 func_80022ca0(s32 slot)
+s32 memory_card_write_slot(s32 slot)
 {
     struct DIRENTRY entries[15];
     KfCardHeader header;
@@ -197,7 +198,7 @@ s32 func_80022ca0(s32 slot)
     memset(slot_digit + 2, 0, 8);
     memset(occupied, 0, sizeof(occupied));
     memset(entries, 0, sizeof(entries));
-    card_full = func_800226ec(entries, &matching_count);
+    card_full = memory_card_scan_save_entries(entries, &matching_count);
 
     for (index = 0; index < 15; index++) {
         if (strncmp(entries[index].name, memory_card_file_prefix, 12) == 0) {
@@ -228,7 +229,7 @@ s32 func_80022ca0(s32 slot)
     header.icon_type = KF_CARD_ICON_TYPE_THREE_FRAMES;
     header.block_count = KF_CARD_FILE_BLOCKS;
     strcpy(header.title, memory_card_assets.title);
-    func_80023178(&header, slot);
+    memory_card_write_title_stats(&header, slot);
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
     memcpy(header.icon_palette, memory_card_assets.icon_palette[slot - 1],
         sizeof(header.icon_palette));
@@ -260,4 +261,75 @@ s32 func_80022ca0(s32 slot)
     close(handle);
     memory_card_loaded_slot = slot;
     return 0;
+}
+
+ADDRESS(0x80023178, 0x110)
+void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
+{
+    s32 experience = player_state.experience;
+    s32 level = player_state.level;
+    s32 digit;
+    s32 index;
+
+    header->title[30] = 0x82;
+    header->title[31] = slot_glyph + 0x4f;
+    for (index = 0; index < 6; index++) {
+        digit = experience % 10;
+        experience /= 10;
+        header->title[(25 - index) * 2] = 0x82;
+        header->title[1 + (25 - index) * 2] = digit + 0x4f;
+        if (experience == 0)
+            index = 6;
+    }
+
+    for (index = 0; index < 2; index++) {
+        digit = level % 10;
+        level /= 10;
+        header->title[(30 - index) * 2] = 0x82;
+        header->title[1 + (30 - index) * 2] = digit + 0x4f;
+        if (level == 0)
+            index = 2;
+    }
+}
+
+ADDRESS(0x80023288, 0x24)
+u32 memory_card_payload_byte_sum(const u8 *payload)
+{
+    u32 sum = 0;
+    s32 index;
+
+    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0;) {
+        sum += *payload;
+        index--;
+        payload++;
+    }
+    return sum;
+}
+
+ADDRESS(0x800232ac, 0x80)
+s32 memory_card_wait_event(void)
+{
+    for (;;) {
+        if (TestEvent(memory_card_io_end_event) == 1) {
+            return KF_CARD_EVENT_IO_END;
+        }
+        if (TestEvent(memory_card_timeout_event) == 1) {
+            return KF_CARD_EVENT_TIMEOUT;
+        }
+        if (TestEvent(memory_card_new_device_event) == 1) {
+            return KF_CARD_EVENT_NEW_DEVICE;
+        }
+        if (TestEvent(memory_card_error_event) == 1) {
+            return KF_CARD_EVENT_ERROR;
+        }
+    }
+}
+
+ADDRESS(0x8002332c, 0x58)
+void memory_card_clear_events(void)
+{
+    TestEvent(memory_card_io_end_event);
+    TestEvent(memory_card_timeout_event);
+    TestEvent(memory_card_new_device_event);
+    TestEvent(memory_card_error_event);
 }

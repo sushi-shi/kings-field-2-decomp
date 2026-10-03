@@ -73,9 +73,9 @@ void game_main_loop(void)
     func_80015d58();
     event_state_initialize();
     memory_card_initialize();
-    func_8002bc18();
+    reset_collision_rows_and_overlay();
     game_graphics_runtime.collision_rotation_dirty = 1;
-    func_8002bd3c();
+    refresh_collision_row_rotations();
     SsSetMVol(0x7f, 0x7f);
     if (menu_card_browser() != -1) {
         player_restore_equipment_effects();
@@ -83,11 +83,11 @@ void game_main_loop(void)
     func_80015fd4();
     player_sync_position_to_map();
 
-    func_8002ce68(0x140, 0x100, 0, 1, 1, 0x40, 0x40);
-    func_8002ce68(0x198, 0x1c0, 0, 1, 1, 0x20, 0x20);
-    func_8002ce68(0x1a0, 0x1c0, 0, 4, 1, 0x20, 0x20);
-    func_8002ce68(0x150, 0x140, 0, 2, 1, 0x40, 0x40);
-    func_8002ce68(0x150, 0x100, 0, 4, 1, 0x40, 0x40);
+    floor_item_capture_image(0x140, 0x100, 0, 1, 1, 0x40, 0x40);
+    floor_item_capture_image(0x198, 0x1c0, 0, 1, 1, 0x20, 0x20);
+    floor_item_capture_image(0x1a0, 0x1c0, 0, 4, 1, 0x20, 0x20);
+    floor_item_capture_image(0x150, 0x140, 0, 2, 1, 0x40, 0x40);
+    floor_item_capture_image(0x150, 0x100, 0, 4, 1, 0x40, 0x40);
 
     /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
@@ -96,17 +96,17 @@ void game_main_loop(void)
     DAT_80198630 = 0;
 
     do {
-        func_8002bc18();
+        reset_collision_rows_and_overlay();
         func_80036ed4();
         func_8002985c();
-        func_8003f610();
+        actor_update_frame();
         effect_pool_sweep();
         player_state.unknown_09[1] = 0;
         callback_invoke_slot_04_zero();
         func_80016820();
         player_get_camera_pose(&camera_position, &camera_rotation);
         audio_update_listener(&camera_position, &camera_rotation);
-        func_8002bd3c();
+        refresh_collision_row_rotations();
         cd_request_service_stream();
         cd_request_service_vab();
         func_800335a0(&camera_position, &camera_rotation);

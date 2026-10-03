@@ -9,7 +9,7 @@ s32 func_8002b604(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void func_8002b874(void);
 s32 func_8002b7f8(s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
-void func_8002bf38(u8 first, u8 second, u8 third, s32 angle, u16 value);
+void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle, u16 value);
 
 /* Phase-one resource loading copies 0x600 words to this interior BSS range.
  * The variable-length shape records within it remain untyped. */

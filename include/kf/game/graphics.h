@@ -142,20 +142,20 @@ typedef struct KfCollisionDefaultRow {
     KfCollisionDefaultTail filter;
 } KfCollisionDefaultRow;
 
-void func_8002be9c(s32 flags, const KfCollisionFilterPayload *payload,
+void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *payload,
                     s32 value);
-void func_8002bc18(void);
+void reset_collision_rows_and_overlay(void);
 void func_8002c670(void);
 void floor_item_update_textures(void);
-void func_80030f5c(void);
-void func_80031024(void);
+void render_map_cell_window(void);
+void render_active_model_rows(void);
 void render_color_overlay(void);
 void render_accumulated_color_overlay(void);
 void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
                               s32 target_first, s32 target_second,
                               s32 target_third);
-void func_800316c8(void);
-void func_80031634(s32 first, s32 second, s32 third, s32 scale);
+void render_player_weapon(void);
+void accumulate_color_overlay(s32 first, s32 second, s32 third, s32 scale);
 void func_8003247c(void);
 void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
                    u8 texture_u, u8 texture_v, u8 texture_width,
@@ -185,10 +185,10 @@ typedef struct KfGraphicsRuntimeGame {
     u8 notification_brightness;
     u8 color_overlay_control;
     u8 color_overlay_rgb[3];
-    u8 unknown_14cc5;
-    u16 unknown_14cc6;
-    u16 unknown_14cc8;
-    u16 unknown_14cca;
+    u8 color_overlay_sample_count;
+    u16 color_overlay_red_sum;
+    u16 color_overlay_green_sum;
+    u16 color_overlay_blue_sum;
     u32 frame_counter_a;
     u32 frame_counter_b;
     KfFloorItem floor_items[KF_FLOOR_ITEM_CAPACITY];
@@ -218,7 +218,7 @@ typedef char kf_collision_default_row_size[
 typedef char kf_collision_rows_offset[
     (u32)&((KfGraphicsRuntimeGame *)0)->collision_rows == 0x1506c ? 1 : -1];
 typedef char kf_collision_control_offset[
-    (u32)&((KfGraphicsRuntimeGame *)0)->unknown_14cc6 == 0x14cc6 ? 1 : -1];
+    (u32)&((KfGraphicsRuntimeGame *)0)->color_overlay_red_sum == 0x14cc6 ? 1 : -1];
 typedef char kf_graphics_runtime_size[sizeof(KfGraphicsRuntimeGame) == 0x17cf0 ? 1 : -1];
 typedef char kf_clip_result_vertices_offset[
     (u32)&((KfGraphicsRuntimeGame *)0)->clip_result_vertices == 0x14994 ? 1 : -1];
@@ -258,8 +258,8 @@ void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue);
 void func_80034e10(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);
-void func_8002bd3c(void);
-void func_8002ce68(s32 x, s32 y, u8 value_01, u8 value_03,
+void refresh_collision_row_rotations(void);
+void floor_item_capture_image(s32 x, s32 y, u8 value_01, u8 value_03,
                    s32 kind, s32 width_bytes, u16 height);
 void display_begin_frame(void);
 void display_present_frame(void);

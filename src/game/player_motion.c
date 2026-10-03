@@ -14,7 +14,7 @@ enum {
 ADDRESS(0x80027928, 0x60)
 void player_check_fall_death(void)
 {
-    if (player_state.unknown_13a >= COLLISION_DEPTH_ARM_HEIGHT
+    if (player_state.vertical_velocity >= COLLISION_DEPTH_ARM_HEIGHT
         && (KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy)
                > COLLISION_DEPTH_DEATH_LIMIT) {
         player_death_begin(NULL);
@@ -57,10 +57,10 @@ void player_update_vertical_motion(void)
 
     case 0x10:
         player_check_fall_death();
-        next_y = player_state.camera_position.vy + player_state.unknown_13a;
+        next_y = player_state.camera_position.vy + player_state.vertical_velocity;
         player_state.camera_position.vy = next_y;
-        player_state.unknown_ea = player_state.unknown_13a;
-        player_state.unknown_13a += 40;
+        player_state.unknown_ea = player_state.vertical_velocity;
+        player_state.vertical_velocity += 40;
         if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             player_state.unknown_d0 = 0;
@@ -69,38 +69,38 @@ void player_update_vertical_motion(void)
 
     case 0x20:
         player_check_fall_death();
-        player_state.camera_position.vy += player_state.unknown_13a;
+        player_state.camera_position.vy += player_state.vertical_velocity;
         if (player_state.camera_position.vy <= KF_COLLISION_CACHE_RESULT
-            || player_state.unknown_13a >= 0) {
+            || player_state.vertical_velocity >= 0) {
             if (KF_COLLISION_CACHE_RESULT
-                < player_state.camera_position.vy - player_state.unknown_13a) {
+                < player_state.camera_position.vy - player_state.vertical_velocity) {
                 player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             }
             player_state.unknown_d0 = 0;
         }
-        player_state.unknown_ea = player_state.unknown_13a;
-        player_state.unknown_13a += 5;
+        player_state.unknown_ea = player_state.vertical_velocity;
+        player_state.vertical_velocity += 5;
         goto finish;
 
     case 0x40:
         player_check_fall_death();
-        next_y = player_state.camera_position.vy + player_state.unknown_13a;
+        next_y = player_state.camera_position.vy + player_state.vertical_velocity;
         collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                          player_state.camera_position.vz, 800, 1700, 0x31);
         if (collision_flags == 0) {
-            player_state.unknown_ea = player_state.unknown_13a;
-            player_state.unknown_13a += 40;
-            player_state.unknown_110[0] = player_state.unknown_13a >> 1;
+            player_state.unknown_ea = player_state.vertical_velocity;
+            player_state.vertical_velocity += 40;
+            player_state.unknown_110[0] = player_state.vertical_velocity >> 1;
             player_state.camera_position.vy = next_y;
             goto finish;
         }
-        if (player_state.unknown_13a < 0) {
-            player_state.unknown_13a = 0;
+        if (player_state.vertical_velocity < 0) {
+            player_state.vertical_velocity = 0;
             goto finish;
         }
-        player_play_landing_sound(player_state.unknown_13a);
-        if (player_state.unknown_13a >= 480) {
-            impact = (player_state.unknown_13a * player_state.unknown_13a) >> 12;
+        player_play_landing_sound(player_state.vertical_velocity);
+        if (player_state.vertical_velocity >= 480) {
+            impact = (player_state.vertical_velocity * player_state.vertical_velocity) >> 12;
             player_apply_damage_reaction(NULL, (impact * impact * impact) / 0x1ccf0, 0);
         }
         if ((collision_flags & 4) != 0) {
@@ -122,18 +122,18 @@ void player_update_vertical_motion(void)
     case 0x50:
 landing:
         if (player_state.landing_vertical_offset > 0) {
-            player_state.landing_vertical_offset += player_state.unknown_13a >> 2;
+            player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
         }
         bob = player_state.unknown_110[0];
-        player_state.unknown_13a -= 100;
+        player_state.vertical_velocity -= 100;
         if (bob > 0) {
             player_state.unknown_110[0] =
-                bob + (player_state.unknown_13a > 0 ? 10 : -30);
+                bob + (player_state.vertical_velocity > 0 ? 10 : -30);
         }
         if (player_state.landing_vertical_offset <= 0
             && player_state.unknown_110[0] <= 0) {
             player_state.unknown_d0 = 0;
-            player_state.unknown_13a = 0;
+            player_state.vertical_velocity = 0;
             player_state.landing_vertical_offset = 0;
             player_state.unknown_110[0] = 0;
         }
@@ -159,7 +159,7 @@ landing:
         }
         movement_speed = player_state.movement_speed.signed_value;
         player_state.unknown_d0 = 0x20;
-        player_state.unknown_13a = movement_speed > 200 ? -300 : -150;
+        player_state.vertical_velocity = movement_speed > 200 ? -300 : -150;
     } else {
         if (height_difference <= 0) {
             goto finish;
@@ -182,7 +182,7 @@ landing:
             goto finish;
         }
         player_state.unknown_d0 = height_difference > 1024 ? 0x40 : 0x10;
-        player_state.unknown_13a = 40;
+        player_state.vertical_velocity = 40;
     }
     player_state.landing_vertical_offset = 0;
     player_state.unknown_110[0] = 0;
@@ -190,9 +190,9 @@ landing:
 finish:
     if (player_state.unknown_d0 == 0) {
         if (player_state.unknown_c9[3] != 0) {
-            player_state.unknown_136 =
-                (player_state.unknown_136 + player_state.movement_speed.unsigned_value) & 0xfff;
-            bob = rsin(player_state.unknown_136) >> 5;
+            player_state.walking_bob_phase =
+                (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value) & 0xfff;
+            bob = rsin(player_state.walking_bob_phase) >> 5;
             if (bob < 0) {
                 bob = -bob;
             }

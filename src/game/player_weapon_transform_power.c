@@ -4,7 +4,7 @@
 #include <kf/game/player.h>
 
 ADDRESS(0x80026330, 0x134)
-void func_80026330(s32 mode, VECTOR *output)
+void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output)
 {
     SVECTOR offset;
     struct KfEulerAngles angles;
@@ -16,7 +16,7 @@ void func_80026330(s32 mode, VECTOR *output)
     angles.z = player_state.camera_rotation.angles[2]
              + player_state.equipped_weapon_record->rotation_offset_z;
     animation_sample_vertex(32, player_state.weapon_attack_mode,
-                  player_state.weapon_attack_phase, mode, &offset);
+                  player_state.weapon_attack_phase, vertex_index, &offset);
     offset.vx -= player_state.equipped_weapon_record->position_offset_x;
     offset.vy += player_state.equipped_weapon_record->position_offset_y;
     offset.vz -= player_state.equipped_weapon_record->position_offset_z;

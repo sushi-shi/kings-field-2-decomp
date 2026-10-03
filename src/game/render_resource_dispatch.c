@@ -56,13 +56,13 @@ void func_8003247c(void)
         if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->unknown_01 + 0x80) != 0) {
-            position = func_8003c10c(actor, &actor_position);
+            position = actor_resolve_group_position(actor, &actor_position);
             if (actor->unknown_28 & 0x20) {
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
                 position = actor_position_ptr;
-                func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
+                render_world_model(actor->unknown_03, actor->unknown_01 + 0x80,
                                position, &rotation, (SVECTOR *)&actor->unknown_48,
                                &actor->animation_cache, &render_world_identity_matrix,
                                actor->unknown_0c, actor->animation_phase,
@@ -72,7 +72,7 @@ actor_visible:
                 rotation.x = actor->rotation.x;
                 rotation.y = actor->rotation.y + 0x800;
                 rotation.z = actor->rotation.z;
-                func_80031850(actor->unknown_03, actor->unknown_01 + 0x80,
+                render_world_model(actor->unknown_03, actor->unknown_01 + 0x80,
                                position, &rotation, (SVECTOR *)&actor->unknown_48,
                                &actor->animation_cache,
                                &game_graphics_runtime.render_state.view_matrix,
@@ -119,7 +119,7 @@ actor_next:
                              object->tail.fields.unknown_39) != 0 &&
             (object->unknown_00 & render_mask_scan_state.first_layer_mask)) {
             if (resource_registry_get(object->object_id + 0x100) != 0) {
-                func_80031d8c(object->object_id + 0x100,
+                render_animated_object(object->object_id + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
                                (KfPoolRecord **)&object->tail,
                                object->unknown_01, object->unknown_0a,
@@ -137,7 +137,7 @@ map_sound_action: {
             s32 radius;
             s32 volume;
 
-            if (func_80036ad8(object->position.vx >> 11,
+            if (player_camera_within_map_region(object->position.vx >> 11,
                               object->position.vz >> 11,
                               object->tail.fields.unknown_38,
                               object->tail.fields.unknown_39, 0x8000) == 0)
@@ -200,7 +200,7 @@ map_ordinary_visible:
                 if (object->collision_flags & 1) {
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
-                func_80031850(object->unknown_00, object_index + 0x100,
+                render_world_model(object->unknown_00, object_index + 0x100,
                                &object->position, &rotation, &object->scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
@@ -240,7 +240,7 @@ map_object_next:
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
-            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
                            &effect->position, &rotation, effect_scale_ptr,
                            effect_cache,
                            &game_graphics_runtime.render_state.view_matrix,
@@ -249,7 +249,7 @@ map_object_next:
                            effect->unknown_09, -60);
             break;
         case 4:
-            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
                            &effect->position, effect_rotation_ptr,
                            effect_scale_ptr, effect_cache,
                            &render_world_identity_matrix,
@@ -258,7 +258,7 @@ map_object_next:
                            effect->unknown_09, -60);
             break;
         case 8:
-            func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
                            &effect->position, effect_rotation_ptr,
                            effect_scale_ptr, effect_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
@@ -274,7 +274,7 @@ map_object_next:
         effect++;
         goto effect_count_tail;
 effect_special_draw:
-        func_80031850(effect->unknown_0a, effect->render_id + 0x28,
+        render_world_model(effect->unknown_0a, effect->render_id + 0x28,
                        &effect->position,
                        effect_rotation_ptr,
                        effect_scale_ptr,
@@ -302,7 +302,7 @@ effect_count_tail:
         if (placed->id == 0xffff) goto placed_next;
         visibility = map_cell_layer_mask(&placed->position);
         if (visibility & placed->layer) {
-            func_80031850(placed->layer, placed->id + 0x28,
+            render_world_model(placed->layer, placed->id + 0x28,
                            &placed->position, &rotation, 0, 0,
                            &game_graphics_runtime.render_state.pitch_matrix,
                            placed->frame_index + 0x80, 0, 0x46,

@@ -131,7 +131,7 @@ void render_enqueue_map(u16 object_index)
 #define CLIPPED_MAP_XY(vertex) (*(long *)&(vertex)->sxy)
 
 ADDRESS(0x8002f5b0, 0x258)
-void func_8002f5b0(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
+void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 clut, u16 tpage,
                    u32 mode, s32 depth_bias)
 {
     EVECTOR *first;
@@ -205,7 +205,7 @@ loop_test:
 #define MAP_ORIGINAL_VERTEX(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
 
 ADDRESS(0x8002f808, 0x754)
-void func_8002f808(u16 object_index, s32 depth_bias,
+void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                    KfTmdPreparedAsset *prepared_asset)
 {
     KfTmdObject *object;
@@ -325,7 +325,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                                              (short *)&face->uv3,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
-                        func_8002f5b0(clipped_count,
+                        render_enqueue_clipped_tmd_polygon(clipped_count,
                                        (SVECTOR *)(normals + face->normal),
                                        face->clut, face->tpage,
                                        header.bytes.mode & 2, depth_bias);
@@ -397,7 +397,7 @@ void func_8002f808(u16 object_index, s32 depth_bias,
                                              (short *)&face->uv2,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
-                        func_8002f5b0(clipped_count,
+                        render_enqueue_clipped_tmd_polygon(clipped_count,
                                        (SVECTOR *)(normals + face->normal),
                                        face->clut, face->tpage,
                                        header.bytes.mode & 2, depth_bias);

@@ -27,12 +27,12 @@ void func_80026498(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 
     switch (magic_id - 38) {
     case 1:
-        func_80026330(DAT_800667e8.effect_ids[effect_parameter], &position);
+        player_sample_weapon_world_vertex(DAT_800667e8.effect_ids[effect_parameter], &position);
         func_80025a18(magic_id, &position);
         break;
     case 11:
     case 12:
-        func_80026330(0, &position);
+        player_sample_weapon_world_vertex(0, &position);
         func_80025a18(magic_id, &position);
         break;
     case 2:
@@ -234,9 +234,9 @@ regular_weapon:
     } else {
         phase_step = weapon->unknown_24;
         phase_end = weapon->unknown_28;
+        hit_step = weapon->magic_phase_step;
         sound_end = weapon->unknown_30;
         sound_step = weapon->release_phase_step;
-        hit_step = weapon->magic_phase_step;
     }
     player_state.weapon_attack_phase += phase_step;
 

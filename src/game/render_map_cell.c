@@ -58,11 +58,11 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
 
                 func_8002ff5c(game_graphics_runtime.tmd_state.current_asset,
                               object_index, &prepared_asset);
-                func_8002f808(object_index, 240, &prepared_asset);
+                render_enqueue_tmd_with_clipping(object_index, 240, &prepared_asset);
                 return;
             }
         }
-        func_8002f808(object_index, 240, 0);
+        render_enqueue_tmd_with_clipping(object_index, 240, 0);
     } else {
         render_enqueue_map(object_index);
     }
@@ -78,7 +78,7 @@ enum {
 };
 
 ADDRESS(0x80030de4, 0x178)
-void func_80030de4(s32 x, s32 z, u8 flags)
+void render_map_cell_layers(s32 x, s32 z, u8 flags)
 {
     KfMapOccupancyCell *cell = &bss_801c7540.map_cells[z][x];
     s32 object_index = cell->layer[0].object_index;
@@ -118,7 +118,7 @@ void func_80030de4(s32 x, s32 z, u8 flags)
 }
 
 ADDRESS(0x80030f5c, 0xc8)
-void func_80030f5c(void)
+void render_map_cell_window(void)
 {
     s32 row;
     s32 remaining_rows;
@@ -139,7 +139,7 @@ void func_80030f5c(void)
                 s32 column = x & 0xff;
                 x++;
                 if ((u32)column < KF_MAP_GRID_WIDTH && *mask != 0) {
-                    func_80030de4(column, row, *mask);
+                    render_map_cell_layers(column, row, *mask);
                 }
                 mask++;
                 remaining_columns--;
@@ -177,7 +177,7 @@ KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
 };
 
 ADDRESS(0x80031024, 0x18c)
-void func_80031024(void)
+void render_active_model_rows(void)
 {
     KfRenderModelRow *entry;
     KfCollisionRow *lighting;

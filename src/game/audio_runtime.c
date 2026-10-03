@@ -67,8 +67,9 @@ void audio_initialize_runtime(void)
     } while (index != -1);
 
     stream_slot = audio_state.vab_stream_slots;
+    index = 0;
     stream_buffer = audio_vab_stream_buffers[1];
-    for (index = 0; index < 7; index++) {
+    for (; index < 7; index++) {
         stream_slot->state = 0;
         stream_slot->buffer = stream_buffer;
         stream_slot++;

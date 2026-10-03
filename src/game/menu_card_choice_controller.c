@@ -285,10 +285,10 @@ void menu_options_controller(void)
 
     selected[0] = player_state.audio_effects_enabled;
     selected[1] = player_state.audio_music_enabled;
-    selected[2] = player_state.unknown_c9[0];
-    selected[3] = player_state.unknown_c9[1];
-    selected[4] = player_state.unknown_c9[2];
-    selected[5] = player_state.unknown_c9[3];
+    selected[2] = player_state.hud_gauges_enabled;
+    selected[3] = player_state.compass_enabled;
+    selected[4] = player_state.item_preview_enabled;
+    selected[5] = player_state.walking_bob_enabled;
 
     for (;;) {
         if (result != KF_MENU_OPTION_PENDING) {
@@ -339,10 +339,10 @@ void menu_options_controller(void)
 
     player_state.audio_effects_enabled = selected[0];
     player_state.audio_music_enabled = selected[1];
-    player_state.unknown_c9[0] = selected[2];
-    player_state.unknown_c9[1] = selected[3];
-    player_state.unknown_c9[2] = selected[4];
-    player_state.unknown_c9[3] = selected[5];
+    player_state.hud_gauges_enabled = selected[2];
+    player_state.compass_enabled = selected[3];
+    player_state.item_preview_enabled = selected[4];
+    player_state.walking_bob_enabled = selected[5];
 }
 
 ADDRESS(0x8001b554, 0x2e0)

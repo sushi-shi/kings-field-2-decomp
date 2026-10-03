@@ -39,7 +39,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     if (position != 0) {
         record->position = *position;
     }
-    record->unknown_0a = 3;
+    record->map_layer_mask = 3;
     if (direction != 0) {
         record->direction = *direction;
     } else {
@@ -55,26 +55,26 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     record->rotation.vz = 0;
     record->rotation.vy = 0;
     record->rotation.vx = 0;
-    record->unknown_12 = 0;
+    record->animation_phase_q12 = 0;
     record->unknown_05 = 0;
-    record->unknown_08 = 1;
+    record->render_flags = 1;
     if ((record->type & KF_EFFECT_USE_PLAYER_MAGIC) != 0 &&
         player_state.death_state == 1) {
         record->cooldown = 8;
     } else {
         record->cooldown = 1;
     }
-    record->unknown_0c = 0xff;
-    record->unknown_09 = 0xff;
+    record->lighting_override_index = 0xff;
+    record->render_queue_mode = 0xff;
     record->updates_remaining = -1;
     length_squared = (s32)record->direction.vx * record->direction.vx +
         (s32)record->direction.vy * record->direction.vy +
         (s32)record->direction.vz * record->direction.vz;
-    record->unknown_10 = 0;
+    record->lighting_blend_q12 = 0;
     if (length_squared >= 810001) {
-        record->unknown_0d = 1;
+        record->midpoint_collision_enabled = 1;
     } else {
-        record->unknown_0d = 0;
+        record->midpoint_collision_enabled = 0;
     }
 
     switch (record->kind) {
@@ -82,7 +82,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 49:
         effect_pool_initialize_scaled(record, 0x2d, 0x1800);
         record->updates_remaining = 50;
-        record->unknown_0d = 1;
+        record->midpoint_collision_enabled = 1;
         effect_play_spatial_sound(record, 0x23);
         break;
     case 32:
@@ -90,19 +90,19 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->updates_remaining = 50;
         break;
     case 4:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0x1f;
         record->render_id = 0x1f;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 0x2d;
         record->unknown_3c[4] = 0;
         record->scale_z = 0x32c8;
         record->scale_y = 0x32c8;
         record->scale_x = 0x32c8;
-        record->unknown_0d = 1;
+        record->midpoint_collision_enabled = 1;
         effect_play_spatial_sound(record, 0x20);
         break;
     case 28:
@@ -111,7 +111,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->scale_x = 0x800;
         /* fall through */
     case 1:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x20;
         record->render_id = 0x20;
@@ -120,7 +120,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         effect_play_spatial_sound(record, 0x1b);
         break;
     case 26:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x24;
         record->render_id = 0x24;
@@ -131,7 +131,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->scale_x = 600;
         break;
     case 27:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x25;
         record->render_id = 0x25;
@@ -143,7 +143,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     case 111: {
         u16 value = va[1];
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->updates_remaining = 50;
         *(u16 *)&record->unknown_3c[4] = value;
         effect_play_spatial_sound(record, 0x21);
@@ -162,13 +162,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 25: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0xd;
         record->render_id = 0xd;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 45;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
@@ -179,7 +179,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 5: {
         u8 parameter;
 
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         parameter = va[1];
         record->updates_remaining = 70;
         record->unknown_3c[5] = parameter;
@@ -242,13 +242,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 10: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0x15;
         record->render_id = 0x15;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 3000;
         record->scale_y = 3000;
         record->scale_x = 3000;
@@ -265,16 +265,16 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         s32 index;
         u32 slot;
 
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0;
         record->render_id = 0;
         record->scale_z = 0x1000;
         record->scale_y = 0x1000;
         record->scale_x = 0x1000;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         slot = effect_trail_next_slot;
@@ -294,13 +294,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 107: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0x23;
         record->render_id = 0x23;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0x1000;
         record->scale_y = 0x1000;
         record->scale_x = 0x1000;
@@ -340,11 +340,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
 
         record->base_render_id = render_id;
         record->render_id = render_id;
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -356,7 +356,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 119: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x13;
         record->render_id = 0x13;
@@ -368,7 +368,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     }
     case 51:
     case 52:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x25;
         record->render_id = 0x25;
@@ -379,12 +379,12 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->scale_x = 0;
         break;
     case 2: {
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 9;
         record->render_id = 9;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_x = 0;
         *(u16 *)&record->unknown_3c[4] = va[1];
@@ -394,13 +394,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         goto emit_three_parameter_sound;
     }
     case 20:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -408,13 +408,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 12: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
-        record->unknown_09 = 1;
+        record->render_flags = 1;
+        record->render_queue_mode = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x22;
         record->render_id = 0x22;
-        record->unknown_0c = 0x49;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x49;
+        record->lighting_blend_q12 = 0x1000;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         record->scale_z = 30000;
@@ -430,12 +430,12 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 100: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x22;
         record->render_id = 0x22;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
         record->rotation.vy += (rand() >> 7) - 128;
@@ -445,13 +445,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     }
     case 42: {
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0x11;
         record->render_id = 0x11;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -462,13 +462,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 115: {
         const SVECTOR *angles;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0xd;
         record->render_id = 0xd;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 45;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
@@ -490,13 +490,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     }
     case 45: {
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0x30;
         record->render_id = 0x30;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -505,17 +505,17 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     }
     case 116:
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->updates_remaining = 20;
         break;
     case 117:
         record->base_render_id = 0x31;
         record->render_id = 0x31;
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 50;
         goto initialize_angles_34_35_117;
     case 40: {
@@ -523,11 +523,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
 
         record->base_render_id = 0xa;
         record->render_id = 0xa;
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 50;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
@@ -539,7 +539,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         const SVECTOR *angles;
         s32 random_x;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x2c;
         record->render_id = 0x2c;
@@ -568,11 +568,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     initialize_34_35:
         record->base_render_id = render_id;
         record->render_id = render_id;
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->updates_remaining = 45;
     initialize_angles_34_35_117:
         angles = (const SVECTOR *)va[1];
@@ -582,11 +582,11 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     }
     case 50:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->render_queue_mode = 1;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
         record->scale_z = 0;
@@ -610,7 +610,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         s32 volume;
         s16 slot;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0xc;
         record->render_id = 0xc;
@@ -649,13 +649,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         effect_pool_initialize_fixed(record, 0x1a);
         break;
     case 16:
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->updates_remaining = 8;
         audio_play_sound(0x2b, 120);
         break;
     case 14:
     case 19:
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->updates_remaining = 16;
         audio_play_sound(0x2b, 120);
         break;
@@ -668,13 +668,13 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         record->direction.vz += (rand() >> 9) - 32;
         break;
     case 3:
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_09 = 1;
+        record->render_queue_mode = 1;
         record->base_render_id = 0xb;
         record->render_id = 0xb;
-        record->unknown_0c = 0x44;
-        record->unknown_10 = 0x1000;
+        record->lighting_override_index = 0x44;
+        record->lighting_blend_q12 = 0x1000;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -683,7 +683,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
     case 114: {
         VECTOR candidate_position;
 
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
         record->base_render_id = 0x26;
         record->render_id = 0x26;
@@ -724,9 +724,9 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         render_id = 0x1c;
     setup_render_id:
         record->base_render_id = render_id;
-        record->unknown_08 = 1;
+        record->render_flags = 1;
         record->animation_clip = 0x80;
-        record->unknown_0c = 0xff;
+        record->lighting_override_index = 0xff;
         record->render_id = record->base_render_id;
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
@@ -750,7 +750,7 @@ KfEffectRecord *effect_construct_record(u8 id, u8 type, u8 kind,
         break;
     }
     case 24:
-        record->unknown_08 = 0;
+        record->render_flags = 0;
         record->updates_remaining = 70;
         break;
     case 109: {

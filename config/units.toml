@@ -414,15 +414,9 @@ source = "src/game/collision_grid_sample.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.collision_shape_runtime"
+unit = "game.collision_shape_mask_runtime"
 image = "GAME.EXE"
-source = "src/game/collision_shape_runtime.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.map_mask_window_sweep"
-image = "GAME.EXE"
-source = "src/game/map_mask_window_sweep.c"
+source = "src/game/collision_shape_mask_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

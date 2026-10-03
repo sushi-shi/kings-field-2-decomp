@@ -84,7 +84,7 @@ void cd_request_service_stream(void)
 
     EnterCriticalSection();
     request = cd_state.current;
-    if (request->kind != 0x40) {
+    if (request->kind != KF_CD_REQUEST_IMAGE_STREAM) {
         goto leave_critical;
     }
     if (request->stream_complete != 1) {
@@ -495,16 +495,16 @@ void cd_complete_handler(void)
     switch (request->kind) {
     case KF_CD_REQUEST_IDLE:
         break;
-    case 0x10:
-    case 0x30:
-    case 0x40:
+    case KF_CD_REQUEST_CHECKSUM_READ:
+    case KF_CD_REQUEST_VAB_READ:
+    case KF_CD_REQUEST_IMAGE_STREAM:
         switch (request->phase) {
         case 0:
             CdRead(request->sector_count, request->destination, CdlModeSpeed);
             request->phase = 1;
             break;
         case 1:
-            if (request->kind == 0x10) {
+            if (request->kind == KF_CD_REQUEST_CHECKSUM_READ) {
                 if (cd_sectors_corrupt((u32 *)request->destination,
                         request->sector_count)) {
                     request->phase = 0;
@@ -521,7 +521,7 @@ void cd_complete_handler(void)
             break;
         }
         break;
-    case 0x20:
+    case KF_CD_REQUEST_SECTOR_CALLBACK:
         if (request->phase == 0) {
             CdRead2(CdlModeSpeed);
             request->phase = 1;
@@ -535,7 +535,8 @@ void cd_data_ready_handler(void)
 {
     KfCdRequest *request = cd_state.current;
 
-    if (request->kind != KF_CD_REQUEST_IDLE && request->kind == 0x20) {
+    if (request->kind != KF_CD_REQUEST_IDLE &&
+        request->kind == KF_CD_REQUEST_SECTOR_CALLBACK) {
         CdGetSector(request->destination, KF_CD_SECTOR_WORDS);
         request->sector_count--;
         if (request->on_complete != 0) {
@@ -687,17 +688,17 @@ void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
     CdlLOC location;
     u32 size = cd_archive_entry_extent(slot, entry, &location);
 
-    cd_request_enqueue(0x10, &location, size, destination, on_complete);
+    cd_request_enqueue(KF_CD_REQUEST_CHECKSUM_READ, &location, size, destination, on_complete);
 }
 
 ADDRESS(0x80017f48, 0x54)
-void cd_archive_queue_read_kind_20(u16 slot, u16 entry, u_long *destination,
+void cd_archive_queue_sector_callback_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete)
 {
     CdlLOC location;
     u32 size = cd_archive_entry_extent(slot, entry, &location);
 
-    cd_request_enqueue(0x20, &location, size, destination, on_complete);
+    cd_request_enqueue(KF_CD_REQUEST_SECTOR_CALLBACK, &location, size, destination, on_complete);
 }
 
 ADDRESS(0x80017f9c, 0x54)
@@ -707,7 +708,7 @@ void cd_archive_queue_stream_read(u16 slot, u16 entry, u_long *destination,
     CdlLOC location;
     u32 size = cd_archive_entry_extent(slot, entry, &location);
 
-    cd_request_enqueue(0x30, &location, size, destination, on_complete);
+    cd_request_enqueue(KF_CD_REQUEST_VAB_READ, &location, size, destination, on_complete);
 }
 
 ADDRESS(0x80017ff0, 0xc4)
@@ -726,10 +727,12 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
     request->chunk_sectors = request->remaining_sectors;
     if (request->remaining_sectors < 17) {
         request->remaining_sectors = 0;
-        cd_request_enqueue(0x40, &location, size, (u_long *)destination, on_complete);
+        cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, size,
+            (u_long *)destination, on_complete);
     } else {
         request->remaining_sectors -= 16;
-        cd_request_enqueue(0x40, &location, 0x8000, (u_long *)destination, on_complete);
+        cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, 0x8000,
+            (u_long *)destination, on_complete);
     }
 }
 

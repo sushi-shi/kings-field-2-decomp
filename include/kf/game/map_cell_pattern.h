@@ -4,8 +4,8 @@
 #include <kf/lib/types.h>
 
 typedef struct KfMapCellPatternVariant {
-    u8 first_unknown_03;
-    u8 second_unknown_03;
+    u8 first_collision_shape_id;
+    u8 second_collision_shape_id;
     u8 first_object_index;
     u8 second_object_index;
 } KfMapCellPatternVariant;

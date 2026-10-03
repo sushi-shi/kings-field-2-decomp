@@ -27,7 +27,7 @@ s32 menu_load_item_model(u8 item_id)
     u8 *allocation;
 
     menu_item_quantity = 1;
-    if (player_state.unknown_c9[2] == 0)
+    if (player_state.item_preview_enabled == 0)
         return 0;
 
     menu_release_item_model();

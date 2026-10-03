@@ -348,7 +348,7 @@ apply_position:
             object->action_timer = 0x63;
             collision_sample_map_cell_layer(object->position.vx, object->position.vy,
                            object->position.vz);
-            object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+            object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
             object->tail.fields.unknown_38 = 0xff;
             break;
         }
@@ -421,16 +421,16 @@ void card_payload_capture_game_state(u8 *buffer)
     saved->magic_training = player_state.magic_training;
     saved->poison_timer = player_state.poison_timer;
     saved->curse_strength = player_state.curse_strength;
-    saved->unknown_58 = player_state.unknown_58;
+    saved->curse_phase_limit = player_state.curse_phase_limit;
     saved->darkness_phase = player_state.darkness_phase;
-    saved->unknown_5c = player_state.unknown_5c;
+    saved->darkness_phase_limit = player_state.darkness_phase_limit;
     saved->slow_timer = player_state.slow_timer;
     saved->paralysis_timer = player_state.paralysis_timer;
     saved->defense_boost_timer = player_state.defense_boost_timer;
     saved->attack_boost_timer = player_state.attack_boost_timer;
-    saved->unknown_66 = player_state.unknown_66;
-    saved->unknown_68 = player_state.unknown_68;
-    saved->unknown_6a = player_state.unknown_6a;
+    saved->magic_tint_phase = player_state.magic_tint_phase;
+    saved->magic_tint_phase_limit = player_state.magic_tint_phase_limit;
+    saved->map_marker_visual_effect_timer = player_state.map_marker_visual_effect_timer;
     saved->full_mp_timer = player_state.full_mp_timer;
     saved->magic_boost_timer = player_state.magic_boost_timer;
     saved->level = player_state.level;
@@ -448,10 +448,10 @@ void card_payload_capture_game_state(u8 *buffer)
     saved->equipped_weapon_id = player_state.equipped_weapon_id;
     saved->audio_effects_enabled = player_state.audio_effects_enabled;
     saved->audio_music_enabled = player_state.audio_music_enabled;
-    saved->unknown_c9[0] = player_state.unknown_c9[0];
-    saved->unknown_c9[1] = player_state.unknown_c9[1];
-    saved->unknown_c9[2] = player_state.unknown_c9[2];
-    saved->unknown_c9[3] = player_state.unknown_c9[3];
+    saved->hud_gauges_enabled = player_state.hud_gauges_enabled;
+    saved->compass_enabled = player_state.compass_enabled;
+    saved->item_preview_enabled = player_state.item_preview_enabled;
+    saved->walking_bob_enabled = player_state.walking_bob_enabled;
 
     for (i = 63; i != -1; --i) {
         *magic_flag++ = record->menu_available;
@@ -499,16 +499,16 @@ void card_payload_restore_game_state(const u8 *buffer)
     player_state.magic_training = saved->magic_training;
     player_state.poison_timer = saved->poison_timer;
     player_state.curse_strength = saved->curse_strength;
-    player_state.unknown_58 = saved->unknown_58;
+    player_state.curse_phase_limit = saved->curse_phase_limit;
     player_state.darkness_phase = saved->darkness_phase;
-    player_state.unknown_5c = saved->unknown_5c;
+    player_state.darkness_phase_limit = saved->darkness_phase_limit;
     player_state.slow_timer = saved->slow_timer;
     player_state.paralysis_timer = saved->paralysis_timer;
     player_state.defense_boost_timer = saved->defense_boost_timer;
     player_state.attack_boost_timer = saved->attack_boost_timer;
-    player_state.unknown_66 = saved->unknown_66;
-    player_state.unknown_68 = saved->unknown_68;
-    player_state.unknown_6a = saved->unknown_6a;
+    player_state.magic_tint_phase = saved->magic_tint_phase;
+    player_state.magic_tint_phase_limit = saved->magic_tint_phase_limit;
+    player_state.map_marker_visual_effect_timer = saved->map_marker_visual_effect_timer;
     player_state.full_mp_timer = saved->full_mp_timer;
     player_state.magic_boost_timer = saved->magic_boost_timer;
     player_state.level = saved->level;
@@ -526,10 +526,10 @@ void card_payload_restore_game_state(const u8 *buffer)
     player_state.equipped_weapon_id = saved->equipped_weapon_id;
     player_state.audio_effects_enabled = saved->audio_effects_enabled;
     player_state.audio_music_enabled = saved->audio_music_enabled;
-    player_state.unknown_c9[0] = saved->unknown_c9[0];
-    player_state.unknown_c9[1] = saved->unknown_c9[1];
-    player_state.unknown_c9[2] = saved->unknown_c9[2];
-    player_state.unknown_c9[3] = saved->unknown_c9[3];
+    player_state.hud_gauges_enabled = saved->hud_gauges_enabled;
+    player_state.compass_enabled = saved->compass_enabled;
+    player_state.item_preview_enabled = saved->item_preview_enabled;
+    player_state.walking_bob_enabled = saved->walking_bob_enabled;
 
     for (i = 63; i != -1; --i) {
         record->menu_available = *magic_flag++;

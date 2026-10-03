@@ -22,7 +22,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
 
     addVector(&record->position, &record->direction);
     result = effect_probe_collision_by_type(&record->position, radius, angle);
-    if (record->unknown_0d != 0) {
+    if (record->midpoint_collision_enabled != 0) {
         effect_collision_motion_step.vx = record->direction.vx >> 1;
         effect_collision_motion_step.vy = record->direction.vy >> 1;
         effect_collision_motion_step.vz = record->direction.vz >> 1;
@@ -40,7 +40,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
     if (KF_COLLISION_CACHE_LAYER == 0) {
         next_kind = 1;
     }
-    record->unknown_0a = next_kind;
+    record->map_layer_mask = next_kind;
     record->rotation.vz = ((u16)record->rotation.vz - step) & KF_ANGLE_WRAP_MASK;
     return result;
 }
@@ -50,7 +50,7 @@ void effect_collision_backtrack(void)
 {
     KfEffectRecord *record = effect_state.current_record;
 
-    if (record->unknown_0d != 0) {
+    if (record->midpoint_collision_enabled != 0) {
         record->position.vx -= effect_collision_motion_step.vx;
         record->position.vy -= effect_collision_motion_step.vy;
         record->position.vz -= effect_collision_motion_step.vz;
@@ -158,7 +158,7 @@ void effect_update_dispatch(void)
             if (KF_COLLISION_CACHE_LAYER == 0) {
                 layer = 1;
             }
-            record->unknown_0a = layer;
+            record->map_layer_mask = layer;
             vector_displacement_to_pitch_yaw(record->direction.vx,
                           record->position.vy - prior_y,
                           record->direction.vz,
@@ -518,8 +518,8 @@ void effect_update_dispatch(void)
     kind_one_update:
         phase = record->unknown_3c[4];
         if (phase == 2) {
-            record->unknown_10 += 256;
-            if (record->unknown_10 >= 4096) {
+            record->lighting_blend_q12 += 256;
+            if (record->lighting_blend_q12 >= 4096) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
             break;
@@ -533,9 +533,9 @@ void effect_update_dispatch(void)
             effect_apply_current_magic_backstep(collision);
             if (record->unknown_3c[4] == 1) {
                 record->unknown_3c[4] = 2;
-                record->unknown_09 = 1;
-                record->unknown_0c = 0x42;
-                record->unknown_10 = 0x400;
+                record->render_queue_mode = 1;
+                record->lighting_override_index = 0x42;
+                record->lighting_blend_q12 = 0x400;
                 break;
             }
             effect_collision_backtrack();
@@ -1187,7 +1187,7 @@ void effect_update_dispatch(void)
             effect_play_spatial_sound(record, 0x25);
             record->unknown_3c[4] = 15;
             record->phase = 1;
-            record->unknown_08 = 0;
+            record->render_flags = 0;
         } else {
             effect_spawn_motion(record, -1, -3, 6000, -800,
                            6, 8, 0, -1024);
@@ -1234,7 +1234,7 @@ void effect_update_dispatch(void)
                         s32 distance;
 
                         record->phase = 1;
-                        record->unknown_08 = 9;
+                        record->render_flags = 9;
                         record->render_id = 20;
                         record->rotation.vz = 0;
                         dx = record->position.vx - parent->position.vx;
@@ -1266,7 +1266,7 @@ void effect_update_dispatch(void)
             record->position.vx = next.vx;
             record->position.vy = next.vy;
             record->position.vz = next.vz;
-            record->unknown_0a = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
+            record->map_layer_mask = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
             record->rotation.vz = ((u16)record->rotation.vz + 300) & 0xfff;
             shared_position_mode = -1;
             shared_motion_mode = 0x400;
@@ -1349,7 +1349,7 @@ void effect_update_dispatch(void)
     kind10_reset:
         record->phase = 1;
         record->render_id = 0xb;
-        record->unknown_0c = 0x44;
+        record->lighting_override_index = 0x44;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -1357,7 +1357,7 @@ void effect_update_dispatch(void)
         record->type |= 3;
         goto kind10_phase1;
     kind10_normal:
-        record->unknown_12 = ((u16)record->unknown_12 + 128) & 0xfff;
+        record->animation_phase_q12 = ((u16)record->animation_phase_q12 + 128) & 0xfff;
         if (record->unknown_3c[5] != 0) {
             VECTOR origin;
             VECTOR target;
@@ -1455,7 +1455,7 @@ void effect_update_dispatch(void)
                     record->unknown_3c[10] = actor_index;
                     actor = &actor_state.actors[record->unknown_3c[10]];
                     if (actor->target_type == 2 || actor->target_type == 3) {
-                        record->unknown_08 = 1;
+                        record->render_flags = 1;
                         record->render_id = 22;
                         record->phase = 2;
                         record->unknown_3c[9] = 0;
@@ -1658,8 +1658,8 @@ void effect_update_dispatch(void)
         spawn_direction.vy = 0;
         spawned = effect_construct_record(10, 0, 101, &spawn_position,
                                 &spawn_direction, 700, -30, 10, 14, -10);
-        spawned->unknown_0a = 3;
-        spawned->unknown_08 = 14;
+        spawned->map_layer_mask = 3;
+        spawned->render_flags = 14;
         interpolate_collision_filter_rows(160, 180, 220, 18000,
                        rsin(record->updates_remaining << 7));
         break;
@@ -1688,8 +1688,8 @@ void effect_update_dispatch(void)
             spawn_position.vz = 0x400;
             spawned = effect_construct_record(10, 0, 101, &spawn_position,
                                     &spawn_direction, 700, -30, 10, 18, -10);
-            spawned->unknown_0a = 3;
-            spawned->unknown_08 = 14;
+            spawned->map_layer_mask = 3;
+            spawned->render_flags = 14;
         }
         interpolate_collision_filter_rows(240, 240, 160, 18000,
                        rsin(record->updates_remaining << 7));

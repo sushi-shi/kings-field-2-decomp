@@ -37,7 +37,11 @@ typedef char kf_cd_archive_size[sizeof(KfCdArchive) == 12 ? 1 : -1];
 
 enum {
     KF_CD_REQUEST_CAPACITY = 16,
-    KF_CD_REQUEST_IDLE = 0
+    KF_CD_REQUEST_IDLE = 0,
+    KF_CD_REQUEST_CHECKSUM_READ = 0x10,
+    KF_CD_REQUEST_SECTOR_CALLBACK = 0x20,
+    KF_CD_REQUEST_VAB_READ = 0x30,
+    KF_CD_REQUEST_IMAGE_STREAM = 0x40
 };
 
 typedef struct KfCdRequest KfCdRequest;
@@ -138,7 +142,7 @@ s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
 u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location);
 void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);
-void cd_archive_queue_read_kind_20(u16 slot, u16 entry, u_long *destination,
+void cd_archive_queue_sector_callback_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);
 void cd_archive_queue_stream_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);

@@ -32,7 +32,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
                 actor->position.vx - position->vx,
                 actor->position.vz - position->vz);
             if (!angle_within_tolerance(actor->rotation.y, angle + 0x800,
-                                        group->unknown_18)) {
+                                        group->actor_facing_tolerance)) {
                 return;
             }
         }
@@ -122,7 +122,7 @@ void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *outp
     SVECTOR offset;
 
     animation_sample_vertex(record->render_id + 40, record->animation_clip,
-                  record->unknown_12, mode, &offset);
+                  record->animation_phase_q12, mode, &offset);
     offset.vx = offset.vx * scale->vx >> KF_FIXED12_BITS;
     offset.vy = offset.vy * scale->vy >> KF_FIXED12_BITS;
     offset.vz = offset.vz * scale->vz >> KF_FIXED12_BITS;
@@ -159,13 +159,13 @@ KfEffectRecord *effect_pool_find_free(void)
 ADDRESS(0x80040264, 0x40)
 void effect_pool_initialize_scaled(KfEffectRecord *record, u8 render_id, u16 scale)
 {
-    record->unknown_08 = 5;
+    record->render_flags = 5;
     record->animation_clip = 0x80;
     record->base_render_id = render_id;
     record->render_id = render_id;
-    record->unknown_09 = 1;
-    record->unknown_0c = 0x43;
-    record->unknown_10 = 0x1000;
+    record->render_queue_mode = 1;
+    record->lighting_override_index = 0x43;
+    record->lighting_blend_q12 = 0x1000;
     record->scale_z = scale;
     record->scale_y = scale;
     record->scale_x = scale;
@@ -174,13 +174,13 @@ void effect_pool_initialize_scaled(KfEffectRecord *record, u8 render_id, u16 sca
 ADDRESS(0x800402a4, 0x64)
 void effect_pool_initialize_fixed(KfEffectRecord *record, u8 render_id)
 {
-    record->unknown_08 = 14;
+    record->render_flags = 14;
     record->animation_clip = 0x80;
     record->base_render_id = render_id;
     record->render_id = render_id;
-    record->unknown_09 = 1;
-    record->unknown_0c = 0x44;
-    record->unknown_10 = 0x1000;
+    record->render_queue_mode = 1;
+    record->lighting_override_index = 0x44;
+    record->lighting_blend_q12 = 0x1000;
     record->scale_y = 0x100;
     record->scale_z = 0x100;
     record->scale_x = 0x100;

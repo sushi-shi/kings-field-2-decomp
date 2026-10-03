@@ -54,16 +54,16 @@ void player_reset_status(void)
 {
     player_state.magic_boost_timer = 0;
     player_state.full_mp_timer = 0;
-    player_state.unknown_6a = 0;
-    player_state.unknown_68 = 0;
-    player_state.unknown_66 = 0;
+    player_state.map_marker_visual_effect_timer = 0;
+    player_state.magic_tint_phase_limit = 0;
+    player_state.magic_tint_phase = 0;
     player_state.attack_boost_timer = 0;
     player_state.defense_boost_timer = 0;
     player_state.paralysis_timer = 0;
     player_state.slow_timer = 0;
-    player_state.unknown_5c = 0;
+    player_state.darkness_phase_limit = 0;
     player_state.darkness_phase = 0;
-    player_state.unknown_58 = 0;
+    player_state.curse_phase_limit = 0;
     player_state.curse_strength = 0;
     player_state.poison_timer = 0;
     player_state.unknown_ce[7] = 0;
@@ -141,10 +141,10 @@ void game_initialize_session(void)
     player_initialize_state();
     player_state.audio_effects_enabled = 1;
     player_state.audio_music_enabled = 1;
-    player_state.unknown_c9[0] = 1;
-    player_state.unknown_c9[1] = 1;
-    player_state.unknown_c9[2] = 1;
-    player_state.unknown_c9[3] = 1;
+    player_state.hud_gauges_enabled = 1;
+    player_state.compass_enabled = 1;
+    player_state.item_preview_enabled = 1;
+    player_state.walking_bob_enabled = 1;
     player_state.unknown_09[1] = 0;
 }
 

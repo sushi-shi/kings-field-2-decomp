@@ -48,7 +48,7 @@ void menu_update_item_preview(s32 item_id)
     MATRIX lit;
     MATRIX color;
 
-    if (player_state.unknown_c9[2] == 0 || (u8)item_id == 0xff) {
+    if (player_state.item_preview_enabled == 0 || (u8)item_id == 0xff) {
         return;
     }
 

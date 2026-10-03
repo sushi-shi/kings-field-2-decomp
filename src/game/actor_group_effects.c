@@ -189,7 +189,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];
             spawned->unknown_28 = group->unknown_34;
-            spawned->unknown_15 = group->unknown_09;
+            spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
             spawned->position.vy = position.vy + 4096;
             spawned->position.vz = position.vz;
@@ -214,9 +214,9 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             spawned->lifecycle = 1;
             group = &actor_state.target_groups[group_index];
             spawned->unknown_28 = group->unknown_34;
-            spawned->unknown_15 = group->unknown_09;
+            spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
-            spawned->position.vy = position.vy + (group->unknown_14 >> 1);
+            spawned->position.vy = position.vy + (group->collision_height >> 1);
             spawned->position.vz = position.vz;
             actor_initialize_from_group(spawned);
             *(SVECTOR *)&spawned->unknown_50 = direction;
@@ -238,7 +238,7 @@ void actor_dispatch_group_effect(s32 kind, s32 effect_id, s32 position_mode, ...
             }
             count--;
             if (count != 0) {
-                vector_add_scaled_delta(player, (SVECTOR *)&player_state.unknown_e8,
+                vector_add_scaled_delta(player, &player_state.frame_displacement,
                               travel_time >> 6, &trajectory_target);
             }
         } while (count != 0);

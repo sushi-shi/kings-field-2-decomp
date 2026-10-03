@@ -20,16 +20,16 @@ typedef struct KfCardPlayerSnapshot {
     u16 magic_training;
     s16 poison_timer;
     s16 curse_strength;
-    u16 unknown_58;
+    u16 curse_phase_limit;
     s16 darkness_phase;
-    u16 unknown_5c;
+    u16 darkness_phase_limit;
     s16 slow_timer;
     s16 paralysis_timer;
     s16 defense_boost_timer;
     s16 attack_boost_timer;
-    s16 unknown_66;
-    s16 unknown_68;
-    s16 unknown_6a;
+    s16 magic_tint_phase;
+    s16 magic_tint_phase_limit;
+    s16 map_marker_visual_effect_timer;
     s16 full_mp_timer;
     s16 magic_boost_timer;
     u8 unused_3a[8];
@@ -42,7 +42,10 @@ typedef struct KfCardPlayerSnapshot {
     u8 equipped_weapon_id;
     u8 audio_effects_enabled;
     u8 audio_music_enabled;
-    u8 unknown_c9[4];
+    u8 hud_gauges_enabled;
+    u8 compass_enabled;
+    u8 item_preview_enabled;
+    u8 walking_bob_enabled;
 } KfCardPlayerSnapshot;
 
 typedef struct KfCardSavePayload {

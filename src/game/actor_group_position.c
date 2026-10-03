@@ -169,7 +169,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         distance = fixed_vector3_length(target->vx - position.vx,
                                         target->vy - position.vy,
                                         target->vz - position.vz);
-        vector_add_scaled_delta(origin, (const SVECTOR *)&player_state.unknown_e8,
+        vector_add_scaled_delta(origin, &player_state.frame_displacement,
                       distance / step, &position);
     }
     return angles.y;

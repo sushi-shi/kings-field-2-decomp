@@ -112,11 +112,11 @@ typedef struct KfPlayerViewRotation {
     u16 unknown_06;
 } KfPlayerViewRotation;
 
-typedef union KfPlayerUnknown108 {
+typedef union KfPlayerViewRotationOffset {
     SVECTOR vector;
     u16 components[4];
-} KfPlayerUnknown108;
-typedef char kf_player_unknown_108_size[sizeof(KfPlayerUnknown108) == 8 ? 1 : -1];
+} KfPlayerViewRotationOffset;
+typedef char kf_player_view_rotation_offset_size[sizeof(KfPlayerViewRotationOffset) == 8 ? 1 : -1];
 
 typedef struct KfPlayerDamageReaction {
     SVECTOR rotation;
@@ -197,7 +197,7 @@ typedef struct KfMapOccupancyLayer {
     u8 object_index;
     u8 elevation;
     u8 quarter_turns;
-    u8 unknown_03;
+    u8 collision_shape_id;
     u8 lighting_index;
 } KfMapOccupancyLayer;
 
@@ -268,16 +268,16 @@ typedef struct KfPlayerState {
     u16 combat_components[9];
     s16 poison_timer;
     s16 curse_strength;
-    u16 unknown_58;
+    u16 curse_phase_limit;
     s16 darkness_phase;
-    u16 unknown_5c;
+    u16 darkness_phase_limit;
     s16 slow_timer;
     s16 paralysis_timer;
     s16 defense_boost_timer;
     s16 attack_boost_timer;
-    s16 unknown_66;
-    s16 unknown_68;
-    s16 unknown_6a;
+    s16 magic_tint_phase;
+    s16 magic_tint_phase_limit;
+    s16 map_marker_visual_effect_timer;
     s16 full_mp_timer;
     s16 magic_boost_timer;
     u8 unknown_70[4];
@@ -318,21 +318,21 @@ typedef struct KfPlayerState {
     u8 equipped_extra_id;
     u8 audio_effects_enabled;
     u8 audio_music_enabled;
-    u8 unknown_c9[4];
+    u8 hud_gauges_enabled;
+    u8 compass_enabled;
+    u8 item_preview_enabled;
+    u8 walking_bob_enabled;
     u8 death_state;
     u8 unknown_ce[2];
-    u8 unknown_d0;
+    u8 vertical_motion_state;
     u8 unknown_d1[7];
     VECTOR camera_position;
-    u16 unknown_e8;
-    u16 unknown_ea;
-    u16 unknown_ec;
-    u16 unknown_ee;
+    SVECTOR frame_displacement;
     KfPlayerViewRotation camera_rotation;
     KfPlayerViewRotation camera_rotation_target;
-    s16 unknown_100[3];
-    s16 unknown_106;
-    KfPlayerUnknown108 unknown_108;
+    s16 reaction_rotation_offset[3];
+    s16 death_transition_frame;
+    KfPlayerViewRotationOffset view_rotation_offset;
     s16 unknown_110[3];
     u8 unknown_116[2];
     SVECTOR magic_origin_offset;
@@ -371,6 +371,8 @@ typedef char kf_player_equipped_head_id_offset[
     (u32)&((KfPlayerState *)0)->equipped_head_id == 0xc0 ? 1 : -1];
 typedef char kf_player_death_state_offset[
     (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
+typedef char kf_player_frame_displacement_offset[
+    (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[

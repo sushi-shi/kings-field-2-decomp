@@ -49,9 +49,9 @@ void player_update_vertical_motion(void)
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
                   player_state.camera_position.vz, 800, 1700);
-    player_state.unknown_ea = 0;
+    player_state.frame_displacement.vy = 0;
 
-    switch (player_state.unknown_d0) {
+    switch (player_state.vertical_motion_state) {
     case 0:
         break;
 
@@ -59,11 +59,11 @@ void player_update_vertical_motion(void)
         player_check_fall_death();
         next_y = player_state.camera_position.vy + player_state.vertical_velocity;
         player_state.camera_position.vy = next_y;
-        player_state.unknown_ea = player_state.vertical_velocity;
+        player_state.frame_displacement.vy = player_state.vertical_velocity;
         player_state.vertical_velocity += 40;
         if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
-            player_state.unknown_d0 = 0;
+            player_state.vertical_motion_state = 0;
         }
         goto finish;
 
@@ -76,9 +76,9 @@ void player_update_vertical_motion(void)
                 < player_state.camera_position.vy - player_state.vertical_velocity) {
                 player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             }
-            player_state.unknown_d0 = 0;
+            player_state.vertical_motion_state = 0;
         }
-        player_state.unknown_ea = player_state.vertical_velocity;
+        player_state.frame_displacement.vy = player_state.vertical_velocity;
         player_state.vertical_velocity += 5;
         goto finish;
 
@@ -88,7 +88,7 @@ void player_update_vertical_motion(void)
         collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                          player_state.camera_position.vz, 800, 1700, 0x31);
         if (collision_flags == 0) {
-            player_state.unknown_ea = player_state.vertical_velocity;
+            player_state.frame_displacement.vy = player_state.vertical_velocity;
             player_state.vertical_velocity += 40;
             player_state.unknown_110[0] = player_state.vertical_velocity >> 1;
             player_state.camera_position.vy = next_y;
@@ -115,7 +115,7 @@ void player_update_vertical_motion(void)
             }
         }
         player_state.landing_vertical_offset = 1;
-        player_state.unknown_d0 = 0x50;
+        player_state.vertical_motion_state = 0x50;
         /* Enter the landing response in the same frame. */
         goto landing;
 
@@ -132,7 +132,7 @@ landing:
         }
         if (player_state.landing_vertical_offset <= 0
             && player_state.unknown_110[0] <= 0) {
-            player_state.unknown_d0 = 0;
+            player_state.vertical_motion_state = 0;
             player_state.vertical_velocity = 0;
             player_state.landing_vertical_offset = 0;
             player_state.unknown_110[0] = 0;
@@ -158,7 +158,7 @@ landing:
             goto finish;
         }
         movement_speed = player_state.movement_speed.signed_value;
-        player_state.unknown_d0 = 0x20;
+        player_state.vertical_motion_state = 0x20;
         player_state.vertical_velocity = movement_speed > 200 ? -300 : -150;
     } else {
         if (height_difference <= 0) {
@@ -181,15 +181,15 @@ landing:
             player_state.camera_position.vy += 256;
             goto finish;
         }
-        player_state.unknown_d0 = height_difference > 1024 ? 0x40 : 0x10;
+        player_state.vertical_motion_state = height_difference > 1024 ? 0x40 : 0x10;
         player_state.vertical_velocity = 40;
     }
     player_state.landing_vertical_offset = 0;
     player_state.unknown_110[0] = 0;
 
 finish:
-    if (player_state.unknown_d0 == 0) {
-        if (player_state.unknown_c9[3] != 0) {
+    if (player_state.vertical_motion_state == 0) {
+        if (player_state.walking_bob_enabled != 0) {
             player_state.walking_bob_phase =
                 (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value) & 0xfff;
             bob = rsin(player_state.walking_bob_phase) >> 5;
@@ -450,7 +450,7 @@ void player_update_horizontal_motion(void)
                 & KF_ANGLE_WRAP_MASK,
             -strafe);
     } else {
-        player_state.unknown_ec = 0;
-        player_state.unknown_e8 = 0;
+        player_state.frame_displacement.vz = 0;
+        player_state.frame_displacement.vx = 0;
     }
 }

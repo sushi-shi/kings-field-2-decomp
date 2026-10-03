@@ -92,8 +92,8 @@ typedef struct KfActorLoadRecord {
     u8 unknown_02;
     u8 cell_z;
     u8 cell_x;
-    u8 unknown_05;
-    u8 unknown_06;
+    u8 spawn_chance;
+    u8 death_drop_object_id;
     u8 unknown_07;
     u16 unknown_08;
     u16 unknown_0a;
@@ -119,8 +119,8 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->unknown_06 = records->unknown_07;
             actor->unknown_07[0] = records->cell_z;
             actor->unknown_07[1] = records->cell_x;
-            actor->unknown_0a[0] = records->unknown_05;
-            actor->unknown_0a[1] = records->unknown_06;
+            actor->spawn_chance = records->spawn_chance;
+            actor->death_drop_object_id = records->death_drop_object_id;
             actor->unknown_20 = records->unknown_08;
             actor->unknown_22 = records->unknown_0a;
             actor->unknown_24 = records->unknown_0c;
@@ -133,7 +133,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             group = &actor_state.target_groups[actor->group_index];
             actor_copy_group_defaults(actor);
             actor_set_home_position(actor);
-            actor->unknown_15 = group->unknown_09;
+            actor->render_depth = group->render_depth;
             if ((actor->unknown_28 & 0x10) != 0) {
                 if (actor->slot_state == 3) {
                     if (actor->unknown_24 == -1) {

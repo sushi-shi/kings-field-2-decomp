@@ -67,7 +67,7 @@ actor_visible:
                                &actor->animation_cache, &render_world_identity_matrix,
                                actor->unknown_0c, actor->animation_phase,
                                actor->unknown_14, actor->unknown_16,
-                               actor->unknown_13, (s8)actor->unknown_15);
+                               actor->unknown_13, (s8)actor->render_depth);
             } else {
                 rotation.x = actor->rotation.x;
                 rotation.y = actor->rotation.y + 0x800;
@@ -78,7 +78,7 @@ actor_visible:
                                &game_graphics_runtime.render_state.view_matrix,
                                actor->unknown_0c, actor->animation_phase,
                                actor->unknown_14, actor->unknown_16,
-                               actor->unknown_13, (s8)actor->unknown_15);
+                               actor->unknown_13, (s8)actor->render_depth);
             }
         }
         group = &actor_state.target_groups[actor->group_index];
@@ -115,14 +115,14 @@ actor_next:
         if (object->action == 0x1f) goto map_sound_action;
         if (object->action != 0xf0) goto map_ordinary_object;
         if (map_cell_visible(&object->position,
-                             object->tail.fields.unknown_38,
-                             object->tail.fields.unknown_39) != 0 &&
-            (object->unknown_00 & render_mask_scan_state.first_layer_mask)) {
+                             object->tail.visibility.radius_x,
+                             object->tail.visibility.radius_z) != 0 &&
+            (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
             if (resource_registry_get(object->object_id + 0x100) != 0) {
                 render_animated_object(object->object_id + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
                                (KfPoolRecord **)&object->tail,
-                               object->unknown_01, object->unknown_0a,
+                               object->asset_clip_selector, object->phase_q12,
                                (u8)object->tail.fields.spawn_sequence,
                                object->tail.fields.unknown_3a.bytes.high,
                                0x1fff - object->tail.fields.unknown_3a.bytes.low);
@@ -186,7 +186,7 @@ map_ordinary_object: {
             KfMapObjectTemplate *object_template;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
-            if ((visibility & object->unknown_00) == 0) goto map_object_next;
+            if ((visibility & object->layer_mask) == 0) goto map_object_next;
             object_template = &map_object_state.templates[object->object_id];
 map_ordinary_visible:
             object_index = object->object_id;
@@ -196,16 +196,16 @@ map_ordinary_visible:
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
-                render_mode = object->unknown_02;
+                render_mode = object->render_queue_mode;
                 if (object->collision_flags & 1) {
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
-                render_world_model(object->unknown_00, object_index + 0x100,
+                render_world_model(object->layer_mask, object_index + 0x100,
                                &object->position, &rotation, &object->scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
-                               object->unknown_01, object->unknown_0a,
-                               object->unknown_05, object->unknown_10,
+                               object->asset_clip_selector, object->phase_q12,
+                               object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
                                (s16)object->unknown_0e);
                 object->collision_flags |= 0x80;
@@ -215,7 +215,7 @@ map_radius_check:
             object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->marker_action_05);
-            if (visibility & object->unknown_00) goto map_ordinary_visible;
+            if (visibility & object->layer_mask) goto map_ordinary_visible;
         }
 map_object_next:
         object++;
@@ -231,50 +231,50 @@ map_object_next:
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         if (effect->type == KF_EFFECT_SLOT_FREE ||
-            (effect->unknown_08 & 3) == 0) goto effect_next;
-        if ((effect->unknown_08 & 3) != 2 &&
-            (map_cell_layer_mask(&effect->position) & effect->unknown_0a) == 0)
+            (effect->render_flags & 3) == 0) goto effect_next;
+        if ((effect->render_flags & 3) != 2 &&
+            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == 0)
             goto effect_next;
-        switch (effect->unknown_08 & 12) {
+        switch (effect->render_flags & 12) {
         case 0:
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
-            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position, &rotation, effect_scale_ptr,
                            effect_cache,
                            &game_graphics_runtime.render_state.view_matrix,
-                           effect->animation_clip, effect->unknown_12,
-                           effect->unknown_0c, effect->unknown_10,
-                           effect->unknown_09, -60);
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
             break;
         case 4:
-            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position, effect_rotation_ptr,
                            effect_scale_ptr, effect_cache,
                            &render_world_identity_matrix,
-                           effect->animation_clip, effect->unknown_12,
-                           effect->unknown_0c, effect->unknown_10,
-                           effect->unknown_09, -60);
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
             break;
         case 8:
-            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position, effect_rotation_ptr,
                            effect_scale_ptr, effect_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
-                           effect->animation_clip, effect->unknown_12,
-                           effect->unknown_0c, effect->unknown_10,
-                           effect->unknown_09, -60);
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, -60);
             break;
         case 12:
-            render_world_model(effect->unknown_0a, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position,
                            effect_rotation_ptr,
                            effect_scale_ptr,
                            effect_cache, 0,
-                           effect->animation_clip, effect->unknown_12,
-                           effect->unknown_0c, effect->unknown_10,
-                           effect->unknown_09, 0x14);
+                           effect->animation_clip, effect->animation_phase_q12,
+                           effect->lighting_override_index, effect->lighting_blend_q12,
+                           effect->render_queue_mode, 0x14);
             break;
         }
 effect_next:

@@ -25,7 +25,7 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
     s32 second_layer_offset = first_layer_offset == 0
                                   ? sizeof(KfMapOccupancyLayer) : 0;
 
-    while (patterns->variant[0].first_unknown_03 != KF_PATTERN_END) {
+    while (patterns->variant[0].first_collision_shape_id != KF_PATTERN_END) {
         s32 local_x = patterns->offset_x;
         s32 local_z = patterns->offset_z;
         s32 cell_x = ((local_x * cosine - local_z * sine) >> 12) +
@@ -39,11 +39,11 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
         KfMapOccupancyLayer *second_layer =
             (KfMapOccupancyLayer *)((u8 *)cell + second_layer_offset);
 
-        if (variant->first_unknown_03 != KF_PATTERN_SKIP_BYTE) {
-            first_layer->unknown_03 = variant->first_unknown_03;
+        if (variant->first_collision_shape_id != KF_PATTERN_SKIP_BYTE) {
+            first_layer->collision_shape_id = variant->first_collision_shape_id;
         }
-        if (variant->second_unknown_03 != KF_PATTERN_SKIP_BYTE) {
-            second_layer->unknown_03 = variant->second_unknown_03;
+        if (variant->second_collision_shape_id != KF_PATTERN_SKIP_BYTE) {
+            second_layer->collision_shape_id = variant->second_collision_shape_id;
         }
         if (variant->first_object_index != KF_PATTERN_SKIP_OBJECT) {
             first_layer->object_index = variant->first_object_index;
@@ -129,7 +129,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                         ((source->layer[0].quarter_turns + quarter_turns) & 3);
                 }
                 if (field_mask & 8) {
-                    destination->layer[0].unknown_03 = source->layer[0].unknown_03;
+                    destination->layer[0].collision_shape_id = source->layer[0].collision_shape_id;
                 }
                 if (field_mask & 0x10) {
                     destination->layer[0].lighting_index =
@@ -160,7 +160,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                         ((source->layer[1].quarter_turns + quarter_turns) & 3);
                 }
                 if (field_mask & 8) {
-                    destination->layer[1].unknown_03 = source->layer[1].unknown_03;
+                    destination->layer[1].collision_shape_id = source->layer[1].collision_shape_id;
                 }
                 if (field_mask & 0x10) {
                     destination->layer[1].lighting_index =

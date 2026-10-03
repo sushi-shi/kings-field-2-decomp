@@ -73,14 +73,14 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    total = actor_magic_component_curve(power, magic_06, group->unknown_20[0]);
-    total += actor_magic_component_curve(power, magic_08, group->unknown_20[1]);
-    total += actor_magic_component_curve(power, magic_0a, group->unknown_20[2]);
-    total += actor_magic_component_curve(power, magic_0c, group->unknown_20[3]);
-    total += actor_magic_component_curve(power, magic_0e, group->unknown_20[4]);
-    total += actor_magic_component_curve(power, magic_10, group->unknown_20[5]);
-    total += actor_magic_component_curve(power, magic_12, group->unknown_20[6]);
-    total += actor_magic_component_curve(power, magic_14, group->unknown_20[7]);
+    total = actor_magic_component_curve(power, magic_06, group->magic_component_divisors[0]);
+    total += actor_magic_component_curve(power, magic_08, group->magic_component_divisors[1]);
+    total += actor_magic_component_curve(power, magic_0a, group->magic_component_divisors[2]);
+    total += actor_magic_component_curve(power, magic_0c, group->magic_component_divisors[3]);
+    total += actor_magic_component_curve(power, magic_0e, group->magic_component_divisors[4]);
+    total += actor_magic_component_curve(power, magic_10, group->magic_component_divisors[5]);
+    total += actor_magic_component_curve(power, magic_12, group->magic_component_divisors[6]);
+    total += actor_magic_component_curve(power, magic_14, group->magic_component_divisors[7]);
     if (total > 0x68db7) {
         total = 0x68db7;
     }
@@ -124,7 +124,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     remaining = (u16)actor->unknown_1a - applied;
     if (remaining <= 0) {
         if (actor->unknown_1a != 0 && kind == 0x10) {
-            player_add_experience(group->unknown_1e);
+            player_add_experience(group->experience_reward);
         }
         actor_select_target_type_in_own_group(actor, 3);
         remaining = 0;

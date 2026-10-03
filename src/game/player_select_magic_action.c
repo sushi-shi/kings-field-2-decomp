@@ -54,7 +54,7 @@ void player_select_magic_action(s32 magic_id)
         }
         break;
     case 4:
-        player_state.unknown_68 = 900;
+        player_state.magic_tint_phase_limit = 900;
         player_state.vitals.current_mp -= record->mp_cost;
         return;
     default:
@@ -257,7 +257,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         result = 0;
         break;
     }
-    player_state.unknown_e8 = dx;
-    player_state.unknown_ec = dz;
+    player_state.frame_displacement.vx = dx;
+    player_state.frame_displacement.vz = dz;
     return result;
 }

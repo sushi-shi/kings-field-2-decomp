@@ -62,8 +62,8 @@ void actor_copy_group_defaults(KfActor *actor)
 
     actor->unknown_01 = group->unknown_00;
     actor->unknown_1a = group->unknown_1a;
-    actor->unknown_1c = group->unknown_12;
-    actor->unknown_1e = group->unknown_14;
+    actor->unknown_1c = group->collision_radius;
+    actor->unknown_1e = group->collision_height;
     actor->unknown_28 = group->unknown_34;
     value = group->unknown_32;
     actor->unknown_4c = value;

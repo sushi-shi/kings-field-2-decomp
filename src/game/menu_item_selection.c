@@ -166,7 +166,7 @@ void menu_apply_item_effect(s32 item_id)
     } else if (item_id == 76) {
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
-        func_80019240();
+        player_clear_and_cap_status_effects();
     } else if (item_id == 77) {
         player_state.vitals.current_hp += 100;
     } else if (item_id == 78) {
@@ -174,11 +174,11 @@ void menu_apply_item_effect(s32 item_id)
     }
 
     if (item_id == 79) {
-        func_80019240();
+        player_clear_and_cap_status_effects();
     } else if (item_id == 80) {
         player_state.vitals.current_hp += 100;
         player_state.vitals.current_mp += 50;
-        func_80019240();
+        player_clear_and_cap_status_effects();
     }
 
     if (player_state.vitals.current_hp > player_state.vitals.maximum_hp)
@@ -193,7 +193,7 @@ void menu_apply_item_effect(s32 item_id)
 }
 
 ADDRESS(0x80019240, 0x6c)
-void func_80019240(void)
+void player_clear_and_cap_status_effects(void)
 {
     if (player_state.paralysis_timer > 0)
         player_state.paralysis_timer = 0;
@@ -209,7 +209,7 @@ void player_cap_darkness_phase(void)
 {
     if (player_state.darkness_phase > 64) {
         player_state.darkness_phase = 64;
-        player_state.unknown_5c = 0;
+        player_state.darkness_phase_limit = 0;
     }
 }
 
@@ -218,7 +218,7 @@ void player_cap_curse_strength(void)
 {
     if (player_state.curse_strength > 64) {
         player_state.curse_strength = 64;
-        player_state.unknown_58 = 0;
+        player_state.curse_phase_limit = 0;
     }
 }
 

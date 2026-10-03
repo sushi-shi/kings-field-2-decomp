@@ -102,9 +102,9 @@ dispatch_action:
                             -(actor->unknown_1e >> 1));
                     }
                 } else if (actor->slot_state == 1 &&
-                           actor->unknown_0a[1] != 0xff) {
+                           actor->death_drop_object_id != 0xff) {
                     map_object_spawn_effect(
-                        0, actor->unknown_0a[1], &actor->position,
+                        0, actor->death_drop_object_id, &actor->position,
                         -(actor->unknown_1e >> 1));
                 }
             }
@@ -781,12 +781,12 @@ case3_motion:
         case 1:
             actor_advance_animation_clamped(actor, target->animation_step);
             actor->unknown_1c = fixed_lerp_q12(target->word_14.value,
-                group->unknown_12, actor->animation_phase);
+                group->collision_radius, actor->animation_phase);
             actor->unknown_1e = fixed_lerp_q12(target->word_16.value,
-                group->unknown_14, actor->animation_phase);
+                group->collision_height, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {
-                actor->unknown_1c = group->unknown_12;
-                actor->unknown_1e = group->unknown_14;
+                actor->unknown_1c = group->collision_radius;
+                actor->unknown_1e = group->collision_height;
                 actor->state_70.signed_state = 2;
                 actor->tail_72.signed_state = target->word_10.value;
                 actor_set_animation(target->word_18.bytes.low);
@@ -836,8 +836,8 @@ case3_motion:
             }
             actor->state_70.signed_state = 1;
             actor->tail_72.signed_state = 8;
-            actor->unknown_1c = group->unknown_12;
-            actor->unknown_1e = group->unknown_14;
+            actor->unknown_1c = group->collision_radius;
+            actor->unknown_1e = group->collision_height;
             actor->position.vy += 2048;
             group_height = group->unknown_32;
             actor->unknown_4c = group_height;
@@ -969,10 +969,10 @@ case3_motion:
             KfTargetCandidate *next_target;
             actor_advance_animation_clamped(actor, target->animation_step);
             actor->unknown_1c = fixed_lerp_q12(
-                group->unknown_12,
+                group->collision_radius,
                 target->word_12.value, actor->animation_phase);
             actor->unknown_1e = fixed_lerp_q12(
-                group->unknown_14,
+                group->collision_height,
                 target->word_14.value, actor->animation_phase);
             if (actor->animation_phase >= 0xfff) {
                 actor->unknown_1c = target->word_12.value;

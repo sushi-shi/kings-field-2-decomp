@@ -44,24 +44,24 @@ void map_object_update_actions(void)
         case 2:
             switch (object->action_timer) {
             case 1:
-                if (object->unknown_0a == 0) {
+                if (object->phase_q12 == 0) {
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
-                object->unknown_0a += 72;
-                if (object->unknown_0a == 0xc18) {
-                    map_cell_apply_rotated_pattern(object->unknown_00, object->position.vx,
+                object->phase_q12 += 72;
+                if (object->phase_q12 == 0xc18) {
+                    map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 1, 0xff);
                 }
-                if (object->unknown_0a > 0xfff) {
-                    object->unknown_0a = 0xfff;
+                if (object->phase_q12 > 0xfff) {
+                    object->phase_q12 = 0xfff;
                     object->action_timer = 2;
                 }
                 break;
             case 20:
                 if (collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
-                    map_cell_apply_rotated_pattern(object->unknown_00, object->position.vx,
+                    map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
@@ -69,9 +69,9 @@ void map_object_update_actions(void)
                 }
                 break;
             case 21:
-                object->unknown_0a -= 72;
-                if ((s16)object->unknown_0a <= 0) {
-                    object->unknown_0a = 0;
+                object->phase_q12 -= 72;
+                if ((s16)object->phase_q12 <= 0) {
+                    object->phase_q12 = 0;
                     object->action_timer = 0;
                 }
                 break;
@@ -93,8 +93,8 @@ void map_object_update_actions(void)
                 break;
             }
             case 1:
-                if (object->unknown_0a == 0) {
-                    map_cell_copy_rotated_fields(object->unknown_00,
+                if (object->phase_q12 == 0) {
+                    map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -104,9 +104,9 @@ void map_object_update_actions(void)
                                   template->unknown_0d[1], object->rotation.vy, 0x2d);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
-                object->unknown_0a += 72;
-                if (object->unknown_0a == 0xc18) {
-                    map_cell_copy_rotated_fields(object->unknown_00,
+                object->phase_q12 += 72;
+                if (object->phase_q12 == 0xc18) {
+                    map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.fields.unknown_39,
@@ -114,8 +114,8 @@ void map_object_update_actions(void)
                                   template->unknown_0d[0],
                                   template->unknown_0d[1], object->rotation.vy, 0x2d);
                 }
-                if (object->unknown_0a > 0xfff) {
-                    object->unknown_0a = 0xfff;
+                if (object->phase_q12 > 0xfff) {
+                    object->phase_q12 = 0xfff;
                     object->action_timer = 2;
                 }
                 break;
@@ -125,7 +125,7 @@ void map_object_update_actions(void)
                     collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x1130, 0xc80, 0xc0) == 0) {
                     object->action_timer = 21;
-                    map_cell_copy_rotated_fields(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0],
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -138,11 +138,11 @@ void map_object_update_actions(void)
                 break;
             }
             case 21:
-                object->unknown_0a -= 72;
-                if ((s16)object->unknown_0a <= 0) {
-                    object->unknown_0a = 0;
+                object->phase_q12 -= 72;
+                if ((s16)object->phase_q12 <= 0) {
+                    object->phase_q12 = 0;
                     object->action_timer = 0;
-                    map_cell_copy_rotated_fields(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.fields.unknown_3a.bytes.high +
                                       template->unknown_0d[0] * 2,
                                   object->tail.spawn_bytes.spawn_sequence.low,
@@ -194,14 +194,14 @@ void map_object_update_actions(void)
                 }
                 previous = object->extra_40.halfwords[0]++;
                 if (previous < 32) {
-                    object->unknown_01 = 0x81;
+                    object->asset_clip_selector = 0x81;
                     object->rotation.vy += 32;
                     if (linked != 0) {
-                        linked->unknown_01 = 0x81;
+                        linked->asset_clip_selector = 0x81;
                         linked->rotation.vy -= 32;
                     }
                     if (previous == 24) {
-                        map_cell_copy_rotated_fields(object->unknown_00,
+                        map_cell_copy_rotated_fields(object->layer_mask,
                                       object->tail.fields.unknown_3a.bytes.high,
                                       object->tail.spawn_bytes.spawn_sequence.low,
                                       object->tail.fields.unknown_39,
@@ -228,7 +228,7 @@ void map_object_update_actions(void)
                                 object->extra_40.halfwords[0] = 300;
                                 break;
                             }
-                            map_cell_copy_rotated_fields(object->unknown_00,
+                            map_cell_copy_rotated_fields(object->layer_mask,
                                           object->tail.fields.unknown_3a.bytes.high + 2,
                                           object->tail.spawn_bytes.spawn_sequence.low,
                                           object->tail.fields.unknown_39,
@@ -242,10 +242,10 @@ void map_object_update_actions(void)
                         }
                     } else {
                         object->action_timer = 0;
-                        object->unknown_01 = 0x80;
+                        object->asset_clip_selector = 0x80;
                         object->unknown_0e = -50;
                         if (linked != 0) {
-                            linked->unknown_01 = 0x80;
+                            linked->asset_clip_selector = 0x80;
                             linked->unknown_0e = -50;
                         }
                     }
@@ -270,7 +270,7 @@ void map_object_update_actions(void)
                     object->extra_40.signed_halfwords[0] = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
-                                            1, object->unknown_00);
+                                            1, object->layer_mask);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 break;
@@ -313,7 +313,7 @@ void map_object_update_actions(void)
                     object->extra_40.halfwords[0] = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
-                                            1, object->unknown_00);
+                                            1, object->layer_mask);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                 }
                 break;
@@ -348,7 +348,7 @@ void map_object_update_actions(void)
                 }
                 if (object->tail.fields.unknown_38 == 0xfe) {
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
-                    object->unknown_0a = 0xfff;
+                    object->phase_q12 = 0xfff;
                     object->action_timer = 3;
                 } else {
                     map_object_set_property(object->tail.fields.unknown_3a.value,
@@ -361,15 +361,15 @@ void map_object_update_actions(void)
                 if (object->tail.fields.unknown_38 == 0xfe) {
                     object->action_timer = 2;
                     map_object_set_property(object->tail.fields.unknown_3a.value,
-                                            1, object->unknown_00);
+                                            1, object->layer_mask);
                     map_object_play_spatial_sound(object, template->unknown_0d[2]);
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
                 }
                 break;
             case 2:
-                object->unknown_0a += 128;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_0a = 0xfff;
+                object->phase_q12 += 128;
+                if (object->phase_q12 >= 0xfff) {
+                    object->phase_q12 = 0xfff;
                     map_object_set_property(object->tail.fields.unknown_3a.value, 2);
                     object->action_timer = 3;
                 }
@@ -399,11 +399,11 @@ void map_object_update_actions(void)
                 }
                 break;
             case 2:
-                object->unknown_0a += 256;
-                if (object->unknown_0a < 0x1000) {
+                object->phase_q12 += 256;
+                if (object->phase_q12 < 0x1000) {
                     break;
                 }
-                object->unknown_0a = 0xfff;
+                object->phase_q12 = 0xfff;
             action83_complete:
                 map_object_apply_marker_signal(object->tail.fields.unknown_39);
                 switch (object->tail.fields.unknown_38) {
@@ -421,21 +421,21 @@ void map_object_update_actions(void)
                 }
                 break;
             case 3:
-                object->unknown_0a -= 256;
-                if ((s16)object->unknown_0a > 0) {
+                object->phase_q12 -= 256;
+                if ((s16)object->phase_q12 > 0) {
                     break;
                 }
-                object->unknown_0a = 0;
+                object->phase_q12 = 0;
                 goto action83_complete;
             case 4:
-                object->unknown_0a -= 256;
-                if ((s16)object->unknown_0a <= 0) {
+                object->phase_q12 -= 256;
+                if ((s16)object->phase_q12 <= 0) {
                     object->action_timer = 99;
                 }
                 break;
             case 9:
                 if (object->tail.fields.unknown_38 == 3) {
-                    object->unknown_0a = 0xfff;
+                    object->phase_q12 = 0xfff;
                 }
                 object->action_timer = 0;
                 break;
@@ -459,7 +459,7 @@ void map_object_update_actions(void)
                 default:
                     break;
                 }
-                map_cell_copy_rotated_fields(object->unknown_00,
+                map_cell_copy_rotated_fields(object->layer_mask,
                               object->tail.spawn_bytes.spawn_sequence.low +
                                   object->tail.fields.unknown_3e.bytes.low,
                               object->tail.spawn_bytes.spawn_sequence.high,
@@ -470,11 +470,11 @@ void map_object_update_actions(void)
                               object->rotation.vy, 0x2d);
                 break;
             case 2:
-                object->unknown_0a -= 64;
-                if ((s16)object->unknown_0a <= 0) {
-                    object->unknown_0a = 0;
+                object->phase_q12 -= 64;
+                if ((s16)object->phase_q12 <= 0) {
+                    object->phase_q12 = 0;
                     object->action_timer = 99;
-                    map_cell_copy_rotated_fields(object->unknown_00,
+                    map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.spawn_bytes.spawn_sequence.low,
                                   object->tail.spawn_bytes.spawn_sequence.high,
                                   object->tail.fields.unknown_3a.bytes.low,
@@ -485,9 +485,9 @@ void map_object_update_actions(void)
                 }
                 break;
             case 3:
-                object->unknown_0a += 64;
-                if (object->unknown_0a >= 0x1000) {
-                    object->unknown_0a = 0xfff;
+                object->phase_q12 += 64;
+                if (object->phase_q12 >= 0x1000) {
+                    object->phase_q12 = 0xfff;
                     object->action_timer = 99;
                 }
                 break;
@@ -499,7 +499,7 @@ void map_object_update_actions(void)
             case 1:
                 object->extra_40.halfwords[0] = object->tail.fields.unknown_3a.value;
                 object->action_timer = 2;
-                object->unknown_00 = object->extra_40.bytes[2];
+                object->layer_mask = object->extra_40.bytes[2];
                 break;
             case 2: {
                 u16 previous = object->extra_40.halfwords[0];
@@ -511,18 +511,18 @@ void map_object_update_actions(void)
                         &row[object->position.vx >> 11];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->action_timer = 3;
-                    if (object->unknown_00 != 1) {
+                    if (object->layer_mask != 1) {
                         layer = &cell->layer[1];
                     }
-                    layer->unknown_03 = 0x74;
+                    layer->collision_shape_id = 0x74;
                     map_object_play_spatial_sound(object, 0xe3);
                 }
                 break;
             }
             case 3:
-                object->unknown_10 -= 256;
-                if ((s16)object->unknown_10 <= 0) {
-                    object->unknown_10 = 0;
+                object->lighting_blend_q12 -= 256;
+                if ((s16)object->lighting_blend_q12 <= 0) {
+                    object->lighting_blend_q12 = 0;
                     object->action_timer = 4;
                     object->extra_40.halfwords[0] = object->tail.fields.spawn_sequence;
                 }
@@ -537,20 +537,20 @@ void map_object_update_actions(void)
                 break;
             }
             case 5:
-                object->unknown_10 += 256;
-                if (object->unknown_10 >= 0x1000) {
+                object->lighting_blend_q12 += 256;
+                if (object->lighting_blend_q12 >= 0x1000) {
                     KfMapOccupancyCell *row =
                         bss_801c7540.map_cells[object->position.vz >> 11];
                     KfMapOccupancyCell *cell =
                         &row[object->position.vx >> 11];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
-                    object->unknown_10 = 0x1000;
+                    object->lighting_blend_q12 = 0x1000;
                     object->action_timer = 0;
-                    if (object->unknown_00 != 1) {
+                    if (object->layer_mask != 1) {
                         layer = &cell->layer[1];
                     }
-                    layer->unknown_03 = 0x75;
-                    object->unknown_00 = 0;
+                    layer->collision_shape_id = 0x75;
+                    object->layer_mask = 0;
                 }
                 break;
             default:
@@ -590,10 +590,10 @@ void map_object_update_actions(void)
                 break;
             }
             case 1:
-                object->unknown_0a += 256;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_01 = 1;
-                    object->unknown_0a = 0;
+                object->phase_q12 += 256;
+                if (object->phase_q12 >= 0xfff) {
+                    object->asset_clip_selector = 1;
+                    object->phase_q12 = 0;
                     if (object->tail.fields.unknown_3e.bytes.low & 2) {
                         object->action_timer = 99;
                         object->tail.fields.unknown_38 = 0xff;
@@ -603,10 +603,10 @@ void map_object_update_actions(void)
                 }
                 break;
             case 32:
-                object->unknown_0a += 128;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_01 = 0;
-                    object->unknown_0a = 0;
+                object->phase_q12 += 128;
+                if (object->phase_q12 >= 0xfff) {
+                    object->asset_clip_selector = 0;
+                    object->phase_q12 = 0;
                     object->action_timer = 0;
                     map_cell_apply_rotated_pattern(object->extra_40.bytes[0], object->position.vx,
                                   object->position.vz, object->rotation.vy,
@@ -649,7 +649,7 @@ void map_object_update_actions(void)
             if (linked_index != 0xffff) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
                 if (linked->object_id != 0xff) {
-                    linked->unknown_00 = 0;
+                    linked->layer_mask = 0;
                     linked->tail.fields.unknown_38 = 0;
                 }
             }
@@ -664,9 +664,9 @@ void map_object_update_actions(void)
             case 0:
                 if (object->tail.fields.unknown_38 == 0) {
                     object->action_timer = 2;
-                    object->unknown_0a = 0;
-                    object->unknown_01 = 1;
-                    object->unknown_0a = 0xfff;
+                    object->phase_q12 = 0;
+                    object->asset_clip_selector = 1;
+                    object->phase_q12 = 0xfff;
                 } else if (object->tail.fields.unknown_3a.bytes.high != 0xfe &&
                            (object->tail.fields.unknown_3a.bytes.high == 0xff ||
                             player_camera_within_map_region(object->position.vx >> 11,
@@ -675,41 +675,41 @@ void map_object_update_actions(void)
                                             object->tail.spawn_bytes.spawn_sequence.low,
                                             object->position.vy))) {
                     object->action_timer = 1;
-                    object->unknown_0a = 0;
-                    object->unknown_01 = 0;
+                    object->phase_q12 = 0;
+                    object->asset_clip_selector = 0;
                     object->extra_40.bytes[0] = 0;
                     map_object_play_spatial_sound(object, template->unknown_0d[9]);
                 }
                 break;
             case 1:
                 if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
-                    if (object->unknown_0a == 0) {
+                    if (object->phase_q12 == 0) {
                         map_object_set_cell_marker(object, 1,
                                                    template->marker_action_51);
                         map_object_play_spatial_sound(object, template->unknown_0d[9]);
-                    } else if (object->unknown_0a >= 1500 &&
-                               object->unknown_0a < 1500 + increment) {
+                    } else if (object->phase_q12 >= 1500 &&
+                               object->phase_q12 < 1500 + increment) {
                         map_object_play_spatial_sound(object, 0x4e);
                     }
                 }
                 if (object->tail.fields.unknown_38 == 0 &&
-                    object->unknown_0a >= 0x1000 - increment) {
+                    object->phase_q12 >= 0x1000 - increment) {
                     object->action_timer = 2;
-                    object->unknown_0a = 0;
-                    object->unknown_01 = 1;
+                    object->phase_q12 = 0;
+                    object->asset_clip_selector = 1;
                     break;
                 }
-                object->unknown_0a += increment;
-                if (object->unknown_0a >= 0xfff) {
+                object->phase_q12 += increment;
+                if (object->phase_q12 >= 0xfff) {
                     if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
-                        object->unknown_0a = 0;
+                        object->phase_q12 = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, 0,
                                                    template->marker_action_51);
                         break;
                     }
                     map_object_play_spatial_sound(object, template->unknown_0d[9]);
-                    object->unknown_0a &= 0xfff;
+                    object->phase_q12 &= 0xfff;
                 }
                 {
                     const KfMapObjectTemplatePoseView *pose_template =
@@ -738,19 +738,19 @@ void map_object_update_actions(void)
                 }
                 break;
             case 2:
-                object->unknown_0a += 64;
-                if (object->unknown_0a >= 0xfff) {
-                    object->unknown_0a = 0xfff;
+                object->phase_q12 += 64;
+                if (object->phase_q12 >= 0xfff) {
+                    object->phase_q12 = 0xfff;
                     if (object->tail.fields.unknown_38 == 0xff) {
-                        object->unknown_01 = 2;
-                        object->unknown_0a = 0;
+                        object->asset_clip_selector = 2;
+                        object->phase_q12 = 0;
                         object->action_timer = 3;
                     }
                 }
                 break;
             case 3:
-                object->unknown_0a += 64;
-                if (object->unknown_0a >= 0xfff) {
+                object->phase_q12 += 64;
+                if (object->phase_q12 >= 0xfff) {
                     object->action_timer = 0;
                 }
                 break;
@@ -821,7 +821,7 @@ void map_object_update_actions(void)
                     linked->object_id = 0x4c;
                     linked->action = KF_MAP_OBJECT_ACTION_NONE;
                     linked->position.vy += 300;
-                    linked->unknown_00 = object->unknown_00;
+                    linked->layer_mask = object->layer_mask;
                     linked->tail.fields.unknown_38 = 0;
                     scale = object->tail.fields.unknown_38 << 5;
                     linked->scale.vz = scale;
@@ -866,7 +866,7 @@ void map_object_update_actions(void)
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
-                object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.fields.unknown_3e.signed_value;
                 object->tail.fields.unknown_3e.value += 20;
                 if (object->position.vy >= floor_y) {
@@ -892,7 +892,7 @@ void map_object_update_actions(void)
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
-                object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += 20;
                 object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
                 if (object->position.vy >= floor_y) {
@@ -908,7 +908,7 @@ void map_object_update_actions(void)
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 s16 velocity;
-                object->unknown_00 = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.fields.unknown_3e.signed_value;
                 effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
                 {
@@ -995,8 +995,8 @@ void map_object_update_actions(void)
                     player_sync_position_to_map();
                     player_state.camera_rotation.angles[1] =
                         player_state.camera_rotation_target.angles[1] +
-                        player_state.unknown_100[1] +
-                        player_state.unknown_108.components[1] +
+                        player_state.reaction_rotation_offset[1] +
+                        player_state.view_rotation_offset.components[1] +
                         player_state.unknown_110[1];
                     render_frames_with_color_overlay(1, 0x1000, 0, -0x100);
                     render_set_color_overlay(0xff, 0, 0, 0);
@@ -1004,7 +1004,7 @@ void map_object_update_actions(void)
             } else {
                 object->extra_40.bytes[0] = 0;
             }
-            object->unknown_0a = (object->unknown_0a + 64) & 0xfff;
+            object->phase_q12 = (object->phase_q12 + 64) & 0xfff;
             break;
 
         default:

@@ -111,8 +111,11 @@ s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *experience = 0;
     weight = 100000;
     for (i = 0; i < 6; ++i) {
-        ((u8 *)&encoded)[0] = header.title[0x28 + i * 2];
-        ((u8 *)&encoded)[1] = header.title[0x29 + i * 2];
+        const char *digit_pair = &header.title[0x28 + i * 2];
+        s8 first_digit_byte = digit_pair[0];
+        s8 second_digit_byte = digit_pair[1];
+        ((u8 *)&encoded)[0] = first_digit_byte;
+        ((u8 *)&encoded)[1] = second_digit_byte;
         if (encoded != 0x4081) {
             encoded = ((s32)encoded >> 8) - 79;
             *experience += encoded * weight;
@@ -123,8 +126,11 @@ s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *level = 0;
     weight = 10;
     for (i = 0; i < 2; ++i) {
-        ((u8 *)&encoded)[0] = header.title[0x3a + i * 2];
-        ((u8 *)&encoded)[1] = header.title[0x3b + i * 2];
+        const char *digit_pair = &header.title[0x3a + i * 2];
+        s8 first_digit_byte = digit_pair[0];
+        s8 second_digit_byte = digit_pair[1];
+        ((u8 *)&encoded)[0] = first_digit_byte;
+        ((u8 *)&encoded)[1] = second_digit_byte;
         if (encoded != 0x4081) {
             encoded = ((s32)encoded >> 8) - 79;
             *level += encoded * weight;

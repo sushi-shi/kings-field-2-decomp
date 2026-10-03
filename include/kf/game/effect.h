@@ -22,15 +22,15 @@ typedef struct KfEffectRecord {
     u8 unknown_05;
     u8 unknown_06;
     u8 phase;
-    u8 unknown_08;
-    u8 unknown_09;
-    u8 unknown_0a;
+    u8 render_flags;
+    u8 render_queue_mode;
+    u8 map_layer_mask;
     u8 cooldown;
-    u8 unknown_0c;
-    u8 unknown_0d;
+    u8 lighting_override_index;
+    u8 midpoint_collision_enabled;
     s16 updates_remaining;
-    s16 unknown_10;
-    u16 unknown_12;
+    s16 lighting_blend_q12;
+    u16 animation_phase_q12;
     VECTOR position;
     SVECTOR rotation;
     u16 scale_x;
@@ -42,6 +42,13 @@ typedef struct KfEffectRecord {
 } KfEffectRecord;
 
 typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
+typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];
+typedef char kf_effect_map_layer_mask_offset[(u32)&((KfEffectRecord *)0)->map_layer_mask == 0x0a ? 1 : -1];
+typedef char kf_effect_render_queue_mode_offset[(u32)&((KfEffectRecord *)0)->render_queue_mode == 0x09 ? 1 : -1];
+typedef char kf_effect_lighting_override_offset[(u32)&((KfEffectRecord *)0)->lighting_override_index == 0x0c ? 1 : -1];
+typedef char kf_effect_midpoint_collision_offset[(u32)&((KfEffectRecord *)0)->midpoint_collision_enabled == 0x0d ? 1 : -1];
+typedef char kf_effect_lighting_blend_offset[(u32)&((KfEffectRecord *)0)->lighting_blend_q12 == 0x10 ? 1 : -1];
+typedef char kf_effect_animation_phase_offset[(u32)&((KfEffectRecord *)0)->animation_phase_q12 == 0x12 ? 1 : -1];
 typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 0x14 ? 1 : -1];
 typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
 typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];

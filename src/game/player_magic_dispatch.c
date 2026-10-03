@@ -329,9 +329,9 @@ regular_weapon:
                 s32 bearing = vector_xz_to_angle(actor->position.vx - player_state.camera_position.vx,
                                                   actor->position.vz - player_state.camera_position.vz);
                 if (angle_within_tolerance(player_state.camera_rotation.angles[1],
-                                           bearing, group->unknown_16)
+                                           bearing, group->player_facing_tolerance)
                     && angle_within_tolerance(actor->rotation.y,
-                                              bearing + 0x800, group->unknown_18)) {
+                                              bearing + 0x800, group->actor_facing_tolerance)) {
                     actor_apply_magic_to_actor(index, player_state.physical_power,
                                    player_state.attack_components[0],
                                    player_state.attack_components[1],

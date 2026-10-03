@@ -17,7 +17,7 @@ void actor_update_lifecycle_for_player_range(void)
         distance = vector_distance_to_point(
             &actor->position, player_state.camera_position.vx,
             KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
-            (group->unknown_0a[0] + 1) << KF_FIXED11_BITS, 0, 0);
+            (group->activation_range_cells + 1) << KF_FIXED11_BITS, 0, 0);
         if (distance == KF_DISTANCE_NONE) {
             return;
         }
@@ -32,12 +32,12 @@ void actor_update_lifecycle_for_player_range(void)
         }
 
         if (slot_state == 2) {
-            u8 chance = actor->unknown_0a[0];
+            u8 chance = actor->spawn_chance;
             if (chance != 0xff && chance < (rand() >> 4)) {
                 return;
             }
         } else {
-            if (distance < (group->unknown_0a[0] << KF_FIXED11_BITS) &&
+            if (distance < (group->activation_range_cells << KF_FIXED11_BITS) &&
                 player_state.unknown_09[1] == 0) {
                 goto set_dormant;
             }
@@ -45,16 +45,16 @@ void actor_update_lifecycle_for_player_range(void)
                 if (slot_state != 0) {
                     goto set_dormant;
                 }
-                if (actor->unknown_0a[0] == 0 ||
-                    actor->unknown_0a[0] < (rand() >> 7)) {
+                if (actor->spawn_chance == 0 ||
+                    actor->spawn_chance < (rand() >> 7)) {
                     goto set_dormant;
                 }
             }
         }
 
         if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
-                          actor->position.vz, group->unknown_12,
-                          group->unknown_14) != -1) {
+                          actor->position.vz, group->collision_radius,
+                          group->collision_height) != -1) {
             goto set_dormant;
         }
 
@@ -82,7 +82,7 @@ void actor_update_lifecycle_for_player_range(void)
         distance = vector_distance_to_point(
             &actor->position, player_state.camera_position.vx,
             KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
-            group->unknown_0a[1] << KF_FIXED11_BITS, 0, 0);
+            group->deactivation_range_cells << KF_FIXED11_BITS, 0, 0);
         if (distance != KF_DISTANCE_NONE) {
             return;
         }
@@ -101,7 +101,7 @@ void actor_update_lifecycle_for_player_range(void)
             distance = vector_distance_to_point(
                 &actor->position, player_state.camera_position.vx,
                 KF_DISTANCE_IGNORE_HEIGHT, player_state.camera_position.vz,
-                group->unknown_0a[1] << KF_FIXED11_BITS, 0, 0);
+                group->deactivation_range_cells << KF_FIXED11_BITS, 0, 0);
             if (distance != KF_DISTANCE_NONE) {
                 return;
             }

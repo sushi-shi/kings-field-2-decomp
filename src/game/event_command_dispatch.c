@@ -186,9 +186,9 @@ transition_action: {
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);
         player_state.death_state = 0;
-        player_state.unknown_108.components[2] = 0;
-        player_state.unknown_108.components[1] = 0;
-        player_state.unknown_108.components[0] = 0;
+        player_state.view_rotation_offset.components[2] = 0;
+        player_state.view_rotation_offset.components[1] = 0;
+        player_state.view_rotation_offset.components[0] = 0;
         player_state.camera_rotation = player_state.camera_rotation_target;
         player_state.camera_position.vx = object->position.vx + forward.x;
         player_state.camera_position.vz = object->position.vz + forward.z;
@@ -228,7 +228,7 @@ transition_action: {
         }
         break;
     case 0x54:
-        player_state.unknown_6a = 1200;
+        player_state.map_marker_visual_effect_timer = 1200;
         game_counter_decrement(0x54);
         event_state.state_word = 1;
         break;
@@ -327,10 +327,10 @@ magic_action: {
         map_object_reset(object);
         game_counter_decrement(command);
         object->object_id = command;
-        object->unknown_02 = 1;
-        object->unknown_00 = 3;
+        object->render_queue_mode = 1;
+        object->layer_mask = 3;
         object->action = 0xff;
-        object->unknown_05 = 0x42;
+        object->lighting_override_index = 0x42;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;
@@ -347,7 +347,7 @@ magic_action: {
                           &far_position, 0, 0, fraction);
             object->rotation.vy += spin;
             spin += 4;
-            object->unknown_10 = (rsin(fraction << 6) >> 2) + 1024;
+            object->lighting_blend_q12 = (rsin(fraction << 6) >> 2) + 1024;
             cd_request_service_vab();
             cd_request_service_stream();
             render_game_frame(0, 0);
@@ -359,19 +359,19 @@ magic_action: {
             cd_request_service_stream();
             render_game_frame(0, 0);
 decay_update:
-            object->unknown_10 -= 64;
+            object->lighting_blend_q12 -= 64;
             object->rotation.vy += spin;
             spin += 8;
-            if ((s16)object->unknown_10 <= 0) {
+            if ((s16)object->lighting_blend_q12 <= 0) {
                 break;
             }
         }
-        object->unknown_10 = 0;
+        object->lighting_blend_q12 = 0;
         do {
             object->rotation.vy += spin;
-            object->unknown_10 += 128;
+            object->lighting_blend_q12 += 128;
             spin += 8;
-            if (object->unknown_10 >= 4096) {
+            if (object->lighting_blend_q12 >= 4096) {
                 break;
             }
             cd_request_service_vab();
@@ -540,7 +540,7 @@ void event_map_object_interact(KfMapObject *object, ...)
             0x15e, 10, map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         object->object_id = spawn_object_id;
-        object->unknown_00 = 3;
+        object->layer_mask = 3;
         object->action = 0xff;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
@@ -771,10 +771,10 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 u8 linked_state = object->extra_40.bytes[0];
                 u16 result_id;
                 linked->tail.fields.unknown_38 = 0xff;
-                linked->unknown_00 = linked_state;
+                linked->layer_mask = linked_state;
                 event_map_object_interact(linked);
                 result_id = linked->object_id;
-                linked->unknown_00 = 0;
+                linked->layer_mask = 0;
                 linked->tail.fields.unknown_38 = 0;
                 if (result_id == 0xff) {
                     object->tail.fields.unknown_3a.value = 0xffff;

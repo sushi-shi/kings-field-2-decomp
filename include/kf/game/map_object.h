@@ -65,7 +65,7 @@ typedef char kf_map_object_tail_copy_words_size[
 
 /* Map resource placements consumed in 24-byte rows by map_object_initialize_from_placements. */
 typedef struct KfMapObjectPlacement {
-    u8 layer;
+    u8 layer_mask;
     u8 region_z;
     u8 region_x;
     u8 unknown_03;
@@ -117,6 +117,20 @@ typedef char kf_map_object_tail_pair38_size[
 typedef char kf_map_object_tail_pair38_offset[
     (u32)&((KfMapObjectTailPair38View *)0)->value_38 == 4 ? 1 : -1];
 
+/* Action 0xf0 uses the two copied tail bytes as a view-cell radius. */
+typedef struct KfMapObjectTailVisibilityView {
+    u32 unknown_34;
+    u8 radius_x;
+    u8 radius_z;
+    u8 unknown_3a[6];
+} KfMapObjectTailVisibilityView;
+typedef char kf_map_object_tail_visibility_size[
+    sizeof(KfMapObjectTailVisibilityView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_visibility_radius_x_offset[
+    (u32)&((KfMapObjectTailVisibilityView *)0)->radius_x == 4 ? 1 : -1];
+typedef char kf_map_object_tail_visibility_radius_z_offset[
+    (u32)&((KfMapObjectTailVisibilityView *)0)->radius_z == 5 ? 1 : -1];
+
 typedef struct KfMapObjectTailSpawnByteFields {
     u32 unknown_34;
     u8 unknown_38;
@@ -133,6 +147,7 @@ typedef char kf_map_object_tail_spawn_bytes_offset[
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailPair38View pair_38;
+    KfMapObjectTailVisibilityView visibility;
     KfMapObjectTailSpawnByteFields spawn_bytes;
     u32 reset_words[3];
     struct {
@@ -159,18 +174,18 @@ typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1
 
 /* The map-object pool is traversed in 0x44-byte records. */
 typedef struct KfMapObject {
-    u8 unknown_00;
-    u8 unknown_01;
-    u8 unknown_02;
+    u8 layer_mask;
+    u8 asset_clip_selector;
+    u8 render_queue_mode;
     u8 collision_flags;
     u8 action;
-    u8 unknown_05;
+    u8 lighting_override_index;
     u16 object_id;
     u16 action_timer;
-    u16 unknown_0a;
+    u16 phase_q12;
     u16 collision_height;
     s16 unknown_0e;
-    u16 unknown_10;
+    u16 lighting_blend_q12;
     u8 unknown_12[2];
     VECTOR position;
     SVECTOR rotation;
@@ -180,10 +195,20 @@ typedef struct KfMapObject {
 } KfMapObject;
 
 typedef char kf_map_object_size[sizeof(KfMapObject) == 0x44 ? 1 : -1];
+typedef char kf_map_object_asset_clip_selector_offset[
+    (u32)&((KfMapObject *)0)->asset_clip_selector == 1 ? 1 : -1];
 typedef char kf_map_object_action_offset[(u32)&((KfMapObject *)0)->action == 4 ? 1 : -1];
+typedef char kf_map_object_render_queue_mode_offset[
+    (u32)&((KfMapObject *)0)->render_queue_mode == 2 ? 1 : -1];
+typedef char kf_map_object_lighting_override_index_offset[
+    (u32)&((KfMapObject *)0)->lighting_override_index == 5 ? 1 : -1];
 typedef char kf_map_object_action_timer_offset[(u32)&((KfMapObject *)0)->action_timer == 8 ? 1 : -1];
+typedef char kf_map_object_phase_q12_offset[
+    (u32)&((KfMapObject *)0)->phase_q12 == 0x0a ? 1 : -1];
 typedef char kf_map_object_collision_height_offset[
     (u32)&((KfMapObject *)0)->collision_height == 0x0c ? 1 : -1];
+typedef char kf_map_object_lighting_blend_q12_offset[
+    (u32)&((KfMapObject *)0)->lighting_blend_q12 == 0x10 ? 1 : -1];
 typedef char kf_map_object_position_offset[(u32)&((KfMapObject *)0)->position == 0x14 ? 1 : -1];
 typedef char kf_map_object_rotation_offset[(u32)&((KfMapObject *)0)->rotation == 0x24 ? 1 : -1];
 typedef char kf_map_object_scale_offset[(u32)&((KfMapObject *)0)->scale == 0x2c ? 1 : -1];

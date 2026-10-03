@@ -257,7 +257,7 @@ s32 menu_choose_inventory_item(void);
 void menu_item_trade_controller(void);
 void menu_item_stock_choice_controller(void);
 s32 menu_run_root_controller(void);
-void func_80019240(void);
+void player_clear_and_cap_status_effects(void);
 void player_cap_darkness_phase(void);
 void player_cap_curse_strength(void);
 void menu_equipment_category_controller(s32 category);

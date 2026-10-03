@@ -162,13 +162,13 @@ void player_cap_status_components(u32 mask)
         if (player_state.curse_strength >= KF_PLAYER_STATUS_CAP + 1) {
             player_state.curse_strength = KF_PLAYER_STATUS_CAP;
         }
-        player_state.unknown_58 = 0;
+        player_state.curse_phase_limit = 0;
     }
     if (mask & KF_PLAYER_STATUS_SECOND) {
         if (player_state.darkness_phase >= KF_PLAYER_STATUS_CAP + 1) {
             player_state.darkness_phase = KF_PLAYER_STATUS_CAP;
         }
-        player_state.unknown_5c = 0;
+        player_state.darkness_phase_limit = 0;
     }
     if (mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_SECOND)) {
         player_state.poison_timer = 0;
@@ -198,8 +198,8 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     s32 total;
     s32 mp_loss;
     s32 damage_loss;
-    s32 timer_58;
-    s32 timer_5c;
+    s32 curse_phase_limit;
+    s32 darkness_phase_limit;
     s32 paralysis_duration;
     s32 slow_duration;
     s32 poison_duration;
@@ -216,14 +216,14 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     }
     if (player_state.equipped_accessory_id == 0x3a
         || player_state.equipped_extra_id == 0x3a) {
-        timer_58 = 300;
-        timer_5c = 250;
+        curse_phase_limit = 300;
+        darkness_phase_limit = 250;
         poison_duration = 300;
         paralysis_duration = 100;
         slow_duration = 300;
     } else {
-        timer_58 = 600;
-        timer_5c = 500;
+        curse_phase_limit = 600;
+        darkness_phase_limit = 500;
         poison_duration = 600;
         paralysis_duration = 200;
         slow_duration = 600;
@@ -231,12 +231,12 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
 
     switch ((flags & 0xf) - 1) {
     case 0:
-        player_state.unknown_58 = timer_58;
+        player_state.curse_phase_limit = curse_phase_limit;
         player_state.curse_strength = 1;
         player_recalculate_combat_stats();
         break;
     case 1:
-        player_state.unknown_5c = timer_5c;
+        player_state.darkness_phase_limit = darkness_phase_limit;
         break;
     case 2:
         if (player_state.equipped_accessory_id == 0x35

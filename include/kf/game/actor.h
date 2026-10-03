@@ -238,31 +238,48 @@ typedef struct KfTargetGroup {
     u8 unknown_05;
     u8 unknown_06;
     u8 unknown_07[2];
-    u8 unknown_09;
-    u8 unknown_0a[2];
+    u8 render_depth;
+    u8 activation_range_cells;
+    u8 deactivation_range_cells;
     s16 unknown_0c;
     s16 unknown_0e;
     s16 unknown_10;
-    u16 unknown_12;
-    u16 unknown_14;
-    u16 unknown_16;
-    u16 unknown_18;
+    u16 collision_radius;
+    u16 collision_height;
+    u16 player_facing_tolerance;
+    u16 actor_facing_tolerance;
     u16 unknown_1a;
     u16 unknown_1c;
-    u16 unknown_1e;
-    u16 unknown_20[8];
+    u16 experience_reward;
+    u16 magic_component_divisors[8];
     u16 unknown_30;
     u16 unknown_32;
     u32 unknown_34;
     KfTargetReference targets[16];
 } KfTargetGroup;
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
+typedef char kf_target_group_render_depth_offset[
+    (u32)&((KfTargetGroup *)0)->render_depth == 0x09 ? 1 : -1];
+typedef char kf_target_group_activation_range_offset[
+    (u32)&((KfTargetGroup *)0)->activation_range_cells == 0x0a ? 1 : -1];
+typedef char kf_target_group_deactivation_range_offset[
+    (u32)&((KfTargetGroup *)0)->deactivation_range_cells == 0x0b ? 1 : -1];
+typedef char kf_target_group_collision_radius_offset[
+    (u32)&((KfTargetGroup *)0)->collision_radius == 0x12 ? 1 : -1];
+typedef char kf_target_group_collision_height_offset[
+    (u32)&((KfTargetGroup *)0)->collision_height == 0x14 ? 1 : -1];
+typedef char kf_target_group_player_facing_tolerance_offset[
+    (u32)&((KfTargetGroup *)0)->player_facing_tolerance == 0x16 ? 1 : -1];
+typedef char kf_target_group_actor_facing_tolerance_offset[
+    (u32)&((KfTargetGroup *)0)->actor_facing_tolerance == 0x18 ? 1 : -1];
+typedef char kf_target_group_experience_reward_offset[
+    (u32)&((KfTargetGroup *)0)->experience_reward == 0x1e ? 1 : -1];
 typedef char kf_target_group_byte_05_offset[(u32)&((KfTargetGroup *)0)->unknown_05 == 0x05 ? 1 : -1];
 typedef char kf_target_group_byte_06_offset[(u32)&((KfTargetGroup *)0)->unknown_06 == 0x06 ? 1 : -1];
 typedef char kf_target_group_offset_x[
     (u32)&((KfTargetGroup *)0)->unknown_0c == 0x0c ? 1 : -1];
 typedef char kf_target_group_curve_offset[
-    (u32)&((KfTargetGroup *)0)->unknown_20 == 0x20 ? 1 : -1];
+    (u32)&((KfTargetGroup *)0)->magic_component_divisors == 0x20 ? 1 : -1];
 typedef char kf_target_group_unknown_30_offset[
     (u32)&((KfTargetGroup *)0)->unknown_30 == 0x30 ? 1 : -1];
 
@@ -337,7 +354,8 @@ typedef struct KfActor {
     u8 unknown_06;
     u8 unknown_07[2];
     u8 lifecycle;
-    u8 unknown_0a[2];
+    u8 spawn_chance;
+    u8 death_drop_object_id;
     u8 unknown_0c;
     u8 unknown_0d;
     u8 target_type;
@@ -347,7 +365,7 @@ typedef struct KfActor {
     u8 unknown_12;
     u8 unknown_13;
     u8 unknown_14;
-    u8 unknown_15;
+    u8 render_depth;
     s16 unknown_16;
     u16 animation_phase;
     u16 unknown_1a;
@@ -386,6 +404,11 @@ typedef struct KfActor {
 } KfActor;
 
 typedef char kf_actor_size[sizeof(KfActor) == 0x7c ? 1 : -1];
+typedef char kf_actor_spawn_chance_offset[(u32)&((KfActor *)0)->spawn_chance == 0x0a ? 1 : -1];
+typedef char kf_actor_death_drop_object_offset[
+    (u32)&((KfActor *)0)->death_drop_object_id == 0x0b ? 1 : -1];
+typedef char kf_actor_render_depth_offset[
+    (u32)&((KfActor *)0)->render_depth == 0x15 ? 1 : -1];
 typedef char kf_actor_phase_offset[(u32)&((KfActor *)0)->animation_phase == 0x18 ? 1 : -1];
 typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1 : -1];
 typedef char kf_actor_previous_y_offset[(u32)&((KfActor *)0)->unknown_3c == 0x3c ? 1 : -1];

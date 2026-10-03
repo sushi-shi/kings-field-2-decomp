@@ -376,7 +376,7 @@ void cd_request_service_vab(void)
 
     EnterCriticalSection();
     request = cd_state.current;
-    if (request->kind == 0x30 && request->payload.vab.phase == 2) {
+    if (request->kind == KF_CD_REQUEST_VAB_READ && request->payload.vab.phase == 2) {
         ExitCriticalSection();
         location = &request->location;
         vab_slot = &audio_state.vab_slots[request->payload.vab.slot_index];

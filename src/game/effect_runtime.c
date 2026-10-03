@@ -611,7 +611,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_y = 0;
         record->scale_x = 0;
         value = va[1];
-        *(u16 *)&record->cache_tail.payload.raw[0] = value / 4;
+        record->cache_tail.payload.scale_step_argument.scale_step = value / 4;
         break;
     }
     case 118:
@@ -767,7 +767,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_y = 0;
         record->scale_x = 0;
         effect_play_spatial_sound(record, 0x17);
-        *(u16 *)&record->cache_tail.payload.raw[0] = va[1];
+        record->cache_tail.payload.scale_step_argument.scale_step = va[1];
         break;
     }
     case 116:
@@ -1689,7 +1689,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 45:
-        effect_scale_step(0x4000, (s16)*(u16 *)&record->cache_tail.payload.raw[0],
+        effect_scale_step(0x4000, record->cache_tail.payload.scale_step_argument.scale_step,
                        0x46, 0x800, 0x8000);
         break;
     case 116: {
@@ -2065,7 +2065,7 @@ void effect_update_dispatch(void)
     case 54: {
         SVECTOR random_direction;
 
-        effect_scale_step(0x3800, (s16)*(u16 *)&record->cache_tail.payload.raw[0],
+        effect_scale_step(0x3800, record->cache_tail.payload.scale_step_argument.scale_step,
                        0x80, 0x400, 0x8000);
         random_direction.vx = (rand() >> 6) - 256;
         random_direction.vz = (rand() >> 6) - 256;

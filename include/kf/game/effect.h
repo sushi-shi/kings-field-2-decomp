@@ -154,6 +154,13 @@ typedef struct KfEffectKind106Children {
 
 typedef char kf_effect_kind106_children_size[sizeof(KfEffectKind106Children) == 1 ? 1 : -1];
 
+/* Kinds 11, 45, and 54 pass this signed step to effect_scale_step. */
+typedef struct KfEffectScaleStepArgument {
+    s16 scale_step;
+} KfEffectScaleStepArgument;
+
+typedef char kf_effect_scale_step_argument_size[sizeof(KfEffectScaleStepArgument) == 2 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -243,6 +250,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind1Stage kind1;
     KfEffectKind50Stage kind50;
     KfEffectKind106Children kind106;
+    KfEffectScaleStepArgument scale_step_argument;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

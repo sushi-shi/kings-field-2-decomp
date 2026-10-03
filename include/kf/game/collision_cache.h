@@ -51,8 +51,7 @@ typedef struct KfCollisionShapeOffsetTable {
 typedef char kf_collision_shape_offset_table_size[
     sizeof(KfCollisionShapeOffsetTable) == 0x200 ? 1 : -1];
 
-/* Interior state of the startup-cleared BSS owner. Its boundary with the
- * provisional equipment-record view remains unresolved. */
+/* Interior collision-query state within the startup-cleared BSS owner. */
 typedef struct KfCollisionCache {
     KfMapOccupancyCell *cell;
     KfMapOccupancyLayer *shape;

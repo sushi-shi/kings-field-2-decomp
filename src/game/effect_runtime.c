@@ -720,7 +720,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
-        record->cache_tail.payload.raw[0] = va[1];
+        record->cache_tail.payload.kind42.ticks_remaining = va[1];
         break;
     }
     case 113:
@@ -1605,10 +1605,10 @@ void effect_update_dispatch(void)
         break;
     }
     case 42:
-        if ((s8)record->cache_tail.payload.raw[0] == 0) {
+        if (record->cache_tail.payload.kind42.ticks_remaining == 0) {
             effect_scale_step(0x3800, 0x1f8, 0x46, 0x800, 0x8000);
         } else {
-            record->cache_tail.payload.raw[0]--;
+            record->cache_tail.payload.kind42.ticks_remaining--;
         }
         break;
     case 115:

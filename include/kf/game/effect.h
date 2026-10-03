@@ -126,6 +126,13 @@ typedef struct KfEffectCollisionLatch {
 
 typedef char kf_effect_collision_latch_size[sizeof(KfEffectCollisionLatch) == 1 ? 1 : -1];
 
+/* Kind 42 counts down before its scale step. */
+typedef struct KfEffectKind42Countdown {
+    s8 ticks_remaining;
+} KfEffectKind42Countdown;
+
+typedef char kf_effect_kind42_countdown_size[sizeof(KfEffectKind42Countdown) == 1 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -211,6 +218,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind103Counter kind103;
     KfEffectKind2Scale kind2;
     KfEffectCollisionLatch collision_latch;
+    KfEffectKind42Countdown kind42;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

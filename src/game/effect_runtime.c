@@ -2319,8 +2319,6 @@ void effect_update_dispatch(void)
         break;
     }
     case 105: {
-        const KfEffectKind105Attachment *attachment =
-            &record->cache_tail.payload.kind105;
         KfActor *actor;
         VECTOR vertex_offset;
         VECTOR actor_position;
@@ -2331,12 +2329,13 @@ void effect_update_dispatch(void)
         if (initial_phase == 2) {
             goto kind105_phase2;
         }
-        if (attachment->actor_index == 0xff) {
+        if (record->cache_tail.payload.kind105.actor_index == 0xff) {
             goto kind105_collision;
         }
-        actor = &actor_state.actors[attachment->actor_index];
+        actor = &actor_state.actors[record->cache_tail.payload.kind105.actor_index];
 
-        actor_sample_rotated_animation_vertex(actor, attachment->vertex_index,
+        actor_sample_rotated_animation_vertex(actor,
+                      record->cache_tail.payload.kind105.vertex_index,
                       &vertex_offset);
         position = actor_resolve_group_position(actor, &actor_position);
         next_position.vx = vertex_offset.vx + position->vx;
@@ -2367,7 +2366,7 @@ void effect_update_dispatch(void)
                                    500, 150, 10, 0);
         if (collision == -2) {
             KfEffectRecord *linked =
-                &effect_state.records[attachment->parent_index];
+                &effect_state.records[record->cache_tail.payload.kind105.parent_index];
             KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
             if (linked_fanout->children_remaining != 0) {
                 --linked_fanout->children_remaining;
@@ -2377,7 +2376,7 @@ void effect_update_dispatch(void)
             if (collision == -1 &&
                 (KF_COLLISION_CACHE_FLAGS & 0xf) != 0) {
                 KfEffectRecord *linked =
-                    &effect_state.records[attachment->parent_index];
+                    &effect_state.records[record->cache_tail.payload.kind105.parent_index];
                 KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
                 if (linked_fanout->children_remaining != 0) {
                     --linked_fanout->children_remaining;

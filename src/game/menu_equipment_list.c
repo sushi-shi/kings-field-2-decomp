@@ -171,7 +171,7 @@ void menu_equipment_category_controller(s32 category)
 
     count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, item_ids,
         first, last);
-    memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
+    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
     values[count] = 0xff;
     item_ids[count] = 0xff;
     count++;
@@ -262,7 +262,7 @@ void menu_choose_primary_magic_shortcut(void)
     s32 frame;
 
     count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 0, 13);
-    memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
+    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
     values[count] = -1;
     indices[count] = 0xff;
     count++;
@@ -339,7 +339,7 @@ void menu_item_magic_controller(void)
 
     count += menu_collect_available_magic_rows(effect_state.magic_records, &rows[count],
         &numbers[count], &magic_ids[count], 0, 19);
-    memcpy(rows[count].codes, menu_row_prefix_649ec, sizeof menu_row_prefix_649ec);
+    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
     count++;
 
     menu_list_init(&menu.list, 0, 2);
@@ -402,7 +402,7 @@ KfMenuLabelSuffix menu_equipment_labels_64910[10] = {
     {{58, 4125, 15, 39, -1, 0, 0, 0, 0, 0}},
 };
 DATA(0x800649ec, 0x8)
-s16 menu_row_prefix_649ec[4] = {89, 4172, 76, -1};
+s16 menu_none_option_glyphs[4] = {89, 4172, 76, -1};
 
 ADDRESS(0x8001a7fc, 0x9c)
 void menu_show_combat_attributes(void)

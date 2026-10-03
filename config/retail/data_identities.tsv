@@ -45,7 +45,7 @@ GAME.EXE	0x80063e00	0x80	callback_default_table	unknown	load	KfCallback[32]	reso
 GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]	menu_render_primitives	supported	asm;xrefs;20 aligned 12-byte load records;KF1 counterpart	20 contiguous menu sprite descriptors through the nine-grid; original TU owner unresolved
 GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]	menu_render_primitives	supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; original TU owner unresolved
 GAME.EXE	0x80064910	0xc8	menu_equipment_labels_64910	global	load	KfMenuLabelSuffix[10]	menu_equipment_list	supported	retail 200-byte copy at 0x80019af0;loaded glyph words	ten 20-byte menu label rows; original TU owner provisional
-GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	menu_equipment_list	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
+GAME.EXE	0x800649ec	0x8	menu_none_option_glyphs	global	load	s16[4]	menu_equipment_list	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	four glyph codes for the final no-selection row in equipment and magic lists; original TU owner provisional
 GAME.EXE	0x80064a00	0xf0	menu_header_labels	global	load	KfMenuLabelSuffix[12]	menu_render_primitives	supported	retail bytes;20-byte row stride;menu render xrefs	twelve menu header glyph suffix rows
 GAME.EXE	0x80064af0	0x140	menu_label_suffixes	global	load	KfMenuLabelSuffix[16]	menu_card_choice_controller	supported	retail bytes;label builder xrefs	sixteen 20-byte glyph suffix templates
 GAME.EXE	0x80064c30	0xb40	menu_glyph_rows	global	load	KfMenuGlyphRow[120]	menu_root	supported	retail bytes;selector xrefs	120 rows copied by menu selectors
@@ -207,8 +207,8 @@ GAME.EXE	0x8006db88	0x4	DAT_8006db88	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006db90	0x4	DAT_8006db90	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006db98	0x4	DAT_8006db98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dba0	0x4	DAT_8006dba0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dba8	0x4	DAT_8006dba8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbb0	0x4	DAT_8006dbb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+GAME.EXE	0x8006dba8	0x4	pad_buf	static	load	u32	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_buf at .sbss+0;exact PadInit/PadRead text and section patches	raw pad word set to -1, passed by address to PAD_init, and read by PadRead
+GAME.EXE	0x8006dbb0	0x4	pad_status	static	load	undefined4	LIBETC PAD.OBJ	supported	Psy-Q 3.0 LIBETC PAD.OBJ local pad_status at .sbss+8;exact PadInit text and section patch	pad status word set to zero on init; further use and signedness unresolved
 GAME.EXE	0x8006dbb8	0x4	target	static	load	s32	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ local target at .sbss+0;exact set_alarm/get_alarm text and section patches	GPU alarm frame deadline: set_alarm stores Vcount+240, get_alarm compares it against Vcount with signed slt
 GAME.EXE	0x8006dbc0	0x4	tim	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local tim at .sbss+0;exact OpenTIM/ReadTIM text and section patches	TIM word cursor: OpenTIM stores its argument; ReadTIM advances it by a word count
 GAME.EXE	0x8006dbc8	0x4	v_ofs	static	load	pointer	LIBGPU TMD.OBJ	supported	Psy-Q 3.0 LIBGPU TMD.OBJ local v_ofs at .sbss+8;exact OpenTMD/ReadTMD text and section patches	current TMD vertex-table pointer; original C pointer type unresolved

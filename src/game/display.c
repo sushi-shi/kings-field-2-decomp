@@ -2540,11 +2540,11 @@ actor_next:
     resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
 
     frame = cd_state.frame_count;
-    camera_position = &player_state.camera_position;
     repeat_store_word((u32 *)tmd_flags, 0, 80);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
+    camera_position = &player_state.camera_position;
     while (remaining != -1) {
         u32 visibility;
 

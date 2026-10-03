@@ -20,7 +20,7 @@ typedef struct KfMapPlacedSource {
     u8 layer_mask;
     u8 region_z;
     u8 region_x;
-    u8 unknown_07[3];
+    u8 unknown_07[2];
     s16 local_z;
     s16 local_x;
     s16 height_offset;
@@ -39,6 +39,8 @@ typedef struct KfMapPlacedEntry {
 typedef char kf_map_placed_source_size[sizeof(KfMapPlacedSource) == 16 ? 1 : -1];
 typedef char kf_map_placed_entry_size[sizeof(KfMapPlacedEntry) == 24 ? 1 : -1];
 #define KF_MAP_PLACED_OFFSET(type, member) ((unsigned long)&((type *)0)->member)
+typedef char kf_map_placed_source_local_z_offset[
+    KF_MAP_PLACED_OFFSET(KfMapPlacedSource, local_z) == 10 ? 1 : -1];
 typedef char kf_map_placed_source_height_offset[
     KF_MAP_PLACED_OFFSET(KfMapPlacedSource, height_offset) == 14 ? 1 : -1];
 typedef char kf_map_placed_entry_world_x_offset[

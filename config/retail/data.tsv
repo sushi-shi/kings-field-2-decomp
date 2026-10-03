@@ -1598,22 +1598,18 @@ OPEN.EXE	0x8003df10	0x2d710	0x4	defined	reviewed	t_prim	pointer	Psy-Q 3.0 LIBGPU
 OPEN.EXE	0x8003df14	0x2d714	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003df18	0x2d718	0x4	defined	reviewed	n_prim	u32	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0x20;retail TMD parser store	private current TMD primitive count; physical linked bytes are zero
 OPEN.EXE	0x8003df1c	0x2d71c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df20	0x2d720	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003df21	0x2d721	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003df22	0x2d722	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df28	0x2d728	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df20	0x2d720	0x8	defined	reviewed		u8[8]	native LIBCD BIOS.OBJ local result.12 at .sbss+0x0;raw retail pairs and eight-byte indexed result buffer	private SDK CD state; adjacent gaps left unresolved
+OPEN.EXE	0x8003df28	0x2d728	0x1	defined	reviewed		u8	native LIBCD BIOS.OBJ local last_intr.13 at .sbss+0x8;raw retail pairs and byte store	private SDK CD state; adjacent gaps left unresolved
 OPEN.EXE	0x8003df29	0x2d729	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df30	0x2d730	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003df31	0x2d731	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df38	0x2d738	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df30	0x2d730	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local intr.14 at .sbss+0x10;raw retail pairs and word store and load	private SDK CD state; adjacent gaps left unresolved
+OPEN.EXE	0x8003df34	0x2d734	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003df38	0x2d738	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local i.15 at .sbss+0x18;raw retail pairs and word stores and loads	private SDK CD state; adjacent gaps left unresolved
 OPEN.EXE	0x8003df3c	0x2d73c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df40	0x2d740	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df40	0x2d740	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local iserror.16 at .sbss+0x20;raw retail pairs and word stores and loads	private SDK CD state; adjacent gaps left unresolved
 OPEN.EXE	0x8003df44	0x2d744	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df48	0x2d748	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003df49	0x2d749	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df50	0x2d750	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003df51	0x2d751	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003df58	0x2d758	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003df48	0x2d748	0x8	defined	reviewed	SyncResult	u8[8]	native LIBCD BIOS.OBJ local SyncResult at .sbss+0x28;raw retail pairs and eight-byte rescpy destination	private SDK CD state; adjacent gaps left unresolved
+OPEN.EXE	0x8003df50	0x2d750	0x8	defined	reviewed	ReadyResult	u8[8]	native LIBCD BIOS.OBJ local ReadyResult at .sbss+0x30;raw retail pairs and eight-byte rescpy destination	private SDK CD state; adjacent gaps left unresolved
+OPEN.EXE	0x8003df58	0x2d758	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local target at .sbss+0x38;raw retail pairs and word store and load	private SDK CD state; adjacent gaps left unresolved
 OPEN.EXE	0x8003df5c	0x2d75c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003df60	0x2d760	0x4	defined	reviewed		undefined4	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 OPEN.EXE	0x8003df64	0x2d764	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2313,22 +2309,18 @@ END.EXE	0x8003ad08	0x2a508	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/
 END.EXE	0x8003ad0c	0x2a50c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ad10	0x2a510	0x4	defined	reviewed	target	s32	Psy-Q 3.0 LIBGPU SYS.OBJ local .sbss+0;retail set_alarm/get_alarm xrefs	private signed GPU alarm frame deadline; physical linked bytes are zero
 END.EXE	0x8003ad14	0x2a514	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad18	0x2a518	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ad19	0x2a519	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ad1a	0x2a51a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad20	0x2a520	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad18	0x2a518	0x8	defined	reviewed		u8[8]	native LIBCD BIOS.OBJ local result.12 at .sbss+0x0;raw retail pairs and eight-byte indexed result buffer	private SDK CD state; adjacent gaps left unresolved
+END.EXE	0x8003ad20	0x2a520	0x1	defined	reviewed		u8	native LIBCD BIOS.OBJ local last_intr.13 at .sbss+0x8;raw retail pairs and byte store	private SDK CD state; adjacent gaps left unresolved
 END.EXE	0x8003ad21	0x2a521	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad28	0x2a528	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ad29	0x2a529	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad30	0x2a530	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad28	0x2a528	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local intr.14 at .sbss+0x10;raw retail pairs and word store and load	private SDK CD state; adjacent gaps left unresolved
+END.EXE	0x8003ad2c	0x2a52c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8003ad30	0x2a530	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local i.15 at .sbss+0x18;raw retail pairs and word stores and loads	private SDK CD state; adjacent gaps left unresolved
 END.EXE	0x8003ad34	0x2a534	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad38	0x2a538	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad38	0x2a538	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local iserror.16 at .sbss+0x20;raw retail pairs and word stores and loads	private SDK CD state; adjacent gaps left unresolved
 END.EXE	0x8003ad3c	0x2a53c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad40	0x2a540	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ad41	0x2a541	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad48	0x2a548	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ad49	0x2a549	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad50	0x2a550	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad40	0x2a540	0x8	defined	reviewed	SyncResult	u8[8]	native LIBCD BIOS.OBJ local SyncResult at .sbss+0x28;raw retail pairs and eight-byte rescpy destination	private SDK CD state; adjacent gaps left unresolved
+END.EXE	0x8003ad48	0x2a548	0x8	defined	reviewed	ReadyResult	u8[8]	native LIBCD BIOS.OBJ local ReadyResult at .sbss+0x30;raw retail pairs and eight-byte rescpy destination	private SDK CD state; adjacent gaps left unresolved
+END.EXE	0x8003ad50	0x2a550	0x4	defined	reviewed		undefined4	native LIBCD BIOS.OBJ local target at .sbss+0x38;raw retail pairs and word store and load	private SDK CD state; adjacent gaps left unresolved
 END.EXE	0x8003ad54	0x2a554	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ad58	0x2a558	0x4	defined	reviewed		undefined4	native LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0x0;raw retail HI16/LO16 text pair verifies address	private SDK CD state; original C type and full object extent unresolved
 END.EXE	0x8003ad5c	0x2a55c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

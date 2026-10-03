@@ -79,7 +79,6 @@ typedef struct KfFloorItem {
     u8 row_step;
     u16 row_offset;
     RECT rect;
-    u16 unknown_0e;
     u_long *pixels;
     u8 unknown_14[4];
 } KfFloorItem;
@@ -272,6 +271,7 @@ s32 menu_fade_transition(s32 level, s32 step);
 enum {
     KF_NOTIFICATION_NONE = 0xff,
     KF_FLOOR_ITEM_NONE = 0xff,
+    KF_FLOOR_ITEM_SCROLLING_IMAGE = 1,
     KF_DISPLAY_BUFFER_NONE = 0xff
 };
 

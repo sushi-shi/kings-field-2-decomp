@@ -27,6 +27,19 @@ enum {
     KF_MENU_CONFIRM_REQUESTED = 1
 };
 
+enum {
+    KF_MENU_ROOT_ITEM_SELECTION = 0,
+    KF_MENU_ROOT_MAGIC_ACTION = 1,
+    KF_MENU_ROOT_EQUIPMENT = 2,
+    KF_MENU_ROOT_COMBAT_ATTRIBUTES = 3,
+    KF_MENU_ROOT_ITEM_USE = 4,
+    KF_MENU_ROOT_MEMORY_CARD = 5,
+    KF_MENU_ROOT_OPTIONS = 6,
+    KF_MENU_ROOT_ENTRY_COUNT = 7,
+    KF_MENU_ROOT_CANCEL_ROW = KF_MENU_ROOT_ENTRY_COUNT,
+    KF_MENU_ROOT_WINDOW_ROWS = KF_MENU_ROOT_ENTRY_COUNT + 1
+};
+
 /* Signed menu controls and the root controller's encoded magic action. */
 enum {
     KF_MENU_RESULT_PENDING = -99,
@@ -130,8 +143,8 @@ typedef struct KfCardMenuList {
     KfMenuList list;
     KfCardSlotGlyphRow *rows;
     u8 unknown_28[4];
-    u8 *values;
-    s32 *codes;
+    u8 *levels;
+    s32 *experience_values;
 } KfCardMenuList;
 
 /* Selection menus extend the initialized list prefix with row/value storage. */
@@ -164,8 +177,9 @@ typedef char kf_item_menu_list_codes_offset[(u32)&((KfItemMenuList *)0)->codes =
 typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
 typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
 typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_card_menu_list_values_offset[(u32)&((KfCardMenuList *)0)->values == 0x2c ? 1 : -1];
-typedef char kf_card_menu_list_codes_offset[(u32)&((KfCardMenuList *)0)->codes == 0x30 ? 1 : -1];
+typedef char kf_card_menu_list_levels_offset[(u32)&((KfCardMenuList *)0)->levels == 0x2c ? 1 : -1];
+typedef char kf_card_menu_list_experience_values_offset[
+    (u32)&((KfCardMenuList *)0)->experience_values == 0x30 ? 1 : -1];
 typedef char kf_magic_menu_list_size[sizeof(KfMagicMenuList) == 52 ? 1 : -1];
 typedef char kf_magic_menu_list_rows_offset[(u32)&((KfMagicMenuList *)0)->rows == 0x24 ? 1 : -1];
 typedef char kf_magic_menu_list_values_offset[(u32)&((KfMagicMenuList *)0)->values == 0x30 ? 1 : -1];

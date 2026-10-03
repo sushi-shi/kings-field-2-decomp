@@ -109,15 +109,15 @@ KfAssetHeader	0x10	0x04	clip_table_offset	u32	supported	asm;animation_select_key
 KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x02	0x02	unknown_02	u8[2]	opaque	game/audio.h	intervening bytes
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer
-KfBss801c7540	0x00	0x11300	map_cells	KfMapOccupancyCell[88][80]	candidate	asm;map_object_set_cell_marker;game_main_loop startup clear	800-byte row and 10-byte cell stride; 88-row extent provisional
-KfBss801c7540	0x11300	0x2a8	unknown_11300	u8[680]	opaque	asm;player_set_equipment_slot;game_main_loop startup clear	unidentified space before equipment records
+KfBss801c7540	0x00	0xfa00	map_cells	KfMapOccupancyCell[80][80]	supported	GAME 0x8001694c-0x8001695c copies 0x3e80 words;GAME 0x8002a988 clips X/Z to 80 cells;GAME 0x80016b2c scrub visits 0x1900 cells	80-by-80 cells, each 10 bytes, loaded from the map resource
+KfBss801c7540	0xfa00	0x1ba8	unknown_fa00	u8[7080]	opaque	GAME 0x80016960-0x8001697c copies a separate 0x1800-byte shape bank at +0x10000;player_set_equipment_slot	ownership between loaded map cells and equipment records remains unresolved
 KfBss801c7540	0x115a8	0x280	equipment_records	KfEquipmentRecord[20]	supported	asm;player_set_equipment_slot;game_main_loop startup clear	member used by reconstructed code
 KfBss801c7540	0x11828	0x1c	unknown_11828	u8[28]	opaque	asm;player_set_equipment_slot;game_main_loop startup clear	not yet modelled
 KfCardMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_card_load_browser;menu_card_load_slot_browser;menu_card_save_browser	shared menu list prefix
 KfCardMenuList	0x24	0x04	rows	KfCardSlotGlyphRow *	supported	game/menu.h;menu_card_build_slot_rows;menu_card_load_browser	pointer to 20-byte card glyph rows
 KfCardMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;menu_card_load_browser	unresolved bytes between card row and value pointers
-KfCardMenuList	0x2c	0x04	values	u8 *	supported	menu_card_build_slot_rows;menu_card_load_browser	pointer to parallel card level bytes
-KfCardMenuList	0x30	0x04	codes	s32 *	supported	menu_card_build_slot_rows;menu_card_load_browser	pointer to parallel card experience values
+KfCardMenuList	0x2c	0x04	levels	u8 *	supported	GAME 0x8001ad50 stores menu_card_build_slot_rows level output;menu_card_load_browser	pointer to parallel card level bytes
+KfCardMenuList	0x30	0x04	experience_values	s32 *	supported	GAME 0x8001ad54 stores menu_card_build_slot_rows experience output;menu_card_load_browser	pointer to parallel card experience values
 KfCardSlotGlyphRow	0x00	0x14	codes	s16[10]	supported	game/menu.h;menu_card_build_slot_rows	ten halfword glyph codes per card slot
 KfCdArchive	0x00	0x04	sector_offsets	u16 *	supported	game/cd.h;cd_archive_open	sector offset table
 KfCdArchive	0x04	0x08	extent	KfCdExtent	supported	game/cd.h;cd_archive_entry_extent	archive file extent
@@ -288,13 +288,12 @@ KfEventState	0x00	0x04	interaction_handled	u32	supported	event_scene_command_dis
 KfEventState	0x04	0x100	control	KfEventControl	supported	func_800482f8;game_main_loop	word-cleared control region with three observed sentinel halfwords
 KfEventState	0x104	0x3800	arena	KfEventArena	supported	func_800482f8;memory_arena_initialize_blocks;pointer rebasing	memory block chain and saved stream data
 KfEventState	0x3904	0x14	saved_offsets	u16[10]	supported	func_800482f8;func_800483d8;func_80048498	ten halfword offsets relative to the arena base; 0xffff means absent
-KfFloorItem	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfFloorItem	0x00	0x01	kind	u8	supported	GAME 0x8002ce3c lbu/0xff free sentinel;GAME 0x8002cecc and 0x8002cf84 kind-1 tests	0xff marks a free slot; kind 1 captures and vertically scrolls an image
 KfFloorItem	0x01	0x01	update_interval	u8	supported	asm;game_main_loop;floor_item_update_textures	reload value for the per-frame update countdown
 KfFloorItem	0x02	0x01	frames_until_update	u8	supported	asm;floor_item_capture_image;floor_item_update_textures	zero triggers an update; nonzero decrements each frame
 KfFloorItem	0x03	0x01	row_step	u8	supported	asm;game_main_loop;floor_item_update_textures	texture rows added on each update
 KfFloorItem	0x04	0x02	row_offset	u16	supported	asm;floor_item_update_textures	wrapped texture row offset used to split LoadImage rectangles
 KfFloorItem	0x06	0x08	rect	RECT	supported	asm;StoreImage;LoadImage	GPU rectangle at +6
-KfFloorItem	0x0e	0x02	unknown_0e	u16	opaque	game headers;asm	field use not yet established
 KfFloorItem	0x10	0x04	pixels	u_long *	supported	asm;StoreImage;LoadImage	captured GPU pixel buffer
 KfFloorItem	0x14	0x04	unknown_14	u8[4]	opaque	game headers;asm	field use not yet established
 KfGpuGT3	0x00	0x28	sdk	POLY_GT3	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code

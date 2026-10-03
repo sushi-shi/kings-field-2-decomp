@@ -131,8 +131,11 @@ landing:
         bob = player_state.vertical_motion_pitch_offset;
         player_state.vertical_velocity -= 100;
         if (bob > 0) {
-            player_state.vertical_motion_pitch_offset =
-                bob + (player_state.vertical_velocity > 0 ? 10 : -30);
+            if (player_state.vertical_velocity > 0) {
+                player_state.vertical_motion_pitch_offset = bob + 10;
+            } else {
+                player_state.vertical_motion_pitch_offset = bob - 30;
+            }
         }
         if (player_state.landing_vertical_offset <= 0
             && player_state.vertical_motion_pitch_offset <= 0) {

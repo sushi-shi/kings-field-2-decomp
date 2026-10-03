@@ -8,11 +8,30 @@
 #include <kf/game/cd.h>
 #include <kf/game/graphics.h>
 #include <kf/game/memory.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/resources.h>
 #include <psyq/sdk.h>
 #include <kf/game/effect.h>
 
 RODATA(0x80011098, 0x1c)
+
+enum {
+    MENU_STATUS_RELIEF_CAP = 64,
+    MENU_LOCATION_REGION_PLACE = 100000,
+    MENU_LOCATION_LAYER_PLACE = 10000,
+    MENU_LOCATION_CELL_X_PLACE = 100,
+    MENU_EFFECT_RELIEVE_AILMENTS = 71,
+    MENU_EFFECT_RESTORE_MP_40 = 72,
+    MENU_EFFECT_RAISE_BASE_MAGIC = 73,
+    MENU_EFFECT_RESTORE_HP_40 = 74,
+    MENU_EFFECT_CURE_POISON_RESTORE_HP_15 = 75,
+    MENU_EFFECT_FULL_RESTORE = 76,
+    MENU_EFFECT_RESTORE_HP_100 = 77,
+    MENU_EFFECT_RESTORE_MP_50 = 78,
+    MENU_EFFECT_CLEAR_AILMENTS = 79,
+    MENU_EFFECT_MIXED_RESTORE = 80,
+    MENU_EFFECT_ITEM_COUNT = MENU_EFFECT_MIXED_RESTORE - MENU_EFFECT_RELIEVE_AILMENTS + 1
+};
 
 DATA(0x80064c30, 0xb40)
 KfMenuGlyphRow menu_glyph_rows[120] = {
@@ -229,7 +248,7 @@ s32 menu_run_root_controller(void)
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         menu_draw_player_status();
-        menu_draw_window(0, 8, cursor, confirmed);
+        menu_draw_window(0, KF_MENU_ROOT_WINDOW_ROWS, cursor, confirmed);
         menu_present_frame();
     }
     menu_play_sound_cue(16);
@@ -240,29 +259,29 @@ s32 menu_run_root_controller(void)
             input_wait_release();
 
         switch (selection) {
-        case 0:
+        case KF_MENU_ROOT_ITEM_SELECTION:
             choice_result = menu_item_selection_controller();
             goto selection_result;
-        case 1:
+        case KF_MENU_ROOT_MAGIC_ACTION:
             choice_result = menu_choose_magic_action();
             goto selection_result;
-        case 2:
+        case KF_MENU_ROOT_EQUIPMENT:
             menu_equipment_list_controller();
             break;
-        case 3:
+        case KF_MENU_ROOT_COMBAT_ATTRIBUTES:
             menu_show_combat_attributes();
             break;
-        case 4:
+        case KF_MENU_ROOT_ITEM_USE:
             menu_item_use_controller();
             break;
-        case 5:
+        case KF_MENU_ROOT_MEMORY_CARD:
             choice_result = menu_run_card_choice();
 selection_result:
             result = choice_result;
             if (choice_result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             break;
-        case 6:
+        case KF_MENU_ROOT_OPTIONS:
             menu_options_controller();
             break;
         }
@@ -270,14 +289,15 @@ selection_result:
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        cursor = menu_poll_choice_input(cursor, 7, &selection, &confirmed, &result);
+        cursor = menu_poll_choice_input(cursor, KF_MENU_ROOT_CANCEL_ROW,
+            &selection, &confirmed, &result);
         buttons = PadRead(1);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
                 menu_draw_location_number();
             menu_draw_player_status();
-            menu_draw_window(0, 8, cursor, confirmed);
+            menu_draw_window(0, KF_MENU_ROOT_WINDOW_ROWS, cursor, confirmed);
             menu_present_frame();
         }
     }
@@ -313,10 +333,10 @@ void menu_draw_location_number(void)
     camera_x = player_state.camera_position.vx;
     camera_z = player_state.camera_position.vz;
     map_layer = player_state.map_layer_index;
-    grid_z = camera_z >> 11;
-    prefix = state_8017d118.current_map_region_id * 100000
-           + map_layer * 10000
-           + (camera_x >> 11) * 100;
+    grid_z = camera_z >> KF_MAP_CELL_POSITION_SHIFT;
+    prefix = state_8017d118.current_map_region_id * MENU_LOCATION_REGION_PLACE
+           + map_layer * MENU_LOCATION_LAYER_PLACE
+           + (camera_x >> KF_MAP_CELL_POSITION_SHIFT) * MENU_LOCATION_CELL_X_PLACE;
     value = prefix + grid_z;
     menu_format_number(value, 6, 1, 0, row.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[0], &row);
@@ -383,7 +403,7 @@ s32 menu_item_selection_controller(void)
     }
 
     menu_release_item_model();
-    if ((u32)(result - 71) < 10)
+    if ((u32)(result - MENU_EFFECT_RELIEVE_AILMENTS) < MENU_EFFECT_ITEM_COUNT)
         menu_apply_item_effect(result);
     return result;
 }
@@ -463,37 +483,37 @@ void menu_apply_item_effect(s32 item_id)
     if (game_counter_bytes[item_id] == 0)
         return;
 
-    if (item_id == 71) {
+    if (item_id == MENU_EFFECT_RELIEVE_AILMENTS) {
         if (player_state.paralysis_timer > 0)
             player_state.paralysis_timer = 0;
-        if (player_state.slow_timer >= 65)
-            player_state.slow_timer = 64;
+        if (player_state.slow_timer >= MENU_STATUS_RELIEF_CAP + 1)
+            player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
         player_cap_curse_strength();
         player_cap_darkness_phase();
-    } else if (item_id == 72) {
+    } else if (item_id == MENU_EFFECT_RESTORE_MP_40) {
         player_state.vitals.current_mp += 40;
-    } else if (item_id == 73) {
+    } else if (item_id == MENU_EFFECT_RAISE_BASE_MAGIC) {
         player_state.base_magic++;
         player_recalculate_combat_stats();
-    } else if (item_id == 74) {
+    } else if (item_id == MENU_EFFECT_RESTORE_HP_40) {
         player_state.vitals.current_hp += 40;
-    } else if (item_id == 75) {
+    } else if (item_id == MENU_EFFECT_CURE_POISON_RESTORE_HP_15) {
         current_hp = player_state.vitals.current_hp;
         player_state.poison_timer = 0;
         player_state.vitals.current_hp = current_hp + 15;
-    } else if (item_id == 76) {
+    } else if (item_id == MENU_EFFECT_FULL_RESTORE) {
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
         player_clear_and_cap_status_effects();
-    } else if (item_id == 77) {
+    } else if (item_id == MENU_EFFECT_RESTORE_HP_100) {
         player_state.vitals.current_hp += 100;
-    } else if (item_id == 78) {
+    } else if (item_id == MENU_EFFECT_RESTORE_MP_50) {
         player_state.vitals.current_mp += 50;
     }
 
-    if (item_id == 79) {
+    if (item_id == MENU_EFFECT_CLEAR_AILMENTS) {
         player_clear_and_cap_status_effects();
-    } else if (item_id == 80) {
+    } else if (item_id == MENU_EFFECT_MIXED_RESTORE) {
         player_state.vitals.current_hp += 100;
         player_state.vitals.current_mp += 50;
         player_clear_and_cap_status_effects();
@@ -505,7 +525,8 @@ void menu_apply_item_effect(s32 item_id)
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
 
     game_counter_bytes[item_id]--;
-    if ((u32)(item_id - 77) < 2 || (u32)(item_id - 79) < 2)
+    if ((u32)(item_id - MENU_EFFECT_RESTORE_HP_100) < 2 ||
+        (u32)(item_id - MENU_EFFECT_CLEAR_AILMENTS) < 2)
         game_counter_bytes[0x52]++;
     menu_play_sound_cue(13);
 }
@@ -515,8 +536,8 @@ void player_clear_and_cap_status_effects(void)
 {
     if (player_state.paralysis_timer > 0)
         player_state.paralysis_timer = 0;
-    if (player_state.slow_timer > 64)
-        player_state.slow_timer = 64;
+    if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP)
+        player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
     player_state.poison_timer = 0;
     player_cap_curse_strength();
     player_cap_darkness_phase();
@@ -525,8 +546,8 @@ void player_clear_and_cap_status_effects(void)
 ADDRESS(0x800192ac, 0x30)
 void player_cap_darkness_phase(void)
 {
-    if (player_state.darkness_phase > 64) {
-        player_state.darkness_phase = 64;
+    if (player_state.darkness_phase > MENU_STATUS_RELIEF_CAP) {
+        player_state.darkness_phase = MENU_STATUS_RELIEF_CAP;
         player_state.darkness_phase_limit = 0;
     }
 }
@@ -534,8 +555,8 @@ void player_cap_darkness_phase(void)
 ADDRESS(0x800192dc, 0x30)
 void player_cap_curse_strength(void)
 {
-    if (player_state.curse_strength > 64) {
-        player_state.curse_strength = 64;
+    if (player_state.curse_strength > MENU_STATUS_RELIEF_CAP) {
+        player_state.curse_strength = MENU_STATUS_RELIEF_CAP;
         player_state.curse_phase_limit = 0;
     }
 }

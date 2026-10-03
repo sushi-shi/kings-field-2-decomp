@@ -275,15 +275,19 @@ typedef struct KfMapOccupancyCell {
 
 typedef char kf_map_occupancy_cell_size[sizeof(KfMapOccupancyCell) == 10 ? 1 : -1];
 
-/* Startup clears this complete region. The map-object helper addresses its
- * leading cells at an 800-byte row stride and a 10-byte column stride. */
+enum { KF_MAP_WORLD_GRID_SIDE = 80 };
+
+/* The resource transition loads 0xfa00 bytes of 80-by-80 map cells. Startup
+ * clears the complete BSS region, whose later storage remains partly opaque. */
 typedef struct KfBss801c7540 {
-    KfMapOccupancyCell map_cells[88][80];
-    u8 unknown_11300[0x2a8];
+    KfMapOccupancyCell map_cells[KF_MAP_WORLD_GRID_SIDE][KF_MAP_WORLD_GRID_SIDE];
+    u8 unknown_fa00[0x1ba8];
     KfEquipmentRecord equipment_records[20];
     u8 unknown_11828[0x1c];
 } KfBss801c7540;
 
+typedef char kf_map_cells_loaded_size[
+    sizeof(((KfBss801c7540 *)0)->map_cells) == 0xfa00 ? 1 : -1];
 typedef char kf_bss_801c7540_size[sizeof(KfBss801c7540) == 0x11844 ? 1 : -1];
 typedef char kf_bss_801c7540_equipment_offset[
     (u32)&((KfBss801c7540 *)0)->equipment_records == 0x115a8 ? 1 : -1];

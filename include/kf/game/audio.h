@@ -15,7 +15,15 @@ enum {
     KF_AUDIO_DEFAULT_MAX_DISTANCE = 0x4800,
     KF_AUDIO_DEFAULT_ATTENUATION_DISTANCE = 0x6000,
     KF_AUDIO_ALTERNATE_PAN_FLAG = 0x8000,
-    KF_AUDIO_SOUND_INDEX_MASK = 0xfff
+    KF_AUDIO_SOUND_INDEX_MASK = 0xfff,
+    KF_AUDIO_SOUND_NONE = 0xff,
+    KF_AUDIO_VAB_ID_NONE = -1,
+    KF_AUDIO_VAB_SLOT_NONE = -1,
+    KF_AUDIO_VOICE_ID_NONE = -1,
+    KF_AUDIO_VAB_SLOT_COUNT = 130,
+    KF_AUDIO_VOICE_HANDLE_COUNT = 10,
+    KF_AUDIO_SOUND_PARAM_COUNT = 256,
+    KF_AUDIO_SPU_VOICE_COUNT = 24
 };
 
 enum {
@@ -74,9 +82,9 @@ typedef char kf_audio_voice_priority_offset[
     (u32)&((KfAudioVoiceParams *)0)->priority == 8 ? 1 : -1];
 
 typedef struct {
-    KfAudioVoiceHandle handles[10];
+    KfAudioVoiceHandle handles[KF_AUDIO_VOICE_HANDLE_COUNT];
     /* Sound IDs are byte-indexed; the loaded parameter rows fill this span. */
-    KfAudioVoiceParams params[256];
+    KfAudioVoiceParams params[KF_AUDIO_SOUND_PARAM_COUNT];
 } KfAudioVoiceState;
 
 /* The startup clear bounds this GAME audio state at 0xe9c bytes. Sequence
@@ -91,7 +99,7 @@ typedef struct {
     u16 listener_layer;
     SVECTOR listener_rotation;
     u8 unknown_2a[2];
-    KfAudioVabSlot vab_slots[130];
+    KfAudioVabSlot vab_slots[KF_AUDIO_VAB_SLOT_COUNT];
     KfAudioVoiceState voices;
     KfAudioVabStreamSlot vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_COUNT];
 } KfGameAudioState;

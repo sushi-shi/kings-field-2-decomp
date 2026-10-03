@@ -439,10 +439,9 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
     s32 target_scale;
     s32 simple_scale;
     s32 case3_z;
-    va_list arguments;
+    /* Read the first unnamed O32 argument after the named home slot. */
+    const s32 *arguments = &effect_id;
     const VECTOR *override_position;
-
-    va_start(arguments, effect_id);
 
     switch (effect_id) {
     case 7:
@@ -606,20 +605,20 @@ sequence_effect: {
         goto probe_rotation_effect;
     case 39:
         player_probe_view_target_and_vectors(50, 0, &direction, &distance);
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = (const VECTOR *)arguments[1];
         position = *override_position;
         goto emit_rotation_effect;
     case 49: {
         const VECTOR *override_position;
         /* Cases 49 and 50 omit the rotation argument. */
         player_probe_view_target_and_vectors(550, 0, &direction, &distance);
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = (const VECTOR *)arguments[1];
         position = *override_position;
         goto emit_simple_effect;
     }
     case 50: {
         const VECTOR *override_position;
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = (const VECTOR *)arguments[1];
         position = *override_position;
         goto emit_simple_effect;
     }
@@ -659,5 +658,4 @@ emit_rotation_effect:
     default:
         break;
     }
-    va_end(arguments);
 }

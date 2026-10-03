@@ -10,6 +10,12 @@
 
 RODATA(0x80011260, 0x34)
 
+enum {
+    WEAPON_ATTACK_EVENT_DISABLED_PHASE = 5000,
+    WEAPON_EFFECT_HELD_PHASE = 99,
+    WEAPON_MAGIC_EFFECT_NONE = 0xff
+};
+
 ADDRESS(0x80026498, 0x1c4)
 void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_parameter)
 {
@@ -43,7 +49,7 @@ void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_param
         player_dispatch_magic_effect(magic_id);
         break;
     case 0:
-        for (effect_parameter = 0; effect_parameter < 4095; effect_parameter += 684) {
+        for (effect_parameter = 0; effect_parameter < KF_ANGLE_WRAP_MASK; effect_parameter += 684) {
             player_state.magic_origin_offset.vx = rcos(effect_parameter) >> 3;
             player_state.magic_origin_offset.vy = rsin(effect_parameter) >> 3;
             player_state.magic_origin_offset.vz = 400;
@@ -88,7 +94,7 @@ void player_update_weapon_attack(void)
     if (weapon_id < 18) {
         goto special_weapon;
     }
-    if (weapon_id == 0xff) {
+    if (weapon_id == KF_EQUIPMENT_NONE) {
         return;
     }
     goto regular_weapon;
@@ -96,7 +102,7 @@ void player_update_weapon_attack(void)
 special_weapon: {
         s32 mode;
         phase = player_state.weapon_attack_phase;
-        if (phase == -1) {
+        if (phase == KF_WEAPON_ATTACK_INACTIVE) {
             goto special_idle;
         }
         mode = player_state.weapon_attack_mode;
@@ -134,7 +140,7 @@ special_mode_zero: {
                         0, &player_state.camera_rotation);
                     effect = player_state.weapon_effect;
                     if (effect != 0) {
-                        effect->phase = 99;
+                        effect->phase = WEAPON_EFFECT_HELD_PHASE;
                     }
                 } else {
                     player_state.weapon_effect = 0;
@@ -142,8 +148,8 @@ special_mode_zero: {
             }
 
             player_state.weapon_attack_phase += weapon->attack_phase_step;
-            if (player_state.weapon_attack_phase >= 4095) {
-                player_state.weapon_attack_phase = 4095;
+            if (player_state.weapon_attack_phase >= KF_ANGLE_WRAP_MASK) {
+                player_state.weapon_attack_phase = KF_ANGLE_WRAP_MASK;
             }
             if (player_state.weapon_attack_phase >= weapon->normal_attack_end_phase) {
                 if (player_state.attack_charge_current == 0
@@ -151,8 +157,8 @@ special_mode_zero: {
                     audio_play_sound(3, 110);
                 }
                 player_state.attack_charge_current =
-                    ((player_state.weapon_attack_phase - weapon->normal_attack_end_phase) * 5000)
-                    / (4095 - weapon->normal_attack_end_phase);
+                    ((player_state.weapon_attack_phase - weapon->normal_attack_end_phase) * KF_PLAYER_CHARGE_FULL)
+                    / (KF_ANGLE_WRAP_MASK - weapon->normal_attack_end_phase);
             } else {
                 player_state.attack_charge_current = 0;
             }
@@ -172,7 +178,8 @@ special_mode_zero: {
                 effect->position.vx = player_state.camera_position.vx + world_position.vx;
                 effect->position.vz = player_state.camera_position.vz + world_position.vz;
                 effect->position.vy = player_state.camera_position.vy + world_position.vy
-                                    + player_state.camera_vertical_offset + player_state.landing_vertical_offset - 1600;
+                                    + player_state.camera_vertical_offset + player_state.landing_vertical_offset
+                                    - KF_PLAYER_CAMERA_EYE_OFFSET;
 
                 animation_sample_vertex(32, player_state.weapon_attack_mode,
                                player_state.weapon_attack_phase,
@@ -194,7 +201,7 @@ special_mode_zero: {
                 pitch_yaw_to_forward_vector(
                     (const struct KfEulerAngles *)&effect->rotation,
                     &effect->direction);
-                vector3s_scale_shift12((player_state.attack_charge_current * 900) / 5000,
+                vector3s_scale_shift12((player_state.attack_charge_current * 900) / KF_PLAYER_CHARGE_FULL,
                                        &effect->direction);
                 effect->updates_remaining = 50;
                 *(u16 *)&effect->unknown_3c[4] = effect->position.vy;
@@ -206,8 +213,8 @@ special_mode_zero: {
 special_mode_one: {
             phase += 400;
             player_state.weapon_attack_phase = phase;
-            if (phase >= 4095) {
-                player_state.weapon_attack_phase = -1;
+            if (phase >= KF_ANGLE_WRAP_MASK) {
+                player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
                 player_state.attack_charge_current = 0;
             }
         }
@@ -221,7 +228,7 @@ special_idle:
 regular_weapon:
     phase = player_state.weapon_attack_phase;
 
-    if (phase == -1) {
+    if (phase == KF_WEAPON_ATTACK_INACTIVE) {
         goto regular_idle;
     }
 
@@ -241,7 +248,7 @@ regular_weapon:
     player_state.weapon_attack_phase += phase_step;
 
     if (player_state.weapon_attack_mode == 0
-        && weapon->initial_effect_id != 0xff
+        && weapon->initial_effect_id != WEAPON_MAGIC_EFFECT_NONE
         && player_state.weapon_attack_fully_charged != 0
         && player_has_power_and_magic_60() != 0
         && (player_state.flags_140.low & 0x80) != 0) {
@@ -263,7 +270,7 @@ regular_weapon:
              < player_state.weapon_next_sound_phase + phase_step) {
         audio_play_sound(weapon->sound_id, 80);
         if (player_state.weapon_next_sound_phase >= sound_end) {
-            player_state.weapon_next_sound_phase = 5000;
+            player_state.weapon_next_sound_phase = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
         } else {
             player_state.weapon_next_sound_phase += sound_step;
         }
@@ -280,7 +287,7 @@ regular_weapon:
                 player_state.weapon_guard_active = 1;
                 return;
             }
-            if (weapon->release_effect_id != 0xff) {
+            if (weapon->release_effect_id != WEAPON_MAGIC_EFFECT_NONE) {
                 player_dispatch_weapon_magic(weapon->release_effect_id,
                                player_state.weapon_attack_phase >= phase_end,
                                (player_state.weapon_attack_phase - weapon->alternate_attack_window_start)
@@ -289,7 +296,7 @@ regular_weapon:
         }
 
         if (player_state.weapon_attack_phase >= phase_end) {
-            player_state.weapon_attack_window = 5000;
+            player_state.weapon_attack_window = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
             player_state.weapon_charge_delay = 10;
             damage_amount = player_state.attack_charge_committed;
             damage_origin = &damage_position;
@@ -349,8 +356,8 @@ regular_weapon:
         }
     }
 
-    if (player_state.weapon_attack_phase > 4095) {
-        player_state.weapon_attack_phase = -1;
+    if (player_state.weapon_attack_phase > KF_ANGLE_WRAP_MASK) {
+        player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
         player_state.weapon_magic_shots_configured = 0;
     }
     return;
@@ -369,8 +376,8 @@ regular_idle:
                 gain *= 2;
             }
             player_state.attack_charge_current += gain;
-            if (player_state.attack_charge_current > 5000) {
-                player_state.attack_charge_current = 5000;
+            if (player_state.attack_charge_current > KF_PLAYER_CHARGE_FULL) {
+                player_state.attack_charge_current = KF_PLAYER_CHARGE_FULL;
             }
         } else {
             player_state.weapon_charge_delay--;

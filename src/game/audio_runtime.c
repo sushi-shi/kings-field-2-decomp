@@ -8,24 +8,31 @@
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
 
+enum {
+    AUDIO_VAB_STREAM_BUFFER_BYTES = 0x1000,
+    AUDIO_VAB_STREAM_BUFFER_COUNT = KF_AUDIO_VAB_STREAM_POOL_COUNT + 1,
+    AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES = 0x2800,
+    AUDIO_SEQUENCE_BUFFER_BYTES = 0x3000
+};
+
 /* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
 DATA(0x8009a6a0, 0x158)
 char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_TRACKS_PER_SEQUENCE];
 
 /* Five pooled VAB headers and the dedicated stream-slot-6 header use 0x1000 bytes each. */
 DATA(0x80164a68, 0x6000)
-static u8 audio_vab_stream_buffers[6][0x1000];
+static u8 audio_vab_stream_buffers[AUDIO_VAB_STREAM_BUFFER_COUNT][AUDIO_VAB_STREAM_BUFFER_BYTES];
 typedef char kf_audio_vab_stream_buffers_size[
     sizeof(audio_vab_stream_buffers) == 0x6000 ? 1 : -1];
 
 DATA(0x80194e30, 0x2800)
-static u8 audio_main_vab_header_buffer[0x2800];
+static u8 audio_main_vab_header_buffer[AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES];
 
 DATA(0x80197630, 0xe9c)
 KfGameAudioState audio_state;
 
 DATA(0x80198640, 0x3000)
-static u8 audio_sequence_buffer[0x3000];
+static u8 audio_sequence_buffer[AUDIO_SEQUENCE_BUFFER_BYTES];
 
 ADDRESS(0x800139c4, 0x120)
 void audio_initialize_runtime(void)
@@ -50,18 +57,18 @@ void audio_initialize_runtime(void)
     audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
     audio_state.sequence_ready = 0;
     vab_slot = audio_state.vab_slots;
-    index = 129;
+    index = KF_AUDIO_VAB_SLOT_COUNT - 1;
     do {
-        vab_slot->vab_id = -1;
+        vab_slot->vab_id = KF_AUDIO_VAB_ID_NONE;
         vab_slot->stream_slot = 0;
         vab_slot++;
         index--;
     } while (index != -1);
 
     voice = audio_state.voices.handles;
-    index = 9;
+    index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
-        voice->voice_id = -1;
+        voice->voice_id = KF_AUDIO_VOICE_ID_NONE;
         voice++;
         index--;
     } while (index != -1);
@@ -73,7 +80,7 @@ void audio_initialize_runtime(void)
         stream_slot->state = KF_AUDIO_VAB_STREAM_FREE;
         stream_slot->buffer = stream_buffer;
         stream_slot++;
-        stream_buffer += 0x1000;
+        stream_buffer += AUDIO_VAB_STREAM_BUFFER_BYTES;
     }
     audio_state.vab_stream_slots[KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1].buffer =
         audio_main_vab_header_buffer;
@@ -117,9 +124,9 @@ void audio_shutdown(void)
         SsSeqClose(audio_state.sequence_id);
     }
     slot = audio_state.vab_slots;
-    index = 129;
+    index = KF_AUDIO_VAB_SLOT_COUNT - 1;
     do {
-        if (slot->vab_id != -1) {
+        if (slot->vab_id != KF_AUDIO_VAB_ID_NONE) {
             SsVabClose(slot->vab_id);
         }
         slot++;
@@ -216,7 +223,7 @@ void audio_key_off_handle(KfAudioVoiceHandle *handle)
     state = &audio_state;
     vab = &state->vab_slots[voice->vab_slot_index];
 
-    if (vab->vab_id != -1 && vab->vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
+    if (vab->vab_id != KF_AUDIO_VAB_ID_NONE && vab->vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
         SsUtKeyOff(handle->voice_id, vab->vab_id, voice->program, voice->tone, voice->note);
     }
 }
@@ -243,16 +250,16 @@ void audio_play_sound(s32 sound, s32 volume)
 ADDRESS(0x80014100, 0x64)
 void audio_refresh_voice_handles(void)
 {
-    u8 status[24];
+    u8 status[KF_AUDIO_SPU_VOICE_COUNT];
     KfAudioVoiceHandle *handle;
     s32 index;
 
     SpuGetAllKeysStatus(status);
     handle = audio_state.voices.handles;
-    index = 9;
+    index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
-        if (handle->voice_id != -1 && status[handle->voice_id] == 0) {
-            handle->voice_id = -1;
+        if (handle->voice_id != KF_AUDIO_VOICE_ID_NONE && status[handle->voice_id] == 0) {
+            handle->voice_id = KF_AUDIO_VOICE_ID_NONE;
         }
         handle++;
         index--;
@@ -271,9 +278,9 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
 
     audio_refresh_voice_handles();
     handle = audio_state.voices.handles;
-    index = 9;
+    index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
-        if (handle->voice_id == -1) {
+        if (handle->voice_id == KF_AUDIO_VOICE_ID_NONE) {
             return handle;
         }
         handle++;
@@ -281,11 +288,11 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
     } while (index != -1);
 
     handle = audio_state.voices.handles;
-    index = 9;
+    index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
         if (handle->sound_id == sound_id) {
             audio_key_off_handle(handle);
-            handle->voice_id = -1;
+            handle->voice_id = KF_AUDIO_VOICE_ID_NONE;
             return handle;
         }
         handle++;
@@ -295,7 +302,7 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
     lowest_priority = 0x10000;
     voices = &audio_state.voices;
     handle = voices->handles;
-    index = 9;
+    index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     params = voices->params;
     do {
         u16 priority = params[(u8)handle->sound_id].priority;
@@ -308,7 +315,7 @@ KfAudioVoiceHandle *audio_allocate_voice_handle(s32 sound_id)
         index--;
     } while (index != -1);
     audio_key_off_handle(lowest_priority_handle);
-    lowest_priority_handle->voice_id = -1;
+    lowest_priority_handle->voice_id = KF_AUDIO_VOICE_ID_NONE;
     return lowest_priority_handle;
 }
 
@@ -319,15 +326,15 @@ void audio_key_on(s32 sound, s32 left_volume, s32 right_volume, s32 note_offset)
     KfAudioVabSlot *vab;
     KfAudioVoiceHandle *handle;
 
-    if (sound == 0xff || player_state.audio_effects_enabled == 0) {
+    if (sound == KF_AUDIO_SOUND_NONE || player_state.audio_effects_enabled == 0) {
         return;
     }
     voice = &audio_state.voices.params[(u8)sound];
-    if (voice->vab_slot_index == -1) {
+    if (voice->vab_slot_index == KF_AUDIO_VAB_SLOT_NONE) {
         return;
     }
     vab = &audio_state.vab_slots[voice->vab_slot_index];
-    if (vab->vab_id == -1 || vab->vab_id == KF_AUDIO_VAB_ID_STREAM_PENDING) {
+    if (vab->vab_id == KF_AUDIO_VAB_ID_NONE || vab->vab_id == KF_AUDIO_VAB_ID_STREAM_PENDING) {
         return;
     }
     handle = audio_allocate_voice_handle(sound);
@@ -357,12 +364,12 @@ void audio_vab_stream_callback(KfCdRequest *request)
             CdSeekP(&request->initial_location);
             return;
         }
-        if (vab_slot->vab_id != -1) {
+        if (vab_slot->vab_id != KF_AUDIO_VAB_ID_NONE) {
             SsVabClose(vab_slot->vab_id);
         }
         vab_slot->vab_id = SsVabOpenHead(
             request->payload.vab.stream_slot->buffer, -1);
-        if (vab_slot->vab_id == -1) {
+        if (vab_slot->vab_id == KF_AUDIO_VAB_ID_NONE) {
             cd_request_advance(request);
             return;
         }
@@ -443,11 +450,11 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
     do {
         if (stream_slot->state == KF_AUDIO_VAB_STREAM_RECLAIMABLE) {
             vab_slot = audio_state.vab_slots;
-            index = 129;
+            index = KF_AUDIO_VAB_SLOT_COUNT - 1;
             do {
-                if (vab_slot->vab_id != -1 && vab_slot->stream_slot == stream_slot) {
+                if (vab_slot->vab_id != KF_AUDIO_VAB_ID_NONE && vab_slot->stream_slot == stream_slot) {
                     SsVabClose(vab_slot->vab_id);
-                    vab_slot->vab_id = -1;
+                    vab_slot->vab_id = KF_AUDIO_VAB_ID_NONE;
                     vab_slot->stream_slot = 0;
                     break;
                 }

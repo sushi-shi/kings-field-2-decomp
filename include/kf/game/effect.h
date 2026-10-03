@@ -60,6 +60,15 @@ typedef struct KfEffectCacheTail {
 typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
 typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->kind_payload == 4 ? 1 : -1];
 
+/* Ballistic kinds keep the launch Y and elapsed update count in the payload. */
+typedef struct KfEffectBallisticState {
+    s16 origin_y;
+    u16 age;
+} KfEffectBallisticState;
+
+typedef char kf_effect_ballistic_state_size[sizeof(KfEffectBallisticState) == 4 ? 1 : -1];
+typedef char kf_effect_ballistic_age_offset[(u32)&((KfEffectBallisticState *)0)->age == 2 ? 1 : -1];
+
 typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
 typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];
 typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];

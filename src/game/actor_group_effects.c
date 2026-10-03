@@ -89,12 +89,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     case 0x20:
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
-        actor_compute_target_direction(current, player, 500, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 500, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         if (effect != 0) effect->cooldown = 3;
         break;
     case 0x79:
-        actor_compute_target_direction(current, player, 600, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 600, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         distance = fixed_vector3_length(position.vx - player->vx,
                                         position.vy - player->vy,
                                         position.vz - player->vz);
@@ -102,7 +104,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         if (travel_time < 0) travel_time = 0;
         goto simple_direction_effect;
     case 4:
-        actor_compute_target_direction(current, player, 800, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 800, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x28: {
@@ -122,11 +125,13 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     }
     case 9:
     case 0x21:
-        actor_compute_target_direction(current, player, 400, &position, &direction, -1, 0x400, 1);
-        travel_time = 0xfe;
+        actor_compute_target_direction(current, player, 400, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
+        travel_time = KF_EFFECT_KIND9_TARGET_PLAYER;
         goto simple_direction_effect;
     case 0x18:
-        actor_compute_target_direction(current, player, 250, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 250, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 2:
@@ -134,7 +139,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
                       0x1000, 0x100, 0x1000);
         break;
     case 0x16:
-        actor_compute_target_direction(current, player, 400, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 400, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x17:
@@ -150,12 +156,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         break;
     case 1:
     case 0x1c:
-        actor_compute_target_direction(current, player, 500, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 500, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0x1a:
     case 0x1b:
-        actor_compute_target_direction(current, player, 300, &position, &direction, -1, 0x400, 1);
+        actor_compute_target_direction(current, player, 300, &position, &direction,
+            KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         travel_time = -1;
         goto simple_direction_effect;
     case 0xc:
@@ -185,8 +193,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         spawned = actor_pool_find_free();
         if (spawned != 0) {
             actor_compute_target_direction(current, player, 400,
-                          &position, &direction, -1, 0x400, 1);
-            spawned->slot_state = 5;
+                          &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
+            spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
@@ -201,7 +209,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_initialize_from_group(spawned);
             spawned->motion.vector = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
-            actor_select_target_type_in_own_group(spawned, 0x1d);
+            actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_ASCENDING_SPIN);
         }
         break;
     case 0x70:
@@ -210,8 +218,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         spawned = actor_pool_find_free();
         if (spawned != 0) {
             actor_compute_target_direction(current, player, 250,
-                          &position, &direction, -1, 0x400, 1);
-            spawned->slot_state = 5;
+                          &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
+            spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
@@ -226,7 +234,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_initialize_from_group(spawned);
             spawned->motion.vector = direction;
             *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
-            actor_select_target_type_in_own_group(spawned, 0x1e);
+            actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_COLLISION_MOVE);
         }
         break;
     case 0x1d:
@@ -257,7 +265,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         if (effect != 0) {
             effect->updates_remaining = 0x32;
             effect->phase = 0;
-            *(u16 *)&effect->unknown_3c[4] = position.vy;
+            ((KfEffectBallisticState *)&effect->unknown_3c[4])->origin_y = position.vy;
         }
         break;
     }

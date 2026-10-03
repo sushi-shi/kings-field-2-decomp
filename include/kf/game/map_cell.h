@@ -3,6 +3,12 @@
 
 #include <kf/game/player.h>
 
+enum {
+    KF_MAP_CELL_POSITION_SHIFT = 11,
+    KF_MAP_CELL_ELEVATION_SHIFT = 7,
+    KF_MAP_CELL_NO_OBJECT_INDEX = 0xff
+};
+
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                             u32 flags);
 s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 height);

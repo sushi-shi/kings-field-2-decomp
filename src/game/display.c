@@ -140,7 +140,7 @@ DATA(0x8006d6d4, 0x4)
 s32 render_model_yaw_smoothing_accumulator = 0;
 
 DATA(0x8006d6dc, 0x8)
-RECT menu_transition_rect = {320, 0, 320, 240};
+RECT menu_transition_rect = {KF_DISPLAY_WIDTH, 0, KF_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT};
 
 DATA(0x800fba58, 0x32000)
 u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
@@ -3577,11 +3577,17 @@ void tim_upload_images(u8 *tim_data)
     SetPolyFT4(quad); \
 } while (0)
 
+enum {
+    KF_MENU_FADE_WAIT_FOR_RELEASE = -1,
+    KF_MENU_FADE_WAIT_FOR_PRESS = -2,
+    KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH = 192
+};
+
 ADDRESS(0x800349bc, 0x454)
 s32 menu_fade_transition(s32 level, s32 step)
 {
     POLY_FT4 *quad;
-    s32 state = -1;
+    s32 state = KF_MENU_FADE_WAIT_FOR_RELEASE;
     s32 shade;
     u32 buttons;
 
@@ -3590,16 +3596,18 @@ s32 menu_fade_transition(s32 level, s32 step)
         shade = 0x80 - (level >> 1);
 
         MENU_FADE_NEXT_QUAD();
-        setXYWH(quad, 0, 0, 192, 240);
-        setUVWH(quad, 0, 0, 192, 240);
+        setXYWH(quad, 0, 0, KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, KF_DISPLAY_HEIGHT);
+        setUVWH(quad, 0, 0, KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, KF_DISPLAY_HEIGHT);
         quad->clut = 0;
         setTPage(quad, 2, 0, 320, 0);
         setRGB0(quad, shade, shade, shade);
         AddPrim(game_graphics_runtime.display_state.ordering_table + 2, quad);
 
         MENU_FADE_NEXT_QUAD();
-        setXYWH(quad, 192, 0, 128, 240);
-        setUVWH(quad, 0, 0, 128, 240);
+        setXYWH(quad, KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, 0,
+            KF_DISPLAY_WIDTH - KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, KF_DISPLAY_HEIGHT);
+        setUVWH(quad, 0, 0,
+            KF_DISPLAY_WIDTH - KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, KF_DISPLAY_HEIGHT);
         quad->clut = 0;
         setTPage(quad, 2, 0, 512, 0);
         setRGB0(quad, shade, shade, shade);
@@ -3629,9 +3637,9 @@ present:
         level += step;
         if (((u32)level - 1u) < 119u) {
             buttons = PadRead(1);
-            if (state == -1) {
+            if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
                 if (buttons == 0)
-                    state = -2;
+                    state = KF_MENU_FADE_WAIT_FOR_PRESS;
             } else if (buttons != 0) {
                 DrawSync(0);
                 return level;
@@ -3644,6 +3652,15 @@ present:
 }
 
 #undef MENU_FADE_NEXT_QUAD
+
+enum {
+    KF_MENU_TRANSITION_FADE_STEP = 12,
+    KF_MENU_TRANSITION_REVERSE_START_LEVEL = 80,
+    KF_MENU_TRANSITION_IMAGE_BYTES = KF_DISPLAY_WIDTH * KF_DISPLAY_HEIGHT * sizeof(u16),
+    KF_MENU_TRANSITION_PRIMITIVE_BUFFER_BYTES =
+        (KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES -
+         KF_MENU_TRANSITION_IMAGE_BYTES) / KF_DISPLAY_BUFFER_COUNT
+};
 
 ADDRESS(0x80034e10, 0x180)
 void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
@@ -3659,10 +3676,10 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
     DrawSync(0);
 
     scratch = game_graphics_runtime.display_state.primitive_buffers[0].start;
-    scratch += KF_GAME_PRIMITIVE_BUFFER_BYTES / 4;
+    scratch += KF_MENU_TRANSITION_PRIMITIVE_BUFFER_BYTES;
     game_graphics_runtime.display_state.primitive_buffers[0].end = scratch;
     game_graphics_runtime.display_state.primitive_buffers[1].start = scratch;
-    scratch += KF_GAME_PRIMITIVE_BUFFER_BYTES / 4;
+    scratch += KF_MENU_TRANSITION_PRIMITIVE_BUFFER_BYTES;
     game_graphics_runtime.display_state.primitive_buffers[1].end = scratch;
     StoreImage(&menu_transition_rect, (u_long *)scratch);
     DrawSync(0);
@@ -3671,23 +3688,23 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
         menu_transition_rect.x, menu_transition_rect.y);
     DrawSync(0);
 
-    frame = menu_fade_transition(0, 12);
+    frame = menu_fade_transition(0, KF_MENU_TRANSITION_FADE_STEP);
     if (frame < 0) {
         for (;;) {
             buttons = PadRead(1);
-            if (frame == -1) {
+            if (frame == KF_MENU_FADE_WAIT_FOR_RELEASE) {
                 if (buttons != 0)
                     continue;
-                frame = -2;
+                frame = KF_MENU_FADE_WAIT_FOR_PRESS;
                 continue;
             }
             if (buttons == 0)
                 continue;
-            frame = 80;
+            frame = KF_MENU_TRANSITION_REVERSE_START_LEVEL;
             break;
         }
     }
-    menu_fade_transition(frame, -12);
+    menu_fade_transition(frame, -KF_MENU_TRANSITION_FADE_STEP);
     LoadImage(&menu_transition_rect,
         (u_long *)game_graphics_runtime.display_state.primitive_buffers[1].end);
     game_graphics_runtime.display_state.primitive_buffers[0].end =

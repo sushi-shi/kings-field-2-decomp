@@ -11,38 +11,50 @@
 #include <psyq/pad.h>
 typedef char kf_card_directory_entry_size[sizeof(struct DIRENTRY) == 40 ? 1 : -1];
 
+enum {
+    CARD_CHOICE_EXIT = -2,
+    CARD_WRITE_IO_FAILURE = 1,
+    CARD_MENU_ROW_CAPACITY = KF_CARD_DIRECTORY_CAPACITY / KF_CARD_FILE_BLOCKS + 1,
+    CARD_MENU_VISIBLE_ROWS = 6,
+    CARD_MENU_LIST_Y = 0x83,
+    CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE = 2,
+    CARD_MENU_NO_PREVIEW_ITEM = 0xff,
+    CARD_MENU_NO_LEVEL = 0xff,
+    CARD_MENU_NEW_SLOT = 0xff
+};
+
 ADDRESS(0x8001aa9c, 0x1e4)
 s32 menu_run_card_choice(void)
 {
     KfMenuGlyphString labels[2];
     s32 cursor = 0;
     s32 confirmed = 0;
-    s32 result = -99;
-    s32 selection = -1;
+    s32 result = KF_MENU_RESULT_PENDING;
+    s32 selection = KF_MENU_SELECTION_NONE;
     s32 frame;
     s32 volume;
 
     for (;;) {
-        if (selection != -1 || result != -99)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         switch (selection) {
         case 0:
             result = menu_card_load_browser();
             if (result == 0)
-                result = -3;
+                result = KF_MENU_RESULT_GAME_LOADED;
             break;
         case 1:
             result = menu_prompt_two_option();
             if (result == 0)
-                result = -2;
+                result = CARD_CHOICE_EXIT;
             break;
         }
 
-        if (selection != -1 && result == -1)
-            result = -99;
+        if (selection != KF_MENU_SELECTION_NONE && result == KF_MENU_RESULT_CANCELLED)
+            result = KF_MENU_RESULT_PENDING;
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         cursor = menu_poll_choice_input(cursor, 2, &selection, &confirmed, &result);
@@ -53,7 +65,7 @@ s32 menu_run_card_choice(void)
         }
     }
 
-    if (result == -2) {
+    if (result == CARD_CHOICE_EXIT) {
         u32 cd_result;
 
         CdControl(CdlStop, 0, (u8 *)&cd_result);
@@ -73,16 +85,16 @@ s32 menu_run_card_choice(void)
 ADDRESS(0x8001ac80, 0x2b0)
 s32 menu_card_load_browser(void)
 {
-    struct DIRENTRY entries[15];
+    struct DIRENTRY entries[KF_CARD_DIRECTORY_CAPACITY];
     KfCardMenuList menu;
-    KfCardSlotGlyphRow glyph_rows[8];
-    s32 experience_values[8];
-    u8 levels[8];
-    s32 slot_ids[8];
+    KfCardSlotGlyphRow glyph_rows[CARD_MENU_ROW_CAPACITY];
+    s32 experience_values[CARD_MENU_ROW_CAPACITY];
+    u8 levels[CARD_MENU_ROW_CAPACITY];
+    s32 slot_ids[CARD_MENU_ROW_CAPACITY];
     KfMenuGlyphString dialog_rows[3];
     s32 matching_count;
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 read_result;
     s32 frame;
@@ -94,25 +106,25 @@ s32 menu_card_load_browser(void)
     count = menu_card_build_slot_rows(entries, glyph_rows[0].codes,
         experience_values, levels, slot_ids);
     menu_list_init(&menu.list, 1, 0);
-    menu.list.visible_rows = 6;
-    menu.list.list_y = 0x83;
+    menu.list.visible_rows = CARD_MENU_VISIBLE_ROWS;
+    menu.list.list_y = CARD_MENU_LIST_Y;
     menu.list.entry_count = count;
     menu.rows = glyph_rows;
-    menu.values = levels;
-    menu.codes = experience_values;
+    menu.levels = levels;
+    menu.experience_values = experience_values;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 6, 8, 0xff);
-            if (result == -1)
-                result = -99;
+            result = menu_preview_choice(&menu, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = slot_ids[menu.list.selected_index];
         }
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -125,7 +137,7 @@ s32 menu_card_load_browser(void)
         }
     }
 
-    if (result != -1) {
+    if (result != KF_MENU_RESULT_CANCELLED) {
         menu_prepare_card_read_row(dialog_rows);
         menu_show_dialog_panel(4, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
         read_result = memory_card_read_slot(result);
@@ -135,7 +147,7 @@ s32 menu_card_load_browser(void)
             input_wait_release();
             while (PadRead(1) == 0) {}
             input_wait_release();
-            result = -1;
+            result = KF_MENU_RESULT_CANCELLED;
         } else {
             result = 0;
         }
@@ -154,7 +166,7 @@ s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_ro
     s32 level;
     s32 slot_id;
 
-    for (index = 0; index < 15; index++) {
+    for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
         if (memory_card_read_slot_summary(card_entries->name,
             &experience, &level, &slot_id) == 0) {
             *glyph_rows++ = 0x1012;
@@ -211,8 +223,8 @@ s32 menu_prompt_two_option(void)
 
     current = 0;
     choice = 0;
-    result = -99;
-    selected = -1;
+    result = KF_MENU_RESULT_PENDING;
+    selected = KF_MENU_SELECTION_NONE;
     labels[0].position.x = 101;
     labels[0].position.y = 123;
     labels[0].glyphs.codes[0] = 89;
@@ -226,7 +238,7 @@ s32 menu_prompt_two_option(void)
     labels[1].glyphs.codes[3] = -1;
 
     for (;;) {
-        if (selected != -1 || result != -99)
+        if (selected != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         switch (selected) {
@@ -238,7 +250,7 @@ s32 menu_prompt_two_option(void)
             break;
         }
 
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
         current = menu_poll_choice_input(current, 1, &selected, &choice, &result);
         for (frame = 0; frame < 2; frame++) {
@@ -255,8 +267,7 @@ s32 menu_prompt_two_option(void)
 }
 enum {
     KF_MENU_OPTION_COUNT = 6,
-    KF_MENU_OPTION_CANCEL_ROW = 6,
-    KF_MENU_OPTION_PENDING = -99
+    KF_MENU_OPTION_CANCEL_ROW = 6
 };
 
 ADDRESS(0x8001b2dc, 0x278)
@@ -265,7 +276,7 @@ void menu_options_controller(void)
     u8 selected[KF_MENU_OPTION_COUNT];
     KfMenuGlyphString labels[2];
     s32 choice = 0;
-    s32 result = KF_MENU_OPTION_PENDING;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 last_row = KF_MENU_OPTION_COUNT;
     s32 confirmed;
     s32 frame;
@@ -291,7 +302,7 @@ void menu_options_controller(void)
     selected[5] = player_state.walking_bob_enabled;
 
     for (;;) {
-        if (result != KF_MENU_OPTION_PENDING) {
+        if (result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
             break;
         }
@@ -348,13 +359,13 @@ void menu_options_controller(void)
 ADDRESS(0x8001b554, 0x2e0)
 s32 menu_card_browser(void)
 {
-    struct DIRENTRY entries[15];
+    struct DIRENTRY entries[KF_CARD_DIRECTORY_CAPACITY];
     KfMenuGlyphString rows[4];
     s32 matching_count;
     s32 cursor = 0;
     s32 confirmed = 0;
-    s32 result = -99;
-    s32 selection = -1;
+    s32 result = KF_MENU_RESULT_PENDING;
+    s32 selection = KF_MENU_SELECTION_NONE;
     s32 card_full;
     s32 probe;
     s32 buttons;
@@ -365,7 +376,7 @@ s32 menu_card_browser(void)
     menu_show_dialog_panel(9, rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
     probe = memory_card_probe_temporary_file();
-    if (probe != 0 && probe != 2) {
+    if (probe != 0 && probe != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
         menu_build_card_probe_error_rows(rows);
         menu_show_dialog_panel(9, rows, 3, 50, 87, 220, 66, 2, 0);
         input_wait_release();
@@ -392,7 +403,7 @@ no_file:
     menu_play_sound_cue(16);
     input_wait_release();
     for (;;) {
-        if (selection != -1)
+        if (selection != KF_MENU_SELECTION_NONE)
             input_wait_release();
         switch (selection) {
         case 0:
@@ -400,13 +411,13 @@ no_file:
             break;
         case 1:
             result = menu_card_load_slot_browser();
-            if (result == -1) {
-                result = -99;
-                selection = -1;
+            if (result == KF_MENU_RESULT_CANCELLED) {
+                result = KF_MENU_RESULT_PENDING;
+                selection = KF_MENU_SELECTION_NONE;
             }
             break;
         }
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         input_wait_brief_release();
@@ -437,16 +448,16 @@ no_file:
 ADDRESS(0x8001b834, 0x24c)
 s32 menu_card_load_slot_browser(void)
 {
-    struct DIRENTRY entries[15];
+    struct DIRENTRY entries[KF_CARD_DIRECTORY_CAPACITY];
     KfCardMenuList menu;
-    KfCardSlotGlyphRow glyph_rows[8];
-    s32 experience_values[8];
-    u8 levels[8];
-    s32 slot_ids[8];
+    KfCardSlotGlyphRow glyph_rows[CARD_MENU_ROW_CAPACITY];
+    s32 experience_values[CARD_MENU_ROW_CAPACITY];
+    u8 levels[CARD_MENU_ROW_CAPACITY];
+    s32 slot_ids[CARD_MENU_ROW_CAPACITY];
     KfMenuGlyphString dialog_rows[3];
     s32 matching_count;
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 read_result;
     s32 frame;
@@ -455,25 +466,25 @@ s32 menu_card_load_slot_browser(void)
     count = menu_card_build_slot_rows(entries, glyph_rows[0].codes,
         experience_values, levels, slot_ids);
     menu_list_init(&menu.list, 1, 0);
-    menu.list.visible_rows = 6;
-    menu.list.list_y = 0x83;
+    menu.list.visible_rows = CARD_MENU_VISIBLE_ROWS;
+    menu.list.list_y = CARD_MENU_LIST_Y;
     menu.list.entry_count = count;
     menu.rows = glyph_rows;
-    menu.values = levels;
-    menu.codes = experience_values;
+    menu.levels = levels;
+    menu.experience_values = experience_values;
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 6, 8, 0xff);
-            if (result == -1)
-                result = -99;
+            result = menu_preview_choice(&menu, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = slot_ids[menu.list.selected_index];
         }
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -570,16 +581,16 @@ void menu_build_card_full_rows(KfMenuGlyphString *row)
 ADDRESS(0x8001bcfc, 0x26c)
 void menu_card_save_browser(void)
 {
-    struct DIRENTRY entries[15];
+    struct DIRENTRY entries[KF_CARD_DIRECTORY_CAPACITY];
     KfCardMenuList menu;
-    KfCardSlotGlyphRow glyph_rows[8];
-    s32 experience_values[8];
-    u8 levels[8];
-    s32 slot_ids[8];
+    KfCardSlotGlyphRow glyph_rows[CARD_MENU_ROW_CAPACITY];
+    s32 experience_values[CARD_MENU_ROW_CAPACITY];
+    u8 levels[CARD_MENU_ROW_CAPACITY];
+    s32 slot_ids[CARD_MENU_ROW_CAPACITY];
     KfMenuGlyphString dialog_rows[2];
     s32 matching_count;
     s32 mode = 0;
-    s32 result = -99;
+    s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
 
@@ -596,31 +607,31 @@ void menu_card_save_browser(void)
     glyph_rows[count].codes[2] = 0xe2;
     glyph_rows[count].codes[3] = -1;
     experience_values[count] = -1;
-    levels[count] = 0xff;
-    slot_ids[count] = 0xff;
+    levels[count] = CARD_MENU_NO_LEVEL;
+    slot_ids[count] = CARD_MENU_NEW_SLOT;
     count++;
 
     menu_list_init(&menu.list, 1, 3);
-    menu.list.visible_rows = 6;
-    menu.list.list_y = 0x83;
+    menu.list.visible_rows = CARD_MENU_VISIBLE_ROWS;
+    menu.list.list_y = CARD_MENU_LIST_Y;
     menu.list.entry_count = count;
     menu.rows = glyph_rows;
-    menu.values = levels;
-    menu.codes = experience_values;
+    menu.levels = levels;
+    menu.experience_values = experience_values;
     menu_play_sound_cue(16);
     input_wait_release();
 
     for (;;) {
-        if (mode != 0 || result != -99)
+        if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 7, 9, 0xff);
-            if (result == -1)
-                result = -99;
+            result = menu_preview_choice(&menu, 7, 9, CARD_MENU_NO_PREVIEW_ITEM);
+            if (result == KF_MENU_RESULT_CANCELLED)
+                result = KF_MENU_RESULT_PENDING;
             else
                 result = menu.list.selected_index;
         }
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         menu_update_list_input(&menu.list, 0, &mode, &result);
@@ -647,7 +658,7 @@ void menu_card_save_slot(s32 slot)
     s32 result;
 
     if (probe != 0) {
-        if (probe != 2) {
+        if (probe != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
             menu_prepare_card_io_error_rows(rows);
             menu_draw_card_dialog_rows(rows, 3, 70, 87, 178, 81, 2, 0);
             input_wait_release();
@@ -671,7 +682,7 @@ write_file:
     result = memory_card_write_slot(slot);
     if (result == 0)
         return;
-    if (result == 1)
+    if (result == CARD_WRITE_IO_FAILURE)
         menu_prepare_card_io_error_rows(rows);
     else
         menu_prepare_card_write_full_rows(rows);
@@ -689,8 +700,8 @@ s32 menu_confirm_card_format(s32 kind)
     KfMenuGlyphString labels[7];
     s32 cursor = 0;
     s32 confirmed = 0;
-    s32 result = -99;
-    s32 selection = -1;
+    s32 result = KF_MENU_RESULT_PENDING;
+    s32 selection = KF_MENU_SELECTION_NONE;
     s32 frame;
 
     labels[0].position.x = menu_window_layouts[1].rows[0].position.x;
@@ -724,7 +735,7 @@ s32 menu_confirm_card_format(s32 kind)
     }
 
     for (;;) {
-        if (selection != -1 || result != -99)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
         switch (selection) {
         case 0:
@@ -734,7 +745,7 @@ s32 menu_confirm_card_format(s32 kind)
             result = -1;
             break;
         }
-        if (result != -99)
+        if (result != KF_MENU_RESULT_PENDING)
             break;
 
         cursor = menu_poll_choice_input(cursor, 1, &selection, &confirmed, &result);

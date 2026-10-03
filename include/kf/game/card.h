@@ -18,7 +18,12 @@ enum {
 
 enum {
     KF_CARD_ICON_TYPE_THREE_FRAMES = 0x13,
-    KF_CARD_FILE_BLOCKS = 2
+    KF_CARD_ICON_FRAME_COUNT = 3,
+    KF_CARD_ICON_FRAME_BYTES = 0x80,
+    KF_CARD_ICON_PALETTE_COLORS = 16,
+    KF_CARD_SAVE_SLOT_COUNT = 7,
+    KF_CARD_FILE_BLOCKS = 2,
+    KF_CARD_DIRECTORY_CAPACITY = 15
 };
 
 /* The file header copies this 0x280-byte prefix; the rest of the 0x400-byte
@@ -29,8 +34,8 @@ typedef struct KfCardHeader {
     u8 block_count;
     char title[0x40];
     u8 reserved_44[0x1c];
-    u16 icon_palette[16];
-    u8 icon_frames[3][0x80];
+    u16 icon_palette[KF_CARD_ICON_PALETTE_COLORS];
+    u8 icon_frames[KF_CARD_ICON_FRAME_COUNT][KF_CARD_ICON_FRAME_BYTES];
     u32 payload_checksum;
     u8 reserved_204[0x7c];
 } KfCardHeader;

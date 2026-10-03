@@ -2,6 +2,8 @@
 #include <kf/game/graphics.h>
 #include <kf/game/memory.h>
 
+enum { FLOOR_ITEM_VRAM_PIXEL_BYTES = sizeof(u16) };
+
 ADDRESS(0x8002ce2c, 0x3c)
 KfFloorItem *floor_item_find_free(void)
 {
@@ -9,7 +11,7 @@ KfFloorItem *floor_item_find_free(void)
     s32 remaining = KF_FLOOR_ITEM_CAPACITY;
 
     do {
-        if (item->kind == 0xff) {
+        if (item->kind == KF_FLOOR_ITEM_NONE) {
             return item;
         }
         item++;
@@ -32,11 +34,11 @@ void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
         item->rect.x = x;
         item->rect.y = y;
         item->kind = kind;
-        if (kind == 1) {
+        if (kind == KF_FLOOR_ITEM_SCROLLING_IMAGE) {
             item->rect.w = width_bytes >> 2;
             item->rect.h = height;
             item->pixels = (u_long *)memory_allocate(
-                (s16)item->rect.w * (s16)height * 2);
+                (s16)item->rect.w * (s16)height * FLOOR_ITEM_VRAM_PIXEL_BYTES);
         }
         StoreImage(&item->rect, item->pixels);
         DrawSync(0);
@@ -53,7 +55,7 @@ void floor_item_update_textures(void)
     do {
         if (item->frames_until_update == 0) {
             item->frames_until_update = item->update_interval;
-            if (item->kind == 1) {
+            if (item->kind == KF_FLOOR_ITEM_SCROLLING_IMAGE) {
                 item->row_offset += item->row_step;
                 if ((s16)item->row_offset >= item->rect.h) {
                     item->row_offset -= item->rect.h;

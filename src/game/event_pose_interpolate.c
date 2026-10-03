@@ -117,10 +117,10 @@ u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker
     for (;;) {
         s32 code = *cursor++;
 
-        if (code == 0xf2) {
+        if (code == KF_EVENT_STREAM_MARKER_RECORD) {
             goto marker_record;
         }
-        if (code == 0xff) {
+        if (code == KF_EVENT_STREAM_END) {
             return candidate->word_10.bytes.fallback_offset;
         }
         continue;
@@ -145,10 +145,10 @@ u8 *event_target_stream_resolve_cursor(KfActor *actor)
     for (;;) {
         u8 code = *cursor;
 
-        if (code == 0xf1) {
+        if (code == KF_EVENT_STREAM_CONDITIONAL_MARKER) {
             goto marker_record;
         }
-        if (code != 0xfe) {
+        if (code != KF_EVENT_STREAM_START) {
             /* Retail retries this byte; the stream must supply a control code. */
             continue;
         }
@@ -201,7 +201,7 @@ void event_target_stream_execute(KfActor *actor)
     cursor = event_target_stream_resolve_cursor(actor);
     if (event_state.control.fields.stream_actor_definition_id != actor->definition_id &&
         candidate->word_12.bytes.marker_state == 1) {
-        while (*cursor++ != 0xf0) {
+        while (*cursor++ != KF_EVENT_STREAM_REWIND_MARKER) {
         }
         cursor++;
         candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
@@ -209,7 +209,7 @@ void event_target_stream_execute(KfActor *actor)
     }
 
     for (;;) {
-        switch (*cursor - 0xf0) {
+        switch (*cursor - KF_EVENT_STREAM_REWIND_MARKER) {
         case 0:
             candidate->word_12.bytes.marker_state = 1;
             /* The two rewind opcodes share their byte-count operand. */
@@ -290,20 +290,21 @@ advance:
 
 after_script:
     old_counter = game_counter_bytes[0x53];
-    switch (candidate->word_12.bytes.post_stream_menu_action & 0xf0) {
-    case 0:
+    switch (candidate->word_12.bytes.post_stream_menu_action & KF_EVENT_POST_STREAM_MENU_MASK) {
+    case KF_EVENT_POST_STREAM_BUY_SELL:
         player_render_frame_and_release_pool();
-        menu_item_buy_sell_controller(candidate->word_12.bytes.post_stream_menu_action & 0xf);
+        menu_item_buy_sell_controller(candidate->word_12.bytes.post_stream_menu_action &
+                                      KF_EVENT_POST_STREAM_BUY_SELL_CHOICE_MASK);
         break;
-    case 0x10:
+    case KF_EVENT_POST_STREAM_STOCK_CHOICE:
         player_render_frame_and_release_pool();
         menu_item_stock_choice_controller();
         break;
-    case 0x20:
+    case KF_EVENT_POST_STREAM_TRADE:
         player_render_frame_and_release_pool();
         menu_item_trade_controller();
         break;
-    case 0x30:
+    case KF_EVENT_POST_STREAM_INVENTORY_CHOICE:
         player_render_frame_and_release_pool();
         choice = menu_choose_inventory_item();
         if (choice != -1) {

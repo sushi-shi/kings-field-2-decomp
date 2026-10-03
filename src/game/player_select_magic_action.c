@@ -124,8 +124,6 @@ charge_gate:
 }
 
 enum {
-    PLAYER_MOVE_RADIUS = 800,
-    PLAYER_MOVE_HEIGHT = 1700,
     PLAYER_MOVE_COLLISION_MODE = KF_COLLISION_QUERY_SHAPES |
                                  KF_COLLISION_QUERY_ACTORS |
                                  KF_COLLISION_QUERY_MAP_OBJECTS,
@@ -158,7 +156,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         next.vx = player_state.camera_position.vx + dx;
         next.vz = player_state.camera_position.vz + dz;
         flags = collision_query_world(next.vx, player_state.camera_position.vy, next.vz,
-                              PLAYER_MOVE_RADIUS, PLAYER_MOVE_HEIGHT,
+                              KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
                               PLAYER_MOVE_COLLISION_MODE);
         if (flags == 0) {
         accept_position:
@@ -170,13 +168,13 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         }
 
         high_collision = 0;
-        if ((flags & -6) == 0) {
+        if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
             s32 collision_height = KF_COLLISION_CACHE_RESULT;
             high_collision = 1;
             if (collision_height + 1280 >= player_state.camera_position.vy
                 && player_state.death_state == 0
                 && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
-                       < -PLAYER_MOVE_HEIGHT) {
+                       < -KF_PLAYER_HEIGHT) {
                 goto accept_position;
             }
         }
@@ -216,8 +214,8 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                     next.vz = camera->vz
                            + ((rcos(heading) * slide_distance) >> 12);
                     if (collision_query_world(next.vx, camera->vy,
-                                       next.vz, PLAYER_MOVE_RADIUS,
-                                       PLAYER_MOVE_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
+                                       next.vz, KF_PLAYER_COLLISION_RADIUS,
+                                       KF_PLAYER_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
                         camera->vx = next.vx;
                         camera->vz = next.vz;
                         break;

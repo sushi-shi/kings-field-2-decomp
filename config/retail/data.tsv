@@ -1484,8 +1484,8 @@ OPEN.EXE	0x8003dcb0	0x2d4b0	0x4	string	byte-pattern		ascii	investigation:string-
 OPEN.EXE	0x8003dcb4	0x2d4b4	0x55	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dd09	0x2d509	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
 OPEN.EXE	0x8003dd0d	0x2d50d	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dd1c	0x2d51c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
-OPEN.EXE	0x8003dd20	0x2d520	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003dd1c	0x2d51c	0x5	string	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .sdata		ascii	archive five-byte none string including NUL;SYS text patches +0xc0/+0xf8 match retail xrefs	vendor status string; original C declaration unresolved
+OPEN.EXE	0x8003dd21	0x2d521	0x3	unclassified	manual:LIBCD SYS .sdata alignment			retail zero bytes after exact five-byte section	alignment before LIBCD BIOS initialized section
 OPEN.EXE	0x8003dd24	0x2d524	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_debug XDEF .sdata+0;unique retail CdlInit prefix	32-bit exported CD debug state
 OPEN.EXE	0x8003dd28	0x2d528	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_isopen XDEF .sdata+4;unique retail CdlInit prefix	32-bit exported CD open state
 OPEN.EXE	0x8003dd2c	0x2d52c	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlInit
@@ -2209,8 +2209,8 @@ END.EXE	0x8003aacc	0x2a2cc	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sd
 END.EXE	0x8003aad8	0x2a2d8	0x51	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ab29	0x2a329	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
 END.EXE	0x8003ab2d	0x2a32d	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ab3c	0x2a33c	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: none
-END.EXE	0x8003ab40	0x2a340	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8003ab3c	0x2a33c	0x5	string	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .sdata		ascii	archive five-byte none string including NUL;SYS text patches +0xc0/+0xf8 match retail xrefs	vendor status string; original C declaration unresolved
+END.EXE	0x8003ab41	0x2a341	0x3	unclassified	manual:LIBCD SYS .sdata alignment			retail zero bytes after exact five-byte section	alignment before LIBCD BIOS initialized section
 END.EXE	0x8003ab44	0x2a344	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_debug XDEF .sdata+0;unique retail CdlInit prefix	32-bit exported CD debug state
 END.EXE	0x8003ab48	0x2a348	0x4	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata XDEF		u32	archive CD_isopen XDEF .sdata+4;unique retail CdlInit prefix	32-bit exported CD open state
 END.EXE	0x8003ab4c	0x2a34c	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlInit

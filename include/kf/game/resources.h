@@ -19,6 +19,8 @@ enum {
     KF_RESOURCE_TRANSITION_PHASE_PENDING_IO = 0xf0
 };
 
+extern u8 resource_tmd_workspace[0x37000];
+
 u32 map_cell_layer_mask(const VECTOR *position);
 u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius);
 s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);

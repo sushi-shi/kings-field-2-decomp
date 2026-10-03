@@ -27,6 +27,21 @@ enum {
     RESOURCE_SEQUENCE_FADE_STEP = 2
 };
 
+DATA(0x80063e00, 0x80)
+KfCallback callback_default_table[32] = {
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
+};
+
+DATA(0x8019e138, 0x14000)
+static u8 resource_callback_table_workspace[0x14000];
+
 ADDRESS(0x800167bc, 0x14)
 void resource_transition_set_phase_1(void)
 {
@@ -101,7 +116,7 @@ void resource_advance_transition(void)
         /* Retail's default table contains 32 pointers to the no-op callback. */
         state_8017d118.active_table = callback_default_table;
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 2,
-            (u_long *)0x8019e138,
+            (u_long *)resource_callback_table_workspace,
             (KfCdRequestCallback)resource_transition_set_phase_2);
         resource_copy_words((u32 *)&bss_801c7540, (u32 *)(buffer + 4),
                             sizeof(bss_801c7540.map_cells) / sizeof(u32));
@@ -122,7 +137,7 @@ void resource_advance_transition(void)
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
             (KfCdRequestCallback)resource_transition_set_phase_3);
-        state_8017d118.active_table = (KfCallback *)0x8019e138;
+        state_8017d118.active_table = (KfCallback *)resource_callback_table_workspace;
         return;
 
     case RESOURCE_STEP_LOAD_MAP_ACTORS:
@@ -130,7 +145,7 @@ phase_three:
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) {
             state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
             cd_archive_queue_read(KF_RESOURCE_ARCHIVE_RTMD, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD],
-                (u_long *)0x8012da68,
+                (u_long *)resource_tmd_workspace,
                 (KfCdRequestCallback)resource_transition_set_phase_4);
         }
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP) {
@@ -261,15 +276,3 @@ begin_phase_five:
         goto complete;
     }
 }
-
-DATA(0x80063e00, 0x80)
-KfCallback callback_default_table[32] = {
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-    resource_noop_callback, resource_noop_callback, resource_noop_callback, resource_noop_callback,
-};

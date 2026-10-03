@@ -16,6 +16,21 @@
 
 RODATA(0x80011000, 0x53)
 
+DATA(0x800855a0, 0x15000)
+static u8 resource_tmd_archive_28_workspace[0x15000];
+
+DATA(0x800fa0d0, 0x1960)
+static u8 resource_tmd_archive_0_workspace[0x1960];
+
+DATA(0x8012da68, 0x37000)
+u8 resource_tmd_workspace[0x37000];
+
+DATA(0x8017d118, 0x1c)
+KfState8017d118 state_8017d118;
+
+DATA(0x801d8d88, 0x880)
+static u8 resource_fdat_segment_801d8d88[0x880];
+
 ADDRESS(0x80015d50, 0x8)
 /* The default table serves callback slots with different caller arguments. */
 void resource_noop_callback()
@@ -48,7 +63,7 @@ void resource_initialize_game_assets(void)
     cd_archive_open(KF_RESOURCE_ARCHIVE_RTMD, "COM\\RTMD.T");
     cd_archive_open(KF_RESOURCE_ARCHIVE_ITEM, "COM\\ITEM.T");
 
-    /* The read arena and three copy destinations still lack full source owners. */
+    /* The archive copy destinations have provisional BSS extents. */
     cd_archive_read(KF_RESOURCE_ARCHIVE_FDAT, 0x30, (u_long *)source);
     cd_map_stream_read(KF_RESOURCE_ARCHIVE_FDAT, 0x2f);
     audio_queue_vab_stream(KF_RESOURCE_ARCHIVE_VAB, 0, 0);
@@ -57,7 +72,7 @@ void resource_initialize_game_assets(void)
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)player_weapon_records, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
-    resource_copy_words((u32 *)0x801d8d88, (u32 *)(source + 4), *(u32 *)source >> 2);
+    resource_copy_words((u32 *)resource_fdat_segment_801d8d88, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)player_level_growth_table, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
@@ -67,11 +82,11 @@ void resource_initialize_game_assets(void)
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)audio_state.voices.params, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
-    resource_copy_words((u32 *)0x800fa0d0, (u32 *)(source + 4), *(u32 *)source >> 2);
+    resource_copy_words((u32 *)resource_tmd_archive_0_workspace, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
-    asset_registry_load_tmd_archive(0, (u8 *)0x800fa0d0);
-    resource_copy_words((u32 *)0x800855a0, (u32 *)(source + 4), *(u32 *)source >> 2);
-    asset_registry_load_tmd_archive(0x28, (u8 *)0x800855a0);
+    asset_registry_load_tmd_archive(0, resource_tmd_archive_0_workspace);
+    resource_copy_words((u32 *)resource_tmd_archive_28_workspace, (u32 *)(source + 4), *(u32 *)source >> 2);
+    asset_registry_load_tmd_archive(0x28, resource_tmd_archive_28_workspace);
     game_initialize_session();
 }
 
@@ -108,7 +123,7 @@ void resource_run_initial_transition(void)
         cd_request_yield();
         resource_advance_transition();
     } while (state_8017d118.transition_active != 0);
-    tmd_set_slot(0, (KfTmdHeader *)0x8012da68);
+    tmd_set_slot(0, (KfTmdHeader *)resource_tmd_workspace);
     state_8017d118.active_table[5]();
 }
 
@@ -160,9 +175,6 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
         actor++;
     } while (actor_remaining-- != 0);
 }
-
-DATA(0x8017d118, 0x1c)
-KfState8017d118 state_8017d118;
 
 ADDRESS(0x80016260, 0x55c)
 void resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,

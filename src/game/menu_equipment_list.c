@@ -22,19 +22,10 @@ enum {
     MENU_CATEGORY_COUNT = 10
 };
 
-typedef struct KfMenuEquipmentList {
-    KfMenuList list;
-    KfMenuLabelSuffix *initial_rows;
-    KfMenuLabelSuffix *current_rows;
-    u8 unknown_2c[8];
-} KfMenuEquipmentList;
-
-typedef char kf_menu_equipment_list_size[sizeof(KfMenuEquipmentList) == 52 ? 1 : -1];
-
 ADDRESS(0x80019ac4, 0x220)
 void menu_equipment_list_controller(void)
 {
-    KfMenuEquipmentList menu;
+    KfMenuRenderList menu;
     KfMenuLabelSuffix initial_rows[MENU_CATEGORY_COUNT];
     KfMenuLabelSuffix current_rows[MENU_CATEGORY_COUNT];
     s32 mode = 0;
@@ -47,8 +38,8 @@ void menu_equipment_list_controller(void)
     menu_list_init(&menu.list, 0, 2);
     menu.list.entry_count = MENU_CATEGORY_COUNT;
     menu.list.visible_rows = MENU_CATEGORY_COUNT;
-    menu.initial_rows = initial_rows;
-    menu.current_rows = current_rows;
+    menu.row_glyphs = initial_rows[0].codes;
+    menu.detail_rows = current_rows;
     menu.list.list_y = 39;
 
     for (;;) {
@@ -140,7 +131,7 @@ void menu_equipment_category_controller(s32 category)
     s32 count;
     s32 frame;
     u8 selected_item;
-    u8 equipped_id;
+    u8 other_slot_item_id;
 
     switch (category) {
     case MENU_CATEGORY_WEAPON:
@@ -169,11 +160,11 @@ void menu_equipment_category_controller(s32 category)
         break;
     case MENU_CATEGORY_ACCESSORY:
     case MENU_CATEGORY_EXTRA:
-        equipped_id = category == MENU_CATEGORY_ACCESSORY ? player_state.equipped_extra_id
-                                    : player_state.equipped_accessory_id;
+        other_slot_item_id = category == MENU_CATEGORY_ACCESSORY ? player_state.equipped_extra_id
+                                        : player_state.equipped_accessory_id;
         first = 53;
-        if (equipped_id != KF_EQUIPMENT_NONE)
-            game_counter_bytes[equipped_id]--;
+        if (other_slot_item_id != KF_EQUIPMENT_NONE)
+            game_counter_bytes[other_slot_item_id]--;
         last = 59;
         break;
     }
@@ -253,8 +244,9 @@ void menu_equipment_category_controller(s32 category)
         }
     }
 
-    if ((u32)(category - MENU_CATEGORY_ACCESSORY) < 2 && equipped_id != KF_EQUIPMENT_NONE)
-        game_counter_bytes[equipped_id]++;
+    if ((u32)(category - MENU_CATEGORY_ACCESSORY) < 2 &&
+        other_slot_item_id != KF_EQUIPMENT_NONE)
+        game_counter_bytes[other_slot_item_id]++;
 }
 
 ADDRESS(0x8001a2f4, 0x1fc)

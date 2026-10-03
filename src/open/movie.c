@@ -9,8 +9,11 @@
 /* The opening STR runs to frame 1085; its music replaces the title music. */
 enum {
     OPENING_LAST_FRAME = 1085,
-    OPENING_MASTER_VOLUME = 128,
+    OPENING_VOLUME_RAMP_END = 128,
     OPENING_VOLUME_STEP = 2,
+    OPENING_MDEC_16BIT_MODE = 2,
+    OPENING_MOVIE_DISPLAY_WIDTH = 320,
+    OPENING_TITLE_DISPLAY_WIDTH = 640,
     /* Frames held after an unskipped movie before the music fades. */
     OPENING_HOLD_FRAMES = 90
 };
@@ -32,7 +35,7 @@ void opening_play_movie(void)
         printf("\n__ file not found");
         return;
     }
-    for (volume = 0; volume < OPENING_MASTER_VOLUME; volume += OPENING_VOLUME_STEP) {
+    for (volume = 0; volume < OPENING_VOLUME_RAMP_END; volume += OPENING_VOLUME_STEP) {
         VSync(0);
         SsSetMVol(volume, volume);
     }
@@ -41,14 +44,14 @@ void opening_play_movie(void)
     strSetDefDecEnv();
     strInit(&file.pos);
     strNextVlc();
-    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 320, KF_DISPLAY_HEIGHT);
-    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[1].disp, 0, 0, 320, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_MOVIE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, OPENING_MOVIE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, OPENING_MOVIE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[1].disp, 0, 0, OPENING_MOVIE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     display_current = &display_buffers[0];
     do {
         display_begin_frame();
-        DecDCTin(dec.vlcbuf[dec.vlcid], 2);
+        DecDCTin(dec.vlcbuf[dec.vlcid], OPENING_MDEC_16BIT_MODE);
         DecDCTout((u_long *)dec.imgbuf, dec.slice.w * dec.slice.h / 2);
         strNextVlc();
         strSync(&dec);
@@ -79,10 +82,10 @@ void opening_play_movie(void)
     CdDataCallback(0);
     CdReadyCallback(0);
     CdControlB(CdlPause, 0, 0);
-    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 640, KF_DISPLAY_HEIGHT);
-    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, 640, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, 640, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[1].disp, 0, 0, 640, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[1].disp, 0, 0, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     display_current = &display_buffers[0];
     SsSeqStop(audio_movie_sequence_id);
 }

@@ -25,7 +25,11 @@ enum {
     OPENING_FADE_END = 96,
     OPENING_PROMPT_STEADY_LEVEL = 32,
     OPENING_CLOSE_FRAMES = 3,
-    OPENING_CLOSE_OT_DEPTH = 200
+    OPENING_CLOSE_OT_DEPTH = 200,
+    OPENING_DISPLAY_WIDTH = 640,
+    OPENING_CLOSE_DISPLAY_WIDTH = 320,
+    OPENING_STATE_TITLE_FADE_IN = 0,
+    OPENING_STATE_BANNER_FADE_IN = 1
 };
 
 DATA(0x8003db88, 0x4)
@@ -65,7 +69,7 @@ void main(void)
     display_current = &display_buffers[1];
     PutDrawEnv(&display_current->draw);
     PutDispEnv(&display_current->disp);
-    state = 0;
+    state = OPENING_STATE_TITLE_FADE_IN;
     opening_open_audio();
 restart:
     SsSetMVol(OPENING_MASTER_VOLUME, OPENING_MASTER_VOLUME);
@@ -73,14 +77,14 @@ restart:
     SsSeqPlay(audio_title_sequence_id, SSPLAY_PLAY, 1);
     for (;;) {
         display_begin_frame();
-        if (state == 0) {
+        if (state == OPENING_STATE_TITLE_FADE_IN) {
             if (opening_draw_title(KF_TITLE_ANIMATE) == 1) {
-                state = 1;
+                state = OPENING_STATE_BANNER_FADE_IN;
             }
         } else {
             opening_draw_title(KF_TITLE_SHOW);
         }
-        if (state == 1 && opening_draw_banner(KF_TITLE_ANIMATE) == 1) {
+        if (state == OPENING_STATE_BANNER_FADE_IN && opening_draw_banner(KF_TITLE_ANIMATE) == 1) {
             break;
         }
         if (PadRead(1) != 0) {
@@ -108,24 +112,24 @@ restart:
         }
         if (idle_frames >= OPENING_IDLE_FRAMES) {
             opening_fade_out(prompt_mode);
-            state = 0;
+            state = OPENING_STATE_TITLE_FADE_IN;
             opening_draw_title(KF_TITLE_RESET);
             opening_draw_banner(KF_TITLE_RESET);
             idle_frames = 0;
             opening_play_movie();
             rect.x = rect.y = 0;
-            rect.w = 640;
-            rect.h = 480;
+            rect.w = OPENING_DISPLAY_WIDTH;
+            rect.h = KF_DISPLAY_HEIGHT * 2;
             ClearImage(&rect, 0, 0, 0);
             goto restart;
         }
         opening_draw_prompt(prompt_mode);
         display_present_frame();
     }
-    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 320, KF_DISPLAY_HEIGHT);
-    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, 320, KF_DISPLAY_HEIGHT);
-    SetDefDispEnv(&display_buffers[1].disp, 0, 0, 320, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_CLOSE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, OPENING_CLOSE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, OPENING_CLOSE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
+    SetDefDispEnv(&display_buffers[1].disp, 0, 0, OPENING_CLOSE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     display_buffers[0].draw.isbg = display_buffers[1].draw.isbg = 1;
     display_current = &display_buffers[0];
     PutDrawEnv(&display_current->draw);

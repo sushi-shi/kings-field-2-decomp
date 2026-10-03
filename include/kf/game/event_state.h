@@ -7,7 +7,11 @@
 
 struct KfPlayerViewRotation;
 
-enum { KF_EVENT_SAVED_SLOT_COUNT = 10 };
+enum {
+    KF_EVENT_SAVED_SLOT_COUNT = 10,
+    KF_EVENT_SAVED_OFFSET_NONE = 0xffff,
+    KF_EVENT_CONTROL_OBJECT_NONE = 0xffff
+};
 
 enum { KF_EVENT_POST_DEATH_RELOAD_ENABLED = 0x08 };
 

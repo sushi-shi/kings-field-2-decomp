@@ -200,7 +200,8 @@ void actor_select_best_target(s32 player_distance)
     s32 score;
     s32 remaining;
 
-    if (actor->target_action_state == 0xf0 || actor->target_action_state == 0) {
+    if (actor->target_action_state == KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED ||
+        actor->target_action_state == 0) {
         return;
     }
 
@@ -533,7 +534,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
             s32 angle = vector_xz_to_angle(
                 actor->position.vx - position->vx,
                 actor->position.vz - position->vz);
-            if (angle_within_tolerance(actor->rotation.y, angle + 0x800,
+            if (angle_within_tolerance(actor->rotation.y, angle + KF_ANGLE_HALF_TURN,
                                        0x200)) {
                 actor_set_target(actor, candidate);
                 goto update_motion;
@@ -607,6 +608,11 @@ update_motion:
     actor->vertical_motion_state = 0x10;
 }
 
+enum {
+    KF_AREA_MAGIC_OMIT_DAMAGE_ORIGIN = 0x8000,
+    KF_AREA_MAGIC_AMOUNT_MASK = 0x7fff
+};
+
 ADDRESS(0x8003a318, 0x2fc)
 void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,
@@ -619,10 +625,10 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
     const VECTOR *damage_position = position;
     u32 amount;
 
-    if ((amount_and_flags & 0x8000) != 0) {
+    if ((amount_and_flags & KF_AREA_MAGIC_OMIT_DAMAGE_ORIGIN) != 0) {
         damage_position = 0;
     }
-    amount = (u32)amount_and_flags & 0x7fff;
+    amount = (u32)amount_and_flags & KF_AREA_MAGIC_AMOUNT_MASK;
     actor = actor_state.actors;
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         s32 distance;
@@ -636,7 +642,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                                      actor->collision_radius, actor->collision_height);
         } else if (mode == 0x8001) {
             if (position->vy < actor->position.vy - actor->collision_height) {
-                distance = -9999999;
+                distance = KF_DISTANCE_OUTSIDE_REACH;
             } else {
                 distance = vector_distance_between_with_reach(position, reach, &actor->position,
                                          actor->collision_radius, actor->collision_height);
@@ -646,7 +652,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                 &actor->position, position->vx, position->vy, position->vz,
                 reach, actor->collision_height, mode);
             if (distance == KF_DISTANCE_NONE) {
-                distance = -9999999;
+                distance = KF_DISTANCE_OUTSIDE_REACH;
             }
         }
         if (distance < minimum_distance) {
@@ -673,15 +679,16 @@ s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, 
                   s32 angle_tolerance, u16 damage0, u16 damage1,
                   u16 damage2, u16 damage3)
 {
-    s32 maximum = maximum_distance << 6;
     s32 offset = y_offset << 5;
-    s32 tolerance = angle_tolerance << 4;
     KfActor *actor = actor_state.current;
+    const VECTOR *camera_position;
     VECTOR origin;
     s32 distance;
     s32 angle;
 
     minimum_distance <<= 6;
+    maximum_distance <<= 6;
+    angle_tolerance <<= 4;
     origin.vx = actor->position.vx;
     origin.vy = actor->position.vy - offset;
     origin.vz = actor->position.vz;
@@ -689,14 +696,15 @@ s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, 
                                         player_state.camera_position.vx,
                                         player_state.camera_position.vy,
                                         player_state.camera_position.vz,
-                                        maximum, 0, 1700);
+                                        maximum_distance, 0, 1700);
     if (distance == -1 || distance < minimum_distance) {
         return 0;
     }
 
-    angle = vector_xz_to_angle(player_state.camera_position.vx - origin.vx,
-                               player_state.camera_position.vz - origin.vz);
-    if (!angle_within_tolerance(actor->rotation.y, angle, tolerance)) {
+    camera_position = &player_state.camera_position;
+    angle = vector_xz_to_angle(camera_position->vx - origin.vx,
+                               camera_position->vz - origin.vz);
+    if (!angle_within_tolerance(actor->rotation.y, angle, angle_tolerance)) {
         return 0;
     }
 
@@ -727,7 +735,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
         }
 
         reach = max_distance;
-        if ((actor->unknown_28 & 0x20000) != 0) {
+        if ((actor->unknown_28 & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0) {
             reach <<= 1;
         }
         actor_distance = vector_distance_to_point(
@@ -749,7 +757,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
             direction.x = KF_ANGLE_FULL_TURN - direction.x;
         }
 
-        if ((actor->unknown_28 & 0x20000) != 0 && variation >= 0) {
+        if ((actor->unknown_28 & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0 && variation >= 0) {
             actor_distance >>= 2;
             direction.x -= 512;
             direction.y -= 512;
@@ -854,7 +862,7 @@ void actor_bind_current(KfActor *actor)
         group = &actor_state.target_groups[actor->group_index];
         actor_state.active_group = group;
         actor_state.current_group_index = actor->group_index;
-        if (group->initial_actor_flags & 0x10) {
+        if (group->initial_actor_flags & KF_ACTOR_FLAG_LINKED) {
             other = &actor_state.actors[actor->word_22.linked_actor_slot];
             actor_state.other_actor = other;
             actor_state.other_group = &actor_state.target_groups[other->group_index];
@@ -1134,7 +1142,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
         &actor->ballistic_horizontal_speed, &actor->ballistic_launch_speed_y) != 0) {
         return -1;
     }
-    actor->vertical_motion_state = 0x30;
+    actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_BALLISTIC;
     actor->motion.ballistic.phase = 1;
     actor->ballistic_acceleration = trajectory_parameter;
     actor->ballistic_origin_y = actor->position.vy;
@@ -1144,7 +1152,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
 ADDRESS(0x8003b5bc, 0x14)
 void actor_suspend_vertical_motion(void)
 {
-    actor_state.current->vertical_motion_state = 0x60;
+    actor_state.current->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_SUSPENDED;
 }
 
 ADDRESS(0x8003b5d0, 0x3d4)
@@ -1158,7 +1166,7 @@ void actor_update_vertical_motion(void)
                    actor->collision_radius,
                    actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
     actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-    if (actor->unknown_28 & 0x400) {
+    if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
@@ -1169,7 +1177,7 @@ void actor_update_vertical_motion(void)
         if (vertical_state == 0x10) goto state_10;
         return;
     }
-    if (vertical_state == 0x30) goto state_30;
+    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) goto state_30;
     return;
 
 state_0: {
@@ -1205,7 +1213,7 @@ state_10: {
                           0x1000, 10, &actor->position);
         }
         if (collision & 4) {
-            if (actor->unknown_28 & 0x400) {
+            if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
                 if (actor->position.vy < floor_y) goto advance_rise;
                 actor->position.vy = floor_y;
@@ -1216,7 +1224,7 @@ state_10: {
             actor->vertical_motion_state = 0;
             return;
         }
-        if (actor->unknown_28 & 0x400) goto advance_rise;
+        if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) goto advance_rise;
         actor->vertical_motion_state = 0;
         return;
     }

@@ -29,7 +29,7 @@ struct EXEC overlay_header;
 ADDRESS(0x80010038, 0xe0)
 void main(void)
 {
-    SetMem(2);
+    SetMem(KF_MAIN_RAM_MEGABYTES);
     _96_remove();
     _96_init();
     *overlay_next_request = KF_OVERLAY_OPEN;

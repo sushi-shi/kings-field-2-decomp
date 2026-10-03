@@ -1013,8 +1013,8 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->direction.vy = 0;
         record->direction.vx = 0;
         record->phase = 9;
-        *(u16 *)&record->unknown_3c[4] = va[1];
-        *(u16 *)&record->unknown_3c[6] = va[2];
+        ((KfEffectKind23Attachment *)&record->unknown_3c[4])->actor_index = va[1];
+        ((KfEffectKind23Attachment *)&record->unknown_3c[4])->vertex_index = va[2];
         third_parameter = va[3];
         three_parameter_sound = 0x26;
     emit_three_parameter_sound:
@@ -1528,7 +1528,9 @@ void effect_update_dispatch(void)
     }
     case 23:
         if (initial_phase == 9) {
-            KfActor *actor = &actor_state.actors[*(s16 *)&record->unknown_3c[4]];
+            const KfEffectKind23Attachment *attachment =
+                (const KfEffectKind23Attachment *)&record->unknown_3c[4];
+            KfActor *actor = &actor_state.actors[attachment->actor_index];
             VECTOR vertex_offset;
             VECTOR actor_position;
             VECTOR old_position;
@@ -1538,7 +1540,7 @@ void effect_update_dispatch(void)
                 record->type = KF_EFFECT_SLOT_FREE;
                 break;
             }
-            actor_sample_rotated_animation_vertex(actor, *(s16 *)&record->unknown_3c[6],
+            actor_sample_rotated_animation_vertex(actor, attachment->vertex_index,
                           &vertex_offset);
             position = actor_resolve_group_position(actor, &actor_position);
             old_position = record->position;
@@ -1555,7 +1557,7 @@ void effect_update_dispatch(void)
             record->direction.vz = (u16)record->position.vz - (u16)old_position.vz;
             effect_spawn_motion(record, -1, -700, (s16)record->scale_x,
                            -300, 3, 8, 0);
-            if (actor->animation_phase >= *(u16 *)&record->unknown_3c[8]) {
+            if (actor->animation_phase >= attachment->release_animation_phase) {
                 actor_compute_target_direction(actor, &player_state.camera_position,
                                650, &record->position, &record->direction,
                                -1, 0x400, 5);

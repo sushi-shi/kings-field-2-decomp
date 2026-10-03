@@ -14,7 +14,9 @@ enum {
     KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
     KF_EFFECT_KIND_DEFENSE_BOOST = 15,
     KF_EFFECT_KIND_ATTACK_BOOST = 17,
-    KF_EFFECT_STATIC_OBJECT_ZERO = 0x80
+    KF_EFFECT_STATIC_OBJECT_ZERO = 0x80,
+    KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c,
+    KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c
 };
 
 typedef union KfEffectScaleThreshold {
@@ -197,6 +199,17 @@ typedef struct KfEffectKind105Attachment {
 
 typedef char kf_effect_kind105_attachment_size[sizeof(KfEffectKind105Attachment) == 4 ? 1 : -1];
 typedef char kf_effect_kind105_vertex_offset[(u32)&((KfEffectKind105Attachment *)0)->vertex_index == 2 ? 1 : -1];
+
+/* Kind 23 tracks an actor vertex until its animation reaches a phase threshold. */
+typedef struct KfEffectKind23Attachment {
+    s16 actor_index;
+    s16 vertex_index;
+    u16 release_animation_phase;
+} KfEffectKind23Attachment;
+
+typedef char kf_effect_kind23_attachment_size[sizeof(KfEffectKind23Attachment) == 6 ? 1 : -1];
+typedef char kf_effect_kind23_vertex_offset[(u32)&((KfEffectKind23Attachment *)0)->vertex_index == 2 ? 1 : -1];
+typedef char kf_effect_kind23_phase_offset[(u32)&((KfEffectKind23Attachment *)0)->release_animation_phase == 4 ? 1 : -1];
 
 typedef struct KfEffectKind12Aim {
     s16 max_length;

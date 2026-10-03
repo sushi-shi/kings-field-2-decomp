@@ -127,7 +127,8 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
     effect_remaining = KF_EFFECT_CAPACITY - 1;
     do {
         if (effect->type != KF_EFFECT_SLOT_FREE &&
-            (effect->render_flags & 0xc) != 0xc) {
+            (effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK) !=
+                KF_EFFECT_RENDER_SCREEN_SPACE) {
             effect->position.vx += dx;
             effect->position.vz += dz;
             effect->position.vy += dy;

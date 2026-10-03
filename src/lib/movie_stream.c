@@ -12,6 +12,8 @@
 #define RING_SIZE 32
 #define SCR_WIDTH 320
 #define SCR_HEIGHT 240
+#define SLICE_WIDTH_PIXELS 16
+#define VLC_BUFFER_HEIGHT 256
 
 /* STR sector header as read here: the Psy-Q 3.0 StHEADER stops after
  * `height`, but the code also compares the next two words (named headm and
@@ -32,11 +34,11 @@ long StrFrame = 0;
 
 DATA_AT("OPEN", 0x8003e058, 0x28000)
 DATA_AT("END", 0x8003ae50, 0x28000)
-u_long vlcbuf0[40960];
+u_long vlcbuf0[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
 
 DATA_AT("OPEN", 0x80066058, 0x28000)
 DATA_AT("END", 0x80062e50, 0x28000)
-u_long vlcbuf1[40960];
+u_long vlcbuf1[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
 
 DATA_AT("OPEN", 0x8008e058, 0x3c00)
 DATA_AT("END", 0x8008ae50, 0x3c00)
@@ -44,7 +46,7 @@ u_short imgbuf[7680];
 
 DATA_AT("OPEN", 0x80091c58, 0x10000)
 DATA_AT("END", 0x8008ea50, 0x10000)
-u_long Ring_Buff[16384];
+u_long Ring_Buff[RING_SIZE * SECTOR_SIZE];
 
 DATA_AT("OPEN", 0x800a1c58, 0x30)
 DATA_AT("END", 0x8009ea50, 0x30)
@@ -63,7 +65,7 @@ void strSetDefDecEnv(void)
     dec.isdone = 0;
     setRECT(&dec.rect[0], 0, 0, SCR_WIDTH, SCR_HEIGHT);
     setRECT(&dec.rect[1], 0, SCR_HEIGHT, SCR_WIDTH, SCR_HEIGHT);
-    setRECT(&dec.slice, 0, 0, 16, SCR_HEIGHT);
+    setRECT(&dec.slice, 0, 0, SLICE_WIDTH_PIXELS, SCR_HEIGHT);
 }
 
 ADDRESS_AT("OPEN", 0x800138f8, 0x74)

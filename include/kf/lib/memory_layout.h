@@ -3,6 +3,7 @@
 
 /* Fixed main-RAM capacity, independent of image/arena placement policy. */
 enum {
+    KF_MAIN_RAM_MEGABYTES = 2,
     KF_MAIN_RAM_BYTES = 0x200000
 };
 

@@ -8,6 +8,7 @@
 #include <kf/game/event_state.h>
 #include <kf/game/map_object.h>
 #include <kf/lib/address.h>
+#include <kf/lib/math.h>
 #include <psyq/libc.h>
 #include <psyq/sdk.h>
 
@@ -34,18 +35,22 @@ void event_state_initialize(void)
     s32 index;
     KfEventControlObjectSlot *object_slots;
 
-    repeat_store_word(event_state.control.clear_words, 0, 0x40);
-    repeat_store_word(event_state.arena.clear_words, 0, 0xe00);
+    repeat_store_word(event_state.control.clear_words, 0,
+                      sizeof(event_state.control.clear_words) / sizeof(u32));
+    repeat_store_word(event_state.arena.clear_words, 0,
+                      sizeof(event_state.arena.clear_words) / sizeof(u32));
     object_slots = event_state.control.fields.object_slots;
-    object_slots[2].object_index = 0xffff;
-    object_slots[1].object_index = 0xffff;
-    object_slots[0].object_index = 0xffff;
-    memory_arena_initialize_blocks(&event_state.arena.first_block, 0x3800);
+    object_slots[2].object_index = KF_EVENT_CONTROL_OBJECT_NONE;
+    object_slots[1].object_index = KF_EVENT_CONTROL_OBJECT_NONE;
+    object_slots[0].object_index = KF_EVENT_CONTROL_OBJECT_NONE;
+    memory_arena_initialize_blocks(&event_state.arena.first_block,
+                                   sizeof(event_state.arena.bytes));
     offset = event_state.saved_offsets;
     for (index = KF_EVENT_SAVED_SLOT_COUNT - 1; index != -1; index--) {
-        *offset++ = 0xffff;
+        *offset++ = KF_EVENT_SAVED_OFFSET_NONE;
     }
-    repeat_store_word((u32 *)game_counter_bytes, 0, 0x1e);
+    repeat_store_word((u32 *)game_counter_bytes, 0,
+                      sizeof(game_counter_bytes) / sizeof(u32));
     game_counter_bytes[0] = 1;
 }
 
@@ -60,7 +65,7 @@ void event_saved_offsets_decode(u8 **pointers)
 {
     u16 *offset = event_state.saved_offsets;
     s32 index = KF_EVENT_SAVED_SLOT_COUNT - 1;
-    u16 absent = 0xffff;
+    u16 absent = KF_EVENT_SAVED_OFFSET_NONE;
 
     for (; index != -1; index--) {
         u16 value = *offset++;
@@ -103,7 +108,7 @@ void event_saved_offsets_encode(u8 **pointers)
         u8 *value = *pointers;
         pointers++;
         if (value == 0) {
-            *offset = 0xffff;
+            *offset = KF_EVENT_SAVED_OFFSET_NONE;
         } else {
             *offset = (u16)(value - event_state.arena.bytes);
         }
@@ -145,12 +150,13 @@ void event_world_state_save_slot(s32 save_slot)
     u8 *block;
 
     for (index = 0; index < KF_ACTOR_CAPACITY; actor++, index++) {
-        if (actor->slot_state != 0xff && actor->slot_state == 1) {
+        if (actor->slot_state != KF_ACTOR_SLOT_FREE &&
+            actor->slot_state == KF_ACTOR_SLOT_PERSISTENT) {
             *write++ = index;
-            if (actor->lifecycle == 3) {
-                *write = 3;
+            if (actor->lifecycle == KF_ACTOR_LIFECYCLE_DISABLED) {
+                *write = KF_ACTOR_LIFECYCLE_DISABLED;
             } else {
-                *write = 0;
+                *write = KF_ACTOR_LIFECYCLE_DORMANT;
             }
             write++;
         }
@@ -158,7 +164,8 @@ void event_world_state_save_slot(s32 save_slot)
     *write++ = 0xff;
 
     group = actor_state.target_groups;
-    for (index = 0; index < 40; group++, index++) {
+    for (index = 0; index < (s32)(sizeof(actor_state.target_groups) / sizeof(actor_state.target_groups[0]));
+         group++, index++) {
         KfTargetCandidate *candidate;
         if (group->definition_id == 0xff) {
             break;
@@ -176,7 +183,7 @@ void event_world_state_save_slot(s32 save_slot)
     for (index = 0; index < KF_MAP_OBJECT_CAPACITY; object++, index++) {
         s32 object_id = object->object_id;
         s32 kind;
-        if (object_id == 0xff) {
+        if (object_id == KF_MAP_OBJECT_ID_NONE) {
             *write++ = KF_EVENT_WORLD_SAVE_EMPTY;
             continue;
         }
@@ -185,7 +192,7 @@ void event_world_state_save_slot(s32 save_slot)
         switch (kind) {
         case 64:
             switch (object->action) {
-            case 0x60:
+            case KF_MAP_OBJECT_ACTION_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -196,7 +203,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = (u32)object->position.vy >> 8;
                 *write++ = object->rotation.vy >> 4;
                 break;
-            case 0x61:
+            case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_61;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -206,7 +213,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = object->position.vy;
                 *write++ = (u32)object->position.vy >> 8;
                 break;
-            case 0x62:
+            case KF_MAP_OBJECT_ACTION_BOUNCE:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_62;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -217,7 +224,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = (u32)object->position.vy >> 8;
                 *write++ = object->tail.fields.unknown_3a.value >> 2;
                 break;
-            case 0x70:
+            case KF_MAP_OBJECT_MOTION_ACTION:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_70;
                 *write++ = *(const u8 *)&object->object_id;
                 *write++ = object->tail.fields.unknown_38;
@@ -325,7 +332,7 @@ void event_world_state_restore_slot(s32 save_slot)
 
         switch (opcode - KF_EVENT_WORLD_SAVE_ACTION_60) {
         case KF_EVENT_WORLD_SAVE_EMPTY - KF_EVENT_WORLD_SAVE_ACTION_60:
-            object->object_id = 0xff;
+            object->object_id = KF_MAP_OBJECT_ID_NONE;
             break;
         case KF_EVENT_WORLD_SAVE_EFFECT - KF_EVENT_WORLD_SAVE_ACTION_60:
             object->tail.event_effect.pending_event_command = *stream++;
@@ -338,7 +345,7 @@ void event_world_state_restore_slot(s32 save_slot)
             s32 angle;
 
             map_object_reset(object);
-            object->action = 0x60;
+            object->action = KF_MAP_OBJECT_ACTION_FALL_AND_TIP;
             object->object_id = *stream++;
             x = *stream++;
             x_high = *stream++;
@@ -350,7 +357,7 @@ void event_world_state_restore_slot(s32 save_slot)
             x |= x_high << 8;
             z |= z_high << 8;
             y |= y_high << 8;
-            object->rotation.vz = 0x400;
+            object->rotation.vz = KF_ANGLE_QUARTER_TURN;
             object->rotation.vy = angle << 4;
 apply_position:
             object->position.vx = x << 2;
@@ -365,7 +372,7 @@ apply_position:
         }
         case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = 0x61;
+            object->action = KF_MAP_OBJECT_ACTION_FALL_AND_SPIN;
             object->object_id = *stream++;
             x = *stream++;
             x |= *stream++ << 8;
@@ -376,7 +383,7 @@ apply_position:
             goto apply_position;
         case KF_EVENT_WORLD_SAVE_ACTION_62 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = 0x62;
+            object->action = KF_MAP_OBJECT_ACTION_BOUNCE;
             object->object_id = *stream++;
             x = *stream++;
             x |= *stream++ << 8;
@@ -387,12 +394,12 @@ apply_position:
             object->tail.fields.unknown_3a.value = (*stream << 2) + (rand() >> 13);
             stream++;
             if (object->object_id == 0x67) {
-                object->rotation.vx = 0x400;
+                object->rotation.vx = KF_ANGLE_QUARTER_TURN;
             }
             goto apply_position;
         case KF_EVENT_WORLD_SAVE_ACTION_70 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = 0x70;
+            object->action = KF_MAP_OBJECT_MOTION_ACTION;
             object->object_id = *stream++;
             /* The next byte is also the body of opcode 0xfd. */
         case KF_EVENT_WORLD_SAVE_STATE_BYTE - KF_EVENT_WORLD_SAVE_ACTION_60:

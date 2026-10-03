@@ -10,12 +10,13 @@ enum {
     ENDING_FADE_FRAME = 1336,
     ENDING_LAST_FRAME = 2136,
     ENDING_MASTER_VOLUME = 127,
-    ENDING_SEQUENCE_VOLUME = 64
+    ENDING_SEQUENCE_VOLUME = 64,
+    ENDING_MDEC_16BIT_MODE = 2
 };
 
 RODATA(0x80011000, 0x1f)
 
-/* The tutorial's anim() as adapted for OPEN.EXE: decode the ending movie while
+/* The tutorial's anim() as adapted for END.EXE: decode the ending movie while
  * fading the music, then stop the drive and wait forever. */
 ADDRESS(0x80011fd8, 0x214)
 void ending_play_movie(void)
@@ -40,7 +41,7 @@ void ending_play_movie(void)
     display_current = &display_buffers[0];
     do {
         display_begin_frame();
-        DecDCTin(dec.vlcbuf[dec.vlcid], 2);
+        DecDCTin(dec.vlcbuf[dec.vlcid], ENDING_MDEC_16BIT_MODE);
         DecDCTout((u_long *)dec.imgbuf, dec.slice.w * dec.slice.h / 2);
         strNextVlc();
         strSync(&dec);

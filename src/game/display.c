@@ -659,8 +659,9 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
+                break;
+            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -810,9 +811,8 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -848,8 +848,9 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
+                break;
+            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -945,10 +946,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s16 fixed_
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u32 blend_bits;
+    u16 blend_bits;
 
     object = tmd_get_object(object_index);
-    blend_bits = (u32)blend_mode << 5;
+    blend_bits = (u16)blend_mode << 5;
     packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
              (object->primitive_offset + KF_TMD_HEADER_BYTES);
     normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
@@ -1382,7 +1383,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                 dx32 = vd->x - vc->x;
                 dx20 = vc->x - va->x;
                 dx12 = vb->x - vc->x;
-                if (!((s16)(va->sz | vb->sz | vc->sz | vd->sz) == -1 ||
+                if (!(((u16)va->sz | (u16)vb->sz | (u16)vc->sz | (u16)vd->sz) == 0xffff ||
                     MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy13) ||
                     MAP_OUTSIDE_Y(dy32) || MAP_OUTSIDE_Y(dy20) ||
                     MAP_OUTSIDE_Y(dy12) || MAP_OUTSIDE_X(dx01) ||
@@ -2545,7 +2546,6 @@ actor_next:
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
     while (remaining != -1) {
         u32 visibility;
-        s32 object_index;
 
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
             goto map_object_next;
@@ -2628,10 +2628,9 @@ map_ordinary_object: {
             if ((visibility & object->layer_mask) == 0) goto map_object_next;
             object_template = &map_object_state.templates[object->object_id];
 map_ordinary_visible:
-            object_index = object->object_id;
-            tmd_flags[object_index] = 1;
+            tmd_flags[object->object_id] = 1;
             vab_flags[object_template->vab_resource_index] = 1;
-            if (resource_registry_get(object_index + 0x100) != 0) {
+            if (resource_registry_get(object->object_id + 0x100) != 0) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
@@ -2639,7 +2638,7 @@ map_ordinary_visible:
                 if (object->collision_flags & 1) {
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
-                render_world_model(object->layer_mask, object_index + 0x100,
+                render_world_model(object->layer_mask, object->object_id + 0x100,
                                &object->position, &rotation, &object->scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,

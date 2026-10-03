@@ -902,7 +902,7 @@ void map_object_update_actions(void)
             break;
         }
 
-        case 96:
+        case KF_MAP_OBJECT_ACTION_FALL_AND_TIP:
             switch (object->action_timer) {
             case 0: {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
@@ -929,14 +929,14 @@ void map_object_update_actions(void)
             }
             break;
 
-        case 97:
+        case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
             if (object->action_timer == 0) {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
                                              template->interaction_height);
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += 20;
-                object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
+                object->rotation.vy = (object->rotation.vy + 0x100) & KF_ANGLE_WRAP_MASK;
                 if (object->position.vy >= floor_y) {
                     object->position.vy = floor_y;
                     object->action_timer = 99;
@@ -944,7 +944,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case 98:
+        case KF_MAP_OBJECT_ACTION_BOUNCE:
             if (object->action_timer < 2) {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, template->collision_radius,
@@ -952,9 +952,9 @@ void map_object_update_actions(void)
                 s16 velocity;
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
-                effect_spawn_at_lower_bound(&object->position, 0x1000, 6000, 300);
+                effect_spawn_at_lower_bound(&object->position, KF_FIXED12_ONE, 6000, 300);
                 object->rotation.vx = (object->rotation.vx +
-                    (object->action_timer == 0 ? 0xa0 : -0xa0)) & 0xfff;
+                    (object->action_timer == 0 ? 0xa0 : -0xa0)) & KF_ANGLE_WRAP_MASK;
                 object->tail.motion.motion_velocity.value += 30;
                 velocity = object->tail.motion.motion_velocity.signed_value;
                 if (velocity >= 0 && object->position.vy >= floor_y) {
@@ -975,11 +975,11 @@ void map_object_update_actions(void)
             }
             break;
 
-        case 225:
+        case KF_MAP_OBJECT_ACTION_REGION_TRIGGER:
             if (player_camera_within_map_region(object->position.vx >> 11,
                                object->position.vz >> 11,
-                               object->tail.fields.unknown_38,
-                               object->tail.fields.unknown_39,
+                               object->tail.resource_trigger.region_width,
+                               object->tail.resource_trigger.region_depth,
                                object->position.vy)) {
                 if (object->extra_40.bytes[0] == 0) {
                     if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {

@@ -544,7 +544,6 @@ typedef struct KfActor {
     u8 unknown_4e[2];
     KfActorMotion motion;
     u16 turn_rate;
-    u8 unknown_5a[2];
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
     s16 movement_yaw;

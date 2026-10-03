@@ -46,13 +46,13 @@ GAME.EXE	0x80063e80	0xf0	menu_sprite_defs	global	load	KfMenuSpriteDef[20]	menu_r
 GAME.EXE	0x80063f70	0x9a0	menu_window_layouts	global	load	KfMenuWindowLayout[8]	menu_render_primitives	supported	asm;load bytes;KF1 counterpart	eight positioned windows of eleven 28-byte glyph rows; original TU owner unresolved
 GAME.EXE	0x80064910	0xc8	menu_equipment_labels_64910	global	load	KfMenuLabelSuffix[10]	menu_equipment_list	supported	retail 200-byte copy at 0x80019af0;loaded glyph words	ten 20-byte menu label rows; original TU owner provisional
 GAME.EXE	0x800649ec	0x8	menu_row_prefix_649ec	global	load	s16[4]	menu_equipment_list	supported	retail copies at 0x8001a024,0x8001a35c,0x8001a620;loaded bytes	shared four-code menu row prefix; original TU owner provisional
-GAME.EXE	0x80064a00	0xf0	menu_header_labels	global	load	KfMenuLabelSuffix[12]	menu_status_render	supported	retail bytes;20-byte row stride;menu render xrefs	twelve menu header glyph suffix rows
+GAME.EXE	0x80064a00	0xf0	menu_header_labels	global	load	KfMenuLabelSuffix[12]	menu_render_primitives	supported	retail bytes;20-byte row stride;menu render xrefs	twelve menu header glyph suffix rows
 GAME.EXE	0x80064af0	0x140	menu_label_suffixes	global	load	KfMenuLabelSuffix[16]	menu_card_choice_controller	supported	retail bytes;label builder xrefs	sixteen 20-byte glyph suffix templates
 GAME.EXE	0x80064c30	0xb40	menu_glyph_rows	global	load	KfMenuGlyphRow[120]	menu_item_selection	supported	retail bytes;selector xrefs	120 rows copied by menu selectors
 GAME.EXE	0x80065770	0x1e0	menu_glyph_rows_extra	global	load	KfMenuGlyphRow[20]	menu_item_selection	supported	retail bytes;second table xrefs	20 distinct rows addressed from second table base
 GAME.EXE	0x80065950	0x2d0	menu_item_mask_pages	global	load	u8[6][120]	menu_item_selection	supported	retail six 120-byte pages;indexed menu item-list callers;page 3 byte 51 write	mutable item selection masks; original TU owner provisional
-GAME.EXE	0x80065c20	0x5a0	menu_item_code_primary	global	load	u16[6][120]	menu_item_buy_sell_controller	supported	retail bytes;func_8001d340 lookup	six 240-byte menu code pages
-GAME.EXE	0x800661c0	0x4b0	menu_item_code_secondary	global	load	u16[5][120]	menu_item_buy_sell_controller	supported	retail bytes;func_8001d654 lookup	five 240-byte numeric menu code pages; byte-pattern strings are false positives
+GAME.EXE	0x80065c20	0x5a0	menu_item_code_primary	global	load	u16[6][120]	menu_render_primitives	supported	retail bytes;func_8001d340 lookup	six 240-byte menu code pages
+GAME.EXE	0x800661c0	0x4b0	menu_item_code_secondary	global	load	u16[5][120]	menu_render_primitives	supported	retail bytes;func_8001d654 lookup	five 240-byte numeric menu code pages; byte-pattern strings are false positives
 GAME.EXE	0x80066670	0x10	memory_card_file_prefix	global	load	char[16]	memory_card_events	supported	retail bytes;card-file xrefs	shared save-file prefix and NUL padding
 GAME.EXE	0x80066680	0x120	memory_card_assets	global	load	KfCardAssets	memory_card_events	supported	retail bytes;card-writer strcpy and indexed 32-byte icon CLUT selection	Shift-JIS card title followed by seven 16-color icon palettes
 GAME.EXE	0x800667a0	0x28	player_magic_spawn_records	global	load	KfPlayerMagicSpawnRecord[5]	player_state_equipment	supported	asm;five eight-byte records;player_dispatch_magic_effect copies each into magic_origin_offset;lh +6 effect kind;retail bytes	Five spawn records with 3D offsets and a signed effect-kind halfword; original C type and defining TU unresolved
@@ -100,11 +100,11 @@ GAME.EXE	0x8006d5bc	0x40	DAT_8006d5bc	unknown	load	u32[16]		address-only	Psy-Q 3
 GAME.EXE	0x8006d5fc	0x60	DAT_8006d5fc	unknown	load	u32[24]		address-only	Psy-Q 3.0 LIBGPU OTAG .data 96-byte pointer record;24 exact archive section patches;retail words	vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d680	0x5	cd_path_prefix	global	load	char[5]	cd_memory	supported	asm;xrefs;OpenEvent specs;cd_archive_open	\\CD\\ directory prefix; original TU remains WIP
 GAME.EXE	0x8006d688	0x3	cd_version_suffix	global	load	char[3]	cd_memory	supported	asm;xrefs;OpenEvent specs;cd_archive_open	ISO9660 version suffix ;1; original TU remains WIP
-GAME.EXE	0x8006d68c	0x4	menu_item_model_allocation_pending	global	load	s32	menu_item_model	supported	asm;read-write xrefs;KF1 counterpart	loaded allocation flag; defining TU remains unresolved
-GAME.EXE	0x8006d690	0x4	input_press_pending	global	load	s32	menu_item_model	supported	asm;xrefs;input_read_mark_active writes 1 after nonzero PadRead;input_wait_brief_release and input_wait_release clear it	one-bit input-active latch; original defining TU remains unresolved
-GAME.EXE	0x8006d694	0x4	menu_item_quantity	global	load	s32	menu_item_model	supported	retail word 1;24 validated GAME xrefs;menu input increments and decrements within 1..99;item controllers multiply prices and update stock	menu item quantity scalar view; original containing object and defining TU unresolved
-GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32	menu_frame_begin	supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; original TU owner unresolved
-GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32	menu_frame_begin	supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; original TU owner unresolved
+GAME.EXE	0x8006d68c	0x4	menu_item_model_allocation_pending	global	load	s32	menu_render_primitives	supported	asm;read-write xrefs;KF1 counterpart	loaded allocation flag; defining TU remains unresolved
+GAME.EXE	0x8006d690	0x4	input_press_pending	global	load	s32	menu_render_primitives	supported	asm;xrefs;input_read_mark_active writes 1 after nonzero PadRead;input_wait_brief_release and input_wait_release clear it	one-bit input-active latch; original defining TU remains unresolved
+GAME.EXE	0x8006d694	0x4	menu_item_quantity	global	load	s32	menu_render_primitives	supported	retail word 1;24 validated GAME xrefs;menu input increments and decrements within 1..99;item controllers multiply prices and update stock	menu item quantity scalar view; original containing object and defining TU unresolved
+GAME.EXE	0x8006d698	0x4	menu_cursor_animation_frame	global	load	s32	menu_render_primitives	supported	asm;menu input update;menu_blit_sprite	0..7 cursor animation frame, also temporarily saved and reset by a menu caller; original TU owner unresolved
+GAME.EXE	0x8006d69c	0x4	menu_cursor_animation_direction	global	load	s32	menu_render_primitives	supported	asm;menu_frame_begin;menu input writers	0 increases frame, 1 decreases frame, -1 holds at zero; original TU owner unresolved
 GAME.EXE	0x8006d6a0	0x1	memory_card_loaded_slot	global	load	u8	memory_card_events	supported	retail bytes;card reader/writer stores	last successful card slot byte
 GAME.EXE	0x8006d6a4	0x2	memory_card_slot_digit_seed	static	load	s8[2]	memory_card_events	supported	retail 0x20,0x00;three pairs of signed byte loads;all consumers form NUL-terminated slot-digit strings	two-byte card slot-digit seed; original TU boundary remains WIP
 GAME.EXE	0x8006d6a8	0x7	memory_card_search_pattern	global	load	char[7]	memory_card_events	supported	retail bytes;firstfile argument at 0x80022744;reviewed HI16/LO16 pair;source DATA claim	seven-byte bu00:* NUL wildcard; original TU boundary and padding beyond NUL remain WIP
@@ -156,13 +156,13 @@ GAME.EXE	0x8006d97c	0x47	DAT_8006d97c	unknown	load	u8[71]		address-only	Psy-Q 3.
 GAME.EXE	0x8006d9c3	0x7	DAT_8006d9c3	unknown	load	u8[7]		address-only	Psy-Q 3.0 LIBGPU OTAG .sdata seven-byte Code record;retail exact	vendor section record; original C declarations and linkage unresolved
 GAME.EXE	0x8006d9ca	0x8	DAT_8006d9ca	unknown	load	u8[8]		address-only	Psy-Q 3.0 LIBGPU OTAG .sdata eight-byte Code record;retail exact	vendor section record; original C declarations and linkage unresolved
 GAME.EXE	0x8006d9d2	0xb	DAT_8006d9d2	unknown	load	u8[11]		address-only	Psy-Q 3.0 LIBGPU OTAG .sdata eleven-byte Code record;retail exact	vendor section record; original C declarations and linkage unresolved
-GAME.EXE	0x8006d9e0	0x4	current_poly_ft4	global	bss	POLY_FT4 *	menu_frame_begin	supported	asm;154 xrefs;KF1 static menu_runtime counterpart;menu_frame_begin and menu_two_option writers;CPE residue	current textured quad pointer; current C owner is central frame writer, original TU remains WIP; CPE residue occupies padded load page
-GAME.EXE	0x8006d9e8	0x1	menu_saved_music_enabled	global	bss	u8	menu_frame_begin	supported	asm;menu entry and exit;CPE zero tail	music enabled flag captured before the menu and compared on exit; original defining TU unresolved
-GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *	menu_frame_begin	supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; original TU owner unresolved
-GAME.EXE	0x8006d9f8	0x8	menu_frame_upload_rect	global	bss	RECT	menu_frame_begin	supported	asm;LoadImage call;menu frame setup	8-byte GPU upload rectangle; original TU owner unresolved
-GAME.EXE	0x8006da00	0x8	menu_item_preview_translation	global	load	SVECTOR	menu_item_model	supported	asm;SDK vector layout;preview renderer	translation coordinates used by menu model preview; original defining TU unresolved
-GAME.EXE	0x8006da08	0x8	menu_item_preview_rotation	global	load	SVECTOR	menu_item_model	supported	asm;SDK vector layout;preview renderer	rotation coordinates used by menu model preview; original defining TU unresolved
-GAME.EXE	0x8006da10	0x4	menu_item_preview_rotation_step	global	load	s32	menu_item_model	supported	asm;preview renderer	rotation increment for menu model preview; original defining TU unresolved
+GAME.EXE	0x8006d9e0	0x4	current_poly_ft4	global	bss	POLY_FT4 *	menu_render_primitives	supported	asm;154 xrefs;KF1 static menu_runtime counterpart;menu_frame_begin and menu_two_option writers;CPE residue	current textured quad pointer; current C owner is central frame writer, original TU remains WIP; CPE residue occupies padded load page
+GAME.EXE	0x8006d9e8	0x1	menu_saved_music_enabled	global	bss	u8	menu_render_primitives	supported	asm;menu entry and exit;CPE zero tail	music enabled flag captured before the menu and compared on exit; original defining TU unresolved
+GAME.EXE	0x8006d9f0	0x4	menu_frame_upload_pixels	global	bss	u_long *	menu_render_primitives	supported	asm;LoadImage call;CPE load tail	pixel source passed to LoadImage during menu frame presentation; original TU owner unresolved
+GAME.EXE	0x8006d9f8	0x8	menu_frame_upload_rect	global	bss	RECT	menu_render_primitives	supported	asm;LoadImage call;menu frame setup	8-byte GPU upload rectangle; original TU owner unresolved
+GAME.EXE	0x8006da00	0x8	menu_item_preview_translation	global	load	SVECTOR	menu_render_primitives	supported	asm;SDK vector layout;preview renderer	translation coordinates used by menu model preview; original defining TU unresolved
+GAME.EXE	0x8006da08	0x8	menu_item_preview_rotation	global	load	SVECTOR	menu_render_primitives	supported	asm;SDK vector layout;preview renderer	rotation coordinates used by menu model preview; original defining TU unresolved
+GAME.EXE	0x8006da10	0x4	menu_item_preview_rotation_step	global	load	s32	menu_render_primitives	supported	asm;preview renderer	rotation increment for menu model preview; original defining TU unresolved
 GAME.EXE	0x8006da18	0x4	memory_card_io_end_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpIOE event handle
 GAME.EXE	0x8006da20	0x4	memory_card_timeout_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpTIMOUT event handle
 GAME.EXE	0x8006da28	0x4	memory_card_new_device_event	global	load	long	memory_card	supported	asm;xrefs;OpenEvent/TestEvent operands;KF1 save_system.c counterparts	HwCARD EvSpNEW event handle
@@ -211,7 +211,7 @@ GAME.EXE	0x8006dba8	0x4	DAT_8006dba8	unknown	load	undefined4		address-only	data.
 GAME.EXE	0x8006dbb0	0x4	DAT_8006dbb0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbb8	0x4	DAT_8006dbb8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x8006dbc0	0x4	DAT_8006dbc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-GAME.EXE	0x8006dbe8	0x18	menu_saved_primitive_buffers	global	bss	KfPrimitiveBuffer[2]	menu_frame_begin	supported	asm;menu entry and exit;CPE zero tail	two saved primitive-buffer triples restored when leaving the menu; original defining TU unresolved
+GAME.EXE	0x8006dbe8	0x18	menu_saved_primitive_buffers	global	bss	KfPrimitiveBuffer[2]	menu_render_primitives	supported	asm;menu entry and exit;CPE zero tail	two saved primitive-buffer triples restored when leaving the menu; original defining TU unresolved
 GAME.EXE	0x8006dc00	0x4000	memory_card_buffer_storage	global	bss	u8[0x4000]	memory_card_events	supported	asm;memory_card_initialize;0x4000-byte card reads into it	memory-card file I/O buffer
 GAME.EXE	0x800758c0	0x8	_spu_rev_reserve_wa	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 GAME.EXE	0x800758f0	0x4b0	player_level_growth_table	global	bss	KfPlayerLevelGrowth[100]	player_core_run	supported	asm;xrefs;game_main_loop clears 0x58 words at the base;experience routine addresses members from a registered base	per-level HP/MP, stat steps and experience thresholds; levels past 100 extrapolate from rows 98 and 99; original TU remains WIP
@@ -302,40 +302,15 @@ OPEN.EXE	0x8003dbac	0x4	pad_previous_buttons	global	load	u32	opening	supported	a
 OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	\\OP\\ CD directory prefix; original defining TU unresolved
 OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 OPEN.EXE	0x8003dbc4	0x3c	DAT_8003dbc4	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
-OPEN.EXE	0x8003dc00	0x4	DAT_8003dc00	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003dc00	0x4	DAT_8003dc00	unknown	load	pointer		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0 patch to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 OPEN.EXE	0x8003dc04	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
-OPEN.EXE	0x8003dc08	0x4	DAT_8003dc08	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc0c	0x4	DAT_8003dc0c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc10	0x4	DAT_8003dc10	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc14	0x4	DAT_8003dc14	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc18	0x4	DAT_8003dc18	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc1c	0x4	DAT_8003dc1c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc20	0x4	DAT_8003dc20	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc24	0x4	DAT_8003dc24	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc28	0x4	DAT_8003dc28	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc2c	0x4	DAT_8003dc2c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc30	0x4	DAT_8003dc30	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc34	0x4	DAT_8003dc34	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc38	0x4	DAT_8003dc38	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc3c	0x4	DAT_8003dc3c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc40	0x4	DAT_8003dc40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dc44	0x4	DAT_8003dc44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003dc08	0x10	DAT_8003dc08	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
+OPEN.EXE	0x8003dc18	0x24	DAT_8003dc18	unknown	load	pointer[9]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
+OPEN.EXE	0x8003dc3c	0xc	DAT_8003dc3c	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
 OPEN.EXE	0x8003dd24	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
 OPEN.EXE	0x8003dd28	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
-OPEN.EXE	0x8003dd84	0x4	DAT_8003dd84	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd88	0x4	DAT_8003dd88	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd8c	0x4	DAT_8003dd8c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd90	0x4	DAT_8003dd90	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd94	0x4	DAT_8003dd94	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd98	0x1	DAT_8003dd98	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dd9c	0x4	DAT_8003dd9c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003dda0	0x4	DAT_8003dda0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddac	0x4	DAT_8003ddac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddb0	0x4	DAT_8003ddb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddb4	0x4	DAT_8003ddb4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddb8	0x4	DAT_8003ddb8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddbc	0x4	DAT_8003ddbc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003ddc0	0x4	DAT_8003ddc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003dd84	0x20	DAT_8003dd84	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata eight-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
+OPEN.EXE	0x8003ddac	0x18	DAT_8003ddac	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata six-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 OPEN.EXE	0x8003ddc4	0x4	DAT_8003ddc4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003ddc8	0x4	DAT_8003ddc8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003ddcc	0x4	DAT_8003ddcc	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -359,10 +334,9 @@ OPEN.EXE	0x8003de1c	0x4	DAT_8003de1c	unknown	load	undefined4		address-only	data.
 OPEN.EXE	0x8003de20	0x4	DAT_8003de20	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de24	0x4	DAT_8003de24	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de28	0x2	DAT_8003de28	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de30	0x4	DAT_8003de30	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de3c	0x2	DAT_8003de3c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de40	0x2	DAT_8003de40	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003de42	0x1	DAT_8003de42	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+OPEN.EXE	0x8003de30	0x4	DAT_8003de30	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de3c	0x2	DAT_8003de3c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de40	0x3	DAT_8003de40	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de48	0x4	DAT_8003de48	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de4c	0x4	DAT_8003de4c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003de50	0x4	DAT_8003de50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -490,40 +464,15 @@ END.EXE	0x8003aa38	0x5	ending_data_file	global	load	char[5]	ending	supported	asm
 END.EXE	0x8003aa40	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	\\OP\\ CD directory prefix; original defining TU unresolved
 END.EXE	0x8003aa48	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved
 END.EXE	0x8003aa54	0x3c	DAT_8003aa54	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
-END.EXE	0x8003aa90	0x4	DAT_8003aa90	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003aa90	0x4	DAT_8003aa90	unknown	load	pointer		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0 patch to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 END.EXE	0x8003aa94	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
-END.EXE	0x8003aa98	0x4	DAT_8003aa98	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aa9c	0x4	DAT_8003aa9c	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aaa0	0x4	DAT_8003aaa0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aaa4	0x4	DAT_8003aaa4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aaa8	0x4	DAT_8003aaa8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aaac	0x4	DAT_8003aaac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aab0	0x4	DAT_8003aab0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aab4	0x4	DAT_8003aab4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aab8	0x4	DAT_8003aab8	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aabc	0x4	DAT_8003aabc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aac0	0x4	DAT_8003aac0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aac4	0x4	DAT_8003aac4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aac8	0x4	DAT_8003aac8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aacc	0x4	DAT_8003aacc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aad0	0x4	DAT_8003aad0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aad4	0x4	DAT_8003aad4	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003aa98	0x10	DAT_8003aa98	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
+END.EXE	0x8003aaa8	0x24	DAT_8003aaa8	unknown	load	pointer[9]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
+END.EXE	0x8003aacc	0xc	DAT_8003aacc	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
 END.EXE	0x8003ab44	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
 END.EXE	0x8003ab48	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
-END.EXE	0x8003aba4	0x4	DAT_8003aba4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003aba8	0x4	DAT_8003aba8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abac	0x4	DAT_8003abac	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abb0	0x4	DAT_8003abb0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abb4	0x4	DAT_8003abb4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abb8	0x1	DAT_8003abb8	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abbc	0x4	DAT_8003abbc	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abc0	0x4	DAT_8003abc0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abcc	0x4	DAT_8003abcc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abd0	0x4	DAT_8003abd0	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abd4	0x4	DAT_8003abd4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abd8	0x4	DAT_8003abd8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abdc	0x4	DAT_8003abdc	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003abe0	0x4	DAT_8003abe0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003aba4	0x20	DAT_8003aba4	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata eight-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
+END.EXE	0x8003abcc	0x18	DAT_8003abcc	unknown	load	u32[6]		address-only	Psy-Q 3.0 LIBCD BIOS .sdata six-word record;retail bytes exact	vendor record; original C declaration and linkage unresolved
 END.EXE	0x8003abe4	0x4	DAT_8003abe4	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003abe8	0x4	DAT_8003abe8	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003abec	0x4	DAT_8003abec	unknown	load	undefined *		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
@@ -547,10 +496,9 @@ END.EXE	0x8003ac3c	0x4	DAT_8003ac3c	unknown	load	undefined4		address-only	data.t
 END.EXE	0x8003ac40	0x4	DAT_8003ac40	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac44	0x4	DAT_8003ac44	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac48	0x2	DAT_8003ac48	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac50	0x4	DAT_8003ac50	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac5c	0x2	DAT_8003ac5c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac60	0x2	DAT_8003ac60	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003ac62	0x1	DAT_8003ac62	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+END.EXE	0x8003ac50	0x4	DAT_8003ac50	unknown	load	u32		address-only	Psy-Q 3.0 LIBCD ISO9660 .sdata scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+END.EXE	0x8003ac5c	0x2	DAT_8003ac5c	unknown	load	char[2]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot string;retail exact	vendor string; original C declaration and linkage unresolved
+END.EXE	0x8003ac60	0x3	DAT_8003ac60	unknown	load	char[3]		address-only	Psy-Q 3.0 LIBCD ISO9660 dot-dot string;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac68	0x4	DAT_8003ac68	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac6c	0x4	DAT_8003ac6c	unknown	load	pointer		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003ac70	0x4	DAT_8003ac70	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate

@@ -91,101 +91,92 @@ GAME.EXE	0x8001295c	0x215c	0x4	unclassified	coverage-gap			payload-complement	ma
 GAME.EXE	0x80012960	0x2160	0x294	pointer	manual:switch-table		pointer[165]	retail record kind 0..0xa4 index at 0x800486a4..0x800486d0	165 in-body event serializer handlers; full record schema WIP
 GAME.EXE	0x80012bf4	0x23f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80012bf8	0x23f8	0x40	pointer	manual:switch-table		pointer[16]	retail opcode 0xf0..0xff index at 0x80048a90..0x80048abc	16 in-body event restore handlers; TU boundary WIP
-GAME.EXE	0x80012c38	0x2438	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadS
-GAME.EXE	0x80012c40	0x2440	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c44	0x2444	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetclock
-GAME.EXE	0x80012c4f	0x244f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c50	0x2450	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetclock
-GAME.EXE	0x80012c5b	0x245b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c5c	0x245c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekP
-GAME.EXE	0x80012c64	0x2464	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c68	0x2468	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekL
-GAME.EXE	0x80012c70	0x2470	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c74	0x2474	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTD
-GAME.EXE	0x80012c7c	0x247c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c80	0x2480	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTN
-GAME.EXE	0x80012c88	0x2488	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c8c	0x248c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadT
-GAME.EXE	0x80012c94	0x2494	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012c98	0x2498	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocP
-GAME.EXE	0x80012ca2	0x24a2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ca4	0x24a4	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocL
-GAME.EXE	0x80012cae	0x24ae	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cb0	0x24b0	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetparam
-GAME.EXE	0x80012cbb	0x24bb	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cbc	0x24bc	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetmode
-GAME.EXE	0x80012cc6	0x24c6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cc8	0x24c8	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetfilter
-GAME.EXE	0x80012cd4	0x24d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cd8	0x24d8	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlDemute
-GAME.EXE	0x80012ce1	0x24e1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ce4	0x24e4	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReset
-GAME.EXE	0x80012cec	0x24ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cf0	0x24f0	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlPause
-GAME.EXE	0x80012cf8	0x24f8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012cfc	0x24fc	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlStandby
-GAME.EXE	0x80012d06	0x2506	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d08	0x2508	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadN
-GAME.EXE	0x80012d10	0x2510	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d14	0x2514	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlBackword
-GAME.EXE	0x80012d1f	0x251f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d20	0x2520	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlForward
-GAME.EXE	0x80012d2a	0x252a	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d2c	0x252c	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetloc
-GAME.EXE	0x80012d35	0x2535	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d38	0x2538	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DiskError
-GAME.EXE	0x80012d41	0x2541	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d44	0x2544	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: Acknowledge
-GAME.EXE	0x80012d4f	0x254f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d50	0x2550	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: Complete
-GAME.EXE	0x80012d58	0x2558	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d5c	0x255c	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DataReady
-GAME.EXE	0x80012d65	0x2565	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d68	0x2568	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: timeout Sync=%s, Ready=%s
-GAME.EXE	0x80012d85	0x2585	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012d88	0x2588	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: DiskError(%02x)
-GAME.EXE	0x80012d9b	0x259b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012da0	0x25a0	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: Ready=DiskError(%02x)
-GAME.EXE	0x80012db5	0x25b5	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012db8	0x25b8	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: CDROM: unknown intr(%d)
-GAME.EXE	0x80012dcf	0x25cf	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012c38	0x2438	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c41	0x2441	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c44	0x2444	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c50	0x2450	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c5c	0x245c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c65	0x2465	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c68	0x2468	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c71	0x2471	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c74	0x2474	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c7d	0x247d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c80	0x2480	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c89	0x2489	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c8c	0x248c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012c95	0x2495	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012c98	0x2498	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012ca3	0x24a3	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012ca4	0x24a4	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012caf	0x24af	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012cb0	0x24b0	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012cbc	0x24bc	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012cc7	0x24c7	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012cc8	0x24c8	0xd	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012cd5	0x24d5	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012cd8	0x24d8	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012ce2	0x24e2	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012ce4	0x24e4	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012ced	0x24ed	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012cf0	0x24f0	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012cf9	0x24f9	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012cfc	0x24fc	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d07	0x2507	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d08	0x2508	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d11	0x2511	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d14	0x2514	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d20	0x2520	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d2b	0x252b	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d2c	0x252c	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d36	0x2536	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d38	0x2538	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d42	0x2542	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d44	0x2544	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d50	0x2550	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d59	0x2559	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d5c	0x255c	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d66	0x2566	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d68	0x2568	0x1f	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d87	0x2587	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012d88	0x2588	0x15	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012d9d	0x259d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012da0	0x25a0	0x17	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012db7	0x25b7	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012db8	0x25b8	0x19	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012dd1	0x25d1	0x7	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 GAME.EXE	0x80012dd8	0x25d8	0x14	pointer	manual:bounded LIBCD getintr jump table		pointer[5]	getintr selector 1..5;five retail targets inside exact Psy-Q 3.0 LIBCD/BIOS text	vendor jump table; original static name unresolved
-GAME.EXE	0x80012dec	0x25ec	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: no param
-GAME.EXE	0x80012df8	0x25f8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012dec	0x25ec	0xe	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+GAME.EXE	0x80012dfa	0x25fa	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 GAME.EXE	0x80012dfc	0x25fc	0x15	string	manual:exact Psy-Q 3.0 LIBCD EVENT .rdata literal		ascii	archive 21-byte Code record;retail exact	CdInit diagnostic including newline and NUL; original C literal provenance unresolved
 GAME.EXE	0x80012e11	0x2611	0x3	unclassified	coverage-gap			payload-complement	outside pinned LIBCD EVENT Code record; ownership unresolved
-GAME.EXE	0x80012e14	0x2614	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: path level (%d) error
-GAME.EXE	0x80012e2d	0x262d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012e30	0x2630	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: dir was not found
-GAME.EXE	0x80012e45	0x2645	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012e48	0x2648	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: disc error
-GAME.EXE	0x80012e60	0x2660	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012e64	0x2664	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: searching %s...
-GAME.EXE	0x80012e81	0x2681	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012e84	0x2684	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: %s:  found
-GAME.EXE	0x80012e8e	0x268e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012e90	0x2690	0xd	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: not found
-GAME.EXE	0x80012e9d	0x269d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ea0	0x26a0	0x27	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error in cd_read(PVD)
-GAME.EXE	0x80012ec7	0x26c7	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012ecc	0x26cc	0x2e	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Disc format error in cd_read(PVD)
-GAME.EXE	0x80012efa	0x26fa	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012efc	0x26fc	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error (PT:%08x)
-GAME.EXE	0x80012f1d	0x271d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012f20	0x2720	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: sarching dir..
-GAME.EXE	0x80012f3b	0x273b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012f40	0x2740	0x12	string	byte-pattern		ascii	investigation:string-census	escaped text: \t%08x,%04x,%04x,%s
-GAME.EXE	0x80012f52	0x2752	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012f54	0x2754	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: %d dir entries found
-GAME.EXE	0x80012f75	0x2775	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012f78	0x2778	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: dir not found
-GAME.EXE	0x80012f93	0x2793	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012f98	0x2798	0x1a	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: searching...
-GAME.EXE	0x80012fb2	0x27b2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012fb4	0x27b4	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: \t(%02x:%02x:%02x) %8d %s
-GAME.EXE	0x80012fcc	0x27cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80012fd0	0x27d0	0x1c	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: %d files found
-GAME.EXE	0x80012fec	0x27ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80012e14	0x2614	0x1b	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e2f	0x262f	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012e30	0x2630	0x17	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e47	0x2647	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012e48	0x2648	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e62	0x2662	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012e64	0x2664	0x1f	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e83	0x2683	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012e84	0x2684	0xc	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e90	0x2690	0xf	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012e9f	0x269f	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012ea0	0x26a0	0x29	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012ec9	0x26c9	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012ecc	0x26cc	0x30	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012efc	0x26fc	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012f1f	0x271f	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012f20	0x2720	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012f3d	0x273d	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012f40	0x2740	0x14	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012f54	0x2754	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012f77	0x2777	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012f78	0x2778	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012f95	0x2795	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012f98	0x2798	0x1c	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012fb4	0x27b4	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012fce	0x27ce	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+GAME.EXE	0x80012fd0	0x27d0	0x1e	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+GAME.EXE	0x80012fee	0x27ee	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
 GAME.EXE	0x80012ff0	0x27f0	0x2d	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 45-byte Code record;retail exact	final-sector format string including newline and NUL; original C literal provenance unresolved
 GAME.EXE	0x8001301d	0x281d	0x3	unclassified	manual:LIBCD CDROM .rdata zero prefix			archive 24-byte Code record;retail zero	leading bytes before DMA-status string
 GAME.EXE	0x80013020	0x2820	0x15	string	manual:exact Psy-Q 3.0 LIBCD CDROM .rdata literal		ascii	archive 24-byte Code record;retail exact	DMA-status format string including newline and NUL; original C literal provenance unresolved
@@ -970,105 +961,96 @@ OPEN.EXE	0x800112f8	0xaf8	0x9	string	byte-pattern		ascii	investigation:string-ce
 OPEN.EXE	0x80011301	0xb01	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80011304	0xb04	0x25	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: bad prim:addr=%08X,type=%s,len=%d
 OPEN.EXE	0x80011329	0xb29	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001132c	0xb2c	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: CdInit: Init failed
-OPEN.EXE	0x8001133f	0xb3f	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011344	0xb44	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadS
-OPEN.EXE	0x8001134c	0xb4c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011350	0xb50	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetclock
-OPEN.EXE	0x8001135b	0xb5b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001135c	0xb5c	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetclock
-OPEN.EXE	0x80011367	0xb67	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011368	0xb68	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekP
-OPEN.EXE	0x80011370	0xb70	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011374	0xb74	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekL
-OPEN.EXE	0x8001137c	0xb7c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011380	0xb80	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTD
-OPEN.EXE	0x80011388	0xb88	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001138c	0xb8c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTN
-OPEN.EXE	0x80011394	0xb94	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011398	0xb98	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadT
-OPEN.EXE	0x800113a0	0xba0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113a4	0xba4	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocP
-OPEN.EXE	0x800113ae	0xbae	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113b0	0xbb0	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocL
-OPEN.EXE	0x800113ba	0xbba	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113bc	0xbbc	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetparam
-OPEN.EXE	0x800113c7	0xbc7	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113c8	0xbc8	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetmode
-OPEN.EXE	0x800113d2	0xbd2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113d4	0xbd4	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetfilter
-OPEN.EXE	0x800113e0	0xbe0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113e4	0xbe4	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlDemute
-OPEN.EXE	0x800113ed	0xbed	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113f0	0xbf0	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReset
-OPEN.EXE	0x800113f8	0xbf8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800113fc	0xbfc	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlPause
-OPEN.EXE	0x80011404	0xc04	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011408	0xc08	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlStandby
-OPEN.EXE	0x80011412	0xc12	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011414	0xc14	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadN
-OPEN.EXE	0x8001141c	0xc1c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011420	0xc20	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlBackword
-OPEN.EXE	0x8001142b	0xc2b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001142c	0xc2c	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlForward
-OPEN.EXE	0x80011436	0xc36	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011438	0xc38	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetloc
-OPEN.EXE	0x80011441	0xc41	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011444	0xc44	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DiskError
-OPEN.EXE	0x8001144d	0xc4d	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011450	0xc50	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: Acknowledge
-OPEN.EXE	0x8001145b	0xc5b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001145c	0xc5c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: Complete
-OPEN.EXE	0x80011464	0xc64	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011468	0xc68	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DataReady
-OPEN.EXE	0x80011471	0xc71	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011474	0xc74	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: timeout Sync=%s, Ready=%s
-OPEN.EXE	0x80011491	0xc91	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011494	0xc94	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: DiskError(%02x)
-OPEN.EXE	0x800114a7	0xca7	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800114ac	0xcac	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: Ready=DiskError(%02x)
-OPEN.EXE	0x800114c1	0xcc1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800114c4	0xcc4	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: CDROM: unknown intr(%d)
-OPEN.EXE	0x800114db	0xcdb	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8001132c	0xb2c	0x15	string	manual:exact Psy-Q 3.0 LIBCD EVENT .rdata literal		ascii	archive 21-byte Code record;retail exact	CdInit diagnostic including newline and NUL; original C literal provenance unresolved
+OPEN.EXE	0x80011341	0xb41	0x3	unclassified	manual:LIBCD EVENT .rdata alignment			retail zero alignment after exact 21-byte archive string	padding between vendored rdata owners
+OPEN.EXE	0x80011344	0xb44	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001134d	0xb4d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011350	0xb50	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001135c	0xb5c	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011368	0xb68	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011371	0xb71	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011374	0xb74	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001137d	0xb7d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011380	0xb80	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011389	0xb89	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x8001138c	0xb8c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011395	0xb95	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011398	0xb98	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113a1	0xba1	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113a4	0xba4	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113af	0xbaf	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113b0	0xbb0	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113bb	0xbbb	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113bc	0xbbc	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113c8	0xbc8	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113d3	0xbd3	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113d4	0xbd4	0xd	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113e1	0xbe1	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113e4	0xbe4	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113ee	0xbee	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113f0	0xbf0	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800113f9	0xbf9	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800113fc	0xbfc	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011405	0xc05	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011408	0xc08	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011413	0xc13	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011414	0xc14	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001141d	0xc1d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011420	0xc20	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001142c	0xc2c	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011437	0xc37	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011438	0xc38	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011442	0xc42	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011444	0xc44	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001144e	0xc4e	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011450	0xc50	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x8001145c	0xc5c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011465	0xc65	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011468	0xc68	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011472	0xc72	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011474	0xc74	0x1f	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011493	0xc93	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011494	0xc94	0x15	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800114a9	0xca9	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800114ac	0xcac	0x17	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800114c3	0xcc3	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800114c4	0xcc4	0x19	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x800114dd	0xcdd	0x7	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 OPEN.EXE	0x800114e4	0xce4	0x14	pointer	manual:bounded LIBCD getintr jump table		pointer[5]	getintr selector 1..5;five retail targets inside exact Psy-Q 3.0 LIBCD/BIOS text	vendor jump table; original static name unresolved
-OPEN.EXE	0x800114f8	0xcf8	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: no param
-OPEN.EXE	0x80011504	0xd04	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x800114f8	0xcf8	0xe	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+OPEN.EXE	0x80011506	0xd06	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 OPEN.EXE	0x80011508	0xd08	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
 OPEN.EXE	0x80011533	0xd33	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80011538	0xd38	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA STATUS ERROR %x
 OPEN.EXE	0x8001154b	0xd4b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011550	0xd50	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: path level (%d) error
-OPEN.EXE	0x80011569	0xd69	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001156c	0xd6c	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: dir was not found
-OPEN.EXE	0x80011581	0xd81	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011584	0xd84	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: disc error
-OPEN.EXE	0x8001159c	0xd9c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800115a0	0xda0	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: searching %s...
-OPEN.EXE	0x800115bd	0xdbd	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800115c0	0xdc0	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: %s:  found
-OPEN.EXE	0x800115ca	0xdca	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800115cc	0xdcc	0xd	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: not found
-OPEN.EXE	0x800115d9	0xdd9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800115dc	0xddc	0x27	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error in cd_read(PVD)
-OPEN.EXE	0x80011603	0xe03	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011608	0xe08	0x2e	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Disc format error in cd_read(PVD)
-OPEN.EXE	0x80011636	0xe36	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011638	0xe38	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error (PT:%08x)
-OPEN.EXE	0x80011659	0xe59	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001165c	0xe5c	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: sarching dir..
-OPEN.EXE	0x80011677	0xe77	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001167c	0xe7c	0x12	string	byte-pattern		ascii	investigation:string-census	escaped text: \t%08x,%04x,%04x,%s
-OPEN.EXE	0x8001168e	0xe8e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011690	0xe90	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: %d dir entries found
-OPEN.EXE	0x800116b1	0xeb1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800116b4	0xeb4	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: dir not found
-OPEN.EXE	0x800116cf	0xecf	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800116d4	0xed4	0x1a	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: searching...
-OPEN.EXE	0x800116ee	0xeee	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x800116f0	0xef0	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: \t(%02x:%02x:%02x) %8d %s
-OPEN.EXE	0x80011708	0xf08	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001170c	0xf0c	0x1c	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: %d files found
-OPEN.EXE	0x80011728	0xf28	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x80011550	0xd50	0x1b	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8001156b	0xd6b	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x8001156c	0xd6c	0x17	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x80011583	0xd83	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011584	0xd84	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8001159e	0xd9e	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800115a0	0xda0	0x1f	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800115bf	0xdbf	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800115c0	0xdc0	0xc	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800115cc	0xdcc	0xf	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800115db	0xddb	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800115dc	0xddc	0x29	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x80011605	0xe05	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x80011608	0xe08	0x30	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x80011638	0xe38	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8001165b	0xe5b	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x8001165c	0xe5c	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x80011679	0xe79	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x8001167c	0xe7c	0x14	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x80011690	0xe90	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800116b3	0xeb3	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800116b4	0xeb4	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800116d1	0xed1	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x800116d4	0xed4	0x1c	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x800116f0	0xef0	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8001170a	0xf0a	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+OPEN.EXE	0x8001170c	0xf0c	0x1e	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8001172a	0xf2a	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
 OPEN.EXE	0x8001172c	0xf2c	0x33	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: intr.c,v 1.52 1995/03/14 12:20:44 hakama Exp $
 OPEN.EXE	0x8001175f	0xf5f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80011760	0xf60	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: Too many interrupts
@@ -1469,24 +1451,11 @@ OPEN.EXE	0x8003dbb5	0x2d3b5	0x3	unclassified	coverage-gap			payload-complement	m
 OPEN.EXE	0x8003dbb8	0x2d3b8	0x3	string	reviewed		ascii	manual:display	escaped text: ;1 (cd_version_suffix)
 OPEN.EXE	0x8003dbbb	0x2d3bb	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dbc4	0x2d3c4	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
-OPEN.EXE	0x8003dc00	0x2d400	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dc00	0x2d400	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer	archive .sdata+0 pointer patches to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 OPEN.EXE	0x8003dc04	0x2d404	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
-OPEN.EXE	0x8003dc08	0x2d408	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc0c	0x2d40c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc10	0x2d410	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc14	0x2d414	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc18	0x2d418	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc1c	0x2d41c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc20	0x2d420	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc24	0x2d424	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc28	0x2d428	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc2c	0x2d42c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc30	0x2d430	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc34	0x2d434	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc38	0x2d438	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc3c	0x2d43c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc40	0x2d440	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dc44	0x2d444	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dc08	0x2d408	0x10	defined	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		u32[4]	archive .sdata+8..+0x18 zero bytes;retail exact	anonymous vendor tail; original C object boundaries unresolved
+OPEN.EXE	0x8003dc18	0x2d418	0x24	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer[9]	archive .sdata+0x18..+0x3c nine hardware pointers;retail exact	vendor hardware-pointer record; original C declaration unresolved
+OPEN.EXE	0x8003dc3c	0x2d43c	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		u32[3]	archive .sdata+0x3c..+0x48 zero bytes;retail exact	vendor zero record; original C declaration unresolved
 OPEN.EXE	0x8003dc48	0x2d448	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: F3L\x20
 OPEN.EXE	0x8003dc4c	0x2d44c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dc50	0x2d450	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: G3L\x20
@@ -1537,25 +1506,12 @@ OPEN.EXE	0x8003dd6c	0x2d56c	0x6	string	byte-pattern		ascii	investigation:string-
 OPEN.EXE	0x8003dd72	0x2d572	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dd74	0x2d574	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: DataEnd
 OPEN.EXE	0x8003dd7b	0x2d57b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dd7c	0x2d57c	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: NoIntr
-OPEN.EXE	0x8003dd82	0x2d582	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dd84	0x2d584	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd88	0x2d588	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd8c	0x2d58c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd90	0x2d590	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd94	0x2d594	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd98	0x2d598	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dd99	0x2d599	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003dd9c	0x2d59c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dda0	0x2d5a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dda4	0x2d5a4	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: %s...
-OPEN.EXE	0x8003dda9	0x2d5a9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003ddac	0x2d5ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddb0	0x2d5b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddb4	0x2d5b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddb8	0x2d5b8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddbc	0x2d5bc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddc0	0x2d5c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003dd7c	0x2d57c	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive NoIntr bytes;retail exact including NUL	vendor command-name string; original C declaration unresolved
+OPEN.EXE	0x8003dd83	0x2d583	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 33-byte record begins with one zero byte	alignment before eight-word record; original C object boundary unresolved
+OPEN.EXE	0x8003dd84	0x2d584	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[8]	archive 33-byte code record after one zero alignment byte;all 32 table bytes retail exact	five hardware-register pointers and three zero words; original C declaration unresolved
+OPEN.EXE	0x8003dda4	0x2d5a4	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive %s... newline NUL bytes;retail exact	vendor diagnostic string; original C declaration unresolved
+OPEN.EXE	0x8003ddab	0x2d5ab	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 25-byte record begins with one zero byte	alignment before six-word record; original C object boundary unresolved
+OPEN.EXE	0x8003ddac	0x2d5ac	0x18	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[6]	archive 25-byte code record after one zero alignment byte;all 24 table bytes retail exact	six hardware-register pointers; original C declaration unresolved
 OPEN.EXE	0x8003ddc4	0x2d5c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003ddc8	0x2d5c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003ddcc	0x2d5cc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -1582,13 +1538,12 @@ OPEN.EXE	0x8003de20	0x2d620	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 OPEN.EXE	0x8003de24	0x2d624	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de28	0x2d628	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de2a	0x2d62a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003de30	0x2d630	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de34	0x2d634	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CD001
-OPEN.EXE	0x8003de39	0x2d639	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003de3c	0x2d63c	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de3e	0x2d63e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003de40	0x2d640	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de42	0x2d642	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003de30	0x2d630	0x4	defined	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata scalar		u32	archive four-byte scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de34	0x2d634	0x6	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive six-byte CD001 string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de3a	0x2d63a	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive alignment bytes;retail zero	alignment before directory-name record
+OPEN.EXE	0x8003de3c	0x2d63c	0x2	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+OPEN.EXE	0x8003de3e	0x2d63e	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive record bytes;retail zero	alignment before dot-dot string
+OPEN.EXE	0x8003de40	0x2d640	0x3	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot-dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de43	0x2d643	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003de48	0x2d648	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003de4c	0x2d64c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -1740,105 +1695,96 @@ END.EXE	0x80011230	0xa30	0x9	string	byte-pattern		ascii	investigation:string-cen
 END.EXE	0x80011239	0xa39	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001123c	0xa3c	0x25	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: bad prim:addr=%08X,type=%s,len=%d
 END.EXE	0x80011261	0xa61	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011264	0xa64	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: CdInit: Init failed
-END.EXE	0x80011277	0xa77	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001127c	0xa7c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadS
-END.EXE	0x80011284	0xa84	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011288	0xa88	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetclock
-END.EXE	0x80011293	0xa93	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011294	0xa94	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetclock
-END.EXE	0x8001129f	0xa9f	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112a0	0xaa0	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekP
-END.EXE	0x800112a8	0xaa8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112ac	0xaac	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSeekL
-END.EXE	0x800112b4	0xab4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112b8	0xab8	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTD
-END.EXE	0x800112c0	0xac0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112c4	0xac4	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetTN
-END.EXE	0x800112cc	0xacc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112d0	0xad0	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadT
-END.EXE	0x800112d8	0xad8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112dc	0xadc	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocP
-END.EXE	0x800112e6	0xae6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112e8	0xae8	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetlocL
-END.EXE	0x800112f2	0xaf2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800112f4	0xaf4	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlGetparam
-END.EXE	0x800112ff	0xaff	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011300	0xb00	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetmode
-END.EXE	0x8001130a	0xb0a	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001130c	0xb0c	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetfilter
-END.EXE	0x80011318	0xb18	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001131c	0xb1c	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlDemute
-END.EXE	0x80011325	0xb25	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011328	0xb28	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReset
-END.EXE	0x80011330	0xb30	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011334	0xb34	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlPause
-END.EXE	0x8001133c	0xb3c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011340	0xb40	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlStandby
-END.EXE	0x8001134a	0xb4a	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001134c	0xb4c	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlReadN
-END.EXE	0x80011354	0xb54	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011358	0xb58	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlBackword
-END.EXE	0x80011363	0xb63	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011364	0xb64	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlForward
-END.EXE	0x8001136e	0xb6e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011370	0xb70	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: CdlSetloc
-END.EXE	0x80011379	0xb79	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001137c	0xb7c	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DiskError
-END.EXE	0x80011385	0xb85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011388	0xb88	0xb	string	byte-pattern		ascii	investigation:string-census	escaped text: Acknowledge
-END.EXE	0x80011393	0xb93	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011394	0xb94	0x8	string	byte-pattern		ascii	investigation:string-census	escaped text: Complete
-END.EXE	0x8001139c	0xb9c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800113a0	0xba0	0x9	string	byte-pattern		ascii	investigation:string-census	escaped text: DataReady
-END.EXE	0x800113a9	0xba9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800113ac	0xbac	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: timeout Sync=%s, Ready=%s
-END.EXE	0x800113c9	0xbc9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800113cc	0xbcc	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: DiskError(%02x)
-END.EXE	0x800113df	0xbdf	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800113e4	0xbe4	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: Ready=DiskError(%02x)
-END.EXE	0x800113f9	0xbf9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800113fc	0xbfc	0x17	string	byte-pattern		ascii	investigation:string-census	escaped text: CDROM: unknown intr(%d)
-END.EXE	0x80011413	0xc13	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x80011264	0xa64	0x15	string	manual:exact Psy-Q 3.0 LIBCD EVENT .rdata literal		ascii	archive 21-byte Code record;retail exact	CdInit diagnostic including newline and NUL; original C literal provenance unresolved
+END.EXE	0x80011279	0xa79	0x3	unclassified	manual:LIBCD EVENT .rdata alignment			retail zero alignment after exact 21-byte archive string	padding between vendored rdata owners
+END.EXE	0x8001127c	0xa7c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011285	0xa85	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011288	0xa88	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011294	0xa94	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112a0	0xaa0	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112a9	0xaa9	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112ac	0xaac	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112b5	0xab5	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112b8	0xab8	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112c1	0xac1	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112c4	0xac4	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112cd	0xacd	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112d0	0xad0	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112d9	0xad9	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112dc	0xadc	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112e7	0xae7	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112e8	0xae8	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800112f3	0xaf3	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800112f4	0xaf4	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011300	0xb00	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001130b	0xb0b	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x8001130c	0xb0c	0xd	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011319	0xb19	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x8001131c	0xb1c	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011326	0xb26	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011328	0xb28	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011331	0xb31	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011334	0xb34	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001133d	0xb3d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011340	0xb40	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001134b	0xb4b	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x8001134c	0xb4c	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011355	0xb55	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011358	0xb58	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011364	0xb64	0xb	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001136f	0xb6f	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011370	0xb70	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001137a	0xb7a	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x8001137c	0xb7c	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011386	0xb86	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011388	0xb88	0xc	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011394	0xb94	0x9	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001139d	0xb9d	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800113a0	0xba0	0xa	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800113aa	0xbaa	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800113ac	0xbac	0x1f	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800113cb	0xbcb	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800113cc	0xbcc	0x15	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800113e1	0xbe1	0x3	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800113e4	0xbe4	0x17	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x800113fb	0xbfb	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800113fc	0xbfc	0x19	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x80011415	0xc15	0x7	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 END.EXE	0x8001141c	0xc1c	0x14	pointer	manual:bounded LIBCD getintr jump table		pointer[5]	getintr selector 1..5;five retail targets inside exact Psy-Q 3.0 LIBCD/BIOS text	vendor jump table; original static name unresolved
-END.EXE	0x80011430	0xc30	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: no param
-END.EXE	0x8001143c	0xc3c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x80011430	0xc30	0xe	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
+END.EXE	0x8001143e	0xc3e	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 END.EXE	0x80011440	0xc40	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
 END.EXE	0x8001146b	0xc6b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80011470	0xc70	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: DMA STATUS ERROR %x
 END.EXE	0x80011483	0xc83	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011488	0xc88	0x19	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: path level (%d) error
-END.EXE	0x800114a1	0xca1	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800114a4	0xca4	0x15	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: dir was not found
-END.EXE	0x800114b9	0xcb9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800114bc	0xcbc	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: disc error
-END.EXE	0x800114d4	0xcd4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800114d8	0xcd8	0x1d	string	byte-pattern		ascii	investigation:string-census	escaped text: CdSearchFile: searching %s...
-END.EXE	0x800114f5	0xcf5	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800114f8	0xcf8	0xa	string	byte-pattern		ascii	investigation:string-census	escaped text: %s:  found
-END.EXE	0x80011502	0xd02	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011504	0xd04	0xd	string	byte-pattern		ascii	investigation:string-census	escaped text: %s: not found
-END.EXE	0x80011511	0xd11	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011514	0xd14	0x27	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error in cd_read(PVD)
-END.EXE	0x8001153b	0xd3b	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011540	0xd40	0x2e	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Disc format error in cd_read(PVD)
-END.EXE	0x8001156e	0xd6e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011570	0xd70	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: Read error (PT:%08x)
-END.EXE	0x80011591	0xd91	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011594	0xd94	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: sarching dir..
-END.EXE	0x800115af	0xdaf	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800115b4	0xdb4	0x12	string	byte-pattern		ascii	investigation:string-census	escaped text: \t%08x,%04x,%04x,%s
-END.EXE	0x800115c6	0xdc6	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800115c8	0xdc8	0x21	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_newmedia: %d dir entries found
-END.EXE	0x800115e9	0xde9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x800115ec	0xdec	0x1b	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: dir not found
-END.EXE	0x80011607	0xe07	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001160c	0xe0c	0x1a	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: searching...
-END.EXE	0x80011626	0xe26	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011628	0xe28	0x18	string	byte-pattern		ascii	investigation:string-census	escaped text: \t(%02x:%02x:%02x) %8d %s
-END.EXE	0x80011640	0xe40	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x80011644	0xe44	0x1c	string	byte-pattern		ascii	investigation:string-census	escaped text: CD_cachefile: %d files found
-END.EXE	0x80011660	0xe60	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x80011488	0xc88	0x1b	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800114a3	0xca3	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800114a4	0xca4	0x17	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800114bb	0xcbb	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800114bc	0xcbc	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800114d6	0xcd6	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800114d8	0xcd8	0x1f	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800114f7	0xcf7	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800114f8	0xcf8	0xc	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011504	0xd04	0xf	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011513	0xd13	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011514	0xd14	0x29	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x8001153d	0xd3d	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011540	0xd40	0x30	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011570	0xd70	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011593	0xd93	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011594	0xd94	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800115b1	0xdb1	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800115b4	0xdb4	0x14	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800115c8	0xdc8	0x23	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x800115eb	0xdeb	0x1	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x800115ec	0xdec	0x1d	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011609	0xe09	0x3	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x8001160c	0xe0c	0x1c	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011628	0xe28	0x1a	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011642	0xe42	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
+END.EXE	0x80011644	0xe44	0x1e	string	manual:exact Psy-Q 3.0 LIBCD ISO9660.OBJ .rdata		ascii	archive .rdata string bytes including newline and terminator;unique retail match	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x80011662	0xe62	0x2	unclassified	manual:LIBCD ISO9660.OBJ .rdata alignment			archive .rdata zero alignment after newline-terminated string;retail exact	padding; original C string owner unresolved
 END.EXE	0x80011664	0xe64	0x33	string	byte-pattern		ascii	investigation:string-census	escaped text: $Id: intr.c,v 1.52 1995/03/14 12:20:44 hakama Exp $
 END.EXE	0x80011697	0xe97	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80011698	0xe98	0x13	string	byte-pattern		ascii	investigation:string-census	escaped text: Too many interrupts
@@ -2245,24 +2191,11 @@ END.EXE	0x8003aa45	0x2a245	0x3	unclassified	coverage-gap			payload-complement	ma
 END.EXE	0x8003aa48	0x2a248	0x3	string	reviewed		ascii	manual:display	escaped text: ;1 (cd_version_suffix)
 END.EXE	0x8003aa4b	0x2a24b	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003aa54	0x2a254	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
-END.EXE	0x8003aa90	0x2a290	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003aa90	0x2a290	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer	archive .sdata+0 pointer patches to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 END.EXE	0x8003aa94	0x2a294	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
-END.EXE	0x8003aa98	0x2a298	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aa9c	0x2a29c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aaa0	0x2a2a0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aaa4	0x2a2a4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aaa8	0x2a2a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aaac	0x2a2ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aab0	0x2a2b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aab4	0x2a2b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aab8	0x2a2b8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aabc	0x2a2bc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aac0	0x2a2c0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aac4	0x2a2c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aac8	0x2a2c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aacc	0x2a2cc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aad0	0x2a2d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aad4	0x2a2d4	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003aa98	0x2a298	0x10	defined	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		u32[4]	archive .sdata+8..+0x18 zero bytes;retail exact	anonymous vendor tail; original C object boundaries unresolved
+END.EXE	0x8003aaa8	0x2a2a8	0x24	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer[9]	archive .sdata+0x18..+0x3c nine hardware pointers;retail exact	vendor hardware-pointer record; original C declaration unresolved
+END.EXE	0x8003aacc	0x2a2cc	0xc	defined	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		u32[3]	archive .sdata+0x3c..+0x48 zero bytes;retail exact	vendor zero record; original C declaration unresolved
 END.EXE	0x8003aad8	0x2a2d8	0x51	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ab29	0x2a329	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: %5d:
 END.EXE	0x8003ab2d	0x2a32d	0xf	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2290,25 +2223,12 @@ END.EXE	0x8003ab8c	0x2a38c	0x6	string	byte-pattern		ascii	investigation:string-c
 END.EXE	0x8003ab92	0x2a392	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ab94	0x2a394	0x7	string	byte-pattern		ascii	investigation:string-census	escaped text: DataEnd
 END.EXE	0x8003ab9b	0x2a39b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ab9c	0x2a39c	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: NoIntr
-END.EXE	0x8003aba2	0x2a3a2	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003aba4	0x2a3a4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003aba8	0x2a3a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abac	0x2a3ac	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abb0	0x2a3b0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abb4	0x2a3b4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abb8	0x2a3b8	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abb9	0x2a3b9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003abbc	0x2a3bc	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abc0	0x2a3c0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abc4	0x2a3c4	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: %s...
-END.EXE	0x8003abc9	0x2a3c9	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003abcc	0x2a3cc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abd0	0x2a3d0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abd4	0x2a3d4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abd8	0x2a3d8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abdc	0x2a3dc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abe0	0x2a3e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ab9c	0x2a39c	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive NoIntr bytes;retail exact including NUL	vendor command-name string; original C declaration unresolved
+END.EXE	0x8003aba3	0x2a3a3	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 33-byte record begins with one zero byte	alignment before eight-word record; original C object boundary unresolved
+END.EXE	0x8003aba4	0x2a3a4	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[8]	archive 33-byte code record after one zero alignment byte;all 32 table bytes retail exact	five hardware-register pointers and three zero words; original C declaration unresolved
+END.EXE	0x8003abc4	0x2a3c4	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive %s... newline NUL bytes;retail exact	vendor diagnostic string; original C declaration unresolved
+END.EXE	0x8003abcb	0x2a3cb	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 25-byte record begins with one zero byte	alignment before six-word record; original C object boundary unresolved
+END.EXE	0x8003abcc	0x2a3cc	0x18	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[6]	archive 25-byte code record after one zero alignment byte;all 24 table bytes retail exact	six hardware-register pointers; original C declaration unresolved
 END.EXE	0x8003abe4	0x2a3e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003abe8	0x2a3e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003abec	0x2a3ec	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
@@ -2335,13 +2255,12 @@ END.EXE	0x8003ac40	0x2a440	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/
 END.EXE	0x8003ac44	0x2a444	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac48	0x2a448	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac4a	0x2a44a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ac50	0x2a450	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac54	0x2a454	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: CD001
-END.EXE	0x8003ac59	0x2a459	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ac5c	0x2a45c	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac5e	0x2a45e	0x2	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ac60	0x2a460	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac62	0x2a462	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ac50	0x2a450	0x4	defined	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata scalar		u32	archive four-byte scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
+END.EXE	0x8003ac54	0x2a454	0x6	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive six-byte CD001 string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+END.EXE	0x8003ac5a	0x2a45a	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive alignment bytes;retail zero	alignment before directory-name record
+END.EXE	0x8003ac5c	0x2a45c	0x2	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
+END.EXE	0x8003ac5e	0x2a45e	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive record bytes;retail zero	alignment before dot-dot string
+END.EXE	0x8003ac60	0x2a460	0x3	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive dot-dot string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac63	0x2a463	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ac68	0x2a468	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ac6c	0x2a46c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

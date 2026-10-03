@@ -160,8 +160,8 @@ handle_active:
     if (state_8017d118.world_shift_applied != 0 && first != KF_RESOURCE_REQUEST_KEEP &&
         offset_x == KF_RESOURCE_OFFSET_NO_SHIFT) {
         offset_x = -state_8017d118.transition_offset.x;
-        offset_z = -state_8017d118.transition_offset.z;
         offset_y = -state_8017d118.transition_offset.y;
+        offset_z = -state_8017d118.transition_offset.z;
     }
     goto apply;
 }

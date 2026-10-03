@@ -109,7 +109,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
                       magic_08, magic_0a, magic_0c, magic_0e, magic_10,
                       magic_12, magic_14, radius, record_type, position);
         if (options & 0x10000) {
-            actor->unknown_28 |= 0x800;
+            actor->unknown_28 |= KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
         }
     }
 }
@@ -2819,7 +2819,7 @@ void effect_update_dispatch(void)
             u8 frame = trail->frame_index + 1;
             s32 actor_extent;
 
-            actor->unknown_28 |= 0x800;
+            actor->unknown_28 |= KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
             actor_extent = actor->collision_radius;
             trail->frame_index = frame;
             if (frame >= 24) {
@@ -2887,7 +2887,7 @@ void effect_update_dispatch(void)
     kind6_release_actor: {
         KfActor *actor = &actor_state.actors[trail->actor_index];
 
-        actor->unknown_28 &= ~0x800;
+        actor->unknown_28 &= ~KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
         record->type = KF_EFFECT_SLOT_FREE;
         break;
     }

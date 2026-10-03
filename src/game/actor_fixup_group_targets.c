@@ -31,7 +31,8 @@ void actor_update_frame(void)
                 actor_state.active_actor_count++;
             }
 
-            if ((actor_state.active_group->initial_actor_flags & 0x10000) != 0) {
+            if ((actor_state.active_group->initial_actor_flags &
+                 KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) != 0) {
                 KfMapObject *object =
                     &map_object_state.objects[actor->word_22.linked_map_object_slot];
                 s32 object_z;

@@ -75,9 +75,11 @@ KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motio
 KfMapObjectSavedLayerState	0x04	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	saved layer mask passed to action 0x54 map-cell pattern updates
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
+KfMapObjectTailAction51MarkerView	0xc	supported	GAME 0x80036800 lbu;map_object_apply_marker_signal action 0x51	Action-0x51 marker identifier overlays the high spawn-sequence byte used by effect objects
 KfMapObjectTailAction83View	0xc	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	action 83 emits a marker after each opening or closing phase
 KfMapObjectTailAction84PatternView	0xc	supported	GAME 0x80037ee4..0x80037f84;map_cell_apply_rotated_pattern	action 84 checks camera region and chooses one of two map-cell patterns
 KfMapObjectTailAction88CellCopyView	0xc	supported	GAME 0x80037c34..0x80037c74;map_cell_copy_rotated_fields	action 88 carries rotated copy coordinates and dimensions at its own tail offsets
+KfMapObjectTailAction89LayerFadeView	0xc	supported	GAME 0x80036828 marker compare;GAME 0x80037ce4 delay copy	action 89 marker and initial layer-fade delay share one tail view
 KfMapObjectTailAmbientSoundView	0xc	supported	GAME 0x80032858..0x80032a5c;map_object action 0x1f	ambient-sound action uses region, volume, range, attenuation, and repeat period bytes
 KfMapObjectTailCellCopyView	0xc	supported	GAME 0x80035c08..0x80035c48;map_cell_copy_rotated_fields	actions 3 and 4 carry source and destination map-cell coordinates
 KfMapObjectTailCollisionProbeView	0xc	supported	GAME 0x80038148..0x800383c8;effect_dispatch_magic_impact	action 81 uses a camera-region gate and dispatches magic collision damage

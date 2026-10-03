@@ -63,7 +63,7 @@ dispatch_action:
             actor_set_animation(target->animation_id);
         }
         if (actor->animation_phase < 0x800 ||
-            (actor->unknown_28 & 0x800) == 0) {
+            (actor->unknown_28 & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) == 0) {
             actor_advance_animation_clamped(actor, target->animation_step);
         }
         if (actor->animation_phase > 0xffe) {
@@ -78,11 +78,11 @@ dispatch_action:
             actor->target_action_state = 0xf0;
             actor_set_animation(target->animation_id);
             actor->state_70.signed_state = 0;
-            actor->unknown_28 &= ~0x10000;
+            actor->unknown_28 &= ~KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED;
         }
         if (actor->state_70.signed_state == 0) {
             if (actor->animation_phase >= 0x400 &&
-                (actor->unknown_28 & 0x800) != 0) {
+                (actor->unknown_28 & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) != 0) {
                 break;
             }
             actor_advance_animation_clamped(actor, target->animation_step);
@@ -200,18 +200,18 @@ case3_motion:
                 target->word_0e.value,
                 group->movement_step,
                 group->turn_acceleration, 17);
-            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+            if ((rand() >> 5) < target->word_12.flight.orientation_change_threshold) {
                 motion_flags |= 1;
             }
-            if ((rand() >> 5) < target->word_12.bytes.marker_state) {
+            if ((rand() >> 5) < target->word_12.flight.orientation_change_threshold) {
                 motion_flags |= 2;
             }
             if (actor->tail_72.motion.baseline + target->word_10.value <
                 actor->position.vy) {
-                actor->motion.vector.vy -= target->word_12.bytes.unknown_12;
+                actor->motion.vector.vy -= target->word_12.flight.vertical_velocity_step;
             } else if (actor->position.vy <
                        actor->tail_72.motion.baseline - target->word_10.value) {
-                actor->motion.vector.vy += target->word_12.bytes.unknown_12;
+                actor->motion.vector.vy += target->word_12.flight.vertical_velocity_step;
             }
         }
         if (motion_flags & 1) {
@@ -470,7 +470,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.bytes.unknown_11);
+                           target->word_10.attack.damage_component3);
         }
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
@@ -494,7 +494,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.bytes.unknown_11 | 0x80);
+                           target->word_10.attack.damage_component3 | 0x80);
         }
         if (target->secondary_hit_phase != 0 &&
             actor_animation_crossed_phase(actor, target->secondary_hit_phase)) {
@@ -541,7 +541,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.bytes.unknown_11);
+                           target->word_10.attack.damage_component3);
         }
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
@@ -650,7 +650,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.bytes.unknown_11);
+                           target->word_10.attack.damage_component3);
         }
         if (actor->animation_phase >= 0xfff) {
             actor_reset_target_and_reselect();
@@ -1120,7 +1120,7 @@ case3_motion:
                     actor->position.vx += 800 + actor->collision_radius;
                 }
                 if (collision & 0xf) {
-                    actor->unknown_28 |= 0x400;
+                    actor->unknown_28 |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
                 if (actor->unknown_28 & 0x200) {
                     actor_select_target_type_in_own_group(actor, 3);
@@ -1153,7 +1153,7 @@ case3_motion:
             actor->position.vz = other->position.vz + vertex_offset.vz -
                                  group_offset.vz;
         }
-    } else if ((actor->unknown_28 & 0x10000) == 0) {
+    } else if ((actor->unknown_28 & KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) == 0) {
         actor_update_vertical_motion();
     }
 

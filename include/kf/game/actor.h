@@ -18,7 +18,11 @@ enum {
     KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
     KF_ACTOR_LIFECYCLE_DISABLED = 3,
     KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
-    KF_ACTOR_FLAG_LINKED = 0x10
+    KF_ACTOR_FLAG_LINKED = 0x10,
+    KF_ACTOR_FLAG_BLENDED_MODEL = 0x80,
+    KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR = 0x400,
+    KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD = 0x800,
+    KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED = 0x10000
 };
 
 typedef struct KfTargetCandidateWord0cBytes {
@@ -74,6 +78,10 @@ typedef char kf_target_candidate_word10_bytes_size[
 typedef union KfTargetCandidateWord10 {
     u16 value;
     KfTargetCandidateWord10Bytes bytes;
+    struct {
+        u8 fallback_offset;
+        u8 damage_component3;
+    } attack;
 } KfTargetCandidateWord10;
 typedef char kf_target_candidate_word10_size[
     sizeof(KfTargetCandidateWord10) == 2 ? 1 : -1];
@@ -88,6 +96,10 @@ typedef char kf_target_candidate_word12_bytes_size[
 typedef union KfTargetCandidateWord12 {
     u16 value;
     KfTargetCandidateWord12Bytes bytes;
+    struct {
+        u8 vertical_velocity_step;
+        u8 orientation_change_threshold;
+    } flight;
 } KfTargetCandidateWord12;
 typedef char kf_target_candidate_word12_size[
     sizeof(KfTargetCandidateWord12) == 2 ? 1 : -1];
@@ -218,7 +230,13 @@ typedef char kf_target_candidate_word_0e_offset[(u32)&((KfTargetCandidate *)0)->
 typedef char kf_target_candidate_word_0e_low_offset[(u32)&((KfTargetCandidate *)0)->word_0e.bytes.low == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_offset[(u32)&((KfTargetCandidateWord10Bytes *)0)->unknown_11 == 1 ? 1 : -1];
 typedef char kf_target_candidate_unknown_11_total_offset[(u32)&((KfTargetCandidate *)0)->word_10.bytes.unknown_11 == 0x11 ? 1 : -1];
+typedef char kf_target_candidate_attack_damage_component3_offset[
+    (u32)&((KfTargetCandidate *)0)->word_10.attack.damage_component3 == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_word_12_offset[(u32)&((KfTargetCandidate *)0)->word_12 == 0x12 ? 1 : -1];
+typedef char kf_target_candidate_flight_vertical_step_offset[
+    (u32)&((KfTargetCandidate *)0)->word_12.flight.vertical_velocity_step == 0x12 ? 1 : -1];
+typedef char kf_target_candidate_flight_orientation_threshold_offset[
+    (u32)&((KfTargetCandidate *)0)->word_12.flight.orientation_change_threshold == 0x13 ? 1 : -1];
 typedef char kf_target_candidate_marker_state_offset[(u32)&((KfTargetCandidateWord12Bytes *)0)->marker_state == 1 ? 1 : -1];
 typedef char kf_target_candidate_marker_state_total_offset[(u32)&((KfTargetCandidate *)0)->word_12.bytes.marker_state == 0x13 ? 1 : -1];
 typedef char kf_target_candidate_word_14_offset[(u32)&((KfTargetCandidate *)0)->word_14 == 0x14 ? 1 : -1];

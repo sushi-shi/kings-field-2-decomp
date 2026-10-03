@@ -262,7 +262,7 @@ typedef struct KfMapObjectTailCellCopyView {
     u8 destination_z;
     u8 source_x;
     u8 source_z;
-    u8 unknown_3d;
+    u8 linked_object_index;
     u16 unknown_3e;
 } KfMapObjectTailCellCopyView;
 typedef char kf_map_object_tail_cell_copy_size[
@@ -271,12 +271,14 @@ typedef char kf_map_object_tail_cell_copy_destination_offset[
     (u32)&((KfMapObjectTailCellCopyView *)0)->destination_x == 5 ? 1 : -1];
 typedef char kf_map_object_tail_cell_copy_source_offset[
     (u32)&((KfMapObjectTailCellCopyView *)0)->source_x == 7 ? 1 : -1];
+typedef char kf_map_object_tail_cell_copy_link_offset[
+    (u32)&((KfMapObjectTailCellCopyView *)0)->linked_object_index == 9 ? 1 : -1];
 
 /* Action 88 stores its copy coordinates and dimensions at different offsets. */
 typedef struct KfMapObjectTailAction88CellCopyView {
     u32 unknown_34;
     u8 transition_mode;
-    u8 unknown_39;
+    u8 marker_id;
     u8 destination_x;
     u8 destination_z;
     u8 source_x;
@@ -288,15 +290,32 @@ typedef char kf_map_object_tail_action88_cell_copy_size[
     sizeof(KfMapObjectTailAction88CellCopyView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action88_mode_offset[
     (u32)&((KfMapObjectTailAction88CellCopyView *)0)->transition_mode == 4 ? 1 : -1];
+typedef char kf_map_object_tail_action88_marker_offset[
+    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->marker_id == 5 ? 1 : -1];
 typedef char kf_map_object_tail_action88_source_offset[
     (u32)&((KfMapObjectTailAction88CellCopyView *)0)->source_x == 8 ? 1 : -1];
 typedef char kf_map_object_tail_action88_width_offset[
     (u32)&((KfMapObjectTailAction88CellCopyView *)0)->width == 10 ? 1 : -1];
 
+/* Action 0x59 waits for a marker, then restores its layer for a timed fade. */
+typedef struct KfMapObjectTailAction89LayerFadeView {
+    u32 unknown_34;
+    u8 marker_id;
+    u8 unknown_39;
+    u16 delay_frames;
+    u8 unknown_3c[4];
+} KfMapObjectTailAction89LayerFadeView;
+typedef char kf_map_object_tail_action89_layer_fade_size[
+    sizeof(KfMapObjectTailAction89LayerFadeView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action89_marker_offset[
+    (u32)&((KfMapObjectTailAction89LayerFadeView *)0)->marker_id == 4 ? 1 : -1];
+typedef char kf_map_object_tail_action89_delay_offset[
+    (u32)&((KfMapObjectTailAction89LayerFadeView *)0)->delay_frames == 6 ? 1 : -1];
+
 /* Action 84 checks a camera region and alternates two pattern rows. */
 typedef struct KfMapObjectTailAction84PatternView {
     u32 unknown_34;
-    u8 unknown_38;
+    u8 marker_id;
     u8 center_x;
     u8 center_z;
     u8 region_width;
@@ -307,6 +326,8 @@ typedef struct KfMapObjectTailAction84PatternView {
 } KfMapObjectTailAction84PatternView;
 typedef char kf_map_object_tail_action84_pattern_size[
     sizeof(KfMapObjectTailAction84PatternView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action84_marker_offset[
+    (u32)&((KfMapObjectTailAction84PatternView *)0)->marker_id == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action84_region_width_offset[
     (u32)&((KfMapObjectTailAction84PatternView *)0)->region_width == 7 ? 1 : -1];
 typedef char kf_map_object_tail_action84_pattern_flags_offset[
@@ -391,6 +412,22 @@ typedef char kf_map_object_tail_marker_size[
 typedef char kf_map_object_tail_marker_id_offset[
     (u32)&((KfMapObjectTailMarkerView *)0)->marker_id == 4 ? 1 : -1];
 
+/* Action 0x51 uses the high byte of the effect spawn-sequence slot as its
+ * incoming marker identifier. */
+typedef struct KfMapObjectTailAction51MarkerView {
+    u32 unknown_34;
+    u8 unknown_38;
+    u8 unknown_39;
+    KfMapObjectTailHalfword unknown_3a;
+    u8 unknown_3c;
+    u8 marker_id;
+    KfMapObjectTailHalfword unknown_3e;
+} KfMapObjectTailAction51MarkerView;
+typedef char kf_map_object_tail_action51_marker_size[
+    sizeof(KfMapObjectTailAction51MarkerView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_action51_marker_offset[
+    (u32)&((KfMapObjectTailAction51MarkerView *)0)->marker_id == 9 ? 1 : -1];
+
 /* Two placement kinds seed three object rotation axes from byte codes;
  * 0xff leaves an axis at its default value. The final code overlaps the
  * spawn-sequence halfword used by other object kinds. */
@@ -456,6 +493,7 @@ typedef union KfMapObjectTail {
     KfMapObjectTailAmbientSoundView ambient_sound;
     KfMapObjectTailCellCopyView cell_copy;
     KfMapObjectTailAction88CellCopyView action_88_cell_copy;
+    KfMapObjectTailAction89LayerFadeView action_89_layer_fade;
     KfMapObjectTailAction84PatternView action_84_pattern;
     KfMapObjectTailCollisionProbeView collision_probe;
     KfMapObjectTailLinkedPropertyView linked_property;
@@ -463,6 +501,7 @@ typedef union KfMapObjectTail {
     KfMapObjectTailScaleLinkView scale_link;
     KfMapObjectTailPair38View pair_38;
     KfMapObjectTailMarkerView marker;
+    KfMapObjectTailAction51MarkerView action_51_marker;
     KfMapObjectTailInitialRotationView initial_rotation;
     KfMapObjectTailEventEffectView event_effect;
     KfMapObjectTailSpawnByteFields spawn_bytes;

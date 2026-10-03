@@ -46,7 +46,7 @@ void actor_set_home_position(KfActor *actor)
     if (actor->position.vy >= 0) {
         actor->position.vy = 0;
     }
-    if (actor->unknown_28 & 0x400) {
+    if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
     if (!(actor->unknown_28 & KF_ACTOR_FLAG_LINKED)) {
@@ -92,7 +92,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->turn_rate = 0;
     actor->lighting_override = 0x47;
     actor->lighting_blend = 0x800;
-    if (actor->unknown_28 & 0x80) {
+    if (actor->unknown_28 & KF_ACTOR_FLAG_BLENDED_MODEL) {
         actor->render_mode = 1;
     } else {
         actor->render_mode = 0xff;

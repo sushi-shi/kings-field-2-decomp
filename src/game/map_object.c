@@ -675,20 +675,20 @@ void map_object_apply_marker_signal(u8 identifier)
             }
             break;
         case 0x58:
-            if (object->tail.fields.unknown_39 == identifier) {
+            if (object->tail.action_88_cell_copy.marker_id == identifier) {
                 object->action_timer = 1;
-                object->tail.fields.unknown_38 =
-                    object->tail.fields.unknown_38 == 0;
+                object->tail.action_88_cell_copy.transition_mode =
+                    object->tail.action_88_cell_copy.transition_mode == 0;
             }
             break;
         case 0x51:
-            if (object->tail.spawn_bytes.spawn_sequence.high == identifier) {
+            if (object->tail.action_51_marker.marker_id == identifier) {
                 object->tail.fields.unknown_38 =
                     object->tail.fields.unknown_38 == 0 ? 0xff : 0;
             }
             break;
         case 0x59:
-            if (object->tail.marker.marker_id == identifier) {
+            if (object->tail.action_89_layer_fade.marker_id == identifier) {
                 object->action_timer = 1;
             }
             break;

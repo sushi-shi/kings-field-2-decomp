@@ -25,6 +25,20 @@ enum {
     KF_PLAYER_HEIGHT = 1700
 };
 
+/* The byte at player +0xcd selects the camera, overlap, damage, and death
+ * reaction paths in player_update_frame. */
+enum {
+    KF_PLAYER_REACTION_NORMAL = 0,
+    KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW = 1,
+    KF_PLAYER_REACTION_MAP_OBJECT_APPROACH = 2,
+    KF_PLAYER_REACTION_ROTATION = 3,
+    KF_PLAYER_REACTION_OVERLAP_BOB = 4,
+    KF_PLAYER_REACTION_POSITION_RECOVERY = 5,
+    KF_PLAYER_REACTION_MOVING_DAMAGE = 0x10,
+    KF_PLAYER_REACTION_DEATH = 0x11,
+    KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
+};
+
 /* Low-halfword motion bits kept when the player's motion is cleared. */
 enum {
     KF_PLAYER_MOTION_FLAGS_KEPT = 0x8b0

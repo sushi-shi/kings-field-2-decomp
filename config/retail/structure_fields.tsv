@@ -32,7 +32,7 @@ KfActor	0x20	0x2	word_20	KfActorWord20	supported	GAME actor_set_home_position;ac
 KfActor	0x22	0x2	word_22	KfActorWord22	supported	GAME actor_set_home_position;actor_target_selection;actor_fixup_group_targets	Signed home-local Z offset; linked actors and a linked map object use this word as an index in specific modes
 KfActor	0x24	0x2	word_24	KfActorWord24	supported	GAME actor_set_home_position;actor_update_behavior	Signed home-local X offset; linked actor behavior also uses this word as an animation vertex index
 KfActor	0x26	0x2	vertical_anchor_offset	s16	supported	actor_load_records;actor_set_home_position;actor_animation;actor_behavior_dispatch	signed local Y offset used for placement, collision baseline, and target sampling
-KfActor	0x28	0x4	unknown_28	u32	opaque	GAME actor_set_home_position;actor_update_behavior;actor_target_selection	Flag word; bit 0x10 links actor motion/position to another actor and bypasses normal vertical-anchor placement; other bits remain unresolved
+KfActor	0x28	0x4	unknown_28	u32	opaque	GAME 0x80038d70/0x8003b64c andi;0x8003d3a8/0x8003d448 andi;0x8003fd74/0x800451e8 ori;actor_initialize_from_group;render_world_model	Flag word; 0x10 links actor motion, 0x80 selects blended model render mode, 0x400 chooses raw map-layer floor, 0x800 holds effect-gated animation; other bits unresolved
 KfActor	0x2c	0x10	position	VECTOR	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3c	0x4	ballistic_origin_y	s32	supported	actor_start_ballistic_motion;actor_update_vertical_motion state 0x30	captures actor Y at ballistic start and anchors the parabolic position equation
 KfActor	0x40	0x6	rotation	KfEulerAngles	supported	game/actor.h;retail GAME actor motion	three signed rotation angles passed to pitch_yaw_to_forward_vector
@@ -442,11 +442,13 @@ KfMapObjectTail	0x0	0xc	ambient_sound	KfMapObjectTailAmbientSoundView	supported	
 KfMapObjectTail	0x0	0xc	cell_copy	KfMapObjectTailCellCopyView	supported	map_object_initialize_from_placements;map_object_update_actions;map_cell_copy_rotated_fields	actions 3 and 4 copy a rotated map-cell region
 KfMapObjectTail	0x0	0xc	action_84_pattern	KfMapObjectTailAction84PatternView	supported	GAME 0x80037ee4..0x80037f84;map_cell_apply_rotated_pattern	action 84 region and pattern flags
 KfMapObjectTail	0x0	0xc	action_88_cell_copy	KfMapObjectTailAction88CellCopyView	supported	GAME 0x80037c34..0x80037c74;map_cell_copy_rotated_fields	action 88's separate rotated copy layout
+KfMapObjectTail	0x0	0xc	action_89_layer_fade	KfMapObjectTailAction89LayerFadeView	supported	GAME 0x80036828 marker compare;GAME 0x80037ce4 delay copy	action 89 marker and initial layer-fade delay view
 KfMapObjectTail	0x0	0xc	collision_probe	KfMapObjectTailCollisionProbeView	supported	GAME 0x80038148..0x800383c8;effect_dispatch_magic_impact	action 81 collision-gate and damage parameters
 KfMapObjectTail	0x0	0xc	linked_property	KfMapObjectTailLinkedPropertyView	supported	map_object_update_actions actions 5/8/22;map_object_refresh_cell_markers	property changes target another map object by index
 KfMapObjectTail	0x0	0xc	action_83	KfMapObjectTailAction83View	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	action 83 completion marker view
 KfMapObjectTail	0x0	0xc	scale_link	KfMapObjectTailScaleLinkView	supported	GAME 0x8003860c..0x800386dc;map_object_update_actions	action 19 linked object and scale step view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTail	0x0	0xc	action_51_marker	KfMapObjectTailAction51MarkerView	supported	GAME 0x80036800 lbu;map_object_apply_marker_signal action 0x51	action-specific marker-byte view
 KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;render_scene_and_update_resources	byte view of the packed spawn sequence
 KfMapObjectTail	0x0	0xc	reset_words	u32[3]	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTailFields	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
@@ -504,19 +506,24 @@ KfMapObjectTailCellCopyView	0x5	0x1	destination_x	u8	supported	GAME 0x80035c1c l
 KfMapObjectTailCellCopyView	0x6	0x1	destination_z	u8	supported	GAME 0x80035c08 lbu;map_cell_copy_rotated_fields	destination map-cell Z argument
 KfMapObjectTailCellCopyView	0x7	0x1	source_x	u8	supported	GAME 0x80035c10 lbu;map_cell_copy_rotated_fields	source map-cell X argument
 KfMapObjectTailCellCopyView	0x8	0x1	source_z	u8	supported	GAME 0x80035c18 lbu;map_cell_copy_rotated_fields	source map-cell Z argument
-KfMapObjectTailCellCopyView	0x9	0x1	unknown_3d	u8	opaque	game/map_object.h	action-specific byte
+KfMapObjectTailCellCopyView	0x9	0x1	linked_object_index	u8	supported	GAME 0x800373b8 lbu;object-index times 68 at 0x800373c4..d8;action 4 branch	Action-4 linked map-object index; action 3 does not read this byte
 KfMapObjectTailCellCopyView	0xa	0x2	unknown_3e	u16	opaque	game/map_object.h	action-specific halfword
 KfMapObjectTailAction88CellCopyView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 88
 KfMapObjectTailAction88CellCopyView	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 88	zero selects decreasing phase and second cell copy; one selects increasing phase
-KfMapObjectTailAction88CellCopyView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	action-specific byte
+KfMapObjectTailAction88CellCopyView	0x5	0x1	marker_id	u8	supported	GAME 0x800367dc lbu and compare with incoming marker in action 0x58	Action-88 marker identifier that arms the copy transition
 KfMapObjectTailAction88CellCopyView	0x6	0x1	destination_x	u8	supported	GAME 0x80037c44 lbu;map_cell_copy_rotated_fields	destination map-cell X argument
 KfMapObjectTailAction88CellCopyView	0x7	0x1	destination_z	u8	supported	GAME 0x80037c34 lbu;map_cell_copy_rotated_fields	destination map-cell Z argument
 KfMapObjectTailAction88CellCopyView	0x8	0x1	source_x	u8	supported	GAME 0x80037c3c lbu;map_cell_copy_rotated_fields	source map-cell X argument
 KfMapObjectTailAction88CellCopyView	0x9	0x1	source_z	u8	supported	GAME 0x80037c40 lbu;map_cell_copy_rotated_fields	source map-cell Z argument
 KfMapObjectTailAction88CellCopyView	0xa	0x1	width	u8	supported	GAME 0x80037c4c lbu;map_cell_copy_rotated_fields	copy width argument
 KfMapObjectTailAction88CellCopyView	0xb	0x1	height	u8	supported	GAME 0x80037c58 lbu;map_cell_copy_rotated_fields	copy height argument
+KfMapObjectTailAction89LayerFadeView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains action-specific
+KfMapObjectTailAction89LayerFadeView	0x4	0x1	marker_id	u8	supported	GAME 0x80036828 lbu and compare with incoming marker	action-89 trigger marker identifier
+KfMapObjectTailAction89LayerFadeView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	adjacent action-specific byte
+KfMapObjectTailAction89LayerFadeView	0x6	0x2	delay_frames	u16	supported	GAME 0x80037ce4 lhu and copy to extra_40.layer_fade.delay_frames_left	initial layer-fade delay in frame ticks
+KfMapObjectTailAction89LayerFadeView	0x8	0x4	unknown_3c	u8[4]	opaque	game/map_object.h	remaining action-specific bytes
 KfMapObjectTailAction84PatternView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 84
-KfMapObjectTailAction84PatternView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	action-specific state byte
+KfMapObjectTailAction84PatternView	0x4	0x1	marker_id	u8	supported	GAME 0x800367c4 compares incoming marker for action 0x54;GAME 0x80037f28/0x80037fe8 consume 0xff marker state	Action-84 marker identifier, set to 0xff when consumed or latched
 KfMapObjectTailAction84PatternView	0x5	0x1	center_x	u8	supported	GAME 0x80037ee8 lbu;player_camera_within_map_region	region center X byte
 KfMapObjectTailAction84PatternView	0x6	0x1	center_z	u8	supported	GAME 0x80037ef0 lbu;player_camera_within_map_region	region center Z byte
 KfMapObjectTailAction84PatternView	0x7	0x1	region_width	u8	supported	GAME 0x80037eec lbu;player_camera_within_map_region	region X extent
@@ -546,6 +553,13 @@ KfMapObjectTailInitialRotationView	0x9	0x3	unknown_3d	u8[3]	opaque	game/map_obje
 KfMapObjectTailMarkerView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains action-specific
 KfMapObjectTailMarkerView	0x4	0x1	marker_id	u8	supported	GAME 0x800367c4..0x80036894 lbu/sb;map_object_apply_marker_signal;map_object_check_and_consume_marker	incoming marker identifier compared and consumed for marker-driven actions
 KfMapObjectTailMarkerView	0x5	0x7	unknown_39	u8[7]	opaque	game/map_object.h	remaining tail bytes retain action-specific meanings
+KfMapObjectTailAction51MarkerView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains action-specific
+KfMapObjectTailAction51MarkerView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	action state byte not resolved by marker comparison
+KfMapObjectTailAction51MarkerView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	adjacent action-specific byte
+KfMapObjectTailAction51MarkerView	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h	action-specific halfword
+KfMapObjectTailAction51MarkerView	0x8	0x1	unknown_3c	u8	opaque	game/map_object.h	low byte adjoining marker ID
+KfMapObjectTailAction51MarkerView	0x9	0x1	marker_id	u8	supported	GAME 0x80036800 lbu and compare with incoming marker	action-0x51 trigger marker identifier
+KfMapObjectTailAction51MarkerView	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h	remaining action-specific halfword
 KfMapObjectTailAction83View	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 83
 KfMapObjectTailAction83View	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 83	selects opening, closing, and return path on phase completion
 KfMapObjectTailAction83View	0x5	0x1	completion_marker	u8	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	marker emitted when action 83 opening or closing phase completes
@@ -778,7 +792,7 @@ KfPlayerState	0xc9	0x01	hud_gauges_enabled	u8	supported	asm;render_game_frame;me
 KfPlayerState	0xca	0x01	compass_enabled	u8	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates rotating compass render model row 0
 KfPlayerState	0xcb	0x01	item_preview_enabled	u8	supported	asm;menu_load_item_model;menu_update_item_preview	gates 3D item preview loading and drawing
 KfPlayerState	0xcc	0x01	walking_bob_enabled	u8	supported	asm;player_update_vertical_motion	gates sinusoidal walking camera bob
-KfPlayerState	0xcd	0x01	death_state	u8	supported	asm;player_death_begin	0x11 marks the death transition
+KfPlayerState	0xcd	0x01	death_state	u8	supported	GAME 0x80029be0 lbu and 0x00..0x12 jump-table dispatch;player reaction setters	General camera, overlap, damage, and death reaction state
 KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet modelled
 KfPlayerState	0xd0	0x01	vertical_motion_state	u8	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses
 KfPlayerState	0xd1	0x04	queued_magic_action	KfQueuedMagicAction	supported	asm;player_select_magic_action;player_update_frame	magic ID sentinel 0xff and dispatch-count/interval/countdown loop

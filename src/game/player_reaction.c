@@ -203,7 +203,7 @@ void player_handle_interaction_and_menu(void)
     s32 value;
 
     if ((player_state.flags_140.word & 0x00200020) == 0x20) {
-        if (player_state.death_state == 1) {
+        if (player_state.death_state == KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
             player_apply_map_object_reaction(&map_object_state.objects[player_state.reaction.view.mode]);
         } else {
             event_world_dispatch_interaction(&player_state.camera_position,
@@ -236,7 +236,7 @@ void player_handle_interaction_and_menu(void)
 ADDRESS(0x80029168, 0x68)
 void player_reset_reaction_state(void)
 {
-    player_state.death_state = 0;
+    player_state.death_state = KF_PLAYER_REACTION_NORMAL;
     player_state.forward_velocity = 0;
     player_state.strafe_velocity = 0;
     player_state.reaction_rotation_offset[2] = 0;
@@ -253,7 +253,7 @@ void player_reset_reaction_state(void)
 ADDRESS(0x800291d0, 0x1c)
 void player_begin_map_object_view_follow(u8 mode)
 {
-    player_state.death_state = 1;
+    player_state.death_state = KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW;
     player_state.reaction.view.mode = mode;
 }
 
@@ -278,7 +278,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
 {
     KfMapObjectRecord40 *record;
 
-    if (player_state.death_state != 1) {
+    if (player_state.death_state != KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
         return;
     }
     if (player_state.reaction.view.mode != object - map_object_state.objects) {
@@ -303,7 +303,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
         struct KfVecXZi offset;
         angle_to_forward_xz(object->rotation.vy + 1024, &offset);
         vector2i_scale_shift11(900, &offset);
-        player_state.death_state = 5;
+        player_state.death_state = KF_PLAYER_REACTION_POSITION_RECOVERY;
         player_state.reaction.position.mode = 0;
         player_state.reaction.position.position.vx = object->position.vx + offset.x;
         player_state.reaction.position.position.vz = object->position.vz + offset.z;
@@ -314,7 +314,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
 ADDRESS(0x800293d4, 0x54)
 void player_begin_view_reaction(u8 mode)
 {
-    player_state.death_state = 2;
+    player_state.death_state = KF_PLAYER_REACTION_MAP_OBJECT_APPROACH;
     player_state.reaction.view.mode = mode;
     player_state.reaction.view.step = 0;
     player_state.reaction.view.rotation = player_state.camera_rotation_target;
@@ -323,14 +323,14 @@ void player_begin_view_reaction(u8 mode)
 ADDRESS(0x80029428, 0x3c)
 void player_begin_rotation_reaction(const SVECTOR *rotation)
 {
-    player_state.death_state = 3;
+    player_state.death_state = KF_PLAYER_REACTION_ROTATION;
     player_state.reaction.damage.rotation = *rotation;
 }
 
 ADDRESS(0x80029464, 0x94)
 void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
 {
-    player_state.death_state = 0x10;
+    player_state.death_state = KF_PLAYER_REACTION_MOVING_DAMAGE;
     player_state.reaction.damage.rotation = *rotation;
     player_state.reaction.damage.motion = *motion;
     player_state.damage_red_overlay_scale = 3500;
@@ -342,7 +342,7 @@ void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR 
 ADDRESS(0x800294f8, 0x78)
 void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion, s16 duration)
 {
-    player_state.death_state = 0x12;
+    player_state.death_state = KF_PLAYER_REACTION_ROTATION_DAMAGE;
     player_state.reaction.damage.rotation = *rotation;
     player_state.reaction.damage.motion = *motion;
     player_state.damage_red_overlay_scale = 3500;
@@ -350,7 +350,6 @@ void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const S
 }
 
 enum {
-    KF_PLAYER_DEATH_STATE = 0x11,
     KF_PLAYER_DEATH_SOUND = 0xb,
     KF_PLAYER_DEATH_VOLUME = 110
 };
@@ -358,8 +357,8 @@ enum {
 ADDRESS(0x80029570, 0x88)
 void player_death_begin(const SVECTOR *rotation)
 {
-    if (player_state.death_state != KF_PLAYER_DEATH_STATE) {
-        player_state.death_state = KF_PLAYER_DEATH_STATE;
+    if (player_state.death_state != KF_PLAYER_REACTION_DEATH) {
+        player_state.death_state = KF_PLAYER_REACTION_DEATH;
         audio_play_sound(KF_PLAYER_DEATH_SOUND, KF_PLAYER_DEATH_VOLUME);
         if (rotation != NULL) {
             player_state.reaction.damage.rotation = *rotation;
@@ -372,8 +371,8 @@ void player_death_begin(const SVECTOR *rotation)
 ADDRESS(0x800295f8, 0x2c)
 void player_begin_actor_overlap_bob(void)
 {
-    if (player_state.death_state == 0) {
-        player_state.death_state = 4;
+    if (player_state.death_state == KF_PLAYER_REACTION_NORMAL) {
+        player_state.death_state = KF_PLAYER_REACTION_OVERLAP_BOB;
         player_state.reaction.damage.rotation.vx = 0;
     }
 }
@@ -551,12 +550,12 @@ void player_update_frame(void)
     }
 
     switch (player_state.death_state) {
-    case 0:
+    case KF_PLAYER_REACTION_NORMAL:
         player_update_actions_and_charge();
         player_update_camera_rotation();
         player_update_horizontal_motion();
         goto update_reaction_pose;
-    case 1:
+    case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -572,7 +571,7 @@ void player_update_frame(void)
 update_reaction_view:
         player_handle_interaction_and_menu();
         goto after_reaction;
-    case 2:
+    case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH:
         object_index = player_state.reaction.view.mode;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -597,7 +596,7 @@ update_reaction_view:
             player_begin_map_object_view_follow(player_state.reaction.view.mode);
         }
         goto after_reaction;
-    case 5:
+    case KF_PLAYER_REACTION_POSITION_RECOVERY:
         ++player_state.reaction.position.mode;
         fraction = player_state.reaction.position.mode << 8;
         player_state.camera_position.vx = fixed_lerp_q12(
@@ -613,12 +612,12 @@ update_reaction_view:
             player_reset_reaction_state();
         }
         goto after_reaction;
-    case 3:
+    case KF_PLAYER_REACTION_ROTATION:
         if (player_move_reaction_with_collision() != 0) {
             player_reset_reaction_state();
         }
         goto update_reaction_view;
-    case 4: {
+    case KF_PLAYER_REACTION_OVERLAP_BOB: {
         u16 angle_phase;
 
         player_update_actions_and_charge();
@@ -637,7 +636,7 @@ update_reaction_view:
         }
         goto update_reaction_view;
     }
-    case 16:
+    case KF_PLAYER_REACTION_MOVING_DAMAGE:
         player_update_actions_and_charge();
         player_update_camera_rotation();
         player_update_horizontal_motion();
@@ -652,7 +651,7 @@ update_reaction_view:
 update_reaction_pose:
         player_update_vertical_motion();
         goto update_reaction_view;
-    case 18:
+    case KF_PLAYER_REACTION_ROTATION_DAMAGE:
         player_update_reaction_rotation_offsets();
         if (player_state.reaction_rotation_offset[0] == 0
             && player_state.reaction_rotation_offset[1] == 0
@@ -660,7 +659,7 @@ update_reaction_pose:
             player_reset_reaction_state();
         }
         goto update_reaction_view;
-    case 17:
+    case KF_PLAYER_REACTION_DEATH:
         player_state.vitals.current_hp = 0;
         value = angle_velocity_step(-1024, player_state.reaction_rotation_offset[0],
                                     player_state.reaction.damage.motion.vx, 8, 4);

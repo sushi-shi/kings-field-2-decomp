@@ -175,8 +175,8 @@ void map_object_update_actions(void)
                         object->render_depth_offset = 0xf0;
                     }
                 }
-                if (object->tail.spawn_bytes.spawn_sequence.high != 0xff) {
-                    linked = &map_object_state.objects[object->tail.spawn_bytes.spawn_sequence.high];
+                if (object->tail.cell_copy.linked_object_index != 0xff) {
+                    linked = &map_object_state.objects[object->tail.cell_copy.linked_object_index];
                     if (linked->collision_flags & 0x80) {
                         s32 bearing = vector_xz_to_angle(
                             player_state.camera_position.vx - linked->position.vx,
@@ -500,7 +500,7 @@ void map_object_update_actions(void)
         case 89:
             switch (object->action_timer) {
             case 1:
-                object->extra_40.layer_fade.delay_frames_left = object->tail.fields.unknown_3a.value;
+                object->extra_40.layer_fade.delay_frames_left = object->tail.action_89_layer_fade.delay_frames;
                 object->action_timer = 2;
                 object->layer_mask = object->extra_40.layer_fade.original_layer_mask;
                 break;
@@ -578,7 +578,7 @@ void map_object_update_actions(void)
                 s32 source_x = center_x - ((width - 1) >> 1);
                 s32 source_z = center_z - ((height - 1) >> 1);
                 if (player_camera_within_map_region(source_x, source_z, width, height, depth) ||
-                    object->tail.fields.unknown_38 == 0xff) {
+                    object->tail.action_84_pattern.marker_id == 0xff) {
                     map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
@@ -599,7 +599,7 @@ void map_object_update_actions(void)
                     object->phase_q12 = 0;
                     if (object->tail.action_84_pattern.pattern_flags & 2) {
                         object->action_timer = 99;
-                        object->tail.fields.unknown_38 = 0xff;
+                        object->tail.action_84_pattern.marker_id = 0xff;
                     } else {
                         object->action_timer = 2;
                     }

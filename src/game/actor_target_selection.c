@@ -1447,16 +1447,16 @@ ADDRESS(0x8003c10c, 0x114)
 VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
 {
     KfTargetGroup *group;
-    switch (actor->flags & 3) {
-    case 0:
+    switch (actor->flags & KF_ACTOR_POSITION_MODE_MASK) {
+    case KF_ACTOR_POSITION_DIRECT:
         return &actor->position;
-    case 1:
+    case KF_ACTOR_POSITION_GROUP_OFFSET:
         group = &actor_state.target_groups[actor->group_index];
         setVector(output, actor->position.vx + group->position_offset_x,
                   actor->position.vy + group->position_offset_y,
                   actor->position.vz + group->position_offset_z);
         return output;
-    case 2:
+    case KF_ACTOR_POSITION_ROTATED_GROUP_OFFSET:
         group = &actor_state.target_groups[actor->group_index];
         vector_rotate_yxz(&actor->rotation,
                           (SVECTOR *)&group->position_offset_x, output);

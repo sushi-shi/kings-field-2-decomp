@@ -1561,7 +1561,7 @@ OPEN.EXE	0x8003de6c	0x2d66c	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .
 OPEN.EXE	0x8003de70	0x2d670	0x4	pointer	manual:exact Psy-Q 3.0 LIBETC INTR_DMA.OBJ .sdata		pointer	archive .sdata 8-byte section byte-exact in retail; section-relative DMAInit text patches agree at .sdata+0x0	SDK initialized section word; original object boundary and name unresolved
 OPEN.EXE	0x8003de74	0x2d674	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA.OBJ .sdata		undefined4	archive .sdata 8-byte section byte-exact in retail; section-relative DMAInit text patches agree at .sdata+0x4	SDK initialized section word; original object boundary and name unresolved
 OPEN.EXE	0x8003de78	0x2d678	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
-OPEN.EXE	0x8003de88	0x2d688	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003de88	0x2d688	0x4	pointer	manual:exact Psy-Q 3.0 LIBSND VMANAGER.OBJ .sdata		pointer	archive four-byte hardware pointer exact;SpuVmInit native patch +0x1514 matches retail 0x800209c4 xref	SDK SPU register pointer; original C declaration unresolved
 OPEN.EXE	0x8003de8c	0x2d68c	0x4	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .sdata		u32	archive 4-byte zero section exact;SpuStart/SpuQuit section-relative HI16/LO16 pairs	SDK start-state flag; original C declaration unresolved
 OPEN.EXE	0x8003de90	0x2d690	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 OPEN.EXE	0x8003de94	0x2d694	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
@@ -2277,7 +2277,7 @@ END.EXE	0x8003ac8c	0x2a48c	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR.OBJ .s
 END.EXE	0x8003ac90	0x2a490	0x4	pointer	manual:exact Psy-Q 3.0 LIBETC INTR_DMA.OBJ .sdata		pointer	archive .sdata 8-byte section byte-exact in retail; section-relative DMAInit text patches agree at .sdata+0x0	SDK initialized section word; original object boundary and name unresolved
 END.EXE	0x8003ac94	0x2a494	0x4	defined	manual:exact Psy-Q 3.0 LIBETC INTR_DMA.OBJ .sdata		undefined4	archive .sdata 8-byte section byte-exact in retail; section-relative DMAInit text patches agree at .sdata+0x4	SDK initialized section word; original object boundary and name unresolved
 END.EXE	0x8003ac98	0x2a498	0x10	defined	manual:exact Psy-Q 3.0 LIBETC VSYNC .sdata record		u32[4]	archive 16-byte initialized record;retail exact	vendor section record; original C declaration and linkage unresolved
-END.EXE	0x8003aca8	0x2a4a8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003aca8	0x2a4a8	0x4	pointer	manual:exact Psy-Q 3.0 LIBSND VMANAGER.OBJ .sdata		pointer	archive four-byte hardware pointer exact;SpuVmInit native patch +0x1514 matches retail 0x80020314 xref	SDK SPU register pointer; original C declaration unresolved
 END.EXE	0x8003acac	0x2a4ac	0x4	defined	manual:exact Psy-Q 3.0 LIBSPU S_INI.OBJ .sdata		u32	archive 4-byte zero section exact;SpuStart/SpuQuit section-relative HI16/LO16 pairs	SDK start-state flag; original C declaration unresolved
 END.EXE	0x8003acb0	0x2a4b0	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x0;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
 END.EXE	0x8003acb4	0x2a4b4	0x4	pointer	manual:exact Psy-Q 3.0 LIBSPU SPU.OBJ .sdata		pointer	archive 28-byte section exact at .sdata+0x4;retail hardware pointer word	SDK SPU register pointer; original C object boundary unresolved
@@ -2374,7 +2374,7 @@ END.EXE	0x8003ae30	0x2a630	0x4	defined	reviewed	spu_transfer_size	undefined4	Psy
 END.EXE	0x8003ae34	0x2a634	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ae38	0x2a638	0x4	defined	reviewed	spu_transfer_time	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0x38;retail _spu_w lw/sw	private SPU transfer time; physical linked bytes are zero
 END.EXE	0x8003ae3c	0x2a63c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ae40	0x2a640	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ae40	0x2a640	0x4	defined	reviewed	spu_mem_mode	undefined4	Psy-Q 3.0 LIBSPU S_M_INT.OBJ local .sbss+0;retail SpuInitMalloc/SpuMalloc lw/sw	private SPU allocation mode word; physical linked bytes are zero
 END.EXE	0x8003ae44	0x2a644	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ae48	0x2a648	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ae48	0x2a648	0x4	defined	reviewed	_SpuMemList	pointer	Psy-Q 3.0 LIBSPU S_M_INT.OBJ local .sbss+8;retail SpuInitMalloc/_gcSPU lw/sw	private SPU allocation-list pointer; physical linked bytes are zero
 END.EXE	0x8003ae4c	0x2a64c	0x1b4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

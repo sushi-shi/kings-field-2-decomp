@@ -940,7 +940,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
 }
 
 ADDRESS(0x8002ebe0, 0x5b4)
-void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s16 fixed_depth)
+void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_depth)
 {
     KfTmdObject *object;
     u8 *normals;

@@ -637,7 +637,7 @@ typedef struct KfActorStateGame {
     KfTargetGroup target_groups[40];
     /* 0x16820 loads the groups and this opaque tail as one 0x32c0-byte span;
      * 0x3f7ec fixes group target offsets after the copy. */
-    u8 unknown_73a0[0x2000];
+    u8 target_candidate_blob[0x2000];
     u8 actor_overlap_exclusion_flags;
     u8 unknown_93a1[3];
     s32 actor_collision_query_flags;
@@ -654,6 +654,8 @@ typedef struct KfActorStateGame {
 
 typedef char kf_actor_state_size[sizeof(KfActorStateGame) == 0x93cc ? 1 : -1];
 typedef char kf_actor_state_groups_offset[(u32)&((KfActorStateGame *)0)->target_groups == 0x60e0 ? 1 : -1];
+typedef char kf_actor_state_target_candidate_blob_offset[
+    (u32)&((KfActorStateGame *)0)->target_candidate_blob == 0x73a0 ? 1 : -1];
 typedef char kf_actor_state_active_group_offset[(u32)&((KfActorStateGame *)0)->active_group == 0x93a8 ? 1 : -1];
 typedef char kf_actor_state_current_offset[(u32)&((KfActorStateGame *)0)->current == 0x93ac ? 1 : -1];
 typedef char kf_actor_state_overlap_exclusion_flags_offset[

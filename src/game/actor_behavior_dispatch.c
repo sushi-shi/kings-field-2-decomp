@@ -1270,7 +1270,7 @@ void actor_fixup_group_targets(void)
     KfTargetReference *slot;
 
     group_index = 0;
-    base = (KfTargetCandidate *)actor_state.unknown_73a0;
+    base = (KfTargetCandidate *)actor_state.target_candidate_blob;
     while (group_index < 40) {
         if (group->definition_id == 0xff) {
             break;

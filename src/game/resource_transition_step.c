@@ -188,7 +188,7 @@ phase_three:
             }
             resource_copy_words((u32 *)actor_state.target_groups,
                 (u32 *)(stream + 4),
-                (sizeof(actor_state.target_groups) + sizeof(actor_state.unknown_73a0)) /
+                (sizeof(actor_state.target_groups) + sizeof(actor_state.target_candidate_blob)) /
                     sizeof(u32));
             actor_fixup_group_targets();
             stream += *(u32 *)stream + 4;

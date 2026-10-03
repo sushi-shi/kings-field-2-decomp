@@ -246,15 +246,9 @@ source = "src/game/map_object_action_update.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.actor_initialization"
+unit = "game.actor_runtime"
 image = "GAME.EXE"
-source = "src/game/actor_initialization.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.actor_target_selection"
-image = "GAME.EXE"
-source = "src/game/actor_target_selection.c"
+source = "src/game/actor_runtime.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

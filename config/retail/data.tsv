@@ -821,7 +821,7 @@ GAME.EXE	0x8006dab8	0x5d2b8	0x4	defined	reviewed		undefined4	Psy-Q 3.0 LIBCD BIO
 GAME.EXE	0x8006dabc	0x5d2bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dac0	0x5d2c0	0x4	defined	reviewed	current	undefined4	Psy-Q 3.0 LIBCD ISO9660.OBJ local .sbss+0;exact text section patch and three validated retail word xrefs	private CD search state word; original type and signedness unresolved
 GAME.EXE	0x8006dac4	0x5d2c4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dac8	0x5d2c8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;exact Psy-Q 3.0 LIBCD/CDROM .text xrefs	all curated direct references lie in the exact LIBCD/CDROM text section; original defining data object and extent unresolved
+GAME.EXE	0x8006dac8	0x5d2c8	0x4	defined	reviewed		pointer	Psy-Q 3.0 LIBCD CDROM.OBJ local HeaderArea.23 at .sbss+0;exact archive text patch and retail pointer store/load/dereference	private CD streaming pointer; original C spelling and pointer target type unresolved
 GAME.EXE	0x8006dacc	0x5d2cc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dad0	0x5d2d0	0x4	defined	reviewed	Rgb24	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x8;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dad4	0x5d2d4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1514,32 +1514,33 @@ OPEN.EXE	0x8003dd84	0x2d584	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdat
 OPEN.EXE	0x8003dda4	0x2d5a4	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive %s... newline NUL bytes;retail exact	vendor diagnostic string; original C declaration unresolved
 OPEN.EXE	0x8003ddab	0x2d5ab	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 25-byte record begins with one zero byte	alignment before six-word record; original C object boundary unresolved
 OPEN.EXE	0x8003ddac	0x2d5ac	0x18	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[6]	archive 25-byte code record after one zero alignment byte;all 24 table bytes retail exact	six hardware-register pointers; original C declaration unresolved
-OPEN.EXE	0x8003ddc4	0x2d5c4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddc8	0x2d5c8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddcc	0x2d5cc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddd0	0x2d5d0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddd4	0x2d5d4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddd8	0x2d5d8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dddc	0x2d5dc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dde0	0x2d5e0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dde4	0x2d5e4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003dde8	0x2d5e8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddec	0x2d5ec	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddf0	0x2d5f0	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddf4	0x2d5f4	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddf8	0x2d5f8	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003ddfc	0x2d5fc	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de00	0x2d600	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de04	0x2d604	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003de08	0x2d608	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de0c	0x2d60c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de10	0x2d610	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003de18	0x2d618	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de1c	0x2d61c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de20	0x2d620	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de24	0x2d624	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de28	0x2d628	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-OPEN.EXE	0x8003de2a	0x2d62a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003ddc4	0x2d5c4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x0;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddc8	0x2d5c8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x4;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddcc	0x2d5cc	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x8;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddd0	0x2d5d0	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0xc;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddd4	0x2d5d4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x10;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddd8	0x2d5d8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x14;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003dddc	0x2d5dc	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x18;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003dde0	0x2d5e0	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x1c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003dde4	0x2d5e4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x20;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003dde8	0x2d5e8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x24;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddec	0x2d5ec	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x28;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddf0	0x2d5f0	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x2c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddf4	0x2d5f4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x30;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddf8	0x2d5f8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x34;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003ddfc	0x2d5fc	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x38;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de00	0x2d600	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x3c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de04	0x2d604	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x40;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de08	0x2d608	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x44;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de0c	0x2d60c	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x48;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de10	0x2d610	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x4c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de14	0x2d614	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x50;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de18	0x2d618	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x54;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de1c	0x2d61c	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x58;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de20	0x2d620	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x5c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de24	0x2d624	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x60;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de28	0x2d628	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x64;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+OPEN.EXE	0x8003de2c	0x2d62c	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x68;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
 OPEN.EXE	0x8003de30	0x2d630	0x4	defined	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata scalar		u32	archive four-byte scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de34	0x2d634	0x6	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive six-byte CD001 string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
 OPEN.EXE	0x8003de3a	0x2d63a	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive alignment bytes;retail zero	alignment before directory-name record
@@ -1585,7 +1586,7 @@ OPEN.EXE	0x8003dee0	0x2d6e0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 OPEN.EXE	0x8003dee4	0x2d6e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dee8	0x2d6e8	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 OPEN.EXE	0x8003deec	0x2d6ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8003def0	0x2d6f0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+OPEN.EXE	0x8003def0	0x2d6f0	0x4	defined	reviewed	target	s32	Psy-Q 3.0 LIBGPU SYS.OBJ local .sbss+0;retail set_alarm/get_alarm xrefs	private signed GPU alarm frame deadline; physical linked bytes are zero
 OPEN.EXE	0x8003def4	0x2d6f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003def8	0x2d6f8	0x4	defined	reviewed	tim	pointer	Psy-Q 3.0 LIBGPU TMD.OBJ local .sbss+0;retail OpenTIM/ReadTIM xrefs	private TIM word cursor; physical linked bytes are zero
 OPEN.EXE	0x8003defc	0x2d6fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -2238,32 +2239,33 @@ END.EXE	0x8003aba4	0x2a3a4	0x20	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata
 END.EXE	0x8003abc4	0x2a3c4	0x7	string	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata string		ascii	archive %s... newline NUL bytes;retail exact	vendor diagnostic string; original C declaration unresolved
 END.EXE	0x8003abcb	0x2a3cb	0x1	unclassified	manual:LIBCD BIOS .sdata alignment			archive 25-byte record begins with one zero byte	alignment before six-word record; original C object boundary unresolved
 END.EXE	0x8003abcc	0x2a3cc	0x18	defined	manual:exact Psy-Q 3.0 LIBCD BIOS .sdata record		u32[6]	archive 25-byte code record after one zero alignment byte;all 24 table bytes retail exact	six hardware-register pointers; original C declaration unresolved
-END.EXE	0x8003abe4	0x2a3e4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abe8	0x2a3e8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abec	0x2a3ec	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abf0	0x2a3f0	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abf4	0x2a3f4	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abf8	0x2a3f8	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003abfc	0x2a3fc	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac00	0x2a400	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac04	0x2a404	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac08	0x2a408	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac0c	0x2a40c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac10	0x2a410	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac14	0x2a414	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac18	0x2a418	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac1c	0x2a41c	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac20	0x2a420	0x4	pointer	ghidra-defined		undefined *	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac24	0x2a424	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ac28	0x2a428	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac2c	0x2a42c	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac30	0x2a430	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ac38	0x2a438	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac3c	0x2a43c	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac40	0x2a440	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac44	0x2a444	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac48	0x2a448	0x2	defined	ghidra-defined		undefined2	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-END.EXE	0x8003ac4a	0x2a44a	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8003abe4	0x2a3e4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x0;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abe8	0x2a3e8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x4;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abec	0x2a3ec	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x8;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abf0	0x2a3f0	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0xc;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abf4	0x2a3f4	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x10;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abf8	0x2a3f8	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x14;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003abfc	0x2a3fc	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x18;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac00	0x2a400	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x1c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac04	0x2a404	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x20;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac08	0x2a408	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x24;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac0c	0x2a40c	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x28;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac10	0x2a410	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x2c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac14	0x2a414	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x30;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac18	0x2a418	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x34;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac1c	0x2a41c	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x38;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac20	0x2a420	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x3c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac24	0x2a424	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x40;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac28	0x2a428	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x44;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac2c	0x2a42c	0x4	pointer	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		pointer	archive 108-byte .sdata section byte-exact in OPEN/END at +0x48;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac30	0x2a430	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x4c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac34	0x2a434	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x50;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac38	0x2a438	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x54;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac3c	0x2a43c	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x58;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac40	0x2a440	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x5c;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac44	0x2a444	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x60;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac48	0x2a448	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x64;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
+END.EXE	0x8003ac4c	0x2a44c	0x4	defined	manual:exact Psy-Q 3.0 LIBCD CDROM.OBJ .sdata		u32	archive 108-byte .sdata section byte-exact in OPEN/END at +0x68;CDROM native section-relative text patches	SDK initialized section word; original C object boundary and name unresolved
 END.EXE	0x8003ac50	0x2a450	0x4	defined	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata scalar		u32	archive four-byte scalar;retail exact	vendor scalar; original C declaration and linkage unresolved
 END.EXE	0x8003ac54	0x2a454	0x6	string	manual:exact Psy-Q 3.0 LIBCD ISO9660 .sdata string		ascii	archive six-byte CD001 string including NUL;retail exact	vendor string; original C declaration and linkage unresolved
 END.EXE	0x8003ac5a	0x2a45a	0x2	unclassified	manual:LIBCD ISO9660 .sdata alignment			archive alignment bytes;retail zero	alignment before directory-name record
@@ -2309,7 +2311,7 @@ END.EXE	0x8003ad00	0x2a500	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/
 END.EXE	0x8003ad04	0x2a504	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ad08	0x2a508	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ad0c	0x2a50c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8003ad10	0x2a510	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+END.EXE	0x8003ad10	0x2a510	0x4	defined	reviewed	target	s32	Psy-Q 3.0 LIBGPU SYS.OBJ local .sbss+0;retail set_alarm/get_alarm xrefs	private signed GPU alarm frame deadline; physical linked bytes are zero
 END.EXE	0x8003ad14	0x2a514	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003ad18	0x2a518	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 END.EXE	0x8003ad19	0x2a519	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

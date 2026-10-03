@@ -1161,11 +1161,12 @@ void actor_update_vertical_motion(void)
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
     s32 vertical_state;
+    const u16 *collision_layer = &KF_COLLISION_CACHE.layer;
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
                    actor->collision_height | ((actor->unknown_28 & 0xc000) << 16));
-    actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+    actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
     if (actor->unknown_28 & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
@@ -1255,7 +1256,7 @@ state_30: {
         if (collision == 0) {
             actor->position.vy = next_y;
             actor->motion.ballistic.phase++;
-            actor->current_map_layer = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+            actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
             return;
         }
         if (collision == 0x80) {

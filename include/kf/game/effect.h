@@ -101,6 +101,13 @@ typedef struct KfEffectKind111Target {
 
 typedef char kf_effect_kind111_target_size[sizeof(KfEffectKind111Target) == 2 ? 1 : -1];
 
+/* Kinds 103 and 121 decrement this count between fanout spawns. */
+typedef struct KfEffectKind103Counter {
+    u16 remaining;
+} KfEffectKind103Counter;
+
+typedef char kf_effect_kind103_counter_size[sizeof(KfEffectKind103Counter) == 2 ? 1 : -1];
+
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -183,6 +190,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind46State kind46;
     KfEffectKind5Fanout kind5;
     KfEffectKind111Target kind111;
+    KfEffectKind103Counter kind103;
     KfEffectTrailChildLink trail_child;
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;

@@ -577,7 +577,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         effect_pool_initialize_scaled(record, 0xf, 0x1000);
     initialize_103_121:
         record->updates_remaining = 100;
-        *(u16 *)&record->cache_tail.payload.raw[0] = va[1];
+        record->cache_tail.payload.kind103.remaining = va[1];
         effect_play_spatial_sound(record, 0x28);
         break;
     case 122:
@@ -2011,8 +2011,8 @@ void effect_update_dispatch(void)
     }
     kind103_after_spawn:
         if (prior_phase == 0) {
-            u16 count = *(u16 *)&record->cache_tail.payload.raw[0];
-            *(u16 *)&record->cache_tail.payload.raw[0] = count - 1;
+            u16 count = record->cache_tail.payload.kind103.remaining;
+            record->cache_tail.payload.kind103.remaining = count - 1;
             if ((s16)count <= 0) {
                 record->phase = 1;
             }

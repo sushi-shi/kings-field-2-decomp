@@ -94,73 +94,6 @@ typedef struct KfEffectKind5Fanout {
 typedef char kf_effect_kind5_fanout_size[sizeof(KfEffectKind5Fanout) == 4 ? 1 : -1];
 typedef char kf_effect_kind5_remaining_offset[(u32)&((KfEffectKind5Fanout *)0)->children_remaining == 2 ? 1 : -1];
 
-typedef union KfEffectKindPayload {
-    u8 raw[8];
-    KfEffectTrailState trail;
-    KfEffectKind102Payload kind102;
-    KfEffectBallisticState ballistic;
-    KfEffectKind23Attachment kind23;
-    KfEffectKind46State kind46;
-    KfEffectKind5Fanout kind5;
-} KfEffectKindPayload;
-
-typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
-
-/* Renderer-owned cache slot followed by the effect kind's variant payload. */
-typedef struct KfEffectCacheTail {
-    struct KfPoolRecord *animation_cache;
-    KfEffectKindPayload payload;
-} KfEffectCacheTail;
-
-typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
-typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->payload == 4 ? 1 : -1];
-
-/* The pool scan and reset visit 128 records at a 72-byte stride. */
-typedef struct KfEffectRecord {
-    u8 type;
-    u8 kind;
-    u8 base_render_id;
-    u8 render_id;
-    u8 animation_clip;
-    u8 unknown_05;
-    u8 damage_multiplier_tenths;
-    u8 phase;
-    u8 render_flags;
-    u8 render_queue_mode;
-    u8 map_layer_mask;
-    u8 cooldown;
-    u8 lighting_override_index;
-    u8 midpoint_collision_enabled;
-    s16 updates_remaining;
-    s16 lighting_blend_q12;
-    u16 animation_phase_q12;
-    VECTOR position;
-    SVECTOR rotation;
-    u16 scale_x;
-    u16 scale_y;
-    u16 scale_z;
-    KfEffectScaleThreshold scale_threshold;
-    SVECTOR direction;
-    KfEffectCacheTail cache_tail;
-} KfEffectRecord;
-
-typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
-typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];
-typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];
-typedef char kf_effect_map_layer_mask_offset[(u32)&((KfEffectRecord *)0)->map_layer_mask == 0x0a ? 1 : -1];
-typedef char kf_effect_render_queue_mode_offset[(u32)&((KfEffectRecord *)0)->render_queue_mode == 0x09 ? 1 : -1];
-typedef char kf_effect_lighting_override_offset[(u32)&((KfEffectRecord *)0)->lighting_override_index == 0x0c ? 1 : -1];
-typedef char kf_effect_midpoint_collision_offset[(u32)&((KfEffectRecord *)0)->midpoint_collision_enabled == 0x0d ? 1 : -1];
-typedef char kf_effect_lighting_blend_offset[(u32)&((KfEffectRecord *)0)->lighting_blend_q12 == 0x10 ? 1 : -1];
-typedef char kf_effect_animation_phase_offset[(u32)&((KfEffectRecord *)0)->animation_phase_q12 == 0x12 ? 1 : -1];
-typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 0x14 ? 1 : -1];
-typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
-typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale_threshold == 0x32 ? 1 : -1];
-typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
-typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->cache_tail == 0x3c ? 1 : -1];
-
-typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->cache_tail.payload.trail == 0x40 ? 1 : -1];
-
 /* Kind 107 follows one kind-6 record at an offset of three frames per row. */
 typedef struct KfEffectTrailChildLink {
     u8 parent_index;
@@ -233,6 +166,81 @@ typedef struct KfEffectKind12Aim {
 
 typedef char kf_effect_kind12_aim_size[sizeof(KfEffectKind12Aim) == 8 ? 1 : -1];
 typedef char kf_effect_kind12_close_scale_offset[(u32)&((KfEffectKind12Aim *)0)->close_scale == 6 ? 1 : -1];
+
+typedef union KfEffectKindPayload {
+    u8 raw[8];
+    KfEffectTrailState trail;
+    KfEffectKind102Payload kind102;
+    KfEffectBallisticState ballistic;
+    KfEffectKind23Attachment kind23;
+    KfEffectKind46State kind46;
+    KfEffectKind5Fanout kind5;
+    KfEffectTrailChildLink trail_child;
+    KfEffectKind8State kind8;
+    KfEffectKind9Target kind9;
+    KfEffectKind109Target kind109;
+    KfEffectKind101Motion kind101;
+    KfEffectKind10Targeting kind10;
+    KfEffectKind105Attachment kind105;
+    KfEffectKind12Aim kind12;
+} KfEffectKindPayload;
+
+typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
+
+/* Renderer-owned cache slot followed by the effect kind's variant payload. */
+typedef struct KfEffectCacheTail {
+    struct KfPoolRecord *animation_cache;
+    KfEffectKindPayload payload;
+} KfEffectCacheTail;
+
+typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
+typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->payload == 4 ? 1 : -1];
+
+/* The pool scan and reset visit 128 records at a 72-byte stride. */
+typedef struct KfEffectRecord {
+    u8 type;
+    u8 kind;
+    u8 base_render_id;
+    u8 render_id;
+    u8 animation_clip;
+    u8 unknown_05;
+    u8 damage_multiplier_tenths;
+    u8 phase;
+    u8 render_flags;
+    u8 render_queue_mode;
+    u8 map_layer_mask;
+    u8 cooldown;
+    u8 lighting_override_index;
+    u8 midpoint_collision_enabled;
+    s16 updates_remaining;
+    s16 lighting_blend_q12;
+    u16 animation_phase_q12;
+    VECTOR position;
+    SVECTOR rotation;
+    u16 scale_x;
+    u16 scale_y;
+    u16 scale_z;
+    KfEffectScaleThreshold scale_threshold;
+    SVECTOR direction;
+    KfEffectCacheTail cache_tail;
+} KfEffectRecord;
+
+typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
+typedef char kf_effect_damage_multiplier_offset[(u32)&((KfEffectRecord *)0)->damage_multiplier_tenths == 0x06 ? 1 : -1];
+typedef char kf_effect_render_flags_offset[(u32)&((KfEffectRecord *)0)->render_flags == 0x08 ? 1 : -1];
+typedef char kf_effect_map_layer_mask_offset[(u32)&((KfEffectRecord *)0)->map_layer_mask == 0x0a ? 1 : -1];
+typedef char kf_effect_render_queue_mode_offset[(u32)&((KfEffectRecord *)0)->render_queue_mode == 0x09 ? 1 : -1];
+typedef char kf_effect_lighting_override_offset[(u32)&((KfEffectRecord *)0)->lighting_override_index == 0x0c ? 1 : -1];
+typedef char kf_effect_midpoint_collision_offset[(u32)&((KfEffectRecord *)0)->midpoint_collision_enabled == 0x0d ? 1 : -1];
+typedef char kf_effect_lighting_blend_offset[(u32)&((KfEffectRecord *)0)->lighting_blend_q12 == 0x10 ? 1 : -1];
+typedef char kf_effect_animation_phase_offset[(u32)&((KfEffectRecord *)0)->animation_phase_q12 == 0x12 ? 1 : -1];
+typedef char kf_effect_position_offset[(u32)&((KfEffectRecord *)0)->position == 0x14 ? 1 : -1];
+typedef char kf_effect_scale_offset[(u32)&((KfEffectRecord *)0)->scale_x == 0x2c ? 1 : -1];
+typedef char kf_effect_scale_threshold_offset[(u32)&((KfEffectRecord *)0)->scale_threshold == 0x32 ? 1 : -1];
+typedef char kf_effect_direction_offset[(u32)&((KfEffectRecord *)0)->direction == 0x34 ? 1 : -1];
+typedef char kf_effect_cache_tail_offset[(u32)&((KfEffectRecord *)0)->cache_tail == 0x3c ? 1 : -1];
+
+typedef char kf_effect_trail_payload_offset[(u32)&((KfEffectRecord *)0)->cache_tail.payload.trail == 0x40 ? 1 : -1];
 
 /* The effect sweep indexes this 26-byte row family by the record kind. */
 typedef struct KfMagicRecord {

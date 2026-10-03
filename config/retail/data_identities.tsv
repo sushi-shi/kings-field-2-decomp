@@ -428,6 +428,7 @@ OPEN.EXE	0x80066058	0x28000	vlcbuf1	global	bss	u_long[40960]	movie_stream	suppor
 OPEN.EXE	0x8008e058	0x3c00	imgbuf	global	bss	u_short[]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	decoded slice buffer; extent measured to Ring_Buff (twice one 16x240 slice), declaration unknown
 OPEN.EXE	0x80091c58	0x10000	Ring_Buff	global	bss	u_long[16384]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	32-sector streaming ring buffer
 OPEN.EXE	0x800a1c58	0x30	dec	global	bss	DECENV	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	DECENV decode environment
+OPEN.EXE	0x800a30c8	0x18	ReadAttr	static	bss	u8[24]	LIBCD BIOS.OBJ	supported	native .bss 24-byte reservation with sole local ReadAttr at +0;17 BIOS text section pairs resolve retail base and offsets +0/+4/+8/+0xc/+0x10	private SDK CD read attributes; original structure fields unresolved; COMMON callback requests are separate symbols
 OPEN.EXE	0x800a5a50	0x8	_spu_rev_reserve_wa	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 OPEN.EXE	0x800a5a70	0x8	_spu_keyoff_bit	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 OPEN.EXE	0x800a5a90	0x4	audio_title_sequence_data	global	bss	u_long *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing;Psy-Q LIBSND.H SsSeqOpen(unsigned long*,short)	title SEQ copied from OP.D for SsSeqOpen
@@ -603,6 +604,7 @@ END.EXE	0x80062e50	0x28000	vlcbuf1	global	bss	u_long[40960]	movie_stream	support
 END.EXE	0x8008ae50	0x3c00	imgbuf	global	bss	u_short[]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	decoded slice buffer; extent measured to Ring_Buff (twice one 16x240 slice), declaration unknown
 END.EXE	0x8008ea50	0x10000	Ring_Buff	global	bss	u_long[16384]	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	32-sector streaming ring buffer
 END.EXE	0x8009ea50	0x30	dec	global	bss	DECENV	movie_stream	supported	asm;xrefs;Sony streaming movie tutorial layout	DECENV decode environment
+END.EXE	0x8009fec0	0x18	ReadAttr	static	bss	u8[24]	LIBCD BIOS.OBJ	supported	native .bss 24-byte reservation with sole local ReadAttr at +0;17 BIOS text section pairs resolve retail base and offsets +0/+4/+8/+0xc/+0x10	private SDK CD read attributes; original structure fields unresolved; COMMON callback requests are separate symbols
 END.EXE	0x800a2848	0x8	_spu_rev_reserve_wa	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 END.EXE	0x800a2868	0x8	_spu_keyoff_bit	global	bss	u8[8]	LIBSPU S_INI.OBJ	supported	archive XBSS size 0x8;S_INI section patch and retail raw pair	SDK private SPU state; internal field type unresolved
 END.EXE	0x800a2888	0x4	audio_sequence_data	global	bss	u_long *	audio	supported	asm;xrefs;ending_open_audio;Psy-Q LIBSND.H SsSeqOpen(unsigned long*,short)	SEQ data passed to SsSeqOpen

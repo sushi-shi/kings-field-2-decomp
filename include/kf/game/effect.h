@@ -63,11 +63,23 @@ typedef struct KfEffectBallisticState {
 typedef char kf_effect_ballistic_state_size[sizeof(KfEffectBallisticState) == 4 ? 1 : -1];
 typedef char kf_effect_ballistic_age_offset[(u32)&((KfEffectBallisticState *)0)->age == 2 ? 1 : -1];
 
+/* Kind 23 tracks an actor vertex until its animation reaches a phase threshold. */
+typedef struct KfEffectKind23Attachment {
+    s16 actor_index;
+    s16 vertex_index;
+    u16 release_animation_phase;
+} KfEffectKind23Attachment;
+
+typedef char kf_effect_kind23_attachment_size[sizeof(KfEffectKind23Attachment) == 6 ? 1 : -1];
+typedef char kf_effect_kind23_vertex_offset[(u32)&((KfEffectKind23Attachment *)0)->vertex_index == 2 ? 1 : -1];
+typedef char kf_effect_kind23_phase_offset[(u32)&((KfEffectKind23Attachment *)0)->release_animation_phase == 4 ? 1 : -1];
+
 typedef union KfEffectKindPayload {
     u8 raw[8];
     KfEffectTrailState trail;
     KfEffectKind102Payload kind102;
     KfEffectBallisticState ballistic;
+    KfEffectKind23Attachment kind23;
 } KfEffectKindPayload;
 
 typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
@@ -209,17 +221,6 @@ typedef struct KfEffectKind105Attachment {
 
 typedef char kf_effect_kind105_attachment_size[sizeof(KfEffectKind105Attachment) == 4 ? 1 : -1];
 typedef char kf_effect_kind105_vertex_offset[(u32)&((KfEffectKind105Attachment *)0)->vertex_index == 2 ? 1 : -1];
-
-/* Kind 23 tracks an actor vertex until its animation reaches a phase threshold. */
-typedef struct KfEffectKind23Attachment {
-    s16 actor_index;
-    s16 vertex_index;
-    u16 release_animation_phase;
-} KfEffectKind23Attachment;
-
-typedef char kf_effect_kind23_attachment_size[sizeof(KfEffectKind23Attachment) == 6 ? 1 : -1];
-typedef char kf_effect_kind23_vertex_offset[(u32)&((KfEffectKind23Attachment *)0)->vertex_index == 2 ? 1 : -1];
-typedef char kf_effect_kind23_phase_offset[(u32)&((KfEffectKind23Attachment *)0)->release_animation_phase == 4 ? 1 : -1];
 
 typedef struct KfEffectKind12Aim {
     s16 max_length;

@@ -1010,10 +1010,10 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->direction.vy = 0;
         record->direction.vx = 0;
         record->phase = 9;
-        ((KfEffectKind23Attachment *)&record->cache_tail.payload.raw[0])->actor_index = va[1];
-        ((KfEffectKind23Attachment *)&record->cache_tail.payload.raw[0])->vertex_index = va[2];
+        record->cache_tail.payload.kind23.actor_index = va[1];
+        record->cache_tail.payload.kind23.vertex_index = va[2];
         third_parameter = va[3];
-        *(u16 *)&record->cache_tail.payload.raw[4] = third_parameter;
+        record->cache_tail.payload.kind23.release_animation_phase = third_parameter;
         effect_play_spatial_sound(record, 0x26);
         break;
     }
@@ -1523,8 +1523,7 @@ void effect_update_dispatch(void)
     }
     case 23:
         if (initial_phase == 9) {
-            const KfEffectKind23Attachment *attachment =
-                (const KfEffectKind23Attachment *)&record->cache_tail.payload.raw[0];
+            const KfEffectKind23Attachment *attachment = &record->cache_tail.payload.kind23;
             KfActor *actor = &actor_state.actors[attachment->actor_index];
             VECTOR vertex_offset;
             VECTOR actor_position;

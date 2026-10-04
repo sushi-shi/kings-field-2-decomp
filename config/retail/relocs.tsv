@@ -6351,28 +6351,28 @@ GAME.EXE	0x8002ddf4	0x1d5f4	0x8002ddf8	mips_hi16_lo16	reachable-code	0x8018d258	
 GAME.EXE	0x8002de64	0x1d664		mips26	reachable-code	0x8002e48c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002de78	0x1d678		mips26	reachable-code	0x8002e48c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002dea4	0x1d6a4		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002deb4	0x1d6b4	0x8002deb8	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002ded0	0x1d6d0	0x8002ded4	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002deb4	0x1d6b4	0x8002deb8	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002ded0	0x1d6d0	0x8002ded4	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002df9c	0x1d79c	0x8002dfa0	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002dfa8	0x1d7a8		mips26	reachable-code	0x8005cdec	load	NormalColorDpq	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e014	0x1d814		mips26	reachable-code	0x8002e470	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e040	0x1d840		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e050	0x1d850	0x8002e054	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e06c	0x1d86c	0x8002e070	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e050	0x1d850	0x8002e054	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e06c	0x1d86c	0x8002e070	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e0f0	0x1d8f0	0x8002e0f4	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a3	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e130	0x1d930		mips26	reachable-code	0x8005ce10	load	NormalColorDpq3	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e19c	0x1d99c		mips26	reachable-code	0x8002e470	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e1c8	0x1d9c8		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e1d8	0x1d9d8	0x8002e1dc	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e1f4	0x1d9f4	0x8002e1f8	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e1d8	0x1d9d8	0x8002e1dc	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e1f4	0x1d9f4	0x8002e1f8	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e290	0x1da90	0x8002e294	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a3	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e2d0	0x1dad0		mips26	reachable-code	0x8005ce10	load	NormalColorDpq3	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e2d8	0x1dad8	0x8002e2dc	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e2ec	0x1daec		mips26	reachable-code	0x8005cdec	load	NormalColorDpq	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e2fc	0x1dafc		mips26	reachable-code	0x8002e434	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e328	0x1db28		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e338	0x1db38	0x8002e33c	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e354	0x1db54	0x8002e358	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e338	0x1db38	0x8002e33c	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e354	0x1db54	0x8002e358	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e3e4	0x1dbe4	0x8002e3e8	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e420	0x1dc20		mips26	reachable-code	0x8005cdec	load	NormalColorDpq	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e484	0x1dc84		mips26	reachable-code	0x80063358	load	AddPrim	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
@@ -6381,20 +6381,20 @@ GAME.EXE	0x8002e518	0x1dd18	0x8002e51c	mips_hi16_lo16	reachable-code	0x8018d258	
 GAME.EXE	0x8002e58c	0x1dd8c		mips26	reachable-code	0x8002eb84	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e5a0	0x1dda0		mips26	reachable-code	0x8002eb84	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e5cc	0x1ddcc		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e5dc	0x1dddc	0x8002e5e0	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e5f8	0x1ddf8	0x8002e5fc	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e5dc	0x1dddc	0x8002e5e0	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e5f8	0x1ddf8	0x8002e5fc	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e6bc	0x1debc	0x8002e6c0	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e6cc	0x1decc		mips26	reachable-code	0x8005cdec	load	NormalColorDpq	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e734	0x1df34		mips26	reachable-code	0x8002eb68	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e760	0x1df60		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e770	0x1df70	0x8002e774	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e78c	0x1df8c	0x8002e790	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e770	0x1df70	0x8002e774	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e78c	0x1df8c	0x8002e790	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e808	0x1e008	0x8002e80c	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a3	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e848	0x1e048		mips26	reachable-code	0x8005ce10	load	NormalColorDpq3	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e8b0	0x1e0b0		mips26	reachable-code	0x8002eb68	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002e8dc	0x1e0dc		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
-GAME.EXE	0x8002e8ec	0x1e0ec	0x8002e8f0	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002e908	0x1e108	0x8002e90c	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e8ec	0x1e0ec	0x8002e8f0	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002e908	0x1e108	0x8002e90c	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002e99c	0x1e19c	0x8002e9a0	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a3	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002e9dc	0x1e1dc		mips26	reachable-code	0x8005ce10	load	NormalColorDpq3	jal		control-flow	reviewed	manual:tmd-walkers-proven-sdk-calls
 GAME.EXE	0x8002e9e4	0x1e1e4	0x8002e9e8	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
@@ -7028,33 +7028,33 @@ GAME.EXE	0x80034dc4	0x245c4		mips26	instruction-word	0x8005f840	load	DrawSync	ja
 GAME.EXE	0x80034dcc	0x245cc		mips26	instruction-word	0x80034de0	load		j		range-filtered	reviewed	manual:menu_transition_fade
 GAME.EXE	0x80034dd4	0x245d4		mips26	instruction-word	0x8005f840	load	DrawSync	jal		range-filtered	reviewed	manual:menu_transition_fade
 GAME.EXE	0x80034e28	0x24628		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
-GAME.EXE	0x80034e34	0x24634	0x80034e38	mips_hi16_lo16	reachable-code	0x8017d144	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034e34	0x24634	0x80034e38	mips_hi16_lo16	reachable-code	0x8017d144	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e40	0x24640		mips26	instruction-word	0x800182d0	load	cd_archive_read	jal		control-flow	reviewed	manual:menu transition archive read
 GAME.EXE	0x80034e4c	0x2464c		mips26	instruction-word	0x8003494c	load	tim_upload_images	jal		control-flow	reviewed	manual:menu transition TIM upload
 GAME.EXE	0x80034e54	0x24654		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
-GAME.EXE	0x80034e5c	0x2465c	0x80034e60	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034e5c	0x2465c	0x80034e60	mips_hi16_lo16	reachable-code	0x8017d148	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e64	0x24664	0x80034e68	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
-GAME.EXE	0x80034e70	0x24670	0x80034e74	mips_hi16_lo16	reachable-code	0x8017d14c	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034e78	0x24678	0x80034e7c	mips_hi16_lo16	reachable-code	0x8017d154	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034e84	0x24684	0x80034e88	mips_hi16_lo16	reachable-code	0x8017d158	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034e70	0x24670	0x80034e74	mips_hi16_lo16	reachable-code	0x8017d14c	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034e78	0x24678	0x80034e7c	mips_hi16_lo16	reachable-code	0x8017d154	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034e84	0x24684	0x80034e88	mips_hi16_lo16	reachable-code	0x8017d158	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e8c	0x2468c		mips26	instruction-word	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:menu transition StoreImage call
 GAME.EXE	0x80034e94	0x24694		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
 GAME.EXE	0x80034e9c	0x2469c	0x80034ea0	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+lh	a1	paired-reviewed	reviewed	manual:menu transition RECT x load
 GAME.EXE	0x80034ea4	0x246a4	0x80034ea8	mips_hi16_lo16	reachable-code	0x8017d140	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034eac	0x246ac	0x80034eb0	mips_hi16_lo16	instruction-word	0x8006d6de	load	menu_transition_rect	lui+lh	a2	paired-reviewed	reviewed	manual:menu transition RECT y load
-GAME.EXE	0x80034ec8	0x246c8	0x80034ecc	mips_hi16_lo16	reachable-code	0x8018d168	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034ec8	0x246c8	0x80034ecc	mips_hi16_lo16	reachable-code	0x8018d168	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034ed0	0x246d0		mips26	instruction-word	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:menu transition MoveImage call
 GAME.EXE	0x80034ed8	0x246d8		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
 GAME.EXE	0x80034ee4	0x246e4		mips26	instruction-word	0x800349bc	load	menu_fade_transition	jal		control-flow	reviewed	manual:menu transition fade helper
 GAME.EXE	0x80034efc	0x246fc		mips26	instruction-word	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:menu transition pad read
 GAME.EXE	0x80034f14	0x24714		mips26	instruction-word	0x80034efc	load		j		control-flow	reviewed	manual:menu transition internal jump
 GAME.EXE	0x80034f2c	0x2472c		mips26	instruction-word	0x800349bc	load	menu_fade_transition	jal		control-flow	reviewed	manual:menu transition fade helper
-GAME.EXE	0x80034f34	0x24734	0x80034f38	mips_hi16_lo16	reachable-code	0x8017d158	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034f34	0x24734	0x80034f38	mips_hi16_lo16	reachable-code	0x8017d158	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034f40	0x24740	0x80034f44	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
 GAME.EXE	0x80034f48	0x24748		mips26	instruction-word	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:menu transition LoadImage call
-GAME.EXE	0x80034f54	0x24754	0x80034f58	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034f64	0x24764	0x80034f68	mips_hi16_lo16	reachable-code	0x8017d14c	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034f6c	0x2476c	0x80034f70	mips_hi16_lo16	reachable-code	0x8017d154	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034f54	0x24754	0x80034f58	mips_hi16_lo16	reachable-code	0x8017d148	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034f64	0x24764	0x80034f68	mips_hi16_lo16	reachable-code	0x8017d14c	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80034f6c	0x2476c	0x80034f70	mips_hi16_lo16	reachable-code	0x8017d154	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034fd0	0x247d0		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:map-cell-pattern
 GAME.EXE	0x80034fdc	0x247dc		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:map-cell-pattern
 GAME.EXE	0x800350a0	0x248a0	0x800350a4	mips_hi16_lo16	reachable-code	0x801c7540	bss	bss_801c7540	lui+addiu		paired-reviewed	reviewed	manual:map-cell-pattern

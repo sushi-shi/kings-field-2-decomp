@@ -700,7 +700,6 @@ KfPlayerMagicSpawnRecord	0x06	0x02	effect_kind	s16	supported	GAME 0x800260fc lh 
 KfPlayerMovementSpeed	0x00	0x02	unsigned_value	u16	supported	asm;player_update_vertical_motion	view bob phase reads lhu
 KfPlayerMovementSpeed	0x00	0x02	signed_value	s16	supported	asm;player_update_vertical_motion	falling threshold reads lh
 KfPlayerPositionReaction	0x00	0x01	recovery_step	u8	supported	player_apply_map_object_reaction;player_update_frame	increments each position-recovery frame; scales interpolation and exits after step 15
-KfPlayerPositionReaction	0x01	0x03	unknown_01	u8[3]	opaque	game/player.h	padding before aligned position
 KfPlayerPositionReaction	0x04	0x10	position	VECTOR	supported	asm;func_800291ec	three signed world-position words stored at +0x150/+0x154/+0x158
 KfPlayerReactionOverlay	0x00	0x10	damage	KfPlayerDamageReaction	supported	asm;func_800293d4;func_80029464	full damage reaction view
 KfPlayerReactionOverlay	0x00	0x10	view	KfPlayerViewReaction	supported	asm;player_reset_view;player_get_camera_pose	full camera reaction view

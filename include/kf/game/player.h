@@ -180,9 +180,13 @@ typedef struct KfPlayerViewReaction {
 
 typedef struct KfPlayerPositionReaction {
     u8 recovery_step;
-    u8 unknown_01[3];
     VECTOR position;
 } KfPlayerPositionReaction;
+
+typedef char kf_player_position_reaction_size[
+    sizeof(KfPlayerPositionReaction) == 0x14 ? 1 : -1];
+typedef char kf_player_position_reaction_position_offset[
+    (u32)&((KfPlayerPositionReaction *)0)->position == 4 ? 1 : -1];
 
 typedef struct KfPlayerFlags140Halves {
     u16 low;

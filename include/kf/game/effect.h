@@ -199,6 +199,15 @@ typedef struct KfEffectKind109Target {
 
 typedef char kf_effect_kind109_target_size[sizeof(KfEffectKind109Target) == 1 ? 1 : -1];
 
+/* Kind 114 keeps its launch Y after the preceding four payload bytes. */
+typedef struct KfEffectKind114State {
+    u8 unknown_00[4];
+    s32 origin_y;
+} KfEffectKind114State;
+
+typedef char kf_effect_kind114_state_size[sizeof(KfEffectKind114State) == 8 ? 1 : -1];
+typedef char kf_effect_kind114_origin_y_offset[(u32)&((KfEffectKind114State *)0)->origin_y == 4 ? 1 : -1];
+
 typedef struct KfEffectKind101Motion {
     u16 scale_step;
     u16 vertical_step;
@@ -255,6 +264,7 @@ typedef union KfEffectKindPayload {
     KfEffectKind8State kind8;
     KfEffectKind9Target kind9;
     KfEffectKind109Target kind109;
+    KfEffectKind114State kind114;
     KfEffectKind101Motion kind101;
     KfEffectKind10Targeting kind10;
     KfEffectKind105Attachment kind105;

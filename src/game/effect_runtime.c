@@ -956,7 +956,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = 0x26;
         record->render_id = 0x26;
         record->updates_remaining = 45;
-        *(s32 *)&record->cache_tail.payload.raw[4] = record->position.vy;
+        record->cache_tail.payload.kind114.origin_y = record->position.vy;
         candidate_position.vx = record->position.vx + (rand() >> 5) - 512;
         candidate_position.vz = record->position.vz + (rand() >> 5) - 512;
         if (collision_query_shapes_with_layer_sample(candidate_position.vx, record->position.vy,
@@ -3039,10 +3039,8 @@ void effect_update_dispatch(void)
         collision = collision_query_world(record->position.vx, record->position.vy,
                                   record->position.vz, 10, 10, 176);
         if (collision == 0) {
-            /* The kind-114 constructor saves its original Y at +0x44.
-             * Other effect kinds use this tail differently. */
             collision_probe_floor_height(record->position.vx,
-                          *(s32 *)&record->cache_tail.payload.raw[4],
+                          record->cache_tail.payload.kind114.origin_y,
                           record->position.vz, 0, 0);
             if (record->position.vy < KF_COLLISION_CACHE_RESULT) {
                 goto kind114_particles;

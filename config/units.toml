@@ -138,12 +138,6 @@ source = "src/game/menu_card_choice_controller.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_render_primitives"
-image = "GAME.EXE"
-source = "src/game/menu_render_primitives.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.memory_card_events"
 image = "GAME.EXE"
 source = "src/game/memory_card_events.c"

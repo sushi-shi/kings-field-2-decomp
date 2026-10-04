@@ -492,7 +492,6 @@ GAME.EXE	0x8005e908	0x4e108	0x3	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8005e90b	0x4e10b	0x6	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <蛮B瑚
 GAME.EXE	0x8005e911	0x4e111	0x27	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005ec14	0x4e414	0xac	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005ed7c	0x4e57c	0x1e8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f0fc	0x4e8fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f10c	0x4e90c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f12c	0x4e92c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1173,9 +1172,6 @@ OPEN.EXE	0x8001ded0	0xd6d0	0xac	unclassified	coverage-gap			payload-complement	m
 OPEN.EXE	0x8001df88	0xd788	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001df98	0xd798	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001dfa8	0xd7a8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001e068	0xd868	0x167	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x8001e1cf	0xd9cf	0x5	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <靦c$
-OPEN.EXE	0x8001e1d4	0xd9d4	0x7c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001e414	0xdc14	0x3c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001e5f8	0xddf8	0x20	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001eb30	0xe330	0x20	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1923,11 +1919,6 @@ END.EXE	0x8001b134	0xa934	0xac	unclassified	coverage-gap			payload-complement	ma
 END.EXE	0x8001b1ec	0xa9ec	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001b1fc	0xa9fc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001b20c	0xaa0c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001b2cc	0xaacc	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001b2cf	0xaacf	0x6	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <成B鈷
-END.EXE	0x8001b2d5	0xaad5	0x15e	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001b433	0xac33	0x5	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <箱c$
-END.EXE	0x8001b438	0xac38	0x7c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001b678	0xae78	0x3c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001b85c	0xb05c	0x20	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001bd94	0xb594	0x20	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

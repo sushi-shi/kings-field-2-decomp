@@ -870,6 +870,8 @@ GAME.EXE	0x8005e948	0x4e148	0x220	0x220	1	function	ghidra-analysis			Ghidra-12.0
 GAME.EXE	0x8005eb68	0x4e368	0xac	0xac	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005ecc0	0x4e4c0	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005ed24	0x4e524	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005ed7c	0x4e57c	0x150	0x150	1	function	sdk-object-label	intDMA		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0xbc; retail prologue and return delay slot; next local symbol at +0x20c
+GAME.EXE	0x8005eecc	0x4e6cc	0x98	0x98	1	function	sdk-object-label	setDMACallback		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0x20c; retail return delay slot; VSYNC.OBJ begins at +0x2a4
 GAME.EXE	0x8005ef64	0x4e764	0x104	0x104	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f068	0x4e868	0x88	0x88	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f0f0	0x4e8f0	0xc	0xc	1	function	ghidra-analysis	CloseEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1187,6 +1189,8 @@ OPEN.EXE	0x8001df8c	0xd78c	0xc	0xc	1	function	ghidra-analysis	ReturnFromExceptio
 OPEN.EXE	0x8001df9c	0xd79c	0xc	0xc	1	function	ghidra-analysis	setjmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001dfac	0xd7ac	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001e010	0xd810	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001e068	0xd868	0x150	0x150	1	function	sdk-object-label	intDMA		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0xbc; retail prologue and return delay slot; next local symbol at +0x20c
+OPEN.EXE	0x8001e1b8	0xd9b8	0x98	0x98	1	function	sdk-object-label	setDMACallback		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0x20c; retail return delay slot; VSYNC.OBJ begins at +0x2a4
 OPEN.EXE	0x8001e250	0xda50	0x104	0x104	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001e354	0xdb54	0x88	0x88	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001e3dc	0xdbdc	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1519,6 +1523,8 @@ END.EXE	0x8001b1f0	0xa9f0	0xc	0xc	1	function	ghidra-analysis	ReturnFromException
 END.EXE	0x8001b200	0xaa00	0xc	0xc	1	function	ghidra-analysis	setjmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001b210	0xaa10	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001b274	0xaa74	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001b2cc	0xaacc	0x150	0x150	1	function	sdk-object-label	intDMA		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0xbc; retail prologue and return delay slot; next local symbol at +0x20c
+END.EXE	0x8001b41c	0xac1c	0x98	0x98	1	function	sdk-object-label	setDMACallback		psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ	archive local symbol .text+0x20c; retail return delay slot; VSYNC.OBJ begins at +0x2a4
 END.EXE	0x8001b4b4	0xacb4	0x104	0x104	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001b5b8	0xadb8	0x88	0x88	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001b640	0xae40	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

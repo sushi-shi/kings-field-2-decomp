@@ -2581,7 +2581,11 @@ void effect_update_dispatch(void)
             record->position.vx = next.vx;
             record->position.vy = next.vy;
             record->position.vz = next.vz;
-            record->map_layer_mask = KF_COLLISION_CACHE_LAYER != 0 ? 2 : 1;
+            if (KF_COLLISION_CACHE_LAYER == 0) {
+                record->map_layer_mask = 1;
+            } else {
+                record->map_layer_mask = 2;
+            }
             record->rotation.vz = ((u16)record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
             shared_position_mode = -1;
             shared_motion_mode = 0x400;

@@ -4572,14 +4572,14 @@ GAME.EXE	0x80024144	0x13944		mips26	reachable-code	0x800331d0	load	notify_enqueu
 GAME.EXE	0x8002414c	0x1394c		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player
 GAME.EXE	0x80024180	0x13980	0x80024184	mips_hi16_lo16	reachable-code	0x801984d0	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player
 GAME.EXE	0x800241b0	0x139b0	0x800241b4	mips_hi16_lo16	reachable-code	0x801984d4	bss		lui+lw		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x800241f8	0x139f8	0x800241fc	mips_hi16_lo16	reachable-code	0x80075d94	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024200	0x13a00	0x80024204	mips_hi16_lo16	reachable-code	0x80075d88	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024218	0x13a18	0x8002421c	mips_hi16_lo16	reachable-code	0x80075d96	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024220	0x13a20	0x80024224	mips_hi16_lo16	reachable-code	0x80075d8a	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x8002423c	0x13a3c	0x80024240	mips_hi16_lo16	reachable-code	0x80075d98	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024248	0x13a48	0x8002424c	mips_hi16_lo16	reachable-code	0x80075d9a	bss		lui+lhu		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024260	0x13a60	0x80024264	mips_hi16_lo16	reachable-code	0x80075d9c	bss		lui+lw		paired-reviewed	reviewed	manual:player
-GAME.EXE	0x80024268	0x13a68	0x8002426c	mips_hi16_lo16	reachable-code	0x80075d90	bss		lui+lw		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x800241f8	0x139f8	0x800241fc	mips_hi16_lo16	reachable-code	0x80075d94	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024200	0x13a00	0x80024204	mips_hi16_lo16	reachable-code	0x80075d88	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024218	0x13a18	0x8002421c	mips_hi16_lo16	reachable-code	0x80075d96	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024220	0x13a20	0x80024224	mips_hi16_lo16	reachable-code	0x80075d8a	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x8002423c	0x13a3c	0x80024240	mips_hi16_lo16	reachable-code	0x80075d98	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024248	0x13a48	0x8002424c	mips_hi16_lo16	reachable-code	0x80075d9a	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024260	0x13a60	0x80024264	mips_hi16_lo16	reachable-code	0x80075d9c	bss	player_level_growth_table	lui+lw		paired-reviewed	reviewed	manual:player
+GAME.EXE	0x80024268	0x13a68	0x8002426c	mips_hi16_lo16	reachable-code	0x80075d90	bss	player_level_growth_table	lui+lw		paired-reviewed	reviewed	manual:player
 GAME.EXE	0x80024278	0x13a78		mips26	reachable-code	0x800242dc	load		j		control-flow	reviewed	manual:player
 GAME.EXE	0x8002428c	0x13a8c	0x80024290	mips_hi16_lo16	reachable-code	0x800758f0	bss	player_level_growth_table	lui+addiu		paired-reviewed	reviewed	manual:player
 GAME.EXE	0x80024344	0x13b44		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player
@@ -4728,10 +4728,10 @@ GAME.EXE	0x8002505c	0x1485c	0x80025060	mips_hi16_lo16	reachable-code	0x80198592	
 GAME.EXE	0x80025064	0x14864	0x80025068	mips_hi16_lo16	reachable-code	0x80198595	bss		lui+sb		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x8002506c	0x1486c	0x80025070	mips_hi16_lo16	reachable-code	0x80198596	bss		lui+sb		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x80025078	0x14878	0x8002507c	mips_hi16_lo16	reachable-code	0x800758f0	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
-GAME.EXE	0x80025080	0x14880	0x80025084	mips_hi16_lo16	reachable-code	0x800758f2	bss		lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
-GAME.EXE	0x80025088	0x14888	0x8002508c	mips_hi16_lo16	reachable-code	0x800758f4	bss		lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
-GAME.EXE	0x80025090	0x14890	0x80025094	mips_hi16_lo16	reachable-code	0x800758f6	bss		lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
-GAME.EXE	0x80025098	0x14898	0x8002509c	mips_hi16_lo16	reachable-code	0x800758f8	bss		lui+lw		paired-reviewed	reviewed	manual:player_initialize_state
+GAME.EXE	0x80025080	0x14880	0x80025084	mips_hi16_lo16	reachable-code	0x800758f2	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
+GAME.EXE	0x80025088	0x14888	0x8002508c	mips_hi16_lo16	reachable-code	0x800758f4	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
+GAME.EXE	0x80025090	0x14890	0x80025094	mips_hi16_lo16	reachable-code	0x800758f6	bss	player_level_growth_table	lui+lhu		paired-reviewed	reviewed	manual:player_initialize_state
+GAME.EXE	0x80025098	0x14898	0x8002509c	mips_hi16_lo16	reachable-code	0x800758f8	bss	player_level_growth_table	lui+lw		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x800250a0	0x148a0	0x800250a4	mips_hi16_lo16	reachable-code	0x801984e2	bss		lui+sh		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x800250a8	0x148a8	0x800250ac	mips_hi16_lo16	reachable-code	0x801984e6	bss		lui+sh		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x800250b0	0x148b0	0x800250b4	mips_hi16_lo16	reachable-code	0x801984f4	bss		lui+sh		paired-reviewed	reviewed	manual:player_initialize_state

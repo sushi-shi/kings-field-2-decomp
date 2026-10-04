@@ -103,8 +103,12 @@ KfAssetHeader	0x04	0x04	animation_present	u32	candidate	asm;animation_sample_ver
 KfAssetHeader	0x08	0x04	tmd_data_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfAssetHeader	0x0c	0x04	morph_offsets_offset	u32	supported	asm;animation_sample_vertex;include/kf/game/asset.h;src/game/display.c	byte offset to a table of morph-data offsets indexed by animation keyframe records
 KfAssetHeader	0x10	0x04	clip_table_offset	u32	supported	asm;animation_select_keyframe;KF1 asset header	byte offset to animation clip offset table
+KfAudioVabSlot	0x00	0x02	vab_id	s16	supported	game/audio.h;audio_initialize_runtime;audio_queue_vab_stream	SDK VAB identifier; -1 denotes an empty slot
+KfAudioVabSlot	0x04	0x04	stream_slot	KfAudioVabStreamSlot *	supported	game/audio.h;audio_vab_stream_callback;audio_queue_vab_stream	stream buffer slot retained while loading a VAB
 KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer
+KfAudioVoiceState	0x00	0x28	handles	KfAudioVoiceHandle[10]	supported	game/audio.h;GAME 0x80013a64;audio_refresh_voice_handles	ten four-byte sound/voice handle pairs
+KfAudioVoiceState	0x28	0xa00	params	KfAudioVoiceParams[256]	supported	game/audio.h;GAME 0x80013fd4;audio_key_on	256 ten-byte sound parameter rows
 KfBss801c7540	0x00	0xfa00	map_cells	KfMapOccupancyCell[80][80]	supported	GAME 0x8001694c-0x8001695c copies 0x3e80 words;GAME 0x8002a988 clips X/Z to 80 cells;GAME 0x80016b2c scrub visits 0x1900 cells	80-by-80 cells, each 10 bytes, loaded from the map resource
 KfBss801c7540	0xfa00	0x600	unknown_fa00	u8[1536]	opaque	game/player.h;GAME 0x80016960 shape-bank copy begins at +0x10000	unclassified gap before shape bank; original allocation ownership WIP
 KfBss801c7540	0x10000	0x1800	shape_bank	u8[6144]	supported	game/player.h;GAME 0x80016960-0x8001697c copies 0x600 words;GAME 0x8002ab68 shape-record access	loaded variable-length shape bank; original allocation ownership WIP
@@ -285,6 +289,16 @@ KfFloorItem	0x04	0x02	row_offset	u16	supported	asm;floor_item_update_textures	wr
 KfFloorItem	0x06	0x08	rect	RECT	supported	asm;StoreImage;LoadImage	GPU rectangle at +6
 KfFloorItem	0x10	0x04	pixels	u_long *	supported	asm;StoreImage;LoadImage	captured GPU pixel buffer
 KfFloorItem	0x14	0x04	unknown_14	u8[4]	opaque	game headers;asm	field use not yet established
+KfGameAudioState	0x00	0x04	sequence_buffer	u_long *	supported	game/audio.h;GAME 0x80013b0c;audio_start_sequence	sequence data pointer initialized at startup
+KfGameAudioState	0x04	0x02	sequence_id	s16	supported	game/audio.h;GAME 0x80013b24/0x80013b44;audio_stop_sequence	SDK sequence handle stored and read as signed halfword
+KfGameAudioState	0x08	0x04	sequence_active	s32	supported	game/audio.h;GAME 0x80013a34/0x80013b58;audio_stop_sequence	active sequence state word
+KfGameAudioState	0x0c	0x04	sequence_ready	s32	supported	game/audio.h;GAME 0x80013a3c/0x80013af8;resource_transition_step	ready state word set after resource loading
+KfGameAudioState	0x10	0x10	listener_position	VECTOR	supported	game/audio.h;GAME 0x80013cb8/0x80014048;audio_update_listener	three-word listener world position in a 16-byte vector
+KfGameAudioState	0x20	0x02	listener_layer	u16	supported	game/audio.h;GAME 0x80013dac/0x80014094;audio_play_spatial	map-cell layer for spatial sound occlusion
+KfGameAudioState	0x22	0x08	listener_rotation	SVECTOR	supported	game/audio.h;GAME 0x800140a4;audio_update_listener	listener orientation copied from camera rotation
+KfGameAudioState	0x2c	0x410	vab_slots	KfAudioVabSlot[130]	supported	game/audio.h;GAME 0x800143e0;audio_initialize_runtime	130 eight-byte VAB slots
+KfGameAudioState	0x43c	0xa28	voices	KfAudioVoiceState	supported	game/audio.h;GAME 0x80013a64/0x80013fd4;audio_key_on	voice handles followed by sound parameter rows
+KfGameAudioState	0xe64	0x38	vab_stream_slots	KfAudioVabStreamSlot[7]	supported	game/audio.h;GAME 0x80013a84/0x80014608;audio_acquire_vab_stream_slot	seven eight-byte VAB stream slots
 KfGpuGT3	0x00	0x28	sdk	POLY_GT3	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfGpuGT3	0x00	0x28	packed	KfGpuGT3Packed	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfGpuGT3Packed	0x00	0x04	tag	u_long	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code

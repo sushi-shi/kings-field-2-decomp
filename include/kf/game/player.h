@@ -401,7 +401,6 @@ typedef struct KfPlayerState {
     u8 vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
     u8 fatal_fall_latch;
-    u8 unknown_d6[2];
     VECTOR camera_position;
     SVECTOR frame_displacement;
     KfPlayerViewRotation camera_rotation;
@@ -458,6 +457,8 @@ typedef char kf_player_queued_magic_action_offset[
     (u32)&((KfPlayerState *)0)->queued_magic_action == 0xd1 ? 1 : -1];
 typedef char kf_player_fatal_fall_latch_offset[
     (u32)&((KfPlayerState *)0)->fatal_fall_latch == 0xd5 ? 1 : -1];
+typedef char kf_player_camera_position_offset[
+    (u32)&((KfPlayerState *)0)->camera_position == 0xd8 ? 1 : -1];
 typedef char kf_player_frame_displacement_offset[
     (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
 typedef char kf_player_vertical_motion_pitch_offset[

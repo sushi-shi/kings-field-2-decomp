@@ -13,10 +13,9 @@ cc1_flags = []
 # hoisting above the frame allocation, and -O2 schedule reproduce retail forms
 # that the 2.6.0 probe cannot emit. Native ASPSX supplies the checked
 # div/rem expansion (`break 7`/`break 6`) that retail contains. Still a probe.
-# `-mcpu=r3000` selects the R3000 scheduling model explicitly: the rebuilt
-# cc1 reports Cpu 3000 but schedules with the generic latencies unless the
-# flag is passed, and the explicit model reproduces retail's argument setup
-# and load placement (ten additional exact units, no regressions).
+# The selected `-mcpu=r2000` scheduling model reproduces retail argument setup
+# and load placement in ten additional units without regressions. The original
+# compiler and CPU flag remain unproven.
 [profiles.probe-gcc257-o2-g0]
 language = "c"
 compiler = "gcc257-native"

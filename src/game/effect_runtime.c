@@ -1475,7 +1475,7 @@ void effect_update_dispatch(void)
     case 49: {
     shared_growth_entry:
         if (initial_phase == 0) {
-            collision = effect_collision_step(180, (s32)0x80000000, -300);
+            collision = effect_collision_step(180, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
             if (collision == 0) {
                 break;
             }
@@ -1795,7 +1795,7 @@ void effect_update_dispatch(void)
             }
             break;
         case 1:
-            if (effect_collision_step(512, (s32)0x80000200, 0) != 0) {
+            if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200, 0) != 0) {
                 record->cache_tail.payload.kind50.stage = 2;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
                                0x8000, 0x1000, 0x1000);
@@ -1951,7 +1951,7 @@ void effect_update_dispatch(void)
             }
             break;
         }
-        collision = effect_collision_step(50, (s32)0x80000000, -300);
+        collision = effect_collision_step(50, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
         if (collision != 0) {
             if (collision & 0xf) {
                 if (prior_phase == 0) {
@@ -2407,7 +2407,7 @@ void effect_update_dispatch(void)
             target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
             target.vz = player_state.camera_position.vz;
             collision = effect_target_motion(&target, 400, 60,
-                                       3000, 0, 10, (s32)0x80000000);
+                                       3000, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
             if (collision != -1) {
                 goto kind9_no_collision;
             }
@@ -2419,7 +2419,7 @@ void effect_update_dispatch(void)
             target.vy = actor->position.vy - (actor->collision_height >> 1);
             target.vz = actor->position.vz;
             collision = effect_target_motion(&target, 600, 50,
-                                       0, 0, 10, (s32)0x80000000);
+                                       0, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
             if (collision != -1) {
                 goto kind9_no_collision;
             }
@@ -2442,7 +2442,7 @@ void effect_update_dispatch(void)
         break;
     kind9_unbound:
         record->direction.vy = (u16)record->direction.vy + 10;
-        collision = effect_collision_step(10, (s32)0x80000000, 0);
+        collision = effect_collision_step(10, KF_COLLISION_HEIGHT_CHECK_FLOOR, 0);
         if (collision != 0) {
             goto kind9_impact;
         }
@@ -2489,7 +2489,7 @@ void effect_update_dispatch(void)
         break;
     kind106_phase0:
         record->direction.vy = (u16)record->direction.vy + 20;
-        collision = effect_collision_step(140, (s32)0x80000000, -300);
+        collision = effect_collision_step(140, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
         if (collision != 0) {
             record->position.vx -= record->direction.vx;
             record->position.vy -= record->direction.vy;
@@ -2529,11 +2529,11 @@ void effect_update_dispatch(void)
             next.vx = record->position.vx + (s16)record->direction.vx;
             next.vy = record->position.vy + (s16)record->direction.vy;
             next.vz = record->position.vz + (s16)record->direction.vz;
-            first_collision = effect_probe_collision_by_type(&next, 140, (s32)0x80000000);
+            first_collision = effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR);
             if (first_collision != 0 && (first_collision & 0xf) != 0) {
                 next.vx = record->position.vx;
                 next.vz = record->position.vz;
-                if ((effect_probe_collision_by_type(&next, 140, (s32)0x80000000) & 0xf) == 0) {
+                if ((effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR) & 0xf) == 0) {
                     goto kind8_reset_axes;
                 }
                 if ((s16)record->direction.vy < 0) {
@@ -2656,7 +2656,7 @@ void effect_update_dispatch(void)
             goto shared_phase_increment;
         }
     kind10_phase0:
-        collision = effect_collision_step(250, (s32)0x80000000, 0);
+        collision = effect_collision_step(250, KF_COLLISION_HEIGHT_CHECK_FLOOR, 0);
         if (collision != 0 || record->updates_remaining < 2) {
             KfEffectRecord *child;
 
@@ -3026,7 +3026,7 @@ void effect_update_dispatch(void)
     }
     case 22:
         record->direction.vy = (u16)record->direction.vy + 10;
-        collision = effect_collision_step(100, (s32)0x80000000, -300);
+        collision = effect_collision_step(100, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
         if (collision != 0) {
             effect_apply_current_magic_backstep(collision);
             record->type = KF_EFFECT_SLOT_FREE;

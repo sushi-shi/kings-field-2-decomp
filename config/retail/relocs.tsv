@@ -8863,9 +8863,9 @@ GAME.EXE	0x80045ea0	0x356a0		mips26	reachable-code	0x8005deac	load	rcos	jal		con
 GAME.EXE	0x80045ed8	0x356d8		mips26	reachable-code	0x8002b604	load	collision_probe_floor_height	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
 GAME.EXE	0x80045ee0	0x356e0	0x80045ee4	mips_hi16_lo16	reachable-code	0x801d8d44	bss	bss_801c7540	lui+lw	v0	paired-reviewed	reviewed	manual:collision_probe_forward_shape_0x20 provisional collision-cache pointer within startup BSS
 GAME.EXE	0x80045f6c	0x3576c		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:event_pose_project
-GAME.EXE	0x80045f78	0x35778	0x80045f7c	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:event_pose_project
-GAME.EXE	0x80045f90	0x35790	0x80045f94	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:event_pose_project
-GAME.EXE	0x80045fac	0x357ac	0x80045fb0	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:event_pose_project
+GAME.EXE	0x80045f78	0x35778	0x80045f7c	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:event_pose_project
+GAME.EXE	0x80045f90	0x35790	0x80045f94	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:event_pose_project
+GAME.EXE	0x80045fac	0x357ac	0x80045fb0	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:event_pose_project
 GAME.EXE	0x80046018	0x35818		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:event_pose_interpolate
 GAME.EXE	0x8004602c	0x3582c		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:event_pose_interpolate
 GAME.EXE	0x80046040	0x35840		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:event_pose_interpolate

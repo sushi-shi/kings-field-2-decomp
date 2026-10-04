@@ -558,15 +558,22 @@ GAME.EXE	0x80049f74	0x39774	0x20	0x20	1	function	sdk-object-label	CdReset		psyq-
 GAME.EXE	0x80049f94	0x39794	0x20	0x20	1	function	sdk-object-label	CdSync		psyq-sdk30:LIBCD.LIB/SYS.OBJ	XDEF offset 0x20 in exact 0x660-byte .text section
 GAME.EXE	0x80049fb4	0x397b4	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80049fd4	0x397d4	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80049ff4	0x397f4	0x18	0x18	1	function	archive-xdef	CdSetDebug		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x80; exact three-image text section and native XDEF	vendored SDK entry to CdComstr at .text+0x98; retail return/delay slot
+GAME.EXE	0x8004a00c	0x3980c	0x38	0x38	1	function	archive-xdef	CdComstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x98; exact three-image text section and native XDEF	vendored SDK entry to CdIntstr at .text+0xd0; retail return/delay slot
+GAME.EXE	0x8004a044	0x39844	0x38	0x38	1	function	archive-xdef	CdIntstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0xd0; exact three-image text section and native XDEF	vendored SDK entry to CdSyncCallback at .text+0x108; retail return/delay slot
 GAME.EXE	0x8004a07c	0x3987c	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a094	0x39894	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a0ac	0x398ac	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a0c4	0x398c4	0x120	0x120	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a1e4	0x399e4	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004a208	0x39a08	0x28	0x28	1	function	archive-xdef	CdControlF		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x294; exact three-image text section and native XDEF	vendored SDK entry to CdControlB at .text+0x2bc; retail return/delay slot
+GAME.EXE	0x8004a230	0x39a30	0x4c	0x4c	1	function	archive-xdef	CdControlB		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x2bc; exact three-image text section and native XDEF	vendored SDK entry to CdGetSector at .text+0x308; retail return/delay slot
 GAME.EXE	0x8004a27c	0x39a7c	0x20	0x20	1	function	ghidra-analysis	CdGetSector		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a29c	0x39a9c	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004a370	0x39b70	0x20	0x20	1	function	archive-xdef	CdMix		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x3fc; exact three-image text section and native XDEF	vendored SDK entry to CdRead2 at .text+0x41c; retail return/delay slot
 GAME.EXE	0x8004a390	0x39b90	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a400	0x39c00	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004a52c	0x39d2c	0xa8	0xa8	1	function	archive-xdef	CdPosToInt		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x5b8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x660; retail return/delay slot
 GAME.EXE	0x8004a5d4	0x39dd4	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a604	0x39e04	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004a624	0x39e24	0x98	0x98	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1155,18 +1162,26 @@ OPEN.EXE	0x8001a394	0x9b94	0x78	0x78	1	function	sdk-object-label	InterpolShort		
 OPEN.EXE	0x8001a40c	0x9c0c	0x4c	0x48	1	function	sdk-object-label	InterpolByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x714;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a458	0x9c58	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a5d4	0x9dd4	0xc	0xc	1	function	ghidra-analysis	DeliverEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001a5e4	0x9de4	0x20	0x20	1	function	archive-xdef	CdReset		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x0; exact three-image text section and native XDEF	vendored SDK entry to CdSync at .text+0x20; retail return/delay slot
+OPEN.EXE	0x8001a604	0x9e04	0x20	0x20	1	function	archive-xdef	CdSync		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x20; exact three-image text section and native XDEF	vendored SDK entry to CdReady at .text+0x40; retail return/delay slot
 OPEN.EXE	0x8001a624	0x9e24	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a644	0x9e44	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001a664	0x9e64	0x18	0x18	1	function	archive-xdef	CdSetDebug		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x80; exact three-image text section and native XDEF	vendored SDK entry to CdComstr at .text+0x98; retail return/delay slot
+OPEN.EXE	0x8001a67c	0x9e7c	0x38	0x38	1	function	archive-xdef	CdComstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x98; exact three-image text section and native XDEF	vendored SDK entry to CdIntstr at .text+0xd0; retail return/delay slot
+OPEN.EXE	0x8001a6b4	0x9eb4	0x38	0x38	1	function	archive-xdef	CdIntstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0xd0; exact three-image text section and native XDEF	vendored SDK entry to CdSyncCallback at .text+0x108; retail return/delay slot
 OPEN.EXE	0x8001a6ec	0x9eec	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a704	0x9f04	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a71c	0x9f1c	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a734	0x9f34	0x120	0x120	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a854	0xa054	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001a878	0xa078	0x28	0x28	1	function	archive-xdef	CdControlF		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x294; exact three-image text section and native XDEF	vendored SDK entry to CdControlB at .text+0x2bc; retail return/delay slot
 OPEN.EXE	0x8001a8a0	0xa0a0	0x4c	0x4c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a8ec	0xa0ec	0x20	0x20	1	function	ghidra-analysis	CdGetSector		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001a90c	0xa10c	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001a9e0	0xa1e0	0x20	0x20	1	function	archive-xdef	CdMix		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x3fc; exact three-image text section and native XDEF	vendored SDK entry to CdRead2 at .text+0x41c; retail return/delay slot
 OPEN.EXE	0x8001aa00	0xa200	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001aa70	0xa270	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001ab9c	0xa39c	0xa8	0xa8	1	function	archive-xdef	CdPosToInt		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x5b8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x660; retail return/delay slot
 OPEN.EXE	0x8001ac44	0xa444	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ac74	0xa474	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ac94	0xa494	0x98	0x98	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1514,17 +1529,26 @@ END.EXE	0x800175f8	0x6df8	0x78	0x78	1	function	sdk-object-label	InterpolShort		p
 END.EXE	0x80017670	0x6e70	0x4c	0x48	1	function	sdk-object-label	InterpolByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x714;exact 0x760-byte section;retail return delay slot
 END.EXE	0x800176bc	0x6ebc	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017838	0x7038	0xc	0xc	1	function	ghidra-analysis	DeliverEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80017848	0x7048	0x20	0x20	1	function	archive-xdef	CdReset		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x0; exact three-image text section and native XDEF	vendored SDK entry to CdSync at .text+0x20; retail return/delay slot
+END.EXE	0x80017868	0x7068	0x20	0x20	1	function	archive-xdef	CdSync		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x20; exact three-image text section and native XDEF	vendored SDK entry to CdReady at .text+0x40; retail return/delay slot
 END.EXE	0x80017888	0x7088	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800178a8	0x70a8	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x800178c8	0x70c8	0x18	0x18	1	function	archive-xdef	CdSetDebug		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x80; exact three-image text section and native XDEF	vendored SDK entry to CdComstr at .text+0x98; retail return/delay slot
+END.EXE	0x800178e0	0x70e0	0x38	0x38	1	function	archive-xdef	CdComstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x98; exact three-image text section and native XDEF	vendored SDK entry to CdIntstr at .text+0xd0; retail return/delay slot
+END.EXE	0x80017918	0x7118	0x38	0x38	1	function	archive-xdef	CdIntstr		Psy-Q 3.0 LIBCD SYS.OBJ .text+0xd0; exact three-image text section and native XDEF	vendored SDK entry to CdSyncCallback at .text+0x108; retail return/delay slot
 END.EXE	0x80017950	0x7150	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017968	0x7168	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017980	0x7180	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017998	0x7198	0x120	0x120	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017ab8	0x72b8	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80017adc	0x72dc	0x28	0x28	1	function	archive-xdef	CdControlF		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x294; exact three-image text section and native XDEF	vendored SDK entry to CdControlB at .text+0x2bc; retail return/delay slot
+END.EXE	0x80017b04	0x7304	0x4c	0x4c	1	function	archive-xdef	CdControlB		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x2bc; exact three-image text section and native XDEF	vendored SDK entry to CdGetSector at .text+0x308; retail return/delay slot
 END.EXE	0x80017b50	0x7350	0x20	0x20	1	function	ghidra-analysis	CdGetSector		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017b70	0x7370	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80017c44	0x7444	0x20	0x20	1	function	archive-xdef	CdMix		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x3fc; exact three-image text section and native XDEF	vendored SDK entry to CdRead2 at .text+0x41c; retail return/delay slot
 END.EXE	0x80017c64	0x7464	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017cd4	0x74d4	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80017e00	0x7600	0xa8	0xa8	1	function	archive-xdef	CdPosToInt		Psy-Q 3.0 LIBCD SYS.OBJ .text+0x5b8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x660; retail return/delay slot
 END.EXE	0x80017ea8	0x76a8	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017ed8	0x76d8	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80017ef8	0x76f8	0x98	0x98	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

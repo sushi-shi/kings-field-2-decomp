@@ -13389,6 +13389,12 @@ OPEN.EXE	0x8001a6a4	0x9ea4	0x8001a6a8	mips_hi16_lo16	instruction-word	0x8003dd1c
 OPEN.EXE	0x8001a6c4	0x9ec4	0x8001a6c8	mips_hi16_lo16	instruction-word	0x8003cf50	load	CD_intstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a6d4	0x9ed4		mips26	instruction-word	0x8001a6e4	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a6dc	0x9edc	0x8001a6e0	mips_hi16_lo16	instruction-word	0x8003dd1c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a6ec	0x9eec	0x8001a6f0	mips_hi16_lo16	reachable-code	0x800ac5d0	bss	CD_cbsync	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+OPEN.EXE	0x8001a6f4	0x9ef4	0x8001a6f8	mips_hi16_lo16	reachable-code	0x800ac5d0	bss	CD_cbsync	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
+OPEN.EXE	0x8001a704	0x9f04	0x8001a708	mips_hi16_lo16	reachable-code	0x800ac7f0	bss	CD_cbready	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+OPEN.EXE	0x8001a70c	0x9f0c	0x8001a710	mips_hi16_lo16	reachable-code	0x800ac7f0	bss	CD_cbready	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
+OPEN.EXE	0x8001a71c	0x9f1c	0x8001a720	mips_hi16_lo16	reachable-code	0x800ac578	bss	CD_cbread	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+OPEN.EXE	0x8001a724	0x9f24	0x8001a728	mips_hi16_lo16	reachable-code	0x800ac578	bss	CD_cbread	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
 OPEN.EXE	0x8001a770	0x9f70	0x8001a774	mips_hi16_lo16	reachable-code	0x8003ce5c	load	cd_command_requires_setloc	lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a788	0x9f88	0x8001a78c	mips_hi16_lo16	reachable-code	0x8003dd28	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a7a8	0x9fa8		mips26	reachable-code	0x8001b3d0	load		jal		control-flow	candidate	investigation:relocs.tsv
@@ -16006,6 +16012,12 @@ END.EXE	0x80017908	0x7108	0x8001790c	mips_hi16_lo16	instruction-word	0x8003ab3c	
 END.EXE	0x80017928	0x7128	0x8001792c	mips_hi16_lo16	instruction-word	0x80039dfc	load	CD_intstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x80017938	0x7138		mips26	instruction-word	0x80017948	load		j		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x80017940	0x7140	0x80017944	mips_hi16_lo16	instruction-word	0x8003ab3c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x80017950	0x7150	0x80017954	mips_hi16_lo16	reachable-code	0x800a93b0	bss	CD_cbsync	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+END.EXE	0x80017958	0x7158	0x8001795c	mips_hi16_lo16	reachable-code	0x800a93b0	bss	CD_cbsync	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
+END.EXE	0x80017968	0x7168	0x8001796c	mips_hi16_lo16	reachable-code	0x800a95d0	bss	CD_cbready	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+END.EXE	0x80017970	0x7170	0x80017974	mips_hi16_lo16	reachable-code	0x800a95d0	bss	CD_cbready	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
+END.EXE	0x80017980	0x7180	0x80017984	mips_hi16_lo16	reachable-code	0x800a9358	bss	CD_cbread	lui+lw	v0	paired-reviewed	reviewed	manual:libcd-sys-archive
+END.EXE	0x80017988	0x7188	0x8001798c	mips_hi16_lo16	reachable-code	0x800a9358	bss	CD_cbread	lui+sw	at	paired-reviewed	reviewed	manual:libcd-sys-archive
 END.EXE	0x800179d4	0x71d4	0x800179d8	mips_hi16_lo16	reachable-code	0x80039d08	load	cd_command_requires_setloc	lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x800179ec	0x71ec	0x800179f0	mips_hi16_lo16	reachable-code	0x8003ab48	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x80017a0c	0x720c		mips26	reachable-code	0x80018634	load		jal		control-flow	candidate	investigation:relocs.tsv

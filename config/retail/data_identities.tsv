@@ -289,7 +289,7 @@ OPEN.EXE	0x8003d23c	0x2	DAT_8003d23c	unknown	load	undefined2		address-only	data.
 OPEN.EXE	0x8003d23e	0x2	DAT_8003d23e	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d24c	0x2	DAT_8003d24c	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 OPEN.EXE	0x8003d24e	0x2	DAT_8003d24e	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-OPEN.EXE	0x8003d26c	0x20	DAT_8003d26c	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes exact in OPEN/END;StartRCnt xrefs	vendor counter data record; original C declaration unresolved
+OPEN.EXE	0x8003d26c	0x20	DAT_8003d26c	unknown	load	u32[8]	LIBAPI COUNTER.OBJ	supported	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes unique exact;SetRCnt/StartRCnt/ResetRCnt validated section xrefs match native patches	vendor counter data record; original C declaration unresolved
 OPEN.EXE	0x8003d28c	0x182	spu_note_pitch_ratios	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
 OPEN.EXE	0x8003d410	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 OPEN.EXE	0x8003d810	0x10	DAT_8003d810	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
@@ -514,7 +514,7 @@ END.EXE	0x8003a0e8	0x2	DAT_8003a0e8	unknown	load	undefined2		address-only	data.t
 END.EXE	0x8003a0ea	0x2	DAT_8003a0ea	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a0f8	0x2	DAT_8003a0f8	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 END.EXE	0x8003a0fa	0x2	DAT_8003a0fa	unknown	load	undefined2		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
-END.EXE	0x8003a118	0x20	DAT_8003a118	unknown	load	u32[8]		address-only	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes exact in OPEN/END;StartRCnt xrefs	vendor counter data record; original C declaration unresolved
+END.EXE	0x8003a118	0x20	DAT_8003a118	unknown	load	u32[8]	LIBAPI COUNTER.OBJ	supported	Psy-Q 3.0 LIBAPI COUNTER.OBJ .data 32 bytes unique exact;SetRCnt/StartRCnt/ResetRCnt validated section xrefs match native patches	vendor counter data record; original C declaration unresolved
 END.EXE	0x8003a138	0x182	spu_note_pitch_ratios	static	load	u16[193]	LIBSPU S_N2P.OBJ	supported	exact archive bytes;note-to-pitch lhu xrefs	193-entry ratio table; original static symbol unresolved
 END.EXE	0x8003a2bc	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 END.EXE	0x8003a6bc	0x10	DAT_8003a6bc	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved

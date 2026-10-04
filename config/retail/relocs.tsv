@@ -11374,6 +11374,7 @@ GAME.EXE	0x8005f240	0x4ea40		mips26	instruction-word	0x8005f24c	load		j		range-f
 GAME.EXE	0x8005f258	0x4ea58	0x8005f25c	mips_hi16_lo16	reachable-code	0x8006d570	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f264	0x4ea64	0x8005f268	mips_hi16_lo16	reachable-code	0x8006d568	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f290	0x4ea90	0x8005f298	mips_hi16_lo16	instruction-word	0x8006d568	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f294	0x4ea94	0x8005f2a0	mips_hi16_lo16	instruction-word	0x8006d570	load	DAT_8006d568	lui+lw	v0	paired-pattern	candidate	manual:LIBAPI COUNTER.OBJ StopRCnt .text+0x114/+0x120 native .data+8 patches;retail decoded pair
 GAME.EXE	0x8005f2cc	0x4eacc	0x8005f2d0	mips_hi16_lo16	reachable-code	0x8006d56c	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f2dc	0x4eadc		mips26	reachable-code	0x8005f2e8	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f4b0	0x4ecb0		mips26	reachable-code	0x80061a58	load	GPU_cw	jal		control-flow	candidate	investigation:relocs.tsv
@@ -14171,15 +14172,16 @@ OPEN.EXE	0x8001ebb8	0xe3b8		mips26	reachable-code	0x8001ebf8	load	CloseEvent	jal
 OPEN.EXE	0x8001ebc0	0xe3c0		mips26	reachable-code	0x80014284	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001ebe0	0xe3e0		mips26	instruction-word	0x800274dc	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001ec28	0xe428		mips26	reachable-code	0x8001ecac	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ec30	0xe430	0x8001ec34	mips_hi16_lo16	reachable-code	0x8003d270	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ec30	0xe430	0x8001ec34	mips_hi16_lo16	reachable-code	0x8003d270	load	DAT_8003d26c	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001ec68	0xe468		mips26	reachable-code	0x8001ec8c	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ec98	0xe498	0x8001ec9c	mips_hi16_lo16	reachable-code	0x8003d270	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ecc4	0xe4c4	0x8001ecc8	mips_hi16_lo16	instruction-word	0x8003d270	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ec98	0xe498	0x8001ec9c	mips_hi16_lo16	reachable-code	0x8003d270	load	DAT_8003d26c	lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ecc4	0xe4c4	0x8001ecc8	mips_hi16_lo16	instruction-word	0x8003d270	load	DAT_8003d26c	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001ecd8	0xe4d8		mips26	instruction-word	0x8001ece4	load		j		range-filtered	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ecf0	0xe4f0	0x8001ecf4	mips_hi16_lo16	reachable-code	0x8003d274	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ecfc	0xe4fc	0x8001ed00	mips_hi16_lo16	reachable-code	0x8003d26c	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ed28	0xe528	0x8001ed30	mips_hi16_lo16	instruction-word	0x8003d26c	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001ed64	0xe564	0x8001ed68	mips_hi16_lo16	reachable-code	0x8003d270	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ecf0	0xe4f0	0x8001ecf4	mips_hi16_lo16	reachable-code	0x8003d274	load	DAT_8003d26c	lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ecfc	0xe4fc	0x8001ed00	mips_hi16_lo16	reachable-code	0x8003d26c	load	DAT_8003d26c	lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ed28	0xe528	0x8001ed30	mips_hi16_lo16	instruction-word	0x8003d26c	load	DAT_8003d26c	lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001ed2c	0xe52c	0x8001ed38	mips_hi16_lo16	instruction-word	0x8003d274	load	DAT_8003d26c	lui+lw	v0	paired-pattern	candidate	manual:LIBAPI COUNTER.OBJ StopRCnt .text+0x114/+0x120 native .data+8 patches;retail decoded pair
+OPEN.EXE	0x8001ed64	0xe564	0x8001ed68	mips_hi16_lo16	reachable-code	0x8003d270	load	DAT_8003d26c	lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001ed74	0xe574		mips26	reachable-code	0x8001ed80	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001edb0	0xe5b0		mips26	reachable-code	0x8002a69c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001edd0	0xe5d0		mips26	instruction-word	0x8002a69c	load		jal		range-filtered	candidate	investigation:relocs.tsv
@@ -16804,15 +16806,16 @@ END.EXE	0x8001be1c	0xb61c		mips26	instruction-word	0x8001be5c	load	CloseEvent	ja
 END.EXE	0x8001be24	0xb624		mips26	instruction-word	0x80012c34	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001be44	0xb644		mips26	instruction-word	0x80024388	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001be8c	0xb68c		mips26	reachable-code	0x8001bf10	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001be94	0xb694	0x8001be98	mips_hi16_lo16	reachable-code	0x8003a11c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001be94	0xb694	0x8001be98	mips_hi16_lo16	reachable-code	0x8003a11c	load	DAT_8003a118	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001becc	0xb6cc		mips26	reachable-code	0x8001bef0	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001befc	0xb6fc	0x8001bf00	mips_hi16_lo16	reachable-code	0x8003a11c	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001bf28	0xb728	0x8001bf2c	mips_hi16_lo16	instruction-word	0x8003a11c	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001befc	0xb6fc	0x8001bf00	mips_hi16_lo16	reachable-code	0x8003a11c	load	DAT_8003a118	lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001bf28	0xb728	0x8001bf2c	mips_hi16_lo16	instruction-word	0x8003a11c	load	DAT_8003a118	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001bf3c	0xb73c		mips26	instruction-word	0x8001bf48	load		j		range-filtered	candidate	investigation:relocs.tsv
-END.EXE	0x8001bf54	0xb754	0x8001bf58	mips_hi16_lo16	reachable-code	0x8003a120	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001bf60	0xb760	0x8001bf64	mips_hi16_lo16	reachable-code	0x8003a118	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001bf8c	0xb78c	0x8001bf94	mips_hi16_lo16	instruction-word	0x8003a118	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001bfc8	0xb7c8	0x8001bfcc	mips_hi16_lo16	reachable-code	0x8003a11c	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001bf54	0xb754	0x8001bf58	mips_hi16_lo16	reachable-code	0x8003a120	load	DAT_8003a118	lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001bf60	0xb760	0x8001bf64	mips_hi16_lo16	reachable-code	0x8003a118	load	DAT_8003a118	lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001bf8c	0xb78c	0x8001bf94	mips_hi16_lo16	instruction-word	0x8003a118	load	DAT_8003a118	lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001bf90	0xb790	0x8001bf9c	mips_hi16_lo16	instruction-word	0x8003a120	load	DAT_8003a118	lui+lw	v0	paired-pattern	candidate	manual:LIBAPI COUNTER.OBJ StopRCnt .text+0x114/+0x120 native .data+8 patches;retail decoded pair
+END.EXE	0x8001bfc8	0xb7c8	0x8001bfcc	mips_hi16_lo16	reachable-code	0x8003a11c	load	DAT_8003a118	lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001bfd8	0xb7d8		mips26	reachable-code	0x8001bfe4	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001c014	0xb814		mips26	reachable-code	0x80027548	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001c034	0xb834		mips26	instruction-word	0x80027548	load		jal		range-filtered	candidate	investigation:relocs.tsv

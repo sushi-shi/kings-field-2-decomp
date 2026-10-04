@@ -7090,7 +7090,7 @@ GAME.EXE	0x8003596c	0x2516c	0x80035970	mips_hi16_lo16	instruction-word	0x801749d
 GAME.EXE	0x800359fc	0x251fc	0x80035a00	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_init_records;retail-pair
 GAME.EXE	0x80035a4c	0x2524c		mips26	instruction-word	0x8005f410	load	memset	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035a6c	0x2526c		mips26	instruction-word	0x8002b73c	load	map_cell_add_layer_occupancy	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
-GAME.EXE	0x80035a90	0x25290	0x80035a94	mips_hi16_lo16	instruction-word	0x80011484	load		lui+addiu	at	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
+GAME.EXE	0x80035a90	0x25290	0x80035a94	mips_hi16_lo16	instruction-word	0x80011484	load	map_object_initialize_from_placements_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b48	0x25348		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b64	0x25364	0x80035b68	mips_hi16_lo16	instruction-word	0x80067980	load	map_object_cell_patterns	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b80	0x25380		mips26	instruction-word	0x80034f90	load	map_cell_apply_rotated_pattern	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target

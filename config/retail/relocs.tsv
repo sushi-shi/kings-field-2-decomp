@@ -4891,7 +4891,7 @@ GAME.EXE	0x80025914	0x15114	0x80025918	mips_hi16_lo16	reachable-code	0x801985b0	
 GAME.EXE	0x8002593c	0x1513c	0x80025940	mips_hi16_lo16	reachable-code	0x801985c2	bss		lui+addiu		paired-reviewed	reviewed	manual:player_attack_target
 GAME.EXE	0x8002594c	0x1514c	0x80025950	mips_hi16_lo16	reachable-code	0x801985c0	bss		lui+lh		paired-reviewed	reviewed	manual:player_attack_target
 GAME.EXE	0x80025954	0x15154		mips26	reachable-code	0x8003a778	load	actor_find_best_in_cone	jal		control-flow	reviewed	manual:player_attack_target
-GAME.EXE	0x80025960	0x15160	0x80025964	mips_hi16_lo16	reachable-code	0x801749c8	bss		lui+addiu		paired-reviewed	reviewed	manual:player_attack_target
+GAME.EXE	0x80025960	0x15160	0x80025964	mips_hi16_lo16	reachable-code	0x801749c8	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:player_attack_target
 GAME.EXE	0x80025988	0x15188		mips26	reachable-code	0x80039710	load	actor_find_target_of_type	jal		control-flow	reviewed	manual:player_attack_target
 GAME.EXE	0x800259b0	0x151b0		mips26	reachable-code	0x800390d0	load	actor_set_target	jal		control-flow	reviewed	manual:player_attack_target
 GAME.EXE	0x800259c0	0x151c0	0x800259c4	mips_hi16_lo16	reachable-code	0x801985c0	bss		lui+lhu		paired-reviewed	reviewed	manual:player_attack_target
@@ -7420,7 +7420,7 @@ GAME.EXE	0x80038c38	0x28438		mips26	instruction-word	0x80038c44	load		j		range-f
 GAME.EXE	0x80038c54	0x28454		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038c5c	0x2845c	0x80038c60	mips_hi16_lo16	reachable-code	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:map_object_dispatch_default_active_callback_table
 GAME.EXE	0x80038c90	0x28490	0x80038c94	mips_hi16_lo16	instruction-word	0x8017d108	bss	map_object_state	lui+sw	at	paired-reviewed	reviewed	manual:map_object_dispatch_outer_loop_struct
-GAME.EXE	0x80038cc8	0x284c8	0x80038ccc	mips_hi16_lo16	reachable-code	0x80171208	bss		lui+addiu		paired-reviewed	reviewed	manual:actor_pool
+GAME.EXE	0x80038cc8	0x284c8	0x80038ccc	mips_hi16_lo16	reachable-code	0x80171208	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_pool
 GAME.EXE	0x80038d54	0x28554		mips26	reachable-code	0x8002b67c	load	collision_sample_map_layer_height	jal		control-flow	reviewed	manual:actor_set_home_position
 GAME.EXE	0x80038d7c	0x2857c	0x80038d80	mips_hi16_lo16	reachable-code	0x801d8d4c	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:actor_set_home_position
 GAME.EXE	0x80038dd8	0x285d8	0x80038ddc	mips_hi16_lo16	reachable-code	0x801716e0	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_copy_group_defaults
@@ -7625,8 +7625,8 @@ GAME.EXE	0x8003ad80	0x2a580	0x8003ad84	mips_hi16_lo16	reachable-code	0x801749b0	
 GAME.EXE	0x8003ada0	0x2a5a0		mips26	instruction-word	0x8003adac	load		j		range-filtered	reviewed	manual:actor_animation
 GAME.EXE	0x8003add4	0x2a5d4		mips26	instruction-word	0x8003ade0	load		j		range-filtered	reviewed	manual:actor_animation
 GAME.EXE	0x8003ae04	0x2a604		mips26	instruction-word	0x8003ae18	load		j		range-filtered	reviewed	manual:actor_animation
-GAME.EXE	0x8003ae80	0x2a680	0x8003ae84	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
-GAME.EXE	0x8003aedc	0x2a6dc	0x8003aee0	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
+GAME.EXE	0x8003ae80	0x2a680	0x8003ae84	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
+GAME.EXE	0x8003aedc	0x2a6dc	0x8003aee0	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003af18	0x2a718		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003af44	0x2a744	0x8003af48	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003af60	0x2a760		mips26	reachable-code	0x8003af78	load		j		control-flow	reviewed	manual:actor_collision_motion
@@ -7658,23 +7658,23 @@ GAME.EXE	0x8003b278	0x2aa78		mips26	reachable-code	0x8003aec8	load		j		control-f
 GAME.EXE	0x8003b29c	0x2aa9c	0x8003b2a0	mips_hi16_lo16	reachable-code	0x801d8d44	bss		lui+lw		paired-reviewed	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b2d0	0x2aad0		mips26	reachable-code	0x8003b2e4	load		j		control-flow	reviewed	manual:actor_collision_motion
 GAME.EXE	0x8003b2e4	0x2aae4		mips26	reachable-code	0x8003aec8	load		j		control-flow	reviewed	manual:actor_collision_motion
-GAME.EXE	0x8003b354	0x2ab54	0x8003b358	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
-GAME.EXE	0x8003b38c	0x2ab8c	0x8003b390	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
+GAME.EXE	0x8003b354	0x2ab54	0x8003b358	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
+GAME.EXE	0x8003b38c	0x2ab8c	0x8003b390	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b3c8	0x2abc8		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b3f8	0x2abf8		mips26	reachable-code	0x8003b504	load		j		control-flow	reviewed	manual:actor_motion_collision
-GAME.EXE	0x8003b40c	0x2ac0c	0x8003b410	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
+GAME.EXE	0x8003b40c	0x2ac0c	0x8003b410	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b434	0x2ac34		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b450	0x2ac50		mips26	reachable-code	0x8003b504	load		j		control-flow	reviewed	manual:actor_motion_collision
-GAME.EXE	0x8003b464	0x2ac64	0x8003b468	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
+GAME.EXE	0x8003b464	0x2ac64	0x8003b468	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b48c	0x2ac8c		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b4a8	0x2aca8		mips26	reachable-code	0x8003b504	load		j		control-flow	reviewed	manual:actor_motion_collision
-GAME.EXE	0x8003b4bc	0x2acbc	0x8003b4c0	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
+GAME.EXE	0x8003b4bc	0x2acbc	0x8003b4c0	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_collision
 GAME.EXE	0x8003b4e4	0x2ace4		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_motion_collision
-GAME.EXE	0x8003b544	0x2ad44	0x8003b548	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_trajectory_begin
+GAME.EXE	0x8003b544	0x2ad44	0x8003b548	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_trajectory_begin
 GAME.EXE	0x8003b578	0x2ad78		mips26	reachable-code	0x80015bc8	load	trajectory_solve_motion_between_points	jal		control-flow	reviewed	manual:actor_trajectory_begin
-GAME.EXE	0x8003b5bc	0x2adbc	0x8003b5c0	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_set_byte_0d_60
-GAME.EXE	0x8003b5e8	0x2ade8	0x8003b5ec	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
-GAME.EXE	0x8003b5f0	0x2adf0	0x8003b5f4	mips_hi16_lo16	reachable-code	0x801749a8	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
+GAME.EXE	0x8003b5bc	0x2adbc	0x8003b5c0	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_set_byte_0d_60
+GAME.EXE	0x8003b5e8	0x2ade8	0x8003b5ec	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
+GAME.EXE	0x8003b5f0	0x2adf0	0x8003b5f4	mips_hi16_lo16	reachable-code	0x801749a8	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b620	0x2ae20		mips26	reachable-code	0x8002b604	load	collision_probe_floor_height	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b628	0x2ae28	0x8003b62c	mips_hi16_lo16	reachable-code	0x801d8d4a	bss	bss_801c7540	lui+addiu		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b658	0x2ae58	0x8003b65c	mips_hi16_lo16	reachable-code	0x801d8d4c	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
@@ -7684,7 +7684,7 @@ GAME.EXE	0x8003b6a8	0x2aea8		mips26	reachable-code	0x8003b988	load		j		control-f
 GAME.EXE	0x8003b6b0	0x2aeb0	0x8003b6b4	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b6d4	0x2aed4		mips26	reachable-code	0x8003b988	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b6e4	0x2aee4		mips26	reachable-code	0x8003b980	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003b700	0x2af00	0x8003b704	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
+GAME.EXE	0x8003b700	0x2af00	0x8003b704	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b728	0x2af28		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b750	0x2af50		mips26	reachable-code	0x8003b988	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b7ac	0x2afac		mips26	reachable-code	0x800248a8	load	player_apply_damage	jal		control-flow	candidate	investigation:relocs.tsv
@@ -7695,16 +7695,16 @@ GAME.EXE	0x8003b808	0x2b008		mips26	reachable-code	0x8003b870	load		j		control-f
 GAME.EXE	0x8003b824	0x2b024		mips26	reachable-code	0x8003b988	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b848	0x2b048	0x8003b84c	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b870	0x2b070		mips26	reachable-code	0x8003b988	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003b8d4	0x2b0d4	0x8003b8d8	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
+GAME.EXE	0x8003b8d4	0x2b0d4	0x8003b8d8	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_terrain_motion
 GAME.EXE	0x8003b8f4	0x2b0f4		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b92c	0x2b12c		mips26	reachable-code	0x8003b988	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003b974	0x2b174		mips26	reachable-code	0x800248a8	load	player_apply_damage	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003b9bc	0x2b1bc	0x8003b9c0	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_decay
+GAME.EXE	0x8003b9bc	0x2b1bc	0x8003b9c0	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_decay
 GAME.EXE	0x8003ba00	0x2b200		mips26	reachable-code	0x8005ab2c	load	SquareRoot0	jal		control-flow	reviewed	manual:actor_motion_decay
 GAME.EXE	0x8003ba5c	0x2b25c		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:actor_motion_decay
 GAME.EXE	0x8003bab0	0x2b2b0		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:actor_motion_decay
 GAME.EXE	0x8003bac0	0x2b2c0		mips26	reachable-code	0x8003ae50	load	actor_move_horizontal_with_collision	jal		control-flow	reviewed	manual:actor_motion_decay
-GAME.EXE	0x8003bb10	0x2b310	0x8003bb14	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_scale
+GAME.EXE	0x8003bb10	0x2b310	0x8003bb14	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_scale
 GAME.EXE	0x8003bb18	0x2b318		mips26	reachable-code	0x80014ac0	load	angle_to_forward_xz	jal		control-flow	reviewed	manual:actor_motion_scale
 GAME.EXE	0x8003bb34	0x2b334		mips26	reachable-code	0x80015148	load	vector2i_scale_shift11	jal		control-flow	reviewed	manual:actor_motion_scale
 GAME.EXE	0x8003bb40	0x2b340		mips26	reachable-code	0x80015148	load	vector2i_scale_shift11	jal		control-flow	reviewed	manual:actor_motion_scale
@@ -7720,14 +7720,14 @@ GAME.EXE	0x8003bc78	0x2b478		mips26	reachable-code	0x8003bca0	load		j		control-f
 GAME.EXE	0x8003bc84	0x2b484		mips26	reachable-code	0x800152e8	load	angle_mod_delta_le_half_turn	jal		control-flow	reviewed	manual:actor_turn_toward
 GAME.EXE	0x8003bc98	0x2b498		mips26	reachable-code	0x800152e8	load	angle_mod_delta_le_half_turn	jal		control-flow	reviewed	manual:actor_turn_toward
 GAME.EXE	0x8003bca8	0x2b4a8		mips26	reachable-code	0x8003bcb4	load		j		control-flow	reviewed	manual:actor_turn_toward
-GAME.EXE	0x8003bcfc	0x2b4fc	0x8003bd00	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_wrapper
+GAME.EXE	0x8003bcfc	0x2b4fc	0x8003bd00	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_wrapper
 GAME.EXE	0x8003bd08	0x2b508		mips26	reachable-code	0x8003bba0	load	actor_turn_toward_angle	jal		control-flow	reviewed	manual:actor_motion_wrapper
 GAME.EXE	0x8003bd1c	0x2b51c		mips26	reachable-code	0x8003bae4	load	actor_move_along_heading	jal		control-flow	reviewed	manual:actor_motion_wrapper
-GAME.EXE	0x8003bd70	0x2b570	0x8003bd74	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_move_toward_point
+GAME.EXE	0x8003bd70	0x2b570	0x8003bd74	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_move_toward_point
 GAME.EXE	0x8003bd98	0x2b598		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:actor_move_toward_point
 GAME.EXE	0x8003bddc	0x2b5dc		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:actor_move_toward_point
 GAME.EXE	0x8003be00	0x2b600		mips26	reachable-code	0x8003bcd0	load	actor_turn_and_move_along_heading	jal		control-flow	reviewed	manual:actor_move_toward_point
-GAME.EXE	0x8003be5c	0x2b65c	0x8003be60	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_3d
+GAME.EXE	0x8003be5c	0x2b65c	0x8003be60	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003be64	0x2b664		mips26	reachable-code	0x80015034	load	pitch_yaw_to_forward_vector	jal		control-flow	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003be90	0x2b690		mips26	reachable-code	0x80015188	load	vector3s_scale_shift12	jal		control-flow	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003be9c	0x2b69c		mips26	reachable-code	0x80015188	load	vector3s_scale_shift12	jal		control-flow	reviewed	manual:actor_motion_3d
@@ -7735,10 +7735,10 @@ GAME.EXE	0x8003beb0	0x2b6b0		mips26	reachable-code	0x80014864	load	value_approac
 GAME.EXE	0x8003bec8	0x2b6c8		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003bee0	0x2b6e0		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003bef0	0x2b6f0		mips26	reachable-code	0x8003ae50	load	actor_move_horizontal_with_collision	jal		control-flow	reviewed	manual:actor_motion_3d
-GAME.EXE	0x8003bf10	0x2b710	0x8003bf14	mips_hi16_lo16	reachable-code	0x801749a4	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_3d
+GAME.EXE	0x8003bf10	0x2b710	0x8003bf14	mips_hi16_lo16	reachable-code	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003bf38	0x2b738		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:actor_motion_3d
 GAME.EXE	0x8003bf48	0x2b748		mips26	reachable-code	0x8003bf54	load		j		control-flow	reviewed	manual:actor_motion_3d
-GAME.EXE	0x8003bfa4	0x2b7a4	0x8003bfa8	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_motion_angles
+GAME.EXE	0x8003bfa4	0x2b7a4	0x8003bfa8	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_motion_angles
 GAME.EXE	0x8003bfb0	0x2b7b0		mips26	reachable-code	0x8003bba0	load	actor_turn_toward_angle	jal		control-flow	reviewed	manual:actor_motion_angles
 GAME.EXE	0x8003bfc0	0x2b7c0		mips26	reachable-code	0x800147a0	load	angle_approach	jal		control-flow	reviewed	manual:actor_motion_angles
 GAME.EXE	0x8003bfd8	0x2b7d8		mips26	reachable-code	0x8003be38	load	actor_move_along_euler_angles	jal		control-flow	reviewed	manual:actor_motion_angles
@@ -7749,9 +7749,9 @@ GAME.EXE	0x8003c148	0x2b948		mips26	reachable-code	0x8003c20c	load		j		control-f
 GAME.EXE	0x8003c150	0x2b950		mips26	reachable-code	0x8003c20c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003c16c	0x2b96c	0x8003c170	mips_hi16_lo16	reachable-code	0x801716e0	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_group_position
 GAME.EXE	0x8003c1a4	0x2b9a4		mips26	reachable-code	0x8003c1fc	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003c1ac	0x2b9ac	0x8003c1b0	mips_hi16_lo16	reachable-code	0x801716ec	bss		lui+addiu		paired-reviewed	reviewed	manual:actor_group_position
+GAME.EXE	0x8003c1ac	0x2b9ac	0x8003c1b0	mips_hi16_lo16	reachable-code	0x801716ec	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_group_position
 GAME.EXE	0x8003c1c8	0x2b9c8		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:actor group-position direct jal; raw target, source call, delay slot
-GAME.EXE	0x8003c23c	0x2ba3c	0x8003c240	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_animation_event
+GAME.EXE	0x8003c23c	0x2ba3c	0x8003c240	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_animation_event
 GAME.EXE	0x8003c25c	0x2ba5c		mips26	reachable-code	0x8003c274	load		j		control-flow	reviewed	manual:actor_animation_event
 GAME.EXE	0x8003c294	0x2ba94		mips26	reachable-code	0x8003c2b4	load		j		control-flow	reviewed	manual:actor_animation_event
 GAME.EXE	0x8003c2c4	0x2bac4		mips26	reachable-code	0x8003ad90	load	actor_advance_animation_wrapped	jal		control-flow	reviewed	manual:actor_animation_event

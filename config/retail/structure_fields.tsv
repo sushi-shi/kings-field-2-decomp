@@ -174,7 +174,7 @@ KfDisplayState	0x20	0x04	primitive_buffer	KfPrimitiveBuffer *	supported	game hea
 KfDisplayState	0x24	0x10000	ordering_tables	KfOrderingTable[2]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfDisplayState	0x10024	0x04	ordering_table	u32 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfEffectCacheTail	0x00	0x04	animation_cache	KfPoolRecord *	observed	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg;animation_prepare_asset_vertices owner_slot;pool_record_release zeroes owner_slot	Per-effect animation vertex cache owner slot
-KfEffectCacheTail	0x04	0x08	kind_payload	u8[8]	supported	GAME 0x80040308;GAME 0x80042650;GAME 0x8003247c	Kind-specific state begins at effect record +0x40
+KfEffectCacheTail	0x04	0x08	payload	KfEffectKindPayload	supported	GAME 0x80040308;GAME 0x80042650;GAME 0x8003247c	Kind-specific state begins at effect record +0x40
 KfEffectKind101Motion	0x00	0x02	scale_step	u16	supported	GAME 0x800455ac lhu;effect_construct_record kind 101	Per-tick increment applied to all three scales
 KfEffectKind101Motion	0x02	0x02	vertical_step	u16	supported	GAME 0x80045584 lhu;effect_construct_record kind 101	Per-tick increment applied to vertical direction
 KfEffectKind10Targeting	0x00	0x01	actor_index	u8	supported	GAME 0x80044da8 lbu;GAME 0x80044eb4 sb	Actor record selected for kind-10 emission

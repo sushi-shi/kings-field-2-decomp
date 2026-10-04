@@ -6229,7 +6229,7 @@ GAME.EXE	0x8002cf54	0x1c754	0x8002cf58	mips_hi16_lo16	reachable-code	0x80191e14	
 GAME.EXE	0x8002d008	0x1c808		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
 GAME.EXE	0x8002d058	0x1c858		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
 GAME.EXE	0x8002d060	0x1c860		mips26	reachable-code	0x8002d07c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002d0ac	0x1c8ac	0x8002d0b0	mips_hi16_lo16	reachable-code	0x80191f64	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002d0ac	0x1c8ac	0x8002d0b0	mips_hi16_lo16	reachable-code	0x80191f64	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d0bc	0x1c8bc		mips26	reachable-code	0x8005dfdc	load	SetFogNear	jal		control-flow	reviewed	manual:graphics
 GAME.EXE	0x8002d0e0	0x1c8e0		mips26	reachable-code	0x8005f4c8	load	ResetGraph	jal		control-flow	reviewed	manual:graphics
 GAME.EXE	0x8002d0e8	0x1c8e8		mips26	reachable-code	0x8005f800	load	SetDispMask	jal		control-flow	reviewed	manual:graphics

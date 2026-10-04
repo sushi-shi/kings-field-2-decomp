@@ -11270,6 +11270,7 @@ GAME.EXE	0x8005e948	0x4e148	0x8005e94c	mips_hi16_lo16	instruction-word	0x8006d89
 GAME.EXE	0x8005e970	0x4e170		mips26	instruction-word	0x8005f110	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e978	0x4e178	0x8005e97c	mips_hi16_lo16	instruction-word	0x8006d8a8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e984	0x4e184	0x8005e988	mips_hi16_lo16	instruction-word	0x8006d510	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e99c	0x4e19c	0x8005e9a0	mips_hi16_lo16	reachable-code	0x80073440	bss	DAT_80073440	lui+addiu	a0	paired-reviewed	reviewed	manual:LIBETC INTR.OBJ intInit .text+0x154 patch rtc_point.14 .bss+0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8005e9a4	0x4e1a4		mips26	instruction-word	0x8005f440	load	setjmp	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e9b4	0x4e1b4	0x8005e9b8	mips_hi16_lo16	instruction-word	0x8006d8a0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e9bc	0x4e1bc	0x8005e9c0	mips_hi16_lo16	instruction-word	0x8006d89c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -11294,6 +11295,8 @@ GAME.EXE	0x8005eb04	0x4e304	0x8005eb08	mips_hi16_lo16	instruction-word	0x8006d89
 GAME.EXE	0x8005eb0c	0x4e30c		mips26	instruction-word	0x8005ecc0	load	DMAInit	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eb14	0x4e314	0x8005eb18	mips_hi16_lo16	instruction-word	0x8006d894	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eb1c	0x4e31c		mips26	instruction-word	0x8005f3c0	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005eb24	0x4e324	0x8005eb28	mips_hi16_lo16	reachable-code	0x80073444	bss	DAT_80073440	lui+addiu	a0	paired-reviewed	reviewed	manual:LIBETC INTR.OBJ intInit .text+0x2dc patch rtc_point.14 .bss+4;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8005eb2c	0x4e32c	0x8005eb30	mips_hi16_lo16	reachable-code	0x80074420	bss	stack	lui+addiu	v0	paired-reviewed	reviewed	manual:LIBETC INTR.OBJ intInit .text+0x2e4 patch stack .bss+0x30+0xfb0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8005eb38	0x4e338		mips26	instruction-word	0x8005f310	load	HookEntryInt	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eb40	0x4e340		mips26	instruction-word	0x8005f390	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eb68	0x4e368	0x8005eb6c	mips_hi16_lo16	instruction-word	0x8006d898	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv

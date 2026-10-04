@@ -444,7 +444,7 @@ KfMapObjectTailFields	0x4	0x1	unknown_38	u8	opaque	game/map_object.h;asm;map obj
 KfMapObjectTailFields	0x5	0x1	unknown_39	u8	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailFields	0x8	0x2	spawn_sequence	u16	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
-KfMapObjectTailFields	0xa	0x2	unknown_3e	s16	candidate	asm;map_object_spawn_effect;map_object_spawn_scattered_effect	signed spawn parameter initialized to zero or -120
+KfMapObjectTailFields	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	candidate	game/map_object.h;map_object_spawn_effect;map_object_spawn_scattered_effect;map_object_update_actions	action-specific halfword: signed motion initialized to zero or -120, then read and updated through signed/unsigned views
 KfMapObjectTailMotionView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
 KfMapObjectTailMotionView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	preceding tail byte
 KfMapObjectTailMotionView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	preceding tail byte
@@ -564,6 +564,7 @@ KfMapObjectTailSpawnByteFields	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque
 KfMapObjectTailSpawnByteFields	0x8	0x2	spawn_sequence	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;render_scene_and_update_resources	retail reads both sequence bytes separately
 KfMapObjectTailSpawnByteFields	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h;asm	following tail halfword
 KfMapObjectTailHalfword	0x0	0x2	value	u16	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
+KfMapObjectTailHalfword	0x0	0x2	signed_value	s16	supported	game/map_object.h;map_object_update_actions actions 0x60/0x62	signed motion velocity shares the unsigned halfword storage
 KfMapObjectTailHalfword	0x0	0x2	bytes	KfMapObjectTailHalfwordBytes	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x0	0x1	low	u8	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
 KfMapObjectTailHalfwordBytes	0x1	0x1	high	u8	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword

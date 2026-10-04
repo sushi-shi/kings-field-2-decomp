@@ -4453,23 +4453,23 @@ GAME.EXE	0x80023974	0x13174	0x80023978	mips_hi16_lo16	reachable-code	0x80198522	
 GAME.EXE	0x80023984	0x13184	0x80023988	mips_hi16_lo16	reachable-code	0x801984f4	bss		lui+lhu		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x8002398c	0x1318c	0x80023990	mips_hi16_lo16	reachable-code	0x801984f6	bss		lui+lhu		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x80023994	0x13194	0x80023998	mips_hi16_lo16	reachable-code	0x80198526	bss		lui+lh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239a8	0x131a8	0x800239ac	mips_hi16_lo16	reachable-code	0x80198500	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239b0	0x131b0	0x800239b4	mips_hi16_lo16	reachable-code	0x80198502	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239b8	0x131b8	0x800239bc	mips_hi16_lo16	reachable-code	0x80198504	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239c0	0x131c0	0x800239c4	mips_hi16_lo16	reachable-code	0x80198506	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239c8	0x131c8	0x800239cc	mips_hi16_lo16	reachable-code	0x80198508	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239d0	0x131d0	0x800239d4	mips_hi16_lo16	reachable-code	0x8019850a	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239d8	0x131d8	0x800239dc	mips_hi16_lo16	reachable-code	0x8019850c	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239e0	0x131e0	0x800239e4	mips_hi16_lo16	reachable-code	0x8019850e	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239e8	0x131e8	0x800239ec	mips_hi16_lo16	reachable-code	0x80198512	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239f0	0x131f0	0x800239f4	mips_hi16_lo16	reachable-code	0x80198514	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x800239f8	0x131f8	0x800239fc	mips_hi16_lo16	reachable-code	0x80198516	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a00	0x13200	0x80023a04	mips_hi16_lo16	reachable-code	0x80198518	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a08	0x13208	0x80023a0c	mips_hi16_lo16	reachable-code	0x8019851a	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a10	0x13210	0x80023a14	mips_hi16_lo16	reachable-code	0x8019851c	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a18	0x13218	0x80023a1c	mips_hi16_lo16	reachable-code	0x8019851e	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a20	0x13220	0x80023a24	mips_hi16_lo16	reachable-code	0x80198520	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
-GAME.EXE	0x80023a28	0x13228	0x80023a2c	mips_hi16_lo16	reachable-code	0x80198522	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239a8	0x131a8	0x800239ac	mips_hi16_lo16	reachable-code	0x80198500	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239b0	0x131b0	0x800239b4	mips_hi16_lo16	reachable-code	0x80198502	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239b8	0x131b8	0x800239bc	mips_hi16_lo16	reachable-code	0x80198504	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239c0	0x131c0	0x800239c4	mips_hi16_lo16	reachable-code	0x80198506	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239c8	0x131c8	0x800239cc	mips_hi16_lo16	reachable-code	0x80198508	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239d0	0x131d0	0x800239d4	mips_hi16_lo16	reachable-code	0x8019850a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239d8	0x131d8	0x800239dc	mips_hi16_lo16	reachable-code	0x8019850c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239e0	0x131e0	0x800239e4	mips_hi16_lo16	reachable-code	0x8019850e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239e8	0x131e8	0x800239ec	mips_hi16_lo16	reachable-code	0x80198512	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239f0	0x131f0	0x800239f4	mips_hi16_lo16	reachable-code	0x80198514	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x800239f8	0x131f8	0x800239fc	mips_hi16_lo16	reachable-code	0x80198516	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a00	0x13200	0x80023a04	mips_hi16_lo16	reachable-code	0x80198518	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a08	0x13208	0x80023a0c	mips_hi16_lo16	reachable-code	0x8019851a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a10	0x13210	0x80023a14	mips_hi16_lo16	reachable-code	0x8019851c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a18	0x13218	0x80023a1c	mips_hi16_lo16	reachable-code	0x8019851e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a20	0x13220	0x80023a24	mips_hi16_lo16	reachable-code	0x80198520	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
+GAME.EXE	0x80023a28	0x13228	0x80023a2c	mips_hi16_lo16	reachable-code	0x80198522	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x80023a30	0x13230	0x80023a34	mips_hi16_lo16	reachable-code	0x801984f8	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x80023a38	0x13238	0x80023a3c	mips_hi16_lo16	reachable-code	0x801984fa	bss		lui+sh		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x80023a48	0x13248	0x80023a4c	mips_hi16_lo16	reachable-code	0x801984f8	bss		lui+lhu		paired-reviewed	reviewed	manual:player_recalculate

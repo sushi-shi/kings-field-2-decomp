@@ -10480,22 +10480,22 @@ GAME.EXE	0x800507c4	0x3ffc4		mips26	reachable-code	0x8004def0	load		jal		control
 GAME.EXE	0x800507d0	0x3ffd0		mips26	reachable-code	0x800507dc	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050818	0x40018		mips26	reachable-code	0x8004d8d0	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050888	0x40088	0x8005088c	mips_hi16_lo16	reachable-code	0x8019b688	bss	_svm_vab_used	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND VS_VTBP.OBJ .text+0x3c native XREF _svm_vab_used;retail raw pair;exact-sdk30 section
-GAME.EXE	0x800508a4	0x400a4	0x800508a8	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x800508a4	0x400a4	0x800508a8	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800508b8	0x400b8	0x800508bc	mips_hi16_lo16	reachable-code	0x801d9f28	bss	_svm_vab_total	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND VS_VTBP.OBJ .text+0x6c native XREF _svm_vab_total;retail raw pair;exact-sdk30 section
-GAME.EXE	0x800508c8	0x400c8	0x800508cc	mips_hi16_lo16	reachable-code	0x8006d874	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x800508d0	0x400d0	0x800508d4	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x800508c8	0x400c8	0x800508cc	mips_hi16_lo16	reachable-code	0x8006d874	load	DAT_8006d870	lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x800508d0	0x400d0	0x800508d4	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800508d8	0x400d8		mips26	reachable-code	0x800509b8	load	SpuSetTransferMode	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800508e0	0x400e0	0x800508e4	mips_hi16_lo16	reachable-code	0x801d9f70	bss	_svm_vab_start	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND VS_VTBP.OBJ .text+0x94 native XREF _svm_vab_start;retail raw pair;exact-sdk30 section
 GAME.EXE	0x800508f0	0x400f0		mips26	reachable-code	0x8005079c	load	SpuSetTransferStartAddr	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800508f8	0x400f8	0x800508fc	mips_hi16_lo16	reachable-code	0x8006d874	load		lui+lh	s2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005090c	0x4010c	0x80050910	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x800508f8	0x400f8	0x800508fc	mips_hi16_lo16	reachable-code	0x8006d874	load	DAT_8006d870	lui+lh	s2	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005090c	0x4010c	0x80050910	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050928	0x40128		mips26	reachable-code	0x80050a0c	load	SpuWritePartly	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050934	0x40134		mips26	reachable-code	0x80050760	load	_spu_setInTransfer	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050944	0x40144		mips26	reachable-code	0x80050998	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005094c	0x4014c	0x80050950	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005095c	0x4015c	0x80050960	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005096c	0x4016c	0x80050970	mips_hi16_lo16	reachable-code	0x8006d870	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80050978	0x40178	0x8005097c	mips_hi16_lo16	reachable-code	0x8006d874	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005094c	0x4014c	0x80050950	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005095c	0x4015c	0x80050960	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005096c	0x4016c	0x80050970	mips_hi16_lo16	reachable-code	0x8006d870	load	DAT_8006d870	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050978	0x40178	0x8005097c	mips_hi16_lo16	reachable-code	0x8006d874	load	DAT_8006d870	lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050984	0x40184	0x80050988	mips_hi16_lo16	reachable-code	0x8019b688	bss	_svm_vab_used	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND VS_VTBP.OBJ .text+0x138 native XREF _svm_vab_used;retail raw pair;exact-sdk30 section
 GAME.EXE	0x800509d0	0x401d0		mips26	reachable-code	0x800509e0	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800509f4	0x401f4		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv

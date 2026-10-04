@@ -233,7 +233,7 @@ KfEffectRecord	0x32	0x2	scale_threshold	KfEffectScaleThreshold	supported	GAME 0x
 KfEffectRecord	0x34	0x8	direction	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x3c	0xc	unknown_3c	u8[12]	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	Variant payload shared by multiple effect kinds; kinds 5, 6, 8, 10, 12, 46, 101, 102, 105, and 107 have typed subviews at +0x40
 KfEffectRecord	0x3c	0xc	cache_tail	KfEffectCacheTail	supported	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg	Cast view with cache pointer at +0x3c and variant payload at +0x40
-KfEffectRecord	0x40	0x8	kind6_trail_state	KfEffectTrailState	supported	GAME 0x80045094-0x8004552c;effect_construct_record kind 6	Cast view of unknown_3c[4]; pointer and three observed bytes, remaining byte opaque
+KfEffectRecord	0x40	0x8	kind6_trail_state	KfEffectTrailState	supported	GAME 0x80045094-0x8004552c;effect_construct_record kind 6	Payload view with a pointer and three observed bytes; final byte is natural alignment
 KfEffectRecord	0x40	0x2	kind107_child_link	KfEffectTrailChildLink	supported	GAME 0x80044fd0-0x80044fd8;GAME 0x80045504-0x8004552c	Cast view of unknown_3c[4] for kind-107 child records
 KfEffectRecord	0x40	0x4	kind46_state	KfEffectKind46State	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Cast view of unknown_3c[4] for kind-46 state
 KfEffectRecord	0x40	0x4	kind5_fanout	KfEffectKind5Fanout	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Cast view of unknown_3c[4] for kind-5 parent fanout state
@@ -260,7 +260,6 @@ KfEffectTrailState	0x00	0x04	rows	KfEffectTrailRow *	supported	GAME 0x80045150/0
 KfEffectTrailState	0x04	0x01	frame_index	u8	supported	GAME 0x80045118-0x80045140;effect_update_dispatch kind 107	Modulo-24 snapshot row index
 KfEffectTrailState	0x05	0x01	phase_counter	u8	supported	GAME 0x80045020/0x8004515c-0x80045168	Kind-6 animation phase counter
 KfEffectTrailState	0x06	0x01	actor_index	u8	supported	GAME 0x80045094-0x80045098/0x800451c0	Actor selected by the collision cache
-KfEffectTrailState	0x07	0x01	unknown_07	u8	opaque	game/effect.h	Final kind-6 payload byte not interpreted
 KfEquipmentRecord	0x00	0x02	unknown_00	u8[2]	opaque	asm;player_set_equipment_slot;game_main_loop startup clear	not yet modelled
 KfEquipmentRecord	0x02	0x12	bonus_components	u16[9]	supported	asm;player_add_equipment_bonuses;player_recalculate_combat_stats	nine additive halfword components
 KfEquipmentRecord	0x14	0x02	hp_regen_interval	u16	supported	asm;func_800297b4;KF1 player_update	HP recovery interval in equipment effect ticks

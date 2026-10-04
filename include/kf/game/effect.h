@@ -41,7 +41,6 @@ typedef struct KfEffectTrailState {
     u8 frame_index;
     u8 phase_counter;
     u8 actor_index;
-    u8 unknown_07;
 } KfEffectTrailState;
 
 typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];

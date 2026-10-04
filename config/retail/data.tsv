@@ -651,7 +651,8 @@ GAME.EXE	0x8006d588	0x5cd88	0x31	string	manual:exact Psy-Q 3.0 LIBGPU SYS .data 
 GAME.EXE	0x8006d5b9	0x5cdb9	0x3	unclassified	manual:LIBGPU SYS .data alignment			archive 67-byte code record begins with three zero bytes	alignment before 16-pointer record; original C object boundary unresolved
 GAME.EXE	0x8006d5bc	0x5cdbc	0x40	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .data pointer record		u32[16]	16 archive 32-bit section patches;all 16 retail words	contiguous vendor pointer record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d5fc	0x5cdfc	0x60	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .data pointer record		u32[24]	24 archive 32-bit section patches;all 24 retail words	contiguous vendor record; original C declaration and linkage unresolved
-GAME.EXE	0x8006d65c	0x5ce5c	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d65c	0x5ce5c	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data tail		u8[0x18]	archive .data+0x60 24 Code bytes match retail;get_p_size references section+0x60	vendor size table; original C declaration and linkage unresolved
+GAME.EXE	0x8006d674	0x5ce74	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
 GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -802,21 +803,17 @@ GAME.EXE	0x8006da70	0x5d270	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4
 GAME.EXE	0x8006da74	0x5d274	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da78	0x5d278	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da7c	0x5d27c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da80	0x5d280	0x1	defined	reviewed		undefined1	Psy-Q 3.0 LIBCD BIOS.OBJ local result.12 at .sbss+0x0;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
-GAME.EXE	0x8006da81	0x5d281	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-GAME.EXE	0x8006da82	0x5d282	0x6	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006da80	0x5d280	0x8	defined	reviewed		u8[8]	Psy-Q 3.0 LIBCD BIOS.OBJ local result.12 at .sbss+0x0;next local at +0x8;exact rescpy copies eight bytes into result buffers	private SDK CD result buffer; spurious Ghidra byte identity at +0x1 was interior
 GAME.EXE	0x8006da88	0x5d288	0x1	defined	reviewed		undefined1	Psy-Q 3.0 LIBCD BIOS.OBJ local last_intr.13 at .sbss+0x8;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
 GAME.EXE	0x8006da89	0x5d289	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da90	0x5d290	0x1	defined	reviewed		undefined1	Psy-Q 3.0 LIBCD BIOS.OBJ local intr.14 at .sbss+0x10;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
-GAME.EXE	0x8006da91	0x5d291	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006da90	0x5d290	0x4	defined	reviewed		undefined4	Psy-Q 3.0 LIBCD BIOS.OBJ local intr.14 at .sbss+0x10;retail getintr stores a word and reads its low byte	private SDK interrupt state word; original signedness unresolved
+GAME.EXE	0x8006da94	0x5d294	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da98	0x5d298	0x4	defined	reviewed		undefined4	Psy-Q 3.0 LIBCD BIOS.OBJ local i.15 at .sbss+0x18;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
 GAME.EXE	0x8006da9c	0x5d29c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006daa0	0x5d2a0	0x4	defined	reviewed		undefined4	Psy-Q 3.0 LIBCD BIOS.OBJ local iserror.16 at .sbss+0x20;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
 GAME.EXE	0x8006daa4	0x5d2a4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006daa8	0x5d2a8	0x1	defined	reviewed		undefined1	Psy-Q 3.0 LIBCD BIOS.OBJ local SyncResult at .sbss+0x28;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
-GAME.EXE	0x8006daa9	0x5d2a9	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006dab0	0x5d2b0	0x1	defined	reviewed		undefined1	Psy-Q 3.0 LIBCD BIOS.OBJ local ReadyResult at .sbss+0x30;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
-GAME.EXE	0x8006dab1	0x5d2b1	0x7	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006daa8	0x5d2a8	0x8	defined	reviewed		u8[8]	Psy-Q 3.0 LIBCD BIOS.OBJ local SyncResult at .sbss+0x28;next local at +0x30;exact rescpy copies eight bytes into result buffers	private SDK CD result buffer; original local name is unsuitable as a C identity
+GAME.EXE	0x8006dab0	0x5d2b0	0x8	defined	reviewed		u8[8]	Psy-Q 3.0 LIBCD BIOS.OBJ local ReadyResult at .sbss+0x30;next local at +0x38;exact rescpy copies eight bytes into result buffers	private SDK CD result buffer; original local name is unsuitable as a C identity
 GAME.EXE	0x8006dab8	0x5d2b8	0x4	defined	reviewed		undefined4	Psy-Q 3.0 LIBCD BIOS.OBJ local target at .sbss+0x38;exact object section patch and retail width-matched xrefs	private SDK state; original object extent and signedness unresolved
 GAME.EXE	0x8006dabc	0x5d2bc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dac0	0x5d2c0	0x4	defined	reviewed	current	undefined4	Psy-Q 3.0 LIBCD ISO9660.OBJ local .sbss+0;exact text section patch and three validated retail word xrefs	private CD search state word; original type and signedness unresolved
@@ -1405,7 +1402,7 @@ OPEN.EXE	0x8003ca50	0x2c250	0x30	string	byte-pattern		ascii	investigation:string
 OPEN.EXE	0x8003ca80	0x2c280	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003ca84	0x2c284	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .data record		pointer[16]	16 ordered archive 32-bit patches;retail words match in OPEN/END	vendor SYS pointer record after version string; original C declaration unresolved
 OPEN.EXE	0x8003cac4	0x2c2c4	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
-OPEN.EXE	0x8003cb24	0x2c324	0x18	unclassified	coverage-gap			payload-complement	before exact LIBGTE MSC.OBJ .data section; ownership unresolved
+OPEN.EXE	0x8003cb24	0x2c324	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data tail		u8[0x18]	archive .data+0x60 24 Code bytes match retail exactly	vendor size table; original C declaration and linkage unresolved
 OPEN.EXE	0x8003cb3c	0x2c33c	0x320	defined	manual:exact Psy-Q 3.0 LIBGTE MSC.OBJ .data section		u8[0x320]	archive 800-byte Code section matches retail uniquely;InitGeom-family XREF to section+0xc	vendor geometric table section; original static objects and names unresolved
 OPEN.EXE	0x8003ce5c	0x2c65c	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
 OPEN.EXE	0x8003cedc	0x2c6dc	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table
@@ -2156,7 +2153,7 @@ END.EXE	0x800398fc	0x290fc	0x30	string	byte-pattern		ascii	investigation:string-
 END.EXE	0x8003992c	0x2912c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80039930	0x29130	0x40	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .data record		pointer[16]	16 ordered archive 32-bit patches;retail words match in OPEN/END	vendor SYS pointer record after version string; original C declaration unresolved
 END.EXE	0x80039970	0x29170	0x60	pointer	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data record		pointer[24]	24 ordered archive 32-bit patches into OTAG string section;all retail words exact in OPEN/END	vendor OTAG pointer record; original C declaration unresolved
-END.EXE	0x800399d0	0x291d0	0x18	unclassified	coverage-gap			payload-complement	before exact LIBGTE MSC.OBJ .data section; ownership unresolved
+END.EXE	0x800399d0	0x291d0	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data tail		u8[0x18]	archive .data+0x60 24 Code bytes match retail exactly	vendor size table; original C declaration and linkage unresolved
 END.EXE	0x800399e8	0x291e8	0x320	defined	manual:exact Psy-Q 3.0 LIBGTE MSC.OBJ .data section		u8[0x320]	archive 800-byte Code section matches retail uniquely;InitGeom-family XREF to section+0xc	vendor geometric table section; original static objects and names unresolved
 END.EXE	0x80039d08	0x29508	0x80	defined	manual:exact Psy-Q 3.0 LIBCD SYS.OBJ .data		u32[32]	archive 128-byte Code section exact in retail;cd_cw indexes selector*4	SDK CD command status table; original static name unresolved
 END.EXE	0x80039d88	0x29588	0x74	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS .data XDEF		pointer[29]	archive CD_comstr XDEF at .data+0;29 section patches;retail words exact	116-byte exported CD command string pointer table

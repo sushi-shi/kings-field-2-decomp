@@ -11265,6 +11265,7 @@ GAME.EXE	0x8005e758	0x4df58		mips26	instruction-word	0x8005e648	load	VBLNKInit	j
 GAME.EXE	0x8005e760	0x4df60	0x8005e764	mips_hi16_lo16	instruction-word	0x8006d88c	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e774	0x4df74	0x8005e778	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e788	0x4df88	0x8005e78c	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e7b0	0x4dfb0	0x8005e7b4	mips_hi16_lo16	reachable-code	0x8016b5f0	bss	PadIdentifier	lui+sw	at	paired-reachable	candidate	manual:LIBETC PAD.OBJ PadInit .text+0x8/+0xc native XREF PadIdentifier XBSS;retail decoded sw pair
 GAME.EXE	0x8005e7b8	0x4dfb8	0x8005e7bc	mips_hi16_lo16	reachable-code	0x8006dbb0	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e7c4	0x4dfc4	0x8005e7c8	mips_hi16_lo16	reachable-code	0x8006dba8	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e7cc	0x4dfcc		mips26	reachable-code	0x8005e848	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
@@ -14011,6 +14012,7 @@ OPEN.EXE	0x8001d9c4	0xd1c4		mips26	instruction-word	0x8001d8b4	load		jal		range-
 OPEN.EXE	0x8001d9cc	0xd1cc	0x8001d9d0	mips_hi16_lo16	instruction-word	0x8003de50	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d9e0	0xd1e0	0x8001d9e4	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d9f4	0xd1f4	0x8001d9f8	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da3c	0xd23c	0x8001da40	mips_hi16_lo16	reachable-code	0x800ac558	bss	PadIdentifier	lui+sw	at	paired-reachable	candidate	manual:LIBETC PAD.OBJ PadInit .text+0x8/+0xc native XREF PadIdentifier XBSS;retail decoded sw pair
 OPEN.EXE	0x8001da44	0xd244	0x8001da48	mips_hi16_lo16	reachable-code	0x8003dff0	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001da50	0xd250	0x8001da54	mips_hi16_lo16	reachable-code	0x8003dfe8	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001da58	0xd258		mips26	reachable-code	0x8001db04	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
@@ -16649,6 +16651,7 @@ END.EXE	0x8001ac28	0xa428		mips26	instruction-word	0x8001ab18	load		jal		range-f
 END.EXE	0x8001ac30	0xa430	0x8001ac34	mips_hi16_lo16	instruction-word	0x8003ac70	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ac44	0xa444	0x8001ac48	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ac58	0xa458	0x8001ac5c	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001aca0	0xa4a0	0x8001aca4	mips_hi16_lo16	reachable-code	0x800a9338	bss	PadIdentifier	lui+sw	at	paired-reachable	candidate	manual:LIBETC PAD.OBJ PadInit .text+0x8/+0xc native XREF PadIdentifier XBSS;retail decoded sw pair
 END.EXE	0x8001aca8	0xa4a8	0x8001acac	mips_hi16_lo16	reachable-code	0x8003ade8	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001acb4	0xa4b4	0x8001acb8	mips_hi16_lo16	reachable-code	0x8003ade0	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001acbc	0xa4bc		mips26	reachable-code	0x8001ad68	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv

@@ -807,18 +807,18 @@ GAME.EXE	0x8005b080	0x4a880	0xe4	0xe4	1	function	sdk-object-label	MulRotMatrix0	
 GAME.EXE	0x8005b164	0x4a964	0x10c	0x10c	1	function	sdk-object-label	MulMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x350;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b270	0x4aa70	0x10c	0x10c	1	function	sdk-object-label	MulMatrix2		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x45c;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b37c	0x4ab7c	0xe8	0xe8	1	function	sdk-object-label	MulRotMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x568;exact 0xed0-byte section;retail return delay slot
-GAME.EXE	0x8005b464	0x4ac64	0x110	0x110	1	function	ghidra-analysis	SetMulMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005b574	0x4ad74	0x50	0x50	1	function	ghidra-analysis	ApplyMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005b464	0x4ac64	0x110	0x110	1	function	sdk-object-label	SetMulMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0x650;exact 0xed0-byte section;retail return delay slot
+GAME.EXE	0x8005b574	0x4ad74	0x50	0x50	1	function	sdk-object-label	ApplyMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0x760;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b5c4	0x4adc4	0x5c	0x5c	1	function	sdk-object-label	ApplyMatrixSV		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x7b0;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b620	0x4ae20	0x160	0x160	1	function	sdk-object-label	ApplyMatrixLV		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x80c;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b780	0x4af80	0x30	0x30	1	function	sdk-object-label	ApplyRotMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x96c;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b7b0	0x4afb0	0x24	0x24	1	function	sdk-object-label	TransMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x99c;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b7d4	0x4afd4	0x124	0x124	1	function	sdk-object-label	ScaleMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x9c0;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005b8f8	0x4b0f8	0x124	0x124	1	function	sdk-object-label	ScaleMatrixL		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xae4;exact 0xed0-byte section;retail return delay slot
-GAME.EXE	0x8005ba1c	0x4b21c	0x30	0x30	1	function	ghidra-analysis	SetRotMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005ba4c	0x4b24c	0x30	0x30	1	function	ghidra-analysis	SetLightMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005ba7c	0x4b27c	0x30	0x30	1	function	ghidra-analysis	SetColorMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005baac	0x4b2ac	0x20	0x20	1	function	ghidra-analysis	SetTransMatrix		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005ba1c	0x4b21c	0x30	0x30	1	function	sdk-object-label	SetRotMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0xc08;exact 0xed0-byte section;retail return delay slot
+GAME.EXE	0x8005ba4c	0x4b24c	0x30	0x30	1	function	sdk-object-label	SetLightMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0xc38;exact 0xed0-byte section;retail return delay slot
+GAME.EXE	0x8005ba7c	0x4b27c	0x30	0x30	1	function	sdk-object-label	SetColorMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0xc68;exact 0xed0-byte section;retail return delay slot
+GAME.EXE	0x8005baac	0x4b2ac	0x20	0x20	1	function	sdk-object-label	SetTransMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	native XDEF .text+0xc98;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005bacc	0x4b2cc	0xa0	0xa0	1	function	sdk-object-label	PushMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xcb8;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005bb6c	0x4b36c	0xa0	0xa0	1	function	sdk-object-label	PopMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xd58;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005bc0c	0x4b40c	0x48	0x48	1	function	sdk-object-label	ReadRotMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xdf8;exact 0xed0-byte section;retail return delay slot

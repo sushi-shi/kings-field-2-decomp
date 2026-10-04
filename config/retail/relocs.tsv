@@ -11265,14 +11265,14 @@ GAME.EXE	0x8005e758	0x4df58		mips26	instruction-word	0x8005e648	load	VBLNKInit	j
 GAME.EXE	0x8005e760	0x4df60	0x8005e764	mips_hi16_lo16	instruction-word	0x8006d88c	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e774	0x4df74	0x8005e778	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e788	0x4df88	0x8005e78c	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e7b8	0x4dfb8	0x8005e7bc	mips_hi16_lo16	reachable-code	0x8006dbb0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e7c4	0x4dfc4	0x8005e7c8	mips_hi16_lo16	reachable-code	0x8006dba8	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e7cc	0x4dfcc		mips26	reachable-code	0x8005e848	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e7d8	0x4dfd8	0x8005e7dc	mips_hi16_lo16	reachable-code	0x8006dba8	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e7b8	0x4dfb8	0x8005e7bc	mips_hi16_lo16	reachable-code	0x8006dbb0	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e7c4	0x4dfc4	0x8005e7c8	mips_hi16_lo16	reachable-code	0x8006dba8	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e7cc	0x4dfcc		mips26	reachable-code	0x8005e848	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e7d8	0x4dfd8	0x8005e7dc	mips_hi16_lo16	reachable-code	0x8006dba8	load	pad_buf	lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e7e0	0x4dfe0		mips26	reachable-code	0x8005f320	load	PAD_init	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e7e8	0x4dfe8		mips26	reachable-code	0x8005f330	load	ChangeClearPAD	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e808	0x4e008		mips26	reachable-code	0x8005f100	load	PAD_dr	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e810	0x4e010	0x8005e814	mips_hi16_lo16	reachable-code	0x8006dba8	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e810	0x4e010	0x8005e814	mips_hi16_lo16	reachable-code	0x8006dba8	load	pad_buf	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e830	0x4e030		mips26	reachable-code	0x8005f160	load	StopPAD	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e848	0x4e048	0x8005e84c	mips_hi16_lo16	reachable-code	0x8006d894	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e878	0x4e078	0x8005e87c	mips_hi16_lo16	reachable-code	0x8006d894	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
@@ -14011,14 +14011,14 @@ OPEN.EXE	0x8001d9c4	0xd1c4		mips26	instruction-word	0x8001d8b4	load		jal		range-
 OPEN.EXE	0x8001d9cc	0xd1cc	0x8001d9d0	mips_hi16_lo16	instruction-word	0x8003de50	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d9e0	0xd1e0	0x8001d9e4	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d9f4	0xd1f4	0x8001d9f8	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001da44	0xd244	0x8001da48	mips_hi16_lo16	reachable-code	0x8003dff0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001da50	0xd250	0x8001da54	mips_hi16_lo16	reachable-code	0x8003dfe8	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001da58	0xd258		mips26	reachable-code	0x8001db04	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001da64	0xd264	0x8001da68	mips_hi16_lo16	reachable-code	0x8003dfe8	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da44	0xd244	0x8001da48	mips_hi16_lo16	reachable-code	0x8003dff0	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da50	0xd250	0x8001da54	mips_hi16_lo16	reachable-code	0x8003dfe8	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da58	0xd258		mips26	reachable-code	0x8001db04	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da64	0xd264	0x8001da68	mips_hi16_lo16	reachable-code	0x8003dfe8	load	pad_buf	lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001da6c	0xd26c		mips26	reachable-code	0x8001daf4	load	PAD_init	jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001da74	0xd274		mips26	reachable-code	0x8001da14	load	ChangeClearPAD	jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001da94	0xd294		mips26	reachable-code	0x8001dad4	load	PAD_dr	jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001da9c	0xd29c	0x8001daa0	mips_hi16_lo16	reachable-code	0x8003dfe8	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001da9c	0xd29c	0x8001daa0	mips_hi16_lo16	reachable-code	0x8003dfe8	load	pad_buf	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001dabc	0xd2bc		mips26	reachable-code	0x8001dae4	load	StopPAD	jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001db04	0xd304	0x8001db08	mips_hi16_lo16	reachable-code	0x8003de58	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001db34	0xd334	0x8001db38	mips_hi16_lo16	reachable-code	0x8003de58	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
@@ -16649,14 +16649,14 @@ END.EXE	0x8001ac28	0xa428		mips26	instruction-word	0x8001ab18	load		jal		range-f
 END.EXE	0x8001ac30	0xa430	0x8001ac34	mips_hi16_lo16	instruction-word	0x8003ac70	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ac44	0xa444	0x8001ac48	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+lw	s1	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ac58	0xa458	0x8001ac5c	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001aca8	0xa4a8	0x8001acac	mips_hi16_lo16	reachable-code	0x8003ade8	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001acb4	0xa4b4	0x8001acb8	mips_hi16_lo16	reachable-code	0x8003ade0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001acbc	0xa4bc		mips26	reachable-code	0x8001ad68	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001acc8	0xa4c8	0x8001accc	mips_hi16_lo16	reachable-code	0x8003ade0	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001aca8	0xa4a8	0x8001acac	mips_hi16_lo16	reachable-code	0x8003ade8	load	pad_status	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001acb4	0xa4b4	0x8001acb8	mips_hi16_lo16	reachable-code	0x8003ade0	load	pad_buf	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001acbc	0xa4bc		mips26	reachable-code	0x8001ad68	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8001acc8	0xa4c8	0x8001accc	mips_hi16_lo16	reachable-code	0x8003ade0	load	pad_buf	lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001acd0	0xa4d0		mips26	reachable-code	0x8001ad58	load	PAD_init	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001acd8	0xa4d8		mips26	reachable-code	0x8001ac78	load	ChangeClearPAD	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001acf8	0xa4f8		mips26	instruction-word	0x8001ad38	load	PAD_dr	jal		range-filtered	candidate	investigation:relocs.tsv
-END.EXE	0x8001ad00	0xa500	0x8001ad04	mips_hi16_lo16	instruction-word	0x8003ade0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001ad00	0xa500	0x8001ad04	mips_hi16_lo16	instruction-word	0x8003ade0	load	pad_buf	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ad20	0xa520		mips26	instruction-word	0x8001ad48	load	StopPAD	jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001ad68	0xa568	0x8001ad6c	mips_hi16_lo16	reachable-code	0x8003ac78	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001ad98	0xa598	0x8001ad9c	mips_hi16_lo16	reachable-code	0x8003ac78	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv

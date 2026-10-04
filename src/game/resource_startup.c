@@ -238,33 +238,33 @@ void resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_
             current_tmd_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD];
             prior_tmd_id = state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD];
         } else {
-            current_tmd_id = tmd_id;
             prior_tmd_id = tmd_id;
+            current_tmd_id = tmd_id;
         }
         if (tim_id == KF_RESOURCE_REQUEST_KEEP) {
             current_tim_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM];
             prior_tim_id = state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM];
         } else {
-            current_tim_id = tim_id;
             prior_tim_id = tim_id;
+            current_tim_id = tim_id;
         }
         if (vab_id == KF_RESOURCE_REQUEST_KEEP) {
             current_vab_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB];
             prior_vab_id = state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB];
         } else {
-            current_vab_id = vab_id;
             prior_vab_id = vab_id;
+            current_vab_id = vab_id;
         }
         if (sequence_id == KF_RESOURCE_REQUEST_KEEP) {
             current_sequence_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
             prior_sequence_id = state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
         } else {
-            current_sequence_id = sequence_id;
             prior_sequence_id = sequence_id;
+            current_sequence_id = sequence_id;
         }
     } else {
-        current_map_region_id = map_region_id;
         prior_map_region_id = map_region_id;
+        current_map_region_id = map_region_id;
         prior_tmd_id = map_region_id;
         prior_tim_id = map_region_id;
         prior_vab_id = map_region_id;

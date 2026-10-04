@@ -274,6 +274,31 @@ typedef char kf_map_object_tail_region_action_operand_offset[
 typedef char kf_map_object_tail_region_action_value_offset[
     (u32)&((KfMapObjectTailRegionActionView *)0)->assigned_value == 8 ? 1 : -1];
 
+/* Scene command 0x55 checks this camera region and opens the selected image. */
+typedef struct KfMapObjectTailSceneInspectView {
+    u32 unknown_34;
+    u8 region_width;
+    u8 region_depth;
+    u16 transition_image_id;
+    u8 unknown_3c[4];
+} KfMapObjectTailSceneInspectView;
+typedef char kf_map_object_tail_scene_inspect_size[
+    sizeof(KfMapObjectTailSceneInspectView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_scene_inspect_image_offset[
+    (u32)&((KfMapObjectTailSceneInspectView *)0)->transition_image_id == 6 ? 1 : -1];
+
+/* Kind 0x20 gives the player this amount when its interaction completes. */
+typedef struct KfMapObjectTailGoldRewardView {
+    u32 unknown_34;
+    u8 unknown_38[2];
+    u16 gold_amount;
+    u8 unknown_3c[4];
+} KfMapObjectTailGoldRewardView;
+typedef char kf_map_object_tail_gold_reward_size[
+    sizeof(KfMapObjectTailGoldRewardView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_gold_reward_amount_offset[
+    (u32)&((KfMapObjectTailGoldRewardView *)0)->gold_amount == 6 ? 1 : -1];
+
 typedef struct KfMapObjectTailAnimatedView {
     KfPoolRecord *animation_cache;
     u8 radius_x;
@@ -557,6 +582,8 @@ typedef union KfMapObjectTail {
     KfMapObjectTailTransitionView transition;
     KfMapObjectTailResourceTriggerView resource_trigger;
     KfMapObjectTailRegionActionView region_action;
+    KfMapObjectTailSceneInspectView scene_inspect;
+    KfMapObjectTailGoldRewardView gold_reward;
     KfMapObjectTailAnimatedView animated;
     KfMapObjectTailAmbientSoundView ambient_sound;
     KfMapObjectTailCellCopyView cell_copy;

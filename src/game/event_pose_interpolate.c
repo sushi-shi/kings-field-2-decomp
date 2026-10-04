@@ -525,7 +525,7 @@ transition_action: {
             KfMapObject *object = &map_object_state.objects[index];
 
             if (object->object_id == 0x9d) {
-                map_object_apply_marker_signal(object->tail.fields.unknown_38);
+                map_object_apply_marker_signal(object->tail.marker.marker_id);
             }
             event_state.interaction_handled = 1;
         }
@@ -714,9 +714,9 @@ decay_update:
                 }
                 if (player_camera_within_map_region(object->position.vx >> 11,
                                   object->position.vz >> 11,
-                                  object->tail.fields.unknown_38,
-                                  object->tail.fields.unknown_39, 0x8000)) {
-                    menu_show_transition_image(6, object->tail.fields.unknown_3a.value + 510);
+                                  object->tail.scene_inspect.region_width,
+                                  object->tail.scene_inspect.region_depth, 0x8000)) {
+                    menu_show_transition_image(6, object->tail.scene_inspect.transition_image_id + 510);
                     event_state.interaction_handled = 1;
                     break;
                 }
@@ -841,9 +841,9 @@ void event_map_object_interact(KfMapObject *object, ...)
         return;
     }
     if (template->kind == 0x20) {
-        notify_enqueue(0x15, object->tail.fields.unknown_3a.value);
+        notify_enqueue(0x15, object->tail.gold_reward.gold_amount);
         object->object_id = 0xff;
-        player_state.gold += object->tail.fields.unknown_3a.value;
+        player_state.gold += object->tail.gold_reward.gold_amount;
         return;
     }
 
@@ -1046,7 +1046,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case 9:
         case 0x15: {
-            u16 linked_index = object->tail.fields.unknown_3a.value;
+            u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index == 0xffff ||
                 objects[linked_index].object_id == 0xff) {
                 notify_enqueue(object->tail.notification.default_notification);
@@ -1063,7 +1063,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 linked->layer_mask = 0;
                 linked->tail.fields.unknown_38 = 0;
                 if (result_id == 0xff) {
-                    object->tail.fields.unknown_3a.value = 0xffff;
+                    object->tail.linked_property.linked_object_index = 0xffff;
                 }
             }
             break;
@@ -1075,7 +1075,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case 2:
             if (object->action_timer == 0) {
-                if (object->tail.fields.unknown_38 == 0xff) {
+                if (object->tail.marker.marker_id == 0xff) {
                     object->action_timer = 1;
                 } else {
                     notify_enqueue(object->tail.notification.default_notification);
@@ -1085,14 +1085,14 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case 3:
         case 4:
             if (object->action_timer == 0) {
-                if (object->tail.fields.unknown_38 >= 0xfc) {
-                    if ((object->tail.fields.unknown_38 & 1) &&
+                if (object->tail.marker.marker_id >= 0xfc) {
+                    if ((object->tail.marker.marker_id & 1) &&
                         angle_within_tolerance(rotation->angles[1],
                                                object->rotation.vy, 900)) {
                         object->action_timer = 1;
                         break;
                     }
-                    if ((object->tail.fields.unknown_38 & 2) &&
+                    if ((object->tail.marker.marker_id & 2) &&
                         angle_within_tolerance(rotation->angles[1],
                                                object->rotation.vy + 0x800,
                                                900)) {
@@ -1100,7 +1100,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                         break;
                     }
                 }
-                if (object->tail.fields.unknown_38 == 0x0f && game_counter_bytes[0x0f] != 0) {
+                if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[0x0f] != 0) {
                     object->action_timer = 1;
                     break;
                 }
@@ -1109,7 +1109,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case 0x51:
             if (object->action_timer == 0 &&
-                object->tail.fields.unknown_38 == 0xff) {
+                object->tail.collision_probe.marker_trigger_state == 0xff) {
                 object->action_timer = 1;
             }
             break;
@@ -1121,9 +1121,9 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             /* Kind five enters the same state handler without the angle gate. */
         case 5:
-            switch (object->tail.fields.unknown_38) {
+            switch (object->tail.marker.marker_id) {
             case 0xfe: {
-                u16 linked_index = object->tail.fields.unknown_3a.value;
+                u16 linked_index = object->tail.linked_property.linked_object_index;
                 if (linked_index != 0xffff) {
                     goto check_linked_object;
                 }
@@ -1137,7 +1137,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 break;
             }
             case 0xff:
-                object->tail.fields.unknown_38 = 0xfe;
+                object->tail.marker.marker_id = 0xfe;
                 break;
             default:
                 notify_enqueue(object->tail.notification.default_notification);
@@ -1145,7 +1145,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             break;
         case 0x0f:
-            if (object->tail.fields.unknown_38 == 0xff) {
+            if (object->tail.event_effect.pending_event_command == 0xff) {
                 notify_enqueue(0x10);
             }
             break;

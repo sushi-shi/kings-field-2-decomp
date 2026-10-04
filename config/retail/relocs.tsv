@@ -6221,13 +6221,13 @@ GAME.EXE	0x8002cd30	0x1c530		mips26	reachable-code	0x8002c290	load	update_curren
 GAME.EXE	0x8002cd84	0x1c584		mips26	reachable-code	0x8002c424	load	sweep_map_cell_layer_mask_line	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve
 GAME.EXE	0x8002ce2c	0x1c62c	0x8002ce30	mips_hi16_lo16	reachable-code	0x80191e14	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002ce54	0x1c654		mips26	reachable-code	0x8002ce60	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002ce90	0x1c690		mips26	reachable-code	0x8002ce2c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002cf00	0x1c700		mips26	reachable-code	0x80017754	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002cf10	0x1c710		mips26	reachable-code	0x8005f8fc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002cf18	0x1c718		mips26	reachable-code	0x8005f840	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002ce90	0x1c690		mips26	reachable-code	0x8002ce2c	load	floor_item_find_free	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, source call, delay slot
+GAME.EXE	0x8002cf00	0x1c700		mips26	reachable-code	0x80017754	load	memory_allocate	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, source call, delay slot
+GAME.EXE	0x8002cf10	0x1c710		mips26	reachable-code	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
+GAME.EXE	0x8002cf18	0x1c718		mips26	reachable-code	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
 GAME.EXE	0x8002cf54	0x1c754	0x8002cf58	mips_hi16_lo16	reachable-code	0x80191e14	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002d008	0x1c808		mips26	reachable-code	0x8005f8c0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002d058	0x1c858		mips26	reachable-code	0x8005f8c0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002d008	0x1c808		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
+GAME.EXE	0x8002d058	0x1c858		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:floor-item direct jal; raw target, LIBGPU SYS.OBJ, source call
 GAME.EXE	0x8002d060	0x1c860		mips26	reachable-code	0x8002d07c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002d0ac	0x1c8ac	0x8002d0b0	mips_hi16_lo16	reachable-code	0x80191f64	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d0bc	0x1c8bc		mips26	reachable-code	0x8005dfdc	load		jal		control-flow	reviewed	manual:graphics

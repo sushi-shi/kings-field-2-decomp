@@ -2666,7 +2666,7 @@ GAME.EXE	0x80018518	0x7d18		mips26	reachable-code	0x8005f420	load	strcat	jal		co
 GAME.EXE	0x80018520	0x7d20	0x80018524	mips_hi16_lo16	reachable-code	0x8006d688	load	cd_version_suffix	lui+addiu	a1	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018528	0x7d28		mips26	reachable-code	0x8005f420	load	strcat	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018534	0x7d34		mips26	reachable-code	0x8004b8a0	load	CdSearchFile	jal		control-flow	reviewed	manual:cd-memory-proven-calls
-GAME.EXE	0x80018544	0x7d44	0x80018548	mips_hi16_lo16	reachable-code	0x80011074	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80018544	0x7d44	0x80018548	mips_hi16_lo16	reachable-code	0x80011074	load		lui+addiu	a0	paired-reachable	reviewed	manual:cd_archive_open raw printf format pointer;source RODATA string
 GAME.EXE	0x8001854c	0x7d4c		mips26	reachable-code	0x8005f430	load	printf	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018578	0x7d78		mips26	reachable-code	0x80018298	load	cd_extent_read_into	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x8001858c	0x7d8c		mips26	reachable-code	0x80017754	load	memory_allocate	jal		control-flow	reviewed	manual:cd-memory-proven-calls

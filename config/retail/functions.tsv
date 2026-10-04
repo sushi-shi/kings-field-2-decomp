@@ -999,11 +999,14 @@ GAME.EXE	0x80063238	0x52a38	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x80063358	0x52b58	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8006340c	0x52c0c	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800634c0	0x52cc0	0x14	0x14	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8006386c	0x5306c	0xe8	0xe8	1	function	sdk-object-xdef	LoadTPage		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0x0 to next XDEF; retail entry and return delay slot in exact SDK section
+GAME.EXE	0x80063954	0x53154	0x64	0x64	1	function	sdk-object-xdef	LoadClut		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0xe8 to next XDEF; retail entry and return delay slot in exact SDK section
 GAME.EXE	0x800639b8	0x531b8	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063a44	0x53244	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063a80	0x53280	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063aec	0x532ec	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063b48	0x53348	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80063bf0	0x533f0	0x148	0x148	1	function	sdk-object-xdef	DumpOTag		psyq-sdk30:LIBGPU.LIB/OTAG.OBJ	archive XDEF .text+0x170 to next XDEF; retail entry and return delay slot in exact SDK section
 GAME.EXE	0x80063d38	0x53538	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80011ac0	0x12c0	0x4dc	0x4dc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80011f9c	0x179c	0xc4	0xc4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1114,11 +1117,14 @@ OPEN.EXE	0x80018e30	0x8630	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x80018fe4	0x87e4	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80019098	0x8898	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001914c	0x894c	0x14	0x14	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x800194f8	0x8cf8	0xe8	0xe8	1	function	sdk-object-xdef	LoadTPage		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0x0 to next XDEF; retail entry and return delay slot in exact SDK section
+OPEN.EXE	0x800195e0	0x8de0	0x64	0x64	1	function	sdk-object-xdef	LoadClut		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0xe8 to next XDEF; retail entry and return delay slot in exact SDK section
 OPEN.EXE	0x80019644	0x8e44	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800196d0	0x8ed0	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001970c	0x8f0c	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80019778	0x8f78	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800197d4	0x8fd4	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001987c	0x907c	0x148	0x148	1	function	sdk-object-xdef	DumpOTag		psyq-sdk30:LIBGPU.LIB/OTAG.OBJ	archive XDEF .text+0x170 to next XDEF; retail entry and return delay slot in exact SDK section
 OPEN.EXE	0x800199c4	0x91c4	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80019a58	0x9258	0x10	0x10	1	function	sdk-object-label	SetVertex0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 OPEN.EXE	0x80019a68	0x9268	0x10	0x10	1	function	sdk-object-label	SetVertex1		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x10;exact 0x2a0-byte REG.OBJ text;retail return delay slot
@@ -1489,12 +1495,15 @@ END.EXE	0x80015f70	0x5770	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x80015f90	0x5790	0x9c	0x9c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001602c	0x582c	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016084	0x5884	0xc	0xc	1	function	ghidra-analysis	GPU_cw		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80016094	0x5894	0xe8	0xe8	1	function	sdk-object-xdef	LoadTPage		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0x0 to next XDEF; retail entry and return delay slot in exact SDK section
+END.EXE	0x8001617c	0x597c	0x64	0x64	1	function	sdk-object-xdef	LoadClut		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0xe8 to next XDEF; retail entry and return delay slot in exact SDK section
 END.EXE	0x800161e0	0x59e0	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001626c	0x5a6c	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800162a8	0x5aa8	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016970	0x6170	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800169dc	0x61dc	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016a38	0x6238	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80016ae0	0x62e0	0x148	0x148	1	function	sdk-object-xdef	DumpOTag		psyq-sdk30:LIBGPU.LIB/OTAG.OBJ	archive XDEF .text+0x170 to next XDEF; retail entry and return delay slot in exact SDK section
 END.EXE	0x80016c28	0x6428	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016cbc	0x64bc	0x10	0x10	1	function	sdk-object-label	SetVertex0		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x0;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 END.EXE	0x80016ccc	0x64cc	0x10	0x10	1	function	sdk-object-label	SetVertex1		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x10;exact 0x2a0-byte REG.OBJ text;retail return delay slot

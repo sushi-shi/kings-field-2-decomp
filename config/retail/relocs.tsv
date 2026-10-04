@@ -2149,13 +2149,13 @@ GAME.EXE	0x80014828	0x4028		mips26	instruction-word	0x8001485c	load		j		range-fi
 GAME.EXE	0x80014874	0x4074		mips26	instruction-word	0x800148b4	load		j		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014888	0x4088		mips26	instruction-word	0x800148b8	load		j		range-filtered	reviewed	manual:math
 GAME.EXE	0x800148a0	0x40a0		mips26	instruction-word	0x800148b8	load		j		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014920	0x4120		mips26	instruction-word	0x800154a8	load		jal		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014a38	0x4238		mips26	instruction-word	0x800152ac	load		jal		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014a64	0x4264		mips26	instruction-word	0x800152e8	load		jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x80014920	0x4120		mips26	instruction-word	0x800154a8	load	fixed_vector3_length	jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x80014a38	0x4238		mips26	instruction-word	0x800152ac	load	angle_within_tolerance	jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x80014a64	0x4264		mips26	instruction-word	0x800152e8	load	angle_mod_delta_le_half_turn	jal		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014a74	0x4274		mips26	instruction-word	0x80014a80	load		j		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014a88	0x4288		mips26	instruction-word	0x80014a9c	load		j		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014adc	0x42dc		mips26	instruction-word	0x8005dda4	load		jal		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014aec	0x42ec		mips26	instruction-word	0x8005deac	load		jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x80014adc	0x42dc		mips26	instruction-word	0x8005dda4	load	rsin	jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x80014aec	0x42ec		mips26	instruction-word	0x8005deac	load	rcos	jal		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014b28	0x4328		mips26	reachable-code	0x80014d28	load		j		control-flow	reviewed	manual:math
 GAME.EXE	0x80014b44	0x4344		mips26	reachable-code	0x80014d28	load		j		control-flow	reviewed	manual:math
 GAME.EXE	0x80014bb0	0x43b0		mips26	reachable-code	0x80014d28	load		j		control-flow	reviewed	manual:math
@@ -2166,27 +2166,27 @@ GAME.EXE	0x80014d68	0x4568		mips26	instruction-word	0x80014e0c	load		j		range-fi
 GAME.EXE	0x80014d8c	0x458c		mips26	instruction-word	0x80014e0c	load		j		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014db4	0x45b4		mips26	instruction-word	0x80014e0c	load		j		range-filtered	reviewed	manual:math
 GAME.EXE	0x80014ddc	0x45dc		mips26	instruction-word	0x80014e08	load		j		range-filtered	reviewed	manual:math
-GAME.EXE	0x80014e30	0x4630		mips26	reachable-code	0x8005dda4	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014e3c	0x463c		mips26	reachable-code	0x8005deac	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014ea0	0x46a0		mips26	reachable-code	0x8005dda4	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014eac	0x46ac		mips26	reachable-code	0x8005deac	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014f10	0x4710		mips26	reachable-code	0x8005dda4	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014f1c	0x471c		mips26	reachable-code	0x8005deac	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014f80	0x4780		mips26	reachable-code	0x80014ef4	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014f8c	0x478c		mips26	reachable-code	0x80014e14	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014f98	0x4798		mips26	reachable-code	0x8005b164	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014fa4	0x47a4		mips26	reachable-code	0x80014e84	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014fb0	0x47b0		mips26	reachable-code	0x8005b270	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014fe8	0x47e8		mips26	reachable-code	0x80014e84	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80014ff4	0x47f4		mips26	reachable-code	0x80014ef4	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80015000	0x4800		mips26	reachable-code	0x8005b164	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x8001500c	0x480c		mips26	reachable-code	0x80014e14	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80015018	0x4818		mips26	reachable-code	0x8005b270	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x8001506c	0x486c		mips26	reachable-code	0x80014e14	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014e30	0x4630		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014e3c	0x463c		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014ea0	0x46a0		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014eac	0x46ac		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014f10	0x4710		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014f1c	0x471c		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014f80	0x4780		mips26	reachable-code	0x80014ef4	load	matrix_set_rotation_z	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014f8c	0x478c		mips26	reachable-code	0x80014e14	load	matrix_set_rotation_x	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014f98	0x4798		mips26	reachable-code	0x8005b164	load	MulMatrix	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014fa4	0x47a4		mips26	reachable-code	0x80014e84	load	matrix_set_rotation_y	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014fb0	0x47b0		mips26	reachable-code	0x8005b270	load	MulMatrix2	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014fe8	0x47e8		mips26	reachable-code	0x80014e84	load	matrix_set_rotation_y	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80014ff4	0x47f4		mips26	reachable-code	0x80014ef4	load	matrix_set_rotation_z	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80015000	0x4800		mips26	reachable-code	0x8005b164	load	MulMatrix	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x8001500c	0x480c		mips26	reachable-code	0x80014e14	load	matrix_set_rotation_x	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80015018	0x4818		mips26	reachable-code	0x8005b270	load	MulMatrix2	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x8001506c	0x486c		mips26	reachable-code	0x80014e14	load	matrix_set_rotation_x	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x80015084	0x4884		mips26	reachable-code	0x8005b574	load	ApplyMatrix	jal		control-flow	reviewed	manual:math
-GAME.EXE	0x800150ac	0x48ac		mips26	reachable-code	0x80014e84	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x800150ac	0x48ac		mips26	reachable-code	0x80014e84	load	matrix_set_rotation_y	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x800150bc	0x48bc		mips26	reachable-code	0x8005b574	load	ApplyMatrix	jal		control-flow	reviewed	manual:math
-GAME.EXE	0x8001511c	0x491c		mips26	reachable-code	0x80014f64	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x8001511c	0x491c		mips26	reachable-code	0x80014f64	load	matrix_set_rotation_yxz	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x8001512c	0x492c		mips26	reachable-code	0x8005b574	load	ApplyMatrix	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x80015378	0x4b78		mips26	reachable-code	0x8005a344	load		jal		control-flow	reviewed	manual:math
 GAME.EXE	0x80015384	0x4b84		mips26	reachable-code	0x80015458	load		j		control-flow	reviewed	manual:math

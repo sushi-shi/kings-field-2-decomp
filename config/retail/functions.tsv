@@ -858,6 +858,8 @@ GAME.EXE	0x8005e594	0x4dd94	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x8005e600	0x4de00	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e648	0x4de48	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e6c4	0x4dec4	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005e6f8	0x4def8	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100
+GAME.EXE	0x8005e748	0x4df48	0x60	0x60	1	function	sdk-object-label	setVBLNKCallback		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0x100; retail prologue and return delay slot; next SDK object begins at +0x160
 GAME.EXE	0x8005e7a8	0x4dfa8	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e800	0x4e000	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e828	0x4e028	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1169,6 +1171,8 @@ OPEN.EXE	0x8001d800	0xd000	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x8001d86c	0xd06c	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d8b4	0xd0b4	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d930	0xd130	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001d964	0xd164	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100
+OPEN.EXE	0x8001d9b4	0xd1b4	0x60	0x60	1	function	sdk-object-label	setVBLNKCallback		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0x100; retail prologue and return delay slot; next SDK object begins at +0x160
 OPEN.EXE	0x8001da14	0xd214	0xc	0xc	1	function	ghidra-analysis	ChangeClearPAD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001da24	0xd224	0xc	0xc	1	function	ghidra-analysis	ChangeClearRCnt		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001da34	0xd234	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1505,6 +1509,8 @@ END.EXE	0x8001aa64	0xa264	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x8001aad0	0xa2d0	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ab18	0xa318	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ab94	0xa394	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001abc8	0xa3c8	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100
+END.EXE	0x8001ac18	0xa418	0x60	0x60	1	function	sdk-object-label	setVBLNKCallback		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0x100; retail prologue and return delay slot; next SDK object begins at +0x160
 END.EXE	0x8001ac78	0xa478	0xc	0xc	1	function	ghidra-analysis	ChangeClearPAD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ac88	0xa488	0xc	0xc	1	function	ghidra-analysis	ChangeClearRCnt		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ac98	0xa498	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

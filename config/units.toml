@@ -132,12 +132,6 @@ source = "src/game/menu_root.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.menu_equipment_list"
-image = "GAME.EXE"
-source = "src/game/menu_equipment_list.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_card_choice_controller"
 image = "GAME.EXE"
 source = "src/game/menu_card_choice_controller.c"

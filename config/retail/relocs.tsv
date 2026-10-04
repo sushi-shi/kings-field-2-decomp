@@ -7476,7 +7476,7 @@ GAME.EXE	0x80039470	0x28c70	0x80039474	mips_hi16_lo16	reachable-code	0x801985b0	
 GAME.EXE	0x80039480	0x28c80		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039490	0x28c90		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800394a0	0x28ca0		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x800394bc	0x28cbc	0x800394c0	mips_hi16_lo16	reachable-code	0x80198560	bss		lui+lh		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
+GAME.EXE	0x800394bc	0x28cbc	0x800394c0	mips_hi16_lo16	reachable-code	0x80198560	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800394d0	0x28cd0	0x800394d4	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800394dc	0x28cdc	0x800394e0	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800394ec	0x28cec		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
@@ -8210,7 +8210,7 @@ GAME.EXE	0x8003fcd8	0x2f4d8		mips26	reachable-code	0x800152ac	load	angle_within_
 GAME.EXE	0x8003fcfc	0x2f4fc		mips26	reachable-code	0x8003fd08	load		j		control-flow	reviewed	manual:effect_update
 GAME.EXE	0x8003fd48	0x2f548	0x8003fd4c	mips_hi16_lo16	reachable-code	0x801d8d64	bss	bss_801c7540	lui+lw	a0	paired-reviewed	reviewed	manual:effect_update
 GAME.EXE	0x8003fd50	0x2f550		mips26	reachable-code	0x80039c94	load	actor_apply_magic_to_actor	jal		control-flow	reviewed	manual:effect_update
-GAME.EXE	0x8003fdc0	0x2f5c0	0x8003fdc4	mips_hi16_lo16	reachable-code	0x801984fa	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:effect
+GAME.EXE	0x8003fdc0	0x2f5c0	0x8003fdc4	mips_hi16_lo16	reachable-code	0x801984fa	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:effect
 GAME.EXE	0x8003fdf8	0x2f5f8	0x8003fdfc	mips_hi16_lo16	reachable-code	0x8019e12c	bss	effect_state	lui+lw	s0	paired-reviewed	reviewed	manual:effect_spawn_magic
 GAME.EXE	0x8003fe00	0x2f600	0x8003fe04	mips_hi16_lo16	reachable-code	0x8019e128	bss	effect_state	lui+lw	s1	paired-reviewed	reviewed	manual:effect_spawn_magic
 GAME.EXE	0x8003fe08	0x2f608		mips26	reachable-code	0x8003fdac	load	effect_magic_power	jal		control-flow	reviewed	manual:effect_spawn_magic

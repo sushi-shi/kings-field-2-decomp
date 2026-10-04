@@ -75,7 +75,7 @@ static s8 memory_card_slot_digit_seed[2] = {0x20, 0};
 DATA(0x8006d6a8, 0x7)
 char memory_card_search_pattern[7] = "bu00:*";
 
-DATA(0x8006dc00, KF_CARD_BLOCK_BYTES)
+DATA(0x8006dc00, 0x4000)
 u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 /* LIBAPI's HwCARD, EvSpIOE, EvSpTIMOUT, EvSpNEW, EvSpERROR and EvMdNOINTR,
  * which the Psy-Q 3.0 kit's headers do not define. */

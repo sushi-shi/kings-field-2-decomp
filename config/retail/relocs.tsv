@@ -8640,33 +8640,33 @@ GAME.EXE	0x80043e58	0x33658		mips26	reachable-code	0x80042298	load	effect_collis
 GAME.EXE	0x80043e70	0x33670		mips26	reachable-code	0x80041e0c	load	effect_spawn_at_lower_bound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043e78	0x33678		mips26	reachable-code	0x80044f4c	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043ea4	0x336a4		mips26	reachable-code	0x8004195c	load	effect_aim_and_move	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80043ed0	0x336d0		mips26	reachable-code	0x80040308	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80043edc	0x336dc		mips26	reachable-code	0x8003fa2c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80043ed0	0x336d0		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80043edc	0x336dc		mips26	reachable-code	0x8003fa2c	load	effect_play_spatial_sound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043ee8	0x336e8		mips26	reachable-code	0x80044f4c	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80043ef8	0x336f8		mips26	reachable-code	0x80041e0c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80043f34	0x33734		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80043ef8	0x336f8		mips26	reachable-code	0x80041e0c	load	effect_spawn_at_lower_bound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80043f34	0x33734		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043f3c	0x3373c		mips26	reachable-code	0x80044f4c	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043f54	0x33754		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043f78	0x33778		mips26	reachable-code	0x80043fd0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80043f8c	0x3378c	0x80043f90	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80043fa0	0x337a0		mips26	reachable-code	0x800345e4	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80043fa0	0x337a0		mips26	reachable-code	0x800345e4	load	asset_vertex_count	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044004	0x33804	0x80044008	mips_hi16_lo16	instruction-word	0x8019e130	bss	effect_state	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80044020	0x33820		mips26	reachable-code	0x80040308	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044020	0x33820		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044038	0x33838		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044064	0x33864	0x80044068	mips_hi16_lo16	instruction-word	0x8019bd28	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
 GAME.EXE	0x800440d4	0x338d4		mips26	reachable-code	0x800440e0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044104	0x33904	0x80044108	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80044114	0x33914		mips26	reachable-code	0x8003fdac	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800441bc	0x339bc		mips26	reachable-code	0x80039c94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044114	0x33914		mips26	reachable-code	0x8003fdac	load	effect_magic_power	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800441bc	0x339bc		mips26	reachable-code	0x80039c94	load	actor_apply_magic_to_actor	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800441c4	0x339c4		mips26	reachable-code	0x80045b24	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044200	0x33a00	0x80044204	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80044214	0x33a14		mips26	reachable-code	0x8003c000	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044220	0x33a20		mips26	reachable-code	0x8003c10c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044214	0x33a14		mips26	reachable-code	0x8003c000	load	actor_sample_rotated_animation_vertex	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044220	0x33a20		mips26	reachable-code	0x8003c10c	load	actor_resolve_group_position	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044260	0x33a60		mips26	reachable-code	0x800442b0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8004428c	0x33a8c		mips26	reachable-code	0x80042298	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8004428c	0x33a8c		mips26	reachable-code	0x80042298	load	effect_collision_step	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800442a8	0x33aa8		mips26	reachable-code	0x80045b24	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800442c0	0x33ac0		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800442e8	0x33ae8		mips26	reachable-code	0x80041b14	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800442e8	0x33ae8		mips26	reachable-code	0x80041b14	load	effect_target_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044314	0x33b14	0x80044318	mips_hi16_lo16	instruction-word	0x8019bd28	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
 GAME.EXE	0x8004433c	0x33b3c		mips26	reachable-code	0x800443a0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8004434c	0x33b4c	0x80044350	mips_hi16_lo16	instruction-word	0x801d8d60	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
@@ -8679,34 +8679,34 @@ GAME.EXE	0x8004443c	0x33c3c	0x80044440	mips_hi16_lo16	instruction-word	0x801985b
 GAME.EXE	0x8004444c	0x33c4c	0x80044450	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
 GAME.EXE	0x80044460	0x33c60		mips26	reachable-code	0x800444b8	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8004447c	0x33c7c	0x80044480	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x800444c8	0x33cc8		mips26	reachable-code	0x80041b14	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800444c8	0x33cc8		mips26	reachable-code	0x80041b14	load	effect_target_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800444e0	0x33ce0	0x800444e4	mips_hi16_lo16	instruction-word	0x801d8d60	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x800444f0	0x33cf0		mips26	reachable-code	0x8003feb0	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8004453c	0x33d3c		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044570	0x33d70		mips26	reachable-code	0x8004212c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800444f0	0x33cf0		mips26	reachable-code	0x8003feb0	load	effect_apply_current_magic_backstep	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8004453c	0x33d3c		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044570	0x33d70		mips26	reachable-code	0x8004212c	load	effect_scatter_lower_bound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044578	0x33d78		mips26	reachable-code	0x80045b24	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044594	0x33d94		mips26	reachable-code	0x80042298	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800445d0	0x33dd0		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044594	0x33d94		mips26	reachable-code	0x80042298	load	effect_collision_step	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800445d0	0x33dd0		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800445d8	0x33dd8		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800445e0	0x33de0		mips26	reachable-code	0x800445ec	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800445f4	0x33df4	0x800445f8	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
 GAME.EXE	0x800445fc	0x33dfc	0x80044600	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
 GAME.EXE	0x8004460c	0x33e0c	0x80044610	mips_hi16_lo16	instruction-word	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80044630	0x33e30		mips26	reachable-code	0x80041b14	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044648	0x33e48		mips26	reachable-code	0x80041e0c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044630	0x33e30		mips26	reachable-code	0x80041b14	load	effect_target_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044648	0x33e48		mips26	reachable-code	0x80041e0c	load	effect_spawn_at_lower_bound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8004465c	0x33e5c	0x80044660	mips_hi16_lo16	instruction-word	0x801d8d60	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x8004466c	0x33e6c		mips26	reachable-code	0x8003feb0	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800446b8	0x33eb8		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044738	0x33f38		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8004466c	0x33e6c		mips26	reachable-code	0x8003feb0	load	effect_apply_current_magic_backstep	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800446b8	0x33eb8		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044738	0x33f38		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044740	0x33f40		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044758	0x33f58		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044774	0x33f74		mips26	reachable-code	0x80042298	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800447bc	0x33fbc		mips26	reachable-code	0x800424f0	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800447d0	0x33fd0		mips26	reachable-code	0x800424f0	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800447e4	0x33fe4		mips26	reachable-code	0x800424f0	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x800447f0	0x33ff0		mips26	reachable-code	0x8003fa2c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044774	0x33f74		mips26	reachable-code	0x80042298	load	effect_collision_step	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800447bc	0x33fbc		mips26	reachable-code	0x800424f0	load	effect_spawn_radial_ring	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800447d0	0x33fd0		mips26	reachable-code	0x800424f0	load	effect_spawn_radial_ring	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800447e4	0x33fe4		mips26	reachable-code	0x800424f0	load	effect_spawn_radial_ring	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x800447f0	0x33ff0		mips26	reachable-code	0x8003fa2c	load	effect_play_spatial_sound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044808	0x34008		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x80044840	0x34040		mips26	reachable-code	0x80041e94	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044840	0x34040		mips26	reachable-code	0x80041e94	load	effect_spawn_motion	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044848	0x34048		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044860	0x34060		mips26	reachable-code	0x80045b24	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044878	0x34078		mips26	reachable-code	0x80045ca0	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
@@ -8714,7 +8714,7 @@ GAME.EXE	0x800448cc	0x340cc		mips26	reachable-code	0x8003fa68	load	effect_probe_
 GAME.EXE	0x800448fc	0x340fc		mips26	reachable-code	0x8003fa68	load	effect_probe_collision_by_type	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044928	0x34128		mips26	reachable-code	0x80044a2c	load		j		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8004494c	0x3414c	0x80044950	mips_hi16_lo16	instruction-word	0x8019bd28	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:effect_dispatch_raw_adjacent_pair
-GAME.EXE	0x80044954	0x34154		mips26	reachable-code	0x80041e0c	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x80044954	0x34154		mips26	reachable-code	0x80041e0c	load	effect_spawn_at_lower_bound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80044998	0x34198		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800449a8	0x341a8		mips26	reachable-code	0x80015468	load		jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x800449c4	0x341c4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target

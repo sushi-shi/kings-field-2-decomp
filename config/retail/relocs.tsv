@@ -9657,24 +9657,24 @@ GAME.EXE	0x8004b164	0x3a964		mips26	reachable-code	0x8004ad60	load	CD_cw	jal		co
 GAME.EXE	0x8004b178	0x3a978		mips26	reachable-code	0x8004ac24	load	CD_sync	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b1c4	0x3a9c4		mips26	reachable-code	0x8004a604	load	set_alarm	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b1d0	0x3a9d0		mips26	reachable-code	0x8004acd4	load	CD_ready	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b1e0	0x3a9e0		mips26	reachable-code	0x8004a624	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b1e0	0x3a9e0		mips26	reachable-code	0x8004a624	load	get_alarm	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b1f0	0x3a9f0		mips26	reachable-code	0x8004b1d0	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b200	0x3aa00	0x8004b204	mips_hi16_lo16	reachable-code	0x8004b37c	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b228	0x3aa28		mips26	reachable-code	0x8004ad60	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b228	0x3aa28		mips26	reachable-code	0x8004ad60	load	CD_cw	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b238	0x3aa38	0x8004b23c	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b254	0x3aa54		mips26	reachable-code	0x8004b2b0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b2a4	0x3aaa4		mips26	reachable-code	0x8004ad60	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b2a4	0x3aaa4		mips26	reachable-code	0x8004ad60	load	CD_cw	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b2ec	0x3aaec	0x8004b2f0	mips_hi16_lo16	reachable-code	0x8006dab0	load		lui+addiu	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b2f4	0x3aaf4		mips26	reachable-code	0x8004a5d4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b2f4	0x3aaf4		mips26	reachable-code	0x8004a5d4	load	rescpy	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b2fc	0x3aafc	0x8004b300	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b318	0x3ab18	0x8004b31c	mips_hi16_lo16	reachable-code	0x8006d794	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b32c	0x3ab2c	0x8004b330	mips_hi16_lo16	reachable-code	0x8006d794	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b3c0	0x3abc0		mips26	instruction-word	0x8004b498	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b3fc	0x3abfc		mips26	instruction-word	0x8004b414	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b468	0x3ac68		mips26	instruction-word	0x8004ad60	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b4b0	0x3acb0		mips26	instruction-word	0x8004a604	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b4b0	0x3acb0		mips26	instruction-word	0x8004a604	load	set_alarm	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b4b8	0x3acb8	0x8004b4bc	mips_hi16_lo16	instruction-word	0x8006d7b4	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004b4dc	0x3acdc		mips26	instruction-word	0x8004a624	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004b4dc	0x3acdc		mips26	instruction-word	0x8004a624	load	get_alarm	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b4ec	0x3acec	0x8004b4f0	mips_hi16_lo16	instruction-word	0x8006d7b4	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b50c	0x3ad0c	0x8004b510	mips_hi16_lo16	instruction-word	0x8006d778	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004b51c	0x3ad1c	0x8004b520	mips_hi16_lo16	instruction-word	0x8006d784	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -9806,10 +9806,10 @@ GAME.EXE	0x8004c1b4	0x3b9b4	0x8004c1b8	mips_hi16_lo16	reachable-code	0x8006dac0	
 GAME.EXE	0x8004c1e0	0x3b9e0	0x8004c1e4	mips_hi16_lo16	reachable-code	0x8006d718	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c1f8	0x3b9f8	0x8004c1fc	mips_hi16_lo16	reachable-code	0x80012fd0	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c200	0x3ba00		mips26	reachable-code	0x8005f430	load	printf	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c280	0x3ba80		mips26	reachable-code	0x8004a400	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c290	0x3ba90		mips26	reachable-code	0x8004a1e4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2a0	0x3baa0		mips26	reachable-code	0x8004a29c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2ac	0x3baac		mips26	reachable-code	0x80049fd4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c280	0x3ba80		mips26	reachable-code	0x8004a400	load	CdIntToPos	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c290	0x3ba90		mips26	reachable-code	0x8004a1e4	load	CdControl	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c2a0	0x3baa0		mips26	reachable-code	0x8004a29c	load	CdRead	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c2ac	0x3baac		mips26	reachable-code	0x80049fd4	load	CdReadSync	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c2e4	0x3bae4	0x8004c2e8	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c2ec	0x3baec	0x8004c2f0	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c2f4	0x3baf4	0x8004c2f8	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv

@@ -588,11 +588,20 @@ GAME.EXE	0x8004beac	0x3b6ac	0xb8	0xb8	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x8004bf64	0x3b764	0x2d0	0x2d0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004c234	0x3ba34	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004c264	0x3ba64	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004c2d4	0x3bad4	0x58	0x58	1	function	archive-xdef	StSetRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x0; exact three-image text section and native XDEF	vendored SDK entry to StClearRing at 0x58; retail return/delay slot
+GAME.EXE	0x8004c32c	0x3bb2c	0x50	0x50	1	function	archive-xdef	StClearRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x58; exact three-image text section and native XDEF	vendored SDK entry to StUnSetRing at 0xa8; retail return/delay slot
+GAME.EXE	0x8004c37c	0x3bb7c	0x38	0x38	1	function	archive-xdef	StUnSetRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xa8; exact three-image text section and native XDEF	vendored SDK entry to data_ready_callback at 0xe0; retail return/delay slot
 GAME.EXE	0x8004c3b4	0x3bbb4	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004c41c	0x3bc1c	0x64	0x64	1	function	archive-xdef	StSetStream		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x148; exact three-image text section and native XDEF	vendored SDK entry to StSetEmulate at 0x1ac; retail return/delay slot
+GAME.EXE	0x8004c480	0x3bc80	0x70	0x70	1	function	archive-xdef	StSetEmulate		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x1ac; exact three-image text section and native XDEF	vendored SDK entry to StFreeRing at 0x21c; retail return/delay slot
+GAME.EXE	0x8004c4f0	0x3bcf0	0xcc	0xcc	1	function	archive-xdef	StFreeRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x21c; exact three-image text section and native XDEF	vendored SDK entry to local init_ring_status at 0x2e8; retail return/delay slot
 GAME.EXE	0x8004c5bc	0x3bdbc	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004c5f8	0x3bdf8	0xb4	0xb4	1	function	archive-xdef	StGetNext		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x324; exact three-image text section and native XDEF	vendored SDK entry to StSetMask at 0x3d8; retail return/delay slot
+GAME.EXE	0x8004c6ac	0x3beac	0x20	0x20	1	function	archive-xdef	StSetMask		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x3d8; exact three-image text section and native XDEF	vendored SDK entry to StCdInterrupt at 0x3f8; retail return/delay slot
 GAME.EXE	0x8004c6cc	0x3becc	0x9b4	0x9b4	1	function	archive-xdef	StCdInterrupt		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x3f8; exact three-image text section and native XDEF	vendored SDK entry to local dma_execute at .text+0xdac; retail return/delay slot
 GAME.EXE	0x8004d080	0x3c880	0x18c	0x18c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d20c	0x3ca0c	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004d23c	0x3ca3c	0x24	0x24	1	function	archive-xdef	StSetChannel		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xf68; exact three-image text section and native XDEF	vendored SDK entry to .text end at 0xf8c; retail return/delay slot
 GAME.EXE	0x8004d260	0x3ca60	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d284	0x3ca84	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d354	0x3cb54	0xe0	0xe0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1172,8 +1181,11 @@ OPEN.EXE	0x8001b80c	0xb00c	0x124	0x124	1	function	ghidra-analysis			Ghidra-12.0.
 OPEN.EXE	0x8001b930	0xb130	0xbc	0xbc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001bb08	0xb308	0x134	0x134	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001bc4c	0xb44c	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001bca4	0xb4a4	0x50	0x50	1	function	archive-xdef	StClearRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x58; exact three-image text section and native XDEF	vendored SDK entry to StUnSetRing at 0xa8; retail return/delay slot
+OPEN.EXE	0x8001bcf4	0xb4f4	0x38	0x38	1	function	archive-xdef	StUnSetRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xa8; exact three-image text section and native XDEF	vendored SDK entry to data_ready_callback at 0xe0; retail return/delay slot
 OPEN.EXE	0x8001bd2c	0xb52c	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001bd94	0xb594	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001bdf8	0xb5f8	0x70	0x70	1	function	archive-xdef	StSetEmulate		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x1ac; exact three-image text section and native XDEF	vendored SDK entry to StFreeRing at 0x21c; retail return/delay slot
 OPEN.EXE	0x8001be68	0xb668	0xcc	0xcc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001bf34	0xb734	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001bf70	0xb770	0xb4	0xb4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1181,6 +1193,7 @@ OPEN.EXE	0x8001c024	0xb824	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x8001c044	0xb844	0x9b4	0x9b4	1	function	archive-xdef	StCdInterrupt		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x3f8; exact three-image text section and native XDEF	vendored SDK entry to local dma_execute at .text+0xdac; retail return/delay slot
 OPEN.EXE	0x8001c9f8	0xc1f8	0x18c	0x18c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001cb84	0xc384	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001cbb4	0xc3b4	0x24	0x24	1	function	archive-xdef	StSetChannel		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xf68; exact three-image text section and native XDEF	vendored SDK entry to .text end at 0xf8c; retail return/delay slot
 OPEN.EXE	0x8001cbd8	0xc3d8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001cd30	0xc530	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001cd40	0xc540	0x2e4	0x2e4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1526,8 +1539,11 @@ END.EXE	0x80018a70	0x8270	0x124	0x124	1	function	ghidra-analysis			Ghidra-12.0.4
 END.EXE	0x80018b94	0x8394	0xbc	0xbc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80018d6c	0x856c	0x134	0x134	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80018eb0	0x86b0	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80018f08	0x8708	0x50	0x50	1	function	archive-xdef	StClearRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x58; exact three-image text section and native XDEF	vendored SDK entry to StUnSetRing at 0xa8; retail return/delay slot
+END.EXE	0x80018f58	0x8758	0x38	0x38	1	function	archive-xdef	StUnSetRing		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xa8; exact three-image text section and native XDEF	vendored SDK entry to data_ready_callback at 0xe0; retail return/delay slot
 END.EXE	0x80018f90	0x8790	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80018ff8	0x87f8	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001905c	0x885c	0x70	0x70	1	function	archive-xdef	StSetEmulate		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x1ac; exact three-image text section and native XDEF	vendored SDK entry to StFreeRing at 0x21c; retail return/delay slot
 END.EXE	0x800190cc	0x88cc	0xcc	0xcc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80019198	0x8998	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800191d4	0x89d4	0xb4	0xb4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1535,6 +1551,7 @@ END.EXE	0x80019288	0x8a88	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x800192a8	0x8aa8	0x9b4	0x9b4	1	function	archive-xdef	StCdInterrupt		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0x3f8; exact three-image text section and native XDEF	vendored SDK entry to local dma_execute at .text+0xdac; retail return/delay slot
 END.EXE	0x80019c5c	0x945c	0x18c	0x18c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80019de8	0x95e8	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80019e18	0x9618	0x24	0x24	1	function	archive-xdef	StSetChannel		Psy-Q 3.0 LIBCD CDROM.OBJ .text+0xf68; exact three-image text section and native XDEF	vendored SDK entry to .text end at 0xf8c; retail return/delay slot
 END.EXE	0x80019e3c	0x963c	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80019f94	0x9794	0xc	0xc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80019fa4	0x97a4	0x2e4	0x2e4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

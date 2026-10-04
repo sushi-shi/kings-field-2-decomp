@@ -3,12 +3,11 @@
 # Address-only DAT_ names and unknown scope are unresolved, not semantic claims.
 # Future analysis writes build/function-inventory proposals and never overwrites this file.
 image	va	size	name	scope	storage	datatype	owner	confidence	evidence	note
-PSX.EXE	0x800101d0	0x4	DAT_800101d0	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 PSX.EXE	0x8001024c	0xc	overlay_path_table	global	load	char *[3]	bootstrap	supported	asm;xrefs;PSX main	CD-ROM paths of OPEN, GAME and END, indexed by overlay_index
 PSX.EXE	0x80010258	0x4	DAT_80010258	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 PSX.EXE	0x80010260	0x4	overlay_index	global	load	long	bootstrap	supported	asm;xrefs;PSX main	path-table index of the next overlay; initially 0 (OPEN)
 PSX.EXE	0x80010264	0x4	overlay_next_request	global	load	u8 *	bootstrap	supported	asm;xrefs;PSX main	points at the fixed byte 0x800102f0 that GAME writes (GAME 0x8001396c) to select the next overlay
-PSX.EXE	0x80010268	0x4	DAT_80010268	unknown	load	undefined4		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
+PSX.EXE	0x80010268	0x4	DAT_80010268	unknown	bss	undefined4	2MBYTE.OBJ	supported	pinned 2MBYTE.OBJ .sbss 4-byte reservation;sectbase patches;PSX.MAP;retail stup1 xrefs	startup-object .sbss word; original C subobject name and scope unresolved
 PSX.EXE	0x8001026c	0x3c	overlay_header	global	bss	struct EXEC	bootstrap	supported	asm;xrefs;PSX main	EXEC header shared by Load and Exec
 PSX.EXE	0x800102f0	0x1	DAT_800102f0	unknown	load	undefined1		address-only	data.tsv:ghidra-defined	unresolved global/static candidate
 GAME.EXE	0x80011058	0x1c	resource_transition_phase_switch_rodata	unknown	load	pointer[7]	resource_transition_step	supported	retail words;phase bound 0..6;func_80016820 jr table;source RODATA claim	compiler phase switch table; original TU owner remains unresolved

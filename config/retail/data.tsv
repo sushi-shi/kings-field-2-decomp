@@ -9,9 +9,7 @@ PSX.EXE	0x80010010	0x810	0x10	string	byte-pattern		ascii	investigation:string-ce
 PSX.EXE	0x80010020	0x820	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 PSX.EXE	0x80010024	0x824	0x10	string	byte-pattern		ascii	investigation:string-census	escaped text: cdrom:OPEN.EXE;1
 PSX.EXE	0x80010034	0x834	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-PSX.EXE	0x800101cd	0x9cd	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-PSX.EXE	0x800101d0	0x9d0	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-PSX.EXE	0x800101d4	0x9d4	0x8	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+PSX.EXE	0x800101cd	0x9cd	0xf	unclassified	coverage-gap			pinned 2MBYTE.OBJ .text tail;retail bytes	includes repeated 0x00200000 text-fill words, not a data object
 PSX.EXE	0x800101f8	0x9f8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 PSX.EXE	0x80010208	0xa08	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 PSX.EXE	0x80010218	0xa18	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -23,7 +21,7 @@ PSX.EXE	0x80010258	0xa58	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/gh
 PSX.EXE	0x8001025c	0xa5c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 PSX.EXE	0x80010260	0xa60	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
 PSX.EXE	0x80010264	0xa64	0x4	pointer	ghidra-defined		pointer	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
-PSX.EXE	0x80010268	0xa68	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum
+PSX.EXE	0x80010268	0xa68	0x4	bss	reviewed		undefined4	pinned 2MBYTE.OBJ .sbss;PSX.MAP;retail stup1 xrefs	4-byte startup BSS word; original subobject identity unresolved
 PSX.EXE	0x8001026c	0xa6c	0x3c	bss	reviewed	overlay_header	struct EXEC	asm;xrefs	Load/Exec header; s_addr/s_size cleared before Exec
 PSX.EXE	0x800102a8	0xaa8	0x48	unclassified	coverage-gap			asm;xrefs	may contain missed code, tables, constants, padding, or writable data
 PSX.EXE	0x800102f0	0xaf0	0x1	defined	ghidra-defined		undefined1	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP datum

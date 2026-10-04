@@ -10019,9 +10019,9 @@ GAME.EXE	0x8004d2e0	0x3cae0	0x8004d2e4	mips_hi16_lo16	reachable-code	0x8006d838	
 GAME.EXE	0x8004d314	0x3cb14		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d31c	0x3cb1c		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d32c	0x3cb2c		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d360	0x3cb60		mips26	reachable-code	0x8005e848	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d368	0x3cb68		mips26	reachable-code	0x8004d5c0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d370	0x3cb70		mips26	reachable-code	0x8004d474	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d360	0x3cb60		mips26	reachable-code	0x8005e848	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d368	0x3cb68		mips26	reachable-code	0x8004d5c0	load	_spu_init	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d370	0x3cb70		mips26	reachable-code	0x8004d474	load	SpuStart	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d378	0x3cb78	0x8004d37c	mips_hi16_lo16	reachable-code	0x801b5a5c	bss	_spu_rev_attr	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_rev_attr;archive patch +0x24 +0x4;retail raw pair
 GAME.EXE	0x8004d380	0x3cb80	0x8004d384	mips_hi16_lo16	reachable-code	0x801b5a5c	bss	_spu_rev_attr	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_rev_attr;archive patch +0x2c +0x4;retail raw pair
 GAME.EXE	0x8004d388	0x3cb88	0x8004d38c	mips_hi16_lo16	reachable-code	0x8019b680	bss	_spu_rev_flag	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_rev_flag;archive patch +0x34;retail raw pair
@@ -10034,20 +10034,20 @@ GAME.EXE	0x8004d3b8	0x3cbb8	0x8004d3bc	mips_hi16_lo16	reachable-code	0x8016aa70	
 GAME.EXE	0x8004d3c4	0x3cbc4	0x8004d3c8	mips_hi16_lo16	reachable-code	0x800680ec	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d3d4	0x3cbd4	0x8004d3d8	mips_hi16_lo16	reachable-code	0x801da000	bss	_spu_rev_offsetaddr	lui+addiu		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_rev_offsetaddr;archive patch +0x80;retail raw pair
 GAME.EXE	0x8004d3dc	0x3cbdc	0x8004d3e0	mips_hi16_lo16	reachable-code	0x801da000	bss	_spu_rev_offsetaddr	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_rev_offsetaddr;archive patch +0x88;retail raw pair
-GAME.EXE	0x8004d3e4	0x3cbe4		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d3e4	0x3cbe4		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d3ec	0x3cbec	0x8004d3f0	mips_hi16_lo16	reachable-code	0x8009a5d0	bss	_spu_trans_mode	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_trans_mode;archive patch +0x98;retail raw pair
 GAME.EXE	0x8004d3f4	0x3cbf4	0x8004d3f8	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+lw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0xa0;retail raw pair
 GAME.EXE	0x8004d3fc	0x3cbfc	0x8004d400	mips_hi16_lo16	reachable-code	0x8009a5d0	bss	_spu_trans_mode	lui+addiu		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_trans_mode;archive patch +0xa8;retail raw pair
-GAME.EXE	0x8004d404	0x3cc04		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d404	0x3cc04		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d40c	0x3cc0c	0x8004d410	mips_hi16_lo16	reachable-code	0x8016b5f8	bss	_spu_keystat	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_keystat;archive patch +0xb8;retail raw pair
 GAME.EXE	0x8004d414	0x3cc14	0x8004d418	mips_hi16_lo16	reachable-code	0x801d9fb0	bss	_spu_keyon_bit	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_keyon_bit;archive patch +0xc0;retail raw pair
 GAME.EXE	0x8004d41c	0x3cc1c	0x8004d420	mips_hi16_lo16	reachable-code	0x8009a5b0	bss	_spu_keyoff_bit	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_keyoff_bit;archive patch +0xc8;retail raw pair
-GAME.EXE	0x8004d43c	0x3cc3c		mips26	reachable-code	0x8004d354	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d45c	0x3cc5c		mips26	reachable-code	0x8004d354	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d43c	0x3cc3c		mips26	reachable-code	0x8004d354	load	_SpuInit	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d45c	0x3cc5c		mips26	reachable-code	0x8004d354	load	_SpuInit	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d474	0x3cc74	0x8004d478	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+lw	v0	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x120 section-relative .sdata+0;retail raw pair
 GAME.EXE	0x8004d48c	0x3cc8c	0x8004d490	mips_hi16_lo16	reachable-code	0x8006d83c	load		lui+sw	at	paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ .text+0x138 section-relative .sdata+0;retail raw pair
 GAME.EXE	0x8004d494	0x3cc94		mips26	reachable-code	0x8005f110	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d4a0	0x3cca0		mips26	reachable-code	0x8004d848	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d4a0	0x3cca0		mips26	reachable-code	0x8004d848	load	_spu_open	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d4a8	0x3cca8	0x8004d4ac	mips_hi16_lo16	reachable-code	0x8016aa70	bss	_spu_fd	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_fd size8;archive patch +0x154;retail raw pair
 GAME.EXE	0x8004d4c0	0x3ccc0		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d4c8	0x3ccc8	0x8004d4cc	mips_hi16_lo16	reachable-code	0x801d9fb8	bss	_spu_EVdma	lui+sw		paired-reviewed	reviewed	manual:LIBSPU S_INI.OBJ XBSS _spu_EVdma;archive patch +0x174;retail raw pair
@@ -10320,31 +10320,31 @@ GAME.EXE	0x8004f21c	0x3ea1c	0x8004f220	mips_hi16_lo16	instruction-word	0x8006d84
 GAME.EXE	0x8004f238	0x3ea38	0x8004f23c	mips_hi16_lo16	instruction-word	0x8006d840	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f308	0x3eb08	0x8004f30c	mips_hi16_lo16	reachable-code	0x800680ec	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f318	0x3eb18	0x8004f31c	mips_hi16_lo16	reachable-code	0x800680ec	load		lui+addiu	s1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f320	0x3eb20		mips26	reachable-code	0x80050414	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f320	0x3eb20		mips26	reachable-code	0x80050414	load	_SpuIsInAllocateArea_	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f330	0x3eb30		mips26	reachable-code	0x8004f744	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f370	0x3eb70		mips26	reachable-code	0x80050568	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f370	0x3eb70		mips26	reachable-code	0x80050568	load	SpuClearReverbWorkArea	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f390	0x3eb90	0x8004f394	mips_hi16_lo16	reachable-code	0x8006813c	load		lui+addiu	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f398	0x3eb98		mips26	reachable-code	0x8004f254	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f398	0x3eb98		mips26	reachable-code	0x8004f254	load	_memcpy	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f3b8	0x3ebb8		mips26	reachable-code	0x8004f3f4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f3d4	0x3ebd4		mips26	reachable-code	0x8004f404	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f3ec	0x3ebec		mips26	reachable-code	0x8004f404	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f44c	0x3ec4c	0x8004f450	mips_hi16_lo16	reachable-code	0x8006813c	load		lui+addiu	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f458	0x3ec58		mips26	reachable-code	0x8004f254	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f458	0x3ec58		mips26	reachable-code	0x8004f254	load	_memcpy	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f520	0x3ed20		mips26	reachable-code	0x8004f530	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f57c	0x3ed7c	0x8004f580	mips_hi16_lo16	reachable-code	0x8006813c	load		lui+addiu	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f588	0x3ed88		mips26	reachable-code	0x8004f254	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f588	0x3ed88		mips26	reachable-code	0x8004f254	load	_memcpy	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f590	0x3ed90		mips26	reachable-code	0x8004f5a4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f5f0	0x3edf0		mips26	reachable-code	0x8004f600	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f610	0x3ee10		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f634	0x3ee34		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f610	0x3ee10		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f634	0x3ee34		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f63c	0x3ee3c		mips26	reachable-code	0x8004f6b4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f654	0x3ee54	0x8004f658	mips_hi16_lo16	reachable-code	0x8006d85c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f688	0x3ee88	0x8004f68c	mips_hi16_lo16	reachable-code	0x8006d85c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f6ac	0x3eeac		mips26	reachable-code	0x8004f6d8	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f6b4	0x3eeb4	0x8004f6b8	mips_hi16_lo16	reachable-code	0x8006d85c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f6f8	0x3eef8		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f718	0x3ef18		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004f738	0x3ef38		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f6f8	0x3eef8		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f718	0x3ef18		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004f738	0x3ef38		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f774	0x3ef74	0x8004f778	mips_hi16_lo16	reachable-code	0x8006d868	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f794	0x3ef94	0x8004f798	mips_hi16_lo16	reachable-code	0x8006db88	load		lui+lw	t0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004f7d4	0x3efd4		mips26	reachable-code	0x8004f7c4	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -10376,21 +10376,21 @@ GAME.EXE	0x8004fb20	0x3f320		mips26	instruction-word	0x8004fb3c	load		j		range-f
 GAME.EXE	0x8004fb54	0x3f354	0x8004fb58	mips_hi16_lo16	instruction-word	0x8006db80	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fb5c	0x3f35c	0x8004fb60	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fb80	0x3f380		mips26	instruction-word	0x8004fc08	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004fb88	0x3f388		mips26	instruction-word	0x8004f774	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004fb88	0x3f388		mips26	instruction-word	0x8004f774	load	_gcSPU	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fb90	0x3f390	0x8004fb94	mips_hi16_lo16	instruction-word	0x8006d864	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fbb0	0x3f3b0	0x8004fbb4	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fbf0	0x3f3f0		mips26	instruction-word	0x8004fc08	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fc14	0x3f414	0x8004fc18	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	t0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fc38	0x3f438	0x8004fc3c	mips_hi16_lo16	instruction-word	0x8006d864	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fca4	0x3f4a4	0x8004fca8	mips_hi16_lo16	instruction-word	0x8006d868	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004fcb4	0x3f4b4		mips26	instruction-word	0x8004f774	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004fcb4	0x3f4b4		mips26	instruction-word	0x8004f774	load	_gcSPU	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fcbc	0x3f4bc	0x8004fcc0	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fcd0	0x3f4d0		mips26	instruction-word	0x8004fd84	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fcec	0x3f4ec	0x8004fcf0	mips_hi16_lo16	instruction-word	0x8006d868	load		lui+lw	a3	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fcf4	0x3f4f4	0x8004fcf8	mips_hi16_lo16	instruction-word	0x8006d864	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fd34	0x3f534	0x8004fd38	mips_hi16_lo16	instruction-word	0x8006d868	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fd44	0x3f544	0x8004fd48	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004fd68	0x3f568		mips26	instruction-word	0x8004f774	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004fd68	0x3f568		mips26	instruction-word	0x8004f774	load	_gcSPU	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fd70	0x3f570	0x8004fd74	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fdb4	0x3f5b4	0x8004fdb8	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004fdec	0x3f5ec		mips26	instruction-word	0x8004fe10	load		j		range-filtered	candidate	investigation:relocs.tsv
@@ -10447,11 +10447,11 @@ GAME.EXE	0x80050380	0x3fb80		mips26	instruction-word	0x8004f774	load		jal		range
 GAME.EXE	0x800503b4	0x3fbb4	0x800503b8	mips_hi16_lo16	reachable-code	0x8006db88	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050400	0x3fc00		mips26	reachable-code	0x800503bc	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050414	0x3fc14	0x80050418	mips_hi16_lo16	reachable-code	0x8006db80	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80050424	0x3fc24		mips26	reachable-code	0x800503a4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050424	0x3fc24		mips26	reachable-code	0x800503a4	load	_SpuIsInAllocateArea	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005043c	0x3fc3c	0x80050440	mips_hi16_lo16	reachable-code	0x8006d864	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050464	0x3fc64	0x80050468	mips_hi16_lo16	reachable-code	0x8006db88	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005048c	0x3fc8c		mips26	reachable-code	0x800504a0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800504a0	0x3fca0		mips26	reachable-code	0x8004f774	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800504a0	0x3fca0		mips26	reachable-code	0x8004f774	load	_gcSPU	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800504b8	0x3fcb8	0x800504bc	mips_hi16_lo16	instruction-word	0x8006d864	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800504e0	0x3fce0	0x800504e4	mips_hi16_lo16	instruction-word	0x8006db88	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050504	0x3fd04	0x80050508	mips_hi16_lo16	instruction-word	0x80013094	load		lui+addiu	a0	paired-pattern	candidate	investigation:relocs.tsv
@@ -10460,16 +10460,16 @@ GAME.EXE	0x80050514	0x3fd14	0x80050518	mips_hi16_lo16	instruction-word	0x8006db8
 GAME.EXE	0x80050538	0x3fd38	0x8005053c	mips_hi16_lo16	instruction-word	0x8006d864	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050568	0x3fd68	0x8005056c	mips_hi16_lo16	reachable-code	0x8006d86c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800505b0	0x3fdb0	0x800505b4	mips_hi16_lo16	reachable-code	0x800680ec	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x800505c4	0x3fdc4		mips26	reachable-code	0x80050414	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800505c4	0x3fdc4		mips26	reachable-code	0x80050414	load	_SpuIsInAllocateArea_	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800505d4	0x3fdd4		mips26	reachable-code	0x8005068c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800505f8	0x3fdf8		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80050624	0x3fe24		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800505f8	0x3fdf8		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050624	0x3fe24		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050638	0x3fe38		mips26	reachable-code	0x80050644	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80050644	0x3fe44		mips26	reachable-code	0x8005079c	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050644	0x3fe44		mips26	reachable-code	0x8005079c	load	SpuSetTransferStartAddr	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005064c	0x3fe4c	0x80050650	mips_hi16_lo16	reachable-code	0x80067cdc	load		lui+addiu	a0	paired-reachable	reviewed	manual:LIBSPU S_CRWA.OBJ XREF _spu_zerobuf at +0xe4;retail raw pair
-GAME.EXE	0x80050654	0x3fe54		mips26	reachable-code	0x800507ec	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005065c	0x3fe5c		mips26	reachable-code	0x800506b0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80050680	0x3fe80		mips26	reachable-code	0x8004def0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050654	0x3fe54		mips26	reachable-code	0x800507ec	load	SpuRead	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005065c	0x3fe5c		mips26	reachable-code	0x800506b0	load	SpuIsTransferCompleted	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80050680	0x3fe80		mips26	reachable-code	0x8004def0	load	_spu_ioctl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800506e8	0x3fee8		mips26	reachable-code	0x8005074c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800506f8	0x3fef8		mips26	reachable-code	0x8005f380	load	TestEvent	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80050718	0x3ff18		mips26	reachable-code	0x8005f380	load	TestEvent	jal		control-flow	candidate	investigation:relocs.tsv

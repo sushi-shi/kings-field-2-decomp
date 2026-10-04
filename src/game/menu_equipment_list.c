@@ -317,7 +317,6 @@ void menu_item_magic_controller(void)
     s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 index;
-    s32 frame;
     u8 selected_item;
     u8 saved_count_60;
     u8 saved_count_61;
@@ -373,7 +372,7 @@ void menu_item_magic_controller(void)
         if (selection == 1)
             menu_play_sound_cue(17);
 
-        for (frame = 0; frame < 2; frame++) {
+        for (index = 0; index < 2; index++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);

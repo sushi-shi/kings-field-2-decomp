@@ -536,6 +536,20 @@ typedef char kf_map_object_tail_spawn_byte_fields_size[
 typedef char kf_map_object_tail_spawn_bytes_offset[
     (u32)&((KfMapObjectTailSpawnByteFields *)0)->spawn_sequence == 8 ? 1 : -1];
 
+/* The scattered effect pool stores the selected effect ID beside its spawn
+ * sequence; the preceding state bytes have action-specific uses elsewhere. */
+typedef struct KfMapObjectTailScatteredEffectView {
+    u32 unknown_34;
+    u8 unknown_38[2];
+    u16 effect_id;
+    u16 spawn_sequence;
+    u16 unknown_3e;
+} KfMapObjectTailScatteredEffectView;
+typedef char kf_map_object_tail_scattered_effect_size[
+    sizeof(KfMapObjectTailScatteredEffectView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_scattered_effect_id_offset[
+    (u32)&((KfMapObjectTailScatteredEffectView *)0)->effect_id == 6 ? 1 : -1];
+
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailMotionView motion;
@@ -559,6 +573,7 @@ typedef union KfMapObjectTail {
     KfMapObjectTailInitialRotationView initial_rotation;
     KfMapObjectTailEventEffectView event_effect;
     KfMapObjectTailSpawnByteFields spawn_bytes;
+    KfMapObjectTailScatteredEffectView scattered_effect;
     u32 reset_words[3];
     struct {
         u32 unknown_34;

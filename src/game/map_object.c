@@ -142,7 +142,7 @@ void map_object_refresh_cell_markers(s32 mode)
             template = &map_object_state.templates[object->object_id];
             map_object_set_cell_marker(object, mode, template->marker_action_51);
         } else {
-            if (object->tail.fields.unknown_38 == 0xfe) {
+            if (object->tail.marker.marker_id == 0xfe) {
                 continue;
             }
             map_object_set_property(object->tail.linked_property.linked_object_index, mode,
@@ -637,9 +637,9 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
     map_object_reset(object);
     sequence = map_object_state.spawn_sequence_pool_15e;
     map_object_state.spawn_sequence_pool_15e = sequence + 1;
-    object->tail.fields.spawn_sequence = sequence;
+    object->tail.scattered_effect.spawn_sequence = sequence;
     object->object_id = 0x46;
-    object->tail.fields.unknown_3a.value = effect_id;
+    object->tail.scattered_effect.effect_id = effect_id;
     angle = (u16)(rand() >> KF_RANDOM_ANGLE_SHIFT);
     object->position.vx = origin->vx +
         ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
@@ -682,8 +682,8 @@ void map_object_apply_marker_signal(u8 identifier)
             break;
         case 0x51:
             if (object->tail.action_51_marker.marker_id == identifier) {
-                object->tail.fields.unknown_38 =
-                    object->tail.fields.unknown_38 == 0 ? 0xff : 0;
+                object->tail.collision_probe.marker_trigger_state =
+                    object->tail.collision_probe.marker_trigger_state == 0 ? 0xff : 0;
             }
             break;
         case 0x59:
@@ -825,7 +825,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 
     switch (source->action_timer) {
     case 0:
-        if (source->tail.fields.unknown_38 == 0xff) {
+        if (source->tail.event_effect.pending_event_command == 0xff) {
             return 0;
         }
         if (target->tail.fields.unknown_38 == 0) {

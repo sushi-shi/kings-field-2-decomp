@@ -2302,7 +2302,7 @@ GAME.EXE	0x80016120	0x5920	0x80016124	mips_hi16_lo16	reachable-code	0x801985ac	b
 GAME.EXE	0x8001612c	0x592c	0x80016130	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+sw	at	paired-reviewed	reviewed	manual:player camera position z
 GAME.EXE	0x80016138	0x5938	0x8001613c	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+sw	at	paired-reviewed	reviewed	manual:player camera position y
 GAME.EXE	0x800161a8	0x59a8	0x800161ac	mips_hi16_lo16	reachable-code	0x801767e8	bss		lui+addiu	a3	paired-reviewed	reviewed	manual:map-object pool position translation
-GAME.EXE	0x800161f8	0x59f8	0x800161fc	mips_hi16_lo16	reachable-code	0x8016b600	bss		lui+addiu	t0	paired-reviewed	reviewed	manual:actor pool position translation
+GAME.EXE	0x800161f8	0x59f8	0x800161fc	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	t0	paired-reviewed	reviewed	manual:actor pool position translation
 GAME.EXE	0x800162bc	0x5abc	0x800162c0	mips_hi16_lo16	instruction-word	0x80197638	bss	audio_state	lui+lw	v0	paired-reviewed	reviewed	manual:audio-fade-controller-direct-pair
 GAME.EXE	0x800162d0	0x5ad0		mips26	control-flow	0x80013ae4	load	audio_start_sequence	jal		reviewed	reviewed	manual:resource_request_transition raw MIPS26 direct call
 GAME.EXE	0x800162d8	0x5ad8		mips26	control-flow	0x8001678c	load		j		reviewed	reviewed	manual:resource_request_transition raw MIPS26 direct in-body jump

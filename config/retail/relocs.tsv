@@ -6097,13 +6097,13 @@ GAME.EXE	0x8002bbd0	0x1b3d0	0x8002bbd4	mips_hi16_lo16	reachable-code	0x801d8d64	
 GAME.EXE	0x8002bbd8	0x1b3d8	0x8002bbdc	mips_hi16_lo16	reachable-code	0x801d8d68	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bbe0	0x1b3e0	0x8002bbe4	mips_hi16_lo16	reachable-code	0x801d8d60	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bc18	0x1b418	0x8002bc1c	mips_hi16_lo16	reachable-code	0x80066ab4	load	collision_default_rows	lui+addiu	t1	paired-reviewed	reviewed	manual:collision_default_rows_direct_base
-GAME.EXE	0x8002bc20	0x1b420	0x8002bc24	mips_hi16_lo16	reachable-code	0x801921ac	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd0c	0x1b50c	0x8002bd10	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd14	0x1b514	0x8002bd18	mips_hi16_lo16	reachable-code	0x80191e05	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd1c	0x1b51c	0x8002bd20	mips_hi16_lo16	reachable-code	0x80191e0a	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd24	0x1b524	0x8002bd28	mips_hi16_lo16	reachable-code	0x80191e08	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd2c	0x1b52c	0x8002bd30	mips_hi16_lo16	reachable-code	0x80191e06	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd4c	0x1b54c	0x8002bd50	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bc20	0x1b420	0x8002bc24	mips_hi16_lo16	reachable-code	0x801921ac	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd0c	0x1b50c	0x8002bd10	mips_hi16_lo16	reachable-code	0x801921a8	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd14	0x1b514	0x8002bd18	mips_hi16_lo16	reachable-code	0x80191e05	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd1c	0x1b51c	0x8002bd20	mips_hi16_lo16	reachable-code	0x80191e0a	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd24	0x1b524	0x8002bd28	mips_hi16_lo16	reachable-code	0x80191e08	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd2c	0x1b52c	0x8002bd30	mips_hi16_lo16	reachable-code	0x80191e06	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bd4c	0x1b54c	0x8002bd50	mips_hi16_lo16	reachable-code	0x801921a8	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bd70	0x1b570		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002bd80	0x1b580		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002bd90	0x1b590		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
@@ -6113,21 +6113,21 @@ GAME.EXE	0x8002be2c	0x1b62c		mips26	reachable-code	0x8001584c	load	fixed_lerp_q1
 GAME.EXE	0x8002be40	0x1b640		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002be54	0x1b654		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002be74	0x1b674		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bec8	0x1b6c8	0x8002becc	mips_hi16_lo16	reachable-code	0x801921ac	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bec8	0x1b6c8	0x8002becc	mips_hi16_lo16	reachable-code	0x801921ac	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bee8	0x1b6e8		mips26	reachable-code	0x8002bdbc	load	interpolate_collision_row_fields	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bf0c	0x1b70c	0x8002bf10	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bf0c	0x1b70c	0x8002bf10	mips_hi16_lo16	reachable-code	0x801921a8	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bf94	0x1b794		mips26	reachable-code	0x8002be9c	load	interpolate_collision_rows	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bfac	0x1b7ac	0x8002bfb0	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bfd8	0x1b7d8	0x8002bfdc	mips_hi16_lo16	reachable-code	0x80191f54	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bfe4	0x1b7e4	0x8002bfe8	mips_hi16_lo16	reachable-code	0x80191f58	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bfac	0x1b7ac	0x8002bfb0	mips_hi16_lo16	reachable-code	0x80191f68	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bfd8	0x1b7d8	0x8002bfdc	mips_hi16_lo16	reachable-code	0x80191f54	bss	game_graphics_runtime	lui+lhu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002bfe4	0x1b7e4	0x8002bfe8	mips_hi16_lo16	reachable-code	0x80191f58	bss	game_graphics_runtime	lui+lhu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c038	0x1b838		mips26	reachable-code	0x8002c044	load		j		control-flow	reviewed	manual:rasterize_map_cell_layer_mask_line negative-step join; raw MIPS26 and safe carve
-GAME.EXE	0x8002c07c	0x1b87c	0x8002c080	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c07c	0x1b87c	0x8002c080	mips_hi16_lo16	reachable-code	0x80191f68	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c0ec	0x1b8ec		mips26	reachable-code	0x8002c168	load		j		control-flow	reviewed	manual:rasterize_map_cell_layer_mask_line first-axis exit; raw MIPS26 and safe carve
-GAME.EXE	0x8002c0f8	0x1b8f8	0x8002c0fc	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c0f8	0x1b8f8	0x8002c0fc	mips_hi16_lo16	reachable-code	0x80191f68	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c1a0	0x1b9a0		mips26	reachable-code	0x8002c1c4	load		j		control-flow	reviewed	manual:find_map_cell_layer_mask_run_boundary unmatched-state advance; raw MIPS26 and safe carve
 GAME.EXE	0x8002c1b0	0x1b9b0		mips26	reachable-code	0x8002c1c0	load		j		control-flow	reviewed	manual:find_map_cell_layer_mask_run_boundary state-one advance; raw MIPS26 and safe carve
 GAME.EXE	0x8002c1c4	0x1b9c4		mips26	reachable-code	0x8002c180	load		j		control-flow	reviewed	manual:find_map_cell_layer_mask_run_boundary scan loop; raw MIPS26 and safe carve
-GAME.EXE	0x8002c1f8	0x1b9f8	0x8002c1fc	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c1f8	0x1b9f8	0x8002c1fc	mips_hi16_lo16	reachable-code	0x80191f68	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c218	0x1ba18		mips26	reachable-code	0x8002c170	load	find_map_cell_layer_mask_run_boundary	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002c230	0x1ba30		mips26	reachable-code	0x8002c170	load	find_map_cell_layer_mask_run_boundary	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002c290	0x1ba90	0x8002c294	mips_hi16_lo16	reachable-code	0x801b5a84	bss	render_mask_scan_state	lui+lw		paired-reviewed	reviewed	manual:render-mask-scan
@@ -6164,25 +6164,25 @@ GAME.EXE	0x8002c62c	0x1be2c	0x8002c630	mips_hi16_lo16	reachable-code	0x801b5a88	
 GAME.EXE	0x8002c634	0x1be34	0x8002c638	mips_hi16_lo16	reachable-code	0x801b5a7c	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c63c	0x1be3c	0x8002c640	mips_hi16_lo16	reachable-code	0x801b5a80	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
 GAME.EXE	0x8002c644	0x1be44	0x8002c648	mips_hi16_lo16	reachable-code	0x801b5a8c	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-line
-GAME.EXE	0x8002c670	0x1be70	0x8002c674	mips_hi16_lo16	reachable-code	0x80191f44	bss		lui+lh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c670	0x1be70	0x8002c674	mips_hi16_lo16	reachable-code	0x80191f44	bss	game_graphics_runtime	lui+lh		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c698	0x1be98		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve
 GAME.EXE	0x8002c6a8	0x1bea8	0x8002c6ac	mips_hi16_lo16	reachable-code	0x80067874	load	map_mask_pitch_shape_pairs	lui+addiu	a0	paired-reviewed	reviewed	manual:map_mask_sweep_seven_shape_pairs
-GAME.EXE	0x8002c6f4	0x1bef4	0x8002c6f8	mips_hi16_lo16	reachable-code	0x80191f46	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c6f4	0x1bef4	0x8002c6f8	mips_hi16_lo16	reachable-code	0x80191f46	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c700	0x1bf00		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve
 GAME.EXE	0x8002c70c	0x1bf0c		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve
 GAME.EXE	0x8002c714	0x1bf14		mips26	reachable-code	0x8002bfac	load	clear_map_cell_layer_masks	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve
 GAME.EXE	0x8002c738	0x1bf38	0x8002c73c	mips_hi16_lo16	reachable-code	0x801b5a7c	bss	render_mask_scan_state	lui+addiu		paired-reviewed	reviewed	manual:render-mask-sweep
-GAME.EXE	0x8002c740	0x1bf40	0x8002c744	mips_hi16_lo16	reachable-code	0x80191f38	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c748	0x1bf48	0x8002c74c	mips_hi16_lo16	reachable-code	0x80191f50	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c750	0x1bf50	0x8002c754	mips_hi16_lo16	reachable-code	0x80191f4c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c740	0x1bf40	0x8002c744	mips_hi16_lo16	reachable-code	0x80191f38	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c748	0x1bf48	0x8002c74c	mips_hi16_lo16	reachable-code	0x80191f50	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c750	0x1bf50	0x8002c754	mips_hi16_lo16	reachable-code	0x80191f4c	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c760	0x1bf60	0x8002c764	mips_hi16_lo16	reachable-code	0x801b5a80	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-sweep
-GAME.EXE	0x8002c768	0x1bf68	0x8002c76c	mips_hi16_lo16	reachable-code	0x80191f34	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c770	0x1bf70	0x8002c774	mips_hi16_lo16	reachable-code	0x80191f3c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c788	0x1bf88	0x8002c78c	mips_hi16_lo16	reachable-code	0x80191f54	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c794	0x1bf94	0x8002c798	mips_hi16_lo16	reachable-code	0x80191f5c	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c768	0x1bf68	0x8002c76c	mips_hi16_lo16	reachable-code	0x80191f34	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c770	0x1bf70	0x8002c774	mips_hi16_lo16	reachable-code	0x80191f3c	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c788	0x1bf88	0x8002c78c	mips_hi16_lo16	reachable-code	0x80191f54	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c794	0x1bf94	0x8002c798	mips_hi16_lo16	reachable-code	0x80191f5c	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c79c	0x1bf9c	0x8002c7a0	mips_hi16_lo16	reachable-code	0x801b5a84	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-sweep
-GAME.EXE	0x8002c7c4	0x1bfc4	0x8002c7c8	mips_hi16_lo16	reachable-code	0x80191f58	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002c7d0	0x1bfd0	0x8002c7d4	mips_hi16_lo16	reachable-code	0x80191f60	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c7c4	0x1bfc4	0x8002c7c8	mips_hi16_lo16	reachable-code	0x80191f58	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002c7d0	0x1bfd0	0x8002c7d4	mips_hi16_lo16	reachable-code	0x80191f60	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002c7d8	0x1bfd8	0x8002c7dc	mips_hi16_lo16	reachable-code	0x801b5a88	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002c7f0	0x1bff0	0x8002c7f4	mips_hi16_lo16	reachable-code	0x801b5a8c	bss	render_mask_scan_state	lui+sw		paired-reviewed	reviewed	manual:render-mask-sweep
 GAME.EXE	0x8002c7f8	0x1bff8		mips26	reachable-code	0x8002a988	load	collision_sample_map_cell_layer	jal		control-flow	reviewed	manual:build_camera_map_cell_layer_masks direct jal; raw CFG, source call, delay slot, safe carve

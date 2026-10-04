@@ -10,7 +10,6 @@ typedef struct KfNotificationQuad {
     u8 texture_v;
     u8 texture_width;
     u8 texture_height;
-    u8 unknown_05;
     u16 x;
     u16 y;
     u16 width;
@@ -20,6 +19,8 @@ typedef struct KfNotificationQuad {
 } KfNotificationQuad;
 
 typedef char kf_notification_quad_size[sizeof(KfNotificationQuad) == 18 ? 1 : -1];
+typedef char kf_notification_quad_x_offset[
+    (u32)&((KfNotificationQuad *)0)->x == 6 ? 1 : -1];
 
 extern KfNotificationQuad notification_quads[7];
 

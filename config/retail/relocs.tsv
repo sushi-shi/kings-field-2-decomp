@@ -13983,14 +13983,14 @@ OPEN.EXE	0x8001d720	0xcf20		mips26	reachable-code	0x8001aa70	load		jal		control-
 OPEN.EXE	0x8001d730	0xcf30		mips26	reachable-code	0x8001a854	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d740	0xcf40		mips26	reachable-code	0x8001a90c	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d74c	0xcf4c		mips26	reachable-code	0x8001a644	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d7a0	0xcfa0		mips26	instruction-word	0x8001db64	load		jal		range-filtered	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d7c4	0xcfc4		mips26	reachable-code	0x8001db64	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d7e8	0xcfe8		mips26	reachable-code	0x8001db64	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d80c	0xd00c		mips26	reachable-code	0x8001db64	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d830	0xd030		mips26	instruction-word	0x8001db64	load		jal		range-filtered	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d854	0xd054		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d878	0xd078		mips26	reachable-code	0x8001db34	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d89c	0xd09c		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d7a0	0xcfa0		mips26	instruction-word	0x8001db64	load	DMACallback	jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d7c4	0xcfc4		mips26	reachable-code	0x8001db64	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d7e8	0xcfe8		mips26	reachable-code	0x8001db64	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d80c	0xd00c		mips26	reachable-code	0x8001db64	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d830	0xd030		mips26	instruction-word	0x8001db64	load	DMACallback	jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d854	0xd054		mips26	instruction-word	0x8001db34	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d878	0xd078		mips26	reachable-code	0x8001db34	load	InterruptCallback	jal		control-flow	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d89c	0xd09c		mips26	instruction-word	0x8001db34	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d8b4	0xd0b4	0x8001d8b8	mips_hi16_lo16	instruction-word	0x8003de4c	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d8cc	0xd0cc	0x8001d8d0	mips_hi16_lo16	instruction-word	0x8003de48	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d8e0	0xd0e0		mips26	instruction-word	0x8001da14	load	ChangeClearPAD	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -16621,14 +16621,14 @@ END.EXE	0x8001a984	0xa184		mips26	reachable-code	0x80017cd4	load		jal		control-f
 END.EXE	0x8001a994	0xa194		mips26	reachable-code	0x80017ab8	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001a9a4	0xa1a4		mips26	reachable-code	0x80017b70	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001a9b0	0xa1b0		mips26	reachable-code	0x800178a8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001aa04	0xa204		mips26	instruction-word	0x8001adc8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-END.EXE	0x8001aa28	0xa228		mips26	reachable-code	0x8001adc8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001aa4c	0xa24c		mips26	reachable-code	0x8001adc8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001aa70	0xa270		mips26	reachable-code	0x8001adc8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001aa94	0xa294		mips26	instruction-word	0x8001adc8	load		jal		range-filtered	candidate	investigation:relocs.tsv
-END.EXE	0x8001aab8	0xa2b8		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv
-END.EXE	0x8001aadc	0xa2dc		mips26	reachable-code	0x8001ad98	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001ab00	0xa300		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv
+END.EXE	0x8001aa04	0xa204		mips26	instruction-word	0x8001adc8	load	DMACallback	jal		range-filtered	candidate	investigation:relocs.tsv
+END.EXE	0x8001aa28	0xa228		mips26	reachable-code	0x8001adc8	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8001aa4c	0xa24c		mips26	reachable-code	0x8001adc8	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8001aa70	0xa270		mips26	reachable-code	0x8001adc8	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8001aa94	0xa294		mips26	instruction-word	0x8001adc8	load	DMACallback	jal		range-filtered	candidate	investigation:relocs.tsv
+END.EXE	0x8001aab8	0xa2b8		mips26	instruction-word	0x8001ad98	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
+END.EXE	0x8001aadc	0xa2dc		mips26	reachable-code	0x8001ad98	load	InterruptCallback	jal		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x8001ab00	0xa300		mips26	instruction-word	0x8001ad98	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab18	0xa318	0x8001ab1c	mips_hi16_lo16	instruction-word	0x8003ac6c	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab30	0xa330	0x8001ab34	mips_hi16_lo16	instruction-word	0x8003ac68	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab44	0xa344		mips26	instruction-word	0x8001ac78	load	ChangeClearPAD	jal		range-filtered	candidate	investigation:relocs.tsv

@@ -2109,7 +2109,7 @@ GAME.EXE	0x80014428	0x3c28		mips26	instruction-word	0x8005169c	load	SsVabOpenHea
 GAME.EXE	0x80014444	0x3c44		mips26	instruction-word	0x80017864	load	cd_request_advance	jal		range-filtered	reviewed	manual:audio_vab_stream
 GAME.EXE	0x8001444c	0x3c4c		mips26	instruction-word	0x800144a0	load		j		range-filtered	reviewed	manual:audio_vab_stream
 GAME.EXE	0x8001445c	0x3c5c		mips26	instruction-word	0x80017bf0	load	cd_location_add	jal		range-filtered	reviewed	manual:audio_vab_stream
-GAME.EXE	0x80014470	0x3c70	0x80014474	mips_hi16_lo16	reachable-code	0x801b6064	bss		lui+addiu	v0	paired-reviewed	reviewed	manual:audio_vab_stream
+GAME.EXE	0x80014470	0x3c70	0x80014474	mips_hi16_lo16	reachable-code	0x801b6064	bss	cd_stream_work_buffer	lui+addiu	v0	paired-reviewed	reviewed	manual:audio_vab_stream
 GAME.EXE	0x8001448c	0x3c8c		mips26	instruction-word	0x8004a1e4	load	CdControl	jal		range-filtered	reviewed	manual:audio_vab_stream
 GAME.EXE	0x80014494	0x3c94		mips26	instruction-word	0x800144a0	load		j		range-filtered	reviewed	manual:audio_vab_stream
 GAME.EXE	0x800144cc	0x3ccc		mips26	reachable-code	0x8005f110	load	EnterCriticalSection	jal		control-flow	reviewed	manual:raw MIPS26 direct call

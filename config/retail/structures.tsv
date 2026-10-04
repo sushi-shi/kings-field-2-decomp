@@ -16,6 +16,8 @@ KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset
 KfAudioVabStreamSlot	0x08	supported	game/audio.h;audio_acquire_vab_stream_slot;audio_vab_stream_callback	stream slot state and transfer buffer
+KfAudioVoiceHandle	0x04	supported	game/audio.h;GAME 0x80014124/0x8001414c/0x80014364	four-byte handle stride; original typedef spelling unproved
+KfAudioVoiceParams	0x0a	supported	game/audio.h;GAME 0x80013fc8-0x80013fe0;GAME 0x80014214-0x80014224	ten-byte parameter stride; original typedef spelling unproved
 KfBss801c7540	0x11844	supported	asm;game_main_loop startup clear;map-cell and collision-cache xrefs	layout from the reconstructed header
 KfCardMenuList	0x34	supported	game/menu.h;menu_card_load_browser;menu_card_load_slot_browser;menu_card_save_browser	card list prefix and row, level, and experience pointers
 KfCardSlotGlyphRow	0x14	supported	game/menu.h;menu_card_build_slot_rows;menu_card_load_browser	ten halfword glyph codes per card slot

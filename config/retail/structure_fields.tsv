@@ -107,6 +107,13 @@ KfAudioVabSlot	0x00	0x02	vab_id	s16	supported	game/audio.h;audio_initialize_runt
 KfAudioVabSlot	0x04	0x04	stream_slot	KfAudioVabStreamSlot *	supported	game/audio.h;audio_vab_stream_callback;audio_queue_vab_stream	stream buffer slot retained while loading a VAB
 KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer
+KfAudioVoiceHandle	0x00	0x02	voice_id	s16	supported	game/audio.h;GAME 0x80014124/0x80014364;audio_key_on	signed SPU voice handle; -1 marks free
+KfAudioVoiceHandle	0x02	0x02	sound_id	s16	supported	game/audio.h;GAME 0x800141c4/0x80014368;audio_key_on	signed sound ID; parameter indexing uses its low byte
+KfAudioVoiceParams	0x00	0x02	vab_slot_index	s16	supported	game/audio.h;GAME 0x800142e0;audio_key_on	signed VAB slot index; -1 marks unavailable
+KfAudioVoiceParams	0x02	0x02	program	s16	supported	game/audio.h;GAME 0x80014348;audio_key_on	SDK key-on program argument
+KfAudioVoiceParams	0x04	0x02	tone	s16	supported	game/audio.h;GAME 0x8001434c;audio_key_on	SDK key-on tone argument
+KfAudioVoiceParams	0x06	0x02	note	s16	supported	game/audio.h;GAME 0x80014318;audio_key_on	signed note offset
+KfAudioVoiceParams	0x08	0x02	priority	u16	supported	game/audio.h;GAME 0x80014224;audio_allocate_voice_handle	unsigned eviction priority
 KfAudioVoiceState	0x00	0x28	handles	KfAudioVoiceHandle[10]	supported	game/audio.h;GAME 0x80013a64;audio_refresh_voice_handles	ten four-byte sound/voice handle pairs
 KfAudioVoiceState	0x28	0xa00	params	KfAudioVoiceParams[256]	supported	game/audio.h;GAME 0x80013fd4;audio_key_on	256 ten-byte sound parameter rows
 KfBss801c7540	0x00	0xfa00	map_cells	KfMapOccupancyCell[80][80]	supported	GAME 0x8001694c-0x8001695c copies 0x3e80 words;GAME 0x8002a988 clips X/Z to 80 cells;GAME 0x80016b2c scrub visits 0x1900 cells	80-by-80 cells, each 10 bytes, loaded from the map resource

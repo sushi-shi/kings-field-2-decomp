@@ -141,6 +141,7 @@ KfPlayerViewRotation	0x08	supported	asm;player_get_camera_pose;player_reset_view
 KfPlayerVitals	0x08	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfQueuedMagicAction	0x04	supported	game/player.h;GAME 0x80027230-0x800273e4;player_update_frame	four byte fields at player_state+0xd1..0xd4; original standalone object/typedef unproved
 KfRenderGridState	0x24c	supported	asm;build_camera_map_cell_layer_masks;func_80030f5c	scan origin, fog threshold, and contiguous 24-by-24 map mask grid
 KfRenderMaskScanState	0x20	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	observed 32-byte window and layer-mask scan state
 KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_frame	36-byte mutable model render row

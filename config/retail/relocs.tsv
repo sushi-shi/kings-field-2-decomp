@@ -2295,7 +2295,7 @@ GAME.EXE	0x80016098	0x5898	0x8001609c	mips_hi16_lo16	reachable-code	0x8017d118	b
 GAME.EXE	0x800160ac	0x58ac	0x800160b0	mips_hi16_lo16	reachable-code	0x8012da68	bss	resource_tmd_workspace	lui+addiu	a1	paired-reviewed	reviewed	manual:resource-transition-TMD-workspace;object-extent-unbound
 GAME.EXE	0x800160b4	0x58b4		mips26	reachable-code	0x8002d8f0	load	tmd_set_slot	jal		control-flow	reviewed	manual:audio-cd-state-snapshot
 GAME.EXE	0x800160bc	0x58bc	0x800160c0	mips_hi16_lo16	reachable-code	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:audio-cd-state-snapshot
-GAME.EXE	0x800160e8	0x58e8	0x800160ec	mips_hi16_lo16	reachable-code	0x8019bd28	bss		lui+addiu	t0	paired-reviewed	reviewed	manual:typed effect pool position translation
+GAME.EXE	0x800160e8	0x58e8	0x800160ec	mips_hi16_lo16	reachable-code	0x8019bd28	bss	effect_state	lui+addiu	t0	paired-reviewed	reviewed	manual:typed effect pool position translation
 GAME.EXE	0x80016100	0x5900	0x80016104	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xd8 camera_position.vx
 GAME.EXE	0x80016118	0x5918	0x8001611c	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xe0 camera_position.vz
 GAME.EXE	0x80016120	0x5920	0x80016124	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xdc camera_position.vy
@@ -6782,7 +6782,7 @@ GAME.EXE	0x80032bb0	0x223b0	0x80032bb4	mips_hi16_lo16	reachable-code	0x801749d0	
 GAME.EXE	0x80032bc0	0x223c0		mips26	reachable-code	0x800320b0	load	map_cell_layer_mask_radius	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x80032c14	0x22414		mips26	reachable-code	0x80032364	load	resource_tmd_update_range	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x80032c30	0x22430		mips26	reachable-code	0x80032274	load	resource_vab_update_range	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
-GAME.EXE	0x80032c38	0x22438	0x80032c3c	mips_hi16_lo16	reachable-code	0x8019bd28	bss		lui+addiu	s4	paired-reviewed	reviewed	manual:render_scene_and_update_resources effect pool base;raw carry-adjusted pair
+GAME.EXE	0x80032c38	0x22438	0x80032c3c	mips_hi16_lo16	reachable-code	0x8019bd28	bss	effect_state	lui+addiu	s4	paired-reviewed	reviewed	manual:render_scene_and_update_resources effect pool base;raw carry-adjusted pair
 GAME.EXE	0x80032c88	0x22488		mips26	reachable-code	0x80032040	load	map_cell_layer_mask	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x80032ccc	0x224cc		mips26	reachable-code	0x80032e44	load		j		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 in-body jump
 GAME.EXE	0x80032ce8	0x224e8		mips26	reachable-code	0x80032e44	load		j		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 in-body jump
@@ -8851,7 +8851,7 @@ GAME.EXE	0x80045c50	0x35450		mips26	reachable-code	0x80040308	load	effect_constr
 GAME.EXE	0x80045c74	0x35474		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80045c80	0x35480		mips26	reachable-code	0x8003fa2c	load	effect_play_spatial_sound	jal		control-flow	reviewed	manual:raw dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x80045cc0	0x354c0	0x80045cc4	mips_hi16_lo16	reachable-code	0x8019bd28	bss	effect_state	lui+addiu	a0	paired-reviewed	reviewed	manual:effect
-GAME.EXE	0x80045cf0	0x354f0	0x80045cf4	mips_hi16_lo16	reachable-code	0x8019b6a8	bss		lui+addiu	a1	paired-reviewed	reviewed	manual:magic_load_records
+GAME.EXE	0x80045cf0	0x354f0	0x80045cf4	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu	a1	paired-reviewed	reviewed	manual:magic_load_records
 GAME.EXE	0x80045d3c	0x3553c	0x80045d40	mips_hi16_lo16	reachable-code	0x8019bd28	bss	effect_state	lui+addiu	s0	paired-reviewed	reviewed	manual:effect_sweep
 GAME.EXE	0x80045d44	0x35544	0x80045d48	mips_hi16_lo16	reachable-code	0x8019e130	bss	effect_state	lui+sw	at	paired-reviewed	reviewed	manual:effect_sweep
 GAME.EXE	0x80045dc4	0x355c4		mips26	reachable-code	0x80045dd4	load		j		control-flow	reviewed	manual:effect_sweep

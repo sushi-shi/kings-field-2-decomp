@@ -4695,25 +4695,25 @@ GAME.EXE	0x80024f04	0x14704	0x80024f08	mips_hi16_lo16	reachable-code	0x80198608	
 GAME.EXE	0x80024f1c	0x1471c	0x80024f20	mips_hi16_lo16	reachable-code	0x801985c0	bss		lui+lhu		paired-reviewed	reviewed	manual:player_camera_pose
 GAME.EXE	0x80024f2c	0x1472c	0x80024f30	mips_hi16_lo16	reachable-code	0x801985c2	bss		lui+lhu		paired-reviewed	reviewed	manual:player_camera_pose
 GAME.EXE	0x80024f3c	0x1473c	0x80024f40	mips_hi16_lo16	reachable-code	0x801985c4	bss		lui+lhu		paired-reviewed	reviewed	manual:player_camera_pose
-GAME.EXE	0x80024f4c	0x1474c	0x80024f50	mips_hi16_lo16	reachable-code	0x801984e2	bss		lui+lhu		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f54	0x14754	0x80024f58	mips_hi16_lo16	reachable-code	0x801984e6	bss		lui+lhu		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f64	0x14764	0x80024f68	mips_hi16_lo16	reachable-code	0x8019853e	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f6c	0x1476c	0x80024f70	mips_hi16_lo16	reachable-code	0x8019853c	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f74	0x14774	0x80024f78	mips_hi16_lo16	reachable-code	0x8019853a	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f7c	0x1477c	0x80024f80	mips_hi16_lo16	reachable-code	0x80198538	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f84	0x14784	0x80024f88	mips_hi16_lo16	reachable-code	0x80198536	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f8c	0x1478c	0x80024f90	mips_hi16_lo16	reachable-code	0x80198534	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f94	0x14794	0x80024f98	mips_hi16_lo16	reachable-code	0x80198532	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024f9c	0x1479c	0x80024fa0	mips_hi16_lo16	reachable-code	0x80198530	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fa4	0x147a4	0x80024fa8	mips_hi16_lo16	reachable-code	0x8019852e	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fac	0x147ac	0x80024fb0	mips_hi16_lo16	reachable-code	0x8019852c	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fb4	0x147b4	0x80024fb8	mips_hi16_lo16	reachable-code	0x8019852a	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fbc	0x147bc	0x80024fc0	mips_hi16_lo16	reachable-code	0x80198528	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fc4	0x147c4	0x80024fc8	mips_hi16_lo16	reachable-code	0x80198526	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fcc	0x147cc	0x80024fd0	mips_hi16_lo16	reachable-code	0x80198524	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fd4	0x147d4	0x80024fd8	mips_hi16_lo16	reachable-code	0x801985a5	bss		lui+sb		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fdc	0x147dc	0x80024fe0	mips_hi16_lo16	reachable-code	0x801984e4	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
-GAME.EXE	0x80024fe4	0x147e4	0x80024fe8	mips_hi16_lo16	reachable-code	0x801984e8	bss		lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f4c	0x1474c	0x80024f50	mips_hi16_lo16	reachable-code	0x801984e2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f54	0x14754	0x80024f58	mips_hi16_lo16	reachable-code	0x801984e6	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f64	0x14764	0x80024f68	mips_hi16_lo16	reachable-code	0x8019853e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f6c	0x1476c	0x80024f70	mips_hi16_lo16	reachable-code	0x8019853c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f74	0x14774	0x80024f78	mips_hi16_lo16	reachable-code	0x8019853a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f7c	0x1477c	0x80024f80	mips_hi16_lo16	reachable-code	0x80198538	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f84	0x14784	0x80024f88	mips_hi16_lo16	reachable-code	0x80198536	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f8c	0x1478c	0x80024f90	mips_hi16_lo16	reachable-code	0x80198534	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f94	0x14794	0x80024f98	mips_hi16_lo16	reachable-code	0x80198532	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024f9c	0x1479c	0x80024fa0	mips_hi16_lo16	reachable-code	0x80198530	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fa4	0x147a4	0x80024fa8	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fac	0x147ac	0x80024fb0	mips_hi16_lo16	reachable-code	0x8019852c	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fb4	0x147b4	0x80024fb8	mips_hi16_lo16	reachable-code	0x8019852a	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fbc	0x147bc	0x80024fc0	mips_hi16_lo16	reachable-code	0x80198528	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fc4	0x147c4	0x80024fc8	mips_hi16_lo16	reachable-code	0x80198526	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fcc	0x147cc	0x80024fd0	mips_hi16_lo16	reachable-code	0x80198524	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fd4	0x147d4	0x80024fd8	mips_hi16_lo16	reachable-code	0x801985a5	bss	player_state	lui+sb		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fdc	0x147dc	0x80024fe0	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
+GAME.EXE	0x80024fe4	0x147e4	0x80024fe8	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_reset_status
 GAME.EXE	0x80024fec	0x147ec		mips26	reachable-code	0x80023484	load	player_reset_view	jal		control-flow	reviewed	manual:player_reset_status
 GAME.EXE	0x8002500c	0x1480c	0x80025010	mips_hi16_lo16	reachable-code	0x801984d0	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x80025018	0x14818	0x8002501c	mips_hi16_lo16	reachable-code	0x801984d8	bss		lui+sb		paired-reviewed	reviewed	manual:player_initialize_state

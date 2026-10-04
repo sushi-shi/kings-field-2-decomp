@@ -6589,28 +6589,28 @@ GAME.EXE	0x800312f4	0x20af4	0x800312f8	mips_hi16_lo16	reachable-code	0x801985f0	
 GAME.EXE	0x8003136c	0x20b6c		mips26	reachable-code	0x800311b0	load	render_textured_quad	jal		control-flow	reviewed	manual:quad-weapon-proven-calls
 GAME.EXE	0x80031384	0x20b84	0x80031388	mips_hi16_lo16	reachable-code	0x801985f4	bss		lui+lw		paired-reviewed	reviewed	manual:graphics_sliding_panels
 GAME.EXE	0x800313fc	0x20bfc		mips26	reachable-code	0x800311b0	load	render_textured_quad	jal		control-flow	reviewed	manual:quad-weapon-proven-calls
-GAME.EXE	0x8003141c	0x20c1c	0x80031420	mips_hi16_lo16	reachable-code	0x80191e01	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031460	0x20c60	0x80031464	mips_hi16_lo16	reachable-code	0x80191e02	bss		lui+lbu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031468	0x20c68	0x8003146c	mips_hi16_lo16	reachable-code	0x80191e03	bss		lui+lbu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031470	0x20c70	0x80031474	mips_hi16_lo16	reachable-code	0x80191e04	bss		lui+lbu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8003141c	0x20c1c	0x80031420	mips_hi16_lo16	reachable-code	0x80191e01	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031460	0x20c60	0x80031464	mips_hi16_lo16	reachable-code	0x80191e02	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031468	0x20c68	0x8003146c	mips_hi16_lo16	reachable-code	0x80191e03	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031470	0x20c70	0x80031474	mips_hi16_lo16	reachable-code	0x80191e04	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800314a0	0x20ca0		mips26	reachable-code	0x800314b0	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800314bc	0x20cbc		mips26	reachable-code	0x800311b0	load	render_textured_quad	jal		control-flow	reviewed	manual:quad-weapon-proven-calls
-GAME.EXE	0x800314d4	0x20cd4	0x800314d8	mips_hi16_lo16	reachable-code	0x80191e01	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800314dc	0x20cdc	0x800314e0	mips_hi16_lo16	reachable-code	0x80191e02	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800314e4	0x20ce4	0x800314e8	mips_hi16_lo16	reachable-code	0x80191e03	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800314ec	0x20cec	0x800314f0	mips_hi16_lo16	reachable-code	0x80191e04	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031504	0x20d04	0x80031508	mips_hi16_lo16	reachable-code	0x80191e05	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8003151c	0x20d1c	0x80031520	mips_hi16_lo16	reachable-code	0x80191e06	bss		lui+lh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031554	0x20d54	0x80031558	mips_hi16_lo16	reachable-code	0x80191e08	bss		lui+lh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031590	0x20d90	0x80031594	mips_hi16_lo16	reachable-code	0x80191e0a	bss		lui+lh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800314d4	0x20cd4	0x800314d8	mips_hi16_lo16	reachable-code	0x80191e01	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800314dc	0x20cdc	0x800314e0	mips_hi16_lo16	reachable-code	0x80191e02	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800314e4	0x20ce4	0x800314e8	mips_hi16_lo16	reachable-code	0x80191e03	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800314ec	0x20cec	0x800314f0	mips_hi16_lo16	reachable-code	0x80191e04	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031504	0x20d04	0x80031508	mips_hi16_lo16	reachable-code	0x80191e05	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8003151c	0x20d1c	0x80031520	mips_hi16_lo16	reachable-code	0x80191e06	bss	game_graphics_runtime	lui+lh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031554	0x20d54	0x80031558	mips_hi16_lo16	reachable-code	0x80191e08	bss	game_graphics_runtime	lui+lh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031590	0x20d90	0x80031594	mips_hi16_lo16	reachable-code	0x80191e0a	bss	game_graphics_runtime	lui+lh		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8003161c	0x20e1c		mips26	reachable-code	0x800311b0	load	render_textured_quad	jal		control-flow	reviewed	manual:quad-weapon-proven-calls
-GAME.EXE	0x80031658	0x20e58	0x8003165c	mips_hi16_lo16	reachable-code	0x80191e05	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031670	0x20e70	0x80031674	mips_hi16_lo16	reachable-code	0x80191e06	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031680	0x20e80	0x80031684	mips_hi16_lo16	reachable-code	0x80191e06	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80031688	0x20e88	0x8003168c	mips_hi16_lo16	reachable-code	0x80191e08	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800316a0	0x20ea0	0x800316a4	mips_hi16_lo16	reachable-code	0x80191e08	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800316a8	0x20ea8	0x800316ac	mips_hi16_lo16	reachable-code	0x80191e0a	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x800316b8	0x20eb8	0x800316bc	mips_hi16_lo16	reachable-code	0x80191e0a	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031658	0x20e58	0x8003165c	mips_hi16_lo16	reachable-code	0x80191e05	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031670	0x20e70	0x80031674	mips_hi16_lo16	reachable-code	0x80191e06	bss	game_graphics_runtime	lui+lhu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031680	0x20e80	0x80031684	mips_hi16_lo16	reachable-code	0x80191e06	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80031688	0x20e88	0x8003168c	mips_hi16_lo16	reachable-code	0x80191e08	bss	game_graphics_runtime	lui+lhu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800316a0	0x20ea0	0x800316a4	mips_hi16_lo16	reachable-code	0x80191e08	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800316a8	0x20ea8	0x800316ac	mips_hi16_lo16	reachable-code	0x80191e0a	bss	game_graphics_runtime	lui+lhu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800316b8	0x20eb8	0x800316bc	mips_hi16_lo16	reachable-code	0x80191e0a	bss	game_graphics_runtime	lui+sh		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800316d8	0x20ed8	0x800316dc	mips_hi16_lo16	reachable-code	0x80198560	bss	player_state	lui+addiu	s1	paired-reviewed	reviewed	manual:func_800316c8 weapon phase and cache
 GAME.EXE	0x800316f0	0x20ef0	0x800316f4	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:func_800316c8 camera Z
 GAME.EXE	0x800316f8	0x20ef8	0x800316fc	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:func_800316c8 camera X
@@ -6804,13 +6804,13 @@ GAME.EXE	0x80032ff4	0x227f4	0x80032ff8	mips_hi16_lo16	reachable-code	0x8017d160	
 GAME.EXE	0x80033010	0x22810	0x80033014	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033120	0x22920	0x80033124	mips_hi16_lo16	reachable-code	0x8018d164	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033128	0x22928		mips26	reachable-code	0x80063358	load	AddPrim	jal		control-flow	reviewed	manual:notification-proven-calls
-GAME.EXE	0x80033150	0x22950	0x80033154	mips_hi16_lo16	reachable-code	0x80191e00	bss		lui+lbu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80033150	0x22950	0x80033154	mips_hi16_lo16	reachable-code	0x80191e00	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033158	0x22958	0x8003315c	mips_hi16_lo16	reachable-code	0x80066808	load	notification_quads	lui+addiu	s0	paired-reviewed	reviewed	manual:notification-quad-fields
 GAME.EXE	0x80033190	0x22990		mips26	reachable-code	0x80032fec	load	notification_draw_quad	jal		control-flow	reviewed	manual:notification-proven-calls
 GAME.EXE	0x800331a0	0x229a0		mips26	reachable-code	0x80032fec	load	notification_draw_quad	jal		control-flow	reviewed	manual:notification-proven-calls
-GAME.EXE	0x800331f0	0x229f0	0x800331f4	mips_hi16_lo16	reachable-code	0x80191dfd	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80033200	0x22a00	0x80033204	mips_hi16_lo16	reachable-code	0x80191de4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80033224	0x22a24	0x80033228	mips_hi16_lo16	reachable-code	0x80191de4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800331f0	0x229f0	0x800331f4	mips_hi16_lo16	reachable-code	0x80191dfd	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80033200	0x22a00	0x80033204	mips_hi16_lo16	reachable-code	0x80191de4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80033224	0x22a24	0x80033228	mips_hi16_lo16	reachable-code	0x80191de4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033294	0x22a94	0x80033298	mips_hi16_lo16	reachable-code	0x80191dfe	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800332bc	0x22abc		mips26	reachable-code	0x80033570	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800332d8	0x22ad8		mips26	reachable-code	0x80033570	load		j		control-flow	candidate	investigation:relocs.tsv

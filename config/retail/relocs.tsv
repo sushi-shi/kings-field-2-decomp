@@ -10799,47 +10799,47 @@ GAME.EXE	0x80056594	0x45d94		mips26	instruction-word	0x800565b4	load		j		range-f
 GAME.EXE	0x800565a8	0x45da8		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056654	0x45e54		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056680	0x45e80		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056698	0x45e98		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800566c0	0x45ec0		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056774	0x45f74		mips26	instruction-word	0x80058190	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800567a0	0x45fa0		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800567b8	0x45fb8		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800567e0	0x45fe0		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056890	0x46090		mips26	instruction-word	0x80058190	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800568d0	0x460d0		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x800568ec	0x460ec		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056698	0x45e98		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800566c0	0x45ec0		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056774	0x45f74		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800567a0	0x45fa0		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800567b8	0x45fb8		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800567e0	0x45fe0		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056890	0x46090		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800568d0	0x460d0		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800568ec	0x460ec		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056908	0x46108		mips26	instruction-word	0x8005697c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056944	0x46144		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005695c	0x4615c		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056984	0x46184		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056a00	0x46200		mips26	instruction-word	0x80051424	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056a48	0x46248		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056944	0x46144		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005695c	0x4615c		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056984	0x46184		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056a00	0x46200		mips26	instruction-word	0x80051424	load	SsUtReverbOff	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056a48	0x46248		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056ae0	0x462e0		mips26	instruction-word	0x80056b10	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056b6c	0x4636c		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056b6c	0x4636c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056bf4	0x463f4		mips26	instruction-word	0x80056c84	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056c08	0x46408		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056c08	0x46408		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c18	0x46418		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056c40	0x46440		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056c40	0x46440		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c5c	0x4645c		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c64	0x46464		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056c6c	0x4646c		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056c6c	0x4646c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c7c	0x4647c		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056c9c	0x4649c		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056d0c	0x4650c		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056d7c	0x4657c		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056e24	0x46624		mips26	instruction-word	0x80058190	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056e58	0x46658		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056c9c	0x4649c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056d0c	0x4650c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056d7c	0x4657c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056e24	0x46624		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056e58	0x46658		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056e60	0x46660		mips26	instruction-word	0x80057328	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056e98	0x46698		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056e98	0x46698		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056ea0	0x466a0		mips26	instruction-word	0x80057328	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056efc	0x466fc		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056f1c	0x4671c		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056efc	0x466fc		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056f1c	0x4671c		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056f90	0x46790		mips26	instruction-word	0x80056f9c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056fc0	0x467c0		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80056fe0	0x467e0		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056fc0	0x467c0		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056fe0	0x467e0		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057040	0x46840		mips26	instruction-word	0x8005704c	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80057070	0x46870		mips26	instruction-word	0x80057d78	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80057090	0x46890		mips26	instruction-word	0x80057fb4	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80057070	0x46870		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80057090	0x46890		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800570b8	0x468b8		mips26	instruction-word	0x80057aac	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800570c4	0x468c4		mips26	instruction-word	0x80057328	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800571e4	0x469e4		mips26	instruction-word	0x80057358	load		jal		range-filtered	candidate	investigation:relocs.tsv

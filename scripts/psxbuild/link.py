@@ -29,6 +29,7 @@ OVERLAY_STARTUP = 'NONE2.OBJ'
 # The retail OPEN/END text puts NONE2 immediately before the movie units.
 # GAME's startup placement is still unresolved and keeps the append order.
 OVERLAY_STARTUP_AFTER_UNITS = {'OPEN.EXE': 8, 'END.EXE': 6}
+MALLOC_OBJECT_SHA256 = '628e405fd0e3acfff2ce9d4a15d481f0aa36398c14e9eae0a82b7ff0a86a74c9'
 
 
 def file_hash(path: Path) -> str:
@@ -100,6 +101,16 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
         if report['startup']:
             tool_succeeded(root, 'BOUNDS.TXT', 'BOUNDS.OBJ', b'LNK\x02')
             report['boundaries']['object_sha256'] = file_hash(root / 'BOUNDS.OBJ')
+        if name in ('OPEN.EXE', 'END.EXE'):
+            source = Path(os.environ['PSYQ_MALLOC_OBJ'])
+            if file_hash(source) != MALLOC_OBJECT_SHA256:
+                raise ValueError(f'{source}: expected the retail-matching Sony MALLOC.OBJ')
+            shutil.copyfile(source, root / 'MALLOC.OBJ')
+            report['allocator'] = {
+                'file': 'MALLOC.OBJ', 'path': str(source),
+                'sha256': MALLOC_OBJECT_SHA256,
+                'provenance': 'hash-pinned Psy-Q Release 2.5 object; retail fixed text bytes exact',
+            }
         for library in LIBRARIES[name]:
             filename = library + '.LIB'
             source = Path(os.environ['PSYQ_LIB']) / filename
@@ -122,6 +133,7 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
         commands = [f'\torg ${load_address:08x}',
                     *object_inputs,
                     *(['\tinclude "BOUNDS.OBJ"'] if report['startup'] else []),
+                    *(['\tinclude "MALLOC.OBJ"'] if report.get('allocator') else []),
                     *(f'\tinclib "{library["file"]}"' for library in report['libraries']),
                     'bssdata group bss', '\tsection .sbss,bssdata',
                     *(['\tsection .bss_start,bssdata'] if report['startup'] else []),

@@ -72,6 +72,26 @@ let
           --stage-dir "$out"
       '';
 
+      # This Release 2.5 standalone allocator is absent from the active 3.0
+      # kit. Its 0x60c text and all 1172 fixed bytes match the linked allocator
+      # in OPEN and END; the original distribution version remains unproved.
+      psyq25Floppies = pkgs.fetchurl {
+        name = "psyq-release-2.5-floppies.rar";
+        url = "https://archive.org/download/ps1_sdks/Floppies.rar";
+        hash = "sha256-SaLzzryjqEIclPHeQ7nSDnN1CwQrCDHdKxcy0o+Ud4M=";
+      };
+      psyqMallocObj = pkgs.runCommand "kings-field-2-psyq-release-2.5-malloc" {
+        nativeBuildInputs = with pkgs; [ coreutils findutils unar ];
+      } ''
+        mkdir -p "$TMPDIR/floppies" "$out"
+        unar -quiet -force-overwrite -output-directory "$TMPDIR/floppies" ${psyq25Floppies}
+        malloc_obj="$(find "$TMPDIR/floppies" -type f -path '*/isa board/PSXLIB/LIB/MALLOC.OBJ' -print -quit)"
+        test -n "$malloc_obj"
+        test "$(sha256sum "$malloc_obj" | cut -d' ' -f1)" = \
+          "628e405fd0e3acfff2ce9d4a15d481f0aa36398c14e9eae0a82b7ff0a86a74c9"
+        cp "$malloc_obj" "$out/MALLOC.OBJ"
+      '';
+
       # Inherited from the King's Field (SLPS-00017) setup, where the Release
       # 2.5 ASPSX was software-key protected. This hash-pinned ASPSX 1.07
       # assembles all compiler output; its distinct provenance remains explicit
@@ -118,6 +138,6 @@ let
       };
 
 in {
-  inherit psyqSdk gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257 cc1psx260 cpppsx260
+  inherit psyqSdk psyqMallocObj gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257 cc1psx260 cpppsx260
     aspsxNative asmpsxNative;
 }

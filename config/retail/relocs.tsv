@@ -7833,27 +7833,27 @@ GAME.EXE	0x8003cc7c	0x2c47c		mips26	reachable-code	0x8005f480	load	rand	jal		con
 GAME.EXE	0x8003cc94	0x2c494	0x8003cc98	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:actor_group_effects_raw_pair
 GAME.EXE	0x8003cca4	0x2c4a4	0x8003cca8	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:actor_group_effects_raw_pair
 GAME.EXE	0x8003ccbc	0x2c4bc		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003ccd4	0x2c4d4		mips26	reachable-code	0x80040308	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003ccd4	0x2c4d4		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003ccdc	0x2c4dc		mips26	reachable-code	0x8003d060	load		j		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003ccf0	0x2c4f0		mips26	reachable-code	0x80038cc8	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003cd2c	0x2c52c		mips26	reachable-code	0x8003c3e0	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003ccf0	0x2c4f0		mips26	reachable-code	0x80038cc8	load	actor_pool_find_free	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cd2c	0x2c52c		mips26	reachable-code	0x8003c3e0	load	actor_compute_target_direction	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003cd60	0x2c560	0x8003cd64	mips_hi16_lo16	reachable-code	0x801716e0	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_group_effects_raw_pair
-GAME.EXE	0x8003cdac	0x2c5ac		mips26	reachable-code	0x80038e38	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003cdf8	0x2c5f8		mips26	reachable-code	0x80039758	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cdac	0x2c5ac		mips26	reachable-code	0x80038e38	load	actor_initialize_from_group	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cdf8	0x2c5f8		mips26	reachable-code	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003ce00	0x2c600		mips26	reachable-code	0x8003d060	load		j		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003ce14	0x2c614		mips26	reachable-code	0x80038cc8	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003ce50	0x2c650		mips26	reachable-code	0x8003c3e0	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003ce14	0x2c614		mips26	reachable-code	0x80038cc8	load	actor_pool_find_free	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003ce50	0x2c650		mips26	reachable-code	0x8003c3e0	load	actor_compute_target_direction	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003ce84	0x2c684	0x8003ce88	mips_hi16_lo16	reachable-code	0x801716e0	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_group_effects_raw_pair
-GAME.EXE	0x8003ced4	0x2c6d4		mips26	reachable-code	0x80038e38	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003cf20	0x2c720		mips26	reachable-code	0x80039758	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003ced4	0x2c6d4		mips26	reachable-code	0x80038e38	load	actor_initialize_from_group	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cf20	0x2c720		mips26	reachable-code	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003cf28	0x2c728		mips26	reachable-code	0x8003d060	load		j		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003cf68	0x2c768		mips26	reachable-code	0x80015468	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003cfa0	0x2c7a0		mips26	reachable-code	0x80015918	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cf68	0x2c768		mips26	reachable-code	0x80015468	load	fixed_vector2_length	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cfa0	0x2c7a0		mips26	reachable-code	0x80015918	load	trajectory_solve_time_angle	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003cfc0	0x2c7c0	0x8003cfc4	mips_hi16_lo16	reachable-code	0x801985b8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:actor_group_effects_raw_pair
-GAME.EXE	0x8003cfd0	0x2c7d0		mips26	reachable-code	0x80015ce0	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003cfd0	0x2c7d0		mips26	reachable-code	0x80015ce0	load	vector_add_scaled_delta	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003cfd8	0x2c7d8		mips26	reachable-code	0x8003cf54	load		j		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003d00c	0x2c80c		mips26	reachable-code	0x8003c3e0	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
-GAME.EXE	0x8003d03c	0x2c83c		mips26	reachable-code	0x80040308	load		jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003d00c	0x2c80c		mips26	reachable-code	0x8003c3e0	load	actor_compute_target_direction	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
+GAME.EXE	0x8003d03c	0x2c83c		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:actor_group_effects_raw_opcode
 GAME.EXE	0x8003d0a8	0x2c8a8		mips26	reachable-code	0x8003d0bc	load		j		control-flow	reviewed	manual:actor_spatial_sound_raw_direct
 GAME.EXE	0x8003d0bc	0x2c8bc		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:actor_spatial_sound_raw_direct
 GAME.EXE	0x8003d118	0x2c918		mips26	reachable-code	0x8003d084	load	actor_sound_note_offset	jal		control-flow	reviewed	manual:actor_spatial_sound_raw_direct
@@ -8185,8 +8185,8 @@ GAME.EXE	0x8003f7ec	0x2efec	0x8003f7f0	mips_hi16_lo16	reachable-code	0x801716e0	
 GAME.EXE	0x8003f82c	0x2f02c		mips26	instruction-word	0x8003f838	load		j		range-filtered	reviewed	manual:actor_fixup_group_targets
 GAME.EXE	0x8003f88c	0x2f08c	0x8003f890	mips_hi16_lo16	reachable-code	0x8016b600	bss		lui+addiu	s3	paired-reviewed	reviewed	manual:actor_record_load
 GAME.EXE	0x8003f958	0x2f158	0x8003f95c	mips_hi16_lo16	reachable-code	0x801716e0	bss		lui+addiu	v0	paired-reviewed	reviewed	manual:actor_record_load
-GAME.EXE	0x8003f960	0x2f160		mips26	reachable-code	0x80038dc4	load		jal		control-flow	reviewed	manual:actor_record_load
-GAME.EXE	0x8003f968	0x2f168		mips26	reachable-code	0x80038d04	load		jal		control-flow	reviewed	manual:actor_record_load
+GAME.EXE	0x8003f960	0x2f160		mips26	reachable-code	0x80038dc4	load	actor_copy_group_defaults	jal		control-flow	reviewed	manual:actor_record_load
+GAME.EXE	0x8003f968	0x2f168		mips26	reachable-code	0x80038d04	load	actor_set_home_position	jal		control-flow	reviewed	manual:actor_record_load
 GAME.EXE	0x8003f9c8	0x2f1c8		mips26	reachable-code	0x8003f9e0	load		j		control-flow	reviewed	manual:actor_record_load
 GAME.EXE	0x8003f9d4	0x2f1d4		mips26	reachable-code	0x8003f9e0	load		j		control-flow	reviewed	manual:actor_record_load
 GAME.EXE	0x8003fa50	0x2f250		mips26	instruction-word	0x80013f84	load		jal		range-filtered	reviewed	manual:effect_spatial_sound

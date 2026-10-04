@@ -5663,9 +5663,9 @@ GAME.EXE	0x80029780	0x18f80	0x80029784	mips_hi16_lo16	reachable-code	0x801984e6	
 GAME.EXE	0x80029798	0x18f98	0x8002979c	mips_hi16_lo16	reachable-code	0x801984e6	bss		lui+lhu		paired-reviewed	reviewed	manual:player
 GAME.EXE	0x800297a0	0x18fa0		mips26	reachable-code	0x800297ac	load		j		control-flow	reviewed	manual:player
 GAME.EXE	0x800297d4	0x18fd4	0x800297d8	mips_hi16_lo16	reachable-code	0x80198544	bss		lui+lw		paired-reviewed	reviewed	manual:player_equipment_hp_effect
-GAME.EXE	0x80029800	0x19000		mips26	reachable-code	0x800296e8	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80029800	0x19000		mips26	reachable-code	0x800296e8	load	player_adjust_hp	jal		control-flow	reviewed	manual:player_apply_equipment_hp_tick retail direct call with positive delay-slot delta
 GAME.EXE	0x80029818	0x19018	0x8002981c	mips_hi16_lo16	reachable-code	0x80198544	bss		lui+lw		paired-reviewed	reviewed	manual:player_equipment_hp_effect
-GAME.EXE	0x80029844	0x19044		mips26	reachable-code	0x800296e8	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80029844	0x19044		mips26	reachable-code	0x800296e8	load	player_adjust_hp	jal		control-flow	reviewed	manual:player_apply_equipment_hp_tick retail direct call with negative delay-slot delta
 GAME.EXE	0x80029874	0x19074	0x80029878	mips_hi16_lo16	instruction-word	0x801749a0	bss	actor_state	lui+sb	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029880	0x19080	0x80029884	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x8002988c	0x1908c	0x80029890	mips_hi16_lo16	instruction-word	0x801985b0	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner

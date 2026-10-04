@@ -282,12 +282,18 @@ enum { KF_MAP_WORLD_GRID_SIDE = 80 };
  * clears the complete BSS region, whose later storage remains partly opaque. */
 typedef struct KfBss801c7540 {
     KfMapOccupancyCell map_cells[KF_MAP_WORLD_GRID_SIDE][KF_MAP_WORLD_GRID_SIDE];
-    u8 unknown_fa00[0x1e44];
+    u8 unknown_fa00[0x600];
+    u8 shape_bank[0x1800];
+    u8 unknown_11800[0x44];
 } KfBss801c7540;
 
 typedef char kf_map_cells_loaded_size[
     sizeof(((KfBss801c7540 *)0)->map_cells) == 0xfa00 ? 1 : -1];
 typedef char kf_bss_801c7540_size[sizeof(KfBss801c7540) == 0x11844 ? 1 : -1];
+typedef char kf_collision_shape_bank_offset[
+    (u32)&((KfBss801c7540 *)0)->shape_bank == 0x10000 ? 1 : -1];
+typedef char kf_collision_shape_bank_size[
+    sizeof(((KfBss801c7540 *)0)->shape_bank) == 0x1800 ? 1 : -1];
 enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
 enum {

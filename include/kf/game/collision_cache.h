@@ -38,10 +38,9 @@ enum {
     KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80
 };
 
-/* Phase-one resource loading copies 0x600 words to this interior BSS range.
- * The variable-length shape records within it remain untyped. */
-#define KF_COLLISION_SHAPE_BANK \
-    ((u8 *)&bss_801c7540 + 0x10000)
+/* Phase-one resource loading copies 0x600 words into this bank. The
+ * variable-length shape records within it remain untyped. */
+#define KF_COLLISION_SHAPE_BANK bss_801c7540.shape_bank
 #define KF_COLLISION_SHAPE_BANK_BYTES 0x1800
 
 typedef struct KfCollisionShapeOffsetTable {

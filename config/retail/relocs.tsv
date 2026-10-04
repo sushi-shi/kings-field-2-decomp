@@ -13381,15 +13381,15 @@ OPEN.EXE	0x8001a5ec	0x9dec		mips26	instruction-word	0x8001b70c	load		jal		range-
 OPEN.EXE	0x8001a60c	0x9e0c		mips26	instruction-word	0x8001b294	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a62c	0x9e2c		mips26	reachable-code	0x8001b344	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a64c	0x9e4c		mips26	reachable-code	0x8001b930	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001a664	0x9e64	0x8001a668	mips_hi16_lo16	instruction-word	0x8003dd24	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001a66c	0x9e6c	0x8001a670	mips_hi16_lo16	instruction-word	0x8003dd24	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001a68c	0x9e8c	0x8001a690	mips_hi16_lo16	instruction-word	0x8003cedc	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a664	0x9e64	0x8001a668	mips_hi16_lo16	instruction-word	0x8003dd24	load	CD_debug	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a66c	0x9e6c	0x8001a670	mips_hi16_lo16	instruction-word	0x8003dd24	load	CD_debug	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a68c	0x9e8c	0x8001a690	mips_hi16_lo16	instruction-word	0x8003cedc	load	CD_comstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a69c	0x9e9c		mips26	instruction-word	0x8001a6ac	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a6a4	0x9ea4	0x8001a6a8	mips_hi16_lo16	instruction-word	0x8003dd1c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001a6c4	0x9ec4	0x8001a6c8	mips_hi16_lo16	instruction-word	0x8003cf50	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a6c4	0x9ec4	0x8001a6c8	mips_hi16_lo16	instruction-word	0x8003cf50	load	CD_intstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a6d4	0x9ed4		mips26	instruction-word	0x8001a6e4	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a6dc	0x9edc	0x8001a6e0	mips_hi16_lo16	instruction-word	0x8003dd1c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001a770	0x9f70	0x8001a774	mips_hi16_lo16	reachable-code	0x8003ce5c	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001a770	0x9f70	0x8001a774	mips_hi16_lo16	reachable-code	0x8003ce5c	load	cd_command_requires_setloc	lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a788	0x9f88	0x8001a78c	mips_hi16_lo16	reachable-code	0x8003dd28	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a7a8	0x9fa8		mips26	reachable-code	0x8001b3d0	load		jal		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001a7b0	0x9fb0		mips26	reachable-code	0x8001a818	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -15998,15 +15998,15 @@ END.EXE	0x80017850	0x7050		mips26	instruction-word	0x80018970	load		jal		range-f
 END.EXE	0x80017870	0x7070		mips26	instruction-word	0x800184f8	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x80017890	0x7090		mips26	reachable-code	0x800185a8	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800178b0	0x70b0		mips26	reachable-code	0x80018b94	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x800178c8	0x70c8	0x800178cc	mips_hi16_lo16	instruction-word	0x8003ab44	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x800178d0	0x70d0	0x800178d4	mips_hi16_lo16	instruction-word	0x8003ab44	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x800178f0	0x70f0	0x800178f4	mips_hi16_lo16	instruction-word	0x80039d88	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x800178c8	0x70c8	0x800178cc	mips_hi16_lo16	instruction-word	0x8003ab44	load	CD_debug	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x800178d0	0x70d0	0x800178d4	mips_hi16_lo16	instruction-word	0x8003ab44	load	CD_debug	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x800178f0	0x70f0	0x800178f4	mips_hi16_lo16	instruction-word	0x80039d88	load	CD_comstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x80017900	0x7100		mips26	instruction-word	0x80017910	load		j		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x80017908	0x7108	0x8001790c	mips_hi16_lo16	instruction-word	0x8003ab3c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x80017928	0x7128	0x8001792c	mips_hi16_lo16	instruction-word	0x80039dfc	load		lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x80017928	0x7128	0x8001792c	mips_hi16_lo16	instruction-word	0x80039dfc	load	CD_intstr	lui+addiu	at	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x80017938	0x7138		mips26	instruction-word	0x80017948	load		j		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x80017940	0x7140	0x80017944	mips_hi16_lo16	instruction-word	0x8003ab3c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x800179d4	0x71d4	0x800179d8	mips_hi16_lo16	reachable-code	0x80039d08	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x800179d4	0x71d4	0x800179d8	mips_hi16_lo16	reachable-code	0x80039d08	load	cd_command_requires_setloc	lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x800179ec	0x71ec	0x800179f0	mips_hi16_lo16	reachable-code	0x8003ab48	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x80017a0c	0x720c		mips26	reachable-code	0x80018634	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80017a14	0x7214		mips26	reachable-code	0x80017a7c	load		j		control-flow	candidate	investigation:relocs.tsv

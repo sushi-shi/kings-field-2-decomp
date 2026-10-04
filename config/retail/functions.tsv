@@ -697,6 +697,7 @@ GAME.EXE	0x800544a8	0x43ca8	0x428	0x428	1	function	ghidra-analysis			Ghidra-12.0
 GAME.EXE	0x800548d0	0x440d0	0x124	0x124	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80055470	0x44c70	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80055544	0x44d44	0xb0	0xb0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80055714	0x44f14	0x390	0x390	1	function	sdk-object-xdef	InitSoundSep		psyq-sdk30:LIBSND.LIB/SEPINIT.OBJ	archive XDEF .text+0x0; exact 0x390-byte section; sole retail return at +0x388 with delay slot at +0x38c
 GAME.EXE	0x80055aa4	0x452a4	0x348	0x348	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80055dec	0x455ec	0x108	0x108	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80055ef4	0x456f4	0x298	0x298	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1402,6 +1403,7 @@ OPEN.EXE	0x80021da0	0x115a0	0x428	0x428	1	function	ghidra-analysis			Ghidra-12.0
 OPEN.EXE	0x80022d68	0x12568	0xd4	0xd4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80022e3c	0x1263c	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80022f0c	0x1270c	0xb0	0xb0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x800230dc	0x128dc	0x390	0x390	1	function	sdk-object-xdef	InitSoundSep		psyq-sdk30:LIBSND.LIB/SEPINIT.OBJ	archive XDEF .text+0x0; exact 0x390-byte section; sole retail return at +0x388 with delay slot at +0x38c
 OPEN.EXE	0x8002346c	0x12c6c	0x348	0x348	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800237b4	0x12fb4	0x108	0x108	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800238bc	0x130bc	0x298	0x298	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1798,6 +1800,7 @@ END.EXE	0x8001c288	0xba88	0x434	0x434	1	function	ghidra-analysis			Ghidra-12.0.4
 END.EXE	0x8001c6bc	0xbebc	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001c714	0xbf14	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001c7e4	0xbfe4	0xb0	0xb0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001c9b4	0xc1b4	0x390	0x390	1	function	sdk-object-xdef	InitSoundSep		psyq-sdk30:LIBSND.LIB/SEPINIT.OBJ	archive XDEF .text+0x0; exact 0x390-byte section; sole retail return at +0x388 with delay slot at +0x38c
 END.EXE	0x8001cd44	0xc544	0x348	0x348	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001d08c	0xc88c	0x108	0x108	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001d194	0xc994	0x298	0x298	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

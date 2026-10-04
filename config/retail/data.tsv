@@ -417,7 +417,7 @@ GAME.EXE	0x800553cf	0x44bcf	0x6	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x800553d5	0x44bd5	0xa	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800553df	0x44bdf	0x6	string	byte-pattern		ascii	investigation:string-census	escaped text: <@0!$!
 GAME.EXE	0x800553e5	0x44be5	0x8b	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800555f4	0x44df4	0x4b0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x800555f4	0x44df4	0x120	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800582e0	0x47ae0	0xfc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80058590	0x47d90	0xbc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005938c	0x48b8c	0x5c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1248,7 +1248,7 @@ OPEN.EXE	0x80022cd7	0x124d7	0x6	string	byte-pattern		ascii	investigation:string-
 OPEN.EXE	0x80022cdd	0x124dd	0xa	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80022ce7	0x124e7	0x7	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <萎B限$
 OPEN.EXE	0x80022cee	0x124ee	0x7a	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80022fbc	0x127bc	0x4b0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x80022fbc	0x127bc	0x120	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80025ca8	0x154a8	0xfc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80025f58	0x15758	0xbc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8002611c	0x1591c	0x238	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -1779,7 +1779,7 @@ END.EXE	0x8001c0ac	0xb8ac	0x3	unclassified	coverage-gap			payload-complement	may
 END.EXE	0x8001c0af	0xb8af	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: <t(B
 END.EXE	0x8001c0b3	0xb8b3	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001c228	0xba28	0x60	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001c894	0xc094	0x4b0	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8001c894	0xc094	0x120	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001fbd4	0xf3d4	0xd	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8001fbe1	0xf3e1	0x4	string	byte-pattern		ascii	investigation:string-census	"escaped text: ""!$!"
 END.EXE	0x8001fbe5	0xf3e5	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

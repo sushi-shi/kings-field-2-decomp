@@ -103,7 +103,7 @@ KfAnimKeyframe	0x06	0x02	morph_count	u16	supported	asm;animation_select_keyframe
 KfAssetHeader	0x00	0x04	byte_size	u32	supported	asm;asset_registry_load_tmd_archive	archive walker advances by record length
 KfAssetHeader	0x04	0x04	animation_present	u32	candidate	asm;animation_sample_vertex	zero selects TMD base vertex path; nonzero selects animation keyframe path
 KfAssetHeader	0x08	0x04	tmd_data_offset	u32	supported	game headers;asm;xrefs	member used by reconstructed code
-KfAssetHeader	0x0c	0x04	unknown_0c	u32	candidate	asm;animation_sample_vertex	word offset to a table of sparse-animation data offsets; owner meaning remains provisional
+KfAssetHeader	0x0c	0x04	morph_offsets_offset	u32	supported	asm;animation_sample_vertex;include/kf/game/asset.h;src/game/display.c	byte offset to a table of morph-data offsets indexed by animation keyframe records
 KfAssetHeader	0x10	0x04	clip_table_offset	u32	supported	asm;animation_select_keyframe;KF1 asset header	byte offset to animation clip offset table
 KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer

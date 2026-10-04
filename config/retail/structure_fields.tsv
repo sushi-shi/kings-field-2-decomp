@@ -106,7 +106,9 @@ KfAssetHeader	0x10	0x04	clip_table_offset	u32	supported	asm;animation_select_key
 KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer
 KfBss801c7540	0x00	0xfa00	map_cells	KfMapOccupancyCell[80][80]	supported	GAME 0x8001694c-0x8001695c copies 0x3e80 words;GAME 0x8002a988 clips X/Z to 80 cells;GAME 0x80016b2c scrub visits 0x1900 cells	80-by-80 cells, each 10 bytes, loaded from the map resource
-KfBss801c7540	0xfa00	0x1e44	unknown_fa00	u8[7748]	opaque	GAME 0x80016960-0x8001697c copies a 0x1800-byte shape bank at +0x10000;collision cache is at +0x11800	startup-cleared tail; shape-bank and collision-cache views remain separately typed
+KfBss801c7540	0xfa00	0x600	unknown_fa00	u8[1536]	opaque	game/player.h;GAME 0x80016960 shape-bank copy begins at +0x10000	unclassified gap before shape bank; original allocation ownership WIP
+KfBss801c7540	0x10000	0x1800	shape_bank	u8[6144]	supported	game/player.h;GAME 0x80016960-0x8001697c copies 0x600 words;GAME 0x8002ab68 shape-record access	loaded variable-length shape bank; original allocation ownership WIP
+KfBss801c7540	0x11800	0x44	unknown_11800	u8[68]	opaque	game/player.h;game/collision_cache.h;GAME 0x8002aa8c and 0x8002ab24 cache xrefs	KfCollisionCache is an interior typed view; original allocation ownership WIP
 KfCardMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_card_load_browser;menu_card_load_slot_browser;menu_card_save_browser	shared menu list prefix
 KfCardMenuList	0x24	0x04	rows	KfCardSlotGlyphRow *	supported	game/menu.h;menu_card_build_slot_rows;menu_card_load_browser	pointer to 20-byte card glyph rows
 KfCardMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;menu_card_load_browser	unresolved bytes between card row and value pointers

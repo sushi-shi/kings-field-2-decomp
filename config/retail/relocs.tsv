@@ -1981,7 +1981,7 @@ GAME.EXE	0x80013794	0x2f94		mips26	reachable-code	0x80015d58	load	resource_initi
 GAME.EXE	0x8001379c	0x2f9c		mips26	reachable-code	0x800482f8	load	event_state_initialize	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800137a4	0x2fa4		mips26	reachable-code	0x80022468	load	memory_card_initialize	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800137ac	0x2fac		mips26	reachable-code	0x8002bc18	load	reset_collision_rows_and_overlay	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x800137b4	0x2fb4	0x800137b8	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x800137b4	0x2fb4	0x800137b8	mips_hi16_lo16	reachable-code	0x801921a8	bss	game_graphics_runtime	lui+sw		paired-reviewed	reviewed	manual:game_main_loop collision_rotation_dirty at game_graphics_runtime+0x15068
 GAME.EXE	0x800137bc	0x2fbc		mips26	reachable-code	0x8002bd3c	load	refresh_collision_row_rotations	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800137c8	0x2fc8		mips26	reachable-code	0x80051b60	load	SsSetMVol	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800137d0	0x2fd0		mips26	reachable-code	0x8001b554	load	menu_card_browser	jal		control-flow	reviewed	manual:decoded game-main card-load browser call

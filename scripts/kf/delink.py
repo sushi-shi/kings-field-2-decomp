@@ -665,6 +665,22 @@ def _module_function_address_relocations(
     return result
 
 
+def _module_function_data_relocations(
+    blob: bytearray,
+    relocations: list[MipsRelocation],
+    function_offsets: dict[str, int],
+) -> list[MipsRelocation]:
+    """Rebase same-unit function pointers to the joined .text section."""
+    result = list(relocations)
+    for index, relocation in enumerate(result):
+        if relocation.kind != "R_MIPS_32" or relocation.symbol not in function_offsets:
+            continue
+        _put_word(blob, relocation.offset,
+                  _get_word(blob, relocation.offset) + function_offsets[relocation.symbol])
+        result[index] = MipsRelocation(relocation.offset, relocation.kind, SECTION_SYMBOL)
+    return result
+
+
 def _module_static_bss_relocations(
     blob: bytearray,
     relocations: list[MipsRelocation],
@@ -875,6 +891,16 @@ def _module_object(
     sdata, sdata_symbols, sdata_relocations, _, _ = _module_data(
         module, data_blobs or {}, load_padding, section=".sdata"
     )
+    data_blob = bytearray(data)
+    data_relocations = _module_function_data_relocations(
+        data_blob, data_relocations, function_offsets
+    )
+    data = bytes(data_blob)
+    sdata_blob = bytearray(sdata)
+    sdata_relocations = _module_function_data_relocations(
+        sdata_blob, sdata_relocations, function_offsets
+    )
+    sdata = bytes(sdata_blob)
     _, _, _, sbss_size, sbss_symbols = _module_data(
         module, {}, section=".sbss"
     )

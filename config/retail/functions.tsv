@@ -879,7 +879,10 @@ GAME.EXE	0x8005e528	0x4dd28	0x24	0x24	1	function	manual-retail-disasm	DecDCTinCa
 GAME.EXE	0x8005e54c	0x4dd4c	0x24	0x24	1	function	manual-retail-disasm	DecDCToutCallback		asm;cfg;Psy-Q 3.0 LIBETC CALLBACK.OBJ exact text section and XDEF	complete callback wrapper through jr ra delay slot
 GAME.EXE	0x8005e570	0x4dd70	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e594	0x4dd94	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005e5b8	0x4ddb8	0x24	0x24	1	function	sdk-object-xdef	PioDataCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0x90 to next XDEF +0xb4; retail entry and return delay slot in exact 0x120-byte SDK section
+GAME.EXE	0x8005e5dc	0x4dddc	0x24	0x24	1	function	sdk-object-xdef	CdCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xb4 to next XDEF +0xd8; retail entry and return delay slot in exact 0x120-byte SDK section
 GAME.EXE	0x8005e600	0x4de00	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005e624	0x4de24	0x24	0x24	1	function	sdk-object-xdef	PioCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xfc to object end +0x120; retail entry and return delay slot in exact 0x120-byte SDK section
 GAME.EXE	0x8005e648	0x4de48	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e6c4	0x4dec4	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005e6f8	0x4def8	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100
@@ -1236,10 +1239,14 @@ OPEN.EXE	0x8001d6d4	0xced4	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x8001d704	0xcf04	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d774	0xcf74	0xc	0xc	1	function	ghidra-analysis	strcmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d784	0xcf84	0xc	0xc	1	function	ghidra-analysis	strncmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001d794	0xcf94	0x24	0x24	1	function	sdk-object-xdef	DecDCTinCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0x0 to next XDEF +0x24; retail entry and return delay slot in exact 0x120-byte SDK section
 OPEN.EXE	0x8001d7b8	0xcfb8	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d7dc	0xcfdc	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d800	0xd000	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001d824	0xd024	0x24	0x24	1	function	sdk-object-xdef	PioDataCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0x90 to next XDEF +0xb4; retail entry and return delay slot in exact 0x120-byte SDK section
+OPEN.EXE	0x8001d848	0xd048	0x24	0x24	1	function	sdk-object-xdef	CdCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xb4 to next XDEF +0xd8; retail entry and return delay slot in exact 0x120-byte SDK section
 OPEN.EXE	0x8001d86c	0xd06c	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001d890	0xd090	0x24	0x24	1	function	sdk-object-xdef	PioCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xfc to object end +0x120; retail entry and return delay slot in exact 0x120-byte SDK section
 OPEN.EXE	0x8001d8b4	0xd0b4	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d930	0xd130	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001d964	0xd164	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100
@@ -1615,10 +1622,14 @@ END.EXE	0x8001a938	0xa138	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x8001a968	0xa168	0x70	0x70	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001a9d8	0xa1d8	0xc	0xc	1	function	ghidra-analysis	strcmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001a9e8	0xa1e8	0xc	0xc	1	function	ghidra-analysis	strncmp		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001a9f8	0xa1f8	0x24	0x24	1	function	sdk-object-xdef	DecDCTinCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0x0 to next XDEF +0x24; retail entry and return delay slot in exact 0x120-byte SDK section
 END.EXE	0x8001aa1c	0xa21c	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001aa40	0xa240	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001aa64	0xa264	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001aa88	0xa288	0x24	0x24	1	function	sdk-object-xdef	PioDataCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0x90 to next XDEF +0xb4; retail entry and return delay slot in exact 0x120-byte SDK section
+END.EXE	0x8001aaac	0xa2ac	0x24	0x24	1	function	sdk-object-xdef	CdCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xb4 to next XDEF +0xd8; retail entry and return delay slot in exact 0x120-byte SDK section
 END.EXE	0x8001aad0	0xa2d0	0x24	0x24	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001aaf4	0xa2f4	0x24	0x24	1	function	sdk-object-xdef	PioCallback		psyq-sdk30:LIBETC.LIB/CALLBACK.OBJ	archive XDEF .text+0xfc to object end +0x120; retail entry and return delay slot in exact 0x120-byte SDK section
 END.EXE	0x8001ab18	0xa318	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ab94	0xa394	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001abc8	0xa3c8	0x50	0x50	1	function	sdk-object-label	intVBLNK		psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ	archive local symbol .text+0xb0; retail callback dispatch and return delay slot; next local symbol at +0x100

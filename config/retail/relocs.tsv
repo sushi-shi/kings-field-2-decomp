@@ -2124,10 +2124,10 @@ GAME.EXE	0x80014574	0x3d74		mips26	reachable-code	0x80017bf0	load	cd_location_ad
 GAME.EXE	0x80014584	0x3d84		mips26	reachable-code	0x8004a1e4	load	CdControl	jal		control-flow	reviewed	manual:raw MIPS26 direct call
 GAME.EXE	0x8001458c	0x3d8c		mips26	reachable-code	0x800584d4	load	SsVabTransCompleted	jal		control-flow	reviewed	manual:raw MIPS26 direct call
 GAME.EXE	0x80014594	0x3d94		mips26	reachable-code	0x800145d8	load		j		control-flow	reviewed	manual:raw MIPS26 in-body jump
-GAME.EXE	0x800145ac	0x3dac		mips26	reachable-code	0x80017864	load		jal		control-flow	reviewed	manual:raw MIPS26 direct call
-GAME.EXE	0x800145b4	0x3db4		mips26	reachable-code	0x800584d4	load		jal		control-flow	reviewed	manual:raw MIPS26 direct call
+GAME.EXE	0x800145ac	0x3dac		mips26	reachable-code	0x80017864	load	cd_request_advance	jal		control-flow	reviewed	manual:raw MIPS26 direct call
+GAME.EXE	0x800145b4	0x3db4		mips26	reachable-code	0x800584d4	load	SsVabTransCompleted	jal		control-flow	reviewed	manual:raw MIPS26 direct call
 GAME.EXE	0x800145c8	0x3dc8		mips26	reachable-code	0x800145d8	load		j		control-flow	reviewed	manual:raw MIPS26 in-body jump
-GAME.EXE	0x800145d0	0x3dd0		mips26	reachable-code	0x8005f390	load		jal		control-flow	reviewed	manual:raw MIPS26 direct call
+GAME.EXE	0x800145d0	0x3dd0		mips26	reachable-code	0x8005f390	load	ExitCriticalSection	jal		control-flow	reviewed	manual:raw MIPS26 direct call
 GAME.EXE	0x80014608	0x3e08	0x8001460c	mips_hi16_lo16	reachable-code	0x80198494	bss		lui+addiu	s1	paired-reviewed	reviewed	manual:audio_vab_stream
 GAME.EXE	0x80014628	0x3e28		mips26	reachable-code	0x800146b8	load		j		control-flow	reviewed	manual:raw audio VAB slot return edge
 GAME.EXE	0x80014638	0x3e38	0x8001463c	mips_hi16_lo16	reachable-code	0x80198494	bss		lui+addiu	s1	paired-reviewed	reviewed	manual:audio_vab_stream

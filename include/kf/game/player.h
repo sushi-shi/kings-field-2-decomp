@@ -435,7 +435,7 @@ typedef char kf_player_movement_speed_adjustment_decay_latch_offset[
     (u32)&((KfPlayerState *)0)->movement_speed_adjustment_decay_latch == 0x0d ? 1 : -1];
 typedef char kf_player_lifecycle_refresh_offset[
     (u32)&((KfPlayerState *)0)->force_actor_lifecycle_refresh == 0x0a ? 1 : -1];
-typedef char kf_player_unknown_97_offset[
+typedef char kf_player_primary_magic_shortcut_id_offset[
     (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
     (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];

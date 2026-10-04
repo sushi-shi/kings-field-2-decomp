@@ -8430,7 +8430,7 @@ GAME.EXE	0x80042238	0x31a38		mips26	reachable-code	0x8005f480	load	rand	jal		con
 GAME.EXE	0x80042264	0x31a64		mips26	reachable-code	0x80042270	load		j		control-flow	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x800422c4	0x31ac4	0x800422c8	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s0	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042300	0x31b00		mips26	reachable-code	0x8003fa68	load	effect_probe_collision_by_type	jal		control-flow	reviewed	manual:effect_collision_motion
-GAME.EXE	0x8004231c	0x31b1c	0x80042320	mips_hi16_lo16	reachable-code	0x801c7068	bss		lui+addiu	s3	paired-reviewed	reviewed	manual:effect_collision_motion
+GAME.EXE	0x8004231c	0x31b1c	0x80042320	mips_hi16_lo16	reachable-code	0x801c7068	bss	effect_collision_motion_step	lui+addiu	s3	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042340	0x31b40	0x80042344	mips_hi16_lo16	reachable-code	0x801c706a	bss		lui+sh		paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042358	0x31b58	0x8004235c	mips_hi16_lo16	reachable-code	0x801c706c	bss		lui+sh		paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042394	0x31b94		mips26	reachable-code	0x8003fa68	load	effect_probe_collision_by_type	jal		control-flow	reviewed	manual:effect_collision_motion
@@ -8438,7 +8438,7 @@ GAME.EXE	0x800423bc	0x31bbc	0x800423c0	mips_hi16_lo16	reachable-code	0x801c706a	
 GAME.EXE	0x800423cc	0x31bcc	0x800423d0	mips_hi16_lo16	reachable-code	0x801c706c	bss		lui+sh		paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x800423d4	0x31bd4	0x800423d8	mips_hi16_lo16	reachable-code	0x801d8d4a	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042424	0x31c24	0x80042428	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	a2	paired-reviewed	reviewed	manual:effect_collision_motion
-GAME.EXE	0x80042440	0x31c40	0x80042444	mips_hi16_lo16	reachable-code	0x801c7068	bss		lui+lh	v1	paired-reviewed	reviewed	manual:effect_collision_motion
+GAME.EXE	0x80042440	0x31c40	0x80042444	mips_hi16_lo16	reachable-code	0x801c7068	bss	effect_collision_motion_step	lui+lh	v1	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042458	0x31c58	0x8004245c	mips_hi16_lo16	reachable-code	0x801c706a	bss		lui+lh	v1	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042470	0x31c70	0x80042474	mips_hi16_lo16	reachable-code	0x801c706c	bss		lui+lh	v1	paired-reviewed	reviewed	manual:effect_collision_motion
 GAME.EXE	0x80042484	0x31c84		mips26	reachable-code	0x800424bc	load		j		control-flow	reviewed	manual:effect_collision_motion

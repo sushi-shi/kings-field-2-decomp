@@ -4136,10 +4136,10 @@ GAME.EXE	0x80021e08	0x11608	0x80021e0c	mips_hi16_lo16	reachable-code	0x8006dbe8	
 GAME.EXE	0x80021e10	0x11610	0x80021e14	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e34	0x11634	0x80021e38	mips_hi16_lo16	reachable-code	0x8006dbf4	bss	menu_saved_primitive_buffers	lui+addiu	a2	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021e3c	0x1163c	0x80021e40	mips_hi16_lo16	reachable-code	0x8017d154	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021e64	0x11664	0x80021e68	mips_hi16_lo16	reachable-code	0x8018d180	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021e6c	0x1166c	0x80021e70	mips_hi16_lo16	reachable-code	0x8018d17f	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021e74	0x11674	0x80021e78	mips_hi16_lo16	reachable-code	0x8018d1dc	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021e7c	0x1167c	0x80021e80	mips_hi16_lo16	reachable-code	0x8018d1db	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80021e64	0x11664	0x80021e68	mips_hi16_lo16	reachable-code	0x8018d180	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80021e6c	0x1166c	0x80021e70	mips_hi16_lo16	reachable-code	0x8018d17f	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80021e74	0x11674	0x80021e78	mips_hi16_lo16	reachable-code	0x8018d1dc	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80021e7c	0x1167c	0x80021e80	mips_hi16_lo16	reachable-code	0x8018d1db	bss	game_graphics_runtime	lui+sb		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e90	0x11690	0x80021e94	mips_hi16_lo16	reachable-code	0x80198598	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:menu display reads player music flag
 GAME.EXE	0x80021e98	0x11698	0x80021e9c	mips_hi16_lo16	reachable-code	0x8006d9e8	bss	menu_saved_music_enabled	lui+lbu	v0	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021eb4	0x116b4		mips26	reachable-code	0x80013b7c	load	audio_stop_sequence	jal		control-flow	reviewed	manual:menu display restore decoded reference

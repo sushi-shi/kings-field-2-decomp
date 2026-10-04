@@ -4355,16 +4355,16 @@ GAME.EXE	0x8002335c	0x12b5c		mips26	reachable-code	0x8005f380	load	TestEvent	jal
 GAME.EXE	0x80023364	0x12b64	0x80023368	mips_hi16_lo16	reachable-code	0x8006da30	load	memory_card_error_event	lui+lw	a0	paired-reviewed	reviewed	manual:memory_card
 GAME.EXE	0x8002336c	0x12b6c		mips26	reachable-code	0x8005f380	load	TestEvent	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x8002338c	0x12b8c	0x80023390	mips_hi16_lo16	reachable-code	0x801d8d58	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:player_update_collision_bounds cache lower_bound +0x11818
-GAME.EXE	0x80023394	0x12b94	0x80023398	mips_hi16_lo16	reachable-code	0x80198604	bss		lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x8002339c	0x12b9c	0x800233a0	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x800233a4	0x12ba4	0x800233a8	mips_hi16_lo16	reachable-code	0x80198608	bss		lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x800233bc	0x12bbc	0x800233c0	mips_hi16_lo16	reachable-code	0x801985f0	bss		lui+sw		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x80023394	0x12b94	0x80023398	mips_hi16_lo16	reachable-code	0x80198604	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x8002339c	0x12b9c	0x800233a0	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x800233a4	0x12ba4	0x800233a8	mips_hi16_lo16	reachable-code	0x80198608	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x800233bc	0x12bbc	0x800233c0	mips_hi16_lo16	reachable-code	0x801985f0	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_collision_bounds
 GAME.EXE	0x800233d0	0x12bd0		mips26	reachable-code	0x80029570	load	player_death_begin	jal		control-flow	reviewed	manual:player_collision_bounds
 GAME.EXE	0x800233d8	0x12bd8	0x800233dc	mips_hi16_lo16	reachable-code	0x801d8d5c	bss	bss_801c7540	lui+lw		paired-reviewed	reviewed	manual:player_update_collision_bounds cache upper_bound +0x1181c
-GAME.EXE	0x800233e0	0x12be0	0x800233e4	mips_hi16_lo16	reachable-code	0x80198604	bss		lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x800233e8	0x12be8	0x800233ec	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x800233f0	0x12bf0	0x800233f4	mips_hi16_lo16	reachable-code	0x80198608	bss		lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
-GAME.EXE	0x80023408	0x12c08	0x8002340c	mips_hi16_lo16	reachable-code	0x801985f4	bss		lui+sw		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x800233e0	0x12be0	0x800233e4	mips_hi16_lo16	reachable-code	0x80198604	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x800233e8	0x12be8	0x800233ec	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x800233f0	0x12bf0	0x800233f4	mips_hi16_lo16	reachable-code	0x80198608	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_collision_bounds
+GAME.EXE	0x80023408	0x12c08	0x8002340c	mips_hi16_lo16	reachable-code	0x801985f4	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_collision_bounds
 GAME.EXE	0x80023418	0x12c18		mips26	reachable-code	0x80029570	load	player_death_begin	jal		control-flow	reviewed	manual:player_collision_bounds
 GAME.EXE	0x80023458	0x12c58	0x8002345c	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:player_distance_margin
 GAME.EXE	0x8002346c	0x12c6c		mips26	reachable-code	0x800155a4	load	vector_distance_to_point	jal		control-flow	reviewed	manual:player_distance_margin

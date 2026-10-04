@@ -960,19 +960,19 @@ GAME.EXE	0x8005f8c0	0x4f0c0	0x3c	0x3c	1	function	archive-xdef	LoadImage		Psy-Q 3
 GAME.EXE	0x8005f8fc	0x4f0fc	0x3c	0x3c	1	function	archive-xdef	StoreImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x45c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 GAME.EXE	0x8005f938	0x4f138	0x6c	0x6c	1	function	archive-xdef	MoveImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x498; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 GAME.EXE	0x8005f9a4	0x4f1a4	0x54	0x54	1	function	archive-xdef	ClearOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x504; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTagR at .text+0x558
-GAME.EXE	0x8005f9f8	0x4f1f8	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005fa30	0x4f230	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005fab4	0x4f2b4	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005fb0c	0x4f30c	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f9f8	0x4f1f8	0x38	0x38	1	function	archive-xdef	ClearOTagR		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x558; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+GAME.EXE	0x8005fa30	0x4f230	0x84	0x84	1	function	archive-xdef	DrawPrim		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x590; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+GAME.EXE	0x8005fab4	0x4f2b4	0x58	0x58	1	function	archive-xdef	DrawOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x614; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+GAME.EXE	0x8005fb0c	0x4f30c	0xc0	0xc0	1	function	archive-xdef	PutDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x66c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 GAME.EXE	0x8005fbcc	0x4f3cc	0x60	0x60	1	function	archive-xdef	GetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x72c; exact three-image section and native XDEF	vendored SDK entry, next XDEF PutDispEnv at .text+0x78c
-GAME.EXE	0x8005fc2c	0x4f42c	0x37c	0x37c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005fc2c	0x4f42c	0x37c	0x37c	1	function	archive-xdef	PutDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x78c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 GAME.EXE	0x8005ffa8	0x4f7a8	0x64	0x64	1	function	archive-xdef	GetDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb08; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetTexWindow at .text+0xb6c
 GAME.EXE	0x8006000c	0x4f80c	0x38	0x38	1	function	archive-xdef	SetTexWindow		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb6c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawArea at .text+0xba4
 GAME.EXE	0x80060044	0x4f844	0x70	0x70	1	function	archive-xdef	SetDrawArea		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xba4; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawOffset at .text+0xc14
 GAME.EXE	0x800600b4	0x4f8b4	0x40	0x40	1	function	archive-xdef	SetDrawOffset		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc14; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetPriority at .text+0xc54
 GAME.EXE	0x800600f4	0x4f8f4	0x28	0x28	1	function	archive-xdef	SetPriority		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc54; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawMode at .text+0xc7c
 GAME.EXE	0x8006011c	0x4f91c	0x54	0x54	1	function	archive-xdef	SetDrawMode		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc7c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawEnv at .text+0xcd0
-GAME.EXE	0x80060170	0x4f970	0x2a4	0x2a4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80060170	0x4f970	0x2a4	0x2a4	1	function	archive-xdef	SetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xcd0; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 GAME.EXE	0x80060414	0x4fc14	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80060464	0x4fc64	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80060534	0x4fd34	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1114,20 +1114,20 @@ OPEN.EXE	0x800154ec	0x4cec	0x50	0x50	1	function	archive-xdef	ClearImage		Psy-Q 3
 OPEN.EXE	0x8001553c	0x4d3c	0x3c	0x3c	1	function	archive-xdef	LoadImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x420; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 OPEN.EXE	0x80015578	0x4d78	0x3c	0x3c	1	function	archive-xdef	StoreImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x45c; exact three-image section and native XDEF	vendored SDK entry, next XDEF MoveImage at .text+0x498
 OPEN.EXE	0x800155b4	0x4db4	0x6c	0x6c	1	function	archive-xdef	MoveImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x498; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTag at .text+0x504
-OPEN.EXE	0x80015620	0x4e20	0x54	0x54	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80015620	0x4e20	0x54	0x54	1	function	archive-xdef	ClearOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x504; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 OPEN.EXE	0x80015674	0x4e74	0x38	0x38	1	function	archive-xdef	ClearOTagR		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x558; exact three-image section and native XDEF	vendored SDK entry, next XDEF DrawPrim at .text+0x590
-OPEN.EXE	0x800156ac	0x4eac	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80015730	0x4f30	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80015788	0x4f88	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x800156ac	0x4eac	0x84	0x84	1	function	archive-xdef	DrawPrim		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x590; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+OPEN.EXE	0x80015730	0x4f30	0x58	0x58	1	function	archive-xdef	DrawOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x614; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+OPEN.EXE	0x80015788	0x4f88	0xc0	0xc0	1	function	archive-xdef	PutDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x66c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 OPEN.EXE	0x80015848	0x5048	0x60	0x60	1	function	archive-xdef	GetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x72c; exact three-image section and native XDEF	vendored SDK entry, next XDEF PutDispEnv at .text+0x78c
-OPEN.EXE	0x800158a8	0x50a8	0x37c	0x37c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x800158a8	0x50a8	0x37c	0x37c	1	function	archive-xdef	PutDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x78c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 OPEN.EXE	0x80015c24	0x5424	0x64	0x64	1	function	archive-xdef	GetDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb08; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetTexWindow at .text+0xb6c
 OPEN.EXE	0x80015c88	0x5488	0x38	0x38	1	function	archive-xdef	SetTexWindow		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb6c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawArea at .text+0xba4
 OPEN.EXE	0x80015cc0	0x54c0	0x70	0x70	1	function	archive-xdef	SetDrawArea		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xba4; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawOffset at .text+0xc14
 OPEN.EXE	0x80015d30	0x5530	0x40	0x40	1	function	archive-xdef	SetDrawOffset		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc14; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetPriority at .text+0xc54
 OPEN.EXE	0x80015d70	0x5570	0x28	0x28	1	function	archive-xdef	SetPriority		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc54; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawMode at .text+0xc7c
 OPEN.EXE	0x80015d98	0x5598	0x54	0x54	1	function	archive-xdef	SetDrawMode		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc7c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawEnv at .text+0xcd0
-OPEN.EXE	0x80015dec	0x55ec	0x2a4	0x2a4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80015dec	0x55ec	0x2a4	0x2a4	1	function	archive-xdef	SetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xcd0; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 OPEN.EXE	0x80016090	0x5890	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800160e0	0x58e0	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800161b0	0x59b0	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1541,20 +1541,20 @@ END.EXE	0x80013e9c	0x369c	0x50	0x50	1	function	archive-xdef	ClearImage		Psy-Q 3.
 END.EXE	0x80013eec	0x36ec	0x3c	0x3c	1	function	archive-xdef	LoadImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x420; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 END.EXE	0x80013f28	0x3728	0x3c	0x3c	1	function	archive-xdef	StoreImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x45c; exact three-image section and native XDEF	vendored SDK entry, next XDEF MoveImage at .text+0x498
 END.EXE	0x80013f64	0x3764	0x6c	0x6c	1	function	archive-xdef	MoveImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x498; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTag at .text+0x504
-END.EXE	0x80013fd0	0x37d0	0x54	0x54	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80013fd0	0x37d0	0x54	0x54	1	function	archive-xdef	ClearOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x504; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 END.EXE	0x80014024	0x3824	0x38	0x38	1	function	archive-xdef	ClearOTagR		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x558; exact three-image section and native XDEF	vendored SDK entry, next XDEF DrawPrim at .text+0x590
-END.EXE	0x8001405c	0x385c	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x800140e0	0x38e0	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80014138	0x3938	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001405c	0x385c	0x84	0x84	1	function	archive-xdef	DrawPrim		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x590; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+END.EXE	0x800140e0	0x38e0	0x58	0x58	1	function	archive-xdef	DrawOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x614; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
+END.EXE	0x80014138	0x3938	0xc0	0xc0	1	function	archive-xdef	PutDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x66c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 END.EXE	0x800141f8	0x39f8	0x60	0x60	1	function	archive-xdef	GetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x72c; exact three-image section and native XDEF	vendored SDK entry, next XDEF PutDispEnv at .text+0x78c
-END.EXE	0x80014258	0x3a58	0x37c	0x37c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80014258	0x3a58	0x37c	0x37c	1	function	archive-xdef	PutDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x78c; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 END.EXE	0x800145d4	0x3dd4	0x64	0x64	1	function	archive-xdef	GetDispEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb08; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetTexWindow at .text+0xb6c
 END.EXE	0x80014638	0x3e38	0x38	0x38	1	function	archive-xdef	SetTexWindow		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xb6c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawArea at .text+0xba4
 END.EXE	0x80014670	0x3e70	0x70	0x70	1	function	archive-xdef	SetDrawArea		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xba4; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawOffset at .text+0xc14
 END.EXE	0x800146e0	0x3ee0	0x40	0x40	1	function	archive-xdef	SetDrawOffset		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc14; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetPriority at .text+0xc54
 END.EXE	0x80014720	0x3f20	0x28	0x28	1	function	archive-xdef	SetPriority		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc54; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawMode at .text+0xc7c
 END.EXE	0x80014748	0x3f48	0x54	0x54	1	function	archive-xdef	SetDrawMode		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xc7c; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDrawEnv at .text+0xcd0
-END.EXE	0x8001479c	0x3f9c	0x2a4	0x2a4	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001479c	0x3f9c	0x2a4	0x2a4	1	function	archive-xdef	SetDrawEnv		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0xcd0; exact three-image section and native XDEF	vendored SDK entry; retail return delay slot
 END.EXE	0x80014a40	0x4240	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80014a90	0x4290	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80014b60	0x4360	0xd0	0xd0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

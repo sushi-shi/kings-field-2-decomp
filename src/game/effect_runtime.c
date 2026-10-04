@@ -10,22 +10,22 @@
 #include <psyq/libc.h>
 #include <kf/game/asset.h>
 
-DATA(0x8006d704, 0x4)
+DATA(0x8006d704, 0x4, ".data")
 u32 effect_trail_next_slot = 0;
 
-DATA(0x8006d708, 0x8)
+DATA(0x8006d708, 0x8, ".data")
 static SVECTOR effect_zero_direction = {0, 0, 0, 0};
 
-DATA(0x8009a5a8, 0x4)
+DATA(0x8009a5a8, 0x4, ".bss")
 s32 effect_kind102_sound_cooldown_frame;
 
-DATA(0x8019b6a8, 0x2a8c)
+DATA(0x8019b6a8, 0x2a8c, ".bss")
 KfEffectState effect_state;
 
-DATA(0x801c7068, 0x8)
+DATA(0x801c7068, 0x8, ".bss")
 SVECTOR effect_collision_motion_step;
 
-DATA(0x801d9628, 0x900)
+DATA(0x801d9628, 0x900, ".bss")
 KfEffectTrailRow effect_trail_rows[4][24];
 
 RODATA(0x8001249c, 0x3f4)

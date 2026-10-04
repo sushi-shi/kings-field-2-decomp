@@ -4,7 +4,7 @@
 
 enum { COLLISION_DEFAULT_SHAPE_ID = 0x3f };
 
-DATA(0x800667fc, 0xa)
+DATA(0x800667fc, 0xa, ".data")
 KfMapOccupancyCell collision_default_cell = {
     {{KF_MAP_CELL_NO_OBJECT_INDEX, 0, 0, COLLISION_DEFAULT_SHAPE_ID, 0},
      {KF_MAP_CELL_NO_OBJECT_INDEX, 0, 0, COLLISION_DEFAULT_SHAPE_ID, 0}}

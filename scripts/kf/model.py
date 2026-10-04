@@ -2,7 +2,7 @@
 
 Each unit source annotates every function it reconstructs with
 ``ADDRESS(0xVA, size)`` on the line before the definition, and every global it
-owns with ``DATA(0xVA, size)`` on the line before the definition. Shared
+owns with ``DATA(0xVA, size, ".data")`` (or its actual section) on the line before the definition. Shared
 sources use image-qualified ``ADDRESS_AT`` and ``DATA_AT`` claims. This module
 extracts those claims; the manifest loader checks them against the admitted
 retail census and the curated identities, enforces address-order
@@ -22,7 +22,8 @@ from scripts.kf.retail import read_tsv, write_tsv
 
 
 CLAIM_RE = re.compile(
-    r"^\s*(ADDRESS|DATA)\(\s*(0x[0-9A-Fa-f]+)\s*,\s*(0x[0-9A-Fa-f]+|[0-9]+)\s*\)\s*"
+    r'^\s*(ADDRESS|DATA)\(\s*(0x[0-9A-Fa-f]+)\s*,\s*(0x[0-9A-Fa-f]+|[0-9]+)\s*'
+    r'(?:,\s*"(\.[a-z]+)"\s*)?\)\s*'
     r"(?:/\*.*\*/\s*)?$"
 )
 ADDRESS_AT_RE = re.compile(
@@ -31,7 +32,8 @@ ADDRESS_AT_RE = re.compile(
 )
 DATA_AT_RE = re.compile(
     r'^\s*DATA_AT\(\s*"([A-Z]+)"\s*,\s*(0x[0-9A-Fa-f]+)\s*,\s*'
-    r'(0x[0-9A-Fa-f]+|[0-9]+)\s*\)\s*(?:/\*.*\*/\s*)?$'
+    r'(0x[0-9A-Fa-f]+|[0-9]+)\s*,\s*"(\.[a-z]+)"\s*\)\s*'
+    r'(?:/\*.*\*/\s*)?$'
 )
 IDENTIFIER_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 FUNCTION_POINTER_RE = re.compile(r"\(\s*\*\s*([A-Za-z_][A-Za-z0-9_]*)")
@@ -57,6 +59,7 @@ class DataClaim:
     size: int
     name: str
     line: int
+    section: str
     image: str | None = None
 
 
@@ -177,17 +180,19 @@ def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]
         at = ADDRESS_AT_RE.match(text)
         if at is None and (DATA_AT_RE.match(text) is not None
                            or (plain is not None and plain.group(1) == "DATA")):
-            run: list[tuple[str | None, int, int, int]] = []
+            run: list[tuple[str | None, int, int, int, str]] = []
             first_line = index + 1
             while index < total:
                 line_at = DATA_AT_RE.match(lines[index])
                 line_plain = CLAIM_RE.match(lines[index])
                 if line_at is not None:
                     run.append((line_at.group(1), int(line_at.group(2), 16),
-                                int(line_at.group(3), 0), index + 1))
+                                int(line_at.group(3), 0), index + 1, line_at.group(4)))
                 elif line_plain is not None and line_plain.group(1) == "DATA":
+                    if line_plain.group(4) is None:
+                        raise ValueError(f"{source}:{index + 1}: DATA requires a section string")
                     run.append((None, int(line_plain.group(2), 16),
-                                int(line_plain.group(3), 0), index + 1))
+                                int(line_plain.group(3), 0), index + 1, line_plain.group(4)))
                 else:
                     break
                 index += 1
@@ -197,11 +202,11 @@ def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]
                     f"{source}:{first_line}: DATA claim is not followed by a "
                     "global definition"
                 )
-            for image, va, size, line in run:
+            for image, va, size, line, section in run:
                 _text, owner, owner_line = located[line - 1]
                 if owner != source:
                     raise ValueError(f'{owner}:{owner_line}: shared fragments must not own data')
-                data_claims.append(DataClaim(va, size, name, owner_line, image))
+                data_claims.append(DataClaim(va, size, name, owner_line, section, image))
             continue
         if at is None and plain is None:
             index += 1
@@ -218,6 +223,8 @@ def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]
                             int(line_at.group(3), 0), index + 1))
                 index += 1
             elif line_plain is not None and line_plain.group(1) == "ADDRESS":
+                if line_plain.group(4) is not None:
+                    raise ValueError(f"{source}:{index + 1}: ADDRESS has no section argument")
                 run.append((None, int(line_plain.group(2), 16),
                             int(line_plain.group(3), 0), index + 1))
                 index += 1

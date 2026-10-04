@@ -10,13 +10,13 @@ enum {
     ENDING_SEQUENCE_BYTES = 0x2584
 };
 
-DATA(0x800a2888, 0x4)
+DATA(0x800a2888, 0x4, ".bss")
 u_long *audio_sequence_data;
-DATA(0x800a2988, 0x2)
+DATA(0x800a2988, 0x2, ".bss")
 short audio_vab_id;
-DATA(0x800a31a8, 0x4)
+DATA(0x800a31a8, 0x4, ".bss")
 u8 *audio_vab_header;
-DATA(0x800a31b0, 0x2)
+DATA(0x800a31b0, 0x2, ".bss")
 short audio_sequence_id;
 
 ADDRESS(0x80011cec, 0xc0)

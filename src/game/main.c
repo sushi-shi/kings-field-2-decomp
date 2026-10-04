@@ -20,7 +20,7 @@
 #include <psyq/pad.h>
 #include <psyq/sdk.h>
 
-DATA(0x80198630, 0x4)
+DATA(0x80198630, 0x4, ".bss")
 u32 game_main_exit_flag;
 
 enum {

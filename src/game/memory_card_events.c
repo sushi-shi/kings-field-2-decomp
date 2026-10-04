@@ -12,7 +12,7 @@
 
 RODATA(0x80011104, 0x22)
 
-DATA(0x80066670, 0x10)
+DATA(0x80066670, 0x10, ".data")
 char memory_card_file_prefix[16] = "BISLPS-00069";
 
 enum {
@@ -44,7 +44,7 @@ typedef struct KfCardAssets {
 } KfCardAssets;
 typedef char kf_card_assets_size[sizeof(KfCardAssets) == 0x120 ? 1 : -1];
 
-DATA(0x80066680, 0x120)
+DATA(0x80066680, 0x120, ".data")
 KfCardAssets memory_card_assets = {
     "\202j\202h\202m\202f\201f\202r\201@\202e"
     "\202h\202d\202k\202c\201@\202Q\201|\201@"
@@ -68,26 +68,26 @@ KfCardAssets memory_card_assets = {
     }
 };
 
-DATA(0x8006d6a0, 0x1)
+DATA(0x8006d6a0, 0x1, ".data")
 u8 memory_card_loaded_slot = 0;
-DATA(0x8006d6a4, 0x2)
+DATA(0x8006d6a4, 0x2, ".data")
 static s8 memory_card_slot_digit_seed[2] = {0x20, 0};
 
-DATA(0x8006d6a8, 0x7)
+DATA(0x8006d6a8, 0x7, ".data")
 char memory_card_search_pattern[7] = "bu00:*";
 
-DATA(0x8006da18, 0x4)
+DATA(0x8006da18, 0x4, ".bss")
 static long memory_card_io_end_event;
-DATA(0x8006da20, 0x4)
+DATA(0x8006da20, 0x4, ".bss")
 static long memory_card_timeout_event;
-DATA(0x8006da28, 0x4)
+DATA(0x8006da28, 0x4, ".bss")
 static long memory_card_new_device_event;
-DATA(0x8006da30, 0x4)
+DATA(0x8006da30, 0x4, ".bss")
 static long memory_card_error_event;
-DATA(0x8006da58, 0x4)
+DATA(0x8006da58, 0x4, ".bss")
 static u8 *memory_card_buffer;
 
-DATA(0x8006dc00, 0x4000)
+DATA(0x8006dc00, 0x4000, ".bss")
 u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 /* LIBAPI's HwCARD, EvSpIOE, EvSpTIMOUT, EvSpNEW, EvSpERROR and EvMdNOINTR,
  * which the Psy-Q 3.0 kit's headers do not define. */

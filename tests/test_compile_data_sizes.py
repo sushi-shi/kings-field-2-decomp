@@ -47,10 +47,10 @@ class CompileDataSizeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / 'witness.c'
-            source.write_text('''#define DATA(va, size)
-DATA(0x80060000, 1)
+            source.write_text('''#define DATA(va, size, section)
+DATA(0x80060000, 1, ".bss")
 int narrow;
-DATA(0x80060008, 8)
+DATA(0x80060008, 8, ".bss")
 unsigned char tail[8];
 int witness(void) { return 0; }
 ''')
@@ -87,17 +87,17 @@ int witness(void) { return 0; }
                 self.assertEqual(symbol['st_size'], 8)
 
     def test_both_compilers_measure_types_without_claim_sizes_or_host_abi(self):
-        content = '''#define DATA(va, size)
+        content = '''#define DATA(va, size, section)
 struct Entry { char label[3]; short field; int count; };
-DATA(0x80050000, 99)
+DATA(0x80050000, 99, ".data")
 static struct Entry rows[2] = {{{1, 2, 3}, 4, 5}, {{6, 7, 8}, 9, 10}};
-DATA(0x80050100, 99)
+DATA(0x80050100, 99, ".data")
 const unsigned char text[] = "ok";
-DATA(0x80060000, 99)
+DATA(0x80060000, 99, ".bss")
 int (*callback)(void);
-DATA(0x80060010, 99)
+DATA(0x80060010, 99, ".bss")
 double bounds[2];
-DATA(0x80060020, 99)
+DATA(0x80060020, 99, ".bss")
 signed char narrow[3];
 int witness(void) { return rows[1].count + text[0]; }
 '''
@@ -121,7 +121,7 @@ int witness(void) { return rows[1].count + text[0]; }
 
                 # Changing only expectations must not change the source object.
                 previous = path.read_bytes()
-                path = self.compile(root, content.replace(', 99)', ', 137)'), version)
+                path = self.compile(root, content.replace(', 99,', ', 137,'), version)
                 self.assertEqual(path.read_bytes(), previous)
 
                 # Removing annotations proves the auxiliary table has not
@@ -137,13 +137,13 @@ int witness(void) { return rows[1].count + text[0]; }
                         self.assertEqual(unclaimed.relocations(name), claimed.relocations(name))
 
     def test_query_respects_preprocessing_and_avoids_source_name_collision(self):
-        content = '''#define DATA(va, size)
+        content = '''#define DATA(va, size, section)
 #ifdef WIDE
 typedef long Value;
 #else
 typedef char Value;
 #endif
-DATA(0x80050000, 19)
+DATA(0x80050000, 19, ".data")
 const Value __kf_source_data_sizes[3] = {1, 2, 3};
 int witness(void) { return __kf_source_data_sizes[0]; }
 '''

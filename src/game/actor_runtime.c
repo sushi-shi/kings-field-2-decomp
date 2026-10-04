@@ -15,7 +15,7 @@
 
 
 
-DATA(0x8016b600, 0x93cc)
+DATA(0x8016b600, 0x93cc, ".bss")
 KfActorStateGame actor_state;
 
 ADDRESS(0x80038cc8, 0x3c)

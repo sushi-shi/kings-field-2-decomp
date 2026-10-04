@@ -1,0 +1,19 @@
+# Inferred retail load-image section transitions, not EXE section metadata.
+# A boundary lies between last_left_end and first_right_start (inclusive).
+# Equal addresses pin it exactly; a gap may be alignment or unclassified bytes.
+image	left_section	right_section	last_left_end	first_right_start	evidence	status
+PSX.EXE	.rdata	.text	0x80010035	0x80010038	initial path literals end at 0x80010035;first reviewed code at 0x80010038	candidate
+PSX.EXE	.text	.data	0x80010248	0x8001024c	last admitted code ends at 0x80010248;overlay_path_table begins at 0x8001024c	candidate
+PSX.EXE	.data	.sdata	0x80010260	0x80010260	overlay_path_table ends where reviewed overlay_index .sdata begins	observed
+GAME.EXE	.rdata	.text	0x80013631	0x80013634	final reviewed diagnostic literal ends at 0x80013631;first admitted function at 0x80013634	candidate
+GAME.EXE	.text	.data	0x80063dcc	0x80063dcc	CheckPrim function ends where render_world_identity_matrix begins	observed
+GAME.EXE	.data	.sdata	0x8006d674	0x8006d718	exact LIBGPU OTAG .data ends at 0x8006d674;unresolved game data follows;first exact SDK .sdata XDEF at 0x8006d718	candidate
+GAME.EXE	.sdata	.sbss	0x8006d9dd	0x8006d9e0	last exact SDK .sdata record ends at 0x8006d9dd;three-byte CPE residue precedes zero-filled game and SDK small BSS	candidate
+OPEN.EXE	.rdata	.text	0x80011abb	0x80011ac0	final reviewed diagnostic literal ends at 0x80011abb;first admitted function at 0x80011ac0	candidate
+OPEN.EXE	.text	.data	0x8002a948	0x8002a948	last admitted function ends where exact LIBPRESS mdec_iq .data begins	observed
+OPEN.EXE	.data	.sdata	0x8003db88	0x8003dbc4	SDK .data copyright literal ends at 0x8003db88;game data follows;exact LIBPRESS .sdata starts at 0x8003dbc4	candidate
+OPEN.EXE	.sdata	.sbss	0x8003dec0	0x8003dec0	exact SDK .sdata ends where zero-filled movie state begins;candidate linker map starts .sbss here	candidate
+END.EXE	.rdata	.text	0x800119f3	0x800119f8	final reviewed diagnostic literal ends at 0x800119f3;first admitted function at 0x800119f8	candidate
+END.EXE	.text	.data	0x800277f4	0x800277f4	last admitted function ends where exact LIBPRESS mdec_iq .data begins	observed
+END.EXE	.data	.sdata	0x8003aa34	0x8003aa54	SDK .data copyright literal ends at 0x8003aa34;game data follows;exact LIBPRESS .sdata starts at 0x8003aa54	candidate
+END.EXE	.sdata	.sbss	0x8003ace0	0x8003ace0	exact SDK .sdata ends where zero-filled movie state begins;candidate linker map starts .sbss here	candidate

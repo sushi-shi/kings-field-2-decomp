@@ -38,10 +38,13 @@
 /*
  * Retail claim for a global a unit owns: the datum's address and its curated
  * size. It precedes the DEFINITION (never an extern) and binds the declarator
- * to the matching data_identities.tsv row, so the module target object carries
- * the datum in .data (retail bytes, storage=load) or .bss (storage=bss):
+ * to the matching data_identities.tsv row. The section is an explicit retail
+ * placement hypothesis: .data/.sdata for initialized storage, .bss/.sbss for
+ * uninitialized storage. Tentative globals may be emitted as COMMON requests
+ * and linked into BSS; COMMON placement does not follow a TU append rule.
+ * Initialized-section claims are checked by the data-order audit:
  *
- *     DATA(0x80057b0c, 0x4)
+ *     DATA(0x80057b0c, 0x4, ".data")
  *     static u32 frame_pacer_vsync_count = 0;
  *
  * Data claims ascend inside a source and a datum belongs to one unit; every
@@ -50,12 +53,12 @@
  * which maspsx turns into `.bss`, so `= 0` is what places a zero word in .data
  * the way the retail image has it.
  */
-#define DATA(va, size)
+#define DATA(va, size, section)
 
 /* Per-image address for one global defined by a shared source. Stack one
  * DATA_AT() per image immediately before the single C definition, as with
  * ADDRESS_AT() for shared functions. */
-#define DATA_AT(image, va, size)
+#define DATA_AT(image, va, size, section)
 
 /*
  * Read-only contribution claim, at most one per translation unit: the retail

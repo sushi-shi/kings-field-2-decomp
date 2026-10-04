@@ -16,13 +16,13 @@
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
 
-DATA(0x8006d6e4, 0x8)
+DATA(0x8006d6e4, 0x8, ".data")
 SVECTOR map_object_motion_action15_start_offset = {0, -1424, 0, 0};
-DATA(0x8006d6ec, 0x8)
+DATA(0x8006d6ec, 0x8, ".data")
 SVECTOR map_object_motion_action15_end_offset = {0, -912, 0, 0};
-DATA(0x8006d6f4, 0x8)
+DATA(0x8006d6f4, 0x8, ".data")
 SVECTOR map_object_motion_action17_start_offset = {0, -100, 300, 0};
-DATA(0x8006d6fc, 0x8)
+DATA(0x8006d6fc, 0x8, ".data")
 SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */

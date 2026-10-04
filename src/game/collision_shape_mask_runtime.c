@@ -1110,7 +1110,7 @@ void build_camera_map_cell_layer_masks(void)
 
 
 /* Startup may replace this load-image table from the archive. */
-DATA(0x80066ab4, 0xdc0)
+DATA(0x80066ab4, 0xdc0, ".data")
 KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT] = {
     {0},
     {0},
@@ -1194,7 +1194,7 @@ KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT] = {
     {0},
 };
 
-DATA(0x80067874, 0x1c)
+DATA(0x80067874, 0x1c, ".data")
 KfMapMaskShapePair map_mask_pitch_shape_pairs[7] = {
     {0x0500, 0x0000},
     {(s16)0xf720, (s16)0xfb20},
@@ -1205,5 +1205,5 @@ KfMapMaskShapePair map_mask_pitch_shape_pairs[7] = {
     {(s16)0xff80, (s16)0xfb80},
 };
 
-DATA(0x801b5a70, 0x20)
+DATA(0x801b5a70, 0x20, ".bss")
 KfRenderMaskScanState render_mask_scan_state;

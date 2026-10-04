@@ -37,22 +37,22 @@ enum {
 
 RODATA(0x80011074, 0x21)
 
-DATA(0x8006d680, 0x5)
+DATA(0x8006d680, 0x5, ".data")
 char cd_path_prefix[5] = "\\CD\\";
-DATA(0x8006d688, 0x3)
+DATA(0x8006d688, 0x3, ".data")
 char cd_version_suffix[3] = ";1";
 
-DATA(0x8009b0a0, 0x5f000)
+DATA(0x8009b0a0, 0x5f000, ".bss")
 u8 game_resource_arena[KF_GAME_RESOURCE_ARENA_CAPACITY];
 
-DATA(0x801b5d60, 0x2a4)
+DATA(0x801b5d60, 0x2a4, ".bss")
 KfCdState cd_state;
-DATA(0x801b6004, 0x60)
+DATA(0x801b6004, 0x60, ".bss")
 KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
 
 /* Provisional extent: the first map payload copies 0xfa00 bytes from this
  * buffer, while the following BSS identity begins at 0x801c7068. */
-DATA(0x801b6064, 0x11000)
+DATA(0x801b6064, 0x11000, ".bss")
 u8 cd_stream_work_buffer[0x11000];
 
 ADDRESS(0x80016ed4, 0xc)

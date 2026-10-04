@@ -1945,7 +1945,7 @@ void menu_draw_card_dialog_rows(const KfMenuGlyphString *rows, s32 count,
 }
 
 
-DATA(0x80063e80, 0xf0)
+DATA(0x80063e80, 0xf0, ".data")
 KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT] = {
     {0x1d, 0x7f64, 240, 0, 7, 14},
     {0x1d, 0x7f64, 0, 0, 15, 15},
@@ -1968,7 +1968,7 @@ KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT] = {
     {0x1e, 0x7fa4, 40, 192, 28, 33},
     {0x1e, 0x7fa4, 72, 192, 33, 33},
 };
-DATA(0x80063f70, 0x9a0)
+DATA(0x80063f70, 0x9a0, ".data")
 KfMenuWindowLayout menu_window_layouts[KF_MENU_WINDOW_COUNT] = {
     {
         {{0, 0}, {{-1}}},
@@ -2043,7 +2043,7 @@ enum {
     KF_MENU_UPLOAD_SECOND_BUFFER_Y = 240,
     KF_MENU_CURSOR_FRAME_COUNT = 8
 };
-DATA(0x80064910, 0xc8)
+DATA(0x80064910, 0xc8, ".data")
 KfMenuLabelSuffix menu_equipment_category_labels[10] = {
     {{118, 119, -1, 0, 0, 0, 0, 0, 0, 0}},
     {{120, 121, -1, 0, 0, 0, 0, 0, 0, 0}},
@@ -2056,9 +2056,9 @@ KfMenuLabelSuffix menu_equipment_category_labels[10] = {
     {{0, 1, 18, 32, 231, -1, 0, 0, 0, 0}},
     {{58, 4125, 15, 39, -1, 0, 0, 0, 0, 0}},
 };
-DATA(0x800649ec, 0x8)
+DATA(0x800649ec, 0x8, ".data")
 s16 menu_none_option_glyphs[4] = {89, 4172, 76, -1};
-DATA(0x80064a00, 0xf0)
+DATA(0x80064a00, 0xf0, ".data")
 KfMenuLabelSuffix menu_header_labels[12] = {
     {{130, 131, 132, -1, 0, 0, 0, 0, 0, 0}},
     {{43, 4124, 42, -1, 0, 0, 0, 0, 0, 0}},
@@ -2073,7 +2073,7 @@ KfMenuLabelSuffix menu_header_labels[12] = {
     {{255, 255, 255, 197, 198, -1, 0, 0, 0, 0}},
     {{4105, 45, 42, 4115, -1, 0, 0, 0, 0}},
 };
-DATA(0x80064af0, 0x140)
+DATA(0x80064af0, 0x140, ".data")
 KfMenuLabelSuffix menu_label_suffixes[16] = {
     {{33, 34, 41, 45, 5, 45, 4115, 88, -1, 0}},
     {{16, 51, 53, 7, 109, 75, 82, 65, 94, 76}},
@@ -2092,7 +2092,7 @@ KfMenuLabelSuffix menu_label_suffixes[16] = {
     {{269, 270, 109, 86, 65, 82, -1, 0, 0, 0}},
     {{161, 271, 109, 263, 59, 82, 71, 4175, 74, 65}}
 };
-DATA(0x80064c30, 0xb40)
+DATA(0x80064c30, 0xb40, ".data")
 KfMenuGlyphRow menu_glyph_rows[120] = {
     {{4111, 4101, 45, -1, 0, 0, 0, 0, 0, 0, 0, 0}},
     {{11, 56, 45, 19, 14, 45, 4115, -1, 0, 0, 0, 0}},
@@ -2215,7 +2215,7 @@ KfMenuGlyphRow menu_glyph_rows[120] = {
     {{3, 42, 27, 88, 135, -1, 0, 0, 0, 0, 0, 0}},
     {{40, 12, 19, 4104, 45, 19, -1, 0, 0, 0, 0, 0}},
 };
-DATA(0x80065770, 0x1e0)
+DATA(0x80065770, 0x1e0, ".data")
 KfMenuGlyphRow menu_glyph_rows_extra[20] = {
     {{2, 52, 45, 15, 45, 27, 52, 45, 42, -1, 0, 0}},
     {{12, 19, 45, 39, -1, 0, 0, 0, 0, 0, 0, 0}},
@@ -2238,7 +2238,7 @@ KfMenuGlyphRow menu_glyph_rows_extra[20] = {
     {{40, 1, 19, -1, 0, 0, 0, 0, 0, 0, 0, 0}},
     {{4123, 43, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0}},
 };
-DATA(0x80065950, 0x2d0)
+DATA(0x80065950, 0x2d0, ".data")
 u8 menu_item_mask_pages[6][120] = {
     {
         0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
@@ -2289,7 +2289,7 @@ u8 menu_item_mask_pages[6][120] = {
         0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     },
 };
-DATA(0x80065c20, 0x5a0)
+DATA(0x80065c20, 0x5a0, ".data")
 u16 menu_item_code_primary[6][120] = {
     {
         50000, 50000, 50000, 990, 50000, 2850, 50000, 50000, 50000, 50000, 50000, 50000,
@@ -2364,7 +2364,7 @@ u16 menu_item_code_primary[6][120] = {
         13500, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000,
     },
 };
-DATA(0x800661c0, 0x4b0)
+DATA(0x800661c0, 0x4b0, ".data")
 u16 menu_item_code_secondary[5][120] = {
     {
         70, 120, 520, 750, 2000, 2100, 2700, 0, 0, 13500, 12800, 13000,
@@ -2427,31 +2427,31 @@ u16 menu_item_code_secondary[5][120] = {
         10500, 22900, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     },
 };
-DATA(0x8006d68c, 0x4)
+DATA(0x8006d68c, 0x4, ".data")
 s32 menu_item_model_allocation_pending = 0;
-DATA(0x8006d690, 0x4)
+DATA(0x8006d690, 0x4, ".data")
 s32 input_press_pending = 0;
-DATA(0x8006d694, 0x4)
+DATA(0x8006d694, 0x4, ".data")
 s32 menu_item_quantity = 1;
-DATA(0x8006d698, 0x4)
+DATA(0x8006d698, 0x4, ".data")
 s32 menu_cursor_animation_frame = 0;
-DATA(0x8006d69c, 0x4)
+DATA(0x8006d69c, 0x4, ".data")
 s32 menu_cursor_animation_direction = 0;
-DATA(0x8006d9e0, 0x4)
+DATA(0x8006d9e0, 0x4, ".bss")
 POLY_FT4 *current_poly_ft4;
-DATA(0x8006d9e8, 0x1)
+DATA(0x8006d9e8, 0x1, ".bss")
 u8 menu_saved_music_enabled;
-DATA(0x8006d9f0, 0x4)
+DATA(0x8006d9f0, 0x4, ".bss")
 u_long *menu_frame_upload_pixels;
-DATA(0x8006d9f8, 0x8)
+DATA(0x8006d9f8, 0x8, ".bss")
 RECT menu_frame_upload_rect;
-DATA(0x8006da00, 0x8)
-SVECTOR menu_item_preview_translation = {0};
-DATA(0x8006da08, 0x8)
-SVECTOR menu_item_preview_rotation = {0};
-DATA(0x8006da10, 0x4)
-s32 menu_item_preview_rotation_step = 0;
-DATA(0x8006dbe8, 0x18)
+DATA(0x8006da00, 0x8, ".sbss")
+SVECTOR menu_item_preview_translation;
+DATA(0x8006da08, 0x8, ".sbss")
+SVECTOR menu_item_preview_rotation;
+DATA(0x8006da10, 0x4, ".sbss")
+s32 menu_item_preview_rotation_step;
+DATA(0x8006dbe8, 0x18, ".bss")
 KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
 
 ADDRESS(0x8001ceb8, 0x178)

@@ -18,16 +18,16 @@ enum {
 #define DISPLAY_BACKGROUND_LEVEL 0
 #endif
 
-DATA_AT("OPEN", 0x800a5ad0, 0x4)
-DATA_AT("END", 0x800a2898, 0x4)
+DATA_AT("OPEN", 0x800a5ad0, 0x4, ".bss")
+DATA_AT("END", 0x800a2898, 0x4, ".bss")
 KfDisplayBuffer *display_current;
 
-DATA_AT("OPEN", 0x800a6438, 0x20e8)
-DATA_AT("END", 0x800a31f8, 0x20e8)
+DATA_AT("OPEN", 0x800a6438, 0x20e8, ".bss")
+DATA_AT("END", 0x800a31f8, 0x20e8, ".bss")
 KfDisplayBuffer display_buffers[2];
 
-DATA_AT("OPEN", 0x800a8540, 0x4000)
-DATA_AT("END", 0x800a52f8, 0x4000)
+DATA_AT("OPEN", 0x800a8540, 0x4000, ".bss")
+DATA_AT("END", 0x800a52f8, 0x4000, ".bss")
 u8 display_primitives[2][KF_PRIMITIVE_BUFFER_BYTES];
 
 ADDRESS_AT("OPEN", 0x800120c8, 0x13c)

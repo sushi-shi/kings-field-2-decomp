@@ -885,7 +885,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     return 0;
 }
 
-DATA(0x80067890, 0x10e)
+DATA(0x80067890, 0x10e, ".data")
 KfMapCellPattern map_object_cell_patterns
     [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS] = {
     {
@@ -935,5 +935,5 @@ KfMapCellPattern map_object_cell_patterns
     },
 };
 
-DATA(0x801749d0, 0x8744)
+DATA(0x801749d0, 0x8744, ".bss")
 KfMapObjectStateGame map_object_state;

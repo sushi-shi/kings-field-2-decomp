@@ -6,22 +6,22 @@
 
 RODATA(0x80010000, 0x35)
 
-DATA(0x8001024c, 0xc)
+DATA(0x8001024c, 0xc, ".data")
 char *overlay_path_table[3] = {
     "cdrom:OPEN.EXE;1",
     "cdrom:GAME.EXE;1",
     "cdrom:END.EXE;1",
 };
 
-DATA(0x80010260, 0x4)
+DATA(0x80010260, 0x4, ".sdata")
 long overlay_index = 0;
 
 /* Fixed mailbox byte that GAME.EXE writes to select the next overlay.
  * Unresolved: how the original spelled or obtained this address. */
-DATA(0x80010264, 0x4)
+DATA(0x80010264, 0x4, ".sdata")
 u8 *overlay_next_request = (u8 *)0x800102f0;
 
-DATA(0x8001026c, 0x3c)
+DATA(0x8001026c, 0x3c, ".bss")
 struct EXEC overlay_header;
 
 /* Loads and runs the overlay named by overlay_index forever; each overlay

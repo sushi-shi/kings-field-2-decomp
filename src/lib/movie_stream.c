@@ -25,32 +25,32 @@ typedef struct {
     u_long headv;
 } StrSectorHeader;
 
-DATA_AT("OPEN", 0x8003dec0, 0x4)
-DATA_AT("END", 0x8003ace0, 0x4)
-int Rewind_Switch = 0;
+DATA_AT("OPEN", 0x8003dec0, 0x4, ".sbss")
+DATA_AT("END", 0x8003ace0, 0x4, ".sbss")
+int Rewind_Switch;
 
-DATA_AT("OPEN", 0x8003dec8, 0x4)
-DATA_AT("END", 0x8003ace8, 0x4)
-long StrFrame = 0;
+DATA_AT("OPEN", 0x8003dec8, 0x4, ".sbss")
+DATA_AT("END", 0x8003ace8, 0x4, ".sbss")
+long StrFrame;
 
-DATA_AT("OPEN", 0x8003e058, 0x28000)
-DATA_AT("END", 0x8003ae50, 0x28000)
+DATA_AT("OPEN", 0x8003e058, 0x28000, ".bss")
+DATA_AT("END", 0x8003ae50, 0x28000, ".bss")
 u_long vlcbuf0[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
 
-DATA_AT("OPEN", 0x80066058, 0x28000)
-DATA_AT("END", 0x80062e50, 0x28000)
+DATA_AT("OPEN", 0x80066058, 0x28000, ".bss")
+DATA_AT("END", 0x80062e50, 0x28000, ".bss")
 u_long vlcbuf1[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
 
-DATA_AT("OPEN", 0x8008e058, 0x3c00)
-DATA_AT("END", 0x8008ae50, 0x3c00)
+DATA_AT("OPEN", 0x8008e058, 0x3c00, ".bss")
+DATA_AT("END", 0x8008ae50, 0x3c00, ".bss")
 u_short imgbuf[7680];
 
-DATA_AT("OPEN", 0x80091c58, 0x10000)
-DATA_AT("END", 0x8008ea50, 0x10000)
+DATA_AT("OPEN", 0x80091c58, 0x10000, ".bss")
+DATA_AT("END", 0x8008ea50, 0x10000, ".bss")
 u_long Ring_Buff[RING_SIZE * SECTOR_SIZE];
 
-DATA_AT("OPEN", 0x800a1c58, 0x30)
-DATA_AT("END", 0x8009ea50, 0x30)
+DATA_AT("OPEN", 0x800a1c58, 0x30, ".bss")
+DATA_AT("END", 0x8009ea50, 0x30, ".bss")
 DECENV dec;
 
 

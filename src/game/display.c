@@ -116,14 +116,14 @@ enum {
     KF_RENDER_MODEL_ACTIVE = 1
 };
 
-DATA(0x80063dcc, 0x20)
+DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
     {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
     0,
     {0, 0, 0}
 };
 
-DATA(0x80066808, 0x7e)
+DATA(0x80066808, 0x7e, ".data")
 KfNotificationQuad notification_quads[7] = {
     {0, 0, 0, 127, 14, 96, 203, 127, 14, 0x7f24, 0x1b},
     {0, 0, 0, 127, 14, 110, 203, 127, 14, 0x7f24, 0x1b},
@@ -134,7 +134,7 @@ KfNotificationQuad notification_quads[7] = {
     {0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
-DATA(0x80066888, 0x21c)
+DATA(0x80066888, 0x21c, ".data")
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
     {1, 0, 0x40,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
     {1, 0, 0x41,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
@@ -153,22 +153,22 @@ KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
     {KF_RENDER_MODEL_END}
 };
 
-DATA(0x8006d6d0, 0x4)
+DATA(0x8006d6d0, 0x4, ".data")
 CVECTOR map_textured_primitive_color = {128, 128, 128, 0};
 
-DATA(0x8006d6d4, 0x4)
+DATA(0x8006d6d4, 0x4, ".data")
 s32 render_model_yaw_smoothing_accumulator = 0;
 
-DATA(0x8006d6dc, 0x8)
+DATA(0x8006d6dc, 0x8, ".data")
 RECT menu_transition_rect = {KF_DISPLAY_WIDTH, 0, KF_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT};
 
-DATA(0x800fba58, 0x32000)
+DATA(0x800fba58, 0x32000, ".bss")
 u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
 
-DATA(0x8017d140, 0x17cf0)
+DATA(0x8017d140, 0x17cf0, ".bss")
 KfGraphicsRuntimeGame game_graphics_runtime;
 
-DATA(0x801d9610, 0x4)
+DATA(0x801d9610, 0x4, ".bss")
 s32 display_frame_cleared_word;
 
 enum { KF_TMD_DEPTH_SHIFT = 2 };

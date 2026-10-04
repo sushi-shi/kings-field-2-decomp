@@ -27,19 +27,19 @@ enum {
     PROMPT_PHASE_DIM = 1
 };
 
-DATA(0x8003db94, 0x4)
+DATA(0x8003db94, 0x4, ".data")
 s32 title_level = 0;
-DATA(0x8003db98, 0x4)
+DATA(0x8003db98, 0x4, ".data")
 s32 title_phase = TITLE_PHASE_FADE_IN;
-DATA(0x8003db9c, 0x4)
+DATA(0x8003db9c, 0x4, ".data")
 s32 banner_level = 0;
-DATA(0x8003dba0, 0x4)
+DATA(0x8003dba0, 0x4, ".data")
 s32 banner_phase = TITLE_PHASE_FADE_IN;
-DATA(0x8003dba4, 0x4)
+DATA(0x8003dba4, 0x4, ".data")
 s32 prompt_level = PROMPT_PULSE_LOW;
-DATA(0x8003dba8, 0x4)
+DATA(0x8003dba8, 0x4, ".data")
 s32 prompt_phase = PROMPT_PHASE_BRIGHTEN;
-DATA(0x8003dbac, 0x4)
+DATA(0x8003dbac, 0x4, ".data")
 u32 pad_previous_buttons = 0;
 
 /* Draws the backdrop and the four title tiles; returns 1 once settled. */

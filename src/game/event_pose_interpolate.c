@@ -22,22 +22,22 @@
 #include <kf/game/card_payload.h>
 #include <psyq/libc.h>
 
-DATA(0x800679a0, 0x8)
+DATA(0x800679a0, 0x8, ".data")
 u8 event_magic_unlock_ids_5a[8] = {7, 8, 9, 10, 0xff, 0, 0, 0};
 
-DATA(0x800679a8, 0x8)
+DATA(0x800679a8, 0x8, ".data")
 u8 event_magic_unlock_ids_5b[8] = {14, 15, 0, 13, 0xff, 0, 0, 0};
 
-DATA(0x800679b0, 0x8)
+DATA(0x800679b0, 0x8, ".data")
 u8 event_magic_unlock_ids_5c[8] = {16, 1, 2, 3, 0xff, 0, 0, 0};
 
-DATA(0x800679b8, 0x8)
+DATA(0x800679b8, 0x8, ".data")
 u8 event_magic_unlock_ids_5d[8] = {4, 17, 5, 6, 0xff, 0, 0, 0};
 
-DATA(0x800679c0, 0x8)
+DATA(0x800679c0, 0x8, ".data")
 u8 event_magic_unlock_ids_5e[8] = {18, 19, 11, 12, 0xff, 0xff, 0xff, 0xff};
 
-DATA(0x8009a5e8, 0x78)
+DATA(0x8009a5e8, 0x78, ".bss")
 u8 game_counter_bytes[0x78];
 
 typedef void (*KfEventCommandCallback)(const VECTOR *position,
@@ -1207,7 +1207,7 @@ enum {
 
 
 
-DATA(0x801b2140, 0x3918)
+DATA(0x801b2140, 0x3918, ".bss")
 KfEventState event_state;
 
 ADDRESS(0x800482f8, 0xb0)

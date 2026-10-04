@@ -53,7 +53,7 @@ class NameBindingTests(unittest.TestCase):
             ("GAME.EXE", 0x800A01FC): _datum("GAME.EXE", 0x800A01FC, "memory_allocation_stack"),
             ("OPEN.EXE", 0x80075854): _datum("OPEN.EXE", 0x80075854, "memory_allocation_stack"),
         }
-        claims = (DataClaim(0x800A01FC, 0x44, "memory_allocation_stack", 3),)
+        claims = (DataClaim(0x800A01FC, 0x44, "memory_allocation_stack", 3, ".bss"),)
         rebound = _rebind_data_claims_by_name(None, "OPEN.EXE", claims, identities)
         self.assertEqual(rebound[0].va, 0x80075854)
 

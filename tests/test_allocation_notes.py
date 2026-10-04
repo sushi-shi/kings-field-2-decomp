@@ -35,7 +35,8 @@ class CompiledAllocationTests(unittest.TestCase):
             with self.subTest(exported=exported), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 source = root / 'control.c'
-                source.write_text('#define DATA(va, size)\nDATA(0x80060000, 8)\n'
+                source.write_text('#define DATA(va, size, section)\n'
+                                  'DATA(0x80060000, 8, ".bss")\n'
                                   + ('' if exported else 'static ')
                                   + 'unsigned int storage[2];\n'
                                   'int witness(void) { return storage[0]; }\n')

@@ -102,7 +102,7 @@ class ClaimScanTests(unittest.TestCase):
                 'ADDRESS(0x80010000, 0x10)\nvoid first(void) {}\n'
                 '#include "shared.inc"\n'
                 'ADDRESS(0x80010020, 0x10)\nvoid last(void) {}\n'
-                'DATA(0x80030000, 4)\nint datum;\n')
+                'DATA(0x80030000, 4, ".data")\nint datum;\n')
             claims, data = scan_source(source)
             self.assertEqual([c.name for c in claims], ['first', 'common', 'common', 'last'])
             self.assertEqual([c.image for c in claims], [None, 'GAME', 'OPEN', None])
@@ -125,7 +125,7 @@ class ClaimScanTests(unittest.TestCase):
             root = Path(directory)
             source = root / 'unit.c'
             source.write_text('#include "shared.inc"\n')
-            for declaration in ('DATA(0x80030000, 4)\nint datum;\n',
+            for declaration in ('DATA(0x80030000, 4, ".data")\nint datum;\n',
                                 'RODATA(0x80030000, 4)\n'):
                 (root / 'shared.inc').write_text(declaration)
                 with self.assertRaisesRegex(ValueError, 'must not own'):
@@ -139,13 +139,13 @@ class ClaimScanTests(unittest.TestCase):
 
     def test_data_claim_binds_the_declarator_that_follows(self) -> None:
         claims = self._scan_data(
-            "DATA(0x80057b0c, 0x4)\n"
+            "DATA(0x80057b0c, 0x4, \".data\")\n"
             "static u32 counter = 0;\n\n"
-            "DATA(0x80057b10, 0x10)\n"
+            "DATA(0x80057b10, 0x10, \".data\")\n"
             "u32 table[4] = {\n    1, 2, 3, 4,\n};\n\n"
-            "DATA(0x80057b20, 0x4)\n"
+            "DATA(0x80057b20, 0x4, \".bss\")\n"
             "struct KfActor *current;\n\n"
-            "DATA(0x80057b24, 0x4)\n"
+            "DATA(0x80057b24, 0x4, \".bss\")\n"
             "void (*handler)(s32 argument);\n"
         )
         self.assertEqual(
@@ -160,7 +160,7 @@ class ClaimScanTests(unittest.TestCase):
 
     def test_data_claim_before_extern_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "global definition"):
-            self._scan_data("DATA(0x80057b0c, 0x4)\nextern u32 counter;\n")
+            self._scan_data("DATA(0x80057b0c, 0x4, \".data\")\nextern u32 counter;\n")
 
 
 class ClaimBindingTests(unittest.TestCase):
@@ -261,7 +261,8 @@ class DataClaimBindingTests(unittest.TestCase):
 
     def test_load_and_bss_claims_bind_with_storage_and_scope(self) -> None:
         data = self._bind((
-            DataClaim(0x80057b0c, 4, "counter", 1), DataClaim(0x800A0000, 0x10, "buffer", 4),
+            DataClaim(0x80057b0c, 4, "counter", 1, ".data"),
+            DataClaim(0x800A0000, 0x10, "buffer", 4, ".bss"),
         ))
         self.assertEqual([(d.va, d.symbol, d.storage, d.scope) for d in data], [
             (0x80057b0c, "counter", "load", "static"),
@@ -270,29 +271,30 @@ class DataClaimBindingTests(unittest.TestCase):
 
     def test_unknown_datum_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "not a curated"):
-            self._bind((DataClaim(0x80057b00, 4, "other", 1),))
+            self._bind((DataClaim(0x80057b00, 4, "other", 1, ".data"),))
 
     def test_name_mismatch_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "identity"):
-            self._bind((DataClaim(0x80057b0c, 4, "DAT_80057b0c", 1),))
+            self._bind((DataClaim(0x80057b0c, 4, "DAT_80057b0c", 1, ".data"),))
 
     def test_size_mismatch_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "curated size"):
-            self._bind((DataClaim(0x80057b0c, 8, "counter", 1),))
+            self._bind((DataClaim(0x80057b0c, 8, "counter", 1, ".data"),))
 
     def test_unsupported_storage_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "storage"):
-            self._bind((DataClaim(0x80012000, 8, "table", 1),))
+            self._bind((DataClaim(0x80012000, 8, "table", 1, ".data"),))
 
     def test_double_claim_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "already claimed"):
-            self._bind((DataClaim(0x80057b0c, 4, "counter", 1),),
+            self._bind((DataClaim(0x80057b0c, 4, "counter", 1, ".data"),),
                        {("GAME.EXE", 0x80057b0c): "game.other"})
 
     def test_descending_data_claims_are_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "does not ascend"):
             self._bind((
-                DataClaim(0x800A0000, 0x10, "buffer", 1), DataClaim(0x80057b0c, 4, "counter", 4),
+                DataClaim(0x800A0000, 0x10, "buffer", 1, ".bss"),
+                DataClaim(0x80057b0c, 4, "counter", 4, ".data"),
             ))
 
 

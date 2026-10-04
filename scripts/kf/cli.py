@@ -154,6 +154,11 @@ def parser() -> argparse.ArgumentParser:
     )
     build.add_argument("--image", action="append", choices=tuple(IMAGE_ALIASES))
 
+    data_order = subs.add_parser(
+        "data-order", help="assert no known TU interleaving within initialized sections"
+    )
+    data_order.add_argument("--image", action="append", choices=tuple(IMAGE_ALIASES))
+
     analyze = subs.add_parser(
         "analyze",
         help="refresh derived delinked and ELF comparison views",
@@ -316,6 +321,11 @@ def main(argv: list[str] | None = None) -> int:
 
             link_args = [value for image in args.image or () for value in ("--image", image)]
             return executable_main(link_args)
+        if args.command == "data-order":
+            from scripts.kf.data_order import report
+            from scripts.kf.manifest import load
+
+            return report(load(), _images(args.image))
         if args.command == "analyze":
             return _analyze(args)
         if args.command == "try":

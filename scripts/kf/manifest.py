@@ -318,6 +318,18 @@ def _bind_data_claims(
                 f"{where}: {identity.name} has storage {identity.storage!r}; only load and "
                 "bss data can be claimed"
             )
+        allowed_sections = {"load": {".data", ".sdata"},
+                            "bss": {".bss", ".sbss"}}
+        if claim.section not in allowed_sections[identity.storage]:
+            raise ValueError(
+                f"{where}: {identity.name} claims {claim.section!r}, invalid for "
+                f"{identity.storage} storage"
+            )
+        if identity.section and claim.section != identity.section:
+            raise ValueError(
+                f"{where}: {identity.name} claims {claim.section!r}, but curated "
+                f"section evidence says {identity.section!r}"
+            )
         owner = claimed.get((image, claim.va))
         if owner is not None:
             raise ValueError(f"{where}: {identity.name} is already claimed by unit {owner!r}")
@@ -328,7 +340,7 @@ def _bind_data_claims(
             )
         claimed[(image, claim.va)] = unit
         data.append(Datum(claim.va, claim.size, identity.name, identity.storage, identity.scope,
-                          identity.section, identity.reservation_size))
+                          claim.section, identity.reservation_size))
     return tuple(data)
 
 

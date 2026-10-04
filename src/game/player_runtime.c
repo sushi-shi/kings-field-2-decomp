@@ -44,7 +44,7 @@ typedef char kf_player_magic_spawn_effect_kind_offset[
     (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
 
 
-DATA(0x800667a0, 0x28)
+DATA(0x800667a0, 0x28, ".data")
 KfPlayerMagicSpawnRecord player_magic_spawn_records[5] = {
     {{0, 0, 100, 0}},
     {{-1000, 0, 0, 46}},
@@ -53,7 +53,7 @@ KfPlayerMagicSpawnRecord player_magic_spawn_records[5] = {
     {{2000, 0, -2000, 46}}
 };
 
-DATA(0x800667c8, 0x20)
+DATA(0x800667c8, 0x20, ".data")
 SVECTOR player_magic_square_offsets[4] = {
     {-400, -400, 200, 0},
     {-400, 400, 200, 0},
@@ -61,14 +61,14 @@ SVECTOR player_magic_square_offsets[4] = {
     {400, 400, 200, 0}
 };
 
-DATA(0x800667e8, 0x14)
+DATA(0x800667e8, 0x14, ".data")
 KfPlayerMagicIdSequence player_magic_id_sequence = {
     {39, 40, 60, 66, 84, 86, 39, 40, 60, 66, 84, 86},
     {0x20, 0x10, 0x80, 0xffff}
 };
 
 
-DATA(0x8006d6b0, 0x20)
+DATA(0x8006d6b0, 0x20, ".data")
 static RECT player_status_texture_rows[4] = {
     {0x240, 0x119, 16, 1},
     {0x240, 0x117, 16, 1},
@@ -78,20 +78,20 @@ static RECT player_status_texture_rows[4] = {
 
 
 
-DATA(0x800758f0, 0x4b0)
+DATA(0x800758f0, 0x4b0, ".bss")
 KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 
-DATA(0x80075da0, 0xc000)
+DATA(0x80075da0, 0xc000, ".bss")
 static KfWeaponAssetBuffer player_weapon_asset_buffer;
 
 
-DATA(0x801984d0, 0x160)
+DATA(0x801984d0, 0x160, ".bss")
 KfPlayerState player_state;
 
-DATA(0x801c7078, 0x4c8)
+DATA(0x801c7078, 0x4c8, ".bss")
 KfWeaponRecordGame player_weapon_records[18];
 
-DATA(0x801c7540, 0x11844)
+DATA(0x801c7540, 0x11844, ".bss")
 KfBss801c7540 bss_801c7540;
 
 

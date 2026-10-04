@@ -24,14 +24,14 @@ int third(int value) { return inline_candidate(value * 3 + 8); }
 int first(int value) { return third(value) + 5; }
 int second(int value) { return first(value) - 2; }
 '''
-DATA_SOURCE = '''#define DATA(va, size)
-DATA(0x80050000, 9)
+DATA_SOURCE = '''#define DATA(va, size, section)
+DATA(0x80050000, 9, ".data")
 unsigned char initialized[9] = {1, 0, 2, 0, 3, 0, 0, 0, 0};
-DATA(0x80050010, 5)
+DATA(0x80050010, 5, ".data")
 const unsigned char message[5] = {120, 121, 0, 0, 0};
-DATA(0x80060000, 4)
+DATA(0x80060000, 4, ".bss")
 static int private_word;
-DATA(0x80060010, 4)
+DATA(0x80060010, 4, ".bss")
 int public_word;
 int witness(int x) { private_word += x; public_word = private_word; return public_word; }
 '''

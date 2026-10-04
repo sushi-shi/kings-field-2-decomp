@@ -4985,26 +4985,26 @@ GAME.EXE	0x800262d0	0x15ad0		mips26	instruction-word	0x80026304	load		j		control
 GAME.EXE	0x800262e8	0x15ae8		mips26	instruction-word	0x80026304	load		j		control-reviewed	reviewed	manual:player_dispatch_magic_effect bounded 53-case table CFG;raw J/JAL target
 GAME.EXE	0x80026304	0x15b04	0x80026308	mips_hi16_lo16	instruction-word	0x801985a8	bss	player_state	lui+addiu	a3	paired-reviewed	reviewed	manual:player_dispatch_magic_effect raw HI/LO pair;typed owner
 GAME.EXE	0x8002630c	0x15b0c		mips26	instruction-word	0x80040308	load	effect_construct_record	jal		control-reviewed	reviewed	manual:player_dispatch_magic_effect bounded 53-case table CFG;raw J/JAL target
-GAME.EXE	0x8002634c	0x15b4c	0x80026350	mips_hi16_lo16	reachable-code	0x80198550	bss		lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026354	0x15b54	0x80026358	mips_hi16_lo16	reachable-code	0x801985c0	bss		lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x8002636c	0x15b6c	0x80026370	mips_hi16_lo16	reachable-code	0x801985c2	bss		lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026378	0x15b78	0x8002637c	mips_hi16_lo16	reachable-code	0x8019856a	bss		lui+lbu		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026388	0x15b88	0x8002638c	mips_hi16_lo16	reachable-code	0x801985c4	bss		lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026394	0x15b94	0x80026398	mips_hi16_lo16	reachable-code	0x80198560	bss		lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x8002634c	0x15b4c	0x80026350	mips_hi16_lo16	reachable-code	0x80198550	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026354	0x15b54	0x80026358	mips_hi16_lo16	reachable-code	0x801985c0	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x8002636c	0x15b6c	0x80026370	mips_hi16_lo16	reachable-code	0x801985c2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026378	0x15b78	0x8002637c	mips_hi16_lo16	reachable-code	0x8019856a	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026388	0x15b88	0x8002638c	mips_hi16_lo16	reachable-code	0x801985c4	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026394	0x15b94	0x80026398	mips_hi16_lo16	reachable-code	0x80198560	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
 GAME.EXE	0x800263a4	0x15ba4		mips26	reachable-code	0x80034344	load	animation_sample_vertex	jal		control-flow	reviewed	manual:player_weapon_transform
-GAME.EXE	0x800263ac	0x15bac	0x800263b0	mips_hi16_lo16	reachable-code	0x80198550	bss		lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x800263ac	0x15bac	0x800263b0	mips_hi16_lo16	reachable-code	0x80198550	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
 GAME.EXE	0x800263ec	0x15bec		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:player_weapon_transform
 GAME.EXE	0x800263f8	0x15bf8	0x800263fc	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
 GAME.EXE	0x80026410	0x15c10	0x80026414	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026428	0x15c28	0x8002642c	mips_hi16_lo16	reachable-code	0x80198604	bss		lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026428	0x15c28	0x8002642c	mips_hi16_lo16	reachable-code	0x80198604	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
 GAME.EXE	0x80026430	0x15c30	0x80026434	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026438	0x15c38	0x8002643c	mips_hi16_lo16	reachable-code	0x80198608	bss		lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
-GAME.EXE	0x80026464	0x15c64	0x80026468	mips_hi16_lo16	reachable-code	0x801984f8	bss		lui+lhu		paired-reviewed	reviewed	manual:player_power_threshold
-GAME.EXE	0x8002647c	0x15c7c	0x80026480	mips_hi16_lo16	reachable-code	0x801984fa	bss		lui+lhu		paired-reviewed	reviewed	manual:player_power_threshold
+GAME.EXE	0x80026438	0x15c38	0x8002643c	mips_hi16_lo16	reachable-code	0x80198608	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_weapon_transform
+GAME.EXE	0x80026464	0x15c64	0x80026468	mips_hi16_lo16	reachable-code	0x801984f8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_power_threshold
+GAME.EXE	0x8002647c	0x15c7c	0x80026480	mips_hi16_lo16	reachable-code	0x801984fa	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_power_threshold
 GAME.EXE	0x800264cc	0x15ccc	0x800264d0	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
-GAME.EXE	0x800264d8	0x15cd8	0x800264dc	mips_hi16_lo16	reachable-code	0x801984e8	bss		lui+addiu		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
-GAME.EXE	0x800264f8	0x15cf8	0x800264fc	mips_hi16_lo16	reachable-code	0x8019854c	bss		lui+sw		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
-GAME.EXE	0x80026508	0x15d08	0x8002650c	mips_hi16_lo16	reachable-code	0x801984ee	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x800264d8	0x15cd8	0x800264dc	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x800264f8	0x15cf8	0x800264fc	mips_hi16_lo16	reachable-code	0x8019854c	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x80026508	0x15d08	0x8002650c	mips_hi16_lo16	reachable-code	0x801984ee	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x8002653c	0x15d3c	0x80026540	mips_hi16_lo16	reachable-code	0x80011260	load	player_magic_dispatch_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:player_magic_dispatch_table
 GAME.EXE	0x80026558	0x15d58	0x8002655c	mips_hi16_lo16	instruction-word	0x800667e8	load	player_magic_id_sequence	lui+addiu	at	paired-reviewed	reviewed	manual:player_magic_effect_ids
 GAME.EXE	0x80026568	0x15d68		mips26	instruction-word	0x80026574	load		j		control-flow	reviewed	manual:player_magic_dispatch_direct_control
@@ -5012,18 +5012,18 @@ GAME.EXE	0x80026574	0x15d74		mips26	instruction-word	0x80026330	load	player_samp
 GAME.EXE	0x80026580	0x15d80		mips26	instruction-word	0x80025a18	load	player_dispatch_magic_effect	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x80026588	0x15d88		mips26	instruction-word	0x80026640	load		j		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x80026594	0x15d94		mips26	instruction-word	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
-GAME.EXE	0x800265a0	0x15da0	0x800265a4	mips_hi16_lo16	reachable-code	0x801985e8	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x800265a0	0x15da0	0x800265a4	mips_hi16_lo16	reachable-code	0x801985e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x800265a8	0x15da8		mips26	instruction-word	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
-GAME.EXE	0x800265b4	0x15db4	0x800265b8	mips_hi16_lo16	reachable-code	0x801985ea	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x800265b4	0x15db4	0x800265b8	mips_hi16_lo16	reachable-code	0x801985ea	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x800265bc	0x15dbc		mips26	instruction-word	0x80026630	load		j		control-flow	reviewed	manual:player_magic_dispatch_direct_control
-GAME.EXE	0x800265c8	0x15dc8	0x800265cc	mips_hi16_lo16	reachable-code	0x801985e8	bss		lui+addiu		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x800265c8	0x15dc8	0x800265cc	mips_hi16_lo16	reachable-code	0x801985e8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x800265d4	0x15dd4		mips26	instruction-word	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x800265e4	0x15de4		mips26	instruction-word	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x800265f8	0x15df8		mips26	instruction-word	0x80025a18	load	player_dispatch_magic_effect	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x80026610	0x15e10		mips26	instruction-word	0x800265d4	load		j		control-flow	reviewed	manual:player_magic_dispatch_direct_control
-GAME.EXE	0x8002661c	0x15e1c	0x80026620	mips_hi16_lo16	reachable-code	0x801985e8	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
-GAME.EXE	0x80026624	0x15e24	0x80026628	mips_hi16_lo16	reachable-code	0x801985ea	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
-GAME.EXE	0x80026630	0x15e30	0x80026634	mips_hi16_lo16	reachable-code	0x801985ec	bss		lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x8002661c	0x15e1c	0x80026620	mips_hi16_lo16	reachable-code	0x801985e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x80026624	0x15e24	0x80026628	mips_hi16_lo16	reachable-code	0x801985ea	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
+GAME.EXE	0x80026630	0x15e30	0x80026634	mips_hi16_lo16	reachable-code	0x801985ec	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:player_magic_dispatch_bss
 GAME.EXE	0x80026638	0x15e38		mips26	reachable-code	0x80025a18	load	player_dispatch_magic_effect	jal		control-flow	reviewed	manual:player_magic_dispatch_direct_control
 GAME.EXE	0x80026688	0x15e88	0x8002668c	mips_hi16_lo16	instruction-word	0x8019856b	bss	player_state	lui+lbu	a0	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner
 GAME.EXE	0x80026690	0x15e90	0x80026694	mips_hi16_lo16	instruction-word	0x80198550	bss	player_state	lui+lw	s2	paired-reviewed	reviewed	manual:player_update_weapon_attack raw HI/LO pair;typed owner

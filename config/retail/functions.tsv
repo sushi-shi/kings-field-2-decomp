@@ -618,17 +618,22 @@ GAME.EXE	0x8004d474	0x3cc74	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x8004d4f0	0x3ccf0	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 GAME.EXE	0x8004d560	0x3cd60	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d5c0	0x3cdc0	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004d820	0x3d020	0x28	0x28	1	function	archive-xdef	_spu_close		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x2c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_open at .text+0x2e8; retail return/delay slot
 GAME.EXE	0x8004d848	0x3d048	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d8a0	0x3d0a0	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d8d0	0x3d0d0	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004d938	0x3d138	0x200	0x200	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004db38	0x3d338	0x28	0x28	1	function	archive-xdef	_spu_read		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x5d8; exact three-image text section and native XDEF	vendored SDK entry to local _spu_interruptDMA at .text+0x600; retail return/delay slot
 GAME.EXE	0x8004dbec	0x3d3ec	0x134	0x134	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004dd20	0x3d520	0x110	0x110	1	function	archive-xdef	_spu_r		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x7c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_r_ at .text+0x8d0; retail return/delay slot
 GAME.EXE	0x8004de30	0x3d630	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004def0	0x3d6f0	0x814	0x814	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004e704	0x3df04	0x184	0x184	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004e888	0x3e088	0x4d0	0x4d0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004ed58	0x3e558	0x398	0x398	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004f0f0	0x3e8f0	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8004f21c	0x3ea1c	0x1c	0x1c	1	function	archive-xdef	SysSpu_setRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cbc; exact three-image text section and native XDEF	vendored SDK entry to SysSpu_getRegister at .text+0x1cd8; retail return/delay slot
+GAME.EXE	0x8004f238	0x3ea38	0x1c	0x1c	1	function	archive-xdef	SysSpu_getRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cd8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x1cf4; retail return/delay slot
 GAME.EXE	0x8004f254	0x3ea54	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004f284	0x3ea84	0x4f0	0x4f0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8004f774	0x3ef74	0x2fc	0x2fc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1352,17 +1357,22 @@ OPEN.EXE	0x80027460	0x16c60	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4
 OPEN.EXE	0x800274dc	0x16cdc	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 OPEN.EXE	0x8002754c	0x16d4c	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800275ac	0x16dac	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8002780c	0x1700c	0x28	0x28	1	function	archive-xdef	_spu_close		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x2c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_open at .text+0x2e8; retail return/delay slot
 OPEN.EXE	0x80027834	0x17034	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8002788c	0x1708c	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800278bc	0x170bc	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80027924	0x17124	0x200	0x200	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80027b24	0x17324	0x28	0x28	1	function	archive-xdef	_spu_read		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x5d8; exact three-image text section and native XDEF	vendored SDK entry to local _spu_interruptDMA at .text+0x600; retail return/delay slot
 OPEN.EXE	0x80027bd8	0x173d8	0x134	0x134	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80027d0c	0x1750c	0x110	0x110	1	function	archive-xdef	_spu_r		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x7c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_r_ at .text+0x8d0; retail return/delay slot
 OPEN.EXE	0x80027e1c	0x1761c	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80027edc	0x176dc	0x814	0x814	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800286f0	0x17ef0	0x184	0x184	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80028874	0x18074	0x4d0	0x4d0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80028d44	0x18544	0x398	0x398	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800290dc	0x188dc	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80029208	0x18a08	0x1c	0x1c	1	function	archive-xdef	SysSpu_setRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cbc; exact three-image text section and native XDEF	vendored SDK entry to SysSpu_getRegister at .text+0x1cd8; retail return/delay slot
+OPEN.EXE	0x80029224	0x18a24	0x1c	0x1c	1	function	archive-xdef	SysSpu_getRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cd8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x1cf4; retail return/delay slot
 OPEN.EXE	0x80029240	0x18a40	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80029270	0x18a70	0x4f0	0x4f0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80029760	0x18f60	0x2fc	0x2fc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1711,17 +1721,22 @@ END.EXE	0x8002430c	0x13b0c	0x7c	0x7c	1	function	ghidra-analysis			Ghidra-12.0.4/
 END.EXE	0x80024388	0x13b88	0x70	0x70	1	function	reviewed-asm	SpuQuit		LIBSPU S_INI.OBJ .text XDEF +0x19c;retail raw prologue and return delay slot	archive-exported SDK function ending at .text+0x20c
 END.EXE	0x800243f8	0x13bf8	0x60	0x60	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80024458	0x13c58	0x260	0x260	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x800246b8	0x13eb8	0x28	0x28	1	function	archive-xdef	_spu_close		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x2c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_open at .text+0x2e8; retail return/delay slot
 END.EXE	0x800246e0	0x13ee0	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80024738	0x13f38	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80024768	0x13f68	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800247d0	0x13fd0	0x200	0x200	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x800249d0	0x141d0	0x28	0x28	1	function	archive-xdef	_spu_read		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x5d8; exact three-image text section and native XDEF	vendored SDK entry to local _spu_interruptDMA at .text+0x600; retail return/delay slot
 END.EXE	0x80024a84	0x14284	0x134	0x134	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80024bb8	0x143b8	0x110	0x110	1	function	archive-xdef	_spu_r		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x7c0; exact three-image text section and native XDEF	vendored SDK entry to _spu_r_ at .text+0x8d0; retail return/delay slot
 END.EXE	0x80024cc8	0x144c8	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80024d88	0x14588	0x814	0x814	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8002559c	0x14d9c	0x184	0x184	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80025720	0x14f20	0x4d0	0x4d0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80025bf0	0x153f0	0x398	0x398	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80025f88	0x15788	0x12c	0x12c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x800260b4	0x158b4	0x1c	0x1c	1	function	archive-xdef	SysSpu_setRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cbc; exact three-image text section and native XDEF	vendored SDK entry to SysSpu_getRegister at .text+0x1cd8; retail return/delay slot
+END.EXE	0x800260d0	0x158d0	0x1c	0x1c	1	function	archive-xdef	SysSpu_getRegister		Psy-Q 3.0 LIBSPU SPU.OBJ .text+0x1cd8; exact three-image text section and native XDEF	vendored SDK entry to .text end at .text+0x1cf4; retail return/delay slot
 END.EXE	0x800260ec	0x158ec	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8002611c	0x1591c	0x4f0	0x4f0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8002660c	0x15e0c	0x2fc	0x2fc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

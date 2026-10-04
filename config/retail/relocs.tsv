@@ -11313,14 +11313,14 @@ GAME.EXE	0x8005ec58	0x4e458	0x8005ec5c	mips_hi16_lo16	instruction-word	0x8006d51
 GAME.EXE	0x8005ec74	0x4e474		mips26	instruction-word	0x8005ed24	load	DMAStop	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ec7c	0x4e47c		mips26	instruction-word	0x8005e6c4	load	VBLNKStop	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eca8	0x4e4a8		mips26	instruction-word	0x8005f390	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ecc8	0x4e4c8	0x8005eccc	mips_hi16_lo16	instruction-word	0x8006d8ac	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ecc8	0x4e4c8	0x8005eccc	mips_hi16_lo16	reachable-code	0x8006d8ac	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x8 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005ecd4	0x4e4d4	0x8005ecd8	mips_hi16_lo16	instruction-word	0x8006d52c	load		lui+addiu	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ecf0	0x4e4f0	0x8005ecf4	mips_hi16_lo16	instruction-word	0x8005ed7c	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ecf8	0x4e4f8		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ed04	0x4e504	0x8005ed08	mips_hi16_lo16	instruction-word	0x8006d8b0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ed04	0x4e504	0x8005ed08	mips_hi16_lo16	reachable-code	0x8006d8b0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x44 native HI16/LO16 to .sdata+0x4;retail sw pair
 GAME.EXE	0x8005ed0c	0x4e50c	0x8005ed10	mips_hi16_lo16	instruction-word	0x8005eecc	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ed2c	0x4e52c	0x8005ed30	mips_hi16_lo16	instruction-word	0x8006d8b0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ed34	0x4e534	0x8005ed38	mips_hi16_lo16	instruction-word	0x8006d8ac	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ed2c	0x4e52c	0x8005ed30	mips_hi16_lo16	reachable-code	0x8006d8b0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x6c native HI16/LO16 to .sdata+0x4;retail sw pair
+GAME.EXE	0x8005ed34	0x4e534	0x8005ed38	mips_hi16_lo16	reachable-code	0x8006d8ac	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x74 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005ed48	0x4e548		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ed54	0x4e554	0x8005ed58	mips_hi16_lo16	instruction-word	0x8006d52c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ed7c	0x4e57c	0x8005ed80	mips_hi16_lo16	instruction-word	0x8006d8ac	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv

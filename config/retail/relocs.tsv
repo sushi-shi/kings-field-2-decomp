@@ -7065,10 +7065,10 @@ GAME.EXE	0x8003523c	0x24a3c		mips26	reachable-code	0x8003526c	load		j		control-f
 GAME.EXE	0x80035258	0x24a58		mips26	reachable-code	0x8003526c	load		j		control-flow	reviewed	manual:map-cell-rectangle
 GAME.EXE	0x8003528c	0x24a8c	0x80035290	mips_hi16_lo16	reachable-code	0x801c7540	bss	bss_801c7540	lui+addiu		paired-reviewed	reviewed	manual:map-cell-rectangle
 GAME.EXE	0x8003551c	0x24d1c		mips26	instruction-word	0x80013f50	load	audio_play_spatial_default_range	jal		range-filtered	reviewed	manual:map_object_sound
-GAME.EXE	0x80035540	0x24d40	0x80035544	mips_hi16_lo16	instruction-word	0x80176804	bss		lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_pool_reset first object tail
-GAME.EXE	0x80035570	0x24d70	0x80035574	mips_hi16_lo16	instruction-word	0x8017d112	bss		lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
-GAME.EXE	0x80035578	0x24d78	0x8003557c	mips_hi16_lo16	instruction-word	0x8017d110	bss		lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
-GAME.EXE	0x80035580	0x24d80	0x80035584	mips_hi16_lo16	instruction-word	0x8017d10e	bss		lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
+GAME.EXE	0x80035540	0x24d40	0x80035544	mips_hi16_lo16	instruction-word	0x80176804	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_pool_reset first object tail
+GAME.EXE	0x80035570	0x24d70	0x80035574	mips_hi16_lo16	instruction-word	0x8017d112	bss	map_object_state	lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
+GAME.EXE	0x80035578	0x24d78	0x8003557c	mips_hi16_lo16	instruction-word	0x8017d110	bss	map_object_state	lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
+GAME.EXE	0x80035580	0x24d80	0x80035584	mips_hi16_lo16	instruction-word	0x8017d10e	bss	map_object_state	lui+sh	at	paired-reviewed	reviewed	manual:map_object_pool_reset tail halfword
 GAME.EXE	0x800355fc	0x24dfc	0x80035600	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	a0	paired-reviewed	reviewed	manual:map_object_set_property pool base
 GAME.EXE	0x8003563c	0x24e3c		mips26	reachable-code	0x800356a4	load		j		control-flow	reviewed	manual:map_object_related_direct_raw_word
 GAME.EXE	0x80035658	0x24e58		mips26	reachable-code	0x800356a4	load		j		control-flow	reviewed	manual:map_object_related_direct_raw_word
@@ -7129,8 +7129,8 @@ GAME.EXE	0x80035fe0	0x257e0		mips26	instruction-word	0x80036018	load		j		decoded
 GAME.EXE	0x80035ff4	0x257f4		mips26	instruction-word	0x80035f70	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035ffc	0x257fc	0x80036000	mips_hi16_lo16	instruction-word	0x8017d124	bss		lui+lw	v0	paired-reviewed	reviewed	manual:map_object_init_records;retail-pair
 GAME.EXE	0x800360b0	0x258b0	0x800360b4	mips_hi16_lo16	reachable-code	0x801767d0	bss	map_object_state	lui+addiu		paired-reviewed	reviewed	manual:map_object_collision_query object pool base
-GAME.EXE	0x800360e4	0x258e4	0x800360e8	mips_hi16_lo16	reachable-code	0x8017d108	bss		lui+lw		paired-reviewed	reviewed	manual:map_object_collision_query current object pointer
-GAME.EXE	0x80036100	0x25900	0x80036104	mips_hi16_lo16	reachable-code	0x801749d4	bss		lui+addiu		paired-reviewed	reviewed	manual:map_object_collision_query template radius field
+GAME.EXE	0x800360e4	0x258e4	0x800360e8	mips_hi16_lo16	reachable-code	0x8017d108	bss	map_object_state	lui+lw		paired-reviewed	reviewed	manual:map_object_collision_query current object pointer
+GAME.EXE	0x80036100	0x25900	0x80036104	mips_hi16_lo16	reachable-code	0x801749d4	bss	map_object_state	lui+addiu		paired-reviewed	reviewed	manual:map_object_collision_query template radius field
 GAME.EXE	0x80036138	0x25938		mips26	reachable-code	0x800155a4	load	vector_distance_to_point	jal		control-flow	reviewed	manual:map_object_related_direct_raw_word
 GAME.EXE	0x800361d8	0x259d8	0x800361dc	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_80036190 object pool
 GAME.EXE	0x8003621c	0x25a1c	0x80036220	mips_hi16_lo16	instruction-word	0x801749d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:func_80036190 template table

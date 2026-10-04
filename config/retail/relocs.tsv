@@ -2019,7 +2019,7 @@ GAME.EXE	0x800139a4	0x31a4		mips26	reachable-code	0x8005e828	load	PadStop	jal		c
 GAME.EXE	0x800139ac	0x31ac		mips26	reachable-code	0x8005f4c8	load	ResetGraph	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139cc	0x31cc		mips26	reachable-code	0x80050cd0	load	SsInit	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139d8	0x31d8		mips26	reachable-code	0x80051b60	load	SsSetMVol	jal		control-flow	reviewed	manual:audio
-GAME.EXE	0x800139e0	0x31e0	0x800139e4	mips_hi16_lo16	reachable-code	0x8009a6a0	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-sequence-table;object-extent-unbound
+GAME.EXE	0x800139e0	0x31e0	0x800139e4	mips_hi16_lo16	reachable-code	0x8009a6a0	bss	audio_sequence_table	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-sequence-table;object-extent-unbound
 GAME.EXE	0x800139ec	0x31ec		mips26	reachable-code	0x80050d10	load	SsSetTableSize	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139f4	0x31f4		mips26	reachable-code	0x80050eb4	load	SsSetTickMode	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139fc	0x31fc		mips26	reachable-code	0x80051248	load	SsStart2	jal		control-flow	reviewed	manual:audio

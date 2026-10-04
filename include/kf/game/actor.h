@@ -591,6 +591,7 @@ typedef char kf_actor_collision_radius_offset[
 typedef char kf_actor_collision_height_offset[
     (u32)&((KfActor *)0)->collision_height == 0x1e ? 1 : -1];
 typedef char kf_actor_phase_offset[(u32)&((KfActor *)0)->animation_phase == 0x18 ? 1 : -1];
+typedef char kf_actor_flags_offset[(u32)&((KfActor *)0)->flags == 0x28 ? 1 : -1];
 typedef char kf_actor_position_offset[(u32)&((KfActor *)0)->position == 0x2c ? 1 : -1];
 typedef char kf_actor_ballistic_origin_y_offset[
     (u32)&((KfActor *)0)->ballistic_origin_y == 0x3c ? 1 : -1];

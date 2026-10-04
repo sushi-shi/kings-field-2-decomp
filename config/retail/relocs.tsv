@@ -10735,10 +10735,12 @@ GAME.EXE	0x80055bbc	0x453bc		mips26	reachable-code	0x8005f430	load	printf	jal		c
 GAME.EXE	0x80055c74	0x45474		mips26	reachable-code	0x80055c80	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055c9c	0x4549c		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055d2c	0x4552c		mips26	reachable-code	0x80055dcc	load		j		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80055e20	0x45620	0x80055e24	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x34/+0x38;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80055e68	0x45668		mips26	reachable-code	0x80055ed8	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055e80	0x45680		mips26	reachable-code	0x80055ed4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055e88	0x45688		mips26	reachable-code	0x80055ed8	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055ea8	0x456a8		mips26	reachable-code	0x80055ef4	load	GetSeqData	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80055f30	0x45730	0x80055f34	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x144/+0x148;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80055f9c	0x4579c		mips26	reachable-code	0x8005616c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055fb8	0x457b8		mips26	reachable-code	0x8005616c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80055fe4	0x457e4		mips26	reachable-code	0x800560f4	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -10762,10 +10764,13 @@ GAME.EXE	0x80056140	0x45940		mips26	reachable-code	0x8005616c	load		j		control-f
 GAME.EXE	0x80056150	0x45950		mips26	reachable-code	0x800576b0	load	SetPitchBend	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056158	0x45958		mips26	reachable-code	0x8005616c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056164	0x45964		mips26	reachable-code	0x80057754	load	GetMetaEvent	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800561b4	0x459b4	0x800561b8	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x3c8/+0x3cc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056254	0x45a54		mips26	reachable-code	0x8005392c	load	SpuVmKeyOn	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005625c	0x45a5c		mips26	reachable-code	0x8005627c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056274	0x45a74		mips26	reachable-code	0x80053d34	load	SpuVmKeyOff	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800562b8	0x45ab8	0x800562bc	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x4cc/+0x4d0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x800562e0	0x45ae0		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005633c	0x45b3c	0x80056340	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x550/+0x554;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056380	0x45b80	0x80056384	mips_hi16_lo16	reachable-code	0x80013110	load		lui+addiu	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005639c	0x45b9c		mips26	instruction-word	0x8005659c	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800563b4	0x45bb4		mips26	instruction-word	0x800565d4	load	ContModulation	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -10798,14 +10803,17 @@ GAME.EXE	0x80056574	0x45d74		mips26	instruction-word	0x800565b4	load		j		range-f
 GAME.EXE	0x8005658c	0x45d8c		mips26	instruction-word	0x800569b4	load	ContResetAll	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056594	0x45d94		mips26	instruction-word	0x800565b4	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800565a8	0x45da8		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056620	0x45e20	0x80056624	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x834/+0x838;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056654	0x45e54		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056680	0x45e80		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056698	0x45e98		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800566c0	0x45ec0		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056740	0x45f40	0x80056744	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x954/+0x958;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056774	0x45f74		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800567a0	0x45fa0		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800567b8	0x45fb8		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800567e0	0x45fe0		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005685c	0x4605c	0x80056860	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xa70/+0xa74;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056890	0x46090		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800568d0	0x460d0		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800568ec	0x460ec		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -10813,10 +10821,14 @@ GAME.EXE	0x80056908	0x46108		mips26	instruction-word	0x8005697c	load		j		range-f
 GAME.EXE	0x80056944	0x46144		mips26	instruction-word	0x80057d78	load	SsUtGetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005695c	0x4615c		mips26	instruction-word	0x80057fb4	load	SsUtSetVagAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056984	0x46184		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800569e8	0x461e8	0x800569ec	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xbfc/+0xc00;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056a00	0x46200		mips26	instruction-word	0x80051424	load	SsUtReverbOff	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056a48	0x46248		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056aa4	0x462a4	0x80056aa8	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xcb8/+0xcbc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056ae0	0x462e0		mips26	instruction-word	0x80056b10	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056b28	0x46328	0x80056b2c	mips_hi16_lo16	reachable-code	0x8009a8a0	bss	MarkCallback	lui+addiu	v0	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF MarkCallback .text+0xd3c/+0xd40;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056b6c	0x4636c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056bc4	0x463c4	0x80056bc8	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xdd8/+0xddc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056bf4	0x463f4		mips26	instruction-word	0x80056c84	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c08	0x46408		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c18	0x46418		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
@@ -10826,8 +10838,11 @@ GAME.EXE	0x80056c64	0x46464		mips26	instruction-word	0x80056ca8	load		j		range-f
 GAME.EXE	0x80056c6c	0x4646c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c7c	0x4647c		mips26	instruction-word	0x80056ca8	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056c9c	0x4649c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056ce4	0x464e4	0x80056ce8	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xef8/+0xefc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056d0c	0x4650c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056d54	0x46554	0x80056d58	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0xf68/+0xf6c;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056d7c	0x4657c		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80056df0	0x465f0	0x80056df4	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x1004/+0x1008;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80056e24	0x46624		mips26	instruction-word	0x80058190	load	SsUtGetProgAtr	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056e58	0x46658		mips26	instruction-word	0x80057aac	load	ReadDeltaValue	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80056e60	0x46660		mips26	instruction-word	0x80057328	load		j		range-filtered	candidate	investigation:relocs.tsv
@@ -10892,8 +10907,11 @@ GAME.EXE	0x80057670	0x46e70		mips26	instruction-word	0x80057690	load		j		range-f
 GAME.EXE	0x80057678	0x46e78		mips26	instruction-word	0x80051570	load	SsUtSetReverbFeedback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057680	0x46e80		mips26	instruction-word	0x80057690	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057688	0x46e88		mips26	instruction-word	0x800515b0	load	SsUtSetReverbDelay	jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800576e4	0x46ee4	0x800576e8	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x18f8/+0x18fc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80057724	0x46f24		mips26	reachable-code	0x80053370	load	SpuVmPitchBend	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057730	0x46f30		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005778c	0x46f8c	0x80057790	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	a0	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x19a0/+0x19a4;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8005783c	0x4703c	0x80057840	mips_hi16_lo16	reachable-code	0x801b5a98	bss	VBLANK_MINUS	lui+lw	v1	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF VBLANK_MINUS .text+0x1a50/+0x1a54;retail raw pair;exact-sdk30 section
 GAME.EXE	0x800578a4	0x470a4		mips26	reachable-code	0x80057944	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057950	0x47150		mips26	reachable-code	0x80057aac	load	ReadDeltaValue	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057958	0x47158		mips26	reachable-code	0x80057a94	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -10901,6 +10919,7 @@ GAME.EXE	0x80057984	0x47184		mips26	reachable-code	0x80057a94	load		j		control-f
 GAME.EXE	0x800579b8	0x471b8		mips26	reachable-code	0x80057a94	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057a70	0x47270		mips26	reachable-code	0x80057b60	load	Snd_nextseq	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057a80	0x47280		mips26	reachable-code	0x80054294	load	SpuVmSeqKeyOff	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80057ac8	0x472c8	0x80057acc	mips_hi16_lo16	reachable-code	0x801d9588	bss	_ss_score	lui+addiu	at	paired-reviewed	reviewed	manual:LIBSND SEQREAD.OBJ XREF _ss_score .text+0x1cdc/+0x1ce0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x80057b04	0x47304		mips26	reachable-code	0x80057b58	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057bc0	0x473c0		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80057db0	0x475b0		mips26	instruction-word	0x80057fa0	load		j		range-filtered	candidate	investigation:relocs.tsv

@@ -922,11 +922,14 @@ GAME.EXE	0x8005f694	0x4ee94	0xd0	0xd0	1	function	archive-xdef	SetGraphReverse		P
 GAME.EXE	0x8005f764	0x4ef64	0x64	0x64	1	function	archive-xdef	SetGraphDebug		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x2c4; OPEN/END homologs; retail bytes	vendored SDK entry, next XDEF GetGraphType at .text+0x328
 GAME.EXE	0x8005f7c8	0x4efc8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f7d8	0x4efd8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f7e8	0x4efe8	0x18	0x18	1	function	archive-xdef	DrawSyncCallback		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x348; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDispMask at .text+0x360
 GAME.EXE	0x8005f800	0x4f000	0x40	0x40	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f840	0x4f040	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f870	0x4f070	0x50	0x50	1	function	archive-xdef	ClearImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x3d0; exact three-image section and native XDEF	vendored SDK entry, next XDEF LoadImage at .text+0x420
 GAME.EXE	0x8005f8c0	0x4f0c0	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f8fc	0x4f0fc	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f938	0x4f138	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f9a4	0x4f1a4	0x54	0x54	1	function	archive-xdef	ClearOTag		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x504; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTagR at .text+0x558
 GAME.EXE	0x8005f9f8	0x4f1f8	0x38	0x38	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005fa30	0x4f230	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005fab4	0x4f2b4	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1028,11 +1031,15 @@ OPEN.EXE	0x80015310	0x4b10	0xd0	0xd0	1	function	archive-xdef	SetGraphReverse		Ps
 OPEN.EXE	0x800153e0	0x4be0	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80015444	0x4c44	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80015454	0x4c54	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80015464	0x4c64	0x18	0x18	1	function	archive-xdef	DrawSyncCallback		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x348; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDispMask at .text+0x360
 OPEN.EXE	0x8001547c	0x4c7c	0x40	0x40	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800154bc	0x4cbc	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800154ec	0x4cec	0x50	0x50	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001553c	0x4d3c	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80015578	0x4d78	0x3c	0x3c	1	function	archive-xdef	StoreImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x45c; exact three-image section and native XDEF	vendored SDK entry, next XDEF MoveImage at .text+0x498
+OPEN.EXE	0x800155b4	0x4db4	0x6c	0x6c	1	function	archive-xdef	MoveImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x498; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTag at .text+0x504
 OPEN.EXE	0x80015620	0x4e20	0x54	0x54	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80015674	0x4e74	0x38	0x38	1	function	archive-xdef	ClearOTagR		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x558; exact three-image section and native XDEF	vendored SDK entry, next XDEF DrawPrim at .text+0x590
 OPEN.EXE	0x800156ac	0x4eac	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80015730	0x4f30	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80015788	0x4f88	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1377,10 +1384,16 @@ END.EXE	0x80013af4	0x32f4	0x1cc	0x1cc	1	function	ghidra-analysis			Ghidra-12.0.4
 END.EXE	0x80013cc0	0x34c0	0xd0	0xd0	1	function	archive-xdef	SetGraphReverse		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x1f4; three-image retail body	vendored SDK entry, next XDEF SetGraphDebug at .text+0x2c4
 END.EXE	0x80013d90	0x3590	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80013df4	0x35f4	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80013e04	0x3604	0x10	0x10	1	function	archive-xdef	GetGraphDebug		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x338; exact three-image section and native XDEF	vendored SDK entry, next XDEF DrawSyncCallback at .text+0x348
+END.EXE	0x80013e14	0x3614	0x18	0x18	1	function	archive-xdef	DrawSyncCallback		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x348; exact three-image section and native XDEF	vendored SDK entry, next XDEF SetDispMask at .text+0x360
 END.EXE	0x80013e2c	0x362c	0x40	0x40	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80013e6c	0x366c	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80013e9c	0x369c	0x50	0x50	1	function	archive-xdef	ClearImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x3d0; exact three-image section and native XDEF	vendored SDK entry, next XDEF LoadImage at .text+0x420
 END.EXE	0x80013eec	0x36ec	0x3c	0x3c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80013f28	0x3728	0x3c	0x3c	1	function	archive-xdef	StoreImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x45c; exact three-image section and native XDEF	vendored SDK entry, next XDEF MoveImage at .text+0x498
+END.EXE	0x80013f64	0x3764	0x6c	0x6c	1	function	archive-xdef	MoveImage		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x498; exact three-image section and native XDEF	vendored SDK entry, next XDEF ClearOTag at .text+0x504
 END.EXE	0x80013fd0	0x37d0	0x54	0x54	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80014024	0x3824	0x38	0x38	1	function	archive-xdef	ClearOTagR		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x558; exact three-image section and native XDEF	vendored SDK entry, next XDEF DrawPrim at .text+0x590
 END.EXE	0x8001405c	0x385c	0x84	0x84	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800140e0	0x38e0	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80014138	0x3938	0xc0	0xc0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

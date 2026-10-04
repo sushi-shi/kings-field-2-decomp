@@ -50,6 +50,11 @@ KfCdState cd_state;
 DATA(0x801b6004, 0x60)
 KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
 
+/* Provisional extent: the first map payload copies 0xfa00 bytes from this
+ * buffer, while the following BSS identity begins at 0x801c7068. */
+DATA(0x801b6064, 0x11000)
+u8 cd_stream_work_buffer[0x11000];
+
 ADDRESS(0x80016ed4, 0xc)
 void cd_stream_mark_complete(KfCdRequest *request)
 {

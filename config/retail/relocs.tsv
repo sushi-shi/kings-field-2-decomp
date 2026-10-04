@@ -6457,13 +6457,13 @@ GAME.EXE	0x8002f4c0	0x1ecc0		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal	
 GAME.EXE	0x8002f4d0	0x1ecd0		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-blend-render-proven-calls
 GAME.EXE	0x8002f4e0	0x1ece0		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-blend-render-proven-calls
 GAME.EXE	0x8002f558	0x1ed58		mips26	reachable-code	0x80063358	load	AddPrim	jal		control-flow	reviewed	manual:tmd-blend-render-proven-calls
-GAME.EXE	0x8002f5e8	0x1ede8	0x8002f5ec	mips_hi16_lo16	reachable-code	0x80191ad4	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002f5f0	0x1edf0	0x8002f5f4	mips_hi16_lo16	reachable-code	0x80191ad8	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002f604	0x1ee04	0x8002f608	mips_hi16_lo16	reachable-code	0x80191adc	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002f5e8	0x1ede8	0x8002f5ec	mips_hi16_lo16	reachable-code	0x80191ad4	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002f5f0	0x1edf0	0x8002f5f4	mips_hi16_lo16	reachable-code	0x80191ad8	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002f604	0x1ee04	0x8002f608	mips_hi16_lo16	reachable-code	0x80191adc	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002f614	0x1ee14		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002f624	0x1ee24	0x8002f628	mips_hi16_lo16	reachable-code	0x8006d6d0	load	map_textured_primitive_color	lui+addiu	a1	paired-reviewed	reviewed	manual:tmd-render-color-sdk-flow
 GAME.EXE	0x8002f62c	0x1ee2c		mips26	reachable-code	0x8005ce58	load	NormalColorCol	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
-GAME.EXE	0x8002f634	0x1ee34	0x8002f638	mips_hi16_lo16	reachable-code	0x80191ad4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002f634	0x1ee34	0x8002f638	mips_hi16_lo16	reachable-code	0x80191ad4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002f654	0x1ee54		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002f674	0x1ee74		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002f67c	0x1ee7c		mips26	reachable-code	0x8002f7d0	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -6480,7 +6480,7 @@ GAME.EXE	0x8002f894	0x1f094	0x8002f898	mips_hi16_lo16	reachable-code	0x8018db5c	
 GAME.EXE	0x8002f89c	0x1f09c		mips26	reachable-code	0x8002da94	load	tmd_project_vertices_mark_clipped	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002f8b8	0x1f0b8		mips26	reachable-code	0x8002f8d4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002f8c4	0x1f0c4	0x8002f8c8	mips_hi16_lo16	reachable-code	0x8018d258	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002f8f8	0x1f0f8	0x8002f8fc	mips_hi16_lo16	reachable-code	0x8018dc50	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002f8f8	0x1f0f8	0x8002f8fc	mips_hi16_lo16	reachable-code	0x8018dc50	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002fa4c	0x1f24c		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fa5c	0x1f25c	0x8002fa60	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002fa78	0x1f278	0x8002fa7c	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
@@ -6491,7 +6491,7 @@ GAME.EXE	0x8002fb40	0x1f340		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal	
 GAME.EXE	0x8002fb50	0x1f350		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fb60	0x1f360		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fbbc	0x1f3bc		mips26	reachable-code	0x8002fe68	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002fbf0	0x1f3f0	0x8002fbf4	mips_hi16_lo16	reachable-code	0x80191ad4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002fbf0	0x1f3f0	0x8002fbf4	mips_hi16_lo16	reachable-code	0x80191ad4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002fc08	0x1f408		mips26	reachable-code	0x8005bd64	load	Clip4FTP	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fc28	0x1f428		mips26	reachable-code	0x8002fed4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8002fcf4	0x1f4f4		mips26	reachable-code	0x8005cf08	load	NormalClip	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
@@ -6504,7 +6504,7 @@ GAME.EXE	0x8002fdd0	0x1f5d0		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal	
 GAME.EXE	0x8002fde0	0x1f5e0		mips26	reachable-code	0x8005ccc8	load	DpqColor	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fe70	0x1f670		mips26	reachable-code	0x80063358	load	AddPrim	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fe78	0x1f678		mips26	reachable-code	0x8002ff00	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002fe9c	0x1f69c	0x8002fea0	mips_hi16_lo16	reachable-code	0x80191ad4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002fe9c	0x1f69c	0x8002fea0	mips_hi16_lo16	reachable-code	0x80191ad4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002feb4	0x1f6b4		mips26	reachable-code	0x8005bce4	load	Clip3FTP	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8002fef8	0x1f6f8		mips26	reachable-code	0x8002f5b0	load	render_enqueue_clipped_tmd_polygon	jal		control-flow	reviewed	manual:tmd-clipped-render-proven-calls
 GAME.EXE	0x8003004c	0x1f84c		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:tmd-prepared-14-direct-calls
@@ -6790,16 +6790,16 @@ GAME.EXE	0x80032d28	0x22528	0x80032d2c	mips_hi16_lo16	reachable-code	0x80191ed4	
 GAME.EXE	0x80032d5c	0x2255c		mips26	reachable-code	0x80032dc8	load		j		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 in-body jump
 GAME.EXE	0x80032d70	0x22570	0x80032d74	mips_hi16_lo16	reachable-code	0x80063dcc	load	render_world_identity_matrix	lui+addiu	v0	paired-reviewed	reviewed	manual:render_scene_and_update_resources world matrix argument
 GAME.EXE	0x80032d78	0x22578		mips26	reachable-code	0x80032d98	load		j		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 in-body jump
-GAME.EXE	0x80032d90	0x22590	0x80032d94	mips_hi16_lo16	reachable-code	0x80191ef4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80032d90	0x22590	0x80032d94	mips_hi16_lo16	reachable-code	0x80191ef4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80032dd8	0x225d8		mips26	reachable-code	0x80031850	load	render_world_model	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x80032de0	0x225e0		mips26	reachable-code	0x80032e44	load		j		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 in-body jump
 GAME.EXE	0x80032e38	0x22638		mips26	reachable-code	0x80031850	load	render_world_model	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
-GAME.EXE	0x80032e70	0x22670	0x80032e74	mips_hi16_lo16	reachable-code	0x80194230	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80032e70	0x22670	0x80032e74	mips_hi16_lo16	reachable-code	0x80194230	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80032e9c	0x2269c		mips26	reachable-code	0x80032040	load	map_cell_layer_mask	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
-GAME.EXE	0x80032ec4	0x226c4	0x80032ec8	mips_hi16_lo16	reachable-code	0x80191ef4	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80032ec4	0x226c4	0x80032ec8	mips_hi16_lo16	reachable-code	0x80191ef4	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80032f00	0x22700		mips26	reachable-code	0x80031850	load	render_world_model	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
-GAME.EXE	0x80032f18	0x22718	0x80032f1c	mips_hi16_lo16	reachable-code	0x8019422c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80032fa4	0x227a4	0x80032fa8	mips_hi16_lo16	reachable-code	0x8019422c	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80032f18	0x22718	0x80032f1c	mips_hi16_lo16	reachable-code	0x8019422c	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80032fa4	0x227a4	0x80032fa8	mips_hi16_lo16	reachable-code	0x8019422c	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80032ff4	0x227f4	0x80032ff8	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033010	0x22810	0x80033014	mips_hi16_lo16	reachable-code	0x8017d160	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80033120	0x22920	0x80033124	mips_hi16_lo16	reachable-code	0x8018d164	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:graphics

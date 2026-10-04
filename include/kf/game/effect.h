@@ -334,7 +334,6 @@ typedef struct KfMagicRecord {
     u8 charge_rate;
     u8 unknown_02[2];
     u8 player_status_flags;
-    u8 unknown_05;
     u16 damage_components[8];
     u16 mp_cost;
     u8 unknown_18[2];

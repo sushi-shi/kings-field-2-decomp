@@ -11317,21 +11317,21 @@ GAME.EXE	0x8005eee0	0x4e6e0	0x8005eee4	mips_hi16_lo16	instruction-word	0x8006d51
 GAME.EXE	0x8005ef08	0x4e708	0x8005ef0c	mips_hi16_lo16	instruction-word	0x8006d8ac	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ef30	0x4e730		mips26	instruction-word	0x8005ef5c	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ef38	0x4e738	0x8005ef3c	mips_hi16_lo16	instruction-word	0x8006d8ac	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ef64	0x4e764	0x8005ef68	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ef80	0x4e780	0x8005ef84	mips_hi16_lo16	reachable-code	0x8006d8b8	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ef88	0x4e788	0x8005ef8c	mips_hi16_lo16	reachable-code	0x8006d8bc	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ef64	0x4e764	0x8005ef68	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x0 native HI16/LO16 to .sdata+0x0;retail lw pair
+GAME.EXE	0x8005ef80	0x4e780	0x8005ef84	mips_hi16_lo16	reachable-code	0x8006d8b8	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x1c native HI16/LO16 to .sdata+0x4;retail lw pair
+GAME.EXE	0x8005ef88	0x4e788	0x8005ef8c	mips_hi16_lo16	reachable-code	0x8006d8bc	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x24 native HI16/LO16 to .sdata+0x8;retail lw pair
 GAME.EXE	0x8005efa4	0x4e7a4	0x8005efa8	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005efac	0x4e7ac		mips26	reachable-code	0x8005f054	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005efc0	0x4e7c0	0x8005efc4	mips_hi16_lo16	reachable-code	0x8006d8c0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005efc0	0x4e7c0	0x8005efc4	mips_hi16_lo16	reachable-code	0x8006d8c0	load		lui+lw	a0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x5c native HI16/LO16 to .sdata+0xc;retail lw pair
 GAME.EXE	0x8005efd0	0x4e7d0		mips26	reachable-code	0x8005f068	load	v_wait	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005efd8	0x4e7d8	0x8005efdc	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005efd8	0x4e7d8	0x8005efdc	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x74 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005efe8	0x4e7e8	0x8005efec	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005eff0	0x4e7f0		mips26	reachable-code	0x8005f068	load	v_wait	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f008	0x4e808	0x8005f00c	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f008	0x4e808	0x8005f00c	mips_hi16_lo16	reachable-code	0x8006d8b4	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xa4 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005f02c	0x4e82c	0x8005f030	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f034	0x4e834	0x8005f038	mips_hi16_lo16	reachable-code	0x8006d8b8	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f03c	0x4e83c	0x8005f040	mips_hi16_lo16	reachable-code	0x8006d8c0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f04c	0x4e84c	0x8005f050	mips_hi16_lo16	reachable-code	0x8006d8bc	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f034	0x4e834	0x8005f038	mips_hi16_lo16	reachable-code	0x8006d8b8	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd0 native HI16/LO16 to .sdata+0x4;retail lw pair
+GAME.EXE	0x8005f03c	0x4e83c	0x8005f040	mips_hi16_lo16	reachable-code	0x8006d8c0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd8 native HI16/LO16 to .sdata+0xc;retail sw pair
+GAME.EXE	0x8005f04c	0x4e84c	0x8005f050	mips_hi16_lo16	reachable-code	0x8006d8bc	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xe8 native HI16/LO16 to .sdata+0x8;retail sw pair
 GAME.EXE	0x8005f074	0x4e874	0x8005f078	mips_hi16_lo16	reachable-code	0x8006d890	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f0b0	0x4e8b0	0x8005f0b4	mips_hi16_lo16	reachable-code	0x800133e0	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f0b8	0x4e8b8		mips26	reachable-code	0x8005f430	load	printf	jal		control-flow	candidate	investigation:relocs.tsv

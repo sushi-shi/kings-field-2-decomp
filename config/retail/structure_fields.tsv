@@ -150,6 +150,7 @@ KfCdState	0x1c	0x280	requests	KfCdRequest[16]	supported	game/cd.h;asm;cd_initial
 KfCdState	0x29c	0x04	tail	KfCdRequest *	supported	game/cd.h;asm;cd_initialize	next free request; ring end marker
 KfCdState	0x2a0	0x04	current	KfCdRequest *	supported	game/cd.h;asm;cd_initialize;cd_request_wait_idle	request being serviced
 KfCollisionCache	0x00	0x04	cell	KfMapOccupancyCell *	supported	game/collision_cache.h;GAME 0x8002aa8c sw	selected map cell pointer; containing BSS ownership remains WIP
+KfCollisionCache	0x04	0x04	shape	KfMapOccupancyLayer *	supported	game/collision_cache.h;GAME 0x80045ee0 lw;collision_probe_forward_shape_0x20	selected occupancy-layer pointer; containing BSS ownership remains WIP
 KfCollisionCache	0x0a	0x02	layer	u16	supported	game/collision_cache.h;GAME 0x8002aa10/0x8002aa28/0x8002aa7c sh	selected layer byte offset within the two-layer cell
 KfCollisionCache	0x0c	0x04	height	s32	supported	game/collision_cache.h;GAME 0x8002aa40 sw/0x8002aa94 lw	scaled selected-layer height returned to caller
 KfCollisionCache	0x18	0x04	lower_bound	s32	supported	game/collision_cache.h;player_update_collision_bounds;GAME 0x8002338c lw	lower collision bound used for player clearance

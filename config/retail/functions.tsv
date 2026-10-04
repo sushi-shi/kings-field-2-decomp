@@ -738,6 +738,7 @@ GAME.EXE	0x80059300	0x48b00	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x800593e8	0x48be8	0x1d8	0x1d8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x800595c0	0x48dc0	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005964c	0x48e4c	0x5c	0x5c	1	function	sdk-object-label	SsVabOpen		psyq-sdk30:LIBSND.LIB/VS_VAB.OBJ	archive XDEF .text+0x8c;exact 0xe8-byte section;retail function ends at object text end
+GAME.EXE	0x800596a8	0x48ea8	0xd0	0xd0	1	function	sdk-object-label	SsVabTransBody		psyq-sdk30:LIBSND.LIB/VS_VTB.OBJ	archive XDEF .text+0;exact 0xd0-byte GAME/OPEN/END section after 12 native patch words are masked
 GAME.EXE	0x80059778	0x48f78	0x168	0x168	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80059a48	0x49248	0x90	0x90	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80059b98	0x49398	0x1e4	0x1e4	1	function	sdk-object-label	RotMatrixC		psyq-sdk30:LIBGTE.LIB/COR.OBJ	archive XDEF .text+0x0;exact 0x87c-byte section;retail return delay slot

@@ -421,13 +421,6 @@ GAME.EXE	0x800555f4	0x44df4	0x4b0	unclassified	coverage-gap			payload-complement
 GAME.EXE	0x800582e0	0x47ae0	0xfc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80058590	0x47d90	0xbc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005938c	0x48b8c	0x5c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800596a8	0x48ea8	0x33	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800596db	0x48edb	0x6	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <宛!$!
-GAME.EXE	0x800596e1	0x48ee1	0x3a	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005971b	0x48f1b	0x6	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <(檻$!
-GAME.EXE	0x80059721	0x48f21	0x22	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80059743	0x48f43	0x6	string	byte-pattern		shift_jis	investigation:string-census	escaped text: <宛!$!
-GAME.EXE	0x80059749	0x48f49	0x2f	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x800598e0	0x490e0	0x168	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80059ad8	0x492d8	0x685	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005a15d	0x4995d	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: PB4!

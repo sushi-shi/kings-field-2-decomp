@@ -823,7 +823,7 @@ GAME.EXE	0x8006dad4	0x5d2d4	0x4	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006dad8	0x5d2d8	0x4	defined	reviewed	Emu_Addr	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x10;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006dadc	0x5d2dc	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006dae0	0x5d2e0	0x4	defined	reviewed	Emu_Idx	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x18;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
-GAME.EXE	0x8006dae4	0x5d2e4	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006dae4	0x5d2e4	0xc	unclassified	coverage-gap			pinned LIBCD CDROM.OBJ .sbss 120-byte section;retail zero bytes	archive local em_ack is at +0x20 (GAME 0x8006dae8);its extent and adjacent bytes remain unclassified
 GAME.EXE	0x8006daf0	0x5d2f0	0x4	defined	reviewed	RingSize	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x28;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006daf4	0x5d2f4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006daf8	0x5d2f8	0x4	defined	reviewed	RingIdx1	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x30;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
@@ -841,7 +841,7 @@ GAME.EXE	0x8006db24	0x5d324	0x4	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006db28	0x5d328	0x4	defined	reviewed	Func1	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x60;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
 GAME.EXE	0x8006db2c	0x5d32c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db30	0x5d330	0x4	defined	reviewed	Func2	undefined4	Psy-Q 3.0 LIBCD CDROM.OBJ local .sbss+0x68;exact archive text and retail word xrefs	private CD streaming state word; original signedness unresolved
-GAME.EXE	0x8006db34	0x5d334	0xc	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006db34	0x5d334	0xc	unclassified	coverage-gap			pinned LIBCD CDROM.OBJ .sbss 120-byte section;retail zero bytes	archive local CDACK is at +0x70 (GAME 0x8006db38);its extent and adjacent bytes remain unclassified
 GAME.EXE	0x8006db40	0x5d340	0x4	defined	reviewed	tcount	undefined4	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+0;retail SPU transfer xrefs	private SPU transfer counter; physical linked bytes are zero
 GAME.EXE	0x8006db44	0x5d344	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006db48	0x5d348	0x2	defined	reviewed	spu_tsa	u16	Psy-Q 3.0 LIBSPU SPU.OBJ local .sbss+8;retail sh/lhu transfer-address xrefs	private SPU transfer start-address halfword; physical linked bytes are zero

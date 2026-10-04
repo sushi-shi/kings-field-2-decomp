@@ -15489,26 +15489,89 @@ END.EXE	0x80013430	0x2c30		mips26	reachable-code	0x80013444	load		j		control-flo
 END.EXE	0x80013470	0x2c70		mips26	reachable-code	0x80013314	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013484	0x2c84		mips26	reachable-code	0x80013310	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800134a8	0x2ca8		mips26	reachable-code	0x80013310	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x800134ec	0x2cec	0x800134f0	mips_hi16_lo16	reachable-code	0x800a93e8	bss	dc_y	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_y .text+0x18;retail raw pair;exact-sdk30 section
+END.EXE	0x800134f4	0x2cf4	0x800134f8	mips_hi16_lo16	reachable-code	0x800a2830	bss	dc_cr	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cr .text+0x20;retail raw pair;exact-sdk30 section
+END.EXE	0x800134fc	0x2cfc	0x80013500	mips_hi16_lo16	reachable-code	0x800a9680	bss	dc_cb	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cb .text+0x28;retail raw pair;exact-sdk30 section
+END.EXE	0x80013504	0x2d04	0x80013508	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x30;retail raw pair;exact-sdk30 section
 END.EXE	0x8001354c	0x2d4c	0x80013550	mips_hi16_lo16	reachable-code	0x800110cc	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x80013554	0x2d54		mips26	reachable-code	0x80012c74	load	printf	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001355c	0x2d5c		mips26	reachable-code	0x800138a4	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80013564	0x2d64	0x80013568	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x90;retail raw pair;exact-sdk30 section
+END.EXE	0x80013578	0x2d78	0x8001357c	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0xa4;retail raw pair;exact-sdk30 section
+END.EXE	0x80013588	0x2d88	0x8001358c	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0xb4;retail raw pair;exact-sdk30 section
 END.EXE	0x80013590	0x2d90		mips26	reachable-code	0x800138bc	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800135ac	0x2dac		mips26	reachable-code	0x800135bc	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x800135c0	0x2dc0	0x800135c4	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0xec;retail raw pair;exact-sdk30 section
 END.EXE	0x800135c8	0x2dc8	0x800135cc	mips_hi16_lo16	reachable-code	0x800288fc	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x800135f4	0x2df4	0x800135f8	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x120;retail raw pair;exact-sdk30 section
+END.EXE	0x80013600	0x2e00	0x80013604	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x12c;retail raw pair;exact-sdk30 section
+END.EXE	0x8001360c	0x2e0c	0x80013610	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x138;retail raw pair;exact-sdk30 section
+END.EXE	0x80013620	0x2e20	0x80013624	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x14c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013630	0x2e30	0x80013634	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x15c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013640	0x2e40	0x80013644	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x16c;retail raw pair;exact-sdk30 section
 END.EXE	0x8001364c	0x2e4c		mips26	reachable-code	0x80013734	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013658	0x2e58	0x8001365c	mips_hi16_lo16	reachable-code	0x800388fc	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013660	0x2e60	0x80013664	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x18c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013670	0x2e70	0x80013674	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x19c;retail raw pair;exact-sdk30 section
+END.EXE	0x8001367c	0x2e7c	0x80013680	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x1a8;retail raw pair;exact-sdk30 section
+END.EXE	0x80013690	0x2e90	0x80013694	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x1bc;retail raw pair;exact-sdk30 section
+END.EXE	0x800136a0	0x2ea0	0x800136a4	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x1cc;retail raw pair;exact-sdk30 section
+END.EXE	0x800136b0	0x2eb0	0x800136b4	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x1dc;retail raw pair;exact-sdk30 section
+END.EXE	0x800136c0	0x2ec0	0x800136c4	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x1ec;retail raw pair;exact-sdk30 section
+END.EXE	0x800136cc	0x2ecc	0x800136d0	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x1f8;retail raw pair;exact-sdk30 section
+END.EXE	0x800136d8	0x2ed8	0x800136dc	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x204;retail raw pair;exact-sdk30 section
+END.EXE	0x800136e4	0x2ee4	0x800136e8	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x210;retail raw pair;exact-sdk30 section
+END.EXE	0x800136f0	0x2ef0	0x800136f4	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x21c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013704	0x2f04	0x80013708	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x230;retail raw pair;exact-sdk30 section
+END.EXE	0x80013714	0x2f14	0x80013718	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x240;retail raw pair;exact-sdk30 section
+END.EXE	0x80013724	0x2f24	0x80013728	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x250;retail raw pair;exact-sdk30 section
+END.EXE	0x80013734	0x2f34	0x80013738	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x260;retail raw pair;exact-sdk30 section
+END.EXE	0x80013760	0x2f60	0x80013764	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x28c;retail raw pair;exact-sdk30 section
 END.EXE	0x8001377c	0x2f7c		mips26	reachable-code	0x800138bc	load		jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013798	0x2f98		mips26	reachable-code	0x800135b8	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800137cc	0x2fcc		mips26	reachable-code	0x800137e0	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x8001380c	0x300c		mips26	reachable-code	0x800135c0	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013820	0x3020		mips26	reachable-code	0x800135c0	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80013838	0x3038	0x8001383c	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x364;retail raw pair;exact-sdk30 section
+END.EXE	0x80013840	0x3040	0x80013844	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x36c;retail raw pair;exact-sdk30 section
+END.EXE	0x8001384c	0x304c	0x80013850	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x378;retail raw pair;exact-sdk30 section
+END.EXE	0x80013858	0x3058	0x8001385c	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x384;retail raw pair;exact-sdk30 section
+END.EXE	0x80013864	0x3064	0x80013868	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x390;retail raw pair;exact-sdk30 section
+END.EXE	0x80013878	0x3078	0x8001387c	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x3a4;retail raw pair;exact-sdk30 section
 END.EXE	0x80013880	0x3080		mips26	reachable-code	0x800135c0	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x800138bc	0x30bc	0x800138c0	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x3e8;retail raw pair;exact-sdk30 section
 END.EXE	0x800138dc	0x30dc	0x800138e0	mips_hi16_lo16	reachable-code	0x800280fc	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x800138e4	0x30e4		mips26	reachable-code	0x80013900	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x800138f4	0x30f4	0x800138f8	mips_hi16_lo16	reachable-code	0x800278fc	load		lui+addiu	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013908	0x3108	0x8001390c	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x434;retail raw pair;exact-sdk30 section
+END.EXE	0x80013914	0x3114	0x80013918	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x440;retail raw pair;exact-sdk30 section
+END.EXE	0x80013920	0x3120	0x80013924	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x44c;retail raw pair;exact-sdk30 section
+END.EXE	0x8001392c	0x312c	0x80013930	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x458;retail raw pair;exact-sdk30 section
+END.EXE	0x80013940	0x3140	0x80013944	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x46c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013950	0x3150	0x80013954	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x47c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013960	0x3160	0x80013964	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x48c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013970	0x3170	0x80013974	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x49c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013988	0x3188	0x8001398c	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+lw	a3	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x4b4;retail raw pair;exact-sdk30 section
+END.EXE	0x800139b8	0x31b8	0x800139bc	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x4e4;retail raw pair;exact-sdk30 section
+END.EXE	0x800139c4	0x31c4	0x800139c8	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	a1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x4f0;retail raw pair;exact-sdk30 section
+END.EXE	0x800139d0	0x31d0	0x800139d4	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	a0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x4fc;retail raw pair;exact-sdk30 section
+END.EXE	0x800139e4	0x31e4	0x800139e8	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x510;retail raw pair;exact-sdk30 section
+END.EXE	0x800139f4	0x31f4	0x800139f8	mips_hi16_lo16	reachable-code	0x800a28b0	bss	dec_pt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_pt .text+0x520;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a04	0x3204	0x80013a08	mips_hi16_lo16	reachable-code	0x800a9350	bss	dec_used	lui+sw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dec_used .text+0x530;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a14	0x3214	0x80013a18	mips_hi16_lo16	reachable-code	0x800a9318	bss	bs_curt	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF bs_curt .text+0x540;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a1c	0x321c	0x80013a20	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+lw	v1	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x548;retail raw pair;exact-sdk30 section
 END.EXE	0x80013a38	0x3238		mips26	reachable-code	0x80013a80	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80013a40	0x3240	0x80013a44	mips_hi16_lo16	reachable-code	0x800a2830	bss	dc_cr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cr .text+0x56c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a50	0x3250	0x80013a54	mips_hi16_lo16	reachable-code	0x800a2830	bss	dc_cr	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cr .text+0x57c;retail raw pair;exact-sdk30 section
 END.EXE	0x80013a58	0x3258		mips26	reachable-code	0x80013a9c	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80013a60	0x3260	0x80013a64	mips_hi16_lo16	reachable-code	0x800a9680	bss	dc_cb	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cb .text+0x58c;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a70	0x3270	0x80013a74	mips_hi16_lo16	reachable-code	0x800a9680	bss	dc_cb	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_cb .text+0x59c;retail raw pair;exact-sdk30 section
 END.EXE	0x80013a78	0x3278		mips26	reachable-code	0x80013a9c	load		j		control-flow	candidate	investigation:relocs.tsv
+END.EXE	0x80013a80	0x3280	0x80013a84	mips_hi16_lo16	reachable-code	0x800a93e8	bss	dc_y	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_y .text+0x5ac;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a90	0x3290	0x80013a94	mips_hi16_lo16	reachable-code	0x800a93e8	bss	dc_y	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_y .text+0x5bc;retail raw pair;exact-sdk30 section
+END.EXE	0x80013a9c	0x329c	0x80013aa0	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+lw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x5c8;retail raw pair;exact-sdk30 section
+END.EXE	0x80013aac	0x32ac	0x80013ab0	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+sw	v0	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x5d8;retail raw pair;exact-sdk30 section
+END.EXE	0x80013abc	0x32bc	0x80013ac0	mips_hi16_lo16	reachable-code	0x800a92f8	bss	dc_type	lui+sw	zero	paired-reviewed	reviewed	manual:LIBPRESS VLC2.OBJ XREF dc_type .text+0x5e8;retail raw pair;exact-sdk30 section
 END.EXE	0x80013adc	0x32dc		mips26	reachable-code	0x80016084	load	GPU_cw	jal		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013b24	0x3324		mips26	reachable-code	0x80013cb0	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013b38	0x3338		mips26	reachable-code	0x80013cb0	load		j		control-flow	candidate	investigation:relocs.tsv

@@ -627,7 +627,7 @@ typedef char kf_actor_tail_72_unsigned_offset[(u32)&((KfActor *)0)->tail_72.unsi
 typedef char kf_actor_tail_72_angles_offset[(u32)&((KfActor *)0)->tail_72.angles == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_script_index_offset[(u32)&((KfActor *)0)->tail_72.script.word_index == 0x72 ? 1 : -1];
 typedef char kf_actor_tail_72_script_effect_cycle_index_offset[(u32)&((KfActor *)0)->tail_72.script.effect_cycle_index == 0x74 ? 1 : -1];
-typedef char kf_actor_unknown_78_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
+typedef char kf_actor_motion_baseline_offset[(u32)&((KfActor *)0)->tail_72.motion.baseline == 0x78 ? 1 : -1];
 
 /* The startup clear bounds this runtime; the two trailer writes and actor
  * array are fixed by actor_pool_clear. */

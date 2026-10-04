@@ -6309,8 +6309,8 @@ GAME.EXE	0x8002d560	0x1cd60	0x8002d564	mips_hi16_lo16	reachable-code	0x80191f44	
 GAME.EXE	0x8002d588	0x1cd88	0x8002d58c	mips_hi16_lo16	reachable-code	0x80191f44	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d594	0x1cd94	0x8002d598	mips_hi16_lo16	reachable-code	0x80191f48	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d5a4	0x1cda4	0x8002d5a8	mips_hi16_lo16	reachable-code	0x80191f46	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002d5b8	0x1cdb8		mips26	reachable-code	0x80014fcc	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002d5c4	0x1cdc4		mips26	reachable-code	0x80014e14	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002d5b8	0x1cdb8		mips26	reachable-code	0x80014fcc	load	matrix_set_rotation_xzy	jal		control-flow	reviewed	manual:display transform direct jal; raw target, source call, delay slot
+GAME.EXE	0x8002d5c4	0x1cdc4		mips26	reachable-code	0x80014e14	load	matrix_set_rotation_x	jal		control-flow	reviewed	manual:display transform direct jal; raw target, source call, delay slot
 GAME.EXE	0x8002d640	0x1ce40	0x8002d644	mips_hi16_lo16	reachable-code	0x80011410	load	tmd_prepare_primitive_indices_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:tmd-primitive-switch
 GAME.EXE	0x8002d688	0x1ce88		mips26	reachable-code	0x8002d608	load		j		control-flow	reviewed	manual:tmd-primitive-switch
 GAME.EXE	0x8002d6cc	0x1cecc		mips26	reachable-code	0x8002d6fc	load		j		control-flow	reviewed	manual:tmd-primitive-switch
@@ -6326,17 +6326,17 @@ GAME.EXE	0x8002d8f8	0x1d0f8	0x8002d8fc	mips_hi16_lo16	reachable-code	0x8018d248	
 GAME.EXE	0x8002d934	0x1d134	0x8002d938	mips_hi16_lo16	reachable-code	0x8018dc50	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d93c	0x1d13c	0x8002d940	mips_hi16_lo16	reachable-code	0x80191f64	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002d944	0x1d144	0x8002d948	mips_hi16_lo16	reachable-code	0x8018db5c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002d978	0x1d178		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002d978	0x1d178		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:TMD projection direct jal; raw target, LIBGTE SMP.OBJ, source call
 GAME.EXE	0x8002d99c	0x1d19c		mips26	reachable-code	0x8002da74	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002d9cc	0x1d1cc		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002d9cc	0x1d1cc		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:TMD projection direct jal; raw target, LIBGTE SMP.OBJ, source call
 GAME.EXE	0x8002da0c	0x1d20c		mips26	reachable-code	0x8002da74	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002da30	0x1d230		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002da30	0x1d230		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:TMD projection direct jal; raw target, LIBGTE SMP.OBJ, source call
 GAME.EXE	0x8002dab4	0x1d2b4	0x8002dab8	mips_hi16_lo16	reachable-code	0x8018dc50	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002dabc	0x1d2bc	0x8002dac0	mips_hi16_lo16	reachable-code	0x80191f64	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002dac4	0x1d2c4	0x8002dac8	mips_hi16_lo16	reachable-code	0x8018db5c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002dafc	0x1d2fc		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002dafc	0x1d2fc		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:TMD projection direct jal; raw target, LIBGTE SMP.OBJ, source call
 GAME.EXE	0x8002db30	0x1d330		mips26	reachable-code	0x8002dbb4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002db58	0x1d358		mips26	reachable-code	0x8005cb84	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8002db58	0x1d358		mips26	reachable-code	0x8005cb84	load	RotTransPers	jal		control-flow	reviewed	manual:TMD projection direct jal; raw target, LIBGTE SMP.OBJ, source call
 GAME.EXE	0x8002dbf4	0x1d3f4	0x8002dbf8	mips_hi16_lo16	reachable-code	0x8018dc50	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002dbfc	0x1d3fc	0x8002dc00	mips_hi16_lo16	reachable-code	0x8018db5c	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002dc1c	0x1d41c		mips26	reachable-code	0x8005cc04	load		jal		control-flow	reviewed	manual:graphics
@@ -6934,11 +6934,11 @@ GAME.EXE	0x80033b24	0x23324	0x80033b28	mips_hi16_lo16	reachable-code	0x8018d258	
 GAME.EXE	0x80033bcc	0x233cc		mips26	reachable-code	0x80033bec	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80033c80	0x23480		mips26	reachable-code	0x80033cb0	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80033d00	0x23500		mips26	reachable-code	0x80033d28	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80033dbc	0x235bc		mips26	reachable-code	0x8005b7d4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80033dbc	0x235bc		mips26	reachable-code	0x8005b7d4	load	ScaleMatrix	jal		control-flow	reviewed	manual:sparse morph direct jal; raw target, LIBGTE MTX.OBJ, source call
 GAME.EXE	0x80033e2c	0x2362c		mips26	reachable-code	0x80033f44	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80033e88	0x23688		mips26	reachable-code	0x8005b7d4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80033e88	0x23688		mips26	reachable-code	0x8005b7d4	load	ScaleMatrix	jal		control-flow	reviewed	manual:sparse morph direct jal; raw target, LIBGTE MTX.OBJ, source call
 GAME.EXE	0x80033f44	0x23744		mips26	reachable-code	0x80033f50	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80033f68	0x23768		mips26	reachable-code	0x8005b7d4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80033f68	0x23768		mips26	reachable-code	0x8005b7d4	load	ScaleMatrix	jal		control-flow	reviewed	manual:sparse morph direct jal; raw target, LIBGTE MTX.OBJ, source call
 GAME.EXE	0x80034040	0x23840		mips26	reachable-code	0x80034068	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800340ac	0x238ac	0x800340b0	mips_hi16_lo16	reachable-code	0x8018d25c	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800340dc	0x238dc		mips26	reachable-code	0x800346b0	load	pool_record_release	jal		control-flow	reviewed	manual:asset-cache-proven-calls

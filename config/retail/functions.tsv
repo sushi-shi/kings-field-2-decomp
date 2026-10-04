@@ -1009,7 +1009,16 @@ GAME.EXE	0x800633d0	0x52bd0	0x24	0x24	1	function	sdk-object-xdef	CatPrim		psyq-s
 GAME.EXE	0x800633f4	0x52bf4	0x18	0x18	1	function	sdk-object-xdef	TermPrim		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x250 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 GAME.EXE	0x8006340c	0x52c0c	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063434	0x52c34	0x28	0x28	1	function	sdk-object-xdef	SetShadeTex		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x290 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x8006345c	0x52c5c	0x14	0x14	1	function	sdk-object-xdef	SetPolyF3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2b8 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x80063470	0x52c70	0x14	0x14	1	function	sdk-object-xdef	SetPolyFT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2cc to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x80063484	0x52c84	0x14	0x14	1	function	sdk-object-xdef	SetPolyG3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2e0 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x80063498	0x52c98	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2f4 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x800634ac	0x52cac	0x14	0x14	1	function	sdk-object-xdef	SetPolyF4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x308 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 GAME.EXE	0x800634c0	0x52cc0	0x14	0x14	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x800634d4	0x52cd4	0x14	0x14	1	function	sdk-object-xdef	SetPolyG4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x330 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x800634e8	0x52ce8	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x344 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x800634fc	0x52cfc	0x14	0x14	1	function	sdk-object-xdef	SetSprt8		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x358 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+GAME.EXE	0x80063510	0x52d10	0x14	0x14	1	function	sdk-object-xdef	SetSprt16		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x36c to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 GAME.EXE	0x8006386c	0x5306c	0xe8	0xe8	1	function	sdk-object-xdef	LoadTPage		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0x0 to next XDEF; retail entry and return delay slot in exact SDK section
 GAME.EXE	0x80063954	0x53154	0x64	0x64	1	function	sdk-object-xdef	LoadClut		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0xe8 to next XDEF; retail entry and return delay slot in exact SDK section
 GAME.EXE	0x800639b8	0x531b8	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1136,7 +1145,16 @@ OPEN.EXE	0x8001905c	0x885c	0x24	0x24	1	function	sdk-object-xdef	CatPrim		psyq-sd
 OPEN.EXE	0x80019080	0x8880	0x18	0x18	1	function	sdk-object-xdef	TermPrim		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x250 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 OPEN.EXE	0x80019098	0x8898	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800190c0	0x88c0	0x28	0x28	1	function	sdk-object-xdef	SetShadeTex		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x290 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x800190e8	0x88e8	0x14	0x14	1	function	sdk-object-xdef	SetPolyF3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2b8 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x800190fc	0x88fc	0x14	0x14	1	function	sdk-object-xdef	SetPolyFT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2cc to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x80019110	0x8910	0x14	0x14	1	function	sdk-object-xdef	SetPolyG3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2e0 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x80019124	0x8924	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2f4 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x80019138	0x8938	0x14	0x14	1	function	sdk-object-xdef	SetPolyF4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x308 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 OPEN.EXE	0x8001914c	0x894c	0x14	0x14	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80019160	0x8960	0x14	0x14	1	function	sdk-object-xdef	SetPolyG4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x330 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x80019174	0x8974	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x344 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x80019188	0x8988	0x14	0x14	1	function	sdk-object-xdef	SetSprt8		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x358 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+OPEN.EXE	0x8001919c	0x899c	0x14	0x14	1	function	sdk-object-xdef	SetSprt16		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x36c to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 OPEN.EXE	0x800194f8	0x8cf8	0xe8	0xe8	1	function	sdk-object-xdef	LoadTPage		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0x0 to next XDEF; retail entry and return delay slot in exact SDK section
 OPEN.EXE	0x800195e0	0x8de0	0x64	0x64	1	function	sdk-object-xdef	LoadClut		psyq-sdk30:LIBGPU.LIB/EXT.OBJ	archive XDEF .text+0xe8 to next XDEF; retail entry and return delay slot in exact SDK section
 OPEN.EXE	0x80019644	0x8e44	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1535,6 +1553,16 @@ END.EXE	0x800164d4	0x5cd4	0x24	0x24	1	function	sdk-object-xdef	CatPrim		psyq-sdk
 END.EXE	0x800164f8	0x5cf8	0x18	0x18	1	function	sdk-object-xdef	TermPrim		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x250 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 END.EXE	0x80016510	0x5d10	0x28	0x28	1	function	sdk-object-xdef	SetSemiTrans		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x268 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 END.EXE	0x80016538	0x5d38	0x28	0x28	1	function	sdk-object-xdef	SetShadeTex		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x290 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x80016560	0x5d60	0x14	0x14	1	function	sdk-object-xdef	SetPolyF3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2b8 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x80016574	0x5d74	0x14	0x14	1	function	sdk-object-xdef	SetPolyFT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2cc to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x80016588	0x5d88	0x14	0x14	1	function	sdk-object-xdef	SetPolyG3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2e0 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x8001659c	0x5d9c	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT3		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x2f4 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x800165b0	0x5db0	0x14	0x14	1	function	sdk-object-xdef	SetPolyF4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x308 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x800165c4	0x5dc4	0x14	0x14	1	function	sdk-object-xdef	SetPolyFT4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x31c to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x800165d8	0x5dd8	0x14	0x14	1	function	sdk-object-xdef	SetPolyG4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x330 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x800165ec	0x5dec	0x14	0x14	1	function	sdk-object-xdef	SetPolyGT4		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x344 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x80016600	0x5e00	0x14	0x14	1	function	sdk-object-xdef	SetSprt8		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x358 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
+END.EXE	0x80016614	0x5e14	0x14	0x14	1	function	sdk-object-xdef	SetSprt16		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x36c to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
 END.EXE	0x80016970	0x6170	0x6c	0x6c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x800169dc	0x61dc	0x5c	0x5c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x80016a38	0x6238	0xa8	0xa8	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

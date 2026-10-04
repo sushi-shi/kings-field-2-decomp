@@ -912,7 +912,9 @@ GAME.EXE	0x8005f150	0x4e950	0xc	0xc	1	function	ghidra-analysis	delete		Ghidra-12
 GAME.EXE	0x8005f160	0x4e960	0xc	0xc	1	function	ghidra-analysis	StopPAD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f170	0x4e970	0xc	0xc	1	function	ghidra-analysis	format		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f180	0x4e980	0x9c	0x9c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f21c	0x4ea1c	0x38	0x38	1	function	sdk-object-xdef	GetRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x9c to next XDEF +0xd4; retail entry and return delay slot in exact 0x170-byte SDK section
 GAME.EXE	0x8005f254	0x4ea54	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f288	0x4ea88	0x34	0x34	1	function	sdk-object-xdef	StopRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x108 to next XDEF +0x13c; retail entry and return delay slot in exact 0x170-byte SDK section
 GAME.EXE	0x8005f2bc	0x4eabc	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f2f0	0x4eaf0	0xc	0xc	1	function	ghidra-analysis	DisableEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f300	0x4eb00	0xc	0xc	1	function	ghidra-analysis	DeliverEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1275,7 +1277,9 @@ OPEN.EXE	0x8001eb70	0xe370	0x68	0x68	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x8001ebf8	0xe3f8	0xc	0xc	1	function	ghidra-analysis	CloseEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ec08	0xe408	0xc	0xc	1	function	ghidra-analysis	EnableEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ec18	0xe418	0x9c	0x9c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001ecb4	0xe4b4	0x38	0x38	1	function	sdk-object-xdef	GetRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x9c to next XDEF +0xd4; retail entry and return delay slot in exact 0x170-byte SDK section
 OPEN.EXE	0x8001ecec	0xe4ec	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001ed20	0xe520	0x34	0x34	1	function	sdk-object-xdef	StopRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x108 to next XDEF +0x13c; retail entry and return delay slot in exact 0x170-byte SDK section
 OPEN.EXE	0x8001ed54	0xe554	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ed88	0xe588	0xc	0xc	1	function	ghidra-analysis	DisableEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x8001ed98	0xe598	0xc	0xc	1	function	ghidra-analysis	OpenEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1646,7 +1650,9 @@ END.EXE	0x8001bdb4	0xb5b4	0x20	0x20	1	function	ghidra-analysis			Ghidra-12.0.4/g
 END.EXE	0x8001be5c	0xb65c	0xc	0xc	1	function	ghidra-analysis	CloseEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001be6c	0xb66c	0xc	0xc	1	function	ghidra-analysis	EnableEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001be7c	0xb67c	0x9c	0x9c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001bf18	0xb718	0x38	0x38	1	function	sdk-object-xdef	GetRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x9c to next XDEF +0xd4; retail entry and return delay slot in exact 0x170-byte SDK section
 END.EXE	0x8001bf50	0xb750	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001bf84	0xb784	0x34	0x34	1	function	sdk-object-xdef	StopRCnt		psyq-sdk30:LIBAPI.LIB/COUNTER.OBJ	archive XDEF .text+0x108 to next XDEF +0x13c; retail entry and return delay slot in exact 0x170-byte SDK section
 END.EXE	0x8001bfb8	0xb7b8	0x34	0x34	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001bfec	0xb7ec	0xc	0xc	1	function	ghidra-analysis	DisableEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001bffc	0xb7fc	0xc	0xc	1	function	ghidra-analysis	OpenEvent		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

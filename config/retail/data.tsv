@@ -954,7 +954,7 @@ OPEN.EXE	0x800114ac	0xcac	0x17	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rda
 OPEN.EXE	0x800114c3	0xcc3	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 OPEN.EXE	0x800114c4	0xcc4	0x19	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
 OPEN.EXE	0x800114dd	0xcdd	0x7	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
-OPEN.EXE	0x800114e4	0xce4	0x14	pointer	manual:bounded LIBCD getintr jump table		pointer[5]	getintr selector 1..5;five retail targets inside exact Psy-Q 3.0 LIBCD/BIOS text	vendor jump table; original static name unresolved
+OPEN.EXE	0x800114e4	0xce4	0x14	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata jump table		pointer[5]	archive .rdata+0x1a0 has five consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
 OPEN.EXE	0x800114f8	0xcf8	0xe	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
 OPEN.EXE	0x80011506	0xd06	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 OPEN.EXE	0x80011508	0xd08	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
@@ -1003,8 +1003,8 @@ OPEN.EXE	0x800117c8	0xfc8	0x15	string	byte-pattern		ascii	investigation:string-c
 OPEN.EXE	0x800117dd	0xfdd	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x800117e0	0xfe0	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: This is an old SEQ Data Format.
 OPEN.EXE	0x800117ff	0xfff	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80011804	0x1004	0x1e8	pointer	manual:bounded LIBSND SetControlChange jump table		pointer[122]	selector 0..0x79;122 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
-OPEN.EXE	0x800119ec	0x11ec	0x5c	pointer	manual:bounded LIBSND Snd_setVabAttr jump table		pointer[23]	selector 0..0x16;23 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
+OPEN.EXE	0x80011804	0x1004	0x1e8	pointer	manual:exact Psy-Q 3.0 LIBSND SEQREAD.OBJ .rdata jump table		pointer[122]	archive .rdata+0x0 has 122 consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
+OPEN.EXE	0x800119ec	0x11ec	0x5c	pointer	manual:exact Psy-Q 3.0 LIBSND SEQREAD.OBJ .rdata jump table		pointer[23]	archive .rdata+0x1e8 has 23 consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
 OPEN.EXE	0x80011a48	0x1248	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: SPU:T/O [%s]
 OPEN.EXE	0x80011a54	0x1254	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80011a58	0x1258	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (reset)
@@ -1641,7 +1641,7 @@ END.EXE	0x800113e4	0xbe4	0x17	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdat
 END.EXE	0x800113fb	0xbfb	0x1	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 END.EXE	0x800113fc	0xbfc	0x19	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
 END.EXE	0x80011415	0xc15	0x7	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
-END.EXE	0x8001141c	0xc1c	0x14	pointer	manual:bounded LIBCD getintr jump table		pointer[5]	getintr selector 1..5;five retail targets inside exact Psy-Q 3.0 LIBCD/BIOS text	vendor jump table; original static name unresolved
+END.EXE	0x8001141c	0xc1c	0x14	pointer	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata jump table		pointer[5]	archive .rdata+0x1a0 has five consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
 END.EXE	0x80011430	0xc30	0xe	string	manual:exact Psy-Q 3.0 LIBCD BIOS.OBJ .rdata		ascii	archive .rdata string bytes including terminator;unique masked retail match	vendor string; original C declaration unresolved
 END.EXE	0x8001143e	0xc3e	0x2	unclassified	manual:LIBCD BIOS.OBJ .rdata alignment			archive .rdata zero alignment after terminated string;retail exact	padding; original C string owner unresolved
 END.EXE	0x80011440	0xc40	0x2b	string	byte-pattern		ascii	investigation:string-census	escaped text: Final Sector is on %08x %08x %08x %04x %04x
@@ -1690,8 +1690,8 @@ END.EXE	0x80011700	0xf00	0x15	string	byte-pattern		ascii	investigation:string-ce
 END.EXE	0x80011715	0xf15	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80011718	0xf18	0x1f	string	byte-pattern		ascii	investigation:string-census	escaped text: This is an old SEQ Data Format.
 END.EXE	0x80011737	0xf37	0x5	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-END.EXE	0x8001173c	0xf3c	0x1e8	pointer	manual:bounded LIBSND SetControlChange jump table		pointer[122]	selector 0..0x79;122 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
-END.EXE	0x80011924	0x1124	0x5c	pointer	manual:bounded LIBSND Snd_setVabAttr jump table		pointer[23]	selector 0..0x16;23 retail targets inside exact Psy-Q 3.0 LIBSND/SEQREAD text	vendor jump table; original static name unresolved
+END.EXE	0x8001173c	0xf3c	0x1e8	pointer	manual:exact Psy-Q 3.0 LIBSND SEQREAD.OBJ .rdata jump table		pointer[122]	archive .rdata+0x0 has 122 consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
+END.EXE	0x80011924	0x1124	0x5c	pointer	manual:exact Psy-Q 3.0 LIBSND SEQREAD.OBJ .rdata jump table		pointer[23]	archive .rdata+0x1e8 has 23 consecutive 32-bit .text patches;all ordered retail targets agree	vendor jump table; original static name and linkage unresolved
 END.EXE	0x80011980	0x1180	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: SPU:T/O [%s]
 END.EXE	0x8001198c	0x118c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x80011990	0x1190	0xc	string	byte-pattern		ascii	investigation:string-census	escaped text: wait (reset)

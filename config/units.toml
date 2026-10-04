@@ -264,6 +264,36 @@ source = "src/game/event_state.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
+unit = "game.memory_card_io_end_data"
+image = "GAME.EXE"
+source = "src/game/memory_card_io_end_data.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_timeout_data"
+image = "GAME.EXE"
+source = "src/game/memory_card_timeout_data.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_new_device_data"
+image = "GAME.EXE"
+source = "src/game/memory_card_new_device_data.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_error_data"
+image = "GAME.EXE"
+source = "src/game/memory_card_error_data.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
+unit = "game.memory_card_buffer_pointer_data"
+image = "GAME.EXE"
+source = "src/game/memory_card_buffer_pointer_data.c"
+profile = "probe-gcc257-o2-g0"
+
+[[unit]]
 unit = "open.main"
 image = "OPEN.EXE"
 source = "src/open/main.c"

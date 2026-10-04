@@ -49,11 +49,10 @@ C_COMPILERS = ("gcc260-native", "gcc257-native")
 
 @dataclass(frozen=True)
 class Unit:
-    """One reconstructed translation unit: a source and its claimed functions.
+    """One reconstructed translation unit: a source and its claimed objects.
 
-    ``functions`` ascend by address and cover a contiguous retail run, so the
-    unit's target object is that run carved as one section. ``va`` is the
-    first function's address; the ledger still keys progress per function.
+    Function claims ascend by address and cover a contiguous retail run. A
+    data-only unit has no function claims and does not enter the code ledger.
     """
 
     unit: str
@@ -68,7 +67,7 @@ class Unit:
 
     @property
     def va(self) -> int:
-        return self.functions[0].va
+        return self.functions[0].va if self.functions else self.data[0].va
 
     @property
     def function(self) -> Function:
@@ -489,23 +488,19 @@ def load(
                         f"{source}:{claim.line}: RODATA range overlaps unit {other.unit!r}"
                     )
             rodata = (claim.va, claim.size)
-        if not claims:
-            raise ValueError(f"{path}: unit {name!r} source has no ADDRESS() claim: {source}")
-        functions = _bind_claims(
-            path,
-            name,
-            image,
-            source,
-            claims,
-            catalog,
-            identities,
-            claimed,
-            scope,
-        )
-        data = _bind_data_claims(name, image, source, data_claims, curated_data, claimed_data)
-        if units and units[-1].image == image and units[-1].va >= functions[0].va:
+        if not claims and (not data_claims or rodata is not None):
             raise ValueError(
-                f"{path}: unit {name!r} at {functions[0].va:#x} is listed after "
+                f"{path}: unit {name!r} needs ADDRESS() claims or DATA() claims "
+                f"without RODATA(): {source}"
+            )
+        functions = _bind_claims(
+            path, name, image, source, claims, catalog, identities, claimed, scope,
+        ) if claims else ()
+        data = _bind_data_claims(name, image, source, data_claims, curated_data, claimed_data)
+        start = functions[0].va if functions else data[0].va
+        if units and units[-1].image == image and units[-1].va >= start:
+            raise ValueError(
+                f"{path}: unit {name!r} at {start:#x} is listed after "
                 f"{units[-1].unit!r} at {units[-1].va:#x}; units follow the linked order"
             )
         units.append(

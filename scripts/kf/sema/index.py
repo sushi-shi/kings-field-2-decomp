@@ -154,7 +154,10 @@ class Index:
         }
         try:
             manifest = load_manifest(config_dir=self.config_dir)
-            units = {(unit.image, unit.va): unit.unit for unit in manifest.units}
+            units = {
+                (unit.image, unit.va): unit.unit
+                for unit in manifest.units if unit.functions
+            }
         except ValueError:
             units = {}
 

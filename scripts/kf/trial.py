@@ -80,6 +80,10 @@ def compare(unit_name: str, source: Path | None, context: int,
     unit = manifest.by_name().get(unit_name)
     if unit is None:
         raise ValueError(f"unknown unit {unit_name!r}")
+    if not unit.functions:
+        raise ValueError(
+            f"{unit_name!r} is data-only; compare its sections in the objdiff report"
+        )
     profile = manifest.profiles[unit.profile]
     target = BUILD / "delink" / unit.image_key / "modules" / unit.object_name
     if not target.is_file():

@@ -577,7 +577,7 @@ def _write_bytes_if_changed(path: Path, content: bytes) -> None:
 
 @dataclass(frozen=True)
 class Module:
-    """A manifested unit: one contiguous run of admitted functions."""
+    """A manifested unit: a contiguous function run or claimed data only."""
 
     image: str
     unit: str
@@ -588,11 +588,12 @@ class Module:
 
     @property
     def object_name(self) -> str:
-        return f"{self.vas[0]:08x}_{self.stem}.o"
+        start = self.vas[0] if self.vas else self.data[0].va
+        return f"{start:08x}_{self.stem}.o"
 
     @property
     def text_start(self) -> int:
-        return self.vas[0]
+        return self.vas[0] if self.vas else self.data[0].va
 
     def owns_rodata(self, address: int) -> bool:
         return self.rodata is not None and self.rodata[0] <= address < self.rodata[0] + self.rodata[1]
@@ -867,7 +868,7 @@ def _module_object(
         symbols.append(DefinedSymbol(function.symbol, offset, function.body_size, STT_FUNC))
         text += rebased
         body_total += function.body_size
-    first = symbols[0]
+    first = symbols[0] if symbols else None
     data, data_symbols, data_relocations, bss_size, bss_symbols = _module_data(
         module, data_blobs or {}, load_padding
     )
@@ -903,10 +904,10 @@ def _module_object(
     return ModuleImage(
         write_mips_elf(
             bytes(text),
-            first.name,
-            first.size,
+            first.name if first else None,
+            first.size if first else 0,
             relocations,
-            symbols[1:],
+            symbols[1:] if first else (),
             data=data,
             data_symbols=data_symbols,
             data_relocations=data_relocations,
@@ -981,7 +982,7 @@ def delink(
         selected_function_starts = {function.va for function in functions}
         selected_modules = [
             module for module in modules_by_image[image]
-            if not selected_vas or set(module.vas) <= selected_vas
+            if not selected_vas or (module.vas and set(module.vas) <= selected_vas)
         ]
         claimed_load_data = sorted(
             (datum for module in selected_modules for datum in module.data
@@ -1173,10 +1174,11 @@ def delink(
             )
             _write_bytes_if_changed(module_output / module.object_name, built.data)
             live_modules.add(module.object_name)
-            first = catalog.function_starts[image][module.vas[0]]
+            first = catalog.function_starts[image][module.vas[0]] if module.vas else None
+            start = module.vas[0] if module.vas else module.data[0].va
             object_rows.append({
                 "image": image,
-                "va": format_hex(module.vas[0]),
+                "va": format_hex(start),
                 "size": format_size(built.size),
                 "body_size": format_size(built.body_size),
                 "name": module.stem,
@@ -1189,7 +1191,7 @@ def delink(
                 "data_size": format_size(built.data_size),
                 "bss_size": format_size(built.bss_size),
                 "rodata_size": format_size(built.rodata_size),
-                "confidence": first.confidence,
+                "confidence": first.confidence if first else "candidate",
                 "provenance": "config/units.toml",
             })
         if not selected_vas:

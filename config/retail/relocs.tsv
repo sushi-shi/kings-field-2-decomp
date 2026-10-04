@@ -3266,9 +3266,9 @@ GAME.EXE	0x8001c780	0xbf80	0x8001c784	mips_hi16_lo16	reachable-code	0x80064b68	l
 GAME.EXE	0x8001c7e8	0xbfe8	0x8001c7ec	mips_hi16_lo16	reachable-code	0x80064ba4	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 9
 GAME.EXE	0x8001c850	0xc050	0x8001c854	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 2
 GAME.EXE	0x8001c8c0	0xc0c0	0x8001c8c4	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
-GAME.EXE	0x8001c928	0xc128	0x8001c92c	mips_hi16_lo16	reachable-code	0x80064af0	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
+GAME.EXE	0x8001c928	0xc128	0x8001c92c	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
 GAME.EXE	0x8001c990	0xc190	0x8001c994	mips_hi16_lo16	reachable-code	0x80064be0	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 12
-GAME.EXE	0x8001ca04	0xc204	0x8001ca08	mips_hi16_lo16	reachable-code	0x80064af0	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
+GAME.EXE	0x8001ca04	0xc204	0x8001ca08	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
 GAME.EXE	0x8001ca74	0xc274	0x8001ca78	mips_hi16_lo16	reachable-code	0x80064bcc	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 11
 GAME.EXE	0x8001cae4	0xc2e4	0x8001cae8	mips_hi16_lo16	reachable-code	0x80064bf4	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix table entry 13
 GAME.EXE	0x8001cb64	0xc364	0x8001cb68	mips_hi16_lo16	reachable-code	0x80064bb8	load		lui+addiu	a1	paired-reachable	reviewed	manual:menu label suffix copy entry 10
@@ -4132,7 +4132,7 @@ GAME.EXE	0x80021db4	0x115b4	0x80021db8	mips_hi16_lo16	reachable-code	0x8006d9e8	
 GAME.EXE	0x80021dcc	0x115cc	0x80021dd0	mips_hi16_lo16	reachable-code	0x80197638	bss	audio_state	lui+lw		paired-reviewed	reviewed	manual:menu-display-state
 GAME.EXE	0x80021de0	0x115e0	0x80021de4	mips_hi16_lo16	reachable-code	0x80197634	bss	audio_state	lui+lh		paired-reviewed	reviewed	manual:menu-display-state
 GAME.EXE	0x80021de8	0x115e8		mips26	reachable-code	0x80059a48	load	SsSeqPause	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80021e08	0x11608	0x80021e0c	mips_hi16_lo16	reachable-code	0x8006dbe8	bss		lui+addiu	a2	paired-reachable	reviewed	manual:menu display restore decoded reference
+GAME.EXE	0x80021e08	0x11608	0x80021e0c	mips_hi16_lo16	reachable-code	0x8006dbe8	bss	menu_saved_primitive_buffers	lui+addiu	a2	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021e10	0x11610	0x80021e14	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e34	0x11634	0x80021e38	mips_hi16_lo16	reachable-code	0x8006dbf4	bss		lui+addiu	a2	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021e3c	0x1163c	0x80021e40	mips_hi16_lo16	reachable-code	0x8017d154	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
@@ -4141,7 +4141,7 @@ GAME.EXE	0x80021e6c	0x1166c	0x80021e70	mips_hi16_lo16	reachable-code	0x8018d17f	
 GAME.EXE	0x80021e74	0x11674	0x80021e78	mips_hi16_lo16	reachable-code	0x8018d1dc	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e7c	0x1167c	0x80021e80	mips_hi16_lo16	reachable-code	0x8018d1db	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e90	0x11690	0x80021e94	mips_hi16_lo16	reachable-code	0x80198598	bss		lui+lbu	v1	paired-reviewed	reviewed	manual:menu display reads player music flag
-GAME.EXE	0x80021e98	0x11698	0x80021e9c	mips_hi16_lo16	reachable-code	0x8006d9e8	bss		lui+lbu	v0	paired-reachable	reviewed	manual:menu display restore decoded reference
+GAME.EXE	0x80021e98	0x11698	0x80021e9c	mips_hi16_lo16	reachable-code	0x8006d9e8	bss	menu_saved_music_enabled	lui+lbu	v0	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021eb4	0x116b4		mips26	reachable-code	0x80013b7c	load	audio_stop_sequence	jal		control-flow	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021ebc	0x116bc		mips26	reachable-code	0x80021f00	load		j		control-flow	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021ec4	0x116c4		mips26	reachable-code	0x80013ae4	load	audio_start_sequence	jal		control-flow	reviewed	manual:menu display restore decoded reference

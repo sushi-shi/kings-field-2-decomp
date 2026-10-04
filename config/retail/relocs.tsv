@@ -13968,21 +13968,21 @@ OPEN.EXE	0x8001e1cc	0xd9cc	0x8001e1d0	mips_hi16_lo16	instruction-word	0x8003d1e8
 OPEN.EXE	0x8001e1f4	0xd9f4	0x8001e1f8	mips_hi16_lo16	instruction-word	0x8003de70	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e21c	0xda1c		mips26	instruction-word	0x8001e248	load		j		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e224	0xda24	0x8001e228	mips_hi16_lo16	instruction-word	0x8003de70	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e250	0xda50	0x8001e254	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e26c	0xda6c	0x8001e270	mips_hi16_lo16	reachable-code	0x8003de7c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e274	0xda74	0x8001e278	mips_hi16_lo16	reachable-code	0x8003de80	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001e250	0xda50	0x8001e254	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x0 native HI16/LO16 to .sdata+0x0;retail lw pair
+OPEN.EXE	0x8001e26c	0xda6c	0x8001e270	mips_hi16_lo16	reachable-code	0x8003de7c	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x1c native HI16/LO16 to .sdata+0x4;retail lw pair
+OPEN.EXE	0x8001e274	0xda74	0x8001e278	mips_hi16_lo16	reachable-code	0x8003de80	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x24 native HI16/LO16 to .sdata+0x8;retail lw pair
 OPEN.EXE	0x8001e290	0xda90	0x8001e294	mips_hi16_lo16	reachable-code	0x8003de54	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e298	0xda98		mips26	reachable-code	0x8001e340	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e2ac	0xdaac	0x8001e2b0	mips_hi16_lo16	reachable-code	0x8003de84	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001e2ac	0xdaac	0x8001e2b0	mips_hi16_lo16	reachable-code	0x8003de84	load		lui+lw	a0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x5c native HI16/LO16 to .sdata+0xc;retail lw pair
 OPEN.EXE	0x8001e2bc	0xdabc		mips26	reachable-code	0x8001e354	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e2c4	0xdac4	0x8001e2c8	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001e2c4	0xdac4	0x8001e2c8	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x74 native HI16/LO16 to .sdata+0x0;retail lw pair
 OPEN.EXE	0x8001e2d4	0xdad4	0x8001e2d8	mips_hi16_lo16	reachable-code	0x8003de54	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e2dc	0xdadc		mips26	reachable-code	0x8001e354	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e2f4	0xdaf4	0x8001e2f8	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001e2f4	0xdaf4	0x8001e2f8	mips_hi16_lo16	reachable-code	0x8003de78	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xa4 native HI16/LO16 to .sdata+0x0;retail lw pair
 OPEN.EXE	0x8001e318	0xdb18	0x8001e31c	mips_hi16_lo16	reachable-code	0x8003de54	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e320	0xdb20	0x8001e324	mips_hi16_lo16	reachable-code	0x8003de7c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e328	0xdb28	0x8001e32c	mips_hi16_lo16	reachable-code	0x8003de84	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001e338	0xdb38	0x8001e33c	mips_hi16_lo16	reachable-code	0x8003de80	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001e320	0xdb20	0x8001e324	mips_hi16_lo16	reachable-code	0x8003de7c	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd0 native HI16/LO16 to .sdata+0x4;retail lw pair
+OPEN.EXE	0x8001e328	0xdb28	0x8001e32c	mips_hi16_lo16	reachable-code	0x8003de84	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd8 native HI16/LO16 to .sdata+0xc;retail sw pair
+OPEN.EXE	0x8001e338	0xdb38	0x8001e33c	mips_hi16_lo16	reachable-code	0x8003de80	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xe8 native HI16/LO16 to .sdata+0x8;retail sw pair
 OPEN.EXE	0x8001e360	0xdb60	0x8001e364	mips_hi16_lo16	reachable-code	0x8003de54	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e39c	0xdb9c	0x8001e3a0	mips_hi16_lo16	reachable-code	0x80011794	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e3a4	0xdba4		mips26	reachable-code	0x800142c4	load	printf	jal		control-flow	candidate	investigation:relocs.tsv
@@ -16522,21 +16522,21 @@ END.EXE	0x8001b430	0xac30	0x8001b434	mips_hi16_lo16	instruction-word	0x8003a094	
 END.EXE	0x8001b458	0xac58	0x8001b45c	mips_hi16_lo16	instruction-word	0x8003ac90	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001b480	0xac80		mips26	instruction-word	0x8001b4ac	load		j		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001b488	0xac88	0x8001b48c	mips_hi16_lo16	instruction-word	0x8003ac90	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001b4b4	0xacb4	0x8001b4b8	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001b4d0	0xacd0	0x8001b4d4	mips_hi16_lo16	reachable-code	0x8003ac9c	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001b4d8	0xacd8	0x8001b4dc	mips_hi16_lo16	reachable-code	0x8003aca0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001b4b4	0xacb4	0x8001b4b8	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x0 native HI16/LO16 to .sdata+0x0;retail lw pair
+END.EXE	0x8001b4d0	0xacd0	0x8001b4d4	mips_hi16_lo16	reachable-code	0x8003ac9c	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x1c native HI16/LO16 to .sdata+0x4;retail lw pair
+END.EXE	0x8001b4d8	0xacd8	0x8001b4dc	mips_hi16_lo16	reachable-code	0x8003aca0	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x24 native HI16/LO16 to .sdata+0x8;retail lw pair
 END.EXE	0x8001b4f4	0xacf4	0x8001b4f8	mips_hi16_lo16	reachable-code	0x8003ac74	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001b4fc	0xacfc		mips26	reachable-code	0x8001b5a4	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001b510	0xad10	0x8001b514	mips_hi16_lo16	reachable-code	0x8003aca4	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001b510	0xad10	0x8001b514	mips_hi16_lo16	reachable-code	0x8003aca4	load		lui+lw	a0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x5c native HI16/LO16 to .sdata+0xc;retail lw pair
 END.EXE	0x8001b520	0xad20		mips26	reachable-code	0x8001b5b8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001b528	0xad28	0x8001b52c	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001b528	0xad28	0x8001b52c	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0x74 native HI16/LO16 to .sdata+0x0;retail lw pair
 END.EXE	0x8001b538	0xad38	0x8001b53c	mips_hi16_lo16	reachable-code	0x8003ac74	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001b540	0xad40		mips26	reachable-code	0x8001b5b8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x8001b558	0xad58	0x8001b55c	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001b558	0xad58	0x8001b55c	mips_hi16_lo16	reachable-code	0x8003ac98	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xa4 native HI16/LO16 to .sdata+0x0;retail lw pair
 END.EXE	0x8001b57c	0xad7c	0x8001b580	mips_hi16_lo16	reachable-code	0x8003ac74	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001b584	0xad84	0x8001b588	mips_hi16_lo16	reachable-code	0x8003ac9c	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001b58c	0xad8c	0x8001b590	mips_hi16_lo16	reachable-code	0x8003aca4	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x8001b59c	0xad9c	0x8001b5a0	mips_hi16_lo16	reachable-code	0x8003aca0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x8001b584	0xad84	0x8001b588	mips_hi16_lo16	reachable-code	0x8003ac9c	load		lui+lw	v1	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd0 native HI16/LO16 to .sdata+0x4;retail lw pair
+END.EXE	0x8001b58c	0xad8c	0x8001b590	mips_hi16_lo16	reachable-code	0x8003aca4	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xd8 native HI16/LO16 to .sdata+0xc;retail sw pair
+END.EXE	0x8001b59c	0xad9c	0x8001b5a0	mips_hi16_lo16	reachable-code	0x8003aca0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC VSYNC.OBJ .text+0xe8 native HI16/LO16 to .sdata+0x8;retail sw pair
 END.EXE	0x8001b5c4	0xadc4	0x8001b5c8	mips_hi16_lo16	reachable-code	0x8003ac74	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001b600	0xae00	0x8001b604	mips_hi16_lo16	reachable-code	0x800116cc	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
 END.EXE	0x8001b608	0xae08		mips26	reachable-code	0x80012c74	load	printf	jal		control-flow	candidate	investigation:relocs.tsv

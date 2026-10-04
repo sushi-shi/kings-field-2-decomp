@@ -11432,6 +11432,8 @@ GAME.EXE	0x8005fad4	0x4f2d4		mips26	reachable-code	0x8005fafc	load		j		control-f
 GAME.EXE	0x8005fadc	0x4f2dc	0x8005fae0	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005fb28	0x4f328		mips26	reachable-code	0x80060170	load	SetDrawEnv	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005fb38	0x4f338	0x8005fb3c	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005fb60	0x4f360	0x8005fb64	mips_hi16_lo16	reachable-code	0x800744b0	bss	c_draw	lui+addiu	a3	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x6c0 native (sectbase(7484)+$40);retail raw pair;exact-sdk30 section
+GAME.EXE	0x8005fbd4	0x4f3d4	0x8005fbd8	mips_hi16_lo16	reachable-code	0x800744b0	bss	c_draw	lui+addiu	a2	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x734 native (sectbase(7484)+$40);retail raw pair;exact-sdk30 section
 GAME.EXE	0x8005fc44	0x4f444	0x8005fc48	mips_hi16_lo16	reachable-code	0x8006d8d0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005fc58	0x4f458		mips26	reachable-code	0x800606c4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005fc78	0x4f478		mips26	reachable-code	0x8005fca0	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -11449,6 +11451,8 @@ GAME.EXE	0x8005fec8	0x4f6c8		mips26	reachable-code	0x8005fef4	load		j		control-f
 GAME.EXE	0x8005fed8	0x4f6d8		mips26	reachable-code	0x8005fef4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005fee8	0x4f6e8		mips26	reachable-code	0x8005fef4	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ff14	0x4f714	0x8005ff18	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ff30	0x4f730	0x8005ff34	mips_hi16_lo16	reachable-code	0x80074510	bss	c_disp	lui+addiu	a1	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0xa90 native (sectbase(7484)+$a0);retail raw pair;exact-sdk30 section
+GAME.EXE	0x8005ffac	0x4f7ac	0x8005ffb0	mips_hi16_lo16	reachable-code	0x80074510	bss	c_disp	lui+addiu	a2	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0xb0c native (sectbase(7484)+$a0);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060024	0x4f824		mips26	instruction-word	0x80060640	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006006c	0x4f86c		mips26	instruction-word	0x80060464	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80060094	0x4f894		mips26	instruction-word	0x80060534	load		jal		range-filtered	candidate	investigation:relocs.tsv
@@ -11511,10 +11515,28 @@ GAME.EXE	0x80060930	0x50130		mips26	instruction-word	0x80060960	load		j		range-f
 GAME.EXE	0x80060944	0x50144	0x80060948	mips_hi16_lo16	instruction-word	0x8006d8d0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80060958	0x50158		mips26	instruction-word	0x80060970	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80060964	0x50164		mips26	instruction-word	0x80060970	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800609a0	0x501a0	0x800609a4	mips_hi16_lo16	reachable-code	0x80074490	bss	DAT_80074490	lui+addiu	a2	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1500 native (sectbase(7484)+$20);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609b4	0x501b4	0x800609b8	mips_hi16_lo16	reachable-code	0x80074470	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1514 native (sectbase(7484)+$0);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609c0	0x501c0	0x800609c4	mips_hi16_lo16	reachable-code	0x80074474	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1520 native (sectbase(7484)+$4);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609d0	0x501d0	0x800609d4	mips_hi16_lo16	reachable-code	0x80074478	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1530 native (sectbase(7484)+$8);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609dc	0x501dc	0x800609e0	mips_hi16_lo16	reachable-code	0x8007447c	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x153c native (sectbase(7484)+$c);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609e8	0x501e8	0x800609ec	mips_hi16_lo16	reachable-code	0x80074480	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1548 native (sectbase(7484)+$10);retail raw pair;exact-sdk30 section
+GAME.EXE	0x800609fc	0x501fc	0x80060a00	mips_hi16_lo16	reachable-code	0x80074484	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x155c native (sectbase(7484)+$14);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060a18	0x50218	0x80060a1c	mips_hi16_lo16	reachable-code	0x80074488	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1578 native (sectbase(7484)+$18);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060a20	0x50220	0x80060a24	mips_hi16_lo16	reachable-code	0x8007448c	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1580 native (sectbase(7484)+$1c);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060a28	0x50228		mips26	instruction-word	0x80061154	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80060a34	0x50234	0x80060a38	mips_hi16_lo16	reachable-code	0x80074494	bss	DAT_80074490	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1594 native (sectbase(7484)+$24);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060a3c	0x5023c		mips26	instruction-word	0x80061154	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80060a4c	0x5024c	0x80060a50	mips_hi16_lo16	reachable-code	0x80074498	bss	DAT_80074490	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x15ac native (sectbase(7484)+$28);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060a54	0x50254		mips26	instruction-word	0x80061154	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80060a60	0x50260	0x80060a64	mips_hi16_lo16	reachable-code	0x8007449c	bss	DAT_80074490	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x15c0 native (sectbase(7484)+$2c);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060a68	0x50268		mips26	instruction-word	0x80060abc	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80060a74	0x50274	0x80060a78	mips_hi16_lo16	reachable-code	0x80074470	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x15d4 native (sectbase(7484)+$0);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060a80	0x50280	0x80060a84	mips_hi16_lo16	reachable-code	0x80074474	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x15e0 native (sectbase(7484)+$4);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060aa4	0x502a4	0x80060aa8	mips_hi16_lo16	reachable-code	0x80074478	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1604 native (sectbase(7484)+$8);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060aac	0x502ac	0x80060ab0	mips_hi16_lo16	reachable-code	0x8007447c	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x160c native (sectbase(7484)+$c);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060ab4	0x502b4	0x80060ab8	mips_hi16_lo16	reachable-code	0x80074480	bss	DAT_80074470	lui+sw	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1614 native (sectbase(7484)+$10);retail raw pair;exact-sdk30 section
+GAME.EXE	0x80060abc	0x502bc	0x80060ac0	mips_hi16_lo16	reachable-code	0x80074470	bss	DAT_80074470	lui+addiu	a0	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x161c native (sectbase(7484)+$0);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80060ac4	0x502c4		mips26	instruction-word	0x80061104	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80060b04	0x50304		mips26	instruction-word	0x80061944	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80060b58	0x50358		mips26	instruction-word	0x80060b64	load		j		range-filtered	candidate	investigation:relocs.tsv
@@ -11562,6 +11584,8 @@ GAME.EXE	0x80061008	0x50808	0x8006100c	mips_hi16_lo16	instruction-word	0x8006d8e
 GAME.EXE	0x80061018	0x50818	0x8006101c	mips_hi16_lo16	instruction-word	0x8006d8e8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006102c	0x5082c	0x80061030	mips_hi16_lo16	instruction-word	0x8006d8ec	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061060	0x50860	0x80061064	mips_hi16_lo16	instruction-word	0x8006d8e0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80061080	0x50880	0x80061084	mips_hi16_lo16	reachable-code	0x80074528	bss	ctlbuf	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1be0 native (sectbase(7484)+$b8);retail raw pair;exact-sdk30 section
+GAME.EXE	0x8006109c	0x5089c	0x800610a0	mips_hi16_lo16	reachable-code	0x80074528	bss	ctlbuf	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1bfc native (sectbase(7484)+$b8);retail raw pair;exact-sdk30 section
 GAME.EXE	0x800610b8	0x508b8	0x800610bc	mips_hi16_lo16	instruction-word	0x8006d8e0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800610e0	0x508e0	0x800610e4	mips_hi16_lo16	instruction-word	0x8006d8dc	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061104	0x50904	0x80061108	mips_hi16_lo16	instruction-word	0x8006d8e0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -11581,10 +11605,17 @@ GAME.EXE	0x80061230	0x50a30		mips26	instruction-word	0x80061964	load		jal		range
 GAME.EXE	0x80061240	0x50a40		mips26	instruction-word	0x80061398	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061248	0x50a48	0x8006124c	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006125c	0x50a5c	0x80061260	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8006127c	0x50a7c	0x80061280	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1ddc native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x80061298	0x50a98	0x8006129c	mips_hi16_lo16	instruction-word	0x8006d900	load		lui+lw	s2	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x800612b8	0x50ab8	0x800612bc	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e18 native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x800612c8	0x50ac8	0x800612cc	mips_hi16_lo16	instruction-word	0x8006d900	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x800612d8	0x50ad8	0x800612dc	mips_hi16_lo16	reachable-code	0x800745bc	bss	que	lui+addiu	s0	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e38 native ($c+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
 GAME.EXE	0x800612e8	0x50ae8		mips26	instruction-word	0x80061a00	load		jal		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x800612f0	0x50af0	0x800612f4	mips_hi16_lo16	reachable-code	0x800745b4	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e50 native ($4+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
 GAME.EXE	0x80061300	0x50b00		mips26	instruction-word	0x8006131c	load		j		range-filtered	candidate	investigation:relocs.tsv
+GAME.EXE	0x80061308	0x50b08	0x8006130c	mips_hi16_lo16	reachable-code	0x800745b4	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e68 native ($4+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
+GAME.EXE	0x8006132c	0x50b2c	0x80061330	mips_hi16_lo16	reachable-code	0x800745b8	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e8c native ($8+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
+GAME.EXE	0x8006133c	0x50b3c	0x80061340	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x1e9c native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x8006134c	0x50b4c		mips26	instruction-word	0x80061398	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061354	0x50b54	0x80061358	mips_hi16_lo16	instruction-word	0x8006d900	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006135c	0x50b5c	0x80061360	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -11607,10 +11638,15 @@ GAME.EXE	0x8006147c	0x50c7c	0x80061480	mips_hi16_lo16	instruction-word	0x8006d8e
 GAME.EXE	0x800614a0	0x50ca0		mips26	instruction-word	0x80061964	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800614b0	0x50cb0	0x800614b4	mips_hi16_lo16	instruction-word	0x8006d8e0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800614d0	0x50cd0	0x800614d4	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x800614f0	0x50cf0	0x800614f4	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x2050 native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x8006150c	0x50d0c	0x80061510	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	a3	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061514	0x50d14	0x80061518	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8006151c	0x50d1c	0x80061520	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80061550	0x50d50	0x80061554	mips_hi16_lo16	reachable-code	0x800745b4	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x20b0 native ($4+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
+GAME.EXE	0x80061568	0x50d68	0x8006156c	mips_hi16_lo16	reachable-code	0x800745b8	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x20c8 native ($8+(sectbase(7484)+$140));retail raw pair;exact-sdk30 section
+GAME.EXE	0x80061580	0x50d80	0x80061584	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x20e0 native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x8006159c	0x50d9c	0x800615a0	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x800615bc	0x50dbc	0x800615c0	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x211c native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x800615cc	0x50dcc	0x800615d0	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800615e0	0x50de0	0x800615e4	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800615e8	0x50de8	0x800615ec	mips_hi16_lo16	instruction-word	0x8006d908	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
@@ -11628,6 +11664,7 @@ GAME.EXE	0x80061688	0x50e88	0x8006168c	mips_hi16_lo16	instruction-word	0x8006d90
 GAME.EXE	0x80061690	0x50e90	0x80061694	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80061698	0x50e98	0x8006169c	mips_hi16_lo16	instruction-word	0x8006d904	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800616a4	0x50ea4	0x800616a8	mips_hi16_lo16	instruction-word	0x8006d900	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x800616ac	0x50eac	0x800616b0	mips_hi16_lo16	reachable-code	0x800745b0	bss	que	lui+addiu	at	paired-reviewed	reviewed	manual:LIBGPU SYS.OBJ .text+0x220c native (sectbase(7484)+$140);retail raw pair;exact-sdk30 section
 GAME.EXE	0x800616dc	0x50edc		mips26	instruction-word	0x80061774	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x800616e4	0x50ee4	0x800616e8	mips_hi16_lo16	instruction-word	0x8006d8ec	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x800616f4	0x50ef4	0x800616f8	mips_hi16_lo16	instruction-word	0x8006d8fc	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv

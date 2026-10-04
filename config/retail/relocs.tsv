@@ -2502,25 +2502,25 @@ GAME.EXE	0x80016ee8	0x66e8	0x80016eec	mips_hi16_lo16	reachable-code	0x801b6064	b
 GAME.EXE	0x80016ef0	0x66f0	0x80016ef4	mips_hi16_lo16	reachable-code	0x80016ed4	load	cd_stream_mark_complete	lui+addiu	a3	paired-reviewed	reviewed	manual:cd_stream_wrapper
 GAME.EXE	0x80016ef8	0x66f8		mips26	reachable-code	0x80017ff0	load	cd_archive_read_chunked	jal		control-flow	reviewed	manual:cd_stream_wrapper
 GAME.EXE	0x80016f34	0x6734		mips26	reachable-code	0x80016f44	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x80016f64	0x6764		mips26	reachable-code	0x8005f110	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80016f64	0x6764		mips26	reachable-code	0x8005f110	load	EnterCriticalSection	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80016f6c	0x676c	0x80016f70	mips_hi16_lo16	reachable-code	0x801b6000	bss	cd_state	lui+lw		paired-reviewed	reviewed	manual:cd-stream-service
-GAME.EXE	0x80016f9c	0x679c		mips26	reachable-code	0x8005f390	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
-GAME.EXE	0x80017028	0x6828		mips26	reachable-code	0x8005f8c0	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80016f9c	0x679c		mips26	reachable-code	0x8005f390	load	ExitCriticalSection	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017028	0x6828		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80017040	0x6840		mips26	reachable-code	0x80017148	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x80017050	0x6850		mips26	reachable-code	0x8005f8c0	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017050	0x6850		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80017060	0x6860		mips26	reachable-code	0x80016fa4	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x800170fc	0x68fc		mips26	reachable-code	0x80016f10	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x800170fc	0x68fc		mips26	reachable-code	0x80016f10	load	cd_stream_limit_chunk	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80017104	0x6904		mips26	reachable-code	0x8001716c	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
 GAME.EXE	0x80017140	0x6940		mips26	reachable-code	0x80016fa4	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x80017150	0x6950		mips26	reachable-code	0x80017bf0	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
-GAME.EXE	0x80017158	0x6958		mips26	reachable-code	0x80016f10	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
-GAME.EXE	0x80017164	0x6964		mips26	reachable-code	0x8005f840	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
-GAME.EXE	0x80017174	0x6974		mips26	reachable-code	0x8004a1e4	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017150	0x6950		mips26	reachable-code	0x80017bf0	load	cd_location_add	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017158	0x6958		mips26	reachable-code	0x80016f10	load	cd_stream_limit_chunk	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017164	0x6964		mips26	reachable-code	0x8005f840	load	DrawSync	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017174	0x6974		mips26	reachable-code	0x8004a1e4	load	CdControl	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x8001717c	0x697c		mips26	reachable-code	0x800171a8	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x80017184	0x6984		mips26	reachable-code	0x8005f840	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
-GAME.EXE	0x80017190	0x6990		mips26	reachable-code	0x80017864	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017184	0x6984		mips26	reachable-code	0x8005f840	load	DrawSync	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x80017190	0x6990		mips26	reachable-code	0x80017864	load	cd_request_advance	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80017198	0x6998		mips26	reachable-code	0x800171a8	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
-GAME.EXE	0x800171a0	0x69a0		mips26	reachable-code	0x8005f390	load		jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
+GAME.EXE	0x800171a0	0x69a0		mips26	reachable-code	0x8005f390	load	ExitCriticalSection	jal		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct call
 GAME.EXE	0x80017228	0x6a28		mips26	reachable-code	0x8001723c	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump
 GAME.EXE	0x8001724c	0x6a4c		mips26	reachable-code	0x80017260	load		j		control-flow	reviewed	asm;matched halfword fill loop;manual:cd-memory raw MIPS26 direct jump
 GAME.EXE	0x800172c4	0x6ac4		mips26	reachable-code	0x800172dc	load		j		control-flow	reviewed	investigation:relocs.tsv;manual:cd-memory raw MIPS26 direct jump

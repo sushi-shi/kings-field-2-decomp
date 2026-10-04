@@ -8403,7 +8403,7 @@ GAME.EXE	0x80041cd8	0x314d8	0x80041cdc	mips_hi16_lo16	reachable-code	0x8019e12c	
 GAME.EXE	0x80041d48	0x31548		mips26	reachable-code	0x8003ff18	load	effect_apply_radial_magic_damage	jal		control-flow	reviewed	manual:effect_scale_step
 GAME.EXE	0x80041d90	0x31590		mips26	instruction-word	0x800401b4	load	effect_sample_world_vertex	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041da0	0x315a0		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
-GAME.EXE	0x80041dd4	0x315d4	0x80041dd8	mips_hi16_lo16	reachable-code	0x8006d708	load		lui+addiu	v0	paired-reviewed	reviewed	manual:effect_spawn_zero_direction
+GAME.EXE	0x80041dd4	0x315d4	0x80041dd8	mips_hi16_lo16	reachable-code	0x8006d708	load	effect_zero_direction	lui+addiu	v0	paired-reviewed	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041de4	0x315e4		mips26	instruction-word	0x80040308	load	effect_construct_record	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041e14	0x31614	0x80041e18	mips_hi16_lo16	reachable-code	0x801d8d58	bss		lui+lw	v1	paired-reviewed	reviewed	manual:effect_spawn_at_lower_bound collision lower bound within startup BSS
 GAME.EXE	0x80041e70	0x31670		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:effect_spawn_at_lower_bound

@@ -11371,27 +11371,27 @@ GAME.EXE	0x8005f4b0	0x4ecb0		mips26	reachable-code	0x80061a58	load	GPU_cw	jal		c
 GAME.EXE	0x8005f4f8	0x4ecf8		mips26	reachable-code	0x8005f684	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f50c	0x4ed0c		mips26	reachable-code	0x8005f684	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f514	0x4ed14		mips26	reachable-code	0x8005e848	load	ResetCallback	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f51c	0x4ed1c	0x8005f520	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f51c	0x4ed1c	0x8005f520	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f52c	0x4ed2c		mips26	reachable-code	0x8005e8a8	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f534	0x4ed34	0x8005f538	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f534	0x4ed34	0x8005f538	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	a0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f53c	0x4ed3c		mips26	reachable-code	0x8005f4a0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f544	0x4ed44	0x8005f548	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f560	0x4ed60	0x8005f564	mips_hi16_lo16	reachable-code	0x8006d8d0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f544	0x4ed44	0x8005f548	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f560	0x4ed60	0x8005f564	mips_hi16_lo16	reachable-code	0x8006d8d0	load	DAT_8006d8cc	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f568	0x4ed68		mips26	reachable-code	0x8005f5d8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f570	0x4ed70	0x8005f574	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f58c	0x4ed8c	0x8005f590	mips_hi16_lo16	reachable-code	0x8006d8d0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f570	0x4ed70	0x8005f574	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f58c	0x4ed8c	0x8005f590	mips_hi16_lo16	reachable-code	0x8006d8d0	load	DAT_8006d8cc	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f594	0x4ed94		mips26	reachable-code	0x8005f5d8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f59c	0x4ed9c	0x8005f5a0	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f5b8	0x4edb8	0x8005f5bc	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f5c8	0x4edc8	0x8005f5cc	mips_hi16_lo16	reachable-code	0x8006d8d0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f59c	0x4ed9c	0x8005f5a0	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f5b8	0x4edb8	0x8005f5bc	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f5c8	0x4edc8	0x8005f5cc	mips_hi16_lo16	reachable-code	0x8006d8d0	load	DAT_8006d8cc	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f5d0	0x4edd0		mips26	reachable-code	0x8005e8a8	load	DMACallback	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f5d8	0x4edd8	0x8005f5dc	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f5f4	0x4edf4	0x8005f5f8	mips_hi16_lo16	reachable-code	0x8006d8d4	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f5d8	0x4edd8	0x8005f5dc	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f5f4	0x4edf4	0x8005f5f8	mips_hi16_lo16	reachable-code	0x8006d8d4	load	DAT_8006d8cc	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f60c	0x4ee0c		mips26	reachable-code	0x8005f618	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f61c	0x4ee1c	0x8005f620	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f648	0x4ee48	0x8005f64c	mips_hi16_lo16	reachable-code	0x8006d8d0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f650	0x4ee50	0x8005f654	mips_hi16_lo16	reachable-code	0x8006d8c4	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005f658	0x4ee58	0x8005f65c	mips_hi16_lo16	reachable-code	0x8006d8d4	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005f61c	0x4ee1c	0x8005f620	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f648	0x4ee48	0x8005f64c	mips_hi16_lo16	reachable-code	0x8006d8d0	load	DAT_8006d8cc	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f650	0x4ee50	0x8005f654	mips_hi16_lo16	reachable-code	0x8006d8c4	load	DAT_8006d8c4	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+GAME.EXE	0x8005f658	0x4ee58	0x8005f65c	mips_hi16_lo16	reachable-code	0x8006d8d4	load	DAT_8006d8cc	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 GAME.EXE	0x8005f694	0x4ee94	0x8005f698	mips_hi16_lo16	instruction-word	0x8006d8c4	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f6a8	0x4eea8	0x8005f6ac	mips_hi16_lo16	instruction-word	0x8006d8d4	load		lui+lw	s0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005f6b4	0x4eeb4	0x8005f6b8	mips_hi16_lo16	instruction-word	0x8006d8d4	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -12841,27 +12841,27 @@ OPEN.EXE	0x8001512c	0x492c		mips26	reachable-code	0x800176d4	load	GPU_cw	jal		co
 OPEN.EXE	0x80015174	0x4974		mips26	reachable-code	0x80015300	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80015188	0x4988		mips26	reachable-code	0x80015300	load		j		control-flow	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80015190	0x4990		mips26	reachable-code	0x8001db04	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015198	0x4998	0x8001519c	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80015198	0x4998	0x8001519c	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x800151a8	0x49a8		mips26	reachable-code	0x8001db64	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800151b0	0x49b0	0x800151b4	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800151b0	0x49b0	0x800151b4	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	a0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x800151b8	0x49b8		mips26	reachable-code	0x8001511c	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800151c0	0x49c0	0x800151c4	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800151dc	0x49dc	0x800151e0	mips_hi16_lo16	reachable-code	0x8003dc0c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800151c0	0x49c0	0x800151c4	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x800151dc	0x49dc	0x800151e0	mips_hi16_lo16	reachable-code	0x8003dc0c	load	DAT_8003dc08	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x800151e4	0x49e4		mips26	reachable-code	0x80015254	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800151ec	0x49ec	0x800151f0	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015208	0x4a08	0x8001520c	mips_hi16_lo16	reachable-code	0x8003dc0c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x800151ec	0x49ec	0x800151f0	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x80015208	0x4a08	0x8001520c	mips_hi16_lo16	reachable-code	0x8003dc0c	load	DAT_8003dc08	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x80015210	0x4a10		mips26	reachable-code	0x80015254	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015218	0x4a18	0x8001521c	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015234	0x4a34	0x80015238	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015244	0x4a44	0x80015248	mips_hi16_lo16	reachable-code	0x8003dc0c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80015218	0x4a18	0x8001521c	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x80015234	0x4a34	0x80015238	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x80015244	0x4a44	0x80015248	mips_hi16_lo16	reachable-code	0x8003dc0c	load	DAT_8003dc08	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x8001524c	0x4a4c		mips26	reachable-code	0x8001db64	load		jal		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015254	0x4a54	0x80015258	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015270	0x4a70	0x80015274	mips_hi16_lo16	reachable-code	0x8003dc10	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80015254	0x4a54	0x80015258	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x80015270	0x4a70	0x80015274	mips_hi16_lo16	reachable-code	0x8003dc10	load	DAT_8003dc08	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x80015288	0x4a88		mips26	reachable-code	0x80015294	load		j		control-flow	candidate	investigation:relocs.tsv
-OPEN.EXE	0x80015298	0x4a98	0x8001529c	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800152c4	0x4ac4	0x800152c8	mips_hi16_lo16	reachable-code	0x8003dc0c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800152cc	0x4acc	0x800152d0	mips_hi16_lo16	reachable-code	0x8003dc00	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-OPEN.EXE	0x800152d4	0x4ad4	0x800152d8	mips_hi16_lo16	reachable-code	0x8003dc10	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+OPEN.EXE	0x80015298	0x4a98	0x8001529c	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x800152c4	0x4ac4	0x800152c8	mips_hi16_lo16	reachable-code	0x8003dc0c	load	DAT_8003dc08	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x800152cc	0x4acc	0x800152d0	mips_hi16_lo16	reachable-code	0x8003dc00	load	DAT_8003dc00	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+OPEN.EXE	0x800152d4	0x4ad4	0x800152d8	mips_hi16_lo16	reachable-code	0x8003dc10	load	DAT_8003dc08	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 OPEN.EXE	0x80015310	0x4b10	0x80015314	mips_hi16_lo16	instruction-word	0x8003dc00	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80015324	0x4b24	0x80015328	mips_hi16_lo16	instruction-word	0x8003dc10	load		lui+lw	s0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x80015330	0x4b30	0x80015334	mips_hi16_lo16	instruction-word	0x8003dc10	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -15576,27 +15576,27 @@ END.EXE	0x80013adc	0x32dc		mips26	reachable-code	0x80016084	load	GPU_cw	jal		con
 END.EXE	0x80013b24	0x3324		mips26	reachable-code	0x80013cb0	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013b38	0x3338		mips26	reachable-code	0x80013cb0	load		j		control-flow	candidate	investigation:relocs.tsv
 END.EXE	0x80013b40	0x3340		mips26	reachable-code	0x8001ad68	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013b48	0x3348	0x80013b4c	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013b48	0x3348	0x80013b4c	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013b58	0x3358		mips26	reachable-code	0x8001adc8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013b60	0x3360	0x80013b64	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013b60	0x3360	0x80013b64	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	a0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013b68	0x3368		mips26	reachable-code	0x80013acc	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013b70	0x3370	0x80013b74	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013b8c	0x338c	0x80013b90	mips_hi16_lo16	reachable-code	0x8003aa9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013b70	0x3370	0x80013b74	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013b8c	0x338c	0x80013b90	mips_hi16_lo16	reachable-code	0x8003aa9c	load	DAT_8003aa98	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013b94	0x3394		mips26	reachable-code	0x80013c04	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013b9c	0x339c	0x80013ba0	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013bb8	0x33b8	0x80013bbc	mips_hi16_lo16	reachable-code	0x8003aa9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013b9c	0x339c	0x80013ba0	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013bb8	0x33b8	0x80013bbc	mips_hi16_lo16	reachable-code	0x8003aa9c	load	DAT_8003aa98	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013bc0	0x33c0		mips26	reachable-code	0x80013c04	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013bc8	0x33c8	0x80013bcc	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013be4	0x33e4	0x80013be8	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013bf4	0x33f4	0x80013bf8	mips_hi16_lo16	reachable-code	0x8003aa9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013bc8	0x33c8	0x80013bcc	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013be4	0x33e4	0x80013be8	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013bf4	0x33f4	0x80013bf8	mips_hi16_lo16	reachable-code	0x8003aa9c	load	DAT_8003aa98	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013bfc	0x33fc		mips26	reachable-code	0x8001adc8	load		jal		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013c04	0x3404	0x80013c08	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013c20	0x3420	0x80013c24	mips_hi16_lo16	reachable-code	0x8003aaa0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013c04	0x3404	0x80013c08	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013c20	0x3420	0x80013c24	mips_hi16_lo16	reachable-code	0x8003aaa0	load	DAT_8003aa98	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013c38	0x3438		mips26	reachable-code	0x80013c44	load		j		control-flow	candidate	investigation:relocs.tsv
-END.EXE	0x80013c48	0x3448	0x80013c4c	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013c74	0x3474	0x80013c78	mips_hi16_lo16	reachable-code	0x8003aa9c	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013c7c	0x347c	0x80013c80	mips_hi16_lo16	reachable-code	0x8003aa90	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-END.EXE	0x80013c84	0x3484	0x80013c88	mips_hi16_lo16	reachable-code	0x8003aaa0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+END.EXE	0x80013c48	0x3448	0x80013c4c	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013c74	0x3474	0x80013c78	mips_hi16_lo16	reachable-code	0x8003aa9c	load	DAT_8003aa98	lui+sw	at	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013c7c	0x347c	0x80013c80	mips_hi16_lo16	reachable-code	0x8003aa90	load	DAT_8003aa90	lui+lw	v1	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
+END.EXE	0x80013c84	0x3484	0x80013c88	mips_hi16_lo16	reachable-code	0x8003aaa0	load	DAT_8003aa98	lui+lw	v0	paired-reviewed	reviewed	manual:Psy-Q 3.0 LIBGPU SYS.OBJ ResetGraph native .text HI16/LO16 patch;retail signed-low word exact
 END.EXE	0x80013cc0	0x34c0	0x80013cc4	mips_hi16_lo16	instruction-word	0x8003aa90	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x80013cd4	0x34d4	0x80013cd8	mips_hi16_lo16	instruction-word	0x8003aaa0	load		lui+lw	s0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x80013ce0	0x34e0	0x80013ce4	mips_hi16_lo16	instruction-word	0x8003aaa0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv

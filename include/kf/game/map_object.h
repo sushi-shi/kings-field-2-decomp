@@ -563,15 +563,11 @@ typedef struct KfMapObjectResourceOffsets {
     s8 offset_x;
     s8 offset_z;
     s8 offset_y;
-    u8 unknown_43;
 } KfMapObjectResourceOffsets;
-typedef char kf_map_object_resource_offsets_size[
-    sizeof(KfMapObjectResourceOffsets) == 4 ? 1 : -1];
 
 typedef struct KfMapObjectLayerFadeState {
     u16 delay_frames_left;
     u8 original_layer_mask;
-    u8 unknown_43;
 } KfMapObjectLayerFadeState;
 typedef char kf_map_object_layer_fade_state_size[
     sizeof(KfMapObjectLayerFadeState) == 4 ? 1 : -1];
@@ -648,6 +644,16 @@ typedef char kf_map_object_offset_motion_elapsed_offset[
     (u32)&((KfMapObject *)0)->extra_40.offset_motion.elapsed_frames == 0x40 ? 1 : -1];
 typedef char kf_map_object_saved_layer_mask_offset[
     (u32)&((KfMapObject *)0)->extra_40.saved_layer.layer_mask == 0x40 ? 1 : -1];
+typedef char kf_map_object_resource_offset_x_offset[
+    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_x == 0x40 ? 1 : -1];
+typedef char kf_map_object_resource_offset_z_offset[
+    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_z == 0x41 ? 1 : -1];
+typedef char kf_map_object_resource_offset_y_offset[
+    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_y == 0x42 ? 1 : -1];
+typedef char kf_map_object_layer_fade_delay_offset[
+    (u32)&((KfMapObject *)0)->extra_40.layer_fade.delay_frames_left == 0x40 ? 1 : -1];
+typedef char kf_map_object_layer_fade_mask_offset[
+    (u32)&((KfMapObject *)0)->extra_40.layer_fade.original_layer_mask == 0x42 ? 1 : -1];
 
 /* game_main_loop clears the whole region containing the 0x18c-object pool. */
 typedef struct KfMapObjectStateGame {

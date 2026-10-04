@@ -9108,34 +9108,34 @@ GAME.EXE	0x80047580	0x36d80		mips26	reachable-code	0x8002bc18	load	reset_collisi
 GAME.EXE	0x80047594	0x36d94		mips26	reachable-code	0x80031634	load	accumulate_color_overlay	jal		control-flow	reviewed	manual:collision_channel_transition
 GAME.EXE	0x800475a0	0x36da0		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:collision_channel_transition
 GAME.EXE	0x80047628	0x36e28	0x8004762c	mips_hi16_lo16	instruction-word	0x8017d10e	bss	map_object_state	lui+lhu	a2	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
-GAME.EXE	0x80047630	0x36e30		mips26	reachable-code	0x800363dc	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x8004763c	0x36e3c		mips26	reachable-code	0x80035590	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047630	0x36e30		mips26	reachable-code	0x800363dc	load	map_object_effect_pool_acquire	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004763c	0x36e3c		mips26	reachable-code	0x80035590	load	map_object_reset	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x8004767c	0x36e7c	0x80047680	mips_hi16_lo16	instruction-word	0x801749d0	bss	map_object_state	lui+addiu	a2	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
-GAME.EXE	0x800476c0	0x36ec0		mips26	reachable-code	0x800331d0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800476c0	0x36ec0		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x800476d8	0x36ed8	0x800476dc	mips_hi16_lo16	instruction-word	0x801984fc	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
 GAME.EXE	0x800476ec	0x36eec		mips26	reachable-code	0x80047c68	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x8004777c	0x36f7c	0x80047780	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
 GAME.EXE	0x800477a4	0x36fa4		mips26	reachable-code	0x800477bc	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x800477bc	0x36fbc		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800477bc	0x36fbc		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x800477f0	0x36ff0	0x800477f4	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
-GAME.EXE	0x80047824	0x37024		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047824	0x37024		mips26	reachable-code	0x80045f20	load	scene_position_from_camera_offset	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x8004782c	0x3702c		mips26	reachable-code	0x8004795c	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047864	0x37064	0x80047868	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+addiu	t0	paired-reviewed	reviewed	manual:0x800475d8 raw HI16/LO16 and established owner
-GAME.EXE	0x800478b4	0x370b4		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x800478c4	0x370c4		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x800478f8	0x370f8		mips26	reachable-code	0x80045fd4	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047910	0x37110		mips26	reachable-code	0x80014864	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x8004792c	0x3712c		mips26	reachable-code	0x8001586c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047934	0x37134		mips26	reachable-code	0x800144b8	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x8004793c	0x3713c		mips26	reachable-code	0x80016f4c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047948	0x37148		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047968	0x37168		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047994	0x37194		mips26	reachable-code	0x800144b8	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x8004799c	0x3719c		mips26	reachable-code	0x80016f4c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800478b4	0x370b4		mips26	reachable-code	0x80045f20	load	scene_position_from_camera_offset	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800478c4	0x370c4		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800478f8	0x370f8		mips26	reachable-code	0x80045fd4	load	scene_pose_interpolate	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047910	0x37110		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004792c	0x3712c		mips26	reachable-code	0x8001586c	load	angle_lerp_shortest_q12	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047934	0x37134		mips26	reachable-code	0x800144b8	load	cd_request_service_vab	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004793c	0x3713c		mips26	reachable-code	0x80016f4c	load	cd_request_service_stream	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047948	0x37148		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047968	0x37168		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047994	0x37194		mips26	reachable-code	0x800144b8	load	cd_request_service_vab	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x8004799c	0x3719c		mips26	reachable-code	0x80016f4c	load	cd_request_service_stream	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x800479a4	0x371a4	0x800479a8	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:0x800475d8 raw player rotation address pair
-GAME.EXE	0x800479ac	0x371ac		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800479ac	0x371ac		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x800479b4	0x371b4		mips26	reachable-code	0x80047968	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x800479d8	0x371d8		mips26	reachable-code	0x80047434	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x800479d8	0x371d8		mips26	reachable-code	0x80047434	load	game_counter_increment	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047a08	0x37208		mips26	reachable-code	0x80047a9c	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047a10	0x37210		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047a2c	0x3722c	0x80047a30	mips_hi16_lo16	instruction-word	0x8009a65d	bss	game_counter_bytes	lui+addiu	a0	paired-reviewed	reviewed	manual:0x800475d8 raw game counter byte 0x75 address pair
@@ -9144,28 +9144,28 @@ GAME.EXE	0x80047a60	0x37260		mips26	reachable-code	0x80047a98	load		j		control-f
 GAME.EXE	0x80047a68	0x37268	0x80047a6c	mips_hi16_lo16	instruction-word	0x8009a65e	bss	game_counter_bytes	lui+addiu	v1	paired-reviewed	reviewed	manual:0x800475d8 raw game counter byte 0x76 address pair
 GAME.EXE	0x80047a88	0x37288		mips26	reachable-code	0x80047a94	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047ab8	0x372b8	0x80047abc	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+lh	v0	paired-reviewed	reviewed	manual:0x800475d8 raw player rotation halfword address pair
-GAME.EXE	0x80047ac4	0x372c4		mips26	reachable-code	0x80045f20	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047ac4	0x372c4		mips26	reachable-code	0x80045f20	load	scene_position_from_camera_offset	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047af4	0x372f4		mips26	reachable-code	0x80047b60	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047b14	0x37314		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047b14	0x37314		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047b30	0x37330	0x80047b34	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:0x800475d8 raw player rotation address pair
-GAME.EXE	0x80047b40	0x37340		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047b40	0x37340		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047b48	0x37348		mips26	reachable-code	0x80047b08	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047b60	0x37360	0x80047b64	mips_hi16_lo16	instruction-word	0x801985c0	bss	player_state	lui+addiu	v0	paired-reviewed	reviewed	manual:0x800475d8 raw player rotation address pair
-GAME.EXE	0x80047bd4	0x373d4		mips26	reachable-code	0x80045fd4	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047be4	0x373e4		mips26	reachable-code	0x8001586c	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047c00	0x37400		mips26	reachable-code	0x80014864	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047c18	0x37418		mips26	reachable-code	0x800335a0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047bd4	0x373d4		mips26	reachable-code	0x80045fd4	load	scene_pose_interpolate	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047be4	0x373e4		mips26	reachable-code	0x8001586c	load	angle_lerp_shortest_q12	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c00	0x37400		mips26	reachable-code	0x80014864	load	value_approach	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c18	0x37418		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047c3c	0x3743c		mips26	reachable-code	0x80047c60	load		j		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
-GAME.EXE	0x80047c60	0x37460		mips26	reachable-code	0x800251f0	load		jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
+GAME.EXE	0x80047c60	0x37460		mips26	reachable-code	0x800251f0	load	player_clear_motion	jal		control-flow	reviewed	manual:0x800475d8 decoded direct MIPS26
 GAME.EXE	0x80047ce4	0x374e4	0x80047ce8	mips_hi16_lo16	instruction-word	0x801b2140	bss	event_state	lui+sw	at	paired-reviewed	reviewed	manual:0x80047c98 event-state control clear
 GAME.EXE	0x80047cec	0x374ec		mips26	reachable-code	0x80045e5c	load	collision_probe_forward_shape_0x20	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
-GAME.EXE	0x80047d1c	0x3751c		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d1c	0x3751c		mips26	reachable-code	0x800474c4	load	color_overlay_transition	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047d3c	0x3753c	0x80047d40	mips_hi16_lo16	instruction-word	0x801984e2	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:0x80047c98 player maximum HP
 GAME.EXE	0x80047d48	0x37548	0x80047d4c	mips_hi16_lo16	instruction-word	0x801984e4	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:0x80047c98 player current HP
-GAME.EXE	0x80047d50	0x37550		mips26	reachable-code	0x800474c4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
-GAME.EXE	0x80047d6c	0x3756c		mips26	reachable-code	0x8003a9f4	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d50	0x37550		mips26	reachable-code	0x800474c4	load	color_overlay_transition	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047d6c	0x3756c		mips26	reachable-code	0x8003a9f4	load	actor_find_overlap_excluding_target_type3	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047d90	0x37590	0x80047d94	mips_hi16_lo16	instruction-word	0x8016b600	bss	actor_state	lui+addiu	v1	paired-reviewed	reviewed	manual:0x80047c98 indexed actor pool
-GAME.EXE	0x80047db0	0x375b0		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
+GAME.EXE	0x80047db0	0x375b0		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047dc0	0x375c0		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047dd0	0x375d0		mips26	reachable-code	0x800462bc	load	event_target_stream_execute	jal		control-flow	reviewed	manual:0x80047c98 decoded direct MIPS26
 GAME.EXE	0x80047ddc	0x375dc	0x80047de0	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	s6	paired-reviewed	reviewed	manual:0x80047c98 indexed map-object pool

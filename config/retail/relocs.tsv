@@ -3925,7 +3925,7 @@ GAME.EXE	0x80020800	0x10000	0x80020804	mips_hi16_lo16	reachable-code	0x80063e8c	
 GAME.EXE	0x80020808	0x10008		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:raw decoded GAME menu option direct jal and curated target identity
 GAME.EXE	0x80020810	0x10010	0x80020814	mips_hi16_lo16	reachable-code	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:menu_draw_two_option decoded sprite-table entry pointer and source call
 GAME.EXE	0x80020818	0x10018		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:raw decoded GAME menu option direct jal and curated target identity
-GAME.EXE	0x8002083c	0x1003c	0x80020840	mips_hi16_lo16	reachable-code	0x8019859b	bss		lui+lbu		paired-reviewed	reviewed	manual:menu_model_preview
+GAME.EXE	0x8002083c	0x1003c	0x80020840	mips_hi16_lo16	reachable-code	0x8019859b	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:menu_model_preview
 GAME.EXE	0x80020868	0x10068	0x8002086c	mips_hi16_lo16	reachable-code	0x8006da0a	load	menu_item_preview_rotation	lui+addiu	a2	paired-reachable	reviewed	manual:menu_update_item_preview retail transform field and matching source use
 GAME.EXE	0x80020874	0x10074	0x80020878	mips_hi16_lo16	reachable-code	0x8006da00	load	menu_item_preview_translation	lui+lh	v0	paired-reachable	reviewed	manual:menu_update_item_preview retail transform field and matching source use
 GAME.EXE	0x8002087c	0x1007c	0x80020880	mips_hi16_lo16	reachable-code	0x8006da02	load	menu_item_preview_translation	lui+lh	v1	paired-reachable	reviewed	manual:menu_update_item_preview retail transform field and matching source use
@@ -4140,7 +4140,7 @@ GAME.EXE	0x80021e64	0x11664	0x80021e68	mips_hi16_lo16	reachable-code	0x8018d180	
 GAME.EXE	0x80021e6c	0x1166c	0x80021e70	mips_hi16_lo16	reachable-code	0x8018d17f	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e74	0x11674	0x80021e78	mips_hi16_lo16	reachable-code	0x8018d1dc	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021e7c	0x1167c	0x80021e80	mips_hi16_lo16	reachable-code	0x8018d1db	bss		lui+sb		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021e90	0x11690	0x80021e94	mips_hi16_lo16	reachable-code	0x80198598	bss		lui+lbu	v1	paired-reviewed	reviewed	manual:menu display reads player music flag
+GAME.EXE	0x80021e90	0x11690	0x80021e94	mips_hi16_lo16	reachable-code	0x80198598	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:menu display reads player music flag
 GAME.EXE	0x80021e98	0x11698	0x80021e9c	mips_hi16_lo16	reachable-code	0x8006d9e8	bss	menu_saved_music_enabled	lui+lbu	v0	paired-reachable	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021eb4	0x116b4		mips26	reachable-code	0x80013b7c	load	audio_stop_sequence	jal		control-flow	reviewed	manual:menu display restore decoded reference
 GAME.EXE	0x80021ebc	0x116bc		mips26	reachable-code	0x80021f00	load		j		control-flow	reviewed	manual:menu display restore decoded reference

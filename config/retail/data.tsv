@@ -653,7 +653,7 @@ GAME.EXE	0x8006d65c	0x5ce5c	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ 
 GAME.EXE	0x8006d674	0x5ce74	0xc	unclassified	coverage-gap			payload-complement	Twelve zero bytes at the linker GP anchor; NONE2.OBJ start loads gp=0x8006d674 and then tail-jumps to main, but no storage identity is proved
 GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
 GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed		ascii	manual:cd_memory;retail bytes;three validated xrefs	escaped text: ;1 (cd_version_suffix); original SDK ownership unresolved
 GAME.EXE	0x8006d68b	0x5ce8b	0x1	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d68c	0x5ce8c	0x4	defined	manual:menu item model flag		s32	retail zero word;3 validated xrefs in menu_load_item_model and menu_release_item_model	allocation pending flag; original containing object and TU unproved
 GAME.EXE	0x8006d690	0x5ce90	0x4	defined	manual:input active latch	input_press_pending	s32	retail zero word;16 validated xrefs;input_read_mark_active writes 1 after nonzero PadRead	input active latch cleared by release/menu handlers; original containing object and TU unproved

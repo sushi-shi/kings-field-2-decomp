@@ -918,6 +918,7 @@ GAME.EXE	0x8005f480	0x4ec80	0xc	0xc	1	function	ghidra-analysis	rand		Ghidra-12.0
 GAME.EXE	0x8005f490	0x4ec90	0xc	0xc	1	function	ghidra-analysis	atoi		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f4a0	0x4eca0	0x28	0x28	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f4c8	0x4ecc8	0x1cc	0x1cc	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005f764	0x4ef64	0x64	0x64	1	function	archive-xdef	SetGraphDebug		Psy-Q 3.0 LIBGPU SYS.OBJ .text+0x2c4; OPEN/END homologs; retail bytes	vendored SDK entry, next XDEF GetGraphType at .text+0x328
 GAME.EXE	0x8005f7c8	0x4efc8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f7d8	0x4efd8	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005f800	0x4f000	0x40	0x40	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

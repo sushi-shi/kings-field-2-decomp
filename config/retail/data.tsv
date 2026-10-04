@@ -526,7 +526,7 @@ GAME.EXE	0x8005f46c	0x4ec6c	0x4	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8005f47c	0x4ec7c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f48c	0x4ec8c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f49c	0x4ec9c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8005f694	0x4ee94	0x134	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8005f694	0x4ee94	0xd0	unclassified	coverage-gap			payload-complement	remaining LIBGPU SYS.OBJ text before exported SetGraphDebug; function boundaries unresolved
 GAME.EXE	0x8005f7e8	0x4efe8	0x18	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f870	0x4f070	0x50	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8005f9a4	0x4f1a4	0x54	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

@@ -21,6 +21,8 @@ KfAudioVoiceParams	0x0a	supported	game/audio.h;GAME 0x80013fc8-0x80013fe0;GAME 0
 KfBss801c7540	0x11844	supported	asm;game_main_loop startup clear;map-cell and collision-cache xrefs	layout from the reconstructed header
 KfCardHeader	0x280	supported	game/card.h;GAME 0x80022990/0x80022994;GAME 0x80023054-0x800230d0	640-byte copied card-file header prefix; reserved spans and original typedef spelling unproved
 KfCardMenuList	0x34	supported	game/menu.h;menu_card_load_browser;menu_card_load_slot_browser;menu_card_save_browser	card list prefix and row, level, and experience pointers
+KfCardPlayerSnapshot	0x58	supported	game/card_payload.h;GAME 0x80048da8-0x8004906c;GAME 0x80049370-0x80049638	88-byte player snapshot view; original typedef spelling unproved
+KfCardSavePayload	0x3c00	supported	game/card_payload.h;GAME 0x80048d24/0x800492dc;memory_card_write_slot	0x3c00-byte on-card payload format; interior gaps and tail unclassified; original C object extent unproved
 KfCardSlotGlyphRow	0x14	supported	game/menu.h;menu_card_build_slot_rows;menu_card_load_browser	ten halfword glyph codes per card slot
 KfCdArchive	0x0c	supported	game/cd.h;cd_archive_open;cd_archive_entry_extent	sector-offset table and file extent
 KfCdExtent	0x08	supported	game/cd.h;cd_file_load;cd_archive_open	CD location and byte extent

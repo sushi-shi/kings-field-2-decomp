@@ -132,6 +132,15 @@ KfCardMenuList	0x24	0x04	rows	KfCardSlotGlyphRow *	supported	game/menu.h;menu_ca
 KfCardMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;menu_card_load_browser	unresolved bytes between card row and value pointers
 KfCardMenuList	0x2c	0x04	levels	u8 *	supported	GAME 0x8001ad50 stores menu_card_build_slot_rows level output;menu_card_load_browser	pointer to parallel card level bytes
 KfCardMenuList	0x30	0x04	experience_values	s32 *	supported	GAME 0x8001ad54 stores menu_card_build_slot_rows experience output;menu_card_load_browser	pointer to parallel card experience values
+KfCardSavePayload	0x0000	0x05	active_resource_ids	u8[5]	supported	game/card_payload.h;GAME 0x80048d30-0x80048d44;GAME 0x800492e8-0x80049308	five active resource IDs copied at the start of the card payload
+KfCardSavePayload	0x0005	0x100	event_control	u8[256]	supported	game/card_payload.h;GAME 0x80049144-0x800491e0;card_payload_restore_game_state	256-byte event control copy
+KfCardSavePayload	0x0105	0x3800	event_arena	u8[14336]	supported	game/card_payload.h;GAME 0x800491e4-0x80049278;card_payload_restore_game_state	0x3800-byte event arena copy
+KfCardSavePayload	0x3906	0x14	saved_event_offsets	u16[10]	supported	game/card_payload.h;GAME 0x8004927c-0x800492d0;card_payload_restore_game_state	twenty copied bytes at ten halfword offset slots; base is halfword-aligned within the on-card format
+KfCardSavePayload	0x391a	0x78	game_counters	u8[120]	supported	game/card_payload.h;GAME 0x80049088-0x80049140;card_payload_restore_game_state	120-byte game-counter copy
+KfCardSavePayload	0x3992	0x40	magic_menu_available	u8[64]	supported	game/card_payload.h;GAME 0x80049034-0x80049084;card_payload_restore_game_state	64 magic-record menu availability bytes
+KfCardSavePayload	0x39d4	0x10	camera_position	VECTOR	supported	game/card_payload.h;GAME 0x80048d50-0x80048d70;card_payload_restore_game_state	four copied camera-position words
+KfCardSavePayload	0x39e4	0x08	camera_rotation_target	KfPlayerViewRotation	supported	game/card_payload.h;GAME 0x80048d7c-0x80048d98;card_payload_restore_game_state	eight-byte target rotation copy
+KfCardSavePayload	0x39ec	0x58	player	KfCardPlayerSnapshot	supported	game/card_payload.h;GAME 0x80048da8-0x8004906c;card_payload_restore_game_state	player snapshot fields copied individually; padding within snapshot unclassified
 KfCardSlotGlyphRow	0x00	0x14	codes	s16[10]	supported	game/menu.h;menu_card_build_slot_rows	ten halfword glyph codes per card slot
 KfCdArchive	0x00	0x04	sector_offsets	u16 *	supported	game/cd.h;cd_archive_open	sector offset table
 KfCdArchive	0x04	0x08	extent	KfCdExtent	supported	game/cd.h;cd_archive_entry_extent	archive file extent

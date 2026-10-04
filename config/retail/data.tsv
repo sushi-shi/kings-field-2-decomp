@@ -511,8 +511,6 @@ GAME.EXE	0x80060aaf	0x502af	0x4	string	byte-pattern		ascii	investigation:string-
 GAME.EXE	0x80060ab3	0x502b3	0x5ad	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80061a30	0x51230	0x28	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80061a64	0x51264	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80061adc	0x512dc	0x29c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80061e94	0x51694	0x1310	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80063dcc	0x535cc	0x20	defined	manual:render world identity matrix	render_world_identity_matrix	MATRIX	retail bytes;render_scene_and_update_resources+0x114/+0x8f4 xrefs;SDK layout	initialized 32-byte identity matrix passed as world transform to func_80031850
 GAME.EXE	0x80063dec	0x535ec	0x14	unclassified	coverage-gap			payload-complement	remaining bytes after the matrix; owner unresolved
 GAME.EXE	0x80063e00	0x53600	0x80	pointer	manual:callback default table		KfCallback[32]	retail words;resource_advance_transition initialized-table address	32 callback pointers, all to no-op stub 0x80015d50; original TU unresolved
@@ -1034,8 +1032,6 @@ OPEN.EXE	0x800168aa	0x60aa	0x4	string	byte-pattern		ascii	investigation:string-c
 OPEN.EXE	0x800168ae	0x60ae	0x42e	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x800176ac	0x6eac	0x28	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x800176e0	0x6ee0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80017758	0x6f58	0x29c	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-OPEN.EXE	0x80017b10	0x7310	0x1310	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80018e2c	0x862c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x80019e00	0x9600	0x393	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8001a193	0x9993	0x4	string	byte-pattern		ascii	investigation:string-census	escaped text: $$PJ

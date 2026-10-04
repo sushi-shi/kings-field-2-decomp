@@ -996,7 +996,11 @@ GAME.EXE	0x80061a00	0x51200	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4
 GAME.EXE	0x80061a58	0x51258	0xc	0xc	1	function	ghidra-analysis	GPU_cw		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80061a68	0x51268	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80061a78	0x51278	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80061adc	0x512dc	0x44	0x44	1	function	sdk-object-xdef	OpenTMD		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive XDEF .text+0x74 to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
+GAME.EXE	0x80061b20	0x51320	0x258	0x258	1	function	sdk-object-xdef	ReadTMD		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive XDEF .text+0xb8 to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
 GAME.EXE	0x80061d78	0x51578	0x11c	0x11c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x80061e94	0x51694	0x194	0x194	1	function	sdk-object-label	get_tmd_addr		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive local symbol .text+0x42c to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
+GAME.EXE	0x80062028	0x51828	0x117c	0x117c	1	function	sdk-object-label	unpack_packet		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive local symbol .text+0x5c0 to object end; retail entry and return delay slot in exact 0x173c-byte SDK section
 GAME.EXE	0x800631a4	0x529a4	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063238	0x52a38	0x18	0x18	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x80063250	0x52a50	0x90	0x90	1	function	sdk-object-xdef	DumpTPage		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0xac to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section
@@ -1146,7 +1150,11 @@ OPEN.EXE	0x8001767c	0x6e7c	0x30	0x30	1	function	ghidra-analysis			Ghidra-12.0.4/
 OPEN.EXE	0x800176d4	0x6ed4	0xc	0xc	1	function	ghidra-analysis	GPU_cw		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800176e4	0x6ee4	0x10	0x10	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x800176f4	0x6ef4	0x64	0x64	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80017758	0x6f58	0x44	0x44	1	function	sdk-object-xdef	OpenTMD		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive XDEF .text+0x74 to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
+OPEN.EXE	0x8001779c	0x6f9c	0x258	0x258	1	function	sdk-object-xdef	ReadTMD		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive XDEF .text+0xb8 to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
 OPEN.EXE	0x800179f4	0x71f4	0x11c	0x11c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80017b10	0x7310	0x194	0x194	1	function	sdk-object-label	get_tmd_addr		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive local symbol .text+0x42c to next symbol; retail entry and return delay slot in exact 0x173c-byte SDK section
+OPEN.EXE	0x80017ca4	0x74a4	0x117c	0x117c	1	function	sdk-object-label	unpack_packet		psyq-sdk30:LIBGPU.LIB/TMD.OBJ	archive local symbol .text+0x5c0 to object end; retail entry and return delay slot in exact 0x173c-byte SDK section
 OPEN.EXE	0x80018e20	0x8620	0xc	0xc	1	function	ghidra-analysis	memset		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80018e30	0x8630	0x94	0x94	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 OPEN.EXE	0x80018ec4	0x86c4	0x18	0x18	1	function	sdk-object-xdef	GetClut		psyq-sdk30:LIBGPU.LIB/PRIM.OBJ	archive XDEF .text+0x94 to next XDEF; retail entry and return delay slot in exact 0x6c8-byte SDK section

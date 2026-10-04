@@ -168,7 +168,6 @@ KfCollisionShapeOffsetTable	0x0	0x200	offsets	u16[256]	supported	game/collision_
 KfCollisionTail	0x0	0x4	kinds	KfCollisionKinds	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfCollisionTail	0x4	0x2	angle	s16	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x00	0x01	buffer_index	u8	supported	game headers;asm;xrefs	member used by reconstructed code
-KfDisplayState	0x01	0x03	unknown_01	u8[3]	opaque	game headers;asm;xrefs	not yet modelled
 KfDisplayState	0x04	0x04	asset_load_buffer	u8 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfDisplayState	0x08	0x18	primitive_buffers	KfPrimitiveBuffer[2]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfDisplayState	0x20	0x04	primitive_buffer	KfPrimitiveBuffer *	supported	game headers;asm;xrefs	member used by reconstructed code

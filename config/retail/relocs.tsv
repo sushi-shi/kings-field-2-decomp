@@ -4075,12 +4075,12 @@ GAME.EXE	0x80021abc	0x112bc	0x80021ac0	mips_hi16_lo16	reachable-code	0x8018d164	
 GAME.EXE	0x80021ac4	0x112c4		mips26	reachable-code	0x8005f9f8	load	ClearOTagR	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021acc	0x112cc	0x80021ad0	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021ae4	0x112e4	0x80021ae8	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80021af8	0x112f8	0x80021afc	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80021b10	0x11310	0x80021b14	mips_hi16_lo16	reachable-code	0x8006d9f8	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80021b18	0x11318	0x80021b1c	mips_hi16_lo16	reachable-code	0x8006d9fa	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80021af8	0x112f8	0x80021afc	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+sw	at	paired-reachable	reviewed	manual:menu_frame_begin retail menu frame pointer and matching source use
+GAME.EXE	0x80021b10	0x11310	0x80021b14	mips_hi16_lo16	reachable-code	0x8006d9f8	load	menu_frame_upload_rect	lui+sh	at	paired-reachable	reviewed	manual:menu_frame_begin retail menu frame pointer and matching source use
+GAME.EXE	0x80021b18	0x11318	0x80021b1c	mips_hi16_lo16	reachable-code	0x8006d9fa	load	menu_frame_upload_rect	lui+sh	at	paired-reachable	reviewed	manual:menu_frame_begin retail menu frame pointer and matching source use
 GAME.EXE	0x80021b20	0x11320		mips26	reachable-code	0x80021b38	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80021b28	0x11328	0x80021b2c	mips_hi16_lo16	reachable-code	0x8006d9f8	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80021b30	0x11330	0x80021b34	mips_hi16_lo16	reachable-code	0x8006d9fa	load		lui+sh	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80021b28	0x11328	0x80021b2c	mips_hi16_lo16	reachable-code	0x8006d9f8	load	menu_frame_upload_rect	lui+sh	at	paired-reachable	reviewed	manual:menu_frame_begin retail menu frame pointer and matching source use
+GAME.EXE	0x80021b30	0x11330	0x80021b34	mips_hi16_lo16	reachable-code	0x8006d9fa	load	menu_frame_upload_rect	lui+sh	at	paired-reachable	reviewed	manual:menu_frame_begin retail menu frame pointer and matching source use
 GAME.EXE	0x80021b38	0x11338	0x80021b3c	mips_hi16_lo16	reachable-code	0x8006d69c	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu scalar direct pair
 GAME.EXE	0x80021b4c	0x1134c	0x80021b50	mips_hi16_lo16	reachable-code	0x8006d698	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu scalar direct pair
 GAME.EXE	0x80021b54	0x11354		mips26	reachable-code	0x80021b78	load		j		control-flow	candidate	investigation:relocs.tsv
@@ -4099,8 +4099,8 @@ GAME.EXE	0x80021c20	0x11420	0x80021c24	mips_hi16_lo16	reachable-code	0x8018d168	
 GAME.EXE	0x80021c28	0x11428		mips26	reachable-code	0x8005fb0c	load	PutDrawEnv	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021c44	0x11444	0x80021c48	mips_hi16_lo16	reachable-code	0x8018d220	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021c4c	0x1144c		mips26	reachable-code	0x8005fc2c	load	PutDispEnv	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80021c54	0x11454	0x80021c58	mips_hi16_lo16	reachable-code	0x8006d9f0	load		lui+lw	a1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80021c5c	0x1145c	0x80021c60	mips_hi16_lo16	reachable-code	0x8006d9f8	load		lui+addiu	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80021c54	0x11454	0x80021c58	mips_hi16_lo16	reachable-code	0x8006d9f0	load	menu_frame_upload_pixels	lui+lw	a1	paired-reachable	reviewed	manual:menu_present_frame retail menu frame pointer and matching source use
+GAME.EXE	0x80021c5c	0x1145c	0x80021c60	mips_hi16_lo16	reachable-code	0x8006d9f8	load	menu_frame_upload_rect	lui+addiu	a0	paired-reachable	reviewed	manual:menu_present_frame retail menu frame pointer and matching source use
 GAME.EXE	0x80021c64	0x11464		mips26	reachable-code	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021c6c	0x1146c	0x80021c70	mips_hi16_lo16	reachable-code	0x8018d164	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021c74	0x11474		mips26	reachable-code	0x8005fab4	load	DrawOTag	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity

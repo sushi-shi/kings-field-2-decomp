@@ -9810,49 +9810,49 @@ GAME.EXE	0x8004c280	0x3ba80		mips26	reachable-code	0x8004a400	load	CdIntToPos	ja
 GAME.EXE	0x8004c290	0x3ba90		mips26	reachable-code	0x8004a1e4	load	CdControl	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c2a0	0x3baa0		mips26	reachable-code	0x8004a29c	load	CdRead	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c2ac	0x3baac		mips26	reachable-code	0x80049fd4	load	CdReadSync	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2e4	0x3bae4	0x8004c2e8	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2ec	0x3baec	0x8004c2f0	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2f4	0x3baf4	0x8004c2f8	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c2fc	0x3bafc	0x8004c300	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c2e4	0x3bae4	0x8004c2e8	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0x10;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c2ec	0x3baec	0x8004c2f0	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x18;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c2f4	0x3baf4	0x8004c2f8	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x20;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c2fc	0x3bafc	0x8004c300	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x28;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c30c	0x3bb0c		mips26	instruction-word	0x8004c5bc	load	init_ring_status	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c32c	0x3bb2c	0x8004c330	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c33c	0x3bb3c	0x8004c340	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c344	0x3bb44	0x8004c348	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c34c	0x3bb4c	0x8004c350	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c32c	0x3bb2c	0x8004c330	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+lw	a1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0x58;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c33c	0x3bb3c	0x8004c340	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x68;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c344	0x3bb44	0x8004c348	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x70;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c34c	0x3bb4c	0x8004c350	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x78;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c35c	0x3bb5c		mips26	instruction-word	0x8004c5bc	load	init_ring_status	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c384	0x3bb84		mips26	instruction-word	0x8005f110	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c38c	0x3bb8c		mips26	instruction-word	0x8005e570	load	CdDataCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c394	0x3bb94		mips26	instruction-word	0x8004a094	load	CdReadyCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c39c	0x3bb9c		mips26	instruction-word	0x8005f390	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c3b4	0x3bbb4	0x8004c3b8	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c3dc	0x3bbdc	0x8004c3e0	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c3b4	0x3bbb4	0x8004c3b8	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0xe0;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c3dc	0x3bbdc	0x8004c3e0	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x108;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c3e4	0x3bbe4	0x8004c3e8	mips_hi16_lo16	instruction-word	0x8006db28	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c3f4	0x3bbf4	0x8004c3f8	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c3f4	0x3bbf4	0x8004c3f8	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x120;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c43c	0x3bc3c		mips26	instruction-word	0x8004c6ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c444	0x3bc44	0x8004c448	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c444	0x3bc44	0x8004c448	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x170;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c44c	0x3bc4c	0x8004c450	mips_hi16_lo16	instruction-word	0x8006db28	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c458	0x3bc58	0x8004c45c	mips_hi16_lo16	instruction-word	0x8006dad0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c460	0x3bc60	0x8004c464	mips_hi16_lo16	instruction-word	0x8006db30	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c4a8	0x3bca8		mips26	instruction-word	0x8004c6ac	load		jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c4b0	0x3bcb0	0x8004c4b4	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c4b0	0x3bcb0	0x8004c4b4	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x1dc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c4b8	0x3bcb8	0x8004c4bc	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c4c0	0x3bcc0	0x8004c4c4	mips_hi16_lo16	instruction-word	0x8006dad0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c4c8	0x3bcc8	0x8004c4cc	mips_hi16_lo16	instruction-word	0x8006db28	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c4d0	0x3bcd0	0x8004c4d4	mips_hi16_lo16	instruction-word	0x8006db30	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c4f0	0x3bcf0	0x8004c4f4	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c4f0	0x3bcf0	0x8004c4f4	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0x21c;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c560	0x3bd60		mips26	instruction-word	0x8004c5b4	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c5a8	0x3bda8	0x8004c5ac	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c5f8	0x3bdf8	0x8004c5fc	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c628	0x3be28	0x8004c62c	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c634	0x3be34	0x8004c638	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c66c	0x3be6c	0x8004c670	mips_hi16_lo16	instruction-word	0x8006db08	load		lui+lw	a2	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c674	0x3be74	0x8004c678	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c6ac	0x3beac	0x8004c6b0	mips_hi16_lo16	instruction-word	0x8006db10	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c6b4	0x3beb4	0x8004c6b8	mips_hi16_lo16	instruction-word	0x8006db18	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c5a8	0x3bda8	0x8004c5ac	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x2d4;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c5f8	0x3bdf8	0x8004c5fc	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x324;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c628	0x3be28	0x8004c62c	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x354;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c634	0x3be34	0x8004c638	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x360;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c66c	0x3be6c	0x8004c670	mips_hi16_lo16	reachable-code	0x8006db08	load	RingIdx3	lui+lw	a2	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx3 .sbss patch at .text+0x398;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c674	0x3be74	0x8004c678	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+lw	v1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0x3a0;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c6ac	0x3beac	0x8004c6b0	mips_hi16_lo16	reachable-code	0x8006db10	load	START_FLAG	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local START_FLAG .sbss patch at .text+0x3d8;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c6b4	0x3beb4	0x8004c6b8	mips_hi16_lo16	reachable-code	0x8006db18	load	StartFlame	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local StartFlame .sbss patch at .text+0x3e0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c6bc	0x3bebc	0x8004c6c0	mips_hi16_lo16	instruction-word	0x8006db20	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c6dc	0x3bedc	0x8004c6e0	mips_hi16_lo16	instruction-word	0x8006dad0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c6f4	0x3bef4	0x8004c6f8	mips_hi16_lo16	instruction-word	0x8006d7ec	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c714	0x3bf14	0x8004c718	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c714	0x3bf14	0x8004c718	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x440;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c72c	0x3bf2c	0x8004c730	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c73c	0x3bf3c	0x8004c740	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c744	0x3bf44	0x8004c748	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -9864,7 +9864,7 @@ GAME.EXE	0x8004c788	0x3bf88	0x8004c78c	mips_hi16_lo16	instruction-word	0x8006d7c
 GAME.EXE	0x8004c7bc	0x3bfbc	0x8004c7c0	mips_hi16_lo16	instruction-word	0x8006d7d0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c7d0	0x3bfd0	0x8004c7d4	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c7e0	0x3bfe0		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c7fc	0x3bffc	0x8004c800	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c7fc	0x3bffc	0x8004c800	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x528;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c810	0x3c010	0x8004c814	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c820	0x3c020	0x8004c824	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c828	0x3c028	0x8004c82c	mips_hi16_lo16	instruction-word	0x8006d810	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -9876,9 +9876,9 @@ GAME.EXE	0x8004c86c	0x3c06c	0x8004c870	mips_hi16_lo16	instruction-word	0x8006d7e
 GAME.EXE	0x8004c87c	0x3c07c	0x8004c880	mips_hi16_lo16	instruction-word	0x80012ff0	load		lui+addiu	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c884	0x3c084		mips26	instruction-word	0x8005f430	load	printf	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c88c	0x3c08c		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c894	0x3c094	0x8004c898	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c894	0x3c094	0x8004c898	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x5c0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c8ac	0x3c0ac	0x8004c8b0	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c8c4	0x3c0c4	0x8004c8c8	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c8c4	0x3c0c4	0x8004c8c8	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x5f0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c8d8	0x3c0d8	0x8004c8dc	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c8e8	0x3c0e8	0x8004c8ec	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c8f4	0x3c0f4	0x8004c8f8	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -9886,7 +9886,7 @@ GAME.EXE	0x8004c8fc	0x3c0fc		mips26	instruction-word	0x8004d070	load		j		range-f
 GAME.EXE	0x8004c908	0x3c108	0x8004c90c	mips_hi16_lo16	instruction-word	0x8006d7d8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c918	0x3c118	0x8004c91c	mips_hi16_lo16	instruction-word	0x8006d7dc	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c92c	0x3c12c	0x8004c930	mips_hi16_lo16	instruction-word	0x8006d7e0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c93c	0x3c13c	0x8004c940	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c93c	0x3c13c	0x8004c940	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x668;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004c954	0x3c154	0x8004c958	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c960	0x3c160	0x8004c964	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c96c	0x3c16c		mips26	instruction-word	0x8004d20c	load	mem2mem	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -9896,17 +9896,17 @@ GAME.EXE	0x8004c998	0x3c198		mips26	instruction-word	0x8004d080	load	dma_execute
 GAME.EXE	0x8004c9a0	0x3c1a0	0x8004c9a4	mips_hi16_lo16	instruction-word	0x8006d7fc	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c9c0	0x3c1c0	0x8004c9c4	mips_hi16_lo16	instruction-word	0x8006d7dc	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004c9d0	0x3c1d0	0x8004c9d4	mips_hi16_lo16	instruction-word	0x8006d7e0	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c9e0	0x3c1e0	0x8004c9e4	mips_hi16_lo16	instruction-word	0x8006db10	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004c9f4	0x3c1f4	0x8004c9f8	mips_hi16_lo16	instruction-word	0x8006db18	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004c9e0	0x3c1e0	0x8004c9e4	mips_hi16_lo16	reachable-code	0x8006db10	load	START_FLAG	lui+lw	v1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local START_FLAG .sbss patch at .text+0x70c;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004c9f4	0x3c1f4	0x8004c9f8	mips_hi16_lo16	reachable-code	0x8006db18	load	StartFlame	lui+lw	a0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local StartFlame .sbss patch at .text+0x720;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004ca08	0x3c208	0x8004ca0c	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ca28	0x3c228	0x8004ca2c	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004ca28	0x3c228	0x8004ca2c	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x754;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004ca3c	0x3c23c	0x8004ca40	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ca4c	0x3c24c	0x8004ca50	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ca54	0x3c254		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ca5c	0x3c25c	0x8004ca60	mips_hi16_lo16	instruction-word	0x8006db10	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004ca5c	0x3c25c	0x8004ca60	mips_hi16_lo16	reachable-code	0x8006db10	load	START_FLAG	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local START_FLAG .sbss patch at .text+0x788;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004ca64	0x3c264	0x8004ca68	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ca88	0x3c288	0x8004ca8c	mips_hi16_lo16	instruction-word	0x8006d828	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004caa0	0x3c2a0	0x8004caa4	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004caa0	0x3c2a0	0x8004caa4	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x7cc;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cab4	0x3c2b4	0x8004cab8	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cabc	0x3c2bc		mips26	instruction-word	0x8004cac8	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cac8	0x3c2c8	0x8004cacc	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -9914,15 +9914,15 @@ GAME.EXE	0x8004cad4	0x3c2d4	0x8004cad8	mips_hi16_lo16	instruction-word	0x8006d82
 GAME.EXE	0x8004cae0	0x3c2e0		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cae8	0x3c2e8	0x8004caec	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+lh	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cb00	0x3c300	0x8004cb04	mips_hi16_lo16	instruction-word	0x8006d820	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cb24	0x3c324	0x8004cb28	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cb2c	0x3c32c	0x8004cb30	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cb24	0x3c324	0x8004cb28	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	a1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x850;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004cb2c	0x3c32c	0x8004cb30	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+lw	a0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x858;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cb34	0x3c334	0x8004cb38	mips_hi16_lo16	instruction-word	0x8006d820	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cb3c	0x3c33c	0x8004cb40	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+sh	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cb44	0x3c344		mips26	instruction-word	0x8004c5bc	load	init_ring_status	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cb4c	0x3c34c	0x8004cb50	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cb4c	0x3c34c	0x8004cb50	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x878;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cb54	0x3c354	0x8004cb58	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cb5c	0x3c35c	0x8004cb60	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cb68	0x3c368	0x8004cb6c	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cb5c	0x3c35c	0x8004cb60	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x888;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004cb68	0x3c368	0x8004cb6c	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x894;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cb7c	0x3c37c	0x8004cb80	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cb8c	0x3c38c	0x8004cb90	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cb98	0x3c398	0x8004cb9c	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -9931,46 +9931,46 @@ GAME.EXE	0x8004cba8	0x3c3a8	0x8004cbac	mips_hi16_lo16	instruction-word	0x8006dac
 GAME.EXE	0x8004cbc8	0x3c3c8	0x8004cbcc	mips_hi16_lo16	instruction-word	0x8006db20	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cbd0	0x3c3d0	0x8004cbd4	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+sh	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cbdc	0x3c3dc	0x8004cbe0	mips_hi16_lo16	instruction-word	0x8006d820	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cbf4	0x3c3f4	0x8004cbf8	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cbfc	0x3c3fc	0x8004cc00	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cbf4	0x3c3f4	0x8004cbf8	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	a1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x920;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004cbfc	0x3c3fc	0x8004cc00	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+lw	a0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x928;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cc04	0x3c404	0x8004cc08	mips_hi16_lo16	instruction-word	0x8006d820	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cc0c	0x3c40c	0x8004cc10	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+sh	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cc14	0x3c414		mips26	instruction-word	0x8004c5bc	load	init_ring_status	jal		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cc1c	0x3c41c	0x8004cc20	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cc1c	0x3c41c	0x8004cc20	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0x948;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cc24	0x3c424	0x8004cc28	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cc2c	0x3c42c	0x8004cc30	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cc2c	0x3c42c	0x8004cc30	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x958;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cc38	0x3c438	0x8004cc3c	mips_hi16_lo16	instruction-word	0x8006db30	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cc44	0x3c444	0x8004cc48	mips_hi16_lo16	instruction-word	0x8006db10	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cc5c	0x3c45c	0x8004cc60	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cc44	0x3c444	0x8004cc48	mips_hi16_lo16	reachable-code	0x8006db10	load	START_FLAG	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local START_FLAG .sbss patch at .text+0x970;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004cc5c	0x3c45c	0x8004cc60	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0x988;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cc70	0x3c470	0x8004cc74	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cc80	0x3c480	0x8004cc84	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cc8c	0x3c48c	0x8004cc90	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cc94	0x3c494		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cc9c	0x3c49c	0x8004cca0	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cc9c	0x3c49c	0x8004cca0	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0x9c8;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cca4	0x3c4a4	0x8004cca8	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ccac	0x3c4ac	0x8004ccb0	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004ccac	0x3c4ac	0x8004ccb0	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	v1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0x9d8;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cccc	0x3c4cc	0x8004ccd0	mips_hi16_lo16	instruction-word	0x8006db20	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cce4	0x3c4e4	0x8004cce8	mips_hi16_lo16	instruction-word	0x8006db30	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ccf0	0x3c4f0	0x8004ccf4	mips_hi16_lo16	instruction-word	0x8006db10	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cd08	0x3c508	0x8004cd0c	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004ccf0	0x3c4f0	0x8004ccf4	mips_hi16_lo16	reachable-code	0x8006db10	load	START_FLAG	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local START_FLAG .sbss patch at .text+0xa1c;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004cd08	0x3c508	0x8004cd0c	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0xa34;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cd1c	0x3c51c	0x8004cd20	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cd2c	0x3c52c	0x8004cd30	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cd38	0x3c538	0x8004cd3c	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cd40	0x3c540		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cd68	0x3c568	0x8004cd6c	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cd68	0x3c568	0x8004cd6c	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0xa94;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cd7c	0x3c57c	0x8004cd80	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cd8c	0x3c58c	0x8004cd90	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cd98	0x3c598	0x8004cd9c	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cda0	0x3c5a0		mips26	instruction-word	0x8004d070	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cdac	0x3c5ac	0x8004cdb0	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cdac	0x3c5ac	0x8004cdb0	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0xad8;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cdc0	0x3c5c0	0x8004cdc4	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cdf4	0x3c5f4	0x8004cdf8	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cdfc	0x3c5fc	0x8004ce00	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ce08	0x3c608	0x8004ce0c	mips_hi16_lo16	instruction-word	0x8006db00	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cdfc	0x3c5fc	0x8004ce00	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0xb28;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004ce08	0x3c608	0x8004ce0c	mips_hi16_lo16	reachable-code	0x8006db00	load	RingIdx2	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx2 .sbss patch at .text+0xb34;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004ce14	0x3c614	0x8004ce18	mips_hi16_lo16	instruction-word	0x8006d82c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ce1c	0x3c61c	0x8004ce20	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+lhu	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ce24	0x3c624	0x8004ce28	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004ce2c	0x3c62c	0x8004ce30	mips_hi16_lo16	instruction-word	0x8006daf0	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004ce24	0x3c624	0x8004ce28	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	a1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0xb50;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004ce2c	0x3c62c	0x8004ce30	mips_hi16_lo16	reachable-code	0x8006daf0	load	RingSize	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingSize .sbss patch at .text+0xb58;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004ce40	0x3c640	0x8004ce44	mips_hi16_lo16	instruction-word	0x8006d830	load		lui+sh	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ce58	0x3c658	0x8004ce5c	mips_hi16_lo16	instruction-word	0x8006dad0	load		lui+lw	a0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ce78	0x3c678	0x8004ce7c	mips_hi16_lo16	instruction-word	0x8006d7dc	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
@@ -9978,7 +9978,7 @@ GAME.EXE	0x8004ce88	0x3c688	0x8004ce8c	mips_hi16_lo16	instruction-word	0x8006d7e
 GAME.EXE	0x8004ce9c	0x3c69c		mips26	instruction-word	0x8004cec0	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004ceac	0x3c6ac	0x8004ceb0	mips_hi16_lo16	instruction-word	0x8006d7dc	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cec0	0x3c6c0	0x8004cec4	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cee0	0x3c6e0	0x8004cee4	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cee0	0x3c6e0	0x8004cee4	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0xc0c;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cef4	0x3c6f4	0x8004cef8	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cf10	0x3c710		mips26	instruction-word	0x8004d20c	load	mem2mem	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cf18	0x3c718	0x8004cf1c	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
@@ -9991,7 +9991,7 @@ GAME.EXE	0x8004cf78	0x3c778	0x8004cf7c	mips_hi16_lo16	instruction-word	0x8006d83
 GAME.EXE	0x8004cf80	0x3c780	0x8004cf84	mips_hi16_lo16	instruction-word	0x8006d820	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cf94	0x3c794	0x8004cf98	mips_hi16_lo16	instruction-word	0x8006d828	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cf9c	0x3c79c		mips26	instruction-word	0x8004d020	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004cfa4	0x3c7a4	0x8004cfa8	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004cfa4	0x3c7a4	0x8004cfa8	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0xcd0;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004cfb8	0x3c7b8	0x8004cfbc	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	a1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cfd4	0x3c7d4		mips26	instruction-word	0x8004d20c	load	mem2mem	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004cfdc	0x3c7dc	0x8004cfe0	mips_hi16_lo16	instruction-word	0x8006dae0	load	Emu_Idx	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
@@ -9999,9 +9999,9 @@ GAME.EXE	0x8004cfec	0x3c7ec	0x8004cff0	mips_hi16_lo16	instruction-word	0x8006dae
 GAME.EXE	0x8004cff4	0x3c7f4		mips26	instruction-word	0x8004d020	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d018	0x3c818		mips26	instruction-word	0x8004d080	load	dma_execute	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d020	0x3c820	0x8004d024	mips_hi16_lo16	instruction-word	0x8006dac8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d030	0x3c830	0x8004d034	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d038	0x3c838	0x8004d03c	mips_hi16_lo16	instruction-word	0x8006dad8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004d044	0x3c844	0x8004d048	mips_hi16_lo16	instruction-word	0x8006daf8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d030	0x3c830	0x8004d034	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+lw	v0	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0xd5c;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004d038	0x3c838	0x8004d03c	mips_hi16_lo16	reachable-code	0x8006dad8	load	Emu_Addr	lui+lw	v1	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local Emu_Addr .sbss patch at .text+0xd64;retail raw pair;exact-sdk30 section
+GAME.EXE	0x8004d044	0x3c844	0x8004d048	mips_hi16_lo16	reachable-code	0x8006daf8	load	RingIdx1	lui+sw	at	paired-reviewed	reviewed	manual:LIBCD CDROM.OBJ local RingIdx1 .sbss patch at .text+0xd70;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004d068	0x3c868		mips26	instruction-word	0x8004c3b4	load	data_ready_callback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d11c	0x3c91c	0x8004d120	mips_hi16_lo16	instruction-word	0x8006d7e8	load		lui+lw	v1	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d13c	0x3c93c		mips26	instruction-word	0x8004d184	load		j		range-filtered	candidate	investigation:relocs.tsv

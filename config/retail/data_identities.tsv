@@ -310,9 +310,9 @@ OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	
 OPEN.EXE	0x8003dbc4	0x3c	DAT_8003dbc4	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
 OPEN.EXE	0x8003dc00	0x4	DAT_8003dc00	unknown	load	pointer	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0 patch to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 OPEN.EXE	0x8003dc04	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
-OPEN.EXE	0x8003dc08	0x10	DAT_8003dc08	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
-OPEN.EXE	0x8003dc18	0x24	DAT_8003dc18	unknown	load	pointer[9]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
-OPEN.EXE	0x8003dc3c	0xc	DAT_8003dc3c	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
+OPEN.EXE	0x8003dc08	0x10	DAT_8003dc08	unknown	load	u32[4]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
+OPEN.EXE	0x8003dc18	0x24	DAT_8003dc18	unknown	load	pointer[9]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
+OPEN.EXE	0x8003dc3c	0xc	DAT_8003dc3c	unknown	load	u32[3]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
 OPEN.EXE	0x8003dd1c	0x5	DAT_8003dd1c	unknown	load	char[5]	LIBCD SYS.OBJ	supported	archive five-byte none string including NUL;SYS text patches +0xc0/+0xf8 match retail xrefs	vendor status string; original static name unresolved
 OPEN.EXE	0x8003dd24	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
 OPEN.EXE	0x8003dd28	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state
@@ -528,9 +528,9 @@ END.EXE	0x8003aa48	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	a
 END.EXE	0x8003aa54	0x3c	DAT_8003aa54	static	load	pointer[15]	LIBPRESS LIBPRESS.OBJ	supported	exact archive .sdata 60 bytes;15 fixed hardware pointers	MDEC and DMA register addresses; original static symbol unresolved
 END.EXE	0x8003aa90	0x4	DAT_8003aa90	unknown	load	pointer	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0 patch to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 END.EXE	0x8003aa94	0x4	GPU_printf	global	load	pointer	LIBGPU SYS.OBJ	supported	archive XDEF .sdata+4;word points to vendored printf	Psy-Q GPU printf callback pointer
-END.EXE	0x8003aa98	0x10	DAT_8003aa98	unknown	load	u32[4]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
-END.EXE	0x8003aaa8	0x24	DAT_8003aaa8	unknown	load	pointer[9]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
-END.EXE	0x8003aacc	0xc	DAT_8003aacc	unknown	load	u32[3]		address-only	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
+END.EXE	0x8003aa98	0x10	DAT_8003aa98	unknown	load	u32[4]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+8..+0x18;retail zero bytes exact	anonymous vendor tail; original C object boundaries unresolved
+END.EXE	0x8003aaa8	0x24	DAT_8003aaa8	unknown	load	pointer[9]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x18..+0x3c;retail hardware pointers exact	vendor hardware-pointer record; original C declaration unresolved
+END.EXE	0x8003aacc	0xc	DAT_8003aacc	unknown	load	u32[3]	LIBGPU SYS.OBJ	supported	Psy-Q 3.0 LIBGPU SYS.OBJ archive .sdata+0x3c..+0x48;retail zero bytes exact	vendor zero record; original C declaration unresolved
 END.EXE	0x8003ab3c	0x5	DAT_8003ab3c	unknown	load	char[5]	LIBCD SYS.OBJ	supported	archive five-byte none string including NUL;SYS text patches +0xc0/+0xf8 match retail xrefs	vendor status string; original static name unresolved
 END.EXE	0x8003ab44	0x4	CD_debug	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+0;unique exact retail CdlInit prefix	Psy-Q CD debug state
 END.EXE	0x8003ab48	0x4	CD_isopen	global	load	u32	LIBCD BIOS.OBJ	supported	archive XDEF .sdata+4;unique exact retail CdlInit prefix	Psy-Q CD open state

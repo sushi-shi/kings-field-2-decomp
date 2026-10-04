@@ -7033,15 +7033,15 @@ GAME.EXE	0x80034e40	0x24640		mips26	instruction-word	0x800182d0	load	cd_archive_
 GAME.EXE	0x80034e4c	0x2464c		mips26	instruction-word	0x8003494c	load	tim_upload_images	jal		control-flow	reviewed	manual:menu transition TIM upload
 GAME.EXE	0x80034e54	0x24654		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
 GAME.EXE	0x80034e5c	0x2465c	0x80034e60	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034e64	0x24664	0x80034e68	mips_hi16_lo16	instruction-word	0x8006d6dc	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
+GAME.EXE	0x80034e64	0x24664	0x80034e68	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
 GAME.EXE	0x80034e70	0x24670	0x80034e74	mips_hi16_lo16	reachable-code	0x8017d14c	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e78	0x24678	0x80034e7c	mips_hi16_lo16	reachable-code	0x8017d154	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e84	0x24684	0x80034e88	mips_hi16_lo16	reachable-code	0x8017d158	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034e8c	0x2468c		mips26	instruction-word	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:menu transition StoreImage call
 GAME.EXE	0x80034e94	0x24694		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
-GAME.EXE	0x80034e9c	0x2469c	0x80034ea0	mips_hi16_lo16	instruction-word	0x8006d6dc	load		lui+lh	a1	paired-reviewed	reviewed	manual:menu transition RECT x load
+GAME.EXE	0x80034e9c	0x2469c	0x80034ea0	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+lh	a1	paired-reviewed	reviewed	manual:menu transition RECT x load
 GAME.EXE	0x80034ea4	0x246a4	0x80034ea8	mips_hi16_lo16	reachable-code	0x8017d140	bss	game_graphics_runtime	lui+lbu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034eac	0x246ac	0x80034eb0	mips_hi16_lo16	instruction-word	0x8006d6de	load		lui+lh	a2	paired-reviewed	reviewed	manual:menu transition RECT y load
+GAME.EXE	0x80034eac	0x246ac	0x80034eb0	mips_hi16_lo16	instruction-word	0x8006d6de	load	menu_transition_rect	lui+lh	a2	paired-reviewed	reviewed	manual:menu transition RECT y load
 GAME.EXE	0x80034ec8	0x246c8	0x80034ecc	mips_hi16_lo16	reachable-code	0x8018d168	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034ed0	0x246d0		mips26	instruction-word	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:menu transition MoveImage call
 GAME.EXE	0x80034ed8	0x246d8		mips26	instruction-word	0x8005f840	load	DrawSync	jal		control-flow	reviewed	manual:menu transition DrawSync call
@@ -7050,7 +7050,7 @@ GAME.EXE	0x80034efc	0x246fc		mips26	instruction-word	0x8005e800	load	PadRead	jal
 GAME.EXE	0x80034f14	0x24714		mips26	instruction-word	0x80034efc	load		j		control-flow	reviewed	manual:menu transition internal jump
 GAME.EXE	0x80034f2c	0x2472c		mips26	instruction-word	0x800349bc	load	menu_fade_transition	jal		control-flow	reviewed	manual:menu transition fade helper
 GAME.EXE	0x80034f34	0x24734	0x80034f38	mips_hi16_lo16	reachable-code	0x8017d158	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x80034f40	0x24740	0x80034f44	mips_hi16_lo16	instruction-word	0x8006d6dc	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
+GAME.EXE	0x80034f40	0x24740	0x80034f44	mips_hi16_lo16	instruction-word	0x8006d6dc	load	menu_transition_rect	lui+addiu	a0	paired-reviewed	reviewed	manual:menu transition RECT address
 GAME.EXE	0x80034f48	0x24748		mips26	instruction-word	0x8005f8c0	load	LoadImage	jal		control-flow	reviewed	manual:menu transition LoadImage call
 GAME.EXE	0x80034f54	0x24754	0x80034f58	mips_hi16_lo16	reachable-code	0x8017d148	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80034f64	0x24764	0x80034f68	mips_hi16_lo16	reachable-code	0x8017d14c	bss		lui+sw		paired-reviewed	reviewed	manual:graphics

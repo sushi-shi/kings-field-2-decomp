@@ -11315,10 +11315,10 @@ GAME.EXE	0x8005ec7c	0x4e47c		mips26	instruction-word	0x8005e6c4	load	VBLNKStop	j
 GAME.EXE	0x8005eca8	0x4e4a8		mips26	instruction-word	0x8005f390	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ecc8	0x4e4c8	0x8005eccc	mips_hi16_lo16	reachable-code	0x8006d8ac	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x8 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005ecd4	0x4e4d4	0x8005ecd8	mips_hi16_lo16	instruction-word	0x8006d52c	load		lui+addiu	v1	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005ecf0	0x4e4f0	0x8005ecf4	mips_hi16_lo16	instruction-word	0x8005ed7c	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ecf0	0x4e4f0	0x8005ecf4	mips_hi16_lo16	reachable-code	0x8005ed7c	load	intDMA	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x30/+0x34 section-local patch to intDMA+0;retail signed low
 GAME.EXE	0x8005ecf8	0x4e4f8		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005ed04	0x4e504	0x8005ed08	mips_hi16_lo16	reachable-code	0x8006d8b0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x44 native HI16/LO16 to .sdata+0x4;retail sw pair
-GAME.EXE	0x8005ed0c	0x4e50c	0x8005ed10	mips_hi16_lo16	instruction-word	0x8005eecc	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005ed0c	0x4e50c	0x8005ed10	mips_hi16_lo16	reachable-code	0x8005eecc	load	setDMACallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x4c/+0x50 section-local patch to setDMACallback+0;retail signed low
 GAME.EXE	0x8005ed2c	0x4e52c	0x8005ed30	mips_hi16_lo16	reachable-code	0x8006d8b0	load		lui+sw	at	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x6c native HI16/LO16 to .sdata+0x4;retail sw pair
 GAME.EXE	0x8005ed34	0x4e534	0x8005ed38	mips_hi16_lo16	reachable-code	0x8006d8ac	load		lui+lw	v0	paired-reachable	reviewed	manual:LIBETC INTR_DMA.OBJ .text+0x74 native HI16/LO16 to .sdata+0x0;retail lw pair
 GAME.EXE	0x8005ed48	0x4e548		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
@@ -13947,10 +13947,10 @@ OPEN.EXE	0x8001df38	0xd738		mips26	instruction-word	0x8001d930	load		jal		range-
 OPEN.EXE	0x8001df64	0xd764		mips26	instruction-word	0x80014284	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001dfb4	0xd7b4	0x8001dfb8	mips_hi16_lo16	instruction-word	0x8003de70	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001dfc0	0xd7c0	0x8001dfc4	mips_hi16_lo16	instruction-word	0x8003d200	load		lui+addiu	v1	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001dfdc	0xd7dc	0x8001dfe0	mips_hi16_lo16	instruction-word	0x8001e068	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001dfdc	0xd7dc	0x8001dfe0	mips_hi16_lo16	reachable-code	0x8001e068	load	intDMA	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x30/+0x34 section-local patch to intDMA+0;retail signed low
 OPEN.EXE	0x8001dfe4	0xd7e4		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001dff0	0xd7f0	0x8001dff4	mips_hi16_lo16	instruction-word	0x8003de74	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001dff8	0xd7f8	0x8001dffc	mips_hi16_lo16	instruction-word	0x8001e1b8	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001dff8	0xd7f8	0x8001dffc	mips_hi16_lo16	reachable-code	0x8001e1b8	load	setDMACallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x4c/+0x50 section-local patch to setDMACallback+0;retail signed low
 OPEN.EXE	0x8001e018	0xd818	0x8001e01c	mips_hi16_lo16	instruction-word	0x8003de74	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e020	0xd820	0x8001e024	mips_hi16_lo16	instruction-word	0x8003de70	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001e034	0xd834		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
@@ -16501,10 +16501,10 @@ END.EXE	0x8001b19c	0xa99c		mips26	instruction-word	0x8001ab94	load		jal		range-f
 END.EXE	0x8001b1c8	0xa9c8		mips26	instruction-word	0x80012c34	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001b218	0xaa18	0x8001b21c	mips_hi16_lo16	instruction-word	0x8003ac90	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001b224	0xaa24	0x8001b228	mips_hi16_lo16	instruction-word	0x8003a0ac	load		lui+addiu	v1	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001b240	0xaa40	0x8001b244	mips_hi16_lo16	instruction-word	0x8001b2cc	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001b240	0xaa40	0x8001b244	mips_hi16_lo16	reachable-code	0x8001b2cc	load	intDMA	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x30/+0x34 section-local patch to intDMA+0;retail signed low
 END.EXE	0x8001b248	0xaa48		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001b254	0xaa54	0x8001b258	mips_hi16_lo16	instruction-word	0x8003ac94	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001b25c	0xaa5c	0x8001b260	mips_hi16_lo16	instruction-word	0x8001b41c	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001b25c	0xaa5c	0x8001b260	mips_hi16_lo16	reachable-code	0x8001b41c	load	setDMACallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_DMA.OBJ .text+0x4c/+0x50 section-local patch to setDMACallback+0;retail signed low
 END.EXE	0x8001b27c	0xaa7c	0x8001b280	mips_hi16_lo16	instruction-word	0x8003ac94	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001b284	0xaa84	0x8001b288	mips_hi16_lo16	instruction-word	0x8003ac90	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001b298	0xaa98		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv

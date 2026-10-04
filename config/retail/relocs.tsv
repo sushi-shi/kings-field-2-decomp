@@ -4204,7 +4204,7 @@ GAME.EXE	0x80022410	0x11c10		mips26	reachable-code	0x8005ef64	load	VSync	jal		co
 GAME.EXE	0x80022418	0x11c18		mips26	reachable-code	0x800223f4	load		j		control-flow	reviewed	manual:retail menu-input polling loop and source
 GAME.EXE	0x80022420	0x11c20	0x80022424	mips_hi16_lo16	reachable-code	0x8006d698	load	menu_cursor_animation_frame	lui+sw	at	paired-reviewed	reviewed	manual:menu_input
 GAME.EXE	0x80022440	0x11c40	0x80022444	mips_hi16_lo16	reachable-code	0x8006d690	load	input_press_pending	lui+sw	at	paired-reviewed	reviewed	manual:memory_card
-GAME.EXE	0x80022448	0x11c48		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x80022448	0x11c48		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x80022480	0x11c80		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x80022488	0x11c88	0x8002248c	mips_hi16_lo16	reachable-code	0x8006da18	load	memory_card_io_end_event	lui+sw	at	paired-reviewed	reviewed	manual:memory_card
 GAME.EXE	0x800224a0	0x11ca0		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:memory_card
@@ -4235,7 +4235,7 @@ GAME.EXE	0x80022598	0x11d98		mips26	instruction-word	0x80049f44	load	StopCARD	ja
 GAME.EXE	0x800225b8	0x11db8		mips26	reachable-code	0x80049f54	load	StartCARD	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x800225c0	0x11dc0		mips26	reachable-code	0x8005f340	load	_bu_init	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x800225e0	0x11de0		mips26	reachable-code	0x80049f44	load	StopCARD	jal		control-flow	reviewed	manual:memory_card
-GAME.EXE	0x800225e8	0x11de8		mips26	reachable-code	0x8005e7a8	load		jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x800225e8	0x11de8		mips26	reachable-code	0x8005e7a8	load	PadInit	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x8002260c	0x11e0c	0x80022610	mips_hi16_lo16	reachable-code	0x80011104	load		lui+addiu	a1	paired-reviewed	reviewed	manual:memory_card_probe
 GAME.EXE	0x80022684	0x11e84		mips26	reachable-code	0x8002332c	load	memory_card_clear_events	jal		control-flow	reviewed	manual:memory_card_probe
 GAME.EXE	0x8002268c	0x11e8c		mips26	reachable-code	0x80049f14	load	_card_info	jal		control-flow	reviewed	manual:memory_card_probe
@@ -4281,7 +4281,7 @@ GAME.EXE	0x80022c2c	0x1242c		mips26	reachable-code	0x8005f120	load	close	jal		co
 GAME.EXE	0x80022c34	0x12434	0x80022c38	mips_hi16_lo16	reachable-code	0x8006da58	load	memory_card_buffer	lui+lw	s0	paired-reviewed	reviewed	manual:memory_card
 GAME.EXE	0x80022c3c	0x1243c		mips26	reachable-code	0x80023288	load	memory_card_payload_byte_sum	jal		control-flow	reviewed	manual:memory_card_checksum
 GAME.EXE	0x80022c54	0x12454	0x80022c58	mips_hi16_lo16	reachable-code	0x8006da58	load	memory_card_buffer	lui+lw	a0	paired-reviewed	reviewed	manual:memory_card
-GAME.EXE	0x80022c5c	0x1245c		mips26	reachable-code	0x800492dc	load		jal		control-flow	reviewed	manual:decoded card-slot-reader direct call
+GAME.EXE	0x80022c5c	0x1245c		mips26	reachable-code	0x800492dc	load	card_payload_restore_game_state	jal		control-flow	reviewed	manual:decoded card-slot-reader direct call
 GAME.EXE	0x80022c64	0x12464	0x80022c68	mips_hi16_lo16	reachable-code	0x8006d6a0	load	memory_card_loaded_slot	lui+sb	at	paired-reachable	reviewed	manual:successful card slot store
 GAME.EXE	0x80022c6c	0x1246c		mips26	reachable-code	0x80022c84	load		j		control-flow	reviewed	manual:retail card-writer success tail and source guard
 GAME.EXE	0x80022cc4	0x124c4	0x80022cc8	mips_hi16_lo16	reachable-code	0x80011120	load		lui+addiu	a1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
@@ -4317,13 +4317,13 @@ GAME.EXE	0x80022f48	0x12748	0x80022f4c	mips_hi16_lo16	reachable-code	0x800666bb	
 GAME.EXE	0x80022f58	0x12758	0x80022f5c	mips_hi16_lo16	reachable-code	0x800666b8	load	memory_card_assets	lui+addiu	at	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022f68	0x12768	0x80022f6c	mips_hi16_lo16	reachable-code	0x800666bf	load	memory_card_assets	lui+addiu	at	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022f78	0x12778	0x80022f7c	mips_hi16_lo16	reachable-code	0x800666bc	load	memory_card_assets	lui+addiu	at	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022fd4	0x127d4		mips26	reachable-code	0x8005f8fc	load		jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022fe8	0x127e8		mips26	reachable-code	0x8005f8fc	load		jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022ffc	0x127fc		mips26	reachable-code	0x8005f8fc	load		jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022fd4	0x127d4		mips26	reachable-code	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022fe8	0x127e8		mips26	reachable-code	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022ffc	0x127fc		mips26	reachable-code	0x8005f8fc	load	StoreImage	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80023008	0x12808	0x8002300c	mips_hi16_lo16	instruction-word	0x8006da58	load	memory_card_buffer	lui+lw	a0	paired-reviewed	reviewed	manual:memory_card
 GAME.EXE	0x80023010	0x12810		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80023018	0x12818	0x8002301c	mips_hi16_lo16	instruction-word	0x8006da58	load	memory_card_buffer	lui+lw	a0	paired-reviewed	reviewed	manual:memory_card
-GAME.EXE	0x80023020	0x12820		mips26	reachable-code	0x80048d24	load		jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80023020	0x12820		mips26	reachable-code	0x80048d24	load	card_payload_capture_game_state	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80023028	0x12828	0x8002302c	mips_hi16_lo16	instruction-word	0x8006da58	load	memory_card_buffer	lui+lw	a0	paired-reviewed	reviewed	manual:memory_card
 GAME.EXE	0x80023030	0x12830		mips26	reachable-code	0x80023288	load	memory_card_payload_byte_sum	jal		control-flow	reviewed	manual:memory_card_checksum
 GAME.EXE	0x80023038	0x12838	0x8002303c	mips_hi16_lo16	instruction-word	0x8006da58	load	memory_card_buffer	lui+lw	a2	paired-reviewed	reviewed	manual:memory_card

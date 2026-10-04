@@ -4054,19 +4054,19 @@ GAME.EXE	0x80021834	0x11034	0x80021838	mips_hi16_lo16	reachable-code	0x80063f04	
 GAME.EXE	0x80021864	0x11064		mips26	reachable-code	0x80021880	load		j		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x800218b4	0x110b4		mips26	reachable-code	0x800218d0	load		j		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x800218d0	0x110d0		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800218d8	0x110d8	0x800218dc	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800218e8	0x110e8	0x800218ec	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800218f8	0x110f8	0x800218fc	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021908	0x11108	0x8002190c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	a0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800218d8	0x110d8	0x800218dc	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800218e8	0x110e8	0x800218ec	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800218f8	0x110f8	0x800218fc	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021908	0x11108	0x8002190c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021910	0x11110		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021918	0x11118	0x8002191c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021968	0x11168	0x8002196c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021984	0x11184	0x80021988	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	a0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021994	0x11194	0x80021998	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800219a8	0x111a8	0x800219ac	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800219c4	0x111c4	0x800219c8	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800219dc	0x111dc	0x800219e0	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x800219f4	0x111f4	0x800219f8	mips_hi16_lo16	reachable-code	0x8006d9e0	bss		lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021918	0x11118	0x8002191c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021968	0x11168	0x8002196c	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021984	0x11184	0x80021988	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021994	0x11194	0x80021998	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800219a8	0x111a8	0x800219ac	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800219c4	0x111c4	0x800219c8	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800219dc	0x111dc	0x800219e0	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x800219f4	0x111f4	0x800219f8	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021a00	0x11200		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021a08	0x11208	0x80021a0c	mips_hi16_lo16	reachable-code	0x80063e98	load		lui+addiu	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021a74	0x11274	0x80021a78	mips_hi16_lo16	reachable-code	0x8017d140	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics

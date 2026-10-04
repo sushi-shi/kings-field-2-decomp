@@ -761,7 +761,6 @@ KfPlayerState	0x9c	0x02	unknown_9c	u8[2]	opaque	asm;player_begin_weapon_attack	f
 KfPlayerState	0x9e	0x01	weapon_magic_shots_configured	u8	supported	asm;player_begin_weapon_attack	selected from weapon record on full charge
 KfPlayerState	0x9f	0x01	weapon_attack_fully_charged	u8	supported	asm;player_begin_weapon_attack;KF1 player.h	set when both charges reach 5000
 KfPlayerState	0xa0	0x01	weapon_guard_active	u8	supported	asm;player_magic_dispatch;player_reaction;player_damage	weapon 13 action-bit attack hold rewinds phase, halves movement, and blocks damage
-KfPlayerState	0xa1	0x03	unknown_a1	u8[3]	opaque	asm;player_equip_weapon	not yet modelled
 KfPlayerState	0xa4	0x04	equipped_head_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
 KfPlayerState	0xa8	0x04	equipped_body_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
 KfPlayerState	0xac	0x04	equipped_arm_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer

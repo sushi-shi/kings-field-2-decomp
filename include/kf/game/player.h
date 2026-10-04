@@ -376,7 +376,6 @@ typedef struct KfPlayerState {
     u8 weapon_magic_shots_configured;
     u8 weapon_attack_fully_charged;
     u8 weapon_guard_active;
-    u8 unknown_a1[3];
     KfEquipmentRecord *equipped_head_record;
     KfEquipmentRecord *equipped_body_record;
     KfEquipmentRecord *equipped_arm_record;

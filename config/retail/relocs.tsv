@@ -4427,7 +4427,7 @@ GAME.EXE	0x80023760	0x12f60		mips26	reachable-code	0x8005ef64	load	VSync	jal		co
 GAME.EXE	0x80023768	0x12f68		mips26	reachable-code	0x80025234	load	player_sync_position_to_map	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023770	0x12f70		mips26	reachable-code	0x8002bc18	load	reset_collision_rows_and_overlay	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023784	0x12f84		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:player_resource_transition
-GAME.EXE	0x8002378c	0x12f8c	0x80023790	mips_hi16_lo16	reachable-code	0x8018d860	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x8002378c	0x12f8c	0x80023790	mips_hi16_lo16	reachable-code	0x8018d860	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:retail pair and source asset_registry_entries[0x181];game_graphics_runtime+0x10720
 GAME.EXE	0x800237a4	0x12fa4		mips26	reachable-code	0x800321d8	load	resource_tmd_queue_read	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x800237ac	0x12fac		mips26	reachable-code	0x80017c2c	load	cd_request_wait_idle	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x800237c0	0x12fc0		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:player_resource_transition
@@ -8995,7 +8995,7 @@ GAME.EXE	0x80046c18	0x36418	0x80046c1c	mips_hi16_lo16	instruction-word	0x801b214
 GAME.EXE	0x80046c24	0x36424	0x80046c28	mips_hi16_lo16	instruction-word	0x801985ca	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established player_state owner
 GAME.EXE	0x80046c2c	0x3642c	0x80046c30	mips_hi16_lo16	instruction-word	0x801985c2	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:func_8004678c raw adjacent signed-low pair to established player_state owner
 GAME.EXE	0x80046c34	0x36434		mips26	control-flow	0x80036e24	load	render_frames_with_color_overlay	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
-GAME.EXE	0x80046c3c	0x3643c	0x80046c40	mips_hi16_lo16	reachable-code	0x8018d860	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
+GAME.EXE	0x80046c3c	0x3643c	0x80046c40	mips_hi16_lo16	reachable-code	0x8018d860	bss	game_graphics_runtime	lui+lw		paired-reviewed	reviewed	manual:retail pair and source asset_registry_entries[0x181];game_graphics_runtime+0x10720
 GAME.EXE	0x80046c58	0x36458		mips26	instruction-word	0x800321d8	load	resource_tmd_queue_read	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
 GAME.EXE	0x80046c6c	0x3646c		mips26	control-flow	0x80036e24	load	render_frames_with_color_overlay	jal		reviewed	reviewed	manual:func_8004678c raw MIPS26 direct call
 GAME.EXE	0x80046c80	0x36480		mips26	instruction-word	0x800314d4	load	render_set_color_overlay	jal		control-flow	reviewed	manual:func_8004678c decoded direct call
@@ -9270,7 +9270,7 @@ GAME.EXE	0x80048ac8	0x382c8		mips26	reachable-code	0x80048ce8	load		j		control-f
 GAME.EXE	0x80048ae4	0x382e4		mips26	reachable-code	0x80048ce8	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
 GAME.EXE	0x80048aec	0x382ec		mips26	reachable-code	0x80035590	load	map_object_reset	jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
 GAME.EXE	0x80048b94	0x38394		mips26	reachable-code	0x8002a988	load	collision_sample_map_cell_layer	jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
-GAME.EXE	0x80048b9c	0x3839c	0x80048ba0	mips_hi16_lo16	reachable-code	0x801d8d4a	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:0x800489ac collision-cache layer flag; object extent unresolved
+GAME.EXE	0x80048b9c	0x3839c	0x80048ba0	mips_hi16_lo16	reachable-code	0x801d8d4a	bss	bss_801c7540	lui+lhu	v0	paired-reviewed	reviewed	manual:retail pair and source KF_COLLISION_CACHE_LAYER;bss_801c7540+0x1180a u16
 GAME.EXE	0x80048bb8	0x383b8		mips26	reachable-code	0x80048ce4	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
 GAME.EXE	0x80048bc0	0x383c0		mips26	reachable-code	0x80035590	load	map_object_reset	jal		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26
 GAME.EXE	0x80048c20	0x38420		mips26	reachable-code	0x80048b68	load		j		control-flow	reviewed	manual:0x800489ac decoded direct MIPS26

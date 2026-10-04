@@ -43,9 +43,13 @@ typedef struct KfTmdUvBytes {
 } KfTmdUvBytes;
 typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
 
+typedef union KfTmdUvWord {
+    struct { KfTmdUvBytes uv; u16 texture_aux; } parts;
+    u32 word;
+} KfTmdUvWord;
+typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
 typedef struct KfTmdFt4TextureWords {
-    KfTmdUvBytes uv0; u16 clut; KfTmdUvBytes uv1; u16 tpage;
-    KfTmdUvBytes uv2; u16 pad0; KfTmdUvBytes uv3; u16 pad1;
+    KfTmdUvWord uv0, uv1, uv2, uv3;
 } KfTmdFt4TextureWords;
 typedef char kf_tmd_ft4_texture_words_size[
     sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
@@ -55,16 +59,16 @@ typedef char kf_tmd_ft4_texture_uv2_offset[
     (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
 typedef char kf_tmd_ft4_texture_uv3_offset[
     (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
-typedef KfTmdUvBytes KfUvScratch;
-typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
+typedef struct KfUvScratch { u32 word; } KfUvScratch;
+typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 4 ? 1 : -1];
 typedef union KfTmdIndexScratch {
     u16 halves[2];
     u8 bytes[4];
 } KfTmdIndexScratch;
 typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
 #define WRITE_UV_CACHED(field, value) do { \
-    ((u8 *)&(field))[0] = (value).u; \
-    ((u8 *)&(field))[1] = (value).v; \
+    ((u8 *)&(field))[0] = (u8)(value).word; \
+    ((u8 *)&(field))[1] = (u8)((value).word >> 8); \
 } while (0)
 #define WRITE_INDEX(field, value) do { \
     ((u8 *)&(field))[0] = (u8)(value); \
@@ -85,8 +89,11 @@ typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
     (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
 } while (0)
 #define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).v = ((u32)(lhs).v + (u32)(rhs).v) >> 1; \
-    (dst).u = ((u32)(lhs).u + (u32)(rhs).u) >> 1; \
+    (dst).word = (lhs).word; \
+    (dst).word &= 0xffff00ff; \
+    (dst).word |= (((u32)(lhs).parts.uv.v + (u32)(rhs).parts.uv.v) >> 1) << 8; \
+    (dst).word &= 0xffffff00; \
+    (dst).word |= ((u32)(lhs).parts.uv.u + (u32)(rhs).parts.uv.u) >> 1; \
 } while (0)
 
 enum {

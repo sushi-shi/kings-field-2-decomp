@@ -10016,6 +10016,7 @@ GAME.EXE	0x8004d250	0x3ca50	0x8004d254	mips_hi16_lo16	instruction-word	0x8006d82
 GAME.EXE	0x8004d26c	0x3ca6c		mips26	reachable-code	0x8004d284	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d2b8	0x3cab8		mips26	reachable-code	0x8004d34c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d2e0	0x3cae0	0x8004d2e4	mips_hi16_lo16	reachable-code	0x8006d838	load	spu_voice_register_base	lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004d2f4	0x3caf4	0x8004d2f8	mips_hi16_lo16	reachable-code	0x8016b5f8	bss	_spu_keystat	lui+lw	v1	paired-reviewed	reviewed	manual:LIBSPU SR_GAKS.OBJ XREF _spu_keystat .text+0x70/+0x74;retail raw pair;exact-sdk30 section
 GAME.EXE	0x8004d314	0x3cb14		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d31c	0x3cb1c		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8004d32c	0x3cb2c		mips26	reachable-code	0x8004d338	load		j		control-flow	candidate	investigation:relocs.tsv

@@ -123,7 +123,6 @@ KfCdRequest	0x00	0x01	kind	u8	supported	game/cd.h;asm;cd_initialize	request kind
 KfCdRequest	0x01	0x01	phase	u8	supported	game/cd.h;asm;cd_initialize	request phase
 KfCdRequest	0x02	0x04	location	CdlLOC	supported	game/cd.h;cd_request_enqueue	current CD location
 KfCdRequest	0x06	0x04	initial_location	CdlLOC	supported	game/cd.h;cd_request_enqueue	initial CD location
-KfCdRequest	0x0a	0x02	unknown_0a	u8[2]	opaque	game/cd.h	intervening bytes
 KfCdRequest	0x0c	0x04	destination	u_long *	supported	game/cd.h;cd_request_enqueue	sector destination
 KfCdRequest	0x10	0x04	sector_count	s32	supported	game/cd.h;cd_request_enqueue	sectors to transfer
 KfCdRequest	0x14	0x04	on_complete	KfCdRequestCallback	supported	game/cd.h;cd_complete_handler	completion callback
@@ -131,11 +130,9 @@ KfCdRequest	0x18	0x08	payload	KfCdRequestPayload	supported	game/cd.h;audio_vab_s
 KfCdRequest	0x20	0x02	chunk_sectors	s16	supported	game/cd.h;cd_stream_limit_chunk	sectors in this chunk
 KfCdRequest	0x22	0x02	remaining_sectors	s16	supported	game/cd.h;cd_stream_limit_chunk	sectors remaining
 KfCdRequest	0x24	0x01	stream_complete	u8	supported	game/cd.h;asm;cd_stream_mark_complete	CD stream completion flag
-KfCdRequest	0x25	0x03	unknown_25	u8[3]	opaque	game/cd.h;asm	not yet modelled
 KfCdRequestPayload	0x00	0x08	vab	KfCdRequestPayloadVab	supported	game/cd.h;audio_vab_stream_callback	VAB stream view
 KfCdRequestPayload	0x00	0x08	image_rect	RECT	supported	game/cd.h;cd_request_service_stream	image rectangle view
 KfCdRequestPayloadVab	0x00	0x01	phase	u8	supported	game/cd.h;audio_vab_stream_callback	VAB transfer phase
-KfCdRequestPayloadVab	0x01	0x01	unknown_19	u8	opaque	game/cd.h	unclassified byte
 KfCdRequestPayloadVab	0x02	0x02	slot_index	s16	supported	game/cd.h;audio_vab_stream_callback	VAB slot index
 KfCdRequestPayloadVab	0x04	0x04	stream_state	KfCdRequestStreamState	supported	game/cd.h;audio_vab_stream_callback	stream-slot and chunk state
 KfCdRequestStreamChunk	0x00	0x02	unknown_1c	u16	opaque	game/cd.h;cd_stream_limit_chunk	first stream counter

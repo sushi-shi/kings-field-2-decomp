@@ -3065,11 +3065,11 @@ GAME.EXE	0x8001af08	0xa708		mips26	reachable-code	0x800225d8	load	memory_card_st
 GAME.EXE	0x8001af7c	0xa77c		mips26	reachable-code	0x800228c8	load	memory_card_read_slot_summary	jal		control-flow	reviewed	manual:card row direct probe call
 GAME.EXE	0x8001b07c	0xa87c	0x8001b080	mips_hi16_lo16	reachable-code	0x800640c0	load		lui+addiu	v1	paired-reachable	reviewed	manual:card panel layout title row
 GAME.EXE	0x8001b08c	0xa88c		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:card panel direct call
-GAME.EXE	0x8001b0a0	0xa8a0	0x8001b0a4	mips_hi16_lo16	reachable-code	0x80063ebc	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel sprite descriptor
+GAME.EXE	0x8001b0a0	0xa8a0	0x8001b0a4	mips_hi16_lo16	reachable-code	0x80063ebc	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:card panel sprite descriptor
 GAME.EXE	0x8001b0a8	0xa8a8		mips26	reachable-code	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:card panel direct call
-GAME.EXE	0x8001b0b0	0xa8b0	0x8001b0b4	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor
+GAME.EXE	0x8001b0b0	0xa8b0	0x8001b0b4	mips_hi16_lo16	reachable-code	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor
 GAME.EXE	0x8001b0b8	0xa8b8		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:card panel direct call
-GAME.EXE	0x8001b0c8	0xa8c8	0x8001b0cc	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor
+GAME.EXE	0x8001b0c8	0xa8c8	0x8001b0cc	mips_hi16_lo16	reachable-code	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor
 GAME.EXE	0x8001b0d0	0xa8d0		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:card panel direct call
 GAME.EXE	0x8001b100	0xa900		mips26	reachable-code	0x800217f0	load	menu_draw_nine_slice_panel	jal		control-flow	reviewed	manual:card panel direct call
 GAME.EXE	0x8001b108	0xa908		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:card panel direct call
@@ -3174,9 +3174,9 @@ GAME.EXE	0x8001ba38	0xb238		mips26	reachable-code	0x8001b030	load	menu_show_dial
 GAME.EXE	0x8001ba40	0xb240		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-slot browser direct call
 GAME.EXE	0x8001ba48	0xb248		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:decoded card-slot browser direct call
 GAME.EXE	0x8001ba58	0xb258		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-slot browser direct call
-GAME.EXE	0x8001ba90	0xb290	0x8001ba94	mips_hi16_lo16	reachable-code	0x80064b54	load		lui+addiu	a3	paired-reachable	reviewed	manual:card label suffix copy entry 5
-GAME.EXE	0x8001bba4	0xb3a4	0x8001bba8	mips_hi16_lo16	reachable-code	0x80064b54	load		lui+addiu	a3	paired-reachable	reviewed	manual:card label suffix copy entry 5
-GAME.EXE	0x8001bc9c	0xb49c	0x8001bca0	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a2	paired-reachable	reviewed	manual:card label suffix copy entry 2
+GAME.EXE	0x8001ba90	0xb290	0x8001ba94	mips_hi16_lo16	reachable-code	0x80064b54	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:card label suffix copy entry 5
+GAME.EXE	0x8001bba4	0xb3a4	0x8001bba8	mips_hi16_lo16	reachable-code	0x80064b54	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:card label suffix copy entry 5
+GAME.EXE	0x8001bc9c	0xb49c	0x8001bca0	mips_hi16_lo16	reachable-code	0x80064b18	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:card label suffix copy entry 2
 GAME.EXE	0x8001bd20	0xb520		mips26	reachable-code	0x80021c8c	load	menu_enter_display_state	jal		control-flow	reviewed	manual:retail card-save browser decoded control flow
 GAME.EXE	0x8001bd2c	0xb52c		mips26	reachable-code	0x8001c550	load	menu_prepare_card_browser_rows	jal		control-flow	reviewed	manual:retail card-save browser decoded control flow
 GAME.EXE	0x8001bd5c	0xb55c		mips26	reachable-code	0x8001cdb0	load	menu_draw_card_dialog_rows	jal		control-flow	reviewed	manual:retail card-save browser decoded control flow
@@ -3259,32 +3259,32 @@ GAME.EXE	0x8001c510	0xbd10		mips26	reachable-code	0x80021be0	load	menu_present_f
 GAME.EXE	0x8001c524	0xbd24		mips26	reachable-code	0x8001c3c4	load		j		control-flow	reviewed	manual:decoded two-option dialog call or internal branch
 GAME.EXE	0x8001c560	0xbd60	0x8001c564	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu_prepare_card_browser_rows raw table entry 0 pointer and source memcpy
 GAME.EXE	0x8001c5c8	0xbdc8	0x8001c5cc	mips_hi16_lo16	reachable-code	0x80064b04	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu_prepare_card_browser_rows raw table entry 1 pointer and source memcpy
-GAME.EXE	0x8001c63c	0xbe3c	0x8001c640	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
-GAME.EXE	0x8001c6a4	0xbea4	0x8001c6a8	mips_hi16_lo16	reachable-code	0x80064b2c	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 3
-GAME.EXE	0x8001c70c	0xbf0c	0x8001c710	mips_hi16_lo16	reachable-code	0x80064b40	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 4
-GAME.EXE	0x8001c780	0xbf80	0x8001c784	mips_hi16_lo16	reachable-code	0x80064b68	load		lui+addiu	t0	paired-reachable	reviewed	manual:menu label suffix copy entry 6
-GAME.EXE	0x8001c7e8	0xbfe8	0x8001c7ec	mips_hi16_lo16	reachable-code	0x80064ba4	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 9
-GAME.EXE	0x8001c850	0xc050	0x8001c854	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 2
-GAME.EXE	0x8001c8c0	0xc0c0	0x8001c8c4	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
+GAME.EXE	0x8001c63c	0xbe3c	0x8001c640	mips_hi16_lo16	reachable-code	0x80064b18	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
+GAME.EXE	0x8001c6a4	0xbea4	0x8001c6a8	mips_hi16_lo16	reachable-code	0x80064b2c	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 3
+GAME.EXE	0x8001c70c	0xbf0c	0x8001c710	mips_hi16_lo16	reachable-code	0x80064b40	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 4
+GAME.EXE	0x8001c780	0xbf80	0x8001c784	mips_hi16_lo16	reachable-code	0x80064b68	load	menu_label_suffixes	lui+addiu	t0	paired-reachable	reviewed	manual:menu label suffix copy entry 6
+GAME.EXE	0x8001c7e8	0xbfe8	0x8001c7ec	mips_hi16_lo16	reachable-code	0x80064ba4	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 9
+GAME.EXE	0x8001c850	0xc050	0x8001c854	mips_hi16_lo16	reachable-code	0x80064b18	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 2
+GAME.EXE	0x8001c8c0	0xc0c0	0x8001c8c4	mips_hi16_lo16	reachable-code	0x80064b18	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
 GAME.EXE	0x8001c928	0xc128	0x8001c92c	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
-GAME.EXE	0x8001c990	0xc190	0x8001c994	mips_hi16_lo16	reachable-code	0x80064be0	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 12
+GAME.EXE	0x8001c990	0xc190	0x8001c994	mips_hi16_lo16	reachable-code	0x80064be0	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 12
 GAME.EXE	0x8001ca04	0xc204	0x8001ca08	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 0
-GAME.EXE	0x8001ca74	0xc274	0x8001ca78	mips_hi16_lo16	reachable-code	0x80064bcc	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 11
-GAME.EXE	0x8001cae4	0xc2e4	0x8001cae8	mips_hi16_lo16	reachable-code	0x80064bf4	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix table entry 13
-GAME.EXE	0x8001cb64	0xc364	0x8001cb68	mips_hi16_lo16	reachable-code	0x80064bb8	load		lui+addiu	a1	paired-reachable	reviewed	manual:menu label suffix copy entry 10
+GAME.EXE	0x8001ca74	0xc274	0x8001ca78	mips_hi16_lo16	reachable-code	0x80064bcc	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 11
+GAME.EXE	0x8001cae4	0xc2e4	0x8001cae8	mips_hi16_lo16	reachable-code	0x80064bf4	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix table entry 13
+GAME.EXE	0x8001cb64	0xc364	0x8001cb68	mips_hi16_lo16	reachable-code	0x80064bb8	load	menu_label_suffixes	lui+addiu	a1	paired-reachable	reviewed	manual:menu label suffix copy entry 10
 GAME.EXE	0x8001cbbc	0xc3bc		mips26	reachable-code	0x8001cbf8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001cc08	0xc408	0x8001cc0c	mips_hi16_lo16	reachable-code	0x80064b2c	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 3
-GAME.EXE	0x8001cc70	0xc470	0x8001cc74	mips_hi16_lo16	reachable-code	0x80064b40	load		lui+addiu	a1	paired-reachable	reviewed	manual:menu label suffix copy entry 4
-GAME.EXE	0x8001cce4	0xc4e4	0x8001cce8	mips_hi16_lo16	reachable-code	0x80064c08	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 14
-GAME.EXE	0x8001cd4c	0xc54c	0x8001cd50	mips_hi16_lo16	reachable-code	0x80064c1c	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 15
+GAME.EXE	0x8001cc08	0xc408	0x8001cc0c	mips_hi16_lo16	reachable-code	0x80064b2c	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 3
+GAME.EXE	0x8001cc70	0xc470	0x8001cc74	mips_hi16_lo16	reachable-code	0x80064b40	load	menu_label_suffixes	lui+addiu	a1	paired-reachable	reviewed	manual:menu label suffix copy entry 4
+GAME.EXE	0x8001cce4	0xc4e4	0x8001cce8	mips_hi16_lo16	reachable-code	0x80064c08	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 14
+GAME.EXE	0x8001cd4c	0xc54c	0x8001cd50	mips_hi16_lo16	reachable-code	0x80064c1c	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 15
 GAME.EXE	0x8001cdf8	0xc5f8		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:two-frame menu panel direct call
-GAME.EXE	0x8001ce00	0xc600	0x8001ce04	mips_hi16_lo16	reachable-code	0x80063ebc	load		lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
+GAME.EXE	0x8001ce00	0xc600	0x8001ce04	mips_hi16_lo16	reachable-code	0x80063ebc	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
 GAME.EXE	0x8001ce08	0xc608	0x8001ce0c	mips_hi16_lo16	reachable-code	0x80064114	load		lui+addiu	a1	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
 GAME.EXE	0x8001ce10	0xc610		mips26	reachable-code	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:two-frame menu panel direct call
-GAME.EXE	0x8001ce18	0xc618	0x8001ce1c	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
+GAME.EXE	0x8001ce18	0xc618	0x8001ce1c	mips_hi16_lo16	reachable-code	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
 GAME.EXE	0x8001ce20	0xc620	0x8001ce24	mips_hi16_lo16	reachable-code	0x80064114	load		lui+addiu	a1	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
 GAME.EXE	0x8001ce28	0xc628		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:two-frame menu panel direct call
-GAME.EXE	0x8001ce38	0xc638	0x8001ce3c	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
+GAME.EXE	0x8001ce38	0xc638	0x8001ce3c	mips_hi16_lo16	reachable-code	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:two-frame menu panel typed descriptor
 GAME.EXE	0x8001ce40	0xc640		mips26	reachable-code	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:two-frame menu panel direct call
 GAME.EXE	0x8001ce6c	0xc66c		mips26	reachable-code	0x800217f0	load	menu_draw_nine_slice_panel	jal		control-flow	reviewed	manual:two-frame menu panel direct call
 GAME.EXE	0x8001ce74	0xc674		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:two-frame menu panel direct call
@@ -3730,21 +3730,21 @@ GAME.EXE	0x8001f718	0xef18	0x8001f71c	mips_hi16_lo16	reachable-code	0x80063e80	l
 GAME.EXE	0x8001f720	0xef20		mips26	reachable-code	0x80021510	load	menu_draw_number	jal		range-filtered	reviewed	manual:menu-attribute-proven-calls
 GAME.EXE	0x8001f744	0xef44		mips26	reachable-code	0x800217f0	load	menu_draw_nine_slice_panel	jal		range-filtered	reviewed	manual:menu-attribute-proven-calls
 GAME.EXE	0x8001f760	0xef60		mips26	reachable-code	0x800217f0	load	menu_draw_nine_slice_panel	jal		range-filtered	reviewed	manual:menu-attribute-proven-calls
-GAME.EXE	0x8001f7e0	0xefe0	0x8001f7e4	mips_hi16_lo16	instruction-word	0x80063e98	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f7e0	0xefe0	0x8001f7e4	mips_hi16_lo16	instruction-word	0x80063e98	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f7e8	0xefe8		mips26	instruction-word	0x80020ef8	load	menu_blit_sprite_fixed_clut	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f7f0	0xeff0	0x8001f7f4	mips_hi16_lo16	instruction-word	0x80063eb0	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f7f0	0xeff0	0x8001f7f4	mips_hi16_lo16	instruction-word	0x80063eb0	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f7f8	0xeff8		mips26	instruction-word	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f800	0xf000	0x8001f804	mips_hi16_lo16	instruction-word	0x80063ea4	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f800	0xf000	0x8001f804	mips_hi16_lo16	instruction-word	0x80063ea4	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f808	0xf008		mips26	instruction-word	0x8001f838	load		j		control-flow	reviewed	manual:menu pair row internal jump
-GAME.EXE	0x8001f810	0xf010	0x8001f814	mips_hi16_lo16	instruction-word	0x80063e98	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f810	0xf010	0x8001f814	mips_hi16_lo16	instruction-word	0x80063e98	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f818	0xf018		mips26	instruction-word	0x80020ef8	load	menu_blit_sprite_fixed_clut	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f820	0xf020	0x8001f824	mips_hi16_lo16	instruction-word	0x80063ea4	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f820	0xf020	0x8001f824	mips_hi16_lo16	instruction-word	0x80063ea4	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f828	0xf028		mips26	instruction-word	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f830	0xf030	0x8001f834	mips_hi16_lo16	instruction-word	0x80063eb0	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
+GAME.EXE	0x8001f830	0xf030	0x8001f834	mips_hi16_lo16	instruction-word	0x80063eb0	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row sprite descriptor
 GAME.EXE	0x8001f838	0xf038		mips26	instruction-word	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f840	0xf040	0x8001f844	mips_hi16_lo16	instruction-word	0x80063e8c	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row font descriptor
+GAME.EXE	0x8001f840	0xf040	0x8001f844	mips_hi16_lo16	instruction-word	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row font descriptor
 GAME.EXE	0x8001f848	0xf048		mips26	instruction-word	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:menu pair row call
-GAME.EXE	0x8001f850	0xf050	0x8001f854	mips_hi16_lo16	instruction-word	0x80063e8c	load		lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row font descriptor
+GAME.EXE	0x8001f850	0xf050	0x8001f854	mips_hi16_lo16	instruction-word	0x80063e8c	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu pair row font descriptor
 GAME.EXE	0x8001f858	0xf058		mips26	instruction-word	0x800210ac	load	menu_draw_string	jal		control-flow	reviewed	manual:menu pair row call
 GAME.EXE	0x8001f8f0	0xf0f0	0x8001f8f4	mips_hi16_lo16	reachable-code	0x800640c0	load	menu_window_layouts	lui+lhu	v0	paired-reviewed	reviewed	manual:decoded menu preview choice call, branch, or data pair
 GAME.EXE	0x8001f8f8	0xf0f8	0x8001f8fc	mips_hi16_lo16	reachable-code	0x800640c2	load	menu_window_layouts	lui+lhu	v1	paired-reviewed	reviewed	manual:decoded menu preview choice call, branch, or data pair
@@ -4050,7 +4050,7 @@ GAME.EXE	0x80021764	0x10f64	0x80021768	mips_hi16_lo16	reachable-code	0x8006d9e0	
 GAME.EXE	0x8002177c	0x10f7c	0x80021780	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
 GAME.EXE	0x800217a8	0x10fa8	0x800217ac	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
 GAME.EXE	0x800217b8	0x10fb8		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80021834	0x11034	0x80021838	mips_hi16_lo16	reachable-code	0x80063f04	load		lui+addiu	s0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021834	0x11034	0x80021838	mips_hi16_lo16	reachable-code	0x80063f04	load	menu_sprite_defs	lui+addiu	s0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021864	0x11064		mips26	reachable-code	0x80021880	load		j		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x800218b4	0x110b4		mips26	reachable-code	0x800218d0	load		j		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x800218d0	0x110d0		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
@@ -4068,7 +4068,7 @@ GAME.EXE	0x800219c4	0x111c4	0x800219c8	mips_hi16_lo16	reachable-code	0x8006d9e0	
 GAME.EXE	0x800219dc	0x111dc	0x800219e0	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x800219f4	0x111f4	0x800219f8	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a1	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021a00	0x11200		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data
-GAME.EXE	0x80021a08	0x11208	0x80021a0c	mips_hi16_lo16	reachable-code	0x80063e98	load		lui+addiu	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
+GAME.EXE	0x80021a08	0x11208	0x80021a0c	mips_hi16_lo16	reachable-code	0x80063e98	load	menu_sprite_defs	lui+addiu	v0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021a74	0x11274	0x80021a78	mips_hi16_lo16	reachable-code	0x8017d140	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021aa8	0x112a8	0x80021aac	mips_hi16_lo16	reachable-code	0x8017d160	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80021abc	0x112bc	0x80021ac0	mips_hi16_lo16	reachable-code	0x8018d164	bss		lui+sw		paired-reviewed	reviewed	manual:graphics

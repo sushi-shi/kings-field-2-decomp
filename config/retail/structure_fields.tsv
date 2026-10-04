@@ -195,6 +195,8 @@ KfCollisionFilterPayload	0x14	0x12	motion	KfCollisionMotion	supported	game/graph
 KfCollisionFilterPayload	0x26	0x6	filter	KfCollisionTail	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
 KfCollisionKinds	0x0	0x3	types	u8[3]	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
 KfCollisionKinds	0x3	0x1	pad	u8	opaque	game/graphics.h;asm;collision query	three collision-kind bytes and pad
+KfCollisionMaskPoint	0x00	0x04	x	s32	supported	game/render_mask.h;GAME 0x8002bfd4 lw;build_camera_map_cell_layer_masks	First 32-bit map-mask coordinate passed to rasterizer
+KfCollisionMaskPoint	0x04	0x04	z	s32	supported	game/render_mask.h;GAME 0x8002bfe0 lw;build_camera_map_cell_layer_masks	Second 32-bit map-mask coordinate passed to rasterizer
 KfCollisionMotion	0x0	0x12	values	s16[9]	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
 KfCollisionRotation	0x0	0x12	m	s16[3][3]	supported	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
 KfCollisionRotation	0x12	0x2	pad	s16	opaque	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
@@ -428,6 +430,8 @@ KfMapCellPatternVariant	0x00	0x01	first_collision_shape_id	u8	supported	asm;map_
 KfMapCellPatternVariant	0x01	0x01	second_collision_shape_id	u8	supported	asm;map_cell_apply_rotated_pattern	copied into other layer collision_shape_id
 KfMapCellPatternVariant	0x02	0x01	first_object_index	u8	supported	asm;map_cell_apply_rotated_pattern;callers	placement pattern field
 KfMapCellPatternVariant	0x03	0x01	second_object_index	u8	supported	asm;map_cell_apply_rotated_pattern;callers	placement pattern field
+KfMapMaskShapePair	0x00	0x02	near	s16	supported	game/render_mask.h;GAME 0x8002c6c0 lh;DATA 0x80067874	Signed near shape halfword used as interpolation base
+KfMapMaskShapePair	0x02	0x02	far	s16	supported	game/render_mask.h;GAME 0x8002c6bc lh;DATA 0x80067874	Signed far shape halfword used as interpolation endpoint
 KfMapObject	0x00	0x01	layer_mask	u8	supported	asm;placement layer copy;map-cell layer selection;render visibility bit tests	1/2/3 layer mask initialized from placement or collision layer and tested by renderer
 KfMapObject	0x01	0x01	asset_clip_selector	u8	supported	render_world_model;render_animated_object;animation_sample_vertex	render_world_model uses values >=0x80 as static object selectors; lower values feed animation, while render_animated_object passes the byte as clip
 KfMapObject	0x02	0x01	render_queue_mode	u8	supported	render_scene_and_update_resources;render_world_model	0xff/0xfe/other selects textured, clipped, or blended render queue

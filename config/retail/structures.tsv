@@ -38,6 +38,7 @@ KfCollisionDefaultRow	0x2c	supported	game/graphics.h;asm;collision defaults	44-b
 KfCollisionDefaultTail	0x6	supported	game/graphics.h;asm;collision defaults	six-byte default filter tail
 KfCollisionFilterPayload	0x2c	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
 KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
+KfCollisionMaskPoint	0x08	supported	game/render_mask.h;GAME 0x8002bfd4/0x8002bfe0 lw;GAME 0x8002c968-0x8002c9f4 corner walk	Two 32-bit map-mask coordinates in the rasterizer call view; original standalone type unproved
 KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
 KfCollisionRotation	0x14	supported	game/graphics.h;asm;collision rows	3x3 signed rotation matrix and pad
 KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collision row
@@ -82,6 +83,7 @@ KfMagicMenuList	0x34	supported	game/menu.h;menu_choose_magic_action;func_8001a2f
 KfMagicRecord	0x1a	supported	game/effect.h;asm;magic_load_records	26-byte archive magic record
 KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants and signed cell offsets
 KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant
+KfMapMaskShapePair	0x04	supported	game/render_mask.h;GAME 0x8002c6bc/0x8002c6c0 lh;GAME 0x8002c6d8 addiu +4;DATA 0x80067874/0x1c	Seven signed near/far halfword pairs in the pitch-shape table; original typedef unproved
 KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	layout from the reconstructed header
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte views of map-object +0x40
 KfMapObjectHingeMotion	0x04	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	two halfword views at map-object +0x40; union member, not a standalone allocation

@@ -74,7 +74,7 @@ GAME.EXE	0x80067a48	0x74	CD_comstr	global	load	pointer[29]	LIBCD BIOS.OBJ	suppor
 GAME.EXE	0x80067abc	0x20	CD_intstr	global	load	pointer[8]	LIBCD BIOS.OBJ	supported	archive XDEF .data+0x74;8 section patches;retail pointer words exact	Psy-Q CD interrupt string pointer table
 GAME.EXE	0x80067adc	0x100	DAT_80067adc	static	load	u32[64]	LIBCD BIOS.OBJ	supported	archive .data section +0x94;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
 GAME.EXE	0x80067bdc	0x80	DAT_80067bdc	static	load	u32[32]	LIBCD BIOS.OBJ	supported	archive .data section +0x194;exact 512-byte tail;getintr indexed xref	vendor CD selector table; original static name unresolved
-GAME.EXE	0x80067c5c	0x64	DAT_80067c5c	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214;exact 512-byte tail;CD_cw indexed xref	vendor CD selector table; original static name unresolved
+GAME.EXE	0x80067c5c	0x64	cd_command_parameter_byte_counts	static	load	u32[25]	LIBCD BIOS.OBJ	supported	archive .data section +0x214 byte-exact;CD_cw indexes by command and uses each value to count byte writes to the CD parameter register	original static symbol spelling unresolved
 GAME.EXE	0x80067cdc	0x400	_spu_zerobuf	global	load	u8[1024]	LIBSPU S_INI.OBJ	supported	archive .data XDEF at +0;1024 zero bytes exact;SpuClearReverbWorkArea HI16/LO16 xref	SDK SPU transfer buffer
 GAME.EXE	0x800680dc	0x10	DAT_800680dc	static	load	u8[16]	LIBSPU SPU.OBJ	supported	archive 16-byte .data exact;_spu_init xref	SDK fill bytes; original static symbol unresolved
 GAME.EXE	0x800680ec	0x28	_spu_rev_startaddr	global	load	u32[10]	LIBSPU S_SRMP.OBJ	supported	archive XDEF +0;exact 760-byte .data;retail indexed xrefs	reverb mode start addresses

@@ -2188,23 +2188,23 @@ GAME.EXE	0x800150ac	0x48ac		mips26	reachable-code	0x80014e84	load	matrix_set_rot
 GAME.EXE	0x800150bc	0x48bc		mips26	reachable-code	0x8005b574	load	ApplyMatrix	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x8001511c	0x491c		mips26	reachable-code	0x80014f64	load	matrix_set_rotation_yxz	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x8001512c	0x492c		mips26	reachable-code	0x8005b574	load	ApplyMatrix	jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80015378	0x4b78		mips26	reachable-code	0x8005a344	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80015378	0x4b78		mips26	reachable-code	0x8005a344	load	catan	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x80015384	0x4b84		mips26	reachable-code	0x80015458	load		j		control-flow	reviewed	manual:math
-GAME.EXE	0x800153c0	0x4bc0		mips26	reachable-code	0x8005a344	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x800153c0	0x4bc0		mips26	reachable-code	0x8005a344	load	catan	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x800153cc	0x4bcc		mips26	reachable-code	0x80015458	load		j		control-flow	reviewed	manual:math
 GAME.EXE	0x800153d4	0x4bd4		mips26	reachable-code	0x80015458	load		j		control-flow	reviewed	manual:math
-GAME.EXE	0x80015410	0x4c10		mips26	reachable-code	0x8005a344	load		jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80015410	0x4c10		mips26	reachable-code	0x8005a344	load	catan	jal		control-flow	reviewed	manual:math
 GAME.EXE	0x80015418	0x4c18		mips26	reachable-code	0x80015458	load		j		control-flow	reviewed	manual:math
-GAME.EXE	0x8001544c	0x4c4c		mips26	reachable-code	0x8005a344	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x80015490	0x4c90		mips26	reachable-code	0x8005ab2c	load		jal		control-flow	reviewed	manual:math
-GAME.EXE	0x800154e4	0x4ce4		mips26	instruction-word	0x8005ab2c	load		jal		range-filtered	reviewed	manual:math
+GAME.EXE	0x8001544c	0x4c4c		mips26	reachable-code	0x8005a344	load	catan	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x80015490	0x4c90		mips26	reachable-code	0x8005ab2c	load	SquareRoot0	jal		control-flow	reviewed	manual:math
+GAME.EXE	0x800154e4	0x4ce4		mips26	instruction-word	0x8005ab2c	load	SquareRoot0	jal		range-filtered	reviewed	manual:math
 GAME.EXE	0x80015524	0x4d24		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:vector_actor_helpers
 GAME.EXE	0x80015534	0x4d34		mips26	reachable-code	0x80015468	load	fixed_vector2_length	jal		control-flow	reviewed	manual:vector_actor_helpers
 GAME.EXE	0x80015540	0x4d40		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:vector_actor_helpers
 GAME.EXE	0x80015580	0x4d80		mips26	reachable-code	0x80015590	load		j		control-flow	reviewed	manual:vector_actor_helpers
 GAME.EXE	0x80015630	0x4e30		mips26	reachable-code	0x80015688	load		j		control-flow	reviewed	manual:vector_distance
-GAME.EXE	0x8001566c	0x4e6c		mips26	reachable-code	0x8005ab2c	load		jal		control-flow	reviewed	manual:vector_distance
-GAME.EXE	0x80015768	0x4f68		mips26	reachable-code	0x8005ab2c	load		jal		control-flow	reviewed	manual:vector_distance_between
+GAME.EXE	0x8001566c	0x4e6c		mips26	reachable-code	0x8005ab2c	load	SquareRoot0	jal		control-flow	reviewed	manual:vector_distance
+GAME.EXE	0x80015768	0x4f68		mips26	reachable-code	0x8005ab2c	load	SquareRoot0	jal		control-flow	reviewed	manual:vector_distance_between
 GAME.EXE	0x8001578c	0x4f8c		mips26	reachable-code	0x80015798	load		j		control-flow	reviewed	manual:vector_distance_between
 GAME.EXE	0x800157bc	0x4fbc		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:actor_random_scalar
 GAME.EXE	0x800157c4	0x4fc4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:actor_random_scalar
@@ -2230,34 +2230,34 @@ GAME.EXE	0x80015db0	0x55b0	0x80015db4	mips_hi16_lo16	reachable-code	0x8017d11f	b
 GAME.EXE	0x80015db8	0x55b8	0x80015dbc	mips_hi16_lo16	reachable-code	0x8017d120	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
 GAME.EXE	0x80015dc0	0x55c0	0x80015dc4	mips_hi16_lo16	reachable-code	0x8017d121	bss	state_8017d118	lui+sb	at	paired-reviewed	reviewed	manual:audio-cd-startup-reset
 GAME.EXE	0x80015dc8	0x55c8	0x80015dcc	mips_hi16_lo16	reachable-code	0x80011000	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015dd0	0x55d0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015dd0	0x55d0		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015dd8	0x55d8	0x80015ddc	mips_hi16_lo16	reachable-code	0x8001100c	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015de0	0x55e0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015de0	0x55e0		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015de8	0x55e8	0x80015dec	mips_hi16_lo16	reachable-code	0x80011018	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015df0	0x55f0		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015df0	0x55f0		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015df8	0x55f8	0x80015dfc	mips_hi16_lo16	reachable-code	0x80011024	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e00	0x5600		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e00	0x5600		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e08	0x5608	0x80015e0c	mips_hi16_lo16	reachable-code	0x80011030	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e10	0x5610		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e10	0x5610		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e18	0x5618	0x80015e1c	mips_hi16_lo16	reachable-code	0x8001103c	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e20	0x5620		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e20	0x5620		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e28	0x5628	0x80015e2c	mips_hi16_lo16	reachable-code	0x80011048	load		lui+addiu	a1	paired-reviewed	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e30	0x5630		mips26	reachable-code	0x800184d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e40	0x5640		mips26	reachable-code	0x800182d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e4c	0x564c		mips26	reachable-code	0x80016ee0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e5c	0x565c		mips26	reachable-code	0x800146d0	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e30	0x5630		mips26	reachable-code	0x800184d0	load	cd_archive_open	jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e40	0x5640		mips26	reachable-code	0x800182d0	load	cd_archive_read	jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e4c	0x564c		mips26	reachable-code	0x80016ee0	load	cd_map_stream_read	jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e5c	0x565c		mips26	reachable-code	0x800146d0	load	audio_queue_vab_stream	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e64	0x5664	0x80015e68	mips_hi16_lo16	reachable-code	0x801749d0	bss	map_object_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
-GAME.EXE	0x80015e74	0x5674		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e74	0x5674		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e80	0x5680	0x80015e84	mips_hi16_lo16	reachable-code	0x801c7078	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-weapon-record-copy;owner-extent-candidate
-GAME.EXE	0x80015e98	0x5698		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015e98	0x5698		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015ea4	0x56a4	0x80015ea8	mips_hi16_lo16	reachable-code	0x801d8d88	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-copy-destination;object-extent-unbound
-GAME.EXE	0x80015ebc	0x56bc		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015ebc	0x56bc		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015ec8	0x56c8	0x80015ecc	mips_hi16_lo16	reachable-code	0x800758f0	bss	player_level_growth_table	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
-GAME.EXE	0x80015ee0	0x56e0		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015ee0	0x56e0		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015eec	0x56ec	0x80015ef0	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
-GAME.EXE	0x80015f04	0x5704		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f04	0x5704		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015f10	0x5710	0x80015f14	mips_hi16_lo16	reachable-code	0x80066ab4	load	collision_default_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
-GAME.EXE	0x80015f28	0x5728		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
+GAME.EXE	0x80015f28	0x5728		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015f34	0x5734	0x80015f38	mips_hi16_lo16	reachable-code	0x80197a94	bss	audio_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
 GAME.EXE	0x80015f4c	0x574c		mips26	reachable-code	0x800171c8	load		jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015f58	0x5758	0x80015f5c	mips_hi16_lo16	reachable-code	0x800fa0d0	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-TMD-copy-destination;object-extent-unbound

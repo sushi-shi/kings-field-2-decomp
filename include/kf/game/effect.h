@@ -173,7 +173,6 @@ typedef char kf_effect_trail_child_lag_offset[(u32)&((KfEffectTrailChildLink *)0
 /* Kind 8 follows a parent effect and applies a per-tick vertical step. */
 typedef struct KfEffectKind8State {
     u8 parent_index;
-    u8 unknown_01;
     u16 vertical_step;
 } KfEffectKind8State;
 

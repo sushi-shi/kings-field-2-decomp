@@ -309,6 +309,16 @@ def diff_unit(unit: Unit, delink_dir: Path, objdiff_dir: Path) -> UnitDataDiff |
         raise FileNotFoundError("missing " + ", ".join(missing))
     retail = Elf(target)
     recon = Elf(base)
+    # A single named COMMON reservation can be placed in BSS by the linker
+    # when its exact source claim supplies the address. The roundtrip plan
+    # checks that placement independently; unclaimed COMMON stays divergent.
+    from scripts.kf.roundtrip import named_common_bss_claim
+    with base.open('rb') as stream:
+        common_claim = named_common_bss_claim(ELFFile(stream), unit)
+    if common_claim is not None:
+        recon.sections['.bss'] = Section('.bss', 8, common_claim.size, b'', 3)
+        recon.allocations['.bss'] = [Allocation(
+            common_claim.symbol, 0, common_claim.size, 1, 0)]
     result = UnitDataDiff(unit.image, unit.unit)
     for name in INIT_SECTIONS:
         diff = _diff_init_section(name, retail, recon)

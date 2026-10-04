@@ -76,7 +76,7 @@ class CommonAllocationTests(unittest.TestCase):
                 }])
 
     def test_claim_does_not_convert_common_to_placed_bss(self):
-        sample = replace(unit(), data=unit().data + (Datum(BASE + 0x200, 8, 'unclaimed', 'bss'),))
+        sample = replace(unit(), data=unit().data + (Datum(BASE + 0x200, 12, 'unclaimed', 'bss'),))
         result = UnitResult('GAME.EXE', 'game.control', 'synthetic')
         plan(ELFFile(io.BytesIO(object_bytes(common=True))), sample, result)
         self.assertIn('unsupported-common-allocation', {i['kind'] for i in result.issues})
@@ -133,6 +133,30 @@ class CommonAllocationTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which(ASSEMBLER) and shutil.which(LINKER), 'pinned GNU MIPS tools required')
 class NativeCommonAllocationTests(unittest.TestCase):
+    def test_exact_named_common_claim_links_as_bss_and_matches_data(self):
+        sample = replace(unit(with_data=False),
+                         data=(Datum(BASE + 0x200, 8, 'unclaimed', 'bss', 'global'),))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / 'delink/game/modules' / sample.object_name
+            source = root / 'objdiff/game/base' / sample.object_name
+            target.parent.mkdir(parents=True)
+            source.parent.mkdir(parents=True)
+            target.write_bytes(write_mips_elf(
+                TEXT, 'control', 8, bss_size=8,
+                bss_symbols=(DefinedSymbol('unclaimed', 0, 8, STT_OBJECT),)))
+            source.write_bytes(object_bytes(common=True, with_data=False))
+            result = verify_unit(sample, retail(), {}, source, root)
+            self.assertTrue(result.linker_ran)
+            self.assertEqual(result.issues, [])
+            self.assertEqual([(s.name, s.address, s.size) for s in result.sections],
+                             [('.text', BASE, 8), ('.bss', BASE + 0x200, 8)])
+            diffs, failures = diff_image(
+                'GAME.EXE', Manifest({}, (sample,)), root / 'delink', root / 'objdiff')
+            self.assertEqual(failures, [])
+            self.assertEqual(len(diffs), 1)
+            self.assertTrue(diffs[0].matches)
+
     def test_real_gas_common_survives_input_but_old_discard_script_loses_it(self):
         assembly = '''.set noreorder
 .text

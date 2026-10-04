@@ -95,6 +95,36 @@ def link_labels(image: str, config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
     return labels
 
 
+def named_common_bss_claim(elf: ELFFile, unit: Unit):
+    """Recognize one fully claimed COMMON request that ld can place as BSS.
+
+    COMMON carries no input section. Only a single, exact, globally named
+    reservation is admissible here; the claimed address supplies its placement
+    and must satisfy the request's alignment. Other COMMON remains unresolved.
+    """
+    symtab = elf.get_section_by_name(".symtab")
+    if symtab is None:
+        return None
+    common = [symbol for symbol in symtab.iter_symbols()
+              if symbol['st_shndx'] == 'SHN_COMMON']
+    claims = [datum for datum in unit.data if datum.section_name == '.bss']
+    bss = elf.get_section_by_name('.bss')
+    if (len(common) != 1 or len(claims) != 1
+            or (bss is not None and bss['sh_size'])):
+        return None
+    symbol, claim = common[0], claims[0]
+    alignment = symbol['st_value']
+    if (not symbol.name or symbol.name != claim.symbol
+            or symbol['st_info']['bind'] != 'STB_GLOBAL'
+            or claim.scope != 'global'
+            or symbol['st_size'] != claim.size or claim.size <= 0
+            or claim.reservation_size
+            or alignment <= 0 or alignment & (alignment - 1)
+            or claim.va % alignment):
+        return None
+    return claim
+
+
 def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
     """Derive one section base from every claim and actual ELF symbol offset."""
     if (elf.elfclass != 32 or not elf.little_endian
@@ -113,13 +143,15 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
     for request in exported_requests:
         result.issue('unplaced-exported-allocation', symbol=request['name'],
                      reservation_size=request['reservation_size'])
+    common_claim = named_common_bss_claim(elf, unit)
     symbols: dict[str, list] = defaultdict(list)
     for symbol in symtab.iter_symbols():
         # COMMON has no input section: SHF_ALLOC enumeration cannot see it,
         # and the discard script below would silently drop an unreferenced
         # reservation. A shared allocation/placement contract is still needed;
         # equal COMMON symbols on both sides are not proof of retail storage.
-        if symbol['st_shndx'] == 'SHN_COMMON':
+        if (symbol['st_shndx'] == 'SHN_COMMON'
+                and (common_claim is None or symbol.name != common_claim.symbol)):
             result.issue("unsupported-common-allocation", symbol=symbol.name,
                          size=symbol['st_size'], alignment=symbol['st_value'])
         if symbol.name:
@@ -140,15 +172,19 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
             continue
         symbol = matches[0]
         index = symbol['st_shndx']
-        actual_section = elf.get_section(index).name if isinstance(index, int) else index
+        is_claimed_common = (common_claim is not None and name == common_claim.symbol
+                             and index == 'SHN_COMMON')
+        actual_section = ('.bss' if is_claimed_common else
+                          elf.get_section(index).name if isinstance(index, int) else index)
         if actual_section != section_name or symbol['st_size'] != size:
             result.issue("owned-symbol-layout", symbol=name, expected_section=section_name,
                          actual_section=actual_section, expected_size=size,
                          actual_size=symbol['st_size'])
             continue
-        offset = symbol['st_value']
-        section = elf.get_section(index)
-        if offset + max(size, reservations.get(name, 0)) > section['sh_size']:
+        offset = 0 if is_claimed_common else symbol['st_value']
+        section = None if is_claimed_common else elf.get_section(index)
+        if (not is_claimed_common
+                and offset + max(size, reservations.get(name, 0)) > section['sh_size']):
             result.issue("owned-symbol-out-of-bounds", symbol=name)
             continue
         bases[section_name].add(va - offset)
@@ -182,6 +218,8 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
             result.issue("unsupported-allocated-section", section=name, size=size)
             continue
         if not size:
+            if name == '.bss' and common_claim is not None:
+                continue
             if sizes[name]:
                 result.issue("owned-section-extent", section=name, size=0, claimed=sizes[name])
             continue
@@ -208,6 +246,16 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
         result.sections.append(SectionPlacement(
             name, base, size, sizes[name], "bss" if name in {".bss", ".sbss"} else "load",
         ))
+    if common_claim is not None:
+        name, size, base = '.bss', common_claim.size, common_claim.va
+        if (name in seen and elf.get_section_by_name(name)['sh_size']
+                or sizes[name] != size or bases[name] != {base}):
+            result.issue('owned-section-extent', section=name, size=size,
+                         claimed=sizes[name])
+        else:
+            placed[name] = base
+            result.sections.append(SectionPlacement(name, base, size, size, 'bss'))
+            seen.add(name)
     for name in bases:
         if name not in seen:
             result.issue("missing-owned-section", section=name)
@@ -303,7 +351,8 @@ def verify_unit(unit: Unit, image: RetailImage, book: dict[str, set[int]],
             root = Path(temporary)
             script = root / "retail.ld"
             script.write_text("SECTIONS {\n" + "\n".join(
-                f"  {name} {address:#x} : {{ *({name}) }}"
+                f"  {name} {address:#x} : {{ *({name})"
+                + (" *(COMMON)" if name == '.bss' else "") + " }"
                 for name, address in sorted(placed.items(), key=lambda item: item[1])
             ) + "\n  /DISCARD/ : { *(*) }\n}\n")
             linked = root / "linked.elf"

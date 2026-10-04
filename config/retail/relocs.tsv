@@ -3977,17 +3977,17 @@ GAME.EXE	0x80020cfc	0x104fc		mips26	reachable-code	0x8006340c	load	SetSemiTrans	
 GAME.EXE	0x80020d04	0x10504		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80020d38	0x10538	0x80020d3c	mips_hi16_lo16	reachable-code	0x8006d698	load		lui+lw	s2	paired-reviewed	reviewed	manual:raw-decoded GAME menu scalar direct pair
 GAME.EXE	0x80020d40	0x10540		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80020d48	0x10548	0x80020d4c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020d58	0x10558	0x80020d5c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020d68	0x10568	0x80020d6c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020d78	0x10578	0x80020d7c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020e34	0x10634	0x80020e38	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020e50	0x10650	0x80020e54	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020e64	0x10664	0x80020e68	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020e7c	0x1067c	0x80020e80	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020e94	0x10694	0x80020e98	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020eac	0x106ac	0x80020eb0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80020ec8	0x106c8	0x80020ecc	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80020d48	0x10548	0x80020d4c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020d58	0x10558	0x80020d5c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020d68	0x10568	0x80020d6c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020d78	0x10578	0x80020d7c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020e34	0x10634	0x80020e38	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020e50	0x10650	0x80020e54	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020e64	0x10664	0x80020e68	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020e7c	0x1067c	0x80020e80	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020e94	0x10694	0x80020e98	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020eac	0x106ac	0x80020eb0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
+GAME.EXE	0x80020ec8	0x106c8	0x80020ecc	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reachable	reviewed	manual:menu_blit_sprite retail current-quad pointer load and source field writes
 GAME.EXE	0x80020ed8	0x106d8		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80020f0c	0x1070c		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu_blit_sprite_fixed_clut
 GAME.EXE	0x80020f14	0x10714	0x80020f18	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:menu_blit_sprite_fixed_clut

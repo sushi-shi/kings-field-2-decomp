@@ -1926,9 +1926,10 @@ void effect_update_dispatch(void)
                 if (initial_phase == 1) {
                     record->type = KF_EFFECT_SLOT_FREE;
                 } else {
+                    s32 collision_height = KF_COLLISION_CACHE_RESULT;
                     record->phase = 1;
                     record->direction.vy = -200;
-                    record->position.vy = KF_COLLISION_CACHE_RESULT;
+                    record->position.vy = collision_height;
                 }
             }
         }

@@ -1413,10 +1413,12 @@ reset_vertical_motion_state:
 
 state_30: {
         s32 phase;
+        s32 launch_speed;
         s32 next_y;
         s32 collision;
+        launch_speed = actor->ballistic_launch_speed_y;
         phase = actor->motion.ballistic.phase;
-        next_y = actor->ballistic_origin_y - actor->ballistic_launch_speed_y * phase +
+        next_y = actor->ballistic_origin_y - launch_speed * phase +
                  ((actor->ballistic_acceleration * phase * phase) >> 1);
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,

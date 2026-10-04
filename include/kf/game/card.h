@@ -1,6 +1,7 @@
 #ifndef KF_GAME_CARD_H
 #define KF_GAME_CARD_H
 #include <kf/lib/types.h>
+#include <kf/lib/bool.h>
 
 /* Memory-card BIOS events, as returned by memory_card_wait_event. */
 enum {
@@ -53,22 +54,17 @@ typedef char kf_card_header_frames_offset[
 typedef char kf_card_header_checksum_offset[
     (u32)&((KfCardHeader *)0)->payload_checksum == 0x200 ? 1 : -1];
 
-extern long memory_card_io_end_event;
-extern long memory_card_timeout_event;
-extern long memory_card_new_device_event;
-extern long memory_card_error_event;
 /* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
 extern s32 input_press_pending;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */
-extern u8 *memory_card_buffer;
 extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
 
 struct DIRENTRY;
-s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count);
-s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
+b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count);
+b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
     s32 *slot_id);
 s32 memory_card_write_slot(s32 slot);
 void input_wait_release(void);
@@ -78,7 +74,7 @@ void memory_card_shutdown_events(void);
 void memory_card_start(void);
 void memory_card_stop(void);
 s32 memory_card_probe_temporary_file(void);
-s32 memory_card_format(void);
+b32 memory_card_format(void);
 s32 memory_card_read_slot(s32 slot);
 void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph);
 u32 memory_card_payload_byte_sum(const u8 *payload);

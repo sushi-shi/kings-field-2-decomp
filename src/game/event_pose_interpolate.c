@@ -46,6 +46,17 @@ typedef void (*KfEventCommandCallback)(const VECTOR *position,
 
 RODATA(0x80012890, 0x3a8)
 
+/* Unreferenced return stubs; original roles and TU owner remain unresolved. */
+ADDRESS(0x80045f10, 0x8)
+void func_80045f10(void)
+{
+}
+
+ADDRESS(0x80045f18, 0x8)
+void func_80045f18(void)
+{
+}
+
 ADDRESS(0x80045f20, 0xb4)
 void scene_position_from_camera_offset(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
                    s32 height_offset, s32 z_offset, VECTOR *output)

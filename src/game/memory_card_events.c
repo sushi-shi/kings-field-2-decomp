@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/bool.h>
 #include <kf/lib/null.h>
 #include <kf/game/card.h>
 #include <kf/game/player.h>
@@ -74,6 +75,17 @@ static s8 memory_card_slot_digit_seed[2] = {0x20, 0};
 
 DATA(0x8006d6a8, 0x7)
 char memory_card_search_pattern[7] = "bu00:*";
+
+DATA(0x8006da18, 0x4)
+static long memory_card_io_end_event;
+DATA(0x8006da20, 0x4)
+static long memory_card_timeout_event;
+DATA(0x8006da28, 0x4)
+static long memory_card_new_device_event;
+DATA(0x8006da30, 0x4)
+static long memory_card_error_event;
+DATA(0x8006da58, 0x4)
+static u8 *memory_card_buffer;
 
 DATA(0x8006dc00, 0x4000)
 u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
@@ -165,7 +177,7 @@ s32 memory_card_probe_temporary_file(void)
     return (handle == -1) << 1;
 }
 ADDRESS(0x800226ec, 0x1dc)
-s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
+b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 {
     struct DIRENTRY ordered[KF_CARD_DIRECTORY_CAPACITY];
     struct DIRENTRY *entry;
@@ -204,7 +216,7 @@ s32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 }
 
 ADDRESS(0x800228c8, 0x280)
-s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
+b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
     s32 *slot)
 {
     KfCardHeader header;
@@ -218,12 +230,12 @@ s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     slot_digit[0] = memory_card_slot_digit_seed[0];
     slot_digit[1] = memory_card_slot_digit_seed[1];
     if (strncmp(filename, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) != 0) {
-        return 1;
+        return KF_TRUE;
     }
     strcat(path, filename);
     handle = open(path, FREAD);
     if (handle == -1 || read(handle, &header, sizeof(header)) != sizeof(header)) {
-        return 1;
+        return KF_TRUE;
     }
     close(handle);
 
@@ -259,11 +271,11 @@ s32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
 
     slot_digit[0] = filename[CARD_FILENAME_PREFIX_LENGTH];
     *slot = atoi(slot_digit);
-    return 0;
+    return KF_FALSE;
 }
 
 ADDRESS(0x80022b48, 0x2c)
-s32 memory_card_format(void)
+b32 memory_card_format(void)
 {
     return format("bu00:") != 1;
 }
@@ -312,12 +324,12 @@ s32 memory_card_write_slot(s32 slot)
     struct DIRENTRY entries[KF_CARD_DIRECTORY_CAPACITY];
     KfCardHeader header;
     char path[40] = "bu00:";
-    s32 occupied[KF_CARD_DIRECTORY_CAPACITY];
+    b32 occupied[KF_CARD_DIRECTORY_CAPACITY];
     RECT icon_rect;
     char slot_digit[10];
     s32 matching_count;
-    s32 card_full;
-    s32 present = 0;
+    b32 card_full;
+    b32 present = KF_FALSE;
     s32 index;
     s32 entry_slot;
     s32 handle;
@@ -333,17 +345,17 @@ s32 memory_card_write_slot(s32 slot)
         if (strncmp(entries[index].name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
             slot_digit[0] = entries[index].name[CARD_FILENAME_PREFIX_LENGTH];
             entry_slot = atoi(slot_digit);
-            occupied[entry_slot - 1] = 1;
+            occupied[entry_slot - 1] = KF_TRUE;
             if (entry_slot == slot)
-                present = 1;
+                present = KF_TRUE;
         }
     }
 
     if (!present) {
-        if (card_full == 1)
+        if (card_full == KF_TRUE)
             return CARD_WRITE_NO_SPACE;
         for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
-            if (occupied[index] == 0) {
+            if (occupied[index] == KF_FALSE) {
                 slot = index + 1;
                 index = KF_CARD_DIRECTORY_CAPACITY;
             }

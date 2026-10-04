@@ -119,12 +119,6 @@ source = "src/game/cd_memory.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.return_stub_18764"
-image = "GAME.EXE"
-source = "src/game/return_stub_18764.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.menu_root"
 image = "GAME.EXE"
 source = "src/game/menu_root.c"
@@ -209,45 +203,9 @@ source = "src/game/audio_sound_wrappers.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.return_stubs_45f10"
-image = "GAME.EXE"
-source = "src/game/return_stubs_45f10.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.event_pose_interpolate"
 image = "GAME.EXE"
 source = "src/game/event_pose_interpolate.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_io_end_data"
-image = "GAME.EXE"
-source = "src/game/memory_card_io_end_data.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_timeout_data"
-image = "GAME.EXE"
-source = "src/game/memory_card_timeout_data.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_new_device_data"
-image = "GAME.EXE"
-source = "src/game/memory_card_new_device_data.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_error_data"
-image = "GAME.EXE"
-source = "src/game/memory_card_error_data.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
-unit = "game.memory_card_buffer_pointer_data"
-image = "GAME.EXE"
-source = "src/game/memory_card_buffer_pointer_data.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]

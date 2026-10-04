@@ -61,4 +61,8 @@ typedef u16 KfBool16;
 #define KF_TRUE 1
 #endif
 
+typedef KfBool8 b8;
+typedef KfBool16 b16;
+typedef KfBool32 b32;
+
 #endif

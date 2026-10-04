@@ -724,15 +724,15 @@ GAME.EXE	0x8006da00	0x5d200	0x8	defined	reviewed	menu_item_preview_translation	S
 GAME.EXE	0x8006da08	0x5d208	0x8	defined	reviewed	menu_item_preview_rotation	SVECTOR	manual:menu-item-model	three signed 16-bit rotation coordinates and SDK vector pad; initialized zeros
 GAME.EXE	0x8006da10	0x5d210	0x4	defined	reviewed	menu_item_preview_rotation_step	s32	manual:menu-item-model	rotation increment used by preview renderer; initialized zero
 GAME.EXE	0x8006da14	0x5d214	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da18	0x5d218	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	IO-end event handle; original defining TU unproved
+GAME.EXE	0x8006da18	0x5d218	0x4	bss	reviewed	memory_card_io_end_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	IO-end event handle; original allocation extent unresolved
 GAME.EXE	0x8006da1c	0x5d21c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da20	0x5d220	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	timeout event handle; original defining TU unproved
+GAME.EXE	0x8006da20	0x5d220	0x4	bss	reviewed	memory_card_timeout_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	timeout event handle; original allocation extent unresolved
 GAME.EXE	0x8006da24	0x5d224	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da28	0x5d228	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	new-device event handle; original defining TU unproved
+GAME.EXE	0x8006da28	0x5d228	0x4	bss	reviewed	memory_card_new_device_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	new-device event handle; original allocation extent unresolved
 GAME.EXE	0x8006da2c	0x5d22c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da30	0x5d230	0x4	defined	manual:card BIOS events		long	retail zero word;reviewed OpenEvent store and EnableEvent/CloseEvent/TestEvent loads	error event handle; original defining TU unproved
+GAME.EXE	0x8006da30	0x5d230	0x4	bss	reviewed	memory_card_error_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	error event handle; original allocation extent unresolved
 GAME.EXE	0x8006da34	0x5d234	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8006da58	0x5d258	0x4	defined	manual:card I/O buffer pointer		u8 *	retail zero word;reviewed initializer store and card reader/writer loads	pointer assigned to memory_card_buffer_storage at initialization; original defining TU unproved
+GAME.EXE	0x8006da58	0x5d258	0x4	bss	reviewed	memory_card_buffer	u8 *	retail zero word;memory_card_initialize writes before first read	pointer assigned to memory_card_buffer_storage; original allocation extent unresolved
 GAME.EXE	0x8006da5c	0x5d25c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da60	0x5d260	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
 GAME.EXE	0x8006da64	0x5d264	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data

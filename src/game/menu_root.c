@@ -1,5 +1,6 @@
 #include <kf/game/callback.h>
 #include <kf/lib/null.h>
+#include <kf/lib/bool.h>
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
@@ -86,8 +87,11 @@ static inline void menu_copy_prefix12(s16 *destination, const s16 *source)
 {
     memcpy(destination, source, 12);
 }
-
-
+/* Unreferenced return stub; original role and TU owner remain unresolved. */
+ADDRESS(0x80018764, 0x8)
+void func_80018764(void)
+{
+}
 
 ADDRESS(0x8001876c, 0x284)
 s32 menu_run_root_controller(void)
@@ -1168,7 +1172,7 @@ s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_ro
 
     for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
         if (memory_card_read_slot_summary(card_entries->name,
-            &experience, &level, &slot_id) == 0) {
+            &experience, &level, &slot_id) == KF_FALSE) {
             *glyph_rows++ = 0x1012;
             *glyph_rows++ = 0x2d;
             *glyph_rows++ = 0xf;
@@ -1372,7 +1376,7 @@ s32 menu_card_browser(void)
     s32 confirmed = 0;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 selection = KF_MENU_SELECTION_NONE;
-    s32 card_full;
+    b32 card_full;
     s32 probe;
     s32 buttons;
     s32 frame;
@@ -1393,7 +1397,7 @@ s32 menu_card_browser(void)
 
     card_full = memory_card_scan_save_entries(entries, &matching_count);
     if (matching_count == 0) {
-        if (card_full == 1) {
+        if (card_full == KF_TRUE) {
             menu_build_card_full_rows(rows);
             menu_show_dialog_panel(9, rows, 4, 70, 87, 178, 96, 2, 0);
             input_wait_release();

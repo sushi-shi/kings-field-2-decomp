@@ -113,6 +113,7 @@ KfMenuGlyphString	0x1c	supported	asm;menu_list_init;KF1 counterpart;loaded menu 
 KfMenuLabelSuffix	0x14	supported	retail bytes;menu label builder xrefs	one 20-byte source suffix copied into a positioned glyph row
 KfMenuList	0x24	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
 KfMenuPoint	0x04	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
+KfMenuRenderList	0x34	supported	game/menu.h;GAME 0x8001fcc4-0x8001fcd0;menu_render_list	shared renderer access view; caller records differ and original standalone ownership unproved
 KfMenuSpriteDef	0x0c	supported	asm;menu sprite blitters;seven-entry loaded descriptor table;KF1 counterpart	texture page, CLUT, UV origin and dimensions
 KfMenuWindowLayout	0x134	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	layout from the reconstructed header
 KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reconstructed header

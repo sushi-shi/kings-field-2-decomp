@@ -691,6 +691,11 @@ KfMenuList	0x20	0x01	scroll_offset	u8	supported	asm;menu_list_init;KF1 counterpa
 KfMenuList	0x21	0x01	selected_index	u8	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
 KfMenuList	0x22	0x01	cursor_row	u8	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
 KfMenuList	0x23	0x01	glyphs_per_entry	u8	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
+KfMenuRenderList	0x00	0x24	list	KfMenuList	supported	game/menu.h;GAME 0x8001fcd4/0x8001fd04;menu_render_list	shared initialized menu-list prefix
+KfMenuRenderList	0x24	0x04	row_glyphs	const s16 *	supported	game/menu.h;GAME 0x8001fcc4/0x8001fdac;menu_render_list	halfword glyph rows; element signedness is not distinguished by this copy
+KfMenuRenderList	0x28	0x04	detail_rows	const KfMenuLabelSuffix *	supported	game/menu.h;GAME 0x8001fcc8/0x8001fd18;menu_render_list	20-byte detail rows used by render mode 3
+KfMenuRenderList	0x2c	0x04	byte_values	const u8 *	supported	game/menu.h;GAME 0x8001fcd0/0x8001ff44;menu_render_list	unsigned byte values with 0xff sentinel
+KfMenuRenderList	0x30	0x04	number_values	const s32 *	supported	game/menu.h;GAME 0x8001fccc/0x8001fe4c;menu_render_list	word values with -1 sentinel
 KfMenuPoint	0x00	0x02	x	s16	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
 KfMenuPoint	0x02	0x02	y	s16	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
 KfMenuSpriteDef	0x00	0x02	tpage	u16	supported	asm;menu sprite blitters;loaded descriptor table	texture page halfword

@@ -637,7 +637,7 @@ KfMapPlacedSource	0x03	0x01	frame_period	u8	supported	asm;map_placed_expand_sour
 KfMapPlacedSource	0x04	0x01	layer_mask	u8	supported	asm;map_placed_expand_sources	source mask copied to the runtime entry
 KfMapPlacedSource	0x05	0x01	region_z	u8	supported	asm;map_placed_expand_sources	map Z region shifted by 11
 KfMapPlacedSource	0x06	0x01	region_x	u8	supported	asm;map_placed_expand_sources	map X region shifted by 11
-KfMapPlacedSource	0x07	0x03	unknown_07	u8[3]	opaque	asm;map_placed_expand_sources	not yet modelled
+KfMapPlacedSource	0x07	0x02	unknown_07	u8[2]	opaque	asm;map_placed_expand_sources	Two unclassified bytes; +0x09 is implicit alignment before local_z
 KfMapPlacedSource	0x0a	0x02	local_z	s16	supported	asm;map_placed_expand_sources	local Z coordinate
 KfMapPlacedSource	0x0c	0x02	local_x	s16	supported	asm;map_placed_expand_sources	local X coordinate
 KfMapPlacedSource	0x0e	0x02	height_offset	s16	supported	asm;map_placed_expand_sources	added to map result

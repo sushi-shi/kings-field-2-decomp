@@ -2753,21 +2753,21 @@ GAME.EXE	0x80018b1c	0x831c		mips26	reachable-code	0x80018d08	load	menu_collect_m
 GAME.EXE	0x80018b30	0x8330		mips26	reachable-code	0x80021fb0	load	menu_list_init	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018b64	0x8364		mips26	reachable-code	0x800221e8	load	menu_load_item_model	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018b74	0x8374		mips26	reachable-code	0x80018ce8	load		j		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018ba8	0x83a8		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018bcc	0x83cc		mips26	reachable-code	0x8001f8b8	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018ba8	0x83a8		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018bcc	0x83cc		mips26	reachable-code	0x8001f8b8	load	menu_preview_choice	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018be0	0x83e0		mips26	reachable-code	0x80018bec	load		j		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c04	0x8404		mips26	reachable-code	0x8001e484	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c24	0x8424		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c48	0x8448		mips26	reachable-code	0x800222bc	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c04	0x8404		mips26	reachable-code	0x8001e484	load	menu_update_list_input	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c24	0x8424		mips26	reachable-code	0x80022300	load	menu_play_sound_cue	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c48	0x8448		mips26	reachable-code	0x800222bc	load	menu_release_item_model	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018c50	0x8450		mips26	reachable-code	0x8001930c	load	menu_show_map_preview	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c58	0x8458		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c60	0x8460		mips26	reachable-code	0x800221e8	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c74	0x8474		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c8c	0x848c		mips26	reachable-code	0x8002083c	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018c98	0x8498		mips26	reachable-code	0x8001fc94	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018ca0	0x84a0		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c58	0x8458		mips26	reachable-code	0x80022300	load	menu_play_sound_cue	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c60	0x8460		mips26	reachable-code	0x800221e8	load	menu_load_item_model	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c74	0x8474		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c8c	0x848c		mips26	reachable-code	0x8002083c	load	menu_update_item_preview	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018c98	0x8498		mips26	reachable-code	0x8001fc94	load	menu_render_list	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018ca0	0x84a0		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018cb4	0x84b4		mips26	reachable-code	0x80018b88	load		j		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x80018cbc	0x84bc		mips26	reachable-code	0x800222bc	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x80018cbc	0x84bc		mips26	reachable-code	0x800222bc	load	menu_release_item_model	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018cdc	0x84dc		mips26	reachable-code	0x80018f8c	load	menu_apply_item_effect	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x80018d10	0x8510	0x80018d14	mips_hi16_lo16	instruction-word	0x80064c30	load	menu_glyph_rows	lui+addiu	v1	paired-pattern	reviewed	manual:120-row glyph table base, retail pair and source referent
 GAME.EXE	0x80018df4	0x85f4	0x80018df8	mips_hi16_lo16	instruction-word	0x80064c30	load	menu_glyph_rows	lui+addiu	v1	paired-pattern	reviewed	manual:120-row glyph table base and selector copy
@@ -2776,13 +2776,13 @@ GAME.EXE	0x80018f9c	0x879c	0x80018fa0	mips_hi16_lo16	reachable-code	0x8009a5e8	b
 GAME.EXE	0x80018fc0	0x87c0	0x80018fc4	mips_hi16_lo16	reachable-code	0x80198530	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80018fdc	0x87dc	0x80018fe0	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80018ff4	0x87f4	0x80018ff8	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
-GAME.EXE	0x80018ffc	0x87fc		mips26	reachable-code	0x800192dc	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
-GAME.EXE	0x80019004	0x8804		mips26	reachable-code	0x800192ac	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x80018ffc	0x87fc		mips26	reachable-code	0x800192dc	load	player_cap_curse_strength	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x80019004	0x8804		mips26	reachable-code	0x800192ac	load	player_cap_darkness_phase	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x8001900c	0x880c		mips26	reachable-code	0x80019124	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x8001901c	0x881c	0x80019020	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019028	0x8828		mips26	reachable-code	0x8001911c	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x8001903c	0x883c	0x80019040	mips_hi16_lo16	reachable-code	0x801984f6	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
-GAME.EXE	0x80019050	0x8850		mips26	reachable-code	0x80023984	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x80019050	0x8850		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x80019058	0x8858		mips26	reachable-code	0x80019124	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x80019068	0x8868	0x8001906c	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019074	0x8874		mips26	reachable-code	0x8001911c	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
@@ -2793,7 +2793,7 @@ GAME.EXE	0x800190b0	0x88b0	0x800190b4	mips_hi16_lo16	reachable-code	0x801984e2	b
 GAME.EXE	0x800190b8	0x88b8	0x800190bc	mips_hi16_lo16	reachable-code	0x801984e6	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x800190c0	0x88c0	0x800190c4	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x800190c8	0x88c8	0x800190cc	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
-GAME.EXE	0x800190d0	0x88d0		mips26	reachable-code	0x80019240	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x800190d0	0x88d0		mips26	reachable-code	0x80019240	load	player_clear_and_cap_status_effects	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x800190d8	0x88d8		mips26	reachable-code	0x80019124	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x800190e8	0x88e8	0x800190ec	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x800190f4	0x88f4		mips26	reachable-code	0x8001911c	load		j		control-flow	reviewed	manual:menu item-effect decoded direct transfer
@@ -2801,7 +2801,7 @@ GAME.EXE	0x80019108	0x8908	0x8001910c	mips_hi16_lo16	reachable-code	0x801984e8	b
 GAME.EXE	0x80019134	0x8934	0x80019138	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019140	0x8940	0x80019144	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019154	0x8954	0x80019158	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
-GAME.EXE	0x8001915c	0x895c		mips26	reachable-code	0x80019240	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x8001915c	0x895c		mips26	reachable-code	0x80019240	load	player_clear_and_cap_status_effects	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x80019164	0x8964	0x80019168	mips_hi16_lo16	reachable-code	0x801984e4	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019170	0x8970	0x80019174	mips_hi16_lo16	reachable-code	0x801984e2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019188	0x8988	0x8001918c	mips_hi16_lo16	reachable-code	0x801984e2	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
@@ -2812,7 +2812,7 @@ GAME.EXE	0x800191c4	0x89c4	0x800191c8	mips_hi16_lo16	reachable-code	0x801984e8	b
 GAME.EXE	0x800191cc	0x89cc	0x800191d0	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x800191e4	0x89e4	0x800191e8	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
 GAME.EXE	0x80019210	0x8a10	0x80019214	mips_hi16_lo16	reachable-code	0x8009a63a	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:menu item-effect typed player state and stock
-GAME.EXE	0x80019228	0x8a28		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
+GAME.EXE	0x80019228	0x8a28		mips26	reachable-code	0x80022300	load	menu_play_sound_cue	jal		control-flow	reviewed	manual:menu item-effect decoded direct transfer
 GAME.EXE	0x80019248	0x8a48	0x8001924c	mips_hi16_lo16	reachable-code	0x80198530	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:menu_player_clamps
 GAME.EXE	0x80019264	0x8a64	0x80019268	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:menu_player_clamps
 GAME.EXE	0x8001927c	0x8a7c	0x80019280	mips_hi16_lo16	reachable-code	0x8019852e	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu_player_clamps
@@ -2825,17 +2825,17 @@ GAME.EXE	0x800192dc	0x8adc	0x800192e0	mips_hi16_lo16	reachable-code	0x80198526	b
 GAME.EXE	0x800192fc	0x8afc	0x80019300	mips_hi16_lo16	reachable-code	0x80198528	bss	player_state	lui+sh		paired-reviewed	reviewed	manual:menu_player_clamps
 GAME.EXE	0x80019350	0x8b50	0x80019354	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:retail signed-low pair and typed image-preview state
 GAME.EXE	0x80019360	0x8b60	0x80019364	mips_hi16_lo16	reachable-code	0x8017d121	bss	state_8017d118	lui+lbu		paired-reviewed	reviewed	manual:retail signed-low pair and typed image-preview state
-GAME.EXE	0x80019374	0x8b74		mips26	reachable-code	0x80017e6c	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x8001937c	0x8b7c		mips26	reachable-code	0x80017754	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x80019390	0x8b90		mips26	reachable-code	0x800182d0	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x80019398	0x8b98		mips26	reachable-code	0x8003494c	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800193a0	0x8ba0		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800193a8	0x8ba8		mips26	reachable-code	0x80021f10	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x80019374	0x8b74		mips26	reachable-code	0x80017e6c	load	cd_archive_entry_extent	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x8001937c	0x8b7c		mips26	reachable-code	0x80017754	load	memory_allocate	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x80019390	0x8b90		mips26	reachable-code	0x800182d0	load	cd_archive_read	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x80019398	0x8b98		mips26	reachable-code	0x8003494c	load	tim_upload_images	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800193a0	0x8ba0		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800193a8	0x8ba8		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800193b0	0x8bb0	0x800193b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800193c0	0x8bc0	0x800193c4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800193d0	0x8bd0	0x800193d4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800193e0	0x8be0	0x800193e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800193e8	0x8be8		mips26	reachable-code	0x8006340c	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800193e8	0x8be8		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800193f4	0x8bf4	0x800193f8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019428	0x8c28	0x8001942c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019444	0x8c44	0x80019448	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
@@ -2844,13 +2844,13 @@ GAME.EXE	0x80019464	0x8c64	0x80019468	mips_hi16_lo16	reachable-code	0x8006d9e0	l
 GAME.EXE	0x80019474	0x8c74	0x80019478	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019484	0x8c84	0x80019488	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019494	0x8c94	0x80019498	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800194a0	0x8ca0		mips26	reachable-code	0x80021f60	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800194a8	0x8ca8		mips26	reachable-code	0x80021f10	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800194a0	0x8ca0		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800194a8	0x8ca8		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800194b0	0x8cb0	0x800194b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800194c0	0x8cc0	0x800194c4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800194d0	0x8cd0	0x800194d4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800194e0	0x8ce0	0x800194e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
-GAME.EXE	0x800194e8	0x8ce8		mips26	reachable-code	0x8006340c	load		jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
+GAME.EXE	0x800194e8	0x8ce8		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x800194f0	0x8cf0	0x800194f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a2	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019738	0x8f38	0x8001973c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access
 GAME.EXE	0x80019748	0x8f48	0x8001974c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:decoded image-preview call or typed POLY_FT4 global access

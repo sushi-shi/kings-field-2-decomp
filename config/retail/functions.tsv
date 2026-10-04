@@ -787,8 +787,8 @@ GAME.EXE	0x8005a67c	0x49e7c	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-s
 GAME.EXE	0x8005a688	0x49e88	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 GAME.EXE	0x8005a6a8	0x49ea8	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 GAME.EXE	0x8005a6b4	0x49eb4	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
-GAME.EXE	0x8005a71c	0x49f1c	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005a76c	0x49f6c	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005a71c	0x49f1c	0x50	0x50	1	function	sdk-object-label	LoadAverage12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x68;exact 0x760-byte section;retail return delay slot
+GAME.EXE	0x8005a76c	0x49f6c	0x50	0x50	1	function	sdk-object-label	LoadAverage0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0xb8;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005a7bc	0x49fbc	0x88	0x88	1	function	sdk-object-label	LoadAverageShort12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x108;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005a844	0x4a044	0x88	0x88	1	function	sdk-object-label	LoadAverageShort0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x190;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005a8cc	0x4a0cc	0x5c	0x5c	1	function	sdk-object-label	LoadAverageByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x218;exact 0x760-byte section;retail return delay slot
@@ -798,7 +798,7 @@ GAME.EXE	0x8005aa64	0x4a264	0xc8	0xc8	1	function	sdk-object-label	VectorNormalS	
 GAME.EXE	0x8005ab2c	0x4a32c	0x84	0x84	1	function	sdk-object-label	SquareRoot0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native MSC.OBJ XDEF extent through final jr ra delay slot;exact 0x760-byte text section
 GAME.EXE	0x8005abb0	0x4a3b0	0x94	0x94	1	function	sdk-object-label	SquareRoot12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native MSC.OBJ XDEF extent through final jr ra delay slot;exact 0x760-byte text section
 GAME.EXE	0x8005ac44	0x4a444	0x8c	0x8c	1	function	sdk-object-label	InvSquareRoot		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native MSC.OBJ XDEF extent through final jr ra delay slot;exact 0x760-byte text section
-GAME.EXE	0x8005acd0	0x4a4d0	0x80	0x80	1	function	ghidra-analysis	gteMIMefunc		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005acd0	0x4a4d0	0x80	0x80	1	function	sdk-object-label	gteMIMefunc		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x61c;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005ad50	0x4a550	0x78	0x78	1	function	sdk-object-label	InterpolShort		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x69c;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005adc8	0x4a5c8	0x4c	0x48	1	function	sdk-object-label	InterpolByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x714;exact 0x760-byte section;retail return delay slot
 GAME.EXE	0x8005ae14	0x4a614	0x160	0x160	1	function	sdk-object-label	CompMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0x0;exact 0xed0-byte section;retail return delay slot
@@ -1238,8 +1238,8 @@ OPEN.EXE	0x80019cc0	0x94c0	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-sd
 OPEN.EXE	0x80019ccc	0x94cc	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 OPEN.EXE	0x80019cec	0x94ec	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 OPEN.EXE	0x80019cf8	0x94f8	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
-OPEN.EXE	0x80019d60	0x9560	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-OPEN.EXE	0x80019db0	0x95b0	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x80019d60	0x9560	0x50	0x50	1	function	sdk-object-label	LoadAverage12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x68;exact 0x760-byte section;retail return delay slot
+OPEN.EXE	0x80019db0	0x95b0	0x50	0x50	1	function	sdk-object-label	LoadAverage0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0xb8;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x80019e00	0x9600	0x88	0x88	1	function	sdk-object-label	LoadAverageShort12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x108;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x80019e88	0x9688	0x88	0x88	1	function	sdk-object-label	LoadAverageShort0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x190;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x80019f10	0x9710	0x5c	0x5c	1	function	sdk-object-label	LoadAverageByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x218;exact 0x760-byte section;retail return delay slot
@@ -1249,7 +1249,7 @@ OPEN.EXE	0x8001a0a8	0x98a8	0xc8	0xc8	1	function	sdk-object-label	VectorNormalS		
 OPEN.EXE	0x8001a170	0x9970	0x84	0x84	1	function	sdk-object-label	SquareRoot0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x478;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a1f4	0x99f4	0x94	0x94	1	function	sdk-object-label	SquareRoot12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x4fc;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a288	0x9a88	0x8c	0x8c	1	function	sdk-object-label	InvSquareRoot		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x590;exact 0x760-byte section;retail return delay slot
-OPEN.EXE	0x8001a314	0x9b14	0x80	0x80	1	function	ghidra-analysis	gteMIMefunc		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+OPEN.EXE	0x8001a314	0x9b14	0x80	0x80	1	function	sdk-object-label	gteMIMefunc		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x61c;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a394	0x9b94	0x78	0x78	1	function	sdk-object-label	InterpolShort		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x69c;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a40c	0x9c0c	0x4c	0x48	1	function	sdk-object-label	InterpolByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x714;exact 0x760-byte section;retail return delay slot
 OPEN.EXE	0x8001a458	0x9c58	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
@@ -1657,8 +1657,8 @@ END.EXE	0x80016f24	0x6724	0xc	0xc	1	function	sdk-object-label	ReadFLAG		psyq-sdk
 END.EXE	0x80016f30	0x6730	0x20	0x20	1	function	sdk-object-label	ReadGeomOffset		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x274;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 END.EXE	0x80016f50	0x6750	0xc	0xc	1	function	sdk-object-label	ReadGeomScreen		psyq-sdk30:LIBGTE.LIB/REG.OBJ	native XDEF .text+0x294;exact 0x2a0-byte REG.OBJ text;retail return delay slot
 END.EXE	0x80016f5c	0x675c	0x68	0x68	1	function	sdk-object-label	InitGeom		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x0;exact 0x760-byte section;retail return delay slot
-END.EXE	0x80016fc4	0x67c4	0x50	0x50	1	function	ghidra-analysis	LoadAverage12		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-END.EXE	0x80017014	0x6814	0x50	0x50	1	function	ghidra-analysis	LoadAverage0		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80016fc4	0x67c4	0x50	0x50	1	function	sdk-object-label	LoadAverage12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x68;exact 0x760-byte section;retail return delay slot
+END.EXE	0x80017014	0x6814	0x50	0x50	1	function	sdk-object-label	LoadAverage0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0xb8;exact 0x760-byte section;retail return delay slot
 END.EXE	0x80017064	0x6864	0x88	0x88	1	function	sdk-object-label	LoadAverageShort12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x108;exact 0x760-byte section;retail return delay slot
 END.EXE	0x800170ec	0x68ec	0x88	0x88	1	function	sdk-object-label	LoadAverageShort0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x190;exact 0x760-byte section;retail return delay slot
 END.EXE	0x80017174	0x6974	0x5c	0x5c	1	function	sdk-object-label	LoadAverageByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x218;exact 0x760-byte section;retail return delay slot
@@ -1668,7 +1668,7 @@ END.EXE	0x8001730c	0x6b0c	0xc8	0xc8	1	function	sdk-object-label	VectorNormalS		p
 END.EXE	0x800173d4	0x6bd4	0x84	0x84	1	function	sdk-object-label	SquareRoot0		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x478;exact 0x760-byte section;retail return delay slot
 END.EXE	0x80017458	0x6c58	0x94	0x94	1	function	sdk-object-label	SquareRoot12		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x4fc;exact 0x760-byte section;retail return delay slot
 END.EXE	0x800174ec	0x6cec	0x8c	0x8c	1	function	sdk-object-label	InvSquareRoot		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x590;exact 0x760-byte section;retail return delay slot
-END.EXE	0x80017578	0x6d78	0x80	0x80	1	function	ghidra-analysis	gteMIMefunc		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x80017578	0x6d78	0x80	0x80	1	function	sdk-object-label	gteMIMefunc		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	native XDEF .text+0x61c;exact 0x760-byte section;retail return delay slot
 END.EXE	0x800175f8	0x6df8	0x78	0x78	1	function	sdk-object-label	InterpolShort		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x69c;exact 0x760-byte section;retail return delay slot
 END.EXE	0x80017670	0x6e70	0x4c	0x48	1	function	sdk-object-label	InterpolByte		psyq-sdk30:LIBGTE.LIB/MSC.OBJ	archive XDEF .text+0x714;exact 0x760-byte section;retail return delay slot
 END.EXE	0x800176bc	0x6ebc	0x8c	0x8c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

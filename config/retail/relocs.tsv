@@ -7255,47 +7255,47 @@ GAME.EXE	0x80037680	0x26e80		mips26	instruction-word	0x80038c78	load		j		range-f
 GAME.EXE	0x800376ac	0x26eac		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800376b8	0x26eb8		mips26	instruction-word	0x80038210	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800376d0	0x26ed0		mips26	instruction-word	0x80014a08	load	angle_velocity_step	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800376fc	0x26efc		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800376fc	0x26efc		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037724	0x26f24		mips26	instruction-word	0x8003841c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x8003774c	0x26f4c		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037764	0x26f64		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037788	0x26f88		mips26	instruction-word	0x80014ac0	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037794	0x26f94		mips26	instruction-word	0x80015148	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037788	0x26f88		mips26	instruction-word	0x80014ac0	load	angle_to_forward_xz	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037794	0x26f94		mips26	instruction-word	0x80015148	load	vector2i_scale_shift11	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800377c4	0x26fc4		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800377d0	0x26fd0		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800377e0	0x26fe0		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800377d0	0x26fd0		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800377e0	0x26fe0		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800377e8	0x26fe8		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037814	0x27014		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037814	0x27014		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037820	0x27020		mips26	instruction-word	0x80038210	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037830	0x27030		mips26	instruction-word	0x80014ac0	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x8003783c	0x2703c		mips26	instruction-word	0x80015148	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037880	0x27080		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037830	0x27030		mips26	instruction-word	0x80014ac0	load	angle_to_forward_xz	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x8003783c	0x2703c		mips26	instruction-word	0x80015148	load	vector2i_scale_shift11	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037880	0x27080		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037888	0x27088		mips26	instruction-word	0x8003841c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037894	0x27094		mips26	instruction-word	0x800147a0	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037894	0x27094		mips26	instruction-word	0x800147a0	load	angle_approach	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800378b4	0x270b4		mips26	instruction-word	0x80037b08	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800378dc	0x270dc		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800378ec	0x270ec		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x8003790c	0x2710c	0x80037910	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_action_linked_pool_raw_pair
-GAME.EXE	0x8003793c	0x2713c		mips26	instruction-word	0x800356ac	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x8003793c	0x2713c		mips26	instruction-word	0x800356ac	load	map_object_set_cell_marker	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037948	0x27148		mips26	instruction-word	0x80038418	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037954	0x27154		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037954	0x27154		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x8003795c	0x2715c		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037980	0x27180		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x8003798c	0x2718c		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x8003799c	0x2719c		mips26	instruction-word	0x800356ac	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037980	0x27180		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x8003798c	0x2718c		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x8003799c	0x2719c		mips26	instruction-word	0x800356ac	load	map_object_set_cell_marker	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800379a4	0x271a4		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800379d8	0x271d8		mips26	instruction-word	0x800355d8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800379d8	0x271d8		mips26	instruction-word	0x800355d8	load	map_object_set_property	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800379e0	0x271e0		mips26	instruction-word	0x8003841c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a04	0x27204	0x80037a08	mips_hi16_lo16	instruction-word	0x80011c9c	load	map_object_update_actions_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_secondary_switch_table
-GAME.EXE	0x80037a24	0x27224		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037a24	0x27224		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a4c	0x2724c		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a5c	0x2725c		mips26	instruction-word	0x800389b0	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a70	0x27270		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037a80	0x27280		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037ab4	0x272b4		mips26	instruction-word	0x800366fc	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037ab4	0x272b4		mips26	instruction-word	0x800366fc	load	map_object_apply_marker_signal	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037adc	0x272dc		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037af0	0x272f0		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037afc	0x272fc		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037afc	0x272fc		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037b08	0x27308		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037b2c	0x2732c		mips26	instruction-word	0x80037ab0	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037b50	0x27350		mips26	instruction-word	0x80038a04	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7303,7 +7303,7 @@ GAME.EXE	0x80037b68	0x27368		mips26	instruction-word	0x800370f8	load		j		range-f
 GAME.EXE	0x80037b90	0x27390		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037ba0	0x273a0		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037bc0	0x273c0		mips26	instruction-word	0x80037bdc	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037bd4	0x273d4		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037bd4	0x273d4		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037c08	0x27408		mips26	instruction-word	0x80037c5c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037c70	0x27470		mips26	instruction-word	0x80035194	load	map_cell_copy_rotated_fields	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037c78	0x27478		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7311,18 +7311,18 @@ GAME.EXE	0x80037ca4	0x274a4		mips26	instruction-word	0x80038a00	load		j		range-f
 GAME.EXE	0x80037cc8	0x274c8	0x80037ccc	mips_hi16_lo16	instruction-word	0x80011cc4	load	map_object_update_actions_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_dispatch_bounded_tertiary_switch_table
 GAME.EXE	0x80037cf8	0x274f8		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037d48	0x27548	0x80037d4c	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_action89_first_cell_base_raw_pair
-GAME.EXE	0x80037d78	0x27578		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037d78	0x27578		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037d80	0x27580		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037db0	0x275b0		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037dd0	0x275d0		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037dd0	0x275d0		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037ddc	0x275dc		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037e3c	0x2763c	0x80037e40	mips_hi16_lo16	instruction-word	0x801c7540	bss	bss_801c7540	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_action89_cell_base_raw_pair
 GAME.EXE	0x80037e68	0x27668		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037e84	0x27684		mips26	instruction-word	0x8005dda4	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037e84	0x27684		mips26	instruction-word	0x8005dda4	load	rsin	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037e98	0x27698		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037ec0	0x276c0		mips26	instruction-word	0x8003807c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037edc	0x276dc		mips26	instruction-word	0x8003807c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80037f18	0x27718		mips26	instruction-word	0x80036ad8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80037f18	0x27718		mips26	instruction-word	0x80036ad8	load	player_camera_within_map_region	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037f6c	0x2776c	0x80037f70	mips_hi16_lo16	instruction-word	0x80067890	load	map_object_cell_patterns	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_dispatch_pattern_index
 GAME.EXE	0x80037f84	0x27784		mips26	instruction-word	0x80034f90	load	map_cell_apply_rotated_pattern	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80037f9c	0x2779c		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
@@ -7331,7 +7331,7 @@ GAME.EXE	0x8003804c	0x2784c	0x80038050	mips_hi16_lo16	instruction-word	0x8006789
 GAME.EXE	0x80038064	0x27864		mips26	instruction-word	0x80034f90	load	map_cell_apply_rotated_pattern	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038074	0x27874		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038088	0x27888		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800380ac	0x278ac		mips26	instruction-word	0x80036ad8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800380ac	0x278ac		mips26	instruction-word	0x80036ad8	load	player_camera_within_map_region	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800380f4	0x278f4		mips26	instruction-word	0x80016260	load	resource_request_transition	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800380fc	0x278fc		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x8003811c	0x2791c	0x80038120	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_action_linked_pool_raw_pair
@@ -7339,13 +7339,13 @@ GAME.EXE	0x80038140	0x27940		mips26	instruction-word	0x80038c78	load		j		range-f
 GAME.EXE	0x80038170	0x27970		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038188	0x27988		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800381b4	0x279b4		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x800381ec	0x279ec		mips26	instruction-word	0x80036ad8	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038210	0x27a10		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x800381ec	0x279ec		mips26	instruction-word	0x80036ad8	load	player_camera_within_map_region	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038210	0x27a10		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038218	0x27a18		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038248	0x27a48		mips26	instruction-word	0x800356ac	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038254	0x27a54		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038248	0x27a48		mips26	instruction-word	0x800356ac	load	map_object_set_cell_marker	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038254	0x27a54		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x8003825c	0x27a5c		mips26	instruction-word	0x80038280	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
-GAME.EXE	0x80038278	0x27a78		mips26	instruction-word	0x80035504	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
+GAME.EXE	0x80038278	0x27a78		mips26	instruction-word	0x80035504	load	map_object_play_spatial_sound	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800382ac	0x27aac		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800382f4	0x27af4		mips26	instruction-word	0x800356ac	load		jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800382fc	0x27afc		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word

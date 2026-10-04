@@ -3012,61 +3012,61 @@ GAME.EXE	0x8001a934	0xa134		mips26	reachable-code	0x800221e8	load	menu_load_item
 GAME.EXE	0x8001a970	0xa170		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x8001a998	0xa198		mips26	reachable-code	0x8001f8b8	load	menu_preview_choice	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x8001a9ac	0xa1ac		mips26	reachable-code	0x8001a9bc	load		j		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001a9d4	0xa1d4		mips26	reachable-code	0x8001e484	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001a9f4	0xa1f4		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001a9fc	0xa1fc		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001aa14	0xa214		mips26	reachable-code	0x8002083c	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001aa20	0xa220		mips26	reachable-code	0x8001fc94	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001aa28	0xa228		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001a9d4	0xa1d4		mips26	reachable-code	0x8001e484	load	menu_update_list_input	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001a9f4	0xa1f4		mips26	reachable-code	0x80022300	load	menu_play_sound_cue	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001a9fc	0xa1fc		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001aa14	0xa214		mips26	reachable-code	0x8002083c	load	menu_update_item_preview	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001aa20	0xa220		mips26	reachable-code	0x8001fc94	load	menu_render_list	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001aa28	0xa228		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x8001aa3c	0xa23c		mips26	reachable-code	0x8001a950	load		j		control-flow	reviewed	manual:menu item controller decoded direct transfer
-GAME.EXE	0x8001aa44	0xa244		mips26	reachable-code	0x800222bc	load		jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
+GAME.EXE	0x8001aa44	0xa244		mips26	reachable-code	0x800222bc	load	menu_release_item_model	jal		control-flow	reviewed	manual:menu item controller decoded direct transfer
 GAME.EXE	0x8001aa5c	0xa25c	0x8001aa60	mips_hi16_lo16	reachable-code	0x8009a5e8	bss	game_counter_bytes	lui+addiu		paired-reviewed	reviewed	manual:menu item controller decoded signed-low game counter base
-GAME.EXE	0x8001aaf4	0xa2f4		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001aaf4	0xa2f4		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ab14	0xa314		mips26	reachable-code	0x8001ab4c	load		j		control-flow	reviewed	manual:decoded card-choice branch
 GAME.EXE	0x8001ab1c	0xa31c		mips26	reachable-code	0x8001ac80	load	menu_card_load_browser	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ab2c	0xa32c		mips26	reachable-code	0x8001ab48	load		j		control-flow	reviewed	manual:decoded card-choice branch
 GAME.EXE	0x8001ab34	0xa334		mips26	reachable-code	0x8001b14c	load	menu_prompt_two_option	jal		control-flow	reviewed	manual:decoded card-choice call
-GAME.EXE	0x8001ab90	0xa390		mips26	reachable-code	0x8001e378	load		jal		control-flow	reviewed	manual:decoded card-choice call
-GAME.EXE	0x8001aba0	0xa3a0		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded card-choice call
-GAME.EXE	0x8001abb4	0xa3b4		mips26	reachable-code	0x8001fb8c	load		jal		control-flow	reviewed	manual:decoded card-choice call
-GAME.EXE	0x8001abbc	0xa3bc		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001ab90	0xa390		mips26	reachable-code	0x8001e378	load	menu_poll_choice_input	jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001aba0	0xa3a0		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001abb4	0xa3b4		mips26	reachable-code	0x8001fb8c	load	menu_draw_window	jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001abbc	0xa3bc		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001abd0	0xa3d0		mips26	reachable-code	0x8001aad4	load		j		control-flow	reviewed	manual:decoded card-choice branch
-GAME.EXE	0x8001abec	0xa3ec		mips26	reachable-code	0x8004a1e4	load		jal		control-flow	reviewed	manual:decoded card-choice call
-GAME.EXE	0x8001abf8	0xa3f8		mips26	reachable-code	0x8001ccd4	load		jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001abec	0xa3ec		mips26	reachable-code	0x8004a1e4	load	CdControl	jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001abf8	0xa3f8		mips26	reachable-code	0x8001ccd4	load	menu_prepare_card_exit_rows	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ac30	0xa430		mips26	reachable-code	0x8001b030	load	menu_show_dialog_panel	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ac44	0xa444	0x8001ac48	mips_hi16_lo16	reachable-code	0x80197634	bss	audio_state	lui+lh	a0	paired-reviewed	reviewed	manual:card-choice sequence id at audio_state+4
-GAME.EXE	0x8001ac50	0xa450		mips26	reachable-code	0x80050ad4	load		jal		control-flow	reviewed	manual:decoded card-choice call
+GAME.EXE	0x8001ac50	0xa450		mips26	reachable-code	0x80050ad4	load	SsSeqSetVol	jal		control-flow	reviewed	manual:decoded card-choice call
 GAME.EXE	0x8001ac58	0xa458		mips26	reachable-code	0x8001ac04	load		j		control-flow	reviewed	manual:decoded card-choice branch
 GAME.EXE	0x8001aca8	0xa4a8		mips26	reachable-code	0x8001c550	load	menu_prepare_card_browser_rows	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ace0	0xa4e0		mips26	reachable-code	0x8001b030	load	menu_show_dialog_panel	jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ace8	0xa4e8		mips26	reachable-code	0x800225b0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ace8	0xa4e8		mips26	reachable-code	0x800225b0	load	memory_card_start	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001acf4	0xa4f4		mips26	reachable-code	0x800226ec	load	memory_card_scan_save_entries	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ad1c	0xa51c		mips26	reachable-code	0x8001af30	load	menu_card_build_slot_rows	jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ad30	0xa530		mips26	reachable-code	0x80021fb0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ad80	0xa580		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ada0	0xa5a0		mips26	reachable-code	0x8001f8b8	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ad30	0xa530		mips26	reachable-code	0x80021fb0	load	menu_list_init	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ad80	0xa580		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ada0	0xa5a0		mips26	reachable-code	0x8001f8b8	load	menu_preview_choice	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001adb4	0xa5b4		mips26	reachable-code	0x8001add8	load		j		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001adf0	0xa5f0		mips26	reachable-code	0x8001e484	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ae08	0xa608		mips26	reachable-code	0x80022300	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ae10	0xa610		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ae1c	0xa61c		mips26	reachable-code	0x8001fc94	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001ae24	0xa624		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001adf0	0xa5f0		mips26	reachable-code	0x8001e484	load	menu_update_list_input	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae08	0xa608		mips26	reachable-code	0x80022300	load	menu_play_sound_cue	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae10	0xa610		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae1c	0xa61c		mips26	reachable-code	0x8001fc94	load	menu_render_list	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001ae24	0xa624		mips26	reachable-code	0x80021be0	load	menu_present_frame	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ae38	0xa638		mips26	reachable-code	0x8001ad60	load		j		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ae50	0xa650		mips26	reachable-code	0x8001cad4	load	menu_prepare_card_read_row	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ae88	0xa688		mips26	reachable-code	0x8001b030	load	menu_show_dialog_panel	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001ae94	0xa694		mips26	reachable-code	0x80022b74	load	memory_card_read_slot	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001aea4	0xa6a4		mips26	reachable-code	0x8001cb44	load	menu_prepare_card_read_failure_rows	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001aed0	0xa6d0		mips26	reachable-code	0x8001b030	load	menu_show_dialog_panel	jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001aed8	0xa6d8		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001aee0	0xa6e0		mips26	reachable-code	0x8005e800	load		jal		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001aef0	0xa6f0		mips26	reachable-code	0x80022438	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aed8	0xa6d8		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aee0	0xa6e0		mips26	reachable-code	0x8005e800	load	PadRead	jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001aef0	0xa6f0		mips26	reachable-code	0x80022438	load	input_wait_release	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001aefc	0xa6fc		mips26	reachable-code	0x8001af08	load		j		control-flow	reviewed	manual:decoded card-load browser control
-GAME.EXE	0x8001af08	0xa708		mips26	reachable-code	0x800225d8	load		jal		control-flow	reviewed	manual:decoded card-load browser control
+GAME.EXE	0x8001af08	0xa708		mips26	reachable-code	0x800225d8	load	memory_card_stop	jal		control-flow	reviewed	manual:decoded card-load browser control
 GAME.EXE	0x8001af7c	0xa77c		mips26	reachable-code	0x800228c8	load	memory_card_read_slot_summary	jal		control-flow	reviewed	manual:card row direct probe call
 GAME.EXE	0x8001b07c	0xa87c	0x8001b080	mips_hi16_lo16	reachable-code	0x800640c0	load		lui+addiu	v1	paired-reachable	reviewed	manual:card panel layout title row
-GAME.EXE	0x8001b08c	0xa88c		mips26	reachable-code	0x80021a68	load		jal		control-flow	reviewed	manual:card panel direct call
+GAME.EXE	0x8001b08c	0xa88c		mips26	reachable-code	0x80021a68	load	menu_frame_begin	jal		control-flow	reviewed	manual:card panel direct call
 GAME.EXE	0x8001b0a0	0xa8a0	0x8001b0a4	mips_hi16_lo16	reachable-code	0x80063ebc	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel sprite descriptor
-GAME.EXE	0x8001b0a8	0xa8a8		mips26	reachable-code	0x80020b50	load		jal		control-flow	reviewed	manual:card panel direct call
+GAME.EXE	0x8001b0a8	0xa8a8		mips26	reachable-code	0x80020b50	load	menu_blit_sprite_translucent	jal		control-flow	reviewed	manual:card panel direct call
 GAME.EXE	0x8001b0b0	0xa8b0	0x8001b0b4	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor
 GAME.EXE	0x8001b0b8	0xa8b8		mips26	reachable-code	0x800210ac	load		jal		control-flow	reviewed	manual:card panel direct call
 GAME.EXE	0x8001b0c8	0xa8c8	0x8001b0cc	mips_hi16_lo16	reachable-code	0x80063e8c	load		lui+addiu	a0	paired-reachable	reviewed	manual:card panel font descriptor

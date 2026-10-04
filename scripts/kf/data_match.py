@@ -81,6 +81,13 @@ class Allocation:
     visibility: int
 
 
+@dataclass(frozen=True)
+class CommonRequest:
+    name: str
+    size: int
+    alignment: int
+
+
 class Elf:
     """Just enough of an ELF32-LE relocatable object to read data + relocs."""
 
@@ -117,6 +124,7 @@ class Elf:
 
         self._symbols: list[str] = []
         self.allocations: dict[str, list[Allocation]] = {}
+        self.common_requests: list[CommonRequest] = []
         if symtab_idx is not None:
             _, _, sym_off, sym_size, link, _info, entsize, _flags = raw[symtab_idx]
             str_off = raw[link][2]
@@ -132,6 +140,9 @@ class Elf:
                     # rather than an indistinguishable empty string.
                     self._symbols.append(self._sec_by_index.get(st_shndx, ""))
                 section = self._sec_by_index.get(st_shndx)
+                if st_name and st_shndx == 0xFFF2:  # SHN_COMMON
+                    self.common_requests.append(CommonRequest(
+                        self._symbols[-1], size, value))
                 if st_name and section and info & 15 not in (3, 4):
                     self.allocations.setdefault(section, []).append(Allocation(
                         self._symbols[-1], value, size, info >> 4, other & 3))
@@ -262,7 +273,8 @@ def _diff_init_section(name: str, retail: Elf, recon: Elf) -> SectionDiff | None
     return SectionDiff(name, rt_size, rc_size, "match")
 
 
-def _diff_bss(retail: Elf, recon: Elf, name: str = ".bss") -> SectionDiff | None:
+def _diff_bss(retail: Elf, recon: Elf, name: str = ".bss",
+              unit: Unit | None = None) -> SectionDiff | None:
     rt, rc = retail.sections.get(name), recon.sections.get(name)
     rt_size, rc_size = rt.size if rt else 0, rc.size if rc else 0
     left = sorted(retail.allocations.get(name, ()))
@@ -270,6 +282,17 @@ def _diff_bss(retail: Elf, recon: Elf, name: str = ".bss") -> SectionDiff | None
     if not (rt_size or rc_size or left or right):
         return None
     if rt is None or rc is None:
+        if name == ".bss" and rt is not None and rc is None and unit is not None:
+            claimed = {datum.symbol for datum in unit.data
+                       if datum.section_name == name and datum.scope == "global"}
+            requests = {request.name for request in recon.common_requests}
+            if claimed and requests == claimed and len(requests) == len(recon.common_requests):
+                return SectionDiff(
+                    name, rt_size, rc_size, "unresolved-common-placement",
+                    "retail has a synthetic BSS section; reconstruction has only named "
+                    "linker COMMON requests. Linked bytes do not prove their original "
+                    "input sections or reservation extents",
+                )
         return SectionDiff(name, rt_size, rc_size, "missing" if rc is None else "extra",
                            "allocation section is absent on one side")
     if rt.type != 8 or rc.type != 8 or rt.flags != rc.flags:
@@ -329,7 +352,7 @@ def diff_unit(unit: Unit, delink_dir: Path, objdiff_dir: Path) -> UnitDataDiff |
         if section.type == 8 and section.flags & 2  # allocated NOBITS, including custom names
     }
     for name in sorted(bss_names):
-        bss = _diff_bss(retail, recon, name)
+        bss = _diff_bss(retail, recon, name, unit)
         if bss is not None:
             result.diffs.append(bss)
     by_section = {diff.name: diff for diff in result.diffs}

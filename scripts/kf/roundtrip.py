@@ -144,6 +144,8 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
         result.issue('unplaced-exported-allocation', symbol=request['name'],
                      reservation_size=request['reservation_size'])
     common_claim = named_common_bss_claim(elf, unit)
+    named_bss = {datum.symbol: datum for datum in unit.data
+                 if datum.section_name == '.bss' and datum.scope == 'global'}
     symbols: dict[str, list] = defaultdict(list)
     for symbol in symtab.iter_symbols():
         # COMMON has no input section: SHF_ALLOC enumeration cannot see it,
@@ -152,8 +154,15 @@ def plan(elf: ELFFile, unit: Unit, result: UnitResult) -> dict[str, int]:
         # equal COMMON symbols on both sides are not proof of retail storage.
         if (symbol['st_shndx'] == 'SHN_COMMON'
                 and (common_claim is None or symbol.name != common_claim.symbol)):
-            result.issue("unsupported-common-allocation", symbol=symbol.name,
-                         size=symbol['st_size'], alignment=symbol['st_value'])
+            claim = named_bss.get(symbol.name)
+            if claim is None:
+                result.issue("unsupported-common-allocation", symbol=symbol.name,
+                             size=symbol['st_size'], alignment=symbol['st_value'])
+            else:
+                result.issue("unresolved-common-placement", symbol=symbol.name,
+                             requested_size=symbol['st_size'],
+                             alignment=symbol['st_value'], claimed_va=claim.va,
+                             claimed_size=claim.size)
         if symbol.name:
             symbols[symbol.name].append(symbol)
     # name, address, extent, expected section. Function sizes exclude linker

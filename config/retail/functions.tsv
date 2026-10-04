@@ -1693,6 +1693,8 @@ END.EXE	0x8001ac18	0xa418	0x60	0x60	1	function	sdk-object-label	setVBLNKCallback
 END.EXE	0x8001ac78	0xa478	0xc	0xc	1	function	ghidra-analysis	ChangeClearPAD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ac88	0xa488	0xc	0xc	1	function	ghidra-analysis	ChangeClearRCnt		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ac98	0xa498	0x58	0x58	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+END.EXE	0x8001acf0	0xa4f0	0x28	0x28	1	function	sdk-object-xdef	PadRead		psyq-sdk30:LIBETC.LIB/PAD.OBJ	archive XDEF .text+0x58 to next XDEF +0x80; retail entry and return delay slot in exact 0xa0-byte SDK section
+END.EXE	0x8001ad18	0xa518	0x20	0x20	1	function	sdk-object-xdef	PadStop		psyq-sdk30:LIBETC.LIB/PAD.OBJ	archive XDEF .text+0x80 to object end +0xa0; retail entry and return delay slot in exact 0xa0-byte SDK section
 END.EXE	0x8001ad38	0xa538	0xc	0xc	1	function	ghidra-analysis	PAD_dr		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ad48	0xa548	0xc	0xc	1	function	ghidra-analysis	StopPAD		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 END.EXE	0x8001ad58	0xa558	0xc	0xc	1	function	ghidra-analysis	PAD_init		Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary

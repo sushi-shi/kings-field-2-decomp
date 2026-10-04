@@ -8189,17 +8189,17 @@ GAME.EXE	0x8003f960	0x2f160		mips26	reachable-code	0x80038dc4	load	actor_copy_gr
 GAME.EXE	0x8003f968	0x2f168		mips26	reachable-code	0x80038d04	load	actor_set_home_position	jal		control-flow	reviewed	manual:actor_record_load
 GAME.EXE	0x8003f9c8	0x2f1c8		mips26	reachable-code	0x8003f9e0	load		j		control-flow	reviewed	manual:actor_record_load
 GAME.EXE	0x8003f9d4	0x2f1d4		mips26	reachable-code	0x8003f9e0	load		j		control-flow	reviewed	manual:actor_record_load
-GAME.EXE	0x8003fa50	0x2f250		mips26	instruction-word	0x80013f84	load		jal		range-filtered	reviewed	manual:effect_spatial_sound
+GAME.EXE	0x8003fa50	0x2f250		mips26	instruction-word	0x80013f84	load	audio_play_spatial_range	jal		range-filtered	reviewed	manual:effect_spatial_sound
 GAME.EXE	0x8003fa6c	0x2f26c	0x8003fa70	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	a0	paired-reviewed	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fac0	0x2f2c0		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fadc	0x2f2dc		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
-GAME.EXE	0x8003faf8	0x2f2f8		mips26	instruction-word	0x8002b9d4	load		jal		range-filtered	reviewed	manual:effect_collision_probe
+GAME.EXE	0x8003faf8	0x2f2f8		mips26	instruction-word	0x8002b9d4	load	collision_query_world	jal		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fb00	0x2f300		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
-GAME.EXE	0x8003fb1c	0x2f31c		mips26	instruction-word	0x8002b9d4	load		jal		range-filtered	reviewed	manual:effect_collision_probe
+GAME.EXE	0x8003fb1c	0x2f31c		mips26	instruction-word	0x8002b9d4	load	collision_query_world	jal		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fb24	0x2f324		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
-GAME.EXE	0x8003fb40	0x2f340		mips26	instruction-word	0x8002b9d4	load		jal		range-filtered	reviewed	manual:effect_collision_probe
+GAME.EXE	0x8003fb40	0x2f340		mips26	instruction-word	0x8002b9d4	load	collision_query_world	jal		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fb48	0x2f348		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
-GAME.EXE	0x8003fb64	0x2f364		mips26	instruction-word	0x8002b9d4	load		jal		range-filtered	reviewed	manual:effect_collision_probe
+GAME.EXE	0x8003fb64	0x2f364		mips26	instruction-word	0x8002b9d4	load	collision_query_world	jal		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fb6c	0x2f36c		mips26	instruction-word	0x8003fb84	load		j		range-filtered	reviewed	manual:effect_collision_probe
 GAME.EXE	0x8003fc5c	0x2f45c		mips26	reachable-code	0x800248a8	load	player_apply_damage	jal		control-flow	reviewed	manual:effect_update
 GAME.EXE	0x8003fc64	0x2f464		mips26	reachable-code	0x8003fd7c	load		j		control-flow	reviewed	manual:effect_update
@@ -8214,17 +8214,17 @@ GAME.EXE	0x8003fdc0	0x2f5c0	0x8003fdc4	mips_hi16_lo16	reachable-code	0x801984fa	
 GAME.EXE	0x8003fdf8	0x2f5f8	0x8003fdfc	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s0	paired-reviewed	reviewed	manual:effect_spawn_magic
 GAME.EXE	0x8003fe00	0x2f600	0x8003fe04	mips_hi16_lo16	reachable-code	0x8019e128	bss		lui+lw	s1	paired-reviewed	reviewed	manual:effect_spawn_magic
 GAME.EXE	0x8003fe08	0x2f608		mips26	reachable-code	0x8003fdac	load	effect_magic_power	jal		control-flow	reviewed	manual:effect_spawn_magic
-GAME.EXE	0x8003fe88	0x2f688		mips26	reachable-code	0x8003fb94	load		jal		control-flow	reviewed	manual:effect_spawn_magic
+GAME.EXE	0x8003fe88	0x2f688		mips26	reachable-code	0x8003fb94	load	effect_dispatch_magic_impact	jal		control-flow	reviewed	manual:effect_spawn_magic
 GAME.EXE	0x8003feb0	0x2f6b0	0x8003feb4	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	a1	paired-reviewed	reviewed	manual:effect_spawn_offset
-GAME.EXE	0x8003ff00	0x2f700		mips26	reachable-code	0x8003fdd0	load		jal		control-flow	reviewed	manual:effect_spawn_offset
+GAME.EXE	0x8003ff00	0x2f700		mips26	reachable-code	0x8003fdd0	load	effect_apply_current_magic	jal		control-flow	reviewed	manual:effect_spawn_offset
 GAME.EXE	0x8003ff50	0x2f750	0x8003ff54	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s1	paired-reviewed	reviewed	manual:effect_emit
 GAME.EXE	0x8003ff60	0x2f760	0x8003ff64	mips_hi16_lo16	reachable-code	0x8019e128	bss		lui+lw	s0	paired-reviewed	reviewed	manual:effect_emit
-GAME.EXE	0x8003ffe8	0x2f7e8		mips26	reachable-code	0x80024ca4	load		jal		control-flow	reviewed	manual:effect_emit
+GAME.EXE	0x8003ffe8	0x2f7e8		mips26	reachable-code	0x80024ca4	load	player_apply_radial_damage	jal		control-flow	reviewed	manual:effect_emit
 GAME.EXE	0x80040004	0x2f804		mips26	reachable-code	0x8003fdac	load	effect_magic_power	jal		control-flow	reviewed	manual:effect_emit
-GAME.EXE	0x8004008c	0x2f88c		mips26	reachable-code	0x8003a318	load		jal		control-flow	reviewed	manual:effect_emit
-GAME.EXE	0x80040100	0x2f900		mips26	reachable-code	0x80034344	load		jal		control-flow	reviewed	manual:effect_transform
+GAME.EXE	0x8004008c	0x2f88c		mips26	reachable-code	0x8003a318	load	actor_apply_area_magic	jal		control-flow	reviewed	manual:effect_emit
+GAME.EXE	0x80040100	0x2f900		mips26	reachable-code	0x80034344	load	animation_sample_vertex	jal		control-flow	reviewed	manual:effect_transform
 GAME.EXE	0x80040190	0x2f990		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:effect_transform
-GAME.EXE	0x800401c8	0x2f9c8		mips26	reachable-code	0x800400c0	load		jal		control-flow	reviewed	manual:effect_position
+GAME.EXE	0x800401c8	0x2f9c8		mips26	reachable-code	0x800400c0	load	effect_sample_rotated_vertex	jal		control-flow	reviewed	manual:effect_position
 GAME.EXE	0x80040220	0x2fa20	0x80040224	mips_hi16_lo16	reachable-code	0x8019bd28	bss		lui+addiu	v1	paired-reviewed	reviewed	manual:effect
 GAME.EXE	0x80040250	0x2fa50		mips26	reachable-code	0x8004025c	load		j		control-flow	reviewed	manual:effect
 GAME.EXE	0x80040338	0x2fb38		mips26	control-flow	0x80040220	load	effect_pool_find_free	jal		reviewed	reviewed	manual:func_80040308 raw MIPS26 direct call
@@ -8380,46 +8380,46 @@ GAME.EXE	0x800417f4	0x30ff4		mips26	reachable-code	0x800154a8	load	fixed_vector3
 GAME.EXE	0x8004191c	0x3111c		mips26	reachable-code	0x8004193c	load		j		control-flow	reviewed	manual:effect_move_probe
 GAME.EXE	0x8004192c	0x3112c		mips26	reachable-code	0x8003fa68	load	effect_probe_collision_by_type	jal		control-flow	reviewed	manual:effect_move_probe
 GAME.EXE	0x80041988	0x31188	0x8004198c	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s0	paired-reviewed	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x800419c8	0x311c8		mips26	instruction-word	0x8003a778	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041a2c	0x3122c		mips26	instruction-word	0x800154fc	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041a3c	0x3123c		mips26	instruction-word	0x800147a0	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041a50	0x31250		mips26	instruction-word	0x800147a0	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x800419c8	0x311c8		mips26	instruction-word	0x8003a778	load	actor_find_best_in_cone	jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041a2c	0x3122c		mips26	instruction-word	0x800154fc	load	vector_displacement_to_pitch_yaw	jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041a3c	0x3123c		mips26	instruction-word	0x800147a0	load	angle_approach	jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041a50	0x31250		mips26	instruction-word	0x800147a0	load	angle_approach	jal		range-filtered	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041a58	0x31258		mips26	instruction-word	0x80041aac	load		j		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041a6c	0x3126c		mips26	instruction-word	0x800252e4	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041a6c	0x3126c		mips26	instruction-word	0x800252e4	load	player_distance_to_point_in_cone	jal		range-filtered	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041a80	0x31280	0x80041a84	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw	v0	paired-reviewed	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041a88	0x31288	0x80041a8c	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw	v1	paired-reviewed	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041a94	0x31294	0x80041a98	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw	v0	paired-reviewed	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041aa4	0x312a4		mips26	instruction-word	0x80041a08	load		j		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041ab0	0x312b0		mips26	instruction-word	0x80015034	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
-GAME.EXE	0x80041ae8	0x312e8		mips26	instruction-word	0x8004177c	load		jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041ab0	0x312b0		mips26	instruction-word	0x80015034	load	pitch_yaw_to_forward_vector	jal		range-filtered	reviewed	manual:effect_aim_and_move
+GAME.EXE	0x80041ae8	0x312e8		mips26	instruction-word	0x8004177c	load	effect_move_probe	jal		range-filtered	reviewed	manual:effect_aim_and_move
 GAME.EXE	0x80041b3c	0x3133c	0x80041b40	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s2	paired-reviewed	reviewed	manual:effect_target_motion
 GAME.EXE	0x80041b7c	0x3137c		mips26	reachable-code	0x800154a8	load	fixed_vector3_length	jal		control-flow	reviewed	manual:effect_target_motion
 GAME.EXE	0x80041b94	0x31394		mips26	reachable-code	0x80041cac	load		j		control-flow	reviewed	manual:effect_target_motion
-GAME.EXE	0x80041ba8	0x313a8		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:effect_target_motion
-GAME.EXE	0x80041bbc	0x313bc		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:effect_target_motion
-GAME.EXE	0x80041bd0	0x313d0		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:effect_target_motion
-GAME.EXE	0x80041ca4	0x314a4		mips26	reachable-code	0x8004177c	load		jal		control-flow	reviewed	manual:effect_target_motion
+GAME.EXE	0x80041ba8	0x313a8		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:effect_target_motion
+GAME.EXE	0x80041bbc	0x313bc		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:effect_target_motion
+GAME.EXE	0x80041bd0	0x313d0		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:effect_target_motion
+GAME.EXE	0x80041ca4	0x314a4		mips26	reachable-code	0x8004177c	load	effect_move_probe	jal		control-flow	reviewed	manual:effect_target_motion
 GAME.EXE	0x80041cd8	0x314d8	0x80041cdc	mips_hi16_lo16	reachable-code	0x8019e12c	bss		lui+lw	s1	paired-reviewed	reviewed	manual:effect_scale_step
-GAME.EXE	0x80041d48	0x31548		mips26	reachable-code	0x8003ff18	load		jal		control-flow	reviewed	manual:effect_scale_step
-GAME.EXE	0x80041d90	0x31590		mips26	instruction-word	0x800401b4	load		jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
+GAME.EXE	0x80041d48	0x31548		mips26	reachable-code	0x8003ff18	load	effect_apply_radial_magic_damage	jal		control-flow	reviewed	manual:effect_scale_step
+GAME.EXE	0x80041d90	0x31590		mips26	instruction-word	0x800401b4	load	effect_sample_world_vertex	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041da0	0x315a0		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041dd4	0x315d4	0x80041dd8	mips_hi16_lo16	reachable-code	0x8006d708	load		lui+addiu	v0	paired-reviewed	reviewed	manual:effect_spawn_zero_direction
-GAME.EXE	0x80041de4	0x315e4		mips26	instruction-word	0x80040308	load		jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
+GAME.EXE	0x80041de4	0x315e4		mips26	instruction-word	0x80040308	load	effect_construct_record	jal		range-filtered	reviewed	manual:effect_spawn_zero_direction
 GAME.EXE	0x80041e14	0x31614	0x80041e18	mips_hi16_lo16	reachable-code	0x801d8d58	bss		lui+lw	v1	paired-reviewed	reviewed	manual:effect_spawn_at_lower_bound collision lower bound within startup BSS
-GAME.EXE	0x80041e70	0x31670		mips26	reachable-code	0x80040308	load		jal		control-flow	reviewed	manual:effect_spawn_at_lower_bound
+GAME.EXE	0x80041e70	0x31670		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:effect_spawn_at_lower_bound
 GAME.EXE	0x80041e78	0x31678		mips26	reachable-code	0x80041e84	load		j		control-flow	reviewed	manual:effect_spawn_at_lower_bound
 GAME.EXE	0x80041ee4	0x316e4		mips26	instruction-word	0x80041efc	load		j		range-filtered	reviewed	manual:effect_spawn_motion
-GAME.EXE	0x80041ef4	0x316f4		mips26	instruction-word	0x800400c0	load		jal		range-filtered	reviewed	manual:effect_spawn_motion
+GAME.EXE	0x80041ef4	0x316f4		mips26	instruction-word	0x800400c0	load	effect_sample_rotated_vertex	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041f18	0x31718		mips26	instruction-word	0x80041ffc	load		j		range-filtered	reviewed	manual:effect_spawn_motion
-GAME.EXE	0x80041f38	0x31738		mips26	instruction-word	0x800400c0	load		jal		range-filtered	reviewed	manual:effect_spawn_motion
+GAME.EXE	0x80041f38	0x31738		mips26	instruction-word	0x800400c0	load	effect_sample_rotated_vertex	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041f5c	0x3175c		mips26	instruction-word	0x80042034	load		j		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041f64	0x31764		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041f8c	0x3178c		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041fb4	0x317b4		mips26	instruction-word	0x8005f480	load	rand	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041fdc	0x317dc		mips26	instruction-word	0x800420a0	load		j		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80041ff4	0x317f4		mips26	instruction-word	0x80042034	load		j		range-filtered	reviewed	manual:effect_spawn_motion
-GAME.EXE	0x80041ffc	0x317fc		mips26	instruction-word	0x80015034	load		jal		range-filtered	reviewed	manual:effect_spawn_motion
-GAME.EXE	0x80042008	0x31808		mips26	instruction-word	0x80015188	load		jal		range-filtered	reviewed	manual:effect_spawn_motion
+GAME.EXE	0x80041ffc	0x317fc		mips26	instruction-word	0x80015034	load	pitch_yaw_to_forward_vector	jal		range-filtered	reviewed	manual:effect_spawn_motion
+GAME.EXE	0x80042008	0x31808		mips26	instruction-word	0x80015188	load	vector3s_scale_shift12	jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x800420fc	0x318fc		mips26	instruction-word	0x80040308	load		jal		range-filtered	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x80042168	0x31968	0x8004216c	mips_hi16_lo16	reachable-code	0x801d8d58	bss		lui+lw	v1	paired-reviewed	reviewed	manual:effect_spawn_motion
 GAME.EXE	0x800421a8	0x319a8	0x800421ac	mips_hi16_lo16	reachable-code	0x801d8d58	bss		lui+lw	v1	paired-reviewed	reviewed	manual:effect_spawn_motion

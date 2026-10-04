@@ -79,7 +79,11 @@ KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants
 KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant
 KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	layout from the reconstructed header
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte views of map-object +0x40
+KfMapObjectHingeMotion	0x04	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	two halfword views at map-object +0x40; union member, not a standalone allocation
+KfMapObjectLayerFadeState	0x04	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	halfword countdown and byte layer mask at +0x40/+0x42; final byte is implicit alignment
+KfMapObjectOffsetMotionState	0x01	supported	game/map_object.h;map_object_step_offset_motion	single elapsed-frame byte view within map-object +0x40 union
 KfMapObjectPlacement	0x18	supported	game/map_object.h;GAME 0x800358e8-0x80035a48;GAME 0x8003602c-0x80036030	24-byte resource row; original allocation and typedef spelling unproved
+KfMapObjectResourceOffsets	0x03	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	three signed resource-transition offset bytes in map-object +0x40 union
 KfMapObjectSavedLayerState	0x04	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	saved layer mask passed to action 0x54 map-cell pattern updates
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view

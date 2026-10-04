@@ -254,6 +254,26 @@ typedef struct KfMapObjectTailResourceTriggerView {
 typedef char kf_map_object_tail_resource_trigger_size[
     sizeof(KfMapObjectTailResourceTriggerView) == 12 ? 1 : -1];
 
+/* Action 225 uses the same camera-region bytes as action 224, followed by an
+ * operation byte, its operand, and the value written by operation 2. */
+typedef struct KfMapObjectTailRegionActionView {
+    u32 unknown_34;
+    u8 region_width;
+    u8 region_depth;
+    u8 operation_flags;
+    u8 operand;
+    u8 assigned_value;
+    u8 unknown_3d[3];
+} KfMapObjectTailRegionActionView;
+typedef char kf_map_object_tail_region_action_size[
+    sizeof(KfMapObjectTailRegionActionView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_region_action_flags_offset[
+    (u32)&((KfMapObjectTailRegionActionView *)0)->operation_flags == 6 ? 1 : -1];
+typedef char kf_map_object_tail_region_action_operand_offset[
+    (u32)&((KfMapObjectTailRegionActionView *)0)->operand == 7 ? 1 : -1];
+typedef char kf_map_object_tail_region_action_value_offset[
+    (u32)&((KfMapObjectTailRegionActionView *)0)->assigned_value == 8 ? 1 : -1];
+
 typedef struct KfMapObjectTailAnimatedView {
     KfPoolRecord *animation_cache;
     u8 radius_x;
@@ -367,7 +387,7 @@ typedef char kf_map_object_tail_action84_pattern_flags_offset[
 /* Action 81 uses a camera gate and dispatches a magic impact on collision. */
 typedef struct KfMapObjectTailCollisionProbeView {
     u32 unknown_34;
-    u8 unknown_38;
+    u8 marker_trigger_state;
     u8 damage_multiplier_tenths;
     u8 phase_step_code;
     u8 camera_region_width;
@@ -377,6 +397,8 @@ typedef struct KfMapObjectTailCollisionProbeView {
 } KfMapObjectTailCollisionProbeView;
 typedef char kf_map_object_tail_collision_probe_size[
     sizeof(KfMapObjectTailCollisionProbeView) == 12 ? 1 : -1];
+typedef char kf_map_object_tail_collision_probe_trigger_offset[
+    (u32)&((KfMapObjectTailCollisionProbeView *)0)->marker_trigger_state == 4 ? 1 : -1];
 typedef char kf_map_object_tail_collision_damage_offset[
     (u32)&((KfMapObjectTailCollisionProbeView *)0)->damage_multiplier_tenths == 5 ? 1 : -1];
 typedef char kf_map_object_tail_collision_region_offset[
@@ -520,6 +542,7 @@ typedef union KfMapObjectTail {
     KfMapObjectTailNotificationView notification;
     KfMapObjectTailTransitionView transition;
     KfMapObjectTailResourceTriggerView resource_trigger;
+    KfMapObjectTailRegionActionView region_action;
     KfMapObjectTailAnimatedView animated;
     KfMapObjectTailAmbientSoundView ambient_sound;
     KfMapObjectTailCellCopyView cell_copy;

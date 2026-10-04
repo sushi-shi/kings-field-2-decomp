@@ -125,7 +125,7 @@ void map_object_update_actions(void)
                 (const KfMapObjectTemplateCellActionView *)template;
             switch (object->action_timer) {
             case 0: {
-                u8 phase_byte = object->tail.fields.unknown_38;
+                u8 phase_byte = object->tail.marker.marker_id;
                 if ((u8)(phase_byte + 0x6a) < 0x31 && (phase_byte & 1)) {
                     object->action_timer = 1;
                 }
@@ -159,7 +159,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 20: {
-                u8 phase_byte = object->tail.fields.unknown_38;
+                u8 phase_byte = object->tail.marker.marker_id;
                 if (((u8)(phase_byte + 0x6a) > 0x30 || !(phase_byte & 1)) &&
                     collision_query_world(object->position.vx, object->position.vy,
                                    object->position.vz, 0x1130, 0xc80, 0xc0) == 0) {
@@ -296,7 +296,7 @@ void map_object_update_actions(void)
         case 8:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->rotation.vx = 0xa00;
                     object->action_timer = 3;
                 } else {
@@ -306,7 +306,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->extra_40.angular_velocity_x = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -334,7 +334,7 @@ void map_object_update_actions(void)
         case 22:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     struct KfVecXZi displacement;
                     object->rotation.vx = 0xd44;
                     angle_to_forward_xz(object->rotation.vy + 0x800, &displacement);
@@ -349,7 +349,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->extra_40.movement_frames_left = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -386,7 +386,7 @@ void map_object_update_actions(void)
                     KfMapObject *linked = &map_object_state.objects[linked_index];
                     linked->render_depth_offset += 200;
                 }
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     map_object_set_cell_marker(object, 1, template->marker_action_05);
                     object->phase_q12 = 0xfff;
                     object->action_timer = 3;
@@ -398,7 +398,7 @@ void map_object_update_actions(void)
                 break;
             }
             case 1:
-                if (object->tail.fields.unknown_38 == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             1, object->layer_mask);
@@ -685,7 +685,7 @@ void map_object_update_actions(void)
             break;
 
         case 9: {
-            u16 linked_index = object->tail.fields.unknown_3a.value;
+            u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
                 if (linked->object_id != 0xff) {
@@ -702,7 +702,7 @@ void map_object_update_actions(void)
 
             switch (object->action_timer) {
             case 0:
-                if (object->tail.fields.unknown_38 == 0) {
+                if (object->tail.collision_probe.marker_trigger_state == 0) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
                     object->asset_clip_selector = 1;
@@ -732,7 +732,7 @@ void map_object_update_actions(void)
                         map_object_play_spatial_sound(object, 0x4e);
                     }
                 }
-                if (object->tail.fields.unknown_38 == 0 &&
+                if (object->tail.collision_probe.marker_trigger_state == 0 &&
                     object->phase_q12 >= 0x1000 - increment) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
@@ -783,7 +783,7 @@ void map_object_update_actions(void)
                 object->phase_q12 += 64;
                 if (object->phase_q12 >= 0xfff) {
                     object->phase_q12 = 0xfff;
-                    if (object->tail.fields.unknown_38 == 0xff) {
+                    if (object->tail.collision_probe.marker_trigger_state == 0xff) {
                         object->asset_clip_selector = 2;
                         object->phase_q12 = 0;
                         object->action_timer = 3;
@@ -978,23 +978,23 @@ void map_object_update_actions(void)
         case KF_MAP_OBJECT_ACTION_REGION_TRIGGER:
             if (player_camera_within_map_region(object->position.vx >> 11,
                                object->position.vz >> 11,
-                               object->tail.resource_trigger.region_width,
-                               object->tail.resource_trigger.region_depth,
+                               object->tail.region_action.region_width,
+                               object->tail.region_action.region_depth,
                                object->position.vy)) {
                 if (object->extra_40.bytes[0] == 0) {
-                    if (!(object->tail.fields.unknown_3a.bytes.low & 0x80)) {
+                    if (!(object->tail.region_action.operation_flags & 0x80)) {
                         object->extra_40.bytes[0] = 1;
                     }
-                    switch (object->tail.fields.unknown_3a.bytes.low & 0x0f) {
+                    switch (object->tail.region_action.operation_flags & 0x0f) {
                     case 0:
                         ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
                         break;
                     case 1:
-                        map_object_apply_marker_signal(object->tail.fields.unknown_3a.bytes.high);
+                        map_object_apply_marker_signal(object->tail.region_action.operand);
                         break;
                     case 2:
-                        event_state.control.bytes[0x40 + object->tail.fields.unknown_3a.bytes.high] =
-                            object->tail.spawn_bytes.spawn_sequence.low;
+                        event_state.control.bytes[0x40 + object->tail.region_action.operand] =
+                            object->tail.region_action.assigned_value;
                         break;
                     }
                 }

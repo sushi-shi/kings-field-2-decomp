@@ -630,7 +630,6 @@ KfMapPlacedEntry	0x02	0x01	layer_mask	u8	supported	asm;map_placed_expand_sources
 KfMapPlacedEntry	0x03	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
 KfMapPlacedEntry	0x04	0x01	frame_period	u8	supported	map_placed_expand_sources;render_scene_and_update_resources	global frame counter divisor; zero disables frame stepping
 KfMapPlacedEntry	0x05	0x01	frame_index	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	initial randomized phase, then incremented and wrapped
-KfMapPlacedEntry	0x06	0x02	unknown_06	u8[2]	opaque	asm;map_placed_expand_sources	not yet modelled
 KfMapPlacedEntry	0x08	0x10	position	VECTOR	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	X/Z region coordinates and map height; caller passes this vector to func_80032040
 KfMapPlacedSource	0x00	0x02	model_index	u16	supported	map_placed_expand_sources	archive-local model index copied into runtime row or 0xffff sentinel
 KfMapPlacedSource	0x02	0x01	frame_count	u8	supported	asm;map_placed_expand_sources;render_scene_and_update_resources	phase wraps at this count
@@ -854,7 +853,6 @@ KfRenderMaskScanState	0x00	0x04	first_layer_byte_offset	s32	supported	asm;update
 KfRenderMaskScanState	0x04	0x04	second_layer_byte_offset	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x08	0x01	first_layer_mask	u8	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x09	0x01	second_layer_mask	u8	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
-KfRenderMaskScanState	0x0a	0x02	unknown_0a	u8[2]	opaque	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x0c	0x04	map_x	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x10	0x04	map_z	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x14	0x04	window_x	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state

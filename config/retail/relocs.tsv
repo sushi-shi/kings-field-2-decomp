@@ -5158,7 +5158,7 @@ GAME.EXE	0x8002725c	0x16a5c	0x80027260	mips_hi16_lo16	reachable-code	0x8019b6a8	
 GAME.EXE	0x80027268	0x16a68	0x8002726c	mips_hi16_lo16	reachable-code	0x801984e8	bss	player_state	lui+lhu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
 GAME.EXE	0x80027284	0x16a84	0x80027288	mips_hi16_lo16	reachable-code	0x8019856b	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
 GAME.EXE	0x800272a8	0x16aa8	0x800272ac	mips_hi16_lo16	reachable-code	0x80198591	bss	player_state	lui+lbu		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
-GAME.EXE	0x800272f0	0x16af0	0x800272f4	mips_hi16_lo16	reachable-code	0x80011298	load		lui+addiu	at	paired-reviewed	reviewed	manual:player_select_magic_action bounded jr table base
+GAME.EXE	0x800272f0	0x16af0	0x800272f4	mips_hi16_lo16	reachable-code	0x80011298	load	player_select_magic_action_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:player_select_magic_action bounded jr table base
 GAME.EXE	0x8002730c	0x16b0c	0x80027310	mips_hi16_lo16	reachable-code	0x80198532	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
 GAME.EXE	0x80027320	0x16b20		mips26	instruction-word	0x80027378	load		j		control-reviewed	reviewed	manual:player_select_magic_action bounded table-case CFG;raw J target
 GAME.EXE	0x80027328	0x16b28	0x8002732c	mips_hi16_lo16	reachable-code	0x80198534	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_select_magic_action raw signed-low player_state pair
@@ -5718,7 +5718,7 @@ GAME.EXE	0x80029bbc	0x193bc	0x80029bc0	mips_hi16_lo16	instruction-word	0x8019861
 GAME.EXE	0x80029bc8	0x193c8	0x80029bcc	mips_hi16_lo16	instruction-word	0x80198614	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029bd4	0x193d4	0x80029bd8	mips_hi16_lo16	instruction-word	0x80198618	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
 GAME.EXE	0x80029bdc	0x193dc	0x80029be0	mips_hi16_lo16	instruction-word	0x8019859d	bss	player_state	lui+lbu	v1	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
-GAME.EXE	0x80029bf4	0x193f4	0x80029bf8	mips_hi16_lo16	reachable-code	0x80011300	load		lui+addiu	at	paired-reviewed	reviewed	manual:player_update_frame bounded jr table base;raw lui/addiu pair
+GAME.EXE	0x80029bf4	0x193f4	0x80029bf8	mips_hi16_lo16	reachable-code	0x80011300	load	player_death_state_jump_table	lui+addiu	at	paired-reviewed	reviewed	manual:player_update_frame bounded jr table base;raw lui/addiu pair
 GAME.EXE	0x80029c10	0x19410		mips26	instruction-word	0x80028998	load	player_update_actions_and_charge	jal		control-reviewed	reviewed	manual:player_update_frame reviewed 19-case table entry;raw JAL target
 GAME.EXE	0x80029c18	0x19418		mips26	instruction-word	0x80028224	load	player_update_camera_rotation	jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target
 GAME.EXE	0x80029c20	0x19420		mips26	instruction-word	0x8002851c	load	player_update_horizontal_motion	jal		control-reviewed	reviewed	manual:player_update_frame bounded 19-case table CFG;raw J/JAL target

@@ -2301,7 +2301,7 @@ GAME.EXE	0x80016118	0x5918	0x8001611c	mips_hi16_lo16	reachable-code	0x801985b0	b
 GAME.EXE	0x80016120	0x5920	0x80016124	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xdc camera_position.vy
 GAME.EXE	0x8001612c	0x592c	0x80016130	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xe0 camera_position.vz
 GAME.EXE	0x80016138	0x5938	0x8001613c	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xdc camera_position.vy
-GAME.EXE	0x800161a8	0x59a8	0x800161ac	mips_hi16_lo16	reachable-code	0x801767e8	bss		lui+addiu	a3	paired-reviewed	reviewed	manual:map-object pool position translation
+GAME.EXE	0x800161a8	0x59a8	0x800161ac	mips_hi16_lo16	reachable-code	0x801767e8	bss	map_object_state	lui+addiu	a3	paired-reviewed	reviewed	manual:map-object pool position translation
 GAME.EXE	0x800161f8	0x59f8	0x800161fc	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	t0	paired-reviewed	reviewed	manual:actor pool position translation
 GAME.EXE	0x800162bc	0x5abc	0x800162c0	mips_hi16_lo16	instruction-word	0x80197638	bss	audio_state	lui+lw	v0	paired-reviewed	reviewed	manual:audio-fade-controller-direct-pair
 GAME.EXE	0x800162d0	0x5ad0		mips26	control-flow	0x80013ae4	load	audio_start_sequence	jal		reviewed	reviewed	manual:resource_request_transition raw MIPS26 direct call
@@ -2641,7 +2641,7 @@ GAME.EXE	0x80018324	0x7b24		mips26	reachable-code	0x80017bf0	load	cd_location_ad
 GAME.EXE	0x80018334	0x7b34		mips26	reachable-code	0x80018100	load	cd_read_sectors	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018340	0x7b40		mips26	reachable-code	0x80017d00	load	cd_sectors_corrupt	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018378	0x7b78	0x8001837c	mips_hi16_lo16	instruction-word	0x8006d680	load	cd_path_prefix	lui+lw	v0	paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x80018380	0x7b80	0x80018384	mips_hi16_lo16	instruction-word	0x8006d684	load		lui+lb	v1	paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x80018380	0x7b80	0x80018384	mips_hi16_lo16	instruction-word	0x8006d684	load	cd_path_prefix	lui+lb	v1	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018394	0x7b94		mips26	instruction-word	0x8005f420	load	strcat	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x8001839c	0x7b9c	0x800183a0	mips_hi16_lo16	instruction-word	0x8006d688	load	cd_version_suffix	lui+addiu	a1	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x800183a4	0x7ba4		mips26	instruction-word	0x8005f420	load	strcat	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
@@ -2651,7 +2651,7 @@ GAME.EXE	0x800183cc	0x7bcc		mips26	instruction-word	0x800180f8	load	cd_report_er
 GAME.EXE	0x800183e4	0x7be4		mips26	instruction-word	0x80017754	load	memory_allocate	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x800183f8	0x7bf8		mips26	instruction-word	0x80018100	load	cd_read_sectors	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x80018438	0x7c38	0x8001843c	mips_hi16_lo16	instruction-word	0x8006d680	load	cd_path_prefix	lui+lw	v0	paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x80018440	0x7c40	0x80018444	mips_hi16_lo16	instruction-word	0x8006d684	load		lui+lb	v1	paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x80018440	0x7c40	0x80018444	mips_hi16_lo16	instruction-word	0x8006d684	load	cd_path_prefix	lui+lb	v1	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018454	0x7c54		mips26	instruction-word	0x8005f420	load	strcat	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x8001845c	0x7c5c	0x80018460	mips_hi16_lo16	instruction-word	0x8006d688	load	cd_version_suffix	lui+addiu	a1	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018464	0x7c64		mips26	instruction-word	0x8005f420	load	strcat	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
@@ -2660,7 +2660,7 @@ GAME.EXE	0x8001847c	0x7c7c		mips26	instruction-word	0x8004b8a0	load	CdSearchFile
 GAME.EXE	0x8001848c	0x7c8c		mips26	instruction-word	0x800180f8	load	cd_report_error	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x800184a8	0x7ca8		mips26	instruction-word	0x80018100	load	cd_read_sectors	jal		range-filtered	reviewed	manual:cd_archive uncalled loader
 GAME.EXE	0x800184ec	0x7cec	0x800184f0	mips_hi16_lo16	reachable-code	0x8006d680	load	cd_path_prefix	lui+lw	v0	paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x800184f4	0x7cf4	0x800184f8	mips_hi16_lo16	reachable-code	0x8006d684	load		lui+lb	a0	paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x800184f4	0x7cf4	0x800184f8	mips_hi16_lo16	reachable-code	0x8006d684	load	cd_path_prefix	lui+lb	a0	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018510	0x7d10	0x80018514	mips_hi16_lo16	reachable-code	0x801b6004	bss	cd_archives	lui+addiu		paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018518	0x7d18		mips26	reachable-code	0x8005f420	load	strcat	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018520	0x7d20	0x80018524	mips_hi16_lo16	reachable-code	0x8006d688	load	cd_version_suffix	lui+addiu	a1	paired-reviewed	reviewed	manual:cd
@@ -5570,7 +5570,7 @@ GAME.EXE	0x80028ff4	0x187f4		mips26	reachable-code	0x800346f8	load	pool_release_
 GAME.EXE	0x80029028	0x18828	0x8002902c	mips_hi16_lo16	reachable-code	0x80198610	bss		lui+addiu		paired-reviewed	reviewed	manual:player_reaction_dispatch
 GAME.EXE	0x80029048	0x18848	0x8002904c	mips_hi16_lo16	reachable-code	0x8019859d	bss		lui+lbu		paired-reviewed	reviewed	manual:player_reaction_dispatch
 GAME.EXE	0x8002905c	0x1885c	0x80029060	mips_hi16_lo16	reachable-code	0x8019861c	bss		lui+lbu		paired-reviewed	reviewed	manual:player_reaction_dispatch
-GAME.EXE	0x80029074	0x18874	0x80029078	mips_hi16_lo16	reachable-code	0x801767d0	bss		lui+addiu		paired-reviewed	reviewed	manual:player_reaction_dispatch
+GAME.EXE	0x80029074	0x18874	0x80029078	mips_hi16_lo16	reachable-code	0x801767d0	bss	map_object_state	lui+addiu		paired-reviewed	reviewed	manual:player_reaction_dispatch
 GAME.EXE	0x8002907c	0x1887c		mips26	reachable-code	0x800291ec	load	player_apply_map_object_reaction	jal		control-flow	reviewed	manual:player_reaction_dispatch
 GAME.EXE	0x80029084	0x18884		mips26	reachable-code	0x80029098	load		j		control-flow	reviewed	manual:player_reaction_dispatch
 GAME.EXE	0x8002908c	0x1888c		mips26	reachable-code	0x80047c98	load	event_world_dispatch_interaction	jal		control-flow	reviewed	manual:player_reaction_dispatch
@@ -5601,7 +5601,7 @@ GAME.EXE	0x800291c0	0x189c0	0x800291c4	mips_hi16_lo16	reachable-code	0x801985e0	
 GAME.EXE	0x800291d4	0x189d4	0x800291d8	mips_hi16_lo16	reachable-code	0x8019859d	bss		lui+sb		paired-reviewed	reviewed	manual:player_reaction_overlay
 GAME.EXE	0x800291dc	0x189dc	0x800291e0	mips_hi16_lo16	reachable-code	0x8019861c	bss		lui+sb		paired-reviewed	reviewed	manual:player_reaction_overlay
 GAME.EXE	0x800291fc	0x189fc	0x80029200	mips_hi16_lo16	reachable-code	0x8019859d	bss		lui+sb		paired-reviewed	reviewed	manual:player_map_object_reaction
-GAME.EXE	0x80029214	0x18a14	0x80029218	mips_hi16_lo16	reachable-code	0x801767d0	bss		lui+addiu		paired-reviewed	reviewed	manual:player_map_object_reaction
+GAME.EXE	0x80029214	0x18a14	0x80029218	mips_hi16_lo16	reachable-code	0x801767d0	bss	map_object_state	lui+addiu		paired-reviewed	reviewed	manual:player_map_object_reaction
 GAME.EXE	0x80029264	0x18a64	0x80029268	mips_hi16_lo16	reachable-code	0x801985d8	bss		lui+lhu		paired-reviewed	reviewed	manual:player_map_object_reaction
 GAME.EXE	0x8002926c	0x18a6c	0x80029270	mips_hi16_lo16	reachable-code	0x801985c8	bss		lui+lhu		paired-reviewed	reviewed	manual:player_map_object_reaction
 GAME.EXE	0x80029274	0x18a74	0x80029278	mips_hi16_lo16	reachable-code	0x801985da	bss		lui+lhu		paired-reviewed	reviewed	manual:player_map_object_reaction
@@ -6070,7 +6070,7 @@ GAME.EXE	0x8002b8f8	0x1b0f8	0x8002b8fc	mips_hi16_lo16	reachable-code	0x801d8d70	
 GAME.EXE	0x8002b92c	0x1b12c	0x8002b930	mips_hi16_lo16	reachable-code	0x801d8d80	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b938	0x1b138		mips26	reachable-code	0x8002b9c0	load		j		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b940	0x1b140	0x8002b944	mips_hi16_lo16	reachable-code	0x801d8d68	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002b95c	0x1b15c	0x8002b960	mips_hi16_lo16	reachable-code	0x801767d0	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002b95c	0x1b15c	0x8002b960	mips_hi16_lo16	reachable-code	0x801767d0	bss	map_object_state	lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b96c	0x1b16c	0x8002b970	mips_hi16_lo16	reachable-code	0x801d8d70	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b9b4	0x1b1b4	0x8002b9b8	mips_hi16_lo16	reachable-code	0x801d8d80	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b9c4	0x1b1c4	0x8002b9c8	mips_hi16_lo16	reachable-code	0x801d8d82	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -6758,7 +6758,7 @@ GAME.EXE	0x80032728	0x21f28		mips26	reachable-code	0x80032274	load	resource_vab_
 GAME.EXE	0x80032738	0x21f38	0x8003273c	mips_hi16_lo16	reachable-code	0x801b5d68	bss		lui+lw	s7	paired-reviewed	reviewed	manual:render_scene_and_update_resources CD frame count;raw signed-low pair
 GAME.EXE	0x80032740	0x21f40		mips26	reachable-code	0x80017228	load	repeat_store_word	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x80032750	0x21f50		mips26	reachable-code	0x80017228	load	repeat_store_word	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
-GAME.EXE	0x80032758	0x21f58	0x8003275c	mips_hi16_lo16	reachable-code	0x801767d0	bss		lui+addiu	s3	paired-reviewed	reviewed	manual:render_scene_and_update_resources map-object pool base;raw signed-low pair
+GAME.EXE	0x80032758	0x21f58	0x8003275c	mips_hi16_lo16	reachable-code	0x801767d0	bss	map_object_state	lui+addiu	s3	paired-reviewed	reviewed	manual:render_scene_and_update_resources map-object pool base;raw signed-low pair
 GAME.EXE	0x80032768	0x21f68	0x8003276c	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+addiu	s8	paired-reviewed	reviewed	manual:render_scene_and_update_resources player camera x;raw carry-adjusted pair
 GAME.EXE	0x800327b4	0x21fb4		mips26	reachable-code	0x80032174	load	map_cell_visible	jal		control-flow	reviewed	manual:render_scene_and_update_resources raw MIPS26 direct call
 GAME.EXE	0x800327c8	0x21fc8	0x800327cc	mips_hi16_lo16	reachable-code	0x801b5a78	bss		lui+lbu	v1	paired-reviewed	reviewed	manual:render_scene_and_update_resources render mask byte;raw signed-low pair

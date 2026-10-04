@@ -3821,85 +3821,85 @@ GAME.EXE	0x8002006c	0xf86c		mips26	reachable-code	0x80022058	load	menu_format_nu
 GAME.EXE	0x80020074	0xf874	0x80020078	mips_hi16_lo16	reachable-code	0x80063e80	load	menu_sprite_defs	lui+addiu	a0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002007c	0xf87c		mips26	reachable-code	0x80021510	load	menu_draw_number	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x800200ac	0xf8ac		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
-GAME.EXE	0x800200b4	0xf8b4	0x800200b8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800200c4	0xf8c4	0x800200c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800200d4	0xf8d4	0x800200d8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800200b4	0xf8b4	0x800200b8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800200c4	0xf8c4	0x800200c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800200d4	0xf8d4	0x800200d8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800200dc	0xf8dc	0x800200e0	mips_hi16_lo16	reachable-code	0x80063ed4	load	menu_sprite_defs	lui+addiu	s1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800200e8	0xf8e8	0x800200ec	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800200e8	0xf8e8	0x800200ec	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800200fc	0xf8fc	0x80020100	mips_hi16_lo16	reachable-code	0x80063ed6	load	menu_sprite_defs	lui+lhu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020128	0xf928	0x8002012c	mips_hi16_lo16	reachable-code	0x80063edc	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020158	0xf958	0x8002015c	mips_hi16_lo16	reachable-code	0x80063ede	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020170	0xf970	0x80020174	mips_hi16_lo16	reachable-code	0x80063edc	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020188	0xf988	0x8002018c	mips_hi16_lo16	reachable-code	0x80063ede	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002019c	0xf99c	0x800201a0	mips_hi16_lo16	reachable-code	0x80063ed8	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800201ac	0xf9ac	0x800201b0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800201ac	0xf9ac	0x800201b0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800201b4	0xf9b4	0x800201b8	mips_hi16_lo16	reachable-code	0x80063eda	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800201c4	0xf9c4	0x800201c8	mips_hi16_lo16	reachable-code	0x80063ed8	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800201cc	0xf9cc	0x800201d0	mips_hi16_lo16	reachable-code	0x80063edc	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800201d4	0xf9d4	0x800201d8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800201e4	0xf9e4	0x800201e8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800201d4	0xf9d4	0x800201d8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800201e4	0xf9e4	0x800201e8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800201ec	0xf9ec	0x800201f0	mips_hi16_lo16	reachable-code	0x80063eda	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800201fc	0xf9fc	0x80020200	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800201fc	0xf9fc	0x80020200	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x80020204	0xfa04	0x80020208	mips_hi16_lo16	reachable-code	0x80063ed8	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020214	0xfa14	0x80020218	mips_hi16_lo16	reachable-code	0x80063eda	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002021c	0xfa1c	0x80020220	mips_hi16_lo16	reachable-code	0x80063ede	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x80020224	0xfa24	0x80020228	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020224	0xfa24	0x80020228	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x80020234	0xfa34	0x80020238	mips_hi16_lo16	reachable-code	0x80063ed8	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002023c	0xfa3c	0x80020240	mips_hi16_lo16	reachable-code	0x80063edc	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x80020244	0xfa44	0x80020248	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020244	0xfa44	0x80020248	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x80020254	0xfa54	0x80020258	mips_hi16_lo16	reachable-code	0x80063eda	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002025c	0xfa5c	0x80020260	mips_hi16_lo16	reachable-code	0x80063ede	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x80020264	0xfa64	0x80020268	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020274	0xfa74	0x80020278	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020264	0xfa64	0x80020268	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020274	0xfa74	0x80020278	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x8002027c	0xfa7c		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x80020284	0xfa84		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x800202a4	0xfaa4	0x800202a8	mips_hi16_lo16	reachable-code	0x80063ee0	load	menu_sprite_defs	lui+addiu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800202c8	0xfac8		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
-GAME.EXE	0x800202d0	0xfad0	0x800202d4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800202e0	0xfae0	0x800202e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800202f0	0xfaf0	0x800202f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020300	0xfb00	0x80020304	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800203c4	0xfbc4	0x800203c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800203e0	0xfbe0	0x800203e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800203f0	0xfbf0	0x800203f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020404	0xfc04	0x80020408	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020420	0xfc20	0x80020424	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020438	0xfc38	0x8002043c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020450	0xfc50	0x80020454	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x80020460	0xfc60	0x80020464	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800202d0	0xfad0	0x800202d4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800202e0	0xfae0	0x800202e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800202f0	0xfaf0	0x800202f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020300	0xfb00	0x80020304	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800203c4	0xfbc4	0x800203c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800203e0	0xfbe0	0x800203e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800203f0	0xfbf0	0x800203f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020404	0xfc04	0x80020408	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020420	0xfc20	0x80020424	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020438	0xfc38	0x8002043c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020450	0xfc50	0x80020454	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020460	0xfc60	0x80020464	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x80020468	0xfc68		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x80020470	0xfc70		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x8002048c	0xfc8c		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
-GAME.EXE	0x80020494	0xfc94	0x80020498	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800204a4	0xfca4	0x800204a8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800204b4	0xfcb4	0x800204b8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020494	0xfc94	0x80020498	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800204a4	0xfca4	0x800204a8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800204b4	0xfcb4	0x800204b8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800204bc	0xfcbc	0x800204c0	mips_hi16_lo16	reachable-code	0x80063eec	load	menu_sprite_defs	lui+addiu	s1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800204c8	0xfcc8	0x800204cc	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800204c8	0xfcc8	0x800204cc	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800204dc	0xfcdc	0x800204e0	mips_hi16_lo16	reachable-code	0x80063eee	load	menu_sprite_defs	lui+lhu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020520	0xfd20	0x80020524	mips_hi16_lo16	reachable-code	0x80063ef4	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020578	0xfd78	0x8002057c	mips_hi16_lo16	reachable-code	0x80063ef6	load	menu_sprite_defs	lui+lhu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020594	0xfd94	0x80020598	mips_hi16_lo16	reachable-code	0x80063ef4	load	menu_sprite_defs	lui+lhu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800205bc	0xfdbc	0x800205c0	mips_hi16_lo16	reachable-code	0x80063ef6	load	menu_sprite_defs	lui+lhu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800205d4	0xfdd4	0x800205d8	mips_hi16_lo16	reachable-code	0x80063ef0	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x800205e4	0xfde4	0x800205e8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800205e4	0xfde4	0x800205e8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800205ec	0xfdec	0x800205f0	mips_hi16_lo16	reachable-code	0x80063ef2	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x800205fc	0xfdfc	0x80020600	mips_hi16_lo16	reachable-code	0x80063ef0	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020604	0xfe04	0x80020608	mips_hi16_lo16	reachable-code	0x80063ef4	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x8002060c	0xfe0c	0x80020610	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x8002061c	0xfe1c	0x80020620	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x8002060c	0xfe0c	0x80020610	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x8002061c	0xfe1c	0x80020620	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x80020624	0xfe24	0x80020628	mips_hi16_lo16	reachable-code	0x80063ef2	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x80020634	0xfe34	0x80020638	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x80020634	0xfe34	0x80020638	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x8002063c	0xfe3c	0x80020640	mips_hi16_lo16	reachable-code	0x80063ef0	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x8002064c	0xfe4c	0x80020650	mips_hi16_lo16	reachable-code	0x80063ef2	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020654	0xfe54	0x80020658	mips_hi16_lo16	reachable-code	0x80063ef6	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x8002065c	0xfe5c	0x80020660	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x8002065c	0xfe5c	0x80020660	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x8002066c	0xfe6c	0x80020670	mips_hi16_lo16	reachable-code	0x80063ef0	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020674	0xfe74	0x80020678	mips_hi16_lo16	reachable-code	0x80063ef4	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x8002067c	0xfe7c	0x80020680	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x8002067c	0xfe7c	0x80020680	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x8002068c	0xfe8c	0x80020690	mips_hi16_lo16	reachable-code	0x80063ef2	load	menu_sprite_defs	lui+lbu	v0	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
 GAME.EXE	0x80020694	0xfe94	0x80020698	mips_hi16_lo16	reachable-code	0x80063ef6	load	menu_sprite_defs	lui+lbu	v1	paired-reviewed	reviewed	manual:menu-visual-typed-pairs
-GAME.EXE	0x8002069c	0xfe9c	0x800206a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
-GAME.EXE	0x800206ac	0xfeac	0x800206b0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x8002069c	0xfe9c	0x800206a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
+GAME.EXE	0x800206ac	0xfeac	0x800206b0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu list primitive pointer
 GAME.EXE	0x800206b4	0xfeb4		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x800206bc	0xfebc		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu-list-render-proven-calls
 GAME.EXE	0x800206e0	0xfee0		mips26	reachable-code	0x80020990	load	menu_draw_status_counters	jal		control-flow	reviewed	manual:decoded GAME menu renderer direct jal with kind 1 delay slot
@@ -3961,18 +3961,18 @@ GAME.EXE	0x80020b24	0x10324		mips26	reachable-code	0x80022058	load	menu_format_n
 GAME.EXE	0x80020b2c	0x1032c	0x80020b30	mips_hi16_lo16	reachable-code	0x80063e80	load	menu_sprite_defs	lui+addiu	a0	paired-reachable	reviewed	manual:menu_draw_status_counters decoded sprite-table entry pointer and source call
 GAME.EXE	0x80020b34	0x10334		mips26	reachable-code	0x80021510	load	menu_draw_number	jal		control-flow	reviewed	manual:raw decoded GAME menu option direct jal and curated target identity
 GAME.EXE	0x80020b64	0x10364		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80020b6c	0x1036c	0x80020b70	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020b7c	0x1037c	0x80020b80	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020b8c	0x1038c	0x80020b90	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020b9c	0x1039c	0x80020ba0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020c58	0x10458	0x80020c5c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020c74	0x10474	0x80020c78	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020c84	0x10484	0x80020c88	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020c98	0x10498	0x80020c9c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020cb4	0x104b4	0x80020cb8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020ccc	0x104cc	0x80020cd0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020ce4	0x104e4	0x80020ce8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80020cf4	0x104f4	0x80020cf8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020b6c	0x1036c	0x80020b70	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020b7c	0x1037c	0x80020b80	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020b8c	0x1038c	0x80020b90	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020b9c	0x1039c	0x80020ba0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020c58	0x10458	0x80020c5c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020c74	0x10474	0x80020c78	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020c84	0x10484	0x80020c88	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020c98	0x10498	0x80020c9c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020cb4	0x104b4	0x80020cb8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020ccc	0x104cc	0x80020cd0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020ce4	0x104e4	0x80020ce8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80020cf4	0x104f4	0x80020cf8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
 GAME.EXE	0x80020cfc	0x104fc		mips26	reachable-code	0x8006340c	load	SetSemiTrans	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80020d04	0x10504		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80020d38	0x10538	0x80020d3c	mips_hi16_lo16	reachable-code	0x8006d698	load		lui+lw	s2	paired-reviewed	reviewed	manual:raw-decoded GAME menu scalar direct pair
@@ -4003,52 +4003,52 @@ GAME.EXE	0x80021068	0x10868	0x8002106c	mips_hi16_lo16	reachable-code	0x8006d9e0	
 GAME.EXE	0x80021080	0x10880	0x80021084	mips_hi16_lo16	reachable-code	0x8006d9e0	bss	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:menu_blit_sprite_fixed_clut
 GAME.EXE	0x80021090	0x10890		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:menu_blit_sprite_fixed_clut
 GAME.EXE	0x800210f8	0x108f8		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x80021100	0x10900	0x80021104	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x800211cc	0x109cc	0x800211d0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x800211e0	0x109e0	0x800211e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x800211f0	0x109f0	0x800211f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021200	0x10a00	0x80021204	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021214	0x10a14	0x80021218	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021228	0x10a28	0x8002122c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x8002123c	0x10a3c	0x80021240	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021100	0x10900	0x80021104	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800211cc	0x109cc	0x800211d0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800211e0	0x109e0	0x800211e4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800211f0	0x109f0	0x800211f4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021200	0x10a00	0x80021204	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021214	0x10a14	0x80021218	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021228	0x10a28	0x8002122c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x8002123c	0x10a3c	0x80021240	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
 GAME.EXE	0x80021248	0x10a48		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021264	0x10a64		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x8002126c	0x10a6c	0x80021270	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x8002130c	0x10b0c	0x80021310	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021324	0x10b24	0x80021328	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021334	0x10b34	0x80021338	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021344	0x10b44	0x80021348	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021358	0x10b58	0x8002135c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x8002136c	0x10b6c	0x80021370	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021380	0x10b80	0x80021384	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x8002126c	0x10a6c	0x80021270	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x8002130c	0x10b0c	0x80021310	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021324	0x10b24	0x80021328	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021334	0x10b34	0x80021338	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021344	0x10b44	0x80021348	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021358	0x10b58	0x8002135c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x8002136c	0x10b6c	0x80021370	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021380	0x10b80	0x80021384	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
 GAME.EXE	0x8002138c	0x10b8c		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x800213a8	0x10ba8		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x800213b0	0x10bb0	0x800213b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021450	0x10c50	0x80021454	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021468	0x10c68	0x8002146c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021478	0x10c78	0x8002147c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x80021488	0x10c88	0x8002148c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x8002149c	0x10c9c	0x800214a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x800214b0	0x10cb0	0x800214b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
-GAME.EXE	0x800214c4	0x10cc4	0x800214c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800213b0	0x10bb0	0x800213b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021450	0x10c50	0x80021454	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021468	0x10c68	0x8002146c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021478	0x10c78	0x8002147c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x80021488	0x10c88	0x8002148c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v0	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x8002149c	0x10c9c	0x800214a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800214b0	0x10cb0	0x800214b4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
+GAME.EXE	0x800214c4	0x10cc4	0x800214c8	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu glyph pointer
 GAME.EXE	0x800214d0	0x10cd0		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021544	0x10d44		mips26	reachable-code	0x80021f10	load	primitive_buffer_begin_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
-GAME.EXE	0x8002154c	0x10d4c	0x80021550	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021618	0x10e18	0x8002161c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021634	0x10e34	0x80021638	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021648	0x10e48	0x8002164c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x8002165c	0x10e5c	0x80021660	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021684	0x10e84	0x80021688	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x8002169c	0x10e9c	0x800216a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x800216c0	0x10ec0	0x800216c4	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x8002154c	0x10d4c	0x80021550	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021618	0x10e18	0x8002161c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021634	0x10e34	0x80021638	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021648	0x10e48	0x8002164c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x8002165c	0x10e5c	0x80021660	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021684	0x10e84	0x80021688	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x8002169c	0x10e9c	0x800216a0	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x800216c0	0x10ec0	0x800216c4	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
 GAME.EXE	0x800216cc	0x10ecc		mips26	reachable-code	0x800217b8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800216e8	0x10ee8	0x800216ec	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021708	0x10f08	0x8002170c	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021720	0x10f20	0x80021724	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x8002173c	0x10f3c	0x80021740	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x80021764	0x10f64	0x80021768	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x8002177c	0x10f7c	0x80021780	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
-GAME.EXE	0x800217a8	0x10fa8	0x800217ac	mips_hi16_lo16	reachable-code	0x8006d9e0	load		lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x800216e8	0x10ee8	0x800216ec	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021708	0x10f08	0x8002170c	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021720	0x10f20	0x80021724	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x8002173c	0x10f3c	0x80021740	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	v1	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x80021764	0x10f64	0x80021768	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x8002177c	0x10f7c	0x80021780	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
+GAME.EXE	0x800217a8	0x10fa8	0x800217ac	mips_hi16_lo16	reachable-code	0x8006d9e0	load	current_poly_ft4	lui+lw	a0	paired-reviewed	reviewed	manual:raw-decoded GAME menu sprite glyph pointer
 GAME.EXE	0x800217b8	0x10fb8		mips26	reachable-code	0x80021f60	load	primitive_buffer_commit_poly_ft4	jal		control-flow	reviewed	manual:raw decoded GAME direct jal and curated target identity
 GAME.EXE	0x80021834	0x11034	0x80021838	mips_hi16_lo16	reachable-code	0x80063f04	load		lui+addiu	s0	paired-reachable	reviewed	manual:menu nine-slice decoded call/branch/data
 GAME.EXE	0x80021864	0x11064		mips26	reachable-code	0x80021880	load		j		control-flow	reviewed	manual:menu nine-slice decoded call/branch/data

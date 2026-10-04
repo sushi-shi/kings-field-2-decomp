@@ -2672,28 +2672,28 @@ GAME.EXE	0x80018578	0x7d78		mips26	reachable-code	0x80018298	load	cd_extent_read
 GAME.EXE	0x8001858c	0x7d8c		mips26	reachable-code	0x80017754	load	memory_allocate	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x800185a4	0x7da4		mips26	reachable-code	0x800171f8	load	resource_copy_halfwords	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x800185c8	0x7dc8		mips26	reachable-code	0x8005f110	load	EnterCriticalSection	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x800185d0	0x7dd0	0x800185d4	mips_hi16_lo16	reachable-code	0x801b5d64	bss		lui+addiu		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x800185d0	0x7dd0	0x800185d4	mips_hi16_lo16	reachable-code	0x801b5d64	bss	cd_state	lui+addiu		paired-reviewed	reviewed	manual:cd_initialize vsync_count +0x4
 GAME.EXE	0x800185e8	0x7de8	0x800185ec	mips_hi16_lo16	reachable-code	0x800177d4	load	cd_vsync_handler	lui+addiu	a3	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x800185f0	0x7df0		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:cd
 GAME.EXE	0x800185f8	0x7df8	0x800185fc	mips_hi16_lo16	reachable-code	0x801b5d60	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018600	0x7e00		mips26	reachable-code	0x8005f140	load	EnableEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x80018608	0x7e08	0x8001860c	mips_hi16_lo16	reachable-code	0x801b5d68	bss		lui+sw		paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x80018630	0x7e30	0x80018634	mips_hi16_lo16	reachable-code	0x801b5ffc	bss		lui+addiu		paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x8001863c	0x7e3c	0x80018640	mips_hi16_lo16	reachable-code	0x801b6000	bss		lui+sw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x80018608	0x7e08	0x8001860c	mips_hi16_lo16	reachable-code	0x801b5d68	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd_initialize frame_count +0x8
+GAME.EXE	0x80018630	0x7e30	0x80018634	mips_hi16_lo16	reachable-code	0x801b5ffc	bss	cd_state	lui+addiu		paired-reviewed	reviewed	manual:cd_initialize tail +0x29c
+GAME.EXE	0x8001863c	0x7e3c	0x80018640	mips_hi16_lo16	reachable-code	0x801b6000	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd_initialize current +0x2a0
 GAME.EXE	0x80018654	0x7e54	0x80018658	mips_hi16_lo16	reachable-code	0x80017a98	load	cd_error_handler	lui+addiu	a3	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x8001865c	0x7e5c		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x80018664	0x7e64	0x80018668	mips_hi16_lo16	reachable-code	0x801b5d6c	bss		lui+sw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x80018664	0x7e64	0x80018668	mips_hi16_lo16	reachable-code	0x801b5d6c	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd_initialize error_event +0xc
 GAME.EXE	0x80018678	0x7e78	0x8001867c	mips_hi16_lo16	reachable-code	0x800178d0	load	cd_complete_handler	lui+addiu	a3	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018680	0x7e80		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x80018688	0x7e88	0x8001868c	mips_hi16_lo16	reachable-code	0x801b5d70	bss		lui+sw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x80018688	0x7e88	0x8001868c	mips_hi16_lo16	reachable-code	0x801b5d70	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd_initialize complete_event +0x10
 GAME.EXE	0x8001869c	0x7e9c	0x800186a0	mips_hi16_lo16	reachable-code	0x80017a1c	load	cd_data_ready_handler	lui+addiu	a3	paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x800186a4	0x7ea4		mips26	reachable-code	0x8005f360	load	OpenEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x800186ac	0x7eac	0x800186b0	mips_hi16_lo16	reachable-code	0x801b5d6c	bss		lui+lw		paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x800186b4	0x7eb4	0x800186b8	mips_hi16_lo16	reachable-code	0x801b5d78	bss		lui+sw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x800186ac	0x7eac	0x800186b0	mips_hi16_lo16	reachable-code	0x801b5d6c	bss	cd_state	lui+lw		paired-reviewed	reviewed	manual:cd_initialize error_event +0xc
+GAME.EXE	0x800186b4	0x7eb4	0x800186b8	mips_hi16_lo16	reachable-code	0x801b5d78	bss	cd_state	lui+sw		paired-reviewed	reviewed	manual:cd_initialize data_ready_event +0x18
 GAME.EXE	0x800186bc	0x7ebc		mips26	reachable-code	0x8005f140	load	EnableEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x800186c4	0x7ec4	0x800186c8	mips_hi16_lo16	reachable-code	0x801b5d70	bss		lui+lw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x800186c4	0x7ec4	0x800186c8	mips_hi16_lo16	reachable-code	0x801b5d70	bss	cd_state	lui+lw		paired-reviewed	reviewed	manual:cd_initialize complete_event +0x10
 GAME.EXE	0x800186cc	0x7ecc		mips26	reachable-code	0x8005f140	load	EnableEvent	jal		control-flow	reviewed	manual:cd
-GAME.EXE	0x800186d4	0x7ed4	0x800186d8	mips_hi16_lo16	reachable-code	0x801b5d78	bss		lui+lw		paired-reviewed	reviewed	manual:cd
+GAME.EXE	0x800186d4	0x7ed4	0x800186d8	mips_hi16_lo16	reachable-code	0x801b5d78	bss	cd_state	lui+lw		paired-reviewed	reviewed	manual:cd_initialize data_ready_event +0x18
 GAME.EXE	0x800186dc	0x7edc		mips26	reachable-code	0x8005f140	load	EnableEvent	jal		control-flow	reviewed	manual:cd
 GAME.EXE	0x800186e4	0x7ee4		mips26	reachable-code	0x8005f390	load	ExitCriticalSection	jal		control-flow	reviewed	manual:cd
 GAME.EXE	0x80018704	0x7f04		mips26	reachable-code	0x8005f110	load	EnterCriticalSection	jal		control-flow	reviewed	manual:cd

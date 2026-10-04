@@ -1,5 +1,6 @@
 #ifndef KF_GAME_AUDIO_H
 #define KF_GAME_AUDIO_H
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 #include <kf/game/cd.h>
 #include <psyq/sdk.h>
@@ -95,7 +96,7 @@ typedef struct {
     u_long *sequence_buffer;
     s16 sequence_id;
     s32 sequence_active;
-    s32 sequence_ready;
+    b32 sequence_ready;
     VECTOR listener_position;
     u16 listener_layer;
     SVECTOR listener_rotation;

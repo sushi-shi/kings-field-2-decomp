@@ -67,7 +67,7 @@ void audio_initialize_runtime(void)
 
     audio_state.sequence_buffer = (u_long *)audio_sequence_buffer;
     audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
-    audio_state.sequence_ready = 0;
+    audio_state.sequence_ready = KF_FALSE;
     vab_slot = audio_state.vab_slots;
     index = KF_AUDIO_VAB_SLOT_COUNT - 1;
     do {

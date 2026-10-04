@@ -55,7 +55,7 @@ typedef char kf_card_header_checksum_offset[
     (u32)&((KfCardHeader *)0)->payload_checksum == 0x200 ? 1 : -1];
 
 /* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
-extern s32 input_press_pending;
+extern b32 input_press_pending;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */
 extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];

@@ -111,7 +111,7 @@ enum {
 ADDRESS(0x80022438, 0x30)
 void input_wait_release(void)
 {
-    input_press_pending = 0;
+    input_press_pending = KF_FALSE;
     while (PadRead(1) != 0) {
     }
 }

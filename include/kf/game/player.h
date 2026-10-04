@@ -1,6 +1,7 @@
 #ifndef KF_GAME_PLAYER_H
 #define KF_GAME_PLAYER_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
@@ -530,7 +531,7 @@ void player_update_vertical_motion(void);
 s32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
-s32 item_id_is_71_to_80(s32 value);
+b32 item_id_is_71_to_80(s32 value);
 void player_update_actions_and_charge(void);
 void player_render_frame_and_release_pool(void);
 void player_begin_view_reaction(u8 map_object_index);

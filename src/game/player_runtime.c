@@ -2578,9 +2578,9 @@ void player_update_horizontal_motion(void)
 
 
 ADDRESS(0x8002897c, 0x1c)
-s32 item_id_is_71_to_80(s32 value)
+b32 item_id_is_71_to_80(s32 value)
 {
-    s32 result = 0;
+    b32 result = KF_FALSE;
     if (value < 81) {
         result = value >= 71;
     }

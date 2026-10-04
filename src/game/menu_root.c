@@ -2430,7 +2430,7 @@ u16 menu_item_code_secondary[5][120] = {
 DATA(0x8006d68c, 0x4, ".data")
 s32 menu_item_model_allocation_pending = 0;
 DATA(0x8006d690, 0x4, ".data")
-s32 input_press_pending = 0;
+b32 input_press_pending = KF_FALSE;
 DATA(0x8006d694, 0x4, ".data")
 s32 menu_item_quantity = 1;
 DATA(0x8006d698, 0x4, ".data")
@@ -3123,56 +3123,56 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
 
     if (buttons & PADselect) {
         if (buttons & PADR1) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation.vx += 16;
         }
         if (buttons & PADR2) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation.vx -= 16;
         }
         if (buttons & PADL1) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation.vz += 16;
         }
         if (buttons & PADL2) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation.vz -= 16;
         }
         if (buttons & PADRup) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation_step++;
         }
         if (buttons & PADRleft) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_rotation_step--;
         }
     }
 
     if (buttons & PADstart) {
         if (buttons & PADR1) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_translation.vx += 16;
         }
         if (buttons & PADR2) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_translation.vx -= 16;
         }
         if (buttons & PADL1) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_translation.vy += 16;
         }
         if (buttons & PADL2) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_translation.vy -= 16;
         }
         if (buttons & PADRup) {
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
             menu_item_preview_translation.vz += 16;
         }
         if (buttons & PADRleft) {
             if (menu_item_preview_translation.vz > 500)
                 menu_item_preview_translation.vz -= 16;
-            input_press_pending = 0;
+            input_press_pending = KF_FALSE;
         }
     }
 
@@ -4409,7 +4409,7 @@ u32 input_read_mark_active(void)
 {
     u32 buttons = PadRead(1);
     if (buttons != 0) {
-        input_press_pending = 1;
+        input_press_pending = KF_TRUE;
     }
     return buttons;
 }
@@ -4419,8 +4419,8 @@ void input_wait_brief_release(void)
 {
     s32 polls;
 
-    if (input_press_pending == 1) {
-        input_press_pending = 0;
+    if (input_press_pending == KF_TRUE) {
+        input_press_pending = KF_FALSE;
         for (polls = 0; PadRead(1) != 0;) {
             if (polls++ < 6) {
                 VSync(0);

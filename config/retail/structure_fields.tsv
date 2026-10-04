@@ -334,7 +334,7 @@ KfFloorItem	0x14	0x04	unknown_14	u8[4]	opaque	game headers;asm	field use not yet
 KfGameAudioState	0x00	0x04	sequence_buffer	u_long *	supported	game/audio.h;GAME 0x80013b0c;audio_start_sequence	sequence data pointer initialized at startup
 KfGameAudioState	0x04	0x02	sequence_id	s16	supported	game/audio.h;GAME 0x80013b24/0x80013b44;audio_stop_sequence	SDK sequence handle stored and read as signed halfword
 KfGameAudioState	0x08	0x04	sequence_active	s32	supported	game/audio.h;GAME 0x80013a34/0x80013b58;audio_stop_sequence	active sequence state word
-KfGameAudioState	0x0c	0x04	sequence_ready	s32	supported	game/audio.h;GAME 0x80013a3c/0x80013af8;resource_transition_step	ready state word set after resource loading
+KfGameAudioState	0x0c	0x04	sequence_ready	b32	supported	game/audio.h;GAME 0x80013a3c/0x80013af8;resource_transition_step	ready state word set after resource loading
 KfGameAudioState	0x10	0x10	listener_position	VECTOR	supported	game/audio.h;GAME 0x80013cb8/0x80014048;audio_update_listener	three-word listener world position in a 16-byte vector
 KfGameAudioState	0x20	0x02	listener_layer	u16	supported	game/audio.h;GAME 0x80013dac/0x80014094;audio_play_spatial	map-cell layer for spatial sound occlusion
 KfGameAudioState	0x22	0x08	listener_rotation	SVECTOR	supported	game/audio.h;GAME 0x800140a4;audio_update_listener	listener orientation copied from camera rotation

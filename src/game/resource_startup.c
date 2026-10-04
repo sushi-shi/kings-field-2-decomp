@@ -560,7 +560,7 @@ complete:
 begin_phase_five:
         state_8017d118.transition_phase = RESOURCE_STEP_FADE_AUDIO;
         state_8017d118.sequence_fade_volume = RESOURCE_SEQUENCE_FADE_START_VOLUME;
-        audio_state.sequence_ready = 0;
+        audio_state.sequence_ready = KF_FALSE;
 
     case RESOURCE_STEP_FADE_AUDIO:
         if (audio_state.sequence_active != 0) {
@@ -594,7 +594,7 @@ begin_phase_five:
 
     case RESOURCE_STEP_FINISH_AUDIO:
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] < 100) {
-            audio_state.sequence_ready = 1;
+            audio_state.sequence_ready = KF_TRUE;
             audio_start_sequence();
         }
         goto complete;

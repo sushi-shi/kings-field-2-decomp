@@ -96,6 +96,7 @@ KfMapObjectTailAction84PatternView	0xc	supported	GAME 0x80037ee4..0x80037f84;map
 KfMapObjectTailAction88CellCopyView	0xc	supported	GAME 0x80037c34..0x80037c74;map_cell_copy_rotated_fields	action 88 carries rotated copy coordinates and dimensions at its own tail offsets
 KfMapObjectTailAction89LayerFadeView	0xc	supported	GAME 0x80036828 marker compare;GAME 0x80037ce4 delay copy	action 89 marker and initial layer-fade delay share one tail view
 KfMapObjectTailAmbientSoundView	0xc	supported	GAME 0x80032858..0x80032a5c;map_object action 0x1f	ambient-sound action uses region, volume, range, attenuation, and repeat period bytes
+KfMapObjectTailAnimatedView	0xc	supported	game/map_object.h;render_scene_and_update_resources;resource_advance_transition	Overlapping action-0xf0 view of the 12-byte tail; not a separate object
 KfMapObjectTailCellCopyView	0xc	supported	GAME 0x80035c08..0x80035c48;map_cell_copy_rotated_fields	actions 3 and 4 carry source and destination map-cell coordinates
 KfMapObjectTailCollisionProbeView	0xc	supported	GAME 0x80038148..0x800383c8;effect_dispatch_magic_impact	action 81 uses a camera-region gate and dispatches magic collision damage
 KfMapObjectTailCopyWords	0x08	supported	game/map_object.h;GAME 0x80035a3c-0x80035a48	two copied resource words; their action-specific meanings remain unresolved
@@ -106,8 +107,11 @@ KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object coll
 KfMapObjectTailInitialRotationView	0xc	supported	GAME 0x80035abc..0x80035b1c and 0x80035da8..0x80035de8;map_object_initialize_from_placements	three byte codes initialize object rotation axes for placement kinds 0x40 and 0x0d
 KfMapObjectTailLinkedPropertyView	0xc	supported	GAME 0x800355d8;map_object_update_actions actions 5/8/22	linked map-object index used by property updates
 KfMapObjectTailMarkerView	0xc	supported	GAME 0x800367c4..0x80036894;map_object_apply_marker_signal;map_object_check_and_consume_marker	marker-driven actions compare and consume the tail +0x38 signal byte
+KfMapObjectTailNotificationView	0xc	supported	game/map_object.h;event_scene_command_dispatch;event_world_dispatch_interaction	Overlapping notification-byte view of the 12-byte tail; not a separate object
 KfMapObjectTailPair38View	0xc	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTailResourceTriggerView	0xc	supported	game/map_object.h;map_object_update_actions;resource_request_transition	Overlapping action-0xe0 resource-selector view of the 12-byte tail; not a separate object
 KfMapObjectTailScaleLinkView	0xc	supported	GAME 0x8003860c..0x800386dc;map_object_update_actions	action 19 controls a linked object's scale in 1/32 units
+KfMapObjectTailTransitionView	0xc	supported	game/map_object.h;map_object_update_actions action 34	Overlapping destination-cell and yaw-code view of the 12-byte tail; not a separate object
 KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
 KfMapObjectTemplateCellActionView	0x18	supported	GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	rotated map-cell action reads template width, height, and spatial sound selector
 KfMapObjectTemplateCollisionView	0x18	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height

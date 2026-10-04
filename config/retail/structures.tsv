@@ -45,6 +45,7 @@ KfCollisionShapeOffsetTable	0x200	supported	game/collision_cache.h;GAME 0x2ab5c.
 KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfEffectCacheTail	0x0c	supported	GAME 0x80032c4c effect+0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg;animation_prepare_asset_vertices owner_slot	Renderer animation-cache slot followed by eight bytes of kind-specific state
+KfEffectCollisionLatch	0x01	supported	game/effect.h;GAME 0x80042b3c lbu/0x80042b50 sb;effect_update_dispatch	One-byte collision-impact latch at effect record +0x40; overlaps other kind payloads
 KfEffectKind101Motion	0x04	supported	GAME 0x80045584/0x800455ac;effect_construct_record kind 101	Two unsigned halfword steps at effect record +0x40
 KfEffectKind10Targeting	0x02	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Kind-10 actor index and remaining emissions at record +0x40
 KfEffectKind102Payload	0x02	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Signed amplitude at effect record +0x40
@@ -52,6 +53,7 @@ KfEffectKind105Attachment	0x04	supported	GAME 0x800441e8-0x80044364;effect_const
 KfEffectKind109Target	0x01	observed	GAME 0x8004162c/0x80041638;GAME 0x80045b6c	Kind-109 linked effect record index at +0x40
 KfEffectKind12Aim	0x08	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Four signed aiming parameters at record +0x40
 KfEffectKind23Attachment	0x06	supported	GAME 0x800415dc/0x800415e8/0x800415f8;GAME 0x80042940/0x80042984/0x80042a88	Signed actor and vertex indices followed by an unsigned animation-phase threshold at record +0x40
+KfEffectKind2Scale	0x06	supported	game/effect.h;GAME 0x80043c1c/0x80043c6c/0x80043c78/0x80043c9c	Three halfwords at effect record +0x40; kind-2 payload view, not a standalone object
 KfEffectKind46State	0x04	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Signed phase and linked-effect index, then unsigned Q12 age, at record +0x40
 KfEffectKind5Fanout	0x04	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Kind-5 initial child count, actor index, and signed remaining count at record +0x40
 KfEffectKind8State	0x04	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Parent effect index and unsigned vertical step at record +0x40

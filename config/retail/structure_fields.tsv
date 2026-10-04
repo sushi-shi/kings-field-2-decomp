@@ -212,6 +212,7 @@ KfDisplayState	0x24	0x10000	ordering_tables	KfOrderingTable[2]	supported	game he
 KfDisplayState	0x10024	0x04	ordering_table	u32 *	supported	game headers;asm;xrefs	member used by reconstructed code
 KfEffectCacheTail	0x00	0x04	animation_cache	KfPoolRecord *	observed	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg;animation_prepare_asset_vertices owner_slot;pool_record_release zeroes owner_slot	Per-effect animation vertex cache owner slot
 KfEffectCacheTail	0x04	0x08	payload	KfEffectKindPayload	supported	GAME 0x80040308;GAME 0x80042650;GAME 0x8003247c	Kind-specific state begins at effect record +0x40
+KfEffectCollisionLatch	0x00	0x01	impact_handled	u8	supported	game/effect.h;GAME 0x80042b3c lbu/0x80042b50 sb;effect_update_dispatch	Suppresses repeated magic impact while contact persists
 KfEffectKind101Motion	0x00	0x02	scale_step	u16	supported	GAME 0x800455ac lhu;effect_construct_record kind 101	Per-tick increment applied to all three scales
 KfEffectKind101Motion	0x02	0x02	vertical_step	u16	supported	GAME 0x80045584 lhu;effect_construct_record kind 101	Per-tick increment applied to vertical direction
 KfEffectKind10Targeting	0x00	0x01	actor_index	u8	supported	GAME 0x80044da8 lbu;GAME 0x80044eb4 sb	Actor record selected for kind-10 emission
@@ -228,6 +229,9 @@ KfEffectKind12Aim	0x06	0x02	close_scale	s16	supported	GAME 0x80040db4 sh;GAME 0x
 KfEffectKind23Attachment	0x00	0x02	actor_index	s16	supported	GAME 0x800415dc sh;GAME 0x80042940 lh	Signed actor index selecting actor_state.actors during kind-23 attachment
 KfEffectKind23Attachment	0x02	0x02	vertex_index	s16	supported	GAME 0x800415e8 sh;GAME 0x80042984 lh	Signed animation vertex index passed to actor_sample_rotated_animation_vertex
 KfEffectKind23Attachment	0x04	0x02	release_animation_phase	u16	supported	GAME 0x800415f8 sh;GAME 0x80042a88 lhu	Unsigned actor animation phase threshold releasing the attached effect
+KfEffectKind2Scale	0x00	0x02	max_scale	u16	supported	game/effect.h;GAME 0x80043c9c lh;effect_update_dispatch	Signed comparison after scaling ends the kind-2 effect
+KfEffectKind2Scale	0x02	0x02	scale_step	u16	supported	game/effect.h;GAME 0x80043c1c lhu/0x80043c6c lh	Unsigned growth step also used as signed damage-radius adjustment
+KfEffectKind2Scale	0x04	0x02	radial_damage_parameter	u16	supported	game/effect.h;GAME 0x80043c78 lh;effect_update_dispatch	Passed as signed halfword to radial magic damage
 KfEffectKind46State	0x00	0x01	phase	s8	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
 KfEffectKind46State	0x01	0x01	linked_effect_index	s8	supported	GAME 0x80042dc8 lb;effect_construct_record kind 46	Signed index into effect_state.records
 KfEffectKind46State	0x02	0x02	age_q12	u16	supported	GAME 0x80042ec0 sh;GAME 0x80042ed0 lh;GAME 0x80042edc lhu	Fade interpolation age advanced by 512 to 4096

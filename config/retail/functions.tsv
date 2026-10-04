@@ -824,12 +824,12 @@ GAME.EXE	0x8005bb6c	0x4b36c	0xa0	0xa0	1	function	sdk-object-label	PopMatrix		psy
 GAME.EXE	0x8005bc0c	0x4b40c	0x48	0x48	1	function	sdk-object-label	ReadRotMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xdf8;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005bc54	0x4b454	0x48	0x48	1	function	sdk-object-label	ReadLightMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xe40;exact 0xed0-byte section;retail return delay slot
 GAME.EXE	0x8005bc9c	0x4b49c	0x48	0x48	1	function	sdk-object-label	ReadColorMatrix		psyq-sdk30:LIBGTE.LIB/MTX.OBJ	archive XDEF .text+0xe88;exact 0xed0-byte section;retail return delay slot
-GAME.EXE	0x8005bce4	0x4b4e4	0x80	0x80	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005bd64	0x4b564	0x90	0x90	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005bdf4	0x4b5f4	0x180	0x180	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005bf74	0x4b774	0x1c0	0x1c0	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005c134	0x4b934	0x818	0x818	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
-GAME.EXE	0x8005c94c	0x4c14c	0x11c	0x11c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
+GAME.EXE	0x8005bce4	0x4b4e4	0x80	0x80	1	function	sdk-object-label	Clip3FTP		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0x0;exact 0xd84-byte section;retail return delay slot
+GAME.EXE	0x8005bd64	0x4b564	0x90	0x90	1	function	sdk-object-label	Clip4FTP		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0x80;exact 0xd84-byte section;retail return delay slot
+GAME.EXE	0x8005bdf4	0x4b5f4	0x180	0x180	1	function	sdk-object-label	Clip3FT		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0x110;exact 0xd84-byte section;retail return delay slot
+GAME.EXE	0x8005bf74	0x4b774	0x1c0	0x1c0	1	function	sdk-object-label	Clip4FT		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0x290;exact 0xd84-byte section;retail return delay slot
+GAME.EXE	0x8005c134	0x4b934	0x818	0x818	1	function	sdk-object-label	ClipFT		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0x450;exact 0xd84-byte section;retail return delay slot
+GAME.EXE	0x8005c94c	0x4c14c	0x11c	0x11c	1	function	sdk-object-label	ZClipFT		psyq-sdk30:LIBGTE.LIB/CLIP_FT.OBJ	native XDEF .text+0xc68;exact 0xd84-byte section;retail return delay slot
 GAME.EXE	0x8005ca68	0x4c268	0x11c	0x11c	1	function	ghidra-analysis			Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08	machine-assisted WIP boundary
 GAME.EXE	0x8005cb84	0x4c384	0x2c	0x2c	1	function	sdk-object-label	RotTransPers		psyq-sdk30:LIBGTE.LIB/SMP.OBJ	archive XDEF .text+0x0;exact 0x4f0-byte section;retail return delay slot
 GAME.EXE	0x8005cbb0	0x4c3b0	0x54	0x54	1	function	sdk-object-label	RotTransPers3		psyq-sdk30:LIBGTE.LIB/SMP.OBJ	archive XDEF .text+0x2c;exact 0x4f0-byte section;retail return delay slot

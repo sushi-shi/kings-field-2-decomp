@@ -436,6 +436,8 @@ KfMapObjectTail	0x0	0xc	linked_property	KfMapObjectTailLinkedPropertyView	suppor
 KfMapObjectTail	0x0	0xc	action_83	KfMapObjectTailAction83View	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	action 83 completion marker view
 KfMapObjectTail	0x0	0xc	scale_link	KfMapObjectTailScaleLinkView	supported	GAME 0x8003860c..0x800386dc;map_object_update_actions	action 19 linked object and scale step view
 KfMapObjectTail	0x0	0xc	pair_38	KfMapObjectTailPair38View	supported	game/map_object.h;event_world_dispatch_interaction	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTail	0x0	0xc	marker	KfMapObjectTailMarkerView	supported	game/map_object.h;GAME 0x800367c4..0x80036894;map_object_apply_marker_signal	marker action view; +0x38 byte is compared and consumed
+KfMapObjectTail	0x0	0xc	initial_rotation	KfMapObjectTailInitialRotationView	supported	game/map_object.h;GAME 0x80035abc..0x80035d88;map_object_initialize_from_placements	placement rotation byte codes at tail +0x3a..+0x3c
 KfMapObjectTail	0x0	0xc	action_51_marker	KfMapObjectTailAction51MarkerView	supported	GAME 0x80036800 lbu;map_object_apply_marker_signal action 0x51	action-specific marker-byte view
 KfMapObjectTail	0x0	0xc	spawn_bytes	KfMapObjectTailSpawnByteFields	supported	game/map_object.h;render_scene_and_update_resources	byte view of the packed spawn sequence
 KfMapObjectTail	0x0	0xc	reset_words	u32[3]	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view

@@ -371,13 +371,13 @@ void effect_apply_current_magic_backstep(s32 kind);
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
                                       s32 arg3, s32 arg4, s32 arg5);
 s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
-                      s32 probe_angle, SVECTOR *motion);
+                      s32 probe_height_flags, SVECTOR *motion);
 s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
-                        s32 probe_radius, s32 probe_angle, s32 proximity,
+                        s32 probe_radius, s32 probe_height_flags, s32 proximity,
                         s32 close_scale, s32 target_filter);
 s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance,
-                         s32 probe_radius, s32 probe_angle);
+                         s32 probe_radius, s32 probe_height_flags);
 void effect_scale_step(s32 multiplier, s32 limit, s32 increment,
                        s32 arg3, s32 arg5);
 void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode);

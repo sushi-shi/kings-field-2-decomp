@@ -1064,8 +1064,8 @@ void effect_rotate_scale_offset_y(const SVECTOR *offset, VECTOR *output, s16 ang
 }
 
 ADDRESS(0x8004177c, 0x1e0)
-s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius, s32 probe_angle,
-                  SVECTOR *motion)
+s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
+                      s32 probe_height_flags, SVECTOR *motion)
 {
     KfEffectRecord *record = effect_state.current_record;
     s32 length;
@@ -1080,15 +1080,15 @@ s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius, s32 probe_ang
         record->direction.vz = record->direction.vz * max_length / length;
     }
     addVector(&record->position, &record->direction);
-    if (probe_angle == -1) {
+    if (probe_height_flags == -1) {
         return 0;
     }
-    return -!!effect_probe_collision_by_type(&record->position, probe_radius, probe_angle);
+    return -!!effect_probe_collision_by_type(&record->position, probe_radius, probe_height_flags);
 }
 
 ADDRESS(0x8004195c, 0x1b8)
 s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
-                        s32 probe_radius, s32 probe_angle, s32 proximity,
+                        s32 probe_radius, s32 probe_height_flags, s32 proximity,
                         s32 close_scale, s32 target_filter)
 {
     KfEffectRecord *record = effect_state.current_record;
@@ -1138,13 +1138,13 @@ move:
     if (distance >= 0 && distance <= proximity) {
         scale = close_scale;
     }
-    return effect_move_probe(scale, max_length, probe_radius, probe_angle, &motion);
+    return effect_move_probe(scale, max_length, probe_radius, probe_height_flags, &motion);
 }
 
 ADDRESS(0x80041b14, 0x1bc)
 s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance, s32 probe_radius,
-                         s32 probe_angle)
+                         s32 probe_height_flags)
 {
     KfEffectRecord *record = effect_state.current_record;
     VECTOR delta;
@@ -1166,7 +1166,7 @@ s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
     motion.vx = (delta.vx << KF_FIXED12_BITS) / length;
     motion.vy = (delta.vy << KF_FIXED12_BITS) / length;
     motion.vz = (delta.vz << KF_FIXED12_BITS) / length;
-    return effect_move_probe(scale, max_length, probe_radius, probe_angle, &motion);
+    return effect_move_probe(scale, max_length, probe_radius, probe_height_flags, &motion);
 }
 
 ADDRESS(0x80041cd0, 0xac)

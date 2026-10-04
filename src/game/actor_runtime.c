@@ -1393,12 +1393,10 @@ state_10: {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
             }
             actor->motion.vector.vy = 0;
-            actor->vertical_motion_state = 0;
-            return;
+            goto reset_vertical_motion_state;
         }
         if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) goto advance_rise;
-        actor->vertical_motion_state = 0;
-        return;
+        goto reset_vertical_motion_state;
     }
 
 state_20:
@@ -1409,6 +1407,7 @@ state_20:
             return;
         }
         actor->position.vy = KF_COLLISION_CACHE_RESULT;
+reset_vertical_motion_state:
         actor->vertical_motion_state = 0;
         return;
 

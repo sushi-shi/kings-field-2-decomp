@@ -91,6 +91,13 @@ KfActorTail72Motion	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x800
 KfActorTail72Motion	0x6	0x2	baseline	s16	supported	GAME 0x8003d784 sh and 0x8003d804 lh	Signed actor height baseline for selectors 12/16
 KfActorTail72Script	0x0	0x2	word_index	u16	supported	GAME 0x8003ed70 lh;0x8003ed88 lhu	Script word index at actor +0x72; both signed and unsigned reads observed
 KfActorTail72Script	0x2	0x2	effect_cycle_index	u16	supported	GAME 0x8003eeb8 lh;0x8003eed4 lhu;actor_dispatch_group_effect kind 0x7b	Counts action-25 effect batches; nonzero suppresses repeated spatial sound for kind 0x7b
+KfActorWord20	0x0	0x2	home_yaw	u16	supported	game/actor.h;GAME 0x8003900c lhu;actor_prepare_and_initialize	Home yaw copied to actor rotation
+KfActorWord20	0x0	0x2	linked_map_object_slot	u16	supported	game/actor.h;GAME 0x8003ec3c lhu;actor_update_behavior	Action-specific map-object pool index
+KfActorWord22	0x0	0x2	home_local_z	s16	supported	game/actor.h;GAME 0x80038d20 lh;actor_set_home_position	Signed offset added to the home-cell Z coordinate
+KfActorWord22	0x0	0x2	linked_actor_slot	s16	supported	game/actor.h;actor_score_target_candidate;actor_find_overlap;actor_update_behavior	Linked actor pool slot in selected modes
+KfActorWord22	0x0	0x2	linked_map_object_slot	s16	supported	game/actor.h;GAME 0x8003f724 lh;actor_update_frame	Map-object pool slot in map-attached mode
+KfActorWord24	0x0	0x2	home_local_x	s16	supported	game/actor.h;GAME 0x80038d18 lh;actor_set_home_position	Signed offset added to the home-cell X coordinate
+KfActorWord24	0x0	0x2	linked_animation_vertex_index	s16	supported	game/actor.h;GAME 0x8003f558 lh;actor_update_behavior	Animation vertex index in linked-actor action
 KfAnimClip	0x00	0x02	keyframe_count	u16	supported	asm;animation_select_keyframe	frame count for the selected clip
 KfAnimClip	0x02	0x02	unknown_02	u16	opaque	game/animation.h;animation_select_keyframe	meaning unresolved
 KfAnimClip	0x04	0x04	keyframe_offsets	u32[1]	candidate	asm;animation_select_keyframe	first offset in variable-length keyframe table

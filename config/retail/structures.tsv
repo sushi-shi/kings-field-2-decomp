@@ -12,6 +12,9 @@ KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout fr
 KfActorTail72	0x8	supported	game/actor.h;GAME 0x8003e414-0x8003e468;GAME 0x8003d784;GAME 0x8003d804;GAME 0x8003ed70-0x8003eed4	SVECTOR output/copy overlaps motion baseline, signed state, and script halfwords
 KfActorTail72Motion	0x8	supported	game/actor.h;GAME 0x8003d784;GAME 0x8003d804	Euler halfwords followed by signed actor +0x78 baseline
 KfActorTail72Script	0x4	supported	game/actor.h;GAME 0x8003ed70;GAME 0x8003ed88;GAME 0x8003eeb8;GAME 0x8003eed4	Minimum two-halfword action-script state; first word has signed and unsigned reads
+KfActorWord20	0x2	supported	game/actor.h;GAME 0x8003900c lhu;GAME 0x8003ec3c lhu	Actor +0x20 halfword used as home yaw or linked map-object slot; original union spelling unproved
+KfActorWord22	0x2	supported	game/actor.h;GAME 0x80038d20 lh;GAME 0x8003f724 lh	Actor +0x22 signed halfword used as home-local Z or linked slot; original union spelling unproved
+KfActorWord24	0x2	supported	game/actor.h;GAME 0x80038d18 lh;GAME 0x8003f558 lh	Actor +0x24 signed halfword used as home-local X or animation vertex index; original union spelling unproved
 KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset

@@ -3257,8 +3257,8 @@ GAME.EXE	0x8001c4e8	0xbce8		mips26	reachable-code	0x800210ac	load		jal		control-
 GAME.EXE	0x8001c508	0xbd08		mips26	reachable-code	0x800217f0	load	menu_draw_nine_slice_panel	jal		control-flow	reviewed	manual:decoded two-option dialog call or internal branch
 GAME.EXE	0x8001c510	0xbd10		mips26	reachable-code	0x80021be0	load		jal		control-flow	reviewed	manual:decoded two-option dialog call or internal branch
 GAME.EXE	0x8001c524	0xbd24		mips26	reachable-code	0x8001c3c4	load		j		control-flow	reviewed	manual:decoded two-option dialog call or internal branch
-GAME.EXE	0x8001c560	0xbd60	0x8001c564	mips_hi16_lo16	reachable-code	0x80064af0	load		lui+addiu	a3	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001c5c8	0xbdc8	0x8001c5cc	mips_hi16_lo16	reachable-code	0x80064b04	load		lui+addiu	a2	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001c560	0xbd60	0x8001c564	mips_hi16_lo16	reachable-code	0x80064af0	load	menu_label_suffixes	lui+addiu	a3	paired-reachable	reviewed	manual:menu_prepare_card_browser_rows raw table entry 0 pointer and source memcpy
+GAME.EXE	0x8001c5c8	0xbdc8	0x8001c5cc	mips_hi16_lo16	reachable-code	0x80064b04	load	menu_label_suffixes	lui+addiu	a2	paired-reachable	reviewed	manual:menu_prepare_card_browser_rows raw table entry 1 pointer and source memcpy
 GAME.EXE	0x8001c63c	0xbe3c	0x8001c640	mips_hi16_lo16	reachable-code	0x80064b18	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 2
 GAME.EXE	0x8001c6a4	0xbea4	0x8001c6a8	mips_hi16_lo16	reachable-code	0x80064b2c	load		lui+addiu	a3	paired-reachable	reviewed	manual:menu label suffix copy entry 3
 GAME.EXE	0x8001c70c	0xbf0c	0x8001c710	mips_hi16_lo16	reachable-code	0x80064b40	load		lui+addiu	a2	paired-reachable	reviewed	manual:menu label suffix copy entry 4

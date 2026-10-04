@@ -6044,7 +6044,7 @@ GAME.EXE	0x8002b58c	0x1ad8c	0x8002b590	mips_hi16_lo16	instruction-word	0x801d8d5
 GAME.EXE	0x8002b59c	0x1ad9c		mips26	instruction-word	0x8002b5c4	load		j		decoded-internal-jump	reviewed	manual:collision_shape_dispatch;retail-word-target
 GAME.EXE	0x8002b5ac	0x1adac	0x8002b5b0	mips_hi16_lo16	instruction-word	0x801d8d4c	bss		lui+lw	v1	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
 GAME.EXE	0x8002b5bc	0x1adbc	0x8002b5c0	mips_hi16_lo16	instruction-word	0x801d8d5c	bss		lui+sw	at	paired-reviewed	reviewed	manual:collision_shape_dispatch;retail-pair
-GAME.EXE	0x8002b634	0x1ae34		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002b634	0x1ae34		mips26	reachable-code	0x8002a988	load	collision_sample_map_cell_layer	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b64c	0x1ae4c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b654	0x1ae54	0x8002b658	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b6b0	0x1aeb0	0x8002b6b4	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -6057,7 +6057,7 @@ GAME.EXE	0x8002b714	0x1af14	0x8002b718	mips_hi16_lo16	reachable-code	0x801d8d4c	
 GAME.EXE	0x8002b71c	0x1af1c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b724	0x1af24	0x8002b728	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b788	0x1af88	0x8002b78c	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_occupancy_add
-GAME.EXE	0x8002b834	0x1b034		mips26	reachable-code	0x8002a988	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002b834	0x1b034		mips26	reachable-code	0x8002a988	load	collision_sample_map_cell_layer	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002b84c	0x1b04c		mips26	reachable-code	0x8002aaa4	load	collision_evaluate_shape_records	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002b874	0x1b074	0x8002b878	mips_hi16_lo16	reachable-code	0x801d8d60	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b88c	0x1b08c	0x8002b890	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
@@ -6074,17 +6074,17 @@ GAME.EXE	0x8002b95c	0x1b15c	0x8002b960	mips_hi16_lo16	reachable-code	0x801767d0	
 GAME.EXE	0x8002b96c	0x1b16c	0x8002b970	mips_hi16_lo16	reachable-code	0x801d8d70	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b9b4	0x1b1b4	0x8002b9b8	mips_hi16_lo16	reachable-code	0x801d8d80	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002b9c4	0x1b1c4	0x8002b9c8	mips_hi16_lo16	reachable-code	0x801d8d82	bss		lui+sh		paired-reviewed	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002ba24	0x1b224		mips26	reachable-code	0x8002b7f8	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002ba24	0x1b224		mips26	reachable-code	0x8002b7f8	load	collision_query_shapes_with_layer_sample	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002ba3c	0x1b23c	0x8002ba40	mips_hi16_lo16	reachable-code	0x801d8d44	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002ba60	0x1b260	0x8002ba64	mips_hi16_lo16	reachable-code	0x801d8d50	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002ba68	0x1b268		mips26	reachable-code	0x8002bab4	load		j		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002ba98	0x1b298	0x8002ba9c	mips_hi16_lo16	reachable-code	0x801c7540	bss		lui+addiu		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002baa8	0x1b2a8	0x8002baac	mips_hi16_lo16	reachable-code	0x801d8d40	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bab4	0x1b2b4	0x8002bab8	mips_hi16_lo16	reachable-code	0x801d8d40	bss		lui+lw		paired-reviewed	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002baec	0x1b2ec		mips26	reachable-code	0x8003a9f4	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002baec	0x1b2ec		mips26	reachable-code	0x8003a9f4	load	actor_find_overlap_excluding_target_type3	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002baf4	0x1b2f4	0x8002baf8	mips_hi16_lo16	reachable-code	0x801d8d64	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bb08	0x1b308		mips26	reachable-code	0x8002bb54	load		j		control-flow	reviewed	manual:collision_height_wrappers
-GAME.EXE	0x8002bb24	0x1b324		mips26	reachable-code	0x8003ab5c	load		jal		control-flow	reviewed	manual:collision_height_wrappers
+GAME.EXE	0x8002bb24	0x1b324		mips26	reachable-code	0x8003ab5c	load	actor_find_overlap	jal		control-flow	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bb2c	0x1b32c	0x8002bb30	mips_hi16_lo16	reachable-code	0x801d8d64	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bb48	0x1b348	0x8002bb4c	mips_hi16_lo16	reachable-code	0x801d8d64	bss		lui+sw		paired-reviewed	reviewed	manual:collision_height_wrappers
 GAME.EXE	0x8002bb68	0x1b368		mips26	reachable-code	0x80036078	load	map_object_find_collision_at_point	jal		control-flow	reviewed	manual:collision_height_wrappers
@@ -6104,19 +6104,19 @@ GAME.EXE	0x8002bd1c	0x1b51c	0x8002bd20	mips_hi16_lo16	reachable-code	0x80191e0a	
 GAME.EXE	0x8002bd24	0x1b524	0x8002bd28	mips_hi16_lo16	reachable-code	0x80191e08	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bd2c	0x1b52c	0x8002bd30	mips_hi16_lo16	reachable-code	0x80191e06	bss		lui+sh		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bd4c	0x1b54c	0x8002bd50	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bd70	0x1b570		mips26	reachable-code	0x80014b0c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bd80	0x1b580		mips26	reachable-code	0x80014b0c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bd90	0x1b590		mips26	reachable-code	0x80014b0c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002bdf4	0x1b5f4		mips26	reachable-code	0x800158b4	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002be10	0x1b610		mips26	reachable-code	0x800158b4	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002be2c	0x1b62c		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002be40	0x1b640		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002be54	0x1b654		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
-GAME.EXE	0x8002be74	0x1b674		mips26	reachable-code	0x8001584c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bd70	0x1b570		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bd80	0x1b580		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bd90	0x1b590		mips26	reachable-code	0x80014b0c	load	matrix_rotate_quarter_turns	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bdf4	0x1b5f4		mips26	reachable-code	0x800158b4	load	fixed_lerp_nine_halfwords_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002be10	0x1b610		mips26	reachable-code	0x800158b4	load	fixed_lerp_nine_halfwords_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002be2c	0x1b62c		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002be40	0x1b640		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002be54	0x1b654		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002be74	0x1b674		mips26	reachable-code	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002bec8	0x1b6c8	0x8002becc	mips_hi16_lo16	reachable-code	0x801921ac	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bee8	0x1b6e8		mips26	reachable-code	0x8002bdbc	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bee8	0x1b6e8		mips26	reachable-code	0x8002bdbc	load	interpolate_collision_row_fields	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002bf0c	0x1b70c	0x8002bf10	mips_hi16_lo16	reachable-code	0x801921a8	bss		lui+sw		paired-reviewed	reviewed	manual:graphics
-GAME.EXE	0x8002bf94	0x1b794		mips26	reachable-code	0x8002be9c	load		jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
+GAME.EXE	0x8002bf94	0x1b794		mips26	reachable-code	0x8002be9c	load	interpolate_collision_rows	jal		control-flow	reviewed	manual:collision_height_wrappers decoded direct call and source
 GAME.EXE	0x8002bfac	0x1b7ac	0x8002bfb0	mips_hi16_lo16	reachable-code	0x80191f68	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bfd8	0x1b7d8	0x8002bfdc	mips_hi16_lo16	reachable-code	0x80191f54	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x8002bfe4	0x1b7e4	0x8002bfe8	mips_hi16_lo16	reachable-code	0x80191f58	bss		lui+lhu		paired-reviewed	reviewed	manual:graphics

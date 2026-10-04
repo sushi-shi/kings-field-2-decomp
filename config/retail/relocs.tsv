@@ -7742,15 +7742,15 @@ GAME.EXE	0x8003bfa4	0x2b7a4	0x8003bfa8	mips_hi16_lo16	reachable-code	0x801749ac	
 GAME.EXE	0x8003bfb0	0x2b7b0		mips26	reachable-code	0x8003bba0	load	actor_turn_toward_angle	jal		control-flow	reviewed	manual:actor_motion_angles
 GAME.EXE	0x8003bfc0	0x2b7c0		mips26	reachable-code	0x800147a0	load	angle_approach	jal		control-flow	reviewed	manual:actor_motion_angles
 GAME.EXE	0x8003bfd8	0x2b7d8		mips26	reachable-code	0x8003be38	load	actor_move_along_euler_angles	jal		control-flow	reviewed	manual:actor_motion_angles
-GAME.EXE	0x8003c030	0x2b830		mips26	reachable-code	0x80034344	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8003c030	0x2b830		mips26	reachable-code	0x80034344	load	animation_sample_vertex	jal		control-flow	reviewed	manual:actor animation direct jal; raw target, source call, delay slot
 GAME.EXE	0x8003c05c	0x2b85c		mips26	reachable-code	0x8003c0c4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003c0ec	0x2b8ec		mips26	reachable-code	0x80015104	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8003c0ec	0x2b8ec		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:actor animation direct jal; raw target, source call, delay slot
 GAME.EXE	0x8003c148	0x2b948		mips26	reachable-code	0x8003c20c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003c150	0x2b950		mips26	reachable-code	0x8003c20c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003c16c	0x2b96c	0x8003c170	mips_hi16_lo16	reachable-code	0x801716e0	bss		lui+addiu		paired-reviewed	reviewed	manual:actor_group_position
 GAME.EXE	0x8003c1a4	0x2b9a4		mips26	reachable-code	0x8003c1fc	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8003c1ac	0x2b9ac	0x8003c1b0	mips_hi16_lo16	reachable-code	0x801716ec	bss		lui+addiu		paired-reviewed	reviewed	manual:actor_group_position
-GAME.EXE	0x8003c1c8	0x2b9c8		mips26	reachable-code	0x80015104	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8003c1c8	0x2b9c8		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:actor group-position direct jal; raw target, source call, delay slot
 GAME.EXE	0x8003c23c	0x2ba3c	0x8003c240	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_animation_event
 GAME.EXE	0x8003c25c	0x2ba5c		mips26	reachable-code	0x8003c274	load		j		control-flow	reviewed	manual:actor_animation_event
 GAME.EXE	0x8003c294	0x2ba94		mips26	reachable-code	0x8003c2b4	load		j		control-flow	reviewed	manual:actor_animation_event

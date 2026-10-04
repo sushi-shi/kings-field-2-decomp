@@ -2039,7 +2039,7 @@ GAME.EXE	0x80013ac4	0x32c4	0x80013ac8	mips_hi16_lo16	reachable-code	0x80164a68	b
 GAME.EXE	0x80013acc	0x32cc	0x80013ad0	mips_hi16_lo16	reachable-code	0x801984c8	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013ae4	0x32e4	0x80013ae8	mips_hi16_lo16	reachable-code	0x80198598	bss		lui+lbu	v0	paired-reviewed	reviewed	manual:audio_sequence
 GAME.EXE	0x80013af8	0x32f8	0x80013afc	mips_hi16_lo16	reachable-code	0x8019763c	bss		lui+lw	v0	paired-reviewed	reviewed	manual:audio_sequence
-GAME.EXE	0x80013b0c	0x330c	0x80013b10	mips_hi16_lo16	reachable-code	0x80197630	bss		lui+lw	a0	paired-reviewed	reviewed	manual:audio_sequence
+GAME.EXE	0x80013b0c	0x330c	0x80013b10	mips_hi16_lo16	reachable-code	0x80197630	bss	audio_state	lui+lw	a0	paired-reviewed	reviewed	manual:audio_sequence
 GAME.EXE	0x80013b14	0x3314	0x80013b18	mips_hi16_lo16	reachable-code	0x80197664	bss		lui+lh	a1	paired-reviewed	reviewed	manual:audio_sequence
 GAME.EXE	0x80013b1c	0x331c		mips26	reachable-code	0x80055544	load	SsSeqOpen	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x80013b24	0x3324	0x80013b28	mips_hi16_lo16	reachable-code	0x80197634	bss		lui+sh	at	paired-reviewed	reviewed	manual:audio_sequence

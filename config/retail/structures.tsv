@@ -25,8 +25,6 @@ KfCdRequest	0x28	supported	game/cd.h;asm;cd_initialize;func_80017d54	one queued 
 KfCollisionCache	0x44	candidate	game/collision_cache.h;GAME 0x8002b67c and 0x8002b874 direct field references;focused strict matches	Typed interior view at bss_801c7540+0x11800; equipment-record boundary and original object ownership unresolved
 KfCdRequestPayload	0x08	supported	game/cd.h;cd_request_service_stream;audio_vab_stream_callback	overlaid image rectangle and VAB stream payload
 KfCdRequestPayloadVab	0x08	supported	game/cd.h;audio_vab_stream_callback	VAB stream phase and slot state
-KfCdRequestStreamChunk	0x04	supported	game/cd.h;cd_stream_limit_chunk	two halfword stream counters
-KfCdRequestStreamState	0x04	supported	game/cd.h;audio_vab_stream_callback;cd_stream_limit_chunk	overlaid VAB slot pointer and chunk counters
 KfCdState	0x2a4	supported	game/cd.h;asm;cd_initialize;cd_close_events;cd_read_sectors	CD events, VSync counters and request ring
 KfCollisionDefaultRow	0x2c	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
 KfCollisionDefaultTail	0x6	supported	game/graphics.h;asm;collision defaults	six-byte default filter tail

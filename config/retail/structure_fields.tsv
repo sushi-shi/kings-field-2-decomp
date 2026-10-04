@@ -134,11 +134,7 @@ KfCdRequestPayload	0x00	0x08	vab	KfCdRequestPayloadVab	supported	game/cd.h;audio
 KfCdRequestPayload	0x00	0x08	image_rect	RECT	supported	game/cd.h;cd_request_service_stream	image rectangle view
 KfCdRequestPayloadVab	0x00	0x01	phase	u8	supported	game/cd.h;audio_vab_stream_callback	VAB transfer phase
 KfCdRequestPayloadVab	0x02	0x02	slot_index	s16	supported	game/cd.h;audio_vab_stream_callback	VAB slot index
-KfCdRequestPayloadVab	0x04	0x04	stream_state	KfCdRequestStreamState	supported	game/cd.h;audio_vab_stream_callback	stream-slot and chunk state
-KfCdRequestStreamChunk	0x00	0x02	unknown_1c	u16	opaque	game/cd.h;cd_stream_limit_chunk	first stream counter
-KfCdRequestStreamChunk	0x02	0x02	unknown_1e	u16	opaque	game/cd.h;cd_stream_limit_chunk	second stream counter
-KfCdRequestStreamState	0x00	0x04	vab_stream_slot	KfAudioVabStreamSlot *	supported	game/cd.h;audio_vab_stream_callback	VAB stream slot pointer view
-KfCdRequestStreamState	0x00	0x04	chunk	KfCdRequestStreamChunk	supported	game/cd.h;cd_stream_limit_chunk	chunk-counter view
+KfCdRequestPayloadVab	0x04	0x04	stream_slot	KfAudioVabStreamSlot *	supported	game/cd.h;audio_vab_stream_callback	VAB stream slot pointer
 KfCdState	0x00	0x04	vsync_event	long	supported	game/cd.h;asm;cd_initialize	RCntCNT3 interrupt event
 KfCdState	0x04	0x04	vsync_count	u32	supported	game/cd.h;asm;cd_initialize;cd_vsync_handler	VSync interrupt count
 KfCdState	0x08	0x04	frame_count	u32	supported	game/cd.h;asm;cd_initialize;cd_vsync_handler	second VSync counter

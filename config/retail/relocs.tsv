@@ -1944,15 +1944,15 @@ GAME.EXE	0x80013368	0x2b68		mips32_candidate	raw-word	0x8005e33c	load		.word		wo
 GAME.EXE	0x8001336c	0x2b6c		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x18 native R_MIPS_32 XREF .text+0x578;retail raw word
 GAME.EXE	0x80013370	0x2b70		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x1c native R_MIPS_32 XREF .text+0x578;retail raw word
 GAME.EXE	0x80013374	0x2b74		mips32_candidate	raw-word	0x8005e31c	load		.word		word-reviewed	reviewed	manual:LIBGTE GEO.OBJ .rdata+0x20 native R_MIPS_32 XREF .text+0x578;retail raw word
-GAME.EXE	0x8001363c	0x2e3c		mips26	reachable-code	0x800498bc	load		jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x8001363c	0x2e3c		mips26	reachable-code	0x800498bc	load	__main	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x8001364c	0x2e4c	0x80013650	mips_hi16_lo16	reachable-code	0x801da018	bss	BSS_END	lui+addiu		paired-reviewed	reviewed	manual:main heap start is the .bss end label
-GAME.EXE	0x80013654	0x2e54		mips26	reachable-code	0x80049b70	load		jal		control-flow	reviewed	manual:memory_card
-GAME.EXE	0x8001365c	0x2e5c		mips26	reachable-code	0x8004b5dc	load		jal		control-flow	reviewed	manual:memory_card
-GAME.EXE	0x80013664	0x2e64		mips26	reachable-code	0x8005e7a8	load		jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x80013654	0x2e54		mips26	reachable-code	0x80049b70	load	InitHeap	jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x8001365c	0x2e5c		mips26	reachable-code	0x8004b5dc	load	CdInit	jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x80013664	0x2e64		mips26	reachable-code	0x8005e7a8	load	PadInit	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x8001366c	0x2e6c		mips26	reachable-code	0x80049f34	load	InitCARD	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x80013674	0x2e74		mips26	reachable-code	0x8005f330	load	ChangeClearPAD	jal		control-flow	reviewed	manual:memory_card
-GAME.EXE	0x8001367c	0x2e7c		mips26	reachable-code	0x8005f390	load		jal		control-flow	reviewed	manual:memory_card
-GAME.EXE	0x80013684	0x2e84		mips26	reachable-code	0x8001369c	load		jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x8001367c	0x2e7c		mips26	reachable-code	0x8005f390	load	ExitCriticalSection	jal		control-flow	reviewed	manual:memory_card
+GAME.EXE	0x80013684	0x2e84		mips26	reachable-code	0x8001369c	load	game_main_loop	jal		control-flow	reviewed	manual:memory_card
 GAME.EXE	0x800136b0	0x2eb0	0x800136b4	mips_hi16_lo16	reachable-code	0x8017d118	bss	state_8017d118	lui+addiu		paired-reviewed	reviewed	manual:game_main_loop startup callback-state clear
 GAME.EXE	0x800136bc	0x2ebc		mips26	reachable-code	0x80017228	load	repeat_store_word	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x800136c4	0x2ec4	0x800136c8	mips_hi16_lo16	reachable-code	0x8017d140	bss	game_graphics_runtime	lui+addiu		paired-reviewed	reviewed	manual:graphics
@@ -2013,10 +2013,10 @@ GAME.EXE	0x80013938	0x3138		mips26	reachable-code	0x800144b8	load	cd_request_ser
 GAME.EXE	0x80013944	0x3144		mips26	reachable-code	0x800335a0	load	render_game_frame	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
 GAME.EXE	0x8001394c	0x314c	0x80013950	mips_hi16_lo16	reachable-code	0x80198630	bss	game_main_exit_flag	lui+lw	v1	paired-reviewed	reviewed	manual:game_main_loop raw exit-word comparison with one
 GAME.EXE	0x80013960	0x3160		mips26	reachable-code	0x8001398c	load	game_shutdown	jal		control-flow	reviewed	manual:game-main-loop-proven-calls
-GAME.EXE	0x80013994	0x3194		mips26	reachable-code	0x80013bd4	load		jal		control-flow	reviewed	manual:audio
-GAME.EXE	0x8001399c	0x319c		mips26	reachable-code	0x800186fc	load		jal		control-flow	reviewed	manual:audio
-GAME.EXE	0x800139a4	0x31a4		mips26	reachable-code	0x8005e828	load		jal		control-flow	reviewed	manual:audio
-GAME.EXE	0x800139ac	0x31ac		mips26	reachable-code	0x8005f4c8	load		jal		control-flow	reviewed	manual:audio
+GAME.EXE	0x80013994	0x3194		mips26	reachable-code	0x80013bd4	load	audio_shutdown	jal		control-flow	reviewed	manual:audio
+GAME.EXE	0x8001399c	0x319c		mips26	reachable-code	0x800186fc	load	cd_close_events	jal		control-flow	reviewed	manual:audio
+GAME.EXE	0x800139a4	0x31a4		mips26	reachable-code	0x8005e828	load	PadStop	jal		control-flow	reviewed	manual:audio
+GAME.EXE	0x800139ac	0x31ac		mips26	reachable-code	0x8005f4c8	load	ResetGraph	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139cc	0x31cc		mips26	reachable-code	0x80050cd0	load	SsInit	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139d8	0x31d8		mips26	reachable-code	0x80051b60	load	SsSetMVol	jal		control-flow	reviewed	manual:audio
 GAME.EXE	0x800139e0	0x31e0	0x800139e4	mips_hi16_lo16	reachable-code	0x8009a6a0	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-sequence-table;object-extent-unbound

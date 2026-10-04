@@ -2608,10 +2608,10 @@ GAME.EXE	0x80017f80	0x7780		mips26	reachable-code	0x80017d54	load	cd_request_enq
 GAME.EXE	0x80017fbc	0x77bc		mips26	reachable-code	0x80017e6c	load	cd_archive_entry_extent	jal		control-flow	reviewed	manual:cd-memory-early-proven-calls
 GAME.EXE	0x80017fd4	0x77d4		mips26	reachable-code	0x80017d54	load	cd_request_enqueue	jal		control-flow	reviewed	manual:cd-memory-early-proven-calls
 GAME.EXE	0x80018018	0x7818	0x8001801c	mips_hi16_lo16	reachable-code	0x801b5ffc	bss		lui+lw		paired-reviewed	reviewed	manual:cd
-GAME.EXE	0x80018024	0x7824		mips26	reachable-code	0x80017ca8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001803c	0x783c		mips26	reachable-code	0x80017e6c	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80018024	0x7824		mips26	reachable-code	0x80017ca8	load	cd_request_wait_done	jal		control-flow	reviewed	manual:cd_archive_read_chunked raw direct jal and matching source call
+GAME.EXE	0x8001803c	0x783c		mips26	reachable-code	0x80017e6c	load	cd_archive_entry_extent	jal		control-flow	reviewed	manual:cd_archive_read_chunked raw direct jal and matching source call
 GAME.EXE	0x80018070	0x7870		mips26	reachable-code	0x8001808c	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8001808c	0x788c		mips26	reachable-code	0x80017d54	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8001808c	0x788c		mips26	reachable-code	0x80017d54	load	cd_request_enqueue	jal		control-flow	reviewed	manual:cd_archive_read_chunked raw direct jal and matching source call
 GAME.EXE	0x800180c8	0x78c8	0x800180cc	mips_hi16_lo16	reachable-code	0x801b6004	bss	cd_archives	lui+addiu		paired-reviewed	reviewed	manual:cd
 GAME.EXE	0x80018128	0x7928		mips26	reachable-code	0x80017c2c	load	cd_request_wait_idle	jal		control-flow	reviewed	manual:cd-memory-proven-calls
 GAME.EXE	0x80018130	0x7930	0x80018134	mips_hi16_lo16	reachable-code	0x801b5d6c	bss		lui+lw		paired-reviewed	reviewed	manual:cd

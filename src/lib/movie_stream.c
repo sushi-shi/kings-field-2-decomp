@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/lib/types.h>
 #include <kf/lib/movie_stream.h>
 
@@ -76,7 +77,7 @@ void strInit(CdlLOC *loc)
     Rewind_Switch = 0;
     DecDCToutCallback(strCallback);
     StSetRing(Ring_Buff, RING_SIZE);
-    StSetStream(0, 1, 0x0fffffff, 0, 0);
+    StSetStream(0, 1, 0x0fffffff, NULL, NULL);
     strKickCD(loc);
 }
 
@@ -105,7 +106,7 @@ int strNextVlc(void)
     int cnt = WAIT_TIME;
     u_long *next;
 
-    while ((next = strNext(&dec)) == 0) {
+    while ((next = strNext(&dec)) == NULL) {
         if (--cnt == 0) {
             return -1;
         }
@@ -127,12 +128,12 @@ u_long *strNext(DECENV *env)
 
     while (StGetNext(&addr, (u_long **)&sector)) {
         if (--cnt == 0) {
-            return 0;
+            return NULL;
         }
     }
     if (addr[0] != sector->headm || addr[1] != sector->headv) {
         StFreeRing(addr);
-        return 0;
+        return NULL;
     }
     StrFrame = sector->header.frameCount;
     if (sector->header.frameCount >= MOVIE_END_FRAME) {

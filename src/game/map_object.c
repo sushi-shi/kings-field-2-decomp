@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <kf/lib/null.h>
 #include <kf/lib/address.h>
 #include <kf/game/callback.h>
 #include <kf/game/cd.h>
@@ -541,7 +542,7 @@ ADDRESS(0x800363dc, 0x88)
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence)
 {
     KfMapObject *object = &map_object_state.objects[first_index];
-    KfMapObject *oldest = 0;
+    KfMapObject *oldest = NULL;
     s32 oldest_age = 0;
     s32 age;
 

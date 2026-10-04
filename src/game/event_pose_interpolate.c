@@ -1,4 +1,5 @@
 #include <kf/game/event_stream.h>
+#include <kf/lib/null.h>
 #include <kf/game/map_object.h>
 #include <kf/game/player.h>
 #include <kf/lib/address.h>
@@ -74,13 +75,13 @@ void scene_pose_interpolate(
     const VECTOR *end_position, const SVECTOR *start_angles,
     const SVECTOR *end_angles, s32 fraction)
 {
-    if (start_position != 0) {
+    if (start_position != NULL) {
         destination->position.vx = fixed_lerp_q12(start_position->vx, end_position->vx, fraction);
         destination->position.vy = fixed_lerp_q12(start_position->vy, end_position->vy, fraction);
         destination->position.vz = fixed_lerp_q12(start_position->vz, end_position->vz, fraction);
     }
 
-    if (start_angles != 0) {
+    if (start_angles != NULL) {
         destination->rotation.vx = angle_lerp_shortest_q12(start_angles->vx, end_angles->vx, fraction);
         destination->rotation.vz = angle_lerp_shortest_q12(start_angles->vz, end_angles->vz, fraction);
     }
@@ -105,11 +106,11 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
         actor->animation_phase = (step + actor->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX;
-        render_game_frame(0, 0);
+        render_game_frame(NULL, NULL);
     }
 
     actor->animation_phase = final_phase & KF_ACTOR_ANIMATION_PHASE_MAX;
-    render_game_frame(0, 0);
+    render_game_frame(NULL, NULL);
 }
 
 ADDRESS(0x80046144, 0x5c)
@@ -188,7 +189,7 @@ void event_target_stream_execute(KfActor *actor)
     s32 old_counter;
     s32 choice;
 
-    if (candidate == 0) {
+    if (candidate == NULL) {
         return;
     }
     if (candidate->type != KF_TARGET_CANDIDATE_EVENT_STREAM) {
@@ -309,7 +310,7 @@ after_script:
         player_render_frame_and_release_pool();
         choice = menu_choose_inventory_item();
         if (choice != -1) {
-            render_game_frame(0, 0);
+            render_game_frame(NULL, NULL);
             menu_show_transition_image(6, choice + 360);
         }
         break;
@@ -484,7 +485,7 @@ transition_action: {
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
         render_frames_with_color_overlay(1, 4096, 4096, 0);
-        if (game_graphics_runtime.asset_registry_entries[0x181] == 0) {
+        if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
             resource_tmd_queue_read(0, 0x101, 0x181);
         }
         render_frames_with_color_overlay(1, 4096, 0, -256);
@@ -533,7 +534,7 @@ transition_action: {
         break;
     case 0x59: {
         KfMapObject *scan = map_object_state.objects;
-        KfMapObject *nearest = 0;
+        KfMapObject *nearest = NULL;
         s32 nearest_distance = 999999;
         s32 remaining = KF_MAP_OBJECT_CAPACITY - 1;
 
@@ -560,7 +561,7 @@ transition_action: {
                 nearest_distance = distance;
             }
         }
-        if (nearest != 0) {
+        if (nearest != NULL) {
             VECTOR sound_position;
 
             /* Retail writes this adjusted vector, then passes the object position. */
@@ -630,20 +631,20 @@ magic_action: {
         spin = 0;
         for (fraction = 0; fraction < 4096; fraction += 64) {
             scene_pose_interpolate(object, &near_position,
-                          &far_position, 0, 0, fraction);
+                          &far_position, NULL, NULL, fraction);
             object->rotation.vy += spin;
             spin += 4;
             object->lighting_blend_q12 = (rsin(fraction << 6) >> 2) + 1024;
             cd_request_service_vab();
             cd_request_service_stream();
-            render_game_frame(0, 0);
+            render_game_frame(NULL, NULL);
         }
         /* The first decay step precedes service; later steps follow it. */
         goto decay_update;
         for (;;) {
             cd_request_service_vab();
             cd_request_service_stream();
-            render_game_frame(0, 0);
+            render_game_frame(NULL, NULL);
 decay_update:
             object->lighting_blend_q12 -= 64;
             object->rotation.vy += spin;
@@ -662,7 +663,7 @@ decay_update:
             }
             cd_request_service_vab();
             cd_request_service_stream();
-            render_game_frame(0, 0);
+            render_game_frame(NULL, NULL);
         } while (1);
         object->object_id = 0xff;
         notify_enqueue(1);
@@ -694,7 +695,7 @@ decay_update:
                                        rotation->angles[0], 8000, 500, 500,
                                        &actor_distance, -1);
 
-        if (actor != 0 && actor->current_map_layer == side) {
+        if (actor != NULL && actor->current_map_layer == side) {
             menu_show_transition_image(6, actor->definition_id + 240);
             event_state.interaction_handled = 1;
             break;
@@ -787,13 +788,13 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
         current_second = fixed_lerp_q12(second, target_second, fraction);
         current_third = fixed_lerp_q12(third, target_third, fraction);
         accumulate_color_overlay(current_first, current_second, current_third, 0x800);
-        render_game_frame(0, 0);
+        render_game_frame(NULL, NULL);
         fraction += step;
     } while (fraction < 4096);
 
     reset_collision_rows_and_overlay();
     accumulate_color_overlay(target_first, target_second, target_third, 0x800);
-    render_game_frame(0, 0);
+    render_game_frame(NULL, NULL);
 }
 ADDRESS(0x800475d8, 0x6c0)
 void event_map_object_interact(KfMapObject *object, ...)
@@ -817,7 +818,7 @@ void event_map_object_interact(KfMapObject *object, ...)
     u32 buttons;
     s32 remove_object;
 
-    if (object == 0) {
+    if (object == NULL) {
         va_start(arguments, object);
         spawn_object_id = va_arg(arguments, s32);
         va_end(arguments);
@@ -900,7 +901,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                 first_yaw, target_yaw, fraction);
             cd_request_service_vab();
             cd_request_service_stream();
-            render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
+            render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
         }
     }
     object->render_depth_offset = target_render_depth_offset;
@@ -913,7 +914,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->rotation.vy += 0x40;
         cd_request_service_vab();
         cd_request_service_stream();
-        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
         previous_buttons = buttons;
     }
 
@@ -958,7 +959,7 @@ return_pose:
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
         object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
-        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
     object->rotation.vy = first_angles.vy;
 
@@ -974,7 +975,7 @@ interpolate_back:
             current_yaw, first_yaw, fraction);
         object->render_depth_offset = value_approach(
             target_render_depth_offset, (s16)initial_render_depth_offset, fraction);
-        render_game_frame(0, (const SVECTOR *)&player_state.camera_rotation);
+        render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
     if (remove_object) {
         object->object_id = 0xff;
@@ -1240,7 +1241,7 @@ void event_saved_offsets_decode(u8 **pointers)
     for (; index != -1; index--) {
         u16 value = *offset++;
         if (value == absent) {
-            *pointers = 0;
+            *pointers = NULL;
         } else {
             *pointers = value + event_state.arena.bytes;
         }
@@ -1277,7 +1278,7 @@ void event_saved_offsets_encode(u8 **pointers)
     for (index = KF_EVENT_SAVED_SLOT_COUNT - 1; index != -1; index--) {
         u8 *value = *pointers;
         pointers++;
-        if (value == 0) {
+        if (value == NULL) {
             *offset = KF_EVENT_SAVED_OFFSET_NONE;
         } else {
             *offset = (u16)(value - event_state.arena.bytes);
@@ -1341,7 +1342,7 @@ void event_world_state_save_slot(s32 save_slot)
             break;
         }
         candidate = group->targets[0].pointer;
-        if (candidate != 0 && candidate->type == KF_TARGET_CANDIDATE_EVENT_STREAM) {
+        if (candidate != NULL && candidate->type == KF_TARGET_CANDIDATE_EVENT_STREAM) {
             *write++ = index;
             *write++ = candidate->word_10.bytes.fallback_offset;
             *write++ = candidate->word_12.bytes.marker_state;
@@ -1443,13 +1444,13 @@ void event_world_state_save_slot(s32 save_slot)
     event_saved_offsets_decode(saved);
     event_arena_owner_pointers_add_delta((s32)saved);
     block = saved[save_slot];
-    if (block != 0) {
+    if (block != NULL) {
         memory_block_release(block);
     }
     size = (write - payload + 3) & ~3;
     block = memory_arena_allocate_block(&event_state.arena.first_block,
                                         size, &saved[save_slot]);
-    if (block != 0) {
+    if (block != NULL) {
         resource_copy_words((u32 *)block, (const u32 *)payload, size >> 2);
         event_saved_offsets_encode(saved);
         event_arena_owner_pointers_subtract_delta((s32)saved);
@@ -1468,7 +1469,7 @@ void event_world_state_restore_slot(s32 save_slot)
 
     event_saved_offsets_decode(saved);
     stream = saved[save_slot];
-    if (stream == 0) {
+    if (stream == NULL) {
         return;
     }
 

@@ -149,6 +149,10 @@ def scan_file(path: Path, arguments: list[str], *, root: Path) -> tuple[Site, ..
                 if origin is None:
                     return
                 location, spelling = origin
+                # A macro may supply its own zero (for example CdSeekP's
+                # buffer argument). Its expansion site is not a written zero.
+                if not re.fullmatch(r"(?:0+|0[xX]0+)[uUlL]*", spelling):
+                    return
                 in_null = any(
                     span.start.file is not None and location.file is not None
                     and span.start.file.name == location.file.name

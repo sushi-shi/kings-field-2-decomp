@@ -136,20 +136,20 @@ KfNotificationQuad notification_quads[7] = {
 
 DATA(0x80066888, 0x21c)
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
-    {1, 0, 0x40,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, 0},
-    {1, 0, 0x41,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, 0},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, 0},
-    {1, 0, 0x41, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, 0},
-    {1, 0, 0x41, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, 0},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, 0},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, 0},
-    {1, 0, 0x48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, 0},
+    {1, 0, 0x40,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
+    {1, 0, 0x41,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
+    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
+    {1, 0, 0x41, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
+    {1, 0, 0x41, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
+    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
+    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
+    {1, 0, 0x48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
     {KF_RENDER_MODEL_END}
 };
 
@@ -295,14 +295,14 @@ void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation)
 {
     struct KfEulerAngles angles;
 
-    if (position != 0) {
+    if (position != NULL) {
         GRAPHICS.render_state.view_position = *position;
         GRAPHICS.render_state.view_cell_x =
             GRAPHICS.render_state.view_position.vx >> KF_FIXED11_BITS;
         GRAPHICS.render_state.view_cell_z =
             GRAPHICS.render_state.view_position.vz >> KF_FIXED11_BITS;
     }
-    if (rotation != 0)
+    if (rotation != NULL)
         GRAPHICS.render_state.view_rotation = *rotation;
 
     angles.x = (u16)GRAPHICS.render_state.view_rotation.vx;
@@ -1348,7 +1348,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
     KfTmdPacketHeader header;
     CVECTOR shade;
 
-    if (prepared_asset != 0) {
+    if (prepared_asset != NULL) {
         object = &prepared_asset->object;
         normals = (u8 *)prepared_asset +
             (object->normal_offset + KF_TMD_HEADER_BYTES);
@@ -1362,7 +1362,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
     }
     original_vertices = game_graphics_runtime.current_tmd_vertices;
     tmd_project_vertices_mark_clipped(object->vertex_count);
-    if (prepared_asset != 0) {
+    if (prepared_asset != NULL) {
         packet = (u8 *)prepared_asset +
             (object->primitive_offset + KF_TMD_HEADER_BYTES);
     } else {
@@ -1810,7 +1810,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                 return;
             }
         }
-        render_enqueue_tmd_with_clipping(object_index, 240, 0);
+        render_enqueue_tmd_with_clipping(object_index, 240, NULL);
     } else {
         render_enqueue_map(object_index);
     }
@@ -2135,7 +2135,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 
     SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
-    if (world_matrix != 0) {
+    if (world_matrix != NULL) {
         KfMapOccupancyCell *cell;
         KfMapOccupancyCell *row;
         KfMapOccupancyLayer *lighting_layer;
@@ -2178,7 +2178,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     }
 
     matrix_set_rotation_yxz(rotation, &model);
-    if (scale != 0) {
+    if (scale != NULL) {
         scale_vector.vx = scale->vx;
         scale_vector.vy = scale->vy;
         scale_vector.vz = scale->vz;
@@ -2230,7 +2230,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         MulMatrix0((MATRIX *)&lighting->rotations[0], &model, &light_matrix);
     }
     SetLightMatrix(&light_matrix);
-    if (world_matrix != 0) {
+    if (world_matrix != NULL) {
         MulMatrix2(world_matrix, &model);
     }
     SetRotMatrix(&model);
@@ -2249,7 +2249,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         tmd_select_object_vertices(object_index);
         object = tmd_get_object(object_index);
     }
-    if (world_matrix != 0) {
+    if (world_matrix != NULL) {
         tmd_project_vertices_with_fog(object->vertex_count);
     } else {
         tmd_transform_vertices_depth(object->vertex_count, depth);
@@ -2257,7 +2257,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     if (render_mode == 0xff) {
         render_enqueue_textured_tmd(object_index, depth);
     } else if (render_mode == 0xfe) {
-        render_enqueue_tmd_with_clipping(object_index, depth, 0);
+        render_enqueue_tmd_with_clipping(object_index, depth, NULL);
     } else {
         render_enqueue_blended_tmd(object_index, depth, render_mode);
     }
@@ -2324,10 +2324,10 @@ KfAssetHeader *resource_registry_get(u16 index)
     if (index < 104) {
         return asset;
     }
-    if (asset != 0 && (u8)(memory_block_kind((u8 *)asset) - 1) < 2) {
+    if (asset != NULL && (u8)(memory_block_kind((u8 *)asset) - 1) < 2) {
         return asset;
     }
-    return 0;
+    return NULL;
 }
 
 ADDRESS(0x80032008, 0x38)
@@ -2425,7 +2425,7 @@ void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
 
     block = memory_arena_allocate_block(KF_GAME_RESOURCE_ARENA_BASE, size,
         (u8 **)&game_graphics_runtime.asset_registry_entries[registry_index]);
-    if (block != 0) {
+    if (block != NULL) {
         memory_block_set_kind(block, 3);
         memory_block_set_tag(block, registry_index);
         /* Kind 0x10 completion passes the destination, not the request. */
@@ -2445,12 +2445,12 @@ void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
         KfAudioVabStreamSlot *state = slot->stream_slot;
 
         if (*flags++) {
-            if (state == 0) {
+            if (state == NULL) {
                 audio_queue_vab_stream(archive_slot, entry, vab_slot);
             } else if (state->state == KF_AUDIO_VAB_STREAM_RECLAIMABLE) {
                 state->state = KF_AUDIO_VAB_STREAM_IN_USE;
             }
-        } else if (state != 0 && state->state == KF_AUDIO_VAB_STREAM_IN_USE) {
+        } else if (state != NULL && state->state == KF_AUDIO_VAB_STREAM_IN_USE) {
             state->state = KF_AUDIO_VAB_STREAM_RECLAIMABLE;
         }
         entry++;
@@ -2469,14 +2469,14 @@ void resource_tmd_update_range(s32 archive_slot, s32 entry, s32 registry_index,
 
         if (*flags++) {
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
-            if (block == 0) {
+            if (block == NULL) {
                 resource_tmd_queue_read(archive_slot, entry, registry_index);
             } else if (memory_block_kind(block) == 1) {
                 memory_block_set_kind(block, 2);
             }
         } else {
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
-            if (block != 0 && memory_block_kind(block) != 3) {
+            if (block != NULL && memory_block_kind(block) != 3) {
                 memory_block_set_kind(block, 1);
             }
         }
@@ -2526,7 +2526,7 @@ void render_scene_and_update_resources(void)
         if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
         if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
 actor_visible:
-        if (resource_registry_get(actor->definition_id + 0x80) != 0) {
+        if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
             if (actor->flags & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) {
                 rotation.z = 0;
@@ -2588,7 +2588,7 @@ actor_next:
                              object->tail.animated.radius_x,
                              object->tail.animated.radius_z) != 0 &&
             (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
-            if (resource_registry_get(object->object_id + 0x100) != 0) {
+            if (resource_registry_get(object->object_id + 0x100) != NULL) {
                 render_animated_object(object->object_id + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
                                &object->tail.animated.animation_cache,
@@ -2661,7 +2661,7 @@ map_ordinary_object: {
 map_ordinary_visible:
             tmd_flags[object->object_id] = 1;
             vab_flags[object_template->vab_resource_index] = 1;
-            if (resource_registry_get(object->object_id + 0x100) != 0) {
+            if (resource_registry_get(object->object_id + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
@@ -2740,7 +2740,7 @@ map_object_next:
                            &effect->position,
                            effect_rotation_ptr,
                            effect_scale_ptr,
-                           effect_cache, 0,
+                           effect_cache, NULL,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, 0x14);
@@ -2767,7 +2767,7 @@ effect_next:
             if (visibility & placed->layer_mask) {
                 render_world_model(placed->layer_mask,
                                placed->model_index + KF_MAP_PLACED_ASSET_BASE,
-                               &placed->position, &rotation, 0, 0,
+                               &placed->position, &rotation, NULL, NULL,
                                &game_graphics_runtime.render_state.pitch_matrix,
                                placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, 0x46,
                                0x1000, 1, 0);
@@ -3278,7 +3278,7 @@ const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index)
             encoded++;
             current += *encoded++;
             if (vertex_index < current) {
-                return 0;
+                return NULL;
             }
         } else {
             if (current == vertex_index) {
@@ -3288,7 +3288,7 @@ const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index)
             encoded += 3;
         }
     }
-    return 0;
+    return NULL;
 }
 
 enum { KF_ASSET_OBJECT_SELECT_BIT = 0x80, KF_ASSET_OBJECT_INDEX_MASK = 0x7f };
@@ -3307,7 +3307,7 @@ s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index,
     u32 blend_fraction;
 
     if (asset->animation_present == 0) {
-        if (record != 0) {
+        if (record != NULL) {
             pool_record_release(record);
         }
         asset_registry_select(asset_index);
@@ -3315,9 +3315,9 @@ s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index,
         return 1;
     }
 
-    if (record == 0) {
+    if (record == NULL) {
         record = pool_allocate();
-        if (record == 0) {
+        if (record == NULL) {
             return 0;
         }
 allocate_vertices:
@@ -3325,7 +3325,7 @@ allocate_vertices:
         record->owner_slot = owner_slot;
         for (;;) {
             record->cached_vertices = (SVECTOR *)memory_malloc_checked(vertex_count * sizeof(SVECTOR));
-            if (record->cached_vertices != 0) {
+            if (record->cached_vertices != NULL) {
                 break;
             }
             pool_release_all();
@@ -3402,7 +3402,7 @@ s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_ind
     s32 keyframe_index;
     u32 blend_fraction;
 
-    if (asset == 0) {
+    if (asset == NULL) {
         output->vz = 0;
         output->vy = 0;
         output->vx = 0;
@@ -3432,7 +3432,7 @@ copy_object_vertex:
         encoded = animation_find_sparse_vertex(
             (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]),
             vertex_index);
-        if (encoded != 0) {
+        if (encoded != NULL) {
             vertex.vx = *encoded++;
             vertex.vy = *encoded++;
             vertex.vz = *encoded;
@@ -3441,7 +3441,7 @@ copy_object_vertex:
     encoded = animation_find_sparse_vertex(
         (const s16 *)((u8 *)asset + morph_offsets[keyframe->rest_index]),
         vertex_index);
-    if (encoded != 0) {
+    if (encoded != NULL) {
         vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> 12) + vertex.vx;
         vertex.vy = (((*encoded - vertex.vy) * (s32)blend_fraction) >> 12) + vertex.vy;
         vertex.vz = (((encoded[1] - vertex.vz) * (s32)blend_fraction) >> 12) + vertex.vz;
@@ -3457,7 +3457,7 @@ u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
     KfTmdHeader *tmd;
 
-    if (asset == 0) {
+    if (asset == NULL) {
         return 0;
     }
     tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);

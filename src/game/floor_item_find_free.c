@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/game/graphics.h>
 #include <kf/game/memory.h>
 
@@ -17,7 +18,7 @@ KfFloorItem *floor_item_find_free(void)
         item++;
     } while (--remaining != 0);
 
-    return 0;
+    return NULL;
 }
 
 ADDRESS(0x8002ce68, 0xd8)
@@ -26,7 +27,7 @@ void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
 {
     KfFloorItem *item = floor_item_find_free();
 
-    if (item != 0) {
+    if (item != NULL) {
         item->row_offset = 0;
         item->update_interval = update_interval;
         item->row_step = row_step;

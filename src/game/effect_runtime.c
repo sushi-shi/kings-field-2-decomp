@@ -283,16 +283,16 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
 
     record = effect_pool_find_free();
 
-    if (record == 0) {
+    if (record == NULL) {
         goto finish;
     }
     record->type = type;
     record->kind = kind;
-    if (position != 0) {
+    if (position != NULL) {
         record->position = *position;
     }
     record->map_layer_mask = 3;
-    if (direction != 0) {
+    if (direction != NULL) {
         record->direction = *direction;
     } else {
         record->direction.vz = 0;
@@ -1104,7 +1104,7 @@ s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
     target = actor_find_best_in_cone(&record->position, record->rotation.vy,
                            record->rotation.vx, 24000, target_filter,
                            target_filter, &distance, 0);
-    if (target == 0) {
+    if (target == NULL) {
         goto move;
     }
     target_position.vx = target->position.vx;
@@ -1198,7 +1198,7 @@ void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode)
     direction.vz = record->rotation.vz;
     spawned = effect_construct_record(10, record->type, 100, &position,
                             &effect_zero_direction, &direction);
-    if (spawned != 0) {
+    if (spawned != NULL) {
         spawned->phase = 2;
     }
 }
@@ -1617,11 +1617,11 @@ void effect_update_dispatch(void)
         if (collision == -1 || record->updates_remaining < 2) {
             effect_collision_backtrack();
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 0);
+                           &record->position, NULL, 0);
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 1);
+                           &record->position, NULL, 1);
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 2);
+                           &record->position, NULL, 2);
             effect_play_spatial_sound(record, 0x18);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
@@ -1632,11 +1632,11 @@ void effect_update_dispatch(void)
         collision = effect_collision_step(180, 360, 0);
         if (collision != 0 || record->updates_remaining < 2) {
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 0);
+                           &record->position, NULL, 0);
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 1);
+                           &record->position, NULL, 1);
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 2);
+                           &record->position, NULL, 2);
             effect_play_spatial_sound(record, 0x17);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
@@ -1705,7 +1705,7 @@ void effect_update_dispatch(void)
                            record->position.vz, 5, 10)) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
-        effect_construct_record(10, record->type, 0x2d, &record->position, 0, 0x1a4);
+        effect_construct_record(10, record->type, 0x2d, &record->position, NULL, 0x1a4);
         break;
     }
     case 117: {
@@ -1722,7 +1722,7 @@ void effect_update_dispatch(void)
                                     100, 10000);
         if (actor_index != -1) {
             effect_construct_record(10, record->type, 0x2d,
-                           &actor_state.actors[actor_index].position, 0,
+                           &actor_state.actors[actor_index].position, NULL,
                            0x4ec);
         }
         effect_spawn_at_lower_bound(&elevated, 0x2000, 0x7fff, 10000);
@@ -1791,7 +1791,7 @@ void effect_update_dispatch(void)
             player_sample_weapon_world_vertex(0, &record->position);
             if ((s16)record->scale_x >= 256) {
                 record->cache_tail.payload.kind50.stage = 1;
-                player_probe_view_target_and_vectors(1000, 0, &record->direction, &distance);
+                player_probe_view_target_and_vectors(1000, NULL, &record->direction, &distance);
             }
             break;
         case 1:
@@ -2092,7 +2092,7 @@ void effect_update_dispatch(void)
         if (effect_collision_step(140, 0, -200) != 0) {
             effect_construct_record(10, record->type | 3,
                            child_kind,
-                           &record->position, 0);
+                           &record->position, NULL);
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -2132,7 +2132,7 @@ void effect_update_dispatch(void)
         case 100: {
             KfEffectRecord *child = effect_construct_record(
                 10, record->type | 3, 12, &record->position,
-                0, &record->rotation);
+                NULL, &record->rotation);
 
             child->phase = 101;
             goto kind12_reset;
@@ -2167,7 +2167,7 @@ void effect_update_dispatch(void)
 
             effect_play_spatial_sound(record, 0x18);
             child = effect_construct_record(10, record->type | 3, 12,
-                                  &record->position, 0,
+                                  &record->position, NULL,
                                   &record->rotation);
             child->phase = 101;
             goto kind12_reset;
@@ -2624,7 +2624,7 @@ void effect_update_dispatch(void)
                     record->position.vx, record->position.vy,
                     record->position.vz, 256, (s16)record->scale_y, 144);
                 if (collision_kind != 0) {
-                    effect_apply_current_magic(collision_kind, 5000, 0);
+                    effect_apply_current_magic(collision_kind, 5000, NULL);
                 }
             }
             if ((s16)record->scale_z >= 4096) {
@@ -2663,7 +2663,7 @@ void effect_update_dispatch(void)
             effect_scatter_lower_bound(&record->position, 8, 400,
                            0x2000, 0x8000, 0x400);
             child = effect_construct_record(10, record->type | 3, 10,
-                                  &record->position, 0,
+                                  &record->position, NULL,
                                   &record->rotation);
             child->phase = 2;
             effect_play_spatial_sound(record, 0x17);
@@ -2705,7 +2705,7 @@ void effect_update_dispatch(void)
                 record->rotation.vx, 25000, 800, 800,
                 &distance, 512);
 
-            if (actor != 0) {
+            if (actor != NULL) {
                 targeting->emissions_remaining = 5;
                 targeting->actor_index = actor - actor_state.actors;
             }
@@ -2715,7 +2715,7 @@ void effect_update_dispatch(void)
 
             if (actor_find_best_in_cone(&record->position, record->rotation.vy,
                                record->rotation.vx, 30000, 800, 800,
-                               &distance, 512) != 0) {
+                               &distance, 512) != NULL) {
                 effect_spawn_zero_direction(record, 0x2f);
                 effect_spawn_zero_direction(record, 0x32);
             }
@@ -2778,7 +2778,7 @@ void effect_update_dispatch(void)
                     KfActor *actor;
 
                     effect_apply_current_magic(EFFECT_IMPACT_HOLD_ACTOR_ANIMATION |
-                                               KF_COLLISION_HIT_ACTOR, 5000, 0);
+                                               KF_COLLISION_HIT_ACTOR, 5000, NULL);
                     actor_index = *(u8 *)&KF_COLLISION_CACHE_ACTOR_INDEX;
                     record->cache_tail.payload.trail.actor_index = actor_index;
                     actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
@@ -3052,7 +3052,7 @@ void effect_update_dispatch(void)
             }
             record->position.vy = KF_COLLISION_CACHE_RESULT;
         }
-        effect_construct_record(10, record->type | 3, 3, &record->position, 0, 0);
+        effect_construct_record(10, record->type | 3, 3, &record->position, NULL, 0);
         record->type = KF_EFFECT_SLOT_FREE;
         break;
     kind114_particles:
@@ -3110,9 +3110,9 @@ void effect_update_dispatch(void)
         }
         if (rand() < 8192) {
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 0);
+                           &record->position, NULL, 0);
             effect_construct_record(10, record->type | 3, 0x2a,
-                           &record->position, 0, 1);
+                           &record->position, NULL, 1);
             effect_play_spatial_sound(record, 0x18);
         }
         record->type = KF_EFFECT_SLOT_FREE;

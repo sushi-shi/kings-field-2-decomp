@@ -237,9 +237,9 @@ void memory_arena_free(KfMemoryBlock *block)
     u8 **owner = block->owner;
 
     block->kind = KF_MEMORY_BLOCK_FREE;
-    if (owner != 0) {
-        *owner = 0;
-        block->owner = 0;
+    if (owner != NULL) {
+        *owner = NULL;
+        block->owner = NULL;
     }
 }
 
@@ -276,7 +276,7 @@ KfMemoryBlock *memory_arena_find_block(KfMemoryBlock *arena, u32 size)
             block = NEXT_BLOCK(block);
         }
     }
-    return 0;
+    return NULL;
 }
 
 ADDRESS(0x8001746c, 0x98)
@@ -346,10 +346,10 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
     u32 remainder;
     u8 *data;
 
-    if (block == 0) {
+    if (block == NULL) {
         memory_arena_compact(arena);
         block = memory_arena_find_block(arena, size);
-        if (block == 0) {
+        if (block == NULL) {
             return NULL;
         }
     }
@@ -360,7 +360,7 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
         KfMemoryBlock *payload_end = (KfMemoryBlock *)((u8 *)block + size);
         payload_end[1].kind = KF_MEMORY_BLOCK_FREE;
         payload_end[1].size = remainder;
-        payload_end[1].owner = 0;
+        payload_end[1].owner = NULL;
     } else {
         size = available;
     }
@@ -368,7 +368,7 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
     block->size = size;
     block->owner = owner;
     data = (u8 *)(block + 1);
-    if (owner != 0) {
+    if (owner != NULL) {
         *owner = data;
     }
     return data;
@@ -516,11 +516,11 @@ void cd_complete_handler(void)
                     CdSeekP(&request->initial_location);
                     break;
                 }
-                if (request->on_complete != 0) {
+                if (request->on_complete != NULL) {
                     ((void (*)(u_long *))request->on_complete)(request->destination);
                 }
                 cd_request_advance(request);
-            } else if (request->on_complete != 0) {
+            } else if (request->on_complete != NULL) {
                 request->on_complete(request);
             }
             break;
@@ -544,7 +544,7 @@ void cd_data_ready_handler(void)
         request->kind == KF_CD_REQUEST_SECTOR_CALLBACK) {
         CdGetSector(request->destination, KF_CD_SECTOR_WORDS);
         request->sector_count--;
-        if (request->on_complete != 0) {
+        if (request->on_complete != NULL) {
             request->on_complete(request);
         }
         if (request->sector_count == 0) {

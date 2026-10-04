@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/game/actor.h>
 #include <kf/game/asset.h>
 #include <kf/game/audio.h>
@@ -476,7 +477,7 @@ phase_three:
             actor = actor_state.actors;
             index = KF_ACTOR_CAPACITY - 1;
             do {
-                if (actor->animation_cache != 0) {
+                if (actor->animation_cache != NULL) {
                     pool_record_release(actor->animation_cache);
                 }
                 actor->slot_state = KF_ACTOR_SLOT_FREE;
@@ -486,7 +487,7 @@ phase_three:
             object = map_object_state.objects;
             index = KF_MAP_OBJECT_CAPACITY - 1;
             do {
-                if (object->tail.animated.animation_cache != 0) {
+                if (object->tail.animated.animation_cache != NULL) {
                     pool_record_release(object->tail.animated.animation_cache);
                 }
                 if (object->action == KF_MAP_OBJECT_ACTION_PLAYER_REACTION) {
@@ -576,7 +577,7 @@ begin_phase_five:
             audio_state.sequence_active = 0;
         }
         if (audio_state.vab_slots[1].vab_id != -1) {
-            audio_state.vab_slots[1].stream_slot = 0;
+            audio_state.vab_slots[1].stream_slot = NULL;
         }
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP) {
             audio_queue_vab_stream(KF_RESOURCE_ARCHIVE_VAB, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] + 1, 1);

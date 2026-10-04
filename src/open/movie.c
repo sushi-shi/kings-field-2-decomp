@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/open/opening.h>
 #include <kf/lib/audio.h>
 #include <kf/lib/display.h>
@@ -31,7 +32,7 @@ void opening_play_movie(void)
     s32 skipped = 0;
 
     SsSeqStop(audio_title_sequence_id);
-    if (CdSearchFile(&file, "\\OP\\OP.S;1") == 0) {
+    if (CdSearchFile(&file, "\\OP\\OP.S;1") == NULL) {
         printf("\n__ file not found");
         return;
     }
@@ -77,11 +78,11 @@ void opening_play_movie(void)
     }
     SsSeqSetVol(audio_movie_sequence_id, 0, 0);
     mode = CdlModeSpeed;
-    CdControlB(CdlSetmode, &mode, 0);
+    CdControlB(CdlSetmode, &mode, NULL);
     DecDCToutCallback(0);
     CdDataCallback(0);
-    CdReadyCallback(0);
-    CdControlB(CdlPause, 0, 0);
+    CdReadyCallback(NULL);
+    CdControlB(CdlPause, NULL, NULL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     SetDefDrawEnv(&display_buffers[1].draw, 0, KF_DISPLAY_HEIGHT, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);
     SetDefDispEnv(&display_buffers[0].disp, 0, KF_DISPLAY_HEIGHT, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);

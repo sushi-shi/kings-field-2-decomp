@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/game/cd.h>
 #include <kf/game/graphics.h>
 #include <kf/game/player.h>
@@ -225,7 +226,7 @@ void map_object_update_actions(void)
                         }
                     }
                 } else {
-                    linked = 0;
+                    linked = NULL;
                 }
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
@@ -236,7 +237,7 @@ void map_object_update_actions(void)
                 if (previous < 32) {
                     object->asset_clip_selector = 0x81;
                     object->rotation.vy += 32;
-                    if (linked != 0) {
+                    if (linked != NULL) {
                         linked->asset_clip_selector = 0x81;
                         linked->rotation.vy -= 32;
                     }
@@ -277,14 +278,14 @@ void map_object_update_actions(void)
                             map_object_play_spatial_sound(object, template->sound_id);
                         }
                         object->rotation.vy -= 32;
-                        if (linked != 0) {
+                        if (linked != NULL) {
                             linked->rotation.vy += 32;
                         }
                     } else {
                         object->action_timer = 0;
                         object->asset_clip_selector = 0x80;
                         object->render_depth_offset = -50;
-                        if (linked != 0) {
+                        if (linked != NULL) {
                             linked->asset_clip_selector = 0x80;
                             linked->render_depth_offset = -50;
                         }
@@ -1054,5 +1055,5 @@ void map_object_update_actions(void)
         object++;
     } while (--remaining != 0);
 
-    map_object_state.current_collision_object = 0;
+    map_object_state.current_collision_object = NULL;
 }

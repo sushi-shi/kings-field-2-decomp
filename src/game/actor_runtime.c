@@ -528,10 +528,10 @@ void actor_update_lifecycle_for_player_range(void)
         actor_prepare_and_initialize(actor_state.current);
         {
             KfTargetCandidate *target = actor_find_target_of_type(group, 0x15);
-            if (target == 0) {
+            if (target == NULL) {
                 target = actor_find_target_of_type(group, 0x1a);
             }
-            if (target != 0) {
+            if (target != NULL) {
                 actor_set_target(actor, target);
                 return;
             }
@@ -701,7 +701,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
             goto update_motion;
         }
         candidate = actor_find_target_of_type(group, 0x16);
-        if (candidate != 0) {
+        if (candidate != NULL) {
             s32 angle = vector_xz_to_angle(
                 actor->position.vx - position->vx,
                 actor->position.vz - position->vz);
@@ -725,7 +725,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         remaining_slots = 15;
         do {
             candidate = (target_slot++)->pointer;
-            if (candidate == 0) {
+            if (candidate == NULL) {
                 break;
             }
             if (candidate->type == 2 && candidate->word_0c.value <= applied) {
@@ -749,7 +749,7 @@ update_motion:
     } else {
         motion_divisor = group->knockback_divisor;
     }
-    if (position != 0 && motion_divisor < 0xf0) {
+    if (position != NULL && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
         SVECTOR *motion = &actor->motion.vector;
         s32 speed;
@@ -797,7 +797,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
     u32 amount;
 
     if ((amount_and_flags & KF_AREA_MAGIC_OMIT_DAMAGE_ORIGIN) != 0) {
-        damage_position = 0;
+        damage_position = NULL;
     }
     amount = (u32)amount_and_flags & KF_AREA_MAGIC_AMOUNT_MASK;
     actor = actor_state.actors;
@@ -889,7 +889,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
                        s32 max_distance, s32 yaw_limit, s32 pitch_limit,
                        s32 *distance, s32 variation)
 {
-    KfActor *best = 0;
+    KfActor *best = NULL;
     s32 best_score = 30000;
     s32 best_distance = -1;
     KfActor *actor = actor_state.actors;
@@ -1852,7 +1852,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
-        if (effect != 0) effect->cooldown = 3;
+        if (effect != NULL) effect->cooldown = 3;
         break;
     case 0x79:
         actor_compute_target_direction(current, player, 600, &position, &direction,
@@ -1905,14 +1905,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         goto simple_direction_effect;
     case 0x17:
         parameters = (const u16 *)arguments[1];
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0,
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL,
                       actor_state.current_actor_slot_index, position_mode, parameters[2]);
         break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, 7, &position, &direction);
-        if (effect != 0) effect->cooldown = 5;
+        if (effect != NULL) effect->cooldown = 5;
         break;
     case 1:
     case 0x1c:
@@ -1940,8 +1940,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, 0);
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         break;
     simple_direction_effect:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
@@ -1951,7 +1951,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         parameters = (const u16 *)arguments[1];
         group_index = parameters[2];
         spawned = actor_pool_find_free();
-        if (spawned != 0) {
+        if (spawned != NULL) {
             actor_compute_target_direction(current, player, 400,
                           &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
             spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
@@ -1976,7 +1976,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         parameters = (const u16 *)arguments[1];
         group_index = parameters[2];
         spawned = actor_pool_find_free();
-        if (spawned != 0) {
+        if (spawned != NULL) {
             actor_compute_target_direction(current, player, 250,
                           &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
             spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
@@ -2022,7 +2022,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         orientation.motion.vz = 0;
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                               &orientation.motion);
-        if (effect != 0) {
+        if (effect != NULL) {
             effect->updates_remaining = 0x32;
             effect->phase = 0;
             effect->cache_tail.payload.ballistic.origin_y = position.vy;
@@ -3045,7 +3045,7 @@ case3_motion:
                 actor->collision_radius = target->word_12.value;
                 actor->collision_height = target->word_14.value;
                 next_target = actor_find_target_of_type(group, 21);
-                if (next_target != 0) {
+                if (next_target != NULL) {
                     actor_set_target(actor, next_target);
                 } else {
                     actor_reset_target_and_reselect();

@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/null.h>
 #include <kf/game/audio.h>
 #include <kf/game/cd.h>
 #include <kf/game/collision_cache.h>
@@ -71,7 +72,7 @@ void audio_initialize_runtime(void)
     index = KF_AUDIO_VAB_SLOT_COUNT - 1;
     do {
         vab_slot->vab_id = KF_AUDIO_VAB_ID_NONE;
-        vab_slot->stream_slot = 0;
+        vab_slot->stream_slot = NULL;
         vab_slot++;
         index--;
     } while (index != -1);
@@ -242,12 +243,12 @@ void audio_key_off_handle(KfAudioVoiceHandle *handle)
 ADDRESS(0x80014030, 0xac)
 void audio_update_listener(const VECTOR *position, const SVECTOR *rotation)
 {
-    if (position != 0) {
+    if (position != NULL) {
         audio_state.listener_position = *position;
         collision_sample_map_cell_layer(position->vx, position->vy, position->vz);
         audio_state.listener_layer = KF_COLLISION_CACHE_LAYER;
     }
-    if (rotation != 0) {
+    if (rotation != NULL) {
         audio_state.listener_rotation = *rotation;
     }
 }
@@ -466,7 +467,7 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
                 if (vab_slot->vab_id != KF_AUDIO_VAB_ID_NONE && vab_slot->stream_slot == stream_slot) {
                     SsVabClose(vab_slot->vab_id);
                     vab_slot->vab_id = KF_AUDIO_VAB_ID_NONE;
-                    vab_slot->stream_slot = 0;
+                    vab_slot->stream_slot = NULL;
                     break;
                 }
                 index--;
@@ -478,7 +479,7 @@ KfAudioVabStreamSlot *audio_acquire_vab_stream_slot(void)
         index--;
         stream_slot++;
     } while (index != -1);
-    return 0;
+    return NULL;
 }
 
 ADDRESS(0x800146d0, 0xd0)
@@ -498,7 +499,7 @@ void audio_queue_vab_stream(s32 archive_slot, s32 entry, s32 vab_slot_index)
         break;
     default:
         stream_slot = audio_acquire_vab_stream_slot();
-        if (stream_slot == 0) {
+        if (stream_slot == NULL) {
             return;
         }
         vab_slot->vab_id = KF_AUDIO_VAB_ID_STREAM_PENDING;

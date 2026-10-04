@@ -24,6 +24,7 @@
 #include <kf/game/pool.h>
 #include <kf/lib/types.h>
 
+void player_apply_map_object_reaction(KfMapObject *object);
 
 
 
@@ -155,7 +156,7 @@ void player_reload_map_resources(
     player_sync_position_to_map();
     reset_collision_rows_and_overlay();
     render_frames_with_color_overlay(0x82, 0x1000, 0x1000, 0);
-    if (game_graphics_runtime.asset_registry_entries[0x181] == 0) {
+    if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
         resource_tmd_queue_read(0, 0x101, 0x181);
     }
     cd_request_wait_idle();
@@ -786,7 +787,7 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
     u16 base_scale;
 
     if (scale_and_flags & KF_RADIAL_NO_REACTION_ORIGIN) {
-        reaction_origin = 0;
+        reaction_origin = NULL;
     }
     base_scale = scale_and_flags & KF_RADIAL_BASE_SCALE_MASK;
 
@@ -1152,7 +1153,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
     KfTargetCandidate *target;
     s32 height;
 
-    if (position != 0) {
+    if (position != NULL) {
         angles.x = -player_state.camera_rotation.angles[0];
         angles.y = player_state.camera_rotation.angles[1];
         angles.z = player_state.camera_rotation.angles[2];
@@ -1168,15 +1169,15 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
                           (s16)player_state.camera_rotation.angles[0], 0x55f0,
                           0x200, 0x200, distance, 0);
     actor_state.actor_93c8 = actor;
-    if (actor != 0) {
+    if (actor != NULL) {
         target = actor_find_target_of_type(&actor_state.target_groups[actor->group_index],
                                            0x82);
-        if (target != 0 && !(actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING)) {
+        if (target != NULL && !(actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING)) {
             actor_set_target(actor, target);
         }
     }
 
-    if (direction != 0) {
+    if (direction != NULL) {
         angles.x = player_state.camera_rotation.angles[0];
         angles.y = player_state.camera_rotation.angles[1];
         angles.z = player_state.camera_rotation.angles[2];
@@ -1215,11 +1216,11 @@ emit_simple_effect:
         break;
     case 2:
         effect_construct_record(10, 0x13, effect_id, &player_state.camera_position,
-                       0, 0x1000, 0x100, 0x1000);
+                       NULL, 0x1000, 0x100, 0x1000);
         break;
     case 3:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
-        if (actor == 0) {
+        if (actor == NULL) {
             position.vx += direction.vx;
             position.vy = player_state.camera_position.vy;
             case3_z = position.vz + direction.vz;
@@ -1238,18 +1239,18 @@ emit_simple_effect:
 case3_store_z:
         position.vz = case3_z;
 case3_emit:
-        effect_construct_record(10, 0x12, 0x72, &position, 0);
+        effect_construct_record(10, 0x12, 0x72, &position, NULL);
         break;
     case 0:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
-        if (actor == 0) {
+        if (actor == NULL) {
             kind = 255;
         } else {
             kind = actor - actor_state.actors;
         }
         position.vx += direction.vx;
         position.vz += direction.vz;
-        effect_construct_record(10, 0x12, 0x6f, &position, 0, kind);
+        effect_construct_record(10, 0x12, 0x6f, &position, NULL, kind);
         break;
     case 13: {
         const SVECTOR *sequence = player_magic_square_offsets;
@@ -1295,7 +1296,7 @@ probe_rotation_effect:
         target_scale = 200;
 select_actor_effect:
         actor = player_probe_view_target_and_vectors(target_scale, &position, &direction, &distance);
-        if (actor == 0) {
+        if (actor == NULL) {
             kind = 255;
         } else {
             kind = actor - actor_state.actors;
@@ -1341,7 +1342,7 @@ sequence_effect: {
         player_probe_view_target_and_vectors(600, &position, &direction, &distance);
         effect = effect_construct_record(10, 0x12, effect_id,
                                &position, &direction, &player_state.camera_rotation);
-        if (effect != 0) {
+        if (effect != NULL) {
             s32 index = effect - effect_state.records;
             record++;
             for (i = 3; i != -1; i--) {
@@ -1366,14 +1367,14 @@ sequence_effect: {
         rotation_scale = 1000;
         goto probe_rotation_effect;
     case 39:
-        player_probe_view_target_and_vectors(50, 0, &direction, &distance);
+        player_probe_view_target_and_vectors(50, NULL, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
         goto emit_rotation_effect;
     case 49: {
         const VECTOR *override_position;
         /* Cases 49 and 50 omit the rotation argument. */
-        player_probe_view_target_and_vectors(550, 0, &direction, &distance);
+        player_probe_view_target_and_vectors(550, NULL, &direction, &distance);
         override_position = va_arg(arguments, const VECTOR *);
         position = *override_position;
         goto emit_simple_effect;
@@ -1592,13 +1593,13 @@ special_mode_zero: {
                     game_counter_bytes[counter]--;
                     player_state.weapon_effect = effect_construct_record(
                         10, 0x12, effect_kind, &player_state.camera_position,
-                        0, &player_state.camera_rotation);
+                        NULL, &player_state.camera_rotation);
                     effect = player_state.weapon_effect;
-                    if (effect != 0) {
+                    if (effect != NULL) {
                         effect->phase = WEAPON_EFFECT_HELD_PHASE;
                     }
                 } else {
-                    player_state.weapon_effect = 0;
+                    player_state.weapon_effect = NULL;
                 }
             }
 
@@ -1619,7 +1620,7 @@ special_mode_zero: {
             }
 
             effect = player_state.weapon_effect;
-            if (effect != 0) {
+            if (effect != NULL) {
                 rotation.x = player_state.camera_rotation.angles[0] - weapon->rotation_offset_x;
                 rotation.y = player_state.camera_rotation.angles[1] - weapon->rotation_offset_y;
                 rotation.z = player_state.camera_rotation.angles[2] + weapon->rotation_offset_z;
@@ -1651,7 +1652,7 @@ special_mode_zero: {
             if ((player_state.flags_140.low & 0x10) != 0) {
                 return;
             }
-            if (effect != 0) {
+            if (effect != NULL) {
                 effect->phase = 0;
                 pitch_yaw_to_forward_vector(
                     (const struct KfEulerAngles *)&effect->rotation,
@@ -1761,7 +1762,7 @@ regular_weapon:
             damage_position.vy = player_state.camera_position.vy - 1000;
         } else {
             player_state.weapon_attack_window += hit_step;
-            damage_origin = 0;
+            damage_origin = NULL;
             damage_amount = player_state.attack_charge_committed >> 2;
         }
 
@@ -2655,7 +2656,7 @@ void player_update_actions_and_charge(void)
         return;
     }
 
-    if (player_state.selected_magic_record == 0) {
+    if (player_state.selected_magic_record == NULL) {
         player_state.magic_charge += player_charge_gain_for_rank(player_state.magic, 0);
     } else {
         charge_gain = player_charge_gain_for_rank(player_state.magic,
@@ -2737,7 +2738,7 @@ void player_render_frame_and_release_pool(void)
 
     player_state.hud_gauges_enabled = 0;
     player_state.compass_enabled = 0;
-    render_game_frame(0, 0);
+    render_game_frame(NULL, NULL);
     player_state.hud_gauges_enabled = saved_hud_gauges;
     player_state.compass_enabled = saved_compass;
     pool_release_all();
@@ -2766,7 +2767,7 @@ void player_handle_interaction_and_menu(void)
     value = menu_run_root_controller();
     if (value >= 0) {
         if (item_id_is_71_to_80(value) == 0) {
-            render_game_frame(0, 0);
+            render_game_frame(NULL, NULL);
             event_scene_command_dispatch(&player_state.camera_position,
                                          &player_state.camera_rotation_target,
                                          value);

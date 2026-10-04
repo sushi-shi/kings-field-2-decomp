@@ -1,4 +1,5 @@
 #include <kf/game/callback.h>
+#include <kf/lib/null.h>
 #include <kf/game/card.h>
 #include <kf/game/menu.h>
 #include <kf/game/player.h>
@@ -433,7 +434,7 @@ void menu_show_map_preview(s32 menu_code)
     map_index = (menu_code - MENU_MAP_ITEM_FIRST) & 0xff;
     map_offset = state_8017d118.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
     entry = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
-    image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, entry, 0));
+    image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, entry, NULL));
     cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, entry, (u_long *)image);
     tim_upload_images(image);
 
@@ -515,7 +516,7 @@ s32 menu_choose_magic_action(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
@@ -612,7 +613,7 @@ void menu_equipment_list_controller(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
@@ -842,7 +843,7 @@ void menu_choose_primary_magic_shortcut(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
@@ -1067,7 +1068,7 @@ s32 menu_run_card_choice(void)
     if (result == CARD_CHOICE_EXIT) {
         u32 cd_result;
 
-        CdControl(CdlStop, 0, (u8 *)&cd_result);
+        CdControl(CdlStop, NULL, (u8 *)&cd_result);
         volume = 60;
         menu_prepare_card_exit_rows(labels);
         for (;;) {
@@ -1126,7 +1127,7 @@ s32 menu_card_load_browser(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
@@ -1492,7 +1493,7 @@ s32 menu_card_load_slot_browser(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
@@ -1639,7 +1640,7 @@ void menu_card_save_browser(void)
         if (result != KF_MENU_RESULT_PENDING)
             break;
 
-        menu_update_list_input(&menu.list, 0, &mode, &result);
+        menu_update_list_input(&menu.list, NULL, &mode, &result);
         if (mode == 1)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
@@ -3082,7 +3083,7 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
                 list->cursor_row = list->visible_rows - 1;
             }
         }
-        if (item_ids != 0 && menu_load_item_model(item_ids[list->selected_index]) != 0)
+        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0)
             *result = -1;
     } else if (buttons & PADLdown) {
         menu_play_sound_cue(16);
@@ -3097,7 +3098,7 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
             list->scroll_offset = 0;
             list->cursor_row = 0;
         }
-        if (item_ids != 0 && menu_load_item_model(item_ids[list->selected_index]) != 0)
+        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0)
             *result = -1;
     } else if (buttons & PADLright) {
         if (menu_item_quantity < 99) {
@@ -4363,7 +4364,7 @@ s32 menu_load_item_model(u8 item_id)
 
     menu_release_item_model();
     if (item_id != 0xff) {
-        allocation = memory_allocate(cd_archive_entry_extent(6, item_id, 0));
+        allocation = memory_allocate(cd_archive_entry_extent(6, item_id, NULL));
         cd_archive_read(6, item_id, (u_long *)allocation);
         tmd_register(KF_TMD_SLOT_MENU_ITEM, (KfTmdHeader *)allocation);
         menu_item_model_allocation_pending = KF_MENU_MODEL_ALLOCATED;

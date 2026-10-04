@@ -8122,49 +8122,49 @@ GAME.EXE	0x8003ef74	0x2e774		mips26	instruction-word	0x8003f3c8	load		j		control
 GAME.EXE	0x8003efcc	0x2e7cc		mips26	instruction-word	0x8003bd40	load	actor_turn_and_move_toward_point	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003eff4	0x2e7f4		mips26	instruction-word	0x8003ad90	load	actor_advance_animation_wrapped	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003effc	0x2e7fc		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f010	0x2e810		mips26	instruction-word	0x8003bba0	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f030	0x2e830		mips26	instruction-word	0x800397d8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f010	0x2e810		mips26	instruction-word	0x8003bba0	load	actor_turn_toward_angle	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f030	0x2e830		mips26	instruction-word	0x800397d8	load	actor_set_animation	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f03c	0x2e83c		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f048	0x2e848		mips26	instruction-word	0x8003adc4	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f05c	0x2e85c		mips26	instruction-word	0x8001584c	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f074	0x2e874		mips26	instruction-word	0x8001584c	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f0a4	0x2e8a4		mips26	instruction-word	0x80039710	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f0b4	0x2e8b4		mips26	instruction-word	0x800390d0	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f048	0x2e848		mips26	instruction-word	0x8003adc4	load	actor_advance_animation_clamped	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f05c	0x2e85c		mips26	instruction-word	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f074	0x2e874		mips26	instruction-word	0x8001584c	load	fixed_lerp_q12	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f0a4	0x2e8a4		mips26	instruction-word	0x80039710	load	actor_find_target_of_type	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f0b4	0x2e8b4		mips26	instruction-word	0x800390d0	load	actor_set_target	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f0bc	0x2e8bc		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f0dc	0x2e8dc		mips26	instruction-word	0x800397d8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f0e4	0x2e8e4		mips26	instruction-word	0x8003b5bc	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f0dc	0x2e8dc		mips26	instruction-word	0x800397d8	load	actor_set_animation	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f0e4	0x2e8e4		mips26	instruction-word	0x8003b5bc	load	actor_suspend_vertical_motion	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f130	0x2e930		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f154	0x2e954		mips26	instruction-word	0x800397d8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f15c	0x2e95c		mips26	instruction-word	0x8003b5bc	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f170	0x2e970		mips26	instruction-word	0x80013f50	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f190	0x2e990		mips26	instruction-word	0x8003b33c	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f200	0x2ea00		mips26	instruction-word	0x800248a8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f20c	0x2ea0c		mips26	instruction-word	0x80039758	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f154	0x2e954		mips26	instruction-word	0x800397d8	load	actor_set_animation	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f15c	0x2e95c		mips26	instruction-word	0x8003b5bc	load	actor_suspend_vertical_motion	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f170	0x2e970		mips26	instruction-word	0x80013f50	load	audio_play_spatial_default_range	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f190	0x2e990		mips26	instruction-word	0x8003b33c	load	actor_move_with_collision	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f200	0x2ea00		mips26	instruction-word	0x800248a8	load	player_apply_damage	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f20c	0x2ea0c		mips26	instruction-word	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f21c	0x2ea1c		mips26	instruction-word	0x8003f390	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f23c	0x2ea3c		mips26	instruction-word	0x800397d8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f244	0x2ea44		mips26	instruction-word	0x8003b5bc	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f23c	0x2ea3c		mips26	instruction-word	0x800397d8	load	actor_set_animation	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f244	0x2ea44		mips26	instruction-word	0x8003b5bc	load	actor_suspend_vertical_motion	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f27c	0x2ea7c	0x8003f280	mips_hi16_lo16	instruction-word	0x801749a4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_dispatch_raw_adjacent_pair
-GAME.EXE	0x8003f2b8	0x2eab8		mips26	instruction-word	0x8002b9d4	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f2b8	0x2eab8		mips26	instruction-word	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f2e4	0x2eae4		mips26	instruction-word	0x8003f368	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f34c	0x2eb4c		mips26	instruction-word	0x800248a8	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f34c	0x2eb4c		mips26	instruction-word	0x800248a8	load	player_apply_damage	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f354	0x2eb54		mips26	instruction-word	0x8003f2c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f36c	0x2eb6c		mips26	instruction-word	0x8003adc4	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f388	0x2eb88		mips26	instruction-word	0x80039758	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f36c	0x2eb6c		mips26	instruction-word	0x8003adc4	load	actor_advance_animation_clamped	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f388	0x2eb88		mips26	instruction-word	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f394	0x2eb94		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f39c	0x2eb9c		mips26	instruction-word	0x8003b5bc	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f39c	0x2eb9c		mips26	instruction-word	0x8003b5bc	load	actor_suspend_vertical_motion	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f3a4	0x2eba4		mips26	instruction-word	0x8003f3c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f3ac	0x2ebac	0x8003f3b0	mips_hi16_lo16	instruction-word	0x8017d124	bss	state_8017d118	lui+lw		paired-reviewed	reviewed	manual:actor_dispatch_raw_adjacent_pair
 GAME.EXE	0x8003f3dc	0x2ebdc	0x8003f3e0	mips_hi16_lo16	instruction-word	0x801749b4	bss	actor_state	lui+lw		paired-reviewed	reviewed	manual:actor_dispatch_raw_adjacent_pair
 GAME.EXE	0x8003f408	0x2ec08		mips26	reachable-code	0x8003f5c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f430	0x2ec30		mips26	reachable-code	0x8003f5c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f484	0x2ec84		mips26	reachable-code	0x8002b9d4	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f4e0	0x2ece0		mips26	reachable-code	0x80039758	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f484	0x2ec84		mips26	reachable-code	0x8002b9d4	load	collision_query_world	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f4e0	0x2ece0		mips26	reachable-code	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f504	0x2ed04		mips26	reachable-code	0x8003f5c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f54c	0x2ed4c		mips26	reachable-code	0x80015104	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f55c	0x2ed5c		mips26	reachable-code	0x8003c000	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f54c	0x2ed4c		mips26	reachable-code	0x80015104	load	vector_rotate_yxz	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f55c	0x2ed5c		mips26	reachable-code	0x8003c000	load	actor_sample_rotated_animation_vertex	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f5a8	0x2eda8		mips26	reachable-code	0x8003f5c8	load		j		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f5c0	0x2edc0		mips26	reachable-code	0x8003b5d0	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
-GAME.EXE	0x8003f5e4	0x2ede4		mips26	reachable-code	0x8002b73c	load		jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f5c0	0x2edc0		mips26	reachable-code	0x8003b5d0	load	actor_update_vertical_motion	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
+GAME.EXE	0x8003f5e4	0x2ede4		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	reviewed	manual:raw actor dispatcher j/jal opcode and exact retail target
 GAME.EXE	0x8003f62c	0x2ee2c	0x8003f630	mips_hi16_lo16	reachable-code	0x801749c0	bss	actor_state	lui+sw		paired-reviewed	reviewed	manual:actor_frame_scan
 GAME.EXE	0x8003f634	0x2ee34	0x8003f638	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu		paired-reviewed	reviewed	manual:actor_frame_scan
 GAME.EXE	0x8003f63c	0x2ee3c	0x8003f640	mips_hi16_lo16	reachable-code	0x801749b8	bss	actor_state	lui+sw		paired-reviewed	reviewed	manual:actor_frame_scan

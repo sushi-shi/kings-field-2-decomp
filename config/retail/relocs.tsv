@@ -4392,12 +4392,12 @@ GAME.EXE	0x8002354c	0x12d4c	0x80023550	mips_hi16_lo16	reachable-code	0x801985a1	
 GAME.EXE	0x80023558	0x12d58	0x8002355c	mips_hi16_lo16	reachable-code	0x801985f0	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_reset_view
 GAME.EXE	0x80023560	0x12d60	0x80023564	mips_hi16_lo16	reachable-code	0x801985f4	bss	player_state	lui+sw		paired-reviewed	reviewed	manual:player_reset_view
 GAME.EXE	0x80023580	0x12d80		mips26	reachable-code	0x8002545c	load	player_set_equipment_slot	jal		control-flow	reviewed	manual:player_restore_equipment_effects
-GAME.EXE	0x80023588	0x12d88	0x8002358c	mips_hi16_lo16	reachable-code	0x8019856b	bss		lui+addiu		paired-reviewed	reviewed	manual:player_restore_equipment_effects
+GAME.EXE	0x80023588	0x12d88	0x8002358c	mips_hi16_lo16	reachable-code	0x8019856b	bss	player_state	lui+addiu		paired-reviewed	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x80023594	0x12d94		mips26	reachable-code	0x8002569c	load	player_equip_weapon	jal		control-flow	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x8002359c	0x12d9c		mips26	reachable-code	0x80023484	load	player_reset_view	jal		control-flow	reviewed	manual:player_restore_equipment_effects
-GAME.EXE	0x800235a4	0x12da4	0x800235a8	mips_hi16_lo16	reachable-code	0x80198532	bss		lui+lh		paired-reviewed	reviewed	manual:player_restore_equipment_effects
+GAME.EXE	0x800235a4	0x12da4	0x800235a8	mips_hi16_lo16	reachable-code	0x80198532	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x800235c4	0x12dc4		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:player_restore_equipment_effects
-GAME.EXE	0x800235cc	0x12dcc	0x800235d0	mips_hi16_lo16	reachable-code	0x80198534	bss		lui+lh		paired-reviewed	reviewed	manual:player_restore_equipment_effects
+GAME.EXE	0x800235cc	0x12dcc	0x800235d0	mips_hi16_lo16	reachable-code	0x80198534	bss	player_state	lui+lh		paired-reviewed	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x800235ec	0x12dec		mips26	reachable-code	0x80040308	load	effect_construct_record	jal		control-flow	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x800235f4	0x12df4		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player_restore_equipment_effects
 GAME.EXE	0x80023640	0x12e40		mips26	reachable-code	0x80017c2c	load	cd_request_wait_idle	jal		control-flow	reviewed	manual:player_resource_transition

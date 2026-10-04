@@ -10917,54 +10917,54 @@ GAME.EXE	0x800584e0	0x47ce0		mips26	reachable-code	0x800506b0	load		jal		control
 GAME.EXE	0x80058578	0x47d78		mips26	reachable-code	0x8005864c	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058634	0x47e34		mips26	instruction-word	0x8005864c	load		jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058698	0x47e98		mips26	reachable-code	0x80054294	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058788	0x47f88		mips26	reachable-code	0x80053630	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058804	0x48004		mips26	reachable-code	0x80058e60	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005882c	0x4802c		mips26	reachable-code	0x80058e8c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058854	0x48054		mips26	reachable-code	0x8005898c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005887c	0x4807c		mips26	reachable-code	0x800593e8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800588a4	0x480a4		mips26	reachable-code	0x800593e8	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800588cc	0x480cc		mips26	reachable-code	0x80059300	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800588f4	0x480f4		mips26	reachable-code	0x80058e00	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005891c	0x4811c		mips26	reachable-code	0x8005864c	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058a58	0x48258		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058788	0x47f88		mips26	reachable-code	0x80053630	load	SpuVmFlush	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058804	0x48004		mips26	reachable-code	0x80058e60	load	Snd_play	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005882c	0x4802c		mips26	reachable-code	0x80058e8c	load	Snd_crescendo	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058854	0x48054		mips26	reachable-code	0x8005898c	load	Snd_decrescendo	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005887c	0x4807c		mips26	reachable-code	0x800593e8	load	Snd_tempo	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800588a4	0x480a4		mips26	reachable-code	0x800593e8	load	Snd_tempo	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800588cc	0x480cc		mips26	reachable-code	0x80059300	load	Snd_pause	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800588f4	0x480f4		mips26	reachable-code	0x80058e00	load	Snd_replay	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005891c	0x4811c		mips26	reachable-code	0x8005864c	load	Snd_stop	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058a58	0x48258		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058a84	0x48284		mips26	reachable-code	0x80058cd4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058aa0	0x482a0		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058aa0	0x482a0		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058ad8	0x482d8		mips26	reachable-code	0x80058d54	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058ae4	0x482e4		mips26	reachable-code	0x80058d40	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058b14	0x48314		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058b60	0x48360		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058b14	0x48314		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058b60	0x48360		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058b98	0x48398		mips26	reachable-code	0x80058d54	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058bd0	0x483d0		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058bd0	0x483d0		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058c08	0x48408		mips26	reachable-code	0x80058cd4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058c24	0x48424		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058c24	0x48424		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058c5c	0x4845c		mips26	reachable-code	0x80058d54	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058c68	0x48468		mips26	reachable-code	0x80058d40	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058c98	0x48498		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058cd4	0x484d4		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058c98	0x48498		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058cd4	0x484d4		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058cdc	0x484dc		mips26	reachable-code	0x80058d64	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058cf8	0x484f8		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058cf8	0x484f8		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058d30	0x48530		mips26	reachable-code	0x80058d54	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058d40	0x48540		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058dd4	0x485d4		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058d40	0x48540		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058dd4	0x485d4		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058e74	0x48674		mips26	reachable-code	0x80055dec	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058f58	0x48758		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80058fa4	0x487a4		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058f58	0x48758		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80058fa4	0x487a4		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058fdc	0x487dc		mips26	reachable-code	0x80059254	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80058fe8	0x487e8		mips26	reachable-code	0x80059240	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80059018	0x48818		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005905c	0x4885c		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80059018	0x48818		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005905c	0x4885c		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80059094	0x48894		mips26	reachable-code	0x80059254	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800590bc	0x488bc		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800590bc	0x488bc		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80059108	0x48908		mips26	reachable-code	0x800591d4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80059124	0x48924		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80059124	0x48924		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005915c	0x4895c		mips26	reachable-code	0x80059254	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80059168	0x48968		mips26	reachable-code	0x80059240	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80059188	0x48988		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800591d4	0x489d4		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80059188	0x48988		mips26	reachable-code	0x80054170	load	SpuVmGetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800591d4	0x489d4		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800591dc	0x489dc		mips26	reachable-code	0x80059264	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800591f8	0x489f8		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800591f8	0x489f8		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80059230	0x48a30		mips26	reachable-code	0x80059254	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80059240	0x48a40		mips26	reachable-code	0x80053fb4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80059240	0x48a40		mips26	reachable-code	0x80053fb4	load	SpuVmSetSeqVol	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800592d4	0x48ad4		mips26	reachable-code	0x80054170	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005934c	0x48b4c		mips26	reachable-code	0x80054294	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005947c	0x48c7c		mips26	reachable-code	0x800594cc	load		j		control-flow	candidate	investigation:relocs.tsv

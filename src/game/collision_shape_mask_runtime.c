@@ -390,7 +390,7 @@ LAB_8002b450:
           special_floor_found = 1;
         }
       }
-      if (height_flags & 0x40000000) {
+      if (height_flags & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
         KF_COLLISION_CACHE_HEIGHT_LIMIT = candidate_height;
         if (bottom_y <= candidate_height) {
           result_flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;

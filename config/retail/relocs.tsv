@@ -9399,34 +9399,34 @@ GAME.EXE	0x800498cc	0x390cc		mips26	reachable-code	0x80013634	load		j		control-f
 GAME.EXE	0x800498dc	0x390dc	0x800498e0	mips_hi16_lo16	reachable-code	0x8006da68	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800498f4	0x390f4		mips26	reachable-code	0x80049900	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049900	0x39100	0x80049904	mips_hi16_lo16	reachable-code	0x8006da70	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049908	0x39108	0x8004990c	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049908	0x39108	0x8004990c	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049930	0x39130		mips26	reachable-code	0x8004996c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049944	0x39144		mips26	reachable-code	0x800499c0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8004994c	0x3914c	0x80049950	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8004994c	0x3914c	0x80049950	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049954	0x39154	0x80049958	mips_hi16_lo16	reachable-code	0x8006da70	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049980	0x39180	0x80049984	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x800499b4	0x391b4	0x800499b8	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049980	0x39180	0x80049984	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+lw	a2	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x800499b4	0x391b4	0x800499b8	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x800499e4	0x391e4		mips26	instruction-word	0x80049b68	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049a38	0x39238		mips26	instruction-word	0x80049a98	load		j		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049a40	0x39240	0x80049a44	mips_hi16_lo16	instruction-word	0x8006da70	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049a74	0x39274	0x80049a78	mips_hi16_lo16	instruction-word	0x8006da60	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049a80	0x39280	0x80049a84	mips_hi16_lo16	instruction-word	0x8006da60	load		lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049a90	0x39290	0x80049a94	mips_hi16_lo16	instruction-word	0x8006da60	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049a74	0x39274	0x80049a78	mips_hi16_lo16	instruction-word	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049a80	0x39280	0x80049a84	mips_hi16_lo16	instruction-word	0x8006da60	load	_AllocRestBlockTop	lui+lw	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049a90	0x39290	0x80049a94	mips_hi16_lo16	instruction-word	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049b44	0x39344		mips26	instruction-word	0x80049b64	load		j		range-filtered	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049b70	0x39370	0x80049b74	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049b70	0x39370	0x80049b74	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049b8c	0x3938c	0x80049b90	mips_hi16_lo16	reachable-code	0x8006da70	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049b98	0x39398	0x80049b9c	mips_hi16_lo16	reachable-code	0x8006da68	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049ba0	0x393a0	0x80049ba4	mips_hi16_lo16	reachable-code	0x8006da78	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049bc8	0x393c8	0x80049bcc	mips_hi16_lo16	reachable-code	0x8006da78	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049bdc	0x393dc	0x80049be0	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049bdc	0x393dc	0x80049be0	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+lw	v1	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049be4	0x393e4	0x80049be8	mips_hi16_lo16	reachable-code	0x8006da70	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049c00	0x39400	0x80049c04	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049c18	0x39418	0x80049c1c	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049c00	0x39400	0x80049c04	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+lw	v0	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049c18	0x39418	0x80049c1c	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049c20	0x39420		mips26	reachable-code	0x800498d4	load		jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049c3c	0x3943c	0x80049c40	mips_hi16_lo16	reachable-code	0x8006da78	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049c60	0x39460		mips26	reachable-code	0x80049d94	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049cac	0x394ac		mips26	reachable-code	0x80049dc0	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80049cec	0x394ec	0x80049cf0	mips_hi16_lo16	reachable-code	0x8006da60	load		lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x80049cec	0x394ec	0x80049cf0	mips_hi16_lo16	reachable-code	0x8006da60	load	_AllocRestBlockTop	lui+sw	at	paired-reachable	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049cf4	0x394f4		mips26	reachable-code	0x80049d8c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049d10	0x39510		mips26	reachable-code	0x80049d8c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80049d20	0x39520		mips26	reachable-code	0x80049d8c	load		j		control-flow	candidate	investigation:relocs.tsv

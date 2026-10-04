@@ -6564,7 +6564,7 @@ GAME.EXE	0x80030f84	0x20784	0x80030f88	mips_hi16_lo16	reachable-code	0x80191f5c	
 GAME.EXE	0x80030f98	0x20798	0x80030f9c	mips_hi16_lo16	reachable-code	0x80191f60	bss		lui+lw		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x80030fd4	0x207d4		mips26	reachable-code	0x80030de4	load	render_map_cell_layers	jal		control-flow	reviewed	manual:render-map-cell-proven-calls
 GAME.EXE	0x80030fe8	0x207e8		mips26	reachable-code	0x80030ff8	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8003103c	0x2083c	0x80031040	mips_hi16_lo16	reachable-code	0x80066888	load		lui+addiu	s2	paired-reachable	candidate	investigation:relocs.tsv
+GAME.EXE	0x8003103c	0x2083c	0x80031040	mips_hi16_lo16	reachable-code	0x80066888	load	render_model_rows	lui+addiu	s2	paired-reachable	reviewed	manual:render_active_model_rows retail table-base pointer and source row iteration
 GAME.EXE	0x8003109c	0x2089c	0x800310a0	mips_hi16_lo16	reachable-code	0x801921ac	bss		lui+addiu		paired-reviewed	reviewed	manual:graphics
 GAME.EXE	0x800310a4	0x208a4		mips26	reachable-code	0x8005d0c4	load	RotMatrix	jal		control-flow	reviewed	manual:render-model-row-proven-calls
 GAME.EXE	0x800310b0	0x208b0		mips26	reachable-code	0x8002d0a4	load	fog_set_near	jal		control-flow	reviewed	manual:render-model-row-proven-calls

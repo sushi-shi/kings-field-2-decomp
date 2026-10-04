@@ -2248,7 +2248,7 @@ GAME.EXE	0x80015e4c	0x564c		mips26	reachable-code	0x80016ee0	load	cd_map_stream_
 GAME.EXE	0x80015e5c	0x565c		mips26	reachable-code	0x800146d0	load	audio_queue_vab_stream	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015e64	0x5664	0x80015e68	mips_hi16_lo16	reachable-code	0x801749d0	bss	map_object_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-resource-copy
 GAME.EXE	0x80015e74	0x5674		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
-GAME.EXE	0x80015e80	0x5680	0x80015e84	mips_hi16_lo16	reachable-code	0x801c7078	bss		lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-weapon-record-copy;owner-extent-candidate
+GAME.EXE	0x80015e80	0x5680	0x80015e84	mips_hi16_lo16	reachable-code	0x801c7078	bss	player_weapon_records	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-weapon-record-copy;owner-extent-candidate
 GAME.EXE	0x80015e98	0x5698		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
 GAME.EXE	0x80015ea4	0x56a4	0x80015ea8	mips_hi16_lo16	reachable-code	0x801d8d88	bss	player_equipment_records	lui+addiu	a0	paired-reviewed	reviewed	manual:audio-cd-startup-copy-destination;object-extent-unbound
 GAME.EXE	0x80015ebc	0x56bc		mips26	reachable-code	0x800171c8	load	resource_copy_words	jal		control-flow	reviewed	manual:audio-cd-startup-direct
@@ -4752,7 +4752,7 @@ GAME.EXE	0x80025138	0x14938	0x8002513c	mips_hi16_lo16	reachable-code	0x801985b0	
 GAME.EXE	0x80025144	0x14944	0x80025148	mips_hi16_lo16	reachable-code	0x801985f8	bss		lui+sh		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x8002514c	0x1494c	0x80025150	mips_hi16_lo16	reachable-code	0x8019b6a8	bss	effect_state	lui+addiu		paired-reviewed	reviewed	manual:player_initialize_state
 GAME.EXE	0x8002516c	0x1496c		mips26	reachable-code	0x80024f4c	load	player_reset_status	jal		control-flow	reviewed	manual:player_initialize_state
-GAME.EXE	0x8002518c	0x1498c	0x80025190	mips_hi16_lo16	reachable-code	0x80075da0	bss		lui+addiu		paired-reviewed	reviewed	manual:player_initialize_session
+GAME.EXE	0x8002518c	0x1498c	0x80025190	mips_hi16_lo16	reachable-code	0x80075da0	bss	player_weapon_asset_buffer	lui+addiu		paired-reviewed	reviewed	manual:player_initialize_session
 GAME.EXE	0x80025194	0x14994	0x80025198	mips_hi16_lo16	reachable-code	0x80198554	bss		lui+sw		paired-reviewed	reviewed	manual:player_initialize_session
 GAME.EXE	0x8002519c	0x1499c		mips26	reachable-code	0x80025004	load	player_initialize_state	jal		control-flow	reviewed	manual:player_initialize_session
 GAME.EXE	0x800251a8	0x149a8	0x800251ac	mips_hi16_lo16	reachable-code	0x80198597	bss		lui+sb		paired-reviewed	reviewed	manual:player_initialize_session
@@ -4849,7 +4849,7 @@ GAME.EXE	0x800256a4	0x14ea4	0x800256a8	mips_hi16_lo16	reachable-code	0x801984ea	
 GAME.EXE	0x800256ac	0x14eac	0x800256b0	mips_hi16_lo16	reachable-code	0x801984ec	bss		lui+sh		paired-reviewed	reviewed	manual:player_equip_weapon
 GAME.EXE	0x800256b8	0x14eb8	0x800256bc	mips_hi16_lo16	reachable-code	0x801984db	bss		lui+sb		paired-reviewed	reviewed	manual:player_equip_weapon
 GAME.EXE	0x800256c0	0x14ec0	0x800256c4	mips_hi16_lo16	reachable-code	0x8019856b	bss		lui+sb		paired-reviewed	reviewed	manual:player_equip_weapon
-GAME.EXE	0x800256e0	0x14ee0	0x800256e4	mips_hi16_lo16	reachable-code	0x801c7078	bss		lui+addiu		paired-reviewed	reviewed	manual:player_equip_weapon
+GAME.EXE	0x800256e0	0x14ee0	0x800256e4	mips_hi16_lo16	reachable-code	0x801c7078	bss	player_weapon_records	lui+addiu		paired-reviewed	reviewed	manual:player_equip_weapon
 GAME.EXE	0x800256ec	0x14eec	0x800256f0	mips_hi16_lo16	reachable-code	0x80198550	bss		lui+sw		paired-reviewed	reviewed	manual:player_equip_weapon
 GAME.EXE	0x800256f8	0x14ef8	0x800256fc	mips_hi16_lo16	reachable-code	0x80198554	bss		lui+lw		paired-reviewed	reviewed	manual:player_equip_weapon
 GAME.EXE	0x80025700	0x14f00		mips26	reachable-code	0x800182d0	load	cd_archive_read	jal		control-flow	reviewed	manual:player_equip_weapon

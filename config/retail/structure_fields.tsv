@@ -224,18 +224,17 @@ KfEffectRecord	0x2e	0x2	scale_y	u16	supported	game/effect.h;asm;effect pool;game
 KfEffectRecord	0x30	0x2	scale_z	u16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x32	0x2	scale_threshold	KfEffectScaleThreshold	supported	GAME 0x80042ec8-0x80042ecc;GAME 0x800449f0-0x80044b8c	Kind 46 start scale Y or kind 8 next probe phase
 KfEffectRecord	0x34	0x8	direction	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x3c	0xc	unknown_3c	u8[12]	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	Variant payload shared by multiple effect kinds; kinds 5, 6, 8, 10, 12, 46, 101, 102, 105, and 107 have typed subviews at +0x40
-KfEffectRecord	0x3c	0xc	cache_tail	KfEffectCacheTail	supported	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg	Cast view with cache pointer at +0x3c and variant payload at +0x40
+KfEffectRecord	0x3c	0xc	cache_tail	KfEffectCacheTail	supported	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg	Typed cache pointer at +0x3c and variant payload at +0x40
 KfEffectRecord	0x40	0x8	kind6_trail_state	KfEffectTrailState	supported	GAME 0x80045094-0x8004552c;effect_construct_record kind 6	Payload view with a pointer and three observed bytes; final byte is natural alignment
-KfEffectRecord	0x40	0x2	kind107_child_link	KfEffectTrailChildLink	supported	GAME 0x80044fd0-0x80044fd8;GAME 0x80045504-0x8004552c	Cast view of unknown_3c[4] for kind-107 child records
-KfEffectRecord	0x40	0x4	kind46_state	KfEffectKind46State	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Cast view of unknown_3c[4] for kind-46 state
-KfEffectRecord	0x40	0x4	kind5_fanout	KfEffectKind5Fanout	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Cast view of unknown_3c[4] for kind-5 parent fanout state
-KfEffectRecord	0x40	0x4	kind8_state	KfEffectKind8State	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Cast view of unknown_3c[4] for kind-8 parent link and vertical step
-KfEffectRecord	0x40	0x4	kind101_motion	KfEffectKind101Motion	supported	GAME 0x80045584/0x800455ac;effect_construct_record kind 101	Cast view of unknown_3c[4] for kind-101 motion steps
-KfEffectRecord	0x40	0x2	kind10_targeting	KfEffectKind10Targeting	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Cast view of unknown_3c[4] for kind-10 targeting state
-KfEffectRecord	0x40	0x2	kind102_payload	KfEffectKind102Payload	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Cast view of unknown_3c[4] for kind-102 signed amplitude
-KfEffectRecord	0x40	0x4	kind105_attachment	KfEffectKind105Attachment	supported	GAME 0x800441e8-0x80044364;effect_construct_record kind 105	Cast view of unknown_3c[4] for kind-105 parent and actor attachment
-KfEffectRecord	0x40	0x8	kind12_aim	KfEffectKind12Aim	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Cast view of unknown_3c[4] for kind-12 aiming parameters
+KfEffectRecord	0x40	0x2	kind107_child_link	KfEffectTrailChildLink	supported	GAME 0x80044fd0-0x80044fd8;GAME 0x80045504-0x8004552c	Payload view at +0x40 for kind-107 child records
+KfEffectRecord	0x40	0x4	kind46_state	KfEffectKind46State	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Payload view at +0x40 for kind-46 state
+KfEffectRecord	0x40	0x4	kind5_fanout	KfEffectKind5Fanout	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Payload view at +0x40 for kind-5 parent fanout state
+KfEffectRecord	0x40	0x4	kind8_state	KfEffectKind8State	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Payload view at +0x40 for kind-8 parent link and vertical step
+KfEffectRecord	0x40	0x4	kind101_motion	KfEffectKind101Motion	supported	GAME 0x80045584/0x800455ac;effect_construct_record kind 101	Payload view at +0x40 for kind-101 motion steps
+KfEffectRecord	0x40	0x2	kind10_targeting	KfEffectKind10Targeting	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Payload view at +0x40 for kind-10 targeting state
+KfEffectRecord	0x40	0x2	kind102_payload	KfEffectKind102Payload	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Payload view at +0x40 for kind-102 signed amplitude
+KfEffectRecord	0x40	0x4	kind105_attachment	KfEffectKind105Attachment	supported	GAME 0x800441e8-0x80044364;effect_construct_record kind 105	Payload view at +0x40 for kind-105 parent and actor attachment
+KfEffectRecord	0x40	0x8	kind12_aim	KfEffectKind12Aim	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Payload view at +0x40 for kind-12 aiming parameters
 KfEffectRecord	0x40	0x1	kind9_target	KfEffectKind9Target	observed	GAME 0x8004085c/0x8004441c	Cast view of +0x40 byte for kind-9 actor target
 KfEffectRecord	0x40	0x1	kind109_target	KfEffectKind109Target	observed	GAME 0x80041638/0x80045b6c	Cast view of +0x40 byte for kind-109 effect target
 KfEffectScaleThreshold	0x00	0x02	interpolation_start_y	s16	supported	GAME 0x80042ec8 sh;GAME 0x80042ecc lh	Kind 46 snapshots scale Y for interpolation to zero

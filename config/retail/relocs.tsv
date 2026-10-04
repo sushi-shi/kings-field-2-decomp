@@ -7428,7 +7428,7 @@ GAME.EXE	0x80038e4c	0x2864c		mips26	reachable-code	0x80038dc4	load	actor_copy_gr
 GAME.EXE	0x80038e88	0x28688		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:actor_initialize_from_group
 GAME.EXE	0x80038ec4	0x286c4		mips26	reachable-code	0x80038ed0	load		j		control-flow	reviewed	manual:actor_initialize_from_group
 GAME.EXE	0x80038edc	0x286dc		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	reviewed	manual:actor_initialize_from_group
-GAME.EXE	0x80038f08	0x28708		mips26	instruction-word	0x80038d04	load		jal		range-filtered	reviewed	manual:actor_home_wrapper
+GAME.EXE	0x80038f08	0x28708		mips26	instruction-word	0x80038d04	load	actor_set_home_position	jal		range-filtered	reviewed	manual:actor_home_wrapper
 GAME.EXE	0x80038f34	0x28734	0x80038f38	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	s1	paired-reviewed	reviewed	manual:actor_scan_callback
 GAME.EXE	0x80038fa0	0x287a0	0x80038fa4	mips_hi16_lo16	reachable-code	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:actor_scan_callback
 GAME.EXE	0x80038fbc	0x287bc		mips26	reachable-code	0x80038efc	load	actor_set_lifecycle_and_home_position	jal		control-flow	reviewed	manual:actor_scan_callback
@@ -7443,51 +7443,51 @@ GAME.EXE	0x800390e8	0x288e8		mips26	reachable-code	0x80039100	load		j		control-f
 GAME.EXE	0x80039124	0x28924	0x80039128	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x8003913c	0x2893c		mips26	reachable-code	0x800395ac	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039158	0x28958	0x8003915c	mips_hi16_lo16	reachable-code	0x80011cd8	load	actor_score_target_candidate_rodata	lui+addiu	at	paired-reviewed	reviewed	manual:actor_candidate_switch_table
-GAME.EXE	0x8003919c	0x2899c		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x8003919c	0x2899c		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800391a4	0x289a4		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x800391c4	0x289c4		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x800391c4	0x289c4		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800391fc	0x289fc		mips26	reachable-code	0x800395ac	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039210	0x28a10		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x8003922c	0x28a2c	0x80039230	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x80039250	0x28a50		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039264	0x28a64	0x80039268	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x80039270	0x28a70	0x80039274	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x80039280	0x28a80		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039290	0x28a90		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039280	0x28a80		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039290	0x28a90		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800392a0	0x28aa0		mips26	reachable-code	0x800395ac	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800392d4	0x28ad4	0x800392d8	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x800392e0	0x28ae0		mips26	reachable-code	0x80015574	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x800392e0	0x28ae0		mips26	reachable-code	0x80015574	load	directed_intervals_overlap	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800392f0	0x28af0	0x800392f4	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800392fc	0x28afc	0x80039300	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x8003930c	0x28b0c		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039320	0x28b20		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039344	0x28b44		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x8003930c	0x28b0c		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039320	0x28b20		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039344	0x28b44		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x8003934c	0x28b4c		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039378	0x28b78		mips26	reachable-code	0x80039388	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x800393bc	0x28bbc		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x800393bc	0x28bbc		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800393c4	0x28bc4		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039408	0x28c08	0x8003940c	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x80039414	0x28c14	0x80039418	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x80039424	0x28c24		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039438	0x28c38		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039424	0x28c24		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039438	0x28c38		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039448	0x28c48		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039464	0x28c64	0x80039468	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x80039470	0x28c70	0x80039474	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x80039480	0x28c80		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039490	0x28c90		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039480	0x28c80		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039490	0x28c90		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800394a0	0x28ca0		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800394bc	0x28cbc	0x800394c0	mips_hi16_lo16	reachable-code	0x80198560	bss		lui+lh		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800394d0	0x28cd0	0x800394d4	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
 GAME.EXE	0x800394dc	0x28cdc	0x800394e0	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x800394ec	0x28cec		mips26	reachable-code	0x80015318	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x80039500	0x28d00		mips26	reachable-code	0x800152ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x800394ec	0x28cec		mips26	reachable-code	0x80015318	load	vector_xz_to_angle	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039500	0x28d00		mips26	reachable-code	0x800152ac	load	angle_within_tolerance	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039510	0x28d10		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039518	0x28d18		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039534	0x28d34		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039550	0x28d50	0x80039554	mips_hi16_lo16	reachable-code	0x8017d124	bss		lui+lw		paired-reviewed	reviewed	manual:func_80039108 decoded signed-low data reference
-GAME.EXE	0x80039588	0x28d88		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x80039588	0x28d88		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x80039590	0x28d90		mips26	reachable-code	0x800395a8	load		j		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
-GAME.EXE	0x8003959c	0x28d9c		mips26	reachable-code	0x800157ac	load		jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
+GAME.EXE	0x8003959c	0x28d9c		mips26	reachable-code	0x800157ac	load	random_triangular_scaled	jal		control-flow	reviewed	manual:func_80039108 raw retail branch/call target
 GAME.EXE	0x800395f4	0x28df4	0x800395f8	mips_hi16_lo16	reachable-code	0x801749ac	bss		lui+lw		paired-reviewed	reviewed	manual:actor_select_best_target
 GAME.EXE	0x800395fc	0x28dfc	0x80039600	mips_hi16_lo16	reachable-code	0x801749a8	bss		lui+lw		paired-reviewed	reviewed	manual:actor_select_best_target
 GAME.EXE	0x80039640	0x28e40		mips26	reachable-code	0x80039108	load	actor_score_target_candidate	jal		control-flow	reviewed	manual:actor_select_best_target
@@ -7510,35 +7510,35 @@ GAME.EXE	0x80039894	0x29094		mips26	reachable-code	0x80039b34	load		j		control-f
 GAME.EXE	0x800398a8	0x290a8		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800398c0	0x290c0	0x800398c4	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x800398c8	0x290c8	0x800398cc	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
-GAME.EXE	0x800398d8	0x290d8		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800398d8	0x290d8		mips26	reachable-code	0x800155a4	load	vector_distance_to_point	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800398fc	0x290fc	0x80039900	mips_hi16_lo16	reachable-code	0x801749b4	bss	actor_state	lui+lw	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
-GAME.EXE	0x8003991c	0x2911c		mips26	reachable-code	0x80038ff0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x8003991c	0x2911c		mips26	reachable-code	0x80038ff0	load	actor_prepare_and_initialize	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039924	0x29124		mips26	reachable-code	0x80039a40	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039948	0x29148		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039960	0x29160		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039980	0x29180	0x80039984	mips_hi16_lo16	reachable-code	0x801984da	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x800399b4	0x291b4		mips26	reachable-code	0x8005f480	load	rand	jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x800399e4	0x291e4		mips26	reachable-code	0x8003a9f4	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x800399e4	0x291e4		mips26	reachable-code	0x8003a9f4	load	actor_find_overlap_excluding_target_type3	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x800399f8	0x291f8	0x800399fc	mips_hi16_lo16	reachable-code	0x801749ac	bss	actor_state	lui+lw	a0	paired-reviewed	reviewed	manual:actor_lifecycle_target
-GAME.EXE	0x80039a00	0x29200		mips26	reachable-code	0x80038ff0	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039a0c	0x2920c		mips26	reachable-code	0x80039710	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039a20	0x29220		mips26	reachable-code	0x80039710	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039a30	0x29230		mips26	reachable-code	0x800390d0	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a00	0x29200		mips26	reachable-code	0x80038ff0	load	actor_prepare_and_initialize	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a0c	0x2920c		mips26	reachable-code	0x80039710	load	actor_find_target_of_type	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a20	0x29220		mips26	reachable-code	0x80039710	load	actor_find_target_of_type	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a30	0x29230		mips26	reachable-code	0x800390d0	load	actor_set_target	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a38	0x29238		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039a40	0x29240		mips26	reachable-code	0x800395c8	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a40	0x29240		mips26	reachable-code	0x800395c8	load	actor_select_best_target	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a48	0x29248		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a60	0x29260		mips26	reachable-code	0x80039b34	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039a7c	0x2927c	0x80039a80	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039a84	0x29284	0x80039a88	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
-GAME.EXE	0x80039a90	0x29290		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039ab0	0x292b0		mips26	reachable-code	0x8002b73c	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039a90	0x29290		mips26	reachable-code	0x800155a4	load	vector_distance_to_point	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039ab0	0x292b0		mips26	reachable-code	0x8002b73c	load	map_cell_add_layer_occupancy	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039ab8	0x292b8		mips26	reachable-code	0x80039b2c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039acc	0x292cc	0x80039ad0	mips_hi16_lo16	reachable-code	0x801749b4	bss	actor_state	lui+lw	v0	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039ae8	0x292e8		mips26	reachable-code	0x80039b2c	load		j		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039b00	0x29300	0x80039b04	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+lw	a1	paired-reviewed	reviewed	manual:actor_lifecycle_target
 GAME.EXE	0x80039b08	0x29308	0x80039b0c	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	a3	paired-reviewed	reviewed	manual:actor_lifecycle_target
-GAME.EXE	0x80039b14	0x29314		mips26	reachable-code	0x800155a4	load		jal		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x80039b2c	0x2932c		mips26	reachable-code	0x80038d04	load		jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039b14	0x29314		mips26	reachable-code	0x800155a4	load	vector_distance_to_point	jal		control-flow	candidate	investigation:relocs.tsv
+GAME.EXE	0x80039b2c	0x2932c		mips26	reachable-code	0x80038d04	load	actor_set_home_position	jal		control-flow	candidate	investigation:relocs.tsv
 GAME.EXE	0x80039b78	0x29378	0x80039b7c	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	s0	paired-reviewed	reviewed	manual:actor_group_scan
 GAME.EXE	0x80039bbc	0x293bc		mips26	reachable-code	0x80039758	load	actor_select_target_type_in_own_group	jal		control-flow	reviewed	manual:actor_group_scan
 GAME.EXE	0x80039bc4	0x293c4		mips26	reachable-code	0x80039bd8	load		j		control-flow	reviewed	manual:actor_group_scan

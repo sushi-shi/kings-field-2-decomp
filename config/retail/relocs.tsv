@@ -7092,7 +7092,7 @@ GAME.EXE	0x80035a4c	0x2524c		mips26	instruction-word	0x8005f410	load	memset	jal	
 GAME.EXE	0x80035a6c	0x2526c		mips26	instruction-word	0x8002b73c	load	map_cell_add_layer_occupancy	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035a90	0x25290	0x80035a94	mips_hi16_lo16	instruction-word	0x80011484	load		lui+addiu	at	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b48	0x25348		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
-GAME.EXE	0x80035b64	0x25364	0x80035b68	mips_hi16_lo16	instruction-word	0x80067980	load		lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
+GAME.EXE	0x80035b64	0x25364	0x80035b68	mips_hi16_lo16	instruction-word	0x80067980	load	map_object_cell_patterns	lui+addiu	v0	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b80	0x25380		mips26	instruction-word	0x80034f90	load	map_cell_apply_rotated_pattern	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035b88	0x25388		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035bc0	0x253c0		mips26	instruction-word	0x80035194	load	map_cell_copy_rotated_fields	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
@@ -7112,7 +7112,7 @@ GAME.EXE	0x80035d80	0x25580		mips26	instruction-word	0x80036018	load		j		decoded
 GAME.EXE	0x80035de4	0x255e4		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035e0c	0x2560c		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035e18	0x25618		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
-GAME.EXE	0x80035e70	0x25670	0x80035e74	mips_hi16_lo16	instruction-word	0x80067890	load		lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
+GAME.EXE	0x80035e70	0x25670	0x80035e74	mips_hi16_lo16	instruction-word	0x80067890	load	map_object_cell_patterns	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035e88	0x25688		mips26	instruction-word	0x80034f90	load	map_cell_apply_rotated_pattern	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035e98	0x25698		mips26	instruction-word	0x80036018	load		j		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target
 GAME.EXE	0x80035ec0	0x256c0		mips26	instruction-word	0x800356ac	load	map_object_set_cell_marker	jal		decoded-instruction	reviewed	manual:map_object_init_records;retail-word-target

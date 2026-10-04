@@ -240,12 +240,6 @@ source = "src/game/event_pose_interpolate.c"
 profile = "probe-gcc257-o2-g0"
 
 [[unit]]
-unit = "game.event_state"
-image = "GAME.EXE"
-source = "src/game/event_state.c"
-profile = "probe-gcc257-o2-g0"
-
-[[unit]]
 unit = "game.memory_card_io_end_data"
 image = "GAME.EXE"
 source = "src/game/memory_card_io_end_data.c"

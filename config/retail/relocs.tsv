@@ -2037,7 +2037,7 @@ GAME.EXE	0x80013ab4	0x32b4	0x80013ab8	mips_hi16_lo16	reachable-code	0x80194e30	b
 GAME.EXE	0x80013abc	0x32bc	0x80013ac0	mips_hi16_lo16	reachable-code	0x801984c0	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
 GAME.EXE	0x80013ac4	0x32c4	0x80013ac8	mips_hi16_lo16	reachable-code	0x80164a68	bss	audio_vab_stream_buffers	lui+addiu	v0	paired-reviewed	reviewed	manual:audio-VAB-slot6-override;first 0x1000-byte element of reviewed six-buffer span
 GAME.EXE	0x80013acc	0x32cc	0x80013ad0	mips_hi16_lo16	reachable-code	0x801984c8	bss	audio_state	lui+sw	at	paired-reviewed	reviewed	manual:audio-init-state
-GAME.EXE	0x80013ae4	0x32e4	0x80013ae8	mips_hi16_lo16	reachable-code	0x80198598	bss		lui+lbu	v0	paired-reviewed	reviewed	manual:audio_sequence
+GAME.EXE	0x80013ae4	0x32e4	0x80013ae8	mips_hi16_lo16	reachable-code	0x80198598	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:audio_sequence;raw player_state+0xc8 audio_music_enabled
 GAME.EXE	0x80013af8	0x32f8	0x80013afc	mips_hi16_lo16	reachable-code	0x8019763c	bss	audio_state	lui+lw	v0	paired-reviewed	reviewed	manual:audio_sequence
 GAME.EXE	0x80013b0c	0x330c	0x80013b10	mips_hi16_lo16	reachable-code	0x80197630	bss	audio_state	lui+lw	a0	paired-reviewed	reviewed	manual:audio_sequence
 GAME.EXE	0x80013b14	0x3314	0x80013b18	mips_hi16_lo16	reachable-code	0x80197664	bss	audio_state	lui+lh	a1	paired-reviewed	reviewed	manual:audio_sequence
@@ -2095,7 +2095,7 @@ GAME.EXE	0x800141d4	0x39d4		mips26	reachable-code	0x80013fb8	load	audio_key_off_
 GAME.EXE	0x800141e0	0x39e0		mips26	reachable-code	0x8001425c	load		j		control-flow	reviewed	manual:audio_voice
 GAME.EXE	0x800141f4	0x39f4	0x800141f8	mips_hi16_lo16	reachable-code	0x80197a6c	bss	audio_state	lui+addiu	s0	paired-reviewed	reviewed	manual:audio_voice
 GAME.EXE	0x80014248	0x3a48		mips26	reachable-code	0x80013fb8	load	audio_key_off_handle	jal		control-flow	reviewed	manual:audio_voice
-GAME.EXE	0x800142b4	0x3ab4	0x800142b8	mips_hi16_lo16	reachable-code	0x80198597	bss		lui+lbu	v0	paired-reviewed	reviewed	manual:audio_voice
+GAME.EXE	0x800142b4	0x3ab4	0x800142b8	mips_hi16_lo16	reachable-code	0x80198597	bss	player_state	lui+lbu	v0	paired-reviewed	reviewed	manual:audio_voice;raw player_state+0xc7 audio_effects_enabled
 GAME.EXE	0x800142d4	0x3ad4	0x800142d8	mips_hi16_lo16	reachable-code	0x80197a94	bss	audio_state	lui+addiu	a0	paired-reviewed	reviewed	manual:audio_voice
 GAME.EXE	0x80014310	0x3b10		mips26	reachable-code	0x80014164	load	audio_allocate_voice_handle	jal		control-flow	reviewed	manual:audio_voice
 GAME.EXE	0x8001432c	0x3b2c		mips26	reachable-code	0x80014344	load		j		control-flow	reviewed	manual:audio_voice
@@ -2296,11 +2296,11 @@ GAME.EXE	0x800160ac	0x58ac	0x800160b0	mips_hi16_lo16	reachable-code	0x8012da68	b
 GAME.EXE	0x800160b4	0x58b4		mips26	reachable-code	0x8002d8f0	load	tmd_set_slot	jal		control-flow	reviewed	manual:audio-cd-state-snapshot
 GAME.EXE	0x800160bc	0x58bc	0x800160c0	mips_hi16_lo16	reachable-code	0x8017d124	bss	state_8017d118	lui+lw	v0	paired-reviewed	reviewed	manual:audio-cd-state-snapshot
 GAME.EXE	0x800160e8	0x58e8	0x800160ec	mips_hi16_lo16	reachable-code	0x8019bd28	bss		lui+addiu	t0	paired-reviewed	reviewed	manual:typed effect pool position translation
-GAME.EXE	0x80016100	0x5900	0x80016104	mips_hi16_lo16	reachable-code	0x801985a8	bss		lui+addiu	v1	paired-reviewed	reviewed	manual:player camera position x
-GAME.EXE	0x80016118	0x5918	0x8001611c	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+lw	v0	paired-reviewed	reviewed	manual:player camera position z
-GAME.EXE	0x80016120	0x5920	0x80016124	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+lw	v1	paired-reviewed	reviewed	manual:player camera position y
-GAME.EXE	0x8001612c	0x592c	0x80016130	mips_hi16_lo16	reachable-code	0x801985b0	bss		lui+sw	at	paired-reviewed	reviewed	manual:player camera position z
-GAME.EXE	0x80016138	0x5938	0x8001613c	mips_hi16_lo16	reachable-code	0x801985ac	bss		lui+sw	at	paired-reviewed	reviewed	manual:player camera position y
+GAME.EXE	0x80016100	0x5900	0x80016104	mips_hi16_lo16	reachable-code	0x801985a8	bss	player_state	lui+addiu	v1	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xd8 camera_position.vx
+GAME.EXE	0x80016118	0x5918	0x8001611c	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+lw	v0	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xe0 camera_position.vz
+GAME.EXE	0x80016120	0x5920	0x80016124	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+lw	v1	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xdc camera_position.vy
+GAME.EXE	0x8001612c	0x592c	0x80016130	mips_hi16_lo16	reachable-code	0x801985b0	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xe0 camera_position.vz
+GAME.EXE	0x80016138	0x5938	0x8001613c	mips_hi16_lo16	reachable-code	0x801985ac	bss	player_state	lui+sw	at	paired-reviewed	reviewed	manual:translate_active_world_positions;raw player_state+0xdc camera_position.vy
 GAME.EXE	0x800161a8	0x59a8	0x800161ac	mips_hi16_lo16	reachable-code	0x801767e8	bss		lui+addiu	a3	paired-reviewed	reviewed	manual:map-object pool position translation
 GAME.EXE	0x800161f8	0x59f8	0x800161fc	mips_hi16_lo16	reachable-code	0x8016b600	bss	actor_state	lui+addiu	t0	paired-reviewed	reviewed	manual:actor pool position translation
 GAME.EXE	0x800162bc	0x5abc	0x800162c0	mips_hi16_lo16	instruction-word	0x80197638	bss	audio_state	lui+lw	v0	paired-reviewed	reviewed	manual:audio-fade-controller-direct-pair

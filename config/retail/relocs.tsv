@@ -11236,10 +11236,10 @@ GAME.EXE	0x8005e660	0x4de60	0x8005e664	mips_hi16_lo16	instruction-word	0x8006d88
 GAME.EXE	0x8005e674	0x4de74		mips26	instruction-word	0x8005f330	load	ChangeClearPAD	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e680	0x4de80		mips26	instruction-word	0x8005f3a0	load	ChangeClearRCnt	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e688	0x4de88	0x8005e68c	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e690	0x4de90	0x8005e694	mips_hi16_lo16	instruction-word	0x8005e6f8	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e690	0x4de90	0x8005e694	mips_hi16_lo16	reachable-code	0x8005e6f8	load	intVBLNK	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x48/+0x4c section-local patch to intVBLNK+0;retail signed low
 GAME.EXE	0x8005e698	0x4de98		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e6a4	0x4dea4	0x8005e6a8	mips_hi16_lo16	instruction-word	0x8006d88c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-GAME.EXE	0x8005e6ac	0x4deac	0x8005e6b0	mips_hi16_lo16	instruction-word	0x8005e748	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+GAME.EXE	0x8005e6ac	0x4deac	0x8005e6b0	mips_hi16_lo16	reachable-code	0x8005e748	load	setVBLNKCallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x64/+0x68 section-local patch to setVBLNKCallback+0;retail signed low
 GAME.EXE	0x8005e6cc	0x4decc	0x8005e6d0	mips_hi16_lo16	instruction-word	0x8006d88c	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e6d8	0x4ded8		mips26	instruction-word	0x8005e878	load	InterruptCallback	jal		range-filtered	candidate	investigation:relocs.tsv
 GAME.EXE	0x8005e6e0	0x4dee0	0x8005e6e4	mips_hi16_lo16	instruction-word	0x8006dba0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -13931,10 +13931,10 @@ OPEN.EXE	0x8001d8cc	0xd0cc	0x8001d8d0	mips_hi16_lo16	instruction-word	0x8003de48
 OPEN.EXE	0x8001d8e0	0xd0e0		mips26	instruction-word	0x8001da14	load	ChangeClearPAD	jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d8ec	0xd0ec		mips26	instruction-word	0x8001da24	load	ChangeClearRCnt	jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d8f4	0xd0f4	0x8001d8f8	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d8fc	0xd0fc	0x8001d900	mips_hi16_lo16	instruction-word	0x8001d964	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d8fc	0xd0fc	0x8001d900	mips_hi16_lo16	reachable-code	0x8001d964	load	intVBLNK	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x48/+0x4c section-local patch to intVBLNK+0;retail signed low
 OPEN.EXE	0x8001d904	0xd104		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d910	0xd110	0x8001d914	mips_hi16_lo16	instruction-word	0x8003de50	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-OPEN.EXE	0x8001d918	0xd118	0x8001d91c	mips_hi16_lo16	instruction-word	0x8001d9b4	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+OPEN.EXE	0x8001d918	0xd118	0x8001d91c	mips_hi16_lo16	reachable-code	0x8001d9b4	load	setVBLNKCallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x64/+0x68 section-local patch to setVBLNKCallback+0;retail signed low
 OPEN.EXE	0x8001d938	0xd138	0x8001d93c	mips_hi16_lo16	instruction-word	0x8003de50	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d944	0xd144		mips26	instruction-word	0x8001db34	load		jal		range-filtered	candidate	investigation:relocs.tsv
 OPEN.EXE	0x8001d94c	0xd14c	0x8001d950	mips_hi16_lo16	instruction-word	0x8003dfe0	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
@@ -16548,10 +16548,10 @@ END.EXE	0x8001ab30	0xa330	0x8001ab34	mips_hi16_lo16	instruction-word	0x8003ac68	
 END.EXE	0x8001ab44	0xa344		mips26	instruction-word	0x8001ac78	load	ChangeClearPAD	jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab50	0xa350		mips26	instruction-word	0x8001ac88	load	ChangeClearRCnt	jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab58	0xa358	0x8001ab5c	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001ab60	0xa360	0x8001ab64	mips_hi16_lo16	instruction-word	0x8001abc8	load		lui+addiu	a1	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001ab60	0xa360	0x8001ab64	mips_hi16_lo16	reachable-code	0x8001abc8	load	intVBLNK	lui+addiu	a1	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x48/+0x4c section-local patch to intVBLNK+0;retail signed low
 END.EXE	0x8001ab68	0xa368		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001ab74	0xa374	0x8001ab78	mips_hi16_lo16	instruction-word	0x8003ac70	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
-END.EXE	0x8001ab7c	0xa37c	0x8001ab80	mips_hi16_lo16	instruction-word	0x8001ac18	load		lui+addiu	v0	paired-pattern	candidate	investigation:relocs.tsv
+END.EXE	0x8001ab7c	0xa37c	0x8001ab80	mips_hi16_lo16	reachable-code	0x8001ac18	load	setVBLNKCallback	lui+addiu	v0	paired-reachable	reviewed	psyq-sdk30:LIBETC.LIB/INTR_VB.OBJ .text+0x64/+0x68 section-local patch to setVBLNKCallback+0;retail signed low
 END.EXE	0x8001ab9c	0xa39c	0x8001aba0	mips_hi16_lo16	instruction-word	0x8003ac70	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv
 END.EXE	0x8001aba8	0xa3a8		mips26	instruction-word	0x8001ad98	load		jal		range-filtered	candidate	investigation:relocs.tsv
 END.EXE	0x8001abb0	0xa3b0	0x8001abb4	mips_hi16_lo16	instruction-word	0x8003add8	load		lui+sw	at	paired-pattern	candidate	investigation:relocs.tsv

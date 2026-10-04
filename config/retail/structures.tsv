@@ -76,6 +76,7 @@ KfMapCellPattern	0x0a	supported	asm;func_80034f90;callers	two four-byte variants
 KfMapCellPatternVariant	0x04	supported	asm;func_80034f90;callers	four copy/skip bytes for one placement variant
 KfMapObject	0x44	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	layout from the reconstructed header
 KfMapObjectExtra40	0x04	supported	asm;func_800291ec;map_object_step_offset_motion	pointer and byte views of map-object +0x40
+KfMapObjectPlacement	0x18	supported	game/map_object.h;GAME 0x800358e8-0x80035a48;GAME 0x8003602c-0x80036030	24-byte resource row; original allocation and typedef spelling unproved
 KfMapObjectSavedLayerState	0x04	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	saved layer mask passed to action 0x54 map-cell pattern updates
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
@@ -87,6 +88,7 @@ KfMapObjectTailAction89LayerFadeView	0xc	supported	GAME 0x80036828 marker compar
 KfMapObjectTailAmbientSoundView	0xc	supported	GAME 0x80032858..0x80032a5c;map_object action 0x1f	ambient-sound action uses region, volume, range, attenuation, and repeat period bytes
 KfMapObjectTailCellCopyView	0xc	supported	GAME 0x80035c08..0x80035c48;map_cell_copy_rotated_fields	actions 3 and 4 carry source and destination map-cell coordinates
 KfMapObjectTailCollisionProbeView	0xc	supported	GAME 0x80038148..0x800383c8;effect_dispatch_magic_impact	action 81 uses a camera-region gate and dispatches magic collision damage
+KfMapObjectTailCopyWords	0x08	supported	game/map_object.h;GAME 0x80035a3c-0x80035a48	two copied resource words; their action-specific meanings remain unresolved
 KfMapObjectTailEventEffectView	0xc	supported	game/map_object.h;event_spawn_effect_object	event effect-object index at map-object tail +0x39
 KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
 KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail

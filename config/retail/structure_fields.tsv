@@ -430,6 +430,15 @@ KfMapObjectExtra40	0x00	0x02	movement_frames_left	u16	supported	map_object_updat
 KfMapObjectExtra40	0x00	0x04	resource_offsets	KfMapObjectResourceOffsets	supported	map_object_initialize_from_placements;map_object_update_actions action 224	three signed placement offsets forwarded to resource_request_transition
 KfMapObjectExtra40	0x00	0x04	layer_fade	KfMapObjectLayerFadeState	supported	map_object_initialize_from_placements;map_object_update_actions action 89	wait countdown and saved collision layer mask during fade
 KfMapObjectExtra40	0x00	0x04	saved_layer	KfMapObjectSavedLayerState	supported	GAME 0x80037f38/0x8003801c lbu;map_object_update_actions action 84	action-specific view of layer mask saved at placement time
+KfMapObjectPlacement	0x00	0x01	layer_mask	u8	supported	game/map_object.h;GAME 0x80035960 lbu	map layer assigned to spawned object
+KfMapObjectPlacement	0x01	0x01	region_z	u8	supported	game/map_object.h;GAME 0x800359c4 lbu	Z map region for object position
+KfMapObjectPlacement	0x02	0x01	region_x	u8	supported	game/map_object.h;GAME 0x800359b0 lbu	X map region for object position
+KfMapObjectPlacement	0x04	0x02	object_id	u16	supported	game/map_object.h;GAME 0x800358e8 lhu	0xffff marks an empty placement
+KfMapObjectPlacement	0x06	0x02	rotation_y	s16	candidate	game/map_object.h;GAME 0x8003593c lhu	width and offset proved; masking leaves signedness unresolved
+KfMapObjectPlacement	0x08	0x02	local_z	s16	supported	game/map_object.h;GAME 0x800359c8 lh	signed local Z offset added to region origin
+KfMapObjectPlacement	0x0a	0x02	local_x	s16	supported	game/map_object.h;GAME 0x800359b4 lh	signed local X offset added to region origin
+KfMapObjectPlacement	0x0c	0x02	height	s16	supported	game/map_object.h;GAME 0x80035a2c lh	signed placement height before map layer subtraction
+KfMapObjectPlacement	0x10	0x08	tail_words	KfMapObjectTailCopyWords	supported	game/map_object.h;GAME 0x80035a3c-0x80035a48	two action-specific words copied into the spawned object tail
 KfMapObjectSavedLayerState	0x00	0x01	layer_mask	u8	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	original layer mask passed to map_cell_apply_rotated_pattern
 KfMapObjectResourceOffsets	0x00	0x01	offset_x	s8	supported	map_object_initialize_from_placements;GAME 0x800380d4 lb	signed X offset for resource transition
 KfMapObjectResourceOffsets	0x01	0x01	offset_z	s8	supported	map_object_initialize_from_placements;GAME 0x800380e0 lb	signed Z offset for resource transition
@@ -602,6 +611,8 @@ KfMapObjectTailHalfwordBytes	0x1	0x1	high	u8	supported	game/map_object.h;asm;map
 KfMapObjectTailPair38View	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
 KfMapObjectTailPair38View	0x4	0x2	value_38	u16	supported	asm;event_world_dispatch_interaction	retail lhu reads bytes +0x38 and +0x39 together
 KfMapObjectTailPair38View	0x6	0x6	unknown_3a	u8[6]	opaque	game/map_object.h;asm	trailing tail bytes retain existing field view
+KfMapObjectTailCopyWords	0x00	0x04	first	u32	supported	game/map_object.h;GAME 0x80035a3c/0x80035a44	first action-specific resource word copied without reinterpretation
+KfMapObjectTailCopyWords	0x04	0x04	second	u32	supported	game/map_object.h;GAME 0x80035a40/0x80035a48	second action-specific resource word copied without reinterpretation
 KfMapObjectTailEventEffectView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	preceding tail word
 KfMapObjectTailEventEffectView	0x4	0x1	pending_event_command	u8	supported	event_scene_command_dispatch commands 0x67/0x72..0x74;map_object_update_actions actions 15/17	command byte uses 0xff as inactive sentinel
 KfMapObjectTailEventEffectView	0x5	0x1	effect_object_index	u8	supported	event_spawn_effect_object;GAME 0x8004676c sb;map_object_update_actions actions 15/17	byte-truncated pool-relative effect object index

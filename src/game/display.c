@@ -71,8 +71,8 @@ typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
     ((u8 *)&(field))[1] = (u8)((value).word >> 8); \
 } while (0)
 #define WRITE_INDEX(field, value) do { \
-    ((u8 *)&(field))[0] = (u8)(value); \
-    ((u8 *)&(field))[1] = (u8)((value) >> 8); \
+    index_scratch.halves[0] = (u16)(value); \
+    COPY_SCRATCH_INDEX(field, 0); \
 } while (0)
 #define COPY_SCRATCH_INDEX(field, slot) do { \
     ((u8 *)&(field))[0] = index_scratch.bytes[(slot) * 2]; \
@@ -1582,6 +1582,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
             KfTmdFt4 *third;
             KfTmdFt4 *fourth;
             u16 ab, ac, ad, cd, bd;
+            KfTmdIndexScratch index_scratch;
 
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
             {

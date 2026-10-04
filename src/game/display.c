@@ -57,6 +57,11 @@ typedef char kf_tmd_ft4_texture_uv3_offset[
     (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
 typedef KfTmdUvBytes KfUvScratch;
 typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
+typedef union KfTmdIndexScratch {
+    u16 halves[2];
+    u8 bytes[4];
+} KfTmdIndexScratch;
+typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
 #define WRITE_UV_CACHED(field, value) do { \
     ((u8 *)&(field))[0] = (value).u; \
     ((u8 *)&(field))[1] = (value).v; \
@@ -64,6 +69,14 @@ typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 2 ? 1 : -1];
 #define WRITE_INDEX(field, value) do { \
     ((u8 *)&(field))[0] = (u8)(value); \
     ((u8 *)&(field))[1] = (u8)((value) >> 8); \
+} while (0)
+#define COPY_SCRATCH_INDEX(field, slot) do { \
+    ((u8 *)&(field))[0] = index_scratch.bytes[(slot) * 2]; \
+    ((u8 *)&(field))[1] = index_scratch.bytes[(slot) * 2 + 1]; \
+} while (0)
+#define WRITE_SCRATCH_INDEX(field, value, slot) do { \
+    index_scratch.halves[slot] = (value); \
+    COPY_SCRATCH_INDEX(field, slot); \
 } while (0)
 #define MID_INDEX(src, n) ((u16)(((src)->vertex_count + (n)) << 3))
 #define MID_VECTOR(dst, lhs, rhs) do { \
@@ -1648,6 +1661,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
             KfTmdFt3 *third;
             KfTmdFt3 *fourth;
             u16 ab, ac, bc;
+            KfTmdIndexScratch index_scratch;
 
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
             {
@@ -1680,31 +1694,33 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
             bc = MID_INDEX(source, midpoint_count + 2);
             WRITE_UV_CACHED(first->uv1, uv_ab);
             WRITE_UV_CACHED(first->uv2, uv_ac);
-            WRITE_INDEX(first->vertex1, ab);
-            WRITE_INDEX(first->vertex2, ac);
+            index_scratch.halves[0] = ab;
+            index_scratch.halves[1] = ac;
+            COPY_SCRATCH_INDEX(first->vertex1, 0);
+            COPY_SCRATCH_INDEX(first->vertex2, 1);
             output_packet += 24;
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
             second = (KfTmdFt3 *)(output_packet + 4);
             WRITE_UV_CACHED(second->uv0, uv_ab);
             WRITE_UV_CACHED(second->uv2, uv_bd);
-            WRITE_INDEX(second->vertex0, ab);
-            WRITE_INDEX(second->vertex2, bc);
+            WRITE_SCRATCH_INDEX(second->vertex0, ab, 1);
+            WRITE_SCRATCH_INDEX(second->vertex2, bc, 1);
             output_packet += 24;
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
             third = (KfTmdFt3 *)(output_packet + 4);
             WRITE_UV_CACHED(third->uv0, uv_ac);
             WRITE_UV_CACHED(third->uv1, uv_bd);
-            WRITE_INDEX(third->vertex0, ac);
-            WRITE_INDEX(third->vertex1, bc);
+            WRITE_SCRATCH_INDEX(third->vertex0, ac, 1);
+            WRITE_SCRATCH_INDEX(third->vertex1, bc, 0);
             output_packet += 24;
             resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
             fourth = (KfTmdFt3 *)(output_packet + 4);
             WRITE_UV_CACHED(fourth->uv0, uv_ab);
             WRITE_UV_CACHED(fourth->uv1, uv_bd);
             WRITE_UV_CACHED(fourth->uv2, uv_ac);
-            WRITE_INDEX(fourth->vertex0, ab);
-            WRITE_INDEX(fourth->vertex1, bc);
-            WRITE_INDEX(fourth->vertex2, ac);
+            WRITE_SCRATCH_INDEX(fourth->vertex0, ab, 1);
+            WRITE_SCRATCH_INDEX(fourth->vertex1, bc, 0);
+            WRITE_SCRATCH_INDEX(fourth->vertex2, ac, 1);
             output_packet += 24;
             output_packet_bytes += 96;
             midpoint_count += 3;
@@ -1736,6 +1752,8 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
 #undef MID_UV_INTO
 #undef WRITE_UV_CACHED
 #undef WRITE_INDEX
+#undef COPY_SCRATCH_INDEX
+#undef WRITE_SCRATCH_INDEX
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,

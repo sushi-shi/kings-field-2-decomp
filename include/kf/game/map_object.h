@@ -557,10 +557,7 @@ typedef char kf_map_object_hinge_motion_size[
 
 typedef struct KfMapObjectOffsetMotionState {
     u8 elapsed_frames;
-    u8 unknown_41[3];
 } KfMapObjectOffsetMotionState;
-typedef char kf_map_object_offset_motion_state_size[
-    sizeof(KfMapObjectOffsetMotionState) == 4 ? 1 : -1];
 
 typedef struct KfMapObjectResourceOffsets {
     s8 offset_x;
@@ -583,10 +580,7 @@ typedef char kf_map_object_layer_fade_state_size[
  * visibility; action 0x54 later passes it to map-cell pattern updates. */
 typedef struct KfMapObjectSavedLayerState {
     u8 layer_mask;
-    u8 unknown_41[3];
 } KfMapObjectSavedLayerState;
-typedef char kf_map_object_saved_layer_state_size[
-    sizeof(KfMapObjectSavedLayerState) == 4 ? 1 : -1];
 
 typedef union KfMapObjectExtra40 {
     KfMapObjectRecord40 *record;
@@ -650,6 +644,10 @@ typedef char kf_map_object_spawn_sequence_offset[
     (u32)&((KfMapObject *)0)->tail.fields.spawn_sequence == 0x3c ? 1 : -1];
 typedef char kf_map_object_record40_offset[
     (u32)&((KfMapObject *)0)->extra_40 == 0x40 ? 1 : -1];
+typedef char kf_map_object_offset_motion_elapsed_offset[
+    (u32)&((KfMapObject *)0)->extra_40.offset_motion.elapsed_frames == 0x40 ? 1 : -1];
+typedef char kf_map_object_saved_layer_mask_offset[
+    (u32)&((KfMapObject *)0)->extra_40.saved_layer.layer_mask == 0x40 ? 1 : -1];
 
 /* game_main_loop clears the whole region containing the 0x18c-object pool. */
 typedef struct KfMapObjectStateGame {

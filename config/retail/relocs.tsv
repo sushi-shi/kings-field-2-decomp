@@ -8855,9 +8855,9 @@ GAME.EXE	0x80045cf0	0x354f0	0x80045cf4	mips_hi16_lo16	reachable-code	0x8019b6a8	
 GAME.EXE	0x80045d3c	0x3553c	0x80045d40	mips_hi16_lo16	reachable-code	0x8019bd28	bss		lui+addiu	s0	paired-reviewed	reviewed	manual:effect_sweep
 GAME.EXE	0x80045d44	0x35544	0x80045d48	mips_hi16_lo16	reachable-code	0x8019e130	bss		lui+sw	at	paired-reviewed	reviewed	manual:effect_sweep
 GAME.EXE	0x80045dc4	0x355c4		mips26	reachable-code	0x80045dd4	load		j		control-flow	reviewed	manual:effect_sweep
-GAME.EXE	0x80045dcc	0x355cc		mips26	reachable-code	0x80042650	load		jal		control-flow	reviewed	manual:effect_sweep
-GAME.EXE	0x80045e24	0x35624		mips26	instruction-word	0x800140dc	load		jal		range-filtered	reviewed	manual:audio_sound_wrappers
-GAME.EXE	0x80045e44	0x35644		mips26	instruction-word	0x800140dc	load		jal		range-filtered	reviewed	manual:audio_sound_wrappers
+GAME.EXE	0x80045dcc	0x355cc		mips26	reachable-code	0x80042650	load	effect_update_dispatch	jal		control-flow	reviewed	manual:effect_sweep
+GAME.EXE	0x80045e24	0x35624		mips26	instruction-word	0x800140dc	load	audio_play_sound	jal		range-filtered	reviewed	manual:audio_sound_wrappers
+GAME.EXE	0x80045e44	0x35644		mips26	instruction-word	0x800140dc	load	audio_play_sound	jal		range-filtered	reviewed	manual:audio_sound_wrappers
 GAME.EXE	0x80045e78	0x35678		mips26	reachable-code	0x8005dda4	load	rsin	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
 GAME.EXE	0x80045ea0	0x356a0		mips26	reachable-code	0x8005deac	load	rcos	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call
 GAME.EXE	0x80045ed8	0x356d8		mips26	reachable-code	0x8002b604	load	collision_probe_floor_height	jal		control-flow	reviewed	manual:collision_probe_forward_shape_0x20 direct call

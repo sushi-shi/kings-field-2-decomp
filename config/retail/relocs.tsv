@@ -4433,23 +4433,23 @@ GAME.EXE	0x800237ac	0x12fac		mips26	reachable-code	0x80017c2c	load	cd_request_wa
 GAME.EXE	0x800237c0	0x12fc0		mips26	reachable-code	0x80036e24	load	render_frames_with_color_overlay	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x800237e8	0x12fe8		mips26	reachable-code	0x80016260	load	resource_request_transition	jal		control-flow	reviewed	manual:player_resource_transition
 GAME.EXE	0x80023874	0x13074	0x80023878	mips_hi16_lo16	reachable-code	0x801d8ae8	bss	player_equipment_records	lui+addiu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023880	0x13080	0x80023884	mips_hi16_lo16	reachable-code	0x80198512	bss		lui+addiu	a1	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x8002389c	0x1309c	0x800238a0	mips_hi16_lo16	reachable-code	0x80198514	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238b0	0x130b0	0x800238b4	mips_hi16_lo16	reachable-code	0x80198514	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238b8	0x130b8	0x800238bc	mips_hi16_lo16	reachable-code	0x80198516	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238cc	0x130cc	0x800238d0	mips_hi16_lo16	reachable-code	0x80198516	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238d4	0x130d4	0x800238d8	mips_hi16_lo16	reachable-code	0x80198518	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238e8	0x130e8	0x800238ec	mips_hi16_lo16	reachable-code	0x80198518	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x800238f0	0x130f0	0x800238f4	mips_hi16_lo16	reachable-code	0x8019851a	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023904	0x13104	0x80023908	mips_hi16_lo16	reachable-code	0x8019851a	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x8002390c	0x1310c	0x80023910	mips_hi16_lo16	reachable-code	0x8019851c	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023920	0x13120	0x80023924	mips_hi16_lo16	reachable-code	0x8019851c	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023928	0x13128	0x8002392c	mips_hi16_lo16	reachable-code	0x8019851e	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x8002393c	0x1313c	0x80023940	mips_hi16_lo16	reachable-code	0x8019851e	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023944	0x13144	0x80023948	mips_hi16_lo16	reachable-code	0x80198520	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023958	0x13158	0x8002395c	mips_hi16_lo16	reachable-code	0x80198520	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023960	0x13160	0x80023964	mips_hi16_lo16	reachable-code	0x80198522	bss		lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
-GAME.EXE	0x80023974	0x13174	0x80023978	mips_hi16_lo16	reachable-code	0x80198522	bss		lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023880	0x13080	0x80023884	mips_hi16_lo16	reachable-code	0x80198512	bss	player_state	lui+addiu	a1	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x8002389c	0x1309c	0x800238a0	mips_hi16_lo16	reachable-code	0x80198514	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238b0	0x130b0	0x800238b4	mips_hi16_lo16	reachable-code	0x80198514	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238b8	0x130b8	0x800238bc	mips_hi16_lo16	reachable-code	0x80198516	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238cc	0x130cc	0x800238d0	mips_hi16_lo16	reachable-code	0x80198516	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238d4	0x130d4	0x800238d8	mips_hi16_lo16	reachable-code	0x80198518	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238e8	0x130e8	0x800238ec	mips_hi16_lo16	reachable-code	0x80198518	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x800238f0	0x130f0	0x800238f4	mips_hi16_lo16	reachable-code	0x8019851a	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023904	0x13104	0x80023908	mips_hi16_lo16	reachable-code	0x8019851a	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x8002390c	0x1310c	0x80023910	mips_hi16_lo16	reachable-code	0x8019851c	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023920	0x13120	0x80023924	mips_hi16_lo16	reachable-code	0x8019851c	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023928	0x13128	0x8002392c	mips_hi16_lo16	reachable-code	0x8019851e	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x8002393c	0x1313c	0x80023940	mips_hi16_lo16	reachable-code	0x8019851e	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023944	0x13144	0x80023948	mips_hi16_lo16	reachable-code	0x80198520	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023958	0x13158	0x8002395c	mips_hi16_lo16	reachable-code	0x80198520	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023960	0x13160	0x80023964	mips_hi16_lo16	reachable-code	0x80198522	bss	player_state	lui+lhu	v0	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
+GAME.EXE	0x80023974	0x13174	0x80023978	mips_hi16_lo16	reachable-code	0x80198522	bss	player_state	lui+sh	at	paired-reviewed	reviewed	manual:player_add_equipment_bonuses
 GAME.EXE	0x80023984	0x13184	0x80023988	mips_hi16_lo16	reachable-code	0x801984f4	bss		lui+lhu		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x8002398c	0x1318c	0x80023990	mips_hi16_lo16	reachable-code	0x801984f6	bss		lui+lhu		paired-reviewed	reviewed	manual:player_recalculate
 GAME.EXE	0x80023994	0x13194	0x80023998	mips_hi16_lo16	reachable-code	0x80198526	bss		lui+lh		paired-reviewed	reviewed	manual:player_recalculate

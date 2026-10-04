@@ -986,6 +986,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         void *enqueue_prim;
+        s32 depth_index;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -1124,11 +1125,12 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
         }
         goto next_packet;
 enqueue:
-        if (fixed_depth <= 0)
+        depth_index = (s16)fixed_depth;
+        if (depth_index <= 0)
             goto next_packet;
-        if ((u32)fixed_depth >= KF_MAP_OT_DEPTH_LIMIT)
+        if ((u32)depth_index >= KF_MAP_OT_DEPTH_LIMIT)
             goto next_packet;
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[fixed_depth],
+        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
                 enqueue_prim);
 next_packet:
         packet += TMD_PACKET_BODY_BYTES(header.word);

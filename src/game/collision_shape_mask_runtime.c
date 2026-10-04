@@ -281,7 +281,8 @@ LAB_8002aff0:
           candidate_height = (int)(s16)operand[5];
           quotient = (int)z_remaining / candidate_height;
 LAB_8002b168:
-          candidate_height = (quotient + 1) * (int)(s16)operand[4];
+          quotient += 1;
+          candidate_height = quotient * (s16)operand[4];
           goto LAB_8002b38c;
         }
         break;

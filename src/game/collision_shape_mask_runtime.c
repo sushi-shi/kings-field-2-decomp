@@ -940,6 +940,14 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
 
 
 
+/* Moves the mask scan one cell, updating both map and window coordinates. */
+#define MASK_SCAN_STEP(dx, dz) ( \
+    render_mask_scan_state.map_x += (dx), \
+    render_mask_scan_state.map_z += (dz), \
+    render_mask_scan_state.window_x += (dx), \
+    render_mask_scan_state.window_z += (dz), \
+    render_mask_scan_state.mask_cursor += (dz) * 24 + (dx))
+
 ADDRESS(0x8002c670, 0x7bc)
 void build_camera_map_cell_layer_masks(void)
 {
@@ -966,9 +974,7 @@ void build_camera_map_cell_layer_masks(void)
     shape_cursor = shape;
     shape_index = 6;
     do {
-        s16 near = pair->near;
-        s16 far = pair->far;
-        *shape_cursor = (((far - near) * pitch_weight) >> 12) + near;
+        *shape_cursor = (((pair->far - pair->near) * pitch_weight) >> 12) + pair->near;
         pair++;
         shape_cursor++;
     } while (--shape_index != -1);
@@ -1043,63 +1049,43 @@ void build_camera_map_cell_layer_masks(void)
 
     for (index = 0; index < 14; index++) {
         render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
         render_mask_scan_state.window_z++;
+        render_mask_scan_state.mask_cursor += 24;
         update_current_map_cell_layer_mask(-24);
-        render_mask_scan_state.map_x--;
-        render_mask_scan_state.window_x--;
-        render_mask_scan_state.mask_cursor--;
+        MASK_SCAN_STEP(-1, 0);
         sweep_map_cell_layer_mask_line(-24, -23, -1, 0, -1, index);
         update_current_map_cell_layer_mask(-23);
-
-        render_mask_scan_state.map_z--;
-        render_mask_scan_state.mask_cursor -= 24;
-        render_mask_scan_state.window_z--;
+        MASK_SCAN_STEP(0, -1);
         sweep_map_cell_layer_mask_line(1, -23, 0, -1, -24, index);
         update_current_map_cell_layer_mask(1);
-        render_mask_scan_state.map_z--;
-        render_mask_scan_state.mask_cursor -= 24;
-        render_mask_scan_state.window_z--;
+        MASK_SCAN_STEP(0, -1);
         sweep_map_cell_layer_mask_line(1, 25, 0, -1, -24, index);
         update_current_map_cell_layer_mask(25);
-
-        render_mask_scan_state.map_x++;
-        render_mask_scan_state.window_x++;
-        render_mask_scan_state.mask_cursor++;
+        MASK_SCAN_STEP(1, 0);
         sweep_map_cell_layer_mask_line(24, 25, 1, 0, 1, index);
         update_current_map_cell_layer_mask(24);
-        render_mask_scan_state.map_x++;
-        render_mask_scan_state.window_x++;
-        render_mask_scan_state.mask_cursor++;
+        MASK_SCAN_STEP(1, 0);
         sweep_map_cell_layer_mask_line(24, 23, 1, 0, 1, index);
         update_current_map_cell_layer_mask(23);
-
-        render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
-        render_mask_scan_state.window_z++;
+        MASK_SCAN_STEP(0, 1);
         sweep_map_cell_layer_mask_line(-1, 23, 0, 1, 24, index);
         update_current_map_cell_layer_mask(-1);
-        render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
-        render_mask_scan_state.window_z++;
+        MASK_SCAN_STEP(0, 1);
         sweep_map_cell_layer_mask_line(-1, -25, 0, 1, 24, index);
         update_current_map_cell_layer_mask(-25);
-
-        render_mask_scan_state.map_x--;
-        render_mask_scan_state.window_x--;
-        render_mask_scan_state.mask_cursor--;
+        MASK_SCAN_STEP(-1, 0);
         sweep_map_cell_layer_mask_line(-24, -25, -1, 0, -1, index);
     }
 
     mask[-25] |= 0x80;
-    mask[-23] |= 0x80;
     mask[-24] |= 0xc0;
-    mask[0] |= 0xc0;
+    mask[-23] |= 0x80;
     mask[-1] |= 0xc0;
-    mask[23] |= 0x80;
+    mask[0] |= 0xc0;
     mask[1] |= 0xc0;
-    mask[25] |= 0x80;
+    mask[23] |= 0x80;
     mask[24] |= 0xc0;
+    mask[25] |= 0x80;
 }
 
 

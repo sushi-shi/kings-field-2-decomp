@@ -1986,15 +1986,15 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 angle;
     s32 radius;
     s32 slide_distance;
-    s32 result = 0;
-    s32 collision_retry = 0;
     s32 slide_attempted = 0;
+    s32 collision_retry = 0;
+    s32 result = 0;
     s32 diagonal_retry = 0;
     s32 high_collision;
     SVECTOR delta;
     s32 diagonal_kind;
 
-    for (;;) {
+retry: {
         next.vx = player_state.camera_position.vx + dx;
         next.vz = player_state.camera_position.vz + dz;
         flags = collision_query_world(next.vx, player_state.camera_position.vy, next.vz,
@@ -2006,7 +2006,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             player_state.camera_position.vz = next.vz;
             player_state.map_layer_index = KF_COLLISION_CACHE_LAYER;
             result = 1;
-            break;
+            goto done;
         }
 
         high_collision = 0;
@@ -2024,7 +2024,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
             collision_retry++;
             if (collision_retry == PLAYER_MOVE_COLLISION_RETRY_LIMIT) {
-                break;
+                goto done;
             }
             collision_cache_load_hit_bounds();
             delta.vx = (u16)KF_COLLISION_CACHE_POSITION.vx
@@ -2043,7 +2043,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
             next.vz = KF_COLLISION_CACHE_POSITION.vz + delta.vz;
             dx = next.vx - player_state.camera_position.vx;
             dz = next.vz - player_state.camera_position.vz;
-            continue;
+            goto retry;
         }
 
         if (!slide_attempted) {
@@ -2072,12 +2072,12 @@ s32 player_move_horizontal(s32 heading, s32 distance)
         axis_retry:
             if (dx != 0) {
                 dx = 0;
-                continue;
+                goto retry;
             }
             if (dz != 0) {
                 dz = 0;
                 dx = initial_dx;
-                continue;
+                goto retry;
             }
         }
         if (flags & KF_COLLISION_HIT_DIAGONAL) {
@@ -2094,12 +2094,12 @@ s32 player_move_horizontal(s32 heading, s32 distance)
                     dx = (initial_dx - initial_dz) >> 1;
                     dz = -dx;
                 }
-                continue;
+                goto retry;
             }
         }
         result = 0;
-        break;
     }
+done:
     player_state.frame_displacement.vx = dx;
     player_state.frame_displacement.vz = dz;
     return result;

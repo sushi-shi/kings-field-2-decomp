@@ -416,24 +416,26 @@ void cd_request_service_vab(void)
         for (;;) {
             result = SsVabTransBodyPartly(request->destination,
                 KF_CD_VAB_BODY_CHUNK_BYTES, vab_slot->vab_id);
-            if (result != -1) {
-                break;
+            if (result == -1) {
+                SsVabClose(vab_slot->vab_id);
+                cd_request_advance(request);
+                continue;
             }
-            SsVabClose(vab_slot->vab_id);
-            cd_request_advance(request);
-        }
-        if (result == AUDIO_VAB_TRANSFER_MORE_DATA) {
-            request->phase = KF_CD_REQUEST_PHASE_SEEK;
-            request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READ;
-            cd_location_add(location, request->sector_count, location);
-            CdSeekP(location);
-            SsVabTransCompleted(SS_WAIT_COMPLETED);
-        } else if (result == vab_slot->vab_id) {
-            cd_request_advance(request);
-            SsVabTransCompleted(SS_WAIT_COMPLETED);
-            request->payload.vab.stream_slot->state =
-                KF_AUDIO_VAB_STREAM_IN_USE;
-            request->sector_count = 0;
+            if (result == AUDIO_VAB_TRANSFER_MORE_DATA) {
+                request->phase = KF_CD_REQUEST_PHASE_SEEK;
+                request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READ;
+                cd_location_add(location, request->sector_count, location);
+                CdSeekP(location);
+                SsVabTransCompleted(SS_WAIT_COMPLETED);
+                return;
+            } else if (result == vab_slot->vab_id) {
+                cd_request_advance(request);
+                SsVabTransCompleted(SS_WAIT_COMPLETED);
+                request->payload.vab.stream_slot->state =
+                    KF_AUDIO_VAB_STREAM_IN_USE;
+                request->sector_count = 0;
+            }
+            return;
         }
     } else {
         ExitCriticalSection();

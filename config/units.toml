@@ -176,7 +176,7 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.display"
 image = "GAME.EXE"
 source = "src/game/display.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.map_cell_pattern_place"
@@ -194,7 +194,7 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.map_object_action_update"
 image = "GAME.EXE"
 source = "src/game/map_object_action_update.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.actor_runtime"
@@ -206,7 +206,7 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.effect_runtime"
 image = "GAME.EXE"
 source = "src/game/effect_runtime.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.audio_sound_wrappers"

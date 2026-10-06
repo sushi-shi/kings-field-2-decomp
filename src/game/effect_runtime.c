@@ -10,10 +10,10 @@
 #include <psyq/libc.h>
 #include <kf/game/asset.h>
 
-DATA(0x8006d704, 0x4, ".data")
+DATA(0x8006d704, 0x4, ".sdata")
 u32 effect_trail_next_slot = 0;
 
-DATA(0x8006d708, 0x8, ".data")
+DATA(0x8006d708, 0x8, ".sdata")
 static SVECTOR effect_zero_direction = {0, 0, 0, 0};
 
 DATA(0x8009a5a8, 0x4, ".bss")

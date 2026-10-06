@@ -153,13 +153,13 @@ KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
     {KF_RENDER_MODEL_END}
 };
 
-DATA(0x8006d6d0, 0x4, ".data")
+DATA(0x8006d6d0, 0x4, ".sdata")
 CVECTOR map_textured_primitive_color = {128, 128, 128, 0};
 
-DATA(0x8006d6d4, 0x4, ".data")
+DATA(0x8006d6d4, 0x4, ".sdata")
 s32 render_model_yaw_smoothing_accumulator = 0;
 
-DATA(0x8006d6dc, 0x8, ".data")
+DATA(0x8006d6dc, 0x8, ".sdata")
 RECT menu_transition_rect = {KF_DISPLAY_WIDTH, 0, KF_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT};
 
 DATA(0x800fba58, 0x32000, ".bss")

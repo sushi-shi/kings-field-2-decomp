@@ -462,14 +462,16 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
     s32 height = ((z + expanded) >> KF_MAP_CELL_POSITION_SHIFT) - first_z;
     KfMapOccupancyCell *row = &bss_801c7540.map_cells[first_z][first_x];
     u32 value = (u32)amount << 2;
+    KfMapOccupancyCell *cell;
+    s32 col;
+    s32 remaining;
 
     do {
-        KfMapOccupancyCell *current_row = row;
+        cell = row;
         row += KF_MAP_WORLD_GRID_SIDE;
         if ((u32)first_z < KF_MAP_WORLD_GRID_SIDE) {
-            KfMapOccupancyCell *cell = current_row;
-            s32 col = first_x;
-            s32 remaining = width;
+            col = first_x;
+            remaining = width;
             do {
                 if ((u32)col < KF_MAP_WORLD_GRID_SIDE) {
                     cell->layer[0].quarter_turns =
@@ -520,7 +522,7 @@ void collision_cache_load_hit_bounds(void)
 }
 
 ADDRESS(0x8002b9d4, 0x244)
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
+s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
 {
     s32 result = 0;
 
@@ -699,40 +701,34 @@ ADDRESS(0x8002bfd4, 0x19c)
 void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
-    /* The rasterizer uses 16-bit origins and truncates grid coordinates. */
-    u16 origin_x = (u16)game_graphics_runtime.render_state.cell_origin_x;
-    u16 origin_z = (u16)game_graphics_runtime.render_state.cell_origin_z;
-    s32 x = ((u32)start->x >> 12) + origin_x;
-    s32 z = ((u32)start->z >> 12) + origin_z;
-    s32 end_x = ((u32)end->x >> 12) + origin_x;
-    s32 end_z = ((u32)end->z >> 12) + origin_z;
-    s32 dx = end_x - x;
-    s32 dz = end_z - z;
-    s32 step_x;
-    s32 step_z;
+    /* The rasterizer reads 16-bit origins and steps 16-bit grid coordinates. */
+    u16 x = ((u32)start->x >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_x;
+    u16 z = ((u32)start->z >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_z;
+    s16 dx = (((u32)end->x >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_x) - x;
+    s16 dz = (((u32)end->z >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_z) - z;
+    s16 step_x;
+    s16 step_z;
     s16 count;
     s16 error;
 
-    if ((s16)dx < 0) {
+    if (dx < 0) {
         dx = -dx;
         step_x = -1;
     } else {
         step_x = 1;
     }
     step_z = 1;
-    if ((s16)dz < 0) {
+    if (dz < 0) {
         dz = -dz;
         step_z = -1;
     }
 
-    if ((s16)dx >= (s16)dz) {
-        error = (s16)dx >> 1;
+    if (dx >= dz) {
+        error = dx >> 1;
         count = dx;
         do {
-            if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
-                (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid
-                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
+            if (x < KF_MAP_CELL_GRID_SIDE && z < KF_MAP_CELL_GRID_SIDE) {
+                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
             }
             error -= dz;
             if (error <= 0) {
@@ -743,13 +739,11 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
             count--;
         } while (count >= 0);
     } else {
-        error = (s16)dz >> 1;
+        error = dz >> 1;
         count = dz;
         do {
-            if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
-                (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid
-                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
+            if (x < KF_MAP_CELL_GRID_SIDE && z < KF_MAP_CELL_GRID_SIDE) {
+                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
             }
             error -= dx;
             if (error <= 0) {

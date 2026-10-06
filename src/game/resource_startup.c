@@ -210,8 +210,10 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
     } while (actor_remaining-- != 0);
 }
 
+/* Retail treats $v0 as live at every exit (an int-returning function whose
+ * returns carry no value); callers ignore the result. */
 ADDRESS(0x80016260, 0x55c)
-void resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
+s32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
                     u8 sequence_id, s8 offset_x, s8 offset_z, s8 offset_y)
 {
     u8 current_map_region_id;
@@ -266,10 +268,7 @@ void resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_
     } else {
         prior_map_region_id = map_region_id;
         current_map_region_id = map_region_id;
-        prior_tmd_id = map_region_id;
-        prior_tim_id = map_region_id;
-        prior_vab_id = map_region_id;
-        prior_sequence_id = map_region_id;
+        prior_tmd_id = prior_tim_id = prior_vab_id = prior_sequence_id = map_region_id;
         current_tmd_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD];
         current_tim_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM];
         current_vab_id = state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB];

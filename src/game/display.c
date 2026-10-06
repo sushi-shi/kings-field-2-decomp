@@ -3582,7 +3582,7 @@ void tim_upload_images(u8 *tim_data)
     }
 }
 
-#define MENU_FADE_NEXT_QUAD() do { \
+#define MENU_FADE_NEXT_QUAD() { \
     KfPrimitiveBuffer *buffer = game_graphics_runtime.display_state.primitive_buffer; \
     quad = (POLY_FT4 *)buffer->cursor; \
     buffer->cursor += sizeof(POLY_FT4); \
@@ -3590,7 +3590,7 @@ void tim_upload_images(u8 *tim_data)
         game_graphics_runtime.display_state.primitive_buffer->end) \
         goto present; \
     SetPolyFT4(quad); \
-} while (0)
+}
 
 enum {
     KF_MENU_FADE_WAIT_FOR_RELEASE = -1,
@@ -3650,20 +3650,20 @@ present:
         DrawSync(0);
         display_present_frame();
         level += step;
-        if (((u32)level - 1u) < 119u) {
-            buttons = PadRead(1);
-            if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
-                if (buttons == 0)
-                    state = KF_MENU_FADE_WAIT_FOR_PRESS;
-            } else if (buttons != 0) {
-                DrawSync(0);
-                return level;
-            }
-        } else {
+        if (level <= 0 || level >= 120) {
+            break;
+        }
+        buttons = PadRead(1);
+        if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
+            if (buttons == 0)
+                state = KF_MENU_FADE_WAIT_FOR_PRESS;
+        } else if (buttons != 0) {
             DrawSync(0);
-            return state;
+            return level;
         }
     }
+    DrawSync(0);
+    return state;
 }
 
 #undef MENU_FADE_NEXT_QUAD

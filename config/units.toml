@@ -128,19 +128,19 @@ profile = "probe-gcc257-o2-g0"
 unit = "game.cd_memory"
 image = "GAME.EXE"
 source = "src/game/cd_memory.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.menu_root"
 image = "GAME.EXE"
 source = "src/game/menu_root.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.memory_card_events"
 image = "GAME.EXE"
 source = "src/game/memory_card_events.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.player_collision_bounds"
@@ -152,7 +152,7 @@ profile = "probe-gcc257-o2-no-cse-skip-blocks"
 unit = "game.player_runtime"
 image = "GAME.EXE"
 source = "src/game/player_runtime.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.collision_grid_sample"

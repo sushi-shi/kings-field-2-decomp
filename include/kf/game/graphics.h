@@ -259,9 +259,6 @@ typedef char kf_clip_evector_uv_offset[
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
 extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];
-extern POLY_FT4 *current_poly_ft4;
-extern KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
-extern u8 menu_saved_music_enabled;
 /* Primitive memory the display reset splits into the two primitive buffers. */
 extern u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
 /* Cleared with the per-frame counters; no other reference is known yet. */

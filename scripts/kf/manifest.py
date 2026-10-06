@@ -15,6 +15,7 @@ from scripts.kf.model import (
     data_identities,
     identity_names,
     scan_rodata_claims,
+    scan_sdata_claims,
     scan_source,
     stale_address_names,
     write_bindings,
@@ -64,6 +65,7 @@ class Unit:
     rodata: tuple[int, int] | None = None
     defines: tuple[str, ...] = ()
     scope: str = "decomp"
+    sdata: tuple[int, int] | None = None
 
     @property
     def va(self) -> int:
@@ -108,6 +110,7 @@ class Manifest:
                 tuple(f.va for f in unit.functions),
                 unit.data,
                 unit.rodata,
+                unit.sdata,
             )
             for unit in self.units
         )
@@ -344,6 +347,54 @@ def _bind_data_claims(
     return tuple(data)
 
 
+def _sdata_range(
+    source: Path,
+    image: str,
+    profile: Profile,
+    claims,
+    data_claims: tuple[DataClaim, ...],
+    units: list[Unit],
+    rodata: tuple[int, int] | None,
+) -> tuple[int, int] | None:
+    """Validate a unit's SDATA() small-data literal range.
+
+    Only a -G compile emits anonymous constants into .sdata, so the claim
+    requires a small-data profile. The range is word-aligned (the compiler
+    aligns each constant), lies in the load image, and may not overlap a
+    named claim of this unit or another unit's literal ranges.
+    """
+    if not claims:
+        return None
+    if len(claims) > 1:
+        raise ValueError(f"{source}: a unit claims at most one SDATA() range")
+    claim = claims[0]
+    where = f"{source}:{claim.line}"
+    if profile.small_data <= 0:
+        raise ValueError(
+            f"{where}: SDATA() needs a small-data profile; profile {profile.name!r} "
+            "compiles with -G0"
+        )
+    layout = IMAGE_LAYOUTS[image]
+    if claim.size <= 0 or claim.va & 3 or not layout.contains(claim.va, claim.size):
+        raise ValueError(
+            f"{where}: SDATA({claim.va:#x}, {claim.size:#x}) must be a word-aligned "
+            f"range inside the {image} load image"
+        )
+    end = claim.va + claim.size
+    if rodata is not None and claim.va < rodata[0] + rodata[1] and rodata[0] < end:
+        raise ValueError(f"{where}: SDATA range overlaps the unit's RODATA range")
+    for datum in data_claims:
+        if datum.va < end and claim.va < datum.va + datum.size:
+            raise ValueError(f"{where}: SDATA range overlaps DATA claim {datum.name}")
+    for other in units:
+        for owned in (other.rodata, other.sdata):
+            if other.image == image and owned is not None and (
+                claim.va < owned[0] + owned[1] and owned[0] < end
+            ):
+                raise ValueError(f"{where}: SDATA range overlaps unit {other.unit!r}")
+    return claim.va, claim.size
+
+
 def load(
     path: Path = UNITS_MANIFEST,
     *,
@@ -450,6 +501,7 @@ def load(
         defines = tuple(raw_defines)
         claims, data_claims = scan_source(source_path)
         rodata_claims = scan_rodata_claims(source_path)
+        sdata_claims = scan_sdata_claims(source_path)
         image_token = image.removesuffix(".EXE")
         data_claims = tuple(
             claim for claim in data_claims
@@ -473,10 +525,10 @@ def load(
             # image reuses it by resolving every claimed definition through
             # that image's own identity tables, so the addresses stay
             # image-qualified while the C text is written once.
-            if rodata_claims:
+            if rodata_claims or sdata_claims:
                 raise ValueError(
-                    f"{source}: RODATA() ranges are image-specific; unit {name!r} cannot "
-                    "bind them by name"
+                    f"{source}: RODATA()/SDATA() ranges are image-specific; unit {name!r} "
+                    "cannot bind them by name"
                 )
             claims = _rebind_claims_by_name(source, image, claims, identities)
             data_claims = _rebind_data_claims_by_name(source, image, data_claims, curated_data)
@@ -500,7 +552,8 @@ def load(
                         f"{source}:{claim.line}: RODATA range overlaps unit {other.unit!r}"
                     )
             rodata = (claim.va, claim.size)
-        if not claims and (not data_claims or rodata is not None):
+        sdata = _sdata_range(source, image, profile, sdata_claims, data_claims, units, rodata)
+        if not claims and (not data_claims or rodata is not None or sdata is not None):
             raise ValueError(
                 f"{path}: unit {name!r} needs ADDRESS() claims or DATA() claims "
                 f"without RODATA(): {source}"
@@ -526,6 +579,7 @@ def load(
                 rodata,
                 defines,
                 scope,
+                sdata,
             )
         )
         for ordinal, (claim, function) in enumerate(zip(claims, functions)):

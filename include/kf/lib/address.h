@@ -72,4 +72,19 @@
  */
 #define RODATA(va, size)
 
+/*
+ * Small-data literal claim, at most one per translation unit: the retail
+ * range of anonymous constants that a -G8 compile emits into .sdata instead
+ * of .rdata. GCC 2.5.7's MIPS SELECT_SECTION sends any constant whose type
+ * is at most -G bytes there, so a short string literal (and a local
+ * `char buf[2] = " "` initializer) lands in .sdata, while the same text
+ * initializing a larger array keeps the array's type and stays in .rdata.
+ * The delinker packs the range into the module object's .sdata in address
+ * order with the unit's .sdata DATA() claims and resolves code references to
+ * it as .sdata offsets, as the assembler does for its local labels:
+ *
+ *     SDATA(0x8006d6a4, 0xb)
+ */
+#define SDATA(va, size)
+
 #endif

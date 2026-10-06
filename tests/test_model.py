@@ -12,6 +12,7 @@ from scripts.kf.model import (
     DataIdentity,
     scan_claims,
     scan_rodata_claims,
+    scan_sdata_claims,
     scan_source,
     stale_address_names,
 )
@@ -331,6 +332,18 @@ class RodataClaimTests(unittest.TestCase):
         self.assertEqual([(c.va, c.size, c.line) for c in claims], [(0x8001235C, 0x178, 3)])
         self.assertEqual(len(functions), 1)
         self.assertEqual(data, ())
+
+    def test_sdata_literal_claim_is_separate_from_rodata(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="kf-model-") as directory:
+            source = Path(directory) / "unit.c"
+            source.write_text(
+                "RODATA(0x80011104, 0x22)\nSDATA(0x8006d6a4, 0xb)\n\n"
+                "ADDRESS(0x80010000, 0x10)\nvoid first(void)\n{\n}\n",
+                encoding="utf-8",
+            )
+            self.assertEqual([(c.va, c.size, c.line) for c in scan_sdata_claims(source)],
+                             [(0x8006D6A4, 0xB, 2)])
+            self.assertEqual([c.va for c in scan_rodata_claims(source)], [0x80011104])
 
 
 if __name__ == "__main__":

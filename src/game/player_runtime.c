@@ -68,13 +68,14 @@ KfPlayerMagicIdSequence player_magic_id_sequence = {
 };
 
 
-DATA(0x8006d6b0, 0x20, ".data")
-static RECT player_status_texture_rows[4] = {
-    {0x240, 0x119, 16, 1},
-    {0x240, 0x117, 16, 1},
-    {0x240, 0x11a, 16, 1},
-    {0x240, 0x118, 16, 1}
-};
+DATA(0x8006d6b0, 0x8, ".sdata")
+static RECT player_status_texture_row_0 = {0x240, 0x119, 16, 1};
+DATA(0x8006d6b8, 0x8, ".sdata")
+static RECT player_status_texture_row_1 = {0x240, 0x117, 16, 1};
+DATA(0x8006d6c0, 0x8, ".sdata")
+static RECT player_status_texture_row_2 = {0x240, 0x11a, 16, 1};
+DATA(0x8006d6c8, 0x8, ".sdata")
+static RECT player_status_texture_row_3 = {0x240, 0x118, 16, 1};
 
 
 
@@ -2585,11 +2586,12 @@ void player_update_horizontal_motion(void)
 ADDRESS(0x8002897c, 0x1c)
 b32 item_id_is_71_to_80(s32 value)
 {
-    b32 result = KF_FALSE;
     if (value < 81) {
-        result = value >= 71;
+        if (value >= 71) {
+            return KF_TRUE;
+        }
     }
-    return result;
+    return KF_FALSE;
 }
 
 ADDRESS(0x80028998, 0x528)
@@ -3301,17 +3303,17 @@ after_reaction:
     }
     if (player_state.map_marker_visual_effect_timer != 0) {
         if (player_state.map_marker_visual_effect_timer == 1) {
-            MoveImage(&player_status_texture_rows[0], 0x240, 0x103);
-            MoveImage(&player_status_texture_rows[2], 0x240, 0x106);
+            MoveImage(&player_status_texture_row_0, 0x240, 0x103);
+            MoveImage(&player_status_texture_row_2, 0x240, 0x106);
             notify_enqueue(34);
             player_state.map_marker_visual_effect_timer = 0;
             map_object_refresh_cell_markers(0);
         } else {
             if ((player_state.map_marker_visual_effect_timer & 7) == 0) {
-                MoveImage(&player_status_texture_rows[1], 0x240, 0x103);
+                MoveImage(&player_status_texture_row_1, 0x240, 0x103);
             }
             if ((player_state.map_marker_visual_effect_timer & 7) == 4) {
-                MoveImage(&player_status_texture_rows[3], 0x240, 0x106);
+                MoveImage(&player_status_texture_row_3, 0x240, 0x106);
             }
             if ((player_state.map_marker_visual_effect_timer & 7) == 1) {
                 map_object_refresh_cell_markers(1);

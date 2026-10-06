@@ -7,7 +7,7 @@ PSX.EXE	.text	.data	0x80010248	0x8001024c	last admitted code ends at 0x80010248;
 PSX.EXE	.data	.sdata	0x80010260	0x80010260	overlay_path_table ends where reviewed overlay_index .sdata begins	observed
 GAME.EXE	.rdata	.text	0x80013631	0x80013634	final reviewed diagnostic literal ends at 0x80013631;first admitted function at 0x80013634	candidate
 GAME.EXE	.text	.data	0x80063dcc	0x80063dcc	CheckPrim function ends where render_world_identity_matrix begins	observed
-GAME.EXE	.data	.sdata	0x8006d674	0x8006d718	exact LIBGPU OTAG .data ends at 0x8006d674;unresolved game data follows;first exact SDK .sdata XDEF at 0x8006d718	candidate
+GAME.EXE	.data	.sdata	0x8006d674	0x8006d680	exact LIBGPU OTAG .data ends at 0x8006d674;first -G8 game .sdata claim cd_path_prefix at 0x8006d680;game small data runs to the first exact SDK .sdata XDEF at 0x8006d718	candidate
 GAME.EXE	.sdata	.sbss	0x8006d9dd	0x8006d9e0	last exact SDK .sdata record ends at 0x8006d9dd;three-byte CPE residue precedes zero-filled game and SDK small BSS	candidate
 OPEN.EXE	.rdata	.text	0x80011abb	0x80011ac0	final reviewed diagnostic literal ends at 0x80011abb;first admitted function at 0x80011ac0	candidate
 OPEN.EXE	.text	.data	0x8002a948	0x8002a948	last admitted function ends where exact LIBPRESS mdec_iq .data begins	observed

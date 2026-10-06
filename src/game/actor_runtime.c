@@ -1185,9 +1185,11 @@ retry_move:
             KF_COLLISION_CACHE_POSITION.vx - actor->position.vx,
             KF_COLLISION_CACHE_POSITION.vz - actor->position.vz);
         movement_angle = vector_xz_to_angle(motion_x, motion_z);
-        obstacle_angle = (angle_mod_delta_le_half_turn(
-            movement_angle, obstacle_angle)
-            ? obstacle_angle + 1024 : obstacle_angle - 1024) & KF_ANGLE_WRAP_MASK;
+        if (angle_mod_delta_le_half_turn(movement_angle, obstacle_angle)) {
+            obstacle_angle = (obstacle_angle + 1024) & KF_ANGLE_WRAP_MASK;
+        } else {
+            obstacle_angle = (obstacle_angle - 1024) & KF_ANGLE_WRAP_MASK;
+        }
         length = SquareRoot0(motion_x * motion_x + motion_z * motion_z);
         motion_x = -(rsin(obstacle_angle) * length) >> 13;
         motion_z = (rcos(obstacle_angle) * length) >> 13;
@@ -2621,11 +2623,6 @@ case3_motion:
         break;
     }
     case 11: {
-        s32 collision;
-        struct KfEulerAngles toward_player;
-        SVECTOR forward;
-        SVECTOR outer;
-
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation_if_changed(target->animation_id);
@@ -2636,6 +2633,8 @@ case3_motion:
         case 0:
             actor_advance_animation_clamped(actor, target->animation_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
+                struct KfEulerAngles toward_player;
+
                 vector_displacement_to_pitch_yaw(
                     player_state.camera_position.vx - actor->position.vx,
                     player_state.camera_position.vy - actor->position.vy,
@@ -2646,7 +2645,11 @@ case3_motion:
                 actor->state_70.signed_state = 1;
             }
             break;
-        case 1:
+        case 1: {
+            SVECTOR forward;
+            SVECTOR outer;
+            s32 collision;
+
             forward = actor->tail_72.direction;
             outer = forward;
             vector3s_scale_shift12(target->word_14.value, &forward);
@@ -2671,6 +2674,7 @@ case3_motion:
             }
             actor->rotation.x = (actor->rotation.x + 256) & KF_ANGLE_WRAP_MASK;
             goto case11_turn;
+        }
         case 2: {
             u32 pitch_phase = ((u16)actor->rotation.x + 256) & KF_ANGLE_WRAP_MASK;
             actor->rotation.x = pitch_phase;

@@ -17,6 +17,7 @@ import struct
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
+from dataclasses import replace
 from typing import Callable, Iterable
 
 from scripts.kf.mips_elf import (
@@ -49,6 +50,15 @@ from scripts.kf.retail import (
     read_tsv,
     write_tsv,
 )
+
+
+# Working name for a module's anonymous small-data literal range. It never
+# reaches an object's symbol table: module packing rewrites every reference to
+# the .sdata section symbol plus the range's packed offset, as ASPSX does for
+# the compiler's local `$LC` labels.
+SDATA_LITERAL_SYMBOL = "$sdata_literals"
+SDATA_SECTION_SYMBOL = ".sdata"
+SBSS_SECTION_SYMBOL = ".sbss"
 
 
 __all__ = (
@@ -423,6 +433,7 @@ def _resolve_symbol(
     rodata: tuple[int, int] | None = None,
     *,
     data_reference: bool = False,
+    sdata: tuple[int, int] | None = None,
 ) -> tuple[str, int]:
     named = named_data_referent(
         catalog, function.image, sanitize_symbol(target_name, "")
@@ -433,6 +444,8 @@ def _resolve_symbol(
         # through their actual read-only section contribution.
         if rodata is not None and rodata[0] <= named.va < rodata[0] + rodata[1]:
             return RODATA_SECTION_SYMBOL, target - rodata[0]
+        if sdata is not None and sdata[0] <= named.va < sdata[0] + sdata[1]:
+            return SDATA_LITERAL_SYMBOL, target - sdata[0]
         return named.name, target - named.va
     if function.contains(target):
         return SECTION_SYMBOL, target - function.va
@@ -440,6 +453,10 @@ def _resolve_symbol(
         # The owning module's read-only contribution: jump tables and string
         # literals compare as .rodata offsets, the way the compiler emits them.
         return RODATA_SECTION_SYMBOL, target - rodata[0]
+    if sdata is not None and sdata[0] <= target < sdata[0] + sdata[1]:
+        # The owning module's small-data literals; module packing turns the
+        # working symbol into a .sdata offset.
+        return SDATA_LITERAL_SYMBOL, target - sdata[0]
     target_function = catalog.function_starts[function.image].get(target)
     if target_function is not None:
         return target_function.symbol, 0
@@ -498,6 +515,7 @@ def _apply_relocation(
     catalog: Catalog,
     policy: str,
     rodata: tuple[int, int] | None = None,
+    sdata: tuple[int, int] | None = None,
 ) -> tuple[list[MipsRelocation], dict[str, object]]:
     validation = validate_relocation(blob, function, row, catalog, policy)
     target = validation.target
@@ -506,6 +524,7 @@ def _apply_relocation(
         catalog, function, target, row["target_name"], rodata,
         data_reference=(row["status"] == "reviewed"
                         and row["kind"] in {"mips_hi16_lo16", "mips32_candidate"}),
+        sdata=sdata,
     )
 
     if row["kind"] == "mips26":
@@ -585,6 +604,7 @@ class Module:
     vas: tuple[int, ...]
     data: tuple[Datum, ...] = ()
     rodata: tuple[int, int] | None = None
+    sdata: tuple[int, int] | None = None
 
     @property
     def object_name(self) -> str:
@@ -685,10 +705,12 @@ def _module_static_bss_relocations(
     blob: bytearray,
     relocations: list[MipsRelocation],
     offsets: dict[str, int],
+    section_symbol: str = BSS_SECTION_SYMBOL,
 ) -> list[MipsRelocation]:
     """Use the BSS section for references to this module's static objects.
 
-    The native assembler resolves a local BSS label through its section symbol.
+    The native assembler resolves a local BSS label through its section symbol;
+    under -G a small `.lcomm` lands in .sbss and resolves through that section.
     The object's section offset must be added to the implicit MIPS addend.
     """
     result = list(relocations)
@@ -708,11 +730,11 @@ def _module_static_bss_relocations(
             new_hi, new_lo = encode_hi_lo_addend(hi_word, lo_word, addend)
             _put_word(blob, high.offset, new_hi)
             _put_word(blob, low.offset, new_lo)
-            result[index] = MipsRelocation(high.offset, high.kind, BSS_SECTION_SYMBOL)
-            result[index + 1] = MipsRelocation(low.offset, low.kind, BSS_SECTION_SYMBOL)
+            result[index] = MipsRelocation(high.offset, high.kind, section_symbol)
+            result[index + 1] = MipsRelocation(low.offset, low.kind, section_symbol)
         elif high.kind == "R_MIPS_32":
             _put_word(blob, high.offset, _get_word(blob, high.offset) + offset)
-            result[index] = MipsRelocation(high.offset, high.kind, BSS_SECTION_SYMBOL)
+            result[index] = MipsRelocation(high.offset, high.kind, section_symbol)
     return result
 
 
@@ -888,33 +910,58 @@ def _module_object(
     data, data_symbols, data_relocations, bss_size, bss_symbols = _module_data(
         module, data_blobs or {}, load_padding
     )
+    # The SDATA literal range packs among the unit's named .sdata claims in
+    # address order; only its packed offset survives into the object.
+    sdata_module = module
+    if module.sdata is not None:
+        literal = Datum(module.sdata[0], module.sdata[1], SDATA_LITERAL_SYMBOL,
+                        "load", "static", ".sdata")
+        sdata_module = replace(module, data=tuple(sorted(
+            (*module.data, literal), key=lambda datum: datum.va)))
     sdata, sdata_symbols, sdata_relocations, _, _ = _module_data(
-        module, data_blobs or {}, load_padding, section=".sdata"
+        sdata_module, data_blobs or {}, load_padding, section=".sdata"
     )
+    literal_offsets = {symbol.name: symbol.value for symbol in sdata_symbols
+                       if symbol.name == SDATA_LITERAL_SYMBOL}
+    sdata_symbols = [symbol for symbol in sdata_symbols
+                     if symbol.name != SDATA_LITERAL_SYMBOL]
     data_blob = bytearray(data)
     data_relocations = _module_function_data_relocations(
         data_blob, data_relocations, function_offsets
     )
-    data = bytes(data_blob)
     sdata_blob = bytearray(sdata)
     sdata_relocations = _module_function_data_relocations(
         sdata_blob, sdata_relocations, function_offsets
     )
+    if literal_offsets:
+        # Initialized pointers may address the unit's own small literals.
+        data_relocations = _module_load_relocations(
+            data_blob, data_relocations, literal_offsets, SDATA_SECTION_SYMBOL)
+        sdata_relocations = _module_load_relocations(
+            sdata_blob, sdata_relocations, literal_offsets, SDATA_SECTION_SYMBOL)
+    data = bytes(data_blob)
     sdata = bytes(sdata_blob)
     _, _, _, sbss_size, sbss_symbols = _module_data(
         module, {}, section=".sbss"
     )
-    static_bss = {
-        symbol.name: symbol.value for symbol in bss_symbols
-        if symbol.binding == STB_LOCAL
-    }
-    if static_bss:
-        relocations = _module_static_bss_relocations(text, relocations, static_bss)
+    for section_symbol, section_symbols in (
+        (BSS_SECTION_SYMBOL, bss_symbols),
+        (SBSS_SECTION_SYMBOL, sbss_symbols),
+    ):
+        static_bss = {
+            symbol.name: symbol.value for symbol in section_symbols
+            if symbol.binding == STB_LOCAL
+        }
+        if static_bss:
+            relocations = _module_static_bss_relocations(
+                text, relocations, static_bss, section_symbol)
     for section_symbol, section_symbols in (
         (DATA_SECTION_SYMBOL, data_symbols),
-        (".sdata", sdata_symbols),
+        (SDATA_SECTION_SYMBOL, sdata_symbols),
     ):
         module_load = {symbol.name: symbol.value for symbol in section_symbols}
+        if section_symbol == SDATA_SECTION_SYMBOL:
+            module_load.update(literal_offsets)
         if module_load:
             relocations = _module_load_relocations(
                 text, relocations, module_load, section_symbol
@@ -942,8 +989,9 @@ def _module_object(
             sdata=sdata,
             sdata_symbols=sdata_symbols,
             sdata_relocations=sdata_relocations,
-            sdata_alignment=max((d.alignment for d in module.data
-                                 if d.section_name == ".sdata"), default=1),
+            sdata_alignment=max((*(d.alignment for d in module.data
+                                   if d.section_name == ".sdata"),
+                                 *((4,) if module.sdata is not None else ())), default=1),
             bss_size=bss_size,
             bss_symbols=bss_symbols,
             bss_alignment=max((4 if d.reservation_size else d.alignment
@@ -1022,6 +1070,11 @@ def delink(
             for module in selected_modules if module.rodata is not None
             for datum in module.data if datum.storage == "load"
         }
+        sdata_by_datum = {
+            datum.va: module.sdata
+            for module in selected_modules if module.sdata is not None
+            for datum in module.data if datum.storage == "load"
+        }
         rows_by_owner: dict[int, list[dict[str, str]]] = defaultdict(list)
         rows_by_datum: dict[int, list[dict[str, str]]] = defaultdict(list)
         withheld_rows: list[dict[str, object]] = []
@@ -1049,6 +1102,11 @@ def delink(
         rodata_by_function = {
             va: module.rodata
             for module in selected_modules if module.rodata is not None
+            for va in module.vas
+        }
+        sdata_by_function = {
+            va: module.sdata
+            for module in selected_modules if module.sdata is not None
             for va in module.vas
         }
         carved_rodata: dict[int, tuple[bytes, list[MipsRelocation]]] = {}
@@ -1098,7 +1156,7 @@ def delink(
                     continue
                 function_relocations.extend(relocations)
                 used_rows.append(used)
-            if function.va in rodata_by_function:
+            if function.va in rodata_by_function or function.va in sdata_by_function:
                 module_blob = bytearray(executable[start:start + function.size])
                 module_relocations: list[MipsRelocation] = []
                 for row in rows_by_owner[function.va]:
@@ -1110,7 +1168,8 @@ def delink(
                     try:
                         relocations, _used = _apply_relocation(
                             module_blob, function, row, catalog, policy,
-                            rodata_by_function[function.va],
+                            rodata_by_function.get(function.va),
+                            sdata_by_function.get(function.va),
                         )
                     except ValueError:
                         continue
@@ -1162,6 +1221,7 @@ def delink(
                     relocations, used = _apply_relocation(
                         blob, owner, row, catalog, policy,
                         rodata_by_datum.get(datum.va),
+                        sdata_by_datum.get(datum.va),
                     )
                 except ValueError as error:
                     withheld_rows.append(_withheld(row, None, f"data:{error}"))
@@ -1169,6 +1229,16 @@ def delink(
                 datum_relocations.extend(relocations)
                 used_rows.append(used)
             data_blobs[datum.va] = (bytes(blob), datum_relocations)
+        # Anonymous small-data literals are carved as bytes; a pointer word
+        # inside one would need a reviewed row like any claimed datum.
+        for module in selected_modules:
+            if module.sdata is not None:
+                va, size = module.sdata
+                start = expected.file_offset(va)
+                blob = executable[start:start + size]
+                if len(blob) != size:
+                    raise ValueError(f"{exe_path}: truncated SDATA range for {module.unit}")
+                data_blobs[va] = (blob, [])
 
         live_objects = {Path(str(row["object"])).name for row in object_rows}
         if not selected_vas:

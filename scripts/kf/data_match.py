@@ -449,9 +449,10 @@ def coverage(
         if unit.image != image:
             continue
         claims.extend((d.va, d.va + d.size) for d in unit.data if d.storage == "load")
-        if unit.rodata:
-            start, size = unit.rodata
-            claims.append((start, start + size))
+        for owned in (unit.rodata, unit.sdata):
+            if owned:
+                start, size = owned
+                claims.append((start, start + size))
     owners = _union(claims)
     total = sum(end - start for start, end in census)
     unowned = sum(

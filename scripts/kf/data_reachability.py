@@ -70,6 +70,12 @@ def data_extents(
                 unit.image, va, size, f"{unit.unit}.rodata", "load", "RODATA",
                 unit.unit, "source-claim", unit.source,
             ))
+        if unit.sdata:
+            va, size = unit.sdata
+            out.append(DataExtent(
+                unit.image, va, size, f"{unit.unit}.sdata", "load", "SDATA",
+                unit.unit, "source-claim", unit.source,
+            ))
     for filename in ("data_identities.tsv", "data.tsv"):
         _, rows = read_tsv(config_dir / filename)
         for row in rows:

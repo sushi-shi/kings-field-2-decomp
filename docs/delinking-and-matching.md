@@ -155,8 +155,9 @@ confidence so later review can promote or reject it without losing evidence.
 
 Known first-pass omissions are:
 
-- no admitted `R_MIPS_GPREL16` census yet; `$gp` recovery and small-data
-  ownership must be calibrated before enabling `-G` profiles;
+- no admitted `R_MIPS_GPREL16` census yet. JP game code has no `$gp`-relative
+  access; `-G8` units model small-data placement only (`.sdata` claims,
+  `SDATA()` literal ranges and `.sbss` statics, see `build-system.md`);
 - no data sections assigned to translation units;
 - no reconstructed fragmented-function ranges; and
 - no final native Psy-Q object/link-order reproduction.

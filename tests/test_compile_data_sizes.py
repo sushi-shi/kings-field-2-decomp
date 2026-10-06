@@ -164,3 +164,55 @@ int witness(void) { return __kf_source_data_sizes[0]; }
                                      for name in self.symbols(path)))
                 metadata = json.loads(path.with_suffix('.o.json').read_text())
                 self.assertEqual(metadata['data_symbol_sizes']['sizes'], {})
+
+    def test_g8_places_short_literals_in_sdata_and_small_statics_in_sbss(self):
+        # Native control for SDATA(): GCC 2.5.7 -G8 sends a constant of at most
+        # eight bytes to .sdata, but a string initializing a larger array takes
+        # that array's type and stays in .rdata; ASPSX -G8 turns a small
+        # `.lcomm` into section-relative .sbss storage. Code size is unchanged.
+        source_text = '''
+static long event;
+int atoi(const char *);
+char *strcat(char *, const char *);
+int card(char *name)
+{
+    char digit[2] = " ";
+    char path[40] = "bu00:";
+    digit[0] = name[0];
+    strcat(path, name);
+    event = atoi(digit);
+    return path[2];
+}
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source.c'
+            source.write_text(source_text)
+            write_tsv(root / 'delink/game/objects.tsv', ('object', 'scope'),
+                      ({'object': 'objects/source.o', 'scope': 'decomp'},), ())
+            texts = {}
+            for small_data in (0, 8):
+                output = root / 'source.o'
+                compile_source(source, 'GAME.EXE', output, root / 'delink',
+                               optimization='O2', small_data=small_data,
+                               compiler='gcc257-native', cc1_flags=('-mcpu=r2000',))
+                with output.open('rb') as stream:
+                    elf = ELFFile(stream)
+                    sections = {s.name: s for s in elf.iter_sections()}
+                    texts[small_data] = sections['.text'].data()
+                    if small_data:
+                        self.assertEqual(sections['.sdata'].data(), b' \0')
+                        self.assertIn(b'bu00:\0', sections['.rodata'].data())
+                        self.assertEqual(sections['.sbss']['sh_size'], 8)
+                        relocations = sections['.rel.text']
+                        symtab = elf.get_section(relocations['sh_link'])
+                        symbols = [symtab.get_symbol(r['r_info_sym'])
+                                   for r in relocations.iter_relocations()]
+                        targets = {elf.get_section(s['st_shndx']).name
+                                   if s['st_info']['type'] == 'STT_SECTION' else s.name
+                                   for s in symbols}
+                        self.assertTrue({'.sdata', '.sbss', '.rodata'} <= targets)
+                    else:
+                        self.assertNotIn('.sdata', sections)
+                        self.assertIn(b' \0', sections['.rodata'].data())
+            self.assertEqual(len(texts[0]), len(texts[8]))

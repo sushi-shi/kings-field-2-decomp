@@ -594,7 +594,7 @@ void actor_retarget_or_disable_group_members(s32 group_index)
 
     do {
         if (actor->slot_state != KF_ACTOR_SLOT_FREE &&
-            actor->group_index == (u16)group_index) {
+            actor->group_index == (group_index & 0xffff)) {
             if (actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
                 actor_select_target_type_in_own_group(actor, 3);
             } else {

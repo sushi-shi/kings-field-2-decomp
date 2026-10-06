@@ -87,7 +87,6 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
     KfMapOccupancyCell *destination_row;
     s32 inner_step;
     s32 row_step;
-    s32 quarter_turns;
     s32 rows_remaining;
     /* Retail reserves an unreferenced 8-byte frame slot. */
     s16 frame_reserve[4];
@@ -95,8 +94,9 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;
     }
-    quarter_turns = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
-    switch (quarter_turns) {
+    /* The rotation argument is reduced to quarter turns in place. */
+    rotation = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
+    switch (rotation) {
     case 0:
         inner_step = 1;
         row_step = KF_MAP_WORLD_GRID_SIDE;
@@ -144,7 +144,7 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                     destination->layer[0].quarter_turns =
                         (destination->layer[0].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
-                        ((source->layer[0].quarter_turns + quarter_turns) &
+                        ((source->layer[0].quarter_turns + rotation) &
                          KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
@@ -177,7 +177,7 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                     destination->layer[1].quarter_turns =
                         (destination->layer[1].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
-                        ((source->layer[1].quarter_turns + quarter_turns) &
+                        ((source->layer[1].quarter_turns + rotation) &
                          KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {

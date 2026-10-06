@@ -1766,7 +1766,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
-                            u32 flags)
+                            u8 flags)
 {
     MATRIX cell_matrix;
     long gte_flags;

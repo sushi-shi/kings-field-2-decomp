@@ -604,6 +604,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -641,9 +642,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -679,9 +679,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -719,10 +718,10 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = 0x3e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -757,10 +756,10 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = 0x2e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
@@ -794,6 +793,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -868,9 +868,8 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -908,10 +907,10 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -946,10 +945,10 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;

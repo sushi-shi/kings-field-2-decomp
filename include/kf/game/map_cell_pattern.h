@@ -39,7 +39,7 @@ enum {
 extern KfMapCellPattern map_object_cell_patterns
     [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS];
 
-void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag);
 void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,

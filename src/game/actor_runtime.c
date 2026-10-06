@@ -205,6 +205,7 @@ ADDRESS(0x80039108, 0x4c0)
 s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 {
     KfActor *actor = actor_state.current;
+    /* Retail leaves several rejection paths returning this unassigned. */
     s32 score;
     s32 angle;
 
@@ -212,17 +213,17 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         return 0;
     }
 
-    score = 0;
-
     switch (target->type) {
     case 5:
     case 13:
         if (target == actor->target) {
+            score = 0;
             if (target->word_12.value >= player_distance) {
                 score = random_triangular_scaled(target->word_02.target_selection.continuing_score_scale);
             }
-            goto done;
+            break;
         }
+        score = 0;
         if (target->word_10.value >= player_distance) {
             score = random_triangular_scaled(target->word_02.target_selection.initial_score_scale);
         }
@@ -235,7 +236,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
             score *= 2;
             break;
         }
-        goto done;
+        break;
 
     case 9:
         if (target->word_0c.value < player_distance) {
@@ -243,23 +244,24 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         }
         if ((u32)(player_state.camera_position.vy - actor->position.vy + 1023) < 2047 &&
             rand() >= 4096) {
-            goto done;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
-        if (!angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
-            goto done;
+        if (angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
+            goto score_target;
         }
-        goto score_target;
+        break;
 
     case 4:
     case 18:
     case 23:
     case 24:
     case 132:
+        score = 0;
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_1a.value < player_distance) {
-            goto zero_score;
+            break;
         }
         if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
@@ -269,11 +271,11 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
                                    player_state.camera_position.vz - actor->position.vz);
         if (!angle_within_tolerance(actor->rotation.y, angle,
                                     target->word_10.bytes.fallback_offset << 4)) {
-            goto done;
+            goto zero_score;
         }
         if (target == actor->target) {
             score = random_triangular_scaled(target->word_02.target_selection.continuing_score_scale);
-            goto done;
+            break;
         }
         score = target->word_02.target_selection.initial_score_scale;
         {
@@ -286,52 +288,58 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
             }
         }
         score = random_triangular_scaled(score);
-        goto done;
+        break;
 
     case 25:
-        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
-            target->word_16.value < player_distance ||
+        score = 0;
+        if (actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) {
+            break;
+        }
+        if (target->word_16.value < player_distance ||
             target->word_14.value > player_distance) {
-            goto done;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
         if (angle_within_tolerance(actor->rotation.y, angle,
                                    target->word_0c.bytes.high << 4)) {
-            break;
+            goto score_target;
         }
-        goto done;
+        goto zero_score;
 
     case 11:
         if (target->word_1a.value < player_distance) {
-            goto done;
+            goto zero_score;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
         if (angle_within_tolerance(actor->rotation.y, angle, 0x140)) {
-            break;
+            goto score_target;
         }
-        goto done;
+        goto zero_score;
 
     case 19:
     case 20:
-        if (target->word_0e.value < player_distance || player_state.weapon_attack_phase == -1) {
-            goto done;
+        if (target->word_0e.value < player_distance) {
+            goto zero_score;
+        }
+        if (player_state.weapon_attack_phase == -1) {
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
         if (angle_within_tolerance(actor->rotation.y, angle,
                                    target->word_0c.bytes.low << 5)) {
-            break;
+            goto score_target;
         }
-        goto done;
+        goto zero_score;
 
     case 112:
         score = -1;
-        goto done;
+        break;
     case 27:
         if (player_distance >= target->word_0c.value) {
-            break;
+            goto score_target;
         }
         /* Fall through to the zero-score cases. */
     case 2:
@@ -339,23 +347,22 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 22:
 zero_score:
         score = 0;
-        goto done;
+        break;
     default:
-        if (target->type >= 128 &&
-            !((KfCandidateScoreCallback)state_8017d118.active_table[16])(
+        if (target->type < 128 ||
+            ((KfCandidateScoreCallback)state_8017d118.active_table[16])(
                 target, player_distance)) {
-            goto done;
+score_target:
+            if (target == actor->target) {
+                score = random_triangular_scaled(
+                    target->word_02.target_selection.continuing_score_scale);
+            } else {
+                score = random_triangular_scaled(
+                    target->word_02.target_selection.initial_score_scale);
+            }
         }
         break;
     }
-
-score_target:
-    if (target == actor->target) {
-        score = random_triangular_scaled(target->word_02.target_selection.continuing_score_scale);
-    } else {
-        score = random_triangular_scaled(target->word_02.target_selection.initial_score_scale);
-    }
-done:
     return score;
 }
 
@@ -1531,13 +1538,12 @@ s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 ra
                   s16 reference_angle, s32 step, s32 mode, s32 target)
 {
     KfActor *actor = actor_state.current;
-    s32 dx = (s32)((u32)world_x - (u32)actor->position.vx);
-    s32 dz = (s32)((u32)world_z - (u32)actor->position.vz);
+    s32 dx = world_x - actor->position.vx;
+    s32 dz = world_z - actor->position.vz;
     s32 angle = vector_xz_to_angle(dx, dz);
+    s32 distance = abs(dx) + abs(dz);
 
-    dx = dx < 0 ? (s32)(0u - (u32)dx) : dx;
-    dz = dz < 0 ? (s32)(0u - (u32)dz) : dz;
-    if (reference_angle != -1 && (s32)((u32)dx + (u32)dz) <= 600
+    if (reference_angle != -1 && distance <= 600
         && !angle_within_tolerance(angle, reference_angle, 0x320)) {
         return -1;
     }
@@ -1716,8 +1722,8 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
     VECTOR position = *origin;
     struct KfEulerAngles angles;
     s32 pitch = pitch_override;
-    s32 yaw_fraction;
-    s32 yaw_error;
+    s32 yaw_scaled;
+    s32 yaw_delta;
     s32 pitch_error;
     s32 distance;
     s32 target_y;
@@ -1727,17 +1733,17 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         vector_displacement_to_pitch_yaw(position.vx - target->vx,
                       position.vy - target_y,
                       position.vz - target->vz, &angles);
-        yaw_error = ((s16)angles.y - (s16)actor->rotation.y) & KF_ANGLE_WRAP_MASK;
-        yaw_fraction = yaw_error << KF_FIXED12_BITS;
-        if (yaw_error >= KF_ANGLE_HALF_TURN) {
-            yaw_error = KF_ANGLE_FULL_TURN - yaw_error;
-            yaw_fraction = yaw_error << KF_FIXED12_BITS;
+        yaw_delta = ((s16)angles.y - (s16)actor->rotation.y) & KF_ANGLE_WRAP_MASK;
+        yaw_scaled = yaw_delta << KF_FIXED12_BITS;
+        if (yaw_delta >= KF_ANGLE_HALF_TURN) {
+            yaw_delta = KF_ANGLE_FULL_TURN - yaw_delta;
+            yaw_scaled = yaw_delta << KF_FIXED12_BITS;
         }
-        yaw_fraction /= (s16)yaw_limit;
-        if (yaw_fraction > KF_FIXED12_ONE) {
-            yaw_fraction = KF_FIXED12_ONE;
+        yaw_delta = yaw_scaled / (s16)yaw_limit;
+        if (yaw_delta > KF_FIXED12_ONE) {
+            yaw_delta = KF_FIXED12_ONE;
         }
-        angles.y = angle_lerp_shortest_q12(angles.y, actor->rotation.y, yaw_fraction);
+        angles.y = angle_lerp_shortest_q12(angles.y, actor->rotation.y, yaw_delta);
 
         if ((s16)pitch == -1) {
             pitch_error = ((s16)angles.x - (s16)actor->rotation.x) & KF_ANGLE_WRAP_MASK;
@@ -3287,13 +3293,11 @@ ADDRESS(0x8003f7ec, 0x74)
 void actor_fixup_group_targets(void)
 {
     KfTargetGroup *group = actor_state.target_groups;
-    u8 *base;
     s32 group_index;
     s32 slot_index;
     KfTargetReference *slot;
 
     group_index = 0;
-    base = actor_state.target_candidate_blob;
     while (group_index < 40) {
         if (group->definition_id == 0xff) {
             break;
@@ -3303,7 +3307,8 @@ void actor_fixup_group_targets(void)
             if (slot->relative_offset == -1) {
                 slot->pointer = NULL;
             } else {
-                slot->pointer = (KfTargetCandidate *)(base + slot->relative_offset);
+                slot->pointer = (KfTargetCandidate *)
+                    &actor_state.target_candidate_blob[slot->relative_offset];
             }
         }
         group_index++;

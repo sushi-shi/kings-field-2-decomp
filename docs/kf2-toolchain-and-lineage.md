@@ -174,6 +174,22 @@ external; don't commit them.
    stub transplant from the KF1 notes. Compile small JP leaf functions and
    compare against the KF1 `cc1psx-257` rebuild. First choose functions that
    are byte-identical between JP and US.
+
+   Partly done: the `gcc241-kit` compiler (`probe-gcc241-kit-o2-r2000`) stages
+   the kit's 2.4.1 image behind the kit `CC1PSX.EXE` go32 stub and runs it
+   under DOSBox with ASPSX 1.07. With every GAME unit switched to one profile
+   (sources tuned for 2.5.7), exact functions were: 2.5.7 `-mcpu=r2000` 479,
+   2.4.1 `-mcpu=r2000` 419, 2.4.1 default CPU 273, decompals 2.6.0 97 (its
+   `addu sp; j ra; nop` epilogue fails every framed function; the kit's real
+   `CC1PSX.EXE` 2.6.0 emits the same epilogue). No unit gains under 2.4.1, but
+   it alone reproduces `menu_fade_transition` exactly: 2.5.7 keeps the
+   `game_graphics_runtime+0x10024` ordering-table address as a loop-movable
+   pseudo, which spends one loop-invariant motion and changes which constants
+   are hoisted. 2.4.1 also reproduces the retail register choice in
+   `render_textured_quad` except one folded constant. It loses 2.5.7 forms that
+   retail has: `divu` for `u8` operands, frameless counted copies, and the
+   2.5.7 constant-multiply sequences. Retail therefore looks like neither
+   pinned build; an SN GCC between 2.4.1 and 2.6.0 remains plausible.
 2. Do the same for EU with GCC 2.7.2.SN.1, sweeping `-G` (for example `-G8`)
    and `-O2`, and compare with the 2.6.0 binary.
 3. Rerun the signature census against the real 3.0 `.LIB` files through psy-k

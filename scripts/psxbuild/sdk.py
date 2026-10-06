@@ -7,12 +7,18 @@ import os
 from pathlib import Path
 import re
 import shutil
+import struct
 import subprocess
 
 C_COMPILERS = {
     "gcc257-native": ("cpppsx-257", "cc1psx-257"),
     "gcc260-native": ("cpppsx-260", "cc1psx-260"),
+    # The kit's extensionless CC1PSX (GCC 2.4.1) runs under DOSBox. Its
+    # preprocessing and the source-size probe use the native 2.5.7 pair: both
+    # are optimizer-independent and see the same headers and MIPS ABI.
+    "gcc241-kit": ("cpppsx-257", "cc1psx-257"),
 }
+DOS_C_COMPILERS = frozenset({"gcc241-kit"})
 
 
 def run_command(arguments, *, environment=None):
@@ -31,7 +37,7 @@ def dos_run(root: Path, commands: list[str], phase: str) -> None:
     result = subprocess.run(['dosbox-x', '-silent', '-fastlaunch', '-set', 'sdl output=surface',
                              '-set', 'cpu cycles=max',
                              '-c', f'mount c "{root}"', '-c', 'c:', '-c', batch, '-exit'],
-                            cwd=root, env=environment, capture_output=True, timeout=60)
+                            cwd=root, env=environment, capture_output=True, timeout=600)
     (root / (phase + '-dosbox.log')).write_bytes(result.stdout + result.stderr)
     if result.returncode:
         raise RuntimeError(f'DOSBox failed during {phase}: {result.returncode}')
@@ -68,12 +74,47 @@ def compile_c(source: Path, root: Path, stem: str, *, compiler: str,
     preprocessed.write_bytes(run(cpp_command))
     cc1_command = [str(cc1_override) if cc1_override else cc1, '-quiet', '-g', f'-{optimization}',
                    f'-G{small_data}', *cc1_flags, str(preprocessed), '-o', str(assembly)]
-    run(cc1_command, environment=environment)
+    probe = {}
+    if compiler in DOS_C_COMPILERS:
+        if cc1_override is not None:
+            raise ValueError(f'{compiler} has no cc1 override')
+        stage_kit_gcc241(root / 'CC1.EXE')
+        assembly.unlink(missing_ok=True)
+        dos_command = ['CC1', '-quiet', '-g', f'-{optimization}', f'-G{small_data}', *cc1_flags,
+                       preprocessed.name, '-o', assembly.name]
+        dos_run(root, [' '.join([*dos_command, '>', stem + '.CC1'])], 'cc1')
+        if not assembly.is_file() or not assembly.stat().st_size:
+            log = root / (stem + '.CC1')
+            detail = log.read_text(errors='replace').strip() if log.is_file() else ''
+            raise RuntimeError(f'kit CC1PSX produced no assembly: {detail or "no output"}')
+        probe = {'size_probe_command': cc1_command}
+        cc1_command = dos_command
+    else:
+        run(cc1_command, environment=environment)
     dos_text(assembly)
     return {'object': stem + '.OBJ', 'assembly': stem + '.S', 'log': stem + '.TXT',
-            'preprocessor_command': cpp_command, 'compiler_command': cc1_command,
+            'preprocessor_command': cpp_command, 'compiler_command': cc1_command, **probe,
             'assembler_command': f'aspsx -g -G{small_data} -o {stem}.OBJ {stem}.S > {stem}.TXT',
             'assembly_sha256': hashlib.sha256(assembly.read_bytes()).hexdigest()}
+
+
+def stage_kit_gcc241(target: Path) -> None:
+    """Write the kit's GCC 2.4.1 cc1 as a stubbed DOS executable.
+
+    The Psy-Q 3.0 kit ships CC1PSX 2.4.1 as a bare go32 COFF image beside
+    the go32-stubbed 2.6.0 CC1PSX.EXE. Prefixing that stub to the 2.4.1 image
+    makes it runnable under DOSBox; neither compiler image is modified.
+    """
+    compiler = Path(os.environ['PSYQ_SDK']) / 'COMPILER'
+    stubbed = (compiler / 'CC1PSX.EXE').read_bytes()
+    image = (compiler / 'CC1PSX').read_bytes()
+    last_page_bytes, pages = struct.unpack_from('<HH', stubbed, 2)
+    stub_size = pages * 512 - ((512 - last_page_bytes) if last_page_bytes else 0)
+    i386_coff = b'\x4c\x01'
+    if (stubbed[:2] != b'MZ' or stubbed[stub_size:stub_size + 2] != i386_coff
+            or image[:2] != i386_coff):
+        raise RuntimeError('unexpected kit CC1PSX layout; cannot stage GCC 2.4.1')
+    target.write_bytes(stubbed[:stub_size] + image)
 
 
 def compile_classic(source: Path, root: Path, stem: str, *, include_dirs: tuple[Path, ...],

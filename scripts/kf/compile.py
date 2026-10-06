@@ -31,6 +31,11 @@ C_COMPILERS = {
         "cc1psx-257",
         "Decompals old-gcc 0.17 GCC 2.5.7 PSX rebuild",
     ),
+    "gcc241-kit": (
+        "cpppsx-257",
+        "cc1psx-257",
+        "Psy-Q 3.0 kit CC1PSX GCC 2.4.1 under DOSBox (go32 stub from the kit CC1PSX.EXE)",
+    ),
 }
 
 def _tool(name: str) -> str:
@@ -195,7 +200,8 @@ def compile_source(
         if data_claims:
             source_sizes = _source_data_sizes(
                 scratch / 'UNIT.I', tuple(claim.name for claim in data_claims),
-                result['compiler_command'][:-3], scratch, small_data)
+                result.get('size_probe_command', result['compiler_command'])[:-3],
+                scratch, small_data)
     elif source.suffix.lower() in ('.s', '.asm'):
         shutil.copyfile(source, scratch / 'UNIT.S')
         result = {}

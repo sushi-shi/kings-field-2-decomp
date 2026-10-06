@@ -965,11 +965,9 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u32 blend_bits;
 
-    blend_bits = (u32)blend_mode;
     object = tmd_get_object(object_index);
-    blend_bits <<= 5;
+    blend_mode <<= 5;
     packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
              (object->primitive_offset + KF_TMD_HEADER_BYTES);
     normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
@@ -984,7 +982,6 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
         KfScreenVertex *vb;
         KfScreenVertex *vc;
         KfScreenVertex *vd;
-        void *enqueue_prim;
         s32 depth_index;
 
         header.word = *(u32 *)packet;
@@ -1006,7 +1003,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -1021,8 +1018,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             &prim->packed.color2);
             ((u8 *)&prim->sdk.tag)[3] = 9;
             prim->sdk.code = (mode & 2) | 0x34;
-            enqueue_prim = &prim->sdk;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        &prim->sdk);
+            break;
         }
         case KF_TMD_MODE_GT4: {
             KfGpuGT4 *prim;
@@ -1039,7 +1039,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -1059,8 +1059,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = (mode & 2) | 0x3c;
-            enqueue_prim = &prim->sdk;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        &prim->sdk);
+            break;
         }
         case KF_TMD_MODE_G3: {
             POLY_G3 *prim;
@@ -1086,8 +1089,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             (CVECTOR *)&prim->r2);
             ((u8 *)&prim->tag)[3] = 6;
             prim->code = 0x30;
-            enqueue_prim = prim;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        prim);
+            break;
         }
         case KF_TMD_MODE_G4: {
             POLY_G4 *prim;
@@ -1118,20 +1124,13 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            (CVECTOR *)&prim->r3);
             ((u8 *)&prim->tag)[3] = 8;
             prim->code = 0x38;
-            enqueue_prim = prim;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        prim);
+            break;
         }
         }
-        goto next_packet;
-enqueue:
-        depth_index = (s16)fixed_depth;
-        if (depth_index <= 0)
-            goto next_packet;
-        if ((u32)depth_index >= KF_MAP_OT_DEPTH_LIMIT)
-            goto next_packet;
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                enqueue_prim);
-next_packet:
         packet += TMD_PACKET_BODY_BYTES(header.word);
     }
 }

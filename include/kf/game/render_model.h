@@ -39,7 +39,7 @@ void render_world_model(u8 layer, u16 asset_index, const VECTOR *position,
                    u16 phase, u8 lighting_override, s16 lighting_blend,
                    u8 render_mode, s32 depth);
 void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotation,
-                   KfPoolRecord **cache, s32 clip, u16 phase,
+                   KfPoolRecord **cache, u16 clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth);
 
 #endif

@@ -2255,11 +2255,11 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 
 ADDRESS(0x80031d8c, 0x214)
 void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotation,
-                   KfPoolRecord **cache, s32 clip, u16 phase,
+                   KfPoolRecord **cache, u16 clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth)
 {
     MATRIX model;
-    MATRIX reversed_light;
+    KfCollisionRotation reversed_light;
     KfCollisionRow *lighting;
     KfTmdObject *object;
     s32 object_index;
@@ -2287,7 +2287,7 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
         reversed_light.m[2][0] = -lighting->rotations[0].m[2][0];
         reversed_light.m[2][1] = -lighting->rotations[0].m[2][1];
         reversed_light.m[2][2] = -lighting->rotations[0].m[2][2];
-        SetLightMatrix(&reversed_light);
+        SetLightMatrix((MATRIX *)&reversed_light);
     } else {
         SetLightMatrix((MATRIX *)&lighting->rotations[0]);
     }
@@ -2295,15 +2295,16 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
     object_index = asset_index & 0xffff;
     asset_registry_select(object_index);
     object = tmd_get_object(0);
-    if (animation_prepare_asset_vertices(cache, object_index, clip & 0xffff, phase,
+    if (animation_prepare_asset_vertices(cache, object_index, clip, phase,
                       object->vertex_count) == 0) {
         tmd_select_object_vertices(0);
         object = tmd_get_object(0);
         tmd_project_vertices(object->vertex_count);
+        render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
     } else {
         tmd_project_vertices(object->vertex_count);
+        render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
     }
-    render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
 }
 
 ADDRESS(0x80031fa0, 0x68)
@@ -2464,6 +2465,8 @@ ADDRESS(0x8003247c, 0xb70)
 void render_scene_and_update_resources(void)
 {
     struct KfEulerAngles rotation;
+    /* Unreferenced 8-byte slot between rotation and actor_position. */
+    SVECTOR unused;
     VECTOR actor_position;
     u8 tmd_flags[320];
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
@@ -2579,7 +2582,7 @@ actor_next:
 map_sound_action: {
             s32 sound;
             s32 distance;
-            s32 radius;
+            s32 nearest;
             s32 volume;
 
             if (player_camera_within_map_region(object->position.vx >> 11,
@@ -2595,26 +2598,29 @@ map_sound_action: {
             if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
                 object->extra_40.next_sound_frame = frame +
                     object->tail.ambient_sound.repeat_delay_units * 6;
-                distance = camera_position->vx -
-                    (object->tail.ambient_sound.region_width * 0x400 + object->position.vx);
+                /* One local carries each half extent, the audible radius and
+                 * finally the volume. */
+                volume = object->tail.ambient_sound.region_width * 0x400;
+                nearest = camera_position->vx - (volume + object->position.vx);
+                if (nearest < 0) nearest = -nearest;
+                nearest = volume - nearest;
+                volume = object->tail.ambient_sound.region_depth * 0x400;
+                distance = camera_position->vz - (volume + object->position.vz);
                 if (distance < 0) distance = -distance;
-                volume = object->tail.ambient_sound.region_width * 0x400 - distance;
-                distance = camera_position->vz -
-                    (object->tail.ambient_sound.region_depth * 0x400 + object->position.vz);
-                if (distance < 0) distance = -distance;
-                distance = object->tail.ambient_sound.region_depth * 0x400 - distance;
-                if (distance < volume) volume = distance;
-                radius = object->tail.ambient_sound.audible_radius_code << 11;
-                if (volume >= radius) {
+                distance = volume - distance;
+                if (distance < nearest) nearest = distance;
+                volume = object->tail.ambient_sound.audible_radius_code << 11;
+                if (nearest >= volume) {
                     volume = object->tail.ambient_sound.maximum_volume;
                 } else {
-                    if (radius == 0) goto map_object_next;
-                    volume = object->tail.ambient_sound.maximum_volume * volume / radius;
+                    if (volume == 0) goto map_object_next;
+                    volume = object->tail.ambient_sound.maximum_volume * nearest / volume;
                 }
                 if (object->tail.ambient_sound.vertical_attenuation_flags & 1) {
                     distance = player_state.camera_position.vy - object->position.vy;
                     if (distance < 0) distance = -distance;
-                    volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
+                    distance = object->tail.ambient_sound.maximum_volume * distance >> 13;
+                    volume -= distance;
                 }
                 if (volume > 19) {
                     audio_play_sound(object->tail.ambient_sound.sound_id, volume);

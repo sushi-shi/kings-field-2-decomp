@@ -588,7 +588,6 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
         - (((speed_squared * horizontal_distance) >> 10)
            * (horizontal_distance >> 2))
         - (((speed * acceleration) >> 3) * (vertical_distance >> 2));
-    s32 square_root;
     s32 midpoint;
     s32 longer_time;
     s32 shorter_time;
@@ -600,10 +599,10 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     if (discriminant < 0) {
         return -1;
     }
-    square_root = SquareRoot0(discriminant << 4) << 2;
+    discriminant = SquareRoot0(discriminant << 4) << 2;
     midpoint = (amplitude_squared >> 2) - ((vertical_distance * speed) >> 2);
-    longer_time = ((midpoint + square_root) << 1) / speed_squared;
-    shorter_time = ((midpoint - square_root) << 1) / speed_squared;
+    longer_time = ((midpoint + discriminant) << 1) / speed_squared;
+    shorter_time = ((midpoint - discriminant) << 1) / speed_squared;
     if (longer_time <= 0 && shorter_time <= 0) {
         return -1;
     }

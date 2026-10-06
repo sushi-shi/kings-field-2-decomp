@@ -180,7 +180,7 @@ ADDRESS(0x800226ec, 0x1dc)
 b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 {
     struct DIRENTRY ordered[KF_CARD_DIRECTORY_CAPACITY];
-    struct DIRENTRY *entry;
+    struct DIRENTRY *first_entry;
     char slot_digit[2];
     s32 total_size = 0;
     s32 i;
@@ -188,30 +188,30 @@ b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 
     slot_digit[0] = memory_card_slot_digit_seed[0];
     slot_digit[1] = memory_card_slot_digit_seed[1];
-    entry = entries;
-    memset(entries, 0, sizeof(ordered));
+    first_entry = entries;
+    memset(first_entry, 0, sizeof(ordered));
     *matching_count = 0;
-    if (firstfile(memory_card_search_pattern, entry) == entry) {
+    if (firstfile(memory_card_search_pattern, first_entry) == first_entry) {
         do {
-            total_size += entry->size;
-            if (strncmp(entry->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
+            total_size += entries->size;
+            if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
                 ++*matching_count;
             }
-            ++entry;
-        } while (nextfile(entry) == entry);
+            ++entries;
+        } while (nextfile(entries) == entries);
     }
 
-    entry = entries;
+    entries = first_entry;
     memset(ordered, 0, sizeof(ordered));
     for (i = 0; i < KF_CARD_DIRECTORY_CAPACITY; ++i) {
-        if (strncmp(entry->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
-            slot_digit[0] = entry->name[CARD_FILENAME_PREFIX_LENGTH];
+        if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
+            slot_digit[0] = entries->name[CARD_FILENAME_PREFIX_LENGTH];
             slot = atoi(slot_digit) - 1;
-            ordered[slot] = *entry;
+            memcpy(&ordered[slot], entries, sizeof(*entries));
         }
-        ++entry;
+        ++entries;
     }
-    memcpy(entries, ordered, sizeof(ordered));
+    memcpy(first_entry, ordered, sizeof(ordered));
     return total_size > CARD_USED_BYTES_LIMIT_FOR_NEW_FILE;
 }
 
@@ -242,11 +242,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *experience = 0;
     weight = 100000;
     for (i = 0; i < CARD_TITLE_EXPERIENCE_DIGITS; ++i) {
-        const char *digit_pair = &header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2];
-        s8 first_digit_byte = digit_pair[0];
-        s8 second_digit_byte = digit_pair[1];
-        ((u8 *)&encoded)[0] = first_digit_byte;
-        ((u8 *)&encoded)[1] = second_digit_byte;
+        memcpy(&encoded, &header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *experience += encoded * weight;
@@ -257,11 +253,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *level = 0;
     weight = 10;
     for (i = 0; i < CARD_TITLE_LEVEL_DIGITS; ++i) {
-        const char *digit_pair = &header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2];
-        s8 first_digit_byte = digit_pair[0];
-        s8 second_digit_byte = digit_pair[1];
-        ((u8 *)&encoded)[0] = first_digit_byte;
-        ((u8 *)&encoded)[1] = second_digit_byte;
+        memcpy(&encoded, &header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *level += encoded * weight;
@@ -427,9 +419,10 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
 
     for (index = 0; index < CARD_TITLE_LEVEL_DIGITS; index++) {
         digit = level % 10;
-        level /= 10;
+        experience = level / 10; /* retail reuses the experience local */
         header->title[(CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
+        level = experience;
         if (level == 0)
             index = CARD_TITLE_LEVEL_DIGITS;
     }

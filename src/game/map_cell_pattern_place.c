@@ -79,7 +79,7 @@ void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle
 enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
-void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z,
                    s32 width, s32 height, s32 rotation, u32 field_mask)
 {
@@ -89,6 +89,8 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     s32 row_step;
     s32 quarter_turns;
     s32 rows_remaining;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;

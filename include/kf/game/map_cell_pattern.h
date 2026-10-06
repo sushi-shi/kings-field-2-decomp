@@ -42,7 +42,7 @@ extern KfMapCellPattern map_object_cell_patterns
 void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag);
-void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z, s32 width,
                    s32 height, s32 rotation, u32 field_mask);
 

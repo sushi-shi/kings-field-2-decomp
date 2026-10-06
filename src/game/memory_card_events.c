@@ -419,9 +419,10 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
 
     for (index = 0; index < CARD_TITLE_LEVEL_DIGITS; index++) {
         digit = level % 10;
-        level /= 10;
+        experience = level / 10; /* retail reuses the experience local */
         header->title[(CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
+        level = experience;
         if (level == 0)
             index = CARD_TITLE_LEVEL_DIGITS;
     }

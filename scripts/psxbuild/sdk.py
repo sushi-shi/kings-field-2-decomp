@@ -61,8 +61,10 @@ def compile_c(source: Path, root: Path, stem: str, *, compiler: str,
     cpp, cc1 = C_COMPILERS[compiler]
     preprocessed, assembly = root / (stem + '.I'), root / (stem + '.S')
     includes = [argument for path in include_dirs for argument in ('-I', str(path.resolve()))]
+    # The name becomes the assembly's `.file`; ASPSX 1.07 hangs on long ones,
+    # so a checkout-relative spelling keeps deep worktrees buildable.
     cpp_command = [cpp, '-lang-c', '-undef', '-nostdinc', *includes,
-                   *(f'-D{value}' for value in defines), str(source.resolve())]
+                   *(f'-D{value}' for value in defines), os.path.relpath(source.resolve())]
     preprocessed.write_bytes(run(cpp_command))
     cc1_command = [str(cc1_override) if cc1_override else cc1, '-quiet', '-g', f'-{optimization}',
                    f'-G{small_data}', *cc1_flags, str(preprocessed), '-o', str(assembly)]

@@ -180,7 +180,7 @@ ADDRESS(0x800226ec, 0x1dc)
 b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 {
     struct DIRENTRY ordered[KF_CARD_DIRECTORY_CAPACITY];
-    struct DIRENTRY *entry;
+    struct DIRENTRY *first_entry;
     char slot_digit[2];
     s32 total_size = 0;
     s32 i;
@@ -188,30 +188,30 @@ b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 
     slot_digit[0] = memory_card_slot_digit_seed[0];
     slot_digit[1] = memory_card_slot_digit_seed[1];
-    entry = entries;
-    memset(entries, 0, sizeof(ordered));
+    first_entry = entries;
+    memset(first_entry, 0, sizeof(ordered));
     *matching_count = 0;
-    if (firstfile(memory_card_search_pattern, entry) == entry) {
+    if (firstfile(memory_card_search_pattern, first_entry) == first_entry) {
         do {
-            total_size += entry->size;
-            if (strncmp(entry->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
+            total_size += entries->size;
+            if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
                 ++*matching_count;
             }
-            ++entry;
-        } while (nextfile(entry) == entry);
+            ++entries;
+        } while (nextfile(entries) == entries);
     }
 
-    entry = entries;
+    entries = first_entry;
     memset(ordered, 0, sizeof(ordered));
     for (i = 0; i < KF_CARD_DIRECTORY_CAPACITY; ++i) {
-        if (strncmp(entry->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
-            slot_digit[0] = entry->name[CARD_FILENAME_PREFIX_LENGTH];
+        if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
+            slot_digit[0] = entries->name[CARD_FILENAME_PREFIX_LENGTH];
             slot = atoi(slot_digit) - 1;
-            ordered[slot] = *entry;
+            memcpy(&ordered[slot], entries, sizeof(*entries));
         }
-        ++entry;
+        ++entries;
     }
-    memcpy(entries, ordered, sizeof(ordered));
+    memcpy(first_entry, ordered, sizeof(ordered));
     return total_size > CARD_USED_BYTES_LIMIT_FOR_NEW_FILE;
 }
 

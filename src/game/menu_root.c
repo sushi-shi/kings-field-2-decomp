@@ -29,6 +29,8 @@ RODATA(0x80011098, 0x6c)
 
 
 enum {
+    /* Three glyphs and the -1 terminator of the "none" label row. */
+    MENU_NONE_OPTION_GLYPHS = 4,
     MENU_STATUS_RELIEF_CAP = 64,
     MENU_LOCATION_REGION_PLACE = 100000,
     MENU_LOCATION_LAYER_PLACE = 10000,
@@ -728,7 +730,8 @@ void menu_equipment_category_controller(s32 category)
 
     count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, item_ids,
         first, last);
-    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
+    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+        MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     values[count] = 0xff;
     item_ids[count] = 0xff;
     count++;
@@ -819,7 +822,8 @@ void menu_choose_primary_magic_shortcut(void)
     s32 frame;
 
     count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 0, 13);
-    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
+    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+        MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     values[count] = -1;
     indices[count] = 0xff;
     count++;
@@ -895,7 +899,8 @@ void menu_item_magic_controller(void)
 
     count += menu_collect_available_magic_rows(effect_state.magic_records, &rows[count],
         &numbers[count], &magic_ids[count], 0, 19);
-    memcpy(rows[count].codes, menu_none_option_glyphs, sizeof menu_none_option_glyphs);
+    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+        MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     count++;
 
     menu_list_init(&menu.list, 0, 2);
@@ -2055,8 +2060,8 @@ KfMenuLabelSuffix menu_equipment_category_labels[10] = {
     {{0, 1, 18, 32, 231, -1, 0, 0, 0, 0}},
     {{58, 4125, 15, 39, -1, 0, 0, 0, 0, 0}},
 };
-DATA(0x800649ec, 0x8, ".data")
-s16 menu_none_option_glyphs[4] = {89, 4172, 76, -1};
+DATA(0x800649ec, 0x14, ".data")
+KfMenuLabelSuffix menu_none_option_glyphs = {{89, 4172, 76, -1, 0, 0, 0, 0, 0, 0}};
 DATA(0x80064a00, 0xf0, ".data")
 KfMenuLabelSuffix menu_header_labels[12] = {
     {{130, 131, 132, -1, 0, 0, 0, 0, 0, 0}},
@@ -2426,15 +2431,15 @@ u16 menu_item_code_secondary[5][120] = {
         10500, 22900, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     },
 };
-DATA(0x8006d68c, 0x4, ".data")
+DATA(0x8006d68c, 0x4, ".sdata")
 s32 menu_item_model_allocation_pending = 0;
-DATA(0x8006d690, 0x4, ".data")
+DATA(0x8006d690, 0x4, ".sdata")
 b32 input_press_pending = KF_FALSE;
-DATA(0x8006d694, 0x4, ".data")
+DATA(0x8006d694, 0x4, ".sdata")
 s32 menu_item_quantity = 1;
-DATA(0x8006d698, 0x4, ".data")
+DATA(0x8006d698, 0x4, ".sdata")
 s32 menu_cursor_animation_frame = 0;
-DATA(0x8006d69c, 0x4, ".data")
+DATA(0x8006d69c, 0x4, ".sdata")
 s32 menu_cursor_animation_direction = 0;
 DATA(0x8006d9e0, 0x4, ".bss")
 POLY_FT4 *current_poly_ft4;

@@ -213,7 +213,7 @@ extern s32 menu_item_preview_rotation_step;
 extern KfMenuGlyphRow menu_glyph_rows[120];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
 extern KfMenuLabelSuffix menu_equipment_category_labels[10];
-extern s16 menu_none_option_glyphs[4];
+extern KfMenuLabelSuffix menu_none_option_glyphs;
 extern u8 menu_item_mask_pages[6][120];
 void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];

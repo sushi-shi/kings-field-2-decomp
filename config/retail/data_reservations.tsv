@@ -1,1 +1,6 @@
 image	va	name	size	class	evidence
+GAME.EXE	0x8006da18	memory_card_io_end_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da20	memory_card_timeout_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da28	memory_card_new_device_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da30	memory_card_error_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da58	memory_card_buffer	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride

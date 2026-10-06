@@ -37,9 +37,9 @@ enum {
 
 RODATA(0x80011074, 0x21)
 
-DATA(0x8006d680, 0x5, ".data")
+DATA(0x8006d680, 0x5, ".sdata")
 char cd_path_prefix[5] = "\\CD\\";
-DATA(0x8006d688, 0x3, ".data")
+DATA(0x8006d688, 0x3, ".sdata")
 char cd_version_suffix[3] = ";1";
 
 DATA(0x8009b0a0, 0x5f000, ".bss")

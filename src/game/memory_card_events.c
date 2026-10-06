@@ -68,23 +68,20 @@ KfCardAssets memory_card_assets = {
     }
 };
 
-DATA(0x8006d6a0, 0x1, ".data")
+DATA(0x8006d6a0, 0x1, ".sdata")
 u8 memory_card_loaded_slot = 0;
-DATA(0x8006d6a4, 0x2, ".data")
-static s8 memory_card_slot_digit_seed[2] = {0x20, 0};
 
-DATA(0x8006d6a8, 0x7, ".data")
-char memory_card_search_pattern[7] = "bu00:*";
+SDATA(0x8006d6a4, 0xb)
 
-DATA(0x8006da18, 0x4, ".bss")
+DATA(0x8006da18, 0x4, ".sbss")
 static long memory_card_io_end_event;
-DATA(0x8006da20, 0x4, ".bss")
+DATA(0x8006da20, 0x4, ".sbss")
 static long memory_card_timeout_event;
-DATA(0x8006da28, 0x4, ".bss")
+DATA(0x8006da28, 0x4, ".sbss")
 static long memory_card_new_device_event;
-DATA(0x8006da30, 0x4, ".bss")
+DATA(0x8006da30, 0x4, ".sbss")
 static long memory_card_error_event;
-DATA(0x8006da58, 0x4, ".bss")
+DATA(0x8006da58, 0x4, ".sbss")
 static u8 *memory_card_buffer;
 
 DATA(0x8006dc00, 0x4000, ".bss")
@@ -181,17 +178,15 @@ b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
 {
     struct DIRENTRY ordered[KF_CARD_DIRECTORY_CAPACITY];
     struct DIRENTRY *first_entry;
-    char slot_digit[2];
     s32 total_size = 0;
+    char slot_digit[2] = " ";
     s32 i;
     s32 slot;
 
-    slot_digit[0] = memory_card_slot_digit_seed[0];
-    slot_digit[1] = memory_card_slot_digit_seed[1];
     first_entry = entries;
     memset(first_entry, 0, sizeof(ordered));
     *matching_count = 0;
-    if (firstfile(memory_card_search_pattern, first_entry) == first_entry) {
+    if (firstfile("bu00:*", first_entry) == first_entry) {
         do {
             total_size += entries->size;
             if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
@@ -221,14 +216,12 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
 {
     KfCardHeader header;
     char path[40] = "bu00:";
-    char slot_digit[2];
+    char slot_digit[2] = " ";
     s16 encoded;
     s32 handle;
     s32 weight;
     s32 i;
 
-    slot_digit[0] = memory_card_slot_digit_seed[0];
-    slot_digit[1] = memory_card_slot_digit_seed[1];
     if (strncmp(filename, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) != 0) {
         return KF_TRUE;
     }
@@ -283,29 +276,28 @@ s32 memory_card_read_slot(s32 slot)
     u32 checksum;
 
     attempt = 0;
-    for (;;) {
-        strcat(path, memory_card_file_prefix);
-        path[CARD_PATH_SLOT_DIGIT_OFFSET] = slot + '0';
-        path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = 0;
-        handle = open(path, FREAD);
-        if (handle == -1 || read(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES)
-                != KF_CARD_BLOCK_BYTES) {
-            status = CARD_READ_IO_FAILURE;
-        } else {
-            close(handle);
-            buffer = memory_card_buffer;
-            checksum = memory_card_payload_byte_sum(buffer + KF_CARD_HEADER_BYTES);
-            if (((KfCardHeader *)buffer)->payload_checksum == checksum) {
-                card_payload_restore_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
-                memory_card_loaded_slot = slot;
-                return 0;
-            }
-            status = CARD_READ_CHECKSUM_FAILURE;
+retry:
+    strcat(path, memory_card_file_prefix);
+    path[CARD_PATH_SLOT_DIGIT_OFFSET] = slot + '0';
+    path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = 0;
+    handle = open(path, FREAD);
+    if (handle == -1 || read(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES)
+            != KF_CARD_BLOCK_BYTES) {
+        status = CARD_READ_IO_FAILURE;
+    } else {
+        close(handle);
+        buffer = memory_card_buffer;
+        checksum = memory_card_payload_byte_sum(buffer + KF_CARD_HEADER_BYTES);
+        if (((KfCardHeader *)buffer)->payload_checksum == checksum) {
+            card_payload_restore_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
+            memory_card_loaded_slot = slot;
+            return 0;
         }
-        if (attempt >= CARD_READ_MAX_RETRIES) {
-            break;
-        }
+        status = CARD_READ_CHECKSUM_FAILURE;
+    }
+    if (attempt < CARD_READ_MAX_RETRIES) {
         attempt++;
+        goto retry;
     }
     return status;
 }
@@ -318,20 +310,18 @@ s32 memory_card_write_slot(s32 slot)
     char path[40] = "bu00:";
     b32 occupied[KF_CARD_DIRECTORY_CAPACITY];
     RECT icon_rect;
-    char slot_digit[10];
+    char slot_digit[10] = " ";
     s32 matching_count;
     b32 card_full;
-    b32 present = KF_FALSE;
+    b32 present;
     s32 index;
     s32 entry_slot;
     s32 handle;
 
-    slot_digit[0] = memory_card_slot_digit_seed[0];
-    slot_digit[1] = memory_card_slot_digit_seed[1];
-    memset(slot_digit + 2, 0, 8);
     memset(occupied, 0, sizeof(occupied));
     memset(entries, 0, sizeof(entries));
     card_full = memory_card_scan_save_entries(entries, &matching_count);
+    present = KF_FALSE;
 
     for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
         if (strncmp(entries[index].name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {

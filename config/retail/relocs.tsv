@@ -4243,10 +4243,10 @@ GAME.EXE	0x80022694	0x11e94		mips26	reachable-code	0x800232ac	load	memory_card_w
 GAME.EXE	0x800226b4	0x11eb4		mips26	reachable-code	0x8005f3b0	load	open	jal		control-flow	reviewed	manual:memory_card_probe
 GAME.EXE	0x800226c0	0x11ec0		mips26	reachable-code	0x8005f120	load	close	jal		control-flow	reviewed	manual:memory_card_probe
 GAME.EXE	0x800226c8	0x11ec8		mips26	reachable-code	0x8005f150	load	delete	jal		control-flow	reviewed	manual:memory_card_probe
-GAME.EXE	0x80022714	0x11f14	0x80022718	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
-GAME.EXE	0x8002271c	0x11f1c	0x80022720	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x80022714	0x11f14	0x80022718	mips_hi16_lo16	reachable-code	0x8006d6a4	load		lui+lb	v0	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x8002271c	0x11f1c	0x80022720	mips_hi16_lo16	reachable-code	0x8006d6a5	load		lui+lb	v1	paired-reviewed	reviewed	manual:retail card directory signed-byte pair; same target used by reviewed writer
 GAME.EXE	0x80022738	0x11f38		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:decoded card-directory direct call
-GAME.EXE	0x80022744	0x11f44	0x80022748	mips_hi16_lo16	reachable-code	0x8006d6a8	load	memory_card_search_pattern	lui+addiu	a0	paired-reviewed	reviewed	manual:decoded card-directory firstfile wildcard pointer; exact bu00:* NUL bytes
+GAME.EXE	0x80022744	0x11f44	0x80022748	mips_hi16_lo16	reachable-code	0x8006d6a8	load		lui+addiu	a0	paired-reviewed	reviewed	manual:decoded card-directory firstfile wildcard pointer; exact bu00:* NUL bytes
 GAME.EXE	0x8002274c	0x11f4c		mips26	reachable-code	0x8005f3d0	load	firstfile	jal		control-flow	reviewed	manual:decoded card-directory direct call
 GAME.EXE	0x8002275c	0x11f5c	0x80022760	mips_hi16_lo16	reachable-code	0x80066670	load	memory_card_file_prefix	lui+addiu	a1	paired-reviewed	reviewed	manual:retail card directory prefix address and owned initialized datum
 GAME.EXE	0x8002276c	0x11f6c		mips26	reachable-code	0x8005f470	load	strncmp	jal		control-flow	reviewed	manual:decoded card-directory direct call
@@ -4257,8 +4257,8 @@ GAME.EXE	0x800227c4	0x11fc4		mips26	reachable-code	0x8005f470	load	strncmp	jal		
 GAME.EXE	0x800227dc	0x11fdc		mips26	reachable-code	0x8005f490	load	atoi	jal		control-flow	reviewed	manual:decoded card-directory direct call
 GAME.EXE	0x800228f4	0x120f4	0x800228f8	mips_hi16_lo16	reachable-code	0x80011120	load		lui+addiu	a1	paired-reviewed	reviewed	manual:decoded card path literal owned by directory RODATA
 GAME.EXE	0x80022924	0x12124		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
-GAME.EXE	0x8002292c	0x1212c	0x80022930	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
-GAME.EXE	0x80022934	0x12134	0x80022938	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x8002292c	0x1212c	0x80022930	mips_hi16_lo16	reachable-code	0x8006d6a4	load		lui+lb	v0	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
+GAME.EXE	0x80022934	0x12134	0x80022938	mips_hi16_lo16	reachable-code	0x8006d6a5	load		lui+lb	v1	paired-reviewed	reviewed	manual:retail card header signed-byte pair; same target used by reviewed writer
 GAME.EXE	0x80022948	0x12148	0x8002294c	mips_hi16_lo16	reachable-code	0x80066670	load	memory_card_file_prefix	lui+addiu	a1	paired-reviewed	reviewed	manual:retail card header prefix address and owned initialized datum
 GAME.EXE	0x80022954	0x12154		mips26	reachable-code	0x8005f470	load	strncmp	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
 GAME.EXE	0x80022968	0x12168		mips26	reachable-code	0x8005f420	load	strcat	jal		control-flow	reviewed	manual:decoded card-header-reader direct call
@@ -4286,8 +4286,8 @@ GAME.EXE	0x80022c64	0x12464	0x80022c68	mips_hi16_lo16	reachable-code	0x8006d6a0	
 GAME.EXE	0x80022c6c	0x1246c		mips26	reachable-code	0x80022c84	load		j		control-flow	reviewed	manual:retail card-writer success tail and source guard
 GAME.EXE	0x80022cc4	0x124c4	0x80022cc8	mips_hi16_lo16	reachable-code	0x80011120	load		lui+addiu	a1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022cf4	0x124f4		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022cfc	0x124fc	0x80022d00	mips_hi16_lo16	reachable-code	0x8006d6a4	load	memory_card_slot_digit_seed	lui+lb	v0	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
-GAME.EXE	0x80022d04	0x12504	0x80022d08	mips_hi16_lo16	reachable-code	0x8006d6a5	load	memory_card_slot_digit_seed	lui+lb	v1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022cfc	0x124fc	0x80022d00	mips_hi16_lo16	reachable-code	0x8006d6a4	load		lui+lb	v0	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
+GAME.EXE	0x80022d04	0x12504	0x80022d08	mips_hi16_lo16	reachable-code	0x8006d6a5	load		lui+lb	v1	paired-reviewed	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d1c	0x1251c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d2c	0x1252c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
 GAME.EXE	0x80022d3c	0x1253c		mips26	reachable-code	0x8005f410	load	memset	jal		control-flow	reviewed	manual:retail card-writer disasm and source/data owner
@@ -5881,16 +5881,16 @@ GAME.EXE	0x8002a498	0x19c98	0x8002a49c	mips_hi16_lo16	instruction-word	0x8019853
 GAME.EXE	0x8002a4c4	0x19cc4		mips26	reachable-code	0x80023984	load	player_recalculate_combat_stats	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a4cc	0x19ccc		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a4d4	0x19cd4	0x8002a4d8	mips_hi16_lo16	instruction-word	0x8019853a	bss	player_state	lui+addiu	s0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner
-GAME.EXE	0x8002a4f8	0x19cf8	0x8002a4fc	mips_hi16_lo16	instruction-word	0x8006d6b0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame first 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a4f8	0x19cf8	0x8002a4fc	mips_hi16_lo16	instruction-word	0x8006d6b0	load	player_status_texture_row_0	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame first 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a504	0x19d04		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a50c	0x19d0c	0x8002a510	mips_hi16_lo16	instruction-word	0x8006d6c0	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame third 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a50c	0x19d0c	0x8002a510	mips_hi16_lo16	instruction-word	0x8006d6c0	load	player_status_texture_row_2	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame third 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a518	0x19d18		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a520	0x19d20		mips26	reachable-code	0x800331d0	load	notify_enqueue	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a52c	0x19d2c		mips26	reachable-code	0x800357a0	load	map_object_refresh_cell_markers	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a534	0x19d34		mips26	reachable-code	0x8002a5a4	load		j		control-flow	candidate	investigation:relocs.tsv
-GAME.EXE	0x8002a544	0x19d44	0x8002a548	mips_hi16_lo16	instruction-word	0x8006d6b8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame second 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a544	0x19d44	0x8002a548	mips_hi16_lo16	instruction-word	0x8006d6b8	load	player_status_texture_row_1	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame second 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a54c	0x19d4c		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
-GAME.EXE	0x8002a568	0x19d68	0x8002a56c	mips_hi16_lo16	instruction-word	0x8006d6c8	load	player_status_texture_rows	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame fourth 16x1 VRAM row; raw HI/LO pair
+GAME.EXE	0x8002a568	0x19d68	0x8002a56c	mips_hi16_lo16	instruction-word	0x8006d6c8	load	player_status_texture_row_3	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame fourth 16x1 VRAM row; raw HI/LO pair
 GAME.EXE	0x8002a570	0x19d70		mips26	reachable-code	0x8005f938	load	MoveImage	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a58c	0x19d8c		mips26	reachable-code	0x800357a0	load	map_object_refresh_cell_markers	jal		control-flow	reviewed	manual:player-reaction-proven-calls
 GAME.EXE	0x8002a5a4	0x19da4	0x8002a5a8	mips_hi16_lo16	instruction-word	0x80198526	bss	player_state	lui+addiu	a0	paired-reviewed	reviewed	manual:player_update_frame raw HI/LO pair;typed owner

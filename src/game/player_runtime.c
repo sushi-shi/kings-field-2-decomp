@@ -1192,6 +1192,8 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
 {
     VECTOR position;
     SVECTOR direction;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
     s32 distance;
     s32 adjusted_distance;
     KfActor *actor;
@@ -2149,7 +2151,7 @@ void player_update_vertical_motion(void)
     s32 height_difference;
     s32 collision_flags;
     s32 impact;
-    s32 bob;
+    s16 bob;
     s32 movement_speed;
     const s32 *floor_result;
     /* Retail reserves an unreferenced 8-byte frame slot. */
@@ -2166,11 +2168,10 @@ void player_update_vertical_motion(void)
 
     case KF_PLAYER_VERTICAL_FALLING:
         player_check_fall_death();
-        next_y = player_state.camera_position.vy + player_state.vertical_velocity;
-        player_state.camera_position.vy = next_y;
+        player_state.camera_position.vy += player_state.vertical_velocity;
         player_state.frame_displacement.vy = player_state.vertical_velocity;
         player_state.vertical_velocity += 40;
-        if (KF_COLLISION_CACHE_RESULT + 100 < next_y) {
+        if (KF_COLLISION_CACHE_RESULT + 100 < player_state.camera_position.vy) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
             player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
         }

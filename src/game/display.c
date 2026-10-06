@@ -2361,31 +2361,27 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
     u8 mask = 0;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
-    s32 row_offset = z * KF_MAP_CELL_GRID_SIDE;
-    const u8 *row = &game_graphics_runtime.render_grid.map_cell_layer_masks[0][0] + row_offset;
-    s32 row_count;
+    s32 x;
+    s32 rows;
+    s32 columns;
 
-    radius = (s32)((u32)radius << 1);
-    row_count = radius;
-
+    radius *= 2;
+    rows = radius;
     do {
-        if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
-            s32 x = x0;
-            s32 column_count = radius;
-
+        if (z >= 0 && (u32)z < KF_MAP_CELL_GRID_SIDE) {
+            x = x0;
+            columns = radius;
             do {
                 if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
-                    mask |= row[x];
+                    mask |= game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
                 }
                 x++;
-                column_count--;
-            } while (column_count != -1);
+                columns--;
+            } while (columns != -1);
         }
-        row += KF_MAP_CELL_GRID_SIDE;
-        row_offset += KF_MAP_CELL_GRID_SIDE;
-        row_count--;
-    } while (row_count != -1);
-
+        z++;
+        rows--;
+    } while (rows != -1);
     return mask;
 }
 
@@ -2394,27 +2390,16 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
 {
     s32 z = position->vz >> KF_MAP_CELL_SHIFT;
     s32 x;
-    s32 visible = 0;
 
-    if (game_graphics_runtime.render_state.view_cell_z
-        < (s32)((u32)z - (u32)radius_z)) {
-        goto done;
+    if (z - radius_z <= game_graphics_runtime.render_state.view_cell_z &&
+        game_graphics_runtime.render_state.view_cell_z <= z + radius_z) {
+        x = position->vx >> KF_MAP_CELL_SHIFT;
+        if (x - radius_x <= game_graphics_runtime.render_state.view_cell_x &&
+            game_graphics_runtime.render_state.view_cell_x <= x + radius_x) {
+            return 1;
+        }
     }
-    if ((s32)((u32)z + (u32)radius_z)
-        < game_graphics_runtime.render_state.view_cell_z) {
-        goto done;
-    }
-
-    x = position->vx >> KF_MAP_CELL_SHIFT;
-    if (game_graphics_runtime.render_state.view_cell_x
-        < (s32)((u32)x - (u32)radius_x)) {
-        goto done;
-    }
-    visible = (s32)((u32)x + (u32)radius_x)
-        >= game_graphics_runtime.render_state.view_cell_x;
-
-done:
-    return visible;
+    return 0;
 }
 
 ADDRESS(0x800321d8, 0x9c)

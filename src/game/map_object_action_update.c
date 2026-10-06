@@ -46,9 +46,12 @@ void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
 {
     VECTOR position;
     SVECTOR angles;
+    s32 end = last_phase;
+    s32 increment = step;
+    s32 level = phase;
 
     for (;;) {
-        s32 brightness = (phase * phase) >> 16;
+        s32 brightness = (level * level) >> 16;
 
         if (brightness >= FRAME_COLOR_LEVELS) {
             brightness = FRAME_COLOR_MAX;
@@ -58,10 +61,10 @@ void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
         cd_request_service_stream();
         player_get_camera_pose(&position, &angles);
         render_game_frame(&position, &angles);
-        if (phase == last_phase) {
+        if (level == end) {
             break;
         }
-        phase += step;
+        level += increment;
     }
 }
 

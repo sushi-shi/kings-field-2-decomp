@@ -20,26 +20,31 @@ enum {
 };
 
 ADDRESS(0x80034f90, 0x204)
-void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag)
 {
-    s32 cell_origin_x = world_x >> KF_MAP_CELL_POSITION_SHIFT;
-    s32 cell_origin_z = world_z >> KF_MAP_CELL_POSITION_SHIFT;
-    s32 cosine = rcos(angle);
-    s32 sine = rsin(angle);
-    s32 first_layer_offset = ((mode & 0xff) == KF_PATTERN_MODE_FIRST_LAYER)
+    s32 cosine;
+    s32 sine;
+    s32 first_layer_offset;
+    s32 second_layer_offset;
+
+    world_x >>= KF_MAP_CELL_POSITION_SHIFT;
+    world_z >>= KF_MAP_CELL_POSITION_SHIFT;
+    cosine = rcos(angle);
+    sine = rsin(angle);
+    first_layer_offset = (mode == KF_PATTERN_MODE_FIRST_LAYER)
                                  ? 0 : sizeof(KfMapOccupancyLayer);
-    s32 second_layer_offset = first_layer_offset == 0
+    second_layer_offset = first_layer_offset == 0
                                   ? sizeof(KfMapOccupancyLayer) : 0;
 
     while (patterns->variant[0].first_collision_shape_id != KF_PATTERN_END) {
         s32 local_x = patterns->offset_x;
         s32 local_z = patterns->offset_z;
         s32 cell_x = ((local_x * cosine - local_z * sine) >> 12) +
-                     cell_origin_x;
+                     world_x;
         s32 cell_z = ((local_z * cosine + local_x * sine) >> 12) +
-                     cell_origin_z;
+                     world_z;
         KfMapOccupancyCell *cell = &bss_801c7540.map_cells[cell_z][cell_x];
         const KfMapCellPatternVariant *variant = &patterns->variant[variant_index];
         KfMapOccupancyLayer *first_layer =
@@ -74,7 +79,7 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
 enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
-void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z,
                    s32 width, s32 height, s32 rotation, u32 field_mask)
 {
@@ -84,6 +89,8 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     s32 row_step;
     s32 quarter_turns;
     s32 rows_remaining;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;

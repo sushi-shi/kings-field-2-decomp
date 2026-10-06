@@ -604,6 +604,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -641,9 +642,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -679,9 +679,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -719,10 +718,10 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = 0x3e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -757,10 +756,10 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = 0x2e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
@@ -794,6 +793,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -868,9 +868,8 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -908,10 +907,10 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            &prim->packed.color3);
             ((u8 *)&prim->sdk.tag)[3] = 12;
             prim->sdk.code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -946,10 +945,10 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            (CVECTOR *)&prim->r0);
             ((u8 *)&prim->tag)[3] = 9;
             prim->code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
@@ -1767,7 +1766,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
-                            u32 flags)
+                            u8 flags)
 {
     MATRIX cell_matrix;
     long gte_flags;
@@ -2361,31 +2360,27 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
     u8 mask = 0;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
-    s32 row_offset = z * KF_MAP_CELL_GRID_SIDE;
-    const u8 *row = &game_graphics_runtime.render_grid.map_cell_layer_masks[0][0] + row_offset;
-    s32 row_count;
+    s32 x;
+    s32 rows;
+    s32 columns;
 
-    radius = (s32)((u32)radius << 1);
-    row_count = radius;
-
+    radius *= 2;
+    rows = radius;
     do {
-        if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
-            s32 x = x0;
-            s32 column_count = radius;
-
+        if (z >= 0 && (u32)z < KF_MAP_CELL_GRID_SIDE) {
+            x = x0;
+            columns = radius;
             do {
                 if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
-                    mask |= row[x];
+                    mask |= game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
                 }
                 x++;
-                column_count--;
-            } while (column_count != -1);
+                columns--;
+            } while (columns != -1);
         }
-        row += KF_MAP_CELL_GRID_SIDE;
-        row_offset += KF_MAP_CELL_GRID_SIDE;
-        row_count--;
-    } while (row_count != -1);
-
+        z++;
+        rows--;
+    } while (rows != -1);
     return mask;
 }
 
@@ -2394,27 +2389,16 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
 {
     s32 z = position->vz >> KF_MAP_CELL_SHIFT;
     s32 x;
-    s32 visible = 0;
 
-    if (game_graphics_runtime.render_state.view_cell_z
-        < (s32)((u32)z - (u32)radius_z)) {
-        goto done;
+    if (z - radius_z <= game_graphics_runtime.render_state.view_cell_z &&
+        game_graphics_runtime.render_state.view_cell_z <= z + radius_z) {
+        x = position->vx >> KF_MAP_CELL_SHIFT;
+        if (x - radius_x <= game_graphics_runtime.render_state.view_cell_x &&
+            game_graphics_runtime.render_state.view_cell_x <= x + radius_x) {
+            return 1;
+        }
     }
-    if ((s32)((u32)z + (u32)radius_z)
-        < game_graphics_runtime.render_state.view_cell_z) {
-        goto done;
-    }
-
-    x = position->vx >> KF_MAP_CELL_SHIFT;
-    if (game_graphics_runtime.render_state.view_cell_x
-        < (s32)((u32)x - (u32)radius_x)) {
-        goto done;
-    }
-    visible = (s32)((u32)x + (u32)radius_x)
-        >= game_graphics_runtime.render_state.view_cell_x;
-
-done:
-    return visible;
+    return 0;
 }
 
 ADDRESS(0x800321d8, 0x9c)
@@ -3597,7 +3581,7 @@ void tim_upload_images(u8 *tim_data)
     }
 }
 
-#define MENU_FADE_NEXT_QUAD() do { \
+#define MENU_FADE_NEXT_QUAD() { \
     KfPrimitiveBuffer *buffer = game_graphics_runtime.display_state.primitive_buffer; \
     quad = (POLY_FT4 *)buffer->cursor; \
     buffer->cursor += sizeof(POLY_FT4); \
@@ -3605,7 +3589,7 @@ void tim_upload_images(u8 *tim_data)
         game_graphics_runtime.display_state.primitive_buffer->end) \
         goto present; \
     SetPolyFT4(quad); \
-} while (0)
+}
 
 enum {
     KF_MENU_FADE_WAIT_FOR_RELEASE = -1,
@@ -3665,20 +3649,20 @@ present:
         DrawSync(0);
         display_present_frame();
         level += step;
-        if (((u32)level - 1u) < 119u) {
-            buttons = PadRead(1);
-            if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
-                if (buttons == 0)
-                    state = KF_MENU_FADE_WAIT_FOR_PRESS;
-            } else if (buttons != 0) {
-                DrawSync(0);
-                return level;
-            }
-        } else {
+        if (level <= 0 || level >= 120) {
+            break;
+        }
+        buttons = PadRead(1);
+        if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
+            if (buttons == 0)
+                state = KF_MENU_FADE_WAIT_FOR_PRESS;
+        } else if (buttons != 0) {
             DrawSync(0);
-            return state;
+            return level;
         }
     }
+    DrawSync(0);
+    return state;
 }
 
 #undef MENU_FADE_NEXT_QUAD

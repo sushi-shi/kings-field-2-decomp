@@ -376,6 +376,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->animation_clip = KF_EFFECT_STATIC_OBJECT_ZERO;
         record->base_render_id = 0x24;
         record->render_id = 0x24;
+        record->cache_tail.payload.kind1.collision_stage = 0;
         record->updates_remaining = 70;
         record->scale_z = 600;
         record->scale_y = 600;

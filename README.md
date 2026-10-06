@@ -42,14 +42,14 @@ _Exact requires 100%. The denominator excludes identified Sony/Psy-Q library fun
 
 _Derived from ignored outputs made by the native Psy-Q executable chain. `kf build` rebuilds them; `kf link --compare-only` refreshes only this comparison._
 
-**Overall (4/4 images): 88.03% island-aligned byte similarity &middot; 84.69% nonzero-byte similarity.**
+**No current EXE comparison reports are available.**
 
 | Image | Same-offset file bytes | Island-aligned load bytes | Nonzero load bytes | Data modules exact |
 | :---- | --------------------: | -----------------------: | -----------------: | -----------------: |
-| `PSX.EXE` | 98.95% | 100.00% | 100.00% | — |
-| `GAME.EXE` | 16.66% | 80.21% | 76.77% | — |
-| `OPEN.EXE` | 66.89% | 95.97% | 94.19% | — |
-| `END.EXE` | 89.72% | 96.63% | 94.90% | — |
+| `PSX.EXE` | — | — | — | 0 / 1 |
+| `GAME.EXE` | — | — | — | 2 / 15 |
+| `OPEN.EXE` | — | — | — | 4 / 9 |
+| `END.EXE` | — | — | — | 3 / 8 |
 
 The three byte columns show similarity, not differences. Island scores allow moved regions and
 small internal edits; unmatched bytes lower the score and no addresses are masked.

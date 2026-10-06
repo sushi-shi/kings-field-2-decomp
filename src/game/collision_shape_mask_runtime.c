@@ -462,14 +462,16 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
     s32 height = ((z + expanded) >> KF_MAP_CELL_POSITION_SHIFT) - first_z;
     KfMapOccupancyCell *row = &bss_801c7540.map_cells[first_z][first_x];
     u32 value = (u32)amount << 2;
+    KfMapOccupancyCell *cell;
+    s32 col;
+    s32 remaining;
 
     do {
-        KfMapOccupancyCell *current_row = row;
+        cell = row;
         row += KF_MAP_WORLD_GRID_SIDE;
         if ((u32)first_z < KF_MAP_WORLD_GRID_SIDE) {
-            KfMapOccupancyCell *cell = current_row;
-            s32 col = first_x;
-            s32 remaining = width;
+            col = first_x;
+            remaining = width;
             do {
                 if ((u32)col < KF_MAP_WORLD_GRID_SIDE) {
                     cell->layer[0].quarter_turns =

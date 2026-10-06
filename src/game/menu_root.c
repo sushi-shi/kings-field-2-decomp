@@ -3645,7 +3645,6 @@ void menu_render_list(const void *list_state, s32 render_mode)
     s32 row;
     s32 code;
     s32 value;
-    s32 y;
 
     if (list->title.position.x != 0) {
         menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &list->title.position);
@@ -3748,26 +3747,20 @@ void menu_render_list(const void *list_state, s32 render_mode)
     SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
-    row = 0;
-    if (row < list->visible_rows) {
-        y = 0;
-        do {
-            sprite = row == list->cursor_row
-                ? &menu_sprite_defs[KF_MENU_SPRITE_LIST_SELECTED_ROW]
-                : &menu_sprite_defs[KF_MENU_SPRITE_LIST_ROW];
-            row++;
-            primitive_buffer_begin_poly_ft4();
-            setRGB0(current_poly_ft4, 255, 255, 255);
-            current_poly_ft4->tpage = sprite->tpage;
-            current_poly_ft4->clut = sprite->clut;
-            setXYWH(current_poly_ft4, list->list_x, list->list_y + y + 5,
-                sprite->width, sprite->height);
-            setUVWH(current_poly_ft4, sprite->u, sprite->v,
-                sprite->width, sprite->height);
-            SetSemiTrans((void *)current_poly_ft4, 1);
-            primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
-            y += 14;
-        } while (row < list->visible_rows);
+    for (row = 0; row < list->visible_rows; row++) {
+        sprite = row == list->cursor_row
+            ? &menu_sprite_defs[KF_MENU_SPRITE_LIST_SELECTED_ROW]
+            : &menu_sprite_defs[KF_MENU_SPRITE_LIST_ROW];
+        primitive_buffer_begin_poly_ft4();
+        setRGB0(current_poly_ft4, 255, 255, 255);
+        current_poly_ft4->tpage = sprite->tpage;
+        current_poly_ft4->clut = sprite->clut;
+        setXYWH(current_poly_ft4, list->list_x, list->list_y + row * 14 + 5,
+            sprite->width, sprite->height);
+        setUVWH(current_poly_ft4, sprite->u, sprite->v,
+            sprite->width, sprite->height);
+        SetSemiTrans((void *)current_poly_ft4, 1);
+        primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
     }
 
     sprite = &menu_sprite_defs[KF_MENU_SPRITE_LIST_BOTTOM];
@@ -3829,6 +3822,8 @@ ADDRESS(0x8002083c, 0x154)
 void menu_update_item_preview(s32 item_id)
 {
     MATRIX rotation;
+    /* Retail reserves two unreferenced matrices in the frame. */
+    MATRIX frame_reserve[2];
     MATRIX light;
     MATRIX lit;
     MATRIX color;

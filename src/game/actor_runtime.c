@@ -1790,7 +1790,6 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     const s32 *arguments = &position_mode;
     KfActor *current = actor_state.current;
     const VECTOR *player = &player_state.camera_position;
-    const u16 *parameters;
     s32 first;
     s32 second;
     s32 third;
@@ -1811,8 +1810,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     s32 trajectory_angle;
     s32 distance;
     s32 count;
-    u16 group_index;
-    KfTargetGroup *group;
+    s32 group_index;
 
     if (position_mode == ACTOR_EFFECT_POSITION_ROTATED_OFFSET) {
         /* Each coordinate occupies an O32 word slot but is read as u16. */
@@ -1868,14 +1866,18 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         distance = fixed_vector3_length(position.vx - player->vx,
                                         position.vy - player->vy,
                                         position.vz - player->vz);
-        travel_time = (distance - 2000) / 600;
-        if (travel_time < 0) travel_time = 0;
-        goto simple_direction_effect;
+        distance = (distance - 2000) / 600;
+        if (distance < 0) distance = 0;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+                      distance);
+        break;
     case 4:
+        /* Five-argument effect calls leave the optional words that the steering
+         * call stored in the outgoing argument area. */
         actor_compute_target_direction(current, player, 800, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = -1;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        break;
     case 0x28: {
         s32 raised_y = position.vy + 1600;
         vector_displacement_to_pitch_yaw(player->vx - position.vx,
@@ -1895,13 +1897,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     case 0x21:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = KF_EFFECT_KIND9_TARGET_PLAYER;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+                      KF_EFFECT_KIND9_TARGET_PLAYER);
+        break;
     case 0x18:
         actor_compute_target_direction(current, player, 250, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = -1;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        break;
     case 2:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
@@ -1909,12 +1912,12 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     case 0x16:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = -1;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        break;
     case 0x17:
-        parameters = (const u16 *)arguments[1];
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL,
-                      actor_state.current_actor_slot_index, position_mode, parameters[2]);
+                      actor_state.current_actor_slot_index, position_mode,
+                      ((const u16 *)arguments[1])[2]);
         break;
     case 0x6c:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
@@ -1926,18 +1929,19 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     case 0x1c:
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = -1;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        break;
     case 0x1a:
     case 0x1b:
         actor_compute_target_direction(current, player, 300, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        travel_time = -1;
-        goto simple_direction_effect;
+        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        break;
     case 0xc:
-        vector_displacement_to_pitch_yaw(player->vx - position.vx,
-                      player->vy - position.vy,
-                      player->vz - position.vz,
+        /* Retail aims at the two-vertex prediction even for other position modes. */
+        vector_displacement_to_pitch_yaw(predicted.vx - position.vx,
+                      predicted.vy - position.vy,
+                      predicted.vz - position.vz,
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
@@ -1951,24 +1955,21 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         break;
-    simple_direction_effect:
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
-                      travel_time, 0x400, 1);
-        break;
     case 0x6e:
-        parameters = (const u16 *)arguments[1];
-        group_index = parameters[2];
+        group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
+            KfTargetGroup *group;
+
             actor_compute_target_direction(current, player, 400,
                           &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
+            group = &actor_state.target_groups[group_index];
             spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
-            group = &actor_state.target_groups[group_index];
             spawned->flags = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
@@ -1981,19 +1982,20 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         }
         break;
     case 0x70:
-        parameters = (const u16 *)arguments[1];
-        group_index = parameters[2];
+        group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
+            KfTargetGroup *group;
+
             actor_compute_target_direction(current, player, 250,
                           &position, &direction, KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
+            group = &actor_state.target_groups[group_index];
             spawned->slot_state = KF_ACTOR_SLOT_EFFECT_SPAWNED;
             spawned->group_index = group_index;
             spawned->unknown_04 = 0;
             spawned->placement_flags = 0;
             spawned->current_map_layer = current->home_map_layer;
             spawned->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
-            group = &actor_state.target_groups[group_index];
             spawned->flags = group->initial_actor_flags;
             spawned->render_depth = group->render_depth;
             spawned->position.vx = position.vx;
@@ -2013,7 +2015,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             distance = fixed_vector2_length(trajectory_target.vx - position.vx,
                                             trajectory_target.vz - position.vz);
             if (trajectory_solve_time_angle(0, distance,
-                    position.vy + 1400 - trajectory_target.vy, 10, 800,
+                    position.vy - (trajectory_target.vy - 1400), 10, 800,
                     &travel_time, &trajectory_angle) != 0) {
                 trajectory_angle = 0x100;
             }
@@ -2031,9 +2033,9 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                               &orientation.motion);
         if (effect != NULL) {
+            effect->cache_tail.payload.ballistic.origin_y = position.vy;
             effect->updates_remaining = 0x32;
             effect->phase = 0;
-            effect->cache_tail.payload.ballistic.origin_y = position.vy;
         }
         break;
     }

@@ -1673,19 +1673,25 @@ void menu_card_save_browser(void)
     menu_exit_display_state(0);
 }
 
+/* Shows a card dialog and waits for a fresh button press. */
+#define MENU_CARD_DIALOG_WAIT(rows, count, width, height, overlap_x) do { \
+    menu_draw_card_dialog_rows(rows, count, 70, 87, width, height, overlap_x, 0); \
+    input_wait_release(); \
+    while (PadRead(1) == 0) {} \
+} while (0)
+
 ADDRESS(0x8001bf68, 0x1c4)
 void menu_card_save_slot(s32 slot)
 {
     KfMenuGlyphString rows[4];
-    s32 probe = memory_card_probe_temporary_file();
-    s32 result;
+    s32 result = memory_card_probe_temporary_file();
+    s32 width = 2;
+    s32 overlap_x;
 
-    if (probe != 0) {
-        if (probe != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
+    if (result != 0) {
+        if (result != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
             menu_prepare_card_io_error_rows(rows);
-            menu_draw_card_dialog_rows(rows, 3, 70, 87, 178, 81, 2, 0);
-            input_wait_release();
-            while (PadRead(1) == 0) {}
+            MENU_CARD_DIALOG_WAIT(rows, 3, 178, 81, width);
             goto wait_release;
         }
         if (menu_confirm_card_format(1) == 0) {
@@ -1693,15 +1699,15 @@ void menu_card_save_slot(s32 slot)
             goto write_file;
         }
         menu_prepare_card_format_declined_rows(rows);
-        menu_draw_card_dialog_rows(rows, 3, 70, 87, 192, 66, 2, 0);
-        input_wait_release();
-        while (PadRead(1) == 0) {}
+        MENU_CARD_DIALOG_WAIT(rows, 3, 192, 66, width);
         goto wait_release;
     }
 
 write_file:
     menu_prepare_card_write_rows(rows);
-    menu_draw_card_dialog_rows(rows, 2, 70, 87, 178, 66, 2, 0);
+    width = 178;
+    overlap_x = 2;
+    menu_draw_card_dialog_rows(rows, 2, 70, 87, width, 66, overlap_x, 0);
     result = memory_card_write_slot(slot);
     if (result == 0)
         return;
@@ -1709,9 +1715,7 @@ write_file:
         menu_prepare_card_io_error_rows(rows);
     else
         menu_prepare_card_write_full_rows(rows);
-    menu_draw_card_dialog_rows(rows, 3, 70, 87, 178, 81, 2, 0);
-    input_wait_release();
-    while (PadRead(1) == 0) {}
+    MENU_CARD_DIALOG_WAIT(rows, 3, width, 81, overlap_x);
 
 wait_release:
     input_wait_release();

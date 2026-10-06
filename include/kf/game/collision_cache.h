@@ -9,7 +9,7 @@ s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void collision_cache_load_hit_bounds(void);
 s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode);
+s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode);
 void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle, u16 value);
 
 /* collision_query_world uses the same bit positions to request and report

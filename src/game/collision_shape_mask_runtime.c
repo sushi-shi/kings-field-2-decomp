@@ -522,7 +522,7 @@ void collision_cache_load_hit_bounds(void)
 }
 
 ADDRESS(0x8002b9d4, 0x244)
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
+s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
 {
     s32 result = 0;
 

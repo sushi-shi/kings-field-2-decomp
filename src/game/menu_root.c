@@ -26,6 +26,15 @@
 
 RODATA(0x80011098, 0x6c)
 
+/* Unit-private state, defined with its retail claims below. */
+static POLY_FT4 *current_poly_ft4;
+static u8 menu_saved_music_enabled;
+static u_long *menu_frame_upload_pixels;
+static RECT menu_frame_upload_rect;
+static SVECTOR menu_item_preview_translation;
+static SVECTOR menu_item_preview_rotation;
+static s32 menu_item_preview_rotation_step;
+static KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
 
 
 enum {
@@ -2441,22 +2450,22 @@ DATA(0x8006d698, 0x4, ".sdata")
 s32 menu_cursor_animation_frame = 0;
 DATA(0x8006d69c, 0x4, ".sdata")
 s32 menu_cursor_animation_direction = 0;
-DATA(0x8006d9e0, 0x4, ".bss")
-POLY_FT4 *current_poly_ft4;
-DATA(0x8006d9e8, 0x1, ".bss")
-u8 menu_saved_music_enabled;
-DATA(0x8006d9f0, 0x4, ".bss")
-u_long *menu_frame_upload_pixels;
-DATA(0x8006d9f8, 0x8, ".bss")
-RECT menu_frame_upload_rect;
+DATA(0x8006d9e0, 0x4, ".sbss")
+static POLY_FT4 *current_poly_ft4;
+DATA(0x8006d9e8, 0x1, ".sbss")
+static u8 menu_saved_music_enabled;
+DATA(0x8006d9f0, 0x4, ".sbss")
+static u_long *menu_frame_upload_pixels;
+DATA(0x8006d9f8, 0x8, ".sbss")
+static RECT menu_frame_upload_rect;
 DATA(0x8006da00, 0x8, ".sbss")
-SVECTOR menu_item_preview_translation;
+static SVECTOR menu_item_preview_translation;
 DATA(0x8006da08, 0x8, ".sbss")
-SVECTOR menu_item_preview_rotation;
+static SVECTOR menu_item_preview_rotation;
 DATA(0x8006da10, 0x4, ".sbss")
-s32 menu_item_preview_rotation_step;
+static s32 menu_item_preview_rotation_step;
 DATA(0x8006dbe8, 0x18, ".bss")
-KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
+static KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
 
 ADDRESS(0x8001ceb8, 0x178)
 void menu_item_buy_sell_controller(s32 kind)

@@ -202,14 +202,9 @@ extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
 extern s32 menu_cursor_animation_direction;
-extern u_long *menu_frame_upload_pixels;
-extern RECT menu_frame_upload_rect;
 extern s32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;
-extern SVECTOR menu_item_preview_translation;
-extern SVECTOR menu_item_preview_rotation;
-extern s32 menu_item_preview_rotation_step;
 extern KfMenuGlyphRow menu_glyph_rows[120];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
 extern KfMenuLabelSuffix menu_equipment_category_labels[10];

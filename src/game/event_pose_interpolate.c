@@ -1474,8 +1474,6 @@ void event_world_state_restore_slot(s32 save_slot)
     u8 *saved[KF_EVENT_SAVED_SLOT_COUNT];
     u8 *stream;
     s32 index;
-    KfActor *actors;
-    KfTargetGroup *groups;
     KfMapObject *object;
 
     event_saved_offsets_decode(saved);
@@ -1484,23 +1482,25 @@ void event_world_state_restore_slot(s32 save_slot)
         return;
     }
 
-    actors = actor_state.actors;
     for (;;) {
         s32 actor_index = *stream++;
+        KfActor *actor;
         if (actor_index == 0xff) {
             break;
         }
-        actors[actor_index].lifecycle = *stream++;
+        actor = &actor_state.actors[actor_index];
+        actor->lifecycle = *stream++;
     }
 
-    groups = actor_state.target_groups;
     for (;;) {
         s32 group_index = *stream++;
+        KfTargetGroup *group;
         KfTargetCandidate *candidate;
         if (group_index == 0xff) {
             break;
         }
-        candidate = groups[group_index].targets[0].pointer;
+        group = &actor_state.target_groups[group_index];
+        candidate = group->targets[0].pointer;
         candidate->word_10.bytes.fallback_offset = *stream++;
         candidate->word_12.bytes.marker_state = *stream++;
     }

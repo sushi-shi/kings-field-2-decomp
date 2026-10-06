@@ -1849,6 +1849,8 @@ void player_select_magic_action(s32 magic_id)
 {
     KfMagicRecord *record;
     u16 mp_cost;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     if (player_state.queued_magic_action.magic_id != KF_PLAYER_MAGIC_ACTION_NONE ||
         magic_id == KF_PLAYER_MAGIC_ACTION_NONE) {
@@ -2150,6 +2152,8 @@ void player_update_vertical_motion(void)
     s32 bob;
     s32 movement_speed;
     const s32 *floor_result;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,

@@ -3608,6 +3608,8 @@ void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmatio
     const KfMenuWindowLayout *layout = &menu_window_layouts[window_kind];
     const KfMenuGlyphString *row = &layout->rows[0];
     s32 index;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     if (layout->title.position.x != 0) {
         menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &layout->title.position);
@@ -4001,6 +4003,8 @@ void menu_draw_string(const KfMenuSpriteDef *font, const KfMenuGlyphString *stri
     const s16 *code = string->glyphs.codes;
     s32 i;
     s32 x_offset;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     for (i = 0; *code != KF_MENU_TEXT_END; code++, i++) {
         u32 glyph;
@@ -4178,6 +4182,9 @@ void menu_present_frame(void)
 ADDRESS(0x80021c8c, 0x174)
 void menu_enter_display_state(s32 mode)
 {
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
+
     pool_release_all();
     game_graphics_runtime.display_draw_environments[0].isbg = 0;
     game_graphics_runtime.display_draw_environments[0].dfe = 0;
@@ -4307,6 +4314,8 @@ void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *
     s32 i;
     s16 blank;
     s16 *cursor;
+    /* Retail reserves an unreferenced 8-byte frame slot. */
+    s16 frame_reserve[4];
 
     if ((u32)(style - 1) < 2 || style == KF_MENU_FORMAT_STYLE_TRAILING_11) {
         count++;

@@ -427,19 +427,19 @@ void player_cap_curse_strength(void)
 ADDRESS(0x8001930c, 0x528)
 void menu_show_map_preview(s32 menu_code)
 {
-    u32 entry;
+    /* One index holds the archive entry, then the facing tile. */
+    u32 index;
     u32 map_index;
     u32 map_offset;
     u8 *image;
     s32 frame;
-    s32 facing_tile;
     s32 u0;
 
     map_index = (menu_code - MENU_MAP_ITEM_FIRST) & 0xff;
     map_offset = state_8017d118.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
-    entry = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
-    image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, entry, NULL));
-    cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, entry, (u_long *)image);
+    index = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
+    image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, index, NULL));
+    cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, index, (u_long *)image);
     tim_upload_images(image);
 
     for (frame = 0; frame < 2; frame++) {
@@ -464,11 +464,11 @@ void menu_show_map_preview(s32 menu_code)
             212 - player_state.camera_position.vz / 819,
             15, 15);
 
-        facing_tile = ((player_state.camera_rotation.angles[1] & KF_ANGLE_WRAP_MASK)
+        index = ((player_state.camera_rotation.angles[1] & KF_ANGLE_WRAP_MASK)
                        + MENU_MAP_FACING_TILE_HALF_ANGLE) >> MENU_MAP_FACING_TILE_SHIFT;
-        if (facing_tile == MENU_MAP_FACING_TILE_COUNT)
-            facing_tile = 0;
-        u0 = facing_tile * MENU_MAP_FACING_TILE_U_STRIDE
+        if (index == MENU_MAP_FACING_TILE_COUNT)
+            index = 0;
+        u0 = index * MENU_MAP_FACING_TILE_U_STRIDE
              - MENU_MAP_FACING_TILE_COUNT * MENU_MAP_FACING_TILE_U_STRIDE;
         setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
         primitive_buffer_commit_poly_ft4(9);
@@ -1376,8 +1376,7 @@ s32 menu_card_browser(void)
     s32 confirmed = 0;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 selection = KF_MENU_SELECTION_NONE;
-    b32 card_full;
-    s32 probe;
+    s32 status;
     s32 buttons;
     s32 frame;
 
@@ -1385,8 +1384,8 @@ s32 menu_card_browser(void)
     menu_prepare_card_browser_rows(rows);
     menu_show_dialog_panel(9, rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
-    probe = memory_card_probe_temporary_file();
-    if (probe != 0 && probe != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
+    status = memory_card_probe_temporary_file();
+    if (status != 0 && status != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
         menu_build_card_probe_error_rows(rows);
         menu_show_dialog_panel(9, rows, 3, 50, 87, 220, 66, 2, 0);
         input_wait_release();
@@ -1395,9 +1394,9 @@ s32 menu_card_browser(void)
         goto no_file;
     }
 
-    card_full = memory_card_scan_save_entries(entries, &matching_count);
+    status = memory_card_scan_save_entries(entries, &matching_count);
     if (matching_count == 0) {
-        if (card_full == KF_TRUE) {
+        if (status == KF_TRUE) {
             menu_build_card_full_rows(rows);
             menu_show_dialog_panel(9, rows, 4, 70, 87, 178, 96, 2, 0);
             input_wait_release();

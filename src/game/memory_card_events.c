@@ -242,11 +242,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *experience = 0;
     weight = 100000;
     for (i = 0; i < CARD_TITLE_EXPERIENCE_DIGITS; ++i) {
-        const char *digit_pair = &header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2];
-        s8 first_digit_byte = digit_pair[0];
-        s8 second_digit_byte = digit_pair[1];
-        ((u8 *)&encoded)[0] = first_digit_byte;
-        ((u8 *)&encoded)[1] = second_digit_byte;
+        memcpy(&encoded, &header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *experience += encoded * weight;
@@ -257,11 +253,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *level = 0;
     weight = 10;
     for (i = 0; i < CARD_TITLE_LEVEL_DIGITS; ++i) {
-        const char *digit_pair = &header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2];
-        s8 first_digit_byte = digit_pair[0];
-        s8 second_digit_byte = digit_pair[1];
-        ((u8 *)&encoded)[0] = first_digit_byte;
-        ((u8 *)&encoded)[1] = second_digit_byte;
+        memcpy(&encoded, &header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *level += encoded * weight;

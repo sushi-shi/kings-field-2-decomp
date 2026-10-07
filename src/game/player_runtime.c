@@ -1226,9 +1226,22 @@ emit_simple_effect:
     case 3:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == NULL) {
-            position.vx += direction.vx;
-            position.vy = player_state.camera_position.vy;
-            case3_z = position.vz + direction.vz;
+            /* Both axes share the reused sum/base temporaries, and the camera
+             * height passes through rotation_scale (set elsewhere), so no load
+             * here starts a single-set register and the z loads stay after the
+             * x store. */
+            s32 sum;
+            s32 base;
+
+            sum = direction.vx;
+            base = position.vx;
+            sum += base;
+            position.vx = sum;
+            rotation_scale = player_state.camera_position.vy;
+            position.vy = rotation_scale;
+            sum = direction.vz;
+            base = position.vz;
+            case3_z = sum + base;
             goto case3_store_z;
         }
         position.vx = ((s32)actor->motion.vector.vx << 14) / 600 + actor->position.vx;

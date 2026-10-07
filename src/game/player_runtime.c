@@ -1684,9 +1684,8 @@ special_mode_zero: {
             return;
         }
 special_mode_one: {
-            phase += 400;
-            player_state.weapon_attack_phase = phase;
-            if (phase >= KF_ANGLE_WRAP_MASK) {
+            player_state.weapon_attack_phase = phase + 400;
+            if (player_state.weapon_attack_phase >= KF_ANGLE_WRAP_MASK) {
                 player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
                 player_state.attack_charge_current = 0;
             }
@@ -1699,9 +1698,7 @@ special_idle:
     }
 
 regular_weapon:
-    phase = player_state.weapon_attack_phase;
-
-    if (phase == KF_WEAPON_ATTACK_INACTIVE) {
+    if (player_state.weapon_attack_phase == KF_WEAPON_ATTACK_INACTIVE) {
         goto regular_idle;
     }
 
@@ -1769,14 +1766,18 @@ regular_weapon:
         }
 
         if (player_state.weapon_attack_phase >= phase_end) {
+            s32 coordinate;
+
             player_state.weapon_attack_window = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
             player_state.weapon_charge_delay = 10;
             damage_amount = player_state.attack_charge_committed;
             damage_origin = &damage_position;
             player_state.attack_charge_current = 0;
-            damage_position.vx = player_state.camera_position.vx;
-            damage_position.vz = player_state.camera_position.vz;
+            coordinate = player_state.camera_position.vx;
+            damage_position.vx = coordinate;
             damage_position.vy = player_state.camera_position.vy - 1000;
+            coordinate = player_state.camera_position.vz;
+            damage_position.vz = coordinate;
         } else {
             player_state.weapon_attack_window += hit_step;
             damage_origin = NULL;

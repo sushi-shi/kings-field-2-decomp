@@ -518,9 +518,10 @@ void tmd_project_vertices(s32 count)
     }
 }
 
-/* Prepared vertex indices are byte offsets into the projected-vertex array;
+/* Prepared vertex and normal indices are byte offsets into their arrays;
  * NormalClip and the GPU packets take each vertex's packed screen XY word. */
 #define TMD_VERTEX(base, offset) ((KfScreenVertex *)((u8 *)(base) + (offset)))
+#define TMD_VECTOR(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
@@ -574,7 +575,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u0 = face->ft3.uv0;
             *(u16 *)&prim->u1 = face->ft3.uv1;
             *(u16 *)&prim->u2 = face->ft3.uv2;
-            NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft3.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
@@ -609,9 +610,9 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
@@ -649,13 +650,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorDpq(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
@@ -692,7 +693,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u1 = face->ft4.uv1;
             *(u16 *)&prim->u2 = face->ft4.uv2;
             *(u16 *)&prim->u3 = face->ft4.uv3;
-            NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft4.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
@@ -761,7 +762,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u0 = face->ft3.uv0;
             *(u16 *)&prim->u1 = face->ft3.uv1;
             *(u16 *)&prim->u2 = face->ft3.uv2;
-            NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft3.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
@@ -796,9 +797,9 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
@@ -836,13 +837,13 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorDpq(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
@@ -879,7 +880,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u1 = face->ft4.uv1;
             *(u16 *)&prim->u2 = face->ft4.uv2;
             *(u16 *)&prim->u3 = face->ft4.uv3;
-            NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft4.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
@@ -948,9 +949,9 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorCol3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
@@ -986,13 +987,13 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorCol3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorCol((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorCol(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
@@ -1019,9 +1020,9 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
-            NormalColorCol3((SVECTOR *)(normals + face->g3.normal0),
-                            (SVECTOR *)(normals + face->g3.normal1),
-                            (SVECTOR *)(normals + face->g3.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->g3.normal0),
+                            TMD_VECTOR(normals, face->g3.normal1),
+                            TMD_VECTOR(normals, face->g3.normal2),
                             &face->g3.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
@@ -1051,13 +1052,13 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
             *(long *)&prim->x3 = TMD_XY(vd);
-            NormalColorCol3((SVECTOR *)(normals + face->g4.normal0),
-                            (SVECTOR *)(normals + face->g4.normal1),
-                            (SVECTOR *)(normals + face->g4.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->g4.normal0),
+                            TMD_VECTOR(normals, face->g4.normal1),
+                            TMD_VECTOR(normals, face->g4.normal2),
                             &face->g4.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
-            NormalColorCol((SVECTOR *)(normals + face->g4.normal3),
+            NormalColorCol(TMD_VECTOR(normals, face->g4.normal3),
                            &face->g4.color,
                            (CVECTOR *)&prim->r3);
             setlen(prim, 8);
@@ -1126,7 +1127,7 @@ void render_enqueue_map(u16 object_index)
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
             prim->packed.uv3 = face->uv3;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
+            NormalColorCol(TMD_VECTOR(normals, face->normal),
                            &map_textured_primitive_color, &shade);
             DpqColor(&shade, va->depth_cue, &prim->packed.color0);
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
@@ -1167,7 +1168,7 @@ void render_enqueue_map(u16 object_index)
             prim->packed.uv0 = face->uv0;
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
+            NormalColorCol(TMD_VECTOR(normals, face->normal),
                            &map_textured_primitive_color, &shade);
             DpqColor(&shade, va->depth_cue, &prim->packed.color0);
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
@@ -1257,7 +1258,6 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
 
 #define MAP_OUTSIDE_Y(delta) ((u32)(delta) + 511u >= 1023u)
 #define MAP_OUTSIDE_X(delta) ((u32)(delta) + 1023u >= 2047u)
-#define MAP_ORIGINAL_VERTEX(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
 
 /* Faces are read through the packet cursor itself; retail keeps no copy. */
 #define FT4_FACE ((KfTmdFt4 *)packet)
@@ -1353,7 +1353,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     prim->packed.uv1 = FT4_FACE->uv1;
                     prim->packed.uv2 = FT4_FACE->uv2;
                     prim->packed.uv3 = FT4_FACE->uv3;
-                    NormalColorCol((SVECTOR *)(normals + FT4_FACE->normal),
+                    NormalColorCol(TMD_VECTOR(normals, FT4_FACE->normal),
                                    &map_textured_primitive_color, &shade);
                     DpqColor(&shade, va->depth_cue, &prim->packed.color0);
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
@@ -1368,10 +1368,10 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             &prim->sdk);
                 } else {
-                    clipped_count = Clip4FTP(MAP_ORIGINAL_VERTEX(original_vertices, FT4_FACE->vertex0),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, FT4_FACE->vertex1),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, FT4_FACE->vertex2),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, FT4_FACE->vertex3),
+                    clipped_count = Clip4FTP(TMD_VECTOR(original_vertices, FT4_FACE->vertex0),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex1),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex2),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex3),
                                              (short *)&FT4_FACE->uv0,
                                              (short *)&FT4_FACE->uv1,
                                              (short *)&FT4_FACE->uv2,
@@ -1379,7 +1379,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
                         render_enqueue_clipped_tmd_polygon(clipped_count,
-                                       (SVECTOR *)(normals + FT4_FACE->normal),
+                                       TMD_VECTOR(normals, FT4_FACE->normal),
                                        FT4_FACE->clut, FT4_FACE->tpage,
                                        header.bytes.mode & 2, depth_bias);
                     }
@@ -1421,7 +1421,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     prim->packed.uv0 = FT3_FACE->uv0;
                     prim->packed.uv1 = FT3_FACE->uv1;
                     prim->packed.uv2 = FT3_FACE->uv2;
-                    NormalColorCol((SVECTOR *)(normals + FT3_FACE->normal),
+                    NormalColorCol(TMD_VECTOR(normals, FT3_FACE->normal),
                                    &map_textured_primitive_color, &shade);
                     DpqColor(&shade, va->depth_cue, &prim->packed.color0);
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
@@ -1435,16 +1435,16 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             &prim->sdk);
                 } else {
-                    clipped_count = Clip3FTP(MAP_ORIGINAL_VERTEX(original_vertices, FT3_FACE->vertex0),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, FT3_FACE->vertex1),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, FT3_FACE->vertex2),
+                    clipped_count = Clip3FTP(TMD_VECTOR(original_vertices, FT3_FACE->vertex0),
+                                             TMD_VECTOR(original_vertices, FT3_FACE->vertex1),
+                                             TMD_VECTOR(original_vertices, FT3_FACE->vertex2),
                                              (short *)&FT3_FACE->uv0,
                                              (short *)&FT3_FACE->uv1,
                                              (short *)&FT3_FACE->uv2,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
                         render_enqueue_clipped_tmd_polygon(clipped_count,
-                                       (SVECTOR *)(normals + FT3_FACE->normal),
+                                       TMD_VECTOR(normals, FT3_FACE->normal),
                                        FT3_FACE->clut, FT3_FACE->tpage,
                                        header.bytes.mode & 2, depth_bias);
                     }

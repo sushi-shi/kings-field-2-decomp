@@ -79,8 +79,8 @@ Diagnostics are enabled with environment variables:
 
 | Variable | Effect |
 | --- | --- |
-| `KF_CAPTURE=DIR` | Write every sixtieth displayed frame as a PPM image |
-| `KF_PAD_SCRIPT=FRAME:MASK,...` | Hold hexadecimal pad masks from vertical-blank counts |
+| `KF_CAPTURE=DIR` | Write every sixtieth displayed frame as a PPM image (`KF_CAPTURE_INTERVAL` changes the interval) |
+| `KF_PAD_SCRIPT=TICK:MASK,...` | Hold hexadecimal pad masks from 60 Hz clock ticks |
 | `KF_TRACE=1` | Log pad and input events |
 | `KF_WATCHDOG=SECONDS` | Print a backtrace and exit after the given time |
 

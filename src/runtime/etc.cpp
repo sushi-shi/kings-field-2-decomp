@@ -15,8 +15,8 @@ namespace {
 std::uint64_t last_vblank;
 std::uint64_t vblank_count;
 
-// KF_PAD_SCRIPT="FRAME:MASK,..." holds hexadecimal pad masks from each listed
-// vertical-blank count, for repeatable diagnostic runs without a keyboard.
+// KF_PAD_SCRIPT="TICK:MASK,..." holds hexadecimal pad masks from each listed
+// 60 Hz host-clock tick, for repeatable diagnostic runs without a keyboard.
 u_long scripted_pad() {
     static const char *script = std::getenv("KF_PAD_SCRIPT");
     if (!script)
@@ -29,7 +29,7 @@ u_long scripted_pad() {
         if (!end || *end != ':')
             break;
         const auto value = std::strtoul(end + 1, &end, 16);
-        if (frame > vblank_count)
+        if (frame > kf::host_clock_tick())
             break;
         mask = value;
         cursor = *end == ',' ? end + 1 : end;

@@ -224,11 +224,17 @@ void submit_packet(void *packet) {
 }
 } // namespace
 
-// KF_CAPTURE=DIRECTORY writes every sixtieth presented display as a PPM image.
+// KF_CAPTURE=DIRECTORY writes every KF_CAPTURE_INTERVAL-th (default 60th)
+// presented display as a PPM image.
 void capture_display() {
     static const char *directory = std::getenv("KF_CAPTURE");
+    static const unsigned interval = [] {
+        const char *value = std::getenv("KF_CAPTURE_INTERVAL");
+        const int parsed = value ? std::atoi(value) : 0;
+        return parsed > 0 ? static_cast<unsigned>(parsed) : 60u;
+    }();
     static unsigned presented;
-    if (!directory || presented++ % 60 != 0)
+    if (!directory || presented++ % interval != 0)
         return;
     const auto &display = host_renderer()->display;
     if (display.width <= 0 || display.height <= 0)
@@ -236,7 +242,7 @@ void capture_display() {
     std::vector<u16> words(std::size_t(display.width) * display.height);
     renderer_read_vram(host_renderer(), display.x, display.y, display.width, display.height, words.data());
     char path[512];
-    std::snprintf(path, sizeof path, "%s/frame%05u.ppm", directory, presented / 60);
+    std::snprintf(path, sizeof path, "%s/frame%05u.ppm", directory, presented / interval);
     if (std::FILE *file = std::fopen(path, "wb")) {
         std::fprintf(file, "P6\n%d %d\n255\n", display.width, display.height);
         for (const auto word : words) {

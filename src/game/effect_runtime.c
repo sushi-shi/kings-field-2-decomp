@@ -900,15 +900,15 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
             volume = 127;
         }
         slot = audio_state.voices.params[236].vab_slot_index;
-        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
-            audio_state.vab_slots[slot].vab_id != 0xfe) {
+        if (slot != KF_AUDIO_VAB_SLOT_NONE && audio_state.vab_slots[slot].vab_id != KF_AUDIO_VAB_ID_NONE &&
+            audio_state.vab_slots[slot].vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
             audio_play_spatial_range(0xec, &record->position, volume, 28000,
                                      0x7148, 0);
             break;
         }
         slot = audio_state.voices.params[239].vab_slot_index;
-        if (slot != -1 && audio_state.vab_slots[slot].vab_id != -1 &&
-            audio_state.vab_slots[slot].vab_id != 0xfe) {
+        if (slot != KF_AUDIO_VAB_SLOT_NONE && audio_state.vab_slots[slot].vab_id != KF_AUDIO_VAB_ID_NONE &&
+            audio_state.vab_slots[slot].vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
             audio_play_spatial_range(0xef, &record->position, volume, 28000,
                                      0x7148, 0);
         }

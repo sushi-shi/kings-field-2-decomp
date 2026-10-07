@@ -792,6 +792,12 @@ enum {
     KF_AREA_MAGIC_AMOUNT_MASK = 0x7fff
 };
 
+/* Strips the flag bits from a packed area-magic amount. The do-while
+   contour weights the packed word's use, so it outranks `falloff`. */
+#define AREA_MAGIC_AMOUNT(amount, amount_and_flags) do { \
+    (amount) = (u32)(amount_and_flags) & KF_AREA_MAGIC_AMOUNT_MASK; \
+} while (0)
+
 ADDRESS(0x8003a318, 0x2fc)
 void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,
@@ -807,7 +813,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
     if ((amount_and_flags & KF_AREA_MAGIC_OMIT_DAMAGE_ORIGIN) != 0) {
         damage_position = NULL;
     }
-    amount = (u32)amount_and_flags & KF_AREA_MAGIC_AMOUNT_MASK;
+    AREA_MAGIC_AMOUNT(amount, amount_and_flags);
     actor = actor_state.actors;
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         s32 distance;

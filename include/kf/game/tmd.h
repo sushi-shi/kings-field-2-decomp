@@ -33,6 +33,7 @@ typedef char kf_tmd_object_size[sizeof(KfTmdObject) == 0x1c ? 1 : -1];
 #define TMD_OBJECTS(asset) ((KfTmdObject *)((asset) + 1))
 #define TMD_OBJECT_VERTICES(asset, object) \
     ((SVECTOR *)((u8 *)(asset) + KF_TMD_HEADER_BYTES + (object)->vertex_offset))
+#define TMD_SECTION(asset, offset) ((u8 *)(asset) + ((offset) + KF_TMD_HEADER_BYTES))
 
 void tmd_select(u16 slot);
 KfTmdObject *tmd_get_object(u16 index);

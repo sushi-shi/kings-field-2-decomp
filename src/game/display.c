@@ -268,7 +268,7 @@ void tmd_prepare_primitive_indices(KfTmdHeader *tmd)
     object = TMD_OBJECTS(tmd);
     while (--objects_left != (u32)-1) {
         primitives_left = object->primitive_count;
-        packet = (u8 *)tmd + (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(tmd, object->primitive_offset);
         while (--primitives_left != (u32)-1) {
             primitive = (KfTmdPrimitive *)TMD_PACKET_BODY(packet);
             header.word = *(u32 *)packet;
@@ -533,10 +533,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
     u16 blend_bits = (u16)render_mode << 5;
 
     object = tmd_get_object(object_index);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -723,10 +721,8 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
     u32 remaining;
 
     object = tmd_get_object(object_index);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -912,10 +908,8 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
 
     object = tmd_get_object(object_index);
     blend_mode <<= 5;
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -1094,11 +1088,9 @@ void render_enqueue_map(u16 object_index)
     KfScreenVertex *vd;
 
     object = tmd_get_object(object_index);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-        (object->normal_offset + KF_TMD_HEADER_BYTES);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     tmd_project_vertices_with_fog(object->vertex_count);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-        (object->primitive_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -1295,24 +1287,20 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
 
     if (prepared_asset != NULL) {
         object = &prepared_asset->object;
-        normals = (u8 *)prepared_asset +
-            (object->normal_offset + KF_TMD_HEADER_BYTES);
+        normals = TMD_SECTION(prepared_asset, object->normal_offset);
         game_graphics_runtime.current_tmd_vertices =
-            (SVECTOR *)((u8 *)prepared_asset +
-                        (object->vertex_offset + KF_TMD_HEADER_BYTES));
+            (SVECTOR *)TMD_SECTION(prepared_asset, object->vertex_offset);
     } else {
         object = tmd_get_object(object_index);
-        normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-            (object->normal_offset + KF_TMD_HEADER_BYTES);
+        normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     }
     original_vertices = game_graphics_runtime.current_tmd_vertices;
     tmd_project_vertices_mark_clipped(object->vertex_count);
     if (prepared_asset != NULL) {
-        packet = (u8 *)prepared_asset +
-            (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(prepared_asset, object->primitive_offset);
     } else {
-        packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-            (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset,
+                             object->primitive_offset);
     }
     remaining = object->primitive_count;
     if (remaining-- != 0) {

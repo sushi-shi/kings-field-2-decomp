@@ -637,7 +637,7 @@ ADDRESS(0x80039c94, 0x684)
 void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
     u16 magic_10, u16 magic_12, u16 magic_14, u16 amount,
-    s32 effect_flags, const VECTOR *position)
+    KF_ENUM_PARAM(KfActorDamageFlags, s32) effect_flags, const VECTOR *position)
 {
     KfActor *actor = &actor_state.actors[(u16)actor_index];
     KfTargetGroup *group;
@@ -645,8 +645,8 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     KfActor *linked;
     s32 damage;
     s32 remaining;
-    s32 mode;
-    s32 kind;
+    KF_ENUM_PROMOTED(KfActorDamageFlags) mode;
+    KF_ENUM_PROMOTED(KfActorDamageFlags) kind;
     s32 remaining_slots;
     KfTargetReference *target_slot;
     s32 motion_divisor;
@@ -669,9 +669,9 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    kind = effect_flags & 0x30;
-    mode = effect_flags & 3;
-    if (kind == 0x20 && (actor->flags & 0x100000)) {
+    kind = effect_flags & KF_ACTOR_DAMAGE_SOURCE_MASK;
+    mode = effect_flags & KF_ACTOR_DAMAGE_MODE_MASK;
+    if (kind == KF_ACTOR_DAMAGE_FROM_HAZARD && (actor->flags & 0x100000)) {
         return;
     }
 
@@ -695,18 +695,18 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    if (actor->health != 0 && kind == 0x10) {
-        if (mode == 2) {
+    if (actor->health != 0 && kind == KF_ACTOR_DAMAGE_FROM_PLAYER) {
+        if (mode == KF_ACTOR_DAMAGE_MAGIC) {
             player_increment_magic_training();
-        } else if (mode == 1 && amount >= 2500) {
+        } else if (mode == KF_ACTOR_DAMAGE_PHYSICAL && amount >= 2500) {
             player_increment_physical_power_training();
         }
     }
-    if (mode == 1) {
+    if (mode == KF_ACTOR_DAMAGE_PHYSICAL) {
         if (actor->target_type == KF_ACTOR_TARGET_19 && actor->state_70.signed_state == 0x10) {
             goto update_motion;
         }
-    } else if (mode == 2) {
+    } else if (mode == KF_ACTOR_DAMAGE_MAGIC) {
         if (actor->flags & 0x40000) {
             goto update_motion;
         }
@@ -725,7 +725,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
 
     remaining = actor->health - damage;
     if (remaining <= 0) {
-        if (actor->health != 0 && kind == 0x10) {
+        if (actor->health != 0 && kind == KF_ACTOR_DAMAGE_FROM_PLAYER) {
             player_add_experience(group->experience_reward);
         }
         actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
@@ -803,7 +803,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
                    u16 magic_10, u16 magic_12, u16 magic_14,
-                   s32 amount_and_flags, u16 effect_flags)
+                   s32 amount_and_flags, KF_ENUM_PARAM(KfActorDamageFlags, u16) effect_flags)
 {
     KfActor *actor;
     s16 index;
@@ -1864,7 +1864,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
     target_effect:
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         if (effect != NULL) effect->cooldown = 3;
         break;
     case KF_EFFECT_KIND_121:
@@ -1875,7 +1875,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                                         position.vz - player->vz);
         distance = (distance - 2000) / 600;
         if (distance < 0) distance = 0;
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       distance);
         break;
     case KF_EFFECT_KIND_4:
@@ -1883,7 +1883,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
          * call stored in the outgoing argument area. */
         actor_compute_target_direction(current, player, 800, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         break;
     case KF_EFFECT_KIND_40: {
         s32 raised_y = position.vy + 1600;
@@ -1896,7 +1896,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         position.vx += direction.vx;
         position.vy += direction.vy;
         position.vz += direction.vz;
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       &orientation.angles);
         break;
     }
@@ -1904,45 +1904,45 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
     case KF_EFFECT_KIND_33:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       KF_EFFECT_KIND9_TARGET_PLAYER);
         break;
     case KF_EFFECT_KIND_24:
         actor_compute_target_direction(current, player, 250, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         break;
     case KF_EFFECT_KIND_2:
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
     case KF_EFFECT_KIND_22:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         break;
     case KF_EFFECT_KIND_23:
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, NULL,
                       actor_state.current_actor_slot_index, position_mode,
                       ((const u16 *)arguments[1])[2]);
         break;
     case KF_EFFECT_KIND_108:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
-        effect = effect_construct_record(damage_multiplier_tenths, 0x23, KF_EFFECT_KIND_7, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_7, &position, &direction);
         if (effect != NULL) effect->cooldown = 5;
         break;
     case KF_EFFECT_KIND_1:
     case KF_EFFECT_KIND_28:
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         break;
     case KF_EFFECT_KIND_26:
     case KF_EFFECT_KIND_27:
         actor_compute_target_direction(current, player, 300, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction);
         break;
     case KF_EFFECT_KIND_12:
         /* Retail aims at the two-vertex prediction even for other position modes. */
@@ -1952,15 +1952,15 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(20, &direction);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
     case KF_EFFECT_KIND_120:
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
-        effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, NULL);
+        effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, NULL);
         break;
     case KF_EFFECT_KIND_110:
         group_index = ((const u16 *)arguments[1])[2];
@@ -2039,7 +2039,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                                               trajectory_angle, 0xc00, 1);
         orientation.motion.vx = trajectory_angle;
         orientation.motion.vz = 0;
-        effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
+        effect = effect_construct_record(damage_multiplier_tenths, KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                               &orientation.motion);
         if (effect != NULL) {
             effect->cache_tail.payload.ballistic.origin_y = position.vy;

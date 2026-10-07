@@ -1192,10 +1192,10 @@ void player_dispatch_magic_effect(KF_ENUM_PARAM(KfEffectKind, s32) effect_id, ..
 simple_probe:
         player_probe_view_target_and_vectors(simple_scale, &position, &direction, &distance);
 emit_simple_effect:
-        effect_construct_record(10, 0x12, effect_id, &position, &direction);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction);
         break;
     case KF_EFFECT_KIND_2:
-        effect_construct_record(10, 0x13, effect_id, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, effect_id, &player_state.camera_position,
                        NULL, 0x1000, 0x100, 0x1000);
         break;
     case KF_EFFECT_KIND_3:
@@ -1232,7 +1232,7 @@ emit_simple_effect:
 case3_store_z:
         position.vz = case3_z;
 case3_emit:
-        effect_construct_record(10, 0x12, KF_EFFECT_KIND_114, &position, NULL);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, KF_EFFECT_KIND_114, &position, NULL);
         break;
     case KF_EFFECT_KIND_0:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
@@ -1243,7 +1243,7 @@ case3_emit:
         }
         position.vx += direction.vx;
         position.vz += direction.vz;
-        effect_construct_record(10, 0x12, KF_EFFECT_KIND_111, &position, NULL, kind);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, KF_EFFECT_KIND_111, &position, NULL, kind);
         break;
     case KF_EFFECT_KIND_13: {
         const SVECTOR *sequence = player_magic_square_offsets;
@@ -1254,7 +1254,7 @@ case3_emit:
             direction.vx += -32 + (rand() >> 9);
             direction.vy += -32 + (rand() >> 9);
             direction.vz += -32 + (rand() >> 9);
-            effect_construct_record(10, 0x12, effect_id, &position, &direction);
+            effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction);
         }
         break;
     }
@@ -1270,7 +1270,7 @@ simple_effect:
 probe_rotation_effect:
         player_probe_view_target_and_vectors(rotation_scale, &position, &direction, &distance);
 emit_rotation_effect:
-        effect_construct_record(10, 0x12, effect_id, &position, &direction,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
     case KF_EFFECT_KIND_11:
@@ -1284,7 +1284,7 @@ emit_rotation_effect:
             adjusted_distance = 10;
         }
         direction.vy = 0;
-        effect_construct_record(10, 0x12, KF_EFFECT_KIND_103, &position, &direction, adjusted_distance);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, KF_EFFECT_KIND_103, &position, &direction, adjusted_distance);
         break;
     case KF_EFFECT_KIND_5:
         target_scale = 200;
@@ -1295,14 +1295,14 @@ select_actor_effect:
         } else {
             kind = actor - actor_state.actors;
         }
-        effect_construct_record(10, 0x12, effect_id, &position, &direction, kind);
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction, kind);
         break;
     case KF_EFFECT_KIND_9:
         target_scale = 500;
         goto select_actor_effect;
     case KF_EFFECT_KIND_8:
         player_probe_view_target_and_vectors(700, &position, &direction, &distance);
-        effect_construct_record(10, 0x12, KF_EFFECT_KIND_106, &position, &direction,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, KF_EFFECT_KIND_106, &position, &direction,
                        &player_state.camera_rotation);
         break;
     case KF_EFFECT_KIND_10:
@@ -1318,7 +1318,7 @@ select_actor_effect:
         player_probe_view_target_and_vectors(150, &position, &direction, &distance);
         player_state.magic_origin_offset.vx += 100;
         player_state.camera_rotation.angles[1] = old_yaw;
-        effect_construct_record(10, 0x12, effect_id, &position, &direction,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction,
                        &player_state.camera_rotation, 600, 60, 128, 140, 160);
         break;
     }
@@ -1334,7 +1334,7 @@ sequence_effect: {
         const KfPlayerMagicSpawnRecord *record = player_magic_spawn_records;
         player_state.magic_origin_offset = record->offset;
         player_probe_view_target_and_vectors(600, &position, &direction, &distance);
-        effect = effect_construct_record(10, 0x12, effect_id,
+        effect = effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id,
                                &position, &direction, &player_state.camera_rotation);
         if (effect != NULL) {
             s32 index = effect - effect_state.records;
@@ -1342,7 +1342,7 @@ sequence_effect: {
             for (i = 3; i != -1; i--) {
                 player_state.magic_origin_offset = record->offset;
                 player_probe_view_target_and_vectors(600, &position, &direction, &distance);
-                effect_construct_record(10, 0x12, record->fields.effect_kind,
+                effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, record->fields.effect_kind,
                                         &position, &direction, index);
                 record++;
             }
@@ -1383,31 +1383,31 @@ sequence_effect: {
     case KF_EFFECT_KIND_35:
     case KF_EFFECT_KIND_38:
         player_probe_view_target_and_vectors(900, &position, &direction, &distance);
-        effect_construct_record(10, 0x12, effect_id, &position, &direction,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
     case KF_EFFECT_KIND_DEFENSE_BOOST:
-        effect_construct_record(10, 0x10, KF_EFFECT_KIND_DEFENSE_BOOST, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_DEFENSE_BOOST, &player_state.camera_position,
                        &direction);
         player_state.defense_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
     case KF_EFFECT_KIND_ATTACK_BOOST:
-        effect_construct_record(10, 0x10, KF_EFFECT_KIND_ATTACK_BOOST, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_ATTACK_BOOST, &player_state.camera_position,
                        &direction);
         player_state.attack_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
     case KF_EFFECT_KIND_14:
-        effect_construct_record(10, 0x10, KF_EFFECT_KIND_14, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_14, &player_state.camera_position,
                        &direction);
         break;
     case KF_EFFECT_KIND_16:
-        effect_construct_record(10, 0x10, KF_EFFECT_KIND_16, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_16, &player_state.camera_position,
                        &direction);
         break;
     case KF_EFFECT_KIND_19:
-        effect_construct_record(10, 0x10, KF_EFFECT_KIND_19, &player_state.camera_position,
+        effect_construct_record(10, KF_EFFECT_USE_PLAYER_MAGIC, KF_EFFECT_KIND_19, &player_state.camera_position,
                        &direction);
         break;
     default:
@@ -1587,7 +1587,7 @@ special_mode_zero: {
                 if (game_counter_bytes[KF_ENUM_ENCODE(s32, counter)] != 0) {
                     game_counter_bytes[KF_ENUM_ENCODE(s32, counter)]--;
                     player_state.weapon_effect = effect_construct_record(
-                        10, 0x12, effect_kind, &player_state.camera_position,
+                        10, KF_EFFECT_USE_PLAYER_MAGIC | KF_EFFECT_TARGET_ACTORS, effect_kind, &player_state.camera_position,
                         NULL, &player_state.camera_rotation);
                     effect = player_state.weapon_effect;
                     if (effect != NULL) {
@@ -1801,7 +1801,7 @@ regular_weapon:
                                    player_state.attack_components[6],
                                    player_state.attack_components[7],
                                    damage_amount,
-                                   0x11, damage_origin);
+                                   KF_ACTOR_DAMAGE_FROM_PLAYER | KF_ACTOR_DAMAGE_PHYSICAL, damage_origin);
                     break;
                 }
             }
@@ -3249,7 +3249,7 @@ update_reaction_pose:
                 s32 count;
 
                 for (count = KF_EFFECT_CAPACITY; count != 0; count--) {
-                    effect->type = 0xff;
+                    effect->type = KF_EFFECT_SLOT_FREE;
                     effect++;
                 }
                 if (game_counter_bytes[KF_ENUM_ENCODE(u8, KF_ITEM_FULL_RESTORE)] != 0

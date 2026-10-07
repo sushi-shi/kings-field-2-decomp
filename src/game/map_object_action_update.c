@@ -781,7 +781,7 @@ void map_object_update_actions(void)
                     }
                     if (object->extra_40.bytes[0] == 0) {
                         object->extra_40.bytes[0] = 1;
-                        effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
+                        effect_dispatch_magic_impact(kind, KF_ACTOR_DAMAGE_FROM_HAZARD, 5000, 5,
                                       object->tail.collision_probe.damage_multiplier_tenths,
                                       object_template->params.collision.impact_magic_values[0],
                                       object_template->params.collision.impact_magic_values[1],

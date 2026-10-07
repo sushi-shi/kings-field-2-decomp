@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 #include <kf/game/item.h>
+#include <kf/game/magic.h>
 #include <psyq/sdk.h>
 
 struct KfMagicRecord;
@@ -31,7 +32,6 @@ enum {
 
 enum {
     KF_PLAYER_CHARGE_FULL = 5000,
-    KF_PLAYER_MAGIC_ACTION_NONE = 0xff,
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
@@ -108,8 +108,8 @@ typedef struct KfWeaponRecordGame {
     u8 sound_id;
     u8 charge_rank;
     u8 unknown_02;
-    u8 initial_effect_id;
-    u8 release_effect_id;
+    KfEffectKind initial_effect_id;
+    KfEffectKind release_effect_id;
     u8 magic_shots;
     u16 attack_components[8];
     u16 hp_regen_interval;
@@ -162,7 +162,7 @@ typedef union KfPlayerViewRotationOffset {
 typedef char kf_player_view_rotation_offset_size[sizeof(KfPlayerViewRotationOffset) == 8 ? 1 : -1];
 
 typedef struct KfQueuedMagicAction {
-    u8 magic_id;
+    KfEffectKind magic_id;
     u8 casts_remaining;
     u8 repeat_interval;
     u8 countdown;
@@ -276,7 +276,7 @@ typedef struct KfPlayerMagicSpawnFields {
     s16 x;
     s16 y;
     s16 z;
-    s16 effect_kind;
+    KF_ENUM_STORAGE(KfEffectKind, s16) effect_kind;
 } KfPlayerMagicSpawnFields;
 
 typedef union KfPlayerMagicSpawnRecord {
@@ -433,8 +433,8 @@ typedef struct KfPlayerState {
     s16 weapon_attack_window;
     s16 weapon_next_sound_phase;
     u8 weapon_magic_shots_remaining;
-    u8 primary_magic_shortcut_id;
-    u8 secondary_magic_shortcut_id;
+    KfEffectKind primary_magic_shortcut_id;
+    KfEffectKind secondary_magic_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
     u8 weapon_attack_mode;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
@@ -581,17 +581,17 @@ void player_cap_status_components(u32 mask);
 void player_death_begin(const SVECTOR *rotation);
 void player_adjust_hp(s32 delta);
 void player_adjust_mp(s32 delta);
-void player_set_primary_magic_shortcut_id(u8 value);
-void player_set_secondary_magic_shortcut_id(u8 value);
+void player_set_primary_magic_shortcut_id(KfEffectKind value);
+void player_set_secondary_magic_shortcut_id(KfEffectKind value);
 void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value);
 void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot);
 void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id);
 struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
-void player_dispatch_magic_effect(s32 effect_id, ...);
+void player_dispatch_magic_effect(KF_ENUM_PARAM(KfEffectKind, s32) effect_id, ...);
 void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
 void player_update_weapon_attack(void);
-void player_select_magic_action(s32 magic_id);
+void player_select_magic_action(KF_ENUM_PARAM(KfEffectKind, s32) magic_id);
 void player_update_vertical_motion(void);
 s32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);

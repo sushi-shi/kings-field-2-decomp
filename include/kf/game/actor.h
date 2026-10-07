@@ -5,6 +5,7 @@
 #include <kf/lib/math.h>
 #include <kf/lib/types.h>
 #include <kf/game/item.h>
+#include <kf/game/magic.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -91,10 +92,19 @@ typedef struct KfTargetCandidateDeathDrop {
 typedef char kf_target_candidate_death_drop_size[
     sizeof(KfTargetCandidateDeathDrop) == 2 ? 1 : -1];
 
+/* Type-25 scripts dispatch this effect kind through actor_dispatch_group_effect. */
+typedef struct KfTargetCandidateScriptEffect {
+    KfEffectKind kind;
+    u8 unknown_01;
+} KfTargetCandidateScriptEffect;
+typedef char kf_target_candidate_script_effect_size[
+    sizeof(KfTargetCandidateScriptEffect) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord0c {
     u16 value;
     KfTargetCandidateWord0cBytes bytes;
     KfTargetCandidateDeathDrop death_drop;
+    KfTargetCandidateScriptEffect script_effect;
 } KfTargetCandidateWord0c;
 typedef char kf_target_candidate_word0c_size[
     sizeof(KfTargetCandidateWord0c) == 2 ? 1 : -1];
@@ -805,7 +815,8 @@ void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
                    s32 acceleration);
 void actor_update_motion_animation(s32 first, s32 reverse, s32 forward,
                                    s32 fast, s32 slow, s32 phase_step);
-void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 position_mode, ...);
+void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 damage_multiplier_tenths,
+                                 s32 position_mode, ...);
 void actor_update_vertical_motion(void);
 void actor_update_frame(void);
 

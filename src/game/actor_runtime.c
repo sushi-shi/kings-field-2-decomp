@@ -1791,7 +1791,8 @@ enum {
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
 ADDRESS(0x8003c614, 0xa70)
-void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 position_mode, ...)
+void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 damage_multiplier_tenths,
+                                 s32 position_mode, ...)
 {
     /* Retail walks O32 argument home slots from the last named word. */
     const s32 *arguments = &position_mode;
@@ -1849,14 +1850,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     position.vz = current->position.vz + offset.vz;
 
     switch (kind) {
-    case 0x7b:
-        kind = 0x20;
+    case KF_EFFECT_KIND_123:
+        kind = KF_EFFECT_KIND_32;
         if (arguments[2] != 0) {
             goto target_effect;
         }
         /* fall through */
-    case 7:
-    case 0x20:
+    case KF_EFFECT_KIND_7:
+    case KF_EFFECT_KIND_32:
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
         actor_compute_target_direction(current, player, 500, &position, &direction,
@@ -1864,7 +1865,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         if (effect != NULL) effect->cooldown = 3;
         break;
-    case 0x79:
+    case KF_EFFECT_KIND_121:
         actor_compute_target_direction(current, player, 600, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         distance = fixed_vector3_length(position.vx - player->vx,
@@ -1875,14 +1876,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       distance);
         break;
-    case 4:
+    case KF_EFFECT_KIND_4:
         /* Five-argument effect calls leave the optional words that the steering
          * call stored in the outgoing argument area. */
         actor_compute_target_direction(current, player, 800, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x28: {
+    case KF_EFFECT_KIND_40: {
         s32 raised_y = position.vy + 1600;
         vector_displacement_to_pitch_yaw(player->vx - position.vx,
                       player->vy - raised_y,
@@ -1897,51 +1898,51 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
                       &orientation.angles);
         break;
     }
-    case 9:
-    case 0x21:
+    case KF_EFFECT_KIND_9:
+    case KF_EFFECT_KIND_33:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       KF_EFFECT_KIND9_TARGET_PLAYER);
         break;
-    case 0x18:
+    case KF_EFFECT_KIND_24:
         actor_compute_target_direction(current, player, 250, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 2:
+    case KF_EFFECT_KIND_2:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
-    case 0x16:
+    case KF_EFFECT_KIND_22:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x17:
+    case KF_EFFECT_KIND_23:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL,
                       actor_state.current_actor_slot_index, position_mode,
                       ((const u16 *)arguments[1])[2]);
         break;
-    case 0x6c:
+    case KF_EFFECT_KIND_108:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
-        effect = effect_construct_record(damage_multiplier_tenths, 0x23, 7, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, 0x23, KF_EFFECT_KIND_7, &position, &direction);
         if (effect != NULL) effect->cooldown = 5;
         break;
-    case 1:
-    case 0x1c:
+    case KF_EFFECT_KIND_1:
+    case KF_EFFECT_KIND_28:
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x1a:
-    case 0x1b:
+    case KF_EFFECT_KIND_26:
+    case KF_EFFECT_KIND_27:
         actor_compute_target_direction(current, player, 300, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0xc:
+    case KF_EFFECT_KIND_12:
         /* Retail aims at the two-vertex prediction even for other position modes. */
         vector_displacement_to_pitch_yaw(predicted.vx - position.vx,
                       predicted.vy - position.vy,
@@ -1952,14 +1953,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
-    case 0x78:
+    case KF_EFFECT_KIND_120:
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         break;
-    case 0x6e:
+    case KF_EFFECT_KIND_110:
         group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
@@ -1986,7 +1987,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_ASCENDING_SPIN);
         }
         break;
-    case 0x70:
+    case KF_EFFECT_KIND_112:
         group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
@@ -2013,8 +2014,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_COLLISION_MOVE);
         }
         break;
-    case 0x1d:
-    case 0x1f:
+    case KF_EFFECT_KIND_29:
+    case KF_EFFECT_KIND_31:
         trajectory_target = *player;
         count = 6;
         do {
@@ -2987,18 +2988,18 @@ case3_motion:
                     actor->tail_72.script.word_index = index + 3;
                     z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, -1, x, y, z, cursor);
                 } else if (opcode == 0x8004) {
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, -2,
                                    first, second, third);
                 } else {
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
                                    (s16)actor->tail_72.script.effect_cycle_index);

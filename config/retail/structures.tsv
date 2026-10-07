@@ -197,6 +197,7 @@ KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x
 KfTargetCandidateAction25	0x1c	candidate	GAME 0x8003ed78-0x8003eecc;game/actor.h	Type-25 prefix plus first script halfword; variable payload extent and candidate stride unresolved
 KfTargetCandidateDamageReaction	0x2	supported	game/actor.h;actor_apply_magic_to_actor	word_02 damage-reaction view: reaction chance byte and an unused byte
 KfTargetCandidateDeathDrop	0x2	supported	actor_update_behavior death branch;map_object_spawn_effect source 1	death-drop object ID and chance bytes of candidate +0x0c
+KfTargetCandidateScriptEffect	0x2	supported	actor_update_behavior type-25 script;actor_dispatch_group_effect arg0	effect-kind byte of candidate +0x0c for type-25 effect scripts
 KfTargetCandidateSelectionScales	0x2	supported	game/actor.h;actor_score_target_candidate	word_02 target-selection view: initial and continuing score scales
 KfTargetCandidateWord02	0x2	supported	game/actor.h;actor_score_target_candidate;actor_apply_magic_to_actor	candidate word +0x02 read as selection scales or damage-reaction bytes
 KfTargetCandidateWord0c	0x2	supported	GAME 0x8003e824 lhu;GAME 0x8003e648 lbu	shared candidate +0x0c halfword and high-byte views

@@ -3,6 +3,7 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
+#include <kf/game/magic.h>
 #include <psyq/sdk.h>
 
 struct KfPoolRecord;
@@ -12,8 +13,6 @@ enum {
     KF_MAGIC_RECORD_COUNT = 64,
     KF_EFFECT_SLOT_FREE = 0xff,
     KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
-    KF_EFFECT_KIND_DEFENSE_BOOST = 15,
-    KF_EFFECT_KIND_ATTACK_BOOST = 17,
     KF_EFFECT_STATIC_OBJECT_ZERO = 0x80,
     KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c,
     KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c
@@ -283,7 +282,7 @@ typedef char kf_effect_cache_payload_offset[(u32)&((KfEffectCacheTail *)0)->payl
 /* The pool scan and reset visit 128 records at a 72-byte stride. */
 typedef struct KfEffectRecord {
     u8 type;
-    u8 kind;
+    KfEffectKind kind;
     u8 base_render_id;
     u8 render_id;
     u8 animation_clip;
@@ -393,7 +392,7 @@ void effect_collision_backtrack(void);
 void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
 KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);
 KfEffectRecord *effect_pool_find_free(void);
-KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8 kind, const VECTOR *position,
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, KfEffectKind kind, const VECTOR *position,
                               const SVECTOR *direction, ...);
 void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output,
                    const SVECTOR *scale);

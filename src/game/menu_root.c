@@ -172,7 +172,8 @@ selection_result:
     if (result != KF_MENU_RESULT_CANCELLED &&
         result != KF_MENU_RESULT_GAME_LOADED &&
         (result & KF_MENU_MAGIC_ACTION_TAG) != 0) {
-        player_select_magic_action(result & KF_MENU_MAGIC_ACTION_ID_MASK);
+        player_select_magic_action(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind),
+                                                  result & KF_MENU_MAGIC_ACTION_ID_MASK));
         result = KF_MENU_RESULT_CANCELLED;
     }
     return result;
@@ -638,7 +639,7 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     s32 i;
 
     selected[MENU_CATEGORY_WEAPON] = KF_ENUM_ENCODE(u8, player_state.equipped_weapon_id);
-    selected[MENU_CATEGORY_PRIMARY_MAGIC] = player_state.primary_magic_shortcut_id;
+    selected[MENU_CATEGORY_PRIMARY_MAGIC] = KF_ENUM_ENCODE(u8, player_state.primary_magic_shortcut_id);
     selected[MENU_CATEGORY_ARM] = KF_ENUM_ENCODE(u8, player_state.equipped_arm_id);
     selected[MENU_CATEGORY_HEAD] = KF_ENUM_ENCODE(u8, player_state.equipped_head_id);
     selected[MENU_CATEGORY_BODY] = KF_ENUM_ENCODE(u8, player_state.equipped_body_id);
@@ -646,10 +647,10 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     selected[MENU_CATEGORY_SHIELD] = KF_ENUM_ENCODE(u8, player_state.equipped_shield_id);
     selected[MENU_CATEGORY_ACCESSORY] = KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id);
     selected[MENU_CATEGORY_EXTRA] = KF_ENUM_ENCODE(u8, player_state.equipped_extra_id);
-    if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
+    if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
         selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id);
     else
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = player_state.secondary_magic_shortcut_id;
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_magic_shortcut_id);
 
     entry = selected;
     for (i = 0; i < MENU_CATEGORY_COUNT; rows++, i++, entry++) {
@@ -661,7 +662,7 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
             goto extra;
         if (i != MENU_CATEGORY_SECONDARY_SHORTCUT)
             goto base;
-        if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
+        if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
             goto base;
     extra:
         *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;
@@ -862,7 +863,7 @@ void menu_choose_primary_magic_shortcut(void)
     }
 
     if (result != KF_MENU_RESULT_CANCELLED)
-        player_set_primary_magic_shortcut_id(result);
+        player_set_primary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), result));
 }
 
 ADDRESS(0x8001a4f0, 0x30c)
@@ -944,7 +945,7 @@ void menu_item_magic_controller(void)
     }
 
     if (result != KF_MENU_RESULT_CANCELLED) {
-        player_set_secondary_magic_shortcut_id(magic_ids[result]);
+        player_set_secondary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), magic_ids[result]));
         player_set_secondary_item_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), item_ids[result]));
     }
 }

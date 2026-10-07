@@ -612,15 +612,15 @@ magic_action: {
         VECTOR far_position;
         s32 fraction;
         s32 spin;
-        s32 magic_id;
+        KF_ENUM_PROMOTED(KfEffectKind) magic_id;
         KfMagicRecord *magic_record;
 
         for (;;) {
-            magic_id = *magic_ids++;
-            if (magic_id == 0xff) {
+            magic_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), *magic_ids++);
+            if (magic_id == KF_MAGIC_NONE) {
                 goto invoke_callback;
             }
-            magic_record = &effect_state.magic_records[magic_id];
+            magic_record = &effect_state.magic_records[KF_ENUM_ENCODE(s32, magic_id)];
             if (magic_record->menu_available == 0) {
                 magic_record->menu_available = 1;
                 break;

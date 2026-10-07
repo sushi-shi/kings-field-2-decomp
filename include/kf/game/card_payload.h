@@ -36,8 +36,8 @@ typedef struct KfCardPlayerSnapshot {
     u8 level;
     u8 unknown_09;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_ids[7];
-    u8 primary_magic_shortcut_id;
-    u8 secondary_magic_shortcut_id;
+    KfEffectKind primary_magic_shortcut_id;
+    KfEffectKind secondary_magic_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
     u8 audio_effects_enabled;

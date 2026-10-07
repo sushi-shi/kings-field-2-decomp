@@ -11,7 +11,7 @@ enum { KF_RENDER_MODEL_ROW_COUNT = 15 };
 
 /* Fourteen live initialized rows followed by a full-width 0xff sentinel. */
 typedef struct KfRenderModelRow {
-    u8 state;
+    KfSpriteState state;
     u8 animation_clip;
     KfLightingIndex lighting_index;
     u16 asset_id;

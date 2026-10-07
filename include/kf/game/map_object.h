@@ -9,6 +9,7 @@
 #include <kf/game/item.h>
 #include <kf/game/pool.h>
 #include <kf/game/render_types.h>
+#include <kf/game/notify_types.h>
 
 /* Template byte 0 selects an object's operation. The loader copies most
  * selectors unchanged into the runtime action byte (GAME 0x80035a74 jump
@@ -239,8 +240,8 @@ typedef struct KfMapObjectTailNotificationView {
     u8 unknown_39;
     KfMapObjectTailHalfword unknown_3a;
     u16 unknown_3c;
-    u8 linked_notification;
-    u8 default_notification;
+    KfNotificationId linked_notification;
+    KfNotificationId default_notification;
 } KfMapObjectTailNotificationView;
 typedef char kf_map_object_tail_notification_size[
     sizeof(KfMapObjectTailNotificationView) == 12 ? 1 : -1];

@@ -49,10 +49,6 @@ enum {
 #define GRAPHICS game_graphics_runtime
 #define DISPLAY game_graphics_runtime.display_state
 
-enum {
-    KF_RENDER_MODEL_END = 0xff,
-    KF_RENDER_MODEL_ACTIVE = 1
-};
 
 DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
@@ -62,32 +58,32 @@ MATRIX render_world_identity_matrix = {
 
 DATA(0x80066808, 0x7e, ".data")
 KfNotificationQuad notification_quads[7] = {
-    {0, 0, 0, 127, 14, 96, 203, 127, 14, 0x7f24, 0x1b},
-    {0, 0, 0, 127, 14, 110, 203, 127, 14, 0x7f24, 0x1b},
-    {0, 240, 0, 7, 14, 90, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 80, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 70, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 60, 203, 7, 13, 0x7f64, 0x1d},
-    {0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    {KF_SPRITE_HIDDEN, 0, 0, 127, 14, 96, 203, 127, 14, 0x7f24, 0x1b},
+    {KF_SPRITE_HIDDEN, 0, 0, 127, 14, 110, 203, 127, 14, 0x7f24, 0x1b},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 90, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 80, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 70, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 60, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_END, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 DATA(0x80066888, 0x21c, ".data")
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
-    {1, 0, KF_LIGHTING_HUD_COMPASS,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
-    {1, 0, KF_LIGHTING_PRESET_48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
-    {KF_RENDER_MODEL_END}
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD_COMPASS,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_PRESET_48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
+    {KF_SPRITE_END}
 };
 
 DATA(0x8006d6d0, 0x4, ".sdata")
@@ -149,7 +145,7 @@ ADDRESS(0x8002d248, 0xe4)
 void display_reset(void)
 {
     u8 *memory;
-    u8 *message_id;
+    KfNotificationId *message_id;
     u8 messages_left;
     KfFloorItem *item;
     s32 items_left;
@@ -161,7 +157,7 @@ void display_reset(void)
     DISPLAY.primitive_buffers[1].start = DISPLAY.primitive_buffers[0].end = memory;
     memory += KF_GAME_PRIMITIVE_BUFFER_BYTES;
     DISPLAY.primitive_buffers[1].end = memory;
-    GRAPHICS.notification_control.effect_phase = 0;
+    GRAPHICS.notification_control.effect_phase = KF_NOTIFICATION_IDLE;
     GRAPHICS.notification_control.queue_tail = 0;
     GRAPHICS.notification_control.queue_head = 0;
     message_id = GRAPHICS.notification_message_ids;
@@ -1825,11 +1821,11 @@ void render_active_model_rows(void)
     MATRIX light_matrix;
 
     entry = render_model_rows;
-    if (entry->state == KF_RENDER_MODEL_END) {
+    if (entry->state == KF_SPRITE_END) {
         return;
     }
     do {
-        if (entry->state == KF_RENDER_MODEL_ACTIVE) {
+        if (entry->state == KF_SPRITE_VISIBLE) {
             lighting = &game_graphics_runtime.collision_rows[KF_ENUM_ENCODE(u8, entry->lighting_index)];
             model.t[0] = entry->translation.vx;
             model.t[1] = entry->translation.vy;
@@ -1857,7 +1853,7 @@ void render_active_model_rows(void)
             render_enqueue_textured_tmd(0, 0);
         }
         entry++;
-    } while (entry->state != KF_RENDER_MODEL_END);
+    } while (entry->state != KF_SPRITE_END);
 }
 
 ADDRESS(0x800311b0, 0x144)
@@ -2703,20 +2699,20 @@ void notification_draw(void)
     u8 color[3];
 
     color[0] = color[1] = color[2] = game_graphics_runtime.notification_brightness;
-    if (quad->kind == 0xff) {
+    if (quad->kind == KF_SPRITE_END) {
         return;
     }
     do {
-        if (quad->kind != 0) {
+        if (quad->kind != KF_SPRITE_HIDDEN) {
             notification_draw_quad(quad, 0x20, color);
             notification_draw_quad(quad, 0x40, color);
         }
         quad++;
-    } while (quad->kind != 0xff);
+    } while (quad->kind != KF_SPRITE_END);
 }
 
 ADDRESS(0x800331d0, 0xa4)
-void notify_enqueue(s32 message_id, ...)
+void notify_enqueue(KF_ENUM_PARAM(KfNotificationId, s32) message_id, ...)
 {
     u8 *head;
 
@@ -2724,7 +2720,7 @@ void notify_enqueue(s32 message_id, ...)
         return;
     }
     head = &game_graphics_runtime.notification_control.queue_head;
-    if (game_graphics_runtime.notification_message_ids[*head] == KF_NOTIFICATION_EMPTY) {
+    if (game_graphics_runtime.notification_message_ids[*head] == KF_NOTIFICATION_NONE) {
         game_graphics_runtime.notification_message_ids[*head] = message_id;
         if (message_id == KF_NOTIFICATION_PAYLOAD_ID) {
             va_list arguments;
@@ -2745,88 +2741,88 @@ void notification_digit_set_v(KfNotificationDigitSprite *sprite, s32 digit)
 static inline void notification_dequeue_group(void)
 {
     KfNotificationControl *control;
-    s32 id;
+    KF_ENUM_STORAGE(KfNotificationId, s32) id;
 
     control = &game_graphics_runtime.notification_control;
     id = game_graphics_runtime.notification_message_ids[
         game_graphics_runtime.notification_control.queue_tail];
     do {
         game_graphics_runtime.notification_message_ids[control->queue_tail] =
-            KF_NOTIFICATION_EMPTY;
+            KF_NOTIFICATION_NONE;
         control->queue_tail = (control->queue_tail + 1) & (KF_NOTIFICATION_CAPACITY - 1);
     } while (id == game_graphics_runtime.notification_message_ids[control->queue_tail]
              && id != KF_NOTIFICATION_PAYLOAD_ID);
-    control->effect_phase = 0;
+    control->effect_phase = KF_NOTIFICATION_IDLE;
 }
 
 ADDRESS(0x80033284, 0x300)
 void notification_update(void)
 {
-    u8 *phase = &game_graphics_runtime.notification_control.effect_phase;
+    KfNotificationPhase *phase = &game_graphics_runtime.notification_control.effect_phase;
 
     switch (*phase) {
-    case 0: {
+    case KF_NOTIFICATION_IDLE: {
         u8 tail = game_graphics_runtime.notification_control.queue_tail;
-        u8 id = game_graphics_runtime.notification_message_ids[tail];
-        if (id == KF_NOTIFICATION_EMPTY) {
+        KfNotificationId id = game_graphics_runtime.notification_message_ids[tail];
+        if (id == KF_NOTIFICATION_NONE) {
             break;
         }
-        *phase = 1;
+        *phase = KF_NOTIFICATION_FADE_IN;
         game_graphics_runtime.notification_brightness = 0;
         game_graphics_runtime.notification_control.hold_frames = 15;
         if (id == KF_NOTIFICATION_PAYLOAD_ID) {
             s16 digits[12];
 
-            notification_quads[0].kind = 0;
-            notification_quads[1].kind = 1;
-            notification_quads[1].texture_u = 128;
-            notification_quads[1].texture_v = 42;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].texture_u = 128;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].texture_v = 42;
             menu_format_number(game_graphics_runtime.notification_payloads[tail],
                                4, KF_FORMAT_PAD_SPACES, KF_MENU_FORMAT_STYLE_PLAIN, digits);
-            notification_quads[2].kind = 1;
-            notification_digit_set_v(&notification_quads[2], (u16)digits[3]);
-            notification_quads[3].kind = 1;
-            notification_digit_set_v(&notification_quads[3], (u16)digits[2]);
-            notification_quads[4].kind = 1;
-            notification_digit_set_v(&notification_quads[4], (u16)digits[1]);
-            notification_quads[5].kind = 1;
-            notification_digit_set_v(&notification_quads[5], (u16)digits[0]);
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_ONES_SPRITE], (u16)digits[3]);
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_TENS_SPRITE], (u16)digits[2]);
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE], (u16)digits[1]);
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE], (u16)digits[0]);
         } else {
-            notification_quads[0].kind = 1;
-            notification_quads[5].kind = 0;
-            notification_quads[4].kind = 0;
-            notification_quads[3].kind = 0;
-            notification_quads[2].kind = 0;
-            notification_quads[1].kind = 0;
-            notification_quads[0].texture_u = (id / 18) << 7;
-            notification_quads[0].texture_v = (id % 18) * 14;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].texture_u = (KF_ENUM_VALUE(id) / 18) << 7;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].texture_v = (KF_ENUM_VALUE(id) % 18) * 14;
         }
         break;
     }
-    case 1:
+    case KF_NOTIFICATION_FADE_IN:
         game_graphics_runtime.notification_brightness += 20;
         if (game_graphics_runtime.notification_brightness >= 100) {
-            *phase = 2;
+            *phase = KF_NOTIFICATION_HOLD;
         }
         break;
-    case 2:
+    case KF_NOTIFICATION_HOLD:
     {
         u8 frames = game_graphics_runtime.notification_control.hold_frames - 1;
         game_graphics_runtime.notification_control.hold_frames = frames;
         if (frames == 0) {
-            *phase = 3;
+            *phase = KF_NOTIFICATION_FADE_OUT;
         }
         break;
     }
-    case 3:
+    case KF_NOTIFICATION_FADE_OUT:
         game_graphics_runtime.notification_brightness -= 20;
         if (game_graphics_runtime.notification_brightness == 0) {
-            notification_quads[5].kind = 0;
-            notification_quads[4].kind = 0;
-            notification_quads[3].kind = 0;
-            notification_quads[2].kind = 0;
-            notification_quads[1].kind = 0;
-            notification_quads[0].kind = 0;
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_HIDDEN;
             notification_dequeue_group();
         }
         break;
@@ -2853,7 +2849,7 @@ void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
     s32 attack_width;
     s32 magic_width;
     s32 yaw_delta;
-    u8 row_state;
+    KfSpriteState row_state;
 
     display_set_view_transform(position, rotation);
     floor_item_update_textures();
@@ -2863,8 +2859,9 @@ void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
     pool_mark_allocated();
     render_player_weapon();
 
-    render_model_rows[0].state = player_state.compass_enabled;
-    row_state = player_state.hud_gauges_enabled;
+    /* The option bytes encode HIDDEN/VISIBLE directly. */
+    render_model_rows[0].state = KF_ENUM_DECODE(KfSpriteState, player_state.compass_enabled);
+    row_state = KF_ENUM_DECODE(KfSpriteState, player_state.hud_gauges_enabled);
     render_model_rows[13].state = row_state;
     render_model_rows[12].state = row_state;
     render_model_rows[11].state = row_state;

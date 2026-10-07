@@ -26,6 +26,14 @@ KF_ENUM_BEGIN(KfMapLayerMask, u8)
 KF_ENUM_END(KfMapLayerMask)
 KF_ENUM_FLAGS(KfMapLayerMask, u8)
 
+/* Visibility of HUD model and notification rows; tables that end in a
+ * sentinel row mark it END (KF1 KfSpriteState). */
+KF_ENUM_BEGIN(KfSpriteState, u8)
+    KF_SPRITE_HIDDEN = 0,
+    KF_SPRITE_VISIBLE = 1,
+    KF_SPRITE_END = 0xff
+KF_ENUM_END(KfSpriteState)
+
 /* render_world_model's queue selector. 0xff and 0xfe pick the textured and
  * clipping enqueues; 0x80 is textured without the below-view depth bias.
  * Other values reach render_enqueue_blended_tmd, which shifts them into the

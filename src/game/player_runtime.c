@@ -2624,7 +2624,7 @@ void player_update_actions_and_charge(void)
                                   player_state.secondary_item_shortcut_id);
                 }
             } else {
-                notify_enqueue(20);
+                notify_enqueue(KF_NOTIFICATION_NOTHING_HAPPENS);
             }
         }
     }
@@ -3299,18 +3299,18 @@ after_reaction:
         player_state.full_mp_timer--;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
         if (player_state.full_mp_timer == 0) {
-            notify_enqueue(34);
+            notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
         }
     }
     if (player_state.magic_boost_timer != 0 && --player_state.magic_boost_timer == 0) {
         player_recalculate_combat_stats();
-        notify_enqueue(34);
+        notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
     }
     if (player_state.map_marker_visual_effect_timer != 0) {
         if (player_state.map_marker_visual_effect_timer == 1) {
             MoveImage(&player_status_texture_row_0, 0x240, 0x103);
             MoveImage(&player_status_texture_row_2, 0x240, 0x106);
-            notify_enqueue(34);
+            notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
             player_state.map_marker_visual_effect_timer = 0;
             map_object_refresh_cell_markers(0);
         } else {

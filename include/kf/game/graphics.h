@@ -10,6 +10,7 @@
 #include <kf/game/tmd.h>
 #include <kf/game/map_placed.h>
 #include <kf/game/render_types.h>
+#include <kf/game/notify_types.h>
 #include <psyq/sdk.h>
 
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
@@ -91,7 +92,7 @@ typedef char kf_screen_vertex_depth_cue_offset[
 typedef struct KfNotificationControl {
     u8 queue_tail;
     u8 queue_head;
-    u8 effect_phase;
+    KfNotificationPhase effect_phase;
     u8 hold_frames;
 } KfNotificationControl;
 
@@ -207,7 +208,7 @@ typedef struct KfGraphicsRuntimeGame {
     EVECTOR *clip_result_vertices[KF_CLIP_EDGE_COUNT];
     u8 unknown_149d4[0x10];
     EVECTOR clip_edges[KF_CLIP_EDGE_COUNT];
-    u8 notification_message_ids[KF_NOTIFICATION_CAPACITY];
+    KfNotificationId notification_message_ids[KF_NOTIFICATION_CAPACITY];
     u16 notification_payloads[KF_NOTIFICATION_CAPACITY];
     KfNotificationControl notification_control;
     u8 notification_brightness;
@@ -291,7 +292,6 @@ extern RECT menu_transition_rect;
 s32 menu_fade_transition(s32 level, s32 step);
 
 enum {
-    KF_NOTIFICATION_NONE = 0xff,
     KF_FLOOR_ITEM_NONE = 0xff,
     KF_FLOOR_ITEM_SCROLLING_IMAGE = 1
 };

@@ -484,7 +484,7 @@ KfGraphicsRuntimeGame	0x12a54	0x1f40	animation_vertex_scratch	SVECTOR[1000]	supp
 KfGraphicsRuntimeGame	0x14994	0x40	clip_result_vertices	EVECTOR *[16]	candidate	asm;Clip3FTP;Clip4FTP;render_enqueue_clipped_tmd_polygon	SDK clip result pointers; first three proven, larger extent provisional
 KfGraphicsRuntimeGame	0x149d4	0x10	unknown_149d4	u8[16]	opaque	game headers;asm;xrefs	not yet modelled
 KfGraphicsRuntimeGame	0x149e4	0x2c0	clip_edges	EVECTOR[16]	supported	game headers;asm;xrefs	InitClip edge buffer
-KfGraphicsRuntimeGame	0x14ca4	0x08	notification_message_ids	u8[8]	supported	game headers;asm;xrefs	member used by reconstructed code
+KfGraphicsRuntimeGame	0x14ca4	0x08	notification_message_ids	KfNotificationId[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cac	0x10	notification_payloads	u16[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cbc	0x04	notification_control	KfNotificationControl	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cc0	0x01	notification_brightness	u8	supported	asm;notification_draw;notification_draw_quad	brightness replicated into notification RGB
@@ -732,8 +732,8 @@ KfMapObjectTailNotificationView	0x4	0x1	unknown_38	u8	opaque	game/map_object.h	p
 KfMapObjectTailNotificationView	0x5	0x1	unknown_39	u8	opaque	game/map_object.h	preceding tail byte
 KfMapObjectTailNotificationView	0x6	0x2	unknown_3a	KfMapObjectTailHalfword	opaque	game/map_object.h	preceding tail halfword
 KfMapObjectTailNotificationView	0x8	0x2	unknown_3c	u16	opaque	game/map_object.h	preceding tail halfword has action-specific meanings
-KfMapObjectTailNotificationView	0xa	0x1	linked_notification	u8	supported	event_scene_command_dispatch;KF1 map_scripts.c	queued after marker-consume linked result
-KfMapObjectTailNotificationView	0xb	0x1	default_notification	u8	supported	event_world_dispatch_interaction;KF1 map_scripts.c	fallback interaction notification
+KfMapObjectTailNotificationView	0xa	0x1	linked_notification	KfNotificationId	supported	event_scene_command_dispatch;KF1 map_scripts.c	queued after marker-consume linked result
+KfMapObjectTailNotificationView	0xb	0x1	default_notification	KfNotificationId	supported	event_world_dispatch_interaction;KF1 map_scripts.c	fallback interaction notification
 KfMapObjectTailPair38View	0x0	0x4	unknown_34	u32	opaque	game/map_object.h;asm	preceding tail word
 KfMapObjectTailPair38View	0x4	0x2	value_38	u16	supported	asm;event_world_dispatch_interaction	retail lhu reads bytes +0x38 and +0x39 together
 KfMapObjectTailPair38View	0x6	0x6	unknown_3a	u8[6]	opaque	game/map_object.h;asm	trailing tail bytes retain existing field view
@@ -870,9 +870,9 @@ KfMenuWindowLayout	0x00	0x1c	title	KfMenuGlyphString	supported	asm;menu_list_ini
 KfMenuWindowLayout	0x1c	0x118	rows	KfMenuGlyphString[10]	supported	asm;menu_list_init;KF1 counterpart;loaded menu table	member used by reconstructed code
 KfNotificationControl	0x00	0x01	queue_tail	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfNotificationControl	0x01	0x01	queue_head	u8	supported	game headers;asm;xrefs	member used by reconstructed code
-KfNotificationControl	0x02	0x01	effect_phase	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfNotificationControl	0x02	0x01	effect_phase	KfNotificationPhase	supported	game headers;asm;xrefs	member used by reconstructed code
 KfNotificationControl	0x03	0x01	hold_frames	u8	supported	game headers;asm;xrefs	member used by reconstructed code
-KfNotificationQuad	0x00	0x01	kind	u8	supported	game/notification_quad.h;notification_draw_quad	member used by reconstructed graphics or event code
+KfNotificationQuad	0x00	0x01	kind	KfSpriteState	supported	game/notification_quad.h;notification_draw_quad	member used by reconstructed graphics or event code
 KfNotificationQuad	0x01	0x01	texture_u	u8	supported	game/notification_quad.h;notification_draw_quad	member used by reconstructed graphics or event code
 KfNotificationQuad	0x02	0x01	texture_v	u8	supported	game/notification_quad.h;notification_draw_quad	member used by reconstructed graphics or event code
 KfNotificationQuad	0x03	0x01	texture_width	u8	supported	game/notification_quad.h;notification_draw_quad	member used by reconstructed graphics or event code
@@ -1064,7 +1064,7 @@ KfRenderMaskScanState	0x10	0x04	map_z	s32	supported	asm;update_current_map_cell_
 KfRenderMaskScanState	0x14	0x04	window_x	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x18	0x04	window_z	s32	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderMaskScanState	0x1c	0x04	mask_cursor	KfMapLayerMask *	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
-KfRenderModelRow	0x00	0x01	state	u8	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
+KfRenderModelRow	0x00	0x01	state	KfSpriteState	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
 KfRenderModelRow	0x01	0x01	animation_clip	u8	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
 KfRenderModelRow	0x02	0x01	lighting_index	KfLightingIndex	supported	asm;retail row bytes;render_active_model_rows;render_types.h	36-byte render-model row
 KfRenderModelRow	0x04	0x02	asset_id	u16	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row

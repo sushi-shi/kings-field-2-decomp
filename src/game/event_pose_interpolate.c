@@ -399,7 +399,7 @@ void event_scene_command_dispatch(const VECTOR *position,
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
             case 4:
-                notify_enqueue(4);
+                notify_enqueue(KF_NOTIFICATION_4);
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
             case 0:
@@ -683,7 +683,7 @@ decay_update:
             render_game_frame(NULL, NULL);
         } while (1);
         object->object_id = KF_OBJECT_NONE;
-        notify_enqueue(1);
+        notify_enqueue(KF_NOTIFICATION_1);
         event_state.interaction_handled = KF_TRUE;
         break;
     }
@@ -700,7 +700,7 @@ decay_update:
             }
         }
         if (!game_counter_increment(KF_ITEM_RESTORE_HP_100)) {
-            notify_enqueue(0x16);
+            notify_enqueue(KF_NOTIFICATION_22);
             game_counter_decrement(KF_OBJECT_82);
         }
         event_state.interaction_handled = KF_TRUE;
@@ -763,7 +763,7 @@ invoke_callback:
     ((KfEventCommandCallback)resource_state.active_table[2])(
         position, rotation, command);
     if (!event_state.interaction_handled) {
-        notify_enqueue(0x14);
+        notify_enqueue(KF_NOTIFICATION_NOTHING_HAPPENS);
     }
     player_clear_motion();
 }
@@ -787,7 +787,7 @@ b32 game_counter_increment(KF_ENUM_PARAM(KfObjectId, s32) index)
         return KF_FALSE;
     }
 
-    notify_enqueue(0x12);
+    notify_enqueue(KF_NOTIFICATION_CANNOT_CARRY_MORE);
     return KF_TRUE;
 }
 
@@ -859,7 +859,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         return;
     }
     if (object_template->kind == 0x20) {
-        notify_enqueue(0x15, object->tail.gold_reward.gold_amount);
+        notify_enqueue(KF_NOTIFICATION_PAYLOAD_ID, object->tail.gold_reward.gold_amount);
         object->object_id = KF_OBJECT_NONE;
         player_state.gold += object->tail.gold_reward.gold_amount;
         return;
@@ -1058,7 +1058,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         switch (kind) {
         case KF_MAP_OBJECT_OP_165:
         case KF_MAP_OBJECT_OP_NONE:
-            if (object->tail.notification.default_notification != 0xff) {
+            if (object->tail.notification.default_notification != KF_NOTIFICATION_NONE) {
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
@@ -1148,7 +1148,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                     goto check_linked_object;
                 }
             notify_six:
-                notify_enqueue(6);
+                notify_enqueue(KF_NOTIFICATION_6);
                 break;
             check_linked_object:
                 if (objects[linked_index].object_id == KF_OBJECT_NONE) {
@@ -1166,7 +1166,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_15:
             if (object->tail.event_effect.pending_event_command == KF_OBJECT_NONE) {
-                notify_enqueue(0x10);
+                notify_enqueue(KF_NOTIFICATION_16);
             }
             break;
         case KF_MAP_OBJECT_OP_PLAYER_REACTION:

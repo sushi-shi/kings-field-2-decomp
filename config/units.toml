@@ -104,7 +104,7 @@ profile = "probe-gcc257-o2-plain-g8"
 unit = "game.main"
 image = "GAME.EXE"
 source = "src/game/main.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.audio_runtime"
@@ -224,7 +224,7 @@ profile = "probe-gcc257-o2-g0"
 unit = "open.main"
 image = "OPEN.EXE"
 source = "src/open/main.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 
 [[unit]]
 unit = "open.display_init"
@@ -250,7 +250,7 @@ profile = "probe-gcc257-o2-plain"
 unit = "open.title"
 image = "OPEN.EXE"
 source = "src/open/title.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 
 [[unit]]
 unit = "open.display_frame"
@@ -263,7 +263,7 @@ defines = ["KF_OPEN"]
 unit = "open.cd_file"
 image = "OPEN.EXE"
 source = "src/lib/cd_file.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 defines = ["KF_OPEN"]
 
 [[unit]]
@@ -276,20 +276,14 @@ profile = "probe-gcc257-o2-plain"
 unit = "open.movie"
 image = "OPEN.EXE"
 source = "src/open/movie.c"
-profile = "probe-gcc257-o2-plain"
-
-[[unit]]
-unit = "open.movie_stream"
-image = "OPEN.EXE"
-source = "src/lib/movie_stream.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 defines = ["MOVIE_END_FRAME=1085"]
 
 [[unit]]
 unit = "end.main"
 image = "END.EXE"
 source = "src/end/main.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 defines = ["KF_END"]
 
 [[unit]]
@@ -324,19 +318,12 @@ defines = ["KF_END"]
 unit = "end.cd_file"
 image = "END.EXE"
 source = "src/lib/cd_file.c"
-profile = "probe-gcc257-o2-plain"
+profile = "probe-gcc257-o2-plain-g8"
 defines = ["KF_END"]
 
 [[unit]]
 unit = "end.movie"
 image = "END.EXE"
 source = "src/end/movie.c"
-profile = "probe-gcc257-o2-plain"
-defines = ["KF_END"]
-
-[[unit]]
-unit = "end.movie_stream"
-image = "END.EXE"
-source = "src/lib/movie_stream.c"
-profile = "probe-gcc257-o2-plain"
-defines = ["MOVIE_END_FRAME=2136"]
+profile = "probe-gcc257-o2-plain-g8"
+defines = ["KF_END", "MOVIE_END_FRAME=2136"]

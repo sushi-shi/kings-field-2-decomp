@@ -354,7 +354,7 @@ extern b32 menu_item_model_allocation_pending;
 extern s32 menu_item_quantity;
 extern KfMenuGlyphRow menu_glyph_rows[KF_ITEM_ID_COUNT];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
-extern KfMenuLabelSuffix menu_equipment_category_labels[10];
+extern KfMenuLabelSuffix menu_equipment_category_labels[11];
 extern KfMenuLabelSuffix menu_none_option_glyphs;
 extern u8 menu_item_mask_pages[6][KF_ITEM_ID_COUNT];
 void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);

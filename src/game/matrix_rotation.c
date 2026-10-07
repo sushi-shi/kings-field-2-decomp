@@ -2,6 +2,21 @@
 #include <kf/lib/types.h>
 #include <kf/lib/math.h>
 #include <psyq/libc.h>
+#include <kf/game/render_model.h>
+
+/* GAME .data opens with these two objects, ahead of every later unit's
+   contribution; the renderer passes the matrix as its world transform. */
+DATA(0x80063dcc, 0x20, ".data")
+MATRIX render_world_identity_matrix = {
+    {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
+    {0, 0, 0}
+};
+
+/* Unreferenced in every retail build; owner and element type unresolved. */
+DATA(0x80063dec, 0x14, ".data")
+static u8 matrix_rotation_unreferenced_bytes[20] = {
+    0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 2, 2, 2, 2, 0, 3, 3, 3, 3, 0
+};
 
 enum {
     RANDOM_TRIANGULAR_CENTER = 0x8000,

@@ -66,7 +66,7 @@ GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	collision_evalu
 GAME.EXE	0x80011410	0xc10	0x74	pointer	manual:switch-table		pointer[29]	retail switch-table words	29 mode-index rows in tmd_prepare_primitive_indices
 GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	map_object_initialize_from_placements jump-table dispatch;retail words	254 opcode rows, all targets within map_object_initialize_from_placements
 GAME.EXE	0x8001187c	0x107c	0x9c	defined	manual:map-object-switch-rodata		u32[39]	retail words;map_object_spawn_effect 17-case and map_object_check_and_consume_marker 21-action bounded jr tables;alignment word at 0x800118c0;source RODATA claim	one unit RODATA span: 17 template-kind pointers, one alignment word, then 21 action pointers
-GAME.EXE	0x80011918	0x1118	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x80011918	0x1118	0x4	defined	manual:map-object-unreferenced-rodata-word		u32	retail zero word;no HI/LO, pointer or table reference in JP, US or EU GAME;.align 3 offsets of map_object and the following jump-table run place it at the end of the map_object .rdata contribution;source RODATA claim	unreferenced read-only word; without it every later GAME address is four bytes low
 GAME.EXE	0x8001191c	0x111c	0x3bc	defined	manual:map-object-update-actions-rodata		u32[239]	retail words;map_object_update_actions three bounded jr tables;zero separator at 0x80011cc0;source RODATA claim	one unit RODATA span: 224 primary pointers, 9 secondary pointers, one zero word, then 5 tertiary pointers
 GAME.EXE	0x80011cd8	0x14d8	0x20c	pointer	manual:switch-table		pointer[131]	retail words;actor_score_target_candidate bounded type-minus-2 jr table	131 in-function case pointers; next word at 0x80011ee4 is zero
 GAME.EXE	0x80011ee4	0x16e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
@@ -507,12 +507,11 @@ GAME.EXE	0x80060ab3	0x502b3	0x5ad	unclassified	coverage-gap			payload-complement
 GAME.EXE	0x80061a30	0x51230	0x28	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80061a64	0x51264	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80063dcc	0x535cc	0x20	defined	manual:render world identity matrix	render_world_identity_matrix	MATRIX	retail bytes;render_scene_and_update_resources+0x114/+0x8f4 xrefs;SDK layout	initialized 32-byte identity matrix passed as world transform to func_80031850
-GAME.EXE	0x80063dec	0x535ec	0x14	unclassified	coverage-gap			payload-complement	remaining bytes after the matrix; owner unresolved
+GAME.EXE	0x80063dec	0x535ec	0x14	defined	manual:unreferenced-data-bytes		u8[20]	retail bytes 0,0,0,0,0,1,1,1,1,0,2,2,2,2,0,3,3,3,3,0;no HI/LO, pointer or table reference in JP, US or EU GAME;follows the identity matrix that opens .data	unreferenced initialized bytes; owner and element type unresolved
 GAME.EXE	0x80063e00	0x53600	0x80	pointer	manual:callback default table		KfCallback[32]	retail words;resource_advance_transition initialized-table address	32 callback pointers, all to no-op stub 0x80015d50; original TU unresolved
 GAME.EXE	0x80063e80	0x53680	0xf0	defined	manual-reviewed	menu_sprite_defs	KfMenuSpriteDef[20]	asm;xrefs;load bytes;KF1 counterpart	20 contiguous 12-byte menu sprite descriptors; nine-grid reaches next table at 0x80063f70
 GAME.EXE	0x80063f70	0x53770	0x9a0	defined	manual-reviewed	menu_window_layouts	KfMenuWindowLayout[8]	manual:menu_list	loaded menu window title and selectable glyph rows; eight 308-byte layouts
-GAME.EXE	0x80064910	0x54110	0xc8	defined	manual-reviewed		KfMenuLabelSuffix[10]	retail bytes;200-byte menu copy at 0x80019af0	ten 20-byte initialized glyph rows
-GAME.EXE	0x800649d8	0x541d8	0x14	unclassified	coverage-gap			payload-complement	object boundary through 0x800649ec remains unclassified
+GAME.EXE	0x80064910	0x54110	0xdc	defined	manual-reviewed		KfMenuLabelSuffix[11]	retail bytes;200-byte menu copy at 0x80019af0;eleventh row at 0x800649d8 has the same glyph-row layout and no reference	eleven 20-byte initialized glyph rows
 GAME.EXE	0x800649ec	0x541ec	0x14	defined	manual-reviewed		KfMenuLabelSuffix	retail bytes;three four-code row copies;zero padding through 0x80064a00 matches adjacent 20-byte label rows	four glyph codes for the final no-selection row in equipment and magic lists; original TU owner provisional
 GAME.EXE	0x80064a00	0x54200	0xf0	defined	manual:menu header labels		KfMenuLabelSuffix[12]	retail bytes;menu render xrefs	twelve 20-byte glyph suffix rows
 GAME.EXE	0x80064af0	0x542f0	0x140	defined	manual:menu label suffixes		KfMenuLabelSuffix[16]	retail bytes;menu label builder xrefs	sixteen 20-byte glyph suffix templates
@@ -531,7 +530,7 @@ GAME.EXE	0x80066806	0x56006	0x2	unclassified	coverage-gap			payload-complement	p
 GAME.EXE	0x80066808	0x56008	0x7e	defined	manual:notification quads		KfNotificationQuad[7]	retail bytes;func_80033140;notification mutation xrefs	six textured rectangles followed by 0xff terminator
 GAME.EXE	0x80066886	0x56086	0x2	unclassified	coverage-gap			payload-complement	padding before next datum
 GAME.EXE	0x80066888	0x56088	0x21c	defined	manual:render model rows	render_model_rows	KfRenderModelRow[15]	retail bytes;func_80031024 scan;render_game_frame writes	14 active 36-byte rows and one complete 0xff sentinel
-GAME.EXE	0x80066aa4	0x562a4	0x10	unclassified	coverage-gap			payload-complement	distinct bytes before collision defaults
+GAME.EXE	0x80066aa4	0x562a4	0x10	defined	manual:kf1-render-palette-rects	render_palette_rects	RECT[2]	retail bytes {0,500,16,1},{0,499,16,1};same two CLUT rows as KF1 render_palette_rects;no reference in JP, US or EU GAME	unreferenced renderer palette rectangles
 GAME.EXE	0x80066ab4	0x562b4	0xdc0	defined	manual:collision defaults		KfCollisionDefaultRow[80]	retail bytes;func_8002bc18 row copy;startup archive write	mutable default collision rows copied into the graphics runtime
 GAME.EXE	0x80067874	0x57074	0x1c	defined	reviewed-asm		KfMapMaskShapePair[7]	build_camera_map_cell_layer_masks table walk;retail bytes	seven s16 near/far pairs interpolated by view pitch
 GAME.EXE	0x80067890	0x57090	0x10e	defined	reviewed-asm		KfMapCellPattern[9][3]	map_object_initialize_from_placements and func_80034f90 pattern argument;retail bytes	nine groups of three 10-byte patterns
@@ -585,7 +584,8 @@ GAME.EXE	0x8006d5b9	0x5cdb9	0x3	unclassified	manual:LIBGPU SYS .data alignment		
 GAME.EXE	0x8006d5bc	0x5cdbc	0x40	defined	manual:exact Psy-Q 3.0 LIBGPU SYS .data pointer record		u32[16]	16 archive 32-bit section patches;all 16 retail words	contiguous vendor pointer record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d5fc	0x5cdfc	0x60	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG .data pointer record		u32[24]	24 archive 32-bit section patches;all 24 retail words	contiguous vendor record; original C declaration and linkage unresolved
 GAME.EXE	0x8006d65c	0x5ce5c	0x18	defined	manual:exact Psy-Q 3.0 LIBGPU OTAG.OBJ .data tail		u8[0x18]	archive .data+0x60 24 Code bytes match retail;get_p_size references section+0x60	vendor size table; original C declaration and linkage unresolved
-GAME.EXE	0x8006d674	0x5ce74	0xc	unclassified	coverage-gap			payload-complement	Twelve zero bytes at the linker GP anchor; NONE2.OBJ start loads gp=0x8006d674 and then tail-jumps to main, but no storage identity is proved
+GAME.EXE	0x8006d674	0x5ce74	0x4	defined	manual:main-unreferenced-sdata	main_unreferenced_sdata_word	u32	retail zero word at the gp anchor that opens the game .sdata;no reference in JP, US or EU GAME;OPEN and END main units own the same first 12 bytes	unreferenced initialized small-data word; type unresolved
+GAME.EXE	0x8006d678	0x5ce78	0x8	defined	manual:main-unreferenced-sdata	main_unreferenced_sdata_bytes	u8[8]	retail zero bytes before cd_path_prefix;no reference in JP, US or EU GAME	unreferenced initialized small data; extent and type unresolved
 GAME.EXE	0x8006d680	0x5ce80	0x5	string	byte-pattern		ascii	investigation:string-census	escaped text: \\CD\\
 GAME.EXE	0x8006d685	0x5ce85	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006d688	0x5ce88	0x3	string	reviewed		ascii	manual:cd_memory;retail bytes;three validated xrefs	escaped text: ;1 (cd_version_suffix); original SDK ownership unresolved
@@ -607,7 +607,7 @@ GAME.EXE	0x8006d6c0	0x5cec0	0x8	defined	manual:player status texture rows	player
 GAME.EXE	0x8006d6c8	0x5cec8	0x8	defined	manual:player status texture rows	player_status_texture_row_3	RECT	retail bytes;one MoveImage source in player_update_frame	fourth 16x1 VRAM row at x=0x240
 GAME.EXE	0x8006d6d0	0x5ced0	0x4	defined	manual:map TMD color		CVECTOR	retail bytes;NormalColorCol xrefs;KF1 counterpart	initialized neutral RGB 128,128,128,0
 GAME.EXE	0x8006d6d4	0x5ced4	0x4	defined	manual:render frame yaw accumulator	render_model_yaw_smoothing_accumulator	s32	retail zero word;four render_game_frame read-write xrefs;angle_shortest_delta	initialized yaw-delta accumulator eased by one eighth per frame
-GAME.EXE	0x8006d6d8	0x5ced8	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006d6d8	0x5ced8	0x4	defined	manual:unreferenced-sdata-word		s32	retail zero word between display .sdata words;no HI/LO or pointer reference in JP, US or EU GAME	unreferenced initialized small-data word; owner and type unresolved
 GAME.EXE	0x8006d6dc	0x5cedc	0x8	defined	manual:menu transition		RECT	retail bytes;StoreImage;MoveImage;LoadImage	initialized 320 by 240 image transfer rectangle
 GAME.EXE	0x8006d6e4	0x5cee4	0x8	defined	manual:map_object_motion_offsets	map_object_motion_recall_socket_start_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion start-offset argument	first motion offset; defining TU and linkage remain WIP
 GAME.EXE	0x8006d6ec	0x5ceec	0x8	defined	manual:map_object_motion_offsets	map_object_motion_recall_socket_end_offset	SVECTOR	retail bytes;independent func_80036ed4 HI/LO pointer;map_object_step_offset_motion end-offset argument	second motion offset; defining TU and linkage remain WIP
@@ -728,7 +728,15 @@ GAME.EXE	0x8006da24	0x5d224	0x4	unclassified	coverage-gap			payload-complement	m
 GAME.EXE	0x8006da28	0x5d228	0x4	bss	reviewed	memory_card_new_device_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	new-device event handle; original allocation extent unresolved
 GAME.EXE	0x8006da2c	0x5d22c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da30	0x5d230	0x4	bss	reviewed	memory_card_error_event	long	retail zero word;OpenEvent writes before first read;KF1 save_system.c eight-byte tail-BSS spacing	error event handle; original allocation extent unresolved
-GAME.EXE	0x8006da34	0x5d234	0x24	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+GAME.EXE	0x8006da34	0x5d234	0x4	unclassified	payload-complement			payload-complement	remainder of the preceding eight-byte .lcomm reservation
+GAME.EXE	0x8006da38	0x5d238	0x4	bss	manual:memory-card-unreferenced-word-0	memory_card_unreferenced_word_0	long	retail eight-byte .sbss stride between memory_card_error_event and memory_card_buffer;no reference in JP, US or EU GAME	unreferenced private small-BSS slot; type and role unresolved
+GAME.EXE	0x8006da3c	0x5d23c	0x4	unclassified	payload-complement			payload-complement	remainder of the preceding eight-byte .lcomm reservation
+GAME.EXE	0x8006da40	0x5d240	0x4	bss	manual:memory-card-unreferenced-word-1	memory_card_unreferenced_word_1	long	retail eight-byte .sbss stride between memory_card_error_event and memory_card_buffer;no reference in JP, US or EU GAME	unreferenced private small-BSS slot; type and role unresolved
+GAME.EXE	0x8006da44	0x5d244	0x4	unclassified	payload-complement			payload-complement	remainder of the preceding eight-byte .lcomm reservation
+GAME.EXE	0x8006da48	0x5d248	0x4	bss	manual:memory-card-unreferenced-word-2	memory_card_unreferenced_word_2	long	retail eight-byte .sbss stride between memory_card_error_event and memory_card_buffer;no reference in JP, US or EU GAME	unreferenced private small-BSS slot; type and role unresolved
+GAME.EXE	0x8006da4c	0x5d24c	0x4	unclassified	payload-complement			payload-complement	remainder of the preceding eight-byte .lcomm reservation
+GAME.EXE	0x8006da50	0x5d250	0x4	bss	manual:memory-card-unreferenced-word-3	memory_card_unreferenced_word_3	long	retail eight-byte .sbss stride between memory_card_error_event and memory_card_buffer;no reference in JP, US or EU GAME	unreferenced private small-BSS slot; type and role unresolved
+GAME.EXE	0x8006da54	0x5d254	0x4	unclassified	payload-complement			payload-complement	remainder of the preceding eight-byte .lcomm reservation
 GAME.EXE	0x8006da58	0x5d258	0x4	bss	reviewed	memory_card_buffer	u8 *	retail zero word;memory_card_initialize writes before first read	pointer assigned to memory_card_buffer_storage; original allocation extent unresolved
 GAME.EXE	0x8006da5c	0x5d25c	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x8006da60	0x5d260	0x4	defined	ghidra-defined		undefined4	Ghidra-12.0.4/ghidra_psx_ldr-2026.07.08;Sony MALLOC.OBJ xrefs	curated direct references occur in signature-matched malloc routines; defining object and extent unresolved
@@ -1333,7 +1341,9 @@ OPEN.EXE	0x8003dbac	0x2d3ac	0x4	defined	manual:open-game-data	pad_previous_butto
 OPEN.EXE	0x8003dbb0	0x2d3b0	0x5	string	reviewed		ascii	manual:display	escaped text: \\OP\\ (cd_path_prefix)
 OPEN.EXE	0x8003dbb5	0x2d3b5	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 OPEN.EXE	0x8003dbb8	0x2d3b8	0x3	string	reviewed		ascii	manual:display	escaped text: ;1 (cd_version_suffix)
-OPEN.EXE	0x8003dbbb	0x2d3bb	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+OPEN.EXE	0x8003dbbb	0x2d3bb	0x1	unclassified	payload-complement			payload-complement	alignment after cd_version_suffix
+OPEN.EXE	0x8003dbbc	0x2d3bc	0x4	defined	manual:tuto0-static	StrWidth	int	retail zero word;TUTO0.C static int StrWidth = 0;no reference in JP, US or EU	unreferenced tutorial movie width in the movie unit .sdata
+OPEN.EXE	0x8003dbc0	0x2d3c0	0x4	defined	manual:tuto0-static	StrHeight	int	retail zero word;TUTO0.C static int StrHeight = 0;no reference in JP, US or EU	unreferenced tutorial movie height in the movie unit .sdata
 OPEN.EXE	0x8003dbc4	0x2d3c4	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
 OPEN.EXE	0x8003dc00	0x2d400	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer	archive .sdata+0 pointer patches to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 OPEN.EXE	0x8003dc04	0x2d404	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer
@@ -2021,7 +2031,9 @@ END.EXE	0x8003aa3d	0x2a23d	0x3	unclassified	coverage-gap			payload-complement	ma
 END.EXE	0x8003aa40	0x2a240	0x5	string	reviewed		ascii	manual:display	escaped text: \\OP\\ (cd_path_prefix)
 END.EXE	0x8003aa45	0x2a245	0x3	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 END.EXE	0x8003aa48	0x2a248	0x3	string	reviewed		ascii	manual:display	escaped text: ;1 (cd_version_suffix)
-END.EXE	0x8003aa4b	0x2a24b	0x9	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
+END.EXE	0x8003aa4b	0x2a24b	0x1	unclassified	payload-complement			payload-complement	alignment after cd_version_suffix
+END.EXE	0x8003aa4c	0x2a24c	0x4	defined	manual:tuto0-static	StrWidth	int	retail zero word;TUTO0.C static int StrWidth = 0;no reference in JP, US or EU	unreferenced tutorial movie width in the movie unit .sdata
+END.EXE	0x8003aa50	0x2a250	0x4	defined	manual:tuto0-static	StrHeight	int	retail zero word;TUTO0.C static int StrHeight = 0;no reference in JP, US or EU	unreferenced tutorial movie height in the movie unit .sdata
 END.EXE	0x8003aa54	0x2a254	0x3c	pointer	manual:exact Psy-Q 3.0 LIBPRESS LIBPRESS.OBJ .sdata		pointer[15]	archive 60-byte Code section exact in retail;15 hardware addresses	MDEC and DMA register pointer record; original static symbol unresolved
 END.EXE	0x8003aa90	0x2a290	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS.OBJ .sdata		pointer	archive .sdata+0 pointer patches to SYS .data+0x34;retail word exact	anonymous vendor pointer; original C declaration unresolved
 END.EXE	0x8003aa94	0x2a294	0x4	pointer	manual:exact Psy-Q 3.0 LIBGPU SYS .sdata XDEF		pointer	archive GPU_printf XDEF .sdata+4;patch to printf;retail word exact	exported GPU printf callback pointer

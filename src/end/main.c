@@ -18,9 +18,9 @@ enum {
     ENDING_LOAD_ATTEMPTS = 10
 };
 
-DATA(0x8003aa34, 0x4, ".data")
+DATA(0x8003aa34, 0x4, ".sdata")
 u8 *overlay_next_request = (u8 *)0x800102f0;
-DATA(0x8003aa38, 0x5, ".data")
+DATA(0x8003aa38, 0x5, ".sdata")
 char ending_data_file[5] = "ED.D";
 
 DATA(0x800a31f0, 0x4, ".bss")

@@ -34,18 +34,18 @@ char audio_sequence_table[SS_SEQ_TABSIZ * KF_AUDIO_SEQUENCE_CAPACITY * KF_AUDIO_
 
 /* Five pooled VAB headers and the dedicated stream-slot-6 header use 0x1000 bytes each. */
 DATA(0x80164a68, 0x6000, ".bss")
-static u8 audio_vab_stream_buffers[AUDIO_VAB_STREAM_BUFFER_COUNT][AUDIO_VAB_STREAM_BUFFER_BYTES];
+u8 audio_vab_stream_buffers[AUDIO_VAB_STREAM_BUFFER_COUNT][AUDIO_VAB_STREAM_BUFFER_BYTES];
 typedef char kf_audio_vab_stream_buffers_size[
     sizeof(audio_vab_stream_buffers) == 0x6000 ? 1 : -1];
 
 DATA(0x80194e30, 0x2800, ".bss")
-static u8 audio_main_vab_header_buffer[AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES];
+u8 audio_main_vab_header_buffer[AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES];
 
 DATA(0x80197630, 0xe9c, ".bss")
 KfGameAudioState audio_state;
 
 DATA(0x80198640, 0x3000, ".bss")
-static u8 audio_sequence_buffer[AUDIO_SEQUENCE_BUFFER_BYTES];
+u8 audio_sequence_buffer[AUDIO_SEQUENCE_BUFFER_BYTES];
 
 ADDRESS(0x800139c4, 0x120)
 void audio_initialize_runtime(void)

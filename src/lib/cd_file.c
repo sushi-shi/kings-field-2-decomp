@@ -11,11 +11,11 @@ enum {
     KF_CD_DATA_START_SECOND = 2
 };
 
-DATA_AT("OPEN", 0x8003dbb0, 0x5, ".data")
-DATA_AT("END", 0x8003aa40, 0x5, ".data")
+DATA_AT("OPEN", 0x8003dbb0, 0x5, ".sdata")
+DATA_AT("END", 0x8003aa40, 0x5, ".sdata")
 char cd_path_prefix[5] = "\\OP\\";
-DATA_AT("OPEN", 0x8003dbb8, 0x3, ".data")
-DATA_AT("END", 0x8003aa48, 0x3, ".data")
+DATA_AT("OPEN", 0x8003dbb8, 0x3, ".sdata")
+DATA_AT("END", 0x8003aa48, 0x3, ".sdata")
 char cd_version_suffix[3] = ";1";
 
 /* Reads \OP\<relative_path>;1 sector by sector into DESTINATION. */

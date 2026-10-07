@@ -260,6 +260,34 @@ It also cannot establish complete playability, because private object layouts,
 data, callbacks, and initialization behavior can differ even when linking
 succeeds. The original hash-verified retail disc remains the runtime reference.
 
+## Game data placement
+
+Each object contributes one run per output section in link order, so a
+datum's section and its unit's link position fix its address. Facts that
+decided the current GAME, OPEN and END layouts:
+
+- GCC 2.5.7's C front end emits every initialized file-scope or local static,
+  const or not, at its declaration even when nothing reads it, and keeps
+  unused non-const tentative statics as `.lcomm` requests. The images retain
+  such leftovers (the word after the map-object jump tables, the bytes after
+  the identity matrix, the eleventh menu label row, KF1's palette rectangles,
+  small-data words and four card `.sbss` slots); each is a curated
+  unreferenced identity rather than padding.
+- A jump table is emitted after `.align 3`, which ASPSX applies relative to
+  the object's `.rdata` start; table offsets therefore show which object an
+  unexplained word belongs to.
+- Under `-G8`, initialized data of at most eight bytes goes to `.sdata` and
+  private tentative data of at most eight bytes to `.sbss`; exported COMMON
+  always stays in `.bss`. OPEN's and END's small game globals, and the movie
+  unit's tutorial statics, are therefore `-G8` objects.
+- PSYLINK places fixed `.bss` reservations in link order, then allocates
+  exported COMMON by symbol-hash bucket, `(len + byte sum) & 511`, as decoded
+  in the KF1 project. The native build follows that order exactly, so a game
+  COMMON object reaches its retail address only if its source name falls in
+  the bucket interval its SDK neighbours bound. `kf common-order` reports
+  which curated names do not; this is the remaining layout difference in
+  all three overlays.
+
 ### Runtime smoke test
 
 `kf-run-candidate` substitutes linked executables into a copy of the raw retail

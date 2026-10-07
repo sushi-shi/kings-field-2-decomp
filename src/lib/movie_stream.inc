@@ -1,20 +1,9 @@
-#include <kf/lib/address.h>
-#include <kf/lib/null.h>
-#include <kf/lib/types.h>
-#include <kf/lib/movie_stream.h>
-
 /*
  * The tutorial's earlier revision as linked here: one decode buffer, 16-bit
  * output and a global DECENV. OPEN.EXE and END.EXE link the same bodies; only
- * the last frame differs.
+ * the last frame differs. Included after the movie player's functions, in the
+ * translation unit whose state movie_stream_state.inc defines.
  */
-
-#define WAIT_TIME 0x800000
-#define RING_SIZE 32
-#define SCR_WIDTH 320
-#define SCR_HEIGHT 240
-#define SLICE_WIDTH_PIXELS 16
-#define VLC_BUFFER_HEIGHT 256
 
 /* STR sector header as read here: the Psy-Q 3.0 StHEADER stops after
  * `height`, but the code also compares the next two words (named headm and
@@ -24,35 +13,6 @@ typedef struct {
     u_long headm;
     u_long headv;
 } StrSectorHeader;
-
-DATA_AT("OPEN", 0x8003dec0, 0x4, ".sbss")
-DATA_AT("END", 0x8003ace0, 0x4, ".sbss")
-KfBool Rewind_Switch;
-
-DATA_AT("OPEN", 0x8003dec8, 0x4, ".sbss")
-DATA_AT("END", 0x8003ace8, 0x4, ".sbss")
-long StrFrame;
-
-DATA_AT("OPEN", 0x8003e058, 0x28000, ".bss")
-DATA_AT("END", 0x8003ae50, 0x28000, ".bss")
-u_long vlcbuf0[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
-
-DATA_AT("OPEN", 0x80066058, 0x28000, ".bss")
-DATA_AT("END", 0x80062e50, 0x28000, ".bss")
-u_long vlcbuf1[SCR_WIDTH / 2 * VLC_BUFFER_HEIGHT];
-
-DATA_AT("OPEN", 0x8008e058, 0x3c00, ".bss")
-DATA_AT("END", 0x8008ae50, 0x3c00, ".bss")
-u_short imgbuf[7680];
-
-DATA_AT("OPEN", 0x80091c58, 0x10000, ".bss")
-DATA_AT("END", 0x8008ea50, 0x10000, ".bss")
-u_long Ring_Buff[RING_SIZE * SECTOR_SIZE];
-
-DATA_AT("OPEN", 0x800a1c58, 0x30, ".bss")
-DATA_AT("END", 0x8009ea50, 0x30, ".bss")
-DECENV dec;
-
 
 ADDRESS_AT("OPEN", 0x8001383c, 0xbc)
 ADDRESS_AT("END", 0x800121ec, 0xbc)

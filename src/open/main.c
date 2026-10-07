@@ -30,9 +30,9 @@ enum {
     OPENING_CLOSE_DISPLAY_WIDTH = 320
 };
 
-DATA(0x8003db88, 0x4, ".data")
+DATA(0x8003db88, 0x4, ".sdata")
 u8 *overlay_next_request = (u8 *)0x800102f0;
-DATA(0x8003db8c, 0x5, ".data")
+DATA(0x8003db8c, 0x5, ".sdata")
 char opening_data_file[5] = "OP.D";
 
 DATA(0x800a6410, 0x4, ".bss")

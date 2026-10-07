@@ -126,11 +126,26 @@ class ClaimScanTests(unittest.TestCase):
             root = Path(directory)
             source = root / 'unit.c'
             source.write_text('#include "shared.inc"\n')
-            for declaration in ('DATA(0x80030000, 4, ".data")\nint datum;\n',
-                                'RODATA(0x80030000, 4)\n'):
+            for declaration, message in (('DATA(0x80030000, 4, ".data")\nint datum;\n',
+                                          'image-qualified DATA_AT'),
+                                         ('RODATA(0x80030000, 4)\n', 'must not own')):
                 (root / 'shared.inc').write_text(declaration)
-                with self.assertRaisesRegex(ValueError, 'must not own'):
+                with self.assertRaisesRegex(ValueError, message):
                     scan_source(source)
+
+    def test_fragment_data_at_claims_keep_their_fragment(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="kf-shared-") as directory:
+            root = Path(directory)
+            source = root / 'unit.c'
+            shared = root / 'shared.inc'
+            source.write_text('#include "shared.inc"\n')
+            shared.write_text('DATA_AT("OPEN", 0x80030000, 4, ".sbss")\n'
+                              'DATA_AT("END", 0x80031000, 4, ".sbss")\n'
+                              'static long datum;\n')
+            _claims, data = scan_source(source)
+            self.assertEqual([(d.image, d.va, d.name, d.source, d.line) for d in data],
+                             [("OPEN", 0x80030000, "datum", shared, 1),
+                              ("END", 0x80031000, "datum", shared, 2)])
 
     def _scan_data(self, text: str) -> tuple[DataClaim, ...]:
         with tempfile.TemporaryDirectory(prefix="kf-model-") as directory:

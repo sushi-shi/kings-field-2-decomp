@@ -299,7 +299,7 @@ def _bind_data_claims(
     """Validate one source's DATA() claims against the curated data identities."""
     data: list[Datum] = []
     for claim in claims:
-        where = f"{source}:{claim.line}"
+        where = f"{claim.source or source}:{claim.line}"
         identity = identities.get((image, claim.va))
         if identity is None:
             raise ValueError(
@@ -601,7 +601,8 @@ def load(
                 "kind": "data",
                 "name": datum.symbol,
                 "unit": name,
-                "source": source.as_posix(),
+                "source": (claim.source.resolve().relative_to(REPO).as_posix()
+                           if claim.source else source.as_posix()),
                 "line": claim.line,
                 "ordinal": ordinal,
             })

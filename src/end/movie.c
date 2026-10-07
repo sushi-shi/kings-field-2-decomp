@@ -6,6 +6,8 @@
 #include <kf/lib/movie_stream.h>
 #include <psyq/libc.h>
 
+#include "../lib/movie_stream_state.inc"
+
 /* The ending STR runs to frame 2136; the music fades out from frame 1336. */
 enum {
     ENDING_FADE_FRAME = 1336,
@@ -79,3 +81,5 @@ void ending_play_movie(void)
     display_current = &display_buffers[0];
     SsSeqStop(audio_sequence_id);
 }
+
+#include "../lib/movie_stream.inc"

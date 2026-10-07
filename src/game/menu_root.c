@@ -2067,8 +2067,10 @@ enum {
     KF_MENU_UPLOAD_SECOND_BUFFER_Y = 240,
     KF_MENU_CURSOR_FRAME_COUNT = 8
 };
-DATA(0x80064910, 0xc8, ".data")
-KfMenuLabelSuffix menu_equipment_category_labels[10] = {
+/* The controller copies the first MENU_CATEGORY_COUNT rows; nothing reads
+   the eleventh, which keeps the same glyph-row layout. */
+DATA(0x80064910, 0xdc, ".data")
+KfMenuLabelSuffix menu_equipment_category_labels[11] = {
     {{118, 119, -1, 0, 0, 0, 0, 0, 0, 0}},
     {{120, 121, -1, 0, 0, 0, 0, 0, 0, 0}},
     {{122, 123, 57, 124, -1, 0, 0, 0, 0, 0}},
@@ -2079,6 +2081,7 @@ KfMenuLabelSuffix menu_equipment_category_labels[10] = {
     {{0, 1, 18, 32, 230, -1, 0, 0, 0, 0}},
     {{0, 1, 18, 32, 231, -1, 0, 0, 0, 0}},
     {{58, 4125, 15, 39, -1, 0, 0, 0, 0, 0}},
+    {{5, 45, 4115, 88, 224, 225, 226, -1, 0, 0}},
 };
 DATA(0x800649ec, 0x14, ".data")
 KfMenuLabelSuffix menu_none_option_glyphs = {{89, 4172, 76, -1, 0, 0, 0, 0, 0, 0}};

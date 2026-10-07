@@ -11,7 +11,7 @@
 #include <kf/lib/math.h>
 #include <kf/game/animation.h>
 
-RODATA(0x80011484, 0x494)
+RODATA(0x80011484, 0x498)
 
 ADDRESS(0x80035504, 0x30)
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound)
@@ -892,6 +892,12 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     }
     return KF_FALSE;
 }
+
+/* Unreferenced in every retail build. The jump tables' .align 3 offsets on
+   both sides place this word at the end of the unit's .rdata, after the
+   marker-check table; GCC 2.5.7 emits an initialized C static const at its
+   declaration even when nothing reads it. */
+static const u32 map_object_unreferenced_rodata_word = 0;
 
 DATA(0x80067890, 0x10e, ".data")
 KfMapCellPattern map_object_cell_patterns

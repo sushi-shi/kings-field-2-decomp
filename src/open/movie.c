@@ -7,6 +7,8 @@
 #include <psyq/libc.h>
 #include <psyq/pad.h>
 
+#include "../lib/movie_stream_state.inc"
+
 /* The opening STR runs to frame 1085; its music replaces the title music. */
 enum {
     OPENING_LAST_FRAME = 1085,
@@ -90,3 +92,5 @@ void opening_play_movie(void)
     display_current = &display_buffers[0];
     SsSeqStop(audio_movie_sequence_id);
 }
+
+#include "../lib/movie_stream.inc"

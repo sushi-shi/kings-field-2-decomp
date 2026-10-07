@@ -75,11 +75,24 @@ DATA(0x8006da28, 0x4, ".sbss")
 static long memory_card_new_device_event;
 DATA(0x8006da30, 0x4, ".sbss")
 static long memory_card_error_event;
+/* Four more private small-BSS slots that no retail code reads or writes;
+   their types and roles are unresolved. */
+DATA(0x8006da38, 0x4, ".sbss")
+static long memory_card_unreferenced_word_0;
+DATA(0x8006da40, 0x4, ".sbss")
+static long memory_card_unreferenced_word_1;
+DATA(0x8006da48, 0x4, ".sbss")
+static long memory_card_unreferenced_word_2;
+DATA(0x8006da50, 0x4, ".sbss")
+static long memory_card_unreferenced_word_3;
 DATA(0x8006da58, 0x4, ".sbss")
 static u8 *memory_card_buffer;
 
-DATA(0x8006dc00, 0x4000, ".bss")
-static u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
+/* Retail reserves 0x3f00 bytes: LIBCD's ISO9660 statics start right after
+   them at 0x80071b00, so each KF_CARD_BLOCK_BYTES transfer through
+   memory_card_buffer runs 0x100 bytes into that library scratch. */
+DATA(0x8006dc00, 0x3f00, ".bss")
+static u8 memory_card_buffer_storage[0x3f00];
 /* LIBAPI's HwCARD, EvSpIOE, EvSpTIMOUT, EvSpNEW, EvSpERROR and EvMdNOINTR,
  * which the Psy-Q 3.0 kit's headers do not define. */
 #define CARD_EVENT_CLASS 0xf4000001

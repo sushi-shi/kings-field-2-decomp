@@ -65,7 +65,7 @@ DATA(0x800758f0, 0x4b0, ".bss")
 KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 
 DATA(0x80075da0, 0xc000, ".bss")
-static KfWeaponAssetBuffer player_weapon_asset_buffer;
+KfWeaponAssetBuffer player_weapon_asset_buffer;
 
 
 DATA(0x801984d0, 0x160, ".bss")

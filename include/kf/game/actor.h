@@ -17,8 +17,6 @@ enum {
     KF_ACTOR_CAPACITY = 200,
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
-    KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED = 0xf0,
-    KF_ACTOR_TARGET_ACTION_UNSELECTED = 0xff,
     KF_ACTOR_PITCH_TRACK_TARGET = -1,
     KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
     KF_ACTOR_POSITION_MODE_MASK = 0x3,
@@ -38,6 +36,43 @@ enum {
     KF_ACTOR_FLAG_CONE_TARGET_PRIORITY = 0x20000,
     KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000
 };
+
+/* Progress of the current target's action. actor_set_target starts at
+ * ENTRY; the behaviour case does its entry work and moves to
+ * RETARGET_BLOCKED, then RETARGET_ALLOWED lets actor_select_best_target pick
+ * another candidate. UNSELECTED follows a cleared target. */
+KF_ENUM_BEGIN(KfActorTargetActionState, u8)
+    KF_ACTOR_TARGET_ACTION_ENTRY = 0,
+    KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED = 0xf0,
+    KF_ACTOR_TARGET_ACTION_RETARGET_ALLOWED = 0xf1,
+    KF_ACTOR_TARGET_ACTION_UNSELECTED = 0xff
+KF_ENUM_END(KfActorTargetActionState)
+
+/*
+ * actor_move_horizontal_with_collision options. SLIDE retries a blocked step
+ * along one axis or a diagonal wall (SLIDE_KEEP_SPEED keeps the full step
+ * length); PROBE_LEDGE reports a drop ahead as KF_COLLISION_HIT_LEDGE and
+ * AVOID_LEDGE also refuses that step; NO_STEP_UP treats every shape hit as a
+ * wall; STORE_MOTION writes the final step back to the caller's motion.
+ */
+KF_ENUM_BEGIN(KfActorMoveFlags, s32)
+    KF_ACTOR_MOVE_NONE = 0,
+    KF_ACTOR_MOVE_SLIDE_KEEP_SPEED = 0x01,
+    KF_ACTOR_MOVE_SLIDE = 0x02,
+    KF_ACTOR_MOVE_AVOID_LEDGE = 0x04,
+    KF_ACTOR_MOVE_STORE_MOTION = 0x08,
+    KF_ACTOR_MOVE_NO_STEP_UP = 0x10,
+    KF_ACTOR_MOVE_PROBE_LEDGE = 0x20
+KF_ENUM_END(KfActorMoveFlags)
+KF_ENUM_FLAGS(KfActorMoveFlags, s32)
+
+/* actor_move_along_euler_angles: which part of the 3D step was blocked. */
+KF_ENUM_BEGIN(KfActorEulerMoveResult, s32)
+    KF_ACTOR_EULER_MOVE_CLEAR = 0,
+    KF_ACTOR_EULER_BLOCKED_HORIZONTAL = 1,
+    KF_ACTOR_EULER_BLOCKED_VERTICAL = 2
+KF_ENUM_END(KfActorEulerMoveResult)
+KF_ENUM_FLAGS(KfActorEulerMoveResult, s32)
 
 /* Activation state, independent of the slot policy (KF1 KfActorLifecycle). */
 KF_ENUM_BEGIN(KfActorLifecycle, u8)
@@ -633,7 +668,7 @@ typedef struct KfActor {
     KfAnimationClip animation_id;
     KfActorVerticalState vertical_motion_state;
     KfActorTargetType target_type;
-    u8 target_action_state;
+    KfActorTargetActionState target_action_state;
     KfActorTargetType previous_target_type;
     u8 unknown_11;
     u8 unknown_12;
@@ -858,29 +893,33 @@ void actor_set_animation_if_changed(KfAnimationClip animation_id);
 void actor_advance_animation_wrapped(KfActor *actor, s16 delta);
 void actor_advance_animation_clamped(KfActor *actor, s16 delta);
 KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase);
-s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_horizontal_with_collision(SVECTOR *motion,
+    KF_ENUM_PARAM(KfActorMoveFlags, s32) flags);
 void actor_play_target_sound(KfActor *actor);
-s32 actor_damp_horizontal_motion(s32 decay, s32 target);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_damp_horizontal_motion(s32 decay,
+    KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
 KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_with_collision(SVECTOR *motion);
-s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target);
-s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x, s32 target_y,
-                  s32 target_z, s32 trajectory_parameter,
-                  s32 trajectory_speed);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_along_heading(s16 angle, s32 speed, s32 step,
+    KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
+s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x,
+    s32 target_y, s32 target_z, s32 trajectory_parameter, s32 trajectory_speed);
 void actor_suspend_vertical_motion(void);
 b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance,
                   s32 y_offset, s32 angle_tolerance, u16 damage0,
                   u16 damage1, u16 damage2, u16 damage3);
-s32 actor_turn_and_move_along_heading(s16 angle, s32 speed, s32 range, s32 step,
-                  s32 mode, s32 target);
-s32 actor_turn_and_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
-                  s32 range, s32 step, s32 mode, s32 target);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_turn_and_move_along_heading(s16 angle, s32 speed,
+    s32 range, s32 step, s32 mode, KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
+KF_ENUM_PARAM(KfActorEulerMoveResult, s32) actor_turn_and_move_along_euler_angles(
+    const struct KfEulerAngles *angles, s32 speed, s32 range, s32 step, s32 mode,
+    KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
 s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 range,
-                  s16 reference_angle, s32 step, s32 mode, s32 target);
+    s16 reference_angle, s32 step, s32 mode, KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
 void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
                    s32 acceleration);
-void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first, KF_ENUM_PARAM(KfAnimationClip, s32) reverse,
-                                   KF_ENUM_PARAM(KfAnimationClip, s32) forward, KF_ENUM_PARAM(KfAnimationClip, s32) fast,
-                                   KF_ENUM_PARAM(KfAnimationClip, s32) slow, s32 phase_step);
+void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
+    KF_ENUM_PARAM(KfAnimationClip, s32) reverse, KF_ENUM_PARAM(KfAnimationClip, s32) forward,
+    KF_ENUM_PARAM(KfAnimationClip, s32) fast, KF_ENUM_PARAM(KfAnimationClip, s32) slow,
+    s32 phase_step);
 void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 damage_multiplier_tenths,
                                  s32 position_mode, ...);
 void actor_update_vertical_motion(void);

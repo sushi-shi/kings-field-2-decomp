@@ -31,6 +31,9 @@ KF_ENUM_BEGIN(KfCollisionHitFlags, u32)
     KF_COLLISION_HIT_ACTOR = 0x10,
     KF_COLLISION_HIT_MAP_OBJECT = 0x20,
     KF_COLLISION_HIT_PLAYER = 0x80,
+    /* actor_move_horizontal_with_collision: the floor ahead drops by more
+     * than 1100 (ledge probe requested by KfActorMoveFlags). */
+    KF_COLLISION_HIT_LEDGE = 0x100,
     KF_COLLISION_IMPACT_HOLD_ACTOR_ANIMATION = 0x10000,
     KF_COLLISION_IMPACT_COUNTS_AS_PHYSICAL = 0x20000,
     KF_COLLISION_IMPACT_OPTION_MASK = 0xf0000

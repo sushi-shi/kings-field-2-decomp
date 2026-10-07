@@ -84,7 +84,8 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_probe_collision_by_type(const VEC
 enum { EFFECT_FIXED_MAGIC_POWER = 5 };
 
 ADDRESS(0x8003fb94, 0x218)
-void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
+void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind,
+                                  KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
                    s32 radius, u16 power,
                    u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
@@ -138,7 +139,8 @@ int effect_magic_power(KfEffectRecord *effect)
 
 
 ADDRESS(0x8003fdd0, 0xe0)
-void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius, const VECTOR *position)
+void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius,
+                                const VECTOR *position)
 {
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
@@ -1087,7 +1089,8 @@ KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_move_probe(s32 scale, s32 max_le
     }
     /* Any hit maps to BLOCKED (-1). */
     return KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectMotionResult),
-                          -!!KF_ENUM_ENCODE(s32, effect_probe_collision_by_type(&record->position, probe_radius,
+                          -!!KF_ENUM_ENCODE(s32, effect_probe_collision_by_type(&record->position,
+                              probe_radius,
                                                                                probe_height_flags)));
 }
 
@@ -1226,7 +1229,8 @@ b32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
     spawn_position.vx = position->vx;
     spawn_position.vz = position->vz;
     spawn_position.vy = lower_bound;
-    effect_construct_record(10, KF_EFFECT_TYPE_NONE, KF_EFFECT_KIND_102, &spawn_position, &direction, arg1, arg2);
+    effect_construct_record(10, KF_EFFECT_TYPE_NONE, KF_EFFECT_KIND_102, &spawn_position, &direction, arg1,
+                            arg2);
     return KF_TRUE;
 }
 
@@ -1393,7 +1397,8 @@ void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg
         direction.vz = (rsin(angle) * radius) >> KF_FIXED12_BITS;
         angle += angle_step;
         count--;
-        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_8, &position, &direction,
+        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_8,
+                                &position, &direction,
                       effect_state.current_index, arg3);
     }
 }
@@ -1649,7 +1654,8 @@ void effect_update_dispatch(void)
         case KF_EFFECT_STAGE_TRACK: {
             collision = collision_query_world(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
-                                      record->scale_y, KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS);
+                                      record->scale_y,
+                                      KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS);
             effect_apply_current_magic_backstep(collision);
             collision_probe_floor_height(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
@@ -1697,7 +1703,8 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
-        if (collision_query_shapes_with_layer_sample(midpoint.vx, midpoint.vy, midpoint.vz, 5, 10) != KF_COLLISION_HIT_NONE ||
+        if (collision_query_shapes_with_layer_sample(midpoint.vx, midpoint.vy, midpoint.vz, 5,
+                                                     10) != KF_COLLISION_HIT_NONE ||
             collision_query_shapes_with_layer_sample(record->position.vx, record->position.vy,
                            record->position.vz, 5, 10) != KF_COLLISION_HIT_NONE) {
             record->type = KF_EFFECT_SLOT_FREE;
@@ -1788,7 +1795,8 @@ void effect_update_dispatch(void)
             }
             break;
         case KF_EFFECT_STAGE_FLIGHT:
-            if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200, 0) != KF_COLLISION_HIT_NONE) {
+            if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200,
+                                      0) != KF_COLLISION_HIT_NONE) {
                 record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_BURST;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
                                0x8000, 0x1000, 0x1000);
@@ -2026,7 +2034,8 @@ void effect_update_dispatch(void)
         {
             s32 distance;
 
-            record->animation_clip = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfAnimationClip), (initial_phase & 1) - 128);
+            record->animation_clip = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfAnimationClip),
+                                                    (initial_phase & 1) - 128);
             if (record->phase < 9) {
                 distance = fixed_vector3_length(
                     player_state.camera_position.vx - record->position.vx,
@@ -2050,7 +2059,8 @@ void effect_update_dispatch(void)
         random_direction.vx = (rand() >> 6) - 256;
         random_direction.vz = (rand() >> 6) - 256;
         random_direction.vy = -(rand() >> 7) - 128;
-        effect_construct_record(10, KF_EFFECT_TYPE_NONE, KF_EFFECT_KIND_101, &record->position, &random_direction,
+        effect_construct_record(10, KF_EFFECT_TYPE_NONE, KF_EFFECT_KIND_101, &record->position,
+                                &random_direction,
                        0xc00, -128, 15, 18, 10);
         record->rotation.vy += 64;
         break;
@@ -2142,7 +2152,8 @@ void effect_update_dispatch(void)
             KfEffectRecord *child;
 
             effect_play_spatial_sound(record, 0x18);
-            child = effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_12,
+            child = effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER,
+                                            KF_EFFECT_KIND_12,
                                   &record->position, NULL,
                                   &record->rotation);
             child->phase = 101;
@@ -2184,7 +2195,8 @@ void effect_update_dispatch(void)
         }
     kind100_miss:
         /* Retail passes this stack local without a visible write on this path. */
-        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_20, &record->position,
+        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_20,
+                                &record->position,
                       &local_direction);
         effect_play_spatial_sound(record, 0x18);
         record->type = KF_EFFECT_SLOT_FREE;
@@ -2314,7 +2326,8 @@ void effect_update_dispatch(void)
         record->direction.vy += 5;
     kind105_collision:
         collision = effect_collision_step(100, 0, 0);
-        if (collision != KF_COLLISION_HIT_NONE && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
+        if (collision != KF_COLLISION_HIT_NONE
+            && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -2494,10 +2507,12 @@ void effect_update_dispatch(void)
             next.vy = record->position.vy + record->direction.vy;
             next.vz = record->position.vz + record->direction.vz;
             collision = effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR);
-            if (collision != KF_COLLISION_HIT_NONE && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
+            if (collision != KF_COLLISION_HIT_NONE
+                && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 next.vx = record->position.vx;
                 next.vz = record->position.vz;
-                if ((effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR) & KF_COLLISION_HIT_SHAPE_MASK) == KF_COLLISION_HIT_NONE) {
+                if ((effect_probe_collision_by_type(&next, 140,
+                                                    KF_COLLISION_HEIGHT_CHECK_FLOOR) & KF_COLLISION_HIT_SHAPE_MASK) == KF_COLLISION_HIT_NONE) {
                     goto kind8_reset_axes;
                 }
                 if (record->direction.vy < 0) {
@@ -2611,7 +2626,8 @@ void effect_update_dispatch(void)
 
             effect_scatter_lower_bound(&record->position, 8, 400,
                            0x2000, 0x8000, 0x400);
-            child = effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_10,
+            child = effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER,
+                                            KF_EFFECT_KIND_10,
                                   &record->position, NULL,
                                   &record->rotation);
             child->phase = 2;
@@ -2989,7 +3005,8 @@ void effect_update_dispatch(void)
             }
             record->position.vy = bss_801c7540.collision_cache.heights.result;
         }
-        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_3, &record->position, NULL, 0);
+        effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_3,
+                                &record->position, NULL, 0);
         record->type = KF_EFFECT_SLOT_FREE;
         break;
     kind114_particles:
@@ -3037,7 +3054,8 @@ void effect_update_dispatch(void)
         }
         if (rand() >= 400) {
             collision = effect_collision_step(180, 0, -300);
-            if (collision == KF_COLLISION_HIT_NONE || (collision & (KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
+            if (collision == KF_COLLISION_HIT_NONE
+                || (collision & (KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
                 goto kind120_rotate;
             }
             record->position.vy = bss_801c7540.collision_cache.heights.result;

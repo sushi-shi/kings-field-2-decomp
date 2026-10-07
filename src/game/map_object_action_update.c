@@ -778,7 +778,8 @@ void map_object_update_actions(void)
                     reach = object_template->params.collision.reach;
                     height = object_template->params.collision.height;
                     kind = collision_query_world(position.vx, position.vy, position.vz,
-                                         reach, height, KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_PLAYER);
+                                         reach, height,
+                                         KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_PLAYER);
                     if (kind == KF_COLLISION_HIT_NONE) {
                         goto clear_action_trigger;
                     }

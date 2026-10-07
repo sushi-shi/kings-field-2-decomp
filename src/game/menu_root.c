@@ -642,9 +642,11 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     selected[MENU_CATEGORY_ACCESSORY] = KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id);
     selected[MENU_CATEGORY_EXTRA] = KF_ENUM_ENCODE(u8, player_state.equipped_extra_id);
     if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id);
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8,
+                                                                    player_state.secondary_item_shortcut_id);
     else
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_magic_shortcut_id);
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8,
+                                                                    player_state.secondary_magic_shortcut_id);
 
     entry = selected;
     for (i = 0; i < MENU_CATEGORY_COUNT; rows++, i++, entry++) {
@@ -776,25 +778,32 @@ void menu_equipment_category_controller(s32 category)
             player_equip_weapon(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result));
             break;
         case MENU_CATEGORY_ARM:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_ARM);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_ARM);
             break;
         case MENU_CATEGORY_HEAD:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_HEAD);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_HEAD);
             break;
         case MENU_CATEGORY_BODY:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_BODY);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_BODY);
             break;
         case MENU_CATEGORY_LEG:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_LEG);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_LEG);
             break;
         case MENU_CATEGORY_SHIELD:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_SHIELD);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_SHIELD);
             break;
         case MENU_CATEGORY_ACCESSORY:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_ACCESSORY);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_ACCESSORY);
             break;
         case MENU_CATEGORY_EXTRA:
-            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_EXTRA);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result),
+                                      KF_EQUIPMENT_SLOT_EXTRA);
             break;
         }
     }
@@ -939,8 +948,10 @@ void menu_item_magic_controller(void)
     }
 
     if (result != KF_MENU_RESULT_CANCELLED) {
-        player_set_secondary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), magic_ids[result]));
-        player_set_secondary_item_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), item_ids[result]));
+        player_set_secondary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind),
+                                                              magic_ids[result]));
+        player_set_secondary_item_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8),
+                                                             item_ids[result]));
     }
 }
 
@@ -1359,12 +1370,18 @@ void menu_options_controller(void)
         }
     }
 
-    player_state.audio_effects_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_EFFECTS_ROW]);
-    player_state.audio_music_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_MUSIC_ROW]);
-    player_state.hud_gauges_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_GAUGES_ROW]);
-    player_state.compass_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_COMPASS_ROW]);
-    player_state.item_preview_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW]);
-    player_state.walking_bob_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_WALKING_BOB_ROW]);
+    player_state.audio_effects_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                        selected[KF_MENU_OPTION_EFFECTS_ROW]);
+    player_state.audio_music_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                      selected[KF_MENU_OPTION_MUSIC_ROW]);
+    player_state.hud_gauges_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                     selected[KF_MENU_OPTION_GAUGES_ROW]);
+    player_state.compass_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                  selected[KF_MENU_OPTION_COMPASS_ROW]);
+    player_state.item_preview_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                       selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW]);
+    player_state.walking_bob_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption),
+                                                      selected[KF_MENU_OPTION_WALKING_BOB_ROW]);
 }
 
 ADDRESS(0x8001b554, 0x2e0)
@@ -3905,7 +3922,8 @@ void menu_draw_status_counters(s32 kind)
     amount.position.x = heading.position.x + 56;
     amount.position.y = heading.position.y;
     if (kind == 3)
-        menu_format_number(game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)], 7, 0, 6, amount.glyphs.codes);
+        menu_format_number(game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)], 7, 0, 6,
+                           amount.glyphs.codes);
     else
         menu_format_number(player_state.gold, 7, 0, 2, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);

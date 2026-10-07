@@ -478,14 +478,16 @@ typedef char kf_effect_current_index_offset[offsetof(KfEffectState, current_inde
 extern KfEffectState effect_state;
 
 int effect_magic_power(KfEffectRecord *effect);
-void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
+void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind,
+                                  KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
                    s32 radius, u16 power,
                    u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position);
 KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_probe_collision_by_type(const VECTOR *position, s32 radius,
     s32 height_flags);
-void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius, const VECTOR *position);
+void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius,
+                                const VECTOR *position);
 void effect_apply_current_magic_backstep(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind);
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
                                       s32 arg3, s32 arg4, s32 arg5);

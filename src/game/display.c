@@ -2982,8 +2982,9 @@ void asset_registry_select(u16 index)
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
 
 ADDRESS(0x80033b34, 0xc8)
-KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase,
-                                          s32 *keyframe_index, u32 *blend_fraction)
+KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset,
+    KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase, s32 *keyframe_index,
+    u32 *blend_fraction)
 {
     u32 *clip_table = ASSET_CLIP_TABLE(asset);
     KfAnimClip *clip = ASSET_CLIP(asset, clip_table[KF_ENUM_ENCODE(s32, clip_index)]);
@@ -3271,7 +3272,8 @@ allocate_vertices:
 }
 
 ADDRESS(0x80034344, 0x2a0)
-b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase, s32 vertex_index,
+b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase,
+                            s32 vertex_index,
                   SVECTOR *output)
 {
     KfAssetHeader *asset = resource_registry_get(asset_index);
@@ -3296,7 +3298,8 @@ b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32)
     tmd = ASSET_TMD(asset);
     if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
 copy_object_vertex:
-        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32, clip) & KF_ASSET_OBJECT_INDEX_MASK]);
+        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32,
+            clip) & KF_ASSET_OBJECT_INDEX_MASK]);
         *output = vertices[vertex_index];
         goto finished;
     }

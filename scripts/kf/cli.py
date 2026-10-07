@@ -166,6 +166,11 @@ def parser() -> argparse.ArgumentParser:
     )
     data_order.add_argument("--image", action="append", choices=tuple(IMAGE_ALIASES))
 
+    common_order = subs.add_parser(
+        "common-order", help="audit COMMON names against the retail XBSS bucket order"
+    )
+    common_order.add_argument("--image", action="append", choices=tuple(IMAGE_ALIASES))
+
     analyze = subs.add_parser(
         "analyze",
         help="refresh derived delinked and ELF comparison views",
@@ -337,6 +342,10 @@ def main(argv: list[str] | None = None) -> int:
             from scripts.kf.manifest import load
 
             return report(load(), _images(args.image))
+        if args.command == "common-order":
+            from scripts.kf.common_order import report as common_report
+
+            return common_report(_images(args.image) or tuple(IMAGE_ALIASES.values()))
         if args.command == "analyze":
             return _analyze(args)
         if args.command == "try":

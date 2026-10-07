@@ -643,8 +643,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     KfTargetGroup *group;
     KfTargetCandidate *candidate;
     KfActor *linked;
-    s32 total;
-    s32 applied;
+    s32 damage;
     s32 remaining;
     s32 mode;
     s32 kind;
@@ -676,23 +675,23 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    total = actor_magic_component_curve(power, magic_06, group->magic_component_divisors[0]);
-    total += actor_magic_component_curve(power, magic_08, group->magic_component_divisors[1]);
-    total += actor_magic_component_curve(power, magic_0a, group->magic_component_divisors[2]);
-    total += actor_magic_component_curve(power, magic_0c, group->magic_component_divisors[3]);
-    total += actor_magic_component_curve(power, magic_0e, group->magic_component_divisors[4]);
-    total += actor_magic_component_curve(power, magic_10, group->magic_component_divisors[5]);
-    total += actor_magic_component_curve(power, magic_12, group->magic_component_divisors[6]);
-    total += actor_magic_component_curve(power, magic_14, group->magic_component_divisors[7]);
-    if (total > 0x68db7) {
-        total = 0x68db7;
+    damage = actor_magic_component_curve(power, magic_06, group->magic_component_divisors[0]);
+    damage += actor_magic_component_curve(power, magic_08, group->magic_component_divisors[1]);
+    damage += actor_magic_component_curve(power, magic_0a, group->magic_component_divisors[2]);
+    damage += actor_magic_component_curve(power, magic_0c, group->magic_component_divisors[3]);
+    damage += actor_magic_component_curve(power, magic_0e, group->magic_component_divisors[4]);
+    damage += actor_magic_component_curve(power, magic_10, group->magic_component_divisors[5]);
+    damage += actor_magic_component_curve(power, magic_12, group->magic_component_divisors[6]);
+    damage += actor_magic_component_curve(power, magic_14, group->magic_component_divisors[7]);
+    if (damage > 0x68db7) {
+        damage = 0x68db7;
     }
-    applied = ((total * (u16)amount) / 5000 + 128) >> 4;
+    damage = ((damage * (u16)amount) / 5000 + 128) >> 4;
     /* Slot 18's target is unresolved; its O32 arguments are observed. */
     ((KfMagicRecipientCallback)state_8017d118.active_table[18])(
-        actor, applied, magic_06, magic_08, magic_0a, magic_0c,
+        actor, damage, magic_06, magic_08, magic_0a, magic_0c,
         magic_0e, magic_10, magic_12, magic_14);
-    if (applied == 0) {
+    if (damage == 0) {
         return;
     }
 
@@ -724,7 +723,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         }
     }
 
-    remaining = (u16)actor->health - applied;
+    remaining = (u16)actor->health - damage;
     if (remaining <= 0) {
         if (actor->health != 0 && kind == 0x10) {
             player_add_experience(group->experience_reward);
@@ -735,16 +734,15 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         target_slot = group->targets;
         remaining_slots = 15;
         do {
-            candidate = (target_slot++)->pointer;
-            if (candidate == NULL) {
+            KfTargetCandidate *reaction = (target_slot++)->pointer;
+            if (reaction == NULL) {
                 break;
             }
-            if (candidate->type == 2 && candidate->word_0c.value <= applied) {
-                u8 chance = candidate->word_02.damage_reaction.reaction_chance;
+            if (reaction->type == 2 && reaction->word_0c.value <= damage) {
+                s32 chance = reaction->word_02.damage_reaction.reaction_chance;
                 if (chance == 0xff || (rand() >> 7) < chance) {
-                    actor_set_target(actor, candidate);
-                    actor->health = remaining;
-                    goto update_motion;
+                    actor_set_target(actor, reaction);
+                    break;
                 }
             }
         } while (--remaining_slots != -1);
@@ -754,27 +752,26 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
 update_motion:
     if (actor->flags & KF_ACTOR_FLAG_LINKED) {
         KfActorStateGame *state = &actor_state;
+        KfTargetGroup *groups = state->target_groups;
         linked = &state->actors[actor->word_22.linked_actor_slot];
-        motion_divisor =
-            state->target_groups[linked->group_index].knockback_divisor;
+        motion_divisor = groups[linked->group_index].knockback_divisor;
     } else {
         motion_divisor = group->knockback_divisor;
     }
     if (position != NULL && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
         SVECTOR *motion = &actor->motion.vector;
-        s32 speed;
 
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - (actor->collision_height >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
         pitch_yaw_to_forward_vector(&angles, motion);
-        speed = SquareRoot0(SquareRoot0(applied << 11));
-        speed = (((speed << 10) / motion_divisor) << 5) / motion_divisor;
-        if (speed > 512) {
-            speed = 512;
+        damage = SquareRoot0(SquareRoot0(damage << 11));
+        damage = (((damage << 10) / motion_divisor) << 5) / motion_divisor;
+        if (damage > 512) {
+            damage = 512;
         }
-        vector3s_scale_shift12(speed, motion);
+        vector3s_scale_shift12(damage, motion);
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;

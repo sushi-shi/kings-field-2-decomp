@@ -129,7 +129,7 @@ KfAssetHeader	0x0c	0x04	morph_offsets_offset	u32	supported	asm;animation_sample_
 KfAssetHeader	0x10	0x04	clip_table_offset	u32	supported	asm;animation_select_keyframe;KF1 asset header	byte offset to animation clip offset table
 KfAudioVabSlot	0x00	0x02	vab_id	s16	supported	game/audio.h;audio_initialize_runtime;audio_queue_vab_stream	SDK VAB identifier; -1 denotes an empty slot
 KfAudioVabSlot	0x04	0x04	stream_slot	KfAudioVabStreamSlot *	supported	game/audio.h;audio_vab_stream_callback;audio_queue_vab_stream	stream buffer slot retained while loading a VAB
-KfAudioVabStreamSlot	0x00	0x02	state	s16	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
+KfAudioVabStreamSlot	0x00	0x02	state	KfAudioVabStreamState	supported	game/audio.h;audio_acquire_vab_stream_slot	stream transfer state
 KfAudioVabStreamSlot	0x04	0x04	buffer	u8 *	supported	game/audio.h;audio_vab_stream_callback	stream buffer pointer
 KfAudioVoiceHandle	0x00	0x02	voice_id	s16	supported	game/audio.h;GAME 0x80014124/0x80014364;audio_key_on	signed SPU voice handle; -1 marks free
 KfAudioVoiceHandle	0x02	0x02	sound_id	s16	supported	game/audio.h;GAME 0x800141c4/0x80014368;audio_key_on	signed sound ID; parameter indexing uses its low byte

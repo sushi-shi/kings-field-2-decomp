@@ -92,6 +92,55 @@ let
         cp "$malloc_obj" "$out/MALLOC.OBJ"
       '';
 
+      # Sony's Programmer Tool Runtime Library 3.0 CD (DTL-S2180, March 1995).
+      # Its PSXGRAPH CPE2X 1.3 is a later build than the kit's: it zeroes the
+      # EXEC save area and reserved words and sets s_addr to 801ffff0, as the
+      # retail PSX, OPEN and END headers record. Only this file is extracted.
+      psyqRuntime30Cd = pkgs.fetchurl {
+        name = "psx-runtime-library-3.0-dtl-s2180.zip";
+        url = "https://archive.org/download/ps1_sdks/Programmer%20Tool%20-%20Runtime%20Library%20Version%203.0%20%28Japan%29%20%28En%2CJa%29_DTL-S2180_redump.zip";
+        hash = "sha256-BxeoIBl9M35TaWy6uuShJS9eIDOWhtMMWSm+N/r07zc=";
+      };
+      psyqRuntime30Cpe2x = pkgs.runCommand "kings-field-2-runtime-3.0-cpe2x" {
+        nativeBuildInputs = with pkgs; [ coreutils python3 ];
+      } ''
+        mkdir -p "$out"
+        # Read PSXGRAPH/BIN/CPE2X.EXE from the MODE1/2352 track's ISO 9660 tree.
+        python3 - ${psyqRuntime30Cd} "$out/CPE2X.EXE" <<'PY'
+        import struct, sys, zipfile
+        with zipfile.ZipFile(sys.argv[1]) as archive:
+            name = next(n for n in archive.namelist() if n.endswith('.bin'))
+            raw = archive.read(name)
+        assert len(raw) % 2352 == 0
+        def sector(lba):
+            return raw[lba * 2352 + 16:lba * 2352 + 2064]
+        def read(lba, size):
+            return bytes().join(sector(lba + i) for i in range((size + 2047) // 2048))[:size]
+        def entries(lba, size):
+            data = read(lba, size)
+            position = 0
+            while position < len(data):
+                length = data[position]
+                if not length:
+                    position = (position // 2048 + 1) * 2048
+                    continue
+                record = data[position:position + length]
+                extent, extent_size = struct.unpack_from('<I', record, 2)[0], struct.unpack_from('<I', record, 10)[0]
+                identifier = record[33:33 + record[32]].decode('ascii').split(';')[0]
+                yield identifier, extent, extent_size
+                position += length
+        descriptor = sector(16)
+        assert descriptor[1:6] == b'CD001'
+        root = descriptor[156:156 + 34]
+        lba, size = struct.unpack_from('<I', root, 2)[0], struct.unpack_from('<I', root, 10)[0]
+        for part in ('PSXGRAPH', 'BIN', 'CPE2X.EXE'):
+            lba, size = next((e, n) for i, e, n in entries(lba, size) if i == part)
+        open(sys.argv[2], 'wb').write(read(lba, size))
+        PY
+        test "$(sha256sum "$out/CPE2X.EXE" | cut -d' ' -f1)" = \
+          "641d95ebe8131c3503407518cb6110ed311cb5f87943d866296660ab98938af2"
+      '';
+
       # Inherited from the King's Field (SLPS-00017) setup, where the Release
       # 2.5 ASPSX was software-key protected. This hash-pinned ASPSX 1.07
       # assembles all compiler output; its distinct provenance remains explicit
@@ -138,6 +187,6 @@ let
       };
 
 in {
-  inherit psyqSdk psyqMallocObj gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257 cc1psx260 cpppsx260
+  inherit psyqSdk psyqMallocObj psyqRuntime30Cpe2x gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257 cc1psx260 cpppsx260
     aspsxNative asmpsxNative;
 }

@@ -2,7 +2,13 @@
 #define KF_GAME_PLAYER_H
 
 #include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/collision_flags.h>
+#include <kf/game/item.h>
+#include <kf/game/magic.h>
+#include <kf/game/render_types.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 struct KfMagicRecord;
@@ -20,6 +26,13 @@ enum {
     KF_PLAYER_TRAINING_POINTS_PER_GAIN = 100
 };
 
+/* Player option bytes, their card copies and the options menu rows share
+ * off/on (KF1 KfPlayerOption). */
+KF_ENUM_BEGIN(KfPlayerOption, u8)
+    KF_PLAYER_OPTION_OFF = 0,
+    KF_PLAYER_OPTION_ON = 1
+KF_ENUM_END(KfPlayerOption)
+
 /* Vertical extent of the player in distance tests (King's Field's
  * KF_COLLISION_PLAYER_HEIGHT). */
 enum {
@@ -30,21 +43,32 @@ enum {
 
 enum {
     KF_PLAYER_CHARGE_FULL = 5000,
-    KF_PLAYER_MAGIC_ACTION_NONE = 0xff,
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
-enum {
+/* player_cap_status_components groups: FIRST caps curse and slow, SECOND
+ * caps darkness (either also clears poison), THIRD caps slow and clears
+ * paralysis. Member names stay WIP. */
+KF_ENUM_BEGIN(KfPlayerStatusMask, u32)
+    KF_PLAYER_STATUS_NONE = 0,
+    KF_PLAYER_STATUS_FIRST = 1,
+    KF_PLAYER_STATUS_SECOND = 2,
+    KF_PLAYER_STATUS_THIRD = 4
+KF_ENUM_END(KfPlayerStatusMask)
+KF_ENUM_FLAGS(KfPlayerStatusMask, u32)
+
+/* player_update_vertical_motion state (KF1 KfPlayerVerticalState). */
+KF_ENUM_BEGIN(KfPlayerVerticalState, u8)
     KF_PLAYER_VERTICAL_GROUNDED = 0,
     KF_PLAYER_VERTICAL_FALLING = 0x10,
     KF_PLAYER_VERTICAL_STEP_UP = 0x20,
     KF_PLAYER_VERTICAL_DEEP_FALL = 0x40,
     KF_PLAYER_VERTICAL_LANDING = 0x50
-};
+KF_ENUM_END(KfPlayerVerticalState)
 
 /* The byte at player +0xcd selects the camera, overlap, damage, and death
  * reaction paths in player_update_frame. */
-enum {
+KF_ENUM_BEGIN(KfPlayerReaction, u8)
     KF_PLAYER_REACTION_NORMAL = 0,
     KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW = 1,
     KF_PLAYER_REACTION_MAP_OBJECT_APPROACH = 2,
@@ -54,7 +78,7 @@ enum {
     KF_PLAYER_REACTION_MOVING_DAMAGE = 0x10,
     KF_PLAYER_REACTION_DEATH = 0x11,
     KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
-};
+KF_ENUM_END(KfPlayerReaction)
 
 /* Buttons that stay pressed when the player's motion is cleared; the
  * direction and shoulder buttons are dropped. */
@@ -94,11 +118,11 @@ typedef struct KfEquipmentRecord {
 
 typedef char kf_equipment_record_size[sizeof(KfEquipmentRecord) == 0x20 ? 1 : -1];
 typedef char kf_equipment_record_bonuses_offset[
-    (u32)&((KfEquipmentRecord *)0)->bonus_components == 2 ? 1 : -1];
+    offsetof(KfEquipmentRecord, bonus_components) == 2 ? 1 : -1];
 typedef char kf_equipment_record_hp_regen_offset[
-    (u32)&((KfEquipmentRecord *)0)->hp_regen_interval == 0x14 ? 1 : -1];
+    offsetof(KfEquipmentRecord, hp_regen_interval) == 0x14 ? 1 : -1];
 typedef char kf_equipment_record_hp_drain_offset[
-    (u32)&((KfEquipmentRecord *)0)->hp_drain_interval == 0x16 ? 1 : -1];
+    offsetof(KfEquipmentRecord, hp_drain_interval) == 0x16 ? 1 : -1];
 
 /* The fourth equipment defense component resists poison application. */
 enum { KF_PLAYER_COMBAT_POISON_RESISTANCE = 3 };
@@ -107,8 +131,8 @@ typedef struct KfWeaponRecordGame {
     u8 sound_id;
     u8 charge_rank;
     u8 unknown_02;
-    u8 initial_effect_id;
-    u8 release_effect_id;
+    KfEffectKind initial_effect_id;
+    KfEffectKind release_effect_id;
     u8 magic_shots;
     u16 attack_components[8];
     u16 hp_regen_interval;
@@ -137,11 +161,11 @@ typedef struct KfWeaponRecordGame {
 } KfWeaponRecordGame;
 
 typedef char kf_weapon_record_game_magic_window_offset[
-    (u32)&((KfWeaponRecordGame *)0)->magic_window_start == 0x20 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, magic_window_start) == 0x20 ? 1 : -1];
 typedef char kf_weapon_record_game_initial_vertex_offset[
-    (u32)&((KfWeaponRecordGame *)0)->initial_vertex_index == 0x3a ? 1 : -1];
+    offsetof(KfWeaponRecordGame, initial_vertex_index) == 0x3a ? 1 : -1];
 typedef char kf_weapon_record_game_final_vertex_offset[
-    (u32)&((KfWeaponRecordGame *)0)->final_vertex_index == 0x42 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, final_vertex_index) == 0x42 ? 1 : -1];
 
 typedef struct KfWeaponAssetBuffer {
     u8 bytes[0xc000];
@@ -161,7 +185,7 @@ typedef union KfPlayerViewRotationOffset {
 typedef char kf_player_view_rotation_offset_size[sizeof(KfPlayerViewRotationOffset) == 8 ? 1 : -1];
 
 typedef struct KfQueuedMagicAction {
-    u8 magic_id;
+    KfEffectKind magic_id;
     u8 casts_remaining;
     u8 repeat_interval;
     u8 countdown;
@@ -188,7 +212,7 @@ typedef struct KfPlayerPositionReaction {
 typedef char kf_player_position_reaction_size[
     sizeof(KfPlayerPositionReaction) == 0x14 ? 1 : -1];
 typedef char kf_player_position_reaction_position_offset[
-    (u32)&((KfPlayerPositionReaction *)0)->position == 4 ? 1 : -1];
+    offsetof(KfPlayerPositionReaction, position) == 4 ? 1 : -1];
 
 /* PadRead(1) buttons for this frame, and the previous frame's copy taken
  * after the player update. */
@@ -206,7 +230,7 @@ typedef union KfPlayerPadButtons {
 typedef char kf_player_pad_button_halves_size[
     sizeof(KfPlayerPadButtonHalves) == 4 ? 1 : -1];
 typedef char kf_player_pad_buttons_previous_offset[
-    (u32)&((KfPlayerPadButtons *)0)->halves.previous == 2 ? 1 : -1];
+    offsetof(KfPlayerPadButtons, halves.previous) == 2 ? 1 : -1];
 typedef char kf_player_pad_buttons_size[sizeof(KfPlayerPadButtons) == 4 ? 1 : -1];
 
 /* Whole-word tests of BUTTON in both frames: newly pressed, or held. */
@@ -226,11 +250,11 @@ typedef union KfPlayerReactionOverlay {
 typedef char kf_player_reaction_overlay_size[
     sizeof(KfPlayerReactionOverlay) == 0x14 ? 1 : -1];
 typedef char kf_player_reaction_view_rotation_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->view.rotation == 2 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, view.rotation) == 2 ? 1 : -1];
 typedef char kf_player_reaction_damage_motion_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->damage.motion == 8 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, damage.motion) == 8 ? 1 : -1];
 typedef char kf_player_reaction_position_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->position.position == 4 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, position.position) == 4 ? 1 : -1];
 
 typedef union KfPlayerMovementSpeed {
     u16 unsigned_value;
@@ -242,23 +266,23 @@ typedef char kf_player_movement_speed_size[
 
 typedef char kf_weapon_record_game_size[sizeof(KfWeaponRecordGame) == 0x44 ? 1 : -1];
 typedef char kf_weapon_record_game_hp_regen_offset[
-    (u32)&((KfWeaponRecordGame *)0)->hp_regen_interval == 0x16 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, hp_regen_interval) == 0x16 ? 1 : -1];
 typedef char kf_weapon_record_game_mp_regen_offset[
-    (u32)&((KfWeaponRecordGame *)0)->mp_regen_interval == 0x18 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, mp_regen_interval) == 0x18 ? 1 : -1];
 typedef char kf_weapon_record_game_normal_end_offset[
-    (u32)&((KfWeaponRecordGame *)0)->normal_attack_end_phase == 0x1e ? 1 : -1];
+    offsetof(KfWeaponRecordGame, normal_attack_end_phase) == 0x1e ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_end_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_end_phase == 0x28 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_end_phase) == 0x28 ? 1 : -1];
 typedef char kf_weapon_record_game_attacks_offset[
-    (u32)&((KfWeaponRecordGame *)0)->attack_components == 6 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, attack_components) == 6 ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_phase_step_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_phase_step == 0x24 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_phase_step) == 0x24 ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_window_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_window_start == 0x26 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_window_start) == 0x26 ? 1 : -1];
 typedef char kf_weapon_record_game_normal_sound_offset[
-    (u32)&((KfWeaponRecordGame *)0)->normal_attack_sound_phase == 0x2c ? 1 : -1];
+    offsetof(KfWeaponRecordGame, normal_attack_sound_phase) == 0x2c ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_sound_step_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_sound_phase_step == 0x32 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_sound_phase_step) == 0x32 ? 1 : -1];
 
 typedef struct KfPlayerMagicIdSequence {
     u8 effect_ids[12];
@@ -268,14 +292,14 @@ typedef struct KfPlayerMagicIdSequence {
 typedef char kf_player_magic_id_sequence_size[
     sizeof(KfPlayerMagicIdSequence) == 0x14 ? 1 : -1];
 typedef char kf_player_magic_attack_masks_offset[
-    (u32)&((KfPlayerMagicIdSequence *)0)->attack_masks == 0x0c ? 1 : -1];
+    offsetof(KfPlayerMagicIdSequence, attack_masks) == 0x0c ? 1 : -1];
 
 /* One magic spawn offset; its SVECTOR pad slot carries the effect kind. */
 typedef struct KfPlayerMagicSpawnFields {
     s16 x;
     s16 y;
     s16 z;
-    s16 effect_kind;
+    KF_ENUM_STORAGE(KfEffectKind, s16) effect_kind;
 } KfPlayerMagicSpawnFields;
 
 typedef union KfPlayerMagicSpawnRecord {
@@ -286,7 +310,7 @@ typedef union KfPlayerMagicSpawnRecord {
 typedef char kf_player_magic_spawn_record_size[
     sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
 typedef char kf_player_magic_spawn_effect_kind_offset[
-    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
+    offsetof(KfPlayerMagicSpawnRecord, fields.effect_kind) == 6 ? 1 : -1];
 
 typedef struct KfMapOccupancyLayer {
     u8 object_index;
@@ -299,9 +323,9 @@ typedef struct KfMapOccupancyLayer {
 typedef KfMapOccupancyLayer KfMapCellShape;
 typedef char kf_map_cell_shape_size[sizeof(KfMapCellShape) == 5 ? 1 : -1];
 typedef char kf_map_cell_orientation_offset[
-    (u32)&((KfMapCellShape *)0)->quarter_turns == 2 ? 1 : -1];
+    offsetof(KfMapCellShape, quarter_turns) == 2 ? 1 : -1];
 typedef char kf_map_cell_lighting_offset[
-    (u32)&((KfMapCellShape *)0)->lighting_index == 4 ? 1 : -1];
+    offsetof(KfMapCellShape, lighting_index) == 4 ? 1 : -1];
 
 typedef struct KfMapOccupancyCell {
     KfMapOccupancyLayer layer[2];
@@ -330,7 +354,7 @@ typedef struct KfCollisionCache {
     u8 unknown_08[2];
     u16 layer;
     KfCollisionHeights heights;
-    u32 flags;
+    KfCollisionHitFlags flags;
     s32 actor_index;
     s32 object_index;
     u8 unknown_2c[4];
@@ -341,11 +365,11 @@ typedef struct KfCollisionCache {
 
 typedef char kf_collision_cache_size[sizeof(KfCollisionCache) == 0x44 ? 1 : -1];
 typedef char kf_collision_cache_height_offset[
-    (u32)&((KfCollisionCache *)0)->heights == 0x0c ? 1 : -1];
+    offsetof(KfCollisionCache, heights) == 0x0c ? 1 : -1];
 typedef char kf_collision_cache_position_offset[
-    (u32)&((KfCollisionCache *)0)->position == 0x30 ? 1 : -1];
+    offsetof(KfCollisionCache, position) == 0x30 ? 1 : -1];
 typedef char kf_collision_cache_radius_offset[
-    (u32)&((KfCollisionCache *)0)->radius == 0x40 ? 1 : -1];
+    offsetof(KfCollisionCache, radius) == 0x40 ? 1 : -1];
 
 /* The resource transition loads 0xfa00 bytes of 80-by-80 map cells. Startup
  * clears the complete BSS region, whose later storage remains partly opaque. */
@@ -357,15 +381,17 @@ typedef struct KfBss801c7540 {
 } KfBss801c7540;
 
 typedef char kf_map_cells_loaded_size[
-    sizeof(((KfBss801c7540 *)0)->map_cells) == 0xfa00 ? 1 : -1];
+    sizeof(((KfBss801c7540 *)NULL)->map_cells) == 0xfa00 ? 1 : -1];
 typedef char kf_bss_801c7540_size[sizeof(KfBss801c7540) == 0x11844 ? 1 : -1];
 typedef char kf_collision_shape_bank_offset[
-    (u32)&((KfBss801c7540 *)0)->shape_bank == 0x10000 ? 1 : -1];
+    offsetof(KfBss801c7540, shape_bank) == 0x10000 ? 1 : -1];
 typedef char kf_collision_shape_bank_size[
-    sizeof(((KfBss801c7540 *)0)->shape_bank) == 0x1800 ? 1 : -1];
+    sizeof(((KfBss801c7540 *)NULL)->shape_bank) == 0x1800 ? 1 : -1];
 enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
-enum {
+/* player_set_equipment_slot target; NONE only refreshes the record
+ * pointers of the current equipment. */
+KF_ENUM_BEGIN(KfEquipmentSlot, u8)
     KF_EQUIPMENT_SLOT_HEAD = 0,
     KF_EQUIPMENT_SLOT_BODY = 1,
     KF_EQUIPMENT_SLOT_LEG = 2,
@@ -373,8 +399,12 @@ enum {
     KF_EQUIPMENT_SLOT_ARM = 4,
     KF_EQUIPMENT_SLOT_ACCESSORY = 5,
     KF_EQUIPMENT_SLOT_EXTRA = 6,
-    KF_EQUIPMENT_NONE = 0xff
-};
+    KF_EQUIPMENT_SLOT_NONE = 0xff
+KF_ENUM_END(KfEquipmentSlot)
+
+/* Encoded empty byte of the menu's equipped item/magic label rows (lane B
+ * menu locals, which mix KfObjectId and KfEffectKind values). */
+enum { KF_EQUIPMENT_NONE = 0xff };
 
 /*
  * The player object: game_main_loop clears 0x160 bytes at its base and the
@@ -432,11 +462,11 @@ typedef struct KfPlayerState {
     s16 weapon_attack_window;
     s16 weapon_next_sound_phase;
     u8 weapon_magic_shots_remaining;
-    u8 primary_magic_shortcut_id;
-    u8 secondary_magic_shortcut_id;
-    u8 secondary_item_shortcut_id;
-    u8 weapon_attack_mode;
-    u8 equipped_weapon_id;
+    KfEffectKind primary_magic_shortcut_id;
+    KfEffectKind secondary_magic_shortcut_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
+    KfAnimationClip weapon_attack_mode;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
     b8 weapon_attack_fully_charged;
@@ -448,22 +478,22 @@ typedef struct KfPlayerState {
     KfEquipmentRecord *equipped_shield_record;
     KfEquipmentRecord *equipped_accessory_record;
     KfEquipmentRecord *equipped_extra_record;
-    u8 equipped_head_id;
-    u8 equipped_body_id;
-    u8 equipped_arm_id;
-    u8 equipped_leg_id;
-    u8 equipped_shield_id;
-    u8 equipped_accessory_id;
-    u8 equipped_extra_id;
-    u8 audio_effects_enabled;
-    u8 audio_music_enabled;
-    u8 hud_gauges_enabled;
-    u8 compass_enabled;
-    u8 item_preview_enabled;
-    u8 walking_bob_enabled;
-    u8 death_state;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_head_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_body_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_arm_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_leg_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_shield_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_accessory_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_extra_id;
+    KfPlayerOption audio_effects_enabled;
+    KfPlayerOption audio_music_enabled;
+    KfPlayerOption hud_gauges_enabled;
+    KfPlayerOption compass_enabled;
+    KfPlayerOption item_preview_enabled;
+    KfPlayerOption walking_bob_enabled;
+    KfPlayerReaction death_state;
     u8 unknown_ce[2];
-    u8 vertical_motion_state;
+    KfPlayerVerticalState vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
     b8 fatal_fall_latch;
     VECTOR camera_position;
@@ -499,47 +529,47 @@ typedef struct KfPlayerState {
 
 typedef char kf_player_state_size[sizeof(KfPlayerState) == 0x160 ? 1 : -1];
 typedef char kf_player_movement_speed_adjustment_decay_latch_offset[
-    (u32)&((KfPlayerState *)0)->movement_speed_adjustment_decay_latch == 0x0d ? 1 : -1];
+    offsetof(KfPlayerState, movement_speed_adjustment_decay_latch) == 0x0d ? 1 : -1];
 typedef char kf_player_lifecycle_refresh_offset[
-    (u32)&((KfPlayerState *)0)->force_actor_lifecycle_refresh == 0x0a ? 1 : -1];
+    offsetof(KfPlayerState, force_actor_lifecycle_refresh) == 0x0a ? 1 : -1];
 typedef char kf_player_primary_magic_shortcut_id_offset[
-    (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
+    offsetof(KfPlayerState, primary_magic_shortcut_id) == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
-    (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
+    offsetof(KfPlayerState, combat_components) == 0x42 ? 1 : -1];
 typedef char kf_player_magic_attack_mask_cursor_offset[
-    (u32)&((KfPlayerState *)0)->magic_attack_mask_cursor == 0x78 ? 1 : -1];
+    offsetof(KfPlayerState, magic_attack_mask_cursor) == 0x78 ? 1 : -1];
 typedef char kf_player_weapon_next_sound_phase_offset[
-    (u32)&((KfPlayerState *)0)->weapon_next_sound_phase == 0x94 ? 1 : -1];
+    offsetof(KfPlayerState, weapon_next_sound_phase) == 0x94 ? 1 : -1];
 typedef char kf_player_selected_magic_record_offset[
-    (u32)&((KfPlayerState *)0)->selected_magic_record == 0x7c ? 1 : -1];
+    offsetof(KfPlayerState, selected_magic_record) == 0x7c ? 1 : -1];
 typedef char kf_player_equipped_head_record_offset[
-    (u32)&((KfPlayerState *)0)->equipped_head_record == 0xa4 ? 1 : -1];
+    offsetof(KfPlayerState, equipped_head_record) == 0xa4 ? 1 : -1];
 typedef char kf_player_equipped_head_id_offset[
-    (u32)&((KfPlayerState *)0)->equipped_head_id == 0xc0 ? 1 : -1];
+    offsetof(KfPlayerState, equipped_head_id) == 0xc0 ? 1 : -1];
 typedef char kf_player_death_state_offset[
-    (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
+    offsetof(KfPlayerState, death_state) == 0xcd ? 1 : -1];
 typedef char kf_player_queued_magic_action_offset[
-    (u32)&((KfPlayerState *)0)->queued_magic_action == 0xd1 ? 1 : -1];
+    offsetof(KfPlayerState, queued_magic_action) == 0xd1 ? 1 : -1];
 typedef char kf_player_fatal_fall_latch_offset[
-    (u32)&((KfPlayerState *)0)->fatal_fall_latch == 0xd5 ? 1 : -1];
+    offsetof(KfPlayerState, fatal_fall_latch) == 0xd5 ? 1 : -1];
 typedef char kf_player_camera_position_offset[
-    (u32)&((KfPlayerState *)0)->camera_position == 0xd8 ? 1 : -1];
+    offsetof(KfPlayerState, camera_position) == 0xd8 ? 1 : -1];
 typedef char kf_player_frame_displacement_offset[
-    (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
+    offsetof(KfPlayerState, frame_displacement) == 0xe8 ? 1 : -1];
 typedef char kf_player_vertical_motion_pitch_offset[
-    (u32)&((KfPlayerState *)0)->vertical_motion_pitch_offset == 0x110 ? 1 : -1];
+    offsetof(KfPlayerState, vertical_motion_pitch_offset) == 0x110 ? 1 : -1];
 typedef char kf_player_camera_yaw_roll_offsets_offset[
-    (u32)&((KfPlayerState *)0)->camera_yaw_roll_offsets == 0x112 ? 1 : -1];
+    offsetof(KfPlayerState, camera_yaw_roll_offsets) == 0x112 ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
-    (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
+    offsetof(KfPlayerState, reaction) == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[
-    (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
+    offsetof(KfPlayerState, movement_speed) == 0x12e ? 1 : -1];
 typedef char kf_player_pad_buttons_offset[
-    (u32)&((KfPlayerState *)0)->pad_buttons == 0x140 ? 1 : -1];
+    offsetof(KfPlayerState, pad_buttons) == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[
-    (u32)&((KfPlayerState *)0)->turn_step_limit == 0x148 ? 1 : -1];
+    offsetof(KfPlayerState, turn_step_limit) == 0x148 ? 1 : -1];
 typedef char kf_player_movement_step_limit_offset[
-    (u32)&((KfPlayerState *)0)->movement_step_limit == 0x144 ? 1 : -1];
+    offsetof(KfPlayerState, movement_step_limit) == 0x144 ? 1 : -1];
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;
@@ -548,7 +578,7 @@ extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 extern KfEquipmentRecord player_equipment_records[KF_EQUIPMENT_RECORD_COUNT];
 
-s32 player_move_horizontal(s32 heading, s32 distance);
+b32 player_move_horizontal(s32 heading, s32 distance);
 void player_recalculate_combat_stats(void);
 void player_increment_physical_power_training(void);
 void player_increment_magic_training(void);
@@ -564,10 +594,21 @@ void player_update_collision_bounds(void);
 void player_reload_map_resources(s32 first, s32 second, s32 third, s32 fourth,
                    s32 fifth, s32 optional_resource);
 s32 player_charge_gain_for_rank(s32 value, s32 rank);
-void player_add_equipment_bonuses(s32 item_id);
+void player_add_equipment_bonuses(KF_ENUM_PARAM(KfObjectId, s32) item_id);
 s32 player_calculate_damage_component(s32 base_power, s32 defense, s32 attack);
 void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction_flags);
-void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
+/* player_apply_damage's flags word (actor attacks, magic records): the low
+ * nibble is a status kind plus one, which the status-guard accessory can
+ * clear, and bits 6 and 7 select the strong and rotation-only reactions
+ * of player_apply_damage_reaction. */
+enum {
+    KF_PLAYER_DAMAGE_STATUS_MASK = 0xf,
+    KF_PLAYER_DAMAGE_GUARDED_STATUS = 0x7,
+    KF_PLAYER_DAMAGE_REACTION_STRONG = 0x40,
+    KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY = 0x80
+};
+
+void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 damage_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 scale_q16, u16 multiplier_tenths,
                    const VECTOR *origin);
@@ -576,26 +617,26 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 damage8, s32 scale_and_flags, u16 record_id);
 void player_adjust_hp_unclamped(s32 delta);
-void player_cap_status_components(u32 mask);
+void player_cap_status_components(KfPlayerStatusMask mask);
 void player_death_begin(const SVECTOR *rotation);
 void player_adjust_hp(s32 delta);
 void player_adjust_mp(s32 delta);
-void player_set_primary_magic_shortcut_id(u8 value);
-void player_set_secondary_magic_shortcut_id(u8 value);
-void player_set_secondary_item_shortcut_id(u8 value);
-void player_set_equipment_slot(u8 item_id, u8 slot);
-void player_equip_weapon(u8 weapon_id);
+void player_set_primary_magic_shortcut_id(KfEffectKind value);
+void player_set_secondary_magic_shortcut_id(KfEffectKind value);
+void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value);
+void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, KfEquipmentSlot slot);
+void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id);
 struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);
-void player_dispatch_magic_effect(s32 effect_id, ...);
+void player_dispatch_magic_effect(KF_ENUM_PARAM(KfEffectKind, s32) effect_id, ...);
 void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
 void player_update_weapon_attack(void);
-void player_select_magic_action(s32 magic_id);
+void player_select_magic_action(KF_ENUM_PARAM(KfEffectKind, s32) magic_id);
 void player_update_vertical_motion(void);
-s32 player_move_reaction_with_collision(void);
+b32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
-b32 item_id_is_71_to_80(s32 value);
+b32 item_id_is_71_to_80(KF_ENUM_PARAM(KfObjectId, s32) value);
 void player_update_actions_and_charge(void);
 void player_render_frame_and_release_pool(void);
 void player_begin_view_reaction(u8 map_object_index);
@@ -605,15 +646,15 @@ void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR 
 void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);
 void player_update_frame(void);
-void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+void render_frames_with_color_overlay(KF_ENUM_PARAM(KfColorOverlayControl, s32) mode, s32 phase, s32 last_phase,
     s32 step);
-void player_begin_weapon_attack(s32 mode);
+void player_begin_weapon_attack(KF_ENUM_PARAM(KfAnimationClip, s32) mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);
 void player_reset_view(void);
 void player_restore_equipment_effects(void);
 void player_sync_position_to_map(void);
-s32 player_meets_weapon_magic_power_requirement(void);
+b32 player_meets_weapon_magic_power_requirement(void);
 void player_initialize_state(void);
 void game_initialize_session(void);
 

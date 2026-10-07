@@ -7,14 +7,14 @@
 RODATA(0x80010000, 0x35)
 
 DATA(0x8001024c, 0xc, ".data")
-char *overlay_path_table[3] = {
+const char *overlay_path_table[3] = {
     "cdrom:OPEN.EXE;1",
     "cdrom:GAME.EXE;1",
     "cdrom:END.EXE;1",
 };
 
 DATA(0x80010260, 0x4, ".sdata")
-long overlay_index = 0;
+long overlay_index = KF_OVERLAY_OPEN;
 
 /* Fixed mailbox byte that GAME.EXE writes to select the next overlay.
  * Unresolved: how the original spelled or obtained this address. */

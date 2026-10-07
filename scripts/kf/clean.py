@@ -24,7 +24,7 @@ from scripts.kf.retail import IMAGE_LAYOUTS
 MARKER = '.kf-clean-generated'
 PROVENANCE = 'Generated-By: kf clean'
 TEMPLATE = 'scripts/kf/clean_project/'
-CLAIMS = {'ADDRESS': 2, 'ADDRESS_AT': 3, 'DATA': 2, 'RODATA': 2}
+CLAIMS = {'ADDRESS': 2, 'ADDRESS_AT': 3, 'DATA': 3, 'DATA_AT': 4, 'RODATA': 2, 'SDATA': 2}
 TYPE_MACROS = {
     'KF_ENUM_BEGIN', 'KF_ENUM_END', 'KF_ENUM_PROMOTED', 'KF_ENUM_STORAGE',
     'KF_ENUM_PARAM', 'KF_ENUM_COUNTER', 'KF_ENUM_FLAGS', 'KF_ENUM_DECODE', 'KF_ENUM_ENCODE',

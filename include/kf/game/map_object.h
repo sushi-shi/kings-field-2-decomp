@@ -1,25 +1,77 @@
 #ifndef KF_GAME_MAP_OBJECT_H
 #define KF_GAME_MAP_OBJECT_H
 
+#include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
 #include <kf/game/audio.h>
+#include <kf/game/item.h>
 #include <kf/game/pool.h>
+#include <kf/game/render_types.h>
+#include <kf/game/notify_types.h>
+
+/* Template byte 0 selects an object's operation. The loader copies most
+ * selectors unchanged into the runtime action byte (GAME 0x80035a74 jump
+ * table, sb +4), which map_object_update_actions dispatches; the interaction
+ * and world-state switches read the template selector directly. Definition-
+ * only and runtime-only operations therefore share one namespace. Names
+ * follow the update/interaction code (and KF1's numbering where it agrees:
+ * lift door 2, hinged container 8, item container 9, screen image 13, save
+ * point 14, item pickup 64); members without behavioural evidence keep
+ * their decimal encoding as a WIP name. */
+KF_ENUM_BEGIN(KfMapObjectOperation, u8)
+    KF_MAP_OBJECT_OP_0 = 0,
+    KF_MAP_OBJECT_OP_LIFT_DOOR = 2,
+    KF_MAP_OBJECT_OP_SIGNAL_DOOR = 3,
+    KF_MAP_OBJECT_OP_HINGE = 4,
+    KF_MAP_OBJECT_OP_ANIMATED_CONTAINER = 5,
+    KF_MAP_OBJECT_OP_HINGED_CONTAINER = 8,
+    KF_MAP_OBJECT_OP_ITEM_CONTAINER = 9,
+    KF_MAP_OBJECT_OP_11 = 11,
+    KF_MAP_OBJECT_OP_SCREEN_IMAGE = 13,
+    KF_MAP_OBJECT_OP_SAVE_POINT = 14,
+    KF_MAP_OBJECT_OP_15 = 15,
+    KF_MAP_OBJECT_OP_BOB = 16,
+    KF_MAP_OBJECT_OP_17 = 17,
+    KF_MAP_OBJECT_OP_RESTORE_POINT = 18,
+    KF_MAP_OBJECT_OP_GROW_ITEM = 19,
+    KF_MAP_OBJECT_OP_HIDDEN_SCREEN_IMAGE = 20,
+    KF_MAP_OBJECT_OP_HIDDEN_ITEM_CONTAINER = 21,
+    KF_MAP_OBJECT_OP_SLIDING_CONTAINER = 22,
+    KF_MAP_OBJECT_OP_AMBIENT_SOUND = 31,
+    KF_MAP_OBJECT_OP_PLAYER_REACTION = 32,
+    KF_MAP_OBJECT_OP_33 = 33,
+    KF_MAP_OBJECT_OP_WARP = 34,
+    KF_MAP_OBJECT_OP_48 = 48,
+    KF_MAP_OBJECT_OP_ITEM_PICKUP = 64,
+    KF_MAP_OBJECT_OP_80 = 80,
+    KF_MAP_OBJECT_OP_81 = 81,
+    KF_MAP_OBJECT_OP_SWITCH = 83,
+    KF_MAP_OBJECT_OP_PATTERN_GATE = 84,
+    KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE = 88,
+    KF_MAP_OBJECT_OP_LAYER_FADE = 89,
+    KF_MAP_OBJECT_OP_95 = 95,
+    KF_MAP_OBJECT_OP_FALL_AND_TIP = 96,
+    KF_MAP_OBJECT_OP_FALL_AND_SPIN = 97,
+    KF_MAP_OBJECT_OP_BOUNCE = 98,
+    KF_MAP_OBJECT_OP_OFFSET_MOTION = 112,
+    KF_MAP_OBJECT_OP_160 = 160,
+    KF_MAP_OBJECT_OP_161 = 161,
+    KF_MAP_OBJECT_OP_162 = 162,
+    KF_MAP_OBJECT_OP_163 = 163,
+    KF_MAP_OBJECT_OP_164 = 164,
+    KF_MAP_OBJECT_OP_165 = 165,
+    KF_MAP_OBJECT_OP_RESOURCE_TRIGGER = 224,
+    KF_MAP_OBJECT_OP_REGION_TRIGGER = 225,
+    KF_MAP_OBJECT_OP_SCENE_INSPECT = 226,
+    KF_MAP_OBJECT_OP_ANIMATED_MODEL = 240,
+    KF_MAP_OBJECT_OP_NONE = 255
+KF_ENUM_END(KfMapObjectOperation)
 
 enum {
-    KF_MAP_OBJECT_ACTION_NONE = 0xff,
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
-    KF_MAP_OBJECT_ACTION_AMBIENT_SOUND = 0x1f,
-    KF_MAP_OBJECT_ACTION_PLAYER_REACTION = 0x20,
-    KF_MAP_OBJECT_ACTION_FALL_AND_TIP = 0x60,
-    KF_MAP_OBJECT_ACTION_FALL_AND_SPIN = 0x61,
-    KF_MAP_OBJECT_ACTION_BOUNCE = 0x62,
-    KF_MAP_OBJECT_MOTION_ACTION = 0x70,
-    KF_MAP_OBJECT_ACTION_REGION_TRIGGER = 0xe1,
-    KF_MAP_OBJECT_ACTION_ANIMATED_MODEL = 0xf0,
-    KF_MAP_OBJECT_ID_NONE = 0xff,
     KF_MAP_OBJECT_INDEX_NONE = 0xffff,
-    KF_MAP_OBJECT_PLACEMENT_ID_NONE = 0xffff,
-    KF_MAP_OBJECT_STATIC_OBJECT_ZERO = 0x80,
     KF_MAP_OBJECT_SPAWN_SEQUENCE_MODULUS = 0x10000,
     KF_MAP_OBJECT_TEMPLATE_CAPACITY = 320,
     KF_MAP_OBJECT_PLACED_COUNT = 0x15e,
@@ -27,25 +79,156 @@ enum {
     KF_MAP_OBJECT_DEFINITION_DROP_FIRST = 0x168,
     KF_MAP_OBJECT_PLACEMENT_DROP_FIRST = 0x172,
     KF_MAP_OBJECT_EFFECT_POOL_SIZE = 10,
-    KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
-    KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1,
-    KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
-    KF_MAP_OBJECT_COLLISION_KIND_HINGE = 4,
+    /* Scene events spawn into the last sixteen slots. */
+    KF_MAP_OBJECT_EVENT_POOL_FIRST = 0x17c,
+    KF_MAP_OBJECT_EVENT_POOL_SIZE = 0x10,
     KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
 };
 
+/* Template collision byte, copied into the object: NEAR_CLIP picks the
+ * clipping enqueue near the camera, RADIUS_VISIBLE tests a cell radius
+ * instead of the object's own cell, ANY_ANGLE accepts interactions from
+ * any bearing and UNBIASED_DEPTH selects KF_RENDER_QUEUE_TEXTURED_UNBIASED.
+ * The renderer sets RENDERED for objects drawn this frame. */
+KF_ENUM_BEGIN(KfMapObjectFlags, u8)
+    KF_MAP_OBJECT_FLAGS_NONE = 0,
+    KF_MAP_OBJECT_FLAG_NEAR_CLIP = 0x01,
+    KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE = 0x02,
+    KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
+    KF_MAP_OBJECT_FLAG_UNBIASED_DEPTH = 0x20,
+    KF_MAP_OBJECT_FLAG_RENDERED = 0x80
+KF_ENUM_END(KfMapObjectFlags)
+KF_ENUM_FLAGS(KfMapObjectFlags, u8)
+
+/* extra_40.bytes[0] one-shot latch of camera-region and trigger actions. */
 enum {
-    KF_MAP_OBJECT_RENDER_TEXTURED = 0xff,
-    KF_MAP_OBJECT_LIGHTING_OVERRIDE_NONE = 0xff
+    KF_MAP_OBJECT_LATCH_CLEAR = 0,
+    KF_MAP_OBJECT_LATCH_SET = 1
 };
 
+/* Action 84 pattern_flags: VARIANT picks the pattern of the pair, ONCE keeps
+ * the pattern applied; the pattern is applied ON (variant 1) and removed OFF
+ * (variant 0) of map_object_cell_patterns rows. */
 enum {
+    KF_MAP_OBJECT_PATTERN_VARIANT = 1,
+    KF_MAP_OBJECT_PATTERN_ONCE = 2,
+    KF_MAP_OBJECT_PATTERN_OFF = 0,
+    KF_MAP_OBJECT_PATTERN_ON = 1
+};
+
+/* Region-action operation byte: low nibble selects the operation, REPEAT
+ * keeps the latch open. */
+enum {
+    KF_MAP_OBJECT_REGION_CALLBACK = 0,
+    KF_MAP_OBJECT_REGION_SIGNAL = 1,
+    KF_MAP_OBJECT_REGION_SET_CONTROL = 2,
+    KF_MAP_OBJECT_REGION_OPERATION_MASK = 0x0f,
+    KF_MAP_OBJECT_REGION_REPEAT = 0x80
+};
+
+/* map_object_spawn_effect pool: an actor's own placement drop or its target
+ * group's definition drop. */
+KF_ENUM_BEGIN(KfMapObjectDropSource, u8)
+    KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
+    KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1
+KF_ENUM_END(KfMapObjectDropSource)
+
+/* Action 83: ONCE runs forward and stops, ONCE_AND_RETURN runs forward and
+ * falls back; the toggle pair alternates, CLOSED running forward to OPEN and
+ * OPEN running back to CLOSED. Only the toggle states are saved. */
+KF_ENUM_BEGIN(KfMapObjectTransitionMode, u8)
+    KF_MAP_OBJECT_TRANSITION_ONCE = 0,
+    KF_MAP_OBJECT_TRANSITION_ONCE_AND_RETURN = 1,
+    KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED = 2,
+    KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN = 3
+KF_ENUM_END(KfMapObjectTransitionMode)
+
+/* Action 88 copies its alternate cells, then REVERT fades back and restores
+ * the source cells while HOLD fades in and keeps them; a marker signal
+ * toggles the mode. */
+KF_ENUM_BEGIN(KfMapObjectCellCopyMode, u8)
+    KF_MAP_OBJECT_CELL_COPY_REVERT = 0,
+    KF_MAP_OBJECT_CELL_COPY_HOLD = 1
+KF_ENUM_END(KfMapObjectCellCopyMode)
+
+/* tail.fields.unknown_38 interaction flags: set_property arms all of them,
+ * event masks clear or set individual bits, pickups require ARMED. */
+enum {
+    KF_MAP_OBJECT_EVENT_DISARMED = 0,
+    KF_MAP_OBJECT_EVENT_ARMED = 0xff
+};
+
+/* Action 81 collision probe: a marker signal toggles RUNNING; region width
+ * NEVER disables the camera trigger and ALWAYS skips the region test. */
+enum {
+    KF_MAP_OBJECT_PROBE_STOPPED = 0,
+    KF_MAP_OBJECT_PROBE_RUNNING = 0xff,
+    KF_MAP_OBJECT_REGION_NEVER = 0xfe,
+    KF_MAP_OBJECT_REGION_ALWAYS = 0xff
+};
+
+/* Template byte 1, the pickup category of a dropped or placed object: a drop
+ * tips over (0x10/0x13/0x16), spins (0x17) or bounces (the rest); GOLD is a
+ * gold pile whose pickup adds its amount. Clearing a 0x10 object's layer
+ * stands it up. Other members keep their encoding as a WIP name. */
+KF_ENUM_BEGIN(KfMapObjectKind, u8)
+    KF_MAP_OBJECT_KIND_10 = 0x10,
+    KF_MAP_OBJECT_KIND_11 = 0x11,
+    KF_MAP_OBJECT_KIND_12 = 0x12,
+    KF_MAP_OBJECT_KIND_13 = 0x13,
+    KF_MAP_OBJECT_KIND_14 = 0x14,
+    KF_MAP_OBJECT_KIND_15 = 0x15,
+    KF_MAP_OBJECT_KIND_16 = 0x16,
+    KF_MAP_OBJECT_KIND_17 = 0x17,
+    KF_MAP_OBJECT_KIND_18 = 0x18,
+    KF_MAP_OBJECT_KIND_19 = 0x19,
+    KF_MAP_OBJECT_KIND_GOLD = 0x20
+KF_ENUM_END(KfMapObjectKind)
+
+/* Marker bytes hold the key-item or signal id an object waits for; a
+ * consumed marker becomes CLEARED and a fired event TRIGGERED. Signal ids
+ * 150..198 come in pairs that differ in bit 0. Doors read markers from
+ * OPEN_SIDES_FIRST up as side bits: FRONT opens facing the door's yaw and
+ * BACK from behind, so a cleared marker opens from both sides. */
+enum {
+    KF_MAP_OBJECT_MARKER_TRIGGERED = 0xfe,
+    KF_MAP_OBJECT_MARKER_CLEARED = 0xff,
+    KF_MAP_OBJECT_MARKER_PAIR_MASK = 0xfe,
+    KF_MAP_OBJECT_MARKER_OPEN_SIDES_FIRST = 0xfc,
+    KF_MAP_OBJECT_MARKER_OPEN_FRONT = 1,
+    KF_MAP_OBJECT_MARKER_OPEN_BACK = 2
+};
+
+/* map_object_check_and_consume_marker: the object takes no marker, the
+ * marker matched and was consumed, it was already cleared or triggered, a
+ * different marker is needed, or the operation refuses markers (15/17). */
+KF_ENUM_BEGIN(KfMapObjectMarkerCheck, s32)
+    KF_MAP_OBJECT_MARKER_NOT_APPLICABLE = 0,
+    KF_MAP_OBJECT_MARKER_CONSUMED = 1,
+    KF_MAP_OBJECT_MARKER_ALREADY_CLEARED = 2,
+    KF_MAP_OBJECT_MARKER_MISMATCH = 3,
+    KF_MAP_OBJECT_MARKER_REFUSED = 4
+KF_ENUM_END(KfMapObjectMarkerCheck)
+
+/* map_object_set_property selector; SET_LAYER_MASK and SET_RENDER_DEPTH
+ * read one variadic value. */
+KF_ENUM_BEGIN(KfMapObjectProperty, s32)
     KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE = 0,
     KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK = 1,
     KF_MAP_OBJECT_PROPERTY_ARM_EVENT = 2,
     KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH = 3
-};
+KF_ENUM_END(KfMapObjectProperty)
+
+/* map_object_set_cell_marker: PLACE hides the object and writes its marker
+ * into the map cell (unless the map-marker effect is running); CLEAR shows
+ * the object and clears the cell. map_object_refresh_cell_markers passes the
+ * same value to map_object_set_property, where 0 hides the linked object and
+ * 1 restores its layer mask. */
+KF_ENUM_BEGIN(KfMapCellMarkerMode, s32)
+    KF_MAP_CELL_MARKER_PLACE = 0,
+    KF_MAP_CELL_MARKER_CLEAR = 1
+KF_ENUM_END(KfMapCellMarkerMode)
 
 /* The last twelve template bytes are interpreted by the object's action:
  * marker and map-cell actions, the scene pose path, the collision probe and
@@ -89,10 +272,10 @@ typedef union KfMapObjectTemplateParams {
 } KfMapObjectTemplateParams;
 
 typedef struct KfMapObjectTemplate {
-    u8 collision_kind;
-    u8 kind;
+    KfMapObjectOperation collision_kind;
+    KfMapObjectKind kind;
     u8 vab_resource_index;
-    u8 collision_flags;
+    KfMapObjectFlags collision_flags;
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
@@ -104,31 +287,31 @@ typedef char kf_map_object_template_params_size[
     sizeof(KfMapObjectTemplateParams) == 12 ? 1 : -1];
 typedef char kf_map_object_template_size[sizeof(KfMapObjectTemplate) == 24 ? 1 : -1];
 typedef char kf_map_object_template_vab_resource_index_offset[
-    (u32)&((KfMapObjectTemplate *)0)->vab_resource_index == 2 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, vab_resource_index) == 2 ? 1 : -1];
 typedef char kf_map_object_template_collision_flags_offset[
-    (u32)&((KfMapObjectTemplate *)0)->collision_flags == 3 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, collision_flags) == 3 ? 1 : -1];
 typedef char kf_map_object_template_radius_offset[
-    (u32)&((KfMapObjectTemplate *)0)->collision_radius == 4 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, collision_radius) == 4 ? 1 : -1];
 typedef char kf_map_object_template_interaction_radius_offset[
-    (u32)&((KfMapObjectTemplate *)0)->interaction_radius == 6 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, interaction_radius) == 6 ? 1 : -1];
 typedef char kf_map_object_template_interaction_height_offset[
-    (u32)&((KfMapObjectTemplate *)0)->interaction_height == 8 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, interaction_height) == 8 ? 1 : -1];
 typedef char kf_map_object_template_initial_render_depth_offset_offset[
-    (u32)&((KfMapObjectTemplate *)0)->initial_render_depth_offset == 0x0a ? 1 : -1];
+    offsetof(KfMapObjectTemplate, initial_render_depth_offset) == 0x0a ? 1 : -1];
 typedef char kf_map_object_template_params_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params == 0x0c ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params) == 0x0c ? 1 : -1];
 typedef char kf_map_object_template_sound_id_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.marker.sound_id == 0x0f ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.marker.sound_id) == 0x0f ? 1 : -1];
 typedef char kf_map_object_template_marker_action_51_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.marker.marker_action_51 == 0x17 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.marker.marker_action_51) == 0x17 ? 1 : -1];
 typedef char kf_map_object_template_pose_tail_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.pose.unknown_04 == 0x10 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.pose.unknown_04) == 0x10 ? 1 : -1];
 typedef char kf_map_object_template_collision_magic_values_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.collision.impact_magic_values == 0x12 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.collision.impact_magic_values) == 0x12 ? 1 : -1];
 typedef char kf_map_object_template_collision_sound_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.collision.sound_id == 0x16 ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.collision.sound_id) == 0x16 ? 1 : -1];
 typedef char kf_map_object_template_pattern_pair_offset[
-    (u32)&((KfMapObjectTemplate *)0)->params.pattern.pattern_pair_index == 0x0e ? 1 : -1];
+    offsetof(KfMapObjectTemplate, params.pattern.pattern_pair_index) == 0x0e ? 1 : -1];
 
 /* The placement's final two words copy together into the object tail. */
 typedef struct KfMapObjectTailCopyWords {
@@ -140,10 +323,10 @@ typedef char kf_map_object_tail_copy_words_size[
 
 /* Map resource placements consumed in 24-byte rows by map_object_initialize_from_placements. */
 typedef struct KfMapObjectPlacement {
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
     u8 region_z;
     u8 region_x;
-    u16 object_id;
+    KF_ENUM_STORAGE(KfObjectId, u16) object_id;
     s16 rotation_y;
     s16 local_z;
     s16 local_x;
@@ -154,9 +337,9 @@ typedef struct KfMapObjectPlacement {
 typedef char kf_map_object_placement_size[
     sizeof(KfMapObjectPlacement) == 24 ? 1 : -1];
 typedef char kf_map_object_placement_height_offset[
-    (u32)&((KfMapObjectPlacement *)0)->height == 12 ? 1 : -1];
+    offsetof(KfMapObjectPlacement, height) == 12 ? 1 : -1];
 typedef char kf_map_object_placement_tail_words_offset[
-    (u32)&((KfMapObjectPlacement *)0)->tail_words == 16 ? 1 : -1];
+    offsetof(KfMapObjectPlacement, tail_words) == 16 ? 1 : -1];
 
 typedef struct KfMapObjectTailHalfwordBytes {
     u8 low;
@@ -188,7 +371,7 @@ typedef struct KfMapObjectTailMotionView {
     KfMapObjectTailHalfword motion_velocity;
 } KfMapObjectTailMotionView;
 typedef char kf_map_object_tail_motion_velocity_offset[
-    (u32)&((KfMapObjectTailMotionView *)0)->motion_velocity == 10 ? 1 : -1];
+    offsetof(KfMapObjectTailMotionView, motion_velocity) == 10 ? 1 : -1];
 
 typedef struct KfMapObjectTailNotificationView {
     u32 unknown_34;
@@ -196,15 +379,15 @@ typedef struct KfMapObjectTailNotificationView {
     u8 unknown_39;
     KfMapObjectTailHalfword unknown_3a;
     u16 unknown_3c;
-    u8 linked_notification;
-    u8 default_notification;
+    KfNotificationId linked_notification;
+    KfNotificationId default_notification;
 } KfMapObjectTailNotificationView;
 typedef char kf_map_object_tail_notification_size[
     sizeof(KfMapObjectTailNotificationView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_linked_notification_offset[
-    (u32)&((KfMapObjectTailNotificationView *)0)->linked_notification == 10 ? 1 : -1];
+    offsetof(KfMapObjectTailNotificationView, linked_notification) == 10 ? 1 : -1];
 typedef char kf_map_object_tail_default_notification_offset[
-    (u32)&((KfMapObjectTailNotificationView *)0)->default_notification == 11 ? 1 : -1];
+    offsetof(KfMapObjectTailNotificationView, default_notification) == 11 ? 1 : -1];
 
 typedef struct KfMapObjectTailTransitionView {
     u32 unknown_34;
@@ -244,11 +427,11 @@ typedef struct KfMapObjectTailRegionActionView {
 typedef char kf_map_object_tail_region_action_size[
     sizeof(KfMapObjectTailRegionActionView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_region_action_flags_offset[
-    (u32)&((KfMapObjectTailRegionActionView *)0)->operation_flags == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailRegionActionView, operation_flags) == 6 ? 1 : -1];
 typedef char kf_map_object_tail_region_action_operand_offset[
-    (u32)&((KfMapObjectTailRegionActionView *)0)->operand == 7 ? 1 : -1];
+    offsetof(KfMapObjectTailRegionActionView, operand) == 7 ? 1 : -1];
 typedef char kf_map_object_tail_region_action_value_offset[
-    (u32)&((KfMapObjectTailRegionActionView *)0)->assigned_value == 8 ? 1 : -1];
+    offsetof(KfMapObjectTailRegionActionView, assigned_value) == 8 ? 1 : -1];
 
 /* Scene command 0x55 checks this camera region and opens the selected image. */
 typedef struct KfMapObjectTailSceneInspectView {
@@ -261,7 +444,7 @@ typedef struct KfMapObjectTailSceneInspectView {
 typedef char kf_map_object_tail_scene_inspect_size[
     sizeof(KfMapObjectTailSceneInspectView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_scene_inspect_image_offset[
-    (u32)&((KfMapObjectTailSceneInspectView *)0)->transition_image_id == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailSceneInspectView, transition_image_id) == 6 ? 1 : -1];
 
 /* Kind 0x20 gives the player this amount when its interaction completes. */
 typedef struct KfMapObjectTailGoldRewardView {
@@ -273,7 +456,7 @@ typedef struct KfMapObjectTailGoldRewardView {
 typedef char kf_map_object_tail_gold_reward_size[
     sizeof(KfMapObjectTailGoldRewardView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_gold_reward_amount_offset[
-    (u32)&((KfMapObjectTailGoldRewardView *)0)->gold_amount == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailGoldRewardView, gold_amount) == 6 ? 1 : -1];
 
 typedef struct KfMapObjectTailAnimatedView {
     KfPoolRecord *animation_cache;
@@ -302,9 +485,9 @@ typedef struct KfMapObjectTailAmbientSoundView {
 typedef char kf_map_object_tail_ambient_sound_size[
     sizeof(KfMapObjectTailAmbientSoundView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_ambient_sound_id_offset[
-    (u32)&((KfMapObjectTailAmbientSoundView *)0)->sound_id == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailAmbientSoundView, sound_id) == 6 ? 1 : -1];
 typedef char kf_map_object_tail_ambient_repeat_delay_offset[
-    (u32)&((KfMapObjectTailAmbientSoundView *)0)->repeat_delay_units == 10 ? 1 : -1];
+    offsetof(KfMapObjectTailAmbientSoundView, repeat_delay_units) == 10 ? 1 : -1];
 
 /* Actions 3 and 4 copy a rotated region between map-cell coordinates. */
 typedef struct KfMapObjectTailCellCopyView {
@@ -320,16 +503,16 @@ typedef struct KfMapObjectTailCellCopyView {
 typedef char kf_map_object_tail_cell_copy_size[
     sizeof(KfMapObjectTailCellCopyView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_cell_copy_destination_offset[
-    (u32)&((KfMapObjectTailCellCopyView *)0)->destination_x == 5 ? 1 : -1];
+    offsetof(KfMapObjectTailCellCopyView, destination_x) == 5 ? 1 : -1];
 typedef char kf_map_object_tail_cell_copy_source_offset[
-    (u32)&((KfMapObjectTailCellCopyView *)0)->source_x == 7 ? 1 : -1];
+    offsetof(KfMapObjectTailCellCopyView, source_x) == 7 ? 1 : -1];
 typedef char kf_map_object_tail_cell_copy_link_offset[
-    (u32)&((KfMapObjectTailCellCopyView *)0)->linked_object_index == 9 ? 1 : -1];
+    offsetof(KfMapObjectTailCellCopyView, linked_object_index) == 9 ? 1 : -1];
 
 /* Action 88 stores its copy coordinates and dimensions at different offsets. */
 typedef struct KfMapObjectTailAction88CellCopyView {
     u32 unknown_34;
-    u8 transition_mode;
+    KfMapObjectCellCopyMode transition_mode;
     u8 marker_id;
     u8 destination_x;
     u8 destination_z;
@@ -341,13 +524,13 @@ typedef struct KfMapObjectTailAction88CellCopyView {
 typedef char kf_map_object_tail_action88_cell_copy_size[
     sizeof(KfMapObjectTailAction88CellCopyView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action88_mode_offset[
-    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->transition_mode == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailAction88CellCopyView, transition_mode) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action88_marker_offset[
-    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->marker_id == 5 ? 1 : -1];
+    offsetof(KfMapObjectTailAction88CellCopyView, marker_id) == 5 ? 1 : -1];
 typedef char kf_map_object_tail_action88_source_offset[
-    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->source_x == 8 ? 1 : -1];
+    offsetof(KfMapObjectTailAction88CellCopyView, source_x) == 8 ? 1 : -1];
 typedef char kf_map_object_tail_action88_width_offset[
-    (u32)&((KfMapObjectTailAction88CellCopyView *)0)->width == 10 ? 1 : -1];
+    offsetof(KfMapObjectTailAction88CellCopyView, width) == 10 ? 1 : -1];
 
 /* Action 0x59 waits for a marker, then restores its layer for a timed fade. */
 typedef struct KfMapObjectTailAction89LayerFadeView {
@@ -360,9 +543,9 @@ typedef struct KfMapObjectTailAction89LayerFadeView {
 typedef char kf_map_object_tail_action89_layer_fade_size[
     sizeof(KfMapObjectTailAction89LayerFadeView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action89_marker_offset[
-    (u32)&((KfMapObjectTailAction89LayerFadeView *)0)->marker_id == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailAction89LayerFadeView, marker_id) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action89_delay_offset[
-    (u32)&((KfMapObjectTailAction89LayerFadeView *)0)->delay_frames == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailAction89LayerFadeView, delay_frames) == 6 ? 1 : -1];
 
 /* Action 84 checks a camera region and alternates two pattern rows. */
 typedef struct KfMapObjectTailAction84PatternView {
@@ -379,11 +562,11 @@ typedef struct KfMapObjectTailAction84PatternView {
 typedef char kf_map_object_tail_action84_pattern_size[
     sizeof(KfMapObjectTailAction84PatternView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action84_marker_offset[
-    (u32)&((KfMapObjectTailAction84PatternView *)0)->marker_id == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailAction84PatternView, marker_id) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action84_region_width_offset[
-    (u32)&((KfMapObjectTailAction84PatternView *)0)->region_width == 7 ? 1 : -1];
+    offsetof(KfMapObjectTailAction84PatternView, region_width) == 7 ? 1 : -1];
 typedef char kf_map_object_tail_action84_pattern_flags_offset[
-    (u32)&((KfMapObjectTailAction84PatternView *)0)->pattern_flags == 10 ? 1 : -1];
+    offsetof(KfMapObjectTailAction84PatternView, pattern_flags) == 10 ? 1 : -1];
 
 /* Action 81 uses a camera gate and dispatches a magic impact on collision. */
 typedef struct KfMapObjectTailCollisionProbeView {
@@ -399,11 +582,11 @@ typedef struct KfMapObjectTailCollisionProbeView {
 typedef char kf_map_object_tail_collision_probe_size[
     sizeof(KfMapObjectTailCollisionProbeView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_collision_probe_trigger_offset[
-    (u32)&((KfMapObjectTailCollisionProbeView *)0)->marker_trigger_state == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailCollisionProbeView, marker_trigger_state) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_collision_damage_offset[
-    (u32)&((KfMapObjectTailCollisionProbeView *)0)->damage_multiplier_tenths == 5 ? 1 : -1];
+    offsetof(KfMapObjectTailCollisionProbeView, damage_multiplier_tenths) == 5 ? 1 : -1];
 typedef char kf_map_object_tail_collision_region_offset[
-    (u32)&((KfMapObjectTailCollisionProbeView *)0)->camera_region_width == 7 ? 1 : -1];
+    offsetof(KfMapObjectTailCollisionProbeView, camera_region_width) == 7 ? 1 : -1];
 
 /* Actions 5, 8, and 22 direct property changes to a linked map object. */
 typedef struct KfMapObjectTailLinkedPropertyView {
@@ -416,21 +599,21 @@ typedef struct KfMapObjectTailLinkedPropertyView {
 typedef char kf_map_object_tail_linked_property_size[
     sizeof(KfMapObjectTailLinkedPropertyView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_linked_property_index_offset[
-    (u32)&((KfMapObjectTailLinkedPropertyView *)0)->linked_object_index == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailLinkedPropertyView, linked_object_index) == 6 ? 1 : -1];
 
 /* Action 83 emits its marker after each opening or closing phase. */
 typedef struct KfMapObjectTailAction83View {
     u32 unknown_34;
-    u8 transition_mode;
+    KfMapObjectTransitionMode transition_mode;
     u8 completion_marker;
     u8 unknown_3a[6];
 } KfMapObjectTailAction83View;
 typedef char kf_map_object_tail_action83_size[
     sizeof(KfMapObjectTailAction83View) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action83_mode_offset[
-    (u32)&((KfMapObjectTailAction83View *)0)->transition_mode == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailAction83View, transition_mode) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_action83_marker_offset[
-    (u32)&((KfMapObjectTailAction83View *)0)->completion_marker == 5 ? 1 : -1];
+    offsetof(KfMapObjectTailAction83View, completion_marker) == 5 ? 1 : -1];
 
 /* Action 19 grows and animates a linked map object in 1/32-scale steps. */
 typedef struct KfMapObjectTailScaleLinkView {
@@ -443,9 +626,9 @@ typedef struct KfMapObjectTailScaleLinkView {
 typedef char kf_map_object_tail_scale_link_size[
     sizeof(KfMapObjectTailScaleLinkView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_scale_step_offset[
-    (u32)&((KfMapObjectTailScaleLinkView *)0)->scale_step_code == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailScaleLinkView, scale_step_code) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_scale_link_index_offset[
-    (u32)&((KfMapObjectTailScaleLinkView *)0)->linked_object_index == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailScaleLinkView, linked_object_index) == 6 ? 1 : -1];
 
 /* Event archive commands read the two state bytes at +0x38 as one halfword. */
 typedef struct KfMapObjectTailPair38View {
@@ -464,7 +647,7 @@ typedef struct KfMapObjectTailMarkerView {
 typedef char kf_map_object_tail_marker_size[
     sizeof(KfMapObjectTailMarkerView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_marker_id_offset[
-    (u32)&((KfMapObjectTailMarkerView *)0)->marker_id == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailMarkerView, marker_id) == 4 ? 1 : -1];
 
 /* Action 0x51 uses the high byte of the effect spawn-sequence slot as its
  * incoming marker identifier. */
@@ -480,7 +663,7 @@ typedef struct KfMapObjectTailAction51MarkerView {
 typedef char kf_map_object_tail_action51_marker_size[
     sizeof(KfMapObjectTailAction51MarkerView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_action51_marker_offset[
-    (u32)&((KfMapObjectTailAction51MarkerView *)0)->marker_id == 9 ? 1 : -1];
+    offsetof(KfMapObjectTailAction51MarkerView, marker_id) == 9 ? 1 : -1];
 
 /* Two placement kinds seed three object rotation axes from byte codes;
  * 0xff leaves an axis at its default value. The final code overlaps the
@@ -496,13 +679,13 @@ typedef struct KfMapObjectTailInitialRotationView {
 typedef char kf_map_object_tail_initial_rotation_size[
     sizeof(KfMapObjectTailInitialRotationView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_initial_rotation_x_offset[
-    (u32)&((KfMapObjectTailInitialRotationView *)0)->rotation_x_code == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailInitialRotationView, rotation_x_code) == 6 ? 1 : -1];
 typedef char kf_map_object_tail_initial_rotation_z_offset[
-    (u32)&((KfMapObjectTailInitialRotationView *)0)->rotation_z_code == 8 ? 1 : -1];
+    offsetof(KfMapObjectTailInitialRotationView, rotation_z_code) == 8 ? 1 : -1];
 
 typedef struct KfMapObjectTailEventEffectView {
     u32 unknown_34;
-    u8 pending_event_command;
+    KF_ENUM_STORAGE(KfObjectId, u8) pending_event_command;
     u8 effect_object_index;
     u8 linked_object_flag_mask;
     u8 linked_object_index;
@@ -511,18 +694,18 @@ typedef struct KfMapObjectTailEventEffectView {
 typedef char kf_map_object_tail_event_effect_size[
     sizeof(KfMapObjectTailEventEffectView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_event_command_offset[
-    (u32)&((KfMapObjectTailEventEffectView *)0)->pending_event_command == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailEventEffectView, pending_event_command) == 4 ? 1 : -1];
 typedef char kf_map_object_tail_event_effect_index_offset[
-    (u32)&((KfMapObjectTailEventEffectView *)0)->effect_object_index == 5 ? 1 : -1];
+    offsetof(KfMapObjectTailEventEffectView, effect_object_index) == 5 ? 1 : -1];
 typedef char kf_map_object_tail_event_linked_mask_offset[
-    (u32)&((KfMapObjectTailEventEffectView *)0)->linked_object_flag_mask == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailEventEffectView, linked_object_flag_mask) == 6 ? 1 : -1];
 typedef char kf_map_object_tail_event_linked_index_offset[
-    (u32)&((KfMapObjectTailEventEffectView *)0)->linked_object_index == 7 ? 1 : -1];
+    offsetof(KfMapObjectTailEventEffectView, linked_object_index) == 7 ? 1 : -1];
 
 typedef char kf_map_object_tail_pair38_size[
     sizeof(KfMapObjectTailPair38View) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_pair38_offset[
-    (u32)&((KfMapObjectTailPair38View *)0)->value_38 == 4 ? 1 : -1];
+    offsetof(KfMapObjectTailPair38View, value_38) == 4 ? 1 : -1];
 
 typedef struct KfMapObjectTailSpawnByteFields {
     u32 unknown_34;
@@ -535,7 +718,7 @@ typedef struct KfMapObjectTailSpawnByteFields {
 typedef char kf_map_object_tail_spawn_byte_fields_size[
     sizeof(KfMapObjectTailSpawnByteFields) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_spawn_bytes_offset[
-    (u32)&((KfMapObjectTailSpawnByteFields *)0)->spawn_sequence == 8 ? 1 : -1];
+    offsetof(KfMapObjectTailSpawnByteFields, spawn_sequence) == 8 ? 1 : -1];
 
 /* The scattered effect pool stores the selected effect ID beside its spawn
  * sequence; the preceding state bytes have action-specific uses elsewhere. */
@@ -549,7 +732,7 @@ typedef struct KfMapObjectTailScatteredEffectView {
 typedef char kf_map_object_tail_scattered_effect_size[
     sizeof(KfMapObjectTailScatteredEffectView) == 12 ? 1 : -1];
 typedef char kf_map_object_tail_scattered_effect_id_offset[
-    (u32)&((KfMapObjectTailScatteredEffectView *)0)->effect_id == 6 ? 1 : -1];
+    offsetof(KfMapObjectTailScatteredEffectView, effect_id) == 6 ? 1 : -1];
 
 typedef struct KfMapObjectTailPlacement {
     u32 unknown_34;
@@ -601,11 +784,25 @@ typedef struct KfMapObjectRecord40 {
     s16 reaction_rotation_scale_q15;
 } KfMapObjectRecord40;
 typedef char kf_map_object_record40_reaction_mode_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_mode == 0x01 ? 1 : -1];
+    offsetof(KfMapObjectRecord40, reaction_mode) == 0x01 ? 1 : -1];
 typedef char kf_map_object_record40_rotation_vector_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_vector == 0x0c ? 1 : -1];
+    offsetof(KfMapObjectRecord40, reaction_rotation_vector) == 0x0c ? 1 : -1];
 typedef char kf_map_object_record40_rotation_scale_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_scale_q15 == 0x38 ? 1 : -1];
+    offsetof(KfMapObjectRecord40, reaction_rotation_scale_q15) == 0x38 ? 1 : -1];
+
+/* Hinged-door progress ticks (KF1 KfMapObjectProgress): the door swings
+ * open for 32 ticks and copies its open cells at tick 24, jumps to the
+ * hold at 280, starts closing at 300 once unblocked and stops at 332. The
+ * placement value IDLE is past the close and parks the door. */
+enum {
+    KF_MAP_OBJECT_HINGE_PASSABLE = 24,
+    KF_MAP_OBJECT_HINGE_OPEN_LAST = 31,
+    KF_MAP_OBJECT_HINGE_OPEN_END = 32,
+    KF_MAP_OBJECT_HINGE_HOLD_FIRST = 280,
+    KF_MAP_OBJECT_HINGE_CLOSE_FIRST = 300,
+    KF_MAP_OBJECT_HINGE_CLOSE_END = 332,
+    KF_MAP_OBJECT_HINGE_IDLE = 999
+};
 
 typedef struct KfMapObjectHingeMotion {
     u16 progress_ticks;
@@ -626,7 +823,7 @@ typedef struct KfMapObjectResourceOffsets {
 
 typedef struct KfMapObjectLayerFadeState {
     u16 delay_frames_left;
-    u8 original_layer_mask;
+    KfMapLayerMask original_layer_mask;
 } KfMapObjectLayerFadeState;
 typedef char kf_map_object_layer_fade_state_size[
     sizeof(KfMapObjectLayerFadeState) == 4 ? 1 : -1];
@@ -634,7 +831,7 @@ typedef char kf_map_object_layer_fade_state_size[
 /* Placement kinds 9, 0x15, 0x54, and 0xe2 save the layer before changing
  * visibility; action 0x54 later passes it to map-cell pattern updates. */
 typedef struct KfMapObjectSavedLayerState {
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
 } KfMapObjectSavedLayerState;
 
 typedef union KfMapObjectExtra40 {
@@ -657,13 +854,13 @@ typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1
 
 /* The map-object pool is traversed in 0x44-byte records. */
 typedef struct KfMapObject {
-    u8 layer_mask;
-    u8 asset_clip_selector;
-    u8 render_queue_mode;
-    u8 collision_flags;
-    u8 action;
-    u8 lighting_override_index;
-    u16 object_id;
+    KfMapLayerMask layer_mask;
+    KfAnimationClip asset_clip_selector;
+    KfRenderQueueMode render_queue_mode;
+    KfMapObjectFlags collision_flags;
+    KfMapObjectOperation action;
+    KfLightingIndex lighting_override_index;
+    KF_ENUM_STORAGE(KfObjectId, u16) object_id;
     u16 action_timer;
     u16 phase_q12;
     u16 collision_height;
@@ -678,41 +875,41 @@ typedef struct KfMapObject {
 
 typedef char kf_map_object_size[sizeof(KfMapObject) == 0x44 ? 1 : -1];
 typedef char kf_map_object_asset_clip_selector_offset[
-    (u32)&((KfMapObject *)0)->asset_clip_selector == 1 ? 1 : -1];
-typedef char kf_map_object_action_offset[(u32)&((KfMapObject *)0)->action == 4 ? 1 : -1];
+    offsetof(KfMapObject, asset_clip_selector) == 1 ? 1 : -1];
+typedef char kf_map_object_action_offset[offsetof(KfMapObject, action) == 4 ? 1 : -1];
 typedef char kf_map_object_render_queue_mode_offset[
-    (u32)&((KfMapObject *)0)->render_queue_mode == 2 ? 1 : -1];
+    offsetof(KfMapObject, render_queue_mode) == 2 ? 1 : -1];
 typedef char kf_map_object_lighting_override_index_offset[
-    (u32)&((KfMapObject *)0)->lighting_override_index == 5 ? 1 : -1];
-typedef char kf_map_object_action_timer_offset[(u32)&((KfMapObject *)0)->action_timer == 8 ? 1 : -1];
+    offsetof(KfMapObject, lighting_override_index) == 5 ? 1 : -1];
+typedef char kf_map_object_action_timer_offset[offsetof(KfMapObject, action_timer) == 8 ? 1 : -1];
 typedef char kf_map_object_phase_q12_offset[
-    (u32)&((KfMapObject *)0)->phase_q12 == 0x0a ? 1 : -1];
+    offsetof(KfMapObject, phase_q12) == 0x0a ? 1 : -1];
 typedef char kf_map_object_collision_height_offset[
-    (u32)&((KfMapObject *)0)->collision_height == 0x0c ? 1 : -1];
+    offsetof(KfMapObject, collision_height) == 0x0c ? 1 : -1];
 typedef char kf_map_object_lighting_blend_q12_offset[
-    (u32)&((KfMapObject *)0)->lighting_blend_q12 == 0x10 ? 1 : -1];
-typedef char kf_map_object_position_offset[(u32)&((KfMapObject *)0)->position == 0x14 ? 1 : -1];
-typedef char kf_map_object_rotation_offset[(u32)&((KfMapObject *)0)->rotation == 0x24 ? 1 : -1];
-typedef char kf_map_object_scale_offset[(u32)&((KfMapObject *)0)->scale == 0x2c ? 1 : -1];
-typedef char kf_map_object_tail_offset[(u32)&((KfMapObject *)0)->tail == 0x34 ? 1 : -1];
+    offsetof(KfMapObject, lighting_blend_q12) == 0x10 ? 1 : -1];
+typedef char kf_map_object_position_offset[offsetof(KfMapObject, position) == 0x14 ? 1 : -1];
+typedef char kf_map_object_rotation_offset[offsetof(KfMapObject, rotation) == 0x24 ? 1 : -1];
+typedef char kf_map_object_scale_offset[offsetof(KfMapObject, scale) == 0x2c ? 1 : -1];
+typedef char kf_map_object_tail_offset[offsetof(KfMapObject, tail) == 0x34 ? 1 : -1];
 typedef char kf_map_object_spawn_sequence_offset[
-    (u32)&((KfMapObject *)0)->tail.fields.spawn_sequence == 0x3c ? 1 : -1];
+    offsetof(KfMapObject, tail.fields.spawn_sequence) == 0x3c ? 1 : -1];
 typedef char kf_map_object_record40_offset[
-    (u32)&((KfMapObject *)0)->extra_40 == 0x40 ? 1 : -1];
+    offsetof(KfMapObject, extra_40) == 0x40 ? 1 : -1];
 typedef char kf_map_object_offset_motion_elapsed_offset[
-    (u32)&((KfMapObject *)0)->extra_40.offset_motion.elapsed_frames == 0x40 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.offset_motion.elapsed_frames) == 0x40 ? 1 : -1];
 typedef char kf_map_object_saved_layer_mask_offset[
-    (u32)&((KfMapObject *)0)->extra_40.saved_layer.layer_mask == 0x40 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.saved_layer.layer_mask) == 0x40 ? 1 : -1];
 typedef char kf_map_object_resource_offset_x_offset[
-    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_x == 0x40 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.resource_offsets.offset_x) == 0x40 ? 1 : -1];
 typedef char kf_map_object_resource_offset_z_offset[
-    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_z == 0x41 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.resource_offsets.offset_z) == 0x41 ? 1 : -1];
 typedef char kf_map_object_resource_offset_y_offset[
-    (u32)&((KfMapObject *)0)->extra_40.resource_offsets.offset_y == 0x42 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.resource_offsets.offset_y) == 0x42 ? 1 : -1];
 typedef char kf_map_object_layer_fade_delay_offset[
-    (u32)&((KfMapObject *)0)->extra_40.layer_fade.delay_frames_left == 0x40 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.layer_fade.delay_frames_left) == 0x40 ? 1 : -1];
 typedef char kf_map_object_layer_fade_mask_offset[
-    (u32)&((KfMapObject *)0)->extra_40.layer_fade.original_layer_mask == 0x42 ? 1 : -1];
+    offsetof(KfMapObject, extra_40.layer_fade.original_layer_mask) == 0x42 ? 1 : -1];
 
 /* game_main_loop clears the whole region containing the 0x18c-object pool. */
 typedef struct KfMapObjectStateGame {
@@ -728,40 +925,40 @@ typedef struct KfMapObjectStateGame {
 } KfMapObjectStateGame;
 
 typedef char kf_map_object_state_size[sizeof(KfMapObjectStateGame) == 0x8744 ? 1 : -1];
-typedef char kf_map_object_state_objects_offset[(u32)&((KfMapObjectStateGame *)0)->objects == 0x1e00 ? 1 : -1];
+typedef char kf_map_object_state_objects_offset[offsetof(KfMapObjectStateGame, objects) == 0x1e00 ? 1 : -1];
 typedef char kf_map_object_state_current_template_offset[
-    (u32)&((KfMapObjectStateGame *)0)->current_template == 0x8734 ? 1 : -1];
+    offsetof(KfMapObjectStateGame, current_template) == 0x8734 ? 1 : -1];
 typedef char kf_map_object_state_current_collision_offset[
-    (u32)&((KfMapObjectStateGame *)0)->current_collision_object == 0x8738 ? 1 : -1];
+    offsetof(KfMapObjectStateGame, current_collision_object) == 0x8738 ? 1 : -1];
 typedef char kf_map_object_state_counter_873e_offset[
-    (u32)&((KfMapObjectStateGame *)0)->spawn_sequence_pool_15e == 0x873e ? 1 : -1];
+    offsetof(KfMapObjectStateGame, spawn_sequence_pool_15e) == 0x873e ? 1 : -1];
 typedef char kf_map_object_state_counter_8742_offset[
-    (u32)&((KfMapObjectStateGame *)0)->placement_drop_sequence == 0x8742 ? 1 : -1];
+    offsetof(KfMapObjectStateGame, placement_drop_sequence) == 0x8742 ? 1 : -1];
 
 extern KfMapObjectStateGame map_object_state;
 
-void map_object_start_action_if_idle(KfMapObject *object, u8 action);
+void map_object_start_action_if_idle(KfMapObject *object, KfMapObjectOperation action);
 void map_object_initialize_from_placements(const KfMapObjectPlacement *placements);
 s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 height);
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence);
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound);
 void map_object_reset(KfMapObject *object);
 void map_object_pool_reset(void);
-void map_object_set_property(s32 index, s32 property, ...);
-void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker);
+void map_object_set_property(s32 index, KfMapObjectProperty property, ...);
+void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u8 marker);
 void map_object_apply_marker_signal(u8 identifier);
-s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
-s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height);
-s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
+KfMapObjectMarkerCheck map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
+b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height);
+b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
                   SVECTOR *start_offset, SVECTOR *end_offset,
-                  s32 brighten, s32 duration);
+                  b32 brighten, s32 duration);
 void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTOR *result);
 void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset);
-void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
-                             s32 height_offset);
+void map_object_spawn_effect(KfMapObjectDropSource source, KF_ENUM_PARAM(KfObjectId, u8) object_id,
+                             const VECTOR *position, s32 height_offset);
 void map_object_update_actions(void);
-void map_object_refresh_cell_markers(s32 mode);
+void map_object_refresh_cell_markers(KfMapCellMarkerMode mode);
 s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);
 

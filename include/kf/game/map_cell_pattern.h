@@ -1,7 +1,9 @@
 #ifndef KF_GAME_MAP_CELL_PATTERN_H
 #define KF_GAME_MAP_CELL_PATTERN_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/render_types.h>
 
 typedef struct KfMapCellPatternVariant {
     u8 first_collision_shape_id;
@@ -18,7 +20,7 @@ typedef struct KfMapCellPattern {
 
 typedef char kf_map_cell_pattern_size[sizeof(KfMapCellPattern) == 10 ? 1 : -1];
 typedef char kf_map_cell_pattern_offset[
-    (u32)&((KfMapCellPattern *)0)->offset_x == 8 ? 1 : -1];
+    offsetof(KfMapCellPattern, offset_x) == 8 ? 1 : -1];
 
 enum {
     KF_MAP_OBJECT_PATTERN_GROUPS = 9,
@@ -33,16 +35,31 @@ enum {
     KF_MAP_CELL_COPY_COLLISION_SHAPE = 0x08,
     KF_MAP_CELL_COPY_LIGHTING_INDEX = 0x10,
     KF_MAP_CELL_COPY_LIGHTING_BIT_40 = 0x20,
-    KF_MAP_CELL_COPY_LIGHTING_BIT_80 = 0x40
+    KF_MAP_CELL_COPY_LIGHTING_BIT_80 = 0x40,
+    /* Door, hinge and cell-copy objects move whole cell contents. */
+    KF_MAP_CELL_COPY_OBJECT_FIELDS = KF_MAP_CELL_COPY_OBJECT_INDEX |
+                                     KF_MAP_CELL_COPY_ROTATED_ORIENTATION |
+                                     KF_MAP_CELL_COPY_COLLISION_SHAPE |
+                                     KF_MAP_CELL_COPY_LIGHTING_BIT_40,
+    /* map_cell_copy_rotated_fields ignores a copy of this width. */
+    KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff
+};
+
+/* map_cell_apply_rotated_pattern layer_flag: keep the lighting byte's flag
+ * bits, or replace them (clear, or reveal the other layer). */
+enum {
+    KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
+    KF_PATTERN_LIGHTING_CLEAR_FLAGS = 0,
+    KF_PATTERN_LIGHTING_REVEAL_OTHER_LAYER = 0x80
 };
 
 extern KfMapCellPattern map_object_cell_patterns
     [KF_MAP_OBJECT_PATTERN_GROUPS][KF_MAP_OBJECT_PATTERN_ROWS];
 
-void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(KfMapLayerMask mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag);
-void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z, s32 width,
                    s32 height, s32 rotation, u32 field_mask);
 

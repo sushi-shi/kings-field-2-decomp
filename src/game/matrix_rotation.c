@@ -5,8 +5,7 @@
 
 enum {
     RANDOM_TRIANGULAR_CENTER = 0x8000,
-    LERP_HALFWORD_COUNT = 9,
-    TRAJECTORY_PREFER_SHORTER_TIME = 0
+    LERP_HALFWORD_COUNT = 9
 };
 
 /*
@@ -133,7 +132,8 @@ void angle_to_forward_xz(s16 angle, struct KfVecXZi *direction)
 
 /* DESTINATION = SOURCE turned by TURNS quarter turns about Y. */
 ADDRESS(0x80014b0c, 0x224)
-void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination, s32 turns)
+void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns)
 {
     switch (turns) {
     case KF_QUARTER_TURN_0:
@@ -184,7 +184,8 @@ void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination, s32 turns)
 }
 
 ADDRESS(0x80014d30, 0xe4)
-void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 turns)
+void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns)
 {
     switch (turns) {
     case KF_QUARTER_TURN_0:
@@ -211,48 +212,48 @@ void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 tur
 ADDRESS(0x80014e14, 0x70)
 void matrix_set_rotation_x(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
     matrix->m[0][0] = KF_FIXED12_ONE;
     matrix->m[0][1] = 0;
     matrix->m[0][2] = 0;
     matrix->m[1][0] = 0;
-    matrix->m[1][1] = cos;
-    matrix->m[1][2] = -sin;
+    matrix->m[1][1] = cosine;
+    matrix->m[1][2] = -sine;
     matrix->m[2][0] = 0;
-    matrix->m[2][1] = sin;
-    matrix->m[2][2] = cos;
+    matrix->m[2][1] = sine;
+    matrix->m[2][2] = cosine;
 }
 
 ADDRESS(0x80014e84, 0x70)
 void matrix_set_rotation_y(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
-    matrix->m[0][0] = cos;
+    matrix->m[0][0] = cosine;
     matrix->m[0][1] = 0;
-    matrix->m[0][2] = -sin;
+    matrix->m[0][2] = -sine;
     matrix->m[1][0] = 0;
     matrix->m[1][1] = KF_FIXED12_ONE;
     matrix->m[1][2] = 0;
-    matrix->m[2][0] = sin;
+    matrix->m[2][0] = sine;
     matrix->m[2][1] = 0;
-    matrix->m[2][2] = cos;
+    matrix->m[2][2] = cosine;
 }
 
 ADDRESS(0x80014ef4, 0x70)
 void matrix_set_rotation_z(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
-    matrix->m[0][0] = cos;
-    matrix->m[0][1] = -sin;
+    matrix->m[0][0] = cosine;
+    matrix->m[0][1] = -sine;
     matrix->m[0][2] = 0;
-    matrix->m[1][0] = sin;
-    matrix->m[1][1] = cos;
+    matrix->m[1][0] = sine;
+    matrix->m[1][1] = cosine;
     matrix->m[1][2] = 0;
     matrix->m[2][0] = 0;
     matrix->m[2][1] = 0;
@@ -577,7 +578,7 @@ void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output
 }
 
 ADDRESS(0x80015918, 0x2b0)
-s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle)
 {
@@ -597,16 +598,16 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     s32 vertical_component;
 
     if (discriminant < 0) {
-        return -1;
+        return KF_TRAJECTORY_UNREACHABLE;
     }
     discriminant = SquareRoot0(discriminant << 4) << 2;
     midpoint = (amplitude_squared >> 2) - ((vertical_distance * speed) >> 2);
     longer_time = ((midpoint + discriminant) << 1) / speed_squared;
     shorter_time = ((midpoint - discriminant) << 1) / speed_squared;
     if (longer_time <= 0 && shorter_time <= 0) {
-        return -1;
+        return KF_TRAJECTORY_UNREACHABLE;
     }
-    if (mode == TRAJECTORY_PREFER_SHORTER_TIME) {
+    if (mode == KF_TRAJECTORY_SHORTER_TIME) {
         chosen_time = shorter_time;
         if (longer_time > 0 && longer_time <= shorter_time) {
             chosen_time = longer_time;
@@ -623,12 +624,13 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
         / (amplitude >> 1)) / (result_time >> 1);
     *travel_time = result_time;
     *angle = vector_xz_to_angle(vertical_component, horizontal_component);
-    return 0;
+    return KF_TRAJECTORY_SOLVED;
 }
 
 ADDRESS(0x80015bc8, 0x118)
-s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
-    s32 source_z, s32 target_x, s32 target_y, s32 target_z,
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_motion_between_points(
+    KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
+    s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
 {
     union {
@@ -636,13 +638,13 @@ s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
         u16 half;
     } result_value;
     s32 angle;
-    s32 status;
+    KF_ENUM_PARAM(KfTrajectoryResult, s32) status;
     s32 distance = fixed_vector2_length(target_x - source_x,
                                        target_z - source_z);
 
     status = trajectory_solve_time_angle(mode, distance, source_y - target_y,
                            speed, amplitude, &result_value.word, &angle);
-    if (status == 0) {
+    if (status == KF_TRAJECTORY_SOLVED) {
         *motion_x = (amplitude * rcos(angle)) >> KF_FIXED12_BITS;
         *motion_z = (amplitude * -rsin(angle)) >> KF_FIXED12_BITS;
         *result = result_value.half;

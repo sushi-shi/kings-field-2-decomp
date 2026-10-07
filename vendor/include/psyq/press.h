@@ -4,4 +4,8 @@
 #include <psyq/sdk.h>
 #include <LIBPRESS.H>
 
+/* LIBETC's CALLBACK.OBJ exports this MDEC output hook; Psy-Q 3.0 LIBPRESS.H
+ * omits it. The return value is unused by every caller. */
+extern int DecDCToutCallback(void (*func)());
+
 #endif

@@ -1,6 +1,7 @@
 #ifndef KF_GAME_CARD_PAYLOAD_H
 #define KF_GAME_CARD_PAYLOAD_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/game/card.h>
 #include <kf/game/player.h>
 
@@ -35,17 +36,17 @@ typedef struct KfCardPlayerSnapshot {
     u8 unused_3a[8];
     u8 level;
     u8 unknown_09;
-    u8 equipped_ids[7];
-    u8 primary_magic_shortcut_id;
-    u8 secondary_magic_shortcut_id;
-    u8 secondary_item_shortcut_id;
-    u8 equipped_weapon_id;
-    u8 audio_effects_enabled;
-    u8 audio_music_enabled;
-    u8 hud_gauges_enabled;
-    u8 compass_enabled;
-    u8 item_preview_enabled;
-    u8 walking_bob_enabled;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_ids[7];
+    KfEffectKind primary_magic_shortcut_id;
+    KfEffectKind secondary_magic_shortcut_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
+    KfPlayerOption audio_effects_enabled;
+    KfPlayerOption audio_music_enabled;
+    KfPlayerOption hud_gauges_enabled;
+    KfPlayerOption compass_enabled;
+    KfPlayerOption item_preview_enabled;
+    KfPlayerOption walking_bob_enabled;
 } KfCardPlayerSnapshot;
 
 typedef struct KfCardSavePayload {
@@ -64,25 +65,25 @@ typedef struct KfCardSavePayload {
 } KfCardSavePayload;
 
 typedef char kf_card_snapshot_level_offset[
-    (u32)&((KfCardPlayerSnapshot *)0)->level == 66 ? 1 : -1];
+    offsetof(KfCardPlayerSnapshot, level) == 66 ? 1 : -1];
 typedef char kf_card_snapshot_size[sizeof(KfCardPlayerSnapshot) == 88 ? 1 : -1];
 typedef char kf_card_save_control_offset[
-    (u32)&((KfCardSavePayload *)0)->event_control == 5 ? 1 : -1];
+    offsetof(KfCardSavePayload, event_control) == 5 ? 1 : -1];
 typedef char kf_card_save_arena_offset[
-    (u32)&((KfCardSavePayload *)0)->event_arena == 261 ? 1 : -1];
+    offsetof(KfCardSavePayload, event_arena) == 261 ? 1 : -1];
 typedef char kf_card_save_offsets_offset[
-    (u32)&((KfCardSavePayload *)0)->saved_event_offsets == 14598 ? 1 : -1];
+    offsetof(KfCardSavePayload, saved_event_offsets) == 14598 ? 1 : -1];
 typedef char kf_card_save_counters_offset[
-    (u32)&((KfCardSavePayload *)0)->game_counters == 14618 ? 1 : -1];
+    offsetof(KfCardSavePayload, game_counters) == 14618 ? 1 : -1];
 typedef char kf_card_save_magic_offset[
-    (u32)&((KfCardSavePayload *)0)->magic_menu_available == 14738 ? 1 : -1];
+    offsetof(KfCardSavePayload, magic_menu_available) == 14738 ? 1 : -1];
 typedef char kf_card_save_position_offset[
-    (u32)&((KfCardSavePayload *)0)->camera_position == 14804 ? 1 : -1];
+    offsetof(KfCardSavePayload, camera_position) == 14804 ? 1 : -1];
 typedef char kf_card_save_rotation_offset[
-    (u32)&((KfCardSavePayload *)0)->camera_rotation_target ==
+    offsetof(KfCardSavePayload, camera_rotation_target) ==
     KF_CARD_SAVE_ROTATION_OFFSET ? 1 : -1];
 typedef char kf_card_save_player_offset[
-    (u32)&((KfCardSavePayload *)0)->player == 14828 ? 1 : -1];
+    offsetof(KfCardSavePayload, player) == 14828 ? 1 : -1];
 typedef char kf_card_save_payload_size[
     sizeof(KfCardSavePayload) == KF_CARD_PAYLOAD_BYTES ? 1 : -1];
 

@@ -1,5 +1,7 @@
 #ifndef KF_GAME_CD_H
 #define KF_GAME_CD_H
+#include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/cd.h>
 #include <psyq/sdk.h>
@@ -18,10 +20,12 @@ enum {
     KF_CD_CHECKSUM_SEED = 0x12345678
 };
 
-/* cd_report_error codes. */
+/* cd_report_error codes (the retail reporter is empty). player_update_frame
+ * reports code 3 when Start is pressed. */
 enum {
     KF_CD_ERROR_SEARCH = 0,
-    KF_CD_ERROR_READ = 1
+    KF_CD_ERROR_READ = 1,
+    KF_CD_ERROR_3 = 3
 };
 
 /* Location and byte size of a file, the leading fields of CdlFILE. */
@@ -38,26 +42,38 @@ typedef struct KfCdArchive {
 
 typedef char kf_cd_archive_size[sizeof(KfCdArchive) == 12 ? 1 : -1];
 
-enum {
-    KF_CD_REQUEST_CAPACITY = 16,
+enum { KF_CD_REQUEST_CAPACITY = 16 };
+
+/* Ring entry kind; the service switch dispatches on it and IDLE frees it. */
+KF_ENUM_BEGIN(KfCdRequestKind, u8)
     KF_CD_REQUEST_IDLE = 0,
     KF_CD_REQUEST_CHECKSUM_READ = 0x10,
     KF_CD_REQUEST_SECTOR_CALLBACK = 0x20,
     KF_CD_REQUEST_VAB_READ = 0x30,
     KF_CD_REQUEST_IMAGE_STREAM = 0x40
-};
+KF_ENUM_END(KfCdRequestKind)
 
 /* Completion callbacks first acknowledge the seek, then the sector read. */
-enum {
+KF_ENUM_BEGIN(KfCdRequestPhase, u8)
     KF_CD_REQUEST_PHASE_SEEK = 0,
     KF_CD_REQUEST_PHASE_READ = 1
-};
+KF_ENUM_END(KfCdRequestPhase)
 
 /* VAB request payload phases, advanced by the CD completion callback. */
-enum {
+KF_ENUM_BEGIN(KfCdVabPhase, u8)
     KF_CD_VAB_PHASE_HEAD = 0,
     KF_CD_VAB_PHASE_BODY_READ = 1,
-    KF_CD_VAB_PHASE_BODY_READY = 2,
+    KF_CD_VAB_PHASE_BODY_READY = 2
+KF_ENUM_END(KfCdVabPhase)
+
+/* Image-stream handshake: the sector callback marks a chunk ready and the
+ * stream service consumes it. */
+KF_ENUM_BEGIN(KfCdStreamState, u8)
+    KF_CD_STREAM_WAITING = 0,
+    KF_CD_STREAM_CHUNK_READY = 1
+KF_ENUM_END(KfCdStreamState)
+
+enum {
     KF_CD_VAB_BODY_CHUNK_SECTORS = 18,
     KF_CD_VAB_BODY_CHUNK_BYTES = KF_CD_VAB_BODY_CHUNK_SECTORS * KF_CD_SECTOR_BYTES
 };
@@ -67,7 +83,7 @@ typedef void (*KfCdRequestCallback)(KfCdRequest *request);
 struct KfAudioVabStreamSlot;
 
 typedef struct KfCdRequestPayloadVab {
-    u8 phase;
+    KfCdVabPhase phase;
     s16 slot_index;
     struct KfAudioVabStreamSlot *stream_slot;
 } KfCdRequestPayloadVab;
@@ -80,14 +96,14 @@ typedef union KfCdRequestPayload {
 typedef char kf_cd_request_payload_size[
     sizeof(KfCdRequestPayload) == 8 ? 1 : -1];
 typedef char kf_cd_vab_slot_index_offset[
-    (u32)&((KfCdRequestPayloadVab *)0)->slot_index == 2 ? 1 : -1];
+    offsetof(KfCdRequestPayloadVab, slot_index) == 2 ? 1 : -1];
 typedef char kf_cd_vab_stream_slot_offset[
-    (u32)&((KfCdRequestPayloadVab *)0)->stream_slot == 4 ? 1 : -1];
+    offsetof(KfCdRequestPayloadVab, stream_slot) == 4 ? 1 : -1];
 
 /* One queued asynchronous CD request. */
 struct KfCdRequest {
-    u8 kind;
-    u8 phase;
+    KfCdRequestKind kind;
+    KfCdRequestPhase phase;
     CdlLOC location;
     CdlLOC initial_location;
     u_long *destination;
@@ -96,14 +112,14 @@ struct KfCdRequest {
     KfCdRequestPayload payload;
     s16 chunk_sectors;
     s16 remaining_sectors;
-    u8 stream_complete;
+    KfCdStreamState stream_complete;
 };
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
 typedef char kf_cd_request_destination_offset[
-    (u32)&((KfCdRequest *)0)->destination == 0x0c ? 1 : -1];
+    offsetof(KfCdRequest, destination) == 0x0c ? 1 : -1];
 typedef char kf_cd_request_stream_complete_offset[
-    (u32)&((KfCdRequest *)0)->stream_complete == 0x24 ? 1 : -1];
+    offsetof(KfCdRequest, stream_complete) == 0x24 ? 1 : -1];
 
 void cd_stream_limit_chunk(KfCdRequest *request);
 
@@ -144,12 +160,12 @@ void cd_data_ready_handler(void);
 void cd_error_handler(void);
 void cd_request_wait_idle(void);
 void cd_request_wait_done(KfCdRequest *request);
-KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
+KfCdRequest *cd_request_enqueue(KF_ENUM_PARAM(KfCdRequestKind, s32) kind, CdlLOC *location, u32 byte_size,
     u_long *destination, KfCdRequestCallback on_complete);
 void cd_request_yield(void);
 void cd_request_service_vab(void);
 void cd_request_service_stream(void);
-s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
+b32 cd_sectors_corrupt(u32 *data, s32 sector_count);
 u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location);
 void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);

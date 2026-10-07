@@ -1,47 +1,28 @@
 #ifndef KF_GAME_COLLISION_CACHE_H
 #define KF_GAME_COLLISION_CACHE_H
 
+#include <kf/lib/bool.h>
 #include <kf/game/player.h>
 
 s32 collision_sample_map_cell_layer(s32 x, s32 y, s32 z);
-s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_evaluate_shape_records(
+    s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void collision_cache_load_hit_bounds(void);
-s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
-s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_shapes_with_layer_sample(
+    s32 x, s32 y, s32 z, s32 radius, s32 height);
+b32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(
+    s32 x, s32 y, s32 z, s32 radius, s32 height, KF_ENUM_PARAM(KfCollisionQuery, u8) mode);
 void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount);
-
-/* collision_query_world uses the same bit positions to request and report
- * actor and map-object checks. Shape records only report bits below 0x10. */
-enum {
-    KF_COLLISION_QUERY_SHAPES = 0x01,
-    KF_COLLISION_QUERY_LAYER_FLAG_40 = 0x02,
-    KF_COLLISION_QUERY_ACTORS = 0x10,
-    KF_COLLISION_QUERY_MAP_OBJECTS = 0x20,
-    KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 = 0x40,
-    KF_COLLISION_QUERY_PLAYER = 0x80,
-    KF_COLLISION_HIT_AXIS = 0x01,
-    KF_COLLISION_HIT_DIAGONAL = 0x02,
-    KF_COLLISION_HIT_FLOOR = 0x04,
-    KF_COLLISION_HIT_HEIGHT_LIMIT = 0x08,
-    KF_COLLISION_HIT_ACTOR = 0x10,
-    KF_COLLISION_HIT_MAP_OBJECT = 0x20,
-    KF_COLLISION_HIT_PLAYER = 0x80
-};
 
 /* The high bit of the shape-query height argument enables floor records
  * (record kind 0x18); the low bits still carry the collision height. */
 #define KF_COLLISION_HEIGHT_CHECK_FLOOR ((s32)0x80000000u)
 #define KF_COLLISION_HEIGHT_CHECK_LIMIT ((s32)0x40000000u)
-
-/* With both shape-query bits set, layer flag 0x40 forces an axis hit and a
- * cache result of -100000. Flag 0x80 reveals the other layer to the camera
- * mask when this layer's map object is present. */
-enum {
-    KF_MAP_CELL_LAYER_COLLISION_FLAG_40 = 0x40,
-    KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80
-};
+/* collision_evaluate_shape_records splits its height argument into these. */
+#define KF_COLLISION_HEIGHT_MODE_MASK ((s32)0xf0000000u)
+#define KF_COLLISION_HEIGHT_VALUE_MASK 0x0fffffff
 
 /* Phase-one resource loading copies 0x600 words into this bank: a table of
  * shape offsets followed by the shapes. */
@@ -57,7 +38,27 @@ typedef char kf_collision_shape_offset_table_size[
 
 /* A collision shape is a radius scale, a record count and that many records,
  * each a halfword opcode followed by the operands below. Wall, slope and
- * ledge records are rotated by the cell's and their own quarter turns. */
+ * ledge records are rotated by the cell's and their own quarter turns.
+ * FLOOR/CEILING bound the column; BASE_FLOOR and UPPER_BOUND feed the cached
+ * bounds and the height-mode checks. Walls test one plane, either of two
+ * (OUTER_CORNER), both (INNER_CORNER) or a diagonal; STAIRS step by run and
+ * RAMP slopes along the diagonal; LEDGE follows an axis hit; OTHER_LAYER
+ * evaluates the cell's second layer once. */
+KF_ENUM_BEGIN(KfShapeRecordKind, s16)
+    KF_SHAPE_RECORD_FLOOR = 0x10,
+    KF_SHAPE_RECORD_CEILING = 0x11,
+    KF_SHAPE_RECORD_BASE_FLOOR = 0x18,
+    KF_SHAPE_RECORD_UPPER_BOUND = 0x19,
+    KF_SHAPE_RECORD_WALL = 0x20,
+    KF_SHAPE_RECORD_OUTER_CORNER_WALL = 0x21,
+    KF_SHAPE_RECORD_INNER_CORNER_WALL = 0x22,
+    KF_SHAPE_RECORD_DIAGONAL_WALL = 0x23,
+    KF_SHAPE_RECORD_STAIRS = 0x30,
+    KF_SHAPE_RECORD_LEDGE = 0x31,
+    KF_SHAPE_RECORD_RAMP = 0x32,
+    KF_SHAPE_RECORD_OTHER_LAYER = 0x40
+KF_ENUM_END(KfShapeRecordKind)
+
 typedef struct KfShapeHeightRecord {
     s16 height;
 } KfShapeHeightRecord;

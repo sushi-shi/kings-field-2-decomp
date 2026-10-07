@@ -33,7 +33,7 @@ int cd_file_load_into(u_long *destination, const char *relative_path)
     start.second = KF_CD_DATA_START_SECOND;
     start.sector = 0;
     start.track = 0;
-    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, relative_path);
     strcat(path, cd_version_suffix);
     if (CdSearchFile(&file, path) == NULL) {
@@ -49,7 +49,7 @@ int cd_file_load_into(u_long *destination, const char *relative_path)
             CdPause();
             return KF_CD_READ_FAILED;
         }
-        CdGetSector(destination, KF_CD_SECTOR_WORDS);
+        CdGetSector((void *)destination, KF_CD_SECTOR_WORDS);
         destination += KF_CD_SECTOR_WORDS;
     }
     CdControl(CdlSetloc, (u_char *)&start, NULL);

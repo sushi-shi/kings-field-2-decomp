@@ -86,8 +86,24 @@ constexpr Integer kf_enum_encode(KfEnumStorage<Enum, Storage> value)
     return static_cast<Integer>(value.encoded_value());
 }
 
+/* The stored integer itself, without a conversion in the C view: use where
+ * an explicit cast would change the retail code (e.g. u8 division). */
+template <typename Enum>
+    requires (__is_enum(Enum))
+constexpr __underlying_type(Enum) kf_enum_value(Enum value)
+{
+    return static_cast<__underlying_type(Enum)>(value);
+}
+
+template <typename Enum, typename Storage>
+constexpr Storage kf_enum_value(KfEnumStorage<Enum, Storage> value)
+{
+    return value.encoded_value();
+}
+
 #define KF_ENUM_DECODE(type, value) kf_enum_decode<type>(value)
 #define KF_ENUM_ENCODE(storage, value) kf_enum_encode<storage>(value)
+#define KF_ENUM_VALUE(value) kf_enum_value(value)
 #else
 #define KF_MODERN_TYPES 0
 #define KF_ENUM_BEGIN(name, storage) typedef storage name; enum {
@@ -99,6 +115,7 @@ constexpr Integer kf_enum_encode(KfEnumStorage<Enum, Storage> value)
 #define KF_ENUM_FLAGS(name, storage)
 #define KF_ENUM_DECODE(type, value) ((type)(value))
 #define KF_ENUM_ENCODE(storage, value) ((storage)(value))
+#define KF_ENUM_VALUE(value) (value)
 #endif
 
 #endif

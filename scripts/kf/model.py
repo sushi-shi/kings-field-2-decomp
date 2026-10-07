@@ -35,6 +35,7 @@ DATA_AT_RE = re.compile(
     r'(0x[0-9A-Fa-f]+|[0-9]+)\s*,\s*"(\.[a-z]+)"\s*\)\s*'
     r'(?:/\*.*\*/\s*)?$'
 )
+C_ONLY_GUARD_RE = re.compile(r"^\s*#\s*ifndef\s+__cplusplus\s*$")
 IDENTIFIER_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 FUNCTION_POINTER_RE = re.compile(r"\(\s*\*\s*([A-Za-z_][A-Za-z0-9_]*)")
 BINDING_FIELDS = ("image", "va", "kind", "name", "unit", "source", "line", "ordinal")
@@ -129,6 +130,10 @@ def _definition_after(lines: list[str], index: int) -> str:
         # Shared definitions stack image-qualified claims before the one
         # declarator; skip sibling claims to reach it.
         if CLAIM_RE.match(following) or ADDRESS_AT_RE.match(following) or DATA_AT_RE.match(following):
+            continue
+        # A C-only repetition of an earlier static tentative definition keeps
+        # its claim; C++ rejects the redefinition.
+        if C_ONLY_GUARD_RE.match(following):
             continue
         return stripped
     return ""

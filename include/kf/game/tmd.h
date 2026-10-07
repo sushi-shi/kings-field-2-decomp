@@ -7,6 +7,8 @@
 /* Standard Sony TMD layout as registered by GAME.EXE. */
 enum {
     KF_TMD_HEADER_BYTES = 12,
+    /* Slot 0 holds the map-cell TMD read into resource_tmd_workspace. */
+    KF_TMD_SLOT_MAP = 0,
     KF_TMD_SLOT_MENU_ITEM = 3
 };
 

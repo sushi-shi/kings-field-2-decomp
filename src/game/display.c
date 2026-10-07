@@ -28,13 +28,8 @@
 #include <kf/game/notification_quad.h>
 #include <kf/game/notify.h>
 
-enum { KF_MAP_CELL_SHIFT = 11 };
 
 enum {
-    KF_MAP_CELL_ORIENTATION_MASK = 3,
-    KF_MAP_CELL_LIGHTING_MASK = 63,
-    KF_MAP_CELL_OBJECT_SPECIAL = 0x80,
-    KF_MAP_CELL_OBJECT_PREPARE = 0x40,
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
@@ -52,10 +47,6 @@ enum {
 #define GRAPHICS game_graphics_runtime
 #define DISPLAY game_graphics_runtime.display_state
 
-enum {
-    KF_RENDER_MODEL_END = 0xff,
-    KF_RENDER_MODEL_ACTIVE = 1
-};
 
 DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
@@ -65,32 +56,32 @@ MATRIX render_world_identity_matrix = {
 
 DATA(0x80066808, 0x7e, ".data")
 KfNotificationQuad notification_quads[7] = {
-    {0, 0, 0, 127, 14, 96, 203, 127, 14, 0x7f24, 0x1b},
-    {0, 0, 0, 127, 14, 110, 203, 127, 14, 0x7f24, 0x1b},
-    {0, 240, 0, 7, 14, 90, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 80, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 70, 203, 7, 13, 0x7f64, 0x1d},
-    {0, 240, 0, 7, 14, 60, 203, 7, 13, 0x7f64, 0x1d},
-    {0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    {KF_SPRITE_HIDDEN, 0, 0, 127, 14, 96, 203, 127, 14, 0x7f24, 0x1b},
+    {KF_SPRITE_HIDDEN, 0, 0, 127, 14, 110, 203, 127, 14, 0x7f24, 0x1b},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 90, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 80, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 70, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_HIDDEN, 240, 0, 7, 14, 60, 203, 7, 13, 0x7f64, 0x1d},
+    {KF_SPRITE_END, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 DATA(0x80066888, 0x21c, ".data")
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
-    {1, 0, 0x40,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
-    {1, 0, 0x41,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
-    {1, 0, 0x41, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
-    {1, 0, 0x48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
-    {KF_RENDER_MODEL_END}
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD_COMPASS,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
+    {KF_SPRITE_VISIBLE, 0, KF_LIGHTING_PRESET_48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
+    {KF_SPRITE_END}
 };
 
 DATA(0x8006d6d0, 0x4, ".sdata")
@@ -152,19 +143,19 @@ ADDRESS(0x8002d248, 0xe4)
 void display_reset(void)
 {
     u8 *memory;
-    u8 *message_id;
+    KfNotificationId *message_id;
     u8 messages_left;
     KfFloorItem *item;
     s32 items_left;
 
-    DISPLAY.buffer_index = KF_DISPLAY_BUFFER_NONE;
+    DISPLAY.buffer_index = KF_DISPLAY_BUFFER_UNINITIALIZED;
     memory = display_primitive_memory;
     DISPLAY.primitive_buffers[0].start = DISPLAY.asset_load_buffer = memory;
     memory += KF_GAME_PRIMITIVE_BUFFER_BYTES;
     DISPLAY.primitive_buffers[1].start = DISPLAY.primitive_buffers[0].end = memory;
     memory += KF_GAME_PRIMITIVE_BUFFER_BYTES;
     DISPLAY.primitive_buffers[1].end = memory;
-    GRAPHICS.notification_control.effect_phase = 0;
+    GRAPHICS.notification_control.effect_phase = KF_NOTIFICATION_IDLE;
     GRAPHICS.notification_control.queue_tail = 0;
     GRAPHICS.notification_control.queue_head = 0;
     message_id = GRAPHICS.notification_message_ids;
@@ -177,7 +168,7 @@ void display_reset(void)
         item->kind = KF_FLOOR_ITEM_NONE;
         item++;
     }
-    GRAPHICS.color_overlay_control = 0xff;
+    GRAPHICS.color_overlay_control = KF_COLOR_OVERLAY_OFF;
     GRAPHICS.map_placed_frame_counter = 0;
     pool_reset();
 }
@@ -185,9 +176,9 @@ void display_reset(void)
 ADDRESS(0x8002d32c, 0x98)
 void display_begin_frame(void)
 {
-    DISPLAY.buffer_index = DISPLAY.buffer_index == 0;
-    DISPLAY.primitive_buffer = &DISPLAY.primitive_buffers[DISPLAY.buffer_index];
-    DISPLAY.ordering_table = DISPLAY.ordering_tables[DISPLAY.buffer_index].entries;
+    DISPLAY.buffer_index = display_next_buffer(DISPLAY.buffer_index);
+    DISPLAY.primitive_buffer = &DISPLAY.primitive_buffers[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)];
+    DISPLAY.ordering_table = DISPLAY.ordering_tables[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)].entries;
     ClearOTagR(DISPLAY.ordering_table, KF_GAME_ORDERING_TABLE_LENGTH);
     DISPLAY.primitive_buffer->cursor = DISPLAY.primitive_buffer->start;
     display_frame_cleared_word = 0;
@@ -200,8 +191,8 @@ void display_present_frame(void)
 {
     DrawSync(0);
     VSync(0);
-    PutDrawEnv(&GRAPHICS.display_draw_environments[DISPLAY.buffer_index]);
-    PutDispEnv(&GRAPHICS.display_disp_environments[DISPLAY.buffer_index]);
+    PutDrawEnv(&GRAPHICS.display_draw_environments[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)]);
+    PutDispEnv(&GRAPHICS.display_disp_environments[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)]);
     DrawOTag(DISPLAY.ordering_table + (KF_GAME_ORDERING_TABLE_LENGTH - 1));
 }
 
@@ -523,13 +514,14 @@ void tmd_project_vertices(s32 count)
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
-void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode)
+void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
+                   KF_ENUM_PARAM(KfRenderQueueMode, s32) render_mode)
 {
     KfTmdObject *object;
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u16 blend_bits = (u16)render_mode << 5;
+    u16 blend_bits = KF_ENUM_ENCODE(u16, render_mode) << 5;
 
     object = tmd_get_object(object_index);
     packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
@@ -566,7 +558,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->clut = face->ft3.clut;
-            prim->tpage = (face->ft3.tpage & 0xff9f) | blend_bits;
+            prim->tpage = (face->ft3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -578,13 +570,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
             setlen(prim, 7);
-            prim->code = 0x26;
+            prim->code = KF_TMD_MODE_FT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -601,7 +593,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -615,13 +607,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             setlen(&prim->sdk, 9);
-            prim->sdk.code = 0x36;
+            prim->sdk.code = KF_TMD_MODE_GT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -639,7 +631,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -658,13 +650,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
-            prim->sdk.code = 0x3e;
+            prim->sdk.code = KF_TMD_MODE_GT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
                 break;
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_FT4: {
@@ -682,7 +674,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->clut = face->ft4.clut;
-            prim->tpage = (face->ft4.tpage & 0xff9f) | blend_bits;
+            prim->tpage = (face->ft4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -696,13 +688,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
             setlen(prim, 9);
-            prim->code = 0x2e;
+            prim->code = KF_TMD_MODE_FT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
                 break;
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             break;
         }
         }
@@ -771,7 +763,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                 break;
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -808,7 +800,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                 break;
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -851,7 +843,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                 break;
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_FT4: {
@@ -889,7 +881,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                 break;
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             break;
         }
         }
@@ -940,7 +932,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_mode;
+            prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -954,11 +946,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             setlen(&prim->sdk, 9);
-            prim->sdk.code = (mode & 2) | 0x34;
+            prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                        &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -976,7 +968,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_mode;
+            prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -995,11 +987,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            &map_textured_primitive_color,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
-            prim->sdk.code = (mode & 2) | 0x3c;
+            prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                        &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        (void *)&prim->sdk);
             break;
         }
         case KF_TMD_MODE_G3: {
@@ -1025,11 +1017,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
             setlen(prim, 6);
-            prim->code = 0x30;
+            prim->code = KF_TMD_MODE_G3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                        prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        (void *)prim);
             break;
         }
         case KF_TMD_MODE_G4: {
@@ -1060,11 +1052,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            &face->g4.color,
                            (CVECTOR *)&prim->r3);
             setlen(prim, 8);
-            prim->code = 0x38;
+            prim->code = KF_TMD_MODE_G4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                        prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        (void *)prim);
             break;
         }
         }
@@ -1132,12 +1124,12 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
             setlen(&prim->sdk, 0x0c);
-            prim->sdk.code = header.bytes.mode | 0x3c;
+            prim->sdk.code = header.bytes.mode | KF_TMD_MODE_GT4;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth],
-                        &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth],
+                        (void *)&prim->sdk);
             }
             break;
         }
@@ -1172,11 +1164,11 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             setlen(&prim->sdk, 0x09);
-            prim->sdk.code = header.bytes.mode | 0x34;
+            prim->sdk.code = header.bytes.mode | KF_TMD_MODE_GT3;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth],
-                        &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth],
+                        (void *)&prim->sdk);
             }
             break;
         }
@@ -1210,7 +1202,7 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
     NormalColorCol(normal, &map_textured_primitive_color, &shade);
     next = game_graphics_runtime.clip_result_vertices;
     first = *next++;
-    packet_code = mode | 0x34;
+    packet_code = mode | KF_TMD_MODE_GT3;
     DpqColor(&shade, first->sxyz.pad >> 1, &first_color);
     second = *next++;
     DpqColor(&shade, second->sxyz.pad >> 1, &second->rgb);
@@ -1247,8 +1239,8 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
         if (depth < 16) {
             depth = 16;
         }
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
-                &packet->sdk);
+        AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                (void *)&packet->sdk);
 
         second = third;
     }
@@ -1358,13 +1350,13 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
                     setlen(&prim->sdk, 12);
-                    prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
+                    prim->sdk.code = (header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
                     depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
                     if (depth < 16) {
                         depth = 16;
                     }
-                    AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
-                            &prim->sdk);
+                    AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                            (void *)&prim->sdk);
                 } else {
                     clipped_count = Clip4FTP(TMD_VECTOR(original_vertices, FT4_FACE->vertex0),
                                              TMD_VECTOR(original_vertices, FT4_FACE->vertex1),
@@ -1379,7 +1371,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         render_enqueue_clipped_tmd_polygon(clipped_count,
                                        TMD_VECTOR(normals, FT4_FACE->normal),
                                        FT4_FACE->clut, FT4_FACE->tpage,
-                                       header.bytes.mode & 2, depth_bias);
+                                       header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT, depth_bias);
                     }
                 }
                 break;
@@ -1425,13 +1417,13 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     setlen(&prim->sdk, 9);
-                    prim->sdk.code = (header.bytes.mode & 2) | 0x34;
+                    prim->sdk.code = (header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
                     depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
                     if (depth < 16) {
                         depth = 16;
                     }
-                    AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
-                            &prim->sdk);
+                    AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                            (void *)&prim->sdk);
                 } else {
                     clipped_count = Clip3FTP(TMD_VECTOR(original_vertices, FT3_FACE->vertex0),
                                              TMD_VECTOR(original_vertices, FT3_FACE->vertex1),
@@ -1444,7 +1436,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         render_enqueue_clipped_tmd_polygon(clipped_count,
                                        TMD_VECTOR(normals, FT3_FACE->normal),
                                        FT3_FACE->clut, FT3_FACE->tpage,
-                                       header.bytes.mode & 2, depth_bias);
+                                       header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT, depth_bias);
                     }
                 }
                 break;
@@ -1679,15 +1671,16 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
-                            u8 flags)
+                            KfMapLayerMask flags)
 {
     MATRIX cell_matrix;
     long gte_flags;
     KfCollisionRow *lighting;
     u16 object_index;
-    s32 orientation;
+    KF_ENUM_STORAGE(KfQuarterTurn, s32) orientation;
 
-    orientation = shape->quarter_turns & KF_MAP_CELL_ORIENTATION_MASK;
+    orientation = KF_ENUM_DECODE(KfQuarterTurn,
+                                 shape->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK);
     SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     RotTrans(position, (VECTOR *)&cell_matrix.t, &gte_flags);
@@ -1698,7 +1691,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
 
     lighting = &game_graphics_runtime.collision_rows[
         shape->lighting_index & KF_MAP_CELL_LIGHTING_MASK];
-    SetLightMatrix((MATRIX *)&lighting->rotations[orientation]);
+    SetLightMatrix((MATRIX *)&lighting->rotations[KF_ENUM_ENCODE(s32, orientation)]);
     SetColorMatrix((MATRIX *)&lighting->motion);
     fog_set_near(lighting->filter.angle);
     SetBackColor(lighting->filter.kinds.types[0],
@@ -1706,13 +1699,13 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                  lighting->filter.kinds.types[2]);
 
     object_index = shape->object_index;
-    if (resource_state.transition_active == 1 && resource_state.tmd_object_limit_active &&
+    if (resource_state.transition_active == KF_TRUE && resource_state.tmd_object_limit_active &&
         object_index >= game_graphics_runtime.tmd_state.current_asset->flags) {
         return;
     }
     tmd_select_object_vertices(object_index);
-    if (flags & KF_MAP_CELL_OBJECT_SPECIAL) {
-        if (flags & KF_MAP_CELL_OBJECT_PREPARE) {
+    if ((flags & KF_MAP_LAYER_NEAR_CLIPPED) != KF_MAP_LAYER_NONE) {
+        if ((flags & KF_MAP_LAYER_NEAR_PREPARE) != KF_MAP_LAYER_NONE) {
             if (tmd_get_object(object_index)->primitive_count < KF_MAP_CELL_PREPARED_LIMIT) {
                 KfTmdPreparedAsset prepared_asset;
 
@@ -1729,22 +1722,21 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
 }
 
 enum {
-    KF_MAP_GRID_WIDTH = 80,
-    KF_MAP_GRID_SCAN_WIDTH = 24,
     KF_MAP_GRID_EMPTY_OBJECT = 240,
-    KF_MAP_GRID_CELL_LENGTH = 2048,
+    KF_MAP_GRID_CELL_LENGTH = 1 << KF_MAP_CELL_POSITION_SHIFT,
     KF_MAP_GRID_CELL_MIDPOINT = 1024,
-    KF_MAP_GRID_ELEVATION_LENGTH = 128
+    KF_MAP_GRID_ELEVATION_LENGTH = 1 << KF_MAP_CELL_ELEVATION_SHIFT
 };
 
 ADDRESS(0x80030de4, 0x178)
-void render_map_cell_layers(s32 x, s32 z, u8 flags)
+void render_map_cell_layers(s32 x, s32 z, KfMapLayerMask flags)
 {
     KfMapOccupancyCell *cell = &bss_801c7540.map_cells[z][x];
     s32 object_index = cell->layer[0].object_index;
     SVECTOR position;
 
-    if ((flags & 1) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+    if ((flags & KF_MAP_LAYER_FIRST) != KF_MAP_LAYER_NONE &&
+        object_index < KF_MAP_GRID_EMPTY_OBJECT) {
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                       game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
@@ -1756,14 +1748,16 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE &&
+            object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
                           game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     } else {
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE &&
+            object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                           game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
@@ -1782,30 +1776,30 @@ void render_map_cell_window(void)
 {
     s32 row;
     s32 remaining_rows;
-    u8 *mask;
+    KfMapLayerMask *mask;
     s32 start_x;
     KfRenderGridState *render = &game_graphics_runtime.render_grid;
 
-    tmd_select(0);
+    tmd_select(KF_TMD_SLOT_MAP);
     mask = &render->map_cell_layer_masks[0][0];
-    remaining_rows = KF_MAP_GRID_SCAN_WIDTH;
+    remaining_rows = KF_MAP_CELL_GRID_SIDE;
     start_x = render->map_scan_start_x;
     row = render->map_scan_start_z;
     while (remaining_rows != 0) {
-        if ((u32)row < KF_MAP_GRID_WIDTH) {
+        if ((u32)row < KF_MAP_WORLD_GRID_SIDE) {
             s32 x = start_x;
-            s32 remaining_columns = KF_MAP_GRID_SCAN_WIDTH;
+            s32 remaining_columns = KF_MAP_CELL_GRID_SIDE;
             do {
                 s32 column = x & 0xff;
                 x++;
-                if ((u32)column < KF_MAP_GRID_WIDTH && *mask != 0) {
+                if ((u32)column < KF_MAP_WORLD_GRID_SIDE && *mask != KF_MAP_LAYER_NONE) {
                     render_map_cell_layers(column, row, *mask);
                 }
                 mask++;
                 remaining_columns--;
             } while (remaining_columns != 0);
         } else {
-            mask += KF_MAP_GRID_SCAN_WIDTH;
+            mask += KF_MAP_CELL_GRID_SIDE;
         }
         remaining_rows--;
         row++;
@@ -1823,12 +1817,12 @@ void render_active_model_rows(void)
     MATRIX light_matrix;
 
     entry = render_model_rows;
-    if (entry->state == KF_RENDER_MODEL_END) {
+    if (entry->state == KF_SPRITE_END) {
         return;
     }
     do {
-        if (entry->state == KF_RENDER_MODEL_ACTIVE) {
-            lighting = &game_graphics_runtime.collision_rows[entry->lighting_index];
+        if (entry->state == KF_SPRITE_VISIBLE) {
+            lighting = &game_graphics_runtime.collision_rows[KF_ENUM_ENCODE(u8, entry->lighting_index)];
             model.t[0] = entry->translation.vx;
             model.t[1] = entry->translation.vy;
             model.t[2] = entry->translation.vz;
@@ -1847,7 +1841,7 @@ void render_active_model_rows(void)
             asset_registry_select(entry->asset_id);
             object = tmd_get_object(0);
             if (animation_prepare_asset_vertices(&entry->animation_state, entry->asset_id,
-                              entry->animation_clip, entry->animation_phase,
+                              KF_ENUM_DECODE(KfAnimationClip, entry->animation_clip), entry->animation_phase,
                               object->vertex_count)) {
                 tmd_select_object_vertices(0);
             }
@@ -1855,7 +1849,7 @@ void render_active_model_rows(void)
             render_enqueue_textured_tmd(0, 0);
         }
         entry++;
-    } while (entry->state != KF_RENDER_MODEL_END);
+    } while (entry->state != KF_SPRITE_END);
 }
 
 ADDRESS(0x800311b0, 0x144)
@@ -1873,7 +1867,7 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     }
 
     setPolyFT4(quad);
-    if (semitrans != 0xff) {
+    if (semitrans != KF_TEXTURED_QUAD_OPAQUE) {
         setSemiTrans(quad, semitrans);
     }
     setRGB0(quad, red, green, blue);
@@ -1893,7 +1887,7 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     quad->y2 = quad->y3 = bottom;
 
     if (depth > 0 && (u32)depth < KF_GAME_ORDERING_TABLE_LENGTH) {
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], quad);
+        AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)quad);
     }
 }
 
@@ -1907,7 +1901,7 @@ void render_sliding_panel_primary(void)
         if (y < 0) {
             y = 0;
         }
-        render_textured_quad(0, y, 320, 240, 128, 192, 15, 15, 1, 55,
+        render_textured_quad(0, y, 320, 240, 128, 192, 15, 15, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 55,
                              0x7bdc, 60, 60, 60, 64);
     }
 }
@@ -1922,7 +1916,7 @@ void render_sliding_panel_secondary(void)
         if (y < 0) {
             y = 0;
         }
-        render_textured_quad(0, y, 320, 240, 144, 192, 15, 15, 1, 55,
+        render_textured_quad(0, y, 320, 240, 144, 192, 15, 15, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 55,
                              0x7bdc, 60, 60, 60, 64);
     }
 }
@@ -1930,20 +1924,22 @@ void render_sliding_panel_secondary(void)
 ADDRESS(0x80031414, 0xc0)
 void render_color_overlay(void)
 {
-    if (game_graphics_runtime.color_overlay_control != 0xff) {
+    if (game_graphics_runtime.color_overlay_control != KF_COLOR_OVERLAY_OFF) {
         render_textured_quad(0, 0, 0x140, 0xf0,
-                             0x80, 0xd0, 0xf, 0xf, 1,
-                             ((game_graphics_runtime.color_overlay_control & 3) << 5) | 0x17,
+                             0x80, 0xd0, 0xf, 0xf, KF_TEXTURED_QUAD_SEMI_TRANSPARENT,
+                             KF_GPU_TPAGE_ABR(game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_BLEND_MASK)
+                                 | 0x17,
                              0x7bdc,
                              game_graphics_runtime.color_overlay_rgb[0],
                              game_graphics_runtime.color_overlay_rgb[1],
                              game_graphics_runtime.color_overlay_rgb[2],
-                             (game_graphics_runtime.color_overlay_control & 0x80) ? 1 : 0x40);
+                             (game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_FRONT) != KF_COLOR_OVERLAY_NO_FLAGS
+                                 ? 1 : 0x40);
     }
 }
 
 ADDRESS(0x800314d4, 0x28)
-void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue)
+void render_set_color_overlay(KfColorOverlayControl control, u8 red, u8 green, u8 blue)
 {
     game_graphics_runtime.color_overlay_control = control;
     game_graphics_runtime.color_overlay_rgb[0] = red;
@@ -1956,7 +1952,7 @@ void render_accumulated_color_overlay(void)
 {
     if (game_graphics_runtime.color_overlay_sample_count != 0) {
         render_textured_quad(0, 0, 0x140, 0xf0,
-                      0x80, 0xd0, 0xf, 0xf, 1, 0x37, 0x7bdc,
+                      0x80, 0xd0, 0xf, 0xf, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 0x37, 0x7bdc,
                       *(s16 *)&game_graphics_runtime.color_overlay_red_sum /
                           game_graphics_runtime.color_overlay_sample_count,
                       *(s16 *)&game_graphics_runtime.color_overlay_green_sum /
@@ -1997,7 +1993,7 @@ void render_player_weapon(void)
     row = &game_graphics_runtime.collision_rows[
         layer[cell_x * sizeof(KfMapOccupancyCell) +
               cell_z * sizeof(bss_801c7540.map_cells[0]) +
-              player_state.map_layer_index] & 0x3f];
+              player_state.map_layer_index] & KF_MAP_CELL_LIGHTING_MASK];
     SetColorMatrix((MATRIX *)&row->motion);
     SetLightMatrix((MATRIX *)&row->rotations[0]);
     fog_set_near(row->filter.angle);
@@ -2023,11 +2019,11 @@ void render_player_weapon(void)
 }
 
 ADDRESS(0x80031850, 0x53c)
-void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
+void render_world_model(KfMapLayerMask map_layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
-                   KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
-                   u16 phase, u8 lighting_override, s16 lighting_blend,
-                   u8 render_mode, s32 depth)
+                   KfPoolRecord **cache, MATRIX *world_matrix, KF_ENUM_PARAM(KfAnimationClip, u16) clip,
+                   u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,
+                   KfRenderQueueMode render_mode, s32 depth)
 {
     /* Retail reads vy after a null world_matrix path without initializing it. */
     SVECTOR relative;
@@ -2057,13 +2053,13 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
         row = bss_801c7540.map_cells[position->vz >> 11];
         cell = &row[position->vx >> 11];
-        if (map_layer != 1) {
+        if (map_layer != KF_MAP_LAYER_FIRST) {
             lighting_layer = &cell->layer[1];
         } else {
             lighting_layer = &cell->layer[0];
         }
         lighting = &game_graphics_runtime.collision_rows[
-            lighting_layer->lighting_index & 0x3f];
+            lighting_layer->lighting_index & KF_MAP_CELL_LIGHTING_MASK];
     } else {
         model.t[0] = position->vx;
         model.t[1] = position->vy;
@@ -2075,12 +2071,12 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
                     game_graphics_runtime.render_state.view_position.vz >> 11][
                     game_graphics_runtime.render_state.view_position.vx >> 11]
                     .layer[0].lighting_index + layer_offset);
-            lighting = &game_graphics_runtime.collision_rows[lighting_index & 0x3f];
+            lighting = &game_graphics_runtime.collision_rows[lighting_index & KF_MAP_CELL_LIGHTING_MASK];
         }
     }
 
-    if (render_mode == 0x80) {
-        render_mode = 0xff;
+    if (render_mode == KF_RENDER_QUEUE_TEXTURED_UNBIASED) {
+        render_mode = KF_RENDER_QUEUE_TEXTURED;
     } else if (relative.vy <= 0) {
         depth += 240;
     }
@@ -2093,8 +2089,8 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         ScaleMatrix(&model, &scale_vector);
     }
 
-    if (lighting_override != 0xff) {
-        override = &game_graphics_runtime.collision_rows[lighting_override];
+    if (lighting_override != KF_LIGHTING_NONE) {
+        override = &game_graphics_runtime.collision_rows[KF_ENUM_ENCODE(u8, lighting_override)];
         if (override->motion.values[0] != -1) {
             fixed_lerp_nine_halfwords_q12(lighting->motion.values, override->motion.values,
                           color_matrix.m[0], lighting_blend);
@@ -2143,7 +2139,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&model);
 
     asset_registry_select(asset_index);
-    if (clip < 0x80) {
+    if (clip < KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
         object_index = 0;
         object = tmd_get_object(0);
         if (animation_prepare_asset_vertices(cache, asset_index, clip, phase,
@@ -2151,7 +2147,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
             tmd_select_object_vertices(0);
         }
     } else {
-        object_index = clip & 0x7f;
+        object_index = KF_ENUM_ENCODE(u16, clip) & KF_ASSET_OBJECT_INDEX_MASK;
         tmd_select_object_vertices(object_index);
         object = tmd_get_object(object_index);
     }
@@ -2160,9 +2156,9 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     } else {
         tmd_transform_vertices_depth(object->vertex_count, depth);
     }
-    if (render_mode == 0xff) {
+    if (render_mode == KF_RENDER_QUEUE_TEXTURED) {
         render_enqueue_textured_tmd(object_index, depth);
-    } else if (render_mode == 0xfe) {
+    } else if (render_mode == KF_RENDER_QUEUE_CLIPPED) {
         render_enqueue_tmd_with_clipping(object_index, depth, NULL);
     } else {
         render_enqueue_blended_tmd(object_index, depth, render_mode);
@@ -2171,7 +2167,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 
 ADDRESS(0x80031d8c, 0x214)
 void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
-                   KfPoolRecord **cache, u16 clip, u16 phase,
+                   KfPoolRecord **cache, KF_ENUM_PARAM(KfAnimationClip, u16) clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth)
 {
     MATRIX model;
@@ -2187,12 +2183,12 @@ void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotatio
     SetRotMatrix(&model);
     SetTransMatrix(&model);
 
-    lighting = &game_graphics_runtime.collision_rows[lighting_flags & 0x7f];
+    lighting = &game_graphics_runtime.collision_rows[lighting_flags & KF_LIGHTING_FLAGS_INDEX_MASK];
     SetColorMatrix((MATRIX *)&lighting->motion);
     SetBackColor(lighting->filter.kinds.types[0],
                  lighting->filter.kinds.types[1],
                  lighting->filter.kinds.types[2]);
-    if (lighting_flags & 0x80) {
+    if (lighting_flags & KF_LIGHTING_FLAG_REVERSED_LIGHT) {
         reversed_light.m[0][0] = -lighting->rotations[0].m[0][0];
         reversed_light.m[0][1] = -lighting->rotations[0].m[0][1];
         reversed_light.m[0][2] = -lighting->rotations[0].m[0][2];
@@ -2229,7 +2225,8 @@ KfAssetHeader *resource_registry_get(u16 index)
     if (index < 104) {
         return asset;
     }
-    if (asset != NULL && (u8)(memory_block_kind((u8 *)asset) - 1) < 2) {
+    /* Encoded range test: RECLAIMABLE or OWNED. */
+    if (asset != NULL && (u8)(KF_ENUM_ENCODE(u8, memory_block_kind((u8 *)asset)) - 1) < 2) {
         return asset;
     }
     return NULL;
@@ -2241,31 +2238,32 @@ void resource_tmd_read_complete(u8 *data)
     KfAssetHeader *asset = (KfAssetHeader *)data;
 
     tmd_prepare_primitive_indices(ASSET_TMD(asset));
-    memory_block_set_kind(data, 2);
+    memory_block_set_kind(data, KF_MEMORY_BLOCK_OWNED);
 }
 
 ADDRESS(0x80032040, 0x70)
-u32 map_cell_layer_mask(const VECTOR *position)
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask(const VECTOR *position)
 {
-    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
+    s32 z = (position->vz >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
     s32 x;
 
     if ((u32)z >= KF_MAP_CELL_GRID_SIDE) {
-        return 0;
+        return KF_MAP_LAYER_NONE;
     }
-    x = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
+    x = (position->vx >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
     if ((u32)x >= KF_MAP_CELL_GRID_SIDE) {
-        return 0;
+        return KF_MAP_LAYER_NONE;
     }
     return game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
 }
 
 ADDRESS(0x800320b0, 0xc4)
-u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask_radius(
+    const VECTOR *position, s32 radius)
 {
-    u8 mask = 0;
-    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
-    s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
+    KfMapLayerMask mask = KF_MAP_LAYER_NONE;
+    s32 z = (position->vz >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
+    s32 x0 = (position->vx >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
     s32 x;
     s32 rows;
     s32 columns;
@@ -2291,20 +2289,20 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
 }
 
 ADDRESS(0x80032174, 0x64)
-s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
+b32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
 {
-    s32 z = position->vz >> KF_MAP_CELL_SHIFT;
+    s32 z = position->vz >> KF_MAP_CELL_POSITION_SHIFT;
     s32 x;
 
     if (z - radius_z <= game_graphics_runtime.render_state.view_cell_z &&
         game_graphics_runtime.render_state.view_cell_z <= z + radius_z) {
-        x = position->vx >> KF_MAP_CELL_SHIFT;
+        x = position->vx >> KF_MAP_CELL_POSITION_SHIFT;
         if (x - radius_x <= game_graphics_runtime.render_state.view_cell_x &&
             game_graphics_runtime.render_state.view_cell_x <= x + radius_x) {
-            return 1;
+            return KF_TRUE;
         }
     }
-    return 0;
+    return KF_FALSE;
 }
 
 ADDRESS(0x800321d8, 0x9c)
@@ -2316,7 +2314,7 @@ void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
     block = memory_arena_allocate_block(KF_GAME_RESOURCE_ARENA_BASE, size,
         (u8 **)&game_graphics_runtime.asset_registry_entries[registry_index]);
     if (block != NULL) {
-        memory_block_set_kind(block, 3);
+        memory_block_set_kind(block, KF_MEMORY_BLOCK_PENDING);
         memory_block_set_tag(block, registry_index);
         /* Kind 0x10 completion passes the destination, not the request. */
         cd_archive_queue_read(archive_slot, entry, (u_long *)block,
@@ -2326,7 +2324,7 @@ void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
 
 ADDRESS(0x80032274, 0xf0)
 void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
-    s32 count, u8 *flags)
+    s32 count, b8 *flags)
 {
     s32 end = count + entry;
 
@@ -2350,7 +2348,7 @@ void resource_vab_update_range(s32 archive_slot, s32 entry, s32 vab_slot,
 
 ADDRESS(0x80032364, 0x118)
 void resource_tmd_update_range(s32 archive_slot, s32 entry, s32 registry_index,
-    s32 count, u8 *flags)
+    s32 count, b8 *flags)
 {
     s32 end = count + entry;
 
@@ -2361,13 +2359,13 @@ void resource_tmd_update_range(s32 archive_slot, s32 entry, s32 registry_index,
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
             if (block == NULL) {
                 resource_tmd_queue_read(archive_slot, entry, registry_index);
-            } else if (memory_block_kind(block) == 1) {
-                memory_block_set_kind(block, 2);
+            } else if (memory_block_kind(block) == KF_MEMORY_BLOCK_RECLAIMABLE) {
+                memory_block_set_kind(block, KF_MEMORY_BLOCK_OWNED);
             }
         } else {
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
-            if (block != NULL && memory_block_kind(block) != 3) {
-                memory_block_set_kind(block, 1);
+            if (block != NULL && memory_block_kind(block) != KF_MEMORY_BLOCK_PENDING) {
+                memory_block_set_kind(block, KF_MEMORY_BLOCK_RECLAIMABLE);
             }
         }
         entry++;
@@ -2382,9 +2380,9 @@ void render_scene_and_update_resources(void)
     /* Unreferenced 8-byte slot between rotation and actor_position. */
     SVECTOR unused;
     VECTOR actor_position;
-    u8 tmd_flags[320];
+    b8 tmd_flags[320];
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
-    u8 vab_flags[320];
+    b8 vab_flags[320];
     KfActor *actor;
     KfMapObject *object;
     KfEffectRecord *effect;
@@ -2397,24 +2395,24 @@ void render_scene_and_update_resources(void)
     actor = actor_state.actors;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
-        u32 layer;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) layer;
         KfTargetGroup *group;
         const VECTOR *position;
 
-        if (actor->lifecycle != 1) {
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
             goto actor_next;
         }
-        if (actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) {
-            layer = actor->current_map_layer | 0x20;
+        if ((actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) != KF_ACTOR_FLAGS_NONE) {
+            layer = actor->current_map_layer | KF_MAP_LAYER_IN_VIEW;
         } else {
             layer = actor->current_map_layer;
         }
-        if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
-        if ((map_cell_layer_mask(&actor->position) & layer) == 0) goto actor_next;
+        if ((actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) != KF_ACTOR_FLAGS_NONE) goto actor_radius_check;
+        if ((map_cell_layer_mask(&actor->position) & layer) == KF_MAP_LAYER_NONE) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
-            if (actor->flags & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) {
+            if ((actor->flags & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) != KF_ACTOR_FLAGS_NONE) {
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
@@ -2438,19 +2436,19 @@ actor_visible:
             }
         }
         group = &actor_state.target_groups[actor->group_index];
-        vab_flags[group->vab_resource_indices[0]] = 1;
-        vab_flags[group->vab_resource_indices[1]] = 1;
-        tmd_flags[actor->definition_id] = 1;
+        vab_flags[group->vab_resource_indices[0]] = KF_TRUE;
+        vab_flags[group->vab_resource_indices[1]] = KF_TRUE;
+        tmd_flags[actor->definition_id] = KF_TRUE;
         goto actor_next;
 actor_radius_check:
-        if (map_cell_layer_mask_radius(&actor->position, 3) &
-            actor->current_map_layer) goto actor_visible;
+        if ((map_cell_layer_mask_radius(&actor->position, 3) &
+             actor->current_map_layer) != KF_MAP_LAYER_NONE) goto actor_visible;
 actor_next:
         actor++;
         remaining--;
     }
-    resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);
-    resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
+    resource_tmd_update_range(KF_RESOURCE_ARCHIVE_MO, 0, 0x80, 0x80, tmd_flags);
+    resource_vab_update_range(KF_RESOURCE_ARCHIVE_VAB, 0x20, 2, 0x40, vab_flags);
 
     frame = cd_state.frame_count;
     repeat_store_word((u32 *)tmd_flags, 0, 80);
@@ -2458,29 +2456,29 @@ actor_next:
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
     while (remaining != -1) {
-        u32 visibility;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) visibility;
 
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             goto map_object_next;
         }
-        object->collision_flags &= 0x7f;
-        if (object->action == KF_MAP_OBJECT_ACTION_AMBIENT_SOUND) goto map_sound_action;
-        if (object->action != KF_MAP_OBJECT_ACTION_ANIMATED_MODEL) goto map_ordinary_object;
+        object->collision_flags &= ~KF_MAP_OBJECT_FLAG_RENDERED;
+        if (object->action == KF_MAP_OBJECT_OP_AMBIENT_SOUND) goto map_sound_action;
+        if (object->action != KF_MAP_OBJECT_OP_ANIMATED_MODEL) goto map_ordinary_object;
         if (map_cell_visible(&object->position,
                              object->tail.animated.radius_x,
-                             object->tail.animated.radius_z) != 0 &&
-            (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
-            if (resource_registry_get(object->object_id + 0x100) != NULL) {
-                render_animated_object(object->object_id + 0x100,
+                             object->tail.animated.radius_z) &&
+            (object->layer_mask & render_mask_scan_state.first_layer_mask) != KF_MAP_LAYER_NONE) {
+            if (resource_registry_get(KF_ENUM_ENCODE(u16, object->object_id) + 0x100) != NULL) {
+                render_animated_object(KF_ENUM_ENCODE(u16, object->object_id) + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
                                &object->tail.animated.animation_cache,
                                object->asset_clip_selector, object->phase_q12,
                                object->tail.animated.blend_mode,
                                object->tail.animated.lighting_flags,
                                0x1fff - object->tail.animated.depth_code);
-                object->collision_flags |= 0x80;
+                object->collision_flags |= KF_MAP_OBJECT_FLAG_RENDERED;
             }
-            tmd_flags[object->object_id] = 1;
+            tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = KF_TRUE;
         }
         goto map_object_next;
 map_sound_action: {
@@ -2497,7 +2495,7 @@ map_sound_action: {
             sound = object->tail.ambient_sound.sound_id;
             if ((u16)(audio_state.voices.params[sound].vab_slot_index - 0x42) < 0x40) {
                 /* This update starts at VAB slot 0x42. */
-                vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = 1;
+                vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = KF_TRUE;
             }
             if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
                 object->extra_40.next_sound_frame = frame +
@@ -2537,26 +2535,28 @@ map_sound_outside:
             goto map_object_next;
         }
 map_ordinary_object: {
-            u8 render_mode;
+            KfRenderQueueMode render_mode;
             KfMapObjectTemplate *object_template;
             SVECTOR *scale;
-            if (object->collision_flags & 2) goto map_radius_check;
+            if ((object->collision_flags & KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE) != KF_MAP_OBJECT_FLAGS_NONE)
+                goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
-            if ((visibility & object->layer_mask) == 0) goto map_object_next;
-            object_template = &map_object_state.templates[object->object_id];
+            if ((visibility & object->layer_mask) == KF_MAP_LAYER_NONE) goto map_object_next;
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
 map_ordinary_visible:
-            tmd_flags[object->object_id] = 1;
-            vab_flags[object_template->vab_resource_index] = 1;
+            tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = KF_TRUE;
+            vab_flags[object_template->vab_resource_index] = KF_TRUE;
             scale = &object->scale;
-            if (resource_registry_get(object->object_id + 0x100) != NULL) {
+            if (resource_registry_get(KF_ENUM_ENCODE(u16, object->object_id) + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
                 render_mode = object->render_queue_mode;
-                if (object->collision_flags & 1) {
-                    render_mode = (visibility & 0x80) ? 0xfe : 0xff;
+                if ((object->collision_flags & KF_MAP_OBJECT_FLAG_NEAR_CLIP) != KF_MAP_OBJECT_FLAGS_NONE) {
+                    render_mode = (visibility & KF_MAP_LAYER_NEAR_CLIPPED) != KF_MAP_LAYER_NONE
+                        ? KF_RENDER_QUEUE_CLIPPED : KF_RENDER_QUEUE_TEXTURED;
                 }
-                render_world_model(object->layer_mask, object->object_id + 0x100,
+                render_world_model(object->layer_mask, KF_ENUM_ENCODE(u16, object->object_id) + 0x100,
                                &object->position, &rotation, scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
@@ -2564,36 +2564,36 @@ map_ordinary_visible:
                                object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
                                object->render_depth_offset);
-                object->collision_flags |= 0x80;
+                object->collision_flags |= KF_MAP_OBJECT_FLAG_RENDERED;
             }
             goto map_object_next;
 map_radius_check:
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->params.marker.marker_action_05);
-            if (visibility & object->layer_mask) goto map_ordinary_visible;
+            if ((visibility & object->layer_mask) != KF_MAP_LAYER_NONE) goto map_ordinary_visible;
         }
 map_object_next:
         object++;
         remaining--;
     }
-    resource_tmd_update_range(0, 0x80, 0x100, 0x140, tmd_flags);
-    resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
+    resource_tmd_update_range(KF_RESOURCE_ARCHIVE_MO, 0x80, 0x100, 0x140, tmd_flags);
+    resource_vab_update_range(KF_RESOURCE_ARCHIVE_VAB, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         if (effect->type == KF_EFFECT_SLOT_FREE ||
-            (effect->render_flags & 3) == 0) goto effect_next;
-        if ((effect->render_flags & 3) != 2 &&
-            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == 0)
+            (effect->render_flags & KF_EFFECT_RENDER_VISIBILITY_MASK) == KF_EFFECT_RENDER_HIDDEN) goto effect_next;
+        if ((effect->render_flags & KF_EFFECT_RENDER_VISIBILITY_MASK) != KF_EFFECT_RENDER_ALWAYS_VISIBLE &&
+            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == KF_MAP_LAYER_NONE)
             goto effect_next;
-        switch (effect->render_flags & 12) {
-        case 0:
+        switch (effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK) {
+        case KF_EFFECT_RENDER_WORLD_TRANSFORM:
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, &rotation, (SVECTOR *)&effect->scale_x,
                            &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.view_matrix,
@@ -2601,8 +2601,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 4:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_EFFECT_RENDER_IDENTITY_TRANSFORM:
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &render_world_identity_matrix,
@@ -2610,8 +2610,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 8:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_EFFECT_RENDER_PITCH_TRANSFORM:
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
@@ -2619,8 +2619,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 12:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_EFFECT_RENDER_SCREEN_SPACE:
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position,
                            (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x,
@@ -2628,6 +2628,8 @@ map_object_next:
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, 0x14);
+            break;
+        default:
             break;
         }
 effect_next:
@@ -2641,16 +2643,18 @@ effect_next:
     rotation.x = 0;
     remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
     while (remaining != -1) {
-        u32 visibility;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) visibility;
         if (placed->model_index != KF_MAP_PLACED_NONE) {
             visibility = map_cell_layer_mask(&placed->position);
-            if (visibility & placed->layer_mask) {
+            if ((visibility & placed->layer_mask) != KF_MAP_LAYER_NONE) {
                 render_world_model(placed->layer_mask,
                                placed->model_index + KF_MAP_PLACED_ASSET_BASE,
                                &placed->position, &rotation, NULL, NULL,
                                &game_graphics_runtime.render_state.pitch_matrix,
-                               placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, 0x46,
-                               0x1000, 1, 0);
+                               KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfAnimationClip),
+                                              placed->frame_index + KF_MAP_PLACED_CLIP_BASE),
+                               0, KF_LIGHTING_MAP_PLACED,
+                               0x1000, KF_RENDER_QUEUE_BLEND_ADD, 0);
             }
             if (placed->frame_period != KF_MAP_PLACED_ANIMATION_DISABLED &&
                 game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
@@ -2688,7 +2692,7 @@ void notification_draw_quad(const KfNotificationQuad *source, u16 tpage_flags, c
     quad->v0 = quad->v1 = source->texture_v;
     quad->v2 = quad->v3 = source->texture_v + source->texture_height;
     setRGB0(quad, color[0], color[1], color[2]);
-    AddPrim(game_graphics_runtime.display_state.ordering_table + 1, quad);
+    AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 1), (void *)quad);
 }
 
 ADDRESS(0x80033140, 0x90)
@@ -2698,20 +2702,20 @@ void notification_draw(void)
     u8 color[3];
 
     color[0] = color[1] = color[2] = game_graphics_runtime.notification_brightness;
-    if (quad->kind == 0xff) {
+    if (quad->kind == KF_SPRITE_END) {
         return;
     }
     do {
-        if (quad->kind != 0) {
-            notification_draw_quad(quad, 0x20, color);
-            notification_draw_quad(quad, 0x40, color);
+        if (quad->kind != KF_SPRITE_HIDDEN) {
+            notification_draw_quad(quad, KF_GPU_TPAGE_ABR(KF_RENDER_QUEUE_BLEND_ADD), color);
+            notification_draw_quad(quad, KF_GPU_TPAGE_ABR(KF_RENDER_QUEUE_BLEND_SUBTRACT), color);
         }
         quad++;
-    } while (quad->kind != 0xff);
+    } while (quad->kind != KF_SPRITE_END);
 }
 
 ADDRESS(0x800331d0, 0xa4)
-void notify_enqueue(s32 message_id, ...)
+void notify_enqueue(KF_ENUM_PARAM(KfNotificationId, s32) message_id, ...)
 {
     u8 *head;
 
@@ -2719,7 +2723,7 @@ void notify_enqueue(s32 message_id, ...)
         return;
     }
     head = &game_graphics_runtime.notification_control.queue_head;
-    if (game_graphics_runtime.notification_message_ids[*head] == KF_NOTIFICATION_EMPTY) {
+    if (game_graphics_runtime.notification_message_ids[*head] == KF_NOTIFICATION_NONE) {
         game_graphics_runtime.notification_message_ids[*head] = message_id;
         if (message_id == KF_NOTIFICATION_PAYLOAD_ID) {
             va_list arguments;
@@ -2740,88 +2744,88 @@ void notification_digit_set_v(KfNotificationDigitSprite *sprite, s32 digit)
 static inline void notification_dequeue_group(void)
 {
     KfNotificationControl *control;
-    s32 id;
+    KF_ENUM_STORAGE(KfNotificationId, s32) id;
 
     control = &game_graphics_runtime.notification_control;
     id = game_graphics_runtime.notification_message_ids[
         game_graphics_runtime.notification_control.queue_tail];
     do {
         game_graphics_runtime.notification_message_ids[control->queue_tail] =
-            KF_NOTIFICATION_EMPTY;
+            KF_NOTIFICATION_NONE;
         control->queue_tail = (control->queue_tail + 1) & (KF_NOTIFICATION_CAPACITY - 1);
     } while (id == game_graphics_runtime.notification_message_ids[control->queue_tail]
              && id != KF_NOTIFICATION_PAYLOAD_ID);
-    control->effect_phase = 0;
+    control->effect_phase = KF_NOTIFICATION_IDLE;
 }
 
 ADDRESS(0x80033284, 0x300)
 void notification_update(void)
 {
-    u8 *phase = &game_graphics_runtime.notification_control.effect_phase;
+    KfNotificationPhase *phase = &game_graphics_runtime.notification_control.effect_phase;
 
     switch (*phase) {
-    case 0: {
+    case KF_NOTIFICATION_IDLE: {
         u8 tail = game_graphics_runtime.notification_control.queue_tail;
-        u8 id = game_graphics_runtime.notification_message_ids[tail];
-        if (id == KF_NOTIFICATION_EMPTY) {
+        KfNotificationId id = game_graphics_runtime.notification_message_ids[tail];
+        if (id == KF_NOTIFICATION_NONE) {
             break;
         }
-        *phase = 1;
+        *phase = KF_NOTIFICATION_FADE_IN;
         game_graphics_runtime.notification_brightness = 0;
         game_graphics_runtime.notification_control.hold_frames = 15;
         if (id == KF_NOTIFICATION_PAYLOAD_ID) {
             s16 digits[12];
 
-            notification_quads[0].kind = 0;
-            notification_quads[1].kind = 1;
-            notification_quads[1].texture_u = 128;
-            notification_quads[1].texture_v = 42;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].texture_u = 128;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].texture_v = 42;
             menu_format_number(game_graphics_runtime.notification_payloads[tail],
-                               4, 0, 0, digits);
-            notification_quads[2].kind = 1;
-            notification_digit_set_v(&notification_quads[2], (u16)digits[3]);
-            notification_quads[3].kind = 1;
-            notification_digit_set_v(&notification_quads[3], (u16)digits[2]);
-            notification_quads[4].kind = 1;
-            notification_digit_set_v(&notification_quads[4], (u16)digits[1]);
-            notification_quads[5].kind = 1;
-            notification_digit_set_v(&notification_quads[5], (u16)digits[0]);
+                               4, KF_FORMAT_PAD_SPACES, KF_MENU_FORMAT_STYLE_PLAIN, digits);
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_ONES_SPRITE], (u16)digits[3]);
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_TENS_SPRITE], (u16)digits[2]);
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE], (u16)digits[1]);
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_digit_set_v(&notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE], (u16)digits[0]);
         } else {
-            notification_quads[0].kind = 1;
-            notification_quads[5].kind = 0;
-            notification_quads[4].kind = 0;
-            notification_quads[3].kind = 0;
-            notification_quads[2].kind = 0;
-            notification_quads[1].kind = 0;
-            notification_quads[0].texture_u = (id / 18) << 7;
-            notification_quads[0].texture_v = (id % 18) * 14;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_VISIBLE;
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].texture_u = (KF_ENUM_VALUE(id) / 18) << 7;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].texture_v = (KF_ENUM_VALUE(id) % 18) * 14;
         }
         break;
     }
-    case 1:
+    case KF_NOTIFICATION_FADE_IN:
         game_graphics_runtime.notification_brightness += 20;
         if (game_graphics_runtime.notification_brightness >= 100) {
-            *phase = 2;
+            *phase = KF_NOTIFICATION_HOLD;
         }
         break;
-    case 2:
+    case KF_NOTIFICATION_HOLD:
     {
         u8 frames = game_graphics_runtime.notification_control.hold_frames - 1;
         game_graphics_runtime.notification_control.hold_frames = frames;
         if (frames == 0) {
-            *phase = 3;
+            *phase = KF_NOTIFICATION_FADE_OUT;
         }
         break;
     }
-    case 3:
+    case KF_NOTIFICATION_FADE_OUT:
         game_graphics_runtime.notification_brightness -= 20;
         if (game_graphics_runtime.notification_brightness == 0) {
-            notification_quads[5].kind = 0;
-            notification_quads[4].kind = 0;
-            notification_quads[3].kind = 0;
-            notification_quads[2].kind = 0;
-            notification_quads[1].kind = 0;
-            notification_quads[0].kind = 0;
+            notification_quads[KF_NOTIFICATION_THOUSANDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_HUNDREDS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TENS_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_ONES_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_GOLD_SPRITE].kind = KF_SPRITE_HIDDEN;
+            notification_quads[KF_NOTIFICATION_TEXT_SPRITE].kind = KF_SPRITE_HIDDEN;
             notification_dequeue_group();
         }
         break;
@@ -2832,7 +2836,7 @@ ADDRESS(0x80033584, 0x1c)
 void display_toggle_buffer_index(void)
 {
     game_graphics_runtime.display_state.buffer_index =
-        game_graphics_runtime.display_state.buffer_index == 0;
+        display_next_buffer(game_graphics_runtime.display_state.buffer_index);
 }
 
 ADDRESS(0x800335a0, 0x3f4)
@@ -2848,7 +2852,7 @@ void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
     s32 attack_width;
     s32 magic_width;
     s32 yaw_delta;
-    u8 row_state;
+    KfSpriteState row_state;
 
     display_set_view_transform(position, rotation);
     floor_item_update_textures();
@@ -2858,8 +2862,10 @@ void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
     pool_mark_allocated();
     render_player_weapon();
 
-    render_model_rows[0].state = player_state.compass_enabled;
-    row_state = player_state.hud_gauges_enabled;
+    /* The option bytes encode HIDDEN/VISIBLE directly. */
+    render_model_rows[0].state = KF_ENUM_DECODE(KfSpriteState,
+        KF_ENUM_VALUE(player_state.compass_enabled));
+    row_state = KF_ENUM_DECODE(KfSpriteState, KF_ENUM_VALUE(player_state.hud_gauges_enabled));
     render_model_rows[13].state = row_state;
     render_model_rows[12].state = row_state;
     render_model_rows[11].state = row_state;
@@ -2977,11 +2983,12 @@ void asset_registry_select(u16 index)
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
 
 ADDRESS(0x80033b34, 0xc8)
-KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, s32 phase,
-                                          s32 *keyframe_index, u32 *blend_fraction)
+KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset,
+    KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase, s32 *keyframe_index,
+    u32 *blend_fraction)
 {
     u32 *clip_table = ASSET_CLIP_TABLE(asset);
-    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[clip_index]);
+    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[KF_ENUM_ENCODE(s32, clip_index)]);
     u32 *offsets = clip->keyframe_offsets;
     s32 remaining = clip->keyframe_count;
     s32 index = 0;
@@ -3170,10 +3177,10 @@ const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index)
     return NULL;
 }
 
-enum { KF_ASSET_OBJECT_SELECT_BIT = 0x80, KF_ASSET_OBJECT_INDEX_MASK = 0x7f };
 
 ADDRESS(0x80034070, 0x2d4)
-s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index, s32 clip,
+s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index,
+                  KF_ENUM_PARAM(KfAnimationClip, s32) clip,
                   s32 phase, s32 vertex_count)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
@@ -3266,7 +3273,8 @@ allocate_vertices:
 }
 
 ADDRESS(0x80034344, 0x2a0)
-s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
+b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase,
+                            s32 vertex_index,
                   SVECTOR *output)
 {
     KfAssetHeader *asset = resource_registry_get(asset_index);
@@ -3285,18 +3293,19 @@ s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_ind
         output->vz = 0;
         output->vy = 0;
         output->vx = 0;
-        return 1;
+        return KF_TRUE;
     }
 
     tmd = ASSET_TMD(asset);
-    if (clip >= KF_ASSET_OBJECT_SELECT_BIT) {
+    if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
 copy_object_vertex:
-        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[clip & KF_ASSET_OBJECT_INDEX_MASK]);
+        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32,
+            clip) & KF_ASSET_OBJECT_INDEX_MASK]);
         *output = vertices[vertex_index];
         goto finished;
     }
     if (asset->animation_present == 0) {
-        clip = 0;
+        clip = KF_ANIMATION_CLIP_FIRST;
         goto copy_object_vertex;
     }
 
@@ -3327,11 +3336,11 @@ copy_object_vertex:
     }
     *output = vertex;
 finished:
-    return 0;
+    return KF_FALSE;
 }
 
 ADDRESS(0x800345e4, 0x60)
-u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
+u32 asset_vertex_count(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
     KfTmdHeader *tmd;
@@ -3340,8 +3349,8 @@ u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
         return 0;
     }
     tmd = ASSET_TMD(asset);
-    if (encoded_object_index >= KF_ASSET_OBJECT_SELECT_BIT) {
-        return TMD_OBJECTS(tmd)[encoded_object_index & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
+    if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
+        return TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32, clip) & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
     }
     return TMD_OBJECTS(tmd)[0].vertex_count;
 }
@@ -3384,7 +3393,7 @@ void pool_record_release(KfPoolRecord *record)
     record->state = KF_ANIMATION_CACHE_FREE;
     *record->owner_slot = NULL;
     if (record->cached_vertices != NULL) {
-        free(record->cached_vertices);
+        free((void *)record->cached_vertices);
         record->cached_vertices = NULL;
     }
 }
@@ -3433,7 +3442,7 @@ KfPoolRecord *pool_allocate(void)
     return NULL;
 }
 
-enum { KF_MAP_PLACED_REGION_SHIFT = 11, KF_MAP_PLACED_RANDOM_SHIFT = 15 };
+enum { KF_MAP_PLACED_RANDOM_SHIFT = 15 };
 
 ADDRESS(0x80034818, 0x134)
 void map_placed_expand_sources(const KfMapPlacedSource *sources)
@@ -3447,8 +3456,8 @@ void map_placed_expand_sources(const KfMapPlacedSource *sources)
             entry->layer_mask = sources->layer_mask;
             entry->frame_count = sources->frame_count;
             entry->frame_period = sources->frame_period;
-            entry->position.vx = (sources->region_x << KF_MAP_PLACED_REGION_SHIFT) + sources->local_x;
-            entry->position.vz = (sources->region_z << KF_MAP_PLACED_REGION_SHIFT) + sources->local_z;
+            entry->position.vx = (sources->region_x << KF_MAP_CELL_POSITION_SHIFT) + sources->local_x;
+            entry->position.vz = (sources->region_z << KF_MAP_CELL_POSITION_SHIFT) + sources->local_z;
             entry->position.vy = collision_sample_map_layer_height(entry->layer_mask, entry->position.vx, entry->position.vz, 0, 0)
                 + sources->height_offset;
             entry->frame_index = (rand() * entry->frame_count) >> KF_MAP_PLACED_RANDOM_SHIFT;
@@ -3509,7 +3518,7 @@ s32 menu_fade_transition(s32 level, s32 step)
         quad->clut = 0;
         setTPage(quad, 2, 0, 320, 0);
         setRGB0(quad, shade, shade, shade);
-        AddPrim(game_graphics_runtime.display_state.ordering_table + 2, quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 2), (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
         setXYWH(quad, KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, 0,
@@ -3519,25 +3528,25 @@ s32 menu_fade_transition(s32 level, s32 step)
         quad->clut = 0;
         setTPage(quad, 2, 0, 512, 0);
         setRGB0(quad, shade, shade, shade);
-        AddPrim(game_graphics_runtime.display_state.ordering_table + 2, quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 2), (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
-        SetSemiTrans(quad, 1);
+        SetSemiTrans((void *)quad, 1);
         setXYWH(quad, 32, 112, 256, 128);
         setUVWH(quad, 0, 0, 255, 128);
         setClut(quad, 576, 511);
         setTPage(quad, 0, 1, 960, 256);
         setRGB0(quad, level, level, level);
-        AddPrim(game_graphics_runtime.display_state.ordering_table, quad);
+        AddPrim((void *)game_graphics_runtime.display_state.ordering_table, (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
-        SetSemiTrans(quad, 1);
+        SetSemiTrans((void *)quad, 1);
         setXYWH(quad, 32, 112, 256, 128);
         setUVWH(quad, 0, 0, 255, 128);
         setClut(quad, 576, 511);
         setTPage(quad, 0, 2, 960, 256);
         setRGB0(quad, level, level, level);
-        AddPrim(game_graphics_runtime.display_state.ordering_table + 1, quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 1), (void *)quad);
 
 present:
         DrawSync(0);
@@ -3592,7 +3601,7 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
     StoreImage(&menu_transition_rect, (u_long *)scratch);
     DrawSync(0);
     MoveImage(&game_graphics_runtime.display_draw_environments[
-            game_graphics_runtime.display_state.buffer_index].clip,
+            KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)].clip,
         menu_transition_rect.x, menu_transition_rect.y);
     DrawSync(0);
 

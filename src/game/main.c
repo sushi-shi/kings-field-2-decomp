@@ -20,14 +20,16 @@
 #include <psyq/pad.h>
 #include <psyq/sdk.h>
 
-DATA(0x80198630, 0x4, ".bss")
-u32 game_main_exit_flag;
-
-enum {
+/* game_main_loop runs frames until the word reads EXIT_REQUESTED. */
+KF_ENUM_BEGIN(KfGameMainState, u32)
     GAME_MAIN_RUNNING = 0,
-    GAME_MAIN_EXIT_REQUESTED = 1,
-    GAME_INITIAL_MASTER_VOLUME = 0x7f
-};
+    GAME_MAIN_EXIT_REQUESTED = 1
+KF_ENUM_END(KfGameMainState)
+
+DATA(0x80198630, 0x4, ".bss")
+KfGameMainState game_main_exit_flag;
+
+enum { GAME_INITIAL_MASTER_VOLUME = 0x7f };
 
 /*
  * GCC inserts the `__main` hook call for a function named main; the SDK
@@ -37,7 +39,7 @@ enum {
 ADDRESS(0x80013634, 0x68)
 void main(void)
 {
-    InitHeap(BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
+    InitHeap((void *)BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
     CdInit();
     PadInit(0);
     InitCARD(1);
@@ -81,7 +83,7 @@ void game_main_loop(void)
     event_state_initialize();
     memory_card_initialize();
     reset_collision_rows_and_overlay();
-    game_graphics_runtime.collision_rotation_dirty = 1;
+    game_graphics_runtime.collision_rotation_dirty = KF_TRUE;
     refresh_collision_row_rotations();
     SsSetMVol(GAME_INITIAL_MASTER_VOLUME, GAME_INITIAL_MASTER_VOLUME);
     if (menu_card_browser() != -1) {
@@ -99,7 +101,8 @@ void game_main_loop(void)
     /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
-    render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT,
+                                     0x1000, 0, -128);
     game_main_exit_flag = GAME_MAIN_RUNNING;
 
     do {

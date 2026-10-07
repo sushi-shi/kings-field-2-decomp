@@ -1,7 +1,9 @@
 #ifndef KF_GAME_ASSET_H
 #define KF_GAME_ASSET_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/pool.h>
 #include <kf/game/tmd.h>
 
 enum {
@@ -20,7 +22,7 @@ typedef struct KfAssetHeader {
 
 typedef char kf_asset_header_size[sizeof(KfAssetHeader) == 20 ? 1 : -1];
 typedef char kf_asset_morph_offsets_offset[
-    (u32)&((KfAssetHeader *)0)->morph_offsets_offset == 0x0c ? 1 : -1];
+    offsetof(KfAssetHeader, morph_offsets_offset) == 0x0c ? 1 : -1];
 
 /* Each asset section is addressed by a byte offset from its header. */
 #define ASSET_BYTES(asset, offset) ((u8 *)(asset) + (offset))
@@ -33,6 +35,6 @@ void asset_registry_load_tmd_archive(u16 first_asset_id, u8 *archive);
 void asset_registry_set(u16 index, KfAssetHeader *asset);
 void asset_registry_select(u16 index);
 KfAssetHeader *resource_registry_get(u16 index);
-u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index);
+u32 asset_vertex_count(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip);
 
 #endif

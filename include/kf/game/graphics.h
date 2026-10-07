@@ -2,6 +2,7 @@
 #define KF_GAME_GRAPHICS_H
 
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
 #include <kf/game/asset.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
@@ -33,6 +34,23 @@ enum {
     KF_COLLISION_ROW_COUNT = 80
 };
 
+/* Retail toggles the index with an equality, so UNINITIALIZED selects FIRST
+ * on the first frame. */
+KF_ENUM_BEGIN(KfDisplayBufferIndex, u8)
+    KF_DISPLAY_BUFFER_FIRST = 0,
+    KF_DISPLAY_BUFFER_SECOND = 1,
+    KF_DISPLAY_BUFFER_UNINITIALIZED = 0xff
+KF_ENUM_END(KfDisplayBufferIndex)
+
+#if KF_MODERN_TYPES
+constexpr KfDisplayBufferIndex display_next_buffer(KfDisplayBufferIndex current)
+{
+    return static_cast<KfDisplayBufferIndex>(current == KF_DISPLAY_BUFFER_FIRST);
+}
+#else
+#define display_next_buffer(current) ((current) == KF_DISPLAY_BUFFER_FIRST)
+#endif
+
 typedef struct KfPrimitiveBuffer {
     u8 *start;
     u8 *end;
@@ -44,7 +62,7 @@ typedef struct KfOrderingTable {
 } KfOrderingTable;
 
 typedef struct KfDisplayState {
-    u8 buffer_index;
+    KfDisplayBufferIndex buffer_index;
     u8 *asset_load_buffer;
     KfPrimitiveBuffer primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
     KfPrimitiveBuffer *primitive_buffer;
@@ -273,8 +291,7 @@ s32 menu_fade_transition(s32 level, s32 step);
 enum {
     KF_NOTIFICATION_NONE = 0xff,
     KF_FLOOR_ITEM_NONE = 0xff,
-    KF_FLOOR_ITEM_SCROLLING_IMAGE = 1,
-    KF_DISPLAY_BUFFER_NONE = 0xff
+    KF_FLOOR_ITEM_SCROLLING_IMAGE = 1
 };
 
 void fog_set_near(s32 distance);

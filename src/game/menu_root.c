@@ -4145,13 +4145,13 @@ ADDRESS(0x80021a68, 0x178)
 void menu_frame_begin(void)
 {
     game_graphics_runtime.display_state.buffer_index =
-        game_graphics_runtime.display_state.buffer_index == 0;
+        display_next_buffer(game_graphics_runtime.display_state.buffer_index);
     game_graphics_runtime.display_state.primitive_buffer =
         &game_graphics_runtime.display_state.primitive_buffers[
-            game_graphics_runtime.display_state.buffer_index];
+            KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)];
     game_graphics_runtime.display_state.ordering_table =
         game_graphics_runtime.display_state.ordering_tables[
-            game_graphics_runtime.display_state.buffer_index].entries;
+            KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)].entries;
     ClearOTagR(game_graphics_runtime.display_state.ordering_table,
         KF_GAME_ORDERING_TABLE_LENGTH);
     game_graphics_runtime.display_state.primitive_buffer->cursor =
@@ -4159,7 +4159,7 @@ void menu_frame_begin(void)
     current_poly_ft4 = (POLY_FT4 *)
         game_graphics_runtime.display_state.primitive_buffer->cursor;
 
-    if (game_graphics_runtime.display_state.buffer_index == 1) {
+    if (game_graphics_runtime.display_state.buffer_index == KF_DISPLAY_BUFFER_SECOND) {
         menu_frame_upload_rect.x = 0;
         menu_frame_upload_rect.y = KF_MENU_UPLOAD_SECOND_BUFFER_Y;
     } else {
@@ -4188,9 +4188,9 @@ void menu_present_frame(void)
     DrawSync(0);
     VSync(0);
     PutDrawEnv(&game_graphics_runtime.display_draw_environments[
-        game_graphics_runtime.display_state.buffer_index]);
+        KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)]);
     PutDispEnv(&game_graphics_runtime.display_disp_environments[
-        game_graphics_runtime.display_state.buffer_index]);
+        KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)]);
     LoadImage(&menu_frame_upload_rect, menu_frame_upload_pixels);
     DrawOTag(game_graphics_runtime.display_state.ordering_table
         + (KF_GAME_ORDERING_TABLE_LENGTH - 1));
@@ -4221,9 +4221,9 @@ void menu_enter_display_state(s32 mode)
     menu_frame_upload_pixels = (u_long *)
         game_graphics_runtime.display_state.primitive_buffers[1].end;
 
-    if (game_graphics_runtime.display_state.buffer_index == 1) {
+    if (game_graphics_runtime.display_state.buffer_index == KF_DISPLAY_BUFFER_SECOND) {
         menu_frame_upload_rect.x = 0;
-        menu_frame_upload_rect.y = 240;
+        menu_frame_upload_rect.y = KF_MENU_UPLOAD_SECOND_BUFFER_Y;
     } else {
         menu_frame_upload_rect.x = 0;
         menu_frame_upload_rect.y = 0;

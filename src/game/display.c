@@ -155,7 +155,7 @@ void display_reset(void)
     KfFloorItem *item;
     s32 items_left;
 
-    DISPLAY.buffer_index = KF_DISPLAY_BUFFER_NONE;
+    DISPLAY.buffer_index = KF_DISPLAY_BUFFER_UNINITIALIZED;
     memory = display_primitive_memory;
     DISPLAY.primitive_buffers[0].start = DISPLAY.asset_load_buffer = memory;
     memory += KF_GAME_PRIMITIVE_BUFFER_BYTES;
@@ -183,9 +183,9 @@ void display_reset(void)
 ADDRESS(0x8002d32c, 0x98)
 void display_begin_frame(void)
 {
-    DISPLAY.buffer_index = DISPLAY.buffer_index == 0;
-    DISPLAY.primitive_buffer = &DISPLAY.primitive_buffers[DISPLAY.buffer_index];
-    DISPLAY.ordering_table = DISPLAY.ordering_tables[DISPLAY.buffer_index].entries;
+    DISPLAY.buffer_index = display_next_buffer(DISPLAY.buffer_index);
+    DISPLAY.primitive_buffer = &DISPLAY.primitive_buffers[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)];
+    DISPLAY.ordering_table = DISPLAY.ordering_tables[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)].entries;
     ClearOTagR(DISPLAY.ordering_table, KF_GAME_ORDERING_TABLE_LENGTH);
     DISPLAY.primitive_buffer->cursor = DISPLAY.primitive_buffer->start;
     display_frame_cleared_word = 0;
@@ -198,8 +198,8 @@ void display_present_frame(void)
 {
     DrawSync(0);
     VSync(0);
-    PutDrawEnv(&GRAPHICS.display_draw_environments[DISPLAY.buffer_index]);
-    PutDispEnv(&GRAPHICS.display_disp_environments[DISPLAY.buffer_index]);
+    PutDrawEnv(&GRAPHICS.display_draw_environments[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)]);
+    PutDispEnv(&GRAPHICS.display_disp_environments[KF_ENUM_ENCODE(u8, DISPLAY.buffer_index)]);
     DrawOTag(DISPLAY.ordering_table + (KF_GAME_ORDERING_TABLE_LENGTH - 1));
 }
 
@@ -2837,7 +2837,7 @@ ADDRESS(0x80033584, 0x1c)
 void display_toggle_buffer_index(void)
 {
     game_graphics_runtime.display_state.buffer_index =
-        game_graphics_runtime.display_state.buffer_index == 0;
+        display_next_buffer(game_graphics_runtime.display_state.buffer_index);
 }
 
 ADDRESS(0x800335a0, 0x3f4)
@@ -3597,7 +3597,7 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
     StoreImage(&menu_transition_rect, (u_long *)scratch);
     DrawSync(0);
     MoveImage(&game_graphics_runtime.display_draw_environments[
-            game_graphics_runtime.display_state.buffer_index].clip,
+            KF_ENUM_ENCODE(u8, game_graphics_runtime.display_state.buffer_index)].clip,
         menu_transition_rect.x, menu_transition_rect.y);
     DrawSync(0);
 

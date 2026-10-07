@@ -42,11 +42,11 @@ s32 prompt_phase = PROMPT_PHASE_BRIGHTEN;
 DATA(0x8003dbac, 0x4, ".data")
 u32 pad_previous_buttons = 0;
 
-/* Draws the backdrop and the four title tiles; returns 1 once settled. */
+/* Draws the backdrop and the four title tiles; returns true once settled. */
 ADDRESS(0x80012560, 0x61c)
-s32 opening_draw_title(s32 mode)
+b32 opening_draw_title(s32 mode)
 {
-    s32 settled = 0;
+    b32 settled = KF_FALSE;
 
     if (mode == KF_TITLE_SHOW) {
         title_phase = TITLE_PHASE_SETTLE;
@@ -54,7 +54,7 @@ s32 opening_draw_title(s32 mode)
     } else if (mode == KF_TITLE_RESET) {
         title_level = 0;
         title_phase = TITLE_PHASE_FADE_IN;
-        return 0;
+        return KF_FALSE;
     }
     primitive_buffer_begin_poly_ft4();
     setRGB0(current_poly_ft4, TITLE_BACKDROP_LEVEL, TITLE_BACKDROP_LEVEL, TITLE_BACKDROP_LEVEL);
@@ -70,7 +70,7 @@ s32 opening_draw_title(s32 mode)
     } else if (title_level > TITLE_REST_LEVEL) {
         title_level -= TITLE_FADE_STEP;
     } else {
-        settled = 1;
+        settled = KF_TRUE;
     }
     primitive_buffer_begin_poly_ft4();
     setTPage(current_poly_ft4, 2, 1, 640, 256);
@@ -99,11 +99,11 @@ s32 opening_draw_title(s32 mode)
     return settled;
 }
 
-/* Draws the banner under the title; returns 1 once settled. */
+/* Draws the banner under the title; returns true once settled. */
 ADDRESS(0x80012b7c, 0x200)
-s32 opening_draw_banner(s32 mode)
+b32 opening_draw_banner(s32 mode)
 {
-    s32 settled = 0;
+    b32 settled = KF_FALSE;
 
     if (mode == KF_TITLE_SHOW) {
         banner_phase = TITLE_PHASE_SETTLE;
@@ -111,7 +111,7 @@ s32 opening_draw_banner(s32 mode)
     } else if (mode == KF_TITLE_RESET) {
         banner_level = 0;
         banner_phase = TITLE_PHASE_FADE_IN;
-        return 0;
+        return KF_FALSE;
     }
     if (banner_phase == TITLE_PHASE_FADE_IN) {
         banner_level += TITLE_FADE_STEP;
@@ -121,7 +121,7 @@ s32 opening_draw_banner(s32 mode)
     } else if (banner_level > TITLE_REST_LEVEL) {
         banner_level -= TITLE_FADE_STEP;
     } else {
-        settled = 1;
+        settled = KF_TRUE;
     }
     primitive_buffer_begin_poly_ft4();
     setTPage(current_poly_ft4, 0, 1, 896, 0);

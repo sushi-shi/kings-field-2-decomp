@@ -1206,7 +1206,7 @@ void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode)
 }
 
 ADDRESS(0x80041e0c, 0x88)
-s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
+b32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
                                 s32 vertical_window)
 {
     s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
@@ -1214,17 +1214,17 @@ s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
     SVECTOR direction;
 
     if (position->vy < lower_bound) {
-        return 0;
+        return KF_FALSE;
     }
     if (position->vy > vertical_window + lower_bound) {
-        return 0;
+        return KF_FALSE;
     }
 
     spawn_position.vx = position->vx;
     spawn_position.vz = position->vz;
     spawn_position.vy = lower_bound;
     effect_construct_record(10, 0, 0x66, &spawn_position, &direction, arg1, arg2);
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x80041e94, 0x298)
@@ -1283,7 +1283,7 @@ spawn:
 }
 
 ADDRESS(0x8004212c, 0x16c)
-s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
+b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation)
 {
     s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
@@ -1292,7 +1292,7 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
 
     if (origin->vy >= lower_bound) {
         if (origin->vy > lower_bound + 500) {
-            return 0;
+            return KF_FALSE;
         }
         count--;
         if (count != -1) {
@@ -1314,9 +1314,9 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
             offset_z = (rand() * spread >> 14) - spread;
             } while (count != -1);
         }
-        return 1;
+        return KF_TRUE;
     }
-    return 0;
+    return KF_FALSE;
 }
 
 ADDRESS(0x80042298, 0x18c)
@@ -2496,7 +2496,7 @@ void effect_update_dispatch(void)
                     next.vy = record->position.vy;
                 } else {
                     parent = &effect_state.records[kind8->parent_index];
-                    if (effect_spawn_at_lower_bound(&next, 0x2000, 0x2000, 500) == 0) {
+                    if (!effect_spawn_at_lower_bound(&next, 0x2000, 0x2000, 500)) {
                         s32 dx;
                         s32 dz;
                         s32 distance;

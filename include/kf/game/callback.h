@@ -29,7 +29,7 @@ typedef char kf_resource_transition_offset_size[
 /* Startup clears this 0x1c-byte runtime state. Its active table pointer is
  * replaced by both an initialized table and a BSS table. */
 typedef struct KfResourceState {
-    s16 transition_active;
+    KfBoolS16 transition_active;
     s16 transition_phase;
     u8 active_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 current_map_region_id;

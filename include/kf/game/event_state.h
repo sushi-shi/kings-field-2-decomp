@@ -1,6 +1,7 @@
 #ifndef KF_GAME_EVENT_STATE_H
 #define KF_GAME_EVENT_STATE_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/memory.h>
@@ -64,7 +65,7 @@ typedef union KfEventArena {
 } KfEventArena;
 
 typedef struct KfEventState {
-    u32 interaction_handled;
+    KfBoolU32 interaction_handled;
     KfEventControl control;
     KfEventArena arena;
     u16 saved_offsets[KF_EVENT_SAVED_SLOT_COUNT];

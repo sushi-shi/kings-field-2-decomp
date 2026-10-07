@@ -783,7 +783,7 @@ s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
                   s32 target_z, s32 trajectory_parameter,
                   s32 trajectory_speed);
 void actor_suspend_vertical_motion(void);
-s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance,
+b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance,
                   s32 y_offset, s32 angle_tolerance, u16 damage0,
                   u16 damage1, u16 damage2, u16 damage3);
 s32 actor_turn_and_move_along_heading(s16 angle, s32 speed, s32 range, s32 step,

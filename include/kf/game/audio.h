@@ -28,11 +28,6 @@ enum {
     KF_AUDIO_SPU_VOICE_COUNT = 24
 };
 
-enum {
-    KF_AUDIO_SEQUENCE_INACTIVE = 0,
-    KF_AUDIO_SEQUENCE_ACTIVE = 1
-};
-
 /* Stream slots are queued, retained while requested, then made reclaimable. */
 enum {
     KF_AUDIO_VAB_STREAM_FREE = 0,
@@ -96,7 +91,7 @@ typedef struct KfAudioVoiceState {
 typedef struct KfGameAudioState {
     u_long *sequence_buffer;
     s16 sequence_id;
-    s32 sequence_active;
+    b32 sequence_active;
     b32 sequence_ready;
     VECTOR listener_position;
     u16 listener_layer;

@@ -834,7 +834,7 @@ void map_object_update_actions(void)
                 object->tail.event_effect.pending_event_command = 0xff;
                 object->action_timer = 0;
             }
-            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, 1, 32);
+            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, KF_TRUE, 32);
             break;
         }
 
@@ -847,7 +847,7 @@ void map_object_update_actions(void)
                 linked->tail.fields.unknown_38 &= ~object->tail.event_effect.linked_object_flag_mask;
             }
             if (map_object_step_offset_motion(object, target, &map_object_motion_action17_start_offset,
-                              &map_object_motion_action17_end_offset, 0, 20)) {
+                              &map_object_motion_action17_end_offset, KF_FALSE, 20)) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
                 linked->tail.fields.unknown_38 |= object->tail.event_effect.linked_object_flag_mask;
             }

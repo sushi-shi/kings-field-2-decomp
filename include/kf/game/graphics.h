@@ -1,6 +1,7 @@
 #ifndef KF_GAME_GRAPHICS_H
 #define KF_GAME_GRAPHICS_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/asset.h>
@@ -202,7 +203,7 @@ typedef struct KfGraphicsRuntimeGame {
     KfFloorItem floor_items[KF_FLOOR_ITEM_CAPACITY];
     KfRenderState render_state;
     KfRenderGridState render_grid;
-    s32 collision_rotation_dirty;
+    b32 collision_rotation_dirty;
     KfCollisionRow collision_rows[KF_COLLISION_ROW_COUNT];
     s32 map_placed_frame_counter;
     KfMapPlacedEntry map_placed_entries[KF_MAP_PLACED_ENTRY_COUNT];

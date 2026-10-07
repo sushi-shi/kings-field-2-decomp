@@ -47,7 +47,7 @@ void ending_play_movie(void)
         strNextVlc();
         strSync(&dec);
         display_present_frame();
-        if (Rewind_Switch == 1) {
+        if (Rewind_Switch == KF_TRUE) {
             break;
         }
         if (StrFrame >= ENDING_FADE_FRAME && volume > 0) {

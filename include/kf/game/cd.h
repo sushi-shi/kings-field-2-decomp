@@ -1,5 +1,6 @@
 #ifndef KF_GAME_CD_H
 #define KF_GAME_CD_H
+#include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/cd.h>
@@ -150,7 +151,7 @@ KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
 void cd_request_yield(void);
 void cd_request_service_vab(void);
 void cd_request_service_stream(void);
-s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
+b32 cd_sectors_corrupt(u32 *data, s32 sector_count);
 u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location);
 void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);

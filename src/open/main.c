@@ -78,13 +78,13 @@ restart:
     for (;;) {
         display_begin_frame();
         if (state == OPENING_STATE_TITLE_FADE_IN) {
-            if (opening_draw_title(KF_TITLE_ANIMATE) == 1) {
+            if (opening_draw_title(KF_TITLE_ANIMATE) == KF_TRUE) {
                 state = OPENING_STATE_BANNER_FADE_IN;
             }
         } else {
             opening_draw_title(KF_TITLE_SHOW);
         }
-        if (state == OPENING_STATE_BANNER_FADE_IN && opening_draw_banner(KF_TITLE_ANIMATE) == 1) {
+        if (state == OPENING_STATE_BANNER_FADE_IN && opening_draw_banner(KF_TITLE_ANIMATE) == KF_TRUE) {
             break;
         }
         if (PadRead(1) != 0) {

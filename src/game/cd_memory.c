@@ -634,7 +634,7 @@ void cd_request_wait_done(KfCdRequest *request)
 /* Nonzero unless the last word of DATA equals KF_CD_CHECKSUM_SEED plus the
  * sum of every preceding word. */
 ADDRESS(0x80017d00, 0x54)
-s32 cd_sectors_corrupt(u32 *data, s32 sector_count)
+b32 cd_sectors_corrupt(u32 *data, s32 sector_count)
 {
     u32 sum = KF_CD_CHECKSUM_SEED;
     s32 last = sector_count * KF_CD_SECTOR_WORDS - 1;
@@ -764,7 +764,7 @@ ADDRESS(0x80018100, 0x140)
 void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
 {
     s32 attempt = 0;
-    s32 failed = 1;
+    b32 failed = KF_TRUE;
     s32 result;
 
     cd_request_wait_idle();
@@ -779,14 +779,14 @@ void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
         }
         CdPause();
         if (result == 0) {
-            failed = 0;
+            failed = KF_FALSE;
             break;
         }
     }
     EnableEvent(cd_state.error_event);
     EnableEvent(cd_state.complete_event);
     EnableEvent(cd_state.data_ready_event);
-    if (failed == 1) {
+    if (failed == KF_TRUE) {
         cd_report_error(KF_CD_ERROR_READ);
     }
 }

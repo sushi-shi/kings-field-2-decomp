@@ -793,7 +793,7 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
 }
 
 ADDRESS(0x80036ad8, 0x90)
-s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height)
+b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height)
 {
     s32 camera_x = player_state.camera_position.vx >> 11;
     s32 camera_z = player_state.camera_position.vz >> 11;
@@ -803,15 +803,15 @@ s32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 heig
         goto outside;
     }
     if (height == KF_MAP_REGION_HEIGHT_ANY) {
-        return 1;
+        return KF_TRUE;
     }
     if (height + 2048 < player_state.camera_position.vy ||
         player_state.camera_position.vy < height - 3200) {
         goto outside;
     }
-    return 1;
+    return KF_TRUE;
 outside:
-    return 0;
+    return KF_FALSE;
 }
 
 enum {
@@ -821,9 +821,9 @@ enum {
 };
 
 ADDRESS(0x80036b68, 0x2bc)
-s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
+b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
                    SVECTOR *start_offset, SVECTOR *end_offset,
-                   s32 brighten, s32 duration)
+                   b32 brighten, s32 duration)
 {
     VECTOR start_position;
     VECTOR end_position;
@@ -832,7 +832,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     switch (source->action_timer) {
     case 0:
         if (source->tail.event_effect.pending_event_command == 0xff) {
-            return 0;
+            return KF_FALSE;
         }
         if (target->tail.fields.unknown_38 == 0) {
             source->extra_40.offset_motion.elapsed_frames = 0;
@@ -857,7 +857,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     case 1:
         break;
     default:
-        return 0;
+        return KF_FALSE;
     }
 
     if (brighten) {
@@ -885,9 +885,9 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
         map_object_play_spatial_sound(target, 0x42);
         target->tail.fields.unknown_38 = 0xff;
         source->action_timer = KF_MAP_OBJECT_MOTION_COMPLETE_ACTION;
-        return 1;
+        return KF_TRUE;
     }
-    return 0;
+    return KF_FALSE;
 }
 
 DATA(0x80067890, 0x10e, ".data")

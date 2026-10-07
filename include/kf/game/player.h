@@ -549,7 +549,7 @@ extern KfBss801c7540 bss_801c7540;
 extern KfWeaponRecordGame player_weapon_records[18];
 extern KfEquipmentRecord player_equipment_records[KF_EQUIPMENT_RECORD_COUNT];
 
-s32 player_move_horizontal(s32 heading, s32 distance);
+b32 player_move_horizontal(s32 heading, s32 distance);
 void player_recalculate_combat_stats(void);
 void player_increment_physical_power_training(void);
 void player_increment_magic_training(void);
@@ -593,7 +593,7 @@ void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output);
 void player_update_weapon_attack(void);
 void player_select_magic_action(s32 magic_id);
 void player_update_vertical_motion(void);
-s32 player_move_reaction_with_collision(void);
+b32 player_move_reaction_with_collision(void);
 void player_update_camera_rotation(void);
 void player_update_horizontal_motion(void);
 b32 item_id_is_71_to_80(s32 value);
@@ -614,7 +614,7 @@ void player_get_camera_pose(VECTOR *position, SVECTOR *angles);
 void player_reset_view(void);
 void player_restore_equipment_effects(void);
 void player_sync_position_to_map(void);
-s32 player_meets_weapon_magic_power_requirement(void);
+b32 player_meets_weapon_magic_power_requirement(void);
 void player_initialize_state(void);
 void game_initialize_session(void);
 

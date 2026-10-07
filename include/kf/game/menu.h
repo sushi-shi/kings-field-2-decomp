@@ -1,6 +1,7 @@
 #ifndef KF_GAME_MENU_H
 #define KF_GAME_MENU_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
@@ -40,8 +41,7 @@ enum {
 };
 
 enum {
-    KF_MENU_CHOICE_ACCEPT = 0,
-    KF_MENU_CONFIRM_REQUESTED = 1
+    KF_MENU_CHOICE_ACCEPT = 0
 };
 
 enum {
@@ -88,11 +88,6 @@ enum {
     KF_MENU_DIGIT_ADVANCE = 7,
     KF_MENU_NUMBER_COLUMN_ROWS = 11,
     KF_MENU_NUMBER_COLUMN_WIDTH = 7
-};
-
-enum {
-    KF_MENU_MODEL_RELEASED = 0,
-    KF_MENU_MODEL_ALLOCATED = 1
 };
 
 typedef struct KfMenuPoint {
@@ -212,7 +207,7 @@ extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
 extern s32 menu_cursor_animation_direction;
-extern s32 menu_item_model_allocation_pending;
+extern b32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;
 extern KfMenuGlyphRow menu_glyph_rows[120];
@@ -226,7 +221,7 @@ extern u16 menu_item_code_secondary[5][120];
 
 void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
-    s32 *selection, s32 *result);
+    b32 *confirmed, s32 *result);
 s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
     s32 render_mode, u8 item_id);
 void menu_show_map_preview(s32 menu_code);
@@ -246,8 +241,8 @@ void menu_frame_begin(void);
 void menu_render_list_mode_8_9_noop(void);
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
-    const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);
-void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmation);
+    const KfMenuGlyphString *decline_label, s32 selected_choice, b32 confirmation);
+void menu_draw_window(s32 window_kind, s32 count, s32 highlight, b32 confirmation);
 void menu_show_combat_attributes(void);
 s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
@@ -280,12 +275,12 @@ void menu_prepare_card_browser_rows(KfMenuGlyphString *rows);
 void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y);
 void menu_enter_display_state(s32 mode);
-void menu_exit_display_state(s32 stop_sequence);
+void menu_exit_display_state(b32 stop_sequence);
 s32 menu_load_item_model(u8 item_id);
 void menu_release_item_model(void);
 void menu_play_sound_cue(s32 cue);
 void input_wait_brief_release(void);
-s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
+s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, b32 *confirmed,
     s32 *cancelled);
 void menu_card_save_browser(void);
 void menu_item_buy_sell_controller(s32 kind);

@@ -37,9 +37,9 @@ KfActor	0x2c	0x10	position	VECTOR	supported	game/actor.h;retail GAME actor chain
 KfActor	0x3c	0x4	ballistic_origin_y	s32	supported	actor_start_ballistic_motion;actor_update_vertical_motion state 0x30	captures actor Y at ballistic start and anchors the parabolic position equation
 KfActor	0x40	0x6	rotation	KfEulerAngles	supported	game/actor.h;retail GAME actor motion	three signed rotation angles passed to pitch_yaw_to_forward_vector
 KfActor	0x46	0x2	unknown_46	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x48	0x2	model_scale_x	u16	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch	Q12 X model scale copied from group default
+KfActor	0x48	0x2	model_scale_x	s16	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch	Q12 X model scale copied from group default
 KfActor	0x4a	0x2	model_scale_y	KfActorModelScaleY	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch;actor_spatial_sound	Q12 Y model scale with signed high-byte sound-note view
-KfActor	0x4c	0x2	model_scale_z	u16	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch	Q12 Z model scale copied from group default
+KfActor	0x4c	0x2	model_scale_z	s16	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch	Q12 Z model scale copied from group default
 KfActor	0x4e	0x2	unknown_4e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x50	0x8	motion	KfActorMotion	supported	actor_move_with_collision;actor_move_horizontal_with_collision;actor_update_vertical_motion	Eight-byte signed X/Y/Z motion vector; Y halfword is reused as ballistic phase in state 0x30
 KfActor	0x58	0x2	turn_rate	s16	supported	asm;actor_turn_toward_angle;actor_update_motion_animation;actor_behavior_dispatch	signed per-frame yaw step accelerated and clamped by turn helper; sign selects turning animation
@@ -69,7 +69,7 @@ KfActorLoadRecord	0x8	0x2	initial_actor_word_20	u16	supported	game/actor.h;actor
 KfActorLoadRecord	0xa	0x2	initial_actor_word_22	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.word_22
 KfActorLoadRecord	0xc	0x2	initial_actor_word_24	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.word_24; -1 selects the group home-x fallback
 KfActorLoadRecord	0xe	0x2	vertical_anchor_offset	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.vertical_anchor_offset; -1 selects the group default
-KfActorModelScaleY	0x0	0x2	value	u16	supported	game/actor.h;actor_group_position	Q12 Y model scale halfword
+KfActorModelScaleY	0x0	0x2	value	s16	supported	game/actor.h;actor_group_position	Q12 Y model scale halfword
 KfActorModelScaleY	0x0	0x2	bytes	KfActorModelScaleYBytes	supported	game/actor.h;actor_spatial_sound	byte view of Y model scale
 KfActorModelScaleYBytes	0x0	0x1	low	u8	supported	game/actor.h;actor_spatial_sound	low byte of Y model scale
 KfActorModelScaleYBytes	0x1	0x1	high	s8	supported	game/actor.h;actor_spatial_sound	signed high byte adjusts spatial sound note

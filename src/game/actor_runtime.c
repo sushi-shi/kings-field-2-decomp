@@ -933,11 +933,11 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - position->vy,
                       actor->position.vz - position->vz, &direction);
-        direction.y = (direction.y - (u16)yaw) & KF_ANGLE_WRAP_MASK;
+        direction.y = (direction.y - yaw) & KF_ANGLE_WRAP_MASK;
         if (direction.y >= KF_ANGLE_HALF_TURN) {
             direction.y = KF_ANGLE_FULL_TURN - direction.y;
         }
-        direction.x = (direction.x - (u16)pitch) & KF_ANGLE_WRAP_MASK;
+        direction.x = (direction.x - pitch) & KF_ANGLE_WRAP_MASK;
         if (direction.x >= KF_ANGLE_HALF_TURN) {
             direction.x = KF_ANGLE_FULL_TURN - direction.x;
         }
@@ -1301,17 +1301,17 @@ s32 actor_move_with_collision(SVECTOR *motion)
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
-        motion->vx = -(u16)motion->vx;
+        motion->vx = -motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
-        motion->vy = -(u16)motion->vy;
+        motion->vy = -motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != 0) {
-        motion->vz = -(u16)motion->vz;
+        motion->vz = -motion->vz;
     }
     return result;
 }
@@ -1619,9 +1619,9 @@ s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index, VECT
         offset.vy = -(s32)actor->collision_height >> 1;
         offset.vz = -(s32)actor->collision_radius;
     } else {
-        offset.vx = ((s32)offset.vx * (s16)actor->model_scale_x) >> KF_FIXED12_BITS;
-        offset.vy = ((s32)offset.vy * (s16)actor->model_scale_y.value) >> KF_FIXED12_BITS;
-        offset.vz = ((s32)offset.vz * (s16)actor->model_scale_z) >> KF_FIXED12_BITS;
+        offset.vx = (offset.vx * actor->model_scale_x) >> KF_FIXED12_BITS;
+        offset.vy = (offset.vy * actor->model_scale_y.value) >> KF_FIXED12_BITS;
+        offset.vz = (offset.vz * actor->model_scale_z) >> KF_FIXED12_BITS;
     }
     rotation.x = actor->rotation.x;
     rotation.y = actor->rotation.y + KF_ANGLE_HALF_TURN;
@@ -1834,22 +1834,19 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         arguments += 3;
         third = *arguments;
         predicted.vx = fixed_lerp_q12(player->vx,
-            (s32)((((u32)offset.vx - (u32)target.vx) << 8) +
-                  (u32)current->position.vx), third);
+            ((offset.vx - target.vx) << 8) + current->position.vx, third);
         predicted.vy = fixed_lerp_q12(player->vy,
-            (s32)((((u32)offset.vy - (u32)target.vy) << 8) +
-                  (u32)current->position.vy), third);
+            ((offset.vy - target.vy) << 8) + current->position.vy, third);
         predicted.vz = fixed_lerp_q12(player->vz,
-            (s32)((((u32)offset.vz - (u32)target.vz) << 8) +
-                  (u32)current->position.vz), third);
+            ((offset.vz - target.vz) << 8) + current->position.vz, third);
         player = &predicted;
     } else {
         actor_sample_rotated_animation_vertex(current, position_mode, &offset);
     }
 
-    position.vx = (s32)((u32)current->position.vx + (u32)offset.vx);
-    position.vy = (s32)((u32)current->position.vy + (u32)offset.vy);
-    position.vz = (s32)((u32)current->position.vz + (u32)offset.vz);
+    position.vx = current->position.vx + offset.vx;
+    position.vy = current->position.vy + offset.vy;
+    position.vz = current->position.vz + offset.vz;
 
     switch (kind) {
     case 0x7b:
@@ -1893,9 +1890,9 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
                       &orientation.angles);
         pitch_yaw_to_forward_vector(&orientation.angles, &direction);
         vector3s_scale_shift12(1000, &direction);
-        position.vx = (s32)((u32)position.vx + (u32)direction.vx);
-        position.vy = (s32)((u32)position.vy + (u32)direction.vy);
-        position.vz = (s32)((u32)position.vz + (u32)direction.vz);
+        position.vx += direction.vx;
+        position.vy += direction.vy;
+        position.vz += direction.vz;
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       &orientation.angles);
         break;
@@ -2270,7 +2267,7 @@ case3_motion:
             actor->tail_72.angles.z = 0;
             actor->tail_72.angles.y = 0;
             actor->tail_72.angles.x = 0;
-            actor->tail_72.motion.baseline = (u16)actor->vertical_anchor_offset +
+            actor->tail_72.motion.baseline = actor->vertical_anchor_offset +
                 collision_sample_map_layer_height(actor->home_map_layer,
                     (actor->home_cell_x << 11) + actor->word_24.home_local_x,
                     (actor->home_cell_z << 11) + actor->word_22.home_local_z,
@@ -2569,7 +2566,7 @@ case3_motion:
         }
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor, actor->state_70.signed_state)) {
-            actor->state_70.signed_state = (u16)actor->state_70.signed_state + target->repeated_attack_phase_step;
+            actor->state_70.signed_state += target->repeated_attack_phase_step;
             if (target->word_26.unsigned_value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;
             }
@@ -2955,8 +2952,7 @@ case3_motion:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor_animation_crossed_phase(actor,
                                           actor->state_70.signed_state)) {
-            actor->state_70.signed_state =
-                (u16)actor->state_70.signed_state + target->word_12.value;
+            actor->state_70.signed_state += target->word_12.value;
             repeat = 1;
             if (target->word_10.value < actor->state_70.signed_state) {
                 actor->state_70.signed_state = 0;

@@ -440,7 +440,7 @@ typedef char kf_actor_model_scale_y_bytes_size[
     sizeof(KfActorModelScaleYBytes) == 2 ? 1 : -1];
 
 typedef union KfActorModelScaleY {
-    u16 value;
+    s16 value;
     KfActorModelScaleYBytes bytes;
 } KfActorModelScaleY;
 typedef char kf_actor_model_scale_y_size[sizeof(KfActorModelScaleY) == 2 ? 1 : -1];
@@ -569,9 +569,9 @@ typedef struct KfActor {
     s32 ballistic_origin_y;
     struct KfEulerAngles rotation;
     u8 unknown_46[2];
-    u16 model_scale_x;
+    s16 model_scale_x;
     KfActorModelScaleY model_scale_y;
-    u16 model_scale_z;
+    s16 model_scale_z;
     u8 unknown_4e[2];
     KfActorMotion motion;
     s16 turn_rate;

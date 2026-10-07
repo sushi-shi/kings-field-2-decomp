@@ -146,8 +146,15 @@ members, values, existing constants, KF1 counterpart and evidence. Verdicts:
 - `linked` - retail transports one value into two meanings by construction;
   record the relationship, keep both names or an explicit boundary.
 - `retain` - quantities, SDK arguments and data encodings: numbers or named
-  policy constants, not enums.
+  policy constants, not enums. Rows named `(retain: ...)` group census
+  domains by reason and list each domain's root slot.
+- `named` - sentinels, packed fields or mixed words whose values are now
+  named constants while the slot keeps integer storage.
 - `e2` - Boolean or pointer zero; handled by lane E2.
+
+Coverage rule: every `enum-candidate`, `flags-candidate` and `review` domain
+in `kf literals` has a member slot named by some row here (members or
+evidence), or has no literal site left.
 
 ### Lane partition
 

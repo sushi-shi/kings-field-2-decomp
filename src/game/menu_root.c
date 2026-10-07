@@ -4009,6 +4009,14 @@ static inline void menu_begin_text_glyph(
         string->position.y, font->width, font->height);
 }
 
+/* Selects the 15-by-15 font cell of a glyph code's low twelve bits. The
+ * do/while contour weights its temporaries as one loop level deeper. */
+#define MENU_SET_GLYPH_UV(p, code, w, h) do { \
+    u32 glyph = (code) & KF_MENU_TEXT_GLYPH_MASK; \
+    setUVWH(p, (glyph % KF_MENU_FONT_COLUMNS) * KF_MENU_FONT_CELL_WIDTH, \
+        (glyph / KF_MENU_FONT_COLUMNS) * KF_MENU_FONT_CELL_HEIGHT, w, h); \
+} while (0)
+
 ADDRESS(0x800210ac, 0x464)
 void menu_draw_string(const KfMenuSpriteDef *font, const KfMenuGlyphString *string)
 {
@@ -4019,15 +4027,9 @@ void menu_draw_string(const KfMenuSpriteDef *font, const KfMenuGlyphString *stri
     s16 frame_reserve[4];
 
     for (i = 0; *code != KF_MENU_TEXT_END; code++, i++) {
-        u32 glyph;
-
         x_offset = i * KF_MENU_GLYPH_ADVANCE;
         menu_begin_text_glyph(font, string, x_offset);
-        glyph = *code & KF_MENU_TEXT_GLYPH_MASK;
-        setUVWH(current_poly_ft4,
-            (glyph % KF_MENU_FONT_COLUMNS) * KF_MENU_FONT_CELL_WIDTH,
-            (glyph / KF_MENU_FONT_COLUMNS) * KF_MENU_FONT_CELL_HEIGHT,
-            font->width, font->height);
+        MENU_SET_GLYPH_UV(current_poly_ft4, *code, font->width, font->height);
         primitive_buffer_commit_poly_ft4(KF_MENU_CONTENT_OT_DEPTH);
 
         if (*code & KF_MENU_TEXT_DAKUTEN) {

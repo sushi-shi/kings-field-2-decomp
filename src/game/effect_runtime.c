@@ -2781,10 +2781,10 @@ void effect_update_dispatch(void)
                 break;
             }
             {
-                angle = (s16)record->rotation.pad;
+                angle = record->rotation.pad;
+                record->rotation.pad += 100000 / radius;
                 record->cache_tail.payload.trail.phase_counter++;
                 row = &record->cache_tail.payload.trail.rows[record->cache_tail.payload.trail.frame_index];
-                record->rotation.pad = angle + 100000 / radius;
                 radius = (radius * 25 << 8) >> 12;
                 row->position.vx = record->position.vx +
                                    ((rsin(angle) * radius) >> 12);

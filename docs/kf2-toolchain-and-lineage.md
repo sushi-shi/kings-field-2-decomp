@@ -236,6 +236,35 @@ Lane B5 traced these further links:
   the function's pseudo count modulo 31, so an unrelated edit can switch
   sharing on or off elsewhere.
 
+Lane B6 traced these further links:
+
+- **Macro contours and the log2 term.** Local-alloc priority uses
+  floor_log2(refs), so one more loop level does not scale every quantity
+  alike. Inside a loop, a `do { } while (0)` macro raises a three-use
+  temporary from 6 to 9 weighted refs (priority 3.0 to 6.75) but a long
+  tied quantity only from 16 to 24 (3.6 to 5.3). The temporary then takes
+  `v0` first (`menu_draw_string`'s glyph-cell macro).
+- **Three-quantity blocks (local-alloc.c `block_alloc`).** With exactly
+  three local quantities, the sorting network's last step compares
+  quantities 0 and 1 by number, not by position. The first-born quantity can
+  therefore be allocated first despite a lower priority. A `divmodsi4` births
+  its remainder quantity before its quotient.
+- **Preferences from local copies (global.c `set_preference`).** A global
+  variable copied from a local temporary inherits that temporary's hard
+  register as a copy preference. `x /= 10` after a block-local `x % 10`
+  keeps the quotient in a temporary until the copy, so the variable prefers
+  the temporary's register over a parameter's (`memory_card_write_title_stats`).
+- **Dead reload slots come from combine splits (combine.c `try_combine`).**
+  Combine zeroes the use count of the middle insn's register only when the
+  result is a single insn. When it splits the result in two (`newi2pat`) and
+  that register disappears, its stale count makes reload give it an 8-byte
+  frame slot. The compare is not essential to the narrow-field case: any
+  sign extension of a narrow field whose narrow register is reused qualifies,
+  for example `a = rec->pad; rec->pad += d;` (no visible `move` remains;
+  `effect_update_dispatch`'s fifth slot). Other sources are the copied entry
+  test of `for (i = 0; i < n; i++)` and of `for (x = n - 1; x != -1; x--)`
+  over a parameter.
+
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 
 Psy-Q links game objects before the libraries, so everything from the load

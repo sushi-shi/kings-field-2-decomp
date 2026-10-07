@@ -398,27 +398,21 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
     header->title[CARD_TITLE_SLOT_DIGIT_OFFSET] = CARD_SHIFT_JIS_DIGIT_LEAD;
     header->title[CARD_TITLE_SLOT_DIGIT_OFFSET + 1] = slot_glyph + CARD_SHIFT_JIS_ZERO_TRAIL;
     for (index = 0; index < CARD_TITLE_EXPERIENCE_DIGITS; index++) {
-        s32 digit;
-        s32 quotient;
+        s32 digit = experience % 10;
 
-        digit = experience % 10;
-        quotient = experience / 10;
         header->title[(CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
-        experience = quotient;
+        experience /= 10;
         if (experience == 0)
             index = CARD_TITLE_EXPERIENCE_DIGITS;
     }
 
     for (index = 0; index < CARD_TITLE_LEVEL_DIGITS; index++) {
-        s32 digit;
-        s32 quotient;
+        s32 digit = level % 10;
 
-        digit = level % 10;
-        quotient = level / 10;
         header->title[(CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
-        level = quotient;
+        level /= 10;
         if (level == 0)
             index = CARD_TITLE_LEVEL_DIGITS;
     }

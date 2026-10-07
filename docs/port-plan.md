@@ -79,16 +79,17 @@ change a shared version must absorb.
 
 | | Milestone | Status on `port-bootstrap` |
 | --- | --- | --- |
-| a | The export compiles natively as C++ against a platform layer, with SDK calls mapped | **Reached.** All 41 units (4 programs) compile for i686. 140 library calls link to `src/runtime`. `nix build .#unwrapped` passes. |
+| a | The export compiles natively as C++ against a platform layer, with SDK calls mapped | **Reached.** All 41 units (4 programs) compile for i686. About 140 library calls link to `src/runtime`. `nix build .#unwrapped` passes. |
 | b | Boots to the title | **Reached.** The PSX loop runs OPEN. OP.D loads through the CD path, and the TIM/ordering-table title renders at 640x240. The idle attract movie runs with black frames. |
-| c | GAME loads the first map and renders | **Reached, with gaps.** Start enters GAME. FDAT/RTMD/RTIM/VAB archives load through the event-driven request queue. The shore map, HUD and compass render, and the player moves and turns. Missing: near-plane clipping (`Clip3FTP`/`Clip4FTP`) and region modules. |
-| d | Input | Gameplay-aware bindings (KF1 action table: WASD, mouse look), menu context, and verification of KF2's button semantics. |
-| e | Audio | Connect `Ss*`/`SsUtKeyOn`/`SpuGetAllKeysStatus` to KF1's SPU mixer and sequencer, including streamed VAB bodies (`SsVabTransBodyPartly`) and OP.D/ED.D music. |
-| f | Saves | Exercise the card path through the original menus. Then direct slot storage, durability and IndexedDB. |
-| g | Web | emscripten build (wasm32 is ILP32 too), Asyncify yields in `VSync`, the disc import page and caching from KF1's `web/shell.html`. |
-| h | Movies | Software MDEC for OP.S/ED.S. |
+| c | GAME loads the first map and renders | **Reached.** Start enters GAME. FDAT/RTMD/RTIM/VAB archives load through the event-driven request queue. The shore map, caves, an enemy, the HUD and the compass render, and the player moves and turns. Transforms report the coprocessor FLAG bits, and `Clip3FTP`/`Clip4FTP` clip at the near plane. Region modules are still missing. |
+| d | Input | **Partly reached.** A raw PlayStation pad layout drives movement, and the in-game menu opens on Cross. Next: gameplay-aware bindings (KF1 action table: WASD, mouse look), menu context and a check of KF2's button meanings. |
+| e | Audio | **Reached, not yet listened to.** `Ss*` run on KF1's SPU mixer and sequencer, with streamed VAB bodies and OP.D/ED.D music. Captured output is non-silent through the title and gameplay. KF2 needed two codec fixes: bank sizes and the tempo meta event. |
+| f | Saves | **In place, not exercised.** `bu00:` files live in a save directory with retail sizes. Next: save at a save point and load through the original menus. Then direct slot storage, durability and IndexedDB. |
+| g | Web | **Links.** The emscripten preset builds the wasm32 module. Missing: Asyncify yields in busy waits, the disc import page and caching from KF1's `web/shell.html`. |
+| h | Movies | Software MDEC for OP.S/ED.S. Stream frames are already assembled from the disc. |
 | i | Region modules | Reconstruct the FDAT callback modules on `master` and register them in the port. |
-| j | Direct boundaries | Retire `src/runtime` subsystem by subsystem: producers enqueue faces directly, resources are read by entry, audio is called directly. Then the LP64 build. |
+| j | Memory adjacency | Use the sanitizer preset to bound retail copies that cross object ends. Two are fixed: the weapon table and the stream work buffer tail. |
+| k | Direct boundaries | Retire `src/runtime` subsystem by subsystem: producers enqueue faces directly, resources are read by entry, audio is called directly. Then the LP64 build. |
 
 Each milestone ends with a run against the retail disc: the bootstrap's
 `KF_PAD_SCRIPT`, `KF_CAPTURE` and offscreen SDL make runs repeatable without a

@@ -1207,7 +1207,9 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
     s32 case3_z;
     va_list arguments;
     const VECTOR *override_position;
-    va_start(arguments, effect_id);
+    /* The cursor stays on the named argument and is advanced before each
+     * read, so every optional pointer is read one word above effect_id. */
+    arguments = (char *)&effect_id;
 
     switch (effect_id) {
     case 7:
@@ -1279,6 +1281,7 @@ simple_effect:
         rotation_scale = 700;
 probe_rotation_effect:
         player_probe_view_target_and_vectors(rotation_scale, &position, &direction, &distance);
+emit_rotation_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
@@ -1371,20 +1374,20 @@ sequence_effect: {
         goto probe_rotation_effect;
     case 39:
         player_probe_view_target_and_vectors(50, NULL, &direction, &distance);
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = *(const VECTOR **)(arguments += 4);
         position = *override_position;
         goto emit_rotation_effect;
     case 49: {
         const VECTOR *override_position;
         /* Cases 49 and 50 omit the rotation argument. */
         player_probe_view_target_and_vectors(550, NULL, &direction, &distance);
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = *(const VECTOR **)(arguments += 4);
         position = *override_position;
         goto emit_simple_effect;
     }
     case 50: {
         const VECTOR *override_position;
-        override_position = va_arg(arguments, const VECTOR *);
+        override_position = *(const VECTOR **)(arguments += 4);
         position = *override_position;
         goto emit_simple_effect;
     }
@@ -1392,8 +1395,6 @@ sequence_effect: {
     case 35:
     case 38:
         player_probe_view_target_and_vectors(900, &position, &direction, &distance);
-        goto emit_rotation_effect;
-emit_rotation_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;

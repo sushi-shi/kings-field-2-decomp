@@ -41,12 +41,12 @@ typedef struct KfCardPlayerSnapshot {
     KfEffectKind secondary_magic_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
-    u8 audio_effects_enabled;
-    u8 audio_music_enabled;
-    u8 hud_gauges_enabled;
-    u8 compass_enabled;
-    u8 item_preview_enabled;
-    u8 walking_bob_enabled;
+    KfPlayerOption audio_effects_enabled;
+    KfPlayerOption audio_music_enabled;
+    KfPlayerOption hud_gauges_enabled;
+    KfPlayerOption compass_enabled;
+    KfPlayerOption item_preview_enabled;
+    KfPlayerOption walking_bob_enabled;
 } KfCardPlayerSnapshot;
 
 typedef struct KfCardSavePayload {

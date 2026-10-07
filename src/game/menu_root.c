@@ -1309,12 +1309,12 @@ void menu_options_controller(void)
     labels[1].glyphs.codes[2] = 244;
     labels[1].glyphs.codes[3] = KF_MENU_TEXT_END;
 
-    selected[KF_MENU_OPTION_EFFECTS_ROW] = player_state.audio_effects_enabled;
-    selected[KF_MENU_OPTION_MUSIC_ROW] = player_state.audio_music_enabled;
-    selected[KF_MENU_OPTION_GAUGES_ROW] = player_state.hud_gauges_enabled;
-    selected[KF_MENU_OPTION_COMPASS_ROW] = player_state.compass_enabled;
-    selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW] = player_state.item_preview_enabled;
-    selected[KF_MENU_OPTION_WALKING_BOB_ROW] = player_state.walking_bob_enabled;
+    selected[KF_MENU_OPTION_EFFECTS_ROW] = KF_ENUM_ENCODE(u8, player_state.audio_effects_enabled);
+    selected[KF_MENU_OPTION_MUSIC_ROW] = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
+    selected[KF_MENU_OPTION_GAUGES_ROW] = KF_ENUM_ENCODE(u8, player_state.hud_gauges_enabled);
+    selected[KF_MENU_OPTION_COMPASS_ROW] = KF_ENUM_ENCODE(u8, player_state.compass_enabled);
+    selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW] = KF_ENUM_ENCODE(u8, player_state.item_preview_enabled);
+    selected[KF_MENU_OPTION_WALKING_BOB_ROW] = KF_ENUM_ENCODE(u8, player_state.walking_bob_enabled);
 
     for (;;) {
         if (result != KF_MENU_RESULT_PENDING) {
@@ -1364,12 +1364,12 @@ void menu_options_controller(void)
         }
     }
 
-    player_state.audio_effects_enabled = selected[KF_MENU_OPTION_EFFECTS_ROW];
-    player_state.audio_music_enabled = selected[KF_MENU_OPTION_MUSIC_ROW];
-    player_state.hud_gauges_enabled = selected[KF_MENU_OPTION_GAUGES_ROW];
-    player_state.compass_enabled = selected[KF_MENU_OPTION_COMPASS_ROW];
-    player_state.item_preview_enabled = selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW];
-    player_state.walking_bob_enabled = selected[KF_MENU_OPTION_WALKING_BOB_ROW];
+    player_state.audio_effects_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_EFFECTS_ROW]);
+    player_state.audio_music_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_MUSIC_ROW]);
+    player_state.hud_gauges_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_GAUGES_ROW]);
+    player_state.compass_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_COMPASS_ROW]);
+    player_state.item_preview_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW]);
+    player_state.walking_bob_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_WALKING_BOB_ROW]);
 }
 
 ADDRESS(0x8001b554, 0x2e0)
@@ -3889,7 +3889,7 @@ void menu_update_item_preview(s32 item_id)
     MATRIX lit;
     MATRIX color;
 
-    if (player_state.item_preview_enabled == 0 || (u8)item_id == 0xff) {
+    if (player_state.item_preview_enabled == KF_PLAYER_OPTION_OFF || (u8)item_id == 0xff) {
         return;
     }
 
@@ -4277,8 +4277,8 @@ void menu_enter_display_state(s32 mode)
     StoreImage(&menu_frame_upload_rect, menu_frame_upload_pixels);
     DrawSync(0);
 
-    menu_saved_music_enabled = player_state.audio_music_enabled;
-    if (player_state.audio_music_enabled == 1 && audio_state.sequence_active == KF_TRUE)
+    menu_saved_music_enabled = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
+    if (player_state.audio_music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE)
         SsSeqPause(audio_state.sequence_id);
 }
 
@@ -4299,7 +4299,7 @@ void menu_exit_display_state(b32 stop_sequence)
     if (stop_sequence == KF_TRUE) {
         audio_stop_sequence();
     } else {
-        music_enabled = player_state.audio_music_enabled;
+        music_enabled = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
         if (music_enabled != menu_saved_music_enabled) {
             if (music_enabled == 0)
                 audio_stop_sequence();
@@ -4427,7 +4427,7 @@ s32 menu_load_item_model(u8 item_id)
     u8 *allocation;
 
     menu_item_quantity = 1;
-    if (player_state.item_preview_enabled == 0)
+    if (player_state.item_preview_enabled == KF_PLAYER_OPTION_OFF)
         return 0;
 
     menu_release_item_model();

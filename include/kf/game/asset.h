@@ -3,6 +3,7 @@
 
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/pool.h>
 #include <kf/game/tmd.h>
 
 enum {
@@ -34,6 +35,6 @@ void asset_registry_load_tmd_archive(u16 first_asset_id, u8 *archive);
 void asset_registry_set(u16 index, KfAssetHeader *asset);
 void asset_registry_select(u16 index);
 KfAssetHeader *resource_registry_get(u16 index);
-u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index);
+u32 asset_vertex_count(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip);
 
 #endif

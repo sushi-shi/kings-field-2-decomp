@@ -83,11 +83,18 @@ s32 random_centered_triangular_scaled(s32 amplitude);
 s32 fixed_lerp_q12(s32 start, s32 end, s32 fraction);
 s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction);
 void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output, s16 fraction);
-s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
+/* Which positive root trajectory_solve_time_angle keeps: the shorter flight
+ * (flat arc) or the longer one (high arc). */
+KF_ENUM_BEGIN(KfTrajectoryMode, s32)
+    KF_TRAJECTORY_SHORTER_TIME = 0,
+    KF_TRAJECTORY_LONGER_TIME = 1
+KF_ENUM_END(KfTrajectoryMode)
+
+s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle);
-s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
-    s32 source_z, s32 target_x, s32 target_y, s32 target_z,
+s32 trajectory_solve_motion_between_points(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
+    s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z);
 void vector_add_scaled_delta(const VECTOR *origin, const SVECTOR *delta, s32 scale,
     VECTOR *output);

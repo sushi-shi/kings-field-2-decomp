@@ -44,7 +44,7 @@ void map_object_pool_reset(void)
 ADDRESS(0x80035590, 0x48)
 void map_object_reset(KfMapObject *object)
 {
-    object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
+    object->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
     object->phase_q12 = 0;
     object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
     object->layer_mask = KF_MAP_LAYER_NONE;
@@ -183,7 +183,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
 
         object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
         object->action_timer = 0;
-        object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
+        object->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         object->phase_q12 = 0;
         object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
         object->rotation.vz = 0;
@@ -244,7 +244,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case KF_MAP_OBJECT_OP_2:
             object->action = KF_MAP_OBJECT_OP_2;
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[8], 0, 0xff);
@@ -263,7 +263,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 3000, 1);
             break;
         case KF_MAP_OBJECT_OP_3: {
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             map_cell_copy_rotated_fields(object->layer_mask,
                           object->tail.cell_copy.source_x +
                               object_template->params.marker.cell_width * 2,
@@ -278,7 +278,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         }
         case KF_MAP_OBJECT_OP_83:
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->action = KF_MAP_OBJECT_OP_83;
             object->action_timer = 9;
             break;
@@ -290,7 +290,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case KF_MAP_OBJECT_OP_5:
             object->action = KF_MAP_OBJECT_OP_5;
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE, object_template->params.marker.marker_action_05);
             break;
         case KF_MAP_OBJECT_OP_RESOURCE_TRIGGER:
@@ -314,7 +314,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             }
             break;
         case KF_MAP_OBJECT_OP_34:
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->phase_q12 = 0;
             object->action = KF_MAP_OBJECT_OP_34;
             object->extra_40.bytes[0] = 0;
@@ -348,7 +348,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->action = KF_MAP_OBJECT_OP_ANIMATED_MODEL;
             break;
         case KF_MAP_OBJECT_OP_84:
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->extra_40.saved_layer.layer_mask = object->layer_mask;
             object->layer_mask = KF_MAP_LAYER_BOTH;
             object->action = KF_MAP_OBJECT_OP_84;
@@ -363,7 +363,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->scale.vx = 0;
             break;
         case KF_MAP_OBJECT_OP_81:
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->action = KF_MAP_OBJECT_OP_81;
             object->extra_40.bytes[0] = 0;
             if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
@@ -372,7 +372,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             }
             break;
         case KF_MAP_OBJECT_OP_88:
-            object->asset_clip_selector = 0;
+            object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->action = KF_MAP_OBJECT_OP_88;
             object->action_timer = 1;
             break;
@@ -847,9 +847,9 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
         target->action = KF_MAP_OBJECT_OP_OFFSET_MOTION;
         target->layer_mask = source->layer_mask;
         if (brighten) {
-            target->asset_clip_selector = 0;
+            target->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
         } else {
-            target->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
+            target->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         }
         vector_rotate_yxz((const struct KfEulerAngles *)&source->rotation,
                           start_offset, &target->position);

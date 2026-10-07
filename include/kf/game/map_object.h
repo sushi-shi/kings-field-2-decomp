@@ -69,7 +69,6 @@ KF_ENUM_END(KfMapObjectOperation)
 enum {
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
     KF_MAP_OBJECT_INDEX_NONE = 0xffff,
-    KF_MAP_OBJECT_STATIC_OBJECT_ZERO = 0x80,
     KF_MAP_OBJECT_SPAWN_SEQUENCE_MODULUS = 0x10000,
     KF_MAP_OBJECT_TEMPLATE_CAPACITY = 320,
     KF_MAP_OBJECT_PLACED_COUNT = 0x15e,
@@ -791,7 +790,7 @@ typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1
 /* The map-object pool is traversed in 0x44-byte records. */
 typedef struct KfMapObject {
     KfMapLayerMask layer_mask;
-    u8 asset_clip_selector;
+    KfAnimationClip asset_clip_selector;
     KfRenderQueueMode render_queue_mode;
     u8 collision_flags;
     KfMapObjectOperation action;

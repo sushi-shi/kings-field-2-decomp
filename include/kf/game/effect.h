@@ -7,19 +7,99 @@
 #include <kf/game/audio.h>
 #include <kf/game/render_types.h>
 #include <kf/game/magic.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 struct KfPoolRecord;
 
 enum {
     KF_EFFECT_CAPACITY = 128,
-    KF_MAGIC_RECORD_COUNT = 64,
-    KF_EFFECT_SLOT_FREE = 0xff,
-    KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
-    KF_EFFECT_STATIC_OBJECT_ZERO = 0x80,
-    KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c,
-    KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c
+    KF_MAGIC_RECORD_COUNT = 64
 };
+
+/*
+ * Effect record type (KF1 KfEffectType). The low three bits choose what the
+ * collision probe tests (player, actors, both, or shapes only); bits 4-5 are
+ * the source class that actor damage keeps (KfActorDamageFlags): 0x10 casts
+ * with the player's magic power, 0x20 marks actor and map hazards. 0xff
+ * frees the pool slot.
+ */
+KF_ENUM_BEGIN(KfEffectType, u8)
+    KF_EFFECT_TYPE_NONE = 0,
+    KF_EFFECT_TARGET_PLAYER = 1,
+    KF_EFFECT_TARGET_ACTORS = 2,
+    KF_EFFECT_TARGET_ACTORS_AND_PLAYER = 3,
+    KF_EFFECT_TARGET_SHAPES_ONLY = 4,
+    KF_EFFECT_TARGET_MASK = 7,
+    KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
+    KF_EFFECT_SOURCE_HAZARD = 0x20,
+    KF_EFFECT_SOURCE_MASK = 0x30,
+    KF_EFFECT_SLOT_FREE = 0xff
+KF_ENUM_END(KfEffectType)
+KF_ENUM_FLAGS(KfEffectType, u8)
+
+/* Effect model row: the renderer and vertex sampler draw asset
+ * render_id + 0x28. base_render_id keeps the constructor's row for kinds that
+ * switch models. Model identities remain WIP. */
+KF_ENUM_BEGIN(KfEffectRenderId, u8)
+    KF_EFFECT_MODEL_0 = 0,
+    KF_EFFECT_MODEL_8 = 8,
+    KF_EFFECT_MODEL_9 = 9,
+    KF_EFFECT_MODEL_10 = 10,
+    KF_EFFECT_MODEL_11 = 11,
+    KF_EFFECT_MODEL_12 = 12,
+    KF_EFFECT_MODEL_13 = 13,
+    KF_EFFECT_MODEL_14 = 14,
+    KF_EFFECT_MODEL_15 = 15,
+    KF_EFFECT_MODEL_16 = 16,
+    KF_EFFECT_MODEL_17 = 17,
+    KF_EFFECT_MODEL_19 = 19,
+    KF_EFFECT_MODEL_20 = 20,
+    KF_EFFECT_MODEL_21 = 21,
+    KF_EFFECT_MODEL_22 = 22,
+    KF_EFFECT_MODEL_23 = 23,
+    KF_EFFECT_MODEL_24 = 24,
+    KF_EFFECT_MODEL_25 = 25,
+    KF_EFFECT_MODEL_26 = 26,
+    KF_EFFECT_MODEL_28 = 28,
+    KF_EFFECT_MODEL_29 = 29,
+    KF_EFFECT_MODEL_30 = 30,
+    KF_EFFECT_MODEL_31 = 31,
+    KF_EFFECT_MODEL_32 = 32,
+    KF_EFFECT_MODEL_33 = 33,
+    KF_EFFECT_MODEL_34 = 34,
+    KF_EFFECT_MODEL_35 = 35,
+    KF_EFFECT_MODEL_36 = 36,
+    KF_EFFECT_MODEL_37 = 37,
+    KF_EFFECT_MODEL_38 = 38,
+    KF_EFFECT_MODEL_40 = 40,
+    KF_EFFECT_MODEL_41 = 41,
+    KF_EFFECT_MODEL_42 = 42,
+    KF_EFFECT_MODEL_43 = 43,
+    KF_EFFECT_MODEL_44 = 44,
+    KF_EFFECT_MODEL_45 = 45,
+    KF_EFFECT_MODEL_46 = 46,
+    KF_EFFECT_MODEL_47 = 47,
+    KF_EFFECT_MODEL_48 = 48,
+    KF_EFFECT_MODEL_49 = 49,
+    KF_EFFECT_MODEL_50 = 50
+KF_ENUM_END(KfEffectRenderId)
+
+/* render_flags: the low two bits hide the effect, draw it inside visible map
+ * layers, or always draw it; bits 2-3 choose the world, identity, pitch or
+ * screen-space transform in render_scene_and_update_resources. */
+KF_ENUM_BEGIN(KfEffectRenderFlags, u8)
+    KF_EFFECT_RENDER_HIDDEN = 0,
+    KF_EFFECT_RENDER_VISIBLE = 1,
+    KF_EFFECT_RENDER_ALWAYS_VISIBLE = 2,
+    KF_EFFECT_RENDER_VISIBILITY_MASK = 3,
+    KF_EFFECT_RENDER_WORLD_TRANSFORM = 0,
+    KF_EFFECT_RENDER_IDENTITY_TRANSFORM = 4,
+    KF_EFFECT_RENDER_PITCH_TRANSFORM = 8,
+    KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c,
+    KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c
+KF_ENUM_END(KfEffectRenderFlags)
+KF_ENUM_FLAGS(KfEffectRenderFlags, u8)
 
 typedef union KfEffectScaleThreshold {
     s16 interpolation_start_y;
@@ -284,15 +364,15 @@ typedef char kf_effect_cache_payload_offset[offsetof(KfEffectCacheTail, payload)
 
 /* The pool scan and reset visit 128 records at a 72-byte stride. */
 typedef struct KfEffectRecord {
-    u8 type;
+    KfEffectType type;
     KfEffectKind kind;
-    u8 base_render_id;
-    u8 render_id;
-    u8 animation_clip;
+    KfEffectRenderId base_render_id;
+    KfEffectRenderId render_id;
+    KfAnimationClip animation_clip;
     u8 unknown_05;
     u8 damage_multiplier_tenths;
     u8 phase;
-    u8 render_flags;
+    KfEffectRenderFlags render_flags;
     KfRenderQueueMode render_queue_mode;
     KfMapLayerMask map_layer_mask;
     u8 cooldown;
@@ -362,7 +442,8 @@ typedef char kf_effect_current_index_offset[offsetof(KfEffectState, current_inde
 extern KfEffectState effect_state;
 
 int effect_magic_power(KfEffectRecord *effect);
-void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 power,
+void effect_dispatch_magic_impact(s32 kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
+                   s32 radius, u16 power,
                    u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position);
@@ -395,14 +476,15 @@ void effect_collision_backtrack(void);
 void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
 KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);
 KfEffectRecord *effect_pool_find_free(void);
-KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, KfEffectKind kind, const VECTOR *position,
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectType type, KfEffectKind kind,
+                              const VECTOR *position,
                               const SVECTOR *direction, ...);
 void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output,
                    const SVECTOR *scale);
 void effect_sample_world_vertex(KfEffectRecord *record, s32 mode, VECTOR *position,
                    const SVECTOR *scale);
-void effect_pool_initialize_scaled(KfEffectRecord *record, u8 render_id, u16 scale);
-void effect_pool_initialize_fixed(KfEffectRecord *record, u8 render_id);
+void effect_pool_initialize_scaled(KfEffectRecord *record, KfEffectRenderId render_id, u16 scale);
+void effect_pool_initialize_fixed(KfEffectRecord *record, KfEffectRenderId render_id);
 void effect_pool_reset(void);
 void effect_rotate_scale_offset_y(const SVECTOR *offset, VECTOR *output, s16 angle, s32 scale);
 void magic_load_records(const KfMagicRecord *records);

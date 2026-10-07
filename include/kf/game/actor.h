@@ -8,12 +8,12 @@
 #include <kf/game/render_types.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 enum {
     KF_ACTOR_ANIMATION_PHASE_PERIOD = 0x1000,
     KF_ACTOR_ANIMATION_PHASE_MAX = KF_ACTOR_ANIMATION_PHASE_PERIOD - 1,
-    KF_ACTOR_ANIMATION_NO_CHANGE = 0xff,
     KF_ACTOR_CAPACITY = 200,
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
@@ -192,7 +192,7 @@ typedef char kf_target_candidate_word0e_size[
 
 typedef struct KfTargetCandidateWord10Bytes {
     u8 fallback_offset;
-    u8 completion_animation_id;
+    KfAnimationClip completion_animation_id;
 } KfTargetCandidateWord10Bytes;
 typedef char kf_target_candidate_word10_bytes_size[
     sizeof(KfTargetCandidateWord10Bytes) == 2 ? 1 : -1];
@@ -336,7 +336,7 @@ typedef char kf_target_sound_trigger_size[
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     KfActorTargetType type;
-    u8 animation_id;
+    KfAnimationClip animation_id;
     KfTargetCandidateWord02 word_02;
     u8 sound_code;
     u8 unknown_05[2];
@@ -630,7 +630,7 @@ typedef struct KfActor {
     KfActorLifecycle lifecycle;
     u8 spawn_chance;
     KF_ENUM_STORAGE(KfObjectId, u8) death_drop_object_id;
-    u8 animation_id;
+    KfAnimationClip animation_id;
     KfActorVerticalState vertical_motion_state;
     KfActorTargetType target_type;
     u8 target_action_state;
@@ -824,7 +824,7 @@ void actor_update_behavior(void);
 KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, KfActorTargetType type);
 u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker);
 u8 *event_target_stream_resolve_cursor(KfActor *actor);
-void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase,
+void actor_animation_seek_phase(KfActor *actor, KfAnimationClip state, u16 phase,
                    s32 target_phase, s32 phase_step);
 void actor_select_target_type_in_own_group(KfActor *actor, KfActorTargetType type);
 void actor_select_best_target(s32 player_distance);
@@ -839,13 +839,13 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c,
                    u16 magic_0e, u16 magic_10, u16 magic_12,
-                   u16 magic_14, u16 amount, s32 effect_flags,
+                   u16 magic_14, u16 amount, KF_ENUM_PARAM(KfActorDamageFlags, s32) effect_flags,
                    const VECTOR *position);
 void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
                    s32 mode, u16 falloff, u16 power, u16 magic_06,
                    u16 magic_08, u16 magic_0a, u16 magic_0c, u16 magic_0e,
                    u16 magic_10, u16 magic_12, u16 magic_14,
-                   s32 amount_and_flags, u16 effect_flags);
+                   s32 amount_and_flags, KF_ENUM_PARAM(KfActorDamageFlags, u16) effect_flags);
 VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output);
 s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index,
                                           VECTOR *output);
@@ -853,8 +853,8 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
                   const VECTOR *target, SVECTOR *direction,
                   s32 pitch_override, u16 yaw_limit, s32 iterations);
 void actor_reset_target_and_reselect(void);
-void actor_set_animation(u8 animation_id);
-void actor_set_animation_if_changed(u8 animation_id);
+void actor_set_animation(KfAnimationClip animation_id);
+void actor_set_animation_if_changed(KfAnimationClip animation_id);
 void actor_advance_animation_wrapped(KfActor *actor, s16 delta);
 void actor_advance_animation_clamped(KfActor *actor, s16 delta);
 KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase);
@@ -863,7 +863,7 @@ void actor_play_target_sound(KfActor *actor);
 s32 actor_damp_horizontal_motion(s32 decay, s32 target);
 s32 actor_move_with_collision(SVECTOR *motion);
 s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target);
-s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
+s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x, s32 target_y,
                   s32 target_z, s32 trajectory_parameter,
                   s32 trajectory_speed);
 void actor_suspend_vertical_motion(void);
@@ -878,8 +878,9 @@ s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 ra
                   s16 reference_angle, s32 step, s32 mode, s32 target);
 void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
                    s32 acceleration);
-void actor_update_motion_animation(s32 first, s32 reverse, s32 forward,
-                                   s32 fast, s32 slow, s32 phase_step);
+void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first, KF_ENUM_PARAM(KfAnimationClip, s32) reverse,
+                                   KF_ENUM_PARAM(KfAnimationClip, s32) forward, KF_ENUM_PARAM(KfAnimationClip, s32) fast,
+                                   KF_ENUM_PARAM(KfAnimationClip, s32) slow, s32 phase_step);
 void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 damage_multiplier_tenths,
                                  s32 position_mode, ...);
 void actor_update_vertical_motion(void);

@@ -7,6 +7,7 @@
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
 #include <kf/game/render_types.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 struct KfMagicRecord;
@@ -23,6 +24,13 @@ enum {
     KF_PLAYER_LEVEL_GROWTH_COUNT = 100,
     KF_PLAYER_TRAINING_POINTS_PER_GAIN = 100
 };
+
+/* Player option bytes, their card copies and the options menu rows share
+ * off/on (KF1 KfPlayerOption). */
+KF_ENUM_BEGIN(KfPlayerOption, u8)
+    KF_PLAYER_OPTION_OFF = 0,
+    KF_PLAYER_OPTION_ON = 1
+KF_ENUM_END(KfPlayerOption)
 
 /* Vertical extent of the player in distance tests (King's Field's
  * KF_COLLISION_PLAYER_HEIGHT). */
@@ -438,7 +446,7 @@ typedef struct KfPlayerState {
     KfEffectKind primary_magic_shortcut_id;
     KfEffectKind secondary_magic_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
-    u8 weapon_attack_mode;
+    KfAnimationClip weapon_attack_mode;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
@@ -458,12 +466,12 @@ typedef struct KfPlayerState {
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_shield_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_accessory_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_extra_id;
-    u8 audio_effects_enabled;
-    u8 audio_music_enabled;
-    u8 hud_gauges_enabled;
-    u8 compass_enabled;
-    u8 item_preview_enabled;
-    u8 walking_bob_enabled;
+    KfPlayerOption audio_effects_enabled;
+    KfPlayerOption audio_music_enabled;
+    KfPlayerOption hud_gauges_enabled;
+    KfPlayerOption compass_enabled;
+    KfPlayerOption item_preview_enabled;
+    KfPlayerOption walking_bob_enabled;
     u8 death_state;
     u8 unknown_ce[2];
     u8 vertical_motion_state;
@@ -610,7 +618,7 @@ void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const S
 void player_update_frame(void);
 void render_frames_with_color_overlay(KF_ENUM_PARAM(KfColorOverlayControl, s32) mode, s32 phase, s32 last_phase,
     s32 step);
-void player_begin_weapon_attack(s32 mode);
+void player_begin_weapon_attack(KF_ENUM_PARAM(KfAnimationClip, s32) mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);
 void player_reset_view(void);

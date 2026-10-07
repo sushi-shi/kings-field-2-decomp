@@ -241,10 +241,10 @@ void map_object_update_actions(void)
                 }
                 previous = object->extra_40.hinge.progress_ticks++;
                 if (previous < 32) {
-                    object->asset_clip_selector = 0x81;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_SECOND;
                     object->rotation.vy += 32;
                     if (linked != NULL) {
-                        linked->asset_clip_selector = 0x81;
+                        linked->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_SECOND;
                         linked->rotation.vy -= 32;
                     }
                     if (previous == 24) {
@@ -290,10 +290,10 @@ void map_object_update_actions(void)
                         }
                     } else {
                         object->action_timer = 0;
-                        object->asset_clip_selector = 0x80;
+                        object->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
                         object->render_depth_offset = -50;
                         if (linked != NULL) {
-                            linked->asset_clip_selector = 0x80;
+                            linked->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
                             linked->render_depth_offset = -50;
                         }
                     }
@@ -642,7 +642,7 @@ void map_object_update_actions(void)
             case 1:
                 object->phase_q12 += 256;
                 if (object->phase_q12 >= 0xfff) {
-                    object->asset_clip_selector = 1;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_SECOND;
                     object->phase_q12 = 0;
                     if (object->tail.action_84_pattern.pattern_flags & 2) {
                         object->action_timer = 99;
@@ -655,7 +655,7 @@ void map_object_update_actions(void)
             case 32:
                 object->phase_q12 += 128;
                 if (object->phase_q12 >= 0xfff) {
-                    object->asset_clip_selector = 0;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
                     object->phase_q12 = 0;
                     object->action_timer = 0;
                     map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
@@ -715,7 +715,7 @@ void map_object_update_actions(void)
                 if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_STOPPED) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
-                    object->asset_clip_selector = 1;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_SECOND;
                     object->phase_q12 = 0xfff;
                 } else if (object->tail.collision_probe.camera_region_width != KF_MAP_OBJECT_REGION_NEVER &&
                            (object->tail.collision_probe.camera_region_width == KF_MAP_OBJECT_REGION_ALWAYS ||
@@ -726,7 +726,7 @@ void map_object_update_actions(void)
                                             object->position.vy))) {
                     object->action_timer = 1;
                     object->phase_q12 = 0;
-                    object->asset_clip_selector = 0;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
                     object->extra_40.bytes[0] = 0;
                     map_object_play_spatial_sound(object,
                                                   object_template->params.collision.sound_id);
@@ -748,7 +748,7 @@ void map_object_update_actions(void)
                     object->phase_q12 >= 0x1000 - increment) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
-                    object->asset_clip_selector = 1;
+                    object->asset_clip_selector = KF_ANIMATION_CLIP_SECOND;
                     break;
                 }
                 object->phase_q12 += increment;
@@ -780,7 +780,7 @@ void map_object_update_actions(void)
                     }
                     if (object->extra_40.bytes[0] == 0) {
                         object->extra_40.bytes[0] = 1;
-                        effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
+                        effect_dispatch_magic_impact(kind, KF_ACTOR_DAMAGE_FROM_HAZARD, 5000, 5,
                                       object->tail.collision_probe.damage_multiplier_tenths,
                                       object_template->params.collision.impact_magic_values[0],
                                       object_template->params.collision.impact_magic_values[1],
@@ -795,7 +795,7 @@ void map_object_update_actions(void)
                 if (object->phase_q12 >= 0xfff) {
                     object->phase_q12 = 0xfff;
                     if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_RUNNING) {
-                        object->asset_clip_selector = 2;
+                        object->asset_clip_selector = KF_ANIMATION_CLIP_THIRD;
                         object->phase_q12 = 0;
                         object->action_timer = 3;
                     }

@@ -93,4 +93,21 @@ KF_ENUM_BEGIN(KfEffectKind, u8)
     KF_MAGIC_NONE = 0xff
 KF_ENUM_END(KfEffectKind)
 
+/*
+ * Actor damage flags passed to actor_apply_magic_to_actor. The low bits are
+ * the damage mode that selects physical or magic training credit; bits 4-5
+ * keep the source class of the effect type that caused it (0x10 player,
+ * 0x20 hazards, which actor flag 0x100000 ignores).
+ */
+KF_ENUM_BEGIN(KfActorDamageFlags, u8)
+    KF_ACTOR_DAMAGE_NONE = 0,
+    KF_ACTOR_DAMAGE_PHYSICAL = 1,
+    KF_ACTOR_DAMAGE_MAGIC = 2,
+    KF_ACTOR_DAMAGE_MODE_MASK = 3,
+    KF_ACTOR_DAMAGE_FROM_PLAYER = 0x10,
+    KF_ACTOR_DAMAGE_FROM_HAZARD = 0x20,
+    KF_ACTOR_DAMAGE_SOURCE_MASK = 0x30
+KF_ENUM_END(KfActorDamageFlags)
+KF_ENUM_FLAGS(KfActorDamageFlags, u8)
+
 #endif

@@ -105,7 +105,8 @@ void scene_pose_interpolate(
 } while (0)
 
 ADDRESS(0x800460a0, 0xa4)
-void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_phase, s32 phase_step)
+void actor_animation_seek_phase(KfActor *actor, KfAnimationClip state, u16 phase, s32 target_phase,
+                                s32 phase_step)
 {
     s32 step;
     s32 final_phase;
@@ -202,7 +203,7 @@ void event_target_stream_execute(KfActor *actor)
     u8 *cursor;
     s32 repeat;
     b32 restore_state;
-    u8 saved_state;
+    KfAnimationClip saved_state;
     s32 old_counter;
     s32 choice;
 
@@ -283,7 +284,7 @@ void event_target_stream_execute(KfActor *actor)
         continue;
 
 execute:
-        if (!restore_state && candidate->animation_id != 0xff) {
+        if (!restore_state && candidate->animation_id != KF_ANIMATION_CLIP_NONE) {
             s32 phase = actor->animation_phase;
             saved_state = actor->animation_id;
             if (phase != 0) {
@@ -336,7 +337,7 @@ after_script:
         event_state.control.fields.counter_53_decreased = 1;
     }
     event_state.control.fields.stream_actor_definition_id = actor->definition_id;
-    if (restore_state && candidate->word_10.bytes.completion_animation_id != 0xff) {
+    if (restore_state && candidate->word_10.bytes.completion_animation_id != KF_ANIMATION_CLIP_NONE) {
         actor_animation_seek_phase(actor, candidate->word_10.bytes.completion_animation_id, 0,
                       KF_ACTOR_ANIMATION_PHASE_MAX,
                       candidate->word_0e.value);

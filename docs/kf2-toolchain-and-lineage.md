@@ -236,6 +236,15 @@ Lane B5 traced these further links:
   the function's pseudo count modulo 31, so an unrelated edit can switch
   sharing on or off elsewhere.
 
+Lane B6 traced these further links:
+
+- **Macro contours and the log2 term.** Local-alloc priority uses
+  floor_log2(refs), so one more loop level does not scale every quantity
+  alike. Inside a loop, a `do { } while (0)` macro raises a three-use
+  temporary from 6 to 9 weighted refs (priority 3.0 to 6.75) but a long
+  tied quantity only from 16 to 24 (3.6 to 5.3). The temporary then takes
+  `v0` first (`menu_draw_string`'s glyph-cell macro).
+
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 
 Psy-Q links game objects before the libraries, so everything from the load

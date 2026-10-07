@@ -592,36 +592,33 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
 }
 
 enum {
-    KF_PLAYER_STATUS_CAP = 64,
-    KF_PLAYER_STATUS_FIRST = 1,
-    KF_PLAYER_STATUS_SECOND = 2,
-    KF_PLAYER_STATUS_THIRD = 4
+    KF_PLAYER_STATUS_CAP = 64
 };
 
 ADDRESS(0x800247e4, 0xc4)
-void player_cap_status_components(u32 mask)
+void player_cap_status_components(KfPlayerStatusMask mask)
 {
-    if (mask & KF_PLAYER_STATUS_FIRST) {
+    if ((mask & KF_PLAYER_STATUS_FIRST) != KF_PLAYER_STATUS_NONE) {
         if (player_state.curse_strength >= KF_PLAYER_STATUS_CAP + 1) {
             player_state.curse_strength = KF_PLAYER_STATUS_CAP;
         }
         player_state.curse_phase_limit = 0;
     }
-    if (mask & KF_PLAYER_STATUS_SECOND) {
+    if ((mask & KF_PLAYER_STATUS_SECOND) != KF_PLAYER_STATUS_NONE) {
         if (player_state.darkness_phase >= KF_PLAYER_STATUS_CAP + 1) {
             player_state.darkness_phase = KF_PLAYER_STATUS_CAP;
         }
         player_state.darkness_phase_limit = 0;
     }
-    if (mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_SECOND)) {
+    if ((mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_SECOND)) != KF_PLAYER_STATUS_NONE) {
         player_state.poison_timer = 0;
     }
-    if (mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_THIRD)) {
+    if ((mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_THIRD)) != KF_PLAYER_STATUS_NONE) {
         if (player_state.slow_timer >= KF_PLAYER_STATUS_CAP + 1) {
             player_state.slow_timer = KF_PLAYER_STATUS_CAP;
         }
     }
-    if (mask & KF_PLAYER_STATUS_THIRD) {
+    if ((mask & KF_PLAYER_STATUS_THIRD) != KF_PLAYER_STATUS_NONE) {
         player_state.paralysis_timer = 0;
     }
 }

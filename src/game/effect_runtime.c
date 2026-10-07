@@ -2957,7 +2957,8 @@ void effect_update_dispatch(void)
                 player_state.vitals.current_hp =
                     player_state.vitals.maximum_hp;
             }
-            player_cap_status_components(7);
+            player_cap_status_components(KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_SECOND |
+                                         KF_PLAYER_STATUS_THIRD);
         }
         spawn_direction.vz = 0;
         spawn_direction.vx = 0;

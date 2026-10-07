@@ -45,6 +45,17 @@ enum {
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
+/* player_cap_status_components groups: FIRST caps curse and slow, SECOND
+ * caps darkness (either also clears poison), THIRD caps slow and clears
+ * paralysis. Member names stay WIP. */
+KF_ENUM_BEGIN(KfPlayerStatusMask, u32)
+    KF_PLAYER_STATUS_NONE = 0,
+    KF_PLAYER_STATUS_FIRST = 1,
+    KF_PLAYER_STATUS_SECOND = 2,
+    KF_PLAYER_STATUS_THIRD = 4
+KF_ENUM_END(KfPlayerStatusMask)
+KF_ENUM_FLAGS(KfPlayerStatusMask, u32)
+
 /* player_update_vertical_motion state (KF1 KfPlayerVerticalState). */
 KF_ENUM_BEGIN(KfPlayerVerticalState, u8)
     KF_PLAYER_VERTICAL_GROUNDED = 0,
@@ -594,7 +605,7 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 damage8, s32 scale_and_flags, u16 record_id);
 void player_adjust_hp_unclamped(s32 delta);
-void player_cap_status_components(u32 mask);
+void player_cap_status_components(KfPlayerStatusMask mask);
 void player_death_begin(const SVECTOR *rotation);
 void player_adjust_hp(s32 delta);
 void player_adjust_mp(s32 delta);

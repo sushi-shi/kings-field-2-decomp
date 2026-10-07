@@ -29,6 +29,15 @@ enum {
     KF_MENU_SPRITE_PANEL_TOP_LEFT = 11
 };
 
+/* Menu sound cues; each nonzero cue is also the sound ID it keys on. */
+enum {
+    KF_MENU_SOUND_NONE = 0,
+    KF_MENU_SOUND_ITEM_USED = 13,
+    KF_MENU_SOUND_CURSOR = 16,
+    KF_MENU_SOUND_CONFIRM = 17,
+    KF_MENU_SOUND_CANCEL = 18
+};
+
 enum {
     KF_MENU_CHOICE_ACCEPT = 0,
     KF_MENU_CONFIRM_REQUESTED = 1
@@ -138,7 +147,7 @@ typedef struct KfItemMenuList {
     KfMenuGlyphRow *rows;
     u8 unknown_28[4];
     u8 *values;
-    u32 *codes;
+    s32 *prices;
 } KfItemMenuList;
 
 /* Card catalogue rows carry ten glyph codes; the renderer advances 20 bytes. */
@@ -180,7 +189,7 @@ typedef char kf_menu_list_prefix_size[sizeof(KfMenuList) == 36 ? 1 : -1];
 typedef char kf_item_menu_list_size[sizeof(KfItemMenuList) == 52 ? 1 : -1];
 typedef char kf_item_menu_list_rows_offset[(u32)&((KfItemMenuList *)0)->rows == 0x24 ? 1 : -1];
 typedef char kf_item_menu_list_values_offset[(u32)&((KfItemMenuList *)0)->values == 0x2c ? 1 : -1];
-typedef char kf_item_menu_list_codes_offset[(u32)&((KfItemMenuList *)0)->codes == 0x30 ? 1 : -1];
+typedef char kf_item_menu_list_prices_offset[(u32)&((KfItemMenuList *)0)->prices == 0x30 ? 1 : -1];
 typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
 typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
 typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
@@ -254,9 +263,9 @@ void menu_draw_player_status(void);
 void menu_draw_location_number(void);
 s32 menu_collect_available_magic_rows(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
-void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
+void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, s32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group);
-void menu_fill_item_prices(u32 *prices, const u8 *indices,
+void menu_fill_item_prices(s32 *prices, const u8 *indices,
     s32 first, s32 last, s32 group);
 s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);

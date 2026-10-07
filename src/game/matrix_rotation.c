@@ -436,14 +436,14 @@ KfBool directed_intervals_overlap(s32 first, s32 first_width, s32 second, s32 se
 {
     if (second < first) {
         if (second < first - first_width) {
-            return 0;
+            return KF_FALSE;
         }
     } else {
         if (first < second - second_width) {
-            return 0;
+            return KF_FALSE;
         }
     }
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x800155a4, 0xf4)

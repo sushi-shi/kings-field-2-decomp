@@ -10,7 +10,7 @@ void collision_cache_load_hit_bounds(void);
 s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
 s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode);
-void interpolate_collision_filter_rows(u8 first, u8 second, u8 third, s32 angle, u16 value);
+void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount);
 
 /* collision_query_world uses the same bit positions to request and report
  * actor and map-object checks. Shape records only report bits below 0x10. */
@@ -95,6 +95,9 @@ typedef char kf_shape_wall_record_size[sizeof(KfShapeWallRecord) == 8 ? 1 : -1];
 typedef char kf_shape_slope_record_size[sizeof(KfShapeSlopeRecord) == 12 ? 1 : -1];
 typedef char kf_shape_ledge_record_size[sizeof(KfShapeLedgeRecord) == 10 ? 1 : -1];
 
+/* A cast view of bss_801c7540.collision_cache. The field spelling compiles
+ * to different register allocation in collision_evaluate_shape_records and
+ * collision_sample_map_layer_height. */
 #define KF_COLLISION_CACHE \
     (*(KfCollisionCache *)((u8 *)&bss_801c7540 + 0x11800))
 #define KF_COLLISION_CACHE_CELL KF_COLLISION_CACHE.cell

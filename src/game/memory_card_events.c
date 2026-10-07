@@ -92,11 +92,7 @@ enum {
 };
 
 enum {
-    CARD_READ_IO_FAILURE = 1,
-    CARD_READ_CHECKSUM_FAILURE = 2,
-    CARD_READ_MAX_RETRIES = 2,
-    CARD_WRITE_IO_FAILURE = 1,
-    CARD_WRITE_NO_SPACE = 2
+    CARD_READ_MAX_RETRIES = 2
 };
 
 ADDRESS(0x80022438, 0x30)
@@ -277,7 +273,7 @@ retry:
     handle = open(path, FREAD);
     if (handle == -1 || read(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES)
             != KF_CARD_BLOCK_BYTES) {
-        status = CARD_READ_IO_FAILURE;
+        status = KF_CARD_READ_IO_FAILURE;
     } else {
         close(handle);
         buffer = memory_card_buffer;
@@ -287,7 +283,7 @@ retry:
             memory_card_loaded_slot = slot;
             return 0;
         }
-        status = CARD_READ_CHECKSUM_FAILURE;
+        status = KF_CARD_READ_CHECKSUM_FAILURE;
     }
     if (attempt < CARD_READ_MAX_RETRIES) {
         attempt++;
@@ -329,7 +325,7 @@ s32 memory_card_write_slot(s32 slot)
 
     if (!present) {
         if (card_full == KF_TRUE)
-            return CARD_WRITE_NO_SPACE;
+            return KF_CARD_WRITE_NO_SPACE;
         for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
             if (occupied[index] == KF_FALSE) {
                 slot = index + 1;
@@ -369,14 +365,14 @@ s32 memory_card_write_slot(s32 slot)
     if (!present) {
         handle = open(path, FCREAT | (KF_CARD_FILE_BLOCKS << 16));
         if (handle == -1)
-            return CARD_WRITE_IO_FAILURE;
+            return KF_CARD_WRITE_IO_FAILURE;
         close(handle);
     }
     handle = open(path, FWRITE);
     if (handle == -1)
-        return CARD_WRITE_IO_FAILURE;
+        return KF_CARD_WRITE_IO_FAILURE;
     if (write(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES)
-        return CARD_WRITE_IO_FAILURE;
+        return KF_CARD_WRITE_IO_FAILURE;
     close(handle);
     memory_card_loaded_slot = slot;
     return 0;

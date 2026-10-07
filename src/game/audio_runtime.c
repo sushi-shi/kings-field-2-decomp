@@ -173,7 +173,7 @@ KfAudioPlaybackResult audio_play_spatial(
                   attenuation_distance;
     level = (attenuation * volume) >> 7;
     collision_sample_map_cell_layer(position->vx, position->vy, position->vz);
-    if ((u16)KF_COLLISION_CACHE_LAYER != audio_state.listener_layer) {
+    if (KF_COLLISION_CACHE_LAYER != audio_state.listener_layer) {
         level = (attenuation * volume) >> 8;
     }
     if (level < AUDIO_SPATIAL_MIN_LEVEL) {

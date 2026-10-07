@@ -517,7 +517,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     }
 
     duration = (KF_PLAYER_DAMAGE_DURATION_BASE - (intensity >> 1)) >> 2;
-    if ((s16)duration < KF_PLAYER_DAMAGE_DURATION_MIN + 1) {
+    if (duration < KF_PLAYER_DAMAGE_DURATION_MIN + 1) {
         duration = KF_PLAYER_DAMAGE_DURATION_MIN;
     }
     if (remaining == 0) {
@@ -549,7 +549,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
             angles.z = -intensity;
         }
         angles.y = 0;
-        player_begin_rotation_only_damage_reaction((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
+        player_begin_rotation_only_damage_reaction(&direction, (const SVECTOR *)&angles, duration);
         return;
     }
 
@@ -591,7 +591,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
         break;
     }
     angles.y = 0;
-    player_begin_moving_damage_reaction((const SVECTOR *)&direction, (const SVECTOR *)&angles, (s16)duration);
+    player_begin_moving_damage_reaction(&direction, (const SVECTOR *)&angles, duration);
 }
 
 enum {
@@ -840,7 +840,7 @@ void player_reset_status(void)
     player_state.curse_phase_limit = 0;
     player_state.curse_strength = 0;
     player_state.poison_timer = 0;
-    player_state.fatal_fall_latch = 0;
+    player_state.fatal_fall_latch = KF_FALSE;
     player_state.vitals.current_hp = player_state.vitals.maximum_hp;
     player_state.vitals.current_mp = player_state.vitals.maximum_mp;
     player_reset_view();
@@ -910,7 +910,7 @@ void game_initialize_session(void)
     player_state.compass_enabled = 1;
     player_state.item_preview_enabled = 1;
     player_state.walking_bob_enabled = 1;
-    player_state.force_actor_lifecycle_refresh = 0;
+    player_state.force_actor_lifecycle_refresh = KF_FALSE;
 }
 
 ADDRESS(0x800251f0, 0x44)
@@ -921,7 +921,7 @@ void player_clear_motion(void)
     player_state.movement_speed.unsigned_value = 0;
     player_state.forward_velocity = 0;
     player_state.strafe_velocity = 0;
-    player_state.flags_140.low &= KF_PLAYER_MOTION_FLAGS_KEPT;
+    player_state.pad_buttons.current &= KF_PLAYER_PAD_KEPT_ON_STOP;
 }
 
 ADDRESS(0x80025234, 0xb0)
@@ -939,7 +939,7 @@ void player_sync_position_to_map(void)
                       player_state.camera_position.vz,
                       KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
     player_update_collision_bounds();
-    player_state.force_actor_lifecycle_refresh = 1;
+    player_state.force_actor_lifecycle_refresh = KF_TRUE;
     player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
     player_state.vertical_velocity = 0;
     player_state.death_state = KF_PLAYER_REACTION_NORMAL;
@@ -1071,7 +1071,6 @@ void player_set_equipment_slot(u8 item_id, u8 slot)
 
 enum {
     PLAYER_WEAPON_CHARGE_DELAY_UPDATES = 10,
-    PLAYER_WEAPON_ARCHIVE_SLOT = 5,
     PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY = 49
 };
 
@@ -1084,7 +1083,7 @@ void player_equip_weapon(u8 weapon_id)
     player_state.equipped_weapon_id = weapon_id;
     if (weapon_id != KF_EQUIPMENT_NONE) {
         player_state.equipped_weapon_record = &player_weapon_records[weapon_id];
-        cd_archive_read(PLAYER_WEAPON_ARCHIVE_SLOT,
+        cd_archive_read(KF_RESOURCE_ARCHIVE_FDAT,
                         weapon_id + PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY,
                         (u_long *)player_state.weapon_asset_buffer);
         asset_registry_set(KF_PLAYER_WEAPON_ASSET_INDEX,
@@ -1093,7 +1092,7 @@ void player_equip_weapon(u8 weapon_id)
     player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
     player_state.weapon_animation_cache = NULL;
     player_state.weapon_magic_shots_remaining = 0;
-    player_state.weapon_guard_active = 0;
+    player_state.weapon_guard_active = KF_FALSE;
     player_recalculate_combat_stats();
 }
 
@@ -1118,10 +1117,10 @@ void player_begin_weapon_attack(s32 mode)
     player_state.attack_charge_committed = player_state.attack_charge_current;
     if (player_state.attack_charge_current == KF_PLAYER_CHARGE_FULL
         && player_state.magic_charge == KF_PLAYER_CHARGE_FULL) {
-        player_state.weapon_attack_fully_charged = 1;
+        player_state.weapon_attack_fully_charged = KF_TRUE;
         player_state.weapon_magic_shots_configured = player_state.equipped_weapon_record->magic_shots;
     } else {
-        player_state.weapon_attack_fully_charged = 0;
+        player_state.weapon_attack_fully_charged = KF_FALSE;
     }
     player_state.attack_charge_current = 0;
     player_state.unknown_9c[0] = 0;
@@ -1148,8 +1147,8 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
     }
 
     actor = actor_find_best_in_cone(&player_state.camera_position,
-                          (s16)player_state.camera_rotation.angles[1],
-                          (s16)player_state.camera_rotation.angles[0], 0x55f0,
+                          player_state.camera_rotation.angles[1],
+                          player_state.camera_rotation.angles[0], 0x55f0,
                           0x200, 0x200, distance, 0);
     actor_state.actor_93c8 = actor;
     if (actor != NULL) {
@@ -1648,7 +1647,7 @@ special_mode_zero: {
                               world_position.vz - last_world.vz,
                               (struct KfEulerAngles *)&effect->rotation);
             }
-            if ((player_state.flags_140.low & 0x10) != 0) {
+            if ((player_state.pad_buttons.current & PADRup) != 0) {
                 return;
             }
             if (effect != NULL) {
@@ -1703,7 +1702,7 @@ regular_weapon:
         && weapon->initial_effect_id != WEAPON_MAGIC_EFFECT_NONE
         && player_state.weapon_attack_fully_charged != 0
         && player_meets_weapon_magic_power_requirement() != 0
-        && (player_state.flags_140.low & 0x80) != 0) {
+        && (player_state.pad_buttons.current & PADRleft) != 0) {
         if (player_state.weapon_attack_phase >= weapon->magic_window_start
             && player_state.weapon_attack_phase <= weapon->magic_window_end) {
             if (player_state.weapon_magic_shots_configured != 0) {
@@ -1731,12 +1730,12 @@ regular_weapon:
     if (player_state.weapon_attack_phase >= player_state.weapon_attack_window
         && player_state.weapon_attack_phase
              < player_state.weapon_attack_window + phase_step) {
-        player_state.weapon_guard_active = 0;
+        player_state.weapon_guard_active = KF_FALSE;
         if (player_state.weapon_attack_mode == 1) {
             if (player_state.equipped_weapon_id == 13
-                && (player_state.flags_140.low & 0x80) != 0) {
+                && (player_state.pad_buttons.current & PADRleft) != 0) {
                 player_state.weapon_attack_phase -= phase_step;
-                player_state.weapon_guard_active = 1;
+                player_state.weapon_guard_active = KF_TRUE;
                 return;
             }
             if (weapon->release_effect_id != WEAPON_MAGIC_EFFECT_NONE) {
@@ -1819,7 +1818,7 @@ regular_weapon:
     return;
 
 regular_idle:
-    if ((player_state.flags_140.low & 0x10) == 0) {
+    if ((player_state.pad_buttons.current & PADRup) == 0) {
         if (player_state.weapon_charge_delay == 0) {
             s32 gain = player_charge_gain_for_rank(player_state.physical_power,
                                       weapon->charge_rank) * 2;
@@ -2092,7 +2091,7 @@ retry: {
                 diagonal_retry = 1;
             } while (0);
             diagonal_kind =
-                ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
+                KF_COLLISION_CACHE_SHAPE->quarter_turns & 3;
             if (diagonal_kind == 0 || diagonal_kind == 2) {
                 dx = (initial_dx + initial_dz) >> 1;
                 dz = dx;
@@ -2128,7 +2127,7 @@ void player_check_fall_death(void)
         && (KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy)
                > COLLISION_DEPTH_DEATH_LIMIT) {
         player_death_begin(NULL);
-        player_state.fatal_fall_latch = 1;
+        player_state.fatal_fall_latch = KF_TRUE;
     }
 }
 
@@ -2347,7 +2346,7 @@ s32 player_move_reaction_with_collision(void)
             && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy
                    > COLLISION_DEPTH_DEATH_LIMIT) {
             player_death_begin(NULL);
-            player_state.fatal_fall_latch = 1;
+            player_state.fatal_fall_latch = KF_TRUE;
         }
         player_state.camera_position.vx = next.vx;
         player_state.camera_position.vy = next.vy;
@@ -2412,12 +2411,12 @@ enum {
 ADDRESS(0x80028224, 0x2f8)
 void player_update_camera_rotation(void)
 {
-    if (player_state.flags_140.low & PADLleft) {
+    if (player_state.pad_buttons.current & PADLleft) {
         player_state.yaw_step += player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
         if (player_state.yaw_step > player_state.turn_step_limit) {
             player_state.yaw_step = player_state.turn_step_limit;
         }
-    } else if (player_state.flags_140.low & PADLright) {
+    } else if (player_state.pad_buttons.current & PADLright) {
         player_state.yaw_step -= player_state.turn_step_limit >> PLAYER_YAW_ACCEL_SHIFT;
         if (player_state.yaw_step < -player_state.turn_step_limit) {
             player_state.yaw_step = -player_state.turn_step_limit;
@@ -2438,12 +2437,12 @@ void player_update_camera_rotation(void)
         (player_state.camera_rotation_target.angles[1] + player_state.yaw_step)
         & KF_ANGLE_WRAP_MASK;
 
-    if (player_state.flags_140.low & PADR2) {
+    if (player_state.pad_buttons.current & PADR2) {
         player_state.pitch_step += PLAYER_PITCH_STEP;
         if (player_state.pitch_step > PLAYER_PITCH_STEP_LIMIT) {
             player_state.pitch_step = PLAYER_PITCH_STEP_LIMIT;
         }
-    } else if (player_state.flags_140.low & PADL2) {
+    } else if (player_state.pad_buttons.current & PADL2) {
         player_state.pitch_step -= PLAYER_PITCH_STEP;
         if (player_state.pitch_step < -PLAYER_PITCH_STEP_LIMIT) {
             player_state.pitch_step = -PLAYER_PITCH_STEP_LIMIT;
@@ -2488,14 +2487,14 @@ void player_update_horizontal_motion(void)
     s32 strafe_square;
     s16 magnitude;
 
-    if (player_state.flags_140.low & PADLup) {
+    if (player_state.pad_buttons.current & PADLup) {
         forward = player_state.forward_velocity + (player_state.movement_step_limit >> 2);
         if (forward > player_state.movement_step_limit) {
             player_state.forward_velocity = player_state.movement_step_limit;
         } else {
             player_state.forward_velocity = forward;
         }
-    } else if (player_state.flags_140.low & PADLdown) {
+    } else if (player_state.pad_buttons.current & PADLdown) {
         forward = player_state.forward_velocity - (player_state.movement_step_limit >> 2);
         if (forward >= -player_state.movement_step_limit) {
             player_state.forward_velocity = forward;
@@ -2514,14 +2513,14 @@ void player_update_horizontal_motion(void)
         }
     }
 
-    if (player_state.flags_140.low & PADR1) {
+    if (player_state.pad_buttons.current & PADR1) {
         strafe = player_state.strafe_velocity + (player_state.movement_step_limit >> 2);
         if (strafe > player_state.movement_step_limit) {
             player_state.strafe_velocity = player_state.movement_step_limit;
         } else {
             player_state.strafe_velocity = strafe;
         }
-    } else if (player_state.flags_140.low & PADL1) {
+    } else if (player_state.pad_buttons.current & PADL1) {
         strafe = player_state.strafe_velocity - (player_state.movement_step_limit >> 2);
         if (strafe >= -player_state.movement_step_limit) {
             player_state.strafe_velocity = strafe;
@@ -2561,21 +2560,21 @@ void player_update_horizontal_motion(void)
 
     player_state.movement_speed.unsigned_value = SquareRoot0(strafe * strafe + forward * forward);
     if (forward >= 0) {
-        player_move_horizontal((s16)player_state.camera_rotation_target.angles[1], forward);
+        player_move_horizontal(player_state.camera_rotation_target.angles[1], forward);
     } else {
         player_move_horizontal(
-            ((s16)player_state.camera_rotation_target.angles[1] + KF_ANGLE_HALF_TURN)
+            (player_state.camera_rotation_target.angles[1] + KF_ANGLE_HALF_TURN)
                 & KF_ANGLE_WRAP_MASK,
             -forward);
     }
     if (strafe > 0) {
         player_move_horizontal(
-            ((s16)player_state.camera_rotation_target.angles[1] - KF_ANGLE_QUARTER_TURN)
+            (player_state.camera_rotation_target.angles[1] - KF_ANGLE_QUARTER_TURN)
                 & KF_ANGLE_WRAP_MASK,
             strafe);
     } else if (strafe < 0) {
         player_move_horizontal(
-            ((s16)player_state.camera_rotation_target.angles[1] + KF_ANGLE_QUARTER_TURN)
+            (player_state.camera_rotation_target.angles[1] + KF_ANGLE_QUARTER_TURN)
                 & KF_ANGLE_WRAP_MASK,
             -strafe);
     } else {
@@ -2604,12 +2603,12 @@ void player_update_actions_and_charge(void)
     u8 timer;
 
     if (player_state.weapon_magic_shots_configured == 0
-        && (player_state.flags_140.word & 0x00800080) == 0x80
+        && KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADRleft)
         && player_state.weapon_magic_shots_remaining == 0) {
         player_select_magic_action(player_state.primary_magic_shortcut_id);
     }
 
-    if ((player_state.flags_140.word & 0x08000800) == 0x800) {
+    if (KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADstart)) {
         if (player_state.secondary_magic_shortcut_id != 0xff) {
             player_select_magic_action(player_state.secondary_magic_shortcut_id);
         }
@@ -2643,7 +2642,7 @@ void player_update_actions_and_charge(void)
         }
     }
 
-    if ((player_state.flags_140.word & 0x00200020) == 0x00200020
+    if (KF_PLAYER_PAD_HELD(player_state.pad_buttons, PADRright)
         && player_state.equipped_shield_id != 50) {
         if (player_state.movement_speed_adjustment_decay_latch != 0) {
             player_state.movement_speed_adjustment_decay_latch--;
@@ -2690,14 +2689,14 @@ void player_update_actions_and_charge(void)
         player_state.magic_attack_mask_cursor = player_magic_id_sequence.attack_masks;
     }
 
-    if ((player_state.flags_140.low & 0xb0) != 0
-        && (player_state.flags_140.halves.high & 0xb0) == 0
+    if ((player_state.pad_buttons.current & (PADRup | PADRright | PADRleft)) != 0
+        && (player_state.pad_buttons.halves.previous & (PADRup | PADRright | PADRleft)) == 0
         && player_state.equipped_weapon_record->alternate_attack_phase_step != 0) {
         if (player_meets_weapon_magic_power_requirement() == 0) {
             goto cancel_weapon_attack;
         }
         attack_mask = player_state.magic_attack_mask_cursor;
-        if ((player_state.flags_140.low & attack_mask[0]) == 0) {
+        if ((player_state.pad_buttons.current & attack_mask[0]) == 0) {
             goto cancel_weapon_attack;
         }
         if (attack_mask == player_magic_id_sequence.attack_masks
@@ -2719,7 +2718,7 @@ cancel_weapon_attack:
 after_weapon_attack:
     if (player_state.weapon_charge_delay == 0
         && player_state.weapon_magic_shots_remaining == 0
-        && (player_state.flags_140.word & 0x00100010) == 0x10) {
+        && KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADRup)) {
         player_begin_weapon_attack(0);
     }
 }
@@ -2728,11 +2727,11 @@ ADDRESS(0x80028ec0, 0xe8)
 void player_update_reaction_rotation_offsets(void)
 {
     player_state.reaction.damage.motion.vx = angle_velocity_step(
-        0, (s16)player_state.reaction_rotation_offset[0], player_state.reaction.damage.motion.vx, 8, 4);
+        0, player_state.reaction_rotation_offset[0], player_state.reaction.damage.motion.vx, 8, 4);
     player_state.reaction.damage.motion.vy = angle_velocity_step(
-        0, (s16)player_state.reaction_rotation_offset[1], player_state.reaction.damage.motion.vy, 8, 4);
+        0, player_state.reaction_rotation_offset[1], player_state.reaction.damage.motion.vy, 8, 4);
     player_state.reaction.damage.motion.vz = angle_velocity_step(
-        0, (s16)player_state.reaction_rotation_offset[2], player_state.reaction.damage.motion.vz, 8, 4);
+        0, player_state.reaction_rotation_offset[2], player_state.reaction.damage.motion.vz, 8, 4);
 
     player_state.reaction_rotation_offset[0] += player_state.reaction.damage.motion.vx;
     player_state.reaction_rotation_offset[1] += player_state.reaction.damage.motion.vy;
@@ -2758,7 +2757,7 @@ void player_handle_interaction_and_menu(void)
 {
     s32 value;
 
-    if ((player_state.flags_140.word & 0x00200020) == 0x20) {
+    if (KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADRright)) {
         if (player_state.death_state == KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
             player_apply_map_object_reaction(
                 &map_object_state.objects[player_state.reaction.view.map_object_index]);
@@ -2767,7 +2766,7 @@ void player_handle_interaction_and_menu(void)
                                              &player_state.camera_rotation_target);
         }
     }
-    if ((player_state.flags_140.word & 0x00400040) != 0x40
+    if (!KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADRdown)
         || player_state.weapon_attack_phase != -1) {
         return;
     }
@@ -2919,7 +2918,7 @@ void player_begin_actor_overlap_bob(void)
 }
 
 ADDRESS(0x80029624, 0xc4)
-s16 status_phase_step_scaled(u16 *phase, u16 *secondary, s32 duration, s32 scale)
+s16 status_phase_step_scaled(s16 *phase, u16 *secondary, s32 duration, s32 scale)
 {
     s16 current = *phase;
     s16 other = 0;
@@ -2944,7 +2943,7 @@ s16 status_phase_step_scaled(u16 *phase, u16 *secondary, s32 duration, s32 scale
         if (secondary != NULL) {
             *secondary = other;
         }
-        return (s16)result;
+        return result;
     }
     return -1;
 }
@@ -3010,12 +3009,12 @@ void player_update_frame(void)
     actor_state.actor_overlap_exclusion_flags = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, -1);
-    value = status_phase_step_scaled((u16 *)&player_state.darkness_phase,
+    value = status_phase_step_scaled(&player_state.darkness_phase,
                            &player_state.darkness_phase_limit, 64, 0xc00);
     if (value != -1) {
         interpolate_collision_filter_rows(10, 10, 10, 0xef9, value);
     }
-    value = status_phase_step_scaled((u16 *)&player_state.magic_tint_phase,
+    value = status_phase_step_scaled(&player_state.magic_tint_phase,
                            (u16 *)&player_state.magic_tint_phase_limit, 64, 0xe10);
     if (value != -1) {
         interpolate_collision_filter_rows(220, 220, 160, 18000, value);
@@ -3039,17 +3038,17 @@ void player_update_frame(void)
         }
     }
 
-    player_state.flags_140.low = PadRead(1);
-    if (player_state.flags_140.low & 0x800) {
+    player_state.pad_buttons.current = PadRead(1);
+    if (player_state.pad_buttons.current & PADstart) {
         cd_report_error(3);
     }
-    if (player_state.flags_140.low & 0x100) {
-        player_state.flags_140.low = 0x40;
+    if (player_state.pad_buttons.current & PADselect) {
+        player_state.pad_buttons.current = PADRdown;
     }
 
     player_state.movement_step_limit = 200;
     player_state.turn_step_limit = 28;
-    if ((player_state.flags_140.low & 0x5000) == 0) {
+    if ((player_state.pad_buttons.current & (PADLup | PADLdown)) == 0) {
         player_state.turn_step_limit = 35;
     }
     if (player_state.slow_timer != 0) {
@@ -3279,7 +3278,7 @@ update_reaction_pose:
     }
 
 after_reaction:
-    player_state.flags_140.halves.high = player_state.flags_140.low;
+    player_state.pad_buttons.halves.previous = player_state.pad_buttons.current;
     if (player_state.poison_timer != 0) {
         if (player_state.poison_timer % 30 == 0) {
             player_state.damage_red_overlay_scale = 2400;
@@ -3325,7 +3324,7 @@ after_reaction:
             player_state.map_marker_visual_effect_timer--;
         }
     }
-    value = status_phase_step_scaled((u16 *)&player_state.curse_strength,
+    value = status_phase_step_scaled(&player_state.curse_strength,
                            &player_state.curse_phase_limit, 64, 0xc00);
     if (value != -1) {
         if (player_state.curse_strength == 0) {

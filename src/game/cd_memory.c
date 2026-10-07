@@ -220,13 +220,13 @@ void memory_arena_coalesce_free(KfMemoryBlock *block)
     }
     do {
         if (block->kind == KF_MEMORY_BLOCK_FREE) {
-            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+            block = NEXT_BLOCK(block);
             if (block->kind != KF_MEMORY_BLOCK_FREE) {
                 return;
             }
             first->size += sizeof(KfMemoryBlock) + block->size;
         } else {
-            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+            block = NEXT_BLOCK(block);
         }
     } while (block->kind != KF_MEMORY_BLOCK_END);
 }
@@ -288,7 +288,7 @@ void memory_arena_wait_pending(KfMemoryBlock *arena)
         while (block->kind == KF_MEMORY_BLOCK_PENDING) {
             cd_request_wait_idle();
         }
-        block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+        block = NEXT_BLOCK(block);
     }
 }
 
@@ -420,7 +420,7 @@ u16 memory_block_tag(u8 *data)
 ADDRESS(0x8001771c, 0x38)
 u8 *memory_malloc_checked(u32 size)
 {
-    u8 *block = malloc(size);
+    u8 *block = (u8 *)malloc(size);
 
     if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
         return NULL;

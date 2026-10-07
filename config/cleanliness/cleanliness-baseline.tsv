@@ -9,4 +9,4 @@ GAME extern decls	0
 source-local extern decls	0
 void* views	0
 .c-local aggregates	0
-unresolved func_ identities	497
+unresolved func_ identities	2

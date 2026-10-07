@@ -164,13 +164,13 @@ KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reco
 KfNotificationQuad	0x12	supported	game/notification_quad.h;notification_draw_quad;notification_quads	seven 18-byte textured notification descriptors
 KfOrderingTable	0x8000	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPlayerDamageReaction	0x10	supported	asm;func_800293d4;func_80029464	rotation and motion view of the player reaction overlay
-KfPlayerFlags140	0x04	supported	asm;func_80029014;player_clear_motion	word and low-halfword views of player motion flags
-KfPlayerFlags140Halves	0x04	supported	asm;func_80028998	separate low and high flag halfwords
 KfPlayerLevelGrowth	0x0c	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPlayerMagicIdSequence	0x14	supported	asm;func_80026498;func_80028998;retail bytes	12 effect IDs followed by four u16 attack masks
 KfPlayerMagicSpawnFields	0x8	supported	game/player.h	One magic spawn offset; its SVECTOR pad slot carries the effect kind.
 KfPlayerMagicSpawnRecord	0x08	supported	asm;player_dispatch_magic_effect;retail bytes	Eight-byte offset copied as SVECTOR with signed effect kind at +6; original typedef spelling unresolved
 KfPlayerMovementSpeed	0x02	supported	asm;player_update_vertical_motion	one halfword read with both lh and lhu in vertical motion
+KfPlayerPadButtonHalves	0x4	supported	asm;player_update_frame PadRead(1) store and previous-frame copy;player_update_actions_and_charge	this frame's pad buttons followed by the previous frame's copy
+KfPlayerPadButtons	0x4	supported	asm;player_update_frame;player_handle_interaction_and_menu;player_clear_motion	pad button word read whole for press/hold edges or by halfword
 KfPlayerPositionReaction	0x14	supported	asm;func_800291ec	mode and three signed position words in the player reaction overlay
 KfPlayerReactionOverlay	0x14	supported	asm;func_800291ec;func_800293d4;func_80029464	three overlapping player reaction views
 KfPlayerState	0x160	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header

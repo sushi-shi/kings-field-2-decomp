@@ -507,7 +507,7 @@ KfItemMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_choose_inven
 KfItemMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	menu_choose_inventory_item;menu_item_selection_controller	pointer to 24-byte glyph rows
 KfItemMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;menu_choose_inventory_item	layout bytes with unresolved meaning
 KfItemMenuList	0x2c	0x04	values	u8 *	supported	menu_choose_inventory_item;menu_item_selection_controller	pointer to parallel byte values
-KfItemMenuList	0x30	0x04	codes	u32 *	supported	asm;menu_item_buy_controller;menu_item_sell_controller	pointer to 120 indexed item-code words
+KfItemMenuList	0x30	0x04	prices	s32 *	supported	asm;menu_item_buy_controller;menu_item_sell_controller;menu_render_list number_values	pointer to per-row item prices rendered as signed numbers
 KfMagicMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_choose_magic_action;menu_choose_primary_magic_shortcut	shared menu list prefix
 KfMagicMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	menu_choose_magic_action;menu_choose_primary_magic_shortcut	pointer to 24-byte glyph rows
 KfMagicMenuList	0x28	0x08	unknown_28	u8[8]	opaque	game/menu.h;menu_choose_magic_action;menu_choose_primary_magic_shortcut	layout bytes with unresolved meaning
@@ -886,11 +886,6 @@ KfNotificationQuad	0x10	0x02	tpage	u16	supported	game/notification_quad.h;notifi
 KfOrderingTable	0x00	0x8000	entries	u32[8192]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPlayerDamageReaction	0x00	0x08	rotation	SVECTOR	supported	asm;player_begin_view_reaction;player_begin_moving_damage_reaction	damage reaction rotation
 KfPlayerDamageReaction	0x08	0x08	motion	SVECTOR	supported	asm;player_begin_view_reaction;player_begin_moving_damage_reaction	damage reaction motion
-KfPlayerFlags140	0x00	0x04	word	u32	supported	asm;player_handle_interaction_and_menu	full flag word masked against 0x00200020 and 0x00400040
-KfPlayerFlags140	0x00	0x02	low	u16	supported	asm;player_clear_motion	low motion bits masked while clearing velocity
-KfPlayerFlags140	0x00	0x04	halves	KfPlayerFlags140Halves	supported	asm;player_update_actions_and_charge	two-halfword view of motion flags
-KfPlayerFlags140Halves	0x00	0x02	low	u16	supported	asm;player_update_actions_and_charge	low flag halfword
-KfPlayerFlags140Halves	0x02	0x02	high	u16	supported	asm;player_update_actions_and_charge	retail reads high flag halfword separately
 KfPlayerLevelGrowth	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x02	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerLevelGrowth	0x04	0x02	physical_power_step	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
@@ -906,6 +901,11 @@ KfPlayerMagicSpawnRecord	0x00	0x08	offset	SVECTOR	supported	GAME 0x8002601c-0x80
 KfPlayerMagicSpawnRecord	0x0	0x8	fields	KfPlayerMagicSpawnFields	candidate	game/player.h	KfPlayerMagicSpawnRecord member from reconstructed header
 KfPlayerMovementSpeed	0x00	0x02	unsigned_value	u16	supported	asm;player_update_vertical_motion	view bob phase reads lhu
 KfPlayerMovementSpeed	0x00	0x02	signed_value	s16	supported	asm;player_update_vertical_motion	falling threshold reads lh
+KfPlayerPadButtonHalves	0x00	0x02	current	u16	supported	asm;player_update_frame PadRead(1) store	buttons read this frame
+KfPlayerPadButtonHalves	0x02	0x02	previous	u16	supported	asm;player_update_frame copy;player_update_actions_and_charge	previous frame's buttons for edge detection
+KfPlayerPadButtons	0x00	0x04	word	u32	supported	asm;player_handle_interaction_and_menu;player_update_actions_and_charge	both halves masked together for pressed/held edges
+KfPlayerPadButtons	0x00	0x02	current	u16	supported	asm;player_update_frame;player_clear_motion	this frame's buttons
+KfPlayerPadButtons	0x00	0x04	halves	KfPlayerPadButtonHalves	supported	asm;player_update_actions_and_charge	current/previous halfword view
 KfPlayerPositionReaction	0x00	0x01	recovery_step	u8	supported	player_apply_map_object_reaction;player_update_frame	increments each position-recovery frame; scales interpolation and exits after step 15
 KfPlayerPositionReaction	0x04	0x10	position	VECTOR	supported	asm;player_apply_map_object_reaction	three signed world-position words stored at +0x150/+0x154/+0x158
 KfPlayerReactionOverlay	0x00	0x10	damage	KfPlayerDamageReaction	supported	asm;player_begin_view_reaction;player_begin_moving_damage_reaction	full damage reaction view
@@ -916,7 +916,7 @@ KfPlayerState	0x00	0x04	experience	s32	supported	asm;xrefs;KF1 player.h counterp
 KfPlayerState	0x04	0x04	next_level_experience	s32	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x08	0x01	level	u8	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0x09	0x01	unknown_09	u8	opaque	event_restore_saved_state;event_save_state	persisted byte, meaning unresolved
-KfPlayerState	0x0a	0x01	force_actor_lifecycle_refresh	u8	supported	player_sync_position_to_map;resource_advance_transition;actor_update_frame;game_main_loop	set after player position or map transition, bypasses staggered actor lifecycle update once, then cleared
+KfPlayerState	0x0a	0x01	force_actor_lifecycle_refresh	b8	supported	player_sync_position_to_map;resource_advance_transition;actor_update_frame;game_main_loop	set after player position or map transition, bypasses staggered actor lifecycle update once, then cleared
 KfPlayerState	0x0b	0x01	weapon_charge_delay	u8	supported	asm;player_equip_weapon;KF1 player_core.c	set to ten on weapon equip
 KfPlayerState	0x0c	0x01	unknown_0c	u8	opaque	asm	first byte remains unresolved
 KfPlayerState	0x0d	0x01	movement_speed_adjustment_decay_latch	u8	supported	GAME 0x80028b68/0x80028d28/0x80029aac lbu/sb;player_reset_view	set to one during normal charge update, decremented under guarded reaction, selects increase versus decrease of movement speed adjustment
@@ -969,8 +969,8 @@ KfPlayerState	0x9a	0x01	weapon_attack_mode	u8	supported	asm;player_begin_weapon_
 KfPlayerState	0x9b	0x01	equipped_weapon_id	u8	supported	asm;player_recalculate_combat_stats	weapon index into 68-byte table
 KfPlayerState	0x9c	0x02	unknown_9c	u8[2]	opaque	asm;player_begin_weapon_attack	first byte reset at attack begin
 KfPlayerState	0x9e	0x01	weapon_magic_shots_configured	u8	supported	asm;player_begin_weapon_attack	selected from weapon record on full charge
-KfPlayerState	0x9f	0x01	weapon_attack_fully_charged	u8	supported	asm;player_begin_weapon_attack;KF1 player.h	set when both charges reach 5000
-KfPlayerState	0xa0	0x01	weapon_guard_active	u8	supported	asm;player_magic_dispatch;player_reaction;player_damage	weapon 13 action-bit attack hold rewinds phase, halves movement, and blocks damage
+KfPlayerState	0x9f	0x01	weapon_attack_fully_charged	b8	supported	asm;player_begin_weapon_attack;KF1 player.h	set when both charges reach 5000
+KfPlayerState	0xa0	0x01	weapon_guard_active	b8	supported	asm;player_magic_dispatch;player_reaction;player_damage	weapon 13 action-bit attack hold rewinds phase, halves movement, and blocks damage
 KfPlayerState	0xa4	0x04	equipped_head_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
 KfPlayerState	0xa8	0x04	equipped_body_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
 KfPlayerState	0xac	0x04	equipped_arm_record	KfEquipmentRecord *	supported	asm;player_set_equipment_slot	player equipment record pointer
@@ -995,7 +995,7 @@ KfPlayerState	0xcd	0x01	death_state	u8	supported	GAME 0x80029be0 lbu and 0x00..0
 KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet modelled
 KfPlayerState	0xd0	0x01	vertical_motion_state	u8	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses
 KfPlayerState	0xd1	0x04	queued_magic_action	KfQueuedMagicAction	supported	asm;player_select_magic_action;player_update_frame	magic ID sentinel 0xff and dispatch-count/interval/countdown loop
-KfPlayerState	0xd5	0x01	fatal_fall_latch	u8	supported	asm;player_check_fall_death;player_move_reaction_with_collision;player_update_frame	set after fatal fall and gates recovery at death-transition frame 31
+KfPlayerState	0xd5	0x01	fatal_fall_latch	b8	supported	asm;player_check_fall_death;player_move_reaction_with_collision;player_update_frame	set after fatal fall and gates recovery at death-transition frame 31
 KfPlayerState	0xd8	0x10	camera_position	VECTOR	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerState	0xe8	0x08	frame_displacement	SVECTOR	supported	asm;player_move_horizontal;player_update_vertical_motion;actor_compute_target_direction	per-frame signed XYZ displacement used to lead moving player targets; fourth halfword remains pad
 KfPlayerState	0xf0	0x08	camera_rotation	KfPlayerViewRotation	supported	asm;player_get_camera_pose;player_reset_view	three signed 16-bit camera angles and fourth halfword
@@ -1021,7 +1021,7 @@ KfPlayerState	0x138	0x02	landing_vertical_offset	s16	supported	asm;player_update
 KfPlayerState	0x13a	0x02	vertical_velocity	s16	supported	asm;player_update_vertical_motion;player_reaction;player_reset_view	signed vertical motion increment and landing-impact magnitude
 KfPlayerState	0x13c	0x02	damage_red_overlay_scale	s16	supported	asm;player_apply_damage_reaction;player_reaction;player_initialize_state	fading red overlay scale fed to RGB accumulator
 KfPlayerState	0x13e	0x02	damage_red_overlay_decay	s16	supported	asm;player_apply_damage_reaction;player_reaction;player_initialize_state	per-frame decrement of red overlay scale
-KfPlayerState	0x140	0x04	flags_140	KfPlayerFlags140	supported	asm;player_handle_interaction_and_menu;player_clear_motion	full-word and low-halfword flag views
+KfPlayerState	0x140	0x04	pad_buttons	KfPlayerPadButtons	supported	asm;player_update_frame PadRead(1);player_handle_interaction_and_menu;player_clear_motion	current and previous pad button halfwords
 KfPlayerState	0x144	0x04	movement_step_limit	s32	supported	asm;player_update_horizontal_motion;KF1 player_update.c	signed full-word movement acceleration limit
 KfPlayerState	0x148	0x04	turn_step_limit	s32	supported	asm;player_update_camera_rotation;KF1 player_update.c	signed full-word turn step and low-halfword clamp value
 KfPlayerState	0x14c	0x14	reaction	KfPlayerReactionOverlay	supported	asm;player_apply_map_object_reaction;player_begin_view_reaction;player_begin_moving_damage_reaction	overlapping death, camera and position reaction views
@@ -1113,8 +1113,8 @@ KfState8017d118	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_t
 KfState8017d118	0x09	0x01	current_map_region_id	u8	supported	resource_advance_transition;menu_draw_location_number;menu_show_map_preview	copied from requested resource ID zero and used as location prefix and map preview asset selector
 KfState8017d118	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table
 KfState8017d118	0x10	0x05	requested_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition	five requested resource IDs consumed by transition phases; 255 skips a slot
-KfState8017d118	0x15	0x01	world_shift_applied	u8	supported	resource_request_transition;resource_advance_transition	set when signed transition offsets shift world positions; later request may reverse that shift
-KfState8017d118	0x16	0x01	tmd_object_limit_active	u8	supported	resource_request_transition;resource_advance_transition;render_map_cell_object	set when a TMD resource transition is requested; bounds map-cell object indices by the loaded TMD asset count during transition
+KfState8017d118	0x15	0x01	world_shift_applied	b8	supported	resource_request_transition;resource_advance_transition	set when signed transition offsets shift world positions; later request may reverse that shift
+KfState8017d118	0x16	0x01	tmd_object_limit_active	b8	supported	resource_request_transition;resource_advance_transition;render_map_cell_object	set when a TMD resource transition is requested; bounds map-cell object indices by the loaded TMD asset count during transition
 KfState8017d118	0x17	0x03	transition_offset	KfResourceTransitionOffset	supported	resource_request_transition;resource_advance_transition	signed X/Z/Y translation request; X=127 disables shift
 KfState8017d118	0x1a	0x02	sequence_fade_volume	s16	supported	resource_advance_transition;SsSeqSetVol	starts at 60 and decrements by 2 to zero, then sequence stops
 KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code

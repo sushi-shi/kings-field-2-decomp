@@ -11,6 +11,14 @@ enum {
     KF_CARD_EVENT_ERROR = 3
 };
 
+/* Nonzero results of memory_card_read_slot and memory_card_write_slot. */
+enum {
+    KF_CARD_READ_IO_FAILURE = 1,
+    KF_CARD_READ_CHECKSUM_FAILURE = 2,
+    KF_CARD_WRITE_IO_FAILURE = 1,
+    KF_CARD_WRITE_NO_SPACE = 2
+};
+
 enum {
     KF_CARD_BLOCK_BYTES = 0x4000,
     KF_CARD_HEADER_BYTES = 0x400,

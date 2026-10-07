@@ -580,7 +580,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 7;
+            setlen(prim, 7);
             prim->code = 0x26;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
@@ -617,7 +617,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = 0x36;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
@@ -660,7 +660,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = 0x3e;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
@@ -698,7 +698,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 9;
+            setlen(prim, 9);
             prim->code = 0x2e;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
@@ -769,7 +769,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 7;
+            setlen(prim, 7);
             prim->code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
@@ -806,7 +806,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
@@ -849,7 +849,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = mode;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
@@ -887,7 +887,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 9;
+            setlen(prim, 9);
             prim->code = mode;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
@@ -960,7 +960,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             &map_textured_primitive_color,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = (mode & 2) | 0x34;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
@@ -1001,7 +1001,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             NormalColorCol((SVECTOR *)(normals + face->gt4.normal3),
                            &map_textured_primitive_color,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = (mode & 2) | 0x3c;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
@@ -1031,7 +1031,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             &face->g3.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
-            ((u8 *)&prim->tag)[3] = 6;
+            setlen(prim, 6);
             prim->code = 0x30;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
@@ -1066,7 +1066,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             NormalColorCol((SVECTOR *)(normals + face->g4.normal3),
                            &face->g4.color,
                            (CVECTOR *)&prim->r3);
-            ((u8 *)&prim->tag)[3] = 8;
+            setlen(prim, 8);
             prim->code = 0x38;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
@@ -1140,7 +1140,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 0x0c;
+            setlen(&prim->sdk, 0x0c);
             prim->sdk.code = header.bytes.mode | 0x3c;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
@@ -1180,7 +1180,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, va->depth_cue, &prim->packed.color0);
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 0x09;
+            setlen(&prim->sdk, 0x09);
             prim->sdk.code = header.bytes.mode | 0x34;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
@@ -1249,7 +1249,7 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
         *(u32 *)&packet->packed.color0 = *(u32 *)&first_color;
         *(u32 *)&packet->packed.color1 = *(u32 *)&second->rgb;
         *(u32 *)&packet->packed.color2 = *(u32 *)&third->rgb;
-        ((u8 *)&packet->sdk.tag)[3] = 9;
+        setlen(&packet->sdk, 9);
         packet->sdk.code = packet_code;
         summed_depth = first->sxyz.vz + second->sxyz.vz + third->sxyz.vz;
         depth = summed_depth / 12 + depth_bias;
@@ -1371,7 +1371,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
-                    ((u8 *)&prim->sdk.tag)[3] = 12;
+                    setlen(&prim->sdk, 12);
                     prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
                     depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
                     if (depth < 16) {
@@ -1438,7 +1438,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, va->depth_cue, &prim->packed.color0);
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
-                    ((u8 *)&prim->sdk.tag)[3] = 9;
+                    setlen(&prim->sdk, 9);
                     prim->sdk.code = (header.bytes.mode & 2) | 0x34;
                     depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
                     if (depth < 16) {

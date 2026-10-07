@@ -47,7 +47,7 @@ _Derived from ignored outputs made by the native Psy-Q executable chain. `kf bui
 | Image | Same-offset file bytes | Island-aligned load bytes | Nonzero load bytes | Data modules exact |
 | :---- | --------------------: | -----------------------: | -----------------: | -----------------: |
 | `PSX.EXE` | — | — | — | 0 / 1 |
-| `GAME.EXE` | — | — | — | 3 / 15 |
+| `GAME.EXE` | — | — | — | 6 / 16 |
 | `OPEN.EXE` | — | — | — | 4 / 9 |
 | `END.EXE` | — | — | — | 3 / 8 |
 

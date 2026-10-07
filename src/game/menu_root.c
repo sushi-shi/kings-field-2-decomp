@@ -72,7 +72,6 @@ typedef char kf_card_directory_entry_size[sizeof(struct DIRENTRY) == 40 ? 1 : -1
 
 enum {
     CARD_CHOICE_EXIT = -2,
-    CARD_WRITE_IO_FAILURE = 1,
     CARD_MENU_ROW_CAPACITY = KF_CARD_DIRECTORY_CAPACITY / KF_CARD_FILE_BLOCKS + 1,
     CARD_MENU_VISIBLE_ROWS = 6,
     CARD_MENU_LIST_Y = 0x83,
@@ -1712,7 +1711,7 @@ write_file:
     result = memory_card_write_slot(slot);
     if (result == 0)
         return;
-    if (result == CARD_WRITE_IO_FAILURE)
+    if (result == KF_CARD_WRITE_IO_FAILURE)
         menu_prepare_card_io_error_rows(rows);
     else
         menu_prepare_card_write_full_rows(rows);
@@ -1901,7 +1900,7 @@ void menu_prepare_card_read_failure_rows(KfMenuGlyphString *row, s32 kind)
 {
     row->position.x = 90;
     row->position.y = 105;
-    if (kind == 1) {
+    if (kind == KF_CARD_READ_IO_FAILURE) {
         memcpy(row->glyphs.codes, menu_label_suffixes[10].codes,
             sizeof menu_label_suffixes[10]);
     } else {

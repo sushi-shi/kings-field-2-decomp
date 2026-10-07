@@ -4432,7 +4432,7 @@ s32 menu_load_item_model(u8 item_id)
 
     menu_release_item_model();
     if (item_id != 0xff) {
-        allocation = memory_allocate(cd_archive_entry_extent(6, item_id, NULL));
+        allocation = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, item_id, NULL));
         cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, item_id, (u_long *)allocation);
         tmd_register(KF_TMD_SLOT_MENU_ITEM, (KfTmdHeader *)allocation);
         menu_item_model_allocation_pending = KF_TRUE;

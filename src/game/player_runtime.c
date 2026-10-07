@@ -140,7 +140,7 @@ void player_reload_map_resources(
     reset_collision_rows_and_overlay();
     render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0x1000, 0);
     if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
-        resource_tmd_queue_read(0, 0x101, 0x181);
+        resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
     }
     cd_request_wait_idle();
     render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0, -128);
@@ -2786,7 +2786,8 @@ void player_handle_interaction_and_menu(void)
         s32 resource;
         player_restore_equipment_effects();
         resource = resource_state.active_resource_ids[0];
-        player_reload_map_resources(resource, resource, resource, resource, resource, 255);
+        player_reload_map_resources(resource, resource, resource, resource, resource,
+                                    KF_RESOURCE_REQUEST_KEEP);
     }
     player_clear_motion();
 }
@@ -3270,7 +3271,7 @@ update_reaction_pose:
                 } else {
                     player_initialize_state();
                     event_state_initialize();
-                    player_reload_map_resources(0, 0, 0, 0, 0, 255);
+                    player_reload_map_resources(0, 0, 0, 0, 0, KF_RESOURCE_REQUEST_KEEP);
                 }
             }
         }

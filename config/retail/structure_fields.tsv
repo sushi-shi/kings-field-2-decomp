@@ -1083,7 +1083,7 @@ KfRenderState	0x7c	0x04	view_cell_z	s32	supported	game headers;asm;xrefs	member 
 KfRenderState	0x80	0x04	cell_origin_x	s32	supported	asm;map_cell_layer_mask	added to world X tile index
 KfRenderState	0x84	0x04	cell_origin_z	s32	supported	asm;map_cell_layer_mask	added to world Z tile index
 KfResourceState	0x00	0x02	transition_active	KfBoolS16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
-KfResourceState	0x02	0x02	transition_phase	s16	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
+KfResourceState	0x02	0x02	transition_phase	KfResourceTransitionPhase	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
 KfResourceState	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition;card_payload_capture_game_state	five active resource IDs saved and updated when a transition completes
 KfResourceState	0x09	0x01	current_map_region_id	u8	supported	resource_advance_transition;menu_draw_location_number;menu_show_map_preview	copied from requested resource ID zero and used as location prefix and map preview asset selector
 KfResourceState	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table

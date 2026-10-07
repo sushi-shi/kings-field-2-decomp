@@ -2451,8 +2451,8 @@ actor_next:
         actor++;
         remaining--;
     }
-    resource_tmd_update_range(0, 0, 0x80, 0x80, tmd_flags);
-    resource_vab_update_range(4, 0x20, 2, 0x40, vab_flags);
+    resource_tmd_update_range(KF_RESOURCE_ARCHIVE_MO, 0, 0x80, 0x80, tmd_flags);
+    resource_vab_update_range(KF_RESOURCE_ARCHIVE_VAB, 0x20, 2, 0x40, vab_flags);
 
     frame = cd_state.frame_count;
     repeat_store_word((u32 *)tmd_flags, 0, 80);
@@ -2580,8 +2580,8 @@ map_object_next:
         object++;
         remaining--;
     }
-    resource_tmd_update_range(0, 0x80, 0x100, 0x140, tmd_flags);
-    resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
+    resource_tmd_update_range(KF_RESOURCE_ARCHIVE_MO, 0x80, 0x100, 0x140, tmd_flags);
+    resource_vab_update_range(KF_RESOURCE_ARCHIVE_VAB, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
     remaining = KF_EFFECT_CAPACITY - 1;

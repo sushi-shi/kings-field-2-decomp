@@ -26,11 +26,24 @@ typedef struct KfResourceTransitionOffset {
 typedef char kf_resource_transition_offset_size[
     sizeof(KfResourceTransitionOffset) == 3 ? 1 : -1];
 
+/* resource_advance_transition steps; each CD completion callback advances
+ * the phase and PENDING_IO waits for the queued read. */
+KF_ENUM_BEGIN(KfResourceTransitionPhase, s16)
+    KF_RESOURCE_TRANSITION_BEGIN_MAP = 0,
+    KF_RESOURCE_TRANSITION_LOAD_MAP_CELLS = 1,
+    KF_RESOURCE_TRANSITION_QUEUE_MAP_ACTORS = 2,
+    KF_RESOURCE_TRANSITION_LOAD_MAP_ACTORS = 3,
+    KF_RESOURCE_TRANSITION_QUEUE_TIM = 4,
+    KF_RESOURCE_TRANSITION_FADE_AUDIO = 5,
+    KF_RESOURCE_TRANSITION_FINISH_AUDIO = 6,
+    KF_RESOURCE_TRANSITION_PENDING_IO = 0xf0
+KF_ENUM_END(KfResourceTransitionPhase)
+
 /* Startup clears this 0x1c-byte runtime state. Its active table pointer is
  * replaced by both an initialized table and a BSS table. */
 typedef struct KfResourceState {
     KfBoolS16 transition_active;
-    s16 transition_phase;
+    KfResourceTransitionPhase transition_phase;
     u8 active_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 current_map_region_id;
     KfCallback *active_table;

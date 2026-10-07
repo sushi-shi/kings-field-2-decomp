@@ -295,7 +295,7 @@ execute:
                           candidate->animation_step);
             restore_state = KF_TRUE;
         }
-        menu_show_transition_image(3, candidate->word_0c.value + *cursor);
+        menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
 
 advance:
         cursor++;
@@ -328,7 +328,7 @@ after_script:
         choice = menu_choose_inventory_item();
         if (choice != -1) {
             render_game_frame(NULL, NULL);
-            menu_show_transition_image(6, choice + 360);
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, choice + 360);
         }
         break;
     }
@@ -432,7 +432,7 @@ object_control_action:
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index =
                     object - map_object_state.objects;
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
-                    resource_state.active_resource_ids[0];
+                    resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
                 event_state.interaction_handled = KF_TRUE;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
@@ -459,7 +459,7 @@ transition_action: {
         s16 yaw;
 
         /* The retail gate checks only the low byte of the saved object index. */
-        if (resource_state.active_resource_ids[0] == 7 ||
+        if (resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
@@ -472,12 +472,12 @@ transition_action: {
             cd_request_yield();
             resource_advance_transition();
         } while (resource_state.transition_active);
-        if (previous_value != resource_state.active_resource_ids[0]) {
+        if (previous_value != resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]) {
             resource_request_transition(previous_value, previous_value, previous_value,
-                          0xff, 0xff, 0x7f, 0x7f, 0x7f);
+                          KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         } else {
-            resource_request_transition(0xff, 0xff, previous_value, 0xff, 0xff,
-                          0x7f, 0x7f, 0x7f);
+            resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
+                          KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         }
         do {
             cd_request_yield();
@@ -489,7 +489,7 @@ transition_action: {
         object = &map_object_state.objects[object_index];
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);
-        player_state.death_state = 0;
+        player_state.death_state = KF_PLAYER_REACTION_NORMAL;
         player_state.view_rotation_offset.components[2] = 0;
         player_state.view_rotation_offset.components[1] = 0;
         player_state.view_rotation_offset.components[0] = 0;
@@ -503,12 +503,12 @@ transition_action: {
         player_state.camera_rotation.angles[1] = yaw;
         render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 4096, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
-            resource_tmd_queue_read(0, 0x101, 0x181);
+            resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
         }
         render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -256);
         render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
-        resource_request_transition(0xff, 0xff, 0xff, previous_value, previous_value,
-                      0x7f, 0x7f, 0x7f);
+        resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, previous_value,
+                      KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         break;
     }
     case KF_OBJECT_103:
@@ -714,7 +714,7 @@ decay_update:
                                        &actor_distance, -1);
 
         if (actor != NULL && actor->current_map_layer == side) {
-            menu_show_transition_image(6, actor->definition_id + 240);
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, actor->definition_id + 240);
             event_state.interaction_handled = KF_TRUE;
             break;
         }
@@ -735,7 +735,7 @@ decay_update:
                                   object->position.vz >> 11,
                                   object->tail.scene_inspect.region_width,
                                   object->tail.scene_inspect.region_depth, 0x8000)) {
-                    menu_show_transition_image(6, object->tail.scene_inspect.transition_image_id + 510);
+                    menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.scene_inspect.transition_image_id + 510);
                     event_state.interaction_handled = KF_TRUE;
                     break;
                 }
@@ -1181,7 +1181,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_13:
         case KF_MAP_OBJECT_OP_20:
-            menu_show_transition_image(6, object->tail.pair_38.value_38 + 0x78);
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.pair_38.value_38 + 0x78);
             break;
         case KF_MAP_OBJECT_OP_18:
             color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
@@ -1189,7 +1189,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
         case KF_MAP_OBJECT_OP_14:
-            event_world_state_save_slot(resource_state.active_resource_ids[0]);
+            event_world_state_save_slot(resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;
@@ -1688,10 +1688,10 @@ void card_payload_restore_game_state(const u8 *buffer)
 
     memcpy((void *)resource_state.active_resource_ids, (const void *)buffer,
         sizeof resource_state.active_resource_ids);
-    resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position,
         sizeof player_state.camera_position);
     memcpy((void *)&player_state.camera_rotation_target,

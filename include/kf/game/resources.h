@@ -17,8 +17,9 @@ enum {
     KF_RESOURCE_REQUEST_KEEP = 0xff,
     KF_RESOURCE_REQUEST_START_SEQUENCE = 200,
     KF_RESOURCE_ACTIVE_UNINITIALIZED = 99,
-    KF_RESOURCE_OFFSET_NO_SHIFT = 127,
-    KF_RESOURCE_TRANSITION_PHASE_PENDING_IO = 0xf0
+    /* An active slot holding no resource. */
+    KF_RESOURCE_ACTIVE_NONE = 0xff,
+    KF_RESOURCE_OFFSET_NO_SHIFT = 127
 };
 
 extern u8 resource_tmd_workspace[0x37000];

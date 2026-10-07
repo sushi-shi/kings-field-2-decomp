@@ -16,7 +16,7 @@ IMAGES = ("psx", "game", "open", "end")
 MODES = {
     "modern": ("-x", "c++", "-std=gnu++20"),
     # C89 lets an int function return without a value, as the pinned GCC does.
-    "retail": ("-x", "c", "-std=gnu89", "-Wno-return-mismatch"),
+    "retail": ("-x", "c", "-std=gnu89", "-Wno-return-type", "-Wno-return-mismatch"),
 }
 FLAGS = (
     "--target=mipsel-none-elf", "-march=mips1", "-mabi=32",

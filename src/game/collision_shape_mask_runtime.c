@@ -445,11 +445,12 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
     KfMapOccupancyCell *cell;
     s32 col;
     s32 remaining;
+    s32 row_index = first_z;
 
     do {
         cell = row;
         row += KF_MAP_WORLD_GRID_SIDE;
-        if ((u32)first_z < KF_MAP_WORLD_GRID_SIDE) {
+        if ((u32)row_index < KF_MAP_WORLD_GRID_SIDE) {
             col = first_x;
             remaining = width;
             do {
@@ -462,7 +463,7 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
                 remaining--;
             } while (remaining != -1);
         }
-        first_z++;
+        row_index++;
         height--;
     } while (height != -1);
 }

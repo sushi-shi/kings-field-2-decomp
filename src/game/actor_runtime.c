@@ -823,10 +823,10 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor == actor_state.current) {
             continue;
         }
-        if (mode == 0x8000) {
+        if (mode == KF_RADIAL_MODE_REACH) {
             distance = vector_distance_between_with_reach(position, reach, &actor->position,
                                      actor->collision_radius, actor->collision_height);
-        } else if (mode == 0x8001) {
+        } else if (mode == KF_RADIAL_MODE_REACH_ABOVE) {
             if (position->vy < actor->position.vy - actor->collision_height) {
                 distance = KF_DISTANCE_OUTSIDE_REACH;
             } else {

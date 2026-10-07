@@ -99,6 +99,15 @@ KF_ENUM_END(KfEffectKind)
  * keep the source class of the effect type that caused it (0x10 player,
  * 0x20 hazards, which actor flag 0x100000 ignores).
  */
+/* Radial magic mode (effect_apply_radial_magic_damage, actor_apply_area_magic,
+ * player_apply_radial_damage): REACH measures to the target's reach cylinder,
+ * REACH_ABOVE also misses a target whose top is above the origin, and any
+ * other value is the vertical window passed to the point-distance test. */
+enum {
+    KF_RADIAL_MODE_REACH = 0x8000,
+    KF_RADIAL_MODE_REACH_ABOVE = 0x8001
+};
+
 KF_ENUM_BEGIN(KfActorDamageFlags, u8)
     KF_ACTOR_DAMAGE_NONE = 0,
     KF_ACTOR_DAMAGE_PHYSICAL = 1,

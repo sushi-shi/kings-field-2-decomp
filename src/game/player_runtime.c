@@ -740,8 +740,6 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 damage_flags
 }
 
 enum {
-    KF_RADIAL_MODE_PLAYER = 0x8000,
-    KF_RADIAL_MODE_PLAYER_ABOVE = 0x8001,
     KF_RADIAL_REACH_OFFSET = 800,
     KF_RADIAL_NO_REACTION_ORIGIN = 0x8000,
     KF_RADIAL_BASE_SCALE_MASK = 0x7fff
@@ -763,10 +761,10 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
     }
     base_scale = scale_and_flags & KF_RADIAL_BASE_SCALE_MASK;
 
-    if (mode == KF_RADIAL_MODE_PLAYER) {
+    if (mode == KF_RADIAL_MODE_REACH) {
         distance = vector_distance_between_with_reach(position, end, &player_state.camera_position,
                                   KF_RADIAL_REACH_OFFSET, KF_PLAYER_HEIGHT);
-    } else if (mode == KF_RADIAL_MODE_PLAYER_ABOVE) {
+    } else if (mode == KF_RADIAL_MODE_REACH_ABOVE) {
         if (position->vy < player_state.camera_position.vy - KF_PLAYER_HEIGHT) {
             distance = KF_DISTANCE_OUTSIDE_REACH;
         } else {
@@ -3068,7 +3066,7 @@ void player_update_frame(void)
 
     player_state.pad_buttons.current = PadRead(1);
     if (player_state.pad_buttons.current & PADstart) {
-        cd_report_error(3);
+        cd_report_error(KF_CD_ERROR_3);
     }
     if (player_state.pad_buttons.current & PADselect) {
         player_state.pad_buttons.current = PADRdown;

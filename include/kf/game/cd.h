@@ -20,10 +20,12 @@ enum {
     KF_CD_CHECKSUM_SEED = 0x12345678
 };
 
-/* cd_report_error codes. */
+/* cd_report_error codes (the retail reporter is empty). player_update_frame
+ * reports code 3 when Start is pressed. */
 enum {
     KF_CD_ERROR_SEARCH = 0,
-    KF_CD_ERROR_READ = 1
+    KF_CD_ERROR_READ = 1,
+    KF_CD_ERROR_3 = 3
 };
 
 /* Location and byte size of a file, the leading fields of CdlFILE. */

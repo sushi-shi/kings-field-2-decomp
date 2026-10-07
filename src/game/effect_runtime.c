@@ -171,26 +171,26 @@ void effect_apply_current_magic_backstep(KF_ENUM_PARAM(KfCollisionHitFlags, s32)
 
 ADDRESS(0x8003ff18, 0x1a8)
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
-                                      s32 arg3, s32 arg4, s32 arg5)
+                                      s32 mode, s32 falloff, s32 scale_and_flags)
 {
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
 
     if ((record->type & KF_EFFECT_TARGET_PLAYER) != KF_EFFECT_TYPE_NONE) {
-        player_apply_radial_damage(position, start, end, arg3, arg4,
+        player_apply_radial_damage(position, start, end, mode, falloff,
                       magic->damage_components[0], magic->damage_components[1], magic->damage_components[2],
                       magic->player_status_flags, magic->damage_components[3], magic->damage_components[4],
                       magic->damage_components[5], magic->damage_components[6], magic->damage_components[7],
-                      arg5, record->damage_multiplier_tenths);
+                      scale_and_flags, record->damage_multiplier_tenths);
     }
     if ((record->type & KF_EFFECT_TARGET_ACTORS) != KF_EFFECT_TYPE_NONE) {
         u16 power = effect_magic_power(record);
 
-        actor_apply_area_magic(position, start, end, arg3, arg4,
+        actor_apply_area_magic(position, start, end, mode, falloff,
                       power, magic->damage_components[0],
                       magic->damage_components[1], magic->damage_components[2], magic->damage_components[3],
                       magic->damage_components[4], magic->damage_components[5], magic->damage_components[6],
-                      magic->damage_components[7], arg5, KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfActorDamageFlags),
+                      magic->damage_components[7], scale_and_flags, KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfActorDamageFlags),
                           KF_ENUM_ENCODE(u8, record->type & KF_EFFECT_SOURCE_MASK)) | KF_ACTOR_DAMAGE_MAGIC);
     }
 }
@@ -1799,7 +1799,7 @@ void effect_update_dispatch(void)
                                       0) != KF_COLLISION_HIT_NONE) {
                 record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_BURST;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
-                               0x8000, 0x1000, 0x1000);
+                               KF_RADIAL_MODE_REACH, 0x1000, 0x1000);
             }
             break;
         case KF_EFFECT_STAGE_BURST:
@@ -1856,7 +1856,7 @@ void effect_update_dispatch(void)
         record->type = KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_PLAYER;
         record->rotation.vy += 100;
         effect_apply_radial_magic_damage(&record->position, 0, record->scale_x,
-                       0x8000, 0x400, 0x1000);
+                       KF_RADIAL_MODE_REACH, 0x400, 0x1000);
         record->type = KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_SHAPES_ONLY;
         switch (record->cache_tail.payload.kind26.stage) {
         case KF_EFFECT_STAGE_TRAVEL:

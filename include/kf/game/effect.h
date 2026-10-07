@@ -493,7 +493,7 @@ void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s3
                                 const VECTOR *position);
 void effect_apply_current_magic_backstep(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind);
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
-                                      s32 arg3, s32 arg4, s32 arg5);
+                                      s32 mode, s32 falloff, s32 scale_and_flags);
 KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
                       s32 probe_height_flags, SVECTOR *motion);
 KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,

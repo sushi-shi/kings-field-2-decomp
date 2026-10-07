@@ -3,20 +3,67 @@
 
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
 #include <kf/game/audio.h>
 #include <kf/game/pool.h>
 
+/* Template byte 0 selects an object's operation. The loader copies most
+ * selectors unchanged into the runtime action byte (GAME 0x80035a74 jump
+ * table, sb +4), which map_object_update_actions dispatches; the interaction
+ * and world-state switches read the template selector directly. Definition-
+ * only and runtime-only operations therefore share one namespace. Members
+ * without behavioural evidence keep their decimal encoding as a WIP name. */
+KF_ENUM_BEGIN(KfMapObjectOperation, u8)
+    KF_MAP_OBJECT_OP_0 = 0,
+    KF_MAP_OBJECT_OP_2 = 2,
+    KF_MAP_OBJECT_OP_3 = 3,
+    KF_MAP_OBJECT_OP_HINGE = 4,
+    KF_MAP_OBJECT_OP_5 = 5,
+    KF_MAP_OBJECT_OP_8 = 8,
+    KF_MAP_OBJECT_OP_9 = 9,
+    KF_MAP_OBJECT_OP_11 = 11,
+    KF_MAP_OBJECT_OP_13 = 13,
+    KF_MAP_OBJECT_OP_14 = 14,
+    KF_MAP_OBJECT_OP_15 = 15,
+    KF_MAP_OBJECT_OP_16 = 16,
+    KF_MAP_OBJECT_OP_17 = 17,
+    KF_MAP_OBJECT_OP_18 = 18,
+    KF_MAP_OBJECT_OP_19 = 19,
+    KF_MAP_OBJECT_OP_20 = 20,
+    KF_MAP_OBJECT_OP_21 = 21,
+    KF_MAP_OBJECT_OP_22 = 22,
+    KF_MAP_OBJECT_OP_AMBIENT_SOUND = 31,
+    KF_MAP_OBJECT_OP_PLAYER_REACTION = 32,
+    KF_MAP_OBJECT_OP_33 = 33,
+    KF_MAP_OBJECT_OP_34 = 34,
+    KF_MAP_OBJECT_OP_48 = 48,
+    KF_MAP_OBJECT_OP_64 = 64,
+    KF_MAP_OBJECT_OP_80 = 80,
+    KF_MAP_OBJECT_OP_81 = 81,
+    KF_MAP_OBJECT_OP_83 = 83,
+    KF_MAP_OBJECT_OP_84 = 84,
+    KF_MAP_OBJECT_OP_88 = 88,
+    KF_MAP_OBJECT_OP_89 = 89,
+    KF_MAP_OBJECT_OP_95 = 95,
+    KF_MAP_OBJECT_OP_FALL_AND_TIP = 96,
+    KF_MAP_OBJECT_OP_FALL_AND_SPIN = 97,
+    KF_MAP_OBJECT_OP_BOUNCE = 98,
+    KF_MAP_OBJECT_OP_OFFSET_MOTION = 112,
+    KF_MAP_OBJECT_OP_160 = 160,
+    KF_MAP_OBJECT_OP_161 = 161,
+    KF_MAP_OBJECT_OP_162 = 162,
+    KF_MAP_OBJECT_OP_163 = 163,
+    KF_MAP_OBJECT_OP_164 = 164,
+    KF_MAP_OBJECT_OP_165 = 165,
+    KF_MAP_OBJECT_OP_RESOURCE_TRIGGER = 224,
+    KF_MAP_OBJECT_OP_REGION_TRIGGER = 225,
+    KF_MAP_OBJECT_OP_226 = 226,
+    KF_MAP_OBJECT_OP_ANIMATED_MODEL = 240,
+    KF_MAP_OBJECT_OP_NONE = 255
+KF_ENUM_END(KfMapObjectOperation)
+
 enum {
-    KF_MAP_OBJECT_ACTION_NONE = 0xff,
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
-    KF_MAP_OBJECT_ACTION_AMBIENT_SOUND = 0x1f,
-    KF_MAP_OBJECT_ACTION_PLAYER_REACTION = 0x20,
-    KF_MAP_OBJECT_ACTION_FALL_AND_TIP = 0x60,
-    KF_MAP_OBJECT_ACTION_FALL_AND_SPIN = 0x61,
-    KF_MAP_OBJECT_ACTION_BOUNCE = 0x62,
-    KF_MAP_OBJECT_MOTION_ACTION = 0x70,
-    KF_MAP_OBJECT_ACTION_REGION_TRIGGER = 0xe1,
-    KF_MAP_OBJECT_ACTION_ANIMATED_MODEL = 0xf0,
     KF_MAP_OBJECT_ID_NONE = 0xff,
     KF_MAP_OBJECT_INDEX_NONE = 0xffff,
     KF_MAP_OBJECT_PLACEMENT_ID_NONE = 0xffff,
@@ -31,7 +78,6 @@ enum {
     KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
     KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1,
     KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
-    KF_MAP_OBJECT_COLLISION_KIND_HINGE = 4,
     KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
 };
@@ -90,7 +136,7 @@ typedef union KfMapObjectTemplateParams {
 } KfMapObjectTemplateParams;
 
 typedef struct KfMapObjectTemplate {
-    u8 collision_kind;
+    KfMapObjectOperation collision_kind;
     u8 kind;
     u8 vab_resource_index;
     u8 collision_flags;
@@ -662,7 +708,7 @@ typedef struct KfMapObject {
     u8 asset_clip_selector;
     u8 render_queue_mode;
     u8 collision_flags;
-    u8 action;
+    KfMapObjectOperation action;
     u8 lighting_override_index;
     u16 object_id;
     u16 action_timer;
@@ -741,7 +787,7 @@ typedef char kf_map_object_state_counter_8742_offset[
 
 extern KfMapObjectStateGame map_object_state;
 
-void map_object_start_action_if_idle(KfMapObject *object, u8 action);
+void map_object_start_action_if_idle(KfMapObject *object, KfMapObjectOperation action);
 void map_object_initialize_from_placements(const KfMapObjectPlacement *placements);
 s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 height);
 KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequence);

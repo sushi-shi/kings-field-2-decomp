@@ -1,23 +1,28 @@
 #ifndef KF_GAME_MEMORY_H
 #define KF_GAME_MEMORY_H
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
+
+/* Arena block state. The owner-pointer relocation walks treat the kinds below
+ * KF_MEMORY_BLOCK_KIND_COUNT other than FREE as owned; END terminates the
+ * block list. */
+KF_ENUM_BEGIN(KfMemoryBlockKind, u8)
+    KF_MEMORY_BLOCK_FREE = 0,
+    KF_MEMORY_BLOCK_RECLAIMABLE = 1,
+    KF_MEMORY_BLOCK_OWNED = 2,
+    KF_MEMORY_BLOCK_PENDING = 3,
+    KF_MEMORY_BLOCK_KIND_COUNT = 4,
+    KF_MEMORY_BLOCK_END = 0xff
+KF_ENUM_END(KfMemoryBlockKind)
 
 /* Header in front of every block handed out by the GAME arena allocator. */
 typedef struct KfMemoryBlock {
-    u8 kind;
+    KfMemoryBlockKind kind;
     u8 flags;
     u16 tag;
     u32 size;
     u8 **owner;
 } KfMemoryBlock;
-
-enum {
-    KF_MEMORY_BLOCK_FREE = 0,
-    KF_MEMORY_BLOCK_RECLAIMABLE = 1,
-    KF_MEMORY_BLOCK_OWNED = 2,
-    KF_MEMORY_BLOCK_PENDING = 3,
-    KF_MEMORY_BLOCK_END = 0xff
-};
 
 typedef char kf_memory_block_size[sizeof(KfMemoryBlock) == 12 ? 1 : -1];
 
@@ -33,8 +38,8 @@ void memory_arena_compact(KfMemoryBlock *arena);
 void memory_arena_initialize_blocks(KfMemoryBlock *arena, u32 capacity);
 u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner);
 void memory_block_release(u8 *data);
-void memory_block_set_kind(u8 *data, u8 kind);
-u8 memory_block_kind(u8 *data);
+void memory_block_set_kind(u8 *data, KfMemoryBlockKind kind);
+KfMemoryBlockKind memory_block_kind(u8 *data);
 void memory_block_set_flags(u8 *data, u8 flags);
 u8 memory_block_flags(u8 *data);
 void memory_block_set_tag(u8 *data, u16 tag);

@@ -633,7 +633,7 @@ magic_action: {
         object->object_id = command;
         object->render_queue_mode = 1;
         object->layer_mask = 3;
-        object->action = 0xff;
+        object->action = KF_MAP_OBJECT_OP_NONE;
         object->lighting_override_index = 0x42;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
@@ -726,7 +726,7 @@ decay_update:
                  remaining != -1; remaining--, scan++) {
                 KfMapObject *object = scan;
 
-                if (map_object_state.templates[object->object_id].collision_kind != 0xe2 ||
+                if (map_object_state.templates[object->object_id].collision_kind != KF_MAP_OBJECT_OP_226 ||
                     object->extra_40.bytes[0] != side) {
                     continue;
                 }
@@ -843,7 +843,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         map_object_reset(object);
         object->object_id = spawn_object_id;
         object->layer_mask = 3;
-        object->action = 0xff;
+        object->action = KF_MAP_OBJECT_OP_NONE;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;
@@ -862,11 +862,11 @@ void event_map_object_interact(KfMapObject *object, ...)
         return;
     }
 
-    if (object->action == 0x70 && object->object_id == 0x67) {
+    if (object->action == KF_MAP_OBJECT_OP_OFFSET_MOTION && object->object_id == 0x67) {
         KfMapObject *child = &map_object_state.objects[object->extra_40.object_index];
         KfMapObject *next = &map_object_state.objects[
             child->tail.fields.unknown_3a.bytes.high];
-        if (next->action == 3 && next->action_timer != 0) {
+        if (next->action == KF_MAP_OBJECT_OP_3 && next->action_timer != 0) {
             return;
         }
     }
@@ -1037,7 +1037,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
     for (;; object_index++) {
         KfMapObject *object;
         u16 object_id;
-        s32 kind;
+        KF_ENUM_PROMOTED(KfMapObjectOperation) kind;
 
         object_index = map_object_find_interaction_target(object_index, &probe, 800, 2500,
                                       rotation->angles[1], 512);
@@ -1051,20 +1051,20 @@ void event_world_dispatch_interaction(const VECTOR *position,
         event_state.interaction_handled = 1;
         kind = templates[object_id].collision_kind;
         switch (kind) {
-        case 0xa5:
-        case 0xff:
+        case KF_MAP_OBJECT_OP_165:
+        case KF_MAP_OBJECT_OP_NONE:
             if (object->tail.notification.default_notification != 0xff) {
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
-        case 0x40:
+        case KF_MAP_OBJECT_OP_64:
             event_map_object_interact(object);
             if (object->object_id == 0xff) {
                 goto invoke_callback;
             }
             break;
-        case 9:
-        case 0x15: {
+        case KF_MAP_OBJECT_OP_9:
+        case KF_MAP_OBJECT_OP_21: {
             u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index == 0xffff ||
                 objects[linked_index].object_id == 0xff) {
@@ -1087,12 +1087,12 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             break;
         }
-        case 0x53:
+        case KF_MAP_OBJECT_OP_83:
             if (object->action_timer == 0) {
                 object->action_timer = 1;
             }
             break;
-        case 2:
+        case KF_MAP_OBJECT_OP_2:
             if (object->action_timer == 0) {
                 if (object->tail.marker.marker_id == 0xff) {
                     object->action_timer = 1;
@@ -1101,8 +1101,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
             }
             break;
-        case 3:
-        case 4:
+        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_HINGE:
             if (object->action_timer == 0) {
                 if (object->tail.marker.marker_id >= 0xfc &&
                     (((object->tail.marker.marker_id & 1) &&
@@ -1122,20 +1122,20 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
-        case 0x51:
+        case KF_MAP_OBJECT_OP_81:
             if (object->action_timer == 0 &&
                 object->tail.collision_probe.marker_trigger_state == 0xff) {
                 object->action_timer = 1;
             }
             break;
-        case 8:
-        case 0x16:
+        case KF_MAP_OBJECT_OP_8:
+        case KF_MAP_OBJECT_OP_22:
             if (!angle_within_tolerance(rotation->angles[1],
                                         object->rotation.vy + 0x800, 0x155)) {
                 break;
             }
             /* Kind five enters the same state handler without the angle gate. */
-        case 5:
+        case KF_MAP_OBJECT_OP_5:
             switch (object->tail.marker.marker_id) {
             case 0xfe: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
@@ -1159,12 +1159,12 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 break;
             }
             break;
-        case 0x0f:
+        case KF_MAP_OBJECT_OP_15:
             if (object->tail.event_effect.pending_event_command == 0xff) {
                 notify_enqueue(0x10);
             }
             break;
-        case KF_MAP_OBJECT_ACTION_PLAYER_REACTION:
+        case KF_MAP_OBJECT_OP_PLAYER_REACTION:
             if (player_state.death_state == 0) {
                 KfMapObjectRecord40 *record;
                 player_begin_view_reaction(object_index);
@@ -1174,16 +1174,16 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
             }
             break;
-        case 0x0d:
-        case 0x14:
+        case KF_MAP_OBJECT_OP_13:
+        case KF_MAP_OBJECT_OP_20:
             menu_show_transition_image(6, object->tail.pair_38.value_38 + 0x78);
             break;
-        case 0x12:
+        case KF_MAP_OBJECT_OP_18:
             color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
             player_state.vitals.current_hp = player_state.vitals.maximum_hp;
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
-        case 0x0e:
+        case KF_MAP_OBJECT_OP_14:
             event_world_state_save_slot(resource_state.active_resource_ids[0]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
@@ -1268,18 +1268,18 @@ void event_arena_owner_pointers_add_delta(s32 delta)
 {
     KfMemoryBlock *block = &event_state.arena.first_block;
 
-    if (block->kind != 0xff) {
+    if (block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            s32 kind = block->kind;
+            KF_ENUM_PROMOTED(KfMemoryBlockKind) kind = block->kind;
             u32 step;
-            if (kind < 4) {
-                if (kind != 0) {
+            if (kind < KF_MEMORY_BLOCK_KIND_COUNT) {
+                if (kind != KF_MEMORY_BLOCK_FREE) {
                     block->owner = (u8 **)((u8 *)block->owner + delta);
                 }
             }
             step = block->size + sizeof(*block);
             block = (KfMemoryBlock *)((u8 *)block + step);
-        } while (block->kind != 0xff);
+        } while (block->kind != KF_MEMORY_BLOCK_END);
     }
 }
 
@@ -1306,18 +1306,18 @@ void event_arena_owner_pointers_subtract_delta(s32 delta)
 {
     KfMemoryBlock *block = &event_state.arena.first_block;
 
-    if (block->kind != 0xff) {
+    if (block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            s32 kind = block->kind;
+            KF_ENUM_PROMOTED(KfMemoryBlockKind) kind = block->kind;
             u32 step;
-            if (kind < 4) {
-                if (kind != 0) {
+            if (kind < KF_MEMORY_BLOCK_KIND_COUNT) {
+                if (kind != KF_MEMORY_BLOCK_FREE) {
                     block->owner = (u8 **)((u8 *)block->owner - delta);
                 }
             }
             step = block->size + sizeof(*block);
             block = (KfMemoryBlock *)((u8 *)block + step);
-        } while (block->kind != 0xff);
+        } while (block->kind != KF_MEMORY_BLOCK_END);
     }
 }
 
@@ -1367,7 +1367,7 @@ void event_world_state_save_slot(s32 save_slot)
     object = map_object_state.objects;
     for (index = 0; index < KF_MAP_OBJECT_CAPACITY; object++, index++) {
         s32 object_id = object->object_id;
-        s32 kind;
+        KF_ENUM_PROMOTED(KfMapObjectOperation) kind;
         if (object_id == KF_MAP_OBJECT_ID_NONE) {
             *write++ = KF_EVENT_WORLD_SAVE_EMPTY;
             continue;
@@ -1375,9 +1375,9 @@ void event_world_state_save_slot(s32 save_slot)
         kind = map_object_state.templates[object_id].collision_kind;
         /* Save packets carry the low byte of the 16-bit template ID. */
         switch (kind) {
-        case 64:
+        case KF_MAP_OBJECT_OP_64:
             switch (object->action) {
-            case KF_MAP_OBJECT_ACTION_FALL_AND_TIP:
+            case KF_MAP_OBJECT_OP_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
                 *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -1388,7 +1388,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = (u32)object->position.vy >> 8;
                 *write++ = object->rotation.vy >> 4;
                 break;
-            case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
+            case KF_MAP_OBJECT_OP_FALL_AND_SPIN:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_61;
                 *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -1398,7 +1398,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = object->position.vy;
                 *write++ = (u32)object->position.vy >> 8;
                 break;
-            case KF_MAP_OBJECT_ACTION_BOUNCE:
+            case KF_MAP_OBJECT_OP_BOUNCE:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_62;
                 *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
@@ -1409,7 +1409,7 @@ void event_world_state_save_slot(s32 save_slot)
                 *write++ = (u32)object->position.vy >> 8;
                 *write++ = object->tail.fields.unknown_3a.value >> 2;
                 break;
-            case KF_MAP_OBJECT_MOTION_ACTION:
+            case KF_MAP_OBJECT_OP_OFFSET_MOTION:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_70;
                 *write++ = object->object_id;
                 *write++ = object->tail.fields.unknown_38;
@@ -1420,31 +1420,31 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             }
             break;
-        case 83:
+        case KF_MAP_OBJECT_OP_83:
             if (object->tail.action_83.transition_mode < 2) {
                 break;
             }
-        case 0:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 8:
-        case 22:
-        case 80:
-        case 81:
-        case 84:
-        case 88:
-        case 95:
-        case 160:
-        case 161:
-        case 163:
-        case 164:
+        case KF_MAP_OBJECT_OP_0:
+        case KF_MAP_OBJECT_OP_2:
+        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_HINGE:
+        case KF_MAP_OBJECT_OP_5:
+        case KF_MAP_OBJECT_OP_8:
+        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_80:
+        case KF_MAP_OBJECT_OP_81:
+        case KF_MAP_OBJECT_OP_84:
+        case KF_MAP_OBJECT_OP_88:
+        case KF_MAP_OBJECT_OP_95:
+        case KF_MAP_OBJECT_OP_160:
+        case KF_MAP_OBJECT_OP_161:
+        case KF_MAP_OBJECT_OP_163:
+        case KF_MAP_OBJECT_OP_164:
             *write++ = KF_EVENT_WORLD_SAVE_STATE_BYTE;
             *write++ = object->tail.fields.unknown_38;
             break;
-        case 15:
-        case 17:
+        case KF_MAP_OBJECT_OP_15:
+        case KF_MAP_OBJECT_OP_17:
             *write++ = KF_EVENT_WORLD_SAVE_EFFECT;
             *write++ = object->tail.event_effect.pending_event_command;
             *write++ = object->tail.event_effect.effect_object_index;
@@ -1530,7 +1530,7 @@ void event_world_state_restore_slot(s32 save_slot)
             s32 angle;
 
             map_object_reset(object);
-            object->action = KF_MAP_OBJECT_ACTION_FALL_AND_TIP;
+            object->action = KF_MAP_OBJECT_OP_FALL_AND_TIP;
             object->object_id = *stream++;
             x = *stream++;
             x_high = *stream++;
@@ -1557,7 +1557,7 @@ apply_position:
         }
         case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = KF_MAP_OBJECT_ACTION_FALL_AND_SPIN;
+            object->action = KF_MAP_OBJECT_OP_FALL_AND_SPIN;
             object->object_id = *stream++;
             x = *stream++;
             x |= *stream++ << 8;
@@ -1568,7 +1568,7 @@ apply_position:
             goto apply_position;
         case KF_EVENT_WORLD_SAVE_ACTION_62 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = KF_MAP_OBJECT_ACTION_BOUNCE;
+            object->action = KF_MAP_OBJECT_OP_BOUNCE;
             object->object_id = *stream++;
             x = *stream++;
             x |= *stream++ << 8;
@@ -1584,7 +1584,7 @@ apply_position:
             goto apply_position;
         case KF_EVENT_WORLD_SAVE_ACTION_70 - KF_EVENT_WORLD_SAVE_ACTION_60:
             map_object_reset(object);
-            object->action = KF_MAP_OBJECT_MOTION_ACTION;
+            object->action = KF_MAP_OBJECT_OP_OFFSET_MOTION;
             object->object_id = *stream++;
             /* The next byte is also the body of opcode 0xfd. */
         case KF_EVENT_WORLD_SAVE_STATE_BYTE - KF_EVENT_WORLD_SAVE_ACTION_60:

@@ -424,7 +424,7 @@ void resource_advance_transition(void)
         object = map_object_state.objects;
         index = KF_MAP_OBJECT_CAPACITY - 1;
         do {
-            object->action = KF_MAP_OBJECT_ACTION_NONE;
+            object->action = KF_MAP_OBJECT_OP_NONE;
             index--;
             object++;
         } while (index != -1);
@@ -489,9 +489,9 @@ phase_three:
                 if (object->tail.animated.animation_cache != NULL) {
                     pool_record_release(object->tail.animated.animation_cache);
                 }
-                if (object->action == KF_MAP_OBJECT_ACTION_PLAYER_REACTION) {
+                if (object->action == KF_MAP_OBJECT_OP_PLAYER_REACTION) {
                     memory_free((u8 *)object->extra_40.record);
-                    object->action = KF_MAP_OBJECT_ACTION_NONE;
+                    object->action = KF_MAP_OBJECT_OP_NONE;
                 }
                 object->object_id = KF_MAP_OBJECT_ID_NONE;
                 index--;

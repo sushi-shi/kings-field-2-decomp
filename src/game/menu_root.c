@@ -208,7 +208,8 @@ void menu_draw_location_number(void)
            + map_layer * MENU_LOCATION_LAYER_PLACE
            + (camera_x >> KF_MAP_CELL_POSITION_SHIFT) * MENU_LOCATION_CELL_X_PLACE;
     value = prefix + grid_z;
-    menu_format_number(value, 6, 1, 0, row.glyphs.codes);
+    menu_format_number(value, 6, KF_FORMAT_PAD_ZEROES,
+        KF_MENU_FORMAT_STYLE_PLAIN, row.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &row);
 }
 
@@ -3211,14 +3212,16 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 77;
     amount.position.y = heading.position.y;
-    menu_format_number(player_state.experience, 7, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.experience, 7, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.position.y += row_step;
     menu_copy_prefix8(heading.glyphs.codes, menu_header_labels[1].codes);
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.y += row_step;
-    menu_format_number(player_state.level, 7, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.level, 7, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.glyphs.codes[0] = 227;
@@ -3228,14 +3231,16 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 63;
     amount.position.y += row_step;
-    menu_format_number(player_state.vitals.current_hp, 4, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.vitals.current_hp, 4, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     amount.glyphs.codes[0] = 20;
     amount.glyphs.codes[1] = -1;
     amount.position.x += 28;
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     amount.position.x += 7;
-    menu_format_number(player_state.vitals.maximum_hp, 4, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.vitals.maximum_hp, 4, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.glyphs.codes[0] = 228;
@@ -3243,14 +3248,16 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 63;
     amount.position.y += row_step;
-    menu_format_number(player_state.vitals.current_mp, 4, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.vitals.current_mp, 4, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     amount.glyphs.codes[0] = 20;
     amount.glyphs.codes[1] = -1;
     amount.position.x += 28;
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     amount.position.x += 7;
-    menu_format_number(player_state.vitals.maximum_mp, 4, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.vitals.maximum_mp, 4, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.glyphs.codes[0] = 140;
@@ -3260,7 +3267,8 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 84;
     amount.position.y = heading.position.y;
-    menu_format_number(player_state.physical_power, 6, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.physical_power, 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.glyphs.codes[0] = 120;
@@ -3268,7 +3276,8 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 84;
     amount.position.y = heading.position.y;
-    menu_format_number(player_state.magic, 6, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.magic, 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     heading.position.y += row_step;
@@ -3295,7 +3304,8 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 77;
     amount.position.y += row_step;
-    menu_format_number(player_state.gold, 7, 0, 0, amount.glyphs.codes);
+    menu_format_number(player_state.gold, 7, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     menu_draw_nine_slice_panel(161, 14, 140, 205, 1, 2);
 }
@@ -3319,7 +3329,8 @@ void menu_draw_combat_attributes(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.x = label.position.x + 84;
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[0], 6, 0, 0,
+    menu_format_number(player_state.attack_components[0], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3328,7 +3339,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[1], 6, 0, 0,
+    menu_format_number(player_state.attack_components[1], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3337,7 +3349,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[2], 6, 0, 0,
+    menu_format_number(player_state.attack_components[2], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3349,7 +3362,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[3], 6, 0, 0,
+    menu_format_number(player_state.attack_components[3], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3357,7 +3371,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[4], 6, 0, 0,
+    menu_format_number(player_state.attack_components[4], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3365,7 +3380,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[5], 6, 0, 0,
+    menu_format_number(player_state.attack_components[5], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3373,7 +3389,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[6], 6, 0, 0,
+    menu_format_number(player_state.attack_components[6], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3381,7 +3398,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.attack_components[7], 6, 0, 0,
+    menu_format_number(player_state.attack_components[7], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3398,7 +3416,8 @@ void menu_draw_combat_attributes(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.x = label.position.x + 84;
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[0], 6, 0, 0,
+    menu_format_number(player_state.combat_components[0], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3407,7 +3426,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[1], 6, 0, 0,
+    menu_format_number(player_state.combat_components[1], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3416,7 +3436,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[2], 6, 0, 0,
+    menu_format_number(player_state.combat_components[2], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3425,7 +3446,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[3], 6, 0, 0,
+    menu_format_number(player_state.combat_components[3], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3437,7 +3459,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[4], 6, 0, 0,
+    menu_format_number(player_state.combat_components[4], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3445,7 +3468,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[5], 6, 0, 0,
+    menu_format_number(player_state.combat_components[5], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3453,7 +3477,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[6], 6, 0, 0,
+    menu_format_number(player_state.combat_components[6], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3461,7 +3486,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[7], 6, 0, 0,
+    menu_format_number(player_state.combat_components[7], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3469,7 +3495,8 @@ void menu_draw_combat_attributes(void)
     label.position.y += 18;
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &label);
     number.position.y = label.position.y;
-    menu_format_number(player_state.combat_components[8], 6, 0, 0,
+    menu_format_number(player_state.combat_components[8], 6, KF_FORMAT_PAD_SPACES,
+        KF_MENU_FORMAT_STYLE_PLAIN,
         number.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &number);
 
@@ -3701,9 +3728,11 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
                 value = *number_values;
                 text.position.x += 140;
                 if (render_mode == 15)
-                    menu_format_number(value, 6, 0, 6, text.glyphs.codes);
+                    menu_format_number(value, 6, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_TRAILING_11, text.glyphs.codes);
                 else
-                    menu_format_number(value, 6, 0, 2, text.glyphs.codes);
+                    menu_format_number(value, 6, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_TRAILING_13, text.glyphs.codes);
                 menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 number_values++;
             }
@@ -3712,7 +3741,8 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
                 value = *number_values++;
                 if (value != -1) {
                     text.position.x += 189;
-                    menu_format_number(value, 3, 0, 3, text.glyphs.codes);
+                    menu_format_number(value, 3, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_PAIR_15_16, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
             }
@@ -3721,13 +3751,15 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
                 value = *number_values++;
                 if (value != -1) {
                     text.position.x += 98;
-                    menu_format_number(value, 7, 0, 4, text.glyphs.codes);
+                    menu_format_number(value, 7, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_TRIPLE_12_18_16, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
                 value = *byte_values++;
                 if (value != 0xff) {
                     text.position.x += 91;
-                    menu_format_number(value, 3, 0, 5, text.glyphs.codes);
+                    menu_format_number(value, 3, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_PAIR_14_17, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
             }
@@ -3737,7 +3769,8 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
                 value = *byte_values++;
                 if (value != 0xff) {
                     text.position.x = list->list_x + 208;
-                    menu_format_number(value, 2, 0, 1, text.glyphs.codes);
+                    menu_format_number(value, 2, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_SINGLE_PREFIX, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
             }
@@ -3745,13 +3778,15 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
                 value = *byte_values++;
                 if (value != 0xff) {
                     text.position.x += 203;
-                    menu_format_number(value, 2, 0, 1, text.glyphs.codes);
+                    menu_format_number(value, 2, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_SINGLE_PREFIX, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
                 value = *number_values++;
                 if (value != -1) {
                     text.position.x += 189;
-                    menu_format_number(value, 3, 0, 3, text.glyphs.codes);
+                    menu_format_number(value, 3, KF_FORMAT_PAD_SPACES,
+                        KF_MENU_FORMAT_STYLE_PAIR_15_16, text.glyphs.codes);
                     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 }
             }
@@ -3919,9 +3954,11 @@ void menu_draw_status_counters(s32 kind)
     amount.position.x = heading.position.x + 56;
     amount.position.y = heading.position.y;
     if (kind == 3)
-        menu_format_number(game_counter_bytes[0x60], 7, 0, 6, amount.glyphs.codes);
+        menu_format_number(game_counter_bytes[0x60], 7, KF_FORMAT_PAD_SPACES,
+            KF_MENU_FORMAT_STYLE_TRAILING_11, amount.glyphs.codes);
     else
-        menu_format_number(player_state.gold, 7, 0, 2, amount.glyphs.codes);
+        menu_format_number(player_state.gold, 7, KF_FORMAT_PAD_SPACES,
+            KF_MENU_FORMAT_STYLE_TRAILING_13, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     if (kind != 2) {
@@ -3934,7 +3971,8 @@ void menu_draw_status_counters(s32 kind)
         menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
         amount.position.x = heading.position.x + 91;
         amount.position.y = heading.position.y;
-        menu_format_number(menu_item_quantity, 2, 0, 1, amount.glyphs.codes);
+        menu_format_number(menu_item_quantity, 2, KF_FORMAT_PAD_SPACES,
+            KF_MENU_FORMAT_STYLE_SINGLE_PREFIX, amount.glyphs.codes);
         menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
     }
 }
@@ -4318,18 +4356,11 @@ void menu_list_init(KfMenuList *list, KfMenuWindowKind window_kind, s32 row)
     list->glyphs_per_entry = 10;
 }
 
-enum {
-    KF_MENU_FORMAT_BLANK = 10,
-    KF_MENU_FORMAT_STYLE_SINGLE_PREFIX = 1,
-    KF_MENU_FORMAT_STYLE_TRAILING_13 = 2,
-    KF_MENU_FORMAT_STYLE_PAIR_15_16 = 3,
-    KF_MENU_FORMAT_STYLE_TRIPLE_12_18_16 = 4,
-    KF_MENU_FORMAT_STYLE_PAIR_14_17 = 5,
-    KF_MENU_FORMAT_STYLE_TRAILING_11 = 6
-};
+enum { KF_MENU_FORMAT_BLANK = 10 };
 
 ADDRESS(0x80022058, 0x190)
-void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out)
+void menu_format_number(s32 value, s32 count, KfFormatPaddingMode padding_mode,
+    KfMenuFormatStyle style, s16 *out)
 {
     s32 i;
     s16 blank;
@@ -4337,7 +4368,8 @@ void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *
     /* Retail reserves an unreferenced 8-byte frame slot. */
     s16 frame_reserve[4];
 
-    if ((u32)(style - 1) < 2 || style == KF_MENU_FORMAT_STYLE_TRAILING_11) {
+    if (style == KF_MENU_FORMAT_STYLE_SINGLE_PREFIX || style == KF_MENU_FORMAT_STYLE_TRAILING_13
+        || style == KF_MENU_FORMAT_STYLE_TRAILING_11) {
         count++;
     } else if (style == KF_MENU_FORMAT_STYLE_PAIR_15_16
         || style == KF_MENU_FORMAT_STYLE_PAIR_14_17) {
@@ -4347,7 +4379,7 @@ void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *
     }
 
     i = 0;
-    blank = padding_mode == 0 ? KF_MENU_FORMAT_BLANK : 0;
+    blank = padding_mode == KF_FORMAT_PAD_SPACES ? KF_MENU_FORMAT_BLANK : 0;
     if (count > 0) {
         cursor = out;
         do {

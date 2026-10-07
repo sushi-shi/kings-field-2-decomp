@@ -2782,7 +2782,7 @@ void notification_update(void)
             notification_quads[1].texture_u = 128;
             notification_quads[1].texture_v = 42;
             menu_format_number(game_graphics_runtime.notification_payloads[tail],
-                               4, 0, 0, digits);
+                               4, KF_FORMAT_PAD_SPACES, KF_MENU_FORMAT_STYLE_PLAIN, digits);
             notification_quads[2].kind = 1;
             notification_digit_set_v(&notification_quads[2], (u16)digits[3]);
             notification_quads[3].kind = 1;

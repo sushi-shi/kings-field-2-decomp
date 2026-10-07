@@ -45,6 +45,24 @@ enum {
     KF_MENU_SPRITE_PANEL_TOP_LEFT = 11
 };
 
+/* menu_format_number pads with the blank glyph or with zero digits. */
+KF_ENUM_BEGIN(KfFormatPaddingMode, s32)
+    KF_FORMAT_PAD_SPACES = 0,
+    KF_FORMAT_PAD_ZEROES = 1
+KF_ENUM_END(KfFormatPaddingMode)
+
+/* Number-font glyphs menu_format_number adds around the digits; members
+ * name the glyph codes until the number atlas is decoded. */
+KF_ENUM_BEGIN(KfMenuFormatStyle, s32)
+    KF_MENU_FORMAT_STYLE_PLAIN = 0,
+    KF_MENU_FORMAT_STYLE_SINGLE_PREFIX = 1,
+    KF_MENU_FORMAT_STYLE_TRAILING_13 = 2,
+    KF_MENU_FORMAT_STYLE_PAIR_15_16 = 3,
+    KF_MENU_FORMAT_STYLE_TRIPLE_12_18_16 = 4,
+    KF_MENU_FORMAT_STYLE_PAIR_14_17 = 5,
+    KF_MENU_FORMAT_STYLE_TRAILING_11 = 6
+KF_ENUM_END(KfMenuFormatStyle)
+
 /* Menu sound cues; each nonzero cue is also the sound ID it keys on. */
 enum {
     KF_MENU_SOUND_NONE = 0,
@@ -261,7 +279,8 @@ void menu_render_item_model(void);
 void menu_present_frame(void);
 void menu_frame_begin(void);
 void menu_render_list_mode_8_9_noop(void);
-void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
+void menu_format_number(s32 value, s32 count, KfFormatPaddingMode padding_mode,
+    KfMenuFormatStyle style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
     const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);
 void menu_draw_window(KfMenuWindowKind window_kind, s32 count, s32 highlight,

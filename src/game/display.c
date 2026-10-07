@@ -38,64 +38,6 @@ enum {
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
-typedef struct KfTmdUvBytes {
-    u8 u, v;
-} KfTmdUvBytes;
-typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
-
-typedef union KfTmdUvWord {
-    struct { KfTmdUvBytes uv; u16 texture_aux; } parts;
-    u32 word;
-} KfTmdUvWord;
-typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
-typedef struct KfTmdFt4TextureWords {
-    KfTmdUvWord uv0, uv1, uv2, uv3;
-} KfTmdFt4TextureWords;
-typedef char kf_tmd_ft4_texture_words_size[
-    sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv1_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv1 == 4 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv2_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv3_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
-typedef struct KfUvScratch { u32 word; } KfUvScratch;
-typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 4 ? 1 : -1];
-typedef union KfTmdIndexScratch {
-    u16 halves[2];
-    u8 bytes[4];
-} KfTmdIndexScratch;
-typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
-#define WRITE_UV_CACHED(field, value) do { \
-    ((u8 *)&(field))[0] = (u8)(value).word; \
-    ((u8 *)&(field))[1] = (u8)((value).word >> 8); \
-} while (0)
-#define WRITE_INDEX(field, value) do { \
-    index_scratch.halves[0] = (u16)(value); \
-    COPY_SCRATCH_INDEX(field, 0); \
-} while (0)
-#define COPY_SCRATCH_INDEX(field, slot) do { \
-    ((u8 *)&(field))[0] = index_scratch.bytes[(slot) * 2]; \
-    ((u8 *)&(field))[1] = index_scratch.bytes[(slot) * 2 + 1]; \
-} while (0)
-#define WRITE_SCRATCH_INDEX(field, value, slot) do { \
-    index_scratch.halves[slot] = (value); \
-    COPY_SCRATCH_INDEX(field, slot); \
-} while (0)
-#define MID_INDEX(src, n) ((u16)(((src)->vertex_count + (n)) << 3))
-#define MID_VECTOR(dst, lhs, rhs) do { \
-    (dst)->vx = ((s32)(lhs)->vx + (s32)(rhs)->vx) >> 1; \
-    (dst)->vy = ((s32)(lhs)->vy + (s32)(rhs)->vy) >> 1; \
-    (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
-} while (0)
-#define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).word = (lhs).word; \
-    (dst).word &= 0xffff00ff; \
-    (dst).word |= (((u32)(lhs).parts.uv.v + (u32)(rhs).parts.uv.v) >> 1) << 8; \
-    (dst).word &= 0xffffff00; \
-    (dst).word |= ((u32)(lhs).parts.uv.u + (u32)(rhs).parts.uv.u) >> 1; \
-} while (0)
-
 enum {
     KF_GPU_RESET_KEEP_DISPLAY = 3,
     KF_DISPLAY_WIDTH = 320,
@@ -1532,228 +1474,233 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
 #undef FT4_FACE
 #undef FT3_FACE
 
+typedef struct KfTmdUvBytes {
+    u8 u, v;
+} KfTmdUvBytes;
+typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
+
+typedef union KfTmdUvWord {
+    struct { KfTmdUvBytes uv; u16 texture_aux; } parts;
+    u32 word;
+} KfTmdUvWord;
+typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
+typedef struct KfTmdFt4TextureWords {
+    KfTmdUvWord uv0, uv1, uv2, uv3;
+} KfTmdFt4TextureWords;
+typedef char kf_tmd_ft4_texture_words_size[
+    sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv1_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv1 == 4 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv2_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv3_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
+
+/* The packet word is read bytewise and as signed halves through its address. */
+#define WORD_BYTE(n) (((u8 *)&word)[n])
+#define WORD_HALF(n) (((s16 *)&word)[n])
+
+#define SUBDIVIDE_CORNER(corner, half) do { \
+    u32 *vertex = (u32 *)(base + source->vertex_offset + WORD_HALF(half)); \
+    (corner).words[0] = vertex[0]; \
+    (corner).words[1] = vertex[1]; \
+} while (0)
+#define SUBDIVIDE_MIDPOINT(lhs, rhs) { \
+    midpoint_end->vx = ((lhs).vector.vx + (rhs).vector.vx) >> 1; \
+    midpoint_end->vy = ((lhs).vector.vy + (rhs).vector.vy) >> 1; \
+    midpoint_end->vz = ((lhs).vector.vz + (rhs).vector.vz) >> 1; \
+    midpoint_end++; \
+}
+#define SUBDIVIDE_UV(dst, lhs, rhs) { \
+    (dst).parts.uv.v = ((lhs).parts.uv.v + (rhs).parts.uv.v) >> 1; \
+    (dst).parts.uv.u = ((lhs).parts.uv.u + (rhs).parts.uv.u) >> 1; \
+}
+#define SUBDIVIDE_INDEX(n) ((count + (n)) << 3)
+#define SUBDIVIDE_WRITE_UV(offset, value) { \
+    out[offset] = (value).parts.uv.u; \
+    out[(offset) + 1] = (value).parts.uv.v; \
+}
+#define SUBDIVIDE_WRITE_INDEX(offset, value) { \
+    WORD_HALF(((offset) >> 1) & 1) = (value); \
+    out[offset] = WORD_BYTE((offset) & 3); \
+    out[(offset) + 1] = WORD_BYTE(((offset) & 3) + 1); \
+}
+#define SUBDIVIDE_NEXT_PACKET() do { \
+    word = *(u32 *)packet; \
+    packet += (WORD_BYTE(1) + 1) * KF_TMD_WORD_BYTES; \
+} while (0)
+
 ADDRESS(0x8002ff5c, 0xcbc)
-void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
-                   KfTmdPreparedAsset *prepared_asset)
+void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out)
 {
-    u8 *base;
-    KfTmdObject *source;
-    KfTmdObject *target;
-    u8 *source_packet;
-    u8 *output_packet;
     union { SVECTOR vector; u32 words[2]; } corners[4];
     KfTmdFt4TextureWords tex;
     SVECTOR midpoints[128];
-    SVECTOR *midpoint_end;
+    u32 word;
+    u8 *base;
     u32 midpoint_count;
-    u32 source_vertex_count;
-    u32 output_packet_bytes;
+    KfTmdObject *source;
+    KfTmdObject *target;
+    u32 output_bytes;
     u32 remaining;
+    KfTmdUvWord uv0, uv1, uv2, uv3, uv4;
+    u8 *packet;
+    SVECTOR *midpoint_end;
+    u32 count;
+    u32 source_vertex_count;
 
     midpoint_count = 0;
-    output_packet_bytes = 0;
+    output_bytes = 0;
     midpoint_end = midpoints;
-    target = &prepared_asset->object;
-    output_packet = (u8 *)target;
-    target->primitive_offset = sizeof(KfTmdObject);
-    output_packet += target->primitive_offset;
+    out += KF_TMD_HEADER_BYTES;
+    target = (KfTmdObject *)out;
     base = (u8 *)asset + KF_TMD_HEADER_BYTES;
-    source = &TMD_OBJECTS(asset)[object_index];
+    source = (KfTmdObject *)base + object_index;
+    target->primitive_offset = sizeof(KfTmdObject);
+    out += sizeof(KfTmdObject);
     target->primitive_count = source->primitive_count;
+    packet = base + source->primitive_offset;
     remaining = source->primitive_count;
-    source_packet = base + source->primitive_offset;
     while (--remaining != (u32)-1) {
-        KfTmdPacketHeader header;
-        KfUvScratch uv_ab, uv_ac, uv_ad, uv_cd, uv_bd;
-        header.word = *(u32 *)source_packet;
-        if (header.bytes.mode == 0x2c || header.bytes.mode == 0x2e) {
-            KfTmdFt4 *face = (KfTmdFt4 *)(source_packet + 4);
-            KfTmdFt4PackedIndices *first =
-                (KfTmdFt4PackedIndices *)(output_packet + 4);
-            KfTmdFt4 *second;
-            KfTmdFt4 *third;
-            KfTmdFt4 *fourth;
-            u16 ab, ac, ad, cd, bd;
-            KfTmdIndexScratch index_scratch;
-
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
-                corners[0].words[0] = vertex[0];
-                corners[0].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
-                corners[1].words[0] = vertex[0];
-                corners[1].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
-                corners[2].words[0] = vertex[0];
-                corners[2].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex3);
-                corners[3].words[0] = vertex[0];
-                corners[3].words[1] = vertex[1];
-            }
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[1].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[2].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[3].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[2].vector, &corners[3].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[1].vector, &corners[3].vector);
-            midpoint_end++;
-            resource_copy_words((u32 *)&tex, (u32 *)(source_packet + 4), 4);
-            MID_UV_INTO(uv_ab, tex.uv0, tex.uv1);
-            MID_UV_INTO(uv_ac, tex.uv0, tex.uv2);
-            MID_UV_INTO(uv_ad, tex.uv0, tex.uv3);
-            MID_UV_INTO(uv_cd, tex.uv2, tex.uv3);
-            MID_UV_INTO(uv_bd, tex.uv1, tex.uv3);
-            ab = MID_INDEX(source, midpoint_count);
-            ac = MID_INDEX(source, midpoint_count + 1);
-            ad = MID_INDEX(source, midpoint_count + 2);
-            cd = MID_INDEX(source, midpoint_count + 3);
-            bd = MID_INDEX(source, midpoint_count + 4);
-            WRITE_UV_CACHED(first->uv1, uv_ab);
-            WRITE_UV_CACHED(first->uv2, uv_ac);
-            WRITE_UV_CACHED(first->uv3, uv_ad);
-            first->vertex1_vertex2 = (u32)ab | ((u32)ac << 16);
-            first->vertex3_pad2 = (u32)ad | ((u32)ac << 16);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            second = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(second->uv0, uv_ab);
-            WRITE_UV_CACHED(second->uv2, uv_ad);
-            WRITE_UV_CACHED(second->uv3, uv_bd);
-            WRITE_INDEX(second->vertex0, ab);
-            WRITE_INDEX(second->vertex2, ad);
-            WRITE_INDEX(second->vertex3, bd);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            third = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(third->uv0, uv_ac);
-            WRITE_UV_CACHED(third->uv1, uv_ad);
-            WRITE_UV_CACHED(third->uv3, uv_cd);
-            WRITE_INDEX(third->vertex0, ac);
-            WRITE_INDEX(third->vertex1, ad);
-            WRITE_INDEX(third->vertex3, cd);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            fourth = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(fourth->uv0, uv_ad);
-            WRITE_UV_CACHED(fourth->uv1, uv_bd);
-            WRITE_UV_CACHED(fourth->uv2, uv_cd);
-            WRITE_INDEX(fourth->vertex0, ad);
-            WRITE_INDEX(fourth->vertex1, bd);
-            WRITE_INDEX(fourth->vertex2, cd);
-            output_packet += 32;
-            output_packet_bytes += 128;
+        /* Retail stores the header word twice before testing its mode. */
+        word = *(u32 *)packet;
+        word = *(u32 *)packet;
+        if (WORD_BYTE(3) == 0x2c || WORD_BYTE(3) == 0x2e) {
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            word = *(u32 *)(packet + 20);
+            SUBDIVIDE_CORNER(corners[0], 1);
+            word = *(u32 *)(packet + 24);
+            SUBDIVIDE_CORNER(corners[1], 0);
+            SUBDIVIDE_CORNER(corners[2], 1);
+            word = *(u32 *)(packet + 28);
+            SUBDIVIDE_CORNER(corners[3], 0);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[3]);
+            SUBDIVIDE_MIDPOINT(corners[2], corners[3]);
+            SUBDIVIDE_MIDPOINT(corners[1], corners[3]);
+            resource_copy_words((u32 *)&tex, (u32 *)(packet + 4), 4);
+            SUBDIVIDE_UV(uv0, tex.uv0, tex.uv1);
+            SUBDIVIDE_UV(uv1, tex.uv0, tex.uv2);
+            SUBDIVIDE_UV(uv2, tex.uv0, tex.uv3);
+            SUBDIVIDE_UV(uv3, tex.uv2, tex.uv3);
+            SUBDIVIDE_UV(uv4, tex.uv1, tex.uv3);
+            count = midpoint_count + source->vertex_count;
+            SUBDIVIDE_WRITE_UV(8, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            SUBDIVIDE_WRITE_UV(16, uv2);
+            WORD_HALF(0) = SUBDIVIDE_INDEX(0);
+            WORD_HALF(1) = SUBDIVIDE_INDEX(1);
+            *(u32 *)(out + 24) = word;
+            WORD_HALF(0) = SUBDIVIDE_INDEX(2);
+            *(u32 *)(out + 28) = word;
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv2);
+            SUBDIVIDE_WRITE_UV(16, uv4);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX(26, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(28, SUBDIVIDE_INDEX(4));
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv1);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_UV(16, uv3);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(1));
+            SUBDIVIDE_WRITE_INDEX(24, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(28, SUBDIVIDE_INDEX(3));
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv2);
+            SUBDIVIDE_WRITE_UV(8, uv4);
+            SUBDIVIDE_WRITE_UV(12, uv3);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(24, SUBDIVIDE_INDEX(4));
+            SUBDIVIDE_WRITE_INDEX(26, SUBDIVIDE_INDEX(3));
+            out += 32;
+            output_bytes += 128;
             midpoint_count += 5;
             target->primitive_count += 3;
-        } else if (header.bytes.mode == 0x24 || header.bytes.mode == 0x26) {
-            KfTmdFt3 *face = (KfTmdFt3 *)(source_packet + 4);
-            KfTmdFt3 *first = (KfTmdFt3 *)(output_packet + 4);
-            KfTmdFt3 *second;
-            KfTmdFt3 *third;
-            KfTmdFt3 *fourth;
-            u16 ab, ac, bc;
-            KfTmdIndexScratch index_scratch;
-
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
-                corners[0].words[0] = vertex[0];
-                corners[0].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
-                corners[1].words[0] = vertex[0];
-                corners[1].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
-                corners[2].words[0] = vertex[0];
-                corners[2].words[1] = vertex[1];
-            }
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[1].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[2].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[1].vector, &corners[2].vector);
-            midpoint_end++;
-            resource_copy_words((u32 *)&tex, (u32 *)(source_packet + 4), 3);
-            MID_UV_INTO(uv_ab, tex.uv0, tex.uv1);
-            MID_UV_INTO(uv_ac, tex.uv0, tex.uv2);
-            MID_UV_INTO(uv_bd, tex.uv1, tex.uv2);
-            ab = MID_INDEX(source, midpoint_count);
-            ac = MID_INDEX(source, midpoint_count + 1);
-            bc = MID_INDEX(source, midpoint_count + 2);
-            WRITE_UV_CACHED(first->uv1, uv_ab);
-            WRITE_UV_CACHED(first->uv2, uv_ac);
-            index_scratch.halves[0] = ab;
-            index_scratch.halves[1] = ac;
-            COPY_SCRATCH_INDEX(first->vertex1, 0);
-            COPY_SCRATCH_INDEX(first->vertex2, 1);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            second = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(second->uv0, uv_ab);
-            WRITE_UV_CACHED(second->uv2, uv_bd);
-            WRITE_SCRATCH_INDEX(second->vertex0, ab, 1);
-            WRITE_SCRATCH_INDEX(second->vertex2, bc, 1);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            third = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(third->uv0, uv_ac);
-            WRITE_UV_CACHED(third->uv1, uv_bd);
-            WRITE_SCRATCH_INDEX(third->vertex0, ac, 1);
-            WRITE_SCRATCH_INDEX(third->vertex1, bc, 0);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            fourth = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(fourth->uv0, uv_ab);
-            WRITE_UV_CACHED(fourth->uv1, uv_bd);
-            WRITE_UV_CACHED(fourth->uv2, uv_ac);
-            WRITE_SCRATCH_INDEX(fourth->vertex0, ab, 1);
-            WRITE_SCRATCH_INDEX(fourth->vertex1, bc, 0);
-            WRITE_SCRATCH_INDEX(fourth->vertex2, ac, 1);
-            output_packet += 24;
-            output_packet_bytes += 96;
+        } else if (WORD_BYTE(3) == 0x24 || WORD_BYTE(3) == 0x26) {
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            word = *(u32 *)(packet + 16);
+            SUBDIVIDE_CORNER(corners[0], 1);
+            word = *(u32 *)(packet + 20);
+            SUBDIVIDE_CORNER(corners[1], 0);
+            SUBDIVIDE_CORNER(corners[2], 1);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
+            SUBDIVIDE_MIDPOINT(corners[1], corners[2]);
+            resource_copy_words((u32 *)&tex, (u32 *)(packet + 4), 3);
+            SUBDIVIDE_UV(uv0, tex.uv0, tex.uv1);
+            SUBDIVIDE_UV(uv1, tex.uv0, tex.uv2);
+            SUBDIVIDE_UV(uv2, tex.uv1, tex.uv2);
+            count = midpoint_count + source->vertex_count;
+            SUBDIVIDE_WRITE_UV(8, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            WORD_HALF(0) = SUBDIVIDE_INDEX(0);
+            WORD_HALF(1) = SUBDIVIDE_INDEX(1);
+            out[20] = WORD_BYTE(0);
+            out[21] = WORD_BYTE(1);
+            out[22] = WORD_BYTE(2);
+            out[23] = WORD_BYTE(3);
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv2);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(2));
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv1);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(1));
+            SUBDIVIDE_WRITE_INDEX(20, SUBDIVIDE_INDEX(2));
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX(20, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(1));
+            out += 24;
+            output_bytes += 96;
             midpoint_count += 3;
             target->primitive_count += 3;
         } else {
-            u32 input_words = header.bytes.input_length + 1;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, input_words);
-            output_packet += input_words * KF_TMD_WORD_BYTES;
-            output_packet_bytes += input_words * KF_TMD_WORD_BYTES;
+            count = WORD_BYTE(1) + 1;
+            resource_copy_words((u32 *)out, (u32 *)packet, count);
+            count <<= 2;
+            out += count;
+            output_bytes += count;
         }
-        header.word = *(u32 *)source_packet;
-        source_packet += (header.bytes.input_length + 1) * KF_TMD_WORD_BYTES;
+        SUBDIVIDE_NEXT_PACKET();
     }
-    target->vertex_offset = target->primitive_offset + output_packet_bytes;
-    target->vertex_count = source->vertex_count + midpoint_count;
+    target->vertex_offset = output_bytes + target->primitive_offset;
+    target->vertex_count = midpoint_count + source->vertex_count;
     source_vertex_count = source->vertex_count;
-    resource_copy_words((u32 *)output_packet, (u32 *)(base + source->vertex_offset),
+    resource_copy_words((u32 *)out, (u32 *)(base + source->vertex_offset),
                         source_vertex_count * 2);
-    output_packet += source_vertex_count * sizeof(SVECTOR);
-    resource_copy_words((u32 *)output_packet, (u32 *)midpoints, midpoint_count * 2);
-    target->normal_offset = target->vertex_offset +
-        source_vertex_count * sizeof(SVECTOR) + midpoint_count * sizeof(SVECTOR);
+    output_bytes = source_vertex_count * sizeof(SVECTOR);
+    out += output_bytes;
+    resource_copy_words((u32 *)out, (u32 *)midpoints, midpoint_count * 2);
+    output_bytes += midpoint_count * sizeof(SVECTOR);
+    target->normal_offset = output_bytes + target->vertex_offset;
     target->normal_count = source->normal_count;
-    resource_copy_words((u32 *)(output_packet + midpoint_count * sizeof(SVECTOR)),
+    resource_copy_words((u32 *)(out + midpoint_count * sizeof(SVECTOR)),
                         (u32 *)(base + source->normal_offset), source->normal_count * 2);
 }
-#undef MID_INDEX
-#undef MID_VECTOR
-#undef MID_UV_INTO
-#undef WRITE_UV_CACHED
-#undef WRITE_INDEX
-#undef COPY_SCRATCH_INDEX
-#undef WRITE_SCRATCH_INDEX
+#undef WORD_BYTE
+#undef WORD_HALF
+#undef SUBDIVIDE_CORNER
+#undef SUBDIVIDE_MIDPOINT
+#undef SUBDIVIDE_UV
+#undef SUBDIVIDE_INDEX
+#undef SUBDIVIDE_WRITE_UV
+#undef SUBDIVIDE_WRITE_INDEX
+#undef SUBDIVIDE_NEXT_PACKET
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
@@ -1795,7 +1742,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                 KfTmdPreparedAsset prepared_asset;
 
                 tmd_prepare_subdivided_object(game_graphics_runtime.tmd_state.current_asset,
-                              object_index, &prepared_asset);
+                              object_index, (u8 *)&prepared_asset);
                 render_enqueue_tmd_with_clipping(object_index, 240, &prepared_asset);
                 return;
             }

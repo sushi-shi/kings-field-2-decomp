@@ -292,7 +292,6 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
                    u32 mode, s32 depth_bias);
 void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                    KfTmdPreparedAsset *prepared_asset);
-void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
-                   KfTmdPreparedAsset *prepared_asset);
+void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out);
 
 #endif

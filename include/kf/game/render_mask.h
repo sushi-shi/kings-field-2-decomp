@@ -26,6 +26,13 @@ typedef char kf_render_mask_scan_map_x_offset[
 typedef char kf_render_mask_scan_cursor_offset[
     offsetof(KfRenderMaskScanState, mask_cursor) == 0x1c ? 1 : -1];
 
+/* find_map_cell_layer_mask_run_boundary scans for the first cell holding
+ * the value, then for the first cell past that run. */
+KF_ENUM_BEGIN(KfMaskRunScan, s32)
+    KF_MASK_RUN_SEEK = 0,
+    KF_MASK_RUN_INSIDE = 1
+KF_ENUM_END(KfMaskRunScan)
+
 typedef struct KfCollisionMaskPoint {
     s32 x;
     s32 z;

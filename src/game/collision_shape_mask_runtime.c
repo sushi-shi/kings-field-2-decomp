@@ -727,7 +727,7 @@ ADDRESS(0x8002c170, 0x64)
 s32 find_map_cell_layer_mask_run_boundary(const KfMapLayerMask *row, s32 index, s32 step,
                    KfMapLayerMask value)
 {
-    s32 state = 0;
+    KF_ENUM_STORAGE(KfMaskRunScan, s32) state = KF_MASK_RUN_SEEK;
 
     for (;;) {
         KfMapLayerMask current;
@@ -736,12 +736,12 @@ s32 find_map_cell_layer_mask_run_boundary(const KfMapLayerMask *row, s32 index, 
         }
         current = row[index];
         switch (state) {
-        case 0:
+        case KF_MASK_RUN_SEEK:
             if (current == value) {
-                state = 1;
+                state = KF_MASK_RUN_INSIDE;
             }
             break;
-        case 1:
+        case KF_MASK_RUN_INSIDE:
             if (current != value) {
                 return index;
             }

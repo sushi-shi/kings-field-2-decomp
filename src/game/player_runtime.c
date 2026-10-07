@@ -1150,7 +1150,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
                           player_state.camera_rotation.angles[1],
                           player_state.camera_rotation.angles[0], 0x55f0,
                           0x200, 0x200, distance, 0);
-    actor_state.actor_93c8 = actor;
+    actor_state.player_view_target = actor;
     if (actor != NULL) {
         target = actor_find_target_of_type(&actor_state.target_groups[actor->group_index],
                                            0x82);

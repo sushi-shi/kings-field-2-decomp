@@ -679,7 +679,7 @@ typedef struct KfActorStateGame {
     u32 current_group_index;
     u32 active_actor_count;
     u32 actor_update_frame_count;
-    KfActor *actor_93c8;
+    KfActor *player_view_target;
 } KfActorStateGame;
 
 typedef char kf_actor_state_size[sizeof(KfActorStateGame) == 0x93cc ? 1 : -1];

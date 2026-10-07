@@ -94,7 +94,7 @@ KfActorStateGame	0x93b8	0x4	current_actor_slot_index	s32	supported	actor_update_
 KfActorStateGame	0x93bc	0x4	current_group_index	u32	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x93c0	0x4	active_actor_count	u32	supported	game/actor.h;GAME 0x8003f610 frame scan	resets to zero and increments only for lifecycle-one actors
 KfActorStateGame	0x93c4	0x4	actor_update_frame_count	u32	supported	actor_initialize_pool;actor_update_frame;actor_behavior_dispatch	initialized to zero and incremented once per actor update pass; schedules lifecycle and behavior intervals
-KfActorStateGame	0x93c8	0x4	actor_93c8	KfActor *	supported	game/actor.h;retail GAME 80025878	actor pointer written from 8003a778 result
+KfActorStateGame	0x93c8	0x4	player_view_target	KfActor *	supported	game/actor.h;player_probe_view_target_and_vectors	actor_find_best_in_cone result for the player view cone
 KfActorTail72	0x0	0x2	signed_state	s16	supported	GAME 0x8003ef8c;0x8003efd4;0x8003efdc	signed state halfword used by alternate action
 KfActorTail72	0x0	0x2	unsigned_state	u16	supported	GAME 0x8003ebb4 lhu;0x8003ebc0 sh;0x8003ebc4-0x8003ebc8 sll/sra	Unsigned decrement with signed terminal test in selector 21
 KfActorTail72	0x0	0x6	angles	KfEulerAngles	supported	GAME 0x8003e634-0x8003e660	Euler output at actor +0x72 consumed by actor_turn_and_move_along_euler_angles

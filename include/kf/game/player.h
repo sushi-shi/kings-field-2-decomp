@@ -56,9 +56,10 @@ enum {
     KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
 };
 
-/* Low-halfword motion bits kept when the player's motion is cleared. */
+/* Buttons that stay pressed when the player's motion is cleared; the
+ * direction and shoulder buttons are dropped. */
 enum {
-    KF_PLAYER_MOTION_FLAGS_KEPT = 0x8b0
+    KF_PLAYER_PAD_KEPT_ON_STOP = PADstart | PADRleft | PADRright | PADRup
 };
 
 /*
@@ -189,22 +190,31 @@ typedef char kf_player_position_reaction_size[
 typedef char kf_player_position_reaction_position_offset[
     (u32)&((KfPlayerPositionReaction *)0)->position == 4 ? 1 : -1];
 
-typedef struct KfPlayerFlags140Halves {
-    u16 low;
-    u16 high;
-} KfPlayerFlags140Halves;
+/* PadRead(1) buttons for this frame, and the previous frame's copy taken
+ * after the player update. */
+typedef struct KfPlayerPadButtonHalves {
+    u16 current;
+    u16 previous;
+} KfPlayerPadButtonHalves;
 
-typedef union KfPlayerFlags140 {
+typedef union KfPlayerPadButtons {
     u32 word;
-    u16 low;
-    KfPlayerFlags140Halves halves;
-} KfPlayerFlags140;
+    u16 current;
+    KfPlayerPadButtonHalves halves;
+} KfPlayerPadButtons;
 
-typedef char kf_player_flags140_halves_size[
-    sizeof(KfPlayerFlags140Halves) == 4 ? 1 : -1];
-typedef char kf_player_flags140_high_offset[
-    (u32)&((KfPlayerFlags140 *)0)->halves.high == 2 ? 1 : -1];
-typedef char kf_player_flags140_size[sizeof(KfPlayerFlags140) == 4 ? 1 : -1];
+typedef char kf_player_pad_button_halves_size[
+    sizeof(KfPlayerPadButtonHalves) == 4 ? 1 : -1];
+typedef char kf_player_pad_buttons_previous_offset[
+    (u32)&((KfPlayerPadButtons *)0)->halves.previous == 2 ? 1 : -1];
+typedef char kf_player_pad_buttons_size[sizeof(KfPlayerPadButtons) == 4 ? 1 : -1];
+
+/* Whole-word tests of BUTTON in both frames: newly pressed, or held. */
+#define KF_PLAYER_PAD_BOTH_FRAMES(button) ((u32)(button) << 16 | (button))
+#define KF_PLAYER_PAD_PRESSED(pad, button) \
+    (((pad).word & KF_PLAYER_PAD_BOTH_FRAMES(button)) == (button))
+#define KF_PLAYER_PAD_HELD(pad, button) \
+    (((pad).word & KF_PLAYER_PAD_BOTH_FRAMES(button)) == KF_PLAYER_PAD_BOTH_FRAMES(button))
 
 typedef union KfPlayerReactionOverlay {
     KfPlayerDamageReaction damage;
@@ -481,7 +491,7 @@ typedef struct KfPlayerState {
     s16 vertical_velocity;
     s16 damage_red_overlay_scale;
     s16 damage_red_overlay_decay;
-    KfPlayerFlags140 flags_140;
+    KfPlayerPadButtons pad_buttons;
     s32 movement_step_limit;
     s32 turn_step_limit;
     KfPlayerReactionOverlay reaction;
@@ -524,8 +534,8 @@ typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[
     (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
-typedef char kf_player_flags140_offset[
-    (u32)&((KfPlayerState *)0)->flags_140 == 0x140 ? 1 : -1];
+typedef char kf_player_pad_buttons_offset[
+    (u32)&((KfPlayerState *)0)->pad_buttons == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[
     (u32)&((KfPlayerState *)0)->turn_step_limit == 0x148 ? 1 : -1];
 typedef char kf_player_movement_step_limit_offset[

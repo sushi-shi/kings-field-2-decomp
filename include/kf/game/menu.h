@@ -1,6 +1,8 @@
 #ifndef KF_GAME_MENU_H
 #define KF_GAME_MENU_H
 
+#include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/item.h>
 #include <psyq/sdk.h>
@@ -40,8 +42,7 @@ enum {
 };
 
 enum {
-    KF_MENU_CHOICE_ACCEPT = 0,
-    KF_MENU_CONFIRM_REQUESTED = 1
+    KF_MENU_CHOICE_ACCEPT = 0
 };
 
 enum {
@@ -88,11 +89,6 @@ enum {
     KF_MENU_DIGIT_ADVANCE = 7,
     KF_MENU_NUMBER_COLUMN_ROWS = 11,
     KF_MENU_NUMBER_COLUMN_WIDTH = 7
-};
-
-enum {
-    KF_MENU_MODEL_RELEASED = 0,
-    KF_MENU_MODEL_ALLOCATED = 1
 };
 
 typedef struct KfMenuPoint {
@@ -188,23 +184,23 @@ typedef char kf_menu_sprite_def_size[sizeof(KfMenuSpriteDef) == 12 ? 1 : -1];
 typedef char kf_menu_window_layout_size[sizeof(KfMenuWindowLayout) == 308 ? 1 : -1];
 typedef char kf_menu_list_prefix_size[sizeof(KfMenuList) == 36 ? 1 : -1];
 typedef char kf_item_menu_list_size[sizeof(KfItemMenuList) == 52 ? 1 : -1];
-typedef char kf_item_menu_list_rows_offset[(u32)&((KfItemMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_item_menu_list_values_offset[(u32)&((KfItemMenuList *)0)->values == 0x2c ? 1 : -1];
-typedef char kf_item_menu_list_prices_offset[(u32)&((KfItemMenuList *)0)->prices == 0x30 ? 1 : -1];
+typedef char kf_item_menu_list_rows_offset[offsetof(KfItemMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_item_menu_list_values_offset[offsetof(KfItemMenuList, values) == 0x2c ? 1 : -1];
+typedef char kf_item_menu_list_prices_offset[offsetof(KfItemMenuList, prices) == 0x30 ? 1 : -1];
 typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
 typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
-typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_card_menu_list_levels_offset[(u32)&((KfCardMenuList *)0)->levels == 0x2c ? 1 : -1];
+typedef char kf_card_menu_list_rows_offset[offsetof(KfCardMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_card_menu_list_levels_offset[offsetof(KfCardMenuList, levels) == 0x2c ? 1 : -1];
 typedef char kf_card_menu_list_experience_values_offset[
-    (u32)&((KfCardMenuList *)0)->experience_values == 0x30 ? 1 : -1];
+    offsetof(KfCardMenuList, experience_values) == 0x30 ? 1 : -1];
 typedef char kf_magic_menu_list_size[sizeof(KfMagicMenuList) == 52 ? 1 : -1];
-typedef char kf_magic_menu_list_rows_offset[(u32)&((KfMagicMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_magic_menu_list_values_offset[(u32)&((KfMagicMenuList *)0)->values == 0x30 ? 1 : -1];
+typedef char kf_magic_menu_list_rows_offset[offsetof(KfMagicMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_magic_menu_list_values_offset[offsetof(KfMagicMenuList, values) == 0x30 ? 1 : -1];
 typedef char kf_menu_render_list_size[sizeof(KfMenuRenderList) == 52 ? 1 : -1];
-typedef char kf_menu_render_row_offset[(u32)&((KfMenuRenderList *)0)->row_glyphs == 0x24 ? 1 : -1];
-typedef char kf_menu_render_detail_offset[(u32)&((KfMenuRenderList *)0)->detail_rows == 0x28 ? 1 : -1];
-typedef char kf_menu_render_byte_offset[(u32)&((KfMenuRenderList *)0)->byte_values == 0x2c ? 1 : -1];
-typedef char kf_menu_render_number_offset[(u32)&((KfMenuRenderList *)0)->number_values == 0x30 ? 1 : -1];
+typedef char kf_menu_render_row_offset[offsetof(KfMenuRenderList, row_glyphs) == 0x24 ? 1 : -1];
+typedef char kf_menu_render_detail_offset[offsetof(KfMenuRenderList, detail_rows) == 0x28 ? 1 : -1];
+typedef char kf_menu_render_byte_offset[offsetof(KfMenuRenderList, byte_values) == 0x2c ? 1 : -1];
+typedef char kf_menu_render_number_offset[offsetof(KfMenuRenderList, number_values) == 0x30 ? 1 : -1];
 
 extern KfMenuWindowLayout menu_window_layouts[KF_MENU_WINDOW_COUNT];
 extern KfMenuLabelSuffix menu_header_labels[12];
@@ -212,7 +208,7 @@ extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
 extern s32 menu_cursor_animation_direction;
-extern s32 menu_item_model_allocation_pending;
+extern b32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;
 extern KfMenuGlyphRow menu_glyph_rows[120];
@@ -226,7 +222,7 @@ extern u16 menu_item_code_secondary[5][120];
 
 void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
-    s32 *selection, s32 *result);
+    b32 *confirmed, s32 *result);
 s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
     s32 render_mode, u8 item_id);
 void menu_show_map_preview(s32 menu_code);
@@ -246,8 +242,8 @@ void menu_frame_begin(void);
 void menu_render_list_mode_8_9_noop(void);
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
-    const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);
-void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmation);
+    const KfMenuGlyphString *decline_label, s32 selected_choice, b32 confirmation);
+void menu_draw_window(s32 window_kind, s32 count, s32 highlight, b32 confirmation);
 void menu_show_combat_attributes(void);
 s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
@@ -280,12 +276,12 @@ void menu_prepare_card_browser_rows(KfMenuGlyphString *rows);
 void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
     s32 overlap_x, s32 overlap_y);
 void menu_enter_display_state(s32 mode);
-void menu_exit_display_state(s32 stop_sequence);
+void menu_exit_display_state(b32 stop_sequence);
 s32 menu_load_item_model(u8 item_id);
 void menu_release_item_model(void);
 void menu_play_sound_cue(s32 cue);
 void input_wait_brief_release(void);
-s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, s32 *confirmed,
+s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, b32 *confirmed,
     s32 *cancelled);
 void menu_card_save_browser(void);
 void menu_item_buy_sell_controller(s32 kind);

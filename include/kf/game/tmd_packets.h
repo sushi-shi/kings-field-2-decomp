@@ -1,6 +1,7 @@
 #ifndef KF_GAME_TMD_PACKETS_H
 #define KF_GAME_TMD_PACKETS_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/tmd.h>
 #include <psyq/sdk.h>
@@ -46,9 +47,9 @@ typedef union KfTmdPacketHeader {
 typedef char kf_tmd_packet_header_size[
     sizeof(KfTmdPacketHeader) == KF_TMD_PACKET_HEADER_BYTES ? 1 : -1];
 typedef char kf_tmd_packet_input_length_offset[
-    (u32)&((KfTmdPacketHeader *)0)->bytes.input_length == 1 ? 1 : -1];
+    offsetof(KfTmdPacketHeader, bytes.input_length) == 1 ? 1 : -1];
 typedef char kf_tmd_packet_mode_offset[
-    (u32)&((KfTmdPacketHeader *)0)->bytes.mode == 3 ? 1 : -1];
+    offsetof(KfTmdPacketHeader, bytes.mode) == 3 ? 1 : -1];
 
 /* The cell renderer supplies a complete temporary TMD to its packet helper. */
 typedef struct KfTmdPreparedAsset {
@@ -60,9 +61,9 @@ typedef struct KfTmdPreparedAsset {
 typedef char kf_tmd_prepared_asset_size[
     sizeof(KfTmdPreparedAsset) == KF_MAP_CELL_PREPARED_BYTES ? 1 : -1];
 typedef char kf_tmd_prepared_object_offset[
-    (u32)&((KfTmdPreparedAsset *)0)->object == KF_TMD_HEADER_BYTES ? 1 : -1];
+    offsetof(KfTmdPreparedAsset, object) == KF_TMD_HEADER_BYTES ? 1 : -1];
 typedef char kf_tmd_prepared_payload_offset[
-    (u32)&((KfTmdPreparedAsset *)0)->payload == 0x28 ? 1 : -1];
+    offsetof(KfTmdPreparedAsset, payload) == 0x28 ? 1 : -1];
 
 typedef struct KfTmdFt3 {
     u16 uv0;
@@ -121,11 +122,11 @@ typedef struct KfTmdFt4TextureWords {
 typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
 typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
 typedef char kf_tmd_uv_parts_aux_offset[
-    (u32)&((KfTmdUvParts *)0)->texture_aux == 2 ? 1 : -1];
+    offsetof(KfTmdUvParts, texture_aux) == 2 ? 1 : -1];
 typedef char kf_tmd_ft4_texture_words_size[
     sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
 typedef char kf_tmd_ft4_texture_uv3_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
+    offsetof(KfTmdFt4TextureWords, uv3) == 12 ? 1 : -1];
 
 /* On-disk primitive bodies. Each index is a halfword until the preparation
  * pass converts it to a byte offset into the projected-vector array. */
@@ -221,17 +222,17 @@ typedef char kf_tmd_g4_size[sizeof(KfTmdG4) == 20 ? 1 : -1];
 typedef char kf_tmd_gt3_size[sizeof(KfTmdGt3) == 24 ? 1 : -1];
 typedef char kf_tmd_gt4_size[sizeof(KfTmdGt4) == 32 ? 1 : -1];
 typedef char kf_tmd_f3_normal_offset[
-    (u32)&((KfTmdF3 *)0)->normal == 4 ? 1 : -1];
+    offsetof(KfTmdF3, normal) == 4 ? 1 : -1];
 typedef char kf_tmd_g3_last_vertex_offset[
-    (u32)&((KfTmdG3 *)0)->vertex2 == 14 ? 1 : -1];
+    offsetof(KfTmdG3, vertex2) == 14 ? 1 : -1];
 typedef char kf_tmd_f4_last_vertex_offset[
-    (u32)&((KfTmdF4 *)0)->vertex3 == 12 ? 1 : -1];
+    offsetof(KfTmdF4, vertex3) == 12 ? 1 : -1];
 typedef char kf_tmd_g4_last_vertex_offset[
-    (u32)&((KfTmdG4 *)0)->vertex3 == 18 ? 1 : -1];
+    offsetof(KfTmdG4, vertex3) == 18 ? 1 : -1];
 typedef char kf_tmd_gt3_normal_offset[
-    (u32)&((KfTmdGt3 *)0)->normal0 == 12 ? 1 : -1];
+    offsetof(KfTmdGt3, normal0) == 12 ? 1 : -1];
 typedef char kf_tmd_gt4_normal_offset[
-    (u32)&((KfTmdGt4 *)0)->normal0 == 16 ? 1 : -1];
+    offsetof(KfTmdGt4, normal0) == 16 ? 1 : -1];
 
 typedef struct KfGpuGT3Packed {
         u_long tag;
@@ -282,19 +283,19 @@ typedef union KfGpuGT4 {
 typedef char kf_tmd_ft3_size[sizeof(KfTmdFt3) == 20 ? 1 : -1];
 typedef char kf_tmd_ft4_size[sizeof(KfTmdFt4) == 28 ? 1 : -1];
 typedef char kf_tmd_ft3_normal_offset[
-    (u32)&((KfTmdFt3 *)0)->normal == 12 ? 1 : -1];
+    offsetof(KfTmdFt3, normal) == 12 ? 1 : -1];
 typedef char kf_tmd_ft4_normal_offset[
-    (u32)&((KfTmdFt4 *)0)->normal == 16 ? 1 : -1];
+    offsetof(KfTmdFt4, normal) == 16 ? 1 : -1];
 typedef char kf_tmd_ft4_last_vertex_offset[
-    (u32)&((KfTmdFt4 *)0)->vertex3 == 24 ? 1 : -1];
+    offsetof(KfTmdFt4, vertex3) == 24 ? 1 : -1];
 typedef char kf_gpu_gt3_size[sizeof(KfGpuGT3) == 40 ? 1 : -1];
 typedef char kf_gpu_gt4_size[sizeof(KfGpuGT4) == 52 ? 1 : -1];
 typedef char kf_gpu_gt3_color2_offset[
-    (u32)&((KfGpuGT3 *)0)->packed.color2 == 28 ? 1 : -1];
+    offsetof(KfGpuGT3, packed.color2) == 28 ? 1 : -1];
 typedef char kf_gpu_gt4_color3_offset[
-    (u32)&((KfGpuGT4 *)0)->packed.color3 == 40 ? 1 : -1];
+    offsetof(KfGpuGT4, packed.color3) == 40 ? 1 : -1];
 typedef char kf_gpu_gt4_last_uv_offset[
-    (u32)&((KfGpuGT4 *)0)->packed.uv3 == 48 ? 1 : -1];
+    offsetof(KfGpuGT4, packed.uv3) == 48 ? 1 : -1];
 
 extern CVECTOR map_textured_primitive_color;
 void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode);

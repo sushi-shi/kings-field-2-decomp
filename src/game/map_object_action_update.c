@@ -14,6 +14,7 @@
 #include <kf/game/map_object.h>
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
+#include <kf/lib/offsetof.h>
 #include <psyq/sdk.h>
 #include <psyq/libc.h>
 
@@ -817,13 +818,13 @@ void map_object_update_actions(void)
                 u32 sentinel_offset;
                 switch (object->tail.event_effect.pending_event_command) {
                 case KF_OBJECT_114:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[0].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[0].object_index);
                     break;
                 case KF_OBJECT_115:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[1].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[1].object_index);
                     break;
                 case KF_OBJECT_116:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[2].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[2].object_index);
                     break;
                 default:
                     goto no_sentinel;
@@ -833,7 +834,7 @@ void map_object_update_actions(void)
                 object->tail.event_effect.pending_event_command = KF_OBJECT_NONE;
                 object->action_timer = 0;
             }
-            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, 1, 32);
+            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, KF_TRUE, 32);
             break;
         }
 
@@ -846,7 +847,7 @@ void map_object_update_actions(void)
                 linked->tail.fields.unknown_38 &= ~object->tail.event_effect.linked_object_flag_mask;
             }
             if (map_object_step_offset_motion(object, target, &map_object_motion_action17_start_offset,
-                              &map_object_motion_action17_end_offset, 0, 20)) {
+                              &map_object_motion_action17_end_offset, KF_FALSE, 20)) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
                 linked->tail.fields.unknown_38 |= object->tail.event_effect.linked_object_flag_mask;
             }

@@ -1,6 +1,7 @@
 #ifndef KF_GAME_ANIMATION_H
 #define KF_GAME_ANIMATION_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 #include <kf/game/asset.h>
 #include <psyq/sdk.h>
@@ -33,7 +34,7 @@ void animation_expand_sparse_vertices(SVECTOR *vertices, const SVECTOR *base,
 void animation_decode_sparse_vertices(SVECTOR *vertices, const s16 *encoded);
 void animation_apply_sparse_morph(SVECTOR *vertices, const s16 *encoded, s32 blend_fraction);
 const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index);
-s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
+b32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
                   SVECTOR *output);
 
 #endif

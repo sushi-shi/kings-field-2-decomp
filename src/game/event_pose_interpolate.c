@@ -201,7 +201,7 @@ void event_target_stream_execute(KfActor *actor)
         actor_state.target_groups[actor->group_index].targets[0].pointer;
     u8 *cursor;
     s32 repeat;
-    s32 restore_state;
+    b32 restore_state;
     u8 saved_state;
     s32 old_counter;
     s32 choice;
@@ -212,7 +212,7 @@ void event_target_stream_execute(KfActor *actor)
     if (candidate->type != KF_ACTOR_TARGET_EVENT_STREAM) {
         return;
     }
-    restore_state = 0;
+    restore_state = KF_FALSE;
     repeat = 0;
     if (candidate->word_10.bytes.fallback_offset == 0) {
         event_state.control.fields.stream_actor_definition_id = actor->definition_id;
@@ -283,7 +283,7 @@ void event_target_stream_execute(KfActor *actor)
         continue;
 
 execute:
-        if (restore_state == 0 && candidate->animation_id != 0xff) {
+        if (!restore_state && candidate->animation_id != 0xff) {
             s32 phase = actor->animation_phase;
             saved_state = actor->animation_id;
             if (phase != 0) {
@@ -293,7 +293,7 @@ execute:
             actor_animation_seek_phase(actor, candidate->animation_id, 0,
                           KF_ACTOR_ANIMATION_PHASE_MAX,
                           candidate->animation_step);
-            restore_state = 1;
+            restore_state = KF_TRUE;
         }
         menu_show_transition_image(3, candidate->word_0c.value + *cursor);
 
@@ -336,13 +336,13 @@ after_script:
         event_state.control.fields.counter_53_decreased = 1;
     }
     event_state.control.fields.stream_actor_definition_id = actor->definition_id;
-    if (restore_state != 0 && candidate->word_10.bytes.completion_animation_id != 0xff) {
+    if (restore_state && candidate->word_10.bytes.completion_animation_id != 0xff) {
         actor_animation_seek_phase(actor, candidate->word_10.bytes.completion_animation_id, 0,
                       KF_ACTOR_ANIMATION_PHASE_MAX,
                       candidate->word_0e.value);
         actor->animation_id = saved_state;
     }
-    event_state.interaction_handled = 1;
+    event_state.interaction_handled = KF_TRUE;
     player_clear_motion();
 }
 
@@ -366,7 +366,7 @@ void event_scene_command_dispatch(const VECTOR *position,
     s32 object_control_offset;
     const u8 *magic_ids;
 
-    event_state.interaction_handled = 0;
+    event_state.interaction_handled = KF_FALSE;
     switch (command) {
     case KF_OBJECT_99:
     case KF_OBJECT_100:
@@ -392,15 +392,15 @@ void event_scene_command_dispatch(const VECTOR *position,
             switch (status) {
             case 1:
                 audio_play_sound_64();
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
             case 3:
                 notify_enqueue(object->tail.notification.linked_notification);
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
             case 4:
                 notify_enqueue(4);
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
             case 0:
             default:
@@ -433,13 +433,13 @@ object_control_action:
                     object - map_object_state.objects;
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
                     resource_state.active_resource_ids[0];
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
                 event_spawn_effect_object(object, command);
             } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
                 notify_enqueue(object->tail.notification.linked_notification);
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
             }
         }
         break;
@@ -471,7 +471,7 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (resource_state.transition_active != 0);
+        } while (resource_state.transition_active);
         if (previous_value != resource_state.active_resource_ids[0]) {
             resource_request_transition(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
@@ -482,7 +482,7 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (resource_state.transition_active != 0);
+        } while (resource_state.transition_active);
         cd_request_wait_idle();
 
         object_index = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index;
@@ -498,7 +498,7 @@ transition_action: {
         player_state.camera_position.vz = object->position.vz + forward.z;
         player_state.camera_position.vy = object->position.vy;
         yaw = object->rotation.vy + 2048;
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
         render_frames_with_color_overlay(1, 4096, 4096, 0);
@@ -521,20 +521,20 @@ transition_action: {
                 if (object->tail.event_effect.pending_event_command == KF_OBJECT_NONE) {
                     object->tail.event_effect.pending_event_command = command;
                     object->action_timer = 0;
-                    event_state.interaction_handled = 1;
+                    event_state.interaction_handled = KF_TRUE;
                     game_counter_decrement(command);
                     event_spawn_effect_object(object, command);
                 }
             } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
                 notify_enqueue(object->tail.notification.linked_notification);
-                event_state.interaction_handled = 1;
+                event_state.interaction_handled = KF_TRUE;
             }
         }
         break;
     case KF_OBJECT_84:
         player_state.map_marker_visual_effect_timer = 1200;
         game_counter_decrement(KF_OBJECT_84);
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         break;
     case KF_OBJECT_88:
         index = map_object_find_interaction_target(0, position, 800, 1700,
@@ -545,7 +545,7 @@ transition_action: {
             if (object->object_id == KF_OBJECT_157) {
                 map_object_apply_marker_signal(object->tail.marker.marker_id);
             }
-            event_state.interaction_handled = 1;
+            event_state.interaction_handled = KF_TRUE;
         }
         audio_play_sound_at_volume_100(8);
         break;
@@ -588,7 +588,7 @@ transition_action: {
                 4 * (nearest->position.vy - audio_state.listener_position.vy);
             audio_play_spatial_range(0x8009, &nearest->position, 0x6e,
                                      25000, 29000, 0);
-            event_state.interaction_handled = 1;
+            event_state.interaction_handled = KF_TRUE;
         }
         break;
     }
@@ -684,7 +684,7 @@ decay_update:
         } while (1);
         object->object_id = KF_OBJECT_NONE;
         notify_enqueue(1);
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         break;
     }
     case KF_OBJECT_82:
@@ -699,11 +699,11 @@ decay_update:
                 goto invoke_callback;
             }
         }
-        if (game_counter_increment(KF_ITEM_RESTORE_HP_100) == 0) {
+        if (!game_counter_increment(KF_ITEM_RESTORE_HP_100)) {
             notify_enqueue(0x16);
             game_counter_decrement(KF_OBJECT_82);
         }
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         break;
     case KF_OBJECT_85: {
         s32 side = player_state.map_layer_index == 0 ? 1 : 2;
@@ -714,7 +714,7 @@ decay_update:
 
         if (actor != NULL && actor->current_map_layer == side) {
             menu_show_transition_image(6, actor->definition_id + 240);
-            event_state.interaction_handled = 1;
+            event_state.interaction_handled = KF_TRUE;
             break;
         }
         {
@@ -735,7 +735,7 @@ decay_update:
                                   object->tail.scene_inspect.region_width,
                                   object->tail.scene_inspect.region_depth, 0x8000)) {
                     menu_show_transition_image(6, object->tail.scene_inspect.transition_image_id + 510);
-                    event_state.interaction_handled = 1;
+                    event_state.interaction_handled = KF_TRUE;
                     break;
                 }
             }
@@ -745,12 +745,12 @@ decay_update:
     case KF_OBJECT_86:
         game_counter_decrement(KF_OBJECT_86);
         player_state.full_mp_timer = 900;
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         break;
     case KF_OBJECT_87:
         game_counter_decrement(KF_OBJECT_87);
         player_state.magic_boost_timer = 900;
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         player_recalculate_combat_stats();
         break;
     default:
@@ -761,33 +761,33 @@ decay_update:
 invoke_callback:
     ((KfEventCommandCallback)resource_state.active_table[2])(
         position, rotation, command);
-    if (event_state.interaction_handled == 0) {
+    if (!event_state.interaction_handled) {
         notify_enqueue(0x14);
     }
     player_clear_motion();
 }
 ADDRESS(0x800473e0, 0x54)
-s32 game_counter_decrement(KF_ENUM_PARAM(KfObjectId, s32) index)
+b32 game_counter_decrement(KF_ENUM_PARAM(KfObjectId, s32) index)
 {
     if (game_counter_bytes[KF_ENUM_ENCODE(s32, index)] != 0) {
         game_counter_bytes[KF_ENUM_ENCODE(s32, index)]--;
-        return 0;
+        return KF_FALSE;
     }
 
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x80047434, 0x90)
-s32 game_counter_increment(KF_ENUM_PARAM(KfObjectId, s32) index)
+b32 game_counter_increment(KF_ENUM_PARAM(KfObjectId, s32) index)
 {
     if (game_counter_bytes[KF_ENUM_ENCODE(s32, index)] < 99) {
         game_counter_bytes[KF_ENUM_ENCODE(s32, index)]++;
         resource_state.active_table[6]();
-        return 0;
+        return KF_FALSE;
     }
 
     notify_enqueue(0x12);
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x800474c4, 0x114)
@@ -940,7 +940,7 @@ button_pressed:
     if ((buttons & 0x20) == 0 && spawned_id == -1) {
         goto return_pose;
     }
-    if (game_counter_increment(object->object_id) == 0) {
+    if (!game_counter_increment(object->object_id)) {
         switch (object->object_id) {
         case KF_OBJECT_117: {
             s32 amount = ((rand() * 6) >> 15) + 4;
@@ -1018,8 +1018,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
     probe.vx = position->vx;
     probe.vy = position->vy + 500;
     probe.vz = position->vz;
-    event_state.interaction_handled = 0;
-    if (collision_probe_forward_shape_0x20(&probe, (const struct KfEulerAngles *)rotation) != 0) {
+    event_state.interaction_handled = KF_FALSE;
+    if (collision_probe_forward_shape_0x20(&probe, (const struct KfEulerAngles *)rotation)) {
         color_overlay_transition(0x400, 0, 0, 0, 0x80, 0xa0, 0xff);
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
         color_overlay_transition(0x400, 0x80, 0xa0, 0xff, 0, 0, 0);
@@ -1052,7 +1052,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         kind = objects[object_index].action;
         object = &objects[object_index];
         object_id = object->object_id;
-        event_state.interaction_handled = 1;
+        event_state.interaction_handled = KF_TRUE;
         kind = templates[KF_ENUM_ENCODE(u16, object_id)].collision_kind;
         switch (kind) {
         case KF_MAP_OBJECT_OP_165:
@@ -1609,10 +1609,12 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(buffer, resource_state.active_resource_ids, 5);
-    memcpy(&payload->camera_position, &player_state.camera_position, 16);
-    memcpy(buffer + KF_CARD_SAVE_ROTATION_OFFSET,
-        &player_state.camera_rotation_target, 8);
+    memcpy((void *)buffer, (const void *)resource_state.active_resource_ids,
+        sizeof resource_state.active_resource_ids);
+    memcpy((void *)&payload->camera_position, (const void *)&player_state.camera_position,
+        sizeof payload->camera_position);
+    memcpy((void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET),
+        (const void *)&player_state.camera_rotation_target, sizeof player_state.camera_rotation_target);
 
     saved->experience = player_state.experience;
     saved->next_level_experience = player_state.next_level_experience;
@@ -1664,13 +1666,13 @@ void card_payload_capture_game_state(u8 *buffer)
         *magic_flag++ = record->menu_available;
         ++record;
     }
-    memcpy(payload->game_counters, game_counter_bytes,
+    memcpy((void *)payload->game_counters, (const void *)game_counter_bytes,
         sizeof payload->game_counters);
-    memcpy(payload->event_control, event_state.control.bytes,
+    memcpy((void *)payload->event_control, (const void *)event_state.control.bytes,
         sizeof payload->event_control);
-    memcpy(payload->event_arena, event_state.arena.bytes,
+    memcpy((void *)payload->event_arena, (const void *)event_state.arena.bytes,
         sizeof payload->event_arena);
-    memcpy(payload->saved_event_offsets, event_state.saved_offsets,
+    memcpy((void *)payload->saved_event_offsets, (const void *)event_state.saved_offsets,
         sizeof payload->saved_event_offsets);
 }
 
@@ -1683,14 +1685,16 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(resource_state.active_resource_ids, buffer, 5);
+    memcpy((void *)resource_state.active_resource_ids, (const void *)buffer,
+        sizeof resource_state.active_resource_ids);
     resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
-    memcpy(&player_state.camera_position, &payload->camera_position, 16);
-    memcpy(&player_state.camera_rotation_target,
-        buffer + KF_CARD_SAVE_ROTATION_OFFSET, 8);
+    memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position,
+        sizeof player_state.camera_position);
+    memcpy((void *)&player_state.camera_rotation_target,
+        (const void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET), sizeof player_state.camera_rotation_target);
 
     player_state.experience = saved->experience;
     player_state.next_level_experience = saved->next_level_experience;
@@ -1742,12 +1746,12 @@ void card_payload_restore_game_state(const u8 *buffer)
         record->menu_available = *magic_flag++;
         ++record;
     }
-    memcpy(game_counter_bytes, payload->game_counters,
+    memcpy((void *)game_counter_bytes, (const void *)payload->game_counters,
         sizeof payload->game_counters);
-    memcpy(event_state.control.bytes, payload->event_control,
+    memcpy((void *)event_state.control.bytes, (const void *)payload->event_control,
         sizeof payload->event_control);
-    memcpy(event_state.arena.bytes, payload->event_arena,
+    memcpy((void *)event_state.arena.bytes, (const void *)payload->event_arena,
         sizeof payload->event_arena);
-    memcpy(event_state.saved_offsets, payload->saved_event_offsets,
+    memcpy((void *)event_state.saved_offsets, (const void *)payload->saved_event_offsets,
         sizeof payload->saved_event_offsets);
 }

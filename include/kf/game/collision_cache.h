@@ -1,6 +1,7 @@
 #ifndef KF_GAME_COLLISION_CACHE_H
 #define KF_GAME_COLLISION_CACHE_H
 
+#include <kf/lib/bool.h>
 #include <kf/game/player.h>
 
 s32 collision_sample_map_cell_layer(s32 x, s32 y, s32 z);
@@ -8,7 +9,7 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
 s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void collision_cache_load_hit_bounds(void);
 s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
-s32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
+b32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
 s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode);
 void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount);
 

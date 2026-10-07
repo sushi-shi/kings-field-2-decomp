@@ -24,7 +24,7 @@ class BooleanTypeTests(unittest.TestCase):
 
     def test_target_width_alignment_and_retail_canonical_types(self) -> None:
         aliases = {'KfBool': 'int', 'KfBool32': 's32', 'KfBoolU32': 'u32',
-                   'KfBool8': 'u8', 'KfBool16': 'u16'}
+                   'KfBool8': 'u8', 'KfBool16': 'u16', 'KfBoolS16': 's16'}
         for mode in ('retail', 'modern'):
             checks = []
             for alias, storage in aliases.items():

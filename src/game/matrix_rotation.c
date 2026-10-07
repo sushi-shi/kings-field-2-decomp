@@ -211,48 +211,48 @@ void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 tur
 ADDRESS(0x80014e14, 0x70)
 void matrix_set_rotation_x(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
     matrix->m[0][0] = KF_FIXED12_ONE;
     matrix->m[0][1] = 0;
     matrix->m[0][2] = 0;
     matrix->m[1][0] = 0;
-    matrix->m[1][1] = cos;
-    matrix->m[1][2] = -sin;
+    matrix->m[1][1] = cosine;
+    matrix->m[1][2] = -sine;
     matrix->m[2][0] = 0;
-    matrix->m[2][1] = sin;
-    matrix->m[2][2] = cos;
+    matrix->m[2][1] = sine;
+    matrix->m[2][2] = cosine;
 }
 
 ADDRESS(0x80014e84, 0x70)
 void matrix_set_rotation_y(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
-    matrix->m[0][0] = cos;
+    matrix->m[0][0] = cosine;
     matrix->m[0][1] = 0;
-    matrix->m[0][2] = -sin;
+    matrix->m[0][2] = -sine;
     matrix->m[1][0] = 0;
     matrix->m[1][1] = KF_FIXED12_ONE;
     matrix->m[1][2] = 0;
-    matrix->m[2][0] = sin;
+    matrix->m[2][0] = sine;
     matrix->m[2][1] = 0;
-    matrix->m[2][2] = cos;
+    matrix->m[2][2] = cosine;
 }
 
 ADDRESS(0x80014ef4, 0x70)
 void matrix_set_rotation_z(s16 angle, MATRIX *matrix)
 {
-    s32 sin = rsin(angle);
-    s32 cos = rcos(angle);
+    s32 sine = rsin(angle);
+    s32 cosine = rcos(angle);
 
-    matrix->m[0][0] = cos;
-    matrix->m[0][1] = -sin;
+    matrix->m[0][0] = cosine;
+    matrix->m[0][1] = -sine;
     matrix->m[0][2] = 0;
-    matrix->m[1][0] = sin;
-    matrix->m[1][1] = cos;
+    matrix->m[1][0] = sine;
+    matrix->m[1][1] = cosine;
     matrix->m[1][2] = 0;
     matrix->m[2][0] = 0;
     matrix->m[2][1] = 0;

@@ -1,6 +1,7 @@
 #ifndef KF_GAME_RENDER_MASK_H
 #define KF_GAME_RENDER_MASK_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 
 /* The observed span is written by 0x8002c670 while it scans a 24-by-24
@@ -20,9 +21,9 @@ typedef struct KfRenderMaskScanState {
 typedef char kf_render_mask_scan_state_size[
     sizeof(KfRenderMaskScanState) == 0x20 ? 1 : -1];
 typedef char kf_render_mask_scan_map_x_offset[
-    (u32)&((KfRenderMaskScanState *)0)->map_x == 0x0c ? 1 : -1];
+    offsetof(KfRenderMaskScanState, map_x) == 0x0c ? 1 : -1];
 typedef char kf_render_mask_scan_cursor_offset[
-    (u32)&((KfRenderMaskScanState *)0)->mask_cursor == 0x1c ? 1 : -1];
+    offsetof(KfRenderMaskScanState, mask_cursor) == 0x1c ? 1 : -1];
 
 typedef struct KfCollisionMaskPoint {
     s32 x;

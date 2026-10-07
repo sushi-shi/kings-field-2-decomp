@@ -24,9 +24,9 @@ ADDRESS(0x8002aaa4, 0xb60)
 s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
     u32 flags;
-    s32 base_floor_hit;
+    b32 base_floor_hit;
     s32 base_ceiling_hit;
-    s32 other_layer_visited;
+    b32 other_layer_visited;
     KfMapOccupancyLayer *layer;
     s16 *record;
     s32 records_left;
@@ -45,10 +45,10 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
     KfShapeSlopeRecord *slope;
 
     flags = 0;
-    base_floor_hit = 0;
+    base_floor_hit = KF_FALSE;
     /* No record sets this; ceiling records are always evaluated. */
     base_ceiling_hit = 0;
-    other_layer_visited = 0;
+    other_layer_visited = KF_FALSE;
     KF_COLLISION_CACHE_RESULT = 100000;
     KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT - 40000;
     KF_COLLISION_CACHE_LOWER_BOUND = 100000;
@@ -356,7 +356,7 @@ next_layer:
                     ((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
             }
             KF_COLLISION_CACHE_HEIGHT = -layer->elevation * 0x80;
-            other_layer_visited = 1;
+            other_layer_visited = KF_TRUE;
             goto next_layer;
         case 0x18: {
             KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
@@ -368,7 +368,7 @@ next_layer:
                 KF_COLLISION_CACHE_RESULT = floor;
                 if (floor < y) {
                     flags |= KF_COLLISION_HIT_FLOOR;
-                    base_floor_hit = 1;
+                    base_floor_hit = KF_TRUE;
                 }
             }
             if (height_mode & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
@@ -562,7 +562,7 @@ void reset_collision_rows_and_overlay(void)
         index--;
     } while (index != -1);
 
-    game_graphics_runtime.collision_rotation_dirty = 0;
+    game_graphics_runtime.collision_rotation_dirty = KF_FALSE;
     game_graphics_runtime.color_overlay_sample_count = 0;
     game_graphics_runtime.color_overlay_blue_sum = 0;
     game_graphics_runtime.color_overlay_green_sum = 0;
@@ -628,7 +628,7 @@ void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *paylo
         }
     }
     if (flags & 1) {
-        game_graphics_runtime.collision_rotation_dirty = 1;
+        game_graphics_runtime.collision_rotation_dirty = KF_TRUE;
     }
 }
 

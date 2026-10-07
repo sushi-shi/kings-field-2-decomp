@@ -325,9 +325,9 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, Kf
         (s32)record->direction.vz * record->direction.vz;
     record->lighting_blend_q12 = 0;
     if (length_squared >= 810001) {
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
     } else {
-        record->midpoint_collision_enabled = 0;
+        record->midpoint_collision_enabled = KF_FALSE;
     }
 
     switch (record->kind) {
@@ -335,7 +335,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, Kf
     case KF_EFFECT_KIND_49:
         effect_pool_initialize_scaled(record, 0x2d, 0x1800);
         record->updates_remaining = 50;
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
         effect_play_spatial_sound(record, 0x23);
         break;
     case KF_EFFECT_KIND_32:
@@ -355,7 +355,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, Kf
         record->scale_z = 0x32c8;
         record->scale_y = 0x32c8;
         record->scale_x = 0x32c8;
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
         effect_play_spatial_sound(record, 0x20);
         break;
     case KF_EFFECT_KIND_28:
@@ -637,7 +637,6 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, Kf
         record->base_render_id = 0x25;
         record->render_id = 0x25;
         record->cache_tail.payload.raw[0] = 0;
-    zero_scale_27_51_52:
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -1206,7 +1205,7 @@ void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode)
 }
 
 ADDRESS(0x80041e0c, 0x88)
-s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
+b32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
                                 s32 vertical_window)
 {
     s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
@@ -1214,17 +1213,17 @@ s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
     SVECTOR direction;
 
     if (position->vy < lower_bound) {
-        return 0;
+        return KF_FALSE;
     }
     if (position->vy > vertical_window + lower_bound) {
-        return 0;
+        return KF_FALSE;
     }
 
     spawn_position.vx = position->vx;
     spawn_position.vz = position->vz;
     spawn_position.vy = lower_bound;
     effect_construct_record(10, 0, KF_EFFECT_KIND_102, &spawn_position, &direction, arg1, arg2);
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x80041e94, 0x298)
@@ -1283,7 +1282,7 @@ spawn:
 }
 
 ADDRESS(0x8004212c, 0x16c)
-s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
+b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation)
 {
     s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
@@ -1292,7 +1291,7 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
 
     if (origin->vy >= lower_bound) {
         if (origin->vy > lower_bound + 500) {
-            return 0;
+            return KF_FALSE;
         }
         count--;
         if (count != -1) {
@@ -1314,9 +1313,9 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
             offset_z = (rand() * spread >> 14) - spread;
             } while (count != -1);
         }
-        return 1;
+        return KF_TRUE;
     }
-    return 0;
+    return KF_FALSE;
 }
 
 ADDRESS(0x80042298, 0x18c)
@@ -1329,7 +1328,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
 
     addVector(&record->position, &record->direction);
     result = effect_probe_collision_by_type(&record->position, radius, angle);
-    if (record->midpoint_collision_enabled != 0) {
+    if (record->midpoint_collision_enabled) {
         effect_collision_motion_step.vx = record->direction.vx >> 1;
         effect_collision_motion_step.vy = record->direction.vy >> 1;
         effect_collision_motion_step.vz = record->direction.vz >> 1;
@@ -1357,7 +1356,7 @@ void effect_collision_backtrack(void)
 {
     KfEffectRecord *record = effect_state.current_record;
 
-    if (record->midpoint_collision_enabled != 0) {
+    if (record->midpoint_collision_enabled) {
         record->position.vx -= effect_collision_motion_step.vx;
         record->position.vy -= effect_collision_motion_step.vy;
         record->position.vz -= effect_collision_motion_step.vz;
@@ -2360,21 +2359,21 @@ void effect_update_dispatch(void)
         u8 actor_index = target->actor_index;
 
         if (actor_index == KF_EFFECT_KIND9_TARGET_PLAYER) {
-            VECTOR target;
+            VECTOR target_position;
 
-            target.vx = player_state.camera_position.vx;
-            target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
-            target.vz = player_state.camera_position.vz;
-            collision = effect_target_motion(&target, 400, 60,
+            target_position.vx = player_state.camera_position.vx;
+            target_position.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
+            target_position.vz = player_state.camera_position.vz;
+            collision = effect_target_motion(&target_position, 400, 60,
                                        3000, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else if (actor_index != KF_EFFECT_KIND9_TARGET_NONE) {
-            VECTOR target;
+            VECTOR target_position;
             const KfActor *actor = &actor_state.actors[actor_index];
 
-            target.vx = actor->position.vx;
-            target.vy = actor->position.vy - (actor->collision_height >> 1);
-            target.vz = actor->position.vz;
-            collision = effect_target_motion(&target, 600, 50,
+            target_position.vx = actor->position.vx;
+            target_position.vy = actor->position.vy - (actor->collision_height >> 1);
+            target_position.vz = actor->position.vz;
+            collision = effect_target_motion(&target_position, 600, 50,
                                        0, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else {
             goto kind9_unbound;
@@ -2496,7 +2495,7 @@ void effect_update_dispatch(void)
                     next.vy = record->position.vy;
                 } else {
                     parent = &effect_state.records[kind8->parent_index];
-                    if (effect_spawn_at_lower_bound(&next, 0x2000, 0x2000, 500) == 0) {
+                    if (!effect_spawn_at_lower_bound(&next, 0x2000, 0x2000, 500)) {
                         s32 dx;
                         s32 dz;
                         s32 distance;

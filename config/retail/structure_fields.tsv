@@ -363,7 +363,7 @@ KfEffectRecord	0x9	0x1	render_queue_mode	u8	candidate	game/effect.h;asm 0x800325
 KfEffectRecord	0xa	0x1	map_layer_mask	u8	candidate	game/effect.h;asm 0x8004037c/0x800423ec;render_scene_and_update_resources	constructor default 3 selects both layers; collision step selects 1 or 2; renderer masks map-cell visibility and passes layer to render_world_model
 KfEffectRecord	0xb	0x1	cooldown	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0xc	0x1	lighting_override_index	u8	candidate	game/effect.h;asm 0x80032bbc/0x80040464;render_world_model consumer	0xff disables lighting-row override; other values index game_graphics_runtime.collision_rows during model rendering
-KfEffectRecord	0xd	0x1	midpoint_collision_enabled	u8	candidate	game/effect.h;asm 0x8004049c/0x80042308/0x80042430;effect constructor and collision helpers	constructor enables midpoint collision for fast motion and kinds 4/7/49; collision step probes midpoint and backtrack uses stored half-step
+KfEffectRecord	0xd	0x1	midpoint_collision_enabled	b8	candidate	game/effect.h;asm 0x8004049c/0x80042308/0x80042430;effect constructor and collision helpers	constructor enables midpoint collision for fast motion and kinds 4/7/49; collision step probes midpoint and backtrack uses stored half-step
 KfEffectRecord	0xe	0x2	updates_remaining	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x10	0x2	lighting_blend_q12	s16	candidate	game/effect.h;GAME 0x80032d58;render_world_model arg 11	constructor uses 0/0x1000; runtime ramps by 256 to 4096; renderer passes signed halfword as lighting blend
 KfEffectRecord	0x12	0x2	animation_phase_q12	u16	candidate	game/effect.h;GAME 0x80032d40;animation_sample_vertex consumer	constructor starts at zero; runtime advances 128 modulo 4096; renderer passes unsigned halfword as animation phase
@@ -415,7 +415,7 @@ KfEventControlFields	0x34	0x0b	unknown_34	u8[11]	opaque	game/event_state.h	uncla
 KfEventControlFields	0x3f	0x01	stream_actor_definition_id	u8	supported	event_target_stream_execute;GAME 0x800462bc	last actor definition ID used by target-stream cursor
 KfEventControlObjectSlot	0x00	0x02	object_index	u16	supported	event_state_initialize;event_scene_command_dispatch;map_object_update_actions	map-object pool index or 0xffff sentinel
 KfEventControlObjectSlot	0x02	0x01	resource_id	u8	supported	event_scene_command_dispatch	resource ID saved on object-control command and restored on transition
-KfEventState	0x00	0x04	interaction_handled	u32	supported	event_scene_command_dispatch;event_target_stream_execute	set when an event command or target stream handles an interaction
+KfEventState	0x00	0x04	interaction_handled	KfBoolU32	supported	event_scene_command_dispatch;event_target_stream_execute	set when an event command or target stream handles an interaction
 KfEventState	0x04	0x100	control	KfEventControl	supported	event_state_initialize;game_main_loop	word-cleared control region with three observed sentinel halfwords
 KfEventState	0x104	0x3800	arena	KfEventArena	supported	event_state_initialize;memory_arena_initialize_blocks;pointer rebasing	memory block chain and saved stream data
 KfEventState	0x3904	0x14	saved_offsets	u16[10]	supported	event_state_initialize;event_saved_offsets_decode;event_saved_offsets_encode	ten halfword offsets relative to the arena base; 0xffff means absent
@@ -429,7 +429,7 @@ KfFloorItem	0x10	0x04	pixels	u_long *	supported	asm;StoreImage;LoadImage	capture
 KfFloorItem	0x14	0x04	unknown_14	u8[4]	opaque	game headers;asm	field use not yet established
 KfGameAudioState	0x00	0x04	sequence_buffer	u_long *	supported	game/audio.h;GAME 0x80013b0c;audio_start_sequence	sequence data pointer initialized at startup
 KfGameAudioState	0x04	0x02	sequence_id	s16	supported	game/audio.h;GAME 0x80013b24/0x80013b44;audio_stop_sequence	SDK sequence handle stored and read as signed halfword
-KfGameAudioState	0x08	0x04	sequence_active	s32	supported	game/audio.h;GAME 0x80013a34/0x80013b58;audio_stop_sequence	active sequence state word
+KfGameAudioState	0x08	0x04	sequence_active	b32	supported	game/audio.h;GAME 0x80013a34/0x80013b58;audio_stop_sequence	active sequence state word
 KfGameAudioState	0x0c	0x04	sequence_ready	b32	supported	game/audio.h;GAME 0x80013a3c/0x80013af8;resource_transition_step	ready state word set after resource loading
 KfGameAudioState	0x10	0x10	listener_position	VECTOR	supported	game/audio.h;GAME 0x80013cb8/0x80014048;audio_update_listener	three-word listener world position in a 16-byte vector
 KfGameAudioState	0x20	0x02	listener_layer	u16	supported	game/audio.h;GAME 0x80013dac/0x80014094;audio_play_spatial	map-cell layer for spatial sound occlusion
@@ -499,7 +499,7 @@ KfGraphicsRuntimeGame	0x14cd0	0x04	frame_counter_b	u32	supported	game headers;as
 KfGraphicsRuntimeGame	0x14cd4	0xc0	floor_items	KfFloorItem[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14d94	0x88	render_state	KfRenderState	supported	game headers;asm;xrefs	view transforms and cell origins
 KfGraphicsRuntimeGame	0x14e1c	0x24c	render_grid	KfRenderGridState	supported	asm;build_camera_map_cell_layer_masks;render_map_cell_window	contiguous scan origin, fog threshold, and 24-by-24 mask grid
-KfGraphicsRuntimeGame	0x15068	0x04	collision_rotation_dirty	s32	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations	reset by collision-default initialization and checked before row rotation
+KfGraphicsRuntimeGame	0x15068	0x04	collision_rotation_dirty	b32	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations	reset by collision-default initialization and checked before row rotation
 KfGraphicsRuntimeGame	0x1506c	0x2080	collision_rows	KfCollisionRow[80]	supported	asm;reset_collision_rows_and_overlay;refresh_collision_row_rotations;interpolate_collision_row_fields;interpolate_collision_rows	80 runtime rows at 104-byte stride
 KfGraphicsRuntimeGame	0x170ec	0x04	map_placed_frame_counter	s32	supported	asm;render_scene_and_update_resources	drives each placed row's frame-period update
 KfGraphicsRuntimeGame	0x170f0	0xc00	map_placed_entries	KfMapPlacedEntry[128]	supported	asm;map_placed_expand_sources;map resource caller	128 runtime rows of 24 bytes
@@ -1082,7 +1082,7 @@ KfRenderState	0x78	0x04	view_cell_x	s32	supported	game headers;asm;xrefs	member 
 KfRenderState	0x7c	0x04	view_cell_z	s32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfRenderState	0x80	0x04	cell_origin_x	s32	supported	asm;map_cell_layer_mask	added to world X tile index
 KfRenderState	0x84	0x04	cell_origin_z	s32	supported	asm;map_cell_layer_mask	added to world Z tile index
-KfResourceState	0x00	0x02	transition_active	s16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
+KfResourceState	0x00	0x02	transition_active	KfBoolS16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
 KfResourceState	0x02	0x02	transition_phase	s16	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
 KfResourceState	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition;card_payload_capture_game_state	five active resource IDs saved and updated when a transition completes
 KfResourceState	0x09	0x01	current_map_region_id	u8	supported	resource_advance_transition;menu_draw_location_number;menu_show_map_preview	copied from requested resource ID zero and used as location prefix and map preview asset selector

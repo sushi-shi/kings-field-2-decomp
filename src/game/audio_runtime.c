@@ -8,6 +8,7 @@
 #include <kf/lib/math.h>
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
+#include <LIBSPU.H>
 
 enum {
     AUDIO_VAB_STREAM_BUFFER_BYTES = 0x1000,
@@ -66,7 +67,7 @@ void audio_initialize_runtime(void)
     SsUtSetReverbDepth(AUDIO_REVERB_DEPTH, AUDIO_REVERB_DEPTH);
 
     audio_state.sequence_buffer = (u_long *)audio_sequence_buffer;
-    audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
+    audio_state.sequence_active = KF_FALSE;
     audio_state.sequence_ready = KF_FALSE;
     vab_slot = audio_state.vab_slots;
     index = KF_AUDIO_VAB_SLOT_COUNT - 1;
@@ -108,7 +109,7 @@ void audio_start_sequence(void)
             audio_state.sequence_buffer, audio_state.vab_slots[AUDIO_SEQUENCE_VAB_SLOT].vab_id);
         SsSeqSetVol(audio_state.sequence_id, AUDIO_SEQUENCE_VOLUME, AUDIO_SEQUENCE_VOLUME);
         SsSeqPlay(audio_state.sequence_id, SSPLAY_PLAY, SSPLAY_INFINITY);
-        audio_state.sequence_active = KF_AUDIO_SEQUENCE_ACTIVE;
+        audio_state.sequence_active = KF_TRUE;
         SsSetMVol(AUDIO_VOLUME_MAX, AUDIO_VOLUME_MAX);
     }
 }
@@ -116,10 +117,10 @@ void audio_start_sequence(void)
 ADDRESS(0x80013b7c, 0x58)
 void audio_stop_sequence(void)
 {
-    if (audio_state.sequence_active == KF_AUDIO_SEQUENCE_ACTIVE) {
+    if (audio_state.sequence_active == KF_TRUE) {
         SsSeqStop(audio_state.sequence_id);
         SsSeqClose(audio_state.sequence_id);
-        audio_state.sequence_active = KF_AUDIO_SEQUENCE_INACTIVE;
+        audio_state.sequence_active = KF_FALSE;
     }
 }
 
@@ -130,7 +131,7 @@ void audio_shutdown(void)
     s32 index;
 
     SsSetMVol(0, 0);
-    if (audio_state.sequence_active == KF_AUDIO_SEQUENCE_ACTIVE) {
+    if (audio_state.sequence_active == KF_TRUE) {
         SsSeqSetVol(audio_state.sequence_id, 0, 0);
         SsSeqStop(audio_state.sequence_id);
         SsSeqClose(audio_state.sequence_id);
@@ -266,7 +267,7 @@ void audio_refresh_voice_handles(void)
     KfAudioVoiceHandle *handle;
     s32 index;
 
-    SpuGetAllKeysStatus(status);
+    SpuGetAllKeysStatus((char *)status);
     handle = audio_state.voices.handles;
     index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
@@ -414,7 +415,7 @@ void cd_request_service_vab(void)
         location = &request->location;
         vab_slot = &audio_state.vab_slots[request->payload.vab.slot_index];
         for (;;) {
-            result = SsVabTransBodyPartly(request->destination,
+            result = SsVabTransBodyPartly((u8 *)request->destination,
                 KF_CD_VAB_BODY_CHUNK_BYTES, vab_slot->vab_id);
             if (result == -1) {
                 SsVabClose(vab_slot->vab_id);

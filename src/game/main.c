@@ -37,7 +37,7 @@ enum {
 ADDRESS(0x80013634, 0x68)
 void main(void)
 {
-    InitHeap(BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
+    InitHeap((void *)BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
     CdInit();
     PadInit(0);
     InitCARD(1);
@@ -81,7 +81,7 @@ void game_main_loop(void)
     event_state_initialize();
     memory_card_initialize();
     reset_collision_rows_and_overlay();
-    game_graphics_runtime.collision_rotation_dirty = 1;
+    game_graphics_runtime.collision_rotation_dirty = KF_TRUE;
     refresh_collision_row_rotations();
     SsSetMVol(GAME_INITIAL_MASTER_VOLUME, GAME_INITIAL_MASTER_VOLUME);
     if (menu_card_browser() != -1) {

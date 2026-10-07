@@ -34,7 +34,7 @@
         inherit pkgs;
         sdkBuilder = ./scripts/create-toolchain.py;
       };
-      inherit (toolchain) psyqSdk psyqMallocObj gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257
+      inherit (toolchain) psyqSdk psyqMallocObj psyqRuntime30Cpe2x gcc257Native gcc257Headers gcc260Native cc1psx257 cpppsx257
         cc1psx260 cpppsx260 aspsxNative asmpsxNative;
 
       psy-k = pkgs.rustPlatform.buildRustPackage {
@@ -354,6 +354,7 @@
           export PSYQ_C_INCLUDE="${gcc257Headers}/include"
           export PSYQ_LIB="$PSYQ_SDK/LIB"
           export PSYQ_MALLOC_OBJ="${psyqMallocObj}/MALLOC.OBJ"
+          export PSYQ_CPE2X="${psyqRuntime30Cpe2x}/CPE2X.EXE"
           cd "$repo"
           exec python3 -m scripts.kf.cli "$@"
         '';
@@ -364,6 +365,7 @@
         packages = [
           psyqSdk
           psyqMallocObj
+          psyqRuntime30Cpe2x
           psy-k
           pkgs.dosbox-x
           cc1psx260
@@ -446,6 +448,7 @@
           export PSYQ_C_INCLUDE="${gcc257Headers}/include"
           export PSYQ_LIB="$PSYQ_SDK/LIB"
           export PSYQ_MALLOC_OBJ="${psyqMallocObj}/MALLOC.OBJ"
+          export PSYQ_CPE2X="${psyqRuntime30Cpe2x}/CPE2X.EXE"
           export PSYQ_COMPILER="$PSYQ_SDK/COMPILER"
           export PSYQ_ASPSX="${aspsxNative}/1.07/ASPSX.EXE"
           export KF_GCC260_NATIVE="${gcc260Native}"

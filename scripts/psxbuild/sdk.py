@@ -38,13 +38,14 @@ def run_command(arguments, *, environment=None):
 DOS_CYCLES = 'fixed 100000'
 
 
-def dos_run(root: Path, commands: list[str], phase: str) -> None:
+def dos_run(root: Path, commands: list[str], phase: str, settings: tuple[str, ...] = ()) -> None:
     batch = phase.upper() + '.BAT'
     (root / batch).write_bytes(('\r\n'.join(commands) + '\r\n').encode('ascii'))
     environment = dict(os.environ, SDL_VIDEODRIVER='dummy', SDL_AUDIODRIVER='dummy',
                        XDG_CONFIG_HOME=str(root / 'dosbox-config'))
+    configuration = [argument for setting in settings for argument in ('-set', setting)]
     result = subprocess.run(['dosbox-x', '-silent', '-fastlaunch', '-set', 'sdl output=surface',
-                             '-set', f'cpu cycles={DOS_CYCLES}',
+                             '-set', f'cpu cycles={DOS_CYCLES}', *configuration,
                              '-c', f'mount c "{root}"', '-c', 'c:', '-c', batch, '-exit'],
                             cwd=root, env=environment, capture_output=True, timeout=600)
     (root / (phase + '-dosbox.log')).write_bytes(result.stdout + result.stderr)

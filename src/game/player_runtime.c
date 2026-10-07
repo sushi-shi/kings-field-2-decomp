@@ -1989,13 +1989,15 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 angle;
     s32 radius;
     s32 slide_distance;
-    s32 slide_attempted = 0;
-    s32 diagonal_retry = 0;
-    s32 result = 0;
-    s32 collision_retry = 0;
+    s32 slide_attempted;
+    s32 collision_retry;
+    s32 result;
+    s32 diagonal_retry;
     s32 high_collision;
     SVECTOR delta;
     s32 diagonal_kind;
+
+    diagonal_retry = slide_attempted = collision_retry = result = 0;
 
 retry: {
         next.vx = player_state.camera_position.vx + dx;
@@ -2013,16 +2015,18 @@ retry: {
         }
 
         high_collision = 0;
-        if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
-            s32 collision_height = KF_COLLISION_CACHE_RESULT;
-            high_collision = 1;
-            if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
-                && player_state.death_state == 0
-                && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
-                       < -KF_PLAYER_HEIGHT) {
-                goto accept_position;
+        do {
+            if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
+                s32 collision_height = KF_COLLISION_CACHE_RESULT;
+                high_collision = 1;
+                if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
+                    && player_state.death_state == 0
+                    && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
+                           < -KF_PLAYER_HEIGHT) {
+                    goto accept_position;
+                }
             }
-        }
+        } while (0);
 
         if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
             collision_retry++;
@@ -2084,21 +2088,22 @@ retry: {
             }
         }
         if (flags & KF_COLLISION_HIT_DIAGONAL) {
-            if (diagonal_retry) {
-                goto axis_retry;
-            } else {
-                diagonal_retry = 1;
-                diagonal_kind =
-                    ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
-                if (diagonal_kind == 0 || diagonal_kind == 2) {
-                    dx = (initial_dx + initial_dz) >> 1;
-                    dz = dx;
-                } else {
-                    dx = (initial_dx - initial_dz) >> 1;
-                    dz = -dx;
+            do {
+                if (diagonal_retry) {
+                    goto axis_retry;
                 }
-                goto retry;
+                diagonal_retry = 1;
+            } while (0);
+            diagonal_kind =
+                ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
+            if (diagonal_kind == 0 || diagonal_kind == 2) {
+                dx = (initial_dx + initial_dz) >> 1;
+                dz = dx;
+            } else {
+                dx = (initial_dx - initial_dz) >> 1;
+                dz = -dx;
             }
+            goto retry;
         }
         result = 0;
     }

@@ -1378,7 +1378,7 @@ void event_world_state_save_slot(s32 save_slot)
             switch (object->action) {
             case KF_MAP_OBJECT_ACTION_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1389,7 +1389,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_61;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1399,7 +1399,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_ACTION_BOUNCE:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_62;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1410,7 +1410,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_MOTION_ACTION:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_70;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = object->tail.fields.unknown_38;
                 break;
             default:

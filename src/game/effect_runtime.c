@@ -10,10 +10,6 @@
 #include <psyq/libc.h>
 #include <kf/game/asset.h>
 
-/* This module names the collision cache as a member of its BSS owner, so
- * each field address is one constant that CSE can share between reads;
- * the collision module reaches the same fields through a base pointer. */
-#define EFFECT_COLLISION_CACHE bss_801c7540.collision_cache
 
 DATA(0x8006d704, 0x4, ".sdata")
 u32 effect_trail_next_slot = 0;
@@ -106,7 +102,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
                       magic_0c, magic_0e, magic_10, magic_12,
                       magic_14, radius, damage_multiplier_tenths, position);
     } else if (kind == KF_COLLISION_HIT_ACTOR) {
-        s32 actor_index = EFFECT_COLLISION_CACHE.actor_index;
+        s32 actor_index = bss_801c7540.collision_cache.actor_index;
         KfActor *actor = &actor_state.actors[actor_index];
         KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
 
@@ -126,7 +122,7 @@ void effect_dispatch_magic_impact(s32 kind, s32 record_type, s32 radius, u16 pow
         } else {
             record_type |= 2;
         }
-        actor_apply_magic_to_actor(EFFECT_COLLISION_CACHE.actor_index, power, magic_06,
+        actor_apply_magic_to_actor(bss_801c7540.collision_cache.actor_index, power, magic_06,
                       magic_08, magic_0a, magic_0c, magic_0e, magic_10,
                       magic_12, magic_14, radius, record_type, position);
         if (options & EFFECT_IMPACT_HOLD_ACTOR_ANIMATION) {
@@ -1213,7 +1209,7 @@ ADDRESS(0x80041e0c, 0x88)
 s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
                                 s32 vertical_window)
 {
-    s32 lower_bound = EFFECT_COLLISION_CACHE.heights.lower_bound;
+    s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
     VECTOR spawn_position;
     SVECTOR direction;
 
@@ -1290,7 +1286,7 @@ ADDRESS(0x8004212c, 0x16c)
 s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation)
 {
-    s32 lower_bound = EFFECT_COLLISION_CACHE.heights.lower_bound;
+    s32 lower_bound = bss_801c7540.collision_cache.heights.lower_bound;
     s32 offset_x = 0;
     s32 offset_z = 0;
 
@@ -1307,7 +1303,7 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
 
             position.vx = origin->vx + offset_x;
             position.vz = origin->vz + offset_z;
-            position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
+            position.vy = bss_801c7540.collision_cache.heights.lower_bound;
             magnitude = random_centered_triangular_scaled(variation) + 4096;
             effect_construct_record(10, 0, 0x66, &position, &direction,
                           scale_x * magnitude >> 12,
@@ -1348,7 +1344,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
         }
     }
     next_kind = 2;
-    if (EFFECT_COLLISION_CACHE.layer == 0) {
+    if (bss_801c7540.collision_cache.layer == 0) {
         next_kind = 1;
     }
     record->map_layer_mask = next_kind;
@@ -1457,7 +1453,7 @@ void effect_update_dispatch(void)
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
             u8 layer = 2;
-            if (EFFECT_COLLISION_CACHE.layer == 0) {
+            if (bss_801c7540.collision_cache.layer == 0) {
                 layer = 1;
             }
             record->map_layer_mask = layer;
@@ -1653,8 +1649,9 @@ void effect_update_dispatch(void)
             effect_apply_current_magic_backstep(collision);
             collision_probe_floor_height(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
-            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
-            height = EFFECT_COLLISION_CACHE.heights.result - EFFECT_COLLISION_CACHE.heights.height_limit;
+            record->position.vy = bss_801c7540.collision_cache.heights.result;
+            height = bss_801c7540.collision_cache.heights.result -
+                     bss_801c7540.collision_cache.heights.height_limit;
             if (height <= 32767) {
                 record->scale_y = height;
             } else {
@@ -1750,7 +1747,7 @@ void effect_update_dispatch(void)
         }
     kind38_response:
         {
-            flags = EFFECT_COLLISION_CACHE.flags;
+            flags = bss_801c7540.collision_cache.flags;
             if (flags & 0x10) {
                 if (record->cache_tail.payload.raw[0] == 0) {
                     effect_apply_current_magic_backstep(flags);
@@ -1764,7 +1761,7 @@ void effect_update_dispatch(void)
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 14, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
             }
-            if (EFFECT_COLLISION_CACHE.flags & 0xf) {
+            if (bss_801c7540.collision_cache.flags & 0xf) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
         }
@@ -1909,7 +1906,7 @@ void effect_update_dispatch(void)
                 if (initial_phase == 1) {
                     record->type = KF_EFFECT_SLOT_FREE;
                 } else {
-                    s32 collision_height = EFFECT_COLLISION_CACHE.heights.result;
+                    s32 collision_height = bss_801c7540.collision_cache.heights.result;
                     record->phase = 1;
                     record->direction.vy = -200;
                     record->position.vy = collision_height;
@@ -1945,11 +1942,11 @@ void effect_update_dispatch(void)
                     collision_probe_floor_height(record->position.vx,
                                   record->position.vy,
                                   record->position.vz, 50, 0);
-                    if (EFFECT_COLLISION_CACHE.heights.result <
-                        EFFECT_COLLISION_CACHE.heights.lower_bound) {
-                        spawn_position.vy = EFFECT_COLLISION_CACHE.heights.result;
+                    if (bss_801c7540.collision_cache.heights.result <
+                        bss_801c7540.collision_cache.heights.lower_bound) {
+                        spawn_position.vy = bss_801c7540.collision_cache.heights.result;
                     } else {
-                        spawn_position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
+                        spawn_position.vy = bss_801c7540.collision_cache.heights.lower_bound;
                     }
                     distance = spawn_position.vy - record->position.vy;
                     goto kind103_spawn;
@@ -1963,11 +1960,11 @@ void effect_update_dispatch(void)
                 0, (s16)record->direction.vx, 3000);
             record->direction.vz = fixed_lerp_q12(
                 0, (s16)record->direction.vz, 3000);
-            if (EFFECT_COLLISION_CACHE.heights.result <
-                EFFECT_COLLISION_CACHE.heights.lower_bound) {
-                spawn_position.vy = EFFECT_COLLISION_CACHE.heights.result;
+            if (bss_801c7540.collision_cache.heights.result <
+                bss_801c7540.collision_cache.heights.lower_bound) {
+                spawn_position.vy = bss_801c7540.collision_cache.heights.result;
             } else {
-                spawn_position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
+                spawn_position.vy = bss_801c7540.collision_cache.heights.lower_bound;
             }
             distance = spawn_position.vy - record->position.vy;
             if (distance >= 7000) {
@@ -2333,7 +2330,7 @@ void effect_update_dispatch(void)
             record->phase = 1;
         } else {
             if (collision == -1 &&
-                (EFFECT_COLLISION_CACHE.flags & 0xf) != 0) {
+                (bss_801c7540.collision_cache.flags & 0xf) != 0) {
                 KfEffectRecord *linked =
                     &effect_state.records[record->cache_tail.payload.kind105.parent_index];
                 KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
@@ -2389,7 +2386,7 @@ void effect_update_dispatch(void)
         {
             s32 index;
 
-            effect_apply_current_magic_backstep(EFFECT_COLLISION_CACHE.flags);
+            effect_apply_current_magic_backstep(bss_801c7540.collision_cache.flags);
             for (index = 11; index != -1; index--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 8, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
@@ -2425,7 +2422,7 @@ void effect_update_dispatch(void)
         collision = effect_target_motion(&work_target, 400, 60, 3000, 0, 10, 0);
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         if (collision == -1) {
-            effect_apply_current_magic_backstep(EFFECT_COLLISION_CACHE.flags);
+            effect_apply_current_magic_backstep(bss_801c7540.collision_cache.flags);
             for (count = 11; count != -1; count--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 33, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
@@ -2537,7 +2534,7 @@ void effect_update_dispatch(void)
             record->position.vx = next.vx;
             record->position.vy = next.vy;
             record->position.vz = next.vz;
-            record->map_layer_mask = EFFECT_COLLISION_CACHE.layer == 0 ? 1 : 2;
+            record->map_layer_mask = bss_801c7540.collision_cache.layer == 0 ? 1 : 2;
             record->rotation.vz = ((u16)record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
             effect_spawn_motion(record, -1, 0x400, 0x1000, -500, 2, 8, 0);
             break;
@@ -2706,7 +2703,7 @@ void effect_update_dispatch(void)
             if (effect_aim_and_move(250, 25, 32, 200,
                               0, 0x400, 100, 0x800) == -1) {
                 record->updates_remaining = -1;
-                if (EFFECT_COLLISION_CACHE.flags != 0x10) {
+                if (bss_801c7540.collision_cache.flags != 0x10) {
                     goto kind6_phase3;
                 }
                 {
@@ -2714,7 +2711,7 @@ void effect_update_dispatch(void)
 
                     effect_apply_current_magic(EFFECT_IMPACT_HOLD_ACTOR_ANIMATION |
                                                KF_COLLISION_HIT_ACTOR, 5000, NULL);
-                    actor_index = *(u8 *)&EFFECT_COLLISION_CACHE.actor_index;
+                    actor_index = bss_801c7540.collision_cache.actor_index;
                     record->cache_tail.payload.trail.actor_index = actor_index;
                     actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
                     if (actor->target_type == 2 || actor->target_type == 3) {
@@ -2975,10 +2972,10 @@ void effect_update_dispatch(void)
             collision_probe_floor_height(record->position.vx,
                           record->cache_tail.payload.kind114.origin_y,
                           record->position.vz, 0, 0);
-            if (record->position.vy < EFFECT_COLLISION_CACHE.heights.result) {
+            if (record->position.vy < bss_801c7540.collision_cache.heights.result) {
                 goto kind114_particles;
             }
-            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
+            record->position.vy = bss_801c7540.collision_cache.heights.result;
         }
         effect_construct_record(10, record->type | 3, 3, &record->position, NULL, 0);
         record->type = KF_EFFECT_SLOT_FREE;
@@ -3000,7 +2997,7 @@ void effect_update_dispatch(void)
         target.vz = player_state.camera_position.vz;
         result = effect_target_motion(&target, 300, 40, 2000, 0, 10, 0);
         if (result == -1) {
-            effect_apply_current_magic_backstep(EFFECT_COLLISION_CACHE.flags);
+            effect_apply_current_magic_backstep(bss_801c7540.collision_cache.flags);
             for (count = 11; count != -1; count--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 14, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
@@ -3031,7 +3028,7 @@ void effect_update_dispatch(void)
             if (collision == 0 || (collision & 5) == 0) {
                 goto kind120_rotate;
             }
-            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
+            record->position.vy = bss_801c7540.collision_cache.heights.result;
         }
         if (rand() < 8192) {
             effect_construct_record(10, record->type | 3, 0x2a,

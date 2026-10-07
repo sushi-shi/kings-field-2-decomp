@@ -15,6 +15,7 @@ GAME.EXE	0x8006d6c0	player_status_texture_row_2	.sdata	retail layout: eight-byte
 GAME.EXE	0x8006d6c8	player_status_texture_row_3	.sdata	retail layout: eight-byte RECT in the game .sdata run between memory_card_events and display small data;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6d0	map_textured_primitive_color	.sdata	retail layout: display word in the game .sdata run after the player status rows;four-byte CVECTOR under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6d4	render_model_yaw_smoothing_accumulator	.sdata	retail layout: display word in the game .sdata run;initialized word under cc1 -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006d6d8	display_unreferenced_sdata_word	.sdata	retail layout: display word between the yaw accumulator and menu_transition_rect in the game .sdata run;initialized word under cc1 -G8
 GAME.EXE	0x8006d6dc	menu_transition_rect	.sdata	retail layout: display eight-byte RECT in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6e4	map_object_motion_action15_start_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run after display small data;initialized under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6ec	map_object_motion_action15_end_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
@@ -33,4 +34,8 @@ GAME.EXE	0x8006da18	memory_card_io_end_event	.sbss	retail layout: eight-byte .lc
 GAME.EXE	0x8006da20	memory_card_timeout_event	.sbss	retail layout: eight-byte .lcomm stride before SDK small BSS at 0x8006da60;static under ASPSX -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006da28	memory_card_new_device_event	.sbss	retail layout: eight-byte .lcomm stride before SDK small BSS at 0x8006da60;static under ASPSX -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006da30	memory_card_error_event	.sbss	retail layout: eight-byte .lcomm stride before SDK small BSS at 0x8006da60;static under ASPSX -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006da38	memory_card_unreferenced_word_0	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
+GAME.EXE	0x8006da40	memory_card_unreferenced_word_1	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
+GAME.EXE	0x8006da48	memory_card_unreferenced_word_2	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
+GAME.EXE	0x8006da50	memory_card_unreferenced_word_3	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
 GAME.EXE	0x8006da58	memory_card_buffer	.sbss	retail layout: eight-byte .lcomm stride before SDK small BSS at 0x8006da60;static under ASPSX -G8;native-gcc257-aspsx107-G8

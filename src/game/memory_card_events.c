@@ -75,6 +75,16 @@ DATA(0x8006da28, 0x4, ".sbss")
 static long memory_card_new_device_event;
 DATA(0x8006da30, 0x4, ".sbss")
 static long memory_card_error_event;
+/* Four more private small-BSS slots that no retail code reads or writes;
+   their types and roles are unresolved. */
+DATA(0x8006da38, 0x4, ".sbss")
+static long memory_card_unreferenced_word_0;
+DATA(0x8006da40, 0x4, ".sbss")
+static long memory_card_unreferenced_word_1;
+DATA(0x8006da48, 0x4, ".sbss")
+static long memory_card_unreferenced_word_2;
+DATA(0x8006da50, 0x4, ".sbss")
+static long memory_card_unreferenced_word_3;
 DATA(0x8006da58, 0x4, ".sbss")
 static u8 *memory_card_buffer;
 

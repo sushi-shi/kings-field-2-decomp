@@ -265,7 +265,7 @@ class InventoryTests(unittest.TestCase):
         counts = validate(RETAIL_CONFIG)
         self.assertEqual(counts["functions"], 564)
         self.assertEqual(counts["signatures_started"], 564)
-        self.assertEqual(counts["data"], 759)
+        self.assertEqual(counts["data"], 766)
         self.assertGreaterEqual(counts["functions_named"], 562)
         self.assertEqual(counts["structures"], 247)
 

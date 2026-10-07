@@ -40,10 +40,10 @@ KfCallback callback_default_table[32] = {
 };
 
 DATA(0x800855a0, 0x15000, ".bss")
-static u8 resource_tmd_archive_28_workspace[0x15000];
+u8 resource_tmd_archive_28_workspace[0x15000];
 
 DATA(0x800fa0d0, 0x1960, ".bss")
-static u8 resource_tmd_archive_0_workspace[0x1960];
+u8 resource_tmd_archive_0_workspace[0x1960];
 
 DATA(0x8012da68, 0x37000, ".bss")
 u8 resource_tmd_workspace[0x37000];
@@ -52,7 +52,7 @@ DATA(0x8017d118, 0x1c, ".bss")
 KfResourceState resource_state;
 
 DATA(0x8019e138, 0x14000, ".bss")
-static u8 resource_callback_table_workspace[0x14000];
+u8 resource_callback_table_workspace[0x14000];
 
 DATA(0x801d8d88, 0x800, ".bss")
 KfEquipmentRecord player_equipment_records[KF_EQUIPMENT_RECORD_COUNT];

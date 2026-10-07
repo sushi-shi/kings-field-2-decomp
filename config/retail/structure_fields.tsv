@@ -1039,7 +1039,7 @@ KfPlayerVitals	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counter
 KfPlayerVitals	0x02	0x02	current_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerVitals	0x04	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerVitals	0x06	0x02	current_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
-KfPoolRecord	0x00	0x02	state	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x00	0x02	state	KF_ENUM_STORAGE(KfAnimationCacheState, s16)	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x02	0x02	asset_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x04	0x02	clip_index	KF_ENUM_STORAGE(KfAnimationClip, u16)	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x06	0x02	keyframe_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code

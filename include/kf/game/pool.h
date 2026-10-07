@@ -5,13 +5,16 @@
 #include <kf/lib/enum.h>
 #include <psyq/sdk.h>
 
-/* Twelve-entry animation vertex cache and its per-frame lifecycle. */
-enum {
+/* Twelve-entry animation vertex cache. pool_mark_allocated marks used
+ * records STALE each frame, a sample makes a record LIVE again and
+ * pool_release_stale frees the records nobody sampled. */
+enum { KF_ANIMATION_CACHE_CAPACITY = 12 };
+
+KF_ENUM_BEGIN(KfAnimationCacheState, u8)
     KF_ANIMATION_CACHE_FREE = 0,
     KF_ANIMATION_CACHE_STALE = 1,
-    KF_ANIMATION_CACHE_LIVE = 2,
-    KF_ANIMATION_CACHE_CAPACITY = 12
-};
+    KF_ANIMATION_CACHE_LIVE = 2
+KF_ENUM_END(KfAnimationCacheState)
 
 /* Clip selector of an animated asset (KF1 KfAnimationClip). Actor animation
  * IDs, the weapon attack mode, map-object and effect selectors and the vertex
@@ -30,7 +33,7 @@ KF_ENUM_END(KfAnimationClip)
 enum { KF_ASSET_OBJECT_INDEX_MASK = 0x7f };
 
 typedef struct KfPoolRecord {
-    s16 state;
+    KF_ENUM_STORAGE(KfAnimationCacheState, s16) state;
     u16 asset_index;
     KF_ENUM_STORAGE(KfAnimationClip, u16) clip_index;
     u16 keyframe_index;

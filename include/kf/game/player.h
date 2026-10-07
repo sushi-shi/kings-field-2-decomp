@@ -377,7 +377,9 @@ typedef char kf_collision_shape_bank_size[
     sizeof(((KfBss801c7540 *)NULL)->shape_bank) == 0x1800 ? 1 : -1];
 enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
-enum {
+/* player_set_equipment_slot target; NONE only refreshes the record
+ * pointers of the current equipment. */
+KF_ENUM_BEGIN(KfEquipmentSlot, u8)
     KF_EQUIPMENT_SLOT_HEAD = 0,
     KF_EQUIPMENT_SLOT_BODY = 1,
     KF_EQUIPMENT_SLOT_LEG = 2,
@@ -385,8 +387,12 @@ enum {
     KF_EQUIPMENT_SLOT_ARM = 4,
     KF_EQUIPMENT_SLOT_ACCESSORY = 5,
     KF_EQUIPMENT_SLOT_EXTRA = 6,
-    KF_EQUIPMENT_NONE = 0xff
-};
+    KF_EQUIPMENT_SLOT_NONE = 0xff
+KF_ENUM_END(KfEquipmentSlot)
+
+/* Encoded empty byte of the menu's equipped item/magic label rows (lane B
+ * menu locals, which mix KfObjectId and KfEffectKind values). */
+enum { KF_EQUIPMENT_NONE = 0xff };
 
 /*
  * The player object: game_main_loop clears 0x160 bytes at its base and the
@@ -595,7 +601,7 @@ void player_adjust_mp(s32 delta);
 void player_set_primary_magic_shortcut_id(KfEffectKind value);
 void player_set_secondary_magic_shortcut_id(KfEffectKind value);
 void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value);
-void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot);
+void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, KfEquipmentSlot slot);
 void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id);
 struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);

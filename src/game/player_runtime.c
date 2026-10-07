@@ -83,7 +83,7 @@ KfBss801c7540 bss_801c7540;
 ADDRESS(0x80023570, 0x9c)
 void player_restore_equipment_effects(void)
 {
-    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_NONE);
+    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_SLOT_NONE);
     player_equip_weapon(player_state.equipped_weapon_id);
     player_reset_view();
     if (player_state.defense_boost_timer != 0) {
@@ -872,7 +872,7 @@ void player_initialize_state(void)
     player_state.base_physical_power = player_level_growth_table[0].physical_power_step;
     player_state.base_magic = player_level_growth_table[0].magic_step;
     player_state.next_level_experience = player_level_growth_table[0].experience_threshold;
-    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_NONE);
+    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_SLOT_NONE);
     player_state.selected_magic_record = NULL;
     player_set_primary_magic_shortcut_id(KF_MAGIC_NONE);
     player_equip_weapon(KF_OBJECT_0);
@@ -999,7 +999,7 @@ void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value)
 }
 
 ADDRESS(0x8002545c, 0x240)
-void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot)
+void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, KfEquipmentSlot slot)
 {
     switch (slot) {
     case KF_EQUIPMENT_SLOT_HEAD:
@@ -1022,6 +1022,8 @@ void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot)
         break;
     case KF_EQUIPMENT_SLOT_EXTRA:
         player_state.equipped_extra_id = item_id;
+        break;
+    default:
         break;
     }
 

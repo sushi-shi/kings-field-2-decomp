@@ -1898,8 +1898,8 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     }
 
     setPolyFT4(quad);
-    if (semitrans != 0xff && semitrans != 0) {
-        setSemiTrans(quad, 1);
+    if (semitrans != 0xff) {
+        setSemiTrans(quad, semitrans);
     }
     setRGB0(quad, red, green, blue);
     quad->tpage = tpage;

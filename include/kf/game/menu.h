@@ -1,6 +1,7 @@
 #ifndef KF_GAME_MENU_H
 #define KF_GAME_MENU_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
@@ -187,23 +188,23 @@ typedef char kf_menu_sprite_def_size[sizeof(KfMenuSpriteDef) == 12 ? 1 : -1];
 typedef char kf_menu_window_layout_size[sizeof(KfMenuWindowLayout) == 308 ? 1 : -1];
 typedef char kf_menu_list_prefix_size[sizeof(KfMenuList) == 36 ? 1 : -1];
 typedef char kf_item_menu_list_size[sizeof(KfItemMenuList) == 52 ? 1 : -1];
-typedef char kf_item_menu_list_rows_offset[(u32)&((KfItemMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_item_menu_list_values_offset[(u32)&((KfItemMenuList *)0)->values == 0x2c ? 1 : -1];
-typedef char kf_item_menu_list_prices_offset[(u32)&((KfItemMenuList *)0)->prices == 0x30 ? 1 : -1];
+typedef char kf_item_menu_list_rows_offset[offsetof(KfItemMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_item_menu_list_values_offset[offsetof(KfItemMenuList, values) == 0x2c ? 1 : -1];
+typedef char kf_item_menu_list_prices_offset[offsetof(KfItemMenuList, prices) == 0x30 ? 1 : -1];
 typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
 typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
-typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_card_menu_list_levels_offset[(u32)&((KfCardMenuList *)0)->levels == 0x2c ? 1 : -1];
+typedef char kf_card_menu_list_rows_offset[offsetof(KfCardMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_card_menu_list_levels_offset[offsetof(KfCardMenuList, levels) == 0x2c ? 1 : -1];
 typedef char kf_card_menu_list_experience_values_offset[
-    (u32)&((KfCardMenuList *)0)->experience_values == 0x30 ? 1 : -1];
+    offsetof(KfCardMenuList, experience_values) == 0x30 ? 1 : -1];
 typedef char kf_magic_menu_list_size[sizeof(KfMagicMenuList) == 52 ? 1 : -1];
-typedef char kf_magic_menu_list_rows_offset[(u32)&((KfMagicMenuList *)0)->rows == 0x24 ? 1 : -1];
-typedef char kf_magic_menu_list_values_offset[(u32)&((KfMagicMenuList *)0)->values == 0x30 ? 1 : -1];
+typedef char kf_magic_menu_list_rows_offset[offsetof(KfMagicMenuList, rows) == 0x24 ? 1 : -1];
+typedef char kf_magic_menu_list_values_offset[offsetof(KfMagicMenuList, values) == 0x30 ? 1 : -1];
 typedef char kf_menu_render_list_size[sizeof(KfMenuRenderList) == 52 ? 1 : -1];
-typedef char kf_menu_render_row_offset[(u32)&((KfMenuRenderList *)0)->row_glyphs == 0x24 ? 1 : -1];
-typedef char kf_menu_render_detail_offset[(u32)&((KfMenuRenderList *)0)->detail_rows == 0x28 ? 1 : -1];
-typedef char kf_menu_render_byte_offset[(u32)&((KfMenuRenderList *)0)->byte_values == 0x2c ? 1 : -1];
-typedef char kf_menu_render_number_offset[(u32)&((KfMenuRenderList *)0)->number_values == 0x30 ? 1 : -1];
+typedef char kf_menu_render_row_offset[offsetof(KfMenuRenderList, row_glyphs) == 0x24 ? 1 : -1];
+typedef char kf_menu_render_detail_offset[offsetof(KfMenuRenderList, detail_rows) == 0x28 ? 1 : -1];
+typedef char kf_menu_render_byte_offset[offsetof(KfMenuRenderList, byte_values) == 0x2c ? 1 : -1];
+typedef char kf_menu_render_number_offset[offsetof(KfMenuRenderList, number_values) == 0x30 ? 1 : -1];
 
 extern KfMenuWindowLayout menu_window_layouts[KF_MENU_WINDOW_COUNT];
 extern KfMenuLabelSuffix menu_header_labels[12];

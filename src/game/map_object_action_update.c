@@ -14,6 +14,7 @@
 #include <kf/game/map_object.h>
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
+#include <kf/lib/offsetof.h>
 #include <psyq/sdk.h>
 #include <psyq/libc.h>
 
@@ -817,13 +818,13 @@ void map_object_update_actions(void)
                 u32 sentinel_offset;
                 switch (object->tail.event_effect.pending_event_command) {
                 case 0x72:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[0].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[0].object_index);
                     break;
                 case 0x73:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[1].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[1].object_index);
                     break;
                 case 0x74:
-                    sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[2].object_index;
+                    sentinel_offset = offsetof(KfEventControlFields, object_slots[2].object_index);
                     break;
                 default:
                     goto no_sentinel;

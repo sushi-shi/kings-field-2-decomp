@@ -1,6 +1,7 @@
 #ifndef KF_GAME_EVENT_STATE_H
 #define KF_GAME_EVENT_STATE_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/memory.h>
 #include <psyq/sdk.h>
@@ -25,7 +26,7 @@ typedef struct KfEventControlObjectSlot {
 typedef char kf_event_control_object_slot_size[
     sizeof(KfEventControlObjectSlot) == 4 ? 1 : -1];
 typedef char kf_event_control_object_slot_resource_offset[
-    (u32)&((KfEventControlObjectSlot *)0)->resource_id == 2 ? 1 : -1];
+    offsetof(KfEventControlObjectSlot, resource_id) == 2 ? 1 : -1];
 
 typedef struct KfEventControlFields {
     u8 highest_requested_map_region_id;
@@ -40,15 +41,15 @@ typedef struct KfEventControlFields {
 typedef char kf_event_control_fields_size[
     sizeof(KfEventControlFields) == 0x40 ? 1 : -1];
 typedef char kf_event_control_post_death_reload_offset[
-    (u32)&((KfEventControlFields *)0)->post_death_reload_flags == 1 ? 1 : -1];
+    offsetof(KfEventControlFields, post_death_reload_flags) == 1 ? 1 : -1];
 typedef char kf_event_control_object_slots_offset[
-    (u32)&((KfEventControlFields *)0)->object_slots == 0x28 ? 1 : -1];
+    offsetof(KfEventControlFields, object_slots) == 0x28 ? 1 : -1];
 typedef char kf_event_control_counter_53_decreased_offset[
-    (u32)&((KfEventControlFields *)0)->counter_53_decreased == 0x1c ? 1 : -1];
+    offsetof(KfEventControlFields, counter_53_decreased) == 0x1c ? 1 : -1];
 typedef char kf_event_control_last_slot_resource_offset[
-    (u32)&((KfEventControlFields *)0)->object_slots[2].resource_id == 0x32 ? 1 : -1];
+    offsetof(KfEventControlFields, object_slots[2].resource_id) == 0x32 ? 1 : -1];
 typedef char kf_event_control_stream_actor_definition_offset[
-    (u32)&((KfEventControlFields *)0)->stream_actor_definition_id == 0x3f ? 1 : -1];
+    offsetof(KfEventControlFields, stream_actor_definition_id) == 0x3f ? 1 : -1];
 
 typedef union KfEventControl {
     u32 clear_words[0x40];
@@ -71,11 +72,11 @@ typedef struct KfEventState {
 
 typedef char kf_event_state_size[sizeof(KfEventState) == 0x3918 ? 1 : -1];
 typedef char kf_event_state_control_offset[
-    (u32)&((KfEventState *)0)->control == 0x04 ? 1 : -1];
+    offsetof(KfEventState, control) == 0x04 ? 1 : -1];
 typedef char kf_event_state_arena_offset[
-    (u32)&((KfEventState *)0)->arena == 0x104 ? 1 : -1];
+    offsetof(KfEventState, arena) == 0x104 ? 1 : -1];
 typedef char kf_event_state_saved_offsets_offset[
-    (u32)&((KfEventState *)0)->saved_offsets == 0x3904 ? 1 : -1];
+    offsetof(KfEventState, saved_offsets) == 0x3904 ? 1 : -1];
 
 extern KfEventState event_state;
 

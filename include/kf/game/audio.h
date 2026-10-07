@@ -1,6 +1,7 @@
 #ifndef KF_GAME_AUDIO_H
 #define KF_GAME_AUDIO_H
 #include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/cd.h>
 #include <psyq/sdk.h>
@@ -56,7 +57,7 @@ typedef struct KfAudioVabStreamSlot {
 typedef char kf_audio_vab_stream_slot_size[
     sizeof(KfAudioVabStreamSlot) == 8 ? 1 : -1];
 typedef char kf_audio_vab_stream_slot_buffer_offset[
-    (u32)&((KfAudioVabStreamSlot *)0)->buffer == 4 ? 1 : -1];
+    offsetof(KfAudioVabStreamSlot, buffer) == 4 ? 1 : -1];
 
 typedef struct KfAudioVabSlot {
     s16 vab_id;
@@ -65,7 +66,7 @@ typedef struct KfAudioVabSlot {
 
 typedef char kf_audio_vab_slot_size[sizeof(KfAudioVabSlot) == 8 ? 1 : -1];
 typedef char kf_audio_vab_slot_stream_slot_offset[
-    (u32)&((KfAudioVabSlot *)0)->stream_slot == 4 ? 1 : -1];
+    offsetof(KfAudioVabSlot, stream_slot) == 4 ? 1 : -1];
 
 typedef struct KfAudioVoiceHandle {
     s16 voice_id;
@@ -82,7 +83,7 @@ typedef struct KfAudioVoiceParams {
 
 typedef char kf_audio_voice_params_size[sizeof(KfAudioVoiceParams) == 10 ? 1 : -1];
 typedef char kf_audio_voice_priority_offset[
-    (u32)&((KfAudioVoiceParams *)0)->priority == 8 ? 1 : -1];
+    offsetof(KfAudioVoiceParams, priority) == 8 ? 1 : -1];
 
 typedef struct KfAudioVoiceState {
     KfAudioVoiceHandle handles[KF_AUDIO_VOICE_HANDLE_COUNT];
@@ -107,25 +108,25 @@ typedef struct KfGameAudioState {
 
 typedef char kf_game_audio_state_size[sizeof(KfGameAudioState) == 0xe9c ? 1 : -1];
 typedef char kf_game_audio_sequence_active_offset[
-    (u32)&((KfGameAudioState *)0)->sequence_active == 8 ? 1 : -1];
+    offsetof(KfGameAudioState, sequence_active) == 8 ? 1 : -1];
 typedef char kf_game_audio_vab_offset[
-    (u32)&((KfGameAudioState *)0)->vab_slots == 0x2c ? 1 : -1];
+    offsetof(KfGameAudioState, vab_slots) == 0x2c ? 1 : -1];
 typedef char kf_game_audio_listener_position_offset[
-    (u32)&((KfGameAudioState *)0)->listener_position == 0x10 ? 1 : -1];
+    offsetof(KfGameAudioState, listener_position) == 0x10 ? 1 : -1];
 typedef char kf_game_audio_listener_layer_offset[
-    (u32)&((KfGameAudioState *)0)->listener_layer == 0x20 ? 1 : -1];
+    offsetof(KfGameAudioState, listener_layer) == 0x20 ? 1 : -1];
 typedef char kf_game_audio_listener_rotation_offset[
-    (u32)&((KfGameAudioState *)0)->listener_rotation == 0x22 ? 1 : -1];
+    offsetof(KfGameAudioState, listener_rotation) == 0x22 ? 1 : -1];
 typedef char kf_game_audio_handles_offset[
-    (u32)&((KfGameAudioState *)0)->voices.handles == 0x43c ? 1 : -1];
+    offsetof(KfGameAudioState, voices.handles) == 0x43c ? 1 : -1];
 typedef char kf_game_audio_params_offset[
-    (u32)&((KfGameAudioState *)0)->voices.params == 0x464 ? 1 : -1];
+    offsetof(KfGameAudioState, voices.params) == 0x464 ? 1 : -1];
 typedef char kf_game_audio_params_236_offset[
-    (u32)&((KfGameAudioState *)0)->voices.params[236].vab_slot_index == 0xd9c ? 1 : -1];
+    offsetof(KfGameAudioState, voices.params[236].vab_slot_index) == 0xd9c ? 1 : -1];
 typedef char kf_game_audio_params_239_offset[
-    (u32)&((KfGameAudioState *)0)->voices.params[239].vab_slot_index == 0xdba ? 1 : -1];
+    offsetof(KfGameAudioState, voices.params[239].vab_slot_index) == 0xdba ? 1 : -1];
 typedef char kf_game_audio_stream_slots_offset[
-    (u32)&((KfGameAudioState *)0)->vab_stream_slots == 0xe64 ? 1 : -1];
+    offsetof(KfGameAudioState, vab_stream_slots) == 0xe64 ? 1 : -1];
 
 extern KfGameAudioState audio_state;
 

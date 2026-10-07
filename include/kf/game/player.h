@@ -2,6 +2,7 @@
 #define KF_GAME_PLAYER_H
 
 #include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
@@ -94,11 +95,11 @@ typedef struct KfEquipmentRecord {
 
 typedef char kf_equipment_record_size[sizeof(KfEquipmentRecord) == 0x20 ? 1 : -1];
 typedef char kf_equipment_record_bonuses_offset[
-    (u32)&((KfEquipmentRecord *)0)->bonus_components == 2 ? 1 : -1];
+    offsetof(KfEquipmentRecord, bonus_components) == 2 ? 1 : -1];
 typedef char kf_equipment_record_hp_regen_offset[
-    (u32)&((KfEquipmentRecord *)0)->hp_regen_interval == 0x14 ? 1 : -1];
+    offsetof(KfEquipmentRecord, hp_regen_interval) == 0x14 ? 1 : -1];
 typedef char kf_equipment_record_hp_drain_offset[
-    (u32)&((KfEquipmentRecord *)0)->hp_drain_interval == 0x16 ? 1 : -1];
+    offsetof(KfEquipmentRecord, hp_drain_interval) == 0x16 ? 1 : -1];
 
 /* The fourth equipment defense component resists poison application. */
 enum { KF_PLAYER_COMBAT_POISON_RESISTANCE = 3 };
@@ -137,11 +138,11 @@ typedef struct KfWeaponRecordGame {
 } KfWeaponRecordGame;
 
 typedef char kf_weapon_record_game_magic_window_offset[
-    (u32)&((KfWeaponRecordGame *)0)->magic_window_start == 0x20 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, magic_window_start) == 0x20 ? 1 : -1];
 typedef char kf_weapon_record_game_initial_vertex_offset[
-    (u32)&((KfWeaponRecordGame *)0)->initial_vertex_index == 0x3a ? 1 : -1];
+    offsetof(KfWeaponRecordGame, initial_vertex_index) == 0x3a ? 1 : -1];
 typedef char kf_weapon_record_game_final_vertex_offset[
-    (u32)&((KfWeaponRecordGame *)0)->final_vertex_index == 0x42 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, final_vertex_index) == 0x42 ? 1 : -1];
 
 typedef struct KfWeaponAssetBuffer {
     u8 bytes[0xc000];
@@ -188,7 +189,7 @@ typedef struct KfPlayerPositionReaction {
 typedef char kf_player_position_reaction_size[
     sizeof(KfPlayerPositionReaction) == 0x14 ? 1 : -1];
 typedef char kf_player_position_reaction_position_offset[
-    (u32)&((KfPlayerPositionReaction *)0)->position == 4 ? 1 : -1];
+    offsetof(KfPlayerPositionReaction, position) == 4 ? 1 : -1];
 
 /* PadRead(1) buttons for this frame, and the previous frame's copy taken
  * after the player update. */
@@ -206,7 +207,7 @@ typedef union KfPlayerPadButtons {
 typedef char kf_player_pad_button_halves_size[
     sizeof(KfPlayerPadButtonHalves) == 4 ? 1 : -1];
 typedef char kf_player_pad_buttons_previous_offset[
-    (u32)&((KfPlayerPadButtons *)0)->halves.previous == 2 ? 1 : -1];
+    offsetof(KfPlayerPadButtons, halves.previous) == 2 ? 1 : -1];
 typedef char kf_player_pad_buttons_size[sizeof(KfPlayerPadButtons) == 4 ? 1 : -1];
 
 /* Whole-word tests of BUTTON in both frames: newly pressed, or held. */
@@ -226,11 +227,11 @@ typedef union KfPlayerReactionOverlay {
 typedef char kf_player_reaction_overlay_size[
     sizeof(KfPlayerReactionOverlay) == 0x14 ? 1 : -1];
 typedef char kf_player_reaction_view_rotation_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->view.rotation == 2 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, view.rotation) == 2 ? 1 : -1];
 typedef char kf_player_reaction_damage_motion_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->damage.motion == 8 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, damage.motion) == 8 ? 1 : -1];
 typedef char kf_player_reaction_position_offset[
-    (u32)&((KfPlayerReactionOverlay *)0)->position.position == 4 ? 1 : -1];
+    offsetof(KfPlayerReactionOverlay, position.position) == 4 ? 1 : -1];
 
 typedef union KfPlayerMovementSpeed {
     u16 unsigned_value;
@@ -242,23 +243,23 @@ typedef char kf_player_movement_speed_size[
 
 typedef char kf_weapon_record_game_size[sizeof(KfWeaponRecordGame) == 0x44 ? 1 : -1];
 typedef char kf_weapon_record_game_hp_regen_offset[
-    (u32)&((KfWeaponRecordGame *)0)->hp_regen_interval == 0x16 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, hp_regen_interval) == 0x16 ? 1 : -1];
 typedef char kf_weapon_record_game_mp_regen_offset[
-    (u32)&((KfWeaponRecordGame *)0)->mp_regen_interval == 0x18 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, mp_regen_interval) == 0x18 ? 1 : -1];
 typedef char kf_weapon_record_game_normal_end_offset[
-    (u32)&((KfWeaponRecordGame *)0)->normal_attack_end_phase == 0x1e ? 1 : -1];
+    offsetof(KfWeaponRecordGame, normal_attack_end_phase) == 0x1e ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_end_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_end_phase == 0x28 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_end_phase) == 0x28 ? 1 : -1];
 typedef char kf_weapon_record_game_attacks_offset[
-    (u32)&((KfWeaponRecordGame *)0)->attack_components == 6 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, attack_components) == 6 ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_phase_step_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_phase_step == 0x24 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_phase_step) == 0x24 ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_window_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_window_start == 0x26 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_window_start) == 0x26 ? 1 : -1];
 typedef char kf_weapon_record_game_normal_sound_offset[
-    (u32)&((KfWeaponRecordGame *)0)->normal_attack_sound_phase == 0x2c ? 1 : -1];
+    offsetof(KfWeaponRecordGame, normal_attack_sound_phase) == 0x2c ? 1 : -1];
 typedef char kf_weapon_record_game_alternate_sound_step_offset[
-    (u32)&((KfWeaponRecordGame *)0)->alternate_attack_sound_phase_step == 0x32 ? 1 : -1];
+    offsetof(KfWeaponRecordGame, alternate_attack_sound_phase_step) == 0x32 ? 1 : -1];
 
 typedef struct KfPlayerMagicIdSequence {
     u8 effect_ids[12];
@@ -268,7 +269,7 @@ typedef struct KfPlayerMagicIdSequence {
 typedef char kf_player_magic_id_sequence_size[
     sizeof(KfPlayerMagicIdSequence) == 0x14 ? 1 : -1];
 typedef char kf_player_magic_attack_masks_offset[
-    (u32)&((KfPlayerMagicIdSequence *)0)->attack_masks == 0x0c ? 1 : -1];
+    offsetof(KfPlayerMagicIdSequence, attack_masks) == 0x0c ? 1 : -1];
 
 /* One magic spawn offset; its SVECTOR pad slot carries the effect kind. */
 typedef struct KfPlayerMagicSpawnFields {
@@ -286,7 +287,7 @@ typedef union KfPlayerMagicSpawnRecord {
 typedef char kf_player_magic_spawn_record_size[
     sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
 typedef char kf_player_magic_spawn_effect_kind_offset[
-    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
+    offsetof(KfPlayerMagicSpawnRecord, fields.effect_kind) == 6 ? 1 : -1];
 
 typedef struct KfMapOccupancyLayer {
     u8 object_index;
@@ -299,9 +300,9 @@ typedef struct KfMapOccupancyLayer {
 typedef KfMapOccupancyLayer KfMapCellShape;
 typedef char kf_map_cell_shape_size[sizeof(KfMapCellShape) == 5 ? 1 : -1];
 typedef char kf_map_cell_orientation_offset[
-    (u32)&((KfMapCellShape *)0)->quarter_turns == 2 ? 1 : -1];
+    offsetof(KfMapCellShape, quarter_turns) == 2 ? 1 : -1];
 typedef char kf_map_cell_lighting_offset[
-    (u32)&((KfMapCellShape *)0)->lighting_index == 4 ? 1 : -1];
+    offsetof(KfMapCellShape, lighting_index) == 4 ? 1 : -1];
 
 typedef struct KfMapOccupancyCell {
     KfMapOccupancyLayer layer[2];
@@ -341,11 +342,11 @@ typedef struct KfCollisionCache {
 
 typedef char kf_collision_cache_size[sizeof(KfCollisionCache) == 0x44 ? 1 : -1];
 typedef char kf_collision_cache_height_offset[
-    (u32)&((KfCollisionCache *)0)->heights == 0x0c ? 1 : -1];
+    offsetof(KfCollisionCache, heights) == 0x0c ? 1 : -1];
 typedef char kf_collision_cache_position_offset[
-    (u32)&((KfCollisionCache *)0)->position == 0x30 ? 1 : -1];
+    offsetof(KfCollisionCache, position) == 0x30 ? 1 : -1];
 typedef char kf_collision_cache_radius_offset[
-    (u32)&((KfCollisionCache *)0)->radius == 0x40 ? 1 : -1];
+    offsetof(KfCollisionCache, radius) == 0x40 ? 1 : -1];
 
 /* The resource transition loads 0xfa00 bytes of 80-by-80 map cells. Startup
  * clears the complete BSS region, whose later storage remains partly opaque. */
@@ -357,12 +358,12 @@ typedef struct KfBss801c7540 {
 } KfBss801c7540;
 
 typedef char kf_map_cells_loaded_size[
-    sizeof(((KfBss801c7540 *)0)->map_cells) == 0xfa00 ? 1 : -1];
+    sizeof(((KfBss801c7540 *)NULL)->map_cells) == 0xfa00 ? 1 : -1];
 typedef char kf_bss_801c7540_size[sizeof(KfBss801c7540) == 0x11844 ? 1 : -1];
 typedef char kf_collision_shape_bank_offset[
-    (u32)&((KfBss801c7540 *)0)->shape_bank == 0x10000 ? 1 : -1];
+    offsetof(KfBss801c7540, shape_bank) == 0x10000 ? 1 : -1];
 typedef char kf_collision_shape_bank_size[
-    sizeof(((KfBss801c7540 *)0)->shape_bank) == 0x1800 ? 1 : -1];
+    sizeof(((KfBss801c7540 *)NULL)->shape_bank) == 0x1800 ? 1 : -1];
 enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
 enum {
@@ -499,47 +500,47 @@ typedef struct KfPlayerState {
 
 typedef char kf_player_state_size[sizeof(KfPlayerState) == 0x160 ? 1 : -1];
 typedef char kf_player_movement_speed_adjustment_decay_latch_offset[
-    (u32)&((KfPlayerState *)0)->movement_speed_adjustment_decay_latch == 0x0d ? 1 : -1];
+    offsetof(KfPlayerState, movement_speed_adjustment_decay_latch) == 0x0d ? 1 : -1];
 typedef char kf_player_lifecycle_refresh_offset[
-    (u32)&((KfPlayerState *)0)->force_actor_lifecycle_refresh == 0x0a ? 1 : -1];
+    offsetof(KfPlayerState, force_actor_lifecycle_refresh) == 0x0a ? 1 : -1];
 typedef char kf_player_primary_magic_shortcut_id_offset[
-    (u32)&((KfPlayerState *)0)->primary_magic_shortcut_id == 0x97 ? 1 : -1];
+    offsetof(KfPlayerState, primary_magic_shortcut_id) == 0x97 ? 1 : -1];
 typedef char kf_player_combat_components_offset[
-    (u32)&((KfPlayerState *)0)->combat_components == 0x42 ? 1 : -1];
+    offsetof(KfPlayerState, combat_components) == 0x42 ? 1 : -1];
 typedef char kf_player_magic_attack_mask_cursor_offset[
-    (u32)&((KfPlayerState *)0)->magic_attack_mask_cursor == 0x78 ? 1 : -1];
+    offsetof(KfPlayerState, magic_attack_mask_cursor) == 0x78 ? 1 : -1];
 typedef char kf_player_weapon_next_sound_phase_offset[
-    (u32)&((KfPlayerState *)0)->weapon_next_sound_phase == 0x94 ? 1 : -1];
+    offsetof(KfPlayerState, weapon_next_sound_phase) == 0x94 ? 1 : -1];
 typedef char kf_player_selected_magic_record_offset[
-    (u32)&((KfPlayerState *)0)->selected_magic_record == 0x7c ? 1 : -1];
+    offsetof(KfPlayerState, selected_magic_record) == 0x7c ? 1 : -1];
 typedef char kf_player_equipped_head_record_offset[
-    (u32)&((KfPlayerState *)0)->equipped_head_record == 0xa4 ? 1 : -1];
+    offsetof(KfPlayerState, equipped_head_record) == 0xa4 ? 1 : -1];
 typedef char kf_player_equipped_head_id_offset[
-    (u32)&((KfPlayerState *)0)->equipped_head_id == 0xc0 ? 1 : -1];
+    offsetof(KfPlayerState, equipped_head_id) == 0xc0 ? 1 : -1];
 typedef char kf_player_death_state_offset[
-    (u32)&((KfPlayerState *)0)->death_state == 0xcd ? 1 : -1];
+    offsetof(KfPlayerState, death_state) == 0xcd ? 1 : -1];
 typedef char kf_player_queued_magic_action_offset[
-    (u32)&((KfPlayerState *)0)->queued_magic_action == 0xd1 ? 1 : -1];
+    offsetof(KfPlayerState, queued_magic_action) == 0xd1 ? 1 : -1];
 typedef char kf_player_fatal_fall_latch_offset[
-    (u32)&((KfPlayerState *)0)->fatal_fall_latch == 0xd5 ? 1 : -1];
+    offsetof(KfPlayerState, fatal_fall_latch) == 0xd5 ? 1 : -1];
 typedef char kf_player_camera_position_offset[
-    (u32)&((KfPlayerState *)0)->camera_position == 0xd8 ? 1 : -1];
+    offsetof(KfPlayerState, camera_position) == 0xd8 ? 1 : -1];
 typedef char kf_player_frame_displacement_offset[
-    (u32)&((KfPlayerState *)0)->frame_displacement == 0xe8 ? 1 : -1];
+    offsetof(KfPlayerState, frame_displacement) == 0xe8 ? 1 : -1];
 typedef char kf_player_vertical_motion_pitch_offset[
-    (u32)&((KfPlayerState *)0)->vertical_motion_pitch_offset == 0x110 ? 1 : -1];
+    offsetof(KfPlayerState, vertical_motion_pitch_offset) == 0x110 ? 1 : -1];
 typedef char kf_player_camera_yaw_roll_offsets_offset[
-    (u32)&((KfPlayerState *)0)->camera_yaw_roll_offsets == 0x112 ? 1 : -1];
+    offsetof(KfPlayerState, camera_yaw_roll_offsets) == 0x112 ? 1 : -1];
 typedef char kf_player_death_rotation_offset[
-    (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
+    offsetof(KfPlayerState, reaction) == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[
-    (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
+    offsetof(KfPlayerState, movement_speed) == 0x12e ? 1 : -1];
 typedef char kf_player_pad_buttons_offset[
-    (u32)&((KfPlayerState *)0)->pad_buttons == 0x140 ? 1 : -1];
+    offsetof(KfPlayerState, pad_buttons) == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[
-    (u32)&((KfPlayerState *)0)->turn_step_limit == 0x148 ? 1 : -1];
+    offsetof(KfPlayerState, turn_step_limit) == 0x148 ? 1 : -1];
 typedef char kf_player_movement_step_limit_offset[
-    (u32)&((KfPlayerState *)0)->movement_step_limit == 0x144 ? 1 : -1];
+    offsetof(KfPlayerState, movement_step_limit) == 0x144 ? 1 : -1];
 
 extern KfPlayerLevelGrowth player_level_growth_table[KF_PLAYER_LEVEL_GROWTH_COUNT];
 extern KfPlayerState player_state;

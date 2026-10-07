@@ -1,6 +1,7 @@
 #ifndef KF_GAME_GRAPHICS_H
 #define KF_GAME_GRAPHICS_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/asset.h>
 #include <kf/game/pool.h>
@@ -65,7 +66,7 @@ typedef struct KfScreenVertex {
 } KfScreenVertex;
 typedef char kf_screen_vertex_size[sizeof(KfScreenVertex) == 8 ? 1 : -1];
 typedef char kf_screen_vertex_depth_cue_offset[
-    (u32)&((KfScreenVertex *)0)->depth_cue == 6 ? 1 : -1];
+    offsetof(KfScreenVertex, depth_cue) == 6 ? 1 : -1];
 
 typedef struct KfNotificationControl {
     u8 queue_tail;
@@ -209,56 +210,56 @@ typedef struct KfGraphicsRuntimeGame {
 
 typedef char kf_display_state_size[sizeof(KfDisplayState) == 0x10028 ? 1 : -1];
 typedef char kf_display_asset_load_buffer_offset[
-    (u32)&((KfDisplayState *)0)->asset_load_buffer == 4 ? 1 : -1];
+    offsetof(KfDisplayState, asset_load_buffer) == 4 ? 1 : -1];
 typedef char kf_render_state_size[sizeof(KfRenderState) == 0x88 ? 1 : -1];
 typedef char kf_render_grid_size[sizeof(KfRenderGridState) == 0x24c ? 1 : -1];
 typedef char kf_collision_row_size[sizeof(KfCollisionRow) == 104 ? 1 : -1];
 typedef char kf_floor_item_size[sizeof(KfFloorItem) == 24 ? 1 : -1];
 typedef char kf_floor_item_update_interval_offset[
-    (u32)&((KfFloorItem *)0)->update_interval == 1 ? 1 : -1];
+    offsetof(KfFloorItem, update_interval) == 1 ? 1 : -1];
 typedef char kf_floor_item_frames_until_update_offset[
-    (u32)&((KfFloorItem *)0)->frames_until_update == 2 ? 1 : -1];
+    offsetof(KfFloorItem, frames_until_update) == 2 ? 1 : -1];
 typedef char kf_floor_item_row_step_offset[
-    (u32)&((KfFloorItem *)0)->row_step == 3 ? 1 : -1];
+    offsetof(KfFloorItem, row_step) == 3 ? 1 : -1];
 typedef char kf_floor_item_row_offset_offset[
-    (u32)&((KfFloorItem *)0)->row_offset == 4 ? 1 : -1];
+    offsetof(KfFloorItem, row_offset) == 4 ? 1 : -1];
 typedef char kf_floor_item_rect_offset[
-    (u32)&((KfFloorItem *)0)->rect == 6 ? 1 : -1];
+    offsetof(KfFloorItem, rect) == 6 ? 1 : -1];
 typedef char kf_floor_item_pixels_offset[
-    (u32)&((KfFloorItem *)0)->pixels == 16 ? 1 : -1];
+    offsetof(KfFloorItem, pixels) == 16 ? 1 : -1];
 typedef char kf_collision_row_types_offset[
-    (u32)&((KfCollisionRow *)0)->filter.kinds.types == 98 ? 1 : -1];
+    offsetof(KfCollisionRow, filter.kinds.types) == 98 ? 1 : -1];
 typedef char kf_collision_row_angle_offset[
-    (u32)&((KfCollisionRow *)0)->filter.angle == 102 ? 1 : -1];
+    offsetof(KfCollisionRow, filter.angle) == 102 ? 1 : -1];
 typedef char kf_collision_filter_payload_size[
     sizeof(KfCollisionFilterPayload) == 44 ? 1 : -1];
 typedef char kf_collision_filter_payload_motion_offset[
-    (u32)&((KfCollisionFilterPayload *)0)->motion == 20 ? 1 : -1];
+    offsetof(KfCollisionFilterPayload, motion) == 20 ? 1 : -1];
 typedef char kf_collision_filter_payload_filter_offset[
-    (u32)&((KfCollisionFilterPayload *)0)->filter == 38 ? 1 : -1];
+    offsetof(KfCollisionFilterPayload, filter) == 38 ? 1 : -1];
 typedef char kf_collision_default_row_size[
     sizeof(KfCollisionDefaultRow) == 44 ? 1 : -1];
 typedef char kf_collision_rows_offset[
-    (u32)&((KfGraphicsRuntimeGame *)0)->collision_rows == 0x1506c ? 1 : -1];
+    offsetof(KfGraphicsRuntimeGame, collision_rows) == 0x1506c ? 1 : -1];
 typedef char kf_collision_control_offset[
-    (u32)&((KfGraphicsRuntimeGame *)0)->color_overlay_red_sum == 0x14cc6 ? 1 : -1];
+    offsetof(KfGraphicsRuntimeGame, color_overlay_red_sum) == 0x14cc6 ? 1 : -1];
 typedef char kf_graphics_runtime_size[sizeof(KfGraphicsRuntimeGame) == 0x17cf0 ? 1 : -1];
 typedef char kf_animation_vertex_scratch_offset[
-    (u32)&((KfGraphicsRuntimeGame *)0)->animation_vertex_scratch == 0x12a54 ? 1 : -1];
+    offsetof(KfGraphicsRuntimeGame, animation_vertex_scratch) == 0x12a54 ? 1 : -1];
 typedef char kf_clip_result_vertices_offset[
-    (u32)&((KfGraphicsRuntimeGame *)0)->clip_result_vertices == 0x14994 ? 1 : -1];
+    offsetof(KfGraphicsRuntimeGame, clip_result_vertices) == 0x14994 ? 1 : -1];
 /* The SDK clip result is a complete EVECTOR, including its trailing window fields. */
 typedef char kf_clip_evector_size[sizeof(EVECTOR) == 0x2c ? 1 : -1];
 typedef char kf_clip_evector_depth_offset[
-    (u32)&((EVECTOR *)0)->sxyz.vz == 16 ? 1 : -1];
+    offsetof(EVECTOR, sxyz.vz) == 16 ? 1 : -1];
 typedef char kf_clip_evector_perspective_offset[
-    (u32)&((EVECTOR *)0)->sxyz.pad == 20 ? 1 : -1];
+    offsetof(EVECTOR, sxyz.pad) == 20 ? 1 : -1];
 typedef char kf_clip_evector_xy_offset[
-    (u32)&((EVECTOR *)0)->sxy == 24 ? 1 : -1];
+    offsetof(EVECTOR, sxy) == 24 ? 1 : -1];
 typedef char kf_clip_evector_color_offset[
-    (u32)&((EVECTOR *)0)->rgb == 28 ? 1 : -1];
+    offsetof(EVECTOR, rgb) == 28 ? 1 : -1];
 typedef char kf_clip_evector_uv_offset[
-    (u32)&((EVECTOR *)0)->txuv == 32 ? 1 : -1];
+    offsetof(EVECTOR, txuv) == 32 ? 1 : -1];
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
 extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];

@@ -818,8 +818,7 @@ void event_map_object_interact(KfMapObject *object, ...)
     va_list arguments;
     s32 spawn_object_id;
     s32 spawned_id = -1;
-    const KfMapObjectTemplate *template;
-    const KfMapObjectTemplatePoseView *pose;
+    const KfMapObjectTemplate *object_template;
     SVECTOR next_angles;
     SVECTOR first_angles;
     VECTOR next_position;
@@ -850,13 +849,12 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->tail.fields.unknown_38 = 0xff;
     }
 
-    template = &map_object_state.templates[object->object_id];
-    pose = (const KfMapObjectTemplatePoseView *)template;
+    object_template = &map_object_state.templates[object->object_id];
     initial_render_depth_offset = object->render_depth_offset;
     if (object->tail.fields.unknown_38 != 0xff) {
         return;
     }
-    if (template->kind == 0x20) {
+    if (object_template->kind == 0x20) {
         notify_enqueue(0x15, object->tail.gold_reward.gold_amount);
         object->object_id = 0xff;
         player_state.gold += object->tail.gold_reward.gold_amount;
@@ -885,19 +883,21 @@ void event_map_object_interact(KfMapObject *object, ...)
         target_yaw = 0xf00;
     }
     previous_buttons = PadRead(1);
-    target_render_depth_offset = (-pose->depth_offset) / 4 - 200;
+    target_render_depth_offset = (-object_template->params.pose.depth_offset) / 4 - 200;
 
     if (spawned_id != -1) {
         scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
-                      pose->height_offset, pose->depth_offset,
+                      object_template->params.pose.height_offset,
+                      object_template->params.pose.depth_offset,
                       &object->position);
     } else {
         first_angles = object->rotation;
         first_position = object->position;
         scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
-                      pose->height_offset, pose->depth_offset,
+                      object_template->params.pose.height_offset,
+                      object_template->params.pose.depth_offset,
                       &next_position);
         next_angles.vz = 0;
         next_angles.vx = 0;

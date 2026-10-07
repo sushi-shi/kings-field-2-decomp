@@ -2573,7 +2573,7 @@ map_ordinary_visible:
 map_radius_check:
             object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
-                object_template->marker_action_05);
+                object_template->params.marker.marker_action_05);
             if (visibility & object->layer_mask) goto map_ordinary_visible;
         }
 map_object_next:

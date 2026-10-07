@@ -789,31 +789,30 @@ KfMapObjectTemplate	0x04	0x02	collision_radius	u16	supported	asm;map_object_find
 KfMapObjectTemplate	0x06	0x02	interaction_radius	u16	candidate	asm;map_object_find_interaction_target	added to caller radius before distance query
 KfMapObjectTemplate	0x08	0x02	interaction_height	u16	candidate	asm;map_object_find_interaction_target	ordinary-kind vertical extent
 KfMapObjectTemplate	0x0a	0x02	initial_render_depth_offset	u16	supported	GAME 0x80035984 lhu;map_object_initialize_from_placements	initial render-depth offset copied into map object +0x0e
-KfMapObjectTemplate	0x0c	0x01	marker_action_05	u8	candidate	asm;map_object_refresh_cell_markers	cell marker for action 5
-KfMapObjectTemplate	0x0d	0x02	unknown_0d	u8[2]	opaque	asm;map_object_refresh_cell_markers	unresolved action-specific bytes
-KfMapObjectTemplate	0x0f	0x01	sound_id	u8	supported	GAME 0x80036ff4..0x80037af8 lbu;map_object_play_spatial_sound	spatial sound selector in map-object actions
-KfMapObjectTemplate	0x10	0x07	unknown_10	u8[7]	opaque	game/map_object.h	unresolved action-specific bytes
-KfMapObjectTemplate	0x17	0x01	marker_action_51	u8	candidate	asm;map_object_refresh_cell_markers	cell marker for action 0x51
-KfMapObjectTemplateCellActionView	0x00	0x0d	unknown_00	u8[13]	opaque	game/map_object.h	shared template prefix
-KfMapObjectTemplateCellActionView	0x0d	0x01	cell_width	u8	supported	GAME 0x8003718c lbu;0x80035c14 lbu;map_cell_copy_rotated_fields	rotated map-cell field copy width
-KfMapObjectTemplateCellActionView	0x0e	0x01	cell_height	u8	supported	GAME 0x800371a8 lbu;0x80035c30 lbu;map_cell_copy_rotated_fields	rotated map-cell field copy height
-KfMapObjectTemplateCellActionView	0x0f	0x01	sound_id	u8	supported	GAME 0x80036ff4 lbu;map_object_play_spatial_sound	spatial sound selector for map-cell action
-KfMapObjectTemplateCellActionView	0x10	0x08	unknown_10	u8[8]	opaque	game/map_object.h	unmodeled remainder of action-specific template view
-KfMapObjectTemplateCollisionView	0x00	0x0c	unknown_00	u8[12]	opaque	game/map_object.h	shared template prefix
-KfMapObjectTemplateCollisionView	0x0c	0x02	vertex_index	u16	supported	GAME 0x80038324 lhu;map_object_sample_world_vertex	vertex selected for action-specific world-space collision probe
-KfMapObjectTemplateCollisionView	0x0e	0x02	reach	u16	supported	GAME 0x80038330 lhu;collision_query_world	probe radius passed in a3
-KfMapObjectTemplateCollisionView	0x10	0x02	height	u16	supported	GAME 0x80038334 lhu;collision_query_world	probe height passed as argument five
-KfMapObjectTemplateCollisionView	0x12	0x04	impact_magic_values	u8[4]	supported	GAME 0x80038380..0x800383a4 lbu;effect_dispatch_magic_impact	four byte values passed to consecutive magic-impact arguments
-KfMapObjectTemplateCollisionView	0x16	0x01	sound_id	u8	supported	GAME 0x80038304 lbu;map_object_play_spatial_sound	spatial sound selector for the collision-probe action
-KfMapObjectTemplateCollisionView	0x17	0x01	marker_action_51	u8	supported	GAME 0x80038244/0x800382f0 lbu;map_object_set_cell_marker	marker selector during the collision-probe action
-KfMapObjectTemplatePatternView	0x00	0x0e	unknown_00	u8[14]	opaque	game/map_object.h	shared template prefix
-KfMapObjectTemplatePatternView	0x0e	0x01	pattern_pair_index	u8	supported	GAME 0x80035e48;0x80037f40;0x80038024 lbu;map_object_cell_patterns	base index multiplied by two, then one state bit selects one of two adjacent pattern rows
-KfMapObjectTemplatePatternView	0x0f	0x09	unknown_0f	u8[9]	opaque	game/map_object.h	unmodeled remainder of action-specific template view
-KfMapObjectTemplatePoseView	0x00	0x0c	unknown_00	u8[12]	opaque	asm;event_map_object_interact	shared template prefix
-KfMapObjectTemplatePoseView	0x0c	0x02	height_offset	s16	candidate	asm;event_map_object_interact	first signed pose offset passed to scene_position_from_camera_offset
-KfMapObjectTemplatePoseView	0x0e	0x02	depth_offset	s16	candidate	asm;event_map_object_interact	second signed pose offset passed to scene_position_from_camera_offset
-KfMapObjectTemplatePoseView	0x10	0x2	unknown_10	u16	opaque	asm;event_map_object_interact	shared template tail
-KfMapObjectTemplatePoseView	0x12	0x6	unknown_12	u8[6]	opaque	game/map_object.h	layout span without a supported meaning
+KfMapObjectTemplate	0xc	0xc	params	KfMapObjectTemplateParams	supported	game/map_object.h;map-object action readers	action-specific parameter bytes
+KfMapObjectTemplateCollisionParams	0x0	0x02	vertex_index	u16	supported	GAME 0x80038324 lhu;map_object_sample_world_vertex	vertex selected for action-specific world-space collision probe
+KfMapObjectTemplateCollisionParams	0x2	0x02	reach	u16	supported	GAME 0x80038330 lhu;collision_query_world	probe radius passed in a3
+KfMapObjectTemplateCollisionParams	0x4	0x02	height	u16	supported	GAME 0x80038334 lhu;collision_query_world	probe height passed as argument five
+KfMapObjectTemplateCollisionParams	0x6	0x04	impact_magic_values	u8[4]	supported	GAME 0x80038380..0x800383a4 lbu;effect_dispatch_magic_impact	four byte values passed to consecutive magic-impact arguments
+KfMapObjectTemplateCollisionParams	0xa	0x01	sound_id	u8	supported	GAME 0x80038304 lbu;map_object_play_spatial_sound	spatial sound selector for the collision-probe action
+KfMapObjectTemplateCollisionParams	0xb	0x01	marker_action_51	u8	supported	GAME 0x80038244/0x800382f0 lbu;map_object_set_cell_marker	marker selector during the collision-probe action
+KfMapObjectTemplateMarkerParams	0x0	0x01	marker_action_05	u8	candidate	asm;map_object_refresh_cell_markers	cell marker for action 5
+KfMapObjectTemplateMarkerParams	0x1	0x01	cell_width	u8	supported	GAME 0x8003718c lbu;0x80035c14 lbu;map_cell_copy_rotated_fields	rotated map-cell field copy width
+KfMapObjectTemplateMarkerParams	0x2	0x01	cell_height	u8	supported	GAME 0x800371a8 lbu;0x80035c30 lbu;map_cell_copy_rotated_fields	rotated map-cell field copy height
+KfMapObjectTemplateMarkerParams	0x3	0x01	sound_id	u8	supported	GAME 0x80036ff4..0x80037af8 lbu;map_object_play_spatial_sound	spatial sound selector in map-object actions
+KfMapObjectTemplateMarkerParams	0x4	0x07	unknown_04	u8[7]	opaque	game/map_object.h	unresolved action-specific bytes
+KfMapObjectTemplateMarkerParams	0xb	0x01	marker_action_51	u8	candidate	asm;map_object_refresh_cell_markers	cell marker for action 0x51
+KfMapObjectTemplateParams	0x0	0xc	marker	KfMapObjectTemplateMarkerParams	supported	game/map_object.h;map-object action readers	marker interpretation of the parameter bytes
+KfMapObjectTemplateParams	0x0	0xc	pose	KfMapObjectTemplatePoseParams	supported	game/map_object.h;map-object action readers	pose interpretation of the parameter bytes
+KfMapObjectTemplateParams	0x0	0xc	collision	KfMapObjectTemplateCollisionParams	supported	game/map_object.h;map-object action readers	collision interpretation of the parameter bytes
+KfMapObjectTemplateParams	0x0	0xc	pattern	KfMapObjectTemplatePatternParams	supported	game/map_object.h;map-object action readers	pattern interpretation of the parameter bytes
+KfMapObjectTemplatePatternParams	0x0	0x2	unknown_00	u8[2]	opaque	game/map_object.h	unmodeled bytes before the pattern pair index
+KfMapObjectTemplatePatternParams	0x2	0x01	pattern_pair_index	u8	supported	GAME 0x80035e48;0x80037f40;0x80038024 lbu;map_object_cell_patterns	base index multiplied by two, then one state bit selects one of two adjacent pattern rows
+KfMapObjectTemplatePatternParams	0x3	0x09	unknown_03	u8[9]	opaque	game/map_object.h	unmodeled remainder of action-specific template view
+KfMapObjectTemplatePoseParams	0x0	0x02	height_offset	s16	candidate	asm;event_map_object_interact	first signed pose offset passed to scene_position_from_camera_offset
+KfMapObjectTemplatePoseParams	0x2	0x02	depth_offset	s16	candidate	asm;event_map_object_interact	second signed pose offset passed to scene_position_from_camera_offset
+KfMapObjectTemplatePoseParams	0x4	0x2	unknown_04	u16	opaque	asm;event_map_object_interact	shared template tail
+KfMapObjectTemplatePoseParams	0x6	0x6	unknown_06	u8[6]	opaque	game/map_object.h	layout span without a supported meaning
 KfMapOccupancyCell	0x00	0x0a	layer	KfMapOccupancyLayer[2]	supported	asm;render_map_cell_object;map_object_set_cell_marker	two render/collision layers
 KfMapOccupancyLayer	0x00	0x01	object_index	u8	supported	asm;render_map_cell_object;map_object_set_cell_marker	TMD object index or reserved marker
 KfMapOccupancyLayer	0x01	0x01	elevation	u8	supported	asm;render_map_cell_grid	map height multiplied by 128

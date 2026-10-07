@@ -141,11 +141,12 @@ KfMapObjectTailScatteredEffectView	0xc	supported	game/map_object.h	The scattered
 KfMapObjectTailSceneInspectView	0xc	supported	game/map_object.h	Scene command 0x55 checks this camera region and opens the selected image.
 KfMapObjectTailSpawnByteFields	0xc	supported	game/map_object.h;map_object_effect_pool_acquire;map_object_spawn_effect	tail view whose spawn sequence halfword is also addressed by byte
 KfMapObjectTailTransitionView	0xc	supported	game/map_object.h;map_object_update_actions action 34	Overlapping destination-cell and yaw-code view of the 12-byte tail; not a separate object
-KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
-KfMapObjectTemplateCellActionView	0x18	supported	GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	rotated map-cell action reads template width, height, and spatial sound selector
-KfMapObjectTemplateCollisionView	0x18	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height
-KfMapObjectTemplatePatternView	0x18	supported	GAME 0x80035e48;0x80037f40;0x80038024;map_object_cell_patterns	action 0x54 selects one of two adjacent map-cell pattern rows
-KfMapObjectTemplatePoseView	0x18	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes in the 24-byte template
+KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template with action-specific parameters
+KfMapObjectTemplateCollisionParams	0xc	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height
+KfMapObjectTemplateMarkerParams	0xc	supported	asm;map_object_refresh_cell_markers;GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	marker selectors, rotated map-cell copy size and spatial sound selector
+KfMapObjectTemplateParams	0xc	supported	game/map_object.h;map-object action readers	action-specific interpretations of template bytes +0x0c..+0x17
+KfMapObjectTemplatePatternParams	0xc	supported	GAME 0x80035e48;0x80037f40;0x80038024;map_object_cell_patterns	action 0x54 selects one of two adjacent map-cell pattern rows
+KfMapObjectTemplatePoseParams	0xc	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes
 KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
 KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
 KfMapPlacedEntry	0x18	supported	asm;map_placed_expand_sources;map resource caller	128 runtime rows at graphics runtime +0x170f0

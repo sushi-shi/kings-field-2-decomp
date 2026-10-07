@@ -514,6 +514,7 @@
         PSYQ_INCLUDE = "${psyqSdk}/include-lf";
         PSYQ_C_INCLUDE = "${gcc257Headers}/include";
         PSYQ_MALLOC_OBJ = "${psyqMallocObj}/MALLOC.OBJ";
+        PSYQ_CPE2X = "${psyqRuntime30Cpe2x}/CPE2X.EXE";
         PSYQ_ASPSX = "${aspsxNative}/1.07/ASPSX.EXE";
         PSYQ_ASMPSX = "${asmpsxNative}";
       } ''

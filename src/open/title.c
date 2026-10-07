@@ -20,40 +20,36 @@ enum {
     /* Voice played when a title choice is made. */
     CHOICE_VOICE_PROGRAM = 10,
     CHOICE_VOICE_NOTE = 60,
-    CHOICE_VOICE_VOLUME = 64,
-    TITLE_PHASE_FADE_IN = 0,
-    TITLE_PHASE_SETTLE = 1,
-    PROMPT_PHASE_BRIGHTEN = 0,
-    PROMPT_PHASE_DIM = 1
+    CHOICE_VOICE_VOLUME = 64
 };
 
 DATA(0x8003db94, 0x4, ".data")
 s32 title_level = 0;
 DATA(0x8003db98, 0x4, ".data")
-s32 title_phase = TITLE_PHASE_FADE_IN;
+KfTitlePhase title_phase = KF_TITLE_PHASE_FADE_IN;
 DATA(0x8003db9c, 0x4, ".data")
 s32 banner_level = 0;
 DATA(0x8003dba0, 0x4, ".data")
-s32 banner_phase = TITLE_PHASE_FADE_IN;
+KfTitlePhase banner_phase = KF_TITLE_PHASE_FADE_IN;
 DATA(0x8003dba4, 0x4, ".data")
 s32 prompt_level = PROMPT_PULSE_LOW;
 DATA(0x8003dba8, 0x4, ".data")
-s32 prompt_phase = PROMPT_PHASE_BRIGHTEN;
+KfPromptPhase prompt_phase = KF_PROMPT_PHASE_BRIGHTEN;
 DATA(0x8003dbac, 0x4, ".data")
 u32 pad_previous_buttons = 0;
 
 /* Draws the backdrop and the four title tiles; returns true once settled. */
 ADDRESS(0x80012560, 0x61c)
-b32 opening_draw_title(s32 mode)
+b32 opening_draw_title(KfTitleMode mode)
 {
     b32 settled = KF_FALSE;
 
     if (mode == KF_TITLE_SHOW) {
-        title_phase = TITLE_PHASE_SETTLE;
+        title_phase = KF_TITLE_PHASE_SETTLE;
         title_level = TITLE_REST_LEVEL;
     } else if (mode == KF_TITLE_RESET) {
         title_level = 0;
-        title_phase = TITLE_PHASE_FADE_IN;
+        title_phase = KF_TITLE_PHASE_FADE_IN;
         return KF_FALSE;
     }
     primitive_buffer_begin_poly_ft4();
@@ -62,10 +58,10 @@ b32 opening_draw_title(s32 mode)
     setXYWH(current_poly_ft4, 0, 0, TITLE_BACKDROP_WIDTH, KF_DISPLAY_HEIGHT);
     setUVWH(current_poly_ft4, 0, 0, 242, 239);
     primitive_buffer_commit_poly_ft4(TITLE_BACKDROP_OT_DEPTH);
-    if (title_phase == TITLE_PHASE_FADE_IN) {
+    if (title_phase == KF_TITLE_PHASE_FADE_IN) {
         title_level += TITLE_FADE_STEP;
         if (title_level >= TITLE_PEAK_LEVEL) {
-            title_phase = TITLE_PHASE_SETTLE;
+            title_phase = KF_TITLE_PHASE_SETTLE;
         }
     } else if (title_level > TITLE_REST_LEVEL) {
         title_level -= TITLE_FADE_STEP;
@@ -101,22 +97,22 @@ b32 opening_draw_title(s32 mode)
 
 /* Draws the banner under the title; returns true once settled. */
 ADDRESS(0x80012b7c, 0x200)
-b32 opening_draw_banner(s32 mode)
+b32 opening_draw_banner(KfTitleMode mode)
 {
     b32 settled = KF_FALSE;
 
     if (mode == KF_TITLE_SHOW) {
-        banner_phase = TITLE_PHASE_SETTLE;
+        banner_phase = KF_TITLE_PHASE_SETTLE;
         banner_level = TITLE_REST_LEVEL;
     } else if (mode == KF_TITLE_RESET) {
         banner_level = 0;
-        banner_phase = TITLE_PHASE_FADE_IN;
+        banner_phase = KF_TITLE_PHASE_FADE_IN;
         return KF_FALSE;
     }
-    if (banner_phase == TITLE_PHASE_FADE_IN) {
+    if (banner_phase == KF_TITLE_PHASE_FADE_IN) {
         banner_level += TITLE_FADE_STEP;
         if (banner_level >= TITLE_PEAK_LEVEL) {
-            banner_phase = TITLE_PHASE_SETTLE;
+            banner_phase = KF_TITLE_PHASE_SETTLE;
         }
     } else if (banner_level > TITLE_REST_LEVEL) {
         banner_level -= TITLE_FADE_STEP;
@@ -136,17 +132,17 @@ b32 opening_draw_banner(s32 mode)
 
 /* Draws the prompt; KF_TITLE_ANIMATE makes it pulse. */
 ADDRESS(0x80012d7c, 0x1c0)
-void opening_draw_prompt(s32 mode)
+void opening_draw_prompt(KfTitleMode mode)
 {
-    if (prompt_phase == PROMPT_PHASE_BRIGHTEN) {
+    if (prompt_phase == KF_PROMPT_PHASE_BRIGHTEN) {
         prompt_level += PROMPT_PULSE_STEP;
         if (prompt_level >= PROMPT_PULSE_HIGH) {
-            prompt_phase = PROMPT_PHASE_DIM;
+            prompt_phase = KF_PROMPT_PHASE_DIM;
         }
     } else {
         prompt_level -= PROMPT_PULSE_STEP;
         if (prompt_level < PROMPT_PULSE_LOW) {
-            prompt_phase = PROMPT_PHASE_BRIGHTEN;
+            prompt_phase = KF_PROMPT_PHASE_BRIGHTEN;
         }
     }
     primitive_buffer_begin_poly_ft4();
@@ -164,9 +160,9 @@ void opening_draw_prompt(s32 mode)
 /* A newly pressed face button or START starts the game; SELECT plays the
  * movie. Counts every polled frame in IDLE_FRAMES. */
 ADDRESS(0x80012f3c, 0x170)
-s32 opening_poll_pad(s32 *prompt_mode, s32 *idle_frames)
+KfOpeningChoice opening_poll_pad(const KfTitleMode *prompt_mode, s32 *idle_frames)
 {
-    s32 choice = KF_OPENING_NO_CHOICE;
+    KfOpeningChoice choice = KF_OPENING_NO_CHOICE;
     u32 buttons = PadRead(1);
 
     if ((buttons & PADRup && !(pad_previous_buttons & PADRup))

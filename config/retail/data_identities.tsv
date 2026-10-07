@@ -340,11 +340,11 @@ OPEN.EXE	0x8003d870	0x2a8	spu_reverb_mode_presets	static	load	u8[10][0x44]	LIBSP
 OPEN.EXE	0x8003db88	0x4	overlay_next_request	global	load	u8 *	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	points at the PSX.EXE mailbox byte 0x800102f0
 OPEN.EXE	0x8003db8c	0x5	opening_data_file	global	load	char[5]	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	OP.D resource file name
 OPEN.EXE	0x8003db94	0x4	title_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	title tile brightness
-OPEN.EXE	0x8003db98	0x4	title_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the title fades in, 1 while it settles
+OPEN.EXE	0x8003db98	0x4	title_phase	global	load	KfTitlePhase	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the title fades in, 1 while it settles
 OPEN.EXE	0x8003db9c	0x4	banner_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	banner brightness
-OPEN.EXE	0x8003dba0	0x4	banner_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the banner fades in, 1 while it settles
+OPEN.EXE	0x8003dba0	0x4	banner_phase	global	load	KfTitlePhase	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the banner fades in, 1 while it settles
 OPEN.EXE	0x8003dba4	0x4	prompt_level	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	prompt pulse brightness
-OPEN.EXE	0x8003dba8	0x4	prompt_phase	global	load	s32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the prompt brightens, 1 while it dims
+OPEN.EXE	0x8003dba8	0x4	prompt_phase	global	load	KfPromptPhase	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	0 while the prompt brightens, 1 while it dims
 OPEN.EXE	0x8003dbac	0x4	pad_previous_buttons	global	load	u32	opening	supported	asm;xrefs;main/opening_open_audio/title drawing	PadRead result of the previous poll
 OPEN.EXE	0x8003dbb0	0x5	cd_path_prefix	global	load	char[5]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	\\OP\\ CD directory prefix; original defining TU unresolved
 OPEN.EXE	0x8003dbb8	0x3	cd_version_suffix	global	load	char[3]	cd_file	supported	asm;xrefs;display_initialize/display_begin_frame;shared source DATA_AT	ISO9660 version suffix ;1; original defining TU unresolved

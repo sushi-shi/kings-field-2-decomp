@@ -170,6 +170,33 @@ void tick(Object *object) {
                                 for row in sites),
                          [(6, "5", "Object.op"), (7, "7", "tick::local")])
 
+    def test_typed_storage_types_only_the_name_it_precedes(self) -> None:
+        report = census({"include/probe.h": """
+#define KF_ENUM_BEGIN(name, storage) typedef storage name; enum {
+#define KF_ENUM_END(name) };
+#define KF_ENUM_PARAM(name, storage) storage
+#define KF_ENUM_STORAGE(name, storage) storage
+KF_ENUM_BEGIN(Op, unsigned short)
+    OP_IDLE = 0xff
+KF_ENUM_END(Op)
+typedef struct Object { KF_ENUM_STORAGE(Op, unsigned char) op; unsigned char other; } Object;
+int count(KF_ENUM_PARAM(Op, int) index, int amount);
+""", "src/probe.c": """#include <probe.h>
+int count(KF_ENUM_PARAM(Op, int) index, int amount) { return index + amount; }
+int probe(Object *object) {
+    object->op = OP_IDLE;
+    object->other = 1;
+    return count(object->op, 2) == 3;
+}
+"""})
+        domains = {key: slot["enum_domain"] for key, slot in report["slots"].items()
+                   if key.startswith(("count:", "Object."))}
+        self.assertEqual(domains["Object.op"], "Op")
+        self.assertEqual(domains["Object.other"], "")
+        self.assertEqual(domains["count:arg0"], "Op")
+        self.assertEqual(domains["count:arg1"], "")
+        self.assertEqual(domains["count:return"], "")
+
     def test_hubs_do_not_weld_domains(self) -> None:
         sites = [{"sink": {"kind": "assign", "target": name}, "value": value,
                   "origin": "literal", "constant": "", "constant_file": "", "class": "assign",

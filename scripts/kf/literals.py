@@ -128,7 +128,8 @@ class Scanner:
         self.facts = UnitFacts()
         self.texts: dict[str, list[str]] = {}
         self.raw: dict[str, str] = {}
-        self.enum_storage: dict[tuple[str, int], str] = {}
+        # (file, line) -> [(macro end column, enum)] for typed declarations.
+        self.enum_storage: dict[tuple[str, int], list[tuple[int, str]]] = {}
         self.enum_names: set[str] = set()
         self.tu = self.cindex.Index.create().parse(
             str((repo / unit.source).resolve()), args=arguments,
@@ -262,13 +263,30 @@ class Scanner:
                                              self.tk.CXType_Short, self.tk.CXType_Int,
                                              self.tk.CXType_Long, self.tk.CXType_LongLong},
                 "file": relative, "line": location.line,
-                "enum_domain": self.enum_storage.get((relative, location.line), "")
+                "enum_domain": self.declared_enum(relative, location.line, location.column)
                 or (spelling.removeprefix("const ") if spelling.removeprefix("const ")
                     in self.enum_names else ""),
             }
         elif not self.facts.slots[key]["name"] and name:
             self.facts.slots[key]["name"] = name
         return key
+
+    def declared_enum(self, relative: str, line: int, column: int) -> str:
+        """Enum of a typed-storage macro that directly precedes the declared name.
+
+        A declaration line can also name a function or another parameter, so
+        only a macro followed by whitespace up to the name types the slot.
+        """
+        macros = self.enum_storage.get((relative, line))
+        if not macros:
+            return ""
+        self.text(relative)
+        source = self.texts[relative][line - 1] if line - 1 < len(self.texts[relative]) else ""
+        preceding = [(end, name) for end, name in macros if end <= column]
+        if not preceding:
+            return ""
+        end, name = max(preceding)
+        return name if not source[end - 1:column - 1].strip() else ""
 
     def parameter_key(self, function: Any, index: int) -> str:
         return f"{function.spelling}:arg{index}"
@@ -492,7 +510,8 @@ class Scanner:
                 tokens = [token.spelling for token in node.get_tokens()]
                 relative = self.relative(node.location.file.name if node.location.file else None)
                 if relative and len(tokens) > 2:
-                    self.enum_storage[(relative, node.location.line)] = tokens[2]
+                    self.enum_storage.setdefault((relative, node.location.line), []).append(
+                        (node.extent.end.column, tokens[2]))
             if node.kind == self.ck.CXCursor_MacroExpansion and node.spelling == "KF_ENUM_BEGIN":
                 tokens = [token.spelling for token in node.get_tokens()]
                 if len(tokens) > 2:

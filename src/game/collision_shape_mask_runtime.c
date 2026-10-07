@@ -32,7 +32,6 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
     s32 records_left;
     s32 bottom;
     KfCollisionHeights *heights;
-    s32 far_limit;
     s32 cell_x;
     s32 cell_z;
     s16 local_x;
@@ -69,7 +68,6 @@ next_layer:
     records_left = *record++;
     while (--records_left != -1) {
         heights = &KF_COLLISION_CACHE.heights;
-        far_limit = 0x800 - radius;
         cell_x = x & 0x7ff;
         cell_z = z & 0x7ff;
         local_x = x & 0x7ff;
@@ -91,11 +89,12 @@ next_layer:
         }
         case 0x11: {
             KfShapeCeilingRecord *ceiling = (KfShapeCeilingRecord *)record;
+            s32 top;
 
             record = (s16 *)(ceiling + 1);
             if (!base_ceiling_hit) {
-                limit = ceiling->limit + heights->height;
-                if (bottom < limit) {
+                top = ceiling->limit + heights->height;
+                if (bottom < top) {
                     floor = ceiling->floor + heights->height;
                     if (floor < bottom) {
                         flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
@@ -107,7 +106,7 @@ next_layer:
                         break;
                     }
                 }
-                KF_COLLISION_CACHE_HEIGHT_LIMIT = limit;
+                KF_COLLISION_CACHE_HEIGHT_LIMIT = top;
             }
             break;
         }
@@ -121,7 +120,8 @@ next_layer:
                     break;
                 }
             wall_hit:
-                limit = wall->limit + heights->height;
+                limit = wall->limit;
+                limit += heights->height;
                 floor = wall->floor + heights->height;
                 if (bottom < limit) {
                     KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, wall_flags);
@@ -130,12 +130,12 @@ next_layer:
                 }
                 break;
             case 1:
-                if (far_limit - wall->offset <= cell_z) {
+                if (0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case 2:
-                if (far_limit - wall->offset <= cell_x) {
+                if (0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
@@ -153,18 +153,18 @@ next_layer:
             switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
             case 0:
                 if (cell_x <= wall->offset + radius
-                    || far_limit - wall->offset <= cell_z) {
+                    || 0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case 1:
-                if (far_limit - wall->offset <= cell_z
-                    || far_limit - wall->offset <= cell_x) {
+                if (0x800 - wall->offset - radius <= cell_z
+                    || 0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
             case 2:
-                if (far_limit - wall->offset <= cell_x
+                if (0x800 - wall->offset - radius <= cell_x
                     || cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
@@ -184,18 +184,18 @@ next_layer:
             switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
             case 0:
                 if (cell_x <= wall->offset + radius
-                    && far_limit - wall->offset <= cell_z) {
+                    && 0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case 1:
-                if (far_limit - wall->offset <= cell_z
-                    && far_limit - wall->offset <= cell_x) {
+                if (0x800 - wall->offset - radius <= cell_z
+                    && 0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
             case 2:
-                if (far_limit - wall->offset <= cell_x
+                if (0x800 - wall->offset - radius <= cell_x
                     && cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
@@ -208,23 +208,28 @@ next_layer:
                 break;
             }
             break;
-        case 0x23:
+        case 0x23: {
+            s32 reach;
+
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
             switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
             case 0:
-                if (local_x - local_z <= radius - (0x800 - wall->offset)) {
+                reach = radius - 0x800;
+                if (local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
             case 1:
-                if (-local_x - local_z <= radius - (0x1000 - wall->offset)) {
+                reach = radius - 0x1000;
+                if (-local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
             case 2:
-                if (local_z - local_x <= radius - (0x800 - wall->offset)) {
+                reach = radius - 0x800;
+                if (local_z - local_x <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
@@ -235,6 +240,7 @@ next_layer:
                 break;
             }
             break;
+        }
         case 0x30:
             slope = (KfShapeSlopeRecord *)record;
             record = (s16 *)(slope + 1);
@@ -246,17 +252,19 @@ next_layer:
                 step = cell_z / slope->run;
             stair_floor:
                 step = (step + 1) * slope->rise;
-                goto slope_floor;
+                floor = slope->floor + heights->height - step;
+                KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
+                break;
             case 1:
                 if (0x800 - slope->start + radius < local_z
-                    || local_z < far_limit - slope->end) {
+                    || local_z < 0x800 - slope->end - radius) {
                     break;
                 }
                 step = cell_x / slope->run;
                 goto stair_floor;
             case 2:
                 if (0x800 - slope->start + radius < local_x
-                    || local_x < far_limit - slope->end) {
+                    || local_x < 0x800 - slope->end - radius) {
                     break;
                 }
                 step = (0x800 - cell_z) / slope->run;
@@ -283,7 +291,6 @@ next_layer:
                 }
                 step = (step - slope->start) / slope->run;
                 step *= slope->rise;
-            slope_floor:
                 floor = slope->floor + heights->height - step;
                 KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
                 break;
@@ -302,14 +309,16 @@ next_layer:
             /* Only an axis hit is tested, and its record is skipped only then. */
             if (flags & KF_COLLISION_HIT_AXIS) {
                 KfShapeLedgeRecord *ledge = (KfShapeLedgeRecord *)record;
-                s16 distance = cell_z;
-                s16 x_distance = cell_x;
+                s16 distance;
+                s16 x_distance;
 
                 record = (s16 *)(ledge + 1);
+                distance = cell_z;
+                x_distance = cell_x;
                 switch ((layer->quarter_turns + ledge->quarter_turns) & 3) {
                 case 0:
                 ledge_floor:
-                    if (ledge->start + radius <= distance
+                    if (distance >= ledge->start + radius
                         && distance <= ledge->end - radius) {
                         KF_COLLISION_CACHE_RESULT =
                             ledge->floor + KF_COLLISION_CACHE_HEIGHT;

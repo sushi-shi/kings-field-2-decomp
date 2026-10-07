@@ -2258,7 +2258,7 @@ void resource_tmd_read_complete(u8 *data)
 {
     KfAssetHeader *asset = (KfAssetHeader *)data;
 
-    tmd_prepare_primitive_indices((KfTmdHeader *)(data + asset->tmd_data_offset));
+    tmd_prepare_primitive_indices(ASSET_TMD(asset));
     memory_block_set_kind(data, 2);
 }
 
@@ -2989,8 +2989,7 @@ void asset_registry_select(u16 index)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[index];
 
-    game_graphics_runtime.tmd_state.current_asset =
-        (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    game_graphics_runtime.tmd_state.current_asset = ASSET_TMD(asset);
 }
 
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
@@ -2999,8 +2998,8 @@ ADDRESS(0x80033b34, 0xc8)
 KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, s32 phase,
                                           s32 *keyframe_index, u32 *blend_fraction)
 {
-    u32 *clip_table = (u32 *)((u8 *)asset + asset->clip_table_offset);
-    KfAnimClip *clip = (KfAnimClip *)((u8 *)asset + clip_table[clip_index]);
+    u32 *clip_table = ASSET_CLIP_TABLE(asset);
+    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[clip_index]);
     u32 *offsets = clip->keyframe_offsets;
     s32 remaining = clip->keyframe_count;
     s32 index = 0;
@@ -3010,7 +3009,7 @@ KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, 
     KfAnimKeyframe *keyframe;
 
     for (--remaining; remaining != -1; --remaining) {
-        keyframe = (KfAnimKeyframe *)((u8 *)asset + *offsets++);
+        keyframe = ASSET_KEYFRAME(asset, *offsets++);
 
         phase_end += keyframe->duration;
         if (phase < phase_end) {
@@ -3239,17 +3238,17 @@ allocate_vertices:
                                           &blend_fraction);
     if (record->clip_index != clip || record->keyframe_index != keyframe_index) {
         tmd_select_object_vertices(0);
-        morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+        morph_offsets = ASSET_MORPH_OFFSETS(asset);
         remaining = keyframe->morph_count;
         if (remaining != 0) {
             morph_indices = (u16 *)(keyframe + 1);
             animation_expand_sparse_vertices(
                 record->cached_vertices, game_graphics_runtime.current_tmd_vertices,
-                (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+                ASSET_MORPH(asset, morph_offsets[*morph_indices++]));
             for (--remaining; remaining != 0; --remaining) {
                 animation_decode_sparse_vertices(
                     record->cached_vertices,
-                    (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+                    ASSET_MORPH(asset, morph_offsets[*morph_indices++]));
             }
         } else {
             const u32 *source = (const u32 *)game_graphics_runtime.current_tmd_vertices;
@@ -3277,7 +3276,7 @@ allocate_vertices:
         } while (--copy_count != 0);
     }
     animation_apply_sparse_morph(game_graphics_runtime.animation_vertex_scratch,
-                   (const s16 *)((u8 *)asset + record->rest_morph_offset),
+                   ASSET_MORPH(asset, record->rest_morph_offset),
                    blend_fraction);
     tmd_set_current_vertices(game_graphics_runtime.animation_vertex_scratch);
     record->state = KF_ANIMATION_CACHE_LIVE;
@@ -3307,7 +3306,7 @@ s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_ind
         return 1;
     }
 
-    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    tmd = ASSET_TMD(asset);
     if (clip >= KF_ASSET_OBJECT_SELECT_BIT) {
 copy_object_vertex:
         vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[clip & KF_ASSET_OBJECT_INDEX_MASK]);
@@ -3323,12 +3322,12 @@ copy_object_vertex:
     keyframe = animation_select_keyframe(asset, clip, phase, &keyframe_index,
                                           &blend_fraction);
     vertex = vertices[vertex_index];
-    morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+    morph_offsets = ASSET_MORPH_OFFSETS(asset);
     remaining = keyframe->morph_count;
     morph_indices = (u16 *)(keyframe + 1);
     for (--remaining; remaining != -1; --remaining) {
         encoded = animation_find_sparse_vertex(
-            (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]),
+            ASSET_MORPH(asset, morph_offsets[*morph_indices++]),
             vertex_index);
         if (encoded != NULL) {
             vertex.vx = *encoded++;
@@ -3337,7 +3336,7 @@ copy_object_vertex:
         }
     }
     encoded = animation_find_sparse_vertex(
-        (const s16 *)((u8 *)asset + morph_offsets[keyframe->rest_index]),
+        ASSET_MORPH(asset, morph_offsets[keyframe->rest_index]),
         vertex_index);
     if (encoded != NULL) {
         vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> 12) + vertex.vx;
@@ -3358,7 +3357,7 @@ u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
     if (asset == NULL) {
         return 0;
     }
-    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    tmd = ASSET_TMD(asset);
     if (encoded_object_index >= KF_ASSET_OBJECT_SELECT_BIT) {
         return TMD_OBJECTS(tmd)[encoded_object_index & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
     }

@@ -285,7 +285,6 @@ execute:
         if (restore_state == 0 && candidate->animation_id != 0xff) {
             s32 phase = actor->animation_phase;
             saved_state = actor->animation_id;
-            restore_state = 1;
             if (phase != 0) {
                 actor_animation_seek_phase(actor, actor->animation_id,
                               phase, 0, actor->animation_step);
@@ -293,6 +292,7 @@ execute:
             actor_animation_seek_phase(actor, candidate->animation_id, 0,
                           KF_ACTOR_ANIMATION_PHASE_MAX,
                           candidate->animation_step);
+            restore_state = 1;
         }
         menu_show_transition_image(3, candidate->word_0c.value + *cursor);
 
@@ -1043,6 +1043,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
         if (object_index == -1) {
             break;
         }
+        /* Dead read, superseded by the template kind below. */
+        kind = objects[object_index].action;
         object = &objects[object_index];
         object_id = object->object_id;
         event_state.interaction_handled = 1;

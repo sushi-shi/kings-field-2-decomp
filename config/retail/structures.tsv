@@ -37,6 +37,7 @@ KfCdState	0x2a4	supported	game/cd.h;asm;cd_initialize;cd_close_events;cd_read_se
 KfCollisionDefaultRow	0x2c	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
 KfCollisionDefaultTail	0x6	supported	game/graphics.h;asm;collision defaults	six-byte default filter tail
 KfCollisionFilterPayload	0x2c	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
+KfCollisionHeights	0x14	supported	game/collision_cache.h;collision_evaluate_shape_records base pointer at bss_801c7540+0x1180c	Height results inside KfCollisionCache; original object ownership unresolved
 KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
 KfCollisionMaskPoint	0x08	supported	game/render_mask.h;GAME 0x8002bfd4/0x8002bfe0 lw;GAME 0x8002c968-0x8002c9f4 corner walk	Two 32-bit map-mask coordinates in the rasterizer call view; original standalone type unproved
 KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
@@ -159,6 +160,11 @@ KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_f
 KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
 KfResourceTransitionOffset	0x03	supported	GAME resource_request_transition;resource_advance_transition;resource_run_initial_transition	signed X/Z/Y transition offsets stored in three bytes
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfShapeCeilingRecord	0x4	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape record 0x11; record meaning from shape evaluation
+KfShapeHeightRecord	0x2	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x10, 0x18 and 0x19; record meaning from shape evaluation
+KfShapeLedgeRecord	0xa	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape record 0x31; record meaning from shape evaluation
+KfShapeSlopeRecord	0xc	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x30 and 0x32; record meaning from shape evaluation
+KfShapeWallRecord	0x8	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x20-0x23; record meaning from shape evaluation
 KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x8003e1b4	minimum observed view through unsigned halfword +0x2a; full extent and stride unknown
 KfTargetCandidateAction25	0x1c	candidate	GAME 0x8003ed78-0x8003eecc;game/actor.h	Type-25 prefix plus first script halfword; variable payload extent and candidate stride unresolved

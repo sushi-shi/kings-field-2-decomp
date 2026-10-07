@@ -151,6 +151,15 @@ source-to-codegen links in the 2.5.7 sources and RTL dumps (`-dr -dL -dl
 - **Delay slots (reorg.c).** A redundant insn at a branch target is skipped,
   so the slot is filled from the fall-through. A target insn is not copied
   when its destination is live on the fall-through.
+- **Hoisted copies and cross-jumping (loop.c, combine.c, jump.c).** Loop
+  invariants land after the copied exit test, so retail's preheader shows
+  which values the loop body computed. Identical single-set invariants
+  combine into one register; an `s16` local set from the same value is
+  instead a separate movable whose `sign_extend` combine reduces to
+  `move`, which is how one `andi` feeds two registers
+  (`collision_evaluate_shape_records`). Jump2 cross-jumping deletes the
+  earlier of two identical tails, so shared code that retail keeps in the
+  first switch arm was a `goto` target in the source.
 - **Other folds.** Combine's nonzero-bits tracking covers only pseudos set
   once, so `x = (x << 8) >> 12` on a reassigned variable stays `sll`/`sra`.
   Reading a bitfield of a word defeats CSE against a plain read of that word.

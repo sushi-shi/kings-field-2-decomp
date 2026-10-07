@@ -8,407 +8,378 @@
 #include <kf/game/render_mask.h>
 #include <psyq/sdk.h>
 
-typedef struct KfCollisionShapeHeader {
-  s16 radius_scale;
-  s16 command_count;
-} KfCollisionShapeHeader;
-
-typedef char kf_collision_shape_header_size[
-    sizeof(KfCollisionShapeHeader) == 4 ? 1 : -1];
-typedef char kf_collision_shape_count_offset[
-    (u32)&((KfCollisionShapeHeader *)0)->command_count == 2 ? 1 : -1];
-
-/* The runtime shape bank remains a WIP ownership view. */
+/* Lower the query floor to FLOOR, reporting FLAG when the probe is below it. */
+#define KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, flag) do { \
+    if ((floor) < (heights)->result) {                         \
+        (heights)->result = (floor);                           \
+        if ((floor) < (y)) {                                   \
+            (flags) |= (flag);                                 \
+        }                                                      \
+    }                                                          \
+} while (0)
 
 RODATA(0x8001134c, 0xc4)
 
 ADDRESS(0x8002aaa4, 0xb60)
 s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height)
-
 {
-  s32 visited_second_layer;
-  s32 special_floor_found;
-  u32 height_flags;
-  int saved_height_limit;
-  s32 record_value;
-  u16 shape_offset;
-  int quotient;
-  int candidate_height;
-  u32 case_value;
-  u16 *record;
-  u16 *operand;
-  u16 *next_record;
-  u32 result_flags;
-  u32 z_fraction;
-  u32 x_fraction;
-  int radius_complement;
-  int bottom_y;
-  int records_left;
-  u32 x_remaining;
-  u32 z_remaining;
-  s32 x_minus_z;
-  s32 z_minus_x;
-  s32 x_plus_z;
-  s32 neg_x_minus_z;
-  s32 x_plus_cell;
-  s32 z_plus_cell;
-  KfMapOccupancyLayer *selected_layer;
-  KfCollisionShapeHeader *shape;
-  KfCollisionCache *cache;
-  u8 *shape_bank;
+    u32 flags;
+    s32 base_floor_hit;
+    s32 base_ceiling_hit;
+    s32 other_layer_visited;
+    KfMapOccupancyLayer *layer;
+    s16 *record;
+    s32 records_left;
+    s32 bottom;
+    KfCollisionHeights *heights;
+    s32 far_limit;
+    s32 cell_x;
+    s32 cell_z;
+    s16 local_x;
+    s16 local_z;
+    u32 height_mode;
+    s32 wall_flags;
+    s32 limit;
+    s32 floor;
+    s32 step;
+    KfShapeWallRecord *wall;
+    KfShapeSlopeRecord *slope;
 
-  result_flags = 0;
-  special_floor_found = 0;
-  visited_second_layer = 0;
-  KF_COLLISION_CACHE_RESULT = 100000;
-  KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
-  KF_COLLISION_CACHE_LOWER_BOUND = 100000;
-  KF_COLLISION_CACHE_UPPER_BOUND = 100000;
-  KF_COLLISION_CACHE_SHAPE = (KfMapOccupancyLayer *)
-      ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
-  selected_layer = KF_COLLISION_CACHE_SHAPE;
-  height_flags = (u32)height & 0xf0000000;
-  height &= 0x0fffffff;
-LAB_8002ab5c:
-  shape_offset = ((KfCollisionShapeOffsetTable *)KF_COLLISION_SHAPE_BANK)
-      ->offsets[selected_layer->collision_shape_id];
-  shape_bank = KF_COLLISION_SHAPE_BANK;
-  shape = (KfCollisionShapeHeader *)(shape_bank + shape_offset);
-  bottom_y = (s32)((u32)y - (u32)height);
-  records_left = shape->command_count + -1;
-  radius = radius * shape->radius_scale >> 0xc;
-  if (records_left == -1) {
-    return result_flags;
-  }
-  radius_complement = 0x800 - radius;
-  x_fraction = x & 0x7ff;
-  x_remaining = 0x800 - x_fraction;
-  z_fraction = z & 0x7ff;
-  z_remaining = 0x800 - z_fraction;
-  x_minus_z = (s32)x_fraction - (s32)z_fraction;
-  z_minus_x = (s32)z_fraction - (s32)x_fraction;
-  x_plus_z = (s32)x_fraction + (s32)z_fraction;
-  neg_x_minus_z = -(s32)x_fraction - (s32)z_fraction;
-  x_plus_cell = (s32)x_fraction + 0x800;
-  z_plus_cell = (s32)z_fraction + 0x800;
-  cache = &KF_COLLISION_CACHE;
-  record = (u16 *)(shape + 1);
-  do {
-    operand = record + 1;
-    next_record = operand;
-    switch ((s16)*record++) {
-    case 0x10:
-      next_record = record + 1;
-      if (!special_floor_found) {
-        candidate_height = (s16)*operand + cache->height;
-        if (candidate_height < cache->result) {
-          cache->result = candidate_height;
+    flags = 0;
+    base_floor_hit = 0;
+    /* No record sets this; ceiling records are always evaluated. */
+    base_ceiling_hit = 0;
+    other_layer_visited = 0;
+    KF_COLLISION_CACHE_RESULT = 100000;
+    KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT - 40000;
+    KF_COLLISION_CACHE_LOWER_BOUND = 100000;
+    KF_COLLISION_CACHE_UPPER_BOUND = 100000;
+    layer = (KfMapOccupancyLayer *)
+        ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+    KF_COLLISION_CACHE_SHAPE = layer;
+    height_mode = height & 0xf0000000;
+    height &= 0x0fffffff;
+
+next_layer:
+    record = (s16 *)(KF_COLLISION_SHAPE_BANK +
+        ((KfCollisionShapeOffsetTable *)KF_COLLISION_SHAPE_BANK)
+            ->offsets[layer->collision_shape_id]);
+    radius = radius * *record++ >> 12;
+    bottom = y - height;
+    records_left = *record++;
+    while (--records_left != -1) {
+        heights = &KF_COLLISION_CACHE.heights;
+        far_limit = 0x800 - radius;
+        cell_x = x & 0x7ff;
+        cell_z = z & 0x7ff;
+        local_x = x & 0x7ff;
+        local_z = z & 0x7ff;
+        switch (*record++) {
+        case 0x10: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            if (!base_floor_hit) {
+                if (level->height + heights->height < heights->result) {
+                    heights->result = level->height + heights->height;
+                }
+                if (heights->result < y) {
+                    flags |= KF_COLLISION_HIT_FLOOR;
+                }
+            }
+            break;
         }
-        candidate_height = cache->result;
-LAB_8002b3b8:
-        if (candidate_height < y) {
-          result_flags = result_flags | KF_COLLISION_HIT_FLOOR;
+        case 0x11: {
+            KfShapeCeilingRecord *ceiling = (KfShapeCeilingRecord *)record;
+
+            record = (s16 *)(ceiling + 1);
+            if (!base_ceiling_hit) {
+                limit = ceiling->limit + heights->height;
+                if (bottom < limit) {
+                    floor = ceiling->floor + heights->height;
+                    if (floor < bottom) {
+                        flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                    } else {
+                        if (floor < heights->result) {
+                            heights->result = floor;
+                        }
+                        heights->height_limit = -100000;
+                        break;
+                    }
+                }
+                KF_COLLISION_CACHE_HEIGHT_LIMIT = limit;
+            }
+            break;
         }
-      }
-      break;
-    case 0x11:
-      next_record = operand + 2;
-      saved_height_limit = (s16)*operand + cache->height;
-      if (bottom_y < saved_height_limit) {
-        candidate_height = (s16)operand[1] + cache->height;
-        if (candidate_height < bottom_y) {
-          result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
+        case 0x20:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (wall->offset + radius < cell_x) {
+                    break;
+                }
+            wall_hit:
+                limit = wall->limit + heights->height;
+                floor = wall->floor + heights->height;
+                if (bottom < limit) {
+                    KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, wall_flags);
+                } else {
+                    heights->height_limit = limit;
+                }
+                break;
+            case 1:
+                if (far_limit - wall->offset <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (far_limit - wall->offset <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x21:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (cell_x <= wall->offset + radius
+                    || far_limit - wall->offset <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                if (far_limit - wall->offset <= cell_z
+                    || far_limit - wall->offset <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (far_limit - wall->offset <= cell_x
+                    || cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius
+                    || cell_x <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x22:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (cell_x <= wall->offset + radius
+                    && far_limit - wall->offset <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                if (far_limit - wall->offset <= cell_z
+                    && far_limit - wall->offset <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (far_limit - wall->offset <= cell_x
+                    && cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius
+                    && cell_x <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x23:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (local_x - local_z <= radius - (0x800 - wall->offset)) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                if (-local_x - local_z <= radius - (0x1000 - wall->offset)) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (local_z - local_x <= radius - (0x800 - wall->offset)) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (local_x + local_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x30:
+            slope = (KfShapeSlopeRecord *)record;
+            record = (s16 *)(slope + 1);
+            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
+            case 0:
+                if (local_x < slope->start - radius || slope->end + radius < local_x) {
+                    break;
+                }
+                step = cell_z / slope->run;
+            stair_floor:
+                step = (step + 1) * slope->rise;
+                goto slope_floor;
+            case 1:
+                if (0x800 - slope->start + radius < local_z
+                    || local_z < far_limit - slope->end) {
+                    break;
+                }
+                step = cell_x / slope->run;
+                goto stair_floor;
+            case 2:
+                if (0x800 - slope->start + radius < local_x
+                    || local_x < far_limit - slope->end) {
+                    break;
+                }
+                step = (0x800 - cell_z) / slope->run;
+                goto stair_floor;
+            case 3:
+                if (local_z < slope->start - radius || slope->end + radius < local_z) {
+                    break;
+                }
+                step = (0x800 - cell_x) / slope->run;
+                goto stair_floor;
+            }
+            break;
+        case 0x32:
+            slope = (KfShapeSlopeRecord *)record;
+            record = (s16 *)(slope + 1);
+            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
+            case 0:
+                step = 0x800 - local_x + local_z;
+            ramp_floor:
+                if (step < slope->start) {
+                    step = slope->start;
+                } else if (slope->end < step) {
+                    step = slope->end;
+                }
+                step = (step - slope->start) / slope->run;
+                step *= slope->rise;
+            slope_floor:
+                floor = slope->floor + heights->height - step;
+                KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
+                break;
+            case 1:
+                step = local_x + local_z;
+                goto ramp_floor;
+            case 2:
+                step = 0x800 - local_z + local_x;
+                goto ramp_floor;
+            case 3:
+                step = 0x1000 - local_x - local_z;
+                goto ramp_floor;
+            }
+            break;
+        case 0x31:
+            /* Only an axis hit is tested, and its record is skipped only then. */
+            if (flags & KF_COLLISION_HIT_AXIS) {
+                KfShapeLedgeRecord *ledge = (KfShapeLedgeRecord *)record;
+                s16 distance = cell_z;
+                s16 x_distance = cell_x;
+
+                record = (s16 *)(ledge + 1);
+                switch ((layer->quarter_turns + ledge->quarter_turns) & 3) {
+                case 0:
+                ledge_floor:
+                    if (ledge->start + radius <= distance
+                        && distance <= ledge->end - radius) {
+                        KF_COLLISION_CACHE_RESULT =
+                            ledge->floor + KF_COLLISION_CACHE_HEIGHT;
+                        KF_COLLISION_CACHE_HEIGHT_LIMIT =
+                            ledge->limit + KF_COLLISION_CACHE_HEIGHT;
+                        if (bottom < KF_COLLISION_CACHE_HEIGHT_LIMIT) {
+                            flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                        }
+                        if (y <= KF_COLLISION_CACHE_RESULT) {
+                            flags &= ~(KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS);
+                        }
+                    }
+                    break;
+                case 1:
+                    distance = x_distance;
+                    goto ledge_floor;
+                case 2:
+                    distance = 0x800 - cell_z;
+                    goto ledge_floor;
+                case 3:
+                    distance = 0x800 - cell_x;
+                    goto ledge_floor;
+                }
+            }
+            break;
+        case 0x40:
+            if (other_layer_visited) {
+                return flags;
+            }
+            {
+                u16 *layer_offset = &KF_COLLISION_CACHE_LAYER;
+
+                *layer_offset = *layer_offset == 0 ? sizeof(KfMapOccupancyLayer) : 0;
+                layer = (KfMapOccupancyLayer *)
+                    ((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
+            }
+            KF_COLLISION_CACHE_HEIGHT = -layer->elevation * 0x80;
+            other_layer_visited = 1;
+            goto next_layer;
+        case 0x18: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            floor = level->height + KF_COLLISION_CACHE_HEIGHT;
+            KF_COLLISION_CACHE_LOWER_BOUND = floor;
+            if (height_mode & KF_COLLISION_HEIGHT_CHECK_FLOOR) {
+                KF_COLLISION_CACHE_RESULT = floor;
+                if (floor < y) {
+                    flags |= KF_COLLISION_HIT_FLOOR;
+                    base_floor_hit = 1;
+                }
+            }
+            if (height_mode & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
+                KF_COLLISION_CACHE_HEIGHT_LIMIT = floor;
+                if (bottom <= floor) {
+                    flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                }
+            }
+            break;
         }
-        else {
-          if (candidate_height < cache->result) {
-            cache->result = candidate_height;
-          }
-          cache->height_limit = -100000;
-          break;
+        case 0x19: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            KF_COLLISION_CACHE_UPPER_BOUND = level->height + KF_COLLISION_CACHE_HEIGHT;
+            break;
         }
-      }
-      KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
-      break;
-    case 0x20:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if (record_value != 1) {
-        if (record_value < 2) {
-          if (record_value == 0 &&
-              (int)x_fraction <= (s16)*operand + radius) goto LAB_8002ada4;
         }
-        else if (record_value == 2) {
-          if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002ada4;
-        }
-        else if (record_value == 3) {
-          candidate_height = (s16)*operand + radius;
-          goto LAB_8002afc4;
-        }
-        break;
-      }
-      candidate_height = radius_complement - (s16)*operand;
-LAB_8002af70:
-      next_record = record + 4;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if (candidate_height <= (int)z_fraction) goto LAB_8002ada4;
-      break;
-LAB_8002afc4:
-      next_record = record + 4;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if ((int)z_fraction <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x21:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((int)z_fraction < candidate_height) goto LAB_8002af9c;
-        break;
-      case 0:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((s16)*operand + radius < (int)x_fraction) goto LAB_8002af70;
-        break;
-      case 2:
-        candidate_height = (s16)*operand + radius;
-        if ((int)x_fraction < radius_complement - (s16)*operand) goto LAB_8002afc4;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        if (candidate_height < (int)z_fraction) goto LAB_8002aff0;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-LAB_8002ada4:
-      next_record = record + 4;
-      candidate_height = (s16)operand[2] + cache->height;
-      saved_height_limit = (s16)operand[1] + cache->height;
-      if (bottom_y < saved_height_limit) {
-        if (candidate_height < cache->result) {
-          cache->result = candidate_height;
-          if (candidate_height < y) {
-            result_flags |= case_value;
-          }
-        }
-      }
-      else {
-        cache->height_limit = saved_height_limit;
-      }
-      break;
-    case 0x22:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = radius_complement - (s16)*operand;
-        if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;
-        break;
-      case 0:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((int)x_fraction <= (s16)*operand + radius) goto LAB_8002af70;
-        break;
-      case 2:
-        candidate_height = (s16)*operand + radius;
-        if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002afc4;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        if ((int)z_fraction <= candidate_height) goto LAB_8002aff0;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      break;
-LAB_8002af9c:
-      if ((int)x_fraction >= candidate_height) goto LAB_8002ada4;
-      break;
-LAB_8002aff0:
-      if ((int)x_fraction <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x23:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_DIAGONAL | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = (int)(s16)*operand + radius + -0x1000;
-        saved_height_limit = neg_x_minus_z;
-        break;
-      case 0:
-        candidate_height = (int)(s16)*operand + radius + -0x800;
-        saved_height_limit = x_minus_z;
-        break;
-      case 2:
-        candidate_height = (int)(s16)*operand + radius + -0x800;
-        saved_height_limit = z_minus_x;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        saved_height_limit = x_plus_z;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      if (saved_height_limit <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x30:
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      next_record = record + 6;
-      switch (record_value) {
-      case 1:
-        if (((int)z_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
-           (radius_complement - (s16)operand[2] <= (int)z_fraction)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)x_fraction / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      case 0:
-        if (((s16)operand[1] - radius <= (int)x_fraction) &&
-           ((int)x_fraction <= (s16)operand[2] + radius)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)z_fraction / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      case 2:
-        if (((int)x_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
-           (radius_complement - (s16)operand[2] <= (int)x_fraction)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)z_remaining / candidate_height;
-LAB_8002b168:
-          quotient += 1;
-          candidate_height = quotient * (s16)operand[4];
-          goto LAB_8002b38c;
-        }
-        break;
-      case 3:
-        if (((s16)operand[1] - radius <= (int)z_fraction) &&
-           ((int)z_fraction <= (s16)operand[2] + radius)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)x_remaining / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      }
-      break;
-    case 0x32:
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      next_record = record + 6;
-      switch (record_value) {
-      case 1:
-        candidate_height = x_plus_z;
-        break;
-      case 0:
-        candidate_height = z_plus_cell - (s32)x_fraction;
-        break;
-      case 2:
-        candidate_height = x_plus_cell - (s32)z_fraction;
-        break;
-      case 3:
-        candidate_height = (0x1000 - z_fraction) - x_fraction;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      quotient = (int)(s16)operand[1];
-      if (candidate_height < quotient) {
-        candidate_height = quotient;
-      }
-      else {
-        quotient = (int)(s16)operand[2];
-        if (quotient < candidate_height) {
-          candidate_height = quotient;
-        }
-      }
-      quotient = (int)(s16)operand[5];
-      candidate_height = ((candidate_height - (s16)operand[1]) / quotient) * (int)(s16)operand[4];
-LAB_8002b38c:
-      candidate_height = ((s16)*operand + cache->height) - candidate_height;
-      if (candidate_height < cache->result) {
-        cache->result = candidate_height;
-        if (candidate_height < y) {
-          result_flags |= KF_COLLISION_HIT_FLOOR;
-        }
-      }
-      break;
-    case 0x31:
-      if ((result_flags & KF_COLLISION_HIT_AXIS) != 0) {
-        next_record = operand + 5;
-        record_value = (u16)selected_layer->quarter_turns + operand[4] & 3;
-        case_value = x_fraction;
-        if (record_value != 1) {
-          if (record_value < 2) {
-            case_value = z_fraction;
-            if (record_value == 0) goto LAB_8002b450;
-          }
-          else {
-            case_value = z_remaining;
-            if ((record_value == 2) || (case_value = x_remaining, record_value == 3)) goto LAB_8002b450;
-          }
-          break;
-        }
-LAB_8002b450:
-        if (((s16)*operand + radius <= (int)(s16)case_value) &&
-           ((int)(s16)case_value <= (s16)operand[1] - radius)) {
-          KF_COLLISION_CACHE_RESULT = (s16)operand[2] + KF_COLLISION_CACHE_HEIGHT;
-          saved_height_limit = (s16)operand[3] + KF_COLLISION_CACHE_HEIGHT;
-          KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
-          if (bottom_y < saved_height_limit) {
-            result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
-          }
-          if (y <= KF_COLLISION_CACHE_RESULT) {
-            result_flags &= ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR);
-          }
-        }
-      }
-      break;
-    case 0x40: {
-      u16 *layer_offset;
-      if (visited_second_layer) {
-        return result_flags;
-      }
-      layer_offset = &KF_COLLISION_CACHE_LAYER;
-      *layer_offset = *layer_offset == 0 ? sizeof(KfMapOccupancyLayer) : 0;
-      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
-      KF_COLLISION_CACHE_HEIGHT = -(s32)selected_layer->elevation * 0x80;
-      visited_second_layer = 1;
-      goto LAB_8002ab5c;
     }
-    case 0x18:
-      next_record = record + 1;
-      candidate_height = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      KF_COLLISION_CACHE_LOWER_BOUND = candidate_height;
-      if ((s32)height_flags < 0) {
-        KF_COLLISION_CACHE_RESULT = candidate_height;
-        if (candidate_height < y) {
-          result_flags |= KF_COLLISION_HIT_FLOOR;
-          special_floor_found = 1;
-        }
-      }
-      if (height_flags & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
-        KF_COLLISION_CACHE_HEIGHT_LIMIT = candidate_height;
-        if (bottom_y <= candidate_height) {
-          result_flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
-        }
-      }
-      break;
-    case 0x19:
-      next_record = record + 1;
-      KF_COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      break;
-    }
-LAB_8002b5c8:
-    --records_left;
-    record = next_record;
-    if (records_left == -1) {
-      return result_flags;
-    }
-  } while( 1 );
+    return flags;
 }
 
 

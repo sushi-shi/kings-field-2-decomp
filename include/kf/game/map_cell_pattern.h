@@ -1,6 +1,7 @@
 #ifndef KF_GAME_MAP_CELL_PATTERN_H
 #define KF_GAME_MAP_CELL_PATTERN_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/render_types.h>
 
@@ -19,7 +20,7 @@ typedef struct KfMapCellPattern {
 
 typedef char kf_map_cell_pattern_size[sizeof(KfMapCellPattern) == 10 ? 1 : -1];
 typedef char kf_map_cell_pattern_offset[
-    (u32)&((KfMapCellPattern *)0)->offset_x == 8 ? 1 : -1];
+    offsetof(KfMapCellPattern, offset_x) == 8 ? 1 : -1];
 
 enum {
     KF_MAP_OBJECT_PATTERN_GROUPS = 9,

@@ -1,6 +1,7 @@
 #ifndef KF_GAME_RENDER_MODEL_H
 #define KF_GAME_RENDER_MODEL_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/pool.h>
 #include <kf/game/render_types.h>
@@ -23,11 +24,11 @@ typedef struct KfRenderModelRow {
 
 typedef char kf_render_model_row_size[sizeof(KfRenderModelRow) == 36 ? 1 : -1];
 typedef char kf_render_model_asset_id_offset[
-    (u32)&((KfRenderModelRow *)0)->asset_id == 4 ? 1 : -1];
+    offsetof(KfRenderModelRow, asset_id) == 4 ? 1 : -1];
 typedef char kf_render_model_rotation_offset[
-    (u32)&((KfRenderModelRow *)0)->rotation == 24 ? 1 : -1];
+    offsetof(KfRenderModelRow, rotation) == 24 ? 1 : -1];
 typedef char kf_render_model_animation_state_offset[
-    (u32)&((KfRenderModelRow *)0)->animation_state == 32 ? 1 : -1];
+    offsetof(KfRenderModelRow, animation_state) == 32 ? 1 : -1];
 
 extern KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT];
 extern s32 render_model_yaw_smoothing_accumulator;

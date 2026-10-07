@@ -2,6 +2,7 @@
 #define KF_GAME_CALLBACK_H
 
 #include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 
 /* The initialized table has 32 function-pointer rows; the BSS table's extent
@@ -28,7 +29,7 @@ typedef char kf_resource_transition_offset_size[
 /* Startup clears this 0x1c-byte runtime state. Its active table pointer is
  * replaced by both an initialized table and a BSS table. */
 typedef struct KfResourceState {
-    s16 transition_active;
+    KfBoolS16 transition_active;
     s16 transition_phase;
     u8 active_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 current_map_region_id;
@@ -41,14 +42,14 @@ typedef struct KfResourceState {
 } KfResourceState;
 
 typedef char kf_resource_state_size[sizeof(KfResourceState) == 0x1c ? 1 : -1];
-typedef char kf_resource_state_table_offset[(u32)&((KfResourceState *)0)->active_table == 0xc ? 1 : -1];
-typedef char kf_resource_state_active_resource_ids_offset[(u32)&((KfResourceState *)0)->active_resource_ids == 0x04 ? 1 : -1];
-typedef char kf_resource_state_current_map_region_id_offset[(u32)&((KfResourceState *)0)->current_map_region_id == 0x09 ? 1 : -1];
-typedef char kf_resource_state_requested_resource_ids_offset[(u32)&((KfResourceState *)0)->requested_resource_ids == 0x10 ? 1 : -1];
-typedef char kf_resource_state_world_shift_applied_offset[(u32)&((KfResourceState *)0)->world_shift_applied == 0x15 ? 1 : -1];
-typedef char kf_resource_state_tmd_object_limit_active_offset[(u32)&((KfResourceState *)0)->tmd_object_limit_active == 0x16 ? 1 : -1];
-typedef char kf_resource_state_transition_offset_offset[(u32)&((KfResourceState *)0)->transition_offset == 0x17 ? 1 : -1];
-typedef char kf_resource_state_sequence_fade_volume_offset[(u32)&((KfResourceState *)0)->sequence_fade_volume == 0x1a ? 1 : -1];
+typedef char kf_resource_state_table_offset[offsetof(KfResourceState, active_table) == 0xc ? 1 : -1];
+typedef char kf_resource_state_active_resource_ids_offset[offsetof(KfResourceState, active_resource_ids) == 0x04 ? 1 : -1];
+typedef char kf_resource_state_current_map_region_id_offset[offsetof(KfResourceState, current_map_region_id) == 0x09 ? 1 : -1];
+typedef char kf_resource_state_requested_resource_ids_offset[offsetof(KfResourceState, requested_resource_ids) == 0x10 ? 1 : -1];
+typedef char kf_resource_state_world_shift_applied_offset[offsetof(KfResourceState, world_shift_applied) == 0x15 ? 1 : -1];
+typedef char kf_resource_state_tmd_object_limit_active_offset[offsetof(KfResourceState, tmd_object_limit_active) == 0x16 ? 1 : -1];
+typedef char kf_resource_state_transition_offset_offset[offsetof(KfResourceState, transition_offset) == 0x17 ? 1 : -1];
+typedef char kf_resource_state_sequence_fade_volume_offset[offsetof(KfResourceState, sequence_fade_volume) == 0x1a ? 1 : -1];
 
 extern KfResourceState resource_state;
 extern KfCallback callback_default_table[32];

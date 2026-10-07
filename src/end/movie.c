@@ -47,7 +47,7 @@ void ending_play_movie(void)
         strNextVlc();
         strSync(&dec);
         display_present_frame();
-        if (Rewind_Switch == 1) {
+        if (Rewind_Switch == KF_TRUE) {
             break;
         }
         if (StrFrame >= ENDING_FADE_FRAME && volume > 0) {
@@ -68,8 +68,8 @@ void ending_play_movie(void)
      * SetDef*Env calls and the address-taken mode byte (retail's 72 bytes). */
     mode = CdlModeSpeed;
     CdControlB(CdlSetmode, &mode, NULL);
-    DecDCToutCallback(0);
-    CdDataCallback(0);
+    DecDCToutCallback(NULL);
+    CdDataCallback(NULL);
     CdReadyCallback(NULL);
     CdControlB(CdlPause, NULL, NULL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 320, KF_DISPLAY_HEIGHT);

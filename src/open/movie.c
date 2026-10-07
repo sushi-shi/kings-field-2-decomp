@@ -29,7 +29,7 @@ void opening_play_movie(void)
     CdlFILE file;
     u_char mode;
     s32 volume;
-    s32 skipped = 0;
+    b32 skipped = KF_FALSE;
 
     SsSeqStop(audio_title_sequence_id);
     if (CdSearchFile(&file, "\\OP\\OP.S;1") == NULL) {
@@ -57,11 +57,11 @@ void opening_play_movie(void)
         strNextVlc();
         strSync(&dec);
         display_present_frame();
-        if (Rewind_Switch == 1) {
+        if (Rewind_Switch == KF_TRUE) {
             break;
         }
         if (PadRead(1) != 0) {
-            skipped = 1;
+            skipped = KF_TRUE;
             while (PadRead(1) != 0) {
             }
             break;
@@ -79,8 +79,8 @@ void opening_play_movie(void)
     SsSeqSetVol(audio_movie_sequence_id, 0, 0);
     mode = CdlModeSpeed;
     CdControlB(CdlSetmode, &mode, NULL);
-    DecDCToutCallback(0);
-    CdDataCallback(0);
+    DecDCToutCallback(NULL);
+    CdDataCallback(NULL);
     CdReadyCallback(NULL);
     CdControlB(CdlPause, NULL, NULL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);

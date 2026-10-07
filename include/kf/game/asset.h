@@ -1,6 +1,7 @@
 #ifndef KF_GAME_ASSET_H
 #define KF_GAME_ASSET_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/tmd.h>
 
@@ -20,7 +21,7 @@ typedef struct KfAssetHeader {
 
 typedef char kf_asset_header_size[sizeof(KfAssetHeader) == 20 ? 1 : -1];
 typedef char kf_asset_morph_offsets_offset[
-    (u32)&((KfAssetHeader *)0)->morph_offsets_offset == 0x0c ? 1 : -1];
+    offsetof(KfAssetHeader, morph_offsets_offset) == 0x0c ? 1 : -1];
 
 /* Each asset section is addressed by a byte offset from its header. */
 #define ASSET_BYTES(asset, offset) ((u8 *)(asset) + (offset))

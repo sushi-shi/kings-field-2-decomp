@@ -79,7 +79,7 @@ void resource_initialize_game_assets(void)
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = 255;
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = 255;
     *second_value = 255;
-    resource_state.transition_active = 0;
+    resource_state.transition_active = KF_FALSE;
     resource_state.transition_phase = 0;
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = 0;
     *second_value = 0;
@@ -132,7 +132,7 @@ void resource_run_initial_transition(void)
     u8 fourth;
     u8 fifth;
 
-    resource_state.transition_active = 1;
+    resource_state.transition_active = KF_TRUE;
     resource_state.transition_phase = 0;
     first = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     second = resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD];
@@ -155,7 +155,7 @@ void resource_run_initial_transition(void)
     do {
         cd_request_yield();
         resource_advance_transition();
-    } while (resource_state.transition_active != 0);
+    } while (resource_state.transition_active);
     tmd_set_slot(0, (KfTmdHeader *)resource_tmd_workspace);
     resource_state.active_table[5]();
 }
@@ -212,7 +212,7 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
 /* Retail treats $v0 as live at every exit (an int-returning function whose
  * returns carry no value); callers ignore the result. */
 ADDRESS(0x80016260, 0x55c)
-s32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
+KF_VALUELESS_S32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
                     u8 sequence_id, s8 offset_x, s8 offset_z, s8 offset_y)
 {
     u8 current_map_region_id;
@@ -227,7 +227,7 @@ s32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_i
     u8 prior_sequence_id;
 
     if (sequence_id == KF_RESOURCE_REQUEST_START_SEQUENCE) {
-        if (audio_state.sequence_active == 0) {
+        if (!audio_state.sequence_active) {
             audio_start_sequence();
         }
         return;
@@ -274,7 +274,7 @@ s32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_i
         current_sequence_id = resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
     }
 
-    if (resource_state.transition_active != 0) {
+    if (resource_state.transition_active) {
         goto handle_active;
     }
     if (resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == current_map_region_id &&
@@ -293,7 +293,7 @@ apply:
     if (event_state.control.fields.highest_requested_map_region_id < current_map_region_id) {
         event_state.control.fields.highest_requested_map_region_id = current_map_region_id;
     }
-    resource_state.transition_active = 1;
+    resource_state.transition_active = KF_TRUE;
     resource_state.transition_phase = 0;
     resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = map_region_id;
     resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] = tmd_id;
@@ -312,7 +312,7 @@ apply:
     return;
 
 handle_active:
-    if ((resource_state.transition_active != 1 ||
+    if ((resource_state.transition_active != KF_TRUE ||
          resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == prior_map_region_id) &&
         resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] == prior_tmd_id &&
         resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] == prior_tim_id &&
@@ -343,7 +343,7 @@ handle_active:
          vab_id == KF_RESOURCE_REQUEST_KEEP) ||
         (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP &&
          sequence_id == KF_RESOURCE_REQUEST_KEEP)) {
-        while (resource_state.transition_active != 0) {
+        while (resource_state.transition_active) {
             cd_request_yield();
             resource_advance_transition();
         }
@@ -406,10 +406,10 @@ void resource_advance_transition(void)
     s32 phase;
     s32 index;
 
-    if (resource_state.transition_active == 0) {
+    if (!resource_state.transition_active) {
         return;
     }
-    if (resource_state.transition_active != 1) {
+    if (resource_state.transition_active != KF_TRUE) {
         return;
     }
     phase = resource_state.transition_phase;
@@ -552,7 +552,7 @@ complete:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP)
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
-        resource_state.transition_active = 0;
+        resource_state.transition_active = KF_FALSE;
         return;
 
 begin_phase_five:
@@ -561,7 +561,7 @@ begin_phase_five:
         audio_state.sequence_ready = KF_FALSE;
 
     case RESOURCE_STEP_FADE_AUDIO:
-        if (audio_state.sequence_active != 0) {
+        if (audio_state.sequence_active) {
             resource_state.sequence_fade_volume -= RESOURCE_SEQUENCE_FADE_STEP;
             if (resource_state.sequence_fade_volume <= 0) {
                 resource_state.sequence_fade_volume = 0;
@@ -572,7 +572,7 @@ begin_phase_five:
             if (resource_state.sequence_fade_volume != 0) return;
             SsSeqStop(audio_state.sequence_id);
             SsSeqClose(audio_state.sequence_id);
-            audio_state.sequence_active = 0;
+            audio_state.sequence_active = KF_FALSE;
         }
         if (audio_state.vab_slots[1].vab_id != KF_AUDIO_VAB_ID_NONE) {
             audio_state.vab_slots[1].stream_slot = NULL;

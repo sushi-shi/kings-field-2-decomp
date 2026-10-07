@@ -8,6 +8,7 @@
 #include <kf/game/player.h>
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
+#include <psyq/pad.h>
 #include <psyq/sdk.h>
 #include <kf/game/actor.h>
 #include <kf/game/animation.h>
@@ -15,7 +16,6 @@
 #include <kf/game/asset.h>
 #include <kf/game/map_cell.h>
 #include <psyq/libc.h>
-#include <stdarg.h>
 #include <kf/game/audio.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
@@ -114,7 +114,7 @@ void player_reload_map_resources(
     do {
         cd_request_yield();
         resource_advance_transition();
-    } while (resource_state.transition_active != 0);
+    } while (resource_state.transition_active);
     cd_request_wait_idle();
     DrawSync(0);
     VSync(0);
@@ -128,7 +128,7 @@ void player_reload_map_resources(
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (resource_state.transition_active != 0);
+        } while (resource_state.transition_active);
         cd_request_wait_idle();
         DrawSync(0);
         VSync(0);
@@ -1186,7 +1186,7 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
     s32 target_scale;
     s32 simple_scale;
     s32 case3_z;
-    va_list arguments;
+    char *arguments;
     const VECTOR *override_position;
     /* The cursor stays on the named argument and is advanced before each
      * read, so every optional pointer is read one word above effect_id. */
@@ -1419,7 +1419,6 @@ sequence_effect: {
     default:
         break;
     }
-    va_end(arguments);
 }
 
 
@@ -1456,7 +1455,7 @@ void player_sample_weapon_world_vertex(s32 vertex_index, VECTOR *output)
 enum { PLAYER_WEAPON_MAGIC_POWER_MINIMUM = 60 };
 
 ADDRESS(0x80026464, 0x34)
-s32 player_meets_weapon_magic_power_requirement(void)
+b32 player_meets_weapon_magic_power_requirement(void)
 {
     return player_state.physical_power >= PLAYER_WEAPON_MAGIC_POWER_MINIMUM
         && player_state.magic >= PLAYER_WEAPON_MAGIC_POWER_MINIMUM;
@@ -1471,7 +1470,7 @@ enum {
 };
 
 ADDRESS(0x80026498, 0x1c4)
-void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_parameter)
+void player_dispatch_weapon_magic(s32 magic_id, b32 consume_mp, s32 effect_parameter)
 {
     KfMagicRecord *record = &effect_state.magic_records[magic_id];
     VECTOR position;
@@ -1480,7 +1479,7 @@ void player_dispatch_weapon_magic(s32 magic_id, s32 consume_mp, s32 effect_param
         return;
     }
     player_state.selected_magic_record = record;
-    if (consume_mp != 0) {
+    if (consume_mp) {
         player_state.magic_charge = 0;
         player_state.vitals.current_mp -= record->mp_cost;
     }
@@ -1701,7 +1700,7 @@ regular_weapon:
     if (player_state.weapon_attack_mode == 0
         && weapon->initial_effect_id != WEAPON_MAGIC_EFFECT_NONE
         && player_state.weapon_attack_fully_charged != 0
-        && player_meets_weapon_magic_power_requirement() != 0
+        && player_meets_weapon_magic_power_requirement()
         && (player_state.pad_buttons.current & PADRleft) != 0) {
         if (player_state.weapon_attack_phase >= weapon->magic_window_start
             && player_state.weapon_attack_phase <= weapon->magic_window_end) {
@@ -1974,7 +1973,7 @@ enum {
 };
 
 ADDRESS(0x800274ec, 0x43c)
-s32 player_move_horizontal(s32 heading, s32 distance)
+b32 player_move_horizontal(s32 heading, s32 distance)
 {
     s32 dx = (-rsin(heading) * distance) >> 12;
     s32 dz = (rcos(heading) * distance) >> 12;
@@ -1985,15 +1984,18 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 angle;
     s32 radius;
     s32 slide_distance;
-    s32 slide_attempted;
+    b32 slide_attempted;
     s32 collision_retry;
-    s32 result;
-    s32 diagonal_retry;
-    s32 high_collision;
+    b32 result;
+    b32 diagonal_retry;
+    b32 high_collision;
     SVECTOR delta;
     KF_ENUM_STORAGE(KfQuarterTurn, s32) diagonal_kind;
 
-    diagonal_retry = slide_attempted = collision_retry = result = 0;
+    result = KF_FALSE;
+    collision_retry = 0;
+    slide_attempted = KF_FALSE;
+    diagonal_retry = KF_FALSE;
 
 retry: {
         next.vx = player_state.camera_position.vx + dx;
@@ -2006,15 +2008,15 @@ retry: {
             player_state.camera_position.vx = next.vx;
             player_state.camera_position.vz = next.vz;
             player_state.map_layer_index = KF_COLLISION_CACHE_LAYER;
-            result = 1;
+            result = KF_TRUE;
             goto done;
         }
 
-        high_collision = 0;
+        high_collision = KF_FALSE;
         do {
             if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
                 s32 collision_height = KF_COLLISION_CACHE_RESULT;
-                high_collision = 1;
+                high_collision = KF_TRUE;
                 if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
                     && player_state.death_state == 0
                     && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
@@ -2068,7 +2070,7 @@ retry: {
                     slide_distance -= PLAYER_MOVE_STEP;
                 } while (slide_distance >= 0);
             }
-            slide_attempted = 1;
+            slide_attempted = KF_TRUE;
         }
 
         if (high_collision || (flags & KF_COLLISION_HIT_AXIS)) {
@@ -2088,7 +2090,7 @@ retry: {
                 if (diagonal_retry) {
                     goto axis_retry;
                 }
-                diagonal_retry = 1;
+                diagonal_retry = KF_TRUE;
             } while (0);
             diagonal_kind = KF_ENUM_DECODE(KfQuarterTurn,
                 KF_COLLISION_CACHE_SHAPE->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK);
@@ -2101,7 +2103,7 @@ retry: {
             }
             goto retry;
         }
-        result = 0;
+        result = KF_FALSE;
     }
 done:
     player_state.frame_displacement.vx = dx;
@@ -2325,7 +2327,7 @@ finish:
 }
 
 ADDRESS(0x80027f78, 0x2ac)
-s32 player_move_reaction_with_collision(void)
+b32 player_move_reaction_with_collision(void)
 {
     VECTOR next;
     s32 flags;
@@ -2384,21 +2386,21 @@ s32 player_move_reaction_with_collision(void)
     }
 
     if (flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) {
-        return 1;
+        return KF_TRUE;
     }
     if (KF_COLLISION_CACHE_RESULT + 256 < player_state.camera_position.vy) {
-        return 1;
+        return KF_TRUE;
     }
     next.vy = KF_COLLISION_CACHE_RESULT;
     minimum_length = 56;
     goto scale_motion;
 
 exhausted:
-    return 1;
+    return KF_TRUE;
 
 accepted:
     player_update_collision_bounds();
-    return 0;
+    return KF_FALSE;
 }
 
 enum {
@@ -2692,7 +2694,7 @@ void player_update_actions_and_charge(void)
     if ((player_state.pad_buttons.current & (PADRup | PADRright | PADRleft)) != 0
         && (player_state.pad_buttons.halves.previous & (PADRup | PADRright | PADRleft)) == 0
         && player_state.equipped_weapon_record->alternate_attack_phase_step != 0) {
-        if (player_meets_weapon_magic_power_requirement() == 0) {
+        if (!player_meets_weapon_magic_power_requirement()) {
             goto cancel_weapon_attack;
         }
         attack_mask = player_state.magic_attack_mask_cursor;
@@ -3167,7 +3169,7 @@ update_reaction_view:
         goto after_reaction;
     }
     case KF_PLAYER_REACTION_ROTATION:
-        if (player_move_reaction_with_collision() != 0) {
+        if (player_move_reaction_with_collision()) {
             player_reset_reaction_state();
         }
         goto update_reaction_view;

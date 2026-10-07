@@ -12,11 +12,12 @@ from scripts.kf.clean_lexer import resolve_conditionals, rewrite_calls, strip_co
 
 class LexicalControls(unittest.TestCase):
     def test_nested_calls_literals_and_token_boundaries(self):
-        source = 'DATA(1, 4)\nconst char *x = "DATA(1, 2) /*literal*/";\nint/**/x;\n'
+        source = ('DATA(1, 4, ".data")\nconst char *x = "DATA(1, 2) /*literal*/";\nint/**/x;\n'
+                  'DATA_AT("GAME", 1, 4, ".sbss")\nSDATA(2, 3)\nRODATA(4, 5)\n')
         result = clean_c(source, {})
         self.assertIn('"DATA(1, 2) /*literal*/"', result)
         self.assertIn('int x;', result)
-        self.assertNotIn('DATA(1, 4)', result)
+        self.assertNotIn('DATA', result.replace('"DATA(1, 2) /*literal*/"', ''))
         self.assertEqual(clean_c('KF_ENUM_DECODE(KF_ENUM_PROMOTED(Id), call(1, 2))', {'Id': 'int'}),
                          '((int)(call(1, 2)))\n')
 

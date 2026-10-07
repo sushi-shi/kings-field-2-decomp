@@ -27,7 +27,7 @@ typedef struct {
 
 DATA_AT("OPEN", 0x8003dec0, 0x4, ".sbss")
 DATA_AT("END", 0x8003ace0, 0x4, ".sbss")
-int Rewind_Switch;
+KfBool Rewind_Switch;
 
 DATA_AT("OPEN", 0x8003dec8, 0x4, ".sbss")
 DATA_AT("END", 0x8003ace8, 0x4, ".sbss")
@@ -63,7 +63,7 @@ void strSetDefDecEnv(void)
     dec.vlcid = 0;
     dec.imgbuf = imgbuf;
     dec.rectid = 0;
-    dec.isdone = 0;
+    dec.isdone = KF_FALSE;
     setRECT(&dec.rect[0], 0, 0, SCR_WIDTH, SCR_HEIGHT);
     setRECT(&dec.rect[1], 0, SCR_HEIGHT, SCR_WIDTH, SCR_HEIGHT);
     setRECT(&dec.slice, 0, 0, SLICE_WIDTH_PIXELS, SCR_HEIGHT);
@@ -74,7 +74,7 @@ ADDRESS_AT("END", 0x800122a8, 0x74)
 void strInit(CdlLOC *loc)
 {
     DecDCTReset(0);
-    Rewind_Switch = 0;
+    Rewind_Switch = KF_FALSE;
     DecDCToutCallback(strCallback);
     StSetRing(Ring_Buff, RING_SIZE);
     StSetStream(0, 1, 0x0fffffff, NULL, NULL);
@@ -92,7 +92,7 @@ void strCallback(void)
     if (dec.slice.x < dec.rect[dec.rectid].x + dec.rect[dec.rectid].w) {
         DecDCTout((u_long *)dec.imgbuf, dec.slice.w * dec.slice.h / 2);
     } else {
-        dec.isdone = 1;
+        dec.isdone = KF_TRUE;
         dec.rectid = dec.rectid ? 0 : 1;
         dec.slice.x = dec.rect[dec.rectid].x;
         dec.slice.y = dec.rect[dec.rectid].y;
@@ -137,7 +137,7 @@ u_long *strNext(DECENV *env)
     }
     StrFrame = sector->header.frameCount;
     if (sector->header.frameCount >= MOVIE_END_FRAME) {
-        Rewind_Switch = 1;
+        Rewind_Switch = KF_TRUE;
     }
     return addr;
 }
@@ -148,15 +148,15 @@ void strSync(DECENV *env)
 {
     u_long cnt = WAIT_TIME;
 
-    while (env->isdone == 0) {
+    while (!env->isdone) {
         if (--cnt == 0) {
-            env->isdone = 1;
+            env->isdone = KF_TRUE;
             env->rectid = env->rectid ? 0 : 1;
             env->slice.x = env->rect[env->rectid].x;
             env->slice.y = env->rect[env->rectid].y;
         }
     }
-    env->isdone = 0;
+    env->isdone = KF_FALSE;
 }
 
 ADDRESS_AT("OPEN", 0x80013c30, 0x48)

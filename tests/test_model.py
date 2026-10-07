@@ -159,6 +159,18 @@ class ClaimScanTests(unittest.TestCase):
             ],
         )
 
+    def test_data_claim_reaches_a_c_only_repeated_tentative_definition(self) -> None:
+        claims = self._scan_data(
+            "static u32 *cursor;\n"
+            "DATA(0x80057b0c, 0x4, \".sbss\")\n"
+            "#ifndef __cplusplus\n"
+            "static u32 *cursor;\n"
+            "#endif\n"
+        )
+        self.assertEqual([(claim.va, claim.name) for claim in claims], [(0x80057b0c, "cursor")])
+        with self.assertRaisesRegex(ValueError, "global definition"):
+            self._scan_data("DATA(0x80057b0c, 0x4, \".sbss\")\n#ifdef KF_OPEN\nu32 cursor;\n#endif\n")
+
     def test_data_claim_before_extern_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "global definition"):
             self._scan_data("DATA(0x80057b0c, 0x4, \".data\")\nextern u32 counter;\n")

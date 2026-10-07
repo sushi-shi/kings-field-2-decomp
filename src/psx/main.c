@@ -7,7 +7,7 @@
 RODATA(0x80010000, 0x35)
 
 DATA(0x8001024c, 0xc, ".data")
-char *overlay_path_table[3] = {
+const char *overlay_path_table[3] = {
     "cdrom:OPEN.EXE;1",
     "cdrom:GAME.EXE;1",
     "cdrom:END.EXE;1",

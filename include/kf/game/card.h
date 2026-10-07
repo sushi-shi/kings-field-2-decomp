@@ -2,6 +2,7 @@
 #define KF_GAME_CARD_H
 #include <kf/lib/types.h>
 #include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 
 /* Memory-card BIOS events, as returned by memory_card_wait_event. */
 enum {
@@ -50,17 +51,17 @@ typedef struct KfCardHeader {
 } KfCardHeader;
 typedef char kf_card_header_size[sizeof(KfCardHeader) == 0x280 ? 1 : -1];
 typedef char kf_card_header_icon_type_offset[
-    (u32)&((KfCardHeader *)0)->icon_type == 2 ? 1 : -1];
+    offsetof(KfCardHeader, icon_type) == 2 ? 1 : -1];
 typedef char kf_card_header_block_count_offset[
-    (u32)&((KfCardHeader *)0)->block_count == 3 ? 1 : -1];
+    offsetof(KfCardHeader, block_count) == 3 ? 1 : -1];
 typedef char kf_card_header_title_offset[
-    (u32)&((KfCardHeader *)0)->title == 4 ? 1 : -1];
+    offsetof(KfCardHeader, title) == 4 ? 1 : -1];
 typedef char kf_card_header_palette_offset[
-    (u32)&((KfCardHeader *)0)->icon_palette == 0x60 ? 1 : -1];
+    offsetof(KfCardHeader, icon_palette) == 0x60 ? 1 : -1];
 typedef char kf_card_header_frames_offset[
-    (u32)&((KfCardHeader *)0)->icon_frames == 0x80 ? 1 : -1];
+    offsetof(KfCardHeader, icon_frames) == 0x80 ? 1 : -1];
 typedef char kf_card_header_checksum_offset[
-    (u32)&((KfCardHeader *)0)->payload_checksum == 0x200 ? 1 : -1];
+    offsetof(KfCardHeader, payload_checksum) == 0x200 ? 1 : -1];
 
 /* Initialized card-file title and one icon palette per save slot. */
 typedef struct KfCardAssets {
@@ -69,7 +70,7 @@ typedef struct KfCardAssets {
 } KfCardAssets;
 typedef char kf_card_assets_size[sizeof(KfCardAssets) == 0x120 ? 1 : -1];
 typedef char kf_card_assets_icon_palette_offset[
-    (u32)&((KfCardAssets *)0)->icon_palette == 0x40 ? 1 : -1];
+    offsetof(KfCardAssets, icon_palette) == 0x40 ? 1 : -1];
 
 /* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
 extern b32 input_press_pending;

@@ -518,7 +518,9 @@ void tmd_project_vertices(s32 count)
     }
 }
 
-#define TMD_VERTEX(base, offset) ((KfScreenVertex *)((base) + (offset)))
+/* Prepared vertex indices are byte offsets into the projected-vertex array;
+ * NormalClip and the GPU packets take each vertex's packed screen XY word. */
+#define TMD_VERTEX(base, offset) ((KfScreenVertex *)((u8 *)(base) + (offset)))
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
@@ -1077,10 +1079,6 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
     }
 }
 
-/* The prepared indices in an FT packet are byte offsets into this array. */
-#define MAP_VERTEX(base, offset) ((KfScreenVertex *)((u8 *)(base) + (offset)))
-#define MAP_XY(vertex) (*(long *)(vertex))
-
 ADDRESS(0x8002f194, 0x41c)
 void render_enqueue_map(u16 object_index)
 {
@@ -1113,14 +1111,14 @@ void render_enqueue_map(u16 object_index)
             KfGpuGT4 *prim;
             s32 depth;
 
-            va = MAP_VERTEX(vertices, face->vertex0);
-            vb = MAP_VERTEX(vertices, face->vertex1);
-            vc = MAP_VERTEX(vertices, face->vertex2);
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+            va = TMD_VERTEX(vertices, face->vertex0);
+            vb = TMD_VERTEX(vertices, face->vertex1);
+            vc = TMD_VERTEX(vertices, face->vertex2);
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
             }
             prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
-            vd = MAP_VERTEX(vertices, face->vertex3);
+            vd = TMD_VERTEX(vertices, face->vertex3);
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
                 game_graphics_runtime.display_state.primitive_buffer->end) {
@@ -1128,10 +1126,10 @@ void render_enqueue_map(u16 object_index)
             }
             prim->packed.clut = face->clut;
             prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
-            prim->packed.xy3 = MAP_XY(vd);
+            prim->packed.xy0 = TMD_XY(va);
+            prim->packed.xy1 = TMD_XY(vb);
+            prim->packed.xy2 = TMD_XY(vc);
+            prim->packed.xy3 = TMD_XY(vd);
             prim->packed.uv0 = face->uv0;
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
@@ -1157,10 +1155,10 @@ void render_enqueue_map(u16 object_index)
             KfGpuGT3 *prim;
             s32 depth;
 
-            va = MAP_VERTEX(vertices, face->vertex0);
-            vb = MAP_VERTEX(vertices, face->vertex1);
-            vc = MAP_VERTEX(vertices, face->vertex2);
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+            va = TMD_VERTEX(vertices, face->vertex0);
+            vb = TMD_VERTEX(vertices, face->vertex1);
+            vc = TMD_VERTEX(vertices, face->vertex2);
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
             }
             prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1171,9 +1169,9 @@ void render_enqueue_map(u16 object_index)
             }
             prim->packed.clut = face->clut;
             prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
+            prim->packed.xy0 = TMD_XY(va);
+            prim->packed.xy1 = TMD_XY(vb);
+            prim->packed.xy2 = TMD_XY(vc);
             prim->packed.uv0 = face->uv0;
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
@@ -1328,10 +1326,10 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                 s32 depth;
                 KfGpuGT4 *prim;
 
-                va = MAP_VERTEX(vertices, FT4_FACE->vertex0);
-                vb = MAP_VERTEX(vertices, FT4_FACE->vertex1);
-                vc = MAP_VERTEX(vertices, FT4_FACE->vertex2);
-                vd = MAP_VERTEX(vertices, FT4_FACE->vertex3);
+                va = TMD_VERTEX(vertices, FT4_FACE->vertex0);
+                vb = TMD_VERTEX(vertices, FT4_FACE->vertex1);
+                vc = TMD_VERTEX(vertices, FT4_FACE->vertex2);
+                vd = TMD_VERTEX(vertices, FT4_FACE->vertex3);
                 dy0 = va->y - vb->y;
                 dy1 = vb->y - vd->y;
                 dy2 = vd->y - vc->y;
@@ -1348,7 +1346,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     MAP_OUTSIDE_Y(dy4) || MAP_OUTSIDE_X(dx0) ||
                     MAP_OUTSIDE_X(dx1) || MAP_OUTSIDE_X(dx2) ||
                     MAP_OUTSIDE_X(dx3) || MAP_OUTSIDE_X(dx4))) {
-                    if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                         break;
                     }
                     prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1359,10 +1357,10 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     }
                     prim->packed.clut = FT4_FACE->clut;
                     prim->packed.tpage = FT4_FACE->tpage;
-                    prim->packed.xy0 = MAP_XY(va);
-                    prim->packed.xy1 = MAP_XY(vb);
-                    prim->packed.xy2 = MAP_XY(vc);
-                    prim->packed.xy3 = MAP_XY(vd);
+                    prim->packed.xy0 = TMD_XY(va);
+                    prim->packed.xy1 = TMD_XY(vb);
+                    prim->packed.xy2 = TMD_XY(vc);
+                    prim->packed.xy3 = TMD_XY(vd);
                     prim->packed.uv0 = FT4_FACE->uv0;
                     prim->packed.uv1 = FT4_FACE->uv1;
                     prim->packed.uv2 = FT4_FACE->uv2;
@@ -1405,9 +1403,9 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                 s32 depth;
                 KfGpuGT3 *prim;
 
-                va = MAP_VERTEX(vertices, FT3_FACE->vertex0);
-                vb = MAP_VERTEX(vertices, FT3_FACE->vertex1);
-                vc = MAP_VERTEX(vertices, FT3_FACE->vertex2);
+                va = TMD_VERTEX(vertices, FT3_FACE->vertex0);
+                vb = TMD_VERTEX(vertices, FT3_FACE->vertex1);
+                vc = TMD_VERTEX(vertices, FT3_FACE->vertex2);
                 dy0 = va->y - vb->y;
                 dy1 = vb->y - vc->y;
                 dy2 = vc->y - va->y;
@@ -1418,7 +1416,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     MAP_OUTSIDE_Y(dy0) || MAP_OUTSIDE_Y(dy1) ||
                     MAP_OUTSIDE_Y(dy2) || MAP_OUTSIDE_X(dx0) ||
                     MAP_OUTSIDE_X(dx1) || MAP_OUTSIDE_X(dx2))) {
-                    if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                         break;
                     }
                     prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1429,9 +1427,9 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     }
                     prim->packed.clut = FT3_FACE->clut;
                     prim->packed.tpage = FT3_FACE->tpage;
-                    prim->packed.xy0 = MAP_XY(va);
-                    prim->packed.xy1 = MAP_XY(vb);
-                    prim->packed.xy2 = MAP_XY(vc);
+                    prim->packed.xy0 = TMD_XY(va);
+                    prim->packed.xy1 = TMD_XY(vb);
+                    prim->packed.xy2 = TMD_XY(vc);
                     prim->packed.uv0 = FT3_FACE->uv0;
                     prim->packed.uv1 = FT3_FACE->uv1;
                     prim->packed.uv2 = FT3_FACE->uv2;
@@ -1760,7 +1758,7 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
     s32 object_index = cell->layer[0].object_index;
     SVECTOR position;
 
-    if ((flags & 1) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+    if ((flags & 1) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                       (u16)game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
@@ -1772,14 +1770,14 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     } else {
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                           (u16)game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
@@ -2583,7 +2581,7 @@ map_ordinary_visible:
                                object->asset_clip_selector, object->phase_q12,
                                object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
-                               (s16)object->render_depth_offset);
+                               object->render_depth_offset);
                 object->collision_flags |= 0x80;
             }
             goto map_object_next;

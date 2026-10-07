@@ -686,7 +686,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     if (damage > 0x68db7) {
         damage = 0x68db7;
     }
-    damage = ((damage * (u16)amount) / 5000 + 128) >> 4;
+    damage = ((damage * amount) / 5000 + 128) >> 4;
     /* Slot 18's target is unresolved; its O32 arguments are observed. */
     ((KfMagicRecipientCallback)state_8017d118.active_table[18])(
         actor, damage, magic_06, magic_08, magic_0a, magic_0c,
@@ -698,7 +698,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     if (actor->health != 0 && kind == 0x10) {
         if (mode == 2) {
             player_increment_magic_training();
-        } else if (mode == 1 && (u16)amount >= 2500) {
+        } else if (mode == 1 && amount >= 2500) {
             player_increment_physical_power_training();
         }
     }
@@ -723,7 +723,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         }
     }
 
-    remaining = (u16)actor->health - damage;
+    remaining = actor->health - damage;
     if (remaining <= 0) {
         if (actor->health != 0 && kind == 0x10) {
             player_add_experience(group->experience_reward);
@@ -844,17 +844,17 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
             continue;
         }
 
-        if ((u16)falloff != KF_FIXED12_ONE) {
+        if (falloff != KF_FIXED12_ONE) {
             u32 ratio = (u16)((distance << KF_FIXED12_BITS) / reach);
             u16 weight = KF_FIXED12_ONE -
-                         ((ratio * (KF_FIXED12_ONE - (u16)falloff)) >> KF_FIXED12_BITS);
+                         ((ratio * (KF_FIXED12_ONE - falloff)) >> KF_FIXED12_BITS);
             scaled_amount = (amount * weight) >> KF_FIXED12_BITS;
         } else {
             scaled_amount = amount;
         }
         actor_apply_magic_to_actor(index, power, magic_06, magic_08, magic_0a,
                       magic_0c, magic_0e, magic_10, magic_12, magic_14,
-                      (u16)scaled_amount, (u16)effect_flags,
+                      (u16)scaled_amount, effect_flags,
                       damage_position);
     }
 }
@@ -1742,7 +1742,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         vector_displacement_to_pitch_yaw(position.vx - target->vx,
                       position.vy - target_y,
                       position.vz - target->vz, &angles);
-        yaw_delta = ((s16)angles.y - (s16)actor->rotation.y) & KF_ANGLE_WRAP_MASK;
+        yaw_delta = (angles.y - actor->rotation.y) & KF_ANGLE_WRAP_MASK;
         yaw_scaled = yaw_delta << KF_FIXED12_BITS;
         if (yaw_delta >= KF_ANGLE_HALF_TURN) {
             yaw_delta = KF_ANGLE_FULL_TURN - yaw_delta;
@@ -1755,7 +1755,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         angles.y = angle_lerp_shortest_q12(angles.y, actor->rotation.y, yaw_delta);
 
         if ((s16)pitch == -1) {
-            pitch_error = ((s16)angles.x - (s16)actor->rotation.x) & KF_ANGLE_WRAP_MASK;
+            pitch_error = (angles.x - actor->rotation.x) & KF_ANGLE_WRAP_MASK;
             if (pitch_error >= KF_ANGLE_HALF_TURN) {
                 pitch_error = KF_ANGLE_FULL_TURN - pitch_error;
             }
@@ -1984,7 +1984,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             spawned->position.vz = position.vz;
             actor_initialize_from_group(spawned);
             spawned->motion.vector = direction;
-            *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
+            *(KfActorOrientation *)&spawned->rotation =
+                *(const KfActorOrientation *)&current->rotation;
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_ASCENDING_SPIN);
         }
         break;
@@ -2010,7 +2011,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             spawned->position.vz = position.vz;
             actor_initialize_from_group(spawned);
             spawned->motion.vector = direction;
-            *(SVECTOR *)&spawned->rotation = *(SVECTOR *)&current->rotation;
+            *(KfActorOrientation *)&spawned->rotation =
+                *(const KfActorOrientation *)&current->rotation;
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_COLLISION_MOVE);
         }
         break;

@@ -247,7 +247,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case KF_MAP_OBJECT_COLLISION_KIND_HINGE:
             map_cell_copy_rotated_fields(object->layer_mask,
-                          (u8)object->tail.cell_copy.source_x + 2,
+                          object->tail.cell_copy.source_x + 2,
                           object->tail.cell_copy.source_z,
                           object->tail.cell_copy.destination_x,
                           object->tail.cell_copy.destination_z,
@@ -263,7 +263,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                 (const KfMapObjectTemplateCellActionView *)template;
             object->asset_clip_selector = 0;
             map_cell_copy_rotated_fields(object->layer_mask,
-                          (u8)object->tail.cell_copy.source_x +
+                          object->tail.cell_copy.source_x +
                               cell_template->cell_width * 2,
                           object->tail.cell_copy.source_z,
                           object->tail.cell_copy.destination_x,

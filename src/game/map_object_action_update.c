@@ -605,7 +605,7 @@ void map_object_update_actions(void)
         case 16:
             object->rotation.vy += 128;
             object->position.vy = object->extra_40.bob_base_y +
-                                  (rsin((s16)object->rotation.vy) >> 6);
+                                  (rsin(object->rotation.vy) >> 6);
             break;
 
         case 84:

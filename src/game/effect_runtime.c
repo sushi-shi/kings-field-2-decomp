@@ -1528,7 +1528,7 @@ void effect_update_dispatch(void)
             record->position.vx = vertex_offset.vx + position->vx;
             record->position.vy = vertex_offset.vy + position->vy;
             record->position.vz = vertex_offset.vz + position->vz;
-            record->scale_x = (u16)record->scale_x + 512;
+            record->scale_x += 512;
             if ((s16)record->scale_x > 0x1800) {
                 record->scale_x = 0x1800;
             }
@@ -1774,7 +1774,7 @@ void effect_update_dispatch(void)
 
         switch (record->cache_tail.payload.kind50.stage) {
         case 0:
-            record->scale_x = record->scale_y = record->scale_z = (u16)record->scale_z + 64;
+            record->scale_x = record->scale_y = record->scale_z = record->scale_z + 64;
             player_sample_weapon_world_vertex(0, &record->position);
             if ((s16)record->scale_x >= 256) {
                 record->cache_tail.payload.kind50.stage = 1;
@@ -1792,7 +1792,7 @@ void effect_update_dispatch(void)
             if ((s16)record->scale_x >= 512) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
-            record->scale_x = record->scale_y = record->scale_z = (u16)record->scale_z + 64;
+            record->scale_x = record->scale_y = record->scale_z = record->scale_z + 64;
             break;
         }
         break;
@@ -1892,7 +1892,7 @@ void effect_update_dispatch(void)
     case 0:
         record->direction.vy += 20;
         if ((s16)record->scale_x < 0xc00) {
-            record->scale_x = record->scale_y = record->scale_z = (u16)record->scale_z + 0x100;
+            record->scale_x = record->scale_y = record->scale_z = record->scale_z + 0x100;
         }
         collision = effect_collision_step(180, 0, -300);
         if (collision != 0) {
@@ -1957,9 +1957,9 @@ void effect_update_dispatch(void)
         if (initial_phase == 1) {
             record->direction.vy = (u16)record->direction.vy - 70;
             record->direction.vx = fixed_lerp_q12(
-                0, (s16)record->direction.vx, 3000);
+                0, record->direction.vx, 3000);
             record->direction.vz = fixed_lerp_q12(
-                0, (s16)record->direction.vz, 3000);
+                0, record->direction.vz, 3000);
             if (bss_801c7540.collision_cache.heights.result <
                 bss_801c7540.collision_cache.heights.lower_bound) {
                 spawn_position.vy = bss_801c7540.collision_cache.heights.result;
@@ -2070,7 +2070,7 @@ void effect_update_dispatch(void)
         break;
     }
     case 2:
-        record->scale_z = record->scale_x = (u16)record->scale_x + record->cache_tail.payload.kind2.scale_step;
+        record->scale_z = record->scale_x = record->scale_x + record->cache_tail.payload.kind2.scale_step;
         if ((s16)record->scale_x >= 0x300) {
             VECTOR elevated;
 
@@ -2301,7 +2301,7 @@ void effect_update_dispatch(void)
         next_position.vz = vertex_offset.vz + position->vz;
         goto kind105_actor_phase;
     kind105_phase2:
-        record->scale_y = record->scale_x = (u16)record->scale_x - 128;
+        record->scale_y = record->scale_x = record->scale_x - 128;
         record->direction.vy = (u16)record->direction.vy + 5;
     kind105_collision:
         collision = effect_collision_step(100, 0, 0);
@@ -2481,9 +2481,9 @@ void effect_update_dispatch(void)
 
             record->direction.vy = (u16)record->direction.vy +
                                    kind8->vertical_step;
-            next.vx = record->position.vx + (s16)record->direction.vx;
-            next.vy = record->position.vy + (s16)record->direction.vy;
-            next.vz = record->position.vz + (s16)record->direction.vz;
+            next.vx = record->position.vx + record->direction.vx;
+            next.vy = record->position.vy + record->direction.vy;
+            next.vz = record->position.vz + record->direction.vz;
             collision = effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR);
             if (collision != 0 && (collision & 0xf) != 0) {
                 next.vx = record->position.vx;
@@ -2491,7 +2491,7 @@ void effect_update_dispatch(void)
                 if ((effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR) & 0xf) == 0) {
                     goto kind8_reset_axes;
                 }
-                if ((s16)record->direction.vy < 0) {
+                if (record->direction.vy < 0) {
                     record->direction.vy = 0;
                     next.vy = record->position.vy;
                 } else {
@@ -2545,15 +2545,15 @@ void effect_update_dispatch(void)
             struct KfVecXZi forward;
 
             parent = &effect_state.records[kind8->parent_index];
-            angle_to_forward_xz((s16)record->direction.vx, &forward);
+            angle_to_forward_xz(record->direction.vx, &forward);
             record->position.vx = parent->position.vx +
-                                  (((s16)record->direction.vz * forward.x) >> 12);
+                                  ((record->direction.vz * forward.x) >> 12);
             record->position.vz = parent->position.vz +
-                                  (((s16)record->direction.vz * forward.z) >> 12);
+                                  ((record->direction.vz * forward.z) >> 12);
             record->direction.vz = fixed_lerp_q12(
-                (s16)record->direction.vy, 0, (s16)record->scale_z);
+                record->direction.vy, 0, (s16)record->scale_z);
             record->scale_y = ((u32)(rsin((s16)record->scale_z >> 1) * 25)) >> 5;
-            record->scale_z = (u16)record->scale_z + 64;
+            record->scale_z += 64;
             if ((s16)record->scale_z >= record->scale_threshold.next_probe_phase) {
                 record->scale_threshold.next_probe_phase += 2048;
                 collision = collision_query_world(
@@ -2620,7 +2620,7 @@ void effect_update_dispatch(void)
         record->type |= 3;
         goto kind10_phase1;
     kind10_normal:
-        record->animation_phase_q12 = ((u16)record->animation_phase_q12 + 128)
+        record->animation_phase_q12 = (record->animation_phase_q12 + 128)
                                       & EFFECT_ANIMATION_PHASE_MASK;
         if (targeting->emissions_remaining != 0) {
             VECTOR target;
@@ -3021,7 +3021,7 @@ void effect_update_dispatch(void)
     case 120: {
         record->direction.vy = (u16)record->direction.vy + 20;
         if ((s16)record->scale_x < 0x1000) {
-            record->scale_x = record->scale_y = record->scale_z = (u16)record->scale_z + 0x200;
+            record->scale_x = record->scale_y = record->scale_z = record->scale_z + 0x200;
         }
         if (rand() >= 400) {
             collision = effect_collision_step(180, 0, -300);

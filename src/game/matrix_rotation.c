@@ -568,9 +568,9 @@ void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output
     s32 index;
 
     for (index = LERP_HALFWORD_COUNT - 1; index != -1; index--) {
-        u16 value = *source++;
-        u16 next = *target++;
-        s32 delta = (s16)next - (s16)value;
+        s16 value = *source++;
+        s16 next = *target++;
+        s32 delta = next - value;
 
         *destination++ = value + ((delta * fraction) >> KF_FIXED12_BITS);
     }

@@ -47,7 +47,7 @@ void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
             item->rect.w = width_bytes >> 2;
             item->rect.h = height;
             item->pixels = (u_long *)memory_allocate(
-                (s16)item->rect.w * (s16)height * FLOOR_ITEM_VRAM_PIXEL_BYTES);
+                item->rect.w * (s16)height * FLOOR_ITEM_VRAM_PIXEL_BYTES);
         }
         StoreImage(&item->rect, item->pixels);
         DrawSync(0);
@@ -73,7 +73,7 @@ void floor_item_update_textures(void)
                         item->rect.w, item->rect.h - item->row_offset);
                 LoadImage(&rect, item->pixels);
                 if ((s16)item->row_offset != 0) {
-                    u_long *pixels = (((s16)rect.w * (s16)rect.h) >> 1) + item->pixels;
+                    u_long *pixels = ((rect.w * rect.h) >> 1) + item->pixels;
                     rect.y = item->rect.y;
                     rect.h = item->row_offset;
                     LoadImage(&rect, pixels);

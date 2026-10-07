@@ -88,7 +88,7 @@ class ExecutableReadmeTests(unittest.TestCase):
             matched = sum(row['fuzzy']['equal_paired_bytes'] for row in images.values())
             size = sum(row['fuzzy']['retail_bytes'] + row['fuzzy']['candidate_bytes']
                        for row in images.values())
-            self.assertIn(f'Overall (2/3 images): {200 * matched / size:.2f}%', text)
+            self.assertIn(f'Overall (2/4 images): {200 * matched / size:.2f}%', text)
             self.assertIn('| `GAME.EXE` | — | — | — | — |', text)
             self.assertIn('## Source-to-EXE status', text)
             self.assertIn('The three byte columns show similarity, not differences.', text)

@@ -27,3 +27,6 @@ line-length = 100
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Tests import the repository package `scripts`; bare `pytest` (no -m) does
+# not put the rootdir on sys.path.
+pythonpath = ["."]

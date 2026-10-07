@@ -391,25 +391,12 @@ next_layer:
     return flags;
 }
 
-
-#define COLLISION_CACHE_CELL KF_COLLISION_CACHE_CELL
-#define COLLISION_CACHE_SHAPE KF_COLLISION_CACHE_SHAPE
-#define COLLISION_CACHE_LAYER KF_COLLISION_CACHE_LAYER
-#define COLLISION_CACHE_HEIGHT KF_COLLISION_CACHE_HEIGHT
-#define COLLISION_CACHE_RESULT KF_COLLISION_CACHE_RESULT
-#define COLLISION_CACHE_FLAGS KF_COLLISION_CACHE_FLAGS
-#define COLLISION_CACHE_ACTOR_INDEX KF_COLLISION_CACHE_ACTOR_INDEX
-#define COLLISION_CACHE_OBJECT_INDEX KF_COLLISION_CACHE_OBJECT_INDEX
-#define COLLISION_CACHE_POSITION KF_COLLISION_CACHE_POSITION
-#define COLLISION_CACHE_RADIUS KF_COLLISION_CACHE_RADIUS
-#define COLLISION_CACHE_INTERACTION_HEIGHT KF_COLLISION_CACHE_INTERACTION_HEIGHT
-
 ADDRESS(0x8002b604, 0x78)
 s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
     collision_sample_map_cell_layer(x, y - 1280, z);
     collision_evaluate_shape_records(x, y, z, radius, height);
-    return COLLISION_CACHE_RESULT;
+    return KF_COLLISION_CACHE_RESULT;
 }
 
 ADDRESS(0x8002b67c, 0xc0)
@@ -420,16 +407,16 @@ s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 hei
     s32 elevation;
 
     if (kind == 2) {
-        COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
+        KF_COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
         elevation = -(s32)cell->layer[1].elevation;
     } else {
-        COLLISION_CACHE_LAYER = 0;
+        KF_COLLISION_CACHE_LAYER = 0;
         elevation = -(s32)cell->layer[0].elevation;
     }
-    COLLISION_CACHE_HEIGHT = elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
-    COLLISION_CACHE_CELL = cell;
-    collision_evaluate_shape_records(x, COLLISION_CACHE_HEIGHT, z, radius, height);
-    return COLLISION_CACHE_RESULT;
+    KF_COLLISION_CACHE_HEIGHT = elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
+    KF_COLLISION_CACHE_CELL = cell;
+    collision_evaluate_shape_records(x, KF_COLLISION_CACHE_HEIGHT, z, radius, height);
+    return KF_COLLISION_CACHE_RESULT;
 }
 
 ADDRESS(0x8002b73c, 0xbc)
@@ -478,27 +465,27 @@ s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s3
 ADDRESS(0x8002b874, 0x160)
 void collision_cache_load_hit_bounds(void)
 {
-    if (COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
-        COLLISION_CACHE_POSITION = player_state.camera_position;
-        COLLISION_CACHE_RADIUS = 800;
-        COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
-    } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
-        KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
-        COLLISION_CACHE_POSITION = actor->position;
-        COLLISION_CACHE_RADIUS = actor->collision_radius;
-        COLLISION_CACHE_INTERACTION_HEIGHT = actor->collision_height;
+    if (KF_COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
+        KF_COLLISION_CACHE_POSITION = player_state.camera_position;
+        KF_COLLISION_CACHE_RADIUS = 800;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
+    } else if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
+        KfActor *actor = &actor_state.actors[KF_COLLISION_CACHE_ACTOR_INDEX];
+        KF_COLLISION_CACHE_POSITION = actor->position;
+        KF_COLLISION_CACHE_RADIUS = actor->collision_radius;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = actor->collision_height;
     } else {
         KfMapObject *object;
         KfMapObjectTemplate *object_template;
 
-        if (COLLISION_CACHE_OBJECT_INDEX == -1) {
+        if (KF_COLLISION_CACHE_OBJECT_INDEX == -1) {
             return;
         }
-        object = &map_object_state.objects[COLLISION_CACHE_OBJECT_INDEX];
+        object = &map_object_state.objects[KF_COLLISION_CACHE_OBJECT_INDEX];
         object_template = &map_object_state.templates[object->object_id];
-        COLLISION_CACHE_POSITION = object->position;
-        COLLISION_CACHE_RADIUS = object_template->collision_radius;
-        COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
+        KF_COLLISION_CACHE_POSITION = object->position;
+        KF_COLLISION_CACHE_RADIUS = object_template->collision_radius;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
     }
 }
 
@@ -510,38 +497,39 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
     if (mode & KF_COLLISION_QUERY_SHAPES) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
         if ((mode & KF_COLLISION_QUERY_LAYER_FLAG_40) &&
-            (COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
-            COLLISION_CACHE_RESULT = -100000;
+            (KF_COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
+            KF_COLLISION_CACHE_RESULT = -100000;
             result |= KF_COLLISION_HIT_AXIS;
         }
     } else {
-        COLLISION_CACHE_CELL = &bss_801c7540.map_cells[z >> 11][x >> 11];
+        KF_COLLISION_CACHE_CELL = &bss_801c7540.map_cells
+            [z >> KF_MAP_CELL_POSITION_SHIFT][x >> KF_MAP_CELL_POSITION_SHIFT];
     }
 
     height &= 0x0fffffff;
-    if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
+    if (KF_COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if (mode & KF_COLLISION_QUERY_ACTORS) {
-            COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
-            if (COLLISION_CACHE_ACTOR_INDEX != -1) {
+            KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
+            if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= KF_COLLISION_HIT_ACTOR;
             }
         } else {
             if (mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) {
-                COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
-                if (COLLISION_CACHE_ACTOR_INDEX != -1) {
+                KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
+                if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= KF_COLLISION_HIT_ACTOR;
                 }
             }
-            COLLISION_CACHE_ACTOR_INDEX = -1;
+            KF_COLLISION_CACHE_ACTOR_INDEX = -1;
         }
 
         if (mode & KF_COLLISION_QUERY_MAP_OBJECTS) {
-            COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
-            if (COLLISION_CACHE_OBJECT_INDEX != -1) {
+            KF_COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
+            if (KF_COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= KF_COLLISION_HIT_MAP_OBJECT;
             }
         } else {
-            COLLISION_CACHE_OBJECT_INDEX = -1;
+            KF_COLLISION_CACHE_OBJECT_INDEX = -1;
         }
 
         if ((mode & KF_COLLISION_QUERY_PLAYER) &&
@@ -549,11 +537,11 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
             result |= KF_COLLISION_HIT_PLAYER;
         }
     } else {
-        COLLISION_CACHE_ACTOR_INDEX = -1;
-        COLLISION_CACHE_OBJECT_INDEX = -1;
+        KF_COLLISION_CACHE_ACTOR_INDEX = -1;
+        KF_COLLISION_CACHE_OBJECT_INDEX = -1;
     }
 
-    COLLISION_CACHE_FLAGS = result;
+    KF_COLLISION_CACHE_FLAGS = result;
     return result;
 }
 
@@ -608,14 +596,12 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
                    KfCollisionRow *row, s32 amount)
 {
     if (flags & 2) {
-        fixed_lerp_nine_halfwords_q12((const u16 *)row->motion.values,
-                      (const u16 *)payload->motion.values,
-                      (u16 *)row->motion.values, amount);
+        fixed_lerp_nine_halfwords_q12(row->motion.values, payload->motion.values,
+                      row->motion.values, amount);
     }
     if (flags & 1) {
-        fixed_lerp_nine_halfwords_q12((const u16 *)&row->rotations[0],
-                      (const u16 *)&payload->rotation,
-                      (u16 *)&row->rotations[0], amount);
+        fixed_lerp_nine_halfwords_q12(row->rotations[0].m[0], payload->rotation.m[0],
+                      row->rotations[0].m[0], amount);
     }
     if (flags & 4) {
         row->filter.kinds.types[0] = fixed_lerp_q12(
@@ -647,22 +633,22 @@ void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *paylo
 }
 
 ADDRESS(0x8002bf38, 0x74)
-void interpolate_collision_filter_rows(u8 arg0, u8 arg1, u8 arg2, s32 angle, u16 value)
+void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount)
 {
     KfCollisionFilterPayload payload;
     s32 flags = 0;
 
-    if (arg0 != 0xff || arg1 != arg0 || arg2 != arg1) {
-        payload.filter.kinds.types[0] = arg0;
-        payload.filter.kinds.types[1] = arg1;
-        payload.filter.kinds.types[2] = arg2;
+    if (type0 != 0xff || type1 != type0 || type2 != type1) {
+        payload.filter.kinds.types[0] = type0;
+        payload.filter.kinds.types[1] = type1;
+        payload.filter.kinds.types[2] = type2;
         flags |= 4;
     }
     if (angle != -1) {
         payload.filter.angle = angle;
         flags |= 8;
     }
-    interpolate_collision_rows(flags, &payload, (s16)value);
+    interpolate_collision_rows(flags, &payload, (s16)amount);
 }
 
 ADDRESS(0x8002bfac, 0x28)
@@ -1011,10 +997,9 @@ void build_camera_map_cell_layer_masks(void)
     lighting_offset = render_mask_scan_state.map_z * sizeof(bss_801c7540.map_cells[0]) +
         render_mask_scan_state.map_x * sizeof(bss_801c7540.map_cells[0][0]) +
         render_mask_scan_state.first_layer_byte_offset;
-    /* The cache stores a byte offset (0 or 5) into the two-layer cell;
-     * address it from the complete grid using the typed field offset. */
-    first_lighting = (u8 *)&bss_801c7540.map_cells + lighting_offset +
-        (u32)&((KfMapOccupancyCell *)0)->layer[0].lighting_index;
+    /* The scan stores a byte offset (0 or 5) into the two-layer cell. */
+    first_lighting = &((KfMapOccupancyLayer *)
+        ((u8 *)bss_801c7540.map_cells + lighting_offset))->lighting_index;
     if (*first_lighting & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {

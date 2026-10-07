@@ -149,7 +149,7 @@ void resource_run_initial_transition(void)
         cd_request_yield();
         resource_advance_transition();
     } while (resource_state.transition_active);
-    tmd_set_slot(0, (KfTmdHeader *)resource_tmd_workspace);
+    tmd_set_slot(KF_TMD_SLOT_MAP, (KfTmdHeader *)resource_tmd_workspace);
     resource_state.active_table[5]();
 }
 

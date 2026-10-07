@@ -150,7 +150,7 @@ restart:
     SsVabClose(audio_vab_id);
     SsEnd();
     PadStop();
-    ResetGraph(3);
+    ResetGraph(KF_GPU_RESET_KEEP_DISPLAY);
 }
 
 /* Darkens the title screen while fading the title music out. */

@@ -23,6 +23,10 @@ enum {
     KF_TMD_MODE_G4 = 0x38,
     KF_TMD_MODE_GT4 = 0x3c,
     KF_TMD_MODE_MASK = 0xfd,
+    /* TMD mode bytes are GPU primitive codes; bit 1 enables semi-transparency. */
+    KF_TMD_MODE_SEMI_TRANSPARENT = 0x02,
+    /* A tpage word without its semi-transparency (ABR) bits 5-6. */
+    KF_GPU_TPAGE_WITHOUT_ABR = 0xff9f,
     KF_MAP_OT_DEPTH_BIAS = 240,
     KF_MAP_OT_DEPTH_LIMIT = 8192,
     KF_MAP_CELL_PREPARED_BYTES = 4096,

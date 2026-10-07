@@ -447,7 +447,7 @@ void menu_show_map_preview(s32 menu_code)
         current_poly_ft4->clut = 0x7fe4;
         setXYWH(current_poly_ft4, 0x3c, 0x14, 200, 200);
         setUVWH(current_poly_ft4, 0, 0, 200, 200);
-        primitive_buffer_commit_poly_ft4(10);
+        primitive_buffer_commit_poly_ft4(KF_MENU_CONTENT_OT_DEPTH);
 
         primitive_buffer_begin_poly_ft4();
         setRGB0(current_poly_ft4, 0x7f, 0x7f, 0x7f);
@@ -466,7 +466,8 @@ void menu_show_map_preview(s32 menu_code)
         u0 = index * MENU_MAP_FACING_TILE_U_STRIDE
              - MENU_MAP_FACING_TILE_COUNT * MENU_MAP_FACING_TILE_U_STRIDE;
         setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
-        primitive_buffer_commit_poly_ft4(9);
+        /* The facing marker sorts just above the map image. */
+        primitive_buffer_commit_poly_ft4(KF_MENU_CONTENT_OT_DEPTH - 1);
 
         menu_draw_nine_slice_panel(0x36, 0xe, 0xd4, 0xd4, 2, 2);
         menu_present_frame();

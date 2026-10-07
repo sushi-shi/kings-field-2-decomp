@@ -560,7 +560,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->clut = face->ft3.clut;
-            prim->tpage = (face->ft3.tpage & 0xff9f) | blend_bits;
+            prim->tpage = (face->ft3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -572,7 +572,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
             setlen(prim, 7);
-            prim->code = 0x26;
+            prim->code = KF_TMD_MODE_FT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
@@ -595,7 +595,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -609,7 +609,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             setlen(&prim->sdk, 9);
-            prim->sdk.code = 0x36;
+            prim->sdk.code = KF_TMD_MODE_GT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
@@ -633,7 +633,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -652,7 +652,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
-            prim->sdk.code = 0x3e;
+            prim->sdk.code = KF_TMD_MODE_GT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
                 break;
@@ -676,7 +676,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->clut = face->ft4.clut;
-            prim->tpage = (face->ft4.tpage & 0xff9f) | blend_bits;
+            prim->tpage = (face->ft4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -690,7 +690,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
             setlen(prim, 9);
-            prim->code = 0x2e;
+            prim->code = KF_TMD_MODE_FT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
             if (average <= 0)
                 break;
@@ -934,7 +934,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_mode;
+            prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -948,7 +948,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
             setlen(&prim->sdk, 9);
-            prim->sdk.code = (mode & 2) | 0x34;
+            prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
@@ -970,7 +970,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_mode;
+            prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -989,7 +989,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            &map_textured_primitive_color,
                            &prim->packed.color3);
             setlen(&prim->sdk, 12);
-            prim->sdk.code = (mode & 2) | 0x3c;
+            prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
@@ -1019,7 +1019,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
             setlen(prim, 6);
-            prim->code = 0x30;
+            prim->code = KF_TMD_MODE_G3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
@@ -1054,7 +1054,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                            &face->g4.color,
                            (CVECTOR *)&prim->r3);
             setlen(prim, 8);
-            prim->code = 0x38;
+            prim->code = KF_TMD_MODE_G4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
@@ -1126,7 +1126,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
             setlen(&prim->sdk, 0x0c);
-            prim->sdk.code = header.bytes.mode | 0x3c;
+            prim->sdk.code = header.bytes.mode | KF_TMD_MODE_GT4;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
@@ -1166,7 +1166,7 @@ void render_enqueue_map(u16 object_index)
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             setlen(&prim->sdk, 0x09);
-            prim->sdk.code = header.bytes.mode | 0x34;
+            prim->sdk.code = header.bytes.mode | KF_TMD_MODE_GT3;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth],
@@ -1204,7 +1204,7 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
     NormalColorCol(normal, &map_textured_primitive_color, &shade);
     next = game_graphics_runtime.clip_result_vertices;
     first = *next++;
-    packet_code = mode | 0x34;
+    packet_code = mode | KF_TMD_MODE_GT3;
     DpqColor(&shade, first->sxyz.pad >> 1, &first_color);
     second = *next++;
     DpqColor(&shade, second->sxyz.pad >> 1, &second->rgb);
@@ -1352,7 +1352,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
                     setlen(&prim->sdk, 12);
-                    prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
+                    prim->sdk.code = (header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
                     depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
                     if (depth < 16) {
                         depth = 16;
@@ -1373,7 +1373,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         render_enqueue_clipped_tmd_polygon(clipped_count,
                                        TMD_VECTOR(normals, FT4_FACE->normal),
                                        FT4_FACE->clut, FT4_FACE->tpage,
-                                       header.bytes.mode & 2, depth_bias);
+                                       header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT, depth_bias);
                     }
                 }
                 break;
@@ -1419,7 +1419,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     setlen(&prim->sdk, 9);
-                    prim->sdk.code = (header.bytes.mode & 2) | 0x34;
+                    prim->sdk.code = (header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
                     depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
                     if (depth < 16) {
                         depth = 16;
@@ -1438,7 +1438,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         render_enqueue_clipped_tmd_polygon(clipped_count,
                                        TMD_VECTOR(normals, FT3_FACE->normal),
                                        FT3_FACE->clut, FT3_FACE->tpage,
-                                       header.bytes.mode & 2, depth_bias);
+                                       header.bytes.mode & KF_TMD_MODE_SEMI_TRANSPARENT, depth_bias);
                     }
                 }
                 break;
@@ -1784,7 +1784,7 @@ void render_map_cell_window(void)
     s32 start_x;
     KfRenderGridState *render = &game_graphics_runtime.render_grid;
 
-    tmd_select(0);
+    tmd_select(KF_TMD_SLOT_MAP);
     mask = &render->map_cell_layer_masks[0][0];
     remaining_rows = KF_MAP_GRID_SCAN_WIDTH;
     start_x = render->map_scan_start_x;
@@ -1871,7 +1871,7 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     }
 
     setPolyFT4(quad);
-    if (semitrans != 0xff) {
+    if (semitrans != KF_TEXTURED_QUAD_OPAQUE) {
         setSemiTrans(quad, semitrans);
     }
     setRGB0(quad, red, green, blue);
@@ -1905,7 +1905,7 @@ void render_sliding_panel_primary(void)
         if (y < 0) {
             y = 0;
         }
-        render_textured_quad(0, y, 320, 240, 128, 192, 15, 15, 1, 55,
+        render_textured_quad(0, y, 320, 240, 128, 192, 15, 15, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 55,
                              0x7bdc, 60, 60, 60, 64);
     }
 }
@@ -1920,7 +1920,7 @@ void render_sliding_panel_secondary(void)
         if (y < 0) {
             y = 0;
         }
-        render_textured_quad(0, y, 320, 240, 144, 192, 15, 15, 1, 55,
+        render_textured_quad(0, y, 320, 240, 144, 192, 15, 15, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 55,
                              0x7bdc, 60, 60, 60, 64);
     }
 }
@@ -1930,8 +1930,8 @@ void render_color_overlay(void)
 {
     if (game_graphics_runtime.color_overlay_control != KF_COLOR_OVERLAY_OFF) {
         render_textured_quad(0, 0, 0x140, 0xf0,
-                             0x80, 0xd0, 0xf, 0xf, 1,
-                             (KF_ENUM_VALUE(game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_BLEND_MASK) << 5)
+                             0x80, 0xd0, 0xf, 0xf, KF_TEXTURED_QUAD_SEMI_TRANSPARENT,
+                             KF_GPU_TPAGE_ABR(game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_BLEND_MASK)
                                  | 0x17,
                              0x7bdc,
                              game_graphics_runtime.color_overlay_rgb[0],
@@ -1956,7 +1956,7 @@ void render_accumulated_color_overlay(void)
 {
     if (game_graphics_runtime.color_overlay_sample_count != 0) {
         render_textured_quad(0, 0, 0x140, 0xf0,
-                      0x80, 0xd0, 0xf, 0xf, 1, 0x37, 0x7bdc,
+                      0x80, 0xd0, 0xf, 0xf, KF_TEXTURED_QUAD_SEMI_TRANSPARENT, 0x37, 0x7bdc,
                       *(s16 *)&game_graphics_runtime.color_overlay_red_sum /
                           game_graphics_runtime.color_overlay_sample_count,
                       *(s16 *)&game_graphics_runtime.color_overlay_green_sum /
@@ -2711,8 +2711,8 @@ void notification_draw(void)
     }
     do {
         if (quad->kind != KF_SPRITE_HIDDEN) {
-            notification_draw_quad(quad, 0x20, color);
-            notification_draw_quad(quad, 0x40, color);
+            notification_draw_quad(quad, KF_GPU_TPAGE_ABR(KF_RENDER_QUEUE_BLEND_ADD), color);
+            notification_draw_quad(quad, KF_GPU_TPAGE_ABR(KF_RENDER_QUEUE_BLEND_SUBTRACT), color);
         }
         quad++;
     } while (quad->kind != KF_SPRITE_END);

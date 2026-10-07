@@ -47,6 +47,15 @@ KF_ENUM_BEGIN(KfColorOverlayControl, u8)
 KF_ENUM_END(KfColorOverlayControl)
 KF_ENUM_FLAGS(KfColorOverlayControl, u8)
 
+/* The tpage semi-transparency field (ABR) of a blend mode. */
+#define KF_GPU_TPAGE_ABR(mode) (KF_ENUM_VALUE(mode) << 5)
+
+/* render_textured_quad's semitrans argument; OPAQUE skips SetSemiTrans. */
+enum {
+    KF_TEXTURED_QUAD_SEMI_TRANSPARENT = 1,
+    KF_TEXTURED_QUAD_OPAQUE = 0xff
+};
+
 /* render_animated_object's lighting byte: a KfLightingIndex row in the low
  * seven bits and a flag that negates the row's light matrix. */
 enum {

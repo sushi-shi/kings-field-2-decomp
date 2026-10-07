@@ -162,6 +162,13 @@ class NativeBuildControls(unittest.TestCase):
             entry, loads = cpe_loads((output / 'PSX.CPE').read_bytes())
             actual = (output / 'PSX.EXE').read_bytes()
             self.assertEqual(actual[:8], b'PS-X EXE')
+            # The converter session: zeroed reserved and save-area words, the
+            # 801ffff0 stack base, and the title-tail residue of the frame
+            # pointer, the far return 3b30:158e and the call's arguments.
+            self.assertEqual(actual[8:16] + actual[0x14:0x18], bytes(12))
+            self.assertEqual(struct.unpack_from('<I', actual, 0x30)[0], 0x801ffff0)
+            self.assertEqual(actual[0x34:0x4c], bytes(0x18))
+            self.assertEqual(actual[0x7c:0x88].hex(), '0500c20f8e15303b05000405')
             self.assertEqual(struct.unpack_from('<I', actual, 0x10)[0], entry)
             base = struct.unpack_from('<I', actual, 0x18)[0]
             for address, payload in loads:

@@ -46,6 +46,22 @@ ALLOCATOR_IMAGES = ('GAME.EXE', 'OPEN.EXE', 'END.EXE')
 CARD_OBJECT = 'CARD.OBJ'
 CARD_OBJECT_SHA256 = '4ab0873cddbf26d99aded93f8b654c861f44409cee408b3bff7026fc59665387'
 CARD_IMAGES = ('GAME.EXE',)
+# The converter is the CPE2X 1.3 build from Sony's Runtime Library 3.0 CD,
+# not the kit's: it zeroes the reserved words and the EXEC save area and sets
+# s_addr to 801ffff0, as the retail PSX, OPEN and END headers record.
+CONVERTER_SHA256 = '641d95ebe8131c3503407518cb6110ed311cb5f87943d866296660ab98938af2'
+# CPE2X never writes the title field's tail (header 0x7c-0x87), which keeps
+# its own stack there: a saved frame pointer, the far return address 158e and
+# code segment of an earlier call, and that call's two arguments. The frame
+# pointer moves with the length of the CPE argument, and the code segment is
+# where DOS loaded the converter. The retail PSX/OPEN/END tails record a 15- or
+# 16-byte argument (this 7-character directory prefix gives that for all
+# three names) and these code segments. Retail GAME came from an older,
+# unavailable converter and keeps DOSBox-X's default layout here.
+CONVERTER_DIRECTORY = 'CPEDIR'
+CONVERTER_CODE_SEGMENTS = {'PSX.EXE': 0x3b30, 'OPEN.EXE': 0x3b30, 'END.EXE': 0x36b0}
+# Under the pinned DOSBox-X, `minimum mcb free = S` loads CPE2X's code at S + 0x122.
+DOSBOX_CODE_SEGMENT_BIAS = 0x122
 
 
 def file_hash(path: Path) -> str:
@@ -62,11 +78,13 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
               'libraries': [], 'startup': None, 'boot_startup': None, 'tools': {}}
     try:
         tools = {'ASPSX.EXE': Path(os.environ['PSYQ_ASPSX']),
-                 **{tool: Path(os.environ['PSYQ_BIN']) / tool
-                    for tool in ('PSYLINK.EXE', 'CPE2X.EXE')}}
+                 'PSYLINK.EXE': Path(os.environ['PSYQ_BIN']) / 'PSYLINK.EXE',
+                 'CPE2X.EXE': Path(os.environ['PSYQ_CPE2X'])}
         for tool, source in tools.items():
             shutil.copyfile(source, root / tool)
             report['tools'][tool] = {'path': str(source), 'sha256': file_hash(source)}
+        if report['tools']['CPE2X.EXE']['sha256'] != CONVERTER_SHA256:
+            raise ValueError(f'{tools["CPE2X.EXE"]}: expected the Runtime Library 3.0 CPE2X')
         if not units:
             raise ValueError(f'{name}: no C source units')
         for index, unit in enumerate(units):
@@ -174,11 +192,19 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
         dos_run(root, [report['linker_command']], 'link')
         tool_succeeded(root, 'LINK.TXT', stem + '.CPE', b'CPE\x01')
         report['phase'] = 'convert'
-        report['converter_command'] = f'cpe2x {stem}.CPE > CONVERT.TXT'
-        dos_run(root, [report['converter_command']], 'convert')
+        (root / CONVERTER_DIRECTORY).mkdir()
+        shutil.copyfile(root / (stem + '.CPE'), root / CONVERTER_DIRECTORY / (stem + '.CPE'))
+        segment = CONVERTER_CODE_SEGMENTS.get(name)
+        report['converter_command'] = f'cpe2x {CONVERTER_DIRECTORY}\\{stem}.CPE > CONVERT.TXT'
+        report['converter_dosbox_settings'] = (
+            [f'minimum mcb free={segment - DOSBOX_CODE_SEGMENT_BIAS:x}'] if segment else [])
+        dos_run(root, [report['converter_command']], 'convert',
+                tuple(report['converter_dosbox_settings']))
         executable = root / name
-        if not executable.is_file():
+        converted = root / CONVERTER_DIRECTORY / name
+        if not converted.is_file():
             raise RuntimeError('CPE2X produced no executable; see CONVERT.TXT')
+        converted.replace(executable)
         actual = executable.read_bytes()
         if len(actual) < 2048 or actual[:8] != b'PS-X EXE':
             raise ValueError('CPE2X produced an invalid executable')

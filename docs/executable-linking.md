@@ -19,10 +19,11 @@ only. The build does not synthesize object sections, force addresses from
 `DATA()` claims, rewrite the CPE, patch the EXE, or copy missing retail bytes.
 A failed phase removes the stale EXE.
 
-The pinned Psy-Q 3.0 kit supplies PSYLINK 1.29, CPE2X 1.3, headers, libraries,
-and the overlay `NONE2.OBJ` startup. The active chain still uses the separately
-hash-pinned ASPSX 1.07 inherited from the SLPS-00017 setup; the kit's ASPSX
-2.08 is not yet wired in. The build report records every tool and input hash. This is
+The pinned Psy-Q 3.0 kit supplies PSYLINK 1.29, headers, libraries, and the
+overlay `NONE2.OBJ` startup. The converter is the CPE2X 1.3 build from Sony's
+Runtime Library 3.0 CD (see [the header section](#ps-x-exe-header)). The
+active chain still uses the separately hash-pinned ASPSX 1.07 inherited from
+the SLPS-00017 setup; the kit's ASPSX 2.08 is not yet wired in. The build report records every tool and input hash. This is
 a reproducible source-to-EXE chain, while exact historical compiler and
 assembler attribution remains open.
 
@@ -99,6 +100,104 @@ data whose placement is game-data work. In OPEN and END, retail puts the
 game's small initialized block (0x34 and 0x18 bytes) at the end of `.data`,
 just before `.sdata`; the candidate puts it at the start.
 
+## PS-X EXE header
+
+`KERNEL.H` defines the 0x88-byte header as follows:
+
+- 0x00: the eight-byte key `PS-X EXE`.
+- 0x08: two reserved words.
+- 0x10: the fifteen-word `EXEC`: `pc0`, `gp0`, `t_addr`, `t_size`, the
+  data and BSS extents, `s_addr`, `s_size`, and the save area `sp`, `fp`,
+  `gp`, `ret` and `base`.
+- 0x4c: a 60-byte title.
+
+The rest of the 2048-byte sector is zero padding. The converter writes the
+whole structure, so any field it does not store keeps whatever was on its
+stack.
+
+Two CPE2X 1.3 builds differ in their header writers:
+
+| Converter | SHA-256 | Fields it stores |
+| --- | --- | --- |
+| Psy-Q 3.0 kit `BIN/CPE2X.EXE` | `8ee3df02…ef20` | key, `pc0`, `t_addr`, `t_size`, data/BSS extents, title |
+| Runtime Library 3.0 CD (DTL-S2180) `PSXGRAPH/BIN/CPE2X.EXE` | `641d95eb…8af2` | also both reserved words, `gp0`, the save area and `s_size` as zero, and `s_addr = 801ffff0` |
+
+`tests/test_cpe2x_header.py` runs both writers with two stack fills. The
+Runtime build leaves exactly 0x7c–0x87 unwritten: the title tail after the
+48-byte `Sony Computer Entertainment Inc. for Japan area` string. The
+retail PSX, OPEN and END headers have this shape: zero reserved words,
+`gp0` and save area, and `s_addr` 801ffff0. The kit build cannot write that
+shape, so the build uses the Runtime build. Nix fetches the CD image from
+Archive.org (`ps1_sdks`, SHA-256 `0717a820…ef37`) and extracts only this file.
+
+Both builds leave the same kind of stack residue in the title tail:
+
+| Offset | Retail PSX / OPEN / END | Meaning |
+| --- | --- | --- |
+| 0x7c | `0005` | saved word |
+| 0x7e | `0fc2` | saved frame pointer |
+| 0x80 | `158e`, then `3b30` / `3b30` / `36b0` | far return address of an earlier call: offset `158e`, then the converter's code segment |
+| 0x84 | `0005`, `0504` | that call's arguments; the kit build's second argument is `04fe` |
+
+Controlled conversions under DOSBox-X show what moves these words:
+
+- **Frame pointer.** It moves with the length of the CPE file argument. The
+  converter's startup puts the argument strings on the stack, rounded to a
+  word.
+  - Bare names give `0fca` for `PSX.CPE` and `END.CPE`, and `0fc8` for
+    `OPEN.CPE` and `GAME.CPE`.
+  - A six-character directory prefix gives `0fc4` for PSX and `0fc2` for
+    OPEN.
+  - A seven-character prefix gives `0fc2` for all three names.
+- **Code segment.** It is where DOS loaded the converter. `LOADFIX -64`
+  moves it from `0822` to `18ac`. DOSBox-X's `minimum mcb free = S` puts it
+  at `S + 0x122`.
+
+So the retail conversions passed a 15- or 16-byte argument and ran with the
+converter's code at `3b30` (PSX, OPEN) or `36b0` (END). END was converted in
+a different DOS session from PSX and OPEN. These are facts about the
+historical DOS session. The residue records only the argument's length, not
+its spelling, and not what occupied the roughly 237 KB (or 218 KB) of
+conventional memory below the converter.
+
+The build reproduces that session. It converts `CPEDIR\<NAME>.CPE`, a
+seven-character prefix, for every image. It sets `minimum mcb free` from
+`CONVERTER_CODE_SEGMENTS` in `scripts/psxbuild/link.py`. The converter still
+writes every byte; nothing is patched afterwards. With this session the PSX,
+OPEN and END headers equal retail, and `PSX.EXE` is byte-identical.
+`NativeBuildControls` checks the residue on a synthetic program, so it does
+not depend on the game input.
+
+### GAME header
+
+Retail GAME was converted by neither CPE2X 1.3 build. With the Runtime
+build, 52 of its header bytes still differ:
+
+- **0x10 (one byte).** `pc0` is `800498c4` in retail and `800498c0` in the
+  candidate. This is the 4-byte game `.rodata` difference, not converter
+  residue.
+- **0x08–0x0f and 0x14–0x17 (12 bytes).** Retail has `56 44 dc ff 52 ff`,
+  then `co`, then `t fr` in `gp0`. That is the text `convert from` with
+  `pc0` written across its middle.
+- **0x30–0x4b (20 of 28 bytes).** Retail has binary residue in the stack and
+  save-area fields. The Runtime build writes these fields.
+- **0x7c–0x8f (19 of 20 bytes).** Retail has
+  `04 02 00 00 04 02 19 13 00 02 ea 01`, then the first eight bytes of a CPE
+  file: `CPE\x01`, select unit 0, and a `pc` register record.
+
+The 20 bytes at 0x7c–0x8f, `dc ff 52 ff 63 6f` at 0x0a and `t fr` are
+identical in all three King's Field (SLPS-00017) retail headers. In those
+headers 0x30–0x4b held linker-map text. GAME was therefore converted by the
+same older converter and process as the 1994 game. Both CPE2X 1.3 builds
+clear 0x88 onwards from a global buffer, so neither can write the CPE prefix
+at 0x88.
+
+That converter is not in the Psy-Q 3.0 kit, the Release 2.5 floppies, or the
+Runtime Library 2.0, 2.6 or 3.0 CDs. It is
+probably CPE2X 1.2 or earlier: the Runtime CD's notes say 1.3 changed only
+the handling of unconvertible CPE files. A candidate is identified by these
+51 bytes from GAME's own CPE.
+
 Derived ELF objects, delinked retail modules, objdiff projects, and semantic
 reports are analysis views. Source compilation in `kf analyze` and `kf try`
 uses the same CPPPSX/CC1PSX/ASPSX implementation as `kf build`. The reader
@@ -142,7 +241,7 @@ Current source-to-EXE status is distinct from exactness and playability:
 | PSYLINK emits PSX, GAME, OPEN, and END | Wired through `kf build`; needs at least one source unit per image |
 | Candidate artifact path | Direct source-to-EXE with no output rewriting |
 | Historical toolchain identity | Open; the usable ASPSX is separately sourced |
-| Byte-identical retail images | Not achieved |
+| Byte-identical retail images | `PSX.EXE`; OPEN and END headers only |
 | Boot | Not yet attempted for SLPS-00069 |
 
 An SDK mismatch does not by itself prove that an executable is unplayable: a

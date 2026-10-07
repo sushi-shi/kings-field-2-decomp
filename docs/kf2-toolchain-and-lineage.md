@@ -387,7 +387,7 @@ Best shape score per JP function, by share of bytes:
 | Needed for | Item / file | Contents | Status |
 | --- | --- | --- | --- |
 | jp/us SDK + tools | [`psyq_psx_toolchain_april_08_1994`](https://archive.org/details/psyq_psx_toolchain_april_08_1994) `psx.zip` (48.8 MB; SHA-256 `416241637cdb0273b6bd936b0ab5627c8ba7225ee2b98066cf3b50fb09e57899`) | Psy-Q PS-X Development System Release 3.0; files dated **1995-04-08** despite the item title. `LIB/*.LIB`, `INCLUDE`, `CC1PSX` 2.4.1, `CC1PSX.EXE` 2.6.0, ASPSX 2.08, CCPSX 1.10, PSYLINK 1.29, CPE2X | **Downloaded. RCS revisions match JP/US exactly.** ASPSX 2.08 has no software-key strings (untested under DOSBox). |
-| jp/us SDK (Sony CD) | `ps1_sdks` "Programmer Tool - Runtime Library Version 3.0 (Japan) DTL-S2180" (68 MB) | Official Sony 3.0 CD | Available, not downloaded; should hold the same libraries |
+| jp/us SDK (Sony CD) | `ps1_sdks` "Programmer Tool - Runtime Library Version 3.0 (Japan) DTL-S2180" (68 MB; SHA-256 `0717a820197d337e53696cbabae4a1252f5e20339686d30c5929be37faf4ef37`) | Official Sony 3.0 CD | **Pinned for its `PSXGRAPH/BIN/CPE2X.EXE`**, the converter that wrote the retail PSX/OPEN/END headers |
 | eu SDK | Runtime Library **3.4** | — | **Not found on archive.org.** `ps1_sdks` has 3.3 (DTL-S2190) and 3.5 (DTL-S2300) as neighbours. The Ghidra corpus has 3.4 signatures, but those are not `.LIB` files |
 | eu compiler | [`psyq-sdk`](https://archive.org/details/psyq-sdk) `PSYQ_SDK.zip`, member `psyq/psyq/CC1PSX.EXE` | GCC **2.7.2.SN.1** (1995-12-20), ASPSX 2.34, CCPSX 1.18, CC1PLPSX | Members downloaded individually |
 | later tools | same zip, `psyq/bin/` | GCC 2.95.2 (1999), SDevTC ASPSX 2.86 | Too late for any KF2 build |

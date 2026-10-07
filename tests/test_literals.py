@@ -107,6 +107,12 @@ void load(Object *object, const Template *definition) {
     case 2:
         object->action = 2;
         break;
+    case 3:
+        object->action = 3;
+        break;
+    case 4:
+        object->timer = 4;
+        break;
     case KIND_DOOR:
         start(object, definition->kind);
         break;
@@ -121,10 +127,12 @@ int count(int frames) { return frames; }
         action = domain_of(report, "Object.action")
         self.assertEqual({member["slot"] for member in action["members"]},
                          {"Object.action", "Template.kind", "start:arg1"})
-        self.assertEqual([row["value"] for row in action["values"]], [2, 0xff])
+        self.assertEqual([row["value"] for row in action["values"]], [2, 3, 4, 0xff])
         self.assertEqual([row["name"] for row in action["constants_used"]], ["KIND_DOOR"])
         self.assertEqual(action["verdict"], "enum-candidate")
-        self.assertIn("case-echo", " ".join(action["edges"]))
+        self.assertIn("case-echo=3", " ".join(action["edges"]))
+        # One coincidental echo (case 4 into the timer) does not join a domain.
+        self.assertNotIn("Object.timer", {member["slot"] for member in action["members"]})
         timer = domain_of(report, "Object.timer")
         self.assertEqual(timer["verdict"], "quantity")
         self.assertNotIn("tick:arg1", {member["slot"] for member in timer["members"]})

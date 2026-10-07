@@ -57,6 +57,7 @@ GEOMETRY_FIELDS = {"vx", "vy", "vz", "pad", "r", "g", "b", "r0", "g0", "b0", "r1
                    "u3", "v3", "m", "t"}
 # Hubs: a slot with more distinct flow partners than this is reported, not unioned.
 HUB_DEGREE = 12
+LOCAL_HUB_DEGREE = 4
 
 
 @dataclass(frozen=True, order=True)
@@ -707,7 +708,7 @@ class Scanner:
                 self.edge(left_slot, self.slot(branch, function), "copy", cursor)
                 value = self.evaluate(branch)
                 if value is not None and value in case_values and switch:
-                    self.edge(left_slot, switch, "case-echo", cursor)
+                    self.edge(left_slot, switch, f"case-echo={value}", cursor)
             self.walk(right, self.slot_sink("assign", left_slot), function, switch)
             return
         if operator.endswith("Assign"):
@@ -950,10 +951,20 @@ def build_domains(sites: list[dict[str, Any]], edges: list[dict[str, Any]],
                   slots: dict[str, dict[str, Any]], counters: set[str],
                   declared: dict[str, tuple[int, str]], *, hub_degree: int = HUB_DEGREE,
                   kf1: dict[str, Any] | None = None) -> tuple[list[dict[str, Any]], list[str]]:
+    # A case label echoed into another slot once can be a coincidence; a
+    # selector copied case by case repeats it for several values.
+    echoes: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for edge in edges:
+        if edge["kind"].startswith("case-echo="):
+            echoes[(edge["left"], edge["right"])].add(edge["kind"])
+    edges = [edge for edge in edges if not edge["kind"].startswith("case-echo=")
+             or len(echoes[(edge["left"], edge["right"])]) >= 2]
     neighbours = _flow_nodes(edges)
-    # Geometry, pointer and index-only hubs would weld unrelated codes together.
+    # Geometry and high-degree hubs would weld unrelated codes together. A
+    # function local reused for several sources is a hub much sooner.
     hubs = sorted(node for node, partners in neighbours.items()
-                  if len(partners) > hub_degree or _geometry(node))
+                  if len(partners) > hub_degree or _geometry(node)
+                  or "::" in node and len(partners) > LOCAL_HUB_DEGREE)
     hub_set = set(hubs)
     union = Union()
     for edge in edges:

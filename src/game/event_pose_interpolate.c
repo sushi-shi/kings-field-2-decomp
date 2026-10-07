@@ -1043,6 +1043,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
         if (object_index == -1) {
             break;
         }
+        /* Dead read, superseded by the template kind below. */
+        kind = objects[object_index].action;
         object = &objects[object_index];
         object_id = object->object_id;
         event_state.interaction_handled = 1;

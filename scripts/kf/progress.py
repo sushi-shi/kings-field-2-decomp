@@ -144,6 +144,16 @@ def _report_function_scores(document: dict | None) -> dict[str, dict[str, float]
     return scores
 
 
+def _compiled_inputs(unit: Unit) -> str | None:
+    """The input digest recorded when the unit's object was compiled, if any."""
+    from scripts.kf.graph import input_stamp
+
+    try:
+        return input_stamp(_base_path(unit)).read_text().strip()
+    except OSError:
+        return None
+
+
 def _report_is_stale(image: str, manifest: Manifest) -> bool:
     from scripts.kf.config_data import load as load_contributions
 
@@ -171,6 +181,8 @@ def current_state(
     contributions = load_contributions(modules=manifest.modules())
     universe = _target_universe()
     scanner = IncludeScanner()
+    digests = {unit.unit: input_hash(unit, manifest, scanner)
+               for unit in manifest.units if unit.image in selected}
     report_scores: dict[str, dict[str, dict[str, float]]] = {}
     failures: list[str] = []
     for image in selected:
@@ -184,8 +196,15 @@ def current_state(
             report, [c for c in contributions if c.image == image]))
         image_units = [unit for unit in manifest.units if unit.image == image]
         if image_units and any(_base_path(unit).is_file() for unit in image_units):
+            changed = [unit.unit for unit in image_units if _base_path(unit).is_file()
+                       and _compiled_inputs(unit) != digests[unit.unit]]
             if report is None and error is None:
                 failures.append(f"{image}: no report; run `kf analyze --image {image_key(image)}`")
+            elif changed:
+                shown = ", ".join(changed[:4]) + (", ..." if len(changed) > 4 else "")
+                failures.append(
+                    f"{image}: report is stale: {len(changed)} unit(s) changed since they were "
+                    f"compiled ({shown}); run `kf analyze --image {image_key(image)}`")
             elif _report_is_stale(image, manifest):
                 failures.append(f"{image}: report is stale; run `kf analyze --image {image_key(image)}`")
 
@@ -194,7 +213,7 @@ def current_state(
         if unit.image not in selected:
             continue
         base = _base_path(unit)
-        digest = input_hash(unit, manifest, scanner)
+        digest = digests[unit.unit]
         unit_scores = report_scores.get(unit.image, {}).get(project_unit_name(unit.image, unit.unit))
         if unit.scope == "vendored" and unit_scores is None:
             failures.append(
@@ -345,6 +364,9 @@ def snapshot(
         "total": totals,
         "changes": {name.lower(): len(values) for name, values in buckets.items()},
         "failures": failures,
+        "stale": [image_key(image) for image in selected
+                  if any(failure.startswith((f"{image}: report is stale", f"{image}: no report"))
+                         for failure in failures)],
         "vendored_verification": {
             "functions": sum(row.unit.scope == "vendored" for row in rows),
             "compiled": sum(
@@ -368,6 +390,10 @@ def print_status(
         print(json.dumps(document, indent=2, sort_keys=True))
         return 0
     threshold_note = " (loose)" if loose else ""
+    stale = document["stale"]
+    if stale:
+        print(f"STALE: the {', '.join(stale)} scores below predate the current sources; they are "
+              f"not current results (run `kf analyze`)")
     print(f"exact threshold: {document['exact_threshold']:.3f}%{threshold_note}")
     print(
         f"{'image':<6} {'eligible':>8} {'started':>8} {'built':>7} "
@@ -380,6 +406,7 @@ def print_status(
             f"{summary['scored_functions']:>7} {summary['exact_functions']:>7} "
             f"{summary['coverage_percent']:>9.3f}% "
             f"{summary['fuzzy_started_percent']:>11.3f}%"
+            + ("  STALE" if key in stale else "")
         )
     total = document["total"]
     print(

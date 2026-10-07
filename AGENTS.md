@@ -141,9 +141,9 @@
   family. Do not create incompatible per-file structure views to improve one
   function.
 - Fake locals (extra temporaries introduced to steer allocation or
-  scheduling) are an accepted matching device once semantics agree. Never add
-  volatile carriers, dead statements, artificial padding, forced calls, or
-  inline assembly solely to steer code generation.
+  scheduling) and dead or repeated statements are accepted matching devices
+  once semantics agree. Never add volatile carriers, artificial padding,
+  forced calls, or inline assembly solely to steer code generation.
 
 ## Relocations, data, and generated inventories
 

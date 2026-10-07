@@ -29,6 +29,15 @@ enum {
     KF_MENU_SPRITE_PANEL_TOP_LEFT = 11
 };
 
+/* Menu sound cues; each nonzero cue is also the sound ID it keys on. */
+enum {
+    KF_MENU_SOUND_NONE = 0,
+    KF_MENU_SOUND_ITEM_USED = 13,
+    KF_MENU_SOUND_CURSOR = 16,
+    KF_MENU_SOUND_CONFIRM = 17,
+    KF_MENU_SOUND_CANCEL = 18
+};
+
 enum {
     KF_MENU_CHOICE_ACCEPT = 0,
     KF_MENU_CONFIRM_REQUESTED = 1

@@ -1695,8 +1695,8 @@ regular_weapon:
         phase_step = weapon->attack_phase_step;
         phase_end = weapon->normal_attack_end_phase;
         sound_end = weapon->normal_attack_sound_phase;
-        sound_step = 0;
         hit_step = 0;
+        sound_step = 0;
     } else {
         phase_step = weapon->alternate_attack_phase_step;
         phase_end = weapon->alternate_attack_end_phase;
@@ -3019,10 +3019,8 @@ void player_update_frame(void)
 {
     s16 value;
     s32 index;
-    s32 fraction;
     u8 object_index;
     u8 step;
-    KfMapObject *object;
 
     actor_state.actor_overlap_exclusion_flags = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
@@ -3043,11 +3041,17 @@ void player_update_frame(void)
         if (player_state.damage_red_overlay_scale < 0) {
             player_state.damage_red_overlay_scale = 0;
         }
-        value = player_state.damage_red_overlay_scale;
-        if (value > 4095) {
-            value = 4096;
+        {
+            s16 scale;
+
+            value = player_state.damage_red_overlay_scale;
+            if (value > 4095) {
+                scale = value = 4096;
+            } else {
+                scale = value;
+            }
+            accumulate_color_overlay(60, 0, 0, scale);
         }
-        accumulate_color_overlay(60, 0, 0, value);
     }
 
     player_state.flags_140.low = PadRead(1);
@@ -3111,7 +3115,9 @@ void player_update_frame(void)
         player_update_camera_rotation();
         player_update_horizontal_motion();
         goto update_reaction_pose;
-    case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW:
+    case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW: {
+        KfMapObject *object;
+
         object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -3124,10 +3130,14 @@ void player_update_frame(void)
                                 - (s16)player_state.camera_position.vz;
         player_state.camera_position = object->position;
         player_state.view_rotation_offset.vector = object->rotation;
+    }
 update_reaction_view:
         player_handle_interaction_and_menu();
         goto after_reaction;
-    case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH:
+    case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH: {
+        KfMapObject *object;
+        s32 fraction;
+
         object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -3152,7 +3162,10 @@ update_reaction_view:
             player_begin_map_object_view_follow(player_state.reaction.view.map_object_index);
         }
         goto after_reaction;
-    case KF_PLAYER_REACTION_POSITION_RECOVERY:
+    }
+    case KF_PLAYER_REACTION_POSITION_RECOVERY: {
+        s32 fraction;
+
         ++player_state.reaction.position.recovery_step;
         fraction = player_state.reaction.position.recovery_step << 8;
         player_state.camera_position.vx = fixed_lerp_q12(
@@ -3168,6 +3181,7 @@ update_reaction_view:
             player_reset_reaction_state();
         }
         goto after_reaction;
+    }
     case KF_PLAYER_REACTION_ROTATION:
         if (player_move_reaction_with_collision() != 0) {
             player_reset_reaction_state();
@@ -3221,8 +3235,10 @@ update_reaction_pose:
                                     player_state.reaction.damage.motion.vx, 8, 4);
         player_state.reaction.damage.motion.vx = value;
         player_state.reaction_rotation_offset[0] += (value * 3) >> 1;
-        value = player_state.camera_vertical_offset;
-        player_state.camera_vertical_offset = value < 1500 ? value + 500 : 1500;
+        {
+            s16 offset = player_state.camera_vertical_offset;
+            player_state.camera_vertical_offset = offset < 1500 ? offset + 500 : 1500;
+        }
         player_move_reaction_with_collision();
         player_state.death_transition_frame++;
         if (player_state.death_transition_frame == 31
@@ -3244,7 +3260,9 @@ update_reaction_pose:
                 render_set_color_overlay(0x82, shade, shade, shade);
             } else {
                 KfEffectRecord *effect = effect_state.records;
-                for (index = KF_EFFECT_CAPACITY; index != 0; index--) {
+                s32 count;
+
+                for (count = KF_EFFECT_CAPACITY; count != 0; count--) {
                     effect->type = 0xff;
                     effect++;
                 }

@@ -1,0 +1,104 @@
+#ifndef KF_GAME_ITEM_H
+#define KF_GAME_ITEM_H
+
+#include <kf/lib/types.h>
+#include <kf/lib/enum.h>
+
+/*
+ * Inventory items, equipment, death drops and map objects share one ID
+ * namespace (KF1 KfObjectId). Item use passes the inventory ID unchanged as
+ * the scene command (event_scene_command_dispatch), which decrements
+ * game_counter_bytes[id] and can store it as a map object's ID
+ * (event_spawn_effect_object); pickups increment the counter of the object's
+ * own ID; actor death drops spawn map objects by ID. game_counter_bytes
+ * covers IDs 0..119; map-object templates extend the namespace to 319, so
+ * the domain is a halfword while byte fields keep their byte storage.
+ *
+ * Weapons are 0..17 (player_weapon_records) and equipment records start at
+ * 21. Members without behavioural evidence keep their decimal encoding as a
+ * WIP name. Behaviour seen in the consumers: using 77..80 returns an 82,
+ * and using 82 at object 195 yields a 77; 84 starts the map-marker effect,
+ * 86 and 87 start the full-MP and magic-boost timers, 90..94 unlock spell
+ * lists, 99..109 are consumed by map-object markers, 114..116 arm the
+ * object-control events of object 189, and weapons 16/17 spend 117/118.
+ * The accessory names describe one consumer each: 54 also spends an 83 to
+ * survive a fall, and 57 doubles weapon 13's charge.
+ */
+KF_ENUM_BEGIN(KfObjectId, u16)
+    KF_OBJECT_0 = 0,
+    KF_OBJECT_10 = 10,
+    KF_OBJECT_11 = 11,
+    KF_OBJECT_12 = 12,
+    KF_OBJECT_13 = 13,
+    KF_OBJECT_15 = 15,
+    KF_OBJECT_16 = 16,
+    KF_OBJECT_17 = 17,
+    KF_OBJECT_18 = 18,
+    KF_OBJECT_24 = 24,
+    KF_OBJECT_25 = 25,
+    KF_OBJECT_31 = 31,
+    KF_OBJECT_44 = 44,
+    KF_OBJECT_50 = 50,
+    KF_ITEM_POISON_GUARD_ACCESSORY = 53,
+    KF_ITEM_STATUS_GUARD_ACCESSORY = 54,
+    KF_ITEM_ATTACK_BONUS_ACCESSORY = 55,
+    KF_ITEM_MAGIC_BONUS_ACCESSORY = 56,
+    KF_ITEM_PHYSICAL_POWER_BONUS_ACCESSORY = 57,
+    KF_ITEM_STATUS_DURATION_HALVING_ACCESSORY = 58,
+    KF_OBJECT_59 = 59,
+    KF_OBJECT_70 = 70,
+    KF_ITEM_RELIEVE_AILMENTS = 71,
+    KF_ITEM_RESTORE_MP_40 = 72,
+    KF_ITEM_RAISE_BASE_MAGIC = 73,
+    KF_ITEM_RESTORE_HP_40 = 74,
+    KF_ITEM_CURE_POISON_RESTORE_HP_15 = 75,
+    KF_ITEM_FULL_RESTORE = 76,
+    KF_ITEM_RESTORE_HP_100 = 77,
+    KF_ITEM_RESTORE_MP_50 = 78,
+    KF_ITEM_CLEAR_AILMENTS = 79,
+    KF_ITEM_MIXED_RESTORE = 80,
+    KF_OBJECT_81 = 81,
+    KF_OBJECT_82 = 82,
+    KF_OBJECT_83 = 83,
+    KF_OBJECT_84 = 84,
+    KF_OBJECT_85 = 85,
+    KF_OBJECT_86 = 86,
+    KF_OBJECT_87 = 87,
+    KF_OBJECT_88 = 88,
+    KF_OBJECT_89 = 89,
+    KF_OBJECT_90 = 90,
+    KF_OBJECT_91 = 91,
+    KF_OBJECT_92 = 92,
+    KF_OBJECT_93 = 93,
+    KF_OBJECT_94 = 94,
+    KF_OBJECT_96 = 96,
+    KF_OBJECT_97 = 97,
+    KF_OBJECT_99 = 99,
+    KF_OBJECT_100 = 100,
+    KF_OBJECT_101 = 101,
+    KF_OBJECT_102 = 102,
+    KF_OBJECT_103 = 103,
+    KF_OBJECT_104 = 104,
+    KF_OBJECT_106 = 106,
+    KF_OBJECT_107 = 107,
+    KF_OBJECT_108 = 108,
+    KF_OBJECT_109 = 109,
+    KF_OBJECT_111 = 111,
+    KF_OBJECT_112 = 112,
+    KF_OBJECT_113 = 113,
+    KF_OBJECT_114 = 114,
+    KF_OBJECT_115 = 115,
+    KF_OBJECT_116 = 116,
+    KF_OBJECT_117 = 117,
+    KF_OBJECT_118 = 118,
+    KF_OBJECT_157 = 157,
+    KF_OBJECT_163 = 163,
+    KF_OBJECT_184 = 184,
+    KF_OBJECT_189 = 189,
+    KF_OBJECT_195 = 195,
+    KF_OBJECT_NONE = 0xff,
+    /* Serialized placement rows mark an empty slot with the full halfword. */
+    KF_OBJECT_PLACEMENT_NONE = 0xffff
+KF_ENUM_END(KfObjectId)
+
+#endif

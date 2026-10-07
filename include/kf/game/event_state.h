@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/item.h>
 #include <kf/game/memory.h>
 #include <psyq/sdk.h>
 
@@ -83,7 +84,7 @@ extern KfEventState event_state;
 
 void event_scene_command_dispatch(const VECTOR *position,
                                   const struct KfPlayerViewRotation *rotation,
-                                  s32 command);
+                                  KF_ENUM_PARAM(KfObjectId, s32) command);
 void event_world_dispatch_interaction(const VECTOR *position,
                                       const struct KfPlayerViewRotation *rotation);
 void event_state_initialize(void);

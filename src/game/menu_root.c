@@ -49,17 +49,8 @@ enum {
     MENU_MAP_FACING_TILE_SHIFT = 9,
     MENU_MAP_FACING_TILE_HALF_ANGLE = 1 << (MENU_MAP_FACING_TILE_SHIFT - 1),
     MENU_MAP_FACING_TILE_U_STRIDE = 16,
-    MENU_EFFECT_RELIEVE_AILMENTS = 71,
-    MENU_EFFECT_RESTORE_MP_40 = 72,
-    MENU_EFFECT_RAISE_BASE_MAGIC = 73,
-    MENU_EFFECT_RESTORE_HP_40 = 74,
-    MENU_EFFECT_CURE_POISON_RESTORE_HP_15 = 75,
-    MENU_EFFECT_FULL_RESTORE = 76,
-    MENU_EFFECT_RESTORE_HP_100 = 77,
-    MENU_EFFECT_RESTORE_MP_50 = 78,
-    MENU_EFFECT_CLEAR_AILMENTS = 79,
-    MENU_EFFECT_MIXED_RESTORE = 80,
-    MENU_EFFECT_ITEM_COUNT = MENU_EFFECT_MIXED_RESTORE - MENU_EFFECT_RELIEVE_AILMENTS + 1
+    MENU_EFFECT_ITEM_COUNT = KF_ENUM_ENCODE(s32, KF_ITEM_MIXED_RESTORE) -
+        KF_ENUM_ENCODE(s32, KF_ITEM_RELIEVE_AILMENTS) + 1
 };
 
 typedef char kf_card_directory_entry_size[sizeof(struct DIRENTRY) == 40 ? 1 : -1];
@@ -174,7 +165,8 @@ selection_result:
     if (result != KF_MENU_RESULT_CANCELLED &&
         result != KF_MENU_RESULT_GAME_LOADED &&
         (result & KF_MENU_MAGIC_ACTION_TAG) != 0) {
-        player_select_magic_action(result & KF_MENU_MAGIC_ACTION_ID_MASK);
+        player_select_magic_action(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind),
+                                                  result & KF_MENU_MAGIC_ACTION_ID_MASK));
         result = KF_MENU_RESULT_CANCELLED;
     }
     return result;
@@ -270,8 +262,8 @@ s32 menu_item_selection_controller(void)
     }
 
     menu_release_item_model();
-    if ((u32)(result - MENU_EFFECT_RELIEVE_AILMENTS) < MENU_EFFECT_ITEM_COUNT)
-        menu_apply_item_effect(result);
+    if ((u32)(result - KF_ENUM_ENCODE(s32, KF_ITEM_RELIEVE_AILMENTS)) < MENU_EFFECT_ITEM_COUNT)
+        menu_apply_item_effect(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), result));
     return result;
 }
 
@@ -316,15 +308,15 @@ s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     while (index < last) {
         if (*entry != 0) {
             *values = *entry;
-            if (index == player_state.equipped_weapon_id
-                || index == player_state.equipped_head_id
-                || index == player_state.equipped_body_id
-                || index == player_state.equipped_arm_id
-                || index == player_state.equipped_leg_id
-                || index == player_state.equipped_shield_id
-                || index == player_state.equipped_accessory_id
-                || index == player_state.equipped_extra_id
-                || index == player_state.secondary_item_shortcut_id)
+            if (index == KF_ENUM_ENCODE(u8, player_state.equipped_weapon_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_head_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_body_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_arm_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_leg_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_shield_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.equipped_extra_id)
+                || index == KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id))
                 --*values;
             if (*values != 0) {
                 *rows = *glyph;
@@ -343,44 +335,44 @@ s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
 }
 
 ADDRESS(0x80018f8c, 0x2b4)
-void menu_apply_item_effect(s32 item_id)
+void menu_apply_item_effect(KF_ENUM_PARAM(KfObjectId, s32) item_id)
 {
     u16 current_hp;
 
-    if (game_counter_bytes[item_id] == 0)
+    if (game_counter_bytes[KF_ENUM_ENCODE(s32, item_id)] == 0)
         return;
 
-    if (item_id == MENU_EFFECT_RELIEVE_AILMENTS) {
+    if (item_id == KF_ITEM_RELIEVE_AILMENTS) {
         if (player_state.paralysis_timer > 0)
             player_state.paralysis_timer = 0;
         if (player_state.slow_timer >= MENU_STATUS_RELIEF_CAP + 1)
             player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
         player_cap_curse_strength();
         player_cap_darkness_phase();
-    } else if (item_id == MENU_EFFECT_RESTORE_MP_40) {
+    } else if (item_id == KF_ITEM_RESTORE_MP_40) {
         player_state.vitals.current_mp += 40;
-    } else if (item_id == MENU_EFFECT_RAISE_BASE_MAGIC) {
+    } else if (item_id == KF_ITEM_RAISE_BASE_MAGIC) {
         player_state.base_magic++;
         player_recalculate_combat_stats();
-    } else if (item_id == MENU_EFFECT_RESTORE_HP_40) {
+    } else if (item_id == KF_ITEM_RESTORE_HP_40) {
         player_state.vitals.current_hp += 40;
-    } else if (item_id == MENU_EFFECT_CURE_POISON_RESTORE_HP_15) {
+    } else if (item_id == KF_ITEM_CURE_POISON_RESTORE_HP_15) {
         current_hp = player_state.vitals.current_hp;
         player_state.poison_timer = 0;
         player_state.vitals.current_hp = current_hp + 15;
-    } else if (item_id == MENU_EFFECT_FULL_RESTORE) {
+    } else if (item_id == KF_ITEM_FULL_RESTORE) {
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
         player_clear_and_cap_status_effects();
-    } else if (item_id == MENU_EFFECT_RESTORE_HP_100) {
+    } else if (item_id == KF_ITEM_RESTORE_HP_100) {
         player_state.vitals.current_hp += 100;
-    } else if (item_id == MENU_EFFECT_RESTORE_MP_50) {
+    } else if (item_id == KF_ITEM_RESTORE_MP_50) {
         player_state.vitals.current_mp += 50;
     }
 
-    if (item_id == MENU_EFFECT_CLEAR_AILMENTS) {
+    if (item_id == KF_ITEM_CLEAR_AILMENTS) {
         player_clear_and_cap_status_effects();
-    } else if (item_id == MENU_EFFECT_MIXED_RESTORE) {
+    } else if (item_id == KF_ITEM_MIXED_RESTORE) {
         player_state.vitals.current_hp += 100;
         player_state.vitals.current_mp += 50;
         player_clear_and_cap_status_effects();
@@ -391,10 +383,10 @@ void menu_apply_item_effect(s32 item_id)
     if (player_state.vitals.current_mp > player_state.vitals.maximum_mp)
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
 
-    game_counter_bytes[item_id]--;
-    if ((u32)(item_id - MENU_EFFECT_RESTORE_HP_100) < 2 ||
-        (u32)(item_id - MENU_EFFECT_CLEAR_AILMENTS) < 2)
-        game_counter_bytes[0x52]++;
+    game_counter_bytes[KF_ENUM_ENCODE(s32, item_id)]--;
+    if ((u32)(KF_ENUM_ENCODE(s32, item_id) - KF_ENUM_ENCODE(s32, KF_ITEM_RESTORE_HP_100)) < 2 ||
+        (u32)(KF_ENUM_ENCODE(s32, item_id) - KF_ENUM_ENCODE(s32, KF_ITEM_CLEAR_AILMENTS)) < 2)
+        game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_82)]++;
     menu_play_sound_cue(KF_MENU_SOUND_ITEM_USED);
 }
 
@@ -640,19 +632,19 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     u8 *entry;
     s32 i;
 
-    selected[MENU_CATEGORY_WEAPON] = player_state.equipped_weapon_id;
-    selected[MENU_CATEGORY_PRIMARY_MAGIC] = player_state.primary_magic_shortcut_id;
-    selected[MENU_CATEGORY_ARM] = player_state.equipped_arm_id;
-    selected[MENU_CATEGORY_HEAD] = player_state.equipped_head_id;
-    selected[MENU_CATEGORY_BODY] = player_state.equipped_body_id;
-    selected[MENU_CATEGORY_LEG] = player_state.equipped_leg_id;
-    selected[MENU_CATEGORY_SHIELD] = player_state.equipped_shield_id;
-    selected[MENU_CATEGORY_ACCESSORY] = player_state.equipped_accessory_id;
-    selected[MENU_CATEGORY_EXTRA] = player_state.equipped_extra_id;
-    if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = player_state.secondary_item_shortcut_id;
+    selected[MENU_CATEGORY_WEAPON] = KF_ENUM_ENCODE(u8, player_state.equipped_weapon_id);
+    selected[MENU_CATEGORY_PRIMARY_MAGIC] = KF_ENUM_ENCODE(u8, player_state.primary_magic_shortcut_id);
+    selected[MENU_CATEGORY_ARM] = KF_ENUM_ENCODE(u8, player_state.equipped_arm_id);
+    selected[MENU_CATEGORY_HEAD] = KF_ENUM_ENCODE(u8, player_state.equipped_head_id);
+    selected[MENU_CATEGORY_BODY] = KF_ENUM_ENCODE(u8, player_state.equipped_body_id);
+    selected[MENU_CATEGORY_LEG] = KF_ENUM_ENCODE(u8, player_state.equipped_leg_id);
+    selected[MENU_CATEGORY_SHIELD] = KF_ENUM_ENCODE(u8, player_state.equipped_shield_id);
+    selected[MENU_CATEGORY_ACCESSORY] = KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id);
+    selected[MENU_CATEGORY_EXTRA] = KF_ENUM_ENCODE(u8, player_state.equipped_extra_id);
+    if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id);
     else
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = player_state.secondary_magic_shortcut_id;
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8, player_state.secondary_magic_shortcut_id);
 
     entry = selected;
     for (i = 0; i < MENU_CATEGORY_COUNT; rows++, i++, entry++) {
@@ -664,7 +656,7 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
             goto extra;
         if (i != MENU_CATEGORY_SECONDARY_SHORTCUT)
             goto base;
-        if (player_state.secondary_magic_shortcut_id == KF_EQUIPMENT_NONE)
+        if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
             goto base;
     extra:
         *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;
@@ -721,8 +713,9 @@ void menu_equipment_category_controller(s32 category)
         break;
     case MENU_CATEGORY_ACCESSORY:
     case MENU_CATEGORY_EXTRA:
-        other_slot_item_id = category == MENU_CATEGORY_ACCESSORY ? player_state.equipped_extra_id
-                                        : player_state.equipped_accessory_id;
+        other_slot_item_id = KF_ENUM_ENCODE(u8, category == MENU_CATEGORY_ACCESSORY
+                                        ? player_state.equipped_extra_id
+                                        : player_state.equipped_accessory_id);
         first = 53;
         if (other_slot_item_id != KF_EQUIPMENT_NONE)
             game_counter_bytes[other_slot_item_id]--;
@@ -780,28 +773,28 @@ void menu_equipment_category_controller(s32 category)
     if (result != KF_MENU_RESULT_CANCELLED) {
         switch (category) {
         case MENU_CATEGORY_WEAPON:
-            player_equip_weapon((u8)result);
+            player_equip_weapon(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result));
             break;
         case MENU_CATEGORY_ARM:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ARM);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_ARM);
             break;
         case MENU_CATEGORY_HEAD:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_HEAD);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_HEAD);
             break;
         case MENU_CATEGORY_BODY:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_BODY);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_BODY);
             break;
         case MENU_CATEGORY_LEG:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_LEG);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_LEG);
             break;
         case MENU_CATEGORY_SHIELD:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_SHIELD);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_SHIELD);
             break;
         case MENU_CATEGORY_ACCESSORY:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_ACCESSORY);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_ACCESSORY);
             break;
         case MENU_CATEGORY_EXTRA:
-            player_set_equipment_slot((u8)result, KF_EQUIPMENT_SLOT_EXTRA);
+            player_set_equipment_slot(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), result), KF_EQUIPMENT_SLOT_EXTRA);
             break;
         }
     }
@@ -864,7 +857,7 @@ void menu_choose_primary_magic_shortcut(void)
     }
 
     if (result != KF_MENU_RESULT_CANCELLED)
-        player_set_primary_magic_shortcut_id(result);
+        player_set_primary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), result));
 }
 
 ADDRESS(0x8001a4f0, 0x30c)
@@ -891,13 +884,13 @@ void menu_item_magic_controller(void)
         magic_ids[index] = 0xff;
     }
 
-    saved_count_60 = game_counter_bytes[0x60];
-    saved_count_61 = game_counter_bytes[0x61];
-    game_counter_bytes[0x60] = 0;
-    game_counter_bytes[0x61] = 0;
+    saved_count_60 = game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)];
+    saved_count_61 = game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)];
+    game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] = 0;
+    game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)] = 0;
     count = menu_collect_masked_item_rows(game_counter_bytes, rows, counts, item_ids, 70, 116);
-    game_counter_bytes[0x60] = saved_count_60;
-    game_counter_bytes[0x61] = saved_count_61;
+    game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] = saved_count_60;
+    game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)] = saved_count_61;
 
     count += menu_collect_available_magic_rows(effect_state.magic_records, &rows[count],
         &numbers[count], &magic_ids[count], 0, 19);
@@ -946,8 +939,8 @@ void menu_item_magic_controller(void)
     }
 
     if (result != KF_MENU_RESULT_CANCELLED) {
-        player_set_secondary_magic_shortcut_id(magic_ids[result]);
-        player_set_secondary_item_shortcut_id(item_ids[result]);
+        player_set_secondary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), magic_ids[result]));
+        player_set_secondary_item_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PARAM(KfObjectId, u8), item_ids[result]));
     }
 }
 
@@ -3964,7 +3957,7 @@ void menu_draw_status_counters(s32 kind)
     amount.position.x = heading.position.x + 56;
     amount.position.y = heading.position.y;
     if (kind == 3)
-        menu_format_number(game_counter_bytes[0x60], 7, KF_FORMAT_PAD_SPACES,
+        menu_format_number(game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)], 7, KF_FORMAT_PAD_SPACES,
             KF_MENU_FORMAT_STYLE_TRAILING_11, amount.glyphs.codes);
     else
         menu_format_number(player_state.gold, 7, KF_FORMAT_PAD_SPACES,

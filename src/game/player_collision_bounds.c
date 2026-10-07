@@ -68,7 +68,7 @@ void player_reset_view(void)
     player_state.movement_speed_adjustment_q12 = 0;
     player_state.movement_speed_adjustment_decay_latch = 0;
     player_state.damage_scale = KF_FIXED12_ONE;
-    player_state.queued_magic_action.magic_id = KF_PLAYER_MAGIC_ACTION_NONE;
+    player_state.queued_magic_action.magic_id = KF_MAGIC_NONE;
     player_state.collision_lower_clearance = PLAYER_COLLISION_CLEARANCE_INITIAL;
     player_state.collision_upper_clearance = PLAYER_COLLISION_CLEARANCE_INITIAL;
 }

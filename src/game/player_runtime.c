@@ -83,7 +83,7 @@ KfBss801c7540 bss_801c7540;
 ADDRESS(0x80023570, 0x9c)
 void player_restore_equipment_effects(void)
 {
-    player_set_equipment_slot(KF_EQUIPMENT_NONE, KF_EQUIPMENT_NONE);
+    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_NONE);
     player_equip_weapon(player_state.equipped_weapon_id);
     player_reset_view();
     if (player_state.defense_boost_timer != 0) {
@@ -165,14 +165,14 @@ s32 player_charge_gain_for_rank(s32 value, s32 rank)
 }
 
 ADDRESS(0x80023868, 0x11c)
-void player_add_equipment_bonuses(s32 item_id)
+void player_add_equipment_bonuses(KF_ENUM_PARAM(KfObjectId, s32) item_id)
 {
     const KfEquipmentRecord *record;
 
-    if (item_id == KF_EQUIPMENT_NONE) {
+    if (item_id == KF_OBJECT_NONE) {
         return;
     }
-    record = &player_equipment_records[item_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    record = &player_equipment_records[KF_ENUM_ENCODE(s32, item_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     player_state.combat_components[0] += record->bonus_components[0];
     player_state.combat_components[1] += record->bonus_components[1];
     player_state.combat_components[2] += record->bonus_components[2];
@@ -189,9 +189,6 @@ enum {
     PLAYER_STATUS_DEFENSE_BONUS = 50,
     PLAYER_STATUS_POWER_BONUS = 30,
     PLAYER_WEAPON_ATTACK_PENALTY = 10,
-    PLAYER_ACCESSORY_ATTACK_BONUS = 0x37,
-    PLAYER_ACCESSORY_MAGIC_BONUS = 0x38,
-    PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS = 0x39,
     PLAYER_BONUS_OVERFLOW_LIMIT = 0x7fff,
     PLAYER_POWER_CAP_THRESHOLD = KF_PLAYER_POWER_MAX + 1
 };
@@ -230,8 +227,8 @@ void player_recalculate_combat_stats(void)
         player_state.physical_power = power;
     }
 
-    if (player_state.equipped_weapon_id != KF_EQUIPMENT_NONE) {
-        weapon = &player_weapon_records[player_state.equipped_weapon_id];
+    if (player_state.equipped_weapon_id != KF_OBJECT_NONE) {
+        weapon = &player_weapon_records[KF_ENUM_ENCODE(u8, player_state.equipped_weapon_id)];
         player_state.attack_components[0] += weapon->attack_components[0];
         player_state.attack_components[1] += weapon->attack_components[1];
         player_state.attack_components[2] += weapon->attack_components[2];
@@ -262,29 +259,29 @@ void player_recalculate_combat_stats(void)
         player_state.magic += PLAYER_STATUS_POWER_BONUS;
     }
 
-    if (player_state.equipped_weapon_id == 10) {
+    if (player_state.equipped_weapon_id == KF_OBJECT_10) {
         player_state.combat_components[1] -= PLAYER_WEAPON_ATTACK_PENALTY;
         player_state.combat_components[2] -= PLAYER_WEAPON_ATTACK_PENALTY;
     }
-    if (player_state.equipped_weapon_id == 11) {
+    if (player_state.equipped_weapon_id == KF_OBJECT_11) {
         player_state.combat_components[4] -= PLAYER_WEAPON_ATTACK_PENALTY;
         player_state.combat_components[5] -= PLAYER_WEAPON_ATTACK_PENALTY;
         player_state.combat_components[7] -= PLAYER_WEAPON_ATTACK_PENALTY;
         player_state.combat_components[8] -= PLAYER_WEAPON_ATTACK_PENALTY;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_ATTACK_BONUS
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_ATTACK_BONUS) {
+    if (player_state.equipped_accessory_id == KF_ITEM_ATTACK_BONUS_ACCESSORY
+        || player_state.equipped_extra_id == KF_ITEM_ATTACK_BONUS_ACCESSORY) {
         player_state.attack_components[1] += 5;
         player_state.attack_components[2] += 5;
         player_state.attack_components[3] += 22;
         player_state.attack_components[7] += 12;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_MAGIC_BONUS
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_MAGIC_BONUS) {
+    if (player_state.equipped_accessory_id == KF_ITEM_MAGIC_BONUS_ACCESSORY
+        || player_state.equipped_extra_id == KF_ITEM_MAGIC_BONUS_ACCESSORY) {
         player_state.magic += 8;
     }
-    if (player_state.equipped_accessory_id == PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS
-        || player_state.equipped_extra_id == PLAYER_ACCESSORY_PHYSICAL_POWER_BONUS) {
+    if (player_state.equipped_accessory_id == KF_ITEM_PHYSICAL_POWER_BONUS_ACCESSORY
+        || player_state.equipped_extra_id == KF_ITEM_PHYSICAL_POWER_BONUS_ACCESSORY) {
         player_state.physical_power += 8;
     }
 
@@ -630,9 +627,6 @@ void player_cap_status_components(u32 mask)
 }
 
 enum {
-    KF_PLAYER_POISON_GUARD_ACCESSORY_ID = 0x35,
-    KF_PLAYER_STATUS_GUARD_ACCESSORY_ID = 0x36,
-    KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID = 0x3a,
     KF_PLAYER_STATUS_GUARD_CHANCE = 16384,
     KF_PLAYER_POISON_ROLL_SCALE = 100,
     KF_PLAYER_POISON_ROLL_SHIFT = 15
@@ -668,14 +662,14 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     if (player_state.weapon_guard_active != 0) {
         return;
     }
-    if (player_state.equipped_accessory_id == KF_PLAYER_STATUS_GUARD_ACCESSORY_ID
-        || player_state.equipped_extra_id == KF_PLAYER_STATUS_GUARD_ACCESSORY_ID) {
+    if (player_state.equipped_accessory_id == KF_ITEM_STATUS_GUARD_ACCESSORY
+        || player_state.equipped_extra_id == KF_ITEM_STATUS_GUARD_ACCESSORY) {
         if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
             flags &= 0xfff8;
         }
     }
-    if (player_state.equipped_accessory_id == KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID
-        || player_state.equipped_extra_id == KF_PLAYER_STATUS_DURATION_HALVING_ACCESSORY_ID) {
+    if (player_state.equipped_accessory_id == KF_ITEM_STATUS_DURATION_HALVING_ACCESSORY
+        || player_state.equipped_extra_id == KF_ITEM_STATUS_DURATION_HALVING_ACCESSORY) {
         curse_phase_limit = 300;
         darkness_phase_limit = 250;
         poison_duration = 300;
@@ -699,8 +693,8 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
         player_state.darkness_phase_limit = darkness_phase_limit;
         break;
     case PLAYER_DAMAGE_STATUS_POISON:
-        if (player_state.equipped_accessory_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID
-            || player_state.equipped_extra_id == KF_PLAYER_POISON_GUARD_ACCESSORY_ID) {
+        if (player_state.equipped_accessory_id == KF_ITEM_POISON_GUARD_ACCESSORY
+            || player_state.equipped_extra_id == KF_ITEM_POISON_GUARD_ACCESSORY) {
             if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
                 break;
             }
@@ -866,24 +860,24 @@ void player_initialize_state(void)
     player_state.gold = 0;
     player_state.damage_red_overlay_scale = 0;
     player_state.damage_red_overlay_decay = 0;
-    player_state.equipped_head_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_body_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_leg_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_shield_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_arm_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_accessory_id = KF_EQUIPMENT_NONE;
-    player_state.equipped_extra_id = KF_EQUIPMENT_NONE;
+    player_state.equipped_head_id = KF_OBJECT_NONE;
+    player_state.equipped_body_id = KF_OBJECT_NONE;
+    player_state.equipped_leg_id = KF_OBJECT_NONE;
+    player_state.equipped_shield_id = KF_OBJECT_NONE;
+    player_state.equipped_arm_id = KF_OBJECT_NONE;
+    player_state.equipped_accessory_id = KF_OBJECT_NONE;
+    player_state.equipped_extra_id = KF_OBJECT_NONE;
     player_state.vitals.maximum_hp = player_level_growth_table[0].maximum_hp;
     player_state.vitals.maximum_mp = player_level_growth_table[0].maximum_mp;
     player_state.base_physical_power = player_level_growth_table[0].physical_power_step;
     player_state.base_magic = player_level_growth_table[0].magic_step;
     player_state.next_level_experience = player_level_growth_table[0].experience_threshold;
-    player_set_equipment_slot(KF_EQUIPMENT_NONE, KF_EQUIPMENT_NONE);
+    player_set_equipment_slot(KF_OBJECT_NONE, KF_EQUIPMENT_NONE);
     player_state.selected_magic_record = NULL;
-    player_set_primary_magic_shortcut_id(KF_EQUIPMENT_NONE);
-    player_equip_weapon(0);
-    player_set_secondary_magic_shortcut_id(KF_EQUIPMENT_NONE);
-    player_set_secondary_item_shortcut_id(KF_EQUIPMENT_NONE);
+    player_set_primary_magic_shortcut_id(KF_MAGIC_NONE);
+    player_equip_weapon(KF_OBJECT_0);
+    player_set_secondary_magic_shortcut_id(KF_MAGIC_NONE);
+    player_set_secondary_item_shortcut_id(KF_OBJECT_NONE);
     player_state.camera_rotation_target.angles[0] = 0;
     player_state.camera_rotation_target.angles[1] = PLAYER_INITIAL_CAMERA_PITCH;
     player_state.camera_rotation_target.angles[2] = 0;
@@ -981,31 +975,31 @@ s32 player_distance_to_point(
 
 
 ADDRESS(0x800253fc, 0x10)
-void player_set_primary_magic_shortcut_id(u8 value)
+void player_set_primary_magic_shortcut_id(KfEffectKind value)
 {
     player_state.primary_magic_shortcut_id = value;
 }
 
 ADDRESS(0x8002540c, 0x28)
-void player_set_secondary_magic_shortcut_id(u8 value)
+void player_set_secondary_magic_shortcut_id(KfEffectKind value)
 {
     player_state.secondary_magic_shortcut_id = value;
-    if (value != KF_EQUIPMENT_NONE) {
-        player_state.secondary_item_shortcut_id = KF_EQUIPMENT_NONE;
+    if (value != KF_MAGIC_NONE) {
+        player_state.secondary_item_shortcut_id = KF_OBJECT_NONE;
     }
 }
 
 ADDRESS(0x80025434, 0x28)
-void player_set_secondary_item_shortcut_id(u8 value)
+void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value)
 {
     player_state.secondary_item_shortcut_id = value;
-    if (value != KF_EQUIPMENT_NONE) {
-        player_state.secondary_magic_shortcut_id = KF_EQUIPMENT_NONE;
+    if (value != KF_OBJECT_NONE) {
+        player_state.secondary_magic_shortcut_id = KF_MAGIC_NONE;
     }
 }
 
 ADDRESS(0x8002545c, 0x240)
-void player_set_equipment_slot(u8 item_id, u8 slot)
+void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot)
 {
     switch (slot) {
     case KF_EQUIPMENT_SLOT_HEAD:
@@ -1031,38 +1025,38 @@ void player_set_equipment_slot(u8 item_id, u8 slot)
         break;
     }
 
-    if (player_state.equipped_head_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_head_record = &player_equipment_records[player_state.equipped_head_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_head_id != KF_OBJECT_NONE) {
+        player_state.equipped_head_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_head_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_head_record = NULL;
     }
-    if (player_state.equipped_body_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_body_record = &player_equipment_records[player_state.equipped_body_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_body_id != KF_OBJECT_NONE) {
+        player_state.equipped_body_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_body_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_body_record = NULL;
     }
-    if (player_state.equipped_leg_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_leg_record = &player_equipment_records[player_state.equipped_leg_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_leg_id != KF_OBJECT_NONE) {
+        player_state.equipped_leg_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_leg_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_leg_record = NULL;
     }
-    if (player_state.equipped_shield_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_shield_record = &player_equipment_records[player_state.equipped_shield_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_shield_id != KF_OBJECT_NONE) {
+        player_state.equipped_shield_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_shield_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_shield_record = NULL;
     }
-    if (player_state.equipped_arm_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_arm_record = &player_equipment_records[player_state.equipped_arm_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_arm_id != KF_OBJECT_NONE) {
+        player_state.equipped_arm_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_arm_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_arm_record = NULL;
     }
-    if (player_state.equipped_accessory_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_accessory_record = &player_equipment_records[player_state.equipped_accessory_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_accessory_id != KF_OBJECT_NONE) {
+        player_state.equipped_accessory_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_accessory_record = NULL;
     }
-    if (player_state.equipped_extra_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_extra_record = &player_equipment_records[player_state.equipped_extra_id - KF_EQUIPMENT_RECORD_FIRST_ID];
+    if (player_state.equipped_extra_id != KF_OBJECT_NONE) {
+        player_state.equipped_extra_record = &player_equipment_records[KF_ENUM_ENCODE(u8, player_state.equipped_extra_id) - KF_EQUIPMENT_RECORD_FIRST_ID];
     } else {
         player_state.equipped_extra_record = NULL;
     }
@@ -1075,16 +1069,16 @@ enum {
 };
 
 ADDRESS(0x8002569c, 0xb8)
-void player_equip_weapon(u8 weapon_id)
+void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id)
 {
     player_state.attack_charge_current = 0;
     player_state.attack_charge_committed = 0;
     player_state.weapon_charge_delay = PLAYER_WEAPON_CHARGE_DELAY_UPDATES;
     player_state.equipped_weapon_id = weapon_id;
-    if (weapon_id != KF_EQUIPMENT_NONE) {
-        player_state.equipped_weapon_record = &player_weapon_records[weapon_id];
+    if (weapon_id != KF_OBJECT_NONE) {
+        player_state.equipped_weapon_record = &player_weapon_records[KF_ENUM_ENCODE(u8, weapon_id)];
         cd_archive_read(KF_RESOURCE_ARCHIVE_FDAT,
-                        weapon_id + PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY,
+                        KF_ENUM_ENCODE(u8, weapon_id) + PLAYER_WEAPON_ARCHIVE_FIRST_ENTRY,
                         (u_long *)player_state.weapon_asset_buffer);
         asset_registry_set(KF_PLAYER_WEAPON_ASSET_INDEX,
                            player_state.weapon_asset_buffer);
@@ -1100,7 +1094,7 @@ ADDRESS(0x80025754, 0x124)
 void player_begin_weapon_attack(s32 mode)
 {
     if (player_state.weapon_attack_phase != KF_WEAPON_ATTACK_INACTIVE
-        || player_state.equipped_weapon_id == KF_EQUIPMENT_NONE
+        || player_state.equipped_weapon_id == KF_OBJECT_NONE
         || player_state.paralysis_timer != 0) {
         return;
     }
@@ -1153,7 +1147,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
     actor_state.player_view_target = actor;
     if (actor != NULL) {
         target = actor_find_target_of_type(&actor_state.target_groups[actor->group_index],
-                                           0x82);
+                                           KF_ACTOR_TARGET_130);
         if (target != NULL && !(actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING)) {
             actor_set_target(actor, target);
         }
@@ -1170,7 +1164,7 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
 }
 
 ADDRESS(0x80025a18, 0x918)
-void player_dispatch_magic_effect(s32 effect_id, ...)
+void player_dispatch_magic_effect(KF_ENUM_PARAM(KfEffectKind, s32) effect_id, ...)
 {
     VECTOR position;
     SVECTOR direction;
@@ -1193,18 +1187,18 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
     arguments = (char *)&effect_id;
 
     switch (effect_id) {
-    case 7:
+    case KF_EFFECT_KIND_7:
         simple_scale = 1000;
 simple_probe:
         player_probe_view_target_and_vectors(simple_scale, &position, &direction, &distance);
 emit_simple_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction);
         break;
-    case 2:
+    case KF_EFFECT_KIND_2:
         effect_construct_record(10, 0x13, effect_id, &player_state.camera_position,
                        NULL, 0x1000, 0x100, 0x1000);
         break;
-    case 3:
+    case KF_EFFECT_KIND_3:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == NULL) {
             /* Both axes share the reused sum/base temporaries, and the camera
@@ -1238,9 +1232,9 @@ emit_simple_effect:
 case3_store_z:
         position.vz = case3_z;
 case3_emit:
-        effect_construct_record(10, 0x12, 0x72, &position, NULL);
+        effect_construct_record(10, 0x12, KF_EFFECT_KIND_114, &position, NULL);
         break;
-    case 0:
+    case KF_EFFECT_KIND_0:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == NULL) {
             kind = 255;
@@ -1249,9 +1243,9 @@ case3_emit:
         }
         position.vx += direction.vx;
         position.vz += direction.vz;
-        effect_construct_record(10, 0x12, 0x6f, &position, NULL, kind);
+        effect_construct_record(10, 0x12, KF_EFFECT_KIND_111, &position, NULL, kind);
         break;
-    case 13: {
+    case KF_EFFECT_KIND_13: {
         const SVECTOR *sequence = player_magic_square_offsets;
         for (i = 3; i != -1; i--) {
             player_state.magic_origin_offset = *sequence;
@@ -1264,13 +1258,13 @@ case3_emit:
         }
         break;
     }
-    case 51:
-        effect_id = 0x76;
+    case KF_EFFECT_KIND_51:
+        effect_id = KF_EFFECT_KIND_118;
         goto simple_effect;
-    case 52:
-        effect_id = 0x77;
+    case KF_EFFECT_KIND_52:
+        effect_id = KF_EFFECT_KIND_119;
         goto simple_effect;
-    case 4:
+    case KF_EFFECT_KIND_4:
 simple_effect:
         rotation_scale = 700;
 probe_rotation_effect:
@@ -1279,7 +1273,7 @@ emit_rotation_effect:
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
-    case 11:
+    case KF_EFFECT_KIND_11:
         player_probe_view_target_and_vectors(600, &position, &direction, &adjusted_distance);
         if (adjusted_distance != -1) {
             adjusted_distance = adjusted_distance / 600 - 8;
@@ -1290,9 +1284,9 @@ emit_rotation_effect:
             adjusted_distance = 10;
         }
         direction.vy = 0;
-        effect_construct_record(10, 0x12, 0x67, &position, &direction, adjusted_distance);
+        effect_construct_record(10, 0x12, KF_EFFECT_KIND_103, &position, &direction, adjusted_distance);
         break;
-    case 5:
+    case KF_EFFECT_KIND_5:
         target_scale = 200;
 select_actor_effect:
         actor = player_probe_view_target_and_vectors(target_scale, &position, &direction, &distance);
@@ -1303,21 +1297,21 @@ select_actor_effect:
         }
         effect_construct_record(10, 0x12, effect_id, &position, &direction, kind);
         break;
-    case 9:
+    case KF_EFFECT_KIND_9:
         target_scale = 500;
         goto select_actor_effect;
-    case 8:
+    case KF_EFFECT_KIND_8:
         player_probe_view_target_and_vectors(700, &position, &direction, &distance);
-        effect_construct_record(10, 0x12, 0x6a, &position, &direction,
+        effect_construct_record(10, 0x12, KF_EFFECT_KIND_106, &position, &direction,
                        &player_state.camera_rotation);
         break;
-    case 10:
+    case KF_EFFECT_KIND_10:
         rotation_scale = 300;
         goto probe_rotation_effect;
-    case 6:
+    case KF_EFFECT_KIND_6:
         rotation_scale = 250;
         goto probe_rotation_effect;
-    case 12: {
+    case KF_EFFECT_KIND_12: {
         s16 old_yaw = player_state.camera_rotation.angles[1];
         player_state.camera_rotation.angles[1] -=
             (u16)player_state.magic_origin_offset.vx * 2;
@@ -1328,14 +1322,14 @@ select_actor_effect:
                        &player_state.camera_rotation, 600, 60, 128, 140, 160);
         break;
     }
-    case 1:
+    case KF_EFFECT_KIND_1:
         simple_scale = 500;
         goto simple_probe;
-    case 43:
-        effect_id = 0x73;
+    case KF_EFFECT_KIND_43:
+        effect_id = KF_EFFECT_KIND_115;
         goto sequence_effect;
-    case 42:
-        effect_id = 0x71;
+    case KF_EFFECT_KIND_42:
+        effect_id = KF_EFFECT_KIND_113;
 sequence_effect: {
         const KfPlayerMagicSpawnRecord *record = player_magic_spawn_records;
         player_state.magic_origin_offset = record->offset;
@@ -1355,23 +1349,23 @@ sequence_effect: {
         }
         break;
     }
-    case 44:
+    case KF_EFFECT_KIND_44:
         player_probe_view_target_and_vectors(1000, &position, &direction, &distance);
-        effect_id = 0x75;
+        effect_id = KF_EFFECT_KIND_117;
         goto emit_rotation_effect;
-    case 45:
+    case KF_EFFECT_KIND_45:
         player_probe_view_target_and_vectors(1000, &position, &direction, &distance);
-        effect_id = 0x74;
+        effect_id = KF_EFFECT_KIND_116;
         goto emit_simple_effect;
-    case 40:
+    case KF_EFFECT_KIND_40:
         rotation_scale = 1000;
         goto probe_rotation_effect;
-    case 39:
+    case KF_EFFECT_KIND_39:
         player_probe_view_target_and_vectors(50, NULL, &direction, &distance);
         override_position = *(const VECTOR **)(arguments += 4);
         position = *override_position;
         goto emit_rotation_effect;
-    case 49: {
+    case KF_EFFECT_KIND_49: {
         const VECTOR *override_position;
         /* Cases 49 and 50 omit the rotation argument. */
         player_probe_view_target_and_vectors(550, NULL, &direction, &distance);
@@ -1379,41 +1373,41 @@ sequence_effect: {
         position = *override_position;
         goto emit_simple_effect;
     }
-    case 50: {
+    case KF_EFFECT_KIND_50: {
         const VECTOR *override_position;
         override_position = *(const VECTOR **)(arguments += 4);
         position = *override_position;
         goto emit_simple_effect;
     }
-    case 34:
-    case 35:
-    case 38:
+    case KF_EFFECT_KIND_34:
+    case KF_EFFECT_KIND_35:
+    case KF_EFFECT_KIND_38:
         player_probe_view_target_and_vectors(900, &position, &direction, &distance);
         effect_construct_record(10, 0x12, effect_id, &position, &direction,
                        &player_state.camera_rotation);
         break;
-    case 15:
-        effect_construct_record(10, 0x10, 15, &player_state.camera_position,
+    case KF_EFFECT_KIND_DEFENSE_BOOST:
+        effect_construct_record(10, 0x10, KF_EFFECT_KIND_DEFENSE_BOOST, &player_state.camera_position,
                        &direction);
         player_state.defense_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
-    case 17:
-        effect_construct_record(10, 0x10, 17, &player_state.camera_position,
+    case KF_EFFECT_KIND_ATTACK_BOOST:
+        effect_construct_record(10, 0x10, KF_EFFECT_KIND_ATTACK_BOOST, &player_state.camera_position,
                        &direction);
         player_state.attack_boost_timer = 900;
         player_recalculate_combat_stats();
         break;
-    case 14:
-        effect_construct_record(10, 0x10, 14, &player_state.camera_position,
+    case KF_EFFECT_KIND_14:
+        effect_construct_record(10, 0x10, KF_EFFECT_KIND_14, &player_state.camera_position,
                        &direction);
         break;
-    case 16:
-        effect_construct_record(10, 0x10, 16, &player_state.camera_position,
+    case KF_EFFECT_KIND_16:
+        effect_construct_record(10, 0x10, KF_EFFECT_KIND_16, &player_state.camera_position,
                        &direction);
         break;
-    case 19:
-        effect_construct_record(10, 0x10, 19, &player_state.camera_position,
+    case KF_EFFECT_KIND_19:
+        effect_construct_record(10, 0x10, KF_EFFECT_KIND_19, &player_state.camera_position,
                        &direction);
         break;
     default:
@@ -1465,14 +1459,14 @@ b32 player_meets_weapon_magic_power_requirement(void)
 
 enum {
     WEAPON_ATTACK_EVENT_DISABLED_PHASE = 5000,
-    WEAPON_EFFECT_HELD_PHASE = 99,
-    WEAPON_MAGIC_EFFECT_NONE = 0xff
+    WEAPON_EFFECT_HELD_PHASE = 99
 };
 
 ADDRESS(0x80026498, 0x1c4)
-void player_dispatch_weapon_magic(s32 magic_id, b32 consume_mp, s32 effect_parameter)
+void player_dispatch_weapon_magic(KF_ENUM_PARAM(KfEffectKind, s32) magic_id, b32 consume_mp,
+                                  s32 effect_parameter)
 {
-    KfMagicRecord *record = &effect_state.magic_records[magic_id];
+    KfMagicRecord *record = &effect_state.magic_records[KF_ENUM_ENCODE(s32, magic_id)];
     VECTOR position;
 
     if (player_state.vitals.current_mp < record->mp_cost) {
@@ -1484,24 +1478,24 @@ void player_dispatch_weapon_magic(s32 magic_id, b32 consume_mp, s32 effect_param
         player_state.vitals.current_mp -= record->mp_cost;
     }
 
-    switch (magic_id - 38) {
-    case 1:
+    switch (magic_id) {
+    case KF_EFFECT_KIND_39:
         player_sample_weapon_world_vertex(player_magic_id_sequence.effect_ids[effect_parameter], &position);
         player_dispatch_magic_effect(magic_id, &position);
         break;
-    case 11:
-    case 12:
+    case KF_EFFECT_KIND_49:
+    case KF_EFFECT_KIND_50:
         player_sample_weapon_world_vertex(0, &position);
         player_dispatch_magic_effect(magic_id, &position);
         break;
-    case 2:
+    case KF_EFFECT_KIND_40:
         effect_parameter <<= 9;
         player_state.magic_origin_offset.vx = rcos(effect_parameter) >> 3;
         player_state.magic_origin_offset.vy = rsin(effect_parameter) >> 3;
         player_state.magic_origin_offset.vz = 600;
         player_dispatch_magic_effect(magic_id);
         break;
-    case 0:
+    case KF_EFFECT_KIND_38:
         for (effect_parameter = 0; effect_parameter < KF_ANGLE_WRAP_MASK; effect_parameter += 684) {
             player_state.magic_origin_offset.vx = rcos(effect_parameter) >> 3;
             player_state.magic_origin_offset.vy = rsin(effect_parameter) >> 3;
@@ -1521,7 +1515,7 @@ void player_dispatch_weapon_magic(s32 magic_id, b32 consume_mp, s32 effect_param
 ADDRESS(0x8002665c, 0xbd0)
 void player_update_weapon_attack(void)
 {
-    s32 weapon_id = player_state.equipped_weapon_id;
+    KF_ENUM_PROMOTED(KfObjectId) weapon_id = player_state.equipped_weapon_id;
     KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
     s16 phase;
     s32 phase_step;
@@ -1541,13 +1535,13 @@ void player_update_weapon_attack(void)
     s32 index;
     s32 i;
 
-    if (weapon_id < 16) {
+    if (weapon_id < KF_OBJECT_16) {
         goto regular_weapon;
     }
-    if (weapon_id < 18) {
+    if (weapon_id < KF_OBJECT_18) {
         goto special_weapon;
     }
-    if (weapon_id == KF_EQUIPMENT_NONE) {
+    if (weapon_id == KF_OBJECT_NONE) {
         return;
     }
     goto regular_weapon;
@@ -1568,26 +1562,30 @@ special_weapon: {
         return;
 special_mode_zero: {
             if (phase == 0) {
-                s32 effect_kind;
-                s32 counter;
+                KF_ENUM_PROMOTED(KfEffectKind) effect_kind;
+                KF_ENUM_PROMOTED(KfObjectId) counter;
 
                 switch (weapon_id) {
-                case 16:
-                    effect_kind = 31;
-                    counter = 0x75;
+                case KF_OBJECT_16:
+                    effect_kind = KF_EFFECT_KIND_31;
+                    counter = KF_OBJECT_117;
                     break;
-                case 17:
-                    effect_kind = 30;
-                    counter = 0x76;
+                case KF_OBJECT_17:
+                    effect_kind = KF_EFFECT_KIND_30;
+                    counter = KF_OBJECT_118;
+                    break;
+                default:
                     break;
                 }
 
-                if (player_state.equipped_accessory_id == 59
-                    || player_state.equipped_extra_id == 59) {
-                    effect_kind += 17;
+                if (player_state.equipped_accessory_id == KF_OBJECT_59
+                    || player_state.equipped_extra_id == KF_OBJECT_59) {
+                    /* Selects the paired ballistic kind 47 or 48. */
+                    effect_kind = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind),
+                                                 KF_ENUM_ENCODE(s32, effect_kind) + 17);
                 }
-                if (game_counter_bytes[counter] != 0) {
-                    game_counter_bytes[counter]--;
+                if (game_counter_bytes[KF_ENUM_ENCODE(s32, counter)] != 0) {
+                    game_counter_bytes[KF_ENUM_ENCODE(s32, counter)]--;
                     player_state.weapon_effect = effect_construct_record(
                         10, 0x12, effect_kind, &player_state.camera_position,
                         NULL, &player_state.camera_rotation);
@@ -1606,7 +1604,7 @@ special_mode_zero: {
             }
             if (player_state.weapon_attack_phase >= weapon->normal_attack_end_phase) {
                 if (player_state.attack_charge_current == 0
-                    && player_state.equipped_weapon_id == 16) {
+                    && player_state.equipped_weapon_id == KF_OBJECT_16) {
                     audio_play_sound(3, 110);
                 }
                 player_state.attack_charge_current =
@@ -1698,7 +1696,7 @@ regular_weapon:
     player_state.weapon_attack_phase += phase_step;
 
     if (player_state.weapon_attack_mode == 0
-        && weapon->initial_effect_id != WEAPON_MAGIC_EFFECT_NONE
+        && weapon->initial_effect_id != KF_MAGIC_NONE
         && player_state.weapon_attack_fully_charged != 0
         && player_meets_weapon_magic_power_requirement()
         && (player_state.pad_buttons.current & PADRleft) != 0) {
@@ -1731,13 +1729,13 @@ regular_weapon:
              < player_state.weapon_attack_window + phase_step) {
         player_state.weapon_guard_active = KF_FALSE;
         if (player_state.weapon_attack_mode == 1) {
-            if (player_state.equipped_weapon_id == 13
+            if (player_state.equipped_weapon_id == KF_OBJECT_13
                 && (player_state.pad_buttons.current & PADRleft) != 0) {
                 player_state.weapon_attack_phase -= phase_step;
                 player_state.weapon_guard_active = KF_TRUE;
                 return;
             }
-            if (weapon->release_effect_id != WEAPON_MAGIC_EFFECT_NONE) {
+            if (weapon->release_effect_id != KF_MAGIC_NONE) {
                 player_dispatch_weapon_magic(weapon->release_effect_id,
                                player_state.weapon_attack_phase >= phase_end,
                                (player_state.weapon_attack_phase - weapon->alternate_attack_window_start)
@@ -1821,12 +1819,12 @@ regular_idle:
         if (player_state.weapon_charge_delay == 0) {
             s32 gain = player_charge_gain_for_rank(player_state.physical_power,
                                       weapon->charge_rank) * 2;
-            if (player_state.equipped_leg_id == 44) {
+            if (player_state.equipped_leg_id == KF_OBJECT_44) {
                 gain >>= 1;
             }
-            if ((player_state.equipped_accessory_id == 57
-                 || player_state.equipped_extra_id == 57)
-                && player_state.equipped_weapon_id == 13) {
+            if ((player_state.equipped_accessory_id == KF_ITEM_PHYSICAL_POWER_BONUS_ACCESSORY
+                 || player_state.equipped_extra_id == KF_ITEM_PHYSICAL_POWER_BONUS_ACCESSORY)
+                && player_state.equipped_weapon_id == KF_OBJECT_13) {
                 gain *= 2;
             }
             player_state.attack_charge_current += gain;
@@ -1843,55 +1841,55 @@ regular_idle:
 
 
 ADDRESS(0x8002722c, 0x2c0)
-void player_select_magic_action(s32 magic_id)
+void player_select_magic_action(KF_ENUM_PARAM(KfEffectKind, s32) magic_id)
 {
     KfMagicRecord *record;
     u16 mp_cost;
     /* Retail reserves an unreferenced 8-byte frame slot. */
     s16 frame_reserve[4];
 
-    if (player_state.queued_magic_action.magic_id != KF_PLAYER_MAGIC_ACTION_NONE ||
-        magic_id == KF_PLAYER_MAGIC_ACTION_NONE) {
+    if (player_state.queued_magic_action.magic_id != KF_MAGIC_NONE ||
+        magic_id == KF_MAGIC_NONE) {
         return;
     }
 
-    record = &effect_state.magic_records[magic_id];
+    record = &effect_state.magic_records[KF_ENUM_ENCODE(s32, magic_id)];
     if (player_state.vitals.current_mp < record->mp_cost) {
         return;
     }
 
-    if (player_state.equipped_weapon_id == 12 && magic_id < 11) {
-        if (magic_id >= 7) {
+    if (player_state.equipped_weapon_id == KF_OBJECT_12 && magic_id < KF_EFFECT_KIND_11) {
+        if (magic_id >= KF_EFFECT_KIND_7) {
             return;
         }
     }
-    if (player_state.equipped_body_id == 31 && magic_id >= 11) {
-        if (magic_id < 13) {
+    if (player_state.equipped_body_id == KF_OBJECT_31 && magic_id >= KF_EFFECT_KIND_11) {
+        if (magic_id < KF_EFFECT_KIND_13) {
             return;
         }
-        if (magic_id < 20) {
-            if (magic_id >= 18) {
+        if (magic_id < KF_EFFECT_KIND_20) {
+            if (magic_id >= KF_EFFECT_KIND_18) {
                 return;
             }
         }
     }
 
-    switch (magic_id - 14) {
-    case 0:
-    case 2:
-    case 5:
+    switch (magic_id) {
+    case KF_EFFECT_KIND_14:
+    case KF_EFFECT_KIND_16:
+    case KF_EFFECT_KIND_19:
         break;
-    case 1:
+    case KF_EFFECT_KIND_DEFENSE_BOOST:
         if (player_state.defense_boost_timer != 0) {
             return;
         }
         break;
-    case 3:
+    case KF_EFFECT_KIND_ATTACK_BOOST:
         if (player_state.attack_boost_timer != 0) {
             return;
         }
         break;
-    case 4:
+    case KF_EFFECT_KIND_18:
         player_state.magic_tint_phase_limit = 900;
         player_state.vitals.current_mp -= record->mp_cost;
         return;
@@ -1915,46 +1913,48 @@ charge_gate:
     player_state.vitals.current_mp -= mp_cost;
 
     switch (magic_id) {
-    case 10:
+    case KF_EFFECT_KIND_10:
         player_state.magic_origin_offset.vx = 0;
         player_state.magic_origin_offset.vy = -512;
         player_state.magic_origin_offset.vz = 2000;
         /* Retail falls through to the shared action-byte stores. */
-    case 1:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 11:
-    case 18:
+    case KF_EFFECT_KIND_1:
+    case KF_EFFECT_KIND_4:
+    case KF_EFFECT_KIND_5:
+    case KF_EFFECT_KIND_6:
+    case KF_EFFECT_KIND_7:
+    case KF_EFFECT_KIND_8:
+    case KF_EFFECT_KIND_11:
+    case KF_EFFECT_KIND_18:
         player_state.queued_magic_action.casts_remaining = 1;
         player_state.queued_magic_action.repeat_interval = 1;
         break;
-    case 12:
+    case KF_EFFECT_KIND_12:
         player_state.magic_origin_offset.vx = -200;
         player_state.queued_magic_action.casts_remaining = 5;
         player_state.queued_magic_action.repeat_interval = 2;
         break;
-    case 9:
+    case KF_EFFECT_KIND_9:
         player_state.queued_magic_action.casts_remaining = 6;
         player_state.queued_magic_action.repeat_interval = 1;
         break;
-    case 0:
-    case 2:
+    case KF_EFFECT_KIND_0:
+    case KF_EFFECT_KIND_2:
         player_state.queued_magic_action.casts_remaining = 1;
         player_state.queued_magic_action.repeat_interval = 1;
         player_state.magic_origin_offset.vz = 0;
         player_state.magic_origin_offset.vy = 0;
         player_state.magic_origin_offset.vx = 0;
         break;
-    case 13:
+    case KF_EFFECT_KIND_13:
         player_state.queued_magic_action.casts_remaining = 7;
         player_state.queued_magic_action.repeat_interval = 1;
         break;
-    case 3:
+    case KF_EFFECT_KIND_3:
         player_state.queued_magic_action.casts_remaining = 6;
         player_state.queued_magic_action.repeat_interval = 2;
+        break;
+    default:
         break;
     }
 
@@ -2587,10 +2587,10 @@ void player_update_horizontal_motion(void)
 
 
 ADDRESS(0x8002897c, 0x1c)
-b32 item_id_is_71_to_80(s32 value)
+b32 item_id_is_71_to_80(KF_ENUM_PARAM(KfObjectId, s32) value)
 {
-    if (value < 81) {
-        if (value >= 71) {
+    if (value < KF_OBJECT_81) {
+        if (value >= KF_ITEM_RELIEVE_AILMENTS) {
             return KF_TRUE;
         }
     }
@@ -2611,11 +2611,11 @@ void player_update_actions_and_charge(void)
     }
 
     if (KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADstart)) {
-        if (player_state.secondary_magic_shortcut_id != 0xff) {
+        if (player_state.secondary_magic_shortcut_id != KF_MAGIC_NONE) {
             player_select_magic_action(player_state.secondary_magic_shortcut_id);
         }
-        if (player_state.secondary_item_shortcut_id != 0xff) {
-            if (game_counter_bytes[player_state.secondary_item_shortcut_id] != 0) {
+        if (player_state.secondary_item_shortcut_id != KF_OBJECT_NONE) {
+            if (game_counter_bytes[KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id)] != 0) {
                 if (item_id_is_71_to_80(player_state.secondary_item_shortcut_id) != 0) {
                     menu_apply_item_effect(player_state.secondary_item_shortcut_id);
                 } else {
@@ -2629,7 +2629,7 @@ void player_update_actions_and_charge(void)
         }
     }
 
-    if (player_state.queued_magic_action.magic_id != 0xff) {
+    if (player_state.queued_magic_action.magic_id != KF_MAGIC_NONE) {
         timer = player_state.queued_magic_action.countdown - 1;
         player_state.queued_magic_action.countdown = timer;
         if (timer == 0) {
@@ -2637,7 +2637,7 @@ void player_update_actions_and_charge(void)
             timer = player_state.queued_magic_action.casts_remaining - 1;
             player_state.queued_magic_action.casts_remaining = timer;
             if (timer == 0) {
-                player_state.queued_magic_action.magic_id = 0xff;
+                player_state.queued_magic_action.magic_id = KF_MAGIC_NONE;
             } else {
                 player_state.queued_magic_action.countdown = player_state.queued_magic_action.repeat_interval;
             }
@@ -2645,7 +2645,7 @@ void player_update_actions_and_charge(void)
     }
 
     if (KF_PLAYER_PAD_HELD(player_state.pad_buttons, PADRright)
-        && player_state.equipped_shield_id != 50) {
+        && player_state.equipped_shield_id != KF_OBJECT_50) {
         if (player_state.movement_speed_adjustment_decay_latch != 0) {
             player_state.movement_speed_adjustment_decay_latch--;
         }
@@ -2671,7 +2671,7 @@ void player_update_actions_and_charge(void)
     } else {
         charge_gain = player_charge_gain_for_rank(player_state.magic,
                                     player_state.selected_magic_record->charge_rate);
-        if (player_state.equipped_head_id == 24) {
+        if (player_state.equipped_head_id == KF_OBJECT_24) {
             charge_gain >>= 1;
         }
         player_state.magic_charge += charge_gain;
@@ -2776,11 +2776,11 @@ void player_handle_interaction_and_menu(void)
     player_render_frame_and_release_pool();
     value = menu_run_root_controller();
     if (value >= 0) {
-        if (item_id_is_71_to_80(value) == 0) {
+        if (item_id_is_71_to_80(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), value)) == 0) {
             render_game_frame(NULL, NULL);
             event_scene_command_dispatch(&player_state.camera_position,
                                          &player_state.camera_rotation_target,
-                                         value);
+                                         KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), value));
         }
     } else if (value == KF_MENU_RESULT_GAME_LOADED) {
         s32 resource;
@@ -3231,10 +3231,10 @@ update_reaction_pose:
             && player_state.collision_lower_clearance > -1001
             && player_state.collision_upper_clearance >= 0
             && player_state.fatal_fall_latch == 0
-            && (player_state.equipped_accessory_id == 54
-                || player_state.equipped_extra_id == 54)
-            && game_counter_bytes[0x53] != 0) {
-            game_counter_bytes[0x53]--;
+            && (player_state.equipped_accessory_id == KF_ITEM_STATUS_GUARD_ACCESSORY
+                || player_state.equipped_extra_id == KF_ITEM_STATUS_GUARD_ACCESSORY)
+            && game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)] != 0) {
+            game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)]--;
             render_frames_with_color_overlay(1, 0, 4096, 512);
             player_reset_status();
             render_frames_with_color_overlay(1, 4096, 0, -512);
@@ -3252,7 +3252,7 @@ update_reaction_pose:
                     effect->type = 0xff;
                     effect++;
                 }
-                if (game_counter_bytes[0x4c] != 0
+                if (game_counter_bytes[KF_ENUM_ENCODE(u8, KF_ITEM_FULL_RESTORE)] != 0
                     && (event_state.control.fields.post_death_reload_flags &
                         KF_EVENT_POST_DEATH_RELOAD_ENABLED) != 0) {
                     actor_disable_type3_transition_actors();
@@ -3263,7 +3263,7 @@ update_reaction_pose:
                     player_state.camera_position.vx = 0x1e000;
                     player_state.camera_position.vz = 0x22000;
                     player_state.map_layer_index = 5;
-                    game_counter_bytes[0x4c]--;
+                    game_counter_bytes[KF_ENUM_ENCODE(u8, KF_ITEM_FULL_RESTORE)]--;
                     event_world_state_save_slot(resource_state.active_resource_ids[0]);
                     player_reset_status();
                     player_reload_map_resources(1, 1, 1, 1, 1, 0x43);
@@ -3357,7 +3357,7 @@ after_reaction:
         player_begin_actor_overlap_bob();
     }
     player_update_weapon_attack();
-    if (player_state.equipped_weapon_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_weapon_id != KF_OBJECT_NONE) {
         KfWeaponRecordGame *weapon = player_state.equipped_weapon_record;
         if (weapon->hp_regen_interval != 0
             && player_state.equipment_effect_ticks % weapon->hp_regen_interval == 0) {
@@ -3369,34 +3369,34 @@ after_reaction:
             player_adjust_mp(1);
         }
     }
-    if (player_state.equipped_head_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_head_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_head_record);
     }
-    if (player_state.equipped_body_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_body_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_body_record);
     }
-    if (player_state.equipped_arm_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_arm_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_arm_record);
     }
-    if (player_state.equipped_leg_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_leg_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_leg_record);
     }
-    if (player_state.equipped_shield_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_shield_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_shield_record);
     }
-    if (player_state.equipped_accessory_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_accessory_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_accessory_record);
     }
-    if (player_state.equipped_extra_id != KF_EQUIPMENT_NONE) {
+    if (player_state.equipped_extra_id != KF_OBJECT_NONE) {
         player_apply_equipment_hp_tick(player_state.equipped_extra_record);
     }
-    if (player_state.equipped_head_id == 25 && rand() < 36) {
+    if (player_state.equipped_head_id == KF_OBJECT_25 && rand() < 36) {
         player_state.magic_origin_offset.vx = 0;
         player_state.magic_origin_offset.vy = -300;
         player_state.magic_origin_offset.vz = 400;
-        player_dispatch_magic_effect(11);
+        player_dispatch_magic_effect(KF_EFFECT_KIND_11);
     }
-    if (player_state.equipped_body_id == 31) {
+    if (player_state.equipped_body_id == KF_OBJECT_31) {
         interpolate_collision_filter_rows(20, 20, 20, 5000, 0x800);
     }
     player_state.equipment_effect_ticks++;

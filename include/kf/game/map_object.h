@@ -6,6 +6,7 @@
 #include <kf/lib/types.h>
 #include <kf/lib/enum.h>
 #include <kf/game/audio.h>
+#include <kf/game/item.h>
 #include <kf/game/pool.h>
 #include <kf/game/render_types.h>
 
@@ -66,9 +67,7 @@ KF_ENUM_END(KfMapObjectOperation)
 
 enum {
     KF_MAP_OBJECT_ACTION_TIMER_INIT = 0,
-    KF_MAP_OBJECT_ID_NONE = 0xff,
     KF_MAP_OBJECT_INDEX_NONE = 0xffff,
-    KF_MAP_OBJECT_PLACEMENT_ID_NONE = 0xffff,
     KF_MAP_OBJECT_STATIC_OBJECT_ZERO = 0x80,
     KF_MAP_OBJECT_SPAWN_SEQUENCE_MODULUS = 0x10000,
     KF_MAP_OBJECT_TEMPLATE_CAPACITY = 320,
@@ -187,7 +186,7 @@ typedef struct KfMapObjectPlacement {
     KfMapLayerMask layer_mask;
     u8 region_z;
     u8 region_x;
-    u16 object_id;
+    KF_ENUM_STORAGE(KfObjectId, u16) object_id;
     s16 rotation_y;
     s16 local_z;
     s16 local_x;
@@ -546,7 +545,7 @@ typedef char kf_map_object_tail_initial_rotation_z_offset[
 
 typedef struct KfMapObjectTailEventEffectView {
     u32 unknown_34;
-    u8 pending_event_command;
+    KF_ENUM_STORAGE(KfObjectId, u8) pending_event_command;
     u8 effect_object_index;
     u8 linked_object_flag_mask;
     u8 linked_object_index;
@@ -707,7 +706,7 @@ typedef struct KfMapObject {
     u8 collision_flags;
     KfMapObjectOperation action;
     KfLightingIndex lighting_override_index;
-    u16 object_id;
+    KF_ENUM_STORAGE(KfObjectId, u16) object_id;
     u16 action_timer;
     u16 phase_q12;
     u16 collision_height;
@@ -802,7 +801,7 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTOR *result);
 void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset);
-void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
+void map_object_spawn_effect(u8 source, KF_ENUM_PARAM(KfObjectId, u8) object_id, const VECTOR *position,
                              s32 height_offset);
 void map_object_update_actions(void);
 void map_object_refresh_cell_markers(s32 mode);

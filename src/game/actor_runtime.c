@@ -90,8 +90,8 @@ void actor_initialize_from_group(KfActor *actor)
     actor->animation_id = 0;
     actor->animation_phase = 0;
     actor->unknown_11 = 0;
-    actor->vertical_motion_state = 0;
-    actor->target_type = 0;
+    actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
+    actor->target_type = KF_ACTOR_TARGET_0;
     actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     actor->target = NULL;
     if ((actor->placement_flags & KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW) == 0) {
@@ -127,7 +127,7 @@ void actor_disable_type3_transition_actors(void)
     do {
         if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
             actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE &&
-            actor->target_type == 3 &&
+            actor->target_type == KF_ACTOR_TARGET_3 &&
             actor->target_action_state == KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED &&
             (actor->state_70.signed_state != 0 ||
              actor->animation_phase > KF_ACTOR_ANIMATION_PHASE_PERIOD / 2)) {
@@ -185,7 +185,7 @@ void actor_set_target(KfActor *actor, KfTargetCandidate *target)
 {
     actor->previous_target_type = actor->target_type;
     if (target != NULL) {
-        u8 target_type;
+        KfActorTargetType target_type;
 
         actor->target = target;
         target_type = target->type;
@@ -193,7 +193,7 @@ void actor_set_target(KfActor *actor, KfTargetCandidate *target)
         actor->target_type = target_type;
     } else {
         actor->target = NULL;
-        actor->target_type = KF_ACTOR_TARGET_TYPE_NONE;
+        actor->target_type = KF_ACTOR_TARGET_NONE;
         actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     }
 }
@@ -206,13 +206,13 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     s32 score;
     s32 angle;
 
-    if (target->type == KF_TARGET_CANDIDATE_DISABLED) {
+    if (target->type == KF_ACTOR_TARGET_NONE) {
         return 0;
     }
 
     switch (target->type) {
-    case 5:
-    case 13:
+    case KF_ACTOR_TARGET_5:
+    case KF_ACTOR_TARGET_13:
         if (target == actor->target) {
             score = 0;
             if (target->word_12.value >= player_distance) {
@@ -225,17 +225,17 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
             score = random_triangular_scaled(target->word_02.target_selection.initial_score_scale);
         }
         switch (actor->target_type) {
-        case 4:
-        case 18:
-        case 23:
-        case 24:
-        case 132:
+        case KF_ACTOR_TARGET_4:
+        case KF_ACTOR_TARGET_18:
+        case KF_ACTOR_TARGET_23:
+        case KF_ACTOR_TARGET_24:
+        case KF_ACTOR_TARGET_132:
             score *= 2;
             break;
         }
         break;
 
-    case 9:
+    case KF_ACTOR_TARGET_9:
         if (target->word_0c.value < player_distance) {
             goto zero_score;
         }
@@ -250,11 +250,11 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         }
         break;
 
-    case 4:
-    case 18:
-    case 23:
-    case 24:
-    case 132:
+    case KF_ACTOR_TARGET_4:
+    case KF_ACTOR_TARGET_18:
+    case KF_ACTOR_TARGET_23:
+    case KF_ACTOR_TARGET_24:
+    case KF_ACTOR_TARGET_132:
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_1a.value < player_distance) {
             goto zero_score;
@@ -286,7 +286,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         score = random_triangular_scaled(score);
         break;
 
-    case 25:
+    case KF_ACTOR_TARGET_25:
         score = 0;
         if (actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) {
             break;
@@ -303,7 +303,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         }
         goto zero_score;
 
-    case 11:
+    case KF_ACTOR_TARGET_11:
         if (target->word_1a.value < player_distance) {
             goto zero_score;
         }
@@ -314,8 +314,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         }
         goto zero_score;
 
-    case 19:
-    case 20:
+    case KF_ACTOR_TARGET_19:
+    case KF_ACTOR_TARGET_20:
         score = 0;
         if (target->word_0e.value < player_distance) {
             break;
@@ -331,22 +331,22 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         }
         goto zero_score;
 
-    case 112:
+    case KF_ACTOR_TARGET_EVENT_STREAM:
         score = -1;
         break;
-    case 27:
+    case KF_ACTOR_TARGET_27:
         if (player_distance >= target->word_0c.value) {
             goto score_target;
         }
         /* Fall through to the zero-score cases. */
-    case 2:
-    case 3:
-    case 22:
+    case KF_ACTOR_TARGET_2:
+    case KF_ACTOR_TARGET_3:
+    case KF_ACTOR_TARGET_22:
 zero_score:
         score = 0;
         break;
     default:
-        if (target->type < 128 ||
+        if (target->type < KF_ACTOR_TARGET_MAP_CALLBACK_FIRST ||
             ((KfCandidateScoreCallback)resource_state.active_table[16])(
                 target, player_distance)) {
 score_target:
@@ -415,7 +415,7 @@ void actor_select_target_for_player_distance(void)
 }
 
 ADDRESS(0x80039710, 0x48)
-KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type)
+KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, KfActorTargetType type)
 {
     KfTargetCandidate *target;
     const KfTargetReference *slot = group->targets;
@@ -434,7 +434,7 @@ KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type
 }
 
 ADDRESS(0x80039758, 0x50)
-void actor_select_target_type_in_own_group(KfActor *actor, u8 type)
+void actor_select_target_type_in_own_group(KfActor *actor, KfActorTargetType type)
 {
     KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
     KfTargetCandidate *target = actor_find_target_of_type(group, type);
@@ -486,7 +486,7 @@ void actor_update_lifecycle_for_player_range(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
-    u8 slot_state = actor->slot_state;
+    KfActorSlotState slot_state = actor->slot_state;
     s32 distance;
 
     switch (actor->lifecycle) {
@@ -519,7 +519,7 @@ void actor_update_lifecycle_for_player_range(void)
                 goto set_dormant;
             }
             if (slot_state != KF_ACTOR_SLOT_PERSISTENT) {
-                if (slot_state != 0) {
+                if (slot_state != KF_ACTOR_SLOT_0) {
                     goto set_dormant;
                 }
                 if (actor->spawn_chance == 0 ||
@@ -537,9 +537,9 @@ void actor_update_lifecycle_for_player_range(void)
 
         actor_prepare_and_initialize(actor_state.current);
         {
-            KfTargetCandidate *target = actor_find_target_of_type(group, 0x15);
+            KfTargetCandidate *target = actor_find_target_of_type(group, KF_ACTOR_TARGET_21);
             if (target == NULL) {
-                target = actor_find_target_of_type(group, 0x1a);
+                target = actor_find_target_of_type(group, KF_ACTOR_TARGET_26);
             }
             if (target != NULL) {
                 actor_set_target(actor, target);
@@ -597,7 +597,7 @@ void actor_retarget_or_disable_group_members(s32 group_index)
         if (actor->slot_state != KF_ACTOR_SLOT_FREE &&
             actor->group_index == (group_index & 0xffff)) {
             if (actor->lifecycle == KF_ACTOR_LIFECYCLE_ACTIVE) {
-                actor_select_target_type_in_own_group(actor, 3);
+                actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
             } else {
                 actor_set_lifecycle_and_home_position(actor);
             }
@@ -652,17 +652,17 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         actor = &actor_state.actors[actor->word_22.linked_actor_slot];
     }
     group = &actor_state.target_groups[actor->group_index];
-    if (actor->target_type == 3 && actor->animation_phase >= 1548) {
+    if (actor->target_type == KF_ACTOR_TARGET_3 && actor->animation_phase >= 1548) {
         return;
     }
-    if (actor->target_type == 0x15) {
+    if (actor->target_type == KF_ACTOR_TARGET_21) {
         if (actor->state_70.signed_state != 0) {
             return;
         }
         actor->state_70.signed_state = 1;
         return;
     }
-    if (actor->target_type == 0x1a) {
+    if (actor->target_type == KF_ACTOR_TARGET_26) {
         return;
     }
 
@@ -700,14 +700,14 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         }
     }
     if (mode == 1) {
-        if (actor->target_type == 0x13 && actor->state_70.signed_state == 0x10) {
+        if (actor->target_type == KF_ACTOR_TARGET_19 && actor->state_70.signed_state == 0x10) {
             goto update_motion;
         }
     } else if (mode == 2) {
         if (actor->flags & 0x40000) {
             goto update_motion;
         }
-        candidate = actor_find_target_of_type(group, 0x16);
+        candidate = actor_find_target_of_type(group, KF_ACTOR_TARGET_22);
         if (candidate != NULL) {
             s32 angle = vector_xz_to_angle(
                 actor->position.vx - position->vx,
@@ -725,7 +725,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         if (actor->health != 0 && kind == 0x10) {
             player_add_experience(group->experience_reward);
         }
-        actor_select_target_type_in_own_group(actor, 3);
+        actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
         remaining = 0;
     } else {
         target_slot = group->targets;
@@ -735,7 +735,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
             if (reaction == NULL) {
                 break;
             }
-            if (reaction->type == 2 && reaction->word_0c.value <= damage) {
+            if (reaction->type == KF_ACTOR_TARGET_2 && reaction->word_0c.value <= damage) {
                 s32 chance = reaction->word_02.damage_reaction.reaction_chance;
                 if (chance == 0xff || (rand() >> 7) < chance) {
                     actor_set_target(actor, reaction);
@@ -776,8 +776,8 @@ update_motion:
             linked->motion.vector.vx = actor->motion.vector.vx;
             linked->motion.vector.vy = actor->motion.vector.vy;
             linked->motion.vector.vz = actor->motion.vector.vz;
-            if (linked->target_type != 3) {
-                actor_select_target_type_in_own_group(linked, 2);
+            if (linked->target_type != KF_ACTOR_TARGET_3) {
+                actor_select_target_type_in_own_group(linked, KF_ACTOR_TARGET_2);
             }
         }
     }
@@ -911,7 +911,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
     s32 reach;
 
     do {
-        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3 ||
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == KF_ACTOR_TARGET_3 ||
             actor == actor_state.current) {
             continue;
         }
@@ -972,7 +972,7 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
     for (index = 0; index < KF_ACTOR_CAPACITY; index++, actor++) {
         VECTOR alternate;
 
-        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == 3
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == KF_ACTOR_TARGET_3
             || (actor_state.actor_overlap_exclusion_flags & actor->flags)
             || actor == actor_state.current) {
             continue;
@@ -1128,7 +1128,7 @@ retry_move:
         actor_state.actor_collision_query_flags);
     if (collision == 0) {
     check_floor:
-        if (actor->vertical_motion_state == 0 && (flags & 0x24)) {
+        if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE && (flags & 0x24)) {
             s32 floor_height = KF_COLLISION_CACHE_RESULT;
             s32 probe_x;
             s32 probe_z;
@@ -1345,7 +1345,7 @@ void actor_update_vertical_motion(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
-    s32 vertical_state;
+    KF_ENUM_PROMOTED(KfActorVerticalState) vertical_state;
     const u16 *collision_layer = &KF_COLLISION_CACHE.layer;
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
@@ -1358,8 +1358,9 @@ void actor_update_vertical_motion(void)
 
     vertical_state = actor->vertical_motion_state;
     if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) goto state_20;
-    if (vertical_state < 33) {
-        if (vertical_state == 0) goto state_0;
+    /* Retail splits the remaining states with a "below FALLING + 1" test. */
+    if (KF_ENUM_ENCODE(s32, vertical_state) < KF_ENUM_ENCODE(s32, KF_ACTOR_VERTICAL_MOTION_FALLING) + 1) {
+        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) goto state_0;
         if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) goto state_10;
         return;
     }
@@ -1422,7 +1423,7 @@ state_20:
         }
         actor->position.vy = KF_COLLISION_CACHE_RESULT;
 reset_vertical_motion_state:
-        actor->vertical_motion_state = 0;
+        actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
         return;
 
 state_30: {
@@ -1461,7 +1462,7 @@ s32 actor_damp_horizontal_motion(s32 decay, s32 target)
     KfActor *actor = actor_state.current;
     s32 length;
 
-    if (actor->vertical_motion_state == 0) {
+    if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
         length = SquareRoot0(actor->motion.vector.vx * actor->motion.vector.vx
                            + actor->motion.vector.vz * actor->motion.vector.vz);
         if (length == 0) {
@@ -1789,7 +1790,8 @@ enum {
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
 ADDRESS(0x8003c614, 0xa70)
-void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 position_mode, ...)
+void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 damage_multiplier_tenths,
+                                 s32 position_mode, ...)
 {
     /* Retail walks O32 argument home slots from the last named word. */
     const s32 *arguments = &position_mode;
@@ -1847,14 +1849,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
     position.vz = current->position.vz + offset.vz;
 
     switch (kind) {
-    case 0x7b:
-        kind = 0x20;
+    case KF_EFFECT_KIND_123:
+        kind = KF_EFFECT_KIND_32;
         if (arguments[2] != 0) {
             goto target_effect;
         }
         /* fall through */
-    case 7:
-    case 0x20:
+    case KF_EFFECT_KIND_7:
+    case KF_EFFECT_KIND_32:
         audio_play_spatial_default_range(0x23, &position, 0x6e, 0);
     target_effect:
         actor_compute_target_direction(current, player, 500, &position, &direction,
@@ -1862,7 +1864,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect = effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         if (effect != NULL) effect->cooldown = 3;
         break;
-    case 0x79:
+    case KF_EFFECT_KIND_121:
         actor_compute_target_direction(current, player, 600, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         distance = fixed_vector3_length(position.vx - player->vx,
@@ -1873,14 +1875,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       distance);
         break;
-    case 4:
+    case KF_EFFECT_KIND_4:
         /* Five-argument effect calls leave the optional words that the steering
          * call stored in the outgoing argument area. */
         actor_compute_target_direction(current, player, 800, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x28: {
+    case KF_EFFECT_KIND_40: {
         s32 raised_y = position.vy + 1600;
         vector_displacement_to_pitch_yaw(player->vx - position.vx,
                       player->vy - raised_y,
@@ -1895,51 +1897,51 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
                       &orientation.angles);
         break;
     }
-    case 9:
-    case 0x21:
+    case KF_EFFECT_KIND_9:
+    case KF_EFFECT_KIND_33:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       KF_EFFECT_KIND9_TARGET_PLAYER);
         break;
-    case 0x18:
+    case KF_EFFECT_KIND_24:
         actor_compute_target_direction(current, player, 250, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 2:
+    case KF_EFFECT_KIND_2:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       0x1000, 0x100, 0x1000);
         break;
-    case 0x16:
+    case KF_EFFECT_KIND_22:
         actor_compute_target_direction(current, player, 400, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x17:
+    case KF_EFFECT_KIND_23:
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL,
                       actor_state.current_actor_slot_index, position_mode,
                       ((const u16 *)arguments[1])[2]);
         break;
-    case 0x6c:
+    case KF_EFFECT_KIND_108:
         pitch_yaw_to_forward_vector(&current->rotation, &direction);
         vector3s_scale_shift12(550, &direction);
-        effect = effect_construct_record(damage_multiplier_tenths, 0x23, 7, &position, &direction);
+        effect = effect_construct_record(damage_multiplier_tenths, 0x23, KF_EFFECT_KIND_7, &position, &direction);
         if (effect != NULL) effect->cooldown = 5;
         break;
-    case 1:
-    case 0x1c:
+    case KF_EFFECT_KIND_1:
+    case KF_EFFECT_KIND_28:
         actor_compute_target_direction(current, player, 500, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0x1a:
-    case 0x1b:
+    case KF_EFFECT_KIND_26:
+    case KF_EFFECT_KIND_27:
         actor_compute_target_direction(current, player, 300, &position, &direction,
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction);
         break;
-    case 0xc:
+    case KF_EFFECT_KIND_12:
         /* Retail aims at the two-vertex prediction even for other position modes. */
         vector_displacement_to_pitch_yaw(predicted.vx - position.vx,
                       predicted.vy - position.vy,
@@ -1950,14 +1952,14 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, &direction,
                       &orientation.angles, 500, 0x3c, 0x80, 0x50, 0x8c);
         break;
-    case 0x78:
+    case KF_EFFECT_KIND_120:
         position.vx = (rand() >> 2) + player_state.camera_position.vx - 4096;
         position.vz = (rand() >> 2) + player_state.camera_position.vz - 4096;
         position.vy = player_state.camera_position.vy - 5000;
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         effect_construct_record(damage_multiplier_tenths, 0x23, kind, &position, NULL);
         break;
-    case 0x6e:
+    case KF_EFFECT_KIND_110:
         group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
@@ -1984,7 +1986,7 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_ASCENDING_SPIN);
         }
         break;
-    case 0x70:
+    case KF_EFFECT_KIND_112:
         group_index = ((const u16 *)arguments[1])[2];
         spawned = actor_pool_find_free();
         if (spawned != NULL) {
@@ -2011,8 +2013,8 @@ void actor_dispatch_group_effect(s32 kind, s32 damage_multiplier_tenths, s32 pos
             actor_select_target_type_in_own_group(spawned, KF_ACTOR_TARGET_COLLISION_MOVE);
         }
         break;
-    case 0x1d:
-    case 0x1f:
+    case KF_EFFECT_KIND_29:
+    case KF_EFFECT_KIND_31:
         trajectory_target = *player;
         count = 6;
         do {
@@ -2135,7 +2137,7 @@ play_sound:
 dispatch_action:
 
     switch (actor->target_type) {
-    case 2:
+    case KF_ACTOR_TARGET_2:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation(target->animation_id);
@@ -2149,7 +2151,7 @@ dispatch_action:
         }
         actor_damp_horizontal_motion(group->movement_step * 2, 10);
         break;
-    case 3: {
+    case KF_ACTOR_TARGET_3: {
         s32 old_state = actor->state_70.signed_state;
 
         if (actor->target_action_state == 0) {
@@ -2172,15 +2174,15 @@ dispatch_action:
                     map_object_spawn_scattered_effect(effect_id, &actor->position,
                                    -(actor->collision_height >> 1));
                 }
-                if (actor->slot_state == 0 || actor->slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
-                    if (target->word_0c.bytes.low != 0xff &&
-                        (rand() >> 7) < target->word_0c.bytes.high) {
+                if (actor->slot_state == KF_ACTOR_SLOT_0 || actor->slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
+                    if (target->word_0c.death_drop.object_id != KF_OBJECT_NONE &&
+                        (rand() >> 7) < target->word_0c.death_drop.chance) {
                         map_object_spawn_effect(
-                            1, target->word_0c.bytes.low, &actor->position,
+                            1, target->word_0c.death_drop.object_id, &actor->position,
                             -(actor->collision_height >> 1));
                     }
                 } else if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
-                           actor->death_drop_object_id != 0xff) {
+                           actor->death_drop_object_id != KF_OBJECT_NONE) {
                     map_object_spawn_effect(
                         0, actor->death_drop_object_id, &actor->position,
                         -(actor->collision_height >> 1));
@@ -2230,7 +2232,7 @@ case3_motion:
         actor_damp_horizontal_motion(group->movement_step * 2, 10);
         break;
     }
-    case 0:
+    case KF_ACTOR_TARGET_0:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation_if_changed(target->animation_id);
@@ -2242,7 +2244,7 @@ case3_motion:
         }
         actor_damp_horizontal_motion(group->movement_step, 10);
         break;
-    case 1:
+    case KF_ACTOR_TARGET_1:
         if (actor->target_action_state == 0) {
             actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
@@ -2256,8 +2258,8 @@ case3_motion:
         }
         actor_advance_animation_wrapped(actor, target->animation_step);
         break;
-    case 12:
-    case 16: {
+    case KF_ACTOR_TARGET_12:
+    case KF_ACTOR_TARGET_16: {
         s32 motion_flags;
 
         if (actor->target_action_state == 0) {
@@ -2299,7 +2301,7 @@ case3_motion:
         if (motion_flags & 2) {
             actor->tail_72.angles.x = (rand() >> 5) - 512;
         }
-        if (actor->target_type == 16) {
+        if (actor->target_type == KF_ACTOR_TARGET_16) {
             actor_update_motion_animation(target->animation_id, target->word_14.bytes[0],
                            target->word_14.bytes[1], target->word_16.bytes.low,
                            target->word_16.bytes.high, target->animation_step);
@@ -2308,7 +2310,7 @@ case3_motion:
         }
         break;
     }
-    case 5: {
+    case KF_ACTOR_TARGET_5: {
         s32 distance;
         s32 angle;
         s32 mode;
@@ -2318,10 +2320,10 @@ case3_motion:
             actor->target_action_state = 0xf1;
             actor_set_animation_if_changed(target->animation_id);
             switch (actor->previous_target_type) {
-            case 4:
-            case 18:
-            case 23:
-            case 24:
+            case KF_ACTOR_TARGET_4:
+            case KF_ACTOR_TARGET_18:
+            case KF_ACTOR_TARGET_23:
+            case KF_ACTOR_TARGET_24:
                 actor->state_70.bytes.low = 1;
                 break;
             default:
@@ -2373,8 +2375,8 @@ case3_motion:
         actor_advance_animation_wrapped(actor, target->animation_step);
         break;
     }
-    case 13:
-    case 17: {
+    case KF_ACTOR_TARGET_13:
+    case KF_ACTOR_TARGET_17: {
         s32 delta_x;
         s32 delta_y;
         s32 delta_z;
@@ -2417,7 +2419,7 @@ case3_motion:
                           group->movement_step,
                           group->turn_acceleration, 17);
         }
-        if (actor->target_type == 17) {
+        if (actor->target_type == KF_ACTOR_TARGET_17) {
             actor_update_motion_animation(target->animation_id, target->word_18.bytes.low,
                            target->word_18.bytes.high, target->word_1a.bytes[0],
                            target->word_1a.bytes[1], target->animation_step);
@@ -2426,7 +2428,7 @@ case3_motion:
         }
         break;
     }
-    case 9:
+    case KF_ACTOR_TARGET_9:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = 0;
@@ -2466,7 +2468,7 @@ case3_motion:
             actor_damp_horizontal_motion(group->movement_step * 2, 10);
             break;
         case 2:
-            if (actor->vertical_motion_state == 0) {
+            if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
                 actor->state_70.signed_state = 3;
                 actor_set_animation(target->word_14.bytes[1]);
             } else {
@@ -2485,7 +2487,7 @@ case3_motion:
             break;
         }
         break;
-    case 10: {
+    case KF_ACTOR_TARGET_10: {
         s32 random_value;
 
         if (actor->target_action_state == 0) {
@@ -2537,7 +2539,7 @@ case3_motion:
                         group->turn_acceleration);
         break;
     }
-    case 4:
+    case KF_ACTOR_TARGET_4:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation(target->animation_id);
@@ -2556,7 +2558,7 @@ case3_motion:
         }
         actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
-    case 23:
+    case KF_ACTOR_TARGET_23:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = target->word_18.value;
@@ -2588,7 +2590,7 @@ case3_motion:
         }
         actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
-    case 24: {
+    case KF_ACTOR_TARGET_24: {
         s32 step;
         s32 speed;
         s32 angle;
@@ -2627,7 +2629,7 @@ case3_motion:
         }
         break;
     }
-    case 11: {
+    case KF_ACTOR_TARGET_11: {
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation_if_changed(target->animation_id);
@@ -2706,7 +2708,7 @@ case3_motion:
                         group->turn_acceleration);
         break;
     }
-    case 18: {
+    case KF_ACTOR_TARGET_18: {
         s32 delta_x;
         s32 delta_y;
         s32 delta_z;
@@ -2738,7 +2740,7 @@ case3_motion:
         }
         break;
     }
-    case 14: {
+    case KF_ACTOR_TARGET_14: {
         KfActor *other = actor_state.other_actor;
         if (actor->target_action_state == 0) {
             actor->target_action_state = 0xf1;
@@ -2777,7 +2779,7 @@ case3_motion:
         }
         break;
     }
-    case 15:
+    case KF_ACTOR_TARGET_15:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation_if_changed(target->animation_id);
@@ -2791,7 +2793,7 @@ case3_motion:
             actor_reset_target_and_reselect();
         }
         break;
-    case 19:
+    case KF_ACTOR_TARGET_19:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = 0;
@@ -2819,7 +2821,7 @@ case3_motion:
         }
         actor_damp_horizontal_motion(group->movement_step, 10);
         break;
-    case 20:
+    case KF_ACTOR_TARGET_20:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = target->word_12.value;
@@ -2838,13 +2840,13 @@ case3_motion:
             }
         }
         break;
-    case 22:
+    case KF_ACTOR_TARGET_22:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation(target->animation_id);
         }
         goto case19_clamped;
-    case 21:
+    case KF_ACTOR_TARGET_21:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = 0;
@@ -2898,7 +2900,7 @@ case3_motion:
         }
         }
         break;
-    case 26:
+    case KF_ACTOR_TARGET_26:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = 0;
@@ -2929,11 +2931,11 @@ case3_motion:
         }
             /* fall through */
         case 1:
-            actor->vertical_motion_state = 0;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
             goto case29_shared_motion;
         }
         break;
-    case 25: {
+    case KF_ACTOR_TARGET_25: {
         const u16 *cursor;
         s32 repeat;
 
@@ -2985,18 +2987,18 @@ case3_motion:
                     actor->tail_72.script.word_index = index + 3;
                     z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, -1, x, y, z, cursor);
                 } else if (opcode == 0x8004) {
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, -2,
                                    first, second, third);
                 } else {
-                    actor_dispatch_group_effect(target->word_0c.bytes.low,
+                    actor_dispatch_group_effect(target->word_0c.script_effect.kind,
                                    target->word_18.value, opcode,
                                    cursor + repeat - 1,
                                    (s16)actor->tail_72.script.effect_cycle_index);
@@ -3013,7 +3015,7 @@ case3_motion:
         actor_damp_horizontal_motion(group->movement_step, 10);
         break;
     }
-    case 27:
+    case KF_ACTOR_TARGET_27:
         if (actor->target_action_state == 0) {
             actor->target_action_state = 0xf1;
             actor->state_70.signed_state = 0;
@@ -3058,7 +3060,7 @@ case3_motion:
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 actor->collision_radius = target->word_12.value;
                 actor->collision_height = target->word_14.value;
-                next_target = actor_find_target_of_type(group, 21);
+                next_target = actor_find_target_of_type(group, KF_ACTOR_TARGET_21);
                 if (next_target != NULL) {
                     actor_set_target(actor, next_target);
                 } else {
@@ -3069,7 +3071,7 @@ case3_motion:
         }
         }
         break;
-    case 29:
+    case KF_ACTOR_TARGET_ASCENDING_SPIN:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor_set_animation(target->animation_id);
@@ -3089,7 +3091,7 @@ case3_motion:
         }
         break;
     }
-    case 28: {
+    case KF_ACTOR_TARGET_28: {
         s32 collision;
 
         if (actor->target_action_state == 0) {
@@ -3109,7 +3111,7 @@ case3_motion:
                                target->word_18.value, target->word_1a.value,
                                target->word_1c.value, 0x1000, 10, &actor->position);
             }
-            actor_select_target_type_in_own_group(actor, 3);
+            actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
             actor->motion.vector.vz = 0;
             actor->motion.vector.vy = 0;
             actor->motion.vector.vx = 0;
@@ -3117,7 +3119,7 @@ case3_motion:
         }
         break;
     }
-    case 30: {
+    case KF_ACTOR_TARGET_COLLISION_MOVE: {
         VECTOR next;
         s32 collision;
 
@@ -3154,17 +3156,17 @@ case3_motion:
     case30_advance:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
-            actor_select_target_type_in_own_group(actor, 3);
+            actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
             actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         }
         break;
     }
-    case 240:
+    case KF_ACTOR_TARGET_240:
         actor_suspend_vertical_motion();
         break;
-    case 6:
-    case 7:
-    case 8:
+    case KF_ACTOR_TARGET_6:
+    case KF_ACTOR_TARGET_7:
+    case KF_ACTOR_TARGET_8:
     default:
         resource_state.active_table[17]();
         break;
@@ -3172,7 +3174,7 @@ case3_motion:
 
     if (actor->flags & KF_ACTOR_FLAG_LINKED) {
         KfActor *other = actor_state.other_actor;
-        u8 slot_state = actor->slot_state;
+        KfActorSlotState slot_state = actor->slot_state;
 
         if (slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
             actor->current_map_layer = KF_MAP_LAYER_NONE;
@@ -3180,8 +3182,8 @@ case3_motion:
                 actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
                 goto behavior_done;
             }
-            if (other->target_type == slot_state) {
-                actor->target_type = 3;
+            if (other->target_type == KF_ACTOR_TARGET_3) {
+                actor->target_type = KF_ACTOR_TARGET_3;
                 actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
                 actor->state_70.signed_state = 99;
                 goto behavior_done;
@@ -3204,7 +3206,7 @@ case3_motion:
                     actor->flags |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
                 if (actor->flags & 0x200) {
-                    actor_select_target_type_in_own_group(actor, 3);
+                    actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
                 }
                 actor->motion.vector.vx = other->motion.vector.vx;
                 actor->motion.vector.vy = other->motion.vector.vy;
@@ -3348,7 +3350,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor->word_24.value = records->initial_actor_word_24;
             actor->vertical_anchor_offset = records->vertical_anchor_offset;
             actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
-            actor->target_type = 0;
+            actor->target_type = KF_ACTOR_TARGET_0;
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
             actor->target = NULL;
 

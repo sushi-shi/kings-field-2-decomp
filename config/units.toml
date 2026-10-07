@@ -104,7 +104,7 @@ profile = "probe-gcc257-o2-plain-g8"
 unit = "game.main"
 image = "GAME.EXE"
 source = "src/game/main.c"
-profile = "probe-gcc257-o2-g0"
+profile = "probe-gcc257-o2-g8"
 
 [[unit]]
 unit = "game.audio_runtime"

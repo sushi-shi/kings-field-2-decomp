@@ -26,6 +26,14 @@ KF_ENUM_BEGIN(KfGameMainState, u32)
     GAME_MAIN_EXIT_REQUESTED = 1
 KF_ENUM_END(KfGameMainState)
 
+/* Twelve zero bytes open the game .sdata at the gp anchor, where OPEN's and
+   END's main units keep their mailbox pointer and data-file name. Nothing in
+   any GAME build reads them; their types are unresolved byte views. */
+DATA(0x8006d674, 0x4, ".sdata")
+static u32 main_unreferenced_sdata_word = 0;
+DATA(0x8006d678, 0x8, ".sdata")
+static u8 main_unreferenced_sdata_bytes[8] = {0};
+
 DATA(0x80198630, 0x4, ".bss")
 KfGameMainState game_main_exit_flag;
 

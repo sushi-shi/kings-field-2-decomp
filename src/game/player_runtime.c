@@ -26,24 +26,6 @@
 
 void player_apply_map_object_reaction(KfMapObject *object);
 
-
-
-typedef union KfPlayerMagicSpawnRecord {
-    SVECTOR offset;
-    struct {
-        s16 x;
-        s16 y;
-        s16 z;
-        s16 effect_kind;
-    } fields;
-} KfPlayerMagicSpawnRecord;
-
-typedef char kf_player_magic_spawn_record_size[
-    sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
-typedef char kf_player_magic_spawn_effect_kind_offset[
-    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
-
-
 DATA(0x800667a0, 0x28, ".data")
 KfPlayerMagicSpawnRecord player_magic_spawn_records[5] = {
     {{0, 0, 100, 0}},
@@ -2831,22 +2813,6 @@ void player_begin_map_object_view_follow(u8 map_object_index)
     player_state.death_state = KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW;
     player_state.reaction.view.map_object_index = map_object_index;
 }
-
-struct KfMapObjectRecord40 {
-    u8 unknown_00;
-    u8 reaction_mode;
-    u8 unknown_02[0x0a];
-    SVECTOR reaction_rotation_vector;
-    u8 unknown_14[0x24];
-    s16 reaction_rotation_scale_q15;
-};
-
-typedef char kf_player_map_object_vector_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_vector == 0x0c ? 1 : -1];
-typedef char kf_player_map_object_reaction_mode_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_mode == 0x01 ? 1 : -1];
-typedef char kf_player_map_object_halfword_offset[
-    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_scale_q15 == 0x38 ? 1 : -1];
 
 ADDRESS(0x800291ec, 0x1e8)
 void player_apply_map_object_reaction(KfMapObject *object)

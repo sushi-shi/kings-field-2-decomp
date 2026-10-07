@@ -7360,13 +7360,13 @@ GAME.EXE	0x80038464	0x27c64	0x80038468	mips_hi16_lo16	instruction-word	0x8017ccc
 GAME.EXE	0x800384a4	0x27ca4		mips26	instruction-word	0x800384dc	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800384b8	0x27cb8		mips26	instruction-word	0x800384dc	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800384c8	0x27cc8	0x800384cc	mips_hi16_lo16	instruction-word	0x801b2144	bss	event_state	lui+addiu	at	paired-reviewed	reviewed	manual:map_object_action_15_event_control_raw_pair
-GAME.EXE	0x800384ec	0x27cec	0x800384f0	mips_hi16_lo16	instruction-word	0x8006d6e4	load	map_object_motion_action15_start_offset	lui+addiu	a2	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_0
-GAME.EXE	0x800384f4	0x27cf4	0x800384f8	mips_hi16_lo16	instruction-word	0x8006d6ec	load	map_object_motion_action15_end_offset	lui+addiu	a3	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_0
+GAME.EXE	0x800384ec	0x27cec	0x800384f0	mips_hi16_lo16	instruction-word	0x8006d6e4	load	map_object_motion_recall_socket_start_offset	lui+addiu	a2	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_0
+GAME.EXE	0x800384f4	0x27cf4	0x800384f8	mips_hi16_lo16	instruction-word	0x8006d6ec	load	map_object_motion_recall_socket_end_offset	lui+addiu	a3	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_0
 GAME.EXE	0x800384fc	0x27cfc		mips26	instruction-word	0x80036b68	load	map_object_step_offset_motion	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038504	0x27d04		mips26	instruction-word	0x80038c7c	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x80038510	0x27d10	0x80038514	mips_hi16_lo16	instruction-word	0x8017ccc0	bss	map_object_state	lui+addiu	a0	paired-reviewed	reviewed	manual:map_object_action_15_target_pool_raw_pair
-GAME.EXE	0x80038584	0x27d84	0x80038588	mips_hi16_lo16	instruction-word	0x8006d6f4	load	map_object_motion_action17_start_offset	lui+addiu	a2	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_1
-GAME.EXE	0x8003858c	0x27d8c	0x80038590	mips_hi16_lo16	instruction-word	0x8006d6fc	load	map_object_motion_action17_end_offset	lui+addiu	a3	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_1
+GAME.EXE	0x80038584	0x27d84	0x80038588	mips_hi16_lo16	instruction-word	0x8006d6f4	load	map_object_motion_door_socket_start_offset	lui+addiu	a2	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_1
+GAME.EXE	0x8003858c	0x27d8c	0x80038590	mips_hi16_lo16	instruction-word	0x8006d6fc	load	map_object_motion_door_socket_end_offset	lui+addiu	a3	paired-reviewed	reviewed	manual:map_object_motion_offset_pair_1
 GAME.EXE	0x80038594	0x27d94		mips26	instruction-word	0x80036b68	load	map_object_step_offset_motion	jal		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word
 GAME.EXE	0x800385b8	0x27db8	0x800385bc	mips_hi16_lo16	instruction-word	0x801767d0	bss	map_object_state	lui+addiu	v1	paired-reviewed	reviewed	manual:map_object_action_linked_pool_raw_pair
 GAME.EXE	0x800385d0	0x27dd0		mips26	instruction-word	0x80038c78	load		j		range-filtered	reviewed	manual:map_object_dispatch_direct_raw_word

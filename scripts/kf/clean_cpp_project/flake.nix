@@ -10,10 +10,11 @@
       python = pkgs.python3.withPackages (p: [ p.pyelftools ]);
       binutils = pkgs.pkgsCross.mipsel-linux-gnu.buildPackages.binutils;
       environment = {
-        PSYQ_INCLUDE = "${sdk.psyqSdk}/release-2.5/isa board/PSXLIB/INCLUDE";
-        PSYQ_BIN = "${sdk.psyqSdk}/release-2.5/isa board/PSXBIN/BIN";
-        PSYQ_LIB = "${sdk.psyqSdk}/release-2.5/isa board/PSXLIB/LIB";
-        PSYQ_H2000_LIB = "${sdk.psyqSdk}/release-2.5/H2000/LIB2000";
+        PSYQ_SDK = "${sdk.psyqSdk}/psyq-3.0";
+        PSYQ_INCLUDE = "${sdk.psyqSdk}/include-lf";
+        PSYQ_BIN = "${sdk.psyqSdk}/psyq-3.0/BIN";
+        PSYQ_LIB = "${sdk.psyqSdk}/psyq-3.0/LIB";
+        PSYQ_MALLOC_OBJ = "${sdk.psyqMallocObj}/MALLOC.OBJ";
         PSYQ_ASPSX = "${sdk.aspsxNative}/1.07/ASPSX.EXE";
         PSYQ_ASMPSX = "${sdk.asmpsxNative}";
         PSYQ_CPE2X = "${sdk.psyqRuntime30Cpe2x}/CPE2X.EXE";
@@ -37,8 +38,8 @@
         '';
         installPhase = ''
           mkdir -p "$out/link"
-          cp build/psx/PSX.EXE build/game/GAME.EXE build/open/OPEN.EXE "$out/"
-          cp build/psx/PSX.CPE build/game/GAME.CPE build/open/OPEN.CPE "$out/link/"
+          cp build/psx/PSX.EXE build/game/GAME.EXE build/open/OPEN.EXE build/end/END.EXE "$out/"
+          cp build/psx/PSX.CPE build/game/GAME.CPE build/open/OPEN.CPE build/end/END.CPE "$out/link/"
         '';
       });
       runner = pkgs.writeShellApplication {

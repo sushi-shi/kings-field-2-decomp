@@ -95,20 +95,44 @@ let c = '/'; /* outer /* inner */ end */ let b = b'\\n'; } // removed
 
 
 class ExportControls(unittest.TestCase):
-    def test_verification_separates_reserved_header_bytes_from_link_identity(self):
+    def test_verification_requires_identical_links_and_executables(self):
         original = b'PS-X EXE' + bytes(2048)
         link = b'CPE\x01native link'
-        self.assertEqual(compare_program(original, original, link, link), [])
-        changed = bytearray(original)
-        changed[8] = 17
-        self.assertEqual(compare_program(original, changed, link, link), [8])
+        self.assertIsNone(compare_program(original, original, link, link))
         with self.assertRaisesRegex(ValueError, 'native linker'):
-            compare_program(original, changed, link, link + b'changed')
-        for offset in (0, 16, 20, 48, 128, 2048):
+            compare_program(original, original, link, link + b'changed')
+        for offset in (8, 9, 15, 16, 20, 48, 128, 2048):
             changed = bytearray(original)
             changed[offset] ^= 1
-            with self.subTest(offset=offset), self.assertRaisesRegex(ValueError, 'executable differs'):
-                compare_program(original, changed, link, link)
+            with self.subTest(offset=offset), self.assertRaisesRegex(
+                    ValueError, f'differs at 1 byte\\(s\\), first at {offset:#x}'):
+                compare_program(original, bytes(changed), link, link)
+        with self.assertRaisesRegex(ValueError, 'executable differs'):
+            compare_program(original, original + b'\0', link, link)
+
+    def test_export_flakes_supply_every_sdk_input_of_the_shared_builder(self):
+        import re
+
+        repo = Path(__file__).resolve().parents[1]
+        used = set()
+        for path in [*(repo / 'scripts/psxbuild').glob('*.py'),
+                     repo / 'scripts/kf/clean_project/build.py']:
+            used.update(re.findall(r"environ\['(PSYQ_\w+)'\]", path.read_text()))
+        self.assertIn('PSYQ_MALLOC_OBJ', used)
+        for template in ('clean_project', 'clean_cpp_project'):
+            text = (repo / 'scripts/kf' / template / 'flake.nix').read_text()
+            with self.subTest(template=template):
+                defined = set(re.findall(r'^\s*(PSYQ_\w+) = ', text, re.M))
+                missing = used - defined - ({'PSYQ_C_INCLUDE'} if template == 'clean_cpp_project'
+                                            else set())
+                self.assertFalse(missing, f'{template} lacks {sorted(missing)}')
+                self.assertNotIn('release-2.5', text)
+                for image in ('PSX', 'GAME', 'OPEN', 'END'):
+                    self.assertIn(f'build/{image.lower()}/{image}.EXE', text)
+                    self.assertIn(f'build/{image.lower()}/{image}.CPE', text)
+
+    def test_classic_cleanup_removes_enum_value_views(self):
+        self.assertEqual(clean_c('x = KF_ENUM_VALUE(a.b) << 5;', {}), 'x = (a.b) << 5;\n')
 
     def test_output_replacement_guards(self):
         with tempfile.TemporaryDirectory() as temporary:

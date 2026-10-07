@@ -19,7 +19,18 @@
  * follow the update/interaction code (and KF1's numbering where it agrees:
  * lift door 2, hinged container 8, item container 9, screen image 13, save
  * point 14, item pickup 64); members without behavioural evidence keep
- * their decimal encoding as a WIP name. */
+ * their decimal encoding as a WIP name.
+ *
+ * Sockets show an item used on them: items 114..116 placed in a recall
+ * socket are the destinations of items 111..113, and item 103 placed in a
+ * door socket sets that side's open bit of the linked door's marker.
+ * Operations 95 and 160..165 have no GAME update case; the map callback
+ * table (FDAT 3r + 2) initializes (slot 8), updates (slot 9) and arms them
+ * (slots 0 and 2), so REGION0/REGION1 name the overlay that implements an
+ * otherwise identical item socket. No JP/US/EU template uses 0, 11 or 80,
+ * the only operation-33 template (object 239) is never placed, dropped or
+ * spawned, and no code or map callback stores any of the four in the action
+ * byte; only their GAME dispatch hooks remain. */
 KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_0 = 0,
     KF_MAP_OBJECT_OP_LIFT_DOOR = 2,
@@ -31,9 +42,9 @@ KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_11 = 11,
     KF_MAP_OBJECT_OP_SCREEN_IMAGE = 13,
     KF_MAP_OBJECT_OP_SAVE_POINT = 14,
-    KF_MAP_OBJECT_OP_15 = 15,
+    KF_MAP_OBJECT_OP_RECALL_SOCKET = 15,
     KF_MAP_OBJECT_OP_BOB = 16,
-    KF_MAP_OBJECT_OP_17 = 17,
+    KF_MAP_OBJECT_OP_DOOR_SOCKET = 17,
     KF_MAP_OBJECT_OP_RESTORE_POINT = 18,
     KF_MAP_OBJECT_OP_GROW_ITEM = 19,
     KF_MAP_OBJECT_OP_HIDDEN_SCREEN_IMAGE = 20,
@@ -43,25 +54,25 @@ KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_PLAYER_REACTION = 32,
     KF_MAP_OBJECT_OP_33 = 33,
     KF_MAP_OBJECT_OP_WARP = 34,
-    KF_MAP_OBJECT_OP_48 = 48,
+    KF_MAP_OBJECT_OP_RAISED_ADDITIVE = 48,
     KF_MAP_OBJECT_OP_ITEM_PICKUP = 64,
     KF_MAP_OBJECT_OP_80 = 80,
-    KF_MAP_OBJECT_OP_81 = 81,
+    KF_MAP_OBJECT_OP_ANIMATED_HAZARD = 81,
     KF_MAP_OBJECT_OP_SWITCH = 83,
     KF_MAP_OBJECT_OP_PATTERN_GATE = 84,
     KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE = 88,
     KF_MAP_OBJECT_OP_LAYER_FADE = 89,
-    KF_MAP_OBJECT_OP_95 = 95,
+    KF_MAP_OBJECT_OP_SIGNAL_CELL_COPY = 95,
     KF_MAP_OBJECT_OP_FALL_AND_TIP = 96,
     KF_MAP_OBJECT_OP_FALL_AND_SPIN = 97,
     KF_MAP_OBJECT_OP_BOUNCE = 98,
     KF_MAP_OBJECT_OP_OFFSET_MOTION = 112,
-    KF_MAP_OBJECT_OP_160 = 160,
-    KF_MAP_OBJECT_OP_161 = 161,
-    KF_MAP_OBJECT_OP_162 = 162,
-    KF_MAP_OBJECT_OP_163 = 163,
-    KF_MAP_OBJECT_OP_164 = 164,
-    KF_MAP_OBJECT_OP_165 = 165,
+    KF_MAP_OBJECT_OP_REGION0_ITEM_SOCKET = 160,
+    KF_MAP_OBJECT_OP_REGION1_ITEM_SOCKET = 161,
+    KF_MAP_OBJECT_OP_SIGNAL_EVENT_BIT = 162,
+    KF_MAP_OBJECT_OP_EVENT_BIT_ACTIVATED = 163,
+    KF_MAP_OBJECT_OP_ITEM_DIAL = 164,
+    KF_MAP_OBJECT_OP_EFFECT_EMITTER = 165,
     KF_MAP_OBJECT_OP_RESOURCE_TRIGGER = 224,
     KF_MAP_OBJECT_OP_REGION_TRIGGER = 225,
     KF_MAP_OBJECT_OP_SCENE_INSPECT = 226,
@@ -202,7 +213,7 @@ enum {
 
 /* map_object_check_and_consume_marker: the object takes no marker, the
  * marker matched and was consumed, it was already cleared or triggered, a
- * different marker is needed, or the operation refuses markers (15/17). */
+ * different marker is needed, or the object is a recall or door socket. */
 KF_ENUM_BEGIN(KfMapObjectMarkerCheck, s32)
     KF_MAP_OBJECT_MARKER_NOT_APPLICABLE = 0,
     KF_MAP_OBJECT_MARKER_CONSUMED = 1,

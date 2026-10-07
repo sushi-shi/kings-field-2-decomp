@@ -171,6 +171,13 @@ sources because module target objects are carved from their claims. Target objec
 and empty reports are written only when content changes. Removing a unit
 prunes its orphan base object at configure time.
 
+The graph's own inputs (scanned sources and headers, scripts and inventories)
+are listed in `build/build.ninja.d`, the generator edge's depfile, so editing
+any of them regenerates the graph. Ninja cannot regenerate past a deleted file
+that a compile or delink edge still names, so `kf analyze`/`kf match` first
+reconfigure whenever a depfile entry no longer exists (or the depfile is
+absent, as in graphs written before it).
+
 ## Status and banking
 
 The status universe is every contiguous, non-vendored function: currently
@@ -186,6 +193,13 @@ and toolchain identity. An unchanged fingerprint below its best score is a
 regression. A changed fingerprint is reported separately; `--strict` also
 gates it against the historical best. A banked identity that disappears from
 the report is a loss.
+
+Each compiled base object records that fingerprint beside it
+(`<object>.inputs`). When a unit's current fingerprint differs, or the report
+is older than its objects, `kf status` starts with a `STALE:` line, marks the
+image row `STALE`, and warns which units changed: the numbers shown are the
+last analysis, not the current sources. `kf check` and `kf bank` treat the
+same condition as a failure.
 
 Only `kf bank` mutates the ledger. It refuses stale reports and dirty build
 inputs unless `--dirty` is explicit. `kf bank --unit ID` updates only the

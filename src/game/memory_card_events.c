@@ -161,6 +161,7 @@ s32 memory_card_probe_temporary_file(void)
     handle = open(path, FCREAT);
     close(handle);
     bios_delete(path);
+    /* KF_CARD_PROBE_CREATE_FAILED when the create failed, else OK. */
     return (handle == -1) << 1;
 }
 ADDRESS(0x800226ec, 0x1dc)
@@ -281,7 +282,7 @@ retry:
         if (((KfCardHeader *)buffer)->payload_checksum == checksum) {
             card_payload_restore_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
             memory_card_loaded_slot = slot;
-            return 0;
+            return KF_CARD_READ_OK;
         }
         status = KF_CARD_READ_CHECKSUM_FAILURE;
     }
@@ -375,7 +376,7 @@ s32 memory_card_write_slot(s32 slot)
         return KF_CARD_WRITE_IO_FAILURE;
     close(handle);
     memory_card_loaded_slot = slot;
-    return 0;
+    return KF_CARD_WRITE_OK;
 }
 
 ADDRESS(0x80023178, 0x110)

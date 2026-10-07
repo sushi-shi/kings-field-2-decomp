@@ -59,7 +59,6 @@ enum {
     CARD_MENU_ROW_CAPACITY = KF_CARD_DIRECTORY_CAPACITY / KF_CARD_FILE_BLOCKS + 1,
     CARD_MENU_VISIBLE_ROWS = 6,
     CARD_MENU_LIST_Y = 0x83,
-    CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE = 2,
     CARD_MENU_NO_PREVIEW_ITEM = 0xff,
     CARD_MENU_NO_LEVEL = KF_MENU_LIST_NO_BYTE,
     CARD_MENU_NEW_SLOT = 0xff
@@ -1146,7 +1145,7 @@ s32 menu_card_load_browser(void)
         menu_prepare_card_read_row(dialog_rows);
         menu_show_dialog_panel(KF_MENU_SYSTEM_LOAD_TITLE, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
         read_result = memory_card_read_slot(result);
-        if (read_result != 0) {
+        if (read_result != KF_CARD_READ_OK) {
             menu_prepare_card_read_failure_rows(dialog_rows, read_result);
             menu_show_dialog_panel(KF_MENU_SYSTEM_LOAD_TITLE,
                 dialog_rows, 3, 70, 87, 178, 81, 2, 0);
@@ -1391,7 +1390,7 @@ s32 menu_card_browser(void)
     menu_show_dialog_panel(KF_MENU_SYSTEM_UNTITLED, rows, 2, 70, 87, 178, 66, 2, 0);
     memory_card_start();
     status = memory_card_probe_temporary_file();
-    if (status != 0 && status != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
+    if (status != KF_CARD_PROBE_OK && status != KF_CARD_PROBE_CREATE_FAILED) {
         menu_build_card_probe_error_rows(rows);
         menu_show_dialog_panel(KF_MENU_SYSTEM_UNTITLED, rows, 3, 50, 87, 220, 66, 2, 0);
         input_wait_release();
@@ -1517,7 +1516,7 @@ s32 menu_card_load_slot_browser(void)
         menu_prepare_card_read_row(dialog_rows);
         menu_show_dialog_panel(KF_MENU_SYSTEM_UNTITLED, dialog_rows, 1, 70, 87, 178, 66, 2, 0);
         read_result = memory_card_read_slot(result);
-        if (read_result != 0) {
+        if (read_result != KF_CARD_READ_OK) {
             menu_prepare_card_read_failure_rows(dialog_rows, read_result);
             menu_show_dialog_panel(KF_MENU_SYSTEM_UNTITLED, dialog_rows, 3, 70, 87, 178, 81, 2, 0);
             input_wait_release();
@@ -1681,13 +1680,13 @@ void menu_card_save_slot(s32 slot)
     s32 width = 2;
     s32 overlap_x;
 
-    if (result != 0) {
-        if (result != CARD_PROBE_TEMPORARY_FILE_CREATE_FAILURE) {
+    if (result != KF_CARD_PROBE_OK) {
+        if (result != KF_CARD_PROBE_CREATE_FAILED) {
             menu_prepare_card_io_error_rows(rows);
             MENU_CARD_DIALOG_WAIT(rows, 3, 178, 81, width);
             goto wait_release;
         }
-        if (menu_confirm_card_format(1) == 0) {
+        if (menu_confirm_card_format(KF_MENU_CARD_FORMAT_WITH_NOTICE) == KF_MENU_RESULT_ACCEPTED) {
             memory_card_format();
             goto write_file;
         }
@@ -1702,7 +1701,7 @@ write_file:
     overlap_x = 2;
     menu_draw_card_dialog_rows(rows, 2, 70, 87, width, 66, overlap_x, 0);
     result = memory_card_write_slot(slot);
-    if (result == 0)
+    if (result == KF_CARD_WRITE_OK)
         return;
     if (result == KF_CARD_WRITE_IO_FAILURE)
         menu_prepare_card_io_error_rows(rows);
@@ -1736,7 +1735,7 @@ s32 menu_confirm_card_format(s32 kind)
     labels[1].glyphs.codes[2] = 67;
     labels[1].glyphs.codes[3] = KF_MENU_TEXT_END;
 
-    if (kind == 1) {
+    if (kind == KF_MENU_CARD_FORMAT_WITH_NOTICE) {
         labels[2].position.x = 90;
         labels[2].position.y = 110;
         memcpy((void *)labels[2].glyphs.codes, (const void *)menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
@@ -1777,7 +1776,7 @@ s32 menu_confirm_card_format(s32 kind)
                 &menu_window_layout(KF_MENU_WINDOW_SYSTEM)->rows[KF_MENU_SYSTEM_SAVE_TITLE].position);
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS],
                 &menu_window_layout(KF_MENU_WINDOW_SYSTEM)->rows[KF_MENU_SYSTEM_SAVE_TITLE]);
-            if (kind == 1) {
+            if (kind == KF_MENU_CARD_FORMAT_WITH_NOTICE) {
                 menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &labels[2]);
                 menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &labels[3]);
                 menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &labels[4]);

@@ -146,6 +146,9 @@ enum {
     KF_MENU_STOCK_ROW_COUNT = KF_MENU_STOCK_RETURN_ROW + 1
 };
 
+/* menu_confirm_card_format kind: the save path asks with explanatory rows. */
+enum { KF_MENU_CARD_FORMAT_WITH_NOTICE = 1 };
+
 /* Startup card-browser prompt: start a new game or load a save. */
 enum {
     KF_MENU_CARD_BROWSER_START_ROW = 0,

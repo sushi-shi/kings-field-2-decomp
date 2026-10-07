@@ -144,7 +144,7 @@ void map_object_refresh_cell_markers(KfMapCellMarkerMode mode)
             map_object_set_cell_marker(object, mode,
                                        object_template->params.marker.marker_action_51);
         } else {
-            if (object->tail.marker.marker_id == 0xfe) {
+            if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                 continue;
             }
             /* The marker mode doubles as hide (0) / restore-layer (1). */
@@ -678,7 +678,7 @@ void map_object_apply_marker_signal(u8 identifier)
         case KF_MAP_OBJECT_OP_162:
         case KF_MAP_OBJECT_OP_163:
             if (object->tail.marker.marker_id == identifier) {
-                object->tail.marker.marker_id = 0xff;
+                object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
             }
             break;
         case KF_MAP_OBJECT_OP_88:
@@ -704,7 +704,7 @@ void map_object_apply_marker_signal(u8 identifier)
         case KF_MAP_OBJECT_OP_3:
         case KF_MAP_OBJECT_OP_HINGE:
             if ((u8)(identifier + 106) < 49) {
-                if ((object->tail.marker.marker_id & 0xfe) == identifier) {
+                if ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_PAIR_MASK) == identifier) {
                     object->tail.marker.marker_id ^= 1;
                 }
             } else {
@@ -712,11 +712,11 @@ void map_object_apply_marker_signal(u8 identifier)
 
                 if (marker == identifier) {
                     if (marker >= 200) {
-                        object->tail.marker.marker_id = 0xff;
+                        object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
                     } else if (object->action_timer == 0) {
                         object->action_timer = 1;
                         if (marker >= 100) {
-                            object->tail.marker.marker_id = 0xff;
+                            object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
                         }
                     }
                 }
@@ -728,32 +728,32 @@ void map_object_apply_marker_signal(u8 identifier)
 }
 
 ADDRESS(0x800368b4, 0x90)
-s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker)
+KfMapObjectMarkerCheck map_object_check_and_consume_marker(KfMapObject *object, s32 marker)
 {
     switch (object->action) {
     case KF_MAP_OBJECT_OP_2:
     case KF_MAP_OBJECT_OP_3:
     case KF_MAP_OBJECT_OP_HINGE:
         if (object->action_timer != 0) {
-            return 0;
+            return KF_MAP_OBJECT_MARKER_NOT_APPLICABLE;
         }
         /* Fall through to the active marker check. */
     case KF_MAP_OBJECT_OP_5:
     case KF_MAP_OBJECT_OP_8:
     case KF_MAP_OBJECT_OP_22:
-        if (object->tail.marker.marker_id >= 0xfe) {
-            return 2;
+        if (object->tail.marker.marker_id >= KF_MAP_OBJECT_MARKER_TRIGGERED) {
+            return KF_MAP_OBJECT_MARKER_ALREADY_CLEARED;
         }
         if (object->tail.marker.marker_id == marker) {
-            object->tail.marker.marker_id = 0xff;
-            return 1;
+            object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
+            return KF_MAP_OBJECT_MARKER_CONSUMED;
         }
-        return 3;
+        return KF_MAP_OBJECT_MARKER_MISMATCH;
     case KF_MAP_OBJECT_OP_15:
     case KF_MAP_OBJECT_OP_17:
-        return 4;
+        return KF_MAP_OBJECT_MARKER_REFUSED;
     default:
-        return 0;
+        return KF_MAP_OBJECT_MARKER_NOT_APPLICABLE;
     }
 }
 

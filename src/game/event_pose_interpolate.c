@@ -380,7 +380,7 @@ void event_scene_command_dispatch(const VECTOR *position,
         index = 0;
         for (;;) {
             KfMapObject *object;
-            s32 status;
+            KF_ENUM_STORAGE(KfMapObjectMarkerCheck, s32) status;
 
             index = map_object_find_interaction_target(index, position, 800, 1700,
                                    rotation->angles[1], 512);
@@ -390,19 +390,19 @@ void event_scene_command_dispatch(const VECTOR *position,
             object = &map_object_state.objects[index];
             status = map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command));
             switch (status) {
-            case 1:
+            case KF_MAP_OBJECT_MARKER_CONSUMED:
                 audio_play_sound_64();
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 3:
+            case KF_MAP_OBJECT_MARKER_MISMATCH:
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 4:
+            case KF_MAP_OBJECT_MARKER_REFUSED:
                 notify_enqueue(KF_NOTIFICATION_4);
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 0:
+            case KF_MAP_OBJECT_MARKER_NOT_APPLICABLE:
             default:
                 index++;
                 continue;
@@ -437,7 +437,7 @@ object_control_action:
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
                 event_spawn_effect_object(object, command);
-            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
+            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == KF_MAP_OBJECT_MARKER_MISMATCH) {
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
             }
@@ -525,7 +525,7 @@ transition_action: {
                     game_counter_decrement(command);
                     event_spawn_effect_object(object, command);
                 }
-            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
+            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == KF_MAP_OBJECT_MARKER_MISMATCH) {
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
             }
@@ -1099,7 +1099,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_2:
             if (object->action_timer == 0) {
-                if (object->tail.marker.marker_id == 0xff) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_CLEARED) {
                     object->action_timer = 1;
                 } else {
                     notify_enqueue(object->tail.notification.default_notification);
@@ -1142,7 +1142,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             /* Kind five enters the same state handler without the angle gate. */
         case KF_MAP_OBJECT_OP_5:
             switch (object->tail.marker.marker_id) {
-            case 0xfe: {
+            case KF_MAP_OBJECT_MARKER_TRIGGERED: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
                 if (linked_index != 0xffff) {
                     goto check_linked_object;
@@ -1156,8 +1156,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
                 break;
             }
-            case 0xff:
-                object->tail.marker.marker_id = 0xfe;
+            case KF_MAP_OBJECT_MARKER_CLEARED:
+                object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_TRIGGERED;
                 break;
             default:
                 notify_enqueue(object->tail.notification.default_notification);

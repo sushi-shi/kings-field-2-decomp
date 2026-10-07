@@ -33,7 +33,6 @@ RODATA(0x8001191c, 0x3bc)
 enum {
     FRAME_COLOR_LEVELS = 256,
     FRAME_COLOR_MAX = FRAME_COLOR_LEVELS - 1,
-    MAP_OBJECT_EVENT_TRIGGERED = 0xfe,
     MAP_OBJECT_RENDERED_PREVIOUS_FRAME = 0x80,
     MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE = 0xc18,
     MAP_OBJECT_CELL_COPY_FIELDS = KF_MAP_CELL_COPY_OBJECT_INDEX |
@@ -305,7 +304,7 @@ void map_object_update_actions(void)
         case KF_MAP_OBJECT_OP_8:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     object->rotation.vx = 0xa00;
                     object->action_timer = 3;
                 } else {
@@ -315,7 +314,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     object->extra_40.angular_velocity_x = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -343,7 +342,7 @@ void map_object_update_actions(void)
         case KF_MAP_OBJECT_OP_22:
             switch (object->action_timer) {
             case 0:
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     struct KfVecXZi displacement;
                     object->rotation.vx = 0xd44;
                     angle_to_forward_xz(object->rotation.vy + 0x800, &displacement);
@@ -358,7 +357,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     object->extra_40.movement_frames_left = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
@@ -395,7 +394,7 @@ void map_object_update_actions(void)
                     KfMapObject *linked = &map_object_state.objects[linked_index];
                     linked->render_depth_offset += 200;
                 }
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_CLEAR,
                                                object_template->params.marker.marker_action_05);
                     object->phase_q12 = 0xfff;
@@ -408,7 +407,7 @@ void map_object_update_actions(void)
                 break;
             }
             case 1:
-                if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK, object->layer_mask);
@@ -626,7 +625,7 @@ void map_object_update_actions(void)
                 s32 source_x = center_x - ((width - 1) >> 1);
                 s32 source_z = center_z - ((height - 1) >> 1);
                 if (player_camera_within_map_region(source_x, source_z, width, height, depth) ||
-                    object->tail.action_84_pattern.marker_id == 0xff) {
+                    object->tail.action_84_pattern.marker_id == KF_MAP_OBJECT_MARKER_CLEARED) {
                     map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
@@ -647,7 +646,7 @@ void map_object_update_actions(void)
                     object->phase_q12 = 0;
                     if (object->tail.action_84_pattern.pattern_flags & 2) {
                         object->action_timer = 99;
-                        object->tail.action_84_pattern.marker_id = 0xff;
+                        object->tail.action_84_pattern.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
                     } else {
                         object->action_timer = 2;
                     }

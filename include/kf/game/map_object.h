@@ -141,6 +141,26 @@ KF_ENUM_BEGIN(KfMapObjectKind, u8)
     KF_MAP_OBJECT_KIND_GOLD = 0x20
 KF_ENUM_END(KfMapObjectKind)
 
+/* Marker bytes hold the key-item or signal id an object waits for; a
+ * consumed marker becomes CLEARED and a fired event TRIGGERED. Signal ids
+ * 150..198 come in pairs that differ in bit 0. */
+enum {
+    KF_MAP_OBJECT_MARKER_TRIGGERED = 0xfe,
+    KF_MAP_OBJECT_MARKER_CLEARED = 0xff,
+    KF_MAP_OBJECT_MARKER_PAIR_MASK = 0xfe
+};
+
+/* map_object_check_and_consume_marker: the object takes no marker, the
+ * marker matched and was consumed, it was already cleared or triggered, a
+ * different marker is needed, or the operation refuses markers (15/17). */
+KF_ENUM_BEGIN(KfMapObjectMarkerCheck, s32)
+    KF_MAP_OBJECT_MARKER_NOT_APPLICABLE = 0,
+    KF_MAP_OBJECT_MARKER_CONSUMED = 1,
+    KF_MAP_OBJECT_MARKER_ALREADY_CLEARED = 2,
+    KF_MAP_OBJECT_MARKER_MISMATCH = 3,
+    KF_MAP_OBJECT_MARKER_REFUSED = 4
+KF_ENUM_END(KfMapObjectMarkerCheck)
+
 /* map_object_set_property selector; SET_LAYER_MASK and SET_RENDER_DEPTH
  * read one variadic value. */
 KF_ENUM_BEGIN(KfMapObjectProperty, s32)
@@ -863,7 +883,7 @@ void map_object_pool_reset(void);
 void map_object_set_property(s32 index, KfMapObjectProperty property, ...);
 void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u8 marker);
 void map_object_apply_marker_signal(u8 identifier);
-s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
+KfMapObjectMarkerCheck map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
 b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height);
 b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
                   SVECTOR *start_offset, SVECTOR *end_offset,

@@ -844,9 +844,6 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
 
     count--;
     if (count != -1) {
-        const u8 *first_layer_mask = &render_mask_scan_state.first_layer_mask;
-        const u8 *second_layer_mask = &render_mask_scan_state.second_layer_mask;
-
         do {
             if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != 0) {
                 if ((u32)map_x < 80 && (u32)map_z < 80) {
@@ -854,17 +851,16 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
                     u8 second = cursor[second_offset];
                     KfMapOccupancyCell *cell;
                     KfMapOccupancyLayer *first_layer;
-                    KfMapOccupancyLayer *second_layer;
 
-                    if (first & *first_layer_mask) {
+                    if (first & render_mask_scan_state.first_layer_mask) {
                         goto check_first_layer;
                     }
-                    if (second & *first_layer_mask) {
+                    if (second & render_mask_scan_state.first_layer_mask) {
                         goto check_first_layer;
                     }
                     cell = &bss_801c7540.map_cells[map_z][map_x];
     clear_first_layer:
-                    *cursor &= ~*first_layer_mask;
+                    *cursor &= ~render_mask_scan_state.first_layer_mask;
                     goto check_second_layer;
     check_first_layer:
                     cell = &bss_801c7540.map_cells[map_z][map_x];
@@ -877,14 +873,13 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
                         goto check_second_layer;
                     }
     set_second_layer:
-                    *cursor |= *second_layer_mask;
+                    *cursor |= render_mask_scan_state.second_layer_mask;
                     goto advance_iteration;
     check_second_layer:
-                    second_layer = (KfMapOccupancyLayer *)((u8 *)cell +
-                                   render_mask_scan_state.second_layer_byte_offset);
-                    if (second_layer->object_index != 0xff) {
-                        if ((first & *second_layer_mask) ||
-                            (second & *second_layer_mask)) {
+                    if (((KfMapOccupancyLayer *)((u8 *)cell +
+                         render_mask_scan_state.second_layer_byte_offset))->object_index != 0xff) {
+                        if ((first & render_mask_scan_state.second_layer_mask) ||
+                            (second & render_mask_scan_state.second_layer_mask)) {
                             goto set_second_layer;
                         }
                     }

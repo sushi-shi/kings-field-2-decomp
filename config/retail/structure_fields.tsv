@@ -32,7 +32,7 @@ KfActor	0x20	0x2	word_20	KfActorWord20	supported	GAME actor_set_home_position;ac
 KfActor	0x22	0x2	word_22	KfActorWord22	supported	GAME actor_set_home_position;actor_target_selection;actor_fixup_group_targets	Signed home-local Z offset; linked actors and a linked map object use this word as an index in specific modes
 KfActor	0x24	0x2	word_24	KfActorWord24	supported	GAME actor_set_home_position;actor_update_behavior	Signed home-local X offset; linked actor behavior also uses this word as an animation vertex index
 KfActor	0x26	0x2	vertical_anchor_offset	s16	supported	actor_load_records;actor_set_home_position;actor_animation;actor_behavior_dispatch	signed local Y offset used for placement, collision baseline, and target sampling
-KfActor	0x28	0x4	flags	u32	supported	GAME 0x80038d70/0x8003b64c andi;0x8003d3a8/0x8003d448 andi;0x8003fd74/0x800451e8 ori;actor_initialize_from_group;render_world_model	Flag word; 0x10 links actor motion, 0x80 selects blended model render mode, 0x400 chooses raw map-layer floor, 0x800 holds effect-gated animation; other bits unresolved
+KfActor	0x28	0x4	flags	KfActorFlags	supported	GAME 0x80038d70/0x8003b64c andi;0x8003d3a8/0x8003d448 andi;0x8003fd74/0x800451e8 ori;actor_initialize_from_group;render_world_model	Flag word; 0x10 links actor motion, 0x80 selects blended model render mode, 0x400 chooses raw map-layer floor, 0x800 holds effect-gated animation; other bits unresolved
 KfActor	0x2c	0x10	position	VECTOR	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3c	0x4	ballistic_origin_y	s32	supported	actor_start_ballistic_motion;actor_update_vertical_motion state 0x30	captures actor Y at ballistic start and anchors the parabolic position equation
 KfActor	0x40	0x6	rotation	KfEulerAngles	supported	game/actor.h;retail GAME actor motion	three signed rotation angles passed to pitch_yaw_to_forward_vector
@@ -84,7 +84,7 @@ KfActorState70Bytes	0x1	0x1	high	u8	supported	GAME 0x8003d934 sb;GAME 0x8003da4c
 KfActorStateGame	0x0	0x60e0	actors	KfActor[200]	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x60e0	0x12c0	target_groups	KfTargetGroup[40]	supported	game/actor.h;retail GAME actor chain;8003f7ec 40-group loop	member used by reconstructed actor code
 KfActorStateGame	0x73a0	0x2000	target_candidate_blob	u8[8192]	supported	game/actor.h;GAME 0x80016820 archive copy;0x8003f7ec fixup	0x32c0-byte copy covers 40 groups and this opaque candidate-record span; internal record layout unresolved
-KfActorStateGame	0x93a0	0x1	actor_overlap_exclusion_flags	u8	supported	player_update_frame;actor_find_overlap;actor_find_overlap_excluding_target_type3	set to 4 during player collision pass; actors with intersecting flags are excluded from overlap scans
+KfActorStateGame	0x93a0	0x1	actor_overlap_exclusion_flags	KF_ENUM_STORAGE(KfActorFlags, u8)	supported	player_update_frame;actor_find_overlap;actor_find_overlap_excluding_target_type3	set to 4 during player collision pass; actors with intersecting flags are excluded from overlap scans
 KfActorStateGame	0x93a4	0x4	actor_collision_query_flags	KfCollisionQuery	supported	actor_update_behavior;actor_move_with_collision;collision_query_world	set per actor behavior and passed as collision mode bitmask; bit 0x20 is temporarily cleared around selected moves
 KfActorStateGame	0x93a8	0x4	active_group	KfTargetGroup *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x93ac	0x4	current	KfActor *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
@@ -1239,7 +1239,7 @@ KfTargetGroup	0x1e	0x2	experience_reward	u16	supported	GAME actor_fixed_curve pl
 KfTargetGroup	0x20	0x10	magic_component_divisors	u16[8]	supported	GAME 0x80039c94 eight lhu reads;actor_magic_component_curve third parameter	Eight divisors for the per-component magic response curve
 KfTargetGroup	0x30	0x2	scattered_effect_id_center	u16	supported	actor_behavior_dispatch;map_object_spawn_scattered_effect	center of randomized effect ID passed to scattered-effect constructor
 KfTargetGroup	0x32	0x2	initial_model_scale_q12	u16	supported	actor_copy_group_defaults;actor_behavior_dispatch;render_resource_dispatch;actor_group_position	uniform Q12 model scale copied to actor X/Y/Z scale components
-KfTargetGroup	0x34	0x4	initial_actor_flags	u32	supported	actor_copy_group_defaults;actor_group_effects;actor_animation;actor_fixup_group_targets	copied to KfActor +0x28 on initialization and spawn; group bits gate actor behavior
+KfTargetGroup	0x34	0x4	initial_actor_flags	KfActorFlags	supported	actor_copy_group_defaults;actor_group_effects;actor_animation;actor_fixup_group_targets	copied to KfActor +0x28 on initialization and spawn; group bits gate actor behavior
 KfTargetGroup	0x38	0x40	targets	KfTargetReference[16]	supported	game/actor.h;retail GAME actor chain;8003f7ec offset fixup	encoded relative offsets become candidate pointers
 KfTargetGroupWord1a	0x0	0x2	initial_health	u16	supported	game/actor.h;actor_copy_group_defaults	initial_health access in exact source
 KfTargetGroupWord1a	0x0	0x2	slot3_home_x_fallback	u16	supported	game/actor.h;actor_load_records	slot3_home_x_fallback access in exact source

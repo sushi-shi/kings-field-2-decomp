@@ -18,24 +18,43 @@ enum {
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
     KF_ACTOR_PITCH_TRACK_TARGET = -1,
-    KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
+    KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1
+};
+
+/*
+ * Actor flag word, seeded from KfTargetGroup.initial_actor_flags. The low
+ * two bits are the packed position mode read by actor_resolve_group_position;
+ * bits 14-15 extend the collision height argument (shifted into bits 30-31).
+ * NO_STEP_UP makes the horizontal mover treat shape hits as walls,
+ * IGNORE_MAGIC_REACTION skips the magic-hit retarget and
+ * IGNORE_HAZARD_DAMAGE ignores hazard-class damage; PLAYER_OVERLAP_BOB starts
+ * the player's overlap bob when the player stands inside the actor.
+ */
+KF_ENUM_BEGIN(KfActorFlags, u32)
+    KF_ACTOR_FLAGS_NONE = 0,
     KF_ACTOR_POSITION_MODE_MASK = 0x3,
     KF_ACTOR_POSITION_DIRECT = 0,
     KF_ACTOR_POSITION_GROUP_OFFSET = 1,
     KF_ACTOR_POSITION_ROTATED_GROUP_OFFSET = 2,
     KF_ACTOR_FLAG_STATIC_COLLISION_ONLY = 0x4,
+    KF_ACTOR_FLAG_PLAYER_OVERLAP_BOB = 0x8,
     KF_ACTOR_FLAG_LINKED = 0x10,
     KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX = 0x20,
     KF_ACTOR_FLAG_BLENDED_MODEL = 0x80,
     KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING = 0x100,
+    KF_ACTOR_FLAG_200 = 0x200,
     KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR = 0x400,
     KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD = 0x800,
     KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20 = 0x2000,
+    KF_ACTOR_FLAG_NO_STEP_UP = 0x4000,
     KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK = 0xc000,
     KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED = 0x10000,
     KF_ACTOR_FLAG_CONE_TARGET_PRIORITY = 0x20000,
-    KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000
-};
+    KF_ACTOR_FLAG_IGNORE_MAGIC_REACTION = 0x40000,
+    KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000,
+    KF_ACTOR_FLAG_IGNORE_HAZARD_DAMAGE = 0x100000
+KF_ENUM_END(KfActorFlags)
+KF_ENUM_FLAGS(KfActorFlags, u32)
 
 /* Progress of the current target's action. actor_set_target starts at
  * ENTRY; the behaviour case does its entry work and moves to
@@ -501,7 +520,7 @@ typedef struct KfTargetGroup {
     u16 magic_component_divisors[8];
     u16 scattered_effect_id_center;
     u16 initial_model_scale_q12;
-    u32 initial_actor_flags;
+    KfActorFlags initial_actor_flags;
     KfTargetReference targets[16];
 } KfTargetGroup;
 typedef char kf_target_group_size[sizeof(KfTargetGroup) == 0x78 ? 1 : -1];
@@ -684,7 +703,7 @@ typedef struct KfActor {
     KfActorWord22 word_22;
     KfActorWord24 word_24;
     s16 vertical_anchor_offset;
-    u32 flags;
+    KfActorFlags flags;
     VECTOR position;
     s32 ballistic_origin_y;
     struct KfEulerAngles rotation;
@@ -789,7 +808,7 @@ typedef struct KfActorStateGame {
     /* 0x16820 loads the groups and this opaque tail as one 0x32c0-byte span;
      * 0x3f7ec fixes group target offsets after the copy. */
     u8 target_candidate_blob[0x2000];
-    u8 actor_overlap_exclusion_flags;
+    KF_ENUM_STORAGE(KfActorFlags, u8) actor_overlap_exclusion_flags;
     KfCollisionQuery actor_collision_query_flags;
     KfTargetGroup *active_group;
     KfActor *current;

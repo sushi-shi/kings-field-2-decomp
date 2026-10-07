@@ -60,10 +60,10 @@ void actor_set_home_position(KfActor *actor)
     if (actor->position.vy >= 0) {
         actor->position.vy = 0;
     }
-    if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+    if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
         actor->position.vy = KF_COLLISION_CACHE_HEIGHT;
     }
-    if (!(actor->flags & KF_ACTOR_FLAG_LINKED)) {
+    if ((actor->flags & KF_ACTOR_FLAG_LINKED) == KF_ACTOR_FLAGS_NONE) {
         actor->position.vy += actor->vertical_anchor_offset;
     }
 }
@@ -106,7 +106,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->turn_rate = 0;
     actor->lighting_override = ACTOR_LIGHTING_DEFAULT;
     actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
-    if (actor->flags & KF_ACTOR_FLAG_BLENDED_MODEL) {
+    if ((actor->flags & KF_ACTOR_FLAG_BLENDED_MODEL) != KF_ACTOR_FLAGS_NONE) {
         actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
     } else {
         actor->render_mode = ACTOR_RENDER_TEXTURED;
@@ -174,7 +174,7 @@ void actor_pool_clear(void)
         actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
         actor->animation_cache = NULL;
     }
-    actor_state.actor_overlap_exclusion_flags = 0;
+    actor_state.actor_overlap_exclusion_flags = KF_ACTOR_FLAGS_NONE;
 }
 
 
@@ -260,7 +260,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case KF_ACTOR_TARGET_23:
     case KF_ACTOR_TARGET_24:
     case KF_ACTOR_TARGET_132:
-        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
+        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) != KF_ACTOR_FLAGS_NONE ||
             target->word_1a.value < player_distance) {
             goto zero_score;
         }
@@ -293,7 +293,7 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case KF_ACTOR_TARGET_25:
         score = 0;
-        if (actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) {
+        if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) != KF_ACTOR_FLAGS_NONE) {
             break;
         }
         if (target->word_16.value < player_distance ||
@@ -675,7 +675,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
 
     kind = effect_flags & KF_ACTOR_DAMAGE_SOURCE_MASK;
     mode = effect_flags & KF_ACTOR_DAMAGE_MODE_MASK;
-    if (kind == KF_ACTOR_DAMAGE_FROM_HAZARD && (actor->flags & 0x100000)) {
+    if (kind == KF_ACTOR_DAMAGE_FROM_HAZARD && (actor->flags & KF_ACTOR_FLAG_IGNORE_HAZARD_DAMAGE) != KF_ACTOR_FLAGS_NONE) {
         return;
     }
 
@@ -711,7 +711,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
             goto update_motion;
         }
     } else if (mode == KF_ACTOR_DAMAGE_MAGIC) {
-        if (actor->flags & 0x40000) {
+        if ((actor->flags & KF_ACTOR_FLAG_IGNORE_MAGIC_REACTION) != KF_ACTOR_FLAGS_NONE) {
             goto update_motion;
         }
         candidate = actor_find_target_of_type(group, KF_ACTOR_TARGET_22);
@@ -754,7 +754,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     actor->health = remaining;
 
 update_motion:
-    if (actor->flags & KF_ACTOR_FLAG_LINKED) {
+    if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
         KfActorStateGame *state = &actor_state;
         KfTargetGroup *groups = state->target_groups;
         linked = &state->actors[actor->word_22.linked_actor_slot];
@@ -779,7 +779,7 @@ update_motion:
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;
-        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
+        if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
             linked->motion.vector.vx = actor->motion.vector.vx;
             linked->motion.vector.vy = actor->motion.vector.vy;
             linked->motion.vector.vz = actor->motion.vector.vz;
@@ -924,7 +924,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
         }
 
         reach = max_distance;
-        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0) {
+        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != KF_ACTOR_FLAGS_NONE) {
             reach <<= 1;
         }
         actor_distance = vector_distance_to_point(
@@ -946,7 +946,7 @@ KfActor *actor_find_best_in_cone(const VECTOR *position, s16 yaw, s16 pitch,
             direction.x = KF_ANGLE_FULL_TURN - direction.x;
         }
 
-        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != 0 && variation >= 0) {
+        if ((actor->flags & KF_ACTOR_FLAG_CONE_TARGET_PRIORITY) != KF_ACTOR_FLAGS_NONE && variation >= 0) {
             actor_distance >>= 2;
             direction.x -= 512;
             direction.y -= 512;
@@ -980,11 +980,11 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type == KF_ACTOR_TARGET_3
-            || (actor_state.actor_overlap_exclusion_flags & actor->flags)
+            || (actor_state.actor_overlap_exclusion_flags & actor->flags) != KF_ACTOR_FLAGS_NONE
             || actor == actor_state.current) {
             continue;
         }
-        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
+        if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
             if (actor->word_22.linked_actor_slot == actor_state.current_actor_slot_index) {
                 continue;
             }
@@ -1015,11 +1015,11 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
         VECTOR alternate;
 
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE
-            || (actor_state.actor_overlap_exclusion_flags & actor->flags)
+            || (actor_state.actor_overlap_exclusion_flags & actor->flags) != KF_ACTOR_FLAGS_NONE
             || actor == actor_state.current) {
             continue;
         }
-        if (actor->flags & KF_ACTOR_FLAG_LINKED) {
+        if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
             if (actor->word_22.linked_actor_slot == actor_state.current_actor_slot_index) {
                 continue;
             }
@@ -1051,7 +1051,7 @@ void actor_bind_current(KfActor *actor)
         group = &actor_state.target_groups[actor->group_index];
         actor_state.active_group = group;
         actor_state.current_group_index = actor->group_index;
-        if (group->initial_actor_flags & KF_ACTOR_FLAG_LINKED) {
+        if ((group->initial_actor_flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
             other = &actor_state.actors[actor->word_22.linked_actor_slot];
             actor_state.other_actor = other;
             actor_state.other_group = &actor_state.target_groups[other->group_index];
@@ -1132,7 +1132,7 @@ retry_move:
     proposed.vz = actor->position.vz + motion_z;
     collision = collision_query_world(proposed.vx, actor->position.vy, proposed.vz,
         actor->collision_radius,
-        actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+        actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
     if (collision == KF_COLLISION_HIT_NONE) {
     check_floor:
@@ -1158,13 +1158,13 @@ retry_move:
             }
             collision_query_shapes_with_layer_sample(actor->position.vx, actor->position.vy,
                 actor->position.vz + probe_z, actor->collision_radius,
-                actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
+                actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
             collision_query_shapes_with_layer_sample(actor->position.vx + probe_x, actor->position.vy,
                 actor->position.vz, actor->collision_radius,
-                actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
+                actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
             if (floor_height < KF_COLLISION_CACHE_RESULT) {
                 floor_height = KF_COLLISION_CACHE_RESULT;
             }
@@ -1209,7 +1209,7 @@ retry_move:
         goto retry_move;
     }
     if ((flags & KF_ACTOR_MOVE_NO_STEP_UP) == KF_ACTOR_MOVE_NONE) {
-        if (actor->flags & 0x4000) {
+        if ((actor->flags & KF_ACTOR_FLAG_NO_STEP_UP) != KF_ACTOR_FLAGS_NONE) {
             goto try_axis;
         }
         if ((collision & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
@@ -1299,23 +1299,23 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_with_collision(SVECTOR *motio
     proposed.vz = actor->position.vz + motion->vz;
     result = collision_query_world(proposed.vx, proposed.vy, proposed.vz,
         actor->collision_radius,
-        actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+        actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
     if (result == KF_COLLISION_HIT_NONE) {
         copyVector(&actor->position, &proposed);
     } else if (collision_query_world(proposed.vx, actor->position.vy,
                              actor->position.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                             actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vx = -motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                             actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vy = -motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->collision_radius,
-                             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                             actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                              actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vz = -motion->vz;
     }
@@ -1358,9 +1358,9 @@ void actor_update_vertical_motion(void)
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
-                   actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
+                   actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
     actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
-    if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+    if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
 
@@ -1395,7 +1395,7 @@ state_10: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                                      (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == KF_COLLISION_HIT_NONE) {
         advance_rise:
@@ -1408,7 +1408,7 @@ state_10: {
                           0x1000, 10, &actor->position);
         }
         if ((collision & KF_COLLISION_HIT_FLOOR) != KF_COLLISION_HIT_NONE) {
-            if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
+            if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
                 if (actor->position.vy < floor_y) goto advance_rise;
                 actor->position.vy = floor_y;
@@ -1418,7 +1418,7 @@ state_10: {
             actor->motion.vector.vy = 0;
             goto reset_vertical_motion_state;
         }
-        if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) goto advance_rise;
+        if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) goto advance_rise;
         goto reset_vertical_motion_state;
     }
 
@@ -1446,7 +1446,7 @@ state_30: {
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
-                                      ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+                                      (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
         if (collision == KF_COLLISION_HIT_NONE) {
             actor->position.vy = next_y;
@@ -1597,7 +1597,7 @@ KF_ENUM_PARAM(KfActorEulerMoveResult, s32) actor_move_along_euler_angles(
                                KF_COLLISION_HIT_NONE);
     proposed_y = actor->position.vy + actor->motion.vector.vy;
     radius = actor->collision_radius;
-    height_and_flags = actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16);
+    height_and_flags = actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
                       actor_state.actor_collision_query_flags) == KF_COLLISION_HIT_NONE) {
@@ -1662,6 +1662,8 @@ VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
                           (SVECTOR *)&group->position_offset_x, output);
         addVector(output, &actor->position);
         return output;
+    default:
+        break;
     }
     /* Retail leaves the return register unspecified for mode 3. */
 }
@@ -2138,7 +2140,7 @@ void actor_update_behavior(void)
     KfTargetCandidate *target = actor->target;
     s32 interval;
 
-    if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != 0) {
+    if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != KF_ACTOR_FLAGS_NONE) {
         actor_state.actor_collision_query_flags =
             KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_LAYER_FLAG_40;
     } else {
@@ -2186,7 +2188,7 @@ dispatch_action:
             actor_set_animation(target->animation_id);
         }
         if (actor->animation_phase < 0x800 ||
-            (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) == 0) {
+            (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) == KF_ACTOR_FLAGS_NONE) {
             actor_advance_animation_clamped(actor, target->animation_step);
         }
         if (actor->animation_phase > 0xffe) {
@@ -2206,7 +2208,7 @@ dispatch_action:
         }
         if (actor->state_70.signed_state == 0) {
             if (actor->animation_phase >= 0x400 &&
-                (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) != 0) {
+                (actor->flags & KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD) != KF_ACTOR_FLAGS_NONE) {
                 break;
             }
             actor_advance_animation_clamped(actor, target->animation_step);
@@ -3199,7 +3201,7 @@ case3_motion:
         next.vz = actor->position.vz + actor->motion.vector.vz;
         collision = collision_query_world(
             next.vx, next.vy, next.vz, actor->collision_radius,
-            actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
+            actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
             actor_state.actor_collision_query_flags);
         if (collision == KF_COLLISION_HIT_NONE) {
         case30_position:
@@ -3238,7 +3240,7 @@ case3_motion:
         break;
     }
 
-    if (actor->flags & KF_ACTOR_FLAG_LINKED) {
+    if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
         KfActor *other = actor_state.other_actor;
         KfActorSlotState slot_state = actor->slot_state;
 
@@ -3271,7 +3273,7 @@ case3_motion:
                 if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                     actor->flags |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
-                if (actor->flags & 0x200) {
+                if ((actor->flags & KF_ACTOR_FLAG_200) != KF_ACTOR_FLAGS_NONE) {
                     actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
                 }
                 actor->motion.vector.vx = other->motion.vector.vx;
@@ -3302,7 +3304,7 @@ case3_motion:
             actor->position.vz = other->position.vz + vertex_offset.vz -
                                  group_offset.vz;
         }
-    } else if ((actor->flags & KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) == 0) {
+    } else if ((actor->flags & KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) == KF_ACTOR_FLAGS_NONE) {
         actor_update_vertical_motion();
     }
 
@@ -3341,7 +3343,7 @@ void actor_update_frame(void)
             }
 
             if ((actor_state.active_group->initial_actor_flags &
-                 KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) != 0) {
+                 KF_ACTOR_FLAG_MAP_OBJECT_ATTACHED) != KF_ACTOR_FLAGS_NONE) {
                 KfMapObject *object =
                     &map_object_state.objects[actor->word_22.linked_map_object_slot];
                 s32 object_z;
@@ -3424,7 +3426,7 @@ void actor_load_records(const KfActorLoadRecord *records)
             actor_copy_group_defaults(actor);
             actor_set_home_position(actor);
             actor->render_depth = group->render_depth;
-            if ((actor->flags & KF_ACTOR_FLAG_LINKED) != 0) {
+            if ((actor->flags & KF_ACTOR_FLAG_LINKED) != KF_ACTOR_FLAGS_NONE) {
                 if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
                     if (actor->word_24.value == -1) {
                         actor->word_24.value = group->word_1a.slot3_home_x_fallback;

@@ -1157,7 +1157,8 @@ KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position, SVECT
     if (actor != NULL) {
         target = actor_find_target_of_type(&actor_state.target_groups[actor->group_index],
                                            KF_ACTOR_TARGET_130);
-        if (target != NULL && !(actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING)) {
+        if (target != NULL &&
+            (actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) == KF_ACTOR_FLAGS_NONE) {
             actor_set_target(actor, target);
         }
     }
@@ -3037,7 +3038,7 @@ void player_update_frame(void)
     u8 object_index;
     u8 step;
 
-    actor_state.actor_overlap_exclusion_flags = 4;
+    actor_state.actor_overlap_exclusion_flags = KF_ACTOR_FLAG_STATIC_COLLISION_ONLY;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, -1);
     value = status_phase_step_scaled(&player_state.darkness_phase,
@@ -3378,11 +3379,12 @@ after_reaction:
         + player_state.camera_yaw_roll_offsets[1];
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                    player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS, 1);
-    actor_state.actor_overlap_exclusion_flags = 0;
+    actor_state.actor_overlap_exclusion_flags = KF_ACTOR_FLAGS_NONE;
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, KF_PLAYER_HEIGHT);
-    if (index != -1 && (actor_state.actors[index].flags & 8) != 0) {
+    if (index != -1 &&
+        (actor_state.actors[index].flags & KF_ACTOR_FLAG_PLAYER_OVERLAP_BOB) != KF_ACTOR_FLAGS_NONE) {
         player_begin_actor_overlap_bob();
     }
     player_update_weapon_attack();

@@ -16,13 +16,13 @@ enum {
 };
 
 /* Records of menu_window_layouts. Titles reuse the root row that opens the
- * window: the memory-card window lists save/load/return and the titles of
- * its sub-screens, the options window seven settings, the shop window
- * buy/sell/return. The card browser's two-row prompt has no title; the last
- * record is zero-filled. */
+ * window: SYSTEM (system) lists load / quit game / return and then the
+ * load, save and quit titles of its sub-screens; OPTIONS holds seven
+ * settings; SHOP (buy/sell) lists buy / sell / return. The card browser's
+ * two-row prompt has no title; the last record is zero-filled. */
 KF_ENUM_BEGIN(KfMenuWindowKind, s32)
     KF_MENU_WINDOW_ROOT = 0,
-    KF_MENU_WINDOW_MEMORY_CARD = 1,
+    KF_MENU_WINDOW_SYSTEM = 1,
     KF_MENU_WINDOW_OPTIONS = 2,
     KF_MENU_WINDOW_SHOP = 3,
     KF_MENU_WINDOW_STOCK = 4,
@@ -44,6 +44,44 @@ enum {
     KF_MENU_SPRITE_LIST_SELECTED_ROW = 10,
     KF_MENU_SPRITE_PANEL_TOP_LEFT = 11
 };
+
+/* menu_render_list layout, one per list screen (the controller that passes
+ * it): which detail, price, count and number columns follow each row. */
+KF_ENUM_BEGIN(KfMenuListMode, s32)
+    KF_MENU_LIST_USE_ITEM = 1,
+    KF_MENU_LIST_USE_MAGIC = 2,
+    KF_MENU_LIST_EQUIPMENT = 3,
+    KF_MENU_LIST_MAGIC_SHORTCUT = 4,
+    KF_MENU_LIST_EQUIPMENT_CATEGORY = 5,
+    KF_MENU_LIST_DROP_ITEM = 7,
+    KF_MENU_LIST_CARD_LOAD = 8,
+    KF_MENU_LIST_CARD_SAVE = 9,
+    KF_MENU_LIST_SHOP_BUY = 10,
+    KF_MENU_LIST_SHOP_SELL = 11,
+    KF_MENU_LIST_INVENTORY = 12,
+    KF_MENU_LIST_STOCK_BUY = 13,
+    KF_MENU_LIST_STOCK_OWNED = 14,
+    KF_MENU_LIST_TRADE = 15,
+    KF_MENU_LIST_ITEM_MAGIC = 16
+KF_ENUM_END(KfMenuListMode)
+
+/* Accept label of menu_preview_choice's two-option footer (KF1 order:
+ * use, discard, yes/no, buy, sell, equip), then load and save; kinds 8 and 9
+ * have their own labels and later kinds share the default label. Only
+ * YES_NO also replaces the decline label. */
+KF_ENUM_BEGIN(KfMenuConfirmKind, s32)
+    KF_MENU_CONFIRM_USE = 0,
+    KF_MENU_CONFIRM_DROP = 1,
+    KF_MENU_CONFIRM_YES_NO = 2,
+    KF_MENU_CONFIRM_BUY = 3,
+    KF_MENU_CONFIRM_SELL = 4,
+    KF_MENU_CONFIRM_EQUIP = 5,
+    KF_MENU_CONFIRM_LOAD = 6,
+    KF_MENU_CONFIRM_SAVE = 7,
+    KF_MENU_CONFIRM_LABEL_8 = 8,
+    KF_MENU_CONFIRM_LABEL_9 = 9,
+    KF_MENU_CONFIRM_LABEL_10 = 10
+KF_ENUM_END(KfMenuConfirmKind)
 
 /* menu_format_number pads with the blank glyph or with zero digits. */
 KF_ENUM_BEGIN(KfFormatPaddingMode, s32)
@@ -77,13 +115,16 @@ enum {
     KF_MENU_CONFIRM_REQUESTED = 1
 };
 
+/* Root window rows, decoded from their glyph labels in KF1's order: use
+ * item, use magic, equipment, attack/defence, discard, system, options,
+ * return. Each row titles the list or window it opens. */
 enum {
-    KF_MENU_ROOT_ITEM_SELECTION = 0,
-    KF_MENU_ROOT_MAGIC_ACTION = 1,
+    KF_MENU_ROOT_USE_ITEM = 0,
+    KF_MENU_ROOT_USE_MAGIC = 1,
     KF_MENU_ROOT_EQUIPMENT = 2,
     KF_MENU_ROOT_COMBAT_ATTRIBUTES = 3,
-    KF_MENU_ROOT_ITEM_USE = 4,
-    KF_MENU_ROOT_MEMORY_CARD = 5,
+    KF_MENU_ROOT_DROP_ITEM = 4,
+    KF_MENU_ROOT_SYSTEM = 5,
     KF_MENU_ROOT_OPTIONS = 6,
     KF_MENU_ROOT_ENTRY_COUNT = 7,
     KF_MENU_ROOT_CANCEL_ROW = KF_MENU_ROOT_ENTRY_COUNT,
@@ -262,12 +303,12 @@ extern u16 menu_item_code_secondary[5][120];
 void menu_list_init(KfMenuList *list, KfMenuWindowKind window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
-s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
-    s32 render_mode, u8 item_id);
+s32 menu_preview_choice(const KfMenuList *list, KfMenuConfirmKind label_kind,
+    KfMenuListMode render_mode, u8 item_id);
 void menu_show_map_preview(s32 menu_code);
 s32 menu_card_browser(void);
 /* Menu modes reinterpret the four payload words after the common list prefix. */
-void menu_render_list(const KfMenuList *menu, s32 render_mode);
+void menu_render_list(const KfMenuList *menu, KfMenuListMode render_mode);
 void menu_blit_sprite(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_fixed_clut(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_translucent(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);

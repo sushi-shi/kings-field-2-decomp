@@ -5,8 +5,7 @@
 
 enum {
     RANDOM_TRIANGULAR_CENTER = 0x8000,
-    LERP_HALFWORD_COUNT = 9,
-    TRAJECTORY_PREFER_SHORTER_TIME = 0
+    LERP_HALFWORD_COUNT = 9
 };
 
 /*
@@ -577,7 +576,7 @@ void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output
 }
 
 ADDRESS(0x80015918, 0x2b0)
-s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
+s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle)
 {
@@ -606,7 +605,7 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     if (longer_time <= 0 && shorter_time <= 0) {
         return -1;
     }
-    if (mode == TRAJECTORY_PREFER_SHORTER_TIME) {
+    if (mode == KF_TRAJECTORY_SHORTER_TIME) {
         chosen_time = shorter_time;
         if (longer_time > 0 && longer_time <= shorter_time) {
             chosen_time = longer_time;
@@ -627,8 +626,8 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
 }
 
 ADDRESS(0x80015bc8, 0x118)
-s32 trajectory_solve_motion_between_points(s32 mode, s32 source_x, s32 source_y,
-    s32 source_z, s32 target_x, s32 target_y, s32 target_z,
+s32 trajectory_solve_motion_between_points(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
+    s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
 {
     union {

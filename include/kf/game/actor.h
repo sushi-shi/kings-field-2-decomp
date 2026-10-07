@@ -862,7 +862,7 @@ void actor_play_target_sound(KfActor *actor);
 s32 actor_damp_horizontal_motion(s32 decay, s32 target);
 s32 actor_move_with_collision(SVECTOR *motion);
 s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target);
-s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
+s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x, s32 target_y,
                   s32 target_z, s32 trajectory_parameter,
                   s32 trajectory_speed);
 void actor_suspend_vertical_motion(void);

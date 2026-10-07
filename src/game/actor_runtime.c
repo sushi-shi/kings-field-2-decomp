@@ -1317,7 +1317,7 @@ s32 actor_move_with_collision(SVECTOR *motion)
 }
 
 ADDRESS(0x8003b520, 0x9c)
-s32 actor_start_ballistic_motion(s32 mode, s32 target_x, s32 target_y,
+s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x, s32 target_y,
     s32 target_z, s32 trajectory_parameter, s32 trajectory_speed)
 {
     KfActor *actor = actor_state.current;
@@ -2022,7 +2022,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         do {
             distance = fixed_vector2_length(trajectory_target.vx - position.vx,
                                             trajectory_target.vz - position.vz);
-            if (trajectory_solve_time_angle(0, distance,
+            if (trajectory_solve_time_angle(KF_TRAJECTORY_SHORTER_TIME, distance,
                     position.vy - (trajectory_target.vy - 1400), 10, 800,
                     &travel_time, &trajectory_angle) != 0) {
                 trajectory_angle = 0x100;
@@ -2456,7 +2456,7 @@ case3_motion:
             actor_advance_animation_clamped(actor, target->word_16.bytes.low);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
                 if ((s16)actor_start_ballistic_motion(
-                        1, player_state.camera_position.vx,
+                        KF_TRAJECTORY_LONGER_TIME, player_state.camera_position.vx,
                         player_state.camera_position.vy - 500,
                         player_state.camera_position.vz,
                         target->word_16.bytes.high,

@@ -304,6 +304,12 @@ Lane A5 traced these further links:
   (`player_update_vertical_motion`, `player_move_horizontal`). An in-place
   field update (`field += 10`) leaves the combine-deleted pseudo that
   explains an otherwise unreferenced 8-byte reload slot.
+- **Loads held below a store (sched.c).** When the r2000 memory unit stalls
+  loads behind a later store, the backward scheduler fills that cycle with
+  any other ready insn, and fixed frame addresses never conflict. A load
+  that writes the register the store reads (a reused variable) keeps the
+  store above it; variables set more than once also lose the birthing
+  promotion (`player_dispatch_magic_effect` case 3).
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

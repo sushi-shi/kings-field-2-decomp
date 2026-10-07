@@ -18,6 +18,7 @@
 #include <kf/game/resources.h>
 #include <stdarg.h>
 #include <psyq/sdk.h>
+#include <psyq/pad.h>
 #include <kf/game/card.h>
 #include <kf/game/card_payload.h>
 #include <psyq/libc.h>

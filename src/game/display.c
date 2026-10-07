@@ -61,7 +61,6 @@ enum {
 DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
     {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
-    0,
     {0, 0, 0}
 };
 

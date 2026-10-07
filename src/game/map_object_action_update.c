@@ -15,6 +15,7 @@
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
+#include <psyq/libc.h>
 
 DATA(0x8006d6e4, 0x8, ".sdata")
 SVECTOR map_object_motion_action15_start_offset = {0, -1424, 0, 0};

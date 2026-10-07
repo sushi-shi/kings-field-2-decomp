@@ -393,26 +393,32 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
 {
     s32 experience = player_state.experience;
     s32 level = player_state.level;
-    s32 digit;
     s32 index;
 
     header->title[CARD_TITLE_SLOT_DIGIT_OFFSET] = CARD_SHIFT_JIS_DIGIT_LEAD;
     header->title[CARD_TITLE_SLOT_DIGIT_OFFSET + 1] = slot_glyph + CARD_SHIFT_JIS_ZERO_TRAIL;
     for (index = 0; index < CARD_TITLE_EXPERIENCE_DIGITS; index++) {
+        s32 digit;
+        s32 quotient;
+
         digit = experience % 10;
-        experience /= 10;
+        quotient = experience / 10;
         header->title[(CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
+        experience = quotient;
         if (experience == 0)
             index = CARD_TITLE_EXPERIENCE_DIGITS;
     }
 
     for (index = 0; index < CARD_TITLE_LEVEL_DIGITS; index++) {
+        s32 digit;
+        s32 quotient;
+
         digit = level % 10;
-        experience = level / 10; /* retail reuses the experience local */
+        quotient = level / 10;
         header->title[(CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
-        level = experience;
+        level = quotient;
         if (level == 0)
             index = CARD_TITLE_LEVEL_DIGITS;
     }

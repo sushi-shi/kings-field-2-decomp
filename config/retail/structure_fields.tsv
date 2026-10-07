@@ -495,7 +495,7 @@ KfItemMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_choose_inven
 KfItemMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	menu_choose_inventory_item;menu_item_selection_controller	pointer to 24-byte glyph rows
 KfItemMenuList	0x28	0x04	unknown_28	u8[4]	opaque	game/menu.h;menu_choose_inventory_item	layout bytes with unresolved meaning
 KfItemMenuList	0x2c	0x04	values	u8 *	supported	menu_choose_inventory_item;menu_item_selection_controller	pointer to parallel byte values
-KfItemMenuList	0x30	0x04	codes	u32 *	supported	asm;menu_item_buy_controller;menu_item_sell_controller	pointer to 120 indexed item-code words
+KfItemMenuList	0x30	0x04	prices	s32 *	supported	asm;menu_item_buy_controller;menu_item_sell_controller;menu_render_list number_values	pointer to per-row item prices rendered as signed numbers
 KfMagicMenuList	0x00	0x24	list	KfMenuList	supported	game/menu.h;menu_choose_magic_action;menu_choose_primary_magic_shortcut	shared menu list prefix
 KfMagicMenuList	0x24	0x04	rows	KfMenuGlyphRow *	supported	menu_choose_magic_action;menu_choose_primary_magic_shortcut	pointer to 24-byte glyph rows
 KfMagicMenuList	0x28	0x08	unknown_28	u8[8]	opaque	game/menu.h;menu_choose_magic_action;menu_choose_primary_magic_shortcut	layout bytes with unresolved meaning

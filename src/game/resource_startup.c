@@ -367,31 +367,31 @@ handle_active:
 }
 
 ADDRESS(0x800167bc, 0x14)
-void resource_transition_set_phase_1(void)
+void resource_transition_set_phase_1(KfCdRequest *request)
 {
     state_8017d118.transition_phase = RESOURCE_STEP_LOAD_MAP_CELLS;
 }
 
 ADDRESS(0x800167d0, 0x14)
-void resource_transition_set_phase_3(void)
+void resource_transition_set_phase_3(KfCdRequest *request)
 {
     state_8017d118.transition_phase = RESOURCE_STEP_LOAD_MAP_ACTORS;
 }
 
 ADDRESS(0x800167e4, 0x14)
-void resource_transition_set_phase_2(void)
+void resource_transition_set_phase_2(KfCdRequest *request)
 {
     state_8017d118.transition_phase = RESOURCE_STEP_QUEUE_MAP_ACTORS;
 }
 
 ADDRESS(0x800167f8, 0x14)
-void resource_transition_set_phase_4(void)
+void resource_transition_set_phase_4(KfCdRequest *request)
 {
     state_8017d118.transition_phase = RESOURCE_STEP_QUEUE_TIM;
 }
 
 ADDRESS(0x8001680c, 0x14)
-void resource_transition_set_phase_6(void)
+void resource_transition_set_phase_6(KfCdRequest *request)
 {
     state_8017d118.transition_phase = RESOURCE_STEP_FINISH_AUDIO;
 }
@@ -430,7 +430,7 @@ void resource_advance_transition(void)
         } while (index != -1);
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3,
             (u_long *)cd_stream_work_buffer,
-            (KfCdRequestCallback)resource_transition_set_phase_1);
+            resource_transition_set_phase_1);
         return;
 
     case RESOURCE_STEP_LOAD_MAP_CELLS:
@@ -440,7 +440,7 @@ void resource_advance_transition(void)
         state_8017d118.active_table = callback_default_table;
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 2,
             (u_long *)resource_callback_table_workspace,
-            (KfCdRequestCallback)resource_transition_set_phase_2);
+            resource_transition_set_phase_2);
         resource_copy_words((u32 *)&bss_801c7540, (u32 *)(buffer + 4),
                             sizeof(bss_801c7540.map_cells) / sizeof(u32));
         buffer += *(u32 *)buffer + 4;
@@ -459,7 +459,7 @@ void resource_advance_transition(void)
         state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
-            (KfCdRequestCallback)resource_transition_set_phase_3);
+            resource_transition_set_phase_3);
         state_8017d118.active_table = (KfCallback *)resource_callback_table_workspace;
         return;
 
@@ -469,7 +469,7 @@ phase_three:
             state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
             cd_archive_queue_read(KF_RESOURCE_ARCHIVE_RTMD, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD],
                 (u_long *)resource_tmd_workspace,
-                (KfCdRequestCallback)resource_transition_set_phase_4);
+                resource_transition_set_phase_4);
         }
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP) {
             stream = cd_stream_work_buffer;
@@ -575,7 +575,7 @@ begin_phase_five:
             SsSeqClose(audio_state.sequence_id);
             audio_state.sequence_active = 0;
         }
-        if (audio_state.vab_slots[1].vab_id != -1) {
+        if (audio_state.vab_slots[1].vab_id != KF_AUDIO_VAB_ID_NONE) {
             audio_state.vab_slots[1].stream_slot = NULL;
         }
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP) {
@@ -585,7 +585,7 @@ begin_phase_five:
             cd_archive_queue_read(KF_RESOURCE_ARCHIVE_VAB,
                 state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] % 100 + 320,
                 audio_state.sequence_buffer,
-                (KfCdRequestCallback)resource_transition_set_phase_6);
+                resource_transition_set_phase_6);
             state_8017d118.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
             return;
         }

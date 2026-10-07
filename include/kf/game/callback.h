@@ -54,10 +54,12 @@ extern KfCallback callback_default_table[32];
 
 void callback_invoke_slot_04_zero(void);
 void resource_noop_callback();
-void resource_transition_set_phase_1(void);
-void resource_transition_set_phase_2(void);
-void resource_transition_set_phase_3(void);
-void resource_transition_set_phase_4(void);
-void resource_transition_set_phase_6(void);
+/* CD request completion callbacks; the finished request is unused. */
+struct KfCdRequest;
+void resource_transition_set_phase_1(struct KfCdRequest *request);
+void resource_transition_set_phase_2(struct KfCdRequest *request);
+void resource_transition_set_phase_3(struct KfCdRequest *request);
+void resource_transition_set_phase_4(struct KfCdRequest *request);
+void resource_transition_set_phase_6(struct KfCdRequest *request);
 
 #endif

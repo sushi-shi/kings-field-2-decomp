@@ -2519,7 +2519,7 @@ void menu_item_buy_controller(s32 kind)
     KfItemMenuList menu;
     KfMenuGlyphRow rows[40];
     u8 values[40];
-    u32 codes[40];
+    s32 prices[40];
     u8 indices[40];
     s32 selection = 0;
     s32 result = -99;
@@ -2535,12 +2535,12 @@ void menu_item_buy_controller(s32 kind)
         menu_item_mask_pages[3][51] = 0;
     count = menu_collect_masked_item_rows(menu_item_mask_pages[kind], rows, values, indices,
         0, 119);
-    menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, kind);
+    menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, kind);
     menu_list_init(&menu.list, 3, 0);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.codes = codes;
+    menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
     if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
@@ -2563,7 +2563,7 @@ void menu_item_buy_controller(s32 kind)
         menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
+            if (player_state.gold < (u32)(menu.prices[menu.list.selected_index]
                     * menu_item_quantity)
                     || counters[selected_item] + menu_item_quantity >= 100) {
                 menu_play_sound_cue(18);
@@ -2584,14 +2584,14 @@ void menu_item_buy_controller(s32 kind)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+        cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
         player_state.gold -= cost;
         counters[result] += (u8)menu_item_quantity;
     }
 }
 
 ADDRESS(0x8001d340, 0x74)
-void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
+void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, s32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group)
 {
     const u16 *page;
@@ -2613,7 +2613,7 @@ void menu_item_sell_controller(s32 kind)
     KfItemMenuList menu;
     KfMenuGlyphRow rows[120];
     u8 values[120];
-    u32 codes[120];
+    s32 prices[120];
     u8 indices[120];
     s32 selection = 0;
     s32 result = -99;
@@ -2623,12 +2623,12 @@ void menu_item_sell_controller(s32 kind)
     u8 selected_item;
 
     count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
-    menu_fill_item_prices(codes, indices, 0, count, kind);
+    menu_fill_item_prices(prices, indices, 0, count, kind);
     menu_list_init(&menu.list, 3, 1);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.codes = codes;
+    menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
     if (menu.list.entry_count != 0
@@ -2671,14 +2671,14 @@ void menu_item_sell_controller(s32 kind)
 
     menu_release_item_model();
     if (result != -1) {
-        payment = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+        payment = menu.prices[menu.list.selected_index] * menu_item_quantity;
         player_state.gold += payment;
         game_counter_bytes[result] -= (u8)menu_item_quantity;
     }
 }
 
 ADDRESS(0x8001d654, 0x54)
-void menu_fill_item_prices(u32 *prices, const u8 *indices, s32 first, s32 last, s32 group)
+void menu_fill_item_prices(s32 *prices, const u8 *indices, s32 first, s32 last, s32 group)
 {
     const u16 *page;
 
@@ -2719,7 +2719,7 @@ s32 menu_choose_inventory_item(void)
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
         if (menu.list.entry_count != 0)
-            menu_update_item_preview((u8)selected_item);
+            menu_update_item_preview(selected_item);
         menu_render_list(&menu.list, 12);
         menu_present_frame();
     }
@@ -2731,7 +2731,7 @@ s32 menu_choose_inventory_item(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu.list, 8, 12, (u8)selected_item);
+            result = menu_preview_choice(&menu.list, 8, 12, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2747,7 +2747,7 @@ s32 menu_choose_inventory_item(void)
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             if (menu.list.entry_count != 0)
-                menu_update_item_preview((u8)selected_item);
+                menu_update_item_preview(selected_item);
             menu_render_list(&menu.list, 12);
             menu_present_frame();
         }
@@ -2763,7 +2763,7 @@ void menu_item_trade_controller(void)
     KfItemMenuList menu;
     KfMenuGlyphRow rows[40];
     u8 values[40];
-    u32 codes[40];
+    s32 prices[40];
     u8 indices[40];
     u8 *counters = game_counter_bytes;
     s32 selection = 0;
@@ -2776,12 +2776,12 @@ void menu_item_trade_controller(void)
     menu_enter_display_state(1);
     count = menu_collect_masked_item_rows(menu_item_mask_pages[4], rows, values, indices,
         0, 119);
-    menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, 4);
+    menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, 4);
     menu_list_init(&menu.list, 5, 1);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.codes = codes;
+    menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
     selected_item = indices[menu.list.selected_index];
@@ -2815,7 +2815,7 @@ void menu_item_trade_controller(void)
         menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+            cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
             if (counters[96] < cost
                     || (selected_item == 117
                         ? counters[117] + menu_item_quantity * 10 >= 100
@@ -2838,7 +2838,7 @@ void menu_item_trade_controller(void)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+        cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
         counters[96] -= cost;
         if (result == 117)
             counters[117] += menu_item_quantity * 10;
@@ -2895,7 +2895,7 @@ void menu_buy_masked_stock_items(void)
     KfItemMenuList menu;
     KfMenuGlyphRow rows[40];
     u8 values[40];
-    u32 codes[40];
+    s32 prices[40];
     u8 indices[40];
     u8 *counters = game_counter_bytes;
     s32 selection = 0;
@@ -2907,12 +2907,12 @@ void menu_buy_masked_stock_items(void)
 
     count = menu_collect_masked_item_rows(menu_item_mask_pages[5], rows, values, indices,
         0, 119);
-    menu_fill_item_counts_and_prices(counters, values, codes, indices, 0, count, 5);
+    menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, 5);
     menu_list_init(&menu.list, 4, 0);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.codes = codes;
+    menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
     if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
@@ -2935,7 +2935,7 @@ void menu_buy_masked_stock_items(void)
         menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
+            if (player_state.gold < (u32)(menu.prices[menu.list.selected_index]
                     * menu_item_quantity)
                     || counters[selected_item] + menu_item_quantity >= 100) {
                 menu_play_sound_cue(18);
@@ -2956,7 +2956,7 @@ void menu_buy_masked_stock_items(void)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+        cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
         player_state.gold -= cost;
         counters[result] += (u8)menu_item_quantity;
     }
@@ -2968,7 +2968,7 @@ void menu_buy_owned_items(void)
     KfItemMenuList menu;
     KfMenuGlyphRow rows[40];
     u8 values[40];
-    u32 codes[40];
+    s32 prices[40];
     u8 indices[40];
     u8 *counters = game_counter_bytes;
     s32 selection = 0;
@@ -2979,12 +2979,12 @@ void menu_buy_owned_items(void)
     u8 selected_item;
 
     count = menu_collect_masked_item_rows(counters, rows, values, indices, 99, 109);
-    menu_fill_item_prices(codes, indices, 0, count, 4);
+    menu_fill_item_prices(prices, indices, 0, count, 4);
     menu_list_init(&menu.list, 4, 1);
     menu.list.entry_count = count;
     menu.rows = rows;
     menu.values = values;
-    menu.codes = codes;
+    menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
     if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
@@ -3007,7 +3007,7 @@ void menu_buy_owned_items(void)
         menu_update_list_input(&menu.list, indices, &selection, &result);
         selected_item = indices[menu.list.selected_index];
         if (selection == 1) {
-            if (player_state.gold < (u32)((s32)menu.codes[menu.list.selected_index]
+            if (player_state.gold < (u32)(menu.prices[menu.list.selected_index]
                     * menu_item_quantity)
                     || counters[selected_item] + menu_item_quantity >= 100) {
                 menu_play_sound_cue(18);
@@ -3028,7 +3028,7 @@ void menu_buy_owned_items(void)
 
     menu_release_item_model();
     if (result != -1) {
-        cost = (s32)menu.codes[menu.list.selected_index] * menu_item_quantity;
+        cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
         player_state.gold -= cost;
         counters[result] += (u8)menu_item_quantity;
     }
@@ -3611,7 +3611,7 @@ labels_ready:
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_update_item_preview((u8)item_id);
+            menu_update_item_preview(item_id);
             menu_render_list(list, render_mode);
             menu_draw_two_option(&labels[0], &labels[1], choice, confirmed);
             menu_present_frame();
@@ -4392,7 +4392,7 @@ s32 menu_load_item_model(u8 item_id)
     menu_release_item_model();
     if (item_id != 0xff) {
         allocation = memory_allocate(cd_archive_entry_extent(6, item_id, NULL));
-        cd_archive_read(6, item_id, (u_long *)allocation);
+        cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, item_id, (u_long *)allocation);
         tmd_register(KF_TMD_SLOT_MENU_ITEM, (KfTmdHeader *)allocation);
         menu_item_model_allocation_pending = KF_MENU_MODEL_ALLOCATED;
     }

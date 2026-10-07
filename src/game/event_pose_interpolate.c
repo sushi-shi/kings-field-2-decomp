@@ -209,7 +209,7 @@ void event_target_stream_execute(KfActor *actor)
     if (candidate == NULL) {
         return;
     }
-    if (candidate->type != KF_TARGET_CANDIDATE_EVENT_STREAM) {
+    if (candidate->type != KF_ACTOR_TARGET_EVENT_STREAM) {
         return;
     }
     restore_state = 0;
@@ -1360,7 +1360,7 @@ void event_world_state_save_slot(s32 save_slot)
             break;
         }
         candidate = group->targets[0].pointer;
-        if (candidate != NULL && candidate->type == KF_TARGET_CANDIDATE_EVENT_STREAM) {
+        if (candidate != NULL && candidate->type == KF_ACTOR_TARGET_EVENT_STREAM) {
             *write++ = index;
             *write++ = candidate->word_10.bytes.fallback_offset;
             *write++ = candidate->word_12.bytes.marker_state;

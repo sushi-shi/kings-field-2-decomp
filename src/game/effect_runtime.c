@@ -1517,7 +1517,7 @@ void effect_update_dispatch(void)
             VECTOR old_position;
             VECTOR *position;
 
-            if (actor->lifecycle != 1 || actor->target_type != 25) {
+            if (actor->lifecycle != 1 || actor->target_type != KF_ACTOR_TARGET_25) {
                 record->type = KF_EFFECT_SLOT_FREE;
                 break;
             }
@@ -2714,7 +2714,7 @@ void effect_update_dispatch(void)
                     actor_index = bss_801c7540.collision_cache.actor_index;
                     record->cache_tail.payload.trail.actor_index = actor_index;
                     actor = &actor_state.actors[record->cache_tail.payload.trail.actor_index];
-                    if (actor->target_type == 2 || actor->target_type == 3) {
+                    if (actor->target_type == KF_ACTOR_TARGET_2 || actor->target_type == KF_ACTOR_TARGET_3) {
                         record->render_flags = 1;
                         record->render_id = 22;
                         record->phase = 2;

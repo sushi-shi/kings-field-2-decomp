@@ -12,18 +12,9 @@ enum {
     KF_ACTOR_ANIMATION_PHASE_PERIOD = 0x1000,
     KF_ACTOR_ANIMATION_PHASE_MAX = KF_ACTOR_ANIMATION_PHASE_PERIOD - 1,
     KF_ACTOR_ANIMATION_NO_CHANGE = 0xff,
-    KF_TARGET_CANDIDATE_DISABLED = 0xff,
-    KF_TARGET_CANDIDATE_EVENT_STREAM = 0x70,
     KF_ACTOR_CAPACITY = 200,
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
-    KF_ACTOR_SLOT_PERSISTENT = 1,
-    KF_ACTOR_SLOT_RESPAWNING = 2,
-    KF_ACTOR_SLOT_HOMEBOUND = 3,
-    KF_ACTOR_SLOT_LINKED_COMPANION = 4,
-    KF_ACTOR_SLOT_EFFECT_SPAWNED = 5,
-    KF_ACTOR_SLOT_FREE = 0xff,
-    KF_ACTOR_TARGET_TYPE_NONE = 0xff,
     KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED = 0xf0,
     KF_ACTOR_TARGET_ACTION_UNSELECTED = 0xff,
     KF_ACTOR_VERTICAL_MOTION_VELOCITY = 0x10,
@@ -31,8 +22,6 @@ enum {
     KF_ACTOR_VERTICAL_MOTION_BALLISTIC = 0x30,
     KF_ACTOR_VERTICAL_MOTION_SUSPENDED = 0x60,
     KF_ACTOR_PITCH_TRACK_TARGET = -1,
-    KF_ACTOR_TARGET_ASCENDING_SPIN = 29,
-    KF_ACTOR_TARGET_COLLISION_MOVE = 30,
     KF_ACTOR_LIFECYCLE_DORMANT = 0,
     KF_ACTOR_LIFECYCLE_ACTIVE = 1,
     KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
@@ -55,6 +44,68 @@ enum {
     KF_ACTOR_FLAG_CONE_TARGET_PRIORITY = 0x20000,
     KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000
 };
+
+/*
+ * Slot policy byte of a placed or spawned actor (KF1 KfActorSlotState). The
+ * loader copies it from KfActorLoadRecord; 0xff frees the slot and ends the
+ * placement stream. Slot 0 is the placement default and keeps a WIP name.
+ */
+KF_ENUM_BEGIN(KfActorSlotState, u8)
+    KF_ACTOR_SLOT_0 = 0,
+    KF_ACTOR_SLOT_PERSISTENT = 1,
+    KF_ACTOR_SLOT_RESPAWNING = 2,
+    KF_ACTOR_SLOT_HOMEBOUND = 3,
+    KF_ACTOR_SLOT_LINKED_COMPANION = 4,
+    KF_ACTOR_SLOT_EFFECT_SPAWNED = 5,
+    KF_ACTOR_SLOT_FREE = 0xff
+KF_ENUM_END(KfActorSlotState)
+
+/*
+ * Candidate behaviour type. actor_set_target copies a candidate's type into
+ * the actor's current target type, actor_find_target_of_type matches it, and
+ * actor_update_behavior / actor_score_target_candidate dispatch on it. Types
+ * from 128 are scored by the active map's callback; 0xff is no target (and a
+ * disabled candidate row). Other members keep decimal WIP names.
+ */
+KF_ENUM_BEGIN(KfActorTargetType, u8)
+    KF_ACTOR_TARGET_0 = 0,
+    KF_ACTOR_TARGET_1 = 1,
+    KF_ACTOR_TARGET_2 = 2,
+    KF_ACTOR_TARGET_3 = 3,
+    KF_ACTOR_TARGET_4 = 4,
+    KF_ACTOR_TARGET_5 = 5,
+    KF_ACTOR_TARGET_6 = 6,
+    KF_ACTOR_TARGET_7 = 7,
+    KF_ACTOR_TARGET_8 = 8,
+    KF_ACTOR_TARGET_9 = 9,
+    KF_ACTOR_TARGET_10 = 10,
+    KF_ACTOR_TARGET_11 = 11,
+    KF_ACTOR_TARGET_12 = 12,
+    KF_ACTOR_TARGET_13 = 13,
+    KF_ACTOR_TARGET_14 = 14,
+    KF_ACTOR_TARGET_15 = 15,
+    KF_ACTOR_TARGET_16 = 16,
+    KF_ACTOR_TARGET_17 = 17,
+    KF_ACTOR_TARGET_18 = 18,
+    KF_ACTOR_TARGET_19 = 19,
+    KF_ACTOR_TARGET_20 = 20,
+    KF_ACTOR_TARGET_21 = 21,
+    KF_ACTOR_TARGET_22 = 22,
+    KF_ACTOR_TARGET_23 = 23,
+    KF_ACTOR_TARGET_24 = 24,
+    KF_ACTOR_TARGET_25 = 25,
+    KF_ACTOR_TARGET_26 = 26,
+    KF_ACTOR_TARGET_27 = 27,
+    KF_ACTOR_TARGET_28 = 28,
+    KF_ACTOR_TARGET_ASCENDING_SPIN = 29,
+    KF_ACTOR_TARGET_COLLISION_MOVE = 30,
+    KF_ACTOR_TARGET_EVENT_STREAM = 0x70,
+    KF_ACTOR_TARGET_MAP_CALLBACK_FIRST = 0x80,
+    KF_ACTOR_TARGET_130 = 130,
+    KF_ACTOR_TARGET_132 = 132,
+    KF_ACTOR_TARGET_240 = 240,
+    KF_ACTOR_TARGET_NONE = 0xff
+KF_ENUM_END(KfActorTargetType)
 
 typedef struct KfTargetCandidateWord0cBytes {
     u8 low;
@@ -270,7 +321,7 @@ typedef char kf_target_sound_trigger_size[
 
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
-    u8 type;
+    KfActorTargetType type;
     u8 animation_id;
     KfTargetCandidateWord02 word_02;
     u8 sound_code;
@@ -340,7 +391,7 @@ typedef char kf_target_candidate_secondary_hit_phase_offset[
 /* Type 25 reads a variable halfword stream after this proved prefix. Its
  * complete allocation and record stride are not established. */
 typedef struct KfTargetCandidateAction25 {
-    u8 type;
+    KfActorTargetType type;
     u8 unknown_01[3];
     u8 unknown_04;
     u8 unknown_05[2];
@@ -553,7 +604,7 @@ typedef char kf_actor_word24_size[sizeof(KfActorWord24) == 2 ? 1 : -1];
 /* The 0x7c stride and these fields are fixed by the actor pool and phase
  * helpers. Other fields remain open. */
 typedef struct KfActor {
-    u8 slot_state;
+    KfActorSlotState slot_state;
     u8 definition_id;
     u8 group_index;
     u8 current_map_layer;
@@ -567,9 +618,9 @@ typedef struct KfActor {
     KF_ENUM_STORAGE(KfObjectId, u8) death_drop_object_id;
     u8 animation_id;
     u8 vertical_motion_state;
-    u8 target_type;
+    KfActorTargetType target_type;
     u8 target_action_state;
-    u8 previous_target_type;
+    KfActorTargetType previous_target_type;
     u8 unknown_11;
     u8 unknown_12;
     u8 render_mode;
@@ -724,7 +775,7 @@ extern KfActorStateGame actor_state;
 /* One 16-byte actor placement record from a map archive; the loader copies
  * KF_ACTOR_CAPACITY consecutive records into the actor pool. */
 typedef struct KfActorLoadRecord {
-    u8 slot_state;
+    KfActorSlotState slot_state;
     u8 group_index;
     u8 placement_flags;
     u8 cell_z;
@@ -756,12 +807,12 @@ void actor_fixup_group_targets(void);
 void actor_load_records(const KfActorLoadRecord *records);
 void actor_update_lifecycle_for_player_range(void);
 void actor_update_behavior(void);
-KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type);
+KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, KfActorTargetType type);
 u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker);
 u8 *event_target_stream_resolve_cursor(KfActor *actor);
 void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase,
                    s32 target_phase, s32 phase_step);
-void actor_select_target_type_in_own_group(KfActor *actor, u8 type);
+void actor_select_target_type_in_own_group(KfActor *actor, KfActorTargetType type);
 void actor_select_best_target(s32 player_distance);
 s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance);
 void actor_select_target_for_player_distance(void);

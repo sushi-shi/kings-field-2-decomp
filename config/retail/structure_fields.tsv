@@ -1,7 +1,7 @@
 # MANUALLY MANAGED - exact target offsets/extents for every field in structures.tsv.
 # opaque means the byte range is modeled for layout but has no supported semantic meaning yet.
 structure	offset	size	name	datatype	meaning_confidence	evidence	note
-KfActor	0x0	0x1	slot_state	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
+KfActor	0x0	0x1	slot_state	KfActorSlotState	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x1	0x1	definition_id	u8	supported	actor_copy_group_defaults group+0x00 copy;actor TMD/portrait asset references;KF1 KfActor definition_id	Actor definition and render asset identity
 KfActor	0x2	0x1	group_index	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3	0x1	current_map_layer	u8	supported	actor_motion collision layer assignment;render_resource_dispatch map_cell_layer_mask and render_world_model layer argument	Actor's current map layer used for visibility and collision side
@@ -15,9 +15,9 @@ KfActor	0xa	0x1	spawn_chance	u8	supported	game/actor.h;actor_load_records +5;act
 KfActor	0xb	0x1	death_drop_object_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	game/actor.h;actor_load_records +6;actor_update_behavior death branch;KF1 actor_behavior/death_drop_object_id	Placement object ID spawned at the actor death phase
 KfActor	0xc	0x1	animation_id	u8	supported	actor_set_animation writes;render_world_model clip argument;animation_sample_vertex;KF1 KfActor animation_id	Current animation clip ID
 KfActor	0xd	0x1	vertical_motion_state	u8	supported	GAME actor_update_vertical_motion state dispatch;actor_suspend_vertical_motion;KF1 vertical_state analog	Current vertical motion mode; observed values differ from KF1 enum
-KfActor	0xe	0x1	target_type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
+KfActor	0xe	0x1	target_type	KfActorTargetType	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0xf	0x1	target_action_state	u8	supported	actor_set_target;actor_select_best_target;actor_update_behavior	0 newly selected, 0xf0/0xf1 active action states, 0xff absent or reset
-KfActor	0x10	0x1	previous_target_type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
+KfActor	0x10	0x1	previous_target_type	KfActorTargetType	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x11	0x1	unknown_11	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x13	0x1	render_mode	u8	supported	render_resource_dispatch render_world_model render_mode argument;actor_initialization	Actor model render mode
@@ -57,7 +57,7 @@ KfActorBallisticPhaseView	0x0	0x2	motion_x	s16	supported	actor_motion.c	Shares v
 KfActorBallisticPhaseView	0x2	0x2	phase	s16	supported	actor_update_vertical_motion state 0x30	Ballistic phase increments for the quadratic Y expression
 KfActorBallisticPhaseView	0x4	0x2	motion_z	s16	supported	actor_motion.c	Shares vector Z halfword in ballistic state
 KfActorBallisticPhaseView	0x6	0x2	pad	s16	supported	SVECTOR layout	Padding halfword of the shared vector extent
-KfActorLoadRecord	0x0	0x1	slot_state	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.slot_state; zero leaves the slot free
+KfActorLoadRecord	0x0	0x1	slot_state	KfActorSlotState	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.slot_state; zero leaves the slot free
 KfActorLoadRecord	0x1	0x1	group_index	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.group_index
 KfActorLoadRecord	0x2	0x1	placement_flags	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.placement_flags
 KfActorLoadRecord	0x3	0x1	cell_z	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.home_cell_z
@@ -1117,7 +1117,7 @@ KfShapeWallRecord	0x00	0x02	offset	s16	supported	game/collision_cache.h;collisio
 KfShapeWallRecord	0x02	0x02	limit	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
 KfShapeWallRecord	0x04	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
 KfShapeWallRecord	0x06	0x02	quarter_turns	u16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
-KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
+KfTargetCandidate	0x0	0x1	type	KfActorTargetType	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfTargetCandidate	0x1	0x1	animation_id	u8	supported	game/actor.h;actor behavior/event stream	byte passed to actor animation setters and phase seek
 KfTargetCandidate	0x2	0x2	word_02	KfTargetCandidateWord02	supported	GAME actor_score_target_candidate lbu +2/+3;actor_apply_magic_to_actor	Initial and continuing selection-score scales; type-2 damage reaction reuses byte +2 as an unsigned chance threshold
 KfTargetCandidate	0x4	0x1	sound_code	u8	supported	actor_spatial_sound;actor_update_behavior	Sound selector with alternate spatial range in high bit
@@ -1141,7 +1141,7 @@ KfTargetCandidate	0x24	0x2	word_24	KfTargetCandidateWord24	supported	GAME 0x8003
 KfTargetCandidate	0x26	0x2	word_26	KfTargetCandidateWord26	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh	unsigned bound and signed motion parameter; meaning unresolved
 KfTargetCandidate	0x28	0x2	repeated_attack_phase_step	u16	supported	GAME 0x8003e140 lhu candidate+0x28;actor_update_behavior	Advances the next hit phase after a repeated attack crossing
 KfTargetCandidate	0x2a	0x2	secondary_hit_phase	u16	supported	GAME 0x8003e1ac lhu candidate+0x2a;actor_update_behavior	Optional animation phase for the second damage-cone call
-KfTargetCandidateAction25	0x0	0x1	type	u8	candidate	game/actor.h	KfTargetCandidateAction25 member from reconstructed header
+KfTargetCandidateAction25	0x0	0x1	type	KfActorTargetType	candidate	game/actor.h	KfTargetCandidateAction25 member from reconstructed header
 KfTargetCandidateAction25	0x1	0x3	unknown_01	u8[3]	opaque	game/actor.h	layout span without a supported meaning
 KfTargetCandidateAction25	0x4	0x1	unknown_04	u8	opaque	game/actor.h	layout span without a supported meaning
 KfTargetCandidateAction25	0x5	0x2	unknown_05	u8[2]	opaque	game/actor.h	layout span without a supported meaning

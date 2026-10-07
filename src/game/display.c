@@ -2116,7 +2116,6 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     long gte_flags;
     KfCollisionRow *lighting;
     KfCollisionRow *override;
-    KfCollisionRow *light_rotation;
     KfTmdObject *object;
     u16 object_index;
     s32 red;
@@ -2185,12 +2184,11 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         } else {
             SetColorMatrix((MATRIX *)&lighting->motion);
         }
-        light_rotation = lighting;
         if (override->rotations[0].m[0][0] != -1) {
-            light_rotation = override;
+            MulMatrix0((MATRIX *)&override->rotations[0], &model, &light_matrix);
+        } else {
+            MulMatrix0((MATRIX *)&lighting->rotations[0], &model, &light_matrix);
         }
-        MulMatrix0((MATRIX *)&light_rotation->rotations[0], &model,
-                   &light_matrix);
         if (override->filter.angle != -1) {
             fog_set_near(fixed_lerp_q12(lighting->filter.angle,
                                        override->filter.angle,

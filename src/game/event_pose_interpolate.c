@@ -229,17 +229,17 @@ void event_target_stream_execute(KfActor *actor)
 
     for (;;) {
         switch (*cursor - KF_EVENT_STREAM_REWIND_MARKER) {
-        case 0:
+        case KF_EVENT_STREAM_REWIND_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
             candidate->word_12.bytes.marker_state = 1;
             /* The two rewind opcodes share their byte-count operand. */
-        case 8:
+        case KF_EVENT_STREAM_REWIND - KF_EVENT_STREAM_REWIND_MARKER:
         {
             u8 count = cursor[1];
             candidate->word_10.bytes.fallback_offset -= count;
             cursor -= count;
             break;
         }
-        case 9:
+        case KF_EVENT_STREAM_BRANCH - KF_EVENT_STREAM_REWIND_MARKER:
             if (event_state.control.bytes[cursor[1]] == cursor[2]) {
                 candidate->word_10.bytes.fallback_offset = event_target_stream_find_marker(candidate, cursor[3]);
                 cursor = candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
@@ -248,34 +248,34 @@ void event_target_stream_execute(KfActor *actor)
                 candidate->word_10.bytes.fallback_offset += 4;
             }
             break;
-        case 2:
+        case KF_EVENT_STREAM_MARKER_RECORD - KF_EVENT_STREAM_REWIND_MARKER:
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
             break;
-        case 3:
+        case KF_EVENT_STREAM_SKIP - KF_EVENT_STREAM_REWIND_MARKER:
             goto advance;
-        case 4:
+        case KF_EVENT_STREAM_CALLBACK - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
             goto advance;
-        case 5:
+        case KF_EVENT_STREAM_REPEAT - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             repeat = *cursor;
             goto advance;
-        case 6:
+        case KF_EVENT_STREAM_RESET_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
             break;
-        case 7:
+        case KF_EVENT_STREAM_SET_CONTROL - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.bytes[cursor[1]] = cursor[2];
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
             goto advance;
-        case 15:
+        case KF_EVENT_STREAM_END - KF_EVENT_STREAM_REWIND_MARKER:
             goto after_script;
         default:
             goto execute;
@@ -326,7 +326,7 @@ after_script:
     case KF_EVENT_POST_STREAM_INVENTORY_CHOICE:
         player_render_frame_and_release_pool();
         choice = menu_choose_inventory_item();
-        if (choice != -1) {
+        if (choice != KF_MENU_RESULT_CANCELLED) {
             render_game_frame(NULL, NULL);
             menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, choice + 360);
         }

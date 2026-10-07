@@ -19,6 +19,16 @@ only. The build does not synthesize object sections, force addresses from
 `DATA()` claims, rewrite the CPE, patch the EXE, or copy missing retail bytes.
 A failed phase removes the stale EXE.
 
+DOSBox-X runs every DOS tool at a fixed emulated rate (`DOS_CYCLES` in
+`scripts/psxbuild/sdk.py`). CPE2X leaves its reserved header words
+(`0x08..0x0f`) uninitialized, so they hold stack bytes that real-mode timer
+interrupt frames wrote. With `cycles=max` the rate followed host load and those
+bytes varied between otherwise identical builds; running OPEN's conversion at
+500, 1000 and 3000 cycles per millisecond gave `a3 27`, `af fe` and `9a 0b`.
+At a fixed rate the interrupt schedule depends only on executed instructions,
+and `nix flake check` (`executable-determinism`) builds all four programs in
+two trees and requires identical CPE and EXE bytes.
+
 The pinned Psy-Q 3.0 kit supplies PSYLINK 1.29, CPE2X 1.3, headers, libraries,
 and the overlay `NONE2.OBJ` startup. The active chain still uses the separately
 hash-pinned ASPSX 1.07 inherited from the SLPS-00017 setup; the kit's ASPSX

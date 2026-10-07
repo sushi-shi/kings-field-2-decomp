@@ -1,0 +1,36 @@
+#ifndef KF_MOVIE_STREAM_H
+#define KF_MOVIE_STREAM_H
+#include <kf/lib/bool.h>
+#include <kf/lib/types.h>
+#include <psyq/cd.h>
+#include <psyq/press.h>
+
+typedef struct {
+    u_long *vlcbuf[2];
+    int vlcid;
+    u_short *imgbuf;
+    RECT rect[2];
+    int rectid;
+    RECT slice;
+    KfBool isdone;
+} DECENV;
+
+typedef char kf_decenv_size[sizeof(DECENV) == 0x30 ? 1 : -1];
+
+extern u_long vlcbuf0[];
+extern u_long vlcbuf1[];
+extern u_short imgbuf[];
+extern u_long Ring_Buff[];
+extern DECENV dec;
+extern KfBool Rewind_Switch;
+extern long StrFrame;
+
+void strSetDefDecEnv(void);
+void strInit(CdlLOC *loc);
+void strCallback(void);
+int strNextVlc(void);
+u_long *strNext(DECENV *env);
+void strSync(DECENV *env);
+void strKickCD(CdlLOC *loc);
+
+#endif

@@ -1,0 +1,288 @@
+{
+  "images": [
+    {
+      "name": "PSX.EXE",
+      "load_address": 2147549184,
+      "units": [
+        {
+          "source": "src/psx/main.cpp",
+          "options": {
+            "defines": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "GAME.EXE",
+      "load_address": 2147553280,
+      "units": [
+        {
+          "source": "src/game/main.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/audio_runtime.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/matrix_rotation.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/resource_startup.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/cd_memory.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/menu_root.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/memory_card_events.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/player_collision_bounds.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/player_runtime.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/collision_grid_sample.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/collision_shape_mask_runtime.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/floor_item_find_free.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/display.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/map_cell_pattern_place.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/map_object.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/map_object_action_update.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/actor_runtime.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/effect_runtime.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/audio_sound_wrappers.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/game/event_pose_interpolate.cpp",
+          "options": {
+            "defines": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "OPEN.EXE",
+      "load_address": 2147553280,
+      "units": [
+        {
+          "source": "src/open/main.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/lib/display_init.cpp",
+          "options": {
+            "defines": [
+              "KF_OPEN"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/audio_init.cpp",
+          "options": {
+            "defines": [
+              "KF_OPEN"
+            ]
+          }
+        },
+        {
+          "source": "src/open/audio.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/open/title.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/lib/display_frame.cpp",
+          "options": {
+            "defines": [
+              "KF_OPEN"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/cd_file.cpp",
+          "options": {
+            "defines": [
+              "KF_OPEN"
+            ]
+          }
+        },
+        {
+          "source": "src/open/resources.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/open/movie.cpp",
+          "options": {
+            "defines": []
+          }
+        },
+        {
+          "source": "src/lib/movie_stream.cpp",
+          "options": {
+            "defines": [
+              "MOVIE_END_FRAME=1085"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "END.EXE",
+      "load_address": 2147553280,
+      "units": [
+        {
+          "source": "src/end/main.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/display_init.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/audio_init.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/end/audio.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/display_frame.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/cd_file.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/end/movie.cpp",
+          "options": {
+            "defines": [
+              "KF_END"
+            ]
+          }
+        },
+        {
+          "source": "src/lib/movie_stream.cpp",
+          "options": {
+            "defines": [
+              "MOVIE_END_FRAME=2136"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+#ifndef KF_GAME_RENDER_MODEL_H
+#define KF_GAME_RENDER_MODEL_H
+
+#include <kf/lib/offsetof.h>
+#include <kf/lib/types.h>
+#include <kf/game/pool.h>
+#include <kf/game/render_types.h>
+#include <psyq/sdk.h>
+
+enum { KF_RENDER_MODEL_ROW_COUNT = 15 };
+
+typedef struct KfRenderModelRow {
+    KfSpriteState state;
+    u8 animation_clip;
+    KfLightingIndex lighting_index;
+    u16 asset_id;
+    u16 animation_phase;
+    SVECTOR scale;
+    SVECTOR translation;
+    SVECTOR rotation;
+    KfPoolRecord *animation_state;
+} KfRenderModelRow;
+
+typedef char kf_render_model_row_size[sizeof(KfRenderModelRow) == 36 ? 1 : -1];
+typedef char kf_render_model_asset_id_offset[
+    offsetof(KfRenderModelRow, asset_id) == 4 ? 1 : -1];
+typedef char kf_render_model_rotation_offset[
+    offsetof(KfRenderModelRow, rotation) == 24 ? 1 : -1];
+typedef char kf_render_model_animation_state_offset[
+    offsetof(KfRenderModelRow, animation_state) == 32 ? 1 : -1];
+
+extern KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT];
+extern s32 render_model_yaw_smoothing_accumulator;
+extern MATRIX render_world_identity_matrix;
+
+struct KfEulerAngles;
+void render_world_model(KfMapLayerMask layer, u16 asset_index, const VECTOR *position,
+                   const struct KfEulerAngles *rotation, const SVECTOR *scale,
+                   KfPoolRecord **cache, MATRIX *world_matrix, KfAnimationClip clip,
+                   u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,
+                   KfRenderQueueMode render_mode, s32 depth);
+void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
+                   KfPoolRecord **cache, KfAnimationClip clip, u16 phase,
+                   s32 blend_mode, s32 lighting_flags, s16 depth);
+
+#endif

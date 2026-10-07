@@ -1,0 +1,504 @@
+#ifndef KF_GAME_EFFECT_H
+#define KF_GAME_EFFECT_H
+
+#include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
+#include <kf/lib/types.h>
+#include <kf/game/audio.h>
+#include <kf/game/render_types.h>
+#include <kf/game/collision_flags.h>
+#include <kf/game/magic.h>
+#include <kf/game/pool.h>
+#include <psyq/sdk.h>
+
+struct KfPoolRecord;
+
+enum {
+    KF_EFFECT_CAPACITY = 128,
+    KF_MAGIC_RECORD_COUNT = 64
+};
+
+enum class KfEffectType : u8 {
+    KF_EFFECT_TYPE_NONE = 0,
+    KF_EFFECT_TARGET_PLAYER = 1,
+    KF_EFFECT_TARGET_ACTORS = 2,
+    KF_EFFECT_TARGET_ACTORS_AND_PLAYER = 3,
+    KF_EFFECT_TARGET_SHAPES_ONLY = 4,
+    KF_EFFECT_TARGET_MASK = 7,
+    KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
+    KF_EFFECT_SOURCE_HAZARD = 0x20,
+    KF_EFFECT_SOURCE_MASK = 0x30,
+    KF_EFFECT_SLOT_FREE = 0xff
+}; using enum KfEffectType;
+constexpr KfEffectType operator|(KfEffectType lhs, KfEffectType rhs)
+    { return static_cast<KfEffectType>(static_cast<u8>(lhs) | static_cast<u8>(rhs)); }
+    constexpr KfEffectType operator&(KfEffectType lhs, KfEffectType rhs)
+    { return static_cast<KfEffectType>(static_cast<u8>(lhs) & static_cast<u8>(rhs)); }
+    constexpr KfEffectType operator^(KfEffectType lhs, KfEffectType rhs)
+    { return static_cast<KfEffectType>(static_cast<u8>(lhs) ^ static_cast<u8>(rhs)); }
+    constexpr KfEffectType operator~(KfEffectType value)
+    { return static_cast<KfEffectType>(~static_cast<u8>(value)); }
+    inline KfEffectType& operator|=(KfEffectType& lhs, KfEffectType rhs) { return lhs = lhs | rhs; }
+    inline KfEffectType& operator&=(KfEffectType& lhs, KfEffectType rhs) { return lhs = lhs & rhs; }
+    inline KfEffectType& operator^=(KfEffectType& lhs, KfEffectType rhs) { return lhs = lhs ^ rhs; }
+
+enum class KfEffectRenderId : u8 {
+    KF_EFFECT_MODEL_0 = 0,
+    KF_EFFECT_MODEL_8 = 8,
+    KF_EFFECT_MODEL_9 = 9,
+    KF_EFFECT_MODEL_10 = 10,
+    KF_EFFECT_MODEL_11 = 11,
+    KF_EFFECT_MODEL_12 = 12,
+    KF_EFFECT_MODEL_13 = 13,
+    KF_EFFECT_MODEL_14 = 14,
+    KF_EFFECT_MODEL_15 = 15,
+    KF_EFFECT_MODEL_16 = 16,
+    KF_EFFECT_MODEL_17 = 17,
+    KF_EFFECT_MODEL_19 = 19,
+    KF_EFFECT_MODEL_20 = 20,
+    KF_EFFECT_MODEL_21 = 21,
+    KF_EFFECT_MODEL_22 = 22,
+    KF_EFFECT_MODEL_23 = 23,
+    KF_EFFECT_MODEL_24 = 24,
+    KF_EFFECT_MODEL_25 = 25,
+    KF_EFFECT_MODEL_26 = 26,
+    KF_EFFECT_MODEL_28 = 28,
+    KF_EFFECT_MODEL_29 = 29,
+    KF_EFFECT_MODEL_30 = 30,
+    KF_EFFECT_MODEL_31 = 31,
+    KF_EFFECT_MODEL_32 = 32,
+    KF_EFFECT_MODEL_33 = 33,
+    KF_EFFECT_MODEL_34 = 34,
+    KF_EFFECT_MODEL_35 = 35,
+    KF_EFFECT_MODEL_36 = 36,
+    KF_EFFECT_MODEL_37 = 37,
+    KF_EFFECT_MODEL_38 = 38,
+    KF_EFFECT_MODEL_40 = 40,
+    KF_EFFECT_MODEL_41 = 41,
+    KF_EFFECT_MODEL_42 = 42,
+    KF_EFFECT_MODEL_43 = 43,
+    KF_EFFECT_MODEL_44 = 44,
+    KF_EFFECT_MODEL_45 = 45,
+    KF_EFFECT_MODEL_46 = 46,
+    KF_EFFECT_MODEL_47 = 47,
+    KF_EFFECT_MODEL_48 = 48,
+    KF_EFFECT_MODEL_49 = 49,
+    KF_EFFECT_MODEL_50 = 50
+}; using enum KfEffectRenderId;
+
+enum class KfEffectRenderFlags : u8 {
+    KF_EFFECT_RENDER_HIDDEN = 0,
+    KF_EFFECT_RENDER_VISIBLE = 1,
+    KF_EFFECT_RENDER_ALWAYS_VISIBLE = 2,
+    KF_EFFECT_RENDER_VISIBILITY_MASK = 3,
+    KF_EFFECT_RENDER_WORLD_TRANSFORM = 0,
+    KF_EFFECT_RENDER_IDENTITY_TRANSFORM = 4,
+    KF_EFFECT_RENDER_PITCH_TRANSFORM = 8,
+    KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c,
+    KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c
+}; using enum KfEffectRenderFlags;
+constexpr KfEffectRenderFlags operator|(KfEffectRenderFlags lhs, KfEffectRenderFlags rhs)
+    { return static_cast<KfEffectRenderFlags>(static_cast<u8>(lhs) | static_cast<u8>(rhs)); }
+    constexpr KfEffectRenderFlags operator&(KfEffectRenderFlags lhs, KfEffectRenderFlags rhs)
+    { return static_cast<KfEffectRenderFlags>(static_cast<u8>(lhs) & static_cast<u8>(rhs)); }
+    constexpr KfEffectRenderFlags operator^(KfEffectRenderFlags lhs, KfEffectRenderFlags rhs)
+    { return static_cast<KfEffectRenderFlags>(static_cast<u8>(lhs) ^ static_cast<u8>(rhs)); }
+    constexpr KfEffectRenderFlags operator~(KfEffectRenderFlags value)
+    { return static_cast<KfEffectRenderFlags>(~static_cast<u8>(value)); }
+    inline KfEffectRenderFlags& operator|=(KfEffectRenderFlags& lhs, KfEffectRenderFlags rhs) { return lhs = lhs | rhs; }
+    inline KfEffectRenderFlags& operator&=(KfEffectRenderFlags& lhs, KfEffectRenderFlags rhs) { return lhs = lhs & rhs; }
+    inline KfEffectRenderFlags& operator^=(KfEffectRenderFlags& lhs, KfEffectRenderFlags rhs) { return lhs = lhs ^ rhs; }
+
+enum class KfEffectStage : u8 {
+    KF_EFFECT_STAGE_TRAVEL = 0,
+    KF_EFFECT_STAGE_BOUNCED = 1,
+    KF_EFFECT_STAGE_FADE = 2,
+    KF_EFFECT_STAGE_SHRINK = 1,
+    KF_EFFECT_STAGE_TRACK = 0,
+    KF_EFFECT_STAGE_COLLAPSE = 1,
+    KF_EFFECT_STAGE_CHARGE = 0,
+    KF_EFFECT_STAGE_FLIGHT = 1,
+    KF_EFFECT_STAGE_BURST = 2
+}; using enum KfEffectStage;
+
+enum class KfEffectMotionResult : s32 {
+    KF_EFFECT_MOTION_ARRIVED = -2,
+    KF_EFFECT_MOTION_BLOCKED = -1,
+    KF_EFFECT_MOTION_CLEAR = 0
+}; using enum KfEffectMotionResult;
+
+typedef union KfEffectScaleThreshold {
+    s16 interpolation_start_y;
+    s16 next_probe_phase;
+} KfEffectScaleThreshold;
+
+typedef char kf_effect_scale_threshold_size[sizeof(KfEffectScaleThreshold) == 2 ? 1 : -1];
+
+typedef struct KfEffectTrailRow {
+    VECTOR position;
+    SVECTOR rotation;
+} KfEffectTrailRow;
+
+typedef char kf_effect_trail_row_size[sizeof(KfEffectTrailRow) == 24 ? 1 : -1];
+typedef char kf_effect_trail_rotation_offset[offsetof(KfEffectTrailRow, rotation) == 16 ? 1 : -1];
+
+typedef struct KfEffectTrailState {
+    KfEffectTrailRow *rows;
+    u8 frame_index;
+    u8 phase_counter;
+    u8 actor_index;
+} KfEffectTrailState;
+
+typedef char kf_effect_trail_state_size[sizeof(KfEffectTrailState) == 8 ? 1 : -1];
+typedef char kf_effect_trail_state_frame_offset[offsetof(KfEffectTrailState, frame_index) == 4 ? 1 : -1];
+typedef char kf_effect_trail_state_actor_offset[offsetof(KfEffectTrailState, actor_index) == 6 ? 1 : -1];
+
+typedef struct KfEffectKind102Payload {
+    s16 amplitude;
+} KfEffectKind102Payload;
+
+typedef char kf_effect_kind102_payload_size[sizeof(KfEffectKind102Payload) == 2 ? 1 : -1];
+
+typedef struct KfEffectBallisticState {
+    s16 origin_y;
+    s16 age;
+} KfEffectBallisticState;
+
+typedef char kf_effect_ballistic_state_size[sizeof(KfEffectBallisticState) == 4 ? 1 : -1];
+typedef char kf_effect_ballistic_age_offset[offsetof(KfEffectBallisticState, age) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind23Attachment {
+    s16 actor_index;
+    s16 vertex_index;
+    u16 release_animation_phase;
+} KfEffectKind23Attachment;
+
+typedef char kf_effect_kind23_attachment_size[sizeof(KfEffectKind23Attachment) == 6 ? 1 : -1];
+typedef char kf_effect_kind23_vertex_offset[offsetof(KfEffectKind23Attachment, vertex_index) == 2 ? 1 : -1];
+typedef char kf_effect_kind23_phase_offset[offsetof(KfEffectKind23Attachment, release_animation_phase) == 4 ? 1 : -1];
+
+typedef struct KfEffectKind46State {
+    KfEnumStorage<KfEffectStage, s8> phase;
+    s8 linked_effect_index;
+    u16 age_q12;
+} KfEffectKind46State;
+
+typedef char kf_effect_kind46_state_size[sizeof(KfEffectKind46State) == 4 ? 1 : -1];
+typedef char kf_effect_kind46_age_offset[offsetof(KfEffectKind46State, age_q12) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind5Fanout {
+    u8 initial_child_count;
+    u8 actor_index;
+    s16 children_remaining;
+} KfEffectKind5Fanout;
+
+typedef char kf_effect_kind5_fanout_size[sizeof(KfEffectKind5Fanout) == 4 ? 1 : -1];
+typedef char kf_effect_kind5_remaining_offset[offsetof(KfEffectKind5Fanout, children_remaining) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind111Target {
+    s16 actor_index;
+} KfEffectKind111Target;
+
+typedef char kf_effect_kind111_target_size[sizeof(KfEffectKind111Target) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind103Counter {
+    u16 remaining;
+} KfEffectKind103Counter;
+
+typedef char kf_effect_kind103_counter_size[sizeof(KfEffectKind103Counter) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind2Scale {
+    s16 max_scale;
+    s16 scale_step;
+    s16 radial_damage_parameter;
+} KfEffectKind2Scale;
+
+typedef char kf_effect_kind2_scale_size[sizeof(KfEffectKind2Scale) == 6 ? 1 : -1];
+typedef char kf_effect_kind2_step_offset[offsetof(KfEffectKind2Scale, scale_step) == 2 ? 1 : -1];
+typedef char kf_effect_kind2_damage_offset[offsetof(KfEffectKind2Scale, radial_damage_parameter) == 4 ? 1 : -1];
+
+typedef struct KfEffectCollisionLatch {
+    u8 impact_handled;
+} KfEffectCollisionLatch;
+
+typedef char kf_effect_collision_latch_size[sizeof(KfEffectCollisionLatch) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind42Countdown {
+    s8 ticks_remaining;
+} KfEffectKind42Countdown;
+
+typedef char kf_effect_kind42_countdown_size[sizeof(KfEffectKind42Countdown) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind1Stage {
+    KfEffectStage collision_stage;
+} KfEffectKind1Stage;
+
+typedef char kf_effect_kind1_stage_size[sizeof(KfEffectKind1Stage) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind26Stage {
+    KfEnumStorage<KfEffectStage, s8> stage;
+} KfEffectKind26Stage;
+
+typedef char kf_effect_kind26_stage_size[sizeof(KfEffectKind26Stage) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind50Stage {
+    KfEnumStorage<KfEffectStage, s8> stage;
+} KfEffectKind50Stage;
+
+typedef char kf_effect_kind50_stage_size[sizeof(KfEffectKind50Stage) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind106Children {
+    u8 children_remaining;
+} KfEffectKind106Children;
+
+typedef char kf_effect_kind106_children_size[sizeof(KfEffectKind106Children) == 1 ? 1 : -1];
+
+typedef struct KfEffectScaleStepArgument {
+    s16 scale_step;
+} KfEffectScaleStepArgument;
+
+typedef char kf_effect_scale_step_argument_size[sizeof(KfEffectScaleStepArgument) == 2 ? 1 : -1];
+
+typedef struct KfEffectTrailChildLink {
+    u8 parent_index;
+    u8 lag_index;
+} KfEffectTrailChildLink;
+
+typedef char kf_effect_trail_child_link_size[sizeof(KfEffectTrailChildLink) == 2 ? 1 : -1];
+typedef char kf_effect_trail_child_lag_offset[offsetof(KfEffectTrailChildLink, lag_index) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind8State {
+    u8 parent_index;
+    u16 vertical_step;
+} KfEffectKind8State;
+
+typedef char kf_effect_kind8_state_size[sizeof(KfEffectKind8State) == 4 ? 1 : -1];
+typedef char kf_effect_kind8_vertical_step_offset[offsetof(KfEffectKind8State, vertical_step) == 2 ? 1 : -1];
+
+enum {
+    KF_EFFECT_TARGET_ACTOR_PLAYER = 0xfe,
+    KF_EFFECT_TARGET_ACTOR_NONE = 0xff
+};
+
+typedef struct KfEffectKind9Target {
+    u8 actor_index;
+} KfEffectKind9Target;
+
+typedef char kf_effect_kind9_target_size[sizeof(KfEffectKind9Target) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind109Target {
+    u8 effect_index;
+} KfEffectKind109Target;
+
+typedef char kf_effect_kind109_target_size[sizeof(KfEffectKind109Target) == 1 ? 1 : -1];
+
+typedef struct KfEffectKind114State {
+    u8 unknown_00[4];
+    s32 origin_y;
+} KfEffectKind114State;
+
+typedef char kf_effect_kind114_state_size[sizeof(KfEffectKind114State) == 8 ? 1 : -1];
+typedef char kf_effect_kind114_origin_y_offset[offsetof(KfEffectKind114State, origin_y) == 4 ? 1 : -1];
+
+typedef struct KfEffectKind101Motion {
+    u16 scale_step;
+    u16 vertical_step;
+} KfEffectKind101Motion;
+
+typedef char kf_effect_kind101_motion_size[sizeof(KfEffectKind101Motion) == 4 ? 1 : -1];
+typedef char kf_effect_kind101_vertical_step_offset[offsetof(KfEffectKind101Motion, vertical_step) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind10Targeting {
+    u8 actor_index;
+    u8 emissions_remaining;
+} KfEffectKind10Targeting;
+
+typedef char kf_effect_kind10_targeting_size[sizeof(KfEffectKind10Targeting) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind105Attachment {
+    u8 parent_index;
+    u8 actor_index;
+    s16 vertex_index;
+} KfEffectKind105Attachment;
+
+typedef char kf_effect_kind105_attachment_size[sizeof(KfEffectKind105Attachment) == 4 ? 1 : -1];
+typedef char kf_effect_kind105_vertex_offset[offsetof(KfEffectKind105Attachment, vertex_index) == 2 ? 1 : -1];
+
+typedef struct KfEffectKind12Aim {
+    s16 max_length;
+    s16 scale;
+    s16 turn_step;
+    s16 close_scale;
+} KfEffectKind12Aim;
+
+typedef char kf_effect_kind12_aim_size[sizeof(KfEffectKind12Aim) == 8 ? 1 : -1];
+typedef char kf_effect_kind12_close_scale_offset[offsetof(KfEffectKind12Aim, close_scale) == 6 ? 1 : -1];
+
+typedef union KfEffectKindPayload {
+    u8 raw[8];
+    KfEffectTrailState trail;
+    KfEffectKind102Payload kind102;
+    KfEffectBallisticState ballistic;
+    KfEffectKind23Attachment kind23;
+    KfEffectKind46State kind46;
+    KfEffectKind5Fanout kind5;
+    KfEffectKind111Target kind111;
+    KfEffectKind103Counter kind103;
+    KfEffectKind2Scale kind2;
+    KfEffectCollisionLatch collision_latch;
+    KfEffectKind42Countdown kind42;
+    KfEffectKind1Stage kind1;
+    KfEffectKind26Stage kind26;
+    KfEffectKind50Stage kind50;
+    KfEffectKind106Children kind106;
+    KfEffectScaleStepArgument scale_step_argument;
+    KfEffectTrailChildLink trail_child;
+    KfEffectKind8State kind8;
+    KfEffectKind9Target kind9;
+    KfEffectKind109Target kind109;
+    KfEffectKind114State kind114;
+    KfEffectKind101Motion kind101;
+    KfEffectKind10Targeting kind10;
+    KfEffectKind105Attachment kind105;
+    KfEffectKind12Aim kind12;
+} KfEffectKindPayload;
+
+typedef char kf_effect_kind_payload_size[sizeof(KfEffectKindPayload) == 8 ? 1 : -1];
+
+typedef struct KfEffectCacheTail {
+    struct KfPoolRecord *animation_cache;
+    KfEffectKindPayload payload;
+} KfEffectCacheTail;
+
+typedef char kf_effect_cache_tail_size[sizeof(KfEffectCacheTail) == 12 ? 1 : -1];
+typedef char kf_effect_cache_payload_offset[offsetof(KfEffectCacheTail, payload) == 4 ? 1 : -1];
+
+typedef struct KfEffectRecord {
+    KfEffectType type;
+    KfEffectKind kind;
+    KfEffectRenderId base_render_id;
+    KfEffectRenderId render_id;
+    KfAnimationClip animation_clip;
+    u8 unknown_05;
+    u8 damage_multiplier_tenths;
+    u8 phase;
+    KfEffectRenderFlags render_flags;
+    KfRenderQueueMode render_queue_mode;
+    KfMapLayerMask map_layer_mask;
+    u8 cooldown;
+    KfLightingIndex lighting_override_index;
+    b8 midpoint_collision_enabled;
+    s16 updates_remaining;
+    s16 lighting_blend_q12;
+    u16 animation_phase_q12;
+    VECTOR position;
+    SVECTOR rotation;
+    s16 scale_x;
+    s16 scale_y;
+    s16 scale_z;
+    KfEffectScaleThreshold scale_threshold;
+    SVECTOR direction;
+    KfEffectCacheTail cache_tail;
+} KfEffectRecord;
+
+typedef char kf_effect_record_size[sizeof(KfEffectRecord) == 72 ? 1 : -1];
+typedef char kf_effect_damage_multiplier_offset[offsetof(KfEffectRecord, damage_multiplier_tenths) == 0x06 ? 1 : -1];
+typedef char kf_effect_render_flags_offset[offsetof(KfEffectRecord, render_flags) == 0x08 ? 1 : -1];
+typedef char kf_effect_map_layer_mask_offset[offsetof(KfEffectRecord, map_layer_mask) == 0x0a ? 1 : -1];
+typedef char kf_effect_render_queue_mode_offset[offsetof(KfEffectRecord, render_queue_mode) == 0x09 ? 1 : -1];
+typedef char kf_effect_lighting_override_offset[offsetof(KfEffectRecord, lighting_override_index) == 0x0c ? 1 : -1];
+typedef char kf_effect_midpoint_collision_offset[offsetof(KfEffectRecord, midpoint_collision_enabled) == 0x0d ? 1 : -1];
+typedef char kf_effect_lighting_blend_offset[offsetof(KfEffectRecord, lighting_blend_q12) == 0x10 ? 1 : -1];
+typedef char kf_effect_animation_phase_offset[offsetof(KfEffectRecord, animation_phase_q12) == 0x12 ? 1 : -1];
+typedef char kf_effect_position_offset[offsetof(KfEffectRecord, position) == 0x14 ? 1 : -1];
+typedef char kf_effect_scale_offset[offsetof(KfEffectRecord, scale_x) == 0x2c ? 1 : -1];
+typedef char kf_effect_scale_threshold_offset[offsetof(KfEffectRecord, scale_threshold) == 0x32 ? 1 : -1];
+typedef char kf_effect_direction_offset[offsetof(KfEffectRecord, direction) == 0x34 ? 1 : -1];
+typedef char kf_effect_cache_tail_offset[offsetof(KfEffectRecord, cache_tail) == 0x3c ? 1 : -1];
+
+typedef char kf_effect_trail_payload_offset[offsetof(KfEffectRecord, cache_tail.payload.trail) == 0x40 ? 1 : -1];
+
+typedef struct KfMagicRecord {
+    u8 menu_available;
+    u8 charge_rate;
+    u8 unknown_02[2];
+    u8 player_status_flags;
+    u16 damage_components[8];
+    u16 mp_cost;
+    u8 unknown_18[2];
+} KfMagicRecord;
+
+typedef char kf_magic_record_size[sizeof(KfMagicRecord) == 26 ? 1 : -1];
+typedef char kf_magic_record_charge_rate_offset[offsetof(KfMagicRecord, charge_rate) == 1 ? 1 : -1];
+typedef char kf_magic_record_damage_components_offset[offsetof(KfMagicRecord, damage_components) == 0x06 ? 1 : -1];
+typedef char kf_magic_record_status_flags_offset[offsetof(KfMagicRecord, player_status_flags) == 0x04 ? 1 : -1];
+typedef char kf_magic_record_mp_cost_offset[offsetof(KfMagicRecord, mp_cost) == 0x16 ? 1 : -1];
+
+typedef struct KfEffectState {
+    KfMagicRecord magic_records[KF_MAGIC_RECORD_COUNT];
+    KfEffectRecord records[KF_EFFECT_CAPACITY];
+    KfMagicRecord *current_magic;
+    KfEffectRecord *current_record;
+    s32 current_index;
+} KfEffectState;
+
+typedef char kf_effect_state_size[sizeof(KfEffectState) == 0x2a8c ? 1 : -1];
+typedef char kf_effect_records_offset[offsetof(KfEffectState, records) == 0x680 ? 1 : -1];
+typedef char kf_effect_current_magic_offset[offsetof(KfEffectState, current_magic) == 0x2a80 ? 1 : -1];
+typedef char kf_effect_current_index_offset[offsetof(KfEffectState, current_index) == 0x2a88 ? 1 : -1];
+
+extern KfEffectState effect_state;
+
+int effect_magic_power(KfEffectRecord *effect);
+void effect_dispatch_magic_impact(KfCollisionHitFlags kind,
+                                  KfActorDamageFlags source_flags,
+                   s32 radius, u16 power,
+                   u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
+                   u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
+                   u16 magic_12, u16 magic_14, const VECTOR *position);
+KfCollisionHitFlags effect_probe_collision_by_type(const VECTOR *position, s32 radius,
+    s32 height_flags);
+void effect_apply_current_magic(KfCollisionHitFlags kind, s32 radius,
+                                const VECTOR *position);
+void effect_apply_current_magic_backstep(KfCollisionHitFlags kind);
+void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
+                                      s32 mode, s32 falloff, s32 scale_and_flags);
+KfEffectMotionResult effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
+                      s32 probe_height_flags, SVECTOR *motion);
+KfEffectMotionResult effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
+                        s32 probe_radius, s32 probe_height_flags, s32 proximity,
+                        s32 close_scale, s32 target_filter);
+KfEffectMotionResult effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
+                         s32 settle_distance, s32 min_distance,
+                         s32 probe_radius, s32 probe_height_flags);
+void effect_scale_step(s32 multiplier, s32 limit, s32 increment,
+                       s32 arg3, s32 arg5);
+void effect_spawn_zero_direction(KfEffectRecord *record, s32 mode);
+b32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
+                                s32 vertical_window);
+void effect_spawn_motion(KfEffectRecord *record, s32 position_mode,
+                   s32 motion_mode, s32 arg3, s32 arg4, s32 arg5,
+                   s32 arg6, s32 arg7, ...);
+b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
+                  s32 scale_x, s32 scale_z, s32 variation);
+KfCollisionHitFlags effect_collision_step(s32 radius, s32 angle, s32 step);
+void effect_collision_backtrack(void);
+void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
+KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);
+KfEffectRecord *effect_pool_find_free(void);
+KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectType type, KfEffectKind kind,
+                              const VECTOR *position,
+                              const SVECTOR *direction, ...);
+void effect_sample_rotated_vertex(KfEffectRecord *record, s32 mode, VECTOR *output,
+                   const SVECTOR *scale);
+void effect_sample_world_vertex(KfEffectRecord *record, s32 mode, VECTOR *position,
+                   const SVECTOR *scale);
+void effect_pool_initialize_scaled(KfEffectRecord *record, KfEffectRenderId render_id, u16 scale);
+void effect_pool_initialize_fixed(KfEffectRecord *record, KfEffectRenderId render_id);
+void effect_pool_reset(void);
+void effect_rotate_scale_offset_y(const SVECTOR *offset, VECTOR *output, s16 angle, s32 scale);
+void magic_load_records(const KfMagicRecord *records);
+void effect_pool_sweep(void);
+void effect_update_dispatch(void);
+
+#endif

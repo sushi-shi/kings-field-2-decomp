@@ -82,7 +82,10 @@ void resource_initialize_game_assets(void)
 
     resource_copy_words((u32 *)&map_object_state, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;
-    resource_copy_words((u32 *)player_weapon_records, (u32 *)(source + 4), *(u32 *)source >> 2);
+    // Port: the archive payload is 0x4d0 bytes for an 0x4c8-byte table; retail
+    // writes the eight zero padding bytes into the following map-cell array.
+    resource_copy_words((u32 *)player_weapon_records, (u32 *)(source + 4),
+        (*(u32 *)source < sizeof player_weapon_records ? *(u32 *)source : sizeof player_weapon_records) >> 2);
     source += *(u32 *)source + 4;
     resource_copy_words((u32 *)player_equipment_records, (u32 *)(source + 4), *(u32 *)source >> 2);
     source += *(u32 *)source + 4;

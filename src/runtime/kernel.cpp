@@ -112,10 +112,25 @@ bool card_path(const char *device_path, std::string &path) {
 }
 }
 
+// Section copies span every global of a program, including the redzones an
+// address sanitizer places between them, so they bypass instrumentation.
+__attribute__((no_sanitize("address"))) void copy_section(char *destination, const char *source, std::size_t size) {
+    for (std::size_t i = 0; i < size; ++i)
+        destination[i] = source[i];
+}
+
+__attribute__((no_sanitize("address"))) void clear_section(char *destination, std::size_t size) {
+    for (std::size_t i = 0; i < size; ++i)
+        destination[i] = 0;
+}
+
 void programs_capture_initial_state() {
-    for (auto &program : programs)
-        if (program.data_start && program.data_stop)
-            program.initial_data.assign(program.data_start, program.data_stop);
+    for (auto &program : programs) {
+        if (program.data_start && program.data_stop) {
+            program.initial_data.resize(static_cast<std::size_t>(program.data_stop - program.data_start));
+            copy_section(program.initial_data.data(), program.data_start, program.initial_data.size());
+        }
+    }
 }
 
 void programs_run_boot() {
@@ -216,9 +231,9 @@ long Exec(struct EXEC *header, long, char **) {
     auto &program = programs.at(header->pc0);
     // Reloading an executable restores its initialized data and clears its BSS.
     if (!program.initial_data.empty())
-        std::memcpy(program.data_start, program.initial_data.data(), program.initial_data.size());
+        copy_section(program.data_start, program.initial_data.data(), program.initial_data.size());
     if (program.bss_start && program.bss_stop)
-        std::memset(program.bss_start, 0, static_cast<std::size_t>(program.bss_stop - program.bss_start));
+        clear_section(program.bss_start, static_cast<std::size_t>(program.bss_stop - program.bss_start));
     std::printf("kf2: running %s\n", program.disc_name);
     std::fflush(stdout);
     program.main();

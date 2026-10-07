@@ -39,7 +39,10 @@ KfCdState cd_state;
 
 KfCdArchive cd_archives[KF_CD_ARCHIVE_SLOTS];
 
-u8 cd_stream_work_buffer[0x11000];
+// Port: map loads copy a fixed 0x1800-byte shape bank after a variable first
+// payload, reading past this buffer on retail. The tail keeps that read inside
+// the buffer; it holds zeros or bytes from an earlier, longer read.
+u8 cd_stream_work_buffer[0x11000 + 0x1808];
 
 void cd_stream_mark_complete(KfCdRequest *request)
 {

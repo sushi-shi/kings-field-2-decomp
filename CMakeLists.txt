@@ -15,7 +15,8 @@ endif()
 
 option(KF_SANITIZE "Enable address and undefined behavior sanitizers" OFF)
 if(KF_SANITIZE AND NOT EMSCRIPTEN)
-  add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
+  # Callbacks are stored through generic function-pointer types, as in the original.
+  add_compile_options(-fsanitize=address,undefined -fno-sanitize=function -fno-omit-frame-pointer)
   add_link_options(-fsanitize=address,undefined)
 endif()
 

@@ -91,6 +91,21 @@ These are the only edits to generated files; keep them minimal and explicit.
 | `include/kf/game/{card,menu}.h` | `struct DIRENTRY` comes from the library header, not a forward declaration |
 | `src/game/{floor_item_find_free,map_object}.cpp` | `va_arg` reads promoted `int` before narrowing |
 | `src/game/{actor,effect}_runtime.cpp` | Two functions that fall off their end return a defined value |
+| `src/game/resource_startup.cpp` | The weapon table copy stops at the table; retail writes 8 zero padding bytes into the map-cell array |
+| `src/game/cd_memory.cpp` | `cd_stream_work_buffer` has a 0x1808-byte tail for the shape-bank copy that reads past it on retail |
+
+## Memory adjacency
+
+Retail code sometimes reads or writes across the end of one object into the
+next, which was harmless in the original memory layout. The sanitizer preset
+(`cmake --preset sanitize`) finds these: each is either bounded at its source
+with a note above, or recorded here. Known remaining reports in a short run of
+the first map, both caused by missing region modules or retail edge cases:
+
+- `map_cell_add_layer_occupancy` indexes row `-1` of the map-cell grid near
+  the map edge (inside the same retail object).
+- `KF_MAP_OBJECT_OP_RECALL_SOCKET` reads map object `380 + 255` when its tail
+  was not set up, which normally comes from a region callback.
 
 ## Region code modules
 

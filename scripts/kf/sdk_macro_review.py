@@ -133,7 +133,7 @@ def main() -> None:
                 decision = "ABS_H_macro_trial_changed_exact_listing"
             elif name in {"va_start", "va_arg", "va_end", "__va_rounded_size"}:
                 decision = "source_local_stdarg_macro"
-            elif name == "WAIT_TIME" and path == "src/lib/movie_stream.c":
+            elif name == "WAIT_TIME" and path == "src/lib/movie_stream_state.inc":
                 decision = "source_local_macro_shadow"
             else:
                 decision = "macro_or_SDK_constant_present_as_spelled"

@@ -39,3 +39,26 @@ GAME.EXE	0x8006da40	memory_card_unreferenced_word_1	.sbss	retail layout: eight-b
 GAME.EXE	0x8006da48	memory_card_unreferenced_word_2	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
 GAME.EXE	0x8006da50	memory_card_unreferenced_word_3	.sbss	retail layout: eight-byte .lcomm stride between memory_card_error_event and memory_card_buffer;static under ASPSX -G8
 GAME.EXE	0x8006da58	memory_card_buffer	.sbss	retail layout: eight-byte .lcomm stride before SDK small BSS at 0x8006da60;static under ASPSX -G8;native-gcc257-aspsx107-G8
+OPEN.EXE	0x8003db88	overlay_next_request	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003db8c	opening_data_file	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003db94	title_level	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003db98	title_phase	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003db9c	banner_level	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dba0	banner_phase	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dba4	prompt_level	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dba8	prompt_phase	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dbac	pad_previous_buttons	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dbb0	cd_path_prefix	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dbb8	cd_version_suffix	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+OPEN.EXE	0x8003dbbc	StrWidth	.sdata	retail layout: last game .sdata words before LIBPRESS .sdata;TUTO0.C initialized static under cc1 -G8
+OPEN.EXE	0x8003dbc0	StrHeight	.sdata	retail layout: last game .sdata words before LIBPRESS .sdata;TUTO0.C initialized static under cc1 -G8
+OPEN.EXE	0x8003dec0	Rewind_Switch	.sbss	retail layout: first game .sbss reservation, eight-byte stride;static under ASPSX -G8
+OPEN.EXE	0x8003dec8	StrFrame	.sbss	retail layout: first game .sbss reservation, eight-byte stride;static under ASPSX -G8
+END.EXE	0x8003aa34	overlay_next_request	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+END.EXE	0x8003aa38	ending_data_file	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+END.EXE	0x8003aa40	cd_path_prefix	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+END.EXE	0x8003aa48	cd_version_suffix	.sdata	retail layout: game small data after the last SDK .data and before the first LIBPRESS .sdata record;initialized under cc1 -G8
+END.EXE	0x8003aa4c	StrWidth	.sdata	retail layout: last game .sdata words before LIBPRESS .sdata;TUTO0.C initialized static under cc1 -G8
+END.EXE	0x8003aa50	StrHeight	.sdata	retail layout: last game .sdata words before LIBPRESS .sdata;TUTO0.C initialized static under cc1 -G8
+END.EXE	0x8003ace0	Rewind_Switch	.sbss	retail layout: first game .sbss reservation, eight-byte stride;static under ASPSX -G8
+END.EXE	0x8003ace8	StrFrame	.sbss	retail layout: first game .sbss reservation, eight-byte stride;static under ASPSX -G8

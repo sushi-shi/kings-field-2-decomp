@@ -62,6 +62,9 @@ class DataClaim:
     line: int
     section: str
     image: str | None = None
+    # The shared fragment that spells an image-qualified DATA_AT() claim;
+    # None when the unit source itself holds the claim.
+    source: Path | None = None
 
 
 @dataclass(frozen=True)
@@ -224,9 +227,13 @@ def scan_source(source: Path) -> tuple[tuple[Claim, ...], tuple[DataClaim, ...]]
                 )
             for image, va, size, line, section in run:
                 _text, owner, owner_line = located[line - 1]
-                if owner != source:
-                    raise ValueError(f'{owner}:{owner_line}: shared fragments must not own data')
-                data_claims.append(DataClaim(va, size, name, owner_line, section, image))
+                # A fragment's state is defined once per including unit, so
+                # its claims must name their image, as its functions' do.
+                if owner != source and image is None:
+                    raise ValueError(f'{owner}:{owner_line}: shared fragments own data only '
+                                     'through image-qualified DATA_AT claims')
+                data_claims.append(DataClaim(va, size, name, owner_line, section, image,
+                                             owner if owner != source else None))
             continue
         if at is None and plain is None:
             index += 1

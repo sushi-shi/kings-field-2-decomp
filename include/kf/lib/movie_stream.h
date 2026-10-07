@@ -19,14 +19,6 @@ typedef struct {
 
 typedef char kf_decenv_size[sizeof(DECENV) == 0x30 ? 1 : -1];
 
-extern u_long vlcbuf0[];
-extern u_long vlcbuf1[];
-extern u_short imgbuf[];
-extern u_long Ring_Buff[];
-extern DECENV dec;
-extern KfBool Rewind_Switch;
-extern long StrFrame;
-
 void strSetDefDecEnv(void);
 void strInit(CdlLOC *loc);
 void strCallback(void);

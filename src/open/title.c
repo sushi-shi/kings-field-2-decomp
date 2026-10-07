@@ -23,19 +23,19 @@ enum {
     CHOICE_VOICE_VOLUME = 64
 };
 
-DATA(0x8003db94, 0x4, ".data")
+DATA(0x8003db94, 0x4, ".sdata")
 s32 title_level = 0;
-DATA(0x8003db98, 0x4, ".data")
+DATA(0x8003db98, 0x4, ".sdata")
 KfTitlePhase title_phase = KF_TITLE_PHASE_FADE_IN;
-DATA(0x8003db9c, 0x4, ".data")
+DATA(0x8003db9c, 0x4, ".sdata")
 s32 banner_level = 0;
-DATA(0x8003dba0, 0x4, ".data")
+DATA(0x8003dba0, 0x4, ".sdata")
 KfTitlePhase banner_phase = KF_TITLE_PHASE_FADE_IN;
-DATA(0x8003dba4, 0x4, ".data")
+DATA(0x8003dba4, 0x4, ".sdata")
 s32 prompt_level = PROMPT_PULSE_LOW;
-DATA(0x8003dba8, 0x4, ".data")
+DATA(0x8003dba8, 0x4, ".sdata")
 KfPromptPhase prompt_phase = KF_PROMPT_PHASE_BRIGHTEN;
-DATA(0x8003dbac, 0x4, ".data")
+DATA(0x8003dbac, 0x4, ".sdata")
 u32 pad_previous_buttons = 0;
 
 /* Draws the backdrop and the four title tiles; returns true once settled. */

@@ -102,11 +102,11 @@ void player_reload_map_resources(
     s32 first, s32 second, s32 third, s32 fourth, s32 fifth, s32 optional_resource)
 {
     cd_request_wait_idle();
-    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
-    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TMD] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
-    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_TIM] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
-    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_VAB] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
-    state_8017d118.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = KF_RESOURCE_ACTIVE_UNINITIALIZED;
     resource_request_transition(first, second, third,
                                 KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
                                 KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT,
@@ -114,7 +114,7 @@ void player_reload_map_resources(
     do {
         cd_request_yield();
         resource_advance_transition();
-    } while (state_8017d118.transition_active != 0);
+    } while (resource_state.transition_active != 0);
     cd_request_wait_idle();
     DrawSync(0);
     VSync(0);
@@ -128,7 +128,7 @@ void player_reload_map_resources(
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (state_8017d118.transition_active != 0);
+        } while (resource_state.transition_active != 0);
         cd_request_wait_idle();
         DrawSync(0);
         VSync(0);
@@ -2783,7 +2783,7 @@ void player_handle_interaction_and_menu(void)
     } else if (value == -3) {
         s32 resource;
         player_restore_equipment_effects();
-        resource = state_8017d118.active_resource_ids[0];
+        resource = resource_state.active_resource_ids[0];
         player_reload_map_resources(resource, resource, resource, resource, resource, 255);
     }
     player_clear_motion();
@@ -3262,7 +3262,7 @@ update_reaction_pose:
                     player_state.camera_position.vz = 0x22000;
                     player_state.map_layer_index = 5;
                     game_counter_bytes[0x4c]--;
-                    event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
+                    event_world_state_save_slot(resource_state.active_resource_ids[0]);
                     player_reset_status();
                     player_reload_map_resources(1, 1, 1, 1, 1, 0x43);
                 } else {

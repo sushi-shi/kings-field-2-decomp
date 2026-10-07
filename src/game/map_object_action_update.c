@@ -998,7 +998,7 @@ void map_object_update_actions(void)
                     }
                     switch (object->tail.region_action.operation_flags & 0x0f) {
                     case 0:
-                        ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
+                        ((void (*)(KfMapObject *))resource_state.active_table[3])(object);
                         break;
                     case 1:
                         map_object_apply_marker_signal(object->tail.region_action.operand);
@@ -1058,7 +1058,7 @@ void map_object_update_actions(void)
             break;
 
         default:
-            ((void (*)(void))state_8017d118.active_table[9])();
+            ((void (*)(void))resource_state.active_table[9])();
             break;
             }
         }

@@ -257,7 +257,7 @@ void event_target_stream_execute(KfActor *actor)
         case 4:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
-            state_8017d118.active_table[4](actor, *cursor);
+            resource_state.active_table[4](actor, *cursor);
             goto advance;
         case 5:
             cursor++;
@@ -432,7 +432,7 @@ object_control_action:
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index =
                     object - map_object_state.objects;
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
-                    state_8017d118.active_resource_ids[0];
+                    resource_state.active_resource_ids[0];
                 event_state.interaction_handled = 1;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
@@ -459,7 +459,7 @@ transition_action: {
         s16 yaw;
 
         /* The retail gate checks only the low byte of the saved object index. */
-        if (state_8017d118.active_resource_ids[0] == 7 ||
+        if (resource_state.active_resource_ids[0] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
@@ -471,8 +471,8 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (state_8017d118.transition_active != 0);
-        if (previous_value != state_8017d118.active_resource_ids[0]) {
+        } while (resource_state.transition_active != 0);
+        if (previous_value != resource_state.active_resource_ids[0]) {
             resource_request_transition(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
         } else {
@@ -482,7 +482,7 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (state_8017d118.transition_active != 0);
+        } while (resource_state.transition_active != 0);
         cd_request_wait_idle();
 
         object_index = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index;
@@ -757,7 +757,7 @@ decay_update:
     }
 
 invoke_callback:
-    ((KfEventCommandCallback)state_8017d118.active_table[2])(
+    ((KfEventCommandCallback)resource_state.active_table[2])(
         position, rotation, command);
     if (event_state.interaction_handled == 0) {
         notify_enqueue(0x14);
@@ -780,7 +780,7 @@ s32 game_counter_increment(s32 index)
 {
     if (game_counter_bytes[index] < 99) {
         game_counter_bytes[index]++;
-        state_8017d118.active_table[6]();
+        resource_state.active_table[6]();
         return 0;
     }
 
@@ -1184,7 +1184,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
         case 0x0e:
-            event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
+            event_world_state_save_slot(resource_state.active_resource_ids[0]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;
@@ -1193,7 +1193,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
 
 invoke_callback:
     ((void (*)(const VECTOR *, const KfPlayerViewRotation *))
-        state_8017d118.active_table[0])(&probe, rotation);
+        resource_state.active_table[0])(&probe, rotation);
 }
 
 
@@ -1242,7 +1242,7 @@ void event_state_initialize(void)
 ADDRESS(0x800483a8, 0x30)
 void callback_invoke_slot_04_zero(void)
 {
-    state_8017d118.active_table[1](0);
+    resource_state.active_table[1](0);
 }
 
 ADDRESS(0x800483d8, 0x50)
@@ -1605,7 +1605,7 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(buffer, state_8017d118.active_resource_ids, 5);
+    memcpy(buffer, resource_state.active_resource_ids, 5);
     memcpy(&payload->camera_position, &player_state.camera_position, 16);
     memcpy(buffer + KF_CARD_SAVE_ROTATION_OFFSET,
         &player_state.camera_rotation_target, 8);
@@ -1679,11 +1679,11 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(state_8017d118.active_resource_ids, buffer, 5);
-    state_8017d118.active_resource_ids[1] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[2] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[3] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[4] = state_8017d118.active_resource_ids[0];
+    memcpy(resource_state.active_resource_ids, buffer, 5);
+    resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
     memcpy(&player_state.camera_position, &payload->camera_position, 16);
     memcpy(&player_state.camera_rotation_target,
         buffer + KF_CARD_SAVE_ROTATION_OFFSET, 8);

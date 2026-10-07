@@ -1082,6 +1082,16 @@ KfRenderState	0x78	0x04	view_cell_x	s32	supported	game headers;asm;xrefs	member 
 KfRenderState	0x7c	0x04	view_cell_z	s32	supported	game headers;asm;xrefs	member used by reconstructed code
 KfRenderState	0x80	0x04	cell_origin_x	s32	supported	asm;map_cell_layer_mask	added to world X tile index
 KfRenderState	0x84	0x04	cell_origin_z	s32	supported	asm;map_cell_layer_mask	added to world Z tile index
+KfResourceState	0x00	0x02	transition_active	s16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
+KfResourceState	0x02	0x02	transition_phase	s16	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
+KfResourceState	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition;card_payload_capture_game_state	five active resource IDs saved and updated when a transition completes
+KfResourceState	0x09	0x01	current_map_region_id	u8	supported	resource_advance_transition;menu_draw_location_number;menu_show_map_preview	copied from requested resource ID zero and used as location prefix and map preview asset selector
+KfResourceState	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table
+KfResourceState	0x10	0x05	requested_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition	five requested resource IDs consumed by transition phases; 255 skips a slot
+KfResourceState	0x15	0x01	world_shift_applied	b8	supported	resource_request_transition;resource_advance_transition	set when signed transition offsets shift world positions; later request may reverse that shift
+KfResourceState	0x16	0x01	tmd_object_limit_active	b8	supported	resource_request_transition;resource_advance_transition;render_map_cell_object	set when a TMD resource transition is requested; bounds map-cell object indices by the loaded TMD asset count during transition
+KfResourceState	0x17	0x03	transition_offset	KfResourceTransitionOffset	supported	resource_request_transition;resource_advance_transition	signed X/Z/Y translation request; X=127 disables shift
+KfResourceState	0x1a	0x02	sequence_fade_volume	s16	supported	resource_advance_transition;SsSeqSetVol	starts at 60 and decrements by 2 to zero, then sequence stops
 KfResourceTransitionOffset	0x00	0x01	x	s8	supported	GAME resource_request_transition;resource_advance_transition	signed world X displacement in map-cell units
 KfResourceTransitionOffset	0x01	0x01	z	s8	supported	GAME resource_request_transition;resource_advance_transition	signed world Z displacement in map-cell units
 KfResourceTransitionOffset	0x02	0x01	y	s8	supported	GAME resource_request_transition;resource_advance_transition	signed world Y displacement in 128-unit steps
@@ -1107,16 +1117,6 @@ KfShapeWallRecord	0x00	0x02	offset	s16	supported	game/collision_cache.h;collisio
 KfShapeWallRecord	0x02	0x02	limit	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
 KfShapeWallRecord	0x04	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
 KfShapeWallRecord	0x06	0x02	quarter_turns	u16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
-KfState8017d118	0x00	0x02	transition_active	s16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
-KfState8017d118	0x02	0x02	transition_phase	s16	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
-KfState8017d118	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition;card_payload_capture_game_state	five active resource IDs saved and updated when a transition completes
-KfState8017d118	0x09	0x01	current_map_region_id	u8	supported	resource_advance_transition;menu_draw_location_number;menu_show_map_preview	copied from requested resource ID zero and used as location prefix and map preview asset selector
-KfState8017d118	0x0c	0x04	active_table	KfCallback *	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	pointer to the currently selected callback table
-KfState8017d118	0x10	0x05	requested_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition	five requested resource IDs consumed by transition phases; 255 skips a slot
-KfState8017d118	0x15	0x01	world_shift_applied	b8	supported	resource_request_transition;resource_advance_transition	set when signed transition offsets shift world positions; later request may reverse that shift
-KfState8017d118	0x16	0x01	tmd_object_limit_active	b8	supported	resource_request_transition;resource_advance_transition;render_map_cell_object	set when a TMD resource transition is requested; bounds map-cell object indices by the loaded TMD asset count during transition
-KfState8017d118	0x17	0x03	transition_offset	KfResourceTransitionOffset	supported	resource_request_transition;resource_advance_transition	signed X/Z/Y translation request; X=127 disables shift
-KfState8017d118	0x1a	0x02	sequence_fade_volume	s16	supported	resource_advance_transition;SsSeqSetVol	starts at 60 and decrements by 2 to zero, then sequence stops
 KfTargetCandidate	0x0	0x1	type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfTargetCandidate	0x1	0x1	animation_id	u8	supported	game/actor.h;actor behavior/event stream	byte passed to actor animation setters and phase seek
 KfTargetCandidate	0x2	0x2	word_02	KfTargetCandidateWord02	supported	GAME actor_score_target_candidate lbu +2/+3;actor_apply_magic_to_actor	Initial and continuing selection-score scales; type-2 damage reaction reuses byte +2 as an unsigned chance threshold

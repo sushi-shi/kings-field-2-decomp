@@ -134,7 +134,7 @@ void actor_disable_type3_transition_actors(void)
             actor->target_action_state == KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED &&
             (actor->state_70.signed_state != 0 ||
              actor->animation_phase > KF_ACTOR_ANIMATION_PHASE_PERIOD / 2)) {
-            state_8017d118.active_table[19](actor);
+            resource_state.active_table[19](actor);
             actor_set_lifecycle_and_home_position(actor);
         }
         actor++;
@@ -350,7 +350,7 @@ zero_score:
         break;
     default:
         if (target->type < 128 ||
-            ((KfCandidateScoreCallback)state_8017d118.active_table[16])(
+            ((KfCandidateScoreCallback)resource_state.active_table[16])(
                 target, player_distance)) {
 score_target:
             if (target == actor->target) {
@@ -688,7 +688,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     }
     damage = ((damage * amount) / 5000 + 128) >> 4;
     /* Slot 18's target is unresolved; its O32 arguments are observed. */
-    ((KfMagicRecipientCallback)state_8017d118.active_table[18])(
+    ((KfMagicRecipientCallback)resource_state.active_table[18])(
         actor, damage, magic_06, magic_08, magic_0a, magic_0c,
         magic_0e, magic_10, magic_12, magic_14);
     if (damage == 0) {
@@ -2213,7 +2213,7 @@ dispatch_action:
                     actor->lighting_blend = 0x1000;
                 }
             } else {
-                state_8017d118.active_table[19](actor);
+                resource_state.active_table[19](actor);
                 if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT) {
                     actor_set_lifecycle_and_home_position(actor);
                 } else if (actor->slot_state == KF_ACTOR_SLOT_RESPAWNING) {
@@ -3168,7 +3168,7 @@ case3_motion:
     case 7:
     case 8:
     default:
-        state_8017d118.active_table[17]();
+        resource_state.active_table[17]();
         break;
     }
 

@@ -204,7 +204,7 @@ void menu_draw_location_number(void)
     camera_z = player_state.camera_position.vz;
     map_layer = player_state.map_layer_index;
     grid_z = camera_z >> KF_MAP_CELL_POSITION_SHIFT;
-    prefix = state_8017d118.current_map_region_id * MENU_LOCATION_REGION_PLACE
+    prefix = resource_state.current_map_region_id * MENU_LOCATION_REGION_PLACE
            + map_layer * MENU_LOCATION_LAYER_PLACE
            + (camera_x >> KF_MAP_CELL_POSITION_SHIFT) * MENU_LOCATION_CELL_X_PLACE;
     value = prefix + grid_z;
@@ -446,7 +446,7 @@ void menu_show_map_preview(s32 menu_code)
     s32 u0;
 
     map_index = (menu_code - MENU_MAP_ITEM_FIRST) & 0xff;
-    map_offset = state_8017d118.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
+    map_offset = resource_state.current_map_region_id + MENU_MAP_ARCHIVE_FIRST_ENTRY;
     index = map_index * MENU_MAP_ARCHIVE_ENTRIES_PER_ITEM + map_offset;
     image = memory_allocate(cd_archive_entry_extent(KF_RESOURCE_ARCHIVE_ITEM, index, NULL));
     cd_archive_read(KF_RESOURCE_ARCHIVE_ITEM, index, (u_long *)image);

@@ -52,8 +52,8 @@ void game_main_loop(void)
     VECTOR camera_position;
     SVECTOR camera_rotation;
 
-    repeat_store_word((u32 *)&state_8017d118, 0,
-        sizeof state_8017d118 / sizeof(u32));
+    repeat_store_word((u32 *)&resource_state, 0,
+        sizeof resource_state / sizeof(u32));
     repeat_store_word((u32 *)&game_graphics_runtime, 0,
         sizeof game_graphics_runtime / sizeof(u32));
     repeat_store_word((u32 *)&player_state, 0,

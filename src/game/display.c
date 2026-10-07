@@ -1706,7 +1706,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                  lighting->filter.kinds.types[2]);
 
     object_index = shape->object_index;
-    if (state_8017d118.transition_active == 1 && state_8017d118.tmd_object_limit_active &&
+    if (resource_state.transition_active == 1 && resource_state.tmd_object_limit_active &&
         object_index >= game_graphics_runtime.tmd_state.current_asset->flags) {
         return;
     }

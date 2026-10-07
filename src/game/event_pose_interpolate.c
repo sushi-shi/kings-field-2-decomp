@@ -230,17 +230,17 @@ void event_target_stream_execute(KfActor *actor)
 
     for (;;) {
         switch (*cursor - KF_EVENT_STREAM_REWIND_MARKER) {
-        case 0:
+        case KF_EVENT_STREAM_REWIND_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
             candidate->word_12.bytes.marker_state = 1;
             /* The two rewind opcodes share their byte-count operand. */
-        case 8:
+        case KF_EVENT_STREAM_REWIND - KF_EVENT_STREAM_REWIND_MARKER:
         {
             u8 count = cursor[1];
             candidate->word_10.bytes.fallback_offset -= count;
             cursor -= count;
             break;
         }
-        case 9:
+        case KF_EVENT_STREAM_BRANCH - KF_EVENT_STREAM_REWIND_MARKER:
             if (event_state.control.bytes[cursor[1]] == cursor[2]) {
                 candidate->word_10.bytes.fallback_offset = event_target_stream_find_marker(candidate, cursor[3]);
                 cursor = candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
@@ -249,34 +249,34 @@ void event_target_stream_execute(KfActor *actor)
                 candidate->word_10.bytes.fallback_offset += 4;
             }
             break;
-        case 2:
+        case KF_EVENT_STREAM_MARKER_RECORD - KF_EVENT_STREAM_REWIND_MARKER:
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
             break;
-        case 3:
+        case KF_EVENT_STREAM_SKIP - KF_EVENT_STREAM_REWIND_MARKER:
             goto advance;
-        case 4:
+        case KF_EVENT_STREAM_CALLBACK - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
             goto advance;
-        case 5:
+        case KF_EVENT_STREAM_REPEAT - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             repeat = *cursor;
             goto advance;
-        case 6:
+        case KF_EVENT_STREAM_RESET_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
             break;
-        case 7:
+        case KF_EVENT_STREAM_SET_CONTROL - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.bytes[cursor[1]] = cursor[2];
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
             goto advance;
-        case 15:
+        case KF_EVENT_STREAM_END - KF_EVENT_STREAM_REWIND_MARKER:
             goto after_script;
         default:
             goto execute;
@@ -296,7 +296,7 @@ execute:
                           candidate->animation_step);
             restore_state = KF_TRUE;
         }
-        menu_show_transition_image(3, candidate->word_0c.value + *cursor);
+        menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
 
 advance:
         cursor++;
@@ -327,9 +327,9 @@ after_script:
     case KF_EVENT_POST_STREAM_INVENTORY_CHOICE:
         player_render_frame_and_release_pool();
         choice = menu_choose_inventory_item();
-        if (choice != -1) {
+        if (choice != KF_MENU_RESULT_CANCELLED) {
             render_game_frame(NULL, NULL);
-            menu_show_transition_image(6, choice + 360);
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, choice + 360);
         }
         break;
     }
@@ -350,12 +350,13 @@ after_script:
 ADDRESS(0x80046700, 0x8c)
 void event_spawn_effect_object(KfMapObject *event, KF_ENUM_PARAM(KfObjectId, s32) object_id)
 {
-    KfMapObject *object = map_object_effect_pool_acquire(0x17c, 0x10, -1);
+    KfMapObject *object = map_object_effect_pool_acquire(KF_MAP_OBJECT_EVENT_POOL_FIRST,
+                                                         KF_MAP_OBJECT_EVENT_POOL_SIZE, -1);
 
     /* The byte store wraps pool slots 0x17c..0x18b to offsets 0..15. */
     event->tail.event_effect.effect_object_index = (object - map_object_state.objects) - 0x7c;
     object->object_id = object_id;
-    object->tail.fields.unknown_38 = 0;
+    object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
 }
 
 ADDRESS(0x8004678c, 0xc54)
@@ -381,7 +382,7 @@ void event_scene_command_dispatch(const VECTOR *position,
         index = 0;
         for (;;) {
             KfMapObject *object;
-            s32 status;
+            KF_ENUM_STORAGE(KfMapObjectMarkerCheck, s32) status;
 
             index = map_object_find_interaction_target(index, position, 800, 1700,
                                    rotation->angles[1], 512);
@@ -391,19 +392,19 @@ void event_scene_command_dispatch(const VECTOR *position,
             object = &map_object_state.objects[index];
             status = map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command));
             switch (status) {
-            case 1:
+            case KF_MAP_OBJECT_MARKER_CONSUMED:
                 audio_play_sound_64();
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 3:
+            case KF_MAP_OBJECT_MARKER_MISMATCH:
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 4:
-                notify_enqueue(4);
+            case KF_MAP_OBJECT_MARKER_REFUSED:
+                notify_enqueue(KF_NOTIFICATION_4);
                 event_state.interaction_handled = KF_TRUE;
                 goto invoke_callback;
-            case 0:
+            case KF_MAP_OBJECT_MARKER_NOT_APPLICABLE:
             default:
                 index++;
                 continue;
@@ -411,13 +412,13 @@ void event_scene_command_dispatch(const VECTOR *position,
         }
         break;
     case KF_OBJECT_114:
-        object_control_offset = 0x28;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[0]);
         goto object_control_action;
     case KF_OBJECT_115:
-        object_control_offset = 0x2c;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[1]);
         goto object_control_action;
     case KF_OBJECT_116:
-        object_control_offset = 0x30;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[2]);
 object_control_action:
         index = map_object_find_interaction_target(0, position, 800, 1700,
                                rotation->angles[1], 512);
@@ -433,25 +434,25 @@ object_control_action:
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index =
                     object - map_object_state.objects;
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
-                    resource_state.active_resource_ids[0];
+                    resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
                 event_state.interaction_handled = KF_TRUE;
                 game_counter_decrement(command);
-                object->extra_40.bytes[0] = 0;
+                object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
                 event_spawn_effect_object(object, command);
-            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
+            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == KF_MAP_OBJECT_MARKER_MISMATCH) {
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
             }
         }
         break;
     case KF_OBJECT_111:
-        object_control_offset = 0x28;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[0]);
         goto transition_action;
     case KF_OBJECT_112:
-        object_control_offset = 0x2c;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[1]);
         goto transition_action;
     case KF_OBJECT_113:
-        object_control_offset = 0x30;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[2]);
 transition_action: {
         u8 previous_value;
         KfMapObject *object;
@@ -460,25 +461,25 @@ transition_action: {
         s16 yaw;
 
         /* The retail gate checks only the low byte of the saved object index. */
-        if (resource_state.active_resource_ids[0] == 7 ||
+        if (resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
         }
         player_state.vitals.current_mp -= 10;
-        render_frames_with_color_overlay(1, 0, 4096, 256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 256);
         actor_disable_type3_transition_actors();
         previous_value = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id;
         do {
             cd_request_yield();
             resource_advance_transition();
         } while (resource_state.transition_active);
-        if (previous_value != resource_state.active_resource_ids[0]) {
+        if (previous_value != resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]) {
             resource_request_transition(previous_value, previous_value, previous_value,
-                          0xff, 0xff, 0x7f, 0x7f, 0x7f);
+                          KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         } else {
-            resource_request_transition(0xff, 0xff, previous_value, 0xff, 0xff,
-                          0x7f, 0x7f, 0x7f);
+            resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
+                          KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         }
         do {
             cd_request_yield();
@@ -502,14 +503,14 @@ transition_action: {
         event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
-        render_frames_with_color_overlay(1, 4096, 4096, 0);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 4096, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
-            resource_tmd_queue_read(0, 0x101, 0x181);
+            resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
         }
-        render_frames_with_color_overlay(1, 4096, 0, -256);
-        render_set_color_overlay(0xff, 0, 0, 0);
-        resource_request_transition(0xff, 0xff, 0xff, previous_value, previous_value,
-                      0x7f, 0x7f, 0x7f);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -256);
+        render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
+        resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, previous_value,
+                      KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
         break;
     }
     case KF_OBJECT_103:
@@ -526,7 +527,7 @@ transition_action: {
                     game_counter_decrement(command);
                     event_spawn_effect_object(object, command);
                 }
-            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == 3) {
+            } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == KF_MAP_OBJECT_MARKER_MISMATCH) {
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
             }
@@ -628,14 +629,15 @@ magic_action: {
             }
         }
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
+            KF_MAP_OBJECT_SCATTER_POOL_FIRST, KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+            map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         game_counter_decrement(command);
         object->object_id = command;
-        object->render_queue_mode = 1;
-        object->layer_mask = 3;
+        object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
+        object->layer_mask = KF_MAP_LAYER_BOTH;
         object->action = KF_MAP_OBJECT_OP_NONE;
-        object->lighting_override_index = 0x42;
+        object->lighting_override_index = KF_LIGHTING_PRESET_42;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;
@@ -684,7 +686,7 @@ decay_update:
             render_game_frame(NULL, NULL);
         } while (1);
         object->object_id = KF_OBJECT_NONE;
-        notify_enqueue(1);
+        notify_enqueue(KF_NOTIFICATION_1);
         event_state.interaction_handled = KF_TRUE;
         break;
     }
@@ -701,20 +703,21 @@ decay_update:
             }
         }
         if (!game_counter_increment(KF_ITEM_RESTORE_HP_100)) {
-            notify_enqueue(0x16);
+            notify_enqueue(KF_NOTIFICATION_22);
             game_counter_decrement(KF_OBJECT_82);
         }
         event_state.interaction_handled = KF_TRUE;
         break;
     case KF_OBJECT_85: {
-        s32 side = player_state.map_layer_index == 0 ? 1 : 2;
+        KF_ENUM_STORAGE(KfMapLayerMask, s32) side =
+            player_state.map_layer_index == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
         s32 actor_distance;
         KfActor *actor = actor_find_best_in_cone(position, rotation->angles[1],
                                        rotation->angles[0], 8000, 500, 500,
                                        &actor_distance, -1);
 
         if (actor != NULL && actor->current_map_layer == side) {
-            menu_show_transition_image(6, actor->definition_id + 240);
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, actor->definition_id + 240);
             event_state.interaction_handled = KF_TRUE;
             break;
         }
@@ -728,15 +731,15 @@ decay_update:
                 KfMapObject *object = scan;
 
                 if (map_object_state.templates[KF_ENUM_ENCODE(u16,
-                                                              object->object_id)].collision_kind != KF_MAP_OBJECT_OP_226 ||
-                    object->extra_40.bytes[0] != side) {
+                                                              object->object_id)].collision_kind != KF_MAP_OBJECT_OP_SCENE_INSPECT ||
+                    object->extra_40.saved_layer.layer_mask != side) {
                     continue;
                 }
                 if (player_camera_within_map_region(object->position.vx >> 11,
                                   object->position.vz >> 11,
                                   object->tail.scene_inspect.region_width,
                                   object->tail.scene_inspect.region_depth, 0x8000)) {
-                    menu_show_transition_image(6, object->tail.scene_inspect.transition_image_id + 510);
+                    menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.scene_inspect.transition_image_id + 510);
                     event_state.interaction_handled = KF_TRUE;
                     break;
                 }
@@ -764,7 +767,7 @@ invoke_callback:
     ((KfEventCommandCallback)resource_state.active_table[2])(
         position, rotation, command);
     if (!event_state.interaction_handled) {
-        notify_enqueue(0x14);
+        notify_enqueue(KF_NOTIFICATION_NOTHING_HAPPENS);
     }
     player_clear_motion();
 }
@@ -788,7 +791,7 @@ b32 game_counter_increment(KF_ENUM_PARAM(KfObjectId, s32) index)
         return KF_FALSE;
     }
 
-    notify_enqueue(0x12);
+    notify_enqueue(KF_NOTIFICATION_CANNOT_CARRY_MORE);
     return KF_TRUE;
 }
 
@@ -843,24 +846,25 @@ void event_map_object_interact(KfMapObject *object, ...)
         va_end(arguments);
         spawned_id = spawn_object_id;
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
+            KF_MAP_OBJECT_SCATTER_POOL_FIRST, KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+            map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         object->object_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), spawn_object_id);
-        object->layer_mask = 3;
+        object->layer_mask = KF_MAP_LAYER_BOTH;
         object->action = KF_MAP_OBJECT_OP_NONE;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;
-        object->tail.fields.unknown_38 = 0xff;
+        object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
     }
 
     object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
     initial_render_depth_offset = object->render_depth_offset;
-    if (object->tail.fields.unknown_38 != 0xff) {
+    if (object->tail.fields.unknown_38 != KF_MAP_OBJECT_EVENT_ARMED) {
         return;
     }
-    if (object_template->kind == 0x20) {
-        notify_enqueue(0x15, object->tail.gold_reward.gold_amount);
+    if (object_template->kind == KF_MAP_OBJECT_KIND_GOLD) {
+        notify_enqueue(KF_NOTIFICATION_PAYLOAD_ID, object->tail.gold_reward.gold_amount);
         object->object_id = KF_OBJECT_NONE;
         player_state.gold += object->tail.gold_reward.gold_amount;
         return;
@@ -870,7 +874,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         KfMapObject *child = &map_object_state.objects[object->extra_40.object_index];
         KfMapObject *next = &map_object_state.objects[
             child->tail.fields.unknown_3a.bytes.high];
-        if (next->action == KF_MAP_OBJECT_OP_3 && next->action_timer != 0) {
+        if (next->action == KF_MAP_OBJECT_OP_SIGNAL_DOOR && next->action_timer != 0) {
             return;
         }
     }
@@ -1059,18 +1063,18 @@ void event_world_dispatch_interaction(const VECTOR *position,
         switch (kind) {
         case KF_MAP_OBJECT_OP_165:
         case KF_MAP_OBJECT_OP_NONE:
-            if (object->tail.notification.default_notification != 0xff) {
+            if (object->tail.notification.default_notification != KF_NOTIFICATION_NONE) {
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
-        case KF_MAP_OBJECT_OP_64:
+        case KF_MAP_OBJECT_OP_ITEM_PICKUP:
             event_map_object_interact(object);
             if (object->object_id == KF_OBJECT_NONE) {
                 goto invoke_callback;
             }
             break;
-        case KF_MAP_OBJECT_OP_9:
-        case KF_MAP_OBJECT_OP_21: {
+        case KF_MAP_OBJECT_OP_ITEM_CONTAINER:
+        case KF_MAP_OBJECT_OP_HIDDEN_ITEM_CONTAINER: {
             u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index == 0xffff ||
                 objects[linked_index].object_id == KF_OBJECT_NONE) {
@@ -1079,35 +1083,35 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             {
                 KfMapObject *linked = &objects[linked_index];
-                u8 linked_state = object->extra_40.bytes[0];
+                KfMapLayerMask linked_state = object->extra_40.saved_layer.layer_mask;
                 KF_ENUM_STORAGE(KfObjectId, u16) result_id;
-                linked->tail.fields.unknown_38 = 0xff;
+                linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
                 linked->layer_mask = linked_state;
                 event_map_object_interact(linked);
                 result_id = linked->object_id;
-                linked->layer_mask = 0;
-                linked->tail.fields.unknown_38 = 0;
+                linked->layer_mask = KF_MAP_LAYER_NONE;
+                linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
                 if (result_id == KF_OBJECT_NONE) {
                     object->tail.linked_property.linked_object_index = 0xffff;
                 }
             }
             break;
         }
-        case KF_MAP_OBJECT_OP_83:
+        case KF_MAP_OBJECT_OP_SWITCH:
             if (object->action_timer == 0) {
                 object->action_timer = 1;
             }
             break;
-        case KF_MAP_OBJECT_OP_2:
+        case KF_MAP_OBJECT_OP_LIFT_DOOR:
             if (object->action_timer == 0) {
-                if (object->tail.marker.marker_id == 0xff) {
+                if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_CLEARED) {
                     object->action_timer = 1;
                 } else {
                     notify_enqueue(object->tail.notification.default_notification);
                 }
             }
             break;
-        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
             if (object->action_timer == 0) {
                 if (object->tail.marker.marker_id >= 0xfc &&
@@ -1131,26 +1135,26 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_81:
             if (object->action_timer == 0 &&
-                object->tail.collision_probe.marker_trigger_state == 0xff) {
+                object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_RUNNING) {
                 object->action_timer = 1;
             }
             break;
-        case KF_MAP_OBJECT_OP_8:
-        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
+        case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
             if (!angle_within_tolerance(rotation->angles[1],
                                         object->rotation.vy + 0x800, 0x155)) {
                 break;
             }
             /* Kind five enters the same state handler without the angle gate. */
-        case KF_MAP_OBJECT_OP_5:
+        case KF_MAP_OBJECT_OP_ANIMATED_CONTAINER:
             switch (object->tail.marker.marker_id) {
-            case 0xfe: {
+            case KF_MAP_OBJECT_MARKER_TRIGGERED: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
                 if (linked_index != 0xffff) {
                     goto check_linked_object;
                 }
             notify_six:
-                notify_enqueue(6);
+                notify_enqueue(KF_NOTIFICATION_6);
                 break;
             check_linked_object:
                 if (objects[linked_index].object_id == KF_OBJECT_NONE) {
@@ -1158,8 +1162,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
                 break;
             }
-            case 0xff:
-                object->tail.marker.marker_id = 0xfe;
+            case KF_MAP_OBJECT_MARKER_CLEARED:
+                object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_TRIGGERED;
                 break;
             default:
                 notify_enqueue(object->tail.notification.default_notification);
@@ -1168,7 +1172,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_15:
             if (object->tail.event_effect.pending_event_command == KF_OBJECT_NONE) {
-                notify_enqueue(0x10);
+                notify_enqueue(KF_NOTIFICATION_16);
             }
             break;
         case KF_MAP_OBJECT_OP_PLAYER_REACTION:
@@ -1181,17 +1185,17 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
             }
             break;
-        case KF_MAP_OBJECT_OP_13:
-        case KF_MAP_OBJECT_OP_20:
-            menu_show_transition_image(6, object->tail.pair_38.value_38 + 0x78);
+        case KF_MAP_OBJECT_OP_SCREEN_IMAGE:
+        case KF_MAP_OBJECT_OP_HIDDEN_SCREEN_IMAGE:
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.pair_38.value_38 + 0x78);
             break;
-        case KF_MAP_OBJECT_OP_18:
+        case KF_MAP_OBJECT_OP_RESTORE_POINT:
             color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
             player_state.vitals.current_hp = player_state.vitals.maximum_hp;
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
-        case KF_MAP_OBJECT_OP_14:
-            event_world_state_save_slot(resource_state.active_resource_ids[0]);
+        case KF_MAP_OBJECT_OP_SAVE_POINT:
+            event_world_state_save_slot(resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;
@@ -1382,7 +1386,7 @@ void event_world_state_save_slot(s32 save_slot)
         kind = map_object_state.templates[KF_ENUM_ENCODE(s32, object_id)].collision_kind;
         /* Save packets carry the low byte of the 16-bit template ID. */
         switch (kind) {
-        case KF_MAP_OBJECT_OP_64:
+        case KF_MAP_OBJECT_OP_ITEM_PICKUP:
             switch (object->action) {
             case KF_MAP_OBJECT_OP_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
@@ -1427,21 +1431,21 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             }
             break;
-        case KF_MAP_OBJECT_OP_83:
-            if (object->tail.action_83.transition_mode < 2) {
+        case KF_MAP_OBJECT_OP_SWITCH:
+            if (object->tail.action_83.transition_mode < KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED) {
                 break;
             }
         case KF_MAP_OBJECT_OP_0:
-        case KF_MAP_OBJECT_OP_2:
-        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_LIFT_DOOR:
+        case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
-        case KF_MAP_OBJECT_OP_5:
-        case KF_MAP_OBJECT_OP_8:
-        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_ANIMATED_CONTAINER:
+        case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
+        case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
         case KF_MAP_OBJECT_OP_80:
         case KF_MAP_OBJECT_OP_81:
-        case KF_MAP_OBJECT_OP_84:
-        case KF_MAP_OBJECT_OP_88:
+        case KF_MAP_OBJECT_OP_PATTERN_GATE:
+        case KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE:
         case KF_MAP_OBJECT_OP_95:
         case KF_MAP_OBJECT_OP_160:
         case KF_MAP_OBJECT_OP_161:
@@ -1559,8 +1563,8 @@ apply_position:
             object->action_timer = 0x63;
             collision_sample_map_cell_layer(object->position.vx, object->position.vy,
                            object->position.vz);
-            object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
-            object->tail.fields.unknown_38 = 0xff;
+            object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
+            object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
             break;
         }
         case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:
@@ -1691,10 +1695,10 @@ void card_payload_restore_game_state(const u8 *buffer)
 
     memcpy((void *)resource_state.active_resource_ids, (const void *)buffer,
         sizeof resource_state.active_resource_ids);
-    resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
-    resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position,
         sizeof player_state.camera_position);
     memcpy((void *)&player_state.camera_rotation_target,

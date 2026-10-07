@@ -5,6 +5,7 @@
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
+#include <kf/game/render_types.h>
 #include <kf/game/collision_flags.h>
 #include <kf/game/magic.h>
 #include <kf/game/pool.h>
@@ -411,10 +412,10 @@ typedef struct KfEffectRecord {
     u8 damage_multiplier_tenths;
     u8 phase;
     KfEffectRenderFlags render_flags;
-    u8 render_queue_mode;
-    u8 map_layer_mask;
+    KfRenderQueueMode render_queue_mode;
+    KfMapLayerMask map_layer_mask;
     u8 cooldown;
-    u8 lighting_override_index;
+    KfLightingIndex lighting_override_index;
     b8 midpoint_collision_enabled;
     s16 updates_remaining;
     s16 lighting_blend_q12;

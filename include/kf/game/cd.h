@@ -40,26 +40,38 @@ typedef struct KfCdArchive {
 
 typedef char kf_cd_archive_size[sizeof(KfCdArchive) == 12 ? 1 : -1];
 
-enum {
-    KF_CD_REQUEST_CAPACITY = 16,
+enum { KF_CD_REQUEST_CAPACITY = 16 };
+
+/* Ring entry kind; the service switch dispatches on it and IDLE frees it. */
+KF_ENUM_BEGIN(KfCdRequestKind, u8)
     KF_CD_REQUEST_IDLE = 0,
     KF_CD_REQUEST_CHECKSUM_READ = 0x10,
     KF_CD_REQUEST_SECTOR_CALLBACK = 0x20,
     KF_CD_REQUEST_VAB_READ = 0x30,
     KF_CD_REQUEST_IMAGE_STREAM = 0x40
-};
+KF_ENUM_END(KfCdRequestKind)
 
 /* Completion callbacks first acknowledge the seek, then the sector read. */
-enum {
+KF_ENUM_BEGIN(KfCdRequestPhase, u8)
     KF_CD_REQUEST_PHASE_SEEK = 0,
     KF_CD_REQUEST_PHASE_READ = 1
-};
+KF_ENUM_END(KfCdRequestPhase)
 
 /* VAB request payload phases, advanced by the CD completion callback. */
-enum {
+KF_ENUM_BEGIN(KfCdVabPhase, u8)
     KF_CD_VAB_PHASE_HEAD = 0,
     KF_CD_VAB_PHASE_BODY_READ = 1,
-    KF_CD_VAB_PHASE_BODY_READY = 2,
+    KF_CD_VAB_PHASE_BODY_READY = 2
+KF_ENUM_END(KfCdVabPhase)
+
+/* Image-stream handshake: the sector callback marks a chunk ready and the
+ * stream service consumes it. */
+KF_ENUM_BEGIN(KfCdStreamState, u8)
+    KF_CD_STREAM_WAITING = 0,
+    KF_CD_STREAM_CHUNK_READY = 1
+KF_ENUM_END(KfCdStreamState)
+
+enum {
     KF_CD_VAB_BODY_CHUNK_SECTORS = 18,
     KF_CD_VAB_BODY_CHUNK_BYTES = KF_CD_VAB_BODY_CHUNK_SECTORS * KF_CD_SECTOR_BYTES
 };
@@ -69,7 +81,7 @@ typedef void (*KfCdRequestCallback)(KfCdRequest *request);
 struct KfAudioVabStreamSlot;
 
 typedef struct KfCdRequestPayloadVab {
-    u8 phase;
+    KfCdVabPhase phase;
     s16 slot_index;
     struct KfAudioVabStreamSlot *stream_slot;
 } KfCdRequestPayloadVab;
@@ -88,8 +100,8 @@ typedef char kf_cd_vab_stream_slot_offset[
 
 /* One queued asynchronous CD request. */
 struct KfCdRequest {
-    u8 kind;
-    u8 phase;
+    KfCdRequestKind kind;
+    KfCdRequestPhase phase;
     CdlLOC location;
     CdlLOC initial_location;
     u_long *destination;
@@ -98,7 +110,7 @@ struct KfCdRequest {
     KfCdRequestPayload payload;
     s16 chunk_sectors;
     s16 remaining_sectors;
-    u8 stream_complete;
+    KfCdStreamState stream_complete;
 };
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
@@ -146,7 +158,7 @@ void cd_data_ready_handler(void);
 void cd_error_handler(void);
 void cd_request_wait_idle(void);
 void cd_request_wait_done(KfCdRequest *request);
-KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
+KfCdRequest *cd_request_enqueue(KF_ENUM_PARAM(KfCdRequestKind, s32) kind, CdlLOC *location, u32 byte_size,
     u_long *destination, KfCdRequestCallback on_complete);
 void cd_request_yield(void);
 void cd_request_service_vab(void);

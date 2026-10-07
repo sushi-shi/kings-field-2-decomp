@@ -7,6 +7,7 @@
 #include <kf/game/collision_flags.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
+#include <kf/game/render_types.h>
 #include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
@@ -634,7 +635,7 @@ void player_begin_moving_damage_reaction(const SVECTOR *rotation, const SVECTOR 
 void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const SVECTOR *motion,
                    s16 duration);
 void player_update_frame(void);
-void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+void render_frames_with_color_overlay(KF_ENUM_PARAM(KfColorOverlayControl, s32) mode, s32 phase, s32 last_phase,
     s32 step);
 void player_begin_weapon_attack(KF_ENUM_PARAM(KfAnimationClip, s32) mode);
 void player_reset_status(void);

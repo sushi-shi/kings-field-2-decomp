@@ -12,12 +12,24 @@ enum {
     KF_CARD_EVENT_ERROR = 3
 };
 
-/* Nonzero results of memory_card_read_slot and memory_card_write_slot. */
+/* Results of memory_card_read_slot and memory_card_write_slot. The menu
+ * keeps both, and the probe result, in reused s32 locals, so they stay
+ * untyped constants. */
 enum {
+    KF_CARD_READ_OK = 0,
     KF_CARD_READ_IO_FAILURE = 1,
     KF_CARD_READ_CHECKSUM_FAILURE = 2,
+    KF_CARD_WRITE_OK = 0,
     KF_CARD_WRITE_IO_FAILURE = 1,
     KF_CARD_WRITE_NO_SPACE = 2
+};
+
+/* memory_card_probe_temporary_file: OK, a card event other than I/O end or
+ * new device (timeout 1, error 3) passed through, or CREATE_FAILED when the
+ * temporary file cannot be created (an unformatted card). */
+enum {
+    KF_CARD_PROBE_OK = 0,
+    KF_CARD_PROBE_CREATE_FAILED = 2
 };
 
 enum {

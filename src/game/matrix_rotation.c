@@ -132,7 +132,8 @@ void angle_to_forward_xz(s16 angle, struct KfVecXZi *direction)
 
 /* DESTINATION = SOURCE turned by TURNS quarter turns about Y. */
 ADDRESS(0x80014b0c, 0x224)
-void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination, s32 turns)
+void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns)
 {
     switch (turns) {
     case KF_QUARTER_TURN_0:
@@ -183,7 +184,8 @@ void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination, s32 turns)
 }
 
 ADDRESS(0x80014d30, 0xe4)
-void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 turns)
+void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns)
 {
     switch (turns) {
     case KF_QUARTER_TURN_0:

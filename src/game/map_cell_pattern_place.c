@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/quarter_turn.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/player.h>
@@ -8,19 +9,13 @@ enum {
     KF_PATTERN_END = 0xff,
     KF_PATTERN_SKIP_BYTE = 0xfe,
     KF_PATTERN_SKIP_OBJECT = 0xff,
-    KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
-    KF_PATTERN_MODE_FIRST_LAYER = 1,
-    KF_PATTERN_ORIENTATION_MASK = 0x03,
     KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
-    KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
-    KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0,
-    KF_PATTERN_SELECT_FIRST_LAYER = 1,
-    KF_PATTERN_SELECT_SECOND_LAYER = 2
+    KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0
 };
 
 ADDRESS(0x80034f90, 0x204)
-void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(KfMapLayerMask mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag)
 {
@@ -33,7 +28,7 @@ void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle
     world_z >>= KF_MAP_CELL_POSITION_SHIFT;
     cosine = rcos(angle);
     sine = rsin(angle);
-    first_layer_offset = (mode == KF_PATTERN_MODE_FIRST_LAYER)
+    first_layer_offset = (mode == KF_MAP_LAYER_FIRST)
                                  ? 0 : sizeof(KfMapOccupancyLayer);
     second_layer_offset = first_layer_offset == 0
                                   ? sizeof(KfMapOccupancyLayer) : 0;
@@ -76,10 +71,9 @@ void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle
     }
 }
 
-enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
-void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z,
                    s32 width, s32 height, s32 rotation, u32 field_mask)
 {
@@ -93,24 +87,24 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
         return;
     }
     /* The rotation argument is reduced to quarter turns in place. */
-    rotation = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
-    switch (rotation) {
-    case 0:
+    rotation = -(rotation >> 10) & KF_MAP_CELL_QUARTER_TURN_MASK;
+    switch (KF_ENUM_DECODE(KfQuarterTurn, rotation)) {
+    case KF_QUARTER_TURN_0:
         inner_step = 1;
         row_step = KF_MAP_WORLD_GRID_SIDE;
         break;
-    case 1:
+    case KF_QUARTER_TURN_1:
         inner_step = -KF_MAP_WORLD_GRID_SIDE;
         row_step = 1;
         destination_z += width - 1;
         break;
-    case 2:
+    case KF_QUARTER_TURN_2:
         inner_step = -1;
         row_step = -KF_MAP_WORLD_GRID_SIDE;
         destination_x += width - 1;
         destination_z += height - 1;
         break;
-    case 3:
+    case KF_QUARTER_TURN_3:
         inner_step = KF_MAP_WORLD_GRID_SIDE;
         row_step = -1;
         destination_x += height - 1;
@@ -126,7 +120,7 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
         destination = destination_row;
         destination_row += row_step;
         for (columns_remaining = width; --columns_remaining != -1;) {
-            if (layer_select & KF_PATTERN_SELECT_FIRST_LAYER) {
+            if ((layer_select & KF_MAP_LAYER_FIRST) != KF_MAP_LAYER_NONE) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[0].object_index = source->layer[0].object_index;
                 }
@@ -138,14 +132,14 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[0].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
                         ((source->layer[0].quarter_turns + rotation) &
-                         KF_PATTERN_ORIENTATION_MASK);
+                         KF_MAP_CELL_QUARTER_TURN_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[0].collision_shape_id = source->layer[0].collision_shape_id;
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[0].lighting_index =
-                        (source->layer[0].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (source->layer[0].lighting_index & KF_MAP_CELL_LIGHTING_MASK) |
                         (destination->layer[0].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
@@ -159,7 +153,7 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[0].lighting_index & 0x7f);
                 }
             }
-            if (layer_select & KF_PATTERN_SELECT_SECOND_LAYER) {
+            if ((layer_select & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[1].object_index = source->layer[1].object_index;
                 }
@@ -171,14 +165,14 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[1].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
                         ((source->layer[1].quarter_turns + rotation) &
-                         KF_PATTERN_ORIENTATION_MASK);
+                         KF_MAP_CELL_QUARTER_TURN_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[1].collision_shape_id = source->layer[1].collision_shape_id;
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[1].lighting_index =
-                        (source->layer[1].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (source->layer[1].lighting_index & KF_MAP_CELL_LIGHTING_MASK) |
                         (destination->layer[1].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {

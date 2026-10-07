@@ -3,6 +3,7 @@
 
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -18,7 +19,7 @@ typedef struct KfMapPlacedSource {
     u16 model_index;
     u8 frame_count;
     u8 frame_period;
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
     u8 region_z;
     u8 region_x;
     u8 unknown_07[2];
@@ -30,7 +31,7 @@ typedef struct KfMapPlacedSource {
 /* Twenty-four-byte runtime rows at game_graphics_runtime +0x170f0. */
 typedef struct KfMapPlacedEntry {
     u16 model_index;
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
     u8 frame_count;
     u8 frame_period;
     u8 frame_index;

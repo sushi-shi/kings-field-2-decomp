@@ -125,7 +125,7 @@ The value appears in two domains and stays separate:
 
 - `map_object.c` (template selector and action switches), `map_object_action_update.c`
   `case 88` and `event_world_state_save_slot` `case 88` are
-  `KF_MAP_OBJECT_OP_88` (applied).
+  `KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE` (applied).
 - `event_scene_command_dispatch(..., command)` `case 0x58` is an object/item ID:
   the same switch decrements inventory counter `0x54` for command `0x54`, passes
   key-item commands `0x63..0x6d` to `map_object_check_and_consume_marker`, and
@@ -171,7 +171,7 @@ adopts them in `map_object.h`, `menu.h` and the card dialogs after lane A lands.
 
 | Value | Members | Verdict |
 | --- | --- | --- |
-| 0x58 / 88 | `KF_MAP_OBJECT_OP_88`; item/command `0x58` in `event_scene_command_dispatch` | retain: no flow; different switch subjects |
+| 0x58 / 88 | `KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE`; item/command `0x58` in `event_scene_command_dispatch` | retain: no flow; different switch subjects |
 | 0xff | `KF_MAP_OBJECT_OP_NONE`, `KF_MAP_OBJECT_ID_NONE`, `KF_MAP_OBJECT_RENDER_TEXTURED`, `KF_MAP_OBJECT_LIGHTING_OVERRIDE_NONE`, `KF_MEMORY_BLOCK_END` | retain: idle action, free object, textured render, no lighting override and list end are different fields |
 | 4 | `KF_MAP_OBJECT_OP_HINGE`; `KF_MAP_OBJECT_INTERACTION_ANY_ANGLE` | retain: an operation versus a `collision_flags` bit; they shared one anonymous enum before |
 | 0 | `KF_MAP_OBJECT_OP_0`; `KF_MAP_OBJECT_ACTION_TIMER_INIT` | retain: operation versus action-timer phase |

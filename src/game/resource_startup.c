@@ -21,14 +21,6 @@
 #include <psyq/kernel.h>
 
 enum {
-    RESOURCE_STEP_BEGIN_MAP = 0,
-    RESOURCE_STEP_LOAD_MAP_CELLS = 1,
-    RESOURCE_STEP_QUEUE_MAP_ACTORS = 2,
-    RESOURCE_STEP_LOAD_MAP_ACTORS = 3,
-    RESOURCE_STEP_QUEUE_TIM = 4,
-    RESOURCE_STEP_FADE_AUDIO = 5,
-    RESOURCE_STEP_FINISH_AUDIO = 6,
-    RESOURCE_MAP_CELL_QUARTER_TURN_MASK = 3,
     RESOURCE_SEQUENCE_FADE_START_VOLUME = 60,
     RESOURCE_SEQUENCE_FADE_STEP = 2
 };
@@ -77,11 +69,11 @@ void resource_initialize_game_assets(void)
     u8 *source = (u8 *)KF_GAME_RESOURCE_ARENA_BASE;
     u8 *second_value = &resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD];
 
-    resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = 255;
-    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = 255;
-    *second_value = 255;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = KF_RESOURCE_ACTIVE_NONE;
+    resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = KF_RESOURCE_ACTIVE_NONE;
+    *second_value = KF_RESOURCE_ACTIVE_NONE;
     resource_state.transition_active = KF_FALSE;
-    resource_state.transition_phase = 0;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_BEGIN_MAP;
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = 0;
     *second_value = 0;
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = 0;
@@ -134,7 +126,7 @@ void resource_run_initial_transition(void)
     u8 fifth;
 
     resource_state.transition_active = KF_TRUE;
-    resource_state.transition_phase = 0;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_BEGIN_MAP;
     first = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     second = resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD];
     third = resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM];
@@ -157,7 +149,7 @@ void resource_run_initial_transition(void)
         cd_request_yield();
         resource_advance_transition();
     } while (resource_state.transition_active);
-    tmd_set_slot(0, (KfTmdHeader *)resource_tmd_workspace);
+    tmd_set_slot(KF_TMD_SLOT_MAP, (KfTmdHeader *)resource_tmd_workspace);
     resource_state.active_table[5]();
 }
 
@@ -295,7 +287,7 @@ apply:
         event_state.control.fields.highest_requested_map_region_id = current_map_region_id;
     }
     resource_state.transition_active = KF_TRUE;
-    resource_state.transition_phase = 0;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_BEGIN_MAP;
     resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] = map_region_id;
     resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] = tmd_id;
     resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] = tim_id;
@@ -351,7 +343,7 @@ handle_active:
     } else {
         do {
             EnterCriticalSection();
-            if (resource_state.transition_phase != KF_RESOURCE_TRANSITION_PHASE_PENDING_IO) break;
+            if (resource_state.transition_phase != KF_RESOURCE_TRANSITION_PENDING_IO) break;
             ExitCriticalSection();
             cd_request_yield();
         } while (1);
@@ -369,31 +361,31 @@ handle_active:
 ADDRESS(0x800167bc, 0x14)
 void resource_transition_set_phase_1(KfCdRequest *request)
 {
-    resource_state.transition_phase = RESOURCE_STEP_LOAD_MAP_CELLS;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_LOAD_MAP_CELLS;
 }
 
 ADDRESS(0x800167d0, 0x14)
 void resource_transition_set_phase_3(KfCdRequest *request)
 {
-    resource_state.transition_phase = RESOURCE_STEP_LOAD_MAP_ACTORS;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_LOAD_MAP_ACTORS;
 }
 
 ADDRESS(0x800167e4, 0x14)
 void resource_transition_set_phase_2(KfCdRequest *request)
 {
-    resource_state.transition_phase = RESOURCE_STEP_QUEUE_MAP_ACTORS;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_QUEUE_MAP_ACTORS;
 }
 
 ADDRESS(0x800167f8, 0x14)
 void resource_transition_set_phase_4(KfCdRequest *request)
 {
-    resource_state.transition_phase = RESOURCE_STEP_QUEUE_TIM;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_QUEUE_TIM;
 }
 
 ADDRESS(0x8001680c, 0x14)
 void resource_transition_set_phase_6(KfCdRequest *request)
 {
-    resource_state.transition_phase = RESOURCE_STEP_FINISH_AUDIO;
+    resource_state.transition_phase = KF_RESOURCE_TRANSITION_FINISH_AUDIO;
 }
 
 
@@ -404,7 +396,7 @@ void resource_advance_transition(void)
     u8 *stream;
     KfActor *actor;
     KfMapObject *object;
-    s32 phase;
+    KF_ENUM_STORAGE(KfResourceTransitionPhase, s32) phase;
     s32 index;
 
     if (!resource_state.transition_active) {
@@ -416,11 +408,11 @@ void resource_advance_transition(void)
     phase = resource_state.transition_phase;
 
     switch (phase) {
-    case RESOURCE_STEP_BEGIN_MAP:
+    case KF_RESOURCE_TRANSITION_BEGIN_MAP:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] == KF_RESOURCE_REQUEST_KEEP) {
             goto phase_three;
         }
-        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PENDING_IO;
         object = map_object_state.objects;
         index = KF_MAP_OBJECT_CAPACITY - 1;
         do {
@@ -433,9 +425,9 @@ void resource_advance_transition(void)
             resource_transition_set_phase_1);
         return;
 
-    case RESOURCE_STEP_LOAD_MAP_CELLS:
+    case KF_RESOURCE_TRANSITION_LOAD_MAP_CELLS:
         buffer = cd_stream_work_buffer;
-        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PENDING_IO;
         /* Retail's default table contains 32 pointers to the no-op callback. */
         resource_state.active_table = callback_default_table;
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 2,
@@ -455,18 +447,18 @@ void resource_advance_transition(void)
         resource_state.current_map_region_id = resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
         return;
 
-    case RESOURCE_STEP_QUEUE_MAP_ACTORS:
-        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+    case KF_RESOURCE_TRANSITION_QUEUE_MAP_ACTORS:
+        resource_state.transition_phase = KF_RESOURCE_TRANSITION_PENDING_IO;
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
             resource_transition_set_phase_3);
         resource_state.active_table = (KfCallback *)resource_callback_table_workspace;
         return;
 
-    case RESOURCE_STEP_LOAD_MAP_ACTORS:
+    case KF_RESOURCE_TRANSITION_LOAD_MAP_ACTORS:
 phase_three:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) {
-            resource_state.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+            resource_state.transition_phase = KF_RESOURCE_TRANSITION_PENDING_IO;
             cd_archive_queue_read(KF_RESOURCE_ARCHIVE_RTMD, resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD],
                 (u_long *)resource_tmd_workspace,
                 resource_transition_set_phase_4);
@@ -501,8 +493,8 @@ phase_three:
                 KfMapOccupancyCell *cell = &bss_801c7540.map_cells[0][0];
                 index = KF_MAP_WORLD_GRID_SIDE * KF_MAP_WORLD_GRID_SIDE;
                 do {
-                    cell->layer[0].quarter_turns &= RESOURCE_MAP_CELL_QUARTER_TURN_MASK;
-                    cell->layer[1].quarter_turns &= RESOURCE_MAP_CELL_QUARTER_TURN_MASK;
+                    cell->layer[0].quarter_turns &= KF_MAP_CELL_QUARTER_TURN_MASK;
+                    cell->layer[1].quarter_turns &= KF_MAP_CELL_QUARTER_TURN_MASK;
                     index--;
                     cell++;
                 } while (index != 0);
@@ -526,7 +518,7 @@ phase_three:
         }
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) return;
 
-    case RESOURCE_STEP_QUEUE_TIM:
+    case KF_RESOURCE_TRANSITION_QUEUE_TIM:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP) {
             cd_map_stream_read(KF_RESOURCE_ARCHIVE_RTIM, resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM]);
         }
@@ -557,11 +549,11 @@ complete:
         return;
 
 begin_phase_five:
-        resource_state.transition_phase = RESOURCE_STEP_FADE_AUDIO;
+        resource_state.transition_phase = KF_RESOURCE_TRANSITION_FADE_AUDIO;
         resource_state.sequence_fade_volume = RESOURCE_SEQUENCE_FADE_START_VOLUME;
         audio_state.sequence_ready = KF_FALSE;
 
-    case RESOURCE_STEP_FADE_AUDIO:
+    case KF_RESOURCE_TRANSITION_FADE_AUDIO:
         if (audio_state.sequence_active) {
             resource_state.sequence_fade_volume -= RESOURCE_SEQUENCE_FADE_STEP;
             if (resource_state.sequence_fade_volume <= 0) {
@@ -586,12 +578,12 @@ begin_phase_five:
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] % 100 + 320,
                 audio_state.sequence_buffer,
                 resource_transition_set_phase_6);
-            resource_state.transition_phase = KF_RESOURCE_TRANSITION_PHASE_PENDING_IO;
+            resource_state.transition_phase = KF_RESOURCE_TRANSITION_PENDING_IO;
             return;
         }
         goto complete;
 
-    case RESOURCE_STEP_FINISH_AUDIO:
+    case KF_RESOURCE_TRANSITION_FINISH_AUDIO:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] < 100) {
             audio_state.sequence_ready = KF_TRUE;
             audio_start_sequence();

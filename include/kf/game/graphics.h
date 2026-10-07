@@ -4,17 +4,19 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
+#include <kf/lib/gpu.h>
 #include <kf/game/asset.h>
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
 #include <kf/game/map_placed.h>
+#include <kf/game/render_types.h>
+#include <kf/game/notify_types.h>
 #include <psyq/sdk.h>
 
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
  * by game_main_loop (0x5f3c words at 0x8017d140). Members are named where a
  * reconstructed function establishes them; the rest stay opaque. */
-/* ResetGraph mode 3 reinitializes the GPU but keeps the display environment. */
-enum { KF_GPU_RESET_KEEP_DISPLAY = 3 };
 
 enum {
     KF_DISPLAY_BUFFER_COUNT = 2,
@@ -34,6 +36,23 @@ enum {
     KF_COLLISION_ROW_COUNT = 80
 };
 
+/* Retail toggles the index with an equality, so UNINITIALIZED selects FIRST
+ * on the first frame. */
+KF_ENUM_BEGIN(KfDisplayBufferIndex, u8)
+    KF_DISPLAY_BUFFER_FIRST = 0,
+    KF_DISPLAY_BUFFER_SECOND = 1,
+    KF_DISPLAY_BUFFER_UNINITIALIZED = 0xff
+KF_ENUM_END(KfDisplayBufferIndex)
+
+#if KF_MODERN_TYPES
+constexpr KfDisplayBufferIndex display_next_buffer(KfDisplayBufferIndex current)
+{
+    return static_cast<KfDisplayBufferIndex>(current == KF_DISPLAY_BUFFER_FIRST);
+}
+#else
+#define display_next_buffer(current) ((current) == KF_DISPLAY_BUFFER_FIRST)
+#endif
+
 typedef struct KfPrimitiveBuffer {
     u8 *start;
     u8 *end;
@@ -45,7 +64,7 @@ typedef struct KfOrderingTable {
 } KfOrderingTable;
 
 typedef struct KfDisplayState {
-    u8 buffer_index;
+    KfDisplayBufferIndex buffer_index;
     u8 *asset_load_buffer;
     KfPrimitiveBuffer primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
     KfPrimitiveBuffer *primitive_buffer;
@@ -72,7 +91,7 @@ typedef char kf_screen_vertex_depth_cue_offset[
 typedef struct KfNotificationControl {
     u8 queue_tail;
     u8 queue_head;
-    u8 effect_phase;
+    KfNotificationPhase effect_phase;
     u8 hold_frames;
 } KfNotificationControl;
 
@@ -103,7 +122,7 @@ typedef struct KfRenderGridState {
     s32 map_scan_start_x;
     s32 map_scan_start_z;
     s32 fog_near_distance;
-    u8 map_cell_layer_masks[KF_MAP_CELL_GRID_SIDE][KF_MAP_CELL_GRID_SIDE];
+    KfMapLayerMask map_cell_layer_masks[KF_MAP_CELL_GRID_SIDE][KF_MAP_CELL_GRID_SIDE];
 } KfRenderGridState;
 
 /* Each transform occupies 20 bytes: the rotation helper uses its first
@@ -188,11 +207,11 @@ typedef struct KfGraphicsRuntimeGame {
     EVECTOR *clip_result_vertices[KF_CLIP_EDGE_COUNT];
     u8 unknown_149d4[0x10];
     EVECTOR clip_edges[KF_CLIP_EDGE_COUNT];
-    u8 notification_message_ids[KF_NOTIFICATION_CAPACITY];
+    KfNotificationId notification_message_ids[KF_NOTIFICATION_CAPACITY];
     u16 notification_payloads[KF_NOTIFICATION_CAPACITY];
     KfNotificationControl notification_control;
     u8 notification_brightness;
-    u8 color_overlay_control;
+    KfColorOverlayControl color_overlay_control;
     u8 color_overlay_rgb[3];
     u8 color_overlay_sample_count;
     u16 color_overlay_red_sum;
@@ -272,14 +291,12 @@ extern RECT menu_transition_rect;
 s32 menu_fade_transition(s32 level, s32 step);
 
 enum {
-    KF_NOTIFICATION_NONE = 0xff,
     KF_FLOOR_ITEM_NONE = 0xff,
-    KF_FLOOR_ITEM_SCROLLING_IMAGE = 1,
-    KF_DISPLAY_BUFFER_NONE = 0xff
+    KF_FLOOR_ITEM_SCROLLING_IMAGE = 1
 };
 
 void fog_set_near(s32 distance);
-void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue);
+void render_set_color_overlay(KfColorOverlayControl control, u8 red, u8 green, u8 blue);
 void menu_show_transition_image(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);

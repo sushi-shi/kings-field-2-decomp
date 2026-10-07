@@ -39,9 +39,6 @@ done:
 
 enum {
     ACTOR_HOME_CELL_SHIFT = 11,
-    ACTOR_RENDER_TEXTURED = 0xff,
-    ACTOR_RENDER_BLEND_MODE_1 = 1,
-    ACTOR_LIGHTING_DEFAULT = 0x47,
     ACTOR_LIGHTING_BLEND_HALF = KF_FIXED12_ONE / 2
 };
 
@@ -104,12 +101,12 @@ void actor_initialize_from_group(KfActor *actor)
     actor->motion.vector.vy = 0;
     actor->motion.vector.vx = 0;
     actor->turn_rate = 0;
-    actor->lighting_override = ACTOR_LIGHTING_DEFAULT;
+    actor->lighting_override = KF_LIGHTING_ACTOR_DEFAULT;
     actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
     if ((actor->flags & KF_ACTOR_FLAG_BLENDED_MODEL) != KF_ACTOR_FLAGS_NONE) {
-        actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
+        actor->render_mode = KF_RENDER_QUEUE_BLEND_ADD;
     } else {
-        actor->render_mode = ACTOR_RENDER_TEXTURED;
+        actor->render_mode = KF_RENDER_QUEUE_TEXTURED;
     }
     map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->collision_radius, 1);
 }
@@ -151,7 +148,7 @@ void actor_prepare_and_initialize(KfActor *actor)
     actor_set_home_position(actor);
     actor_initialize_from_group(actor);
     if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
-        actor->current_map_layer = 0;
+        actor->current_map_layer = KF_MAP_LAYER_NONE;
     }
 }
 
@@ -1265,9 +1262,10 @@ check_diagonal:
     if (diagonal_attempted) {
         goto try_axis;
     }
-    switch (KF_COLLISION_CACHE_SHAPE->quarter_turns & 3) {
-    case 0:
-    case 2:
+    switch (KF_ENUM_DECODE(KfQuarterTurn,
+                           KF_COLLISION_CACHE_SHAPE->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK)) {
+    case KF_QUARTER_TURN_0:
+    case KF_QUARTER_TURN_2:
         motion_x = (original_x + original_z) >> 1;
         motion_z = motion_x;
         break;
@@ -1359,7 +1357,7 @@ void actor_update_vertical_motion(void)
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
                    actor->collision_height | (KF_ENUM_ENCODE(u32, actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
-    actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
+    actor->current_map_layer = *collision_layer == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
     if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
@@ -1451,7 +1449,7 @@ state_30: {
         if (collision == KF_COLLISION_HIT_NONE) {
             actor->position.vy = next_y;
             actor->motion.ballistic.phase++;
-            actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
+            actor->current_map_layer = *collision_layer == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
             return;
         }
         if (collision == KF_COLLISION_HIT_PLAYER) {
@@ -2235,13 +2233,15 @@ dispatch_action:
                     if (target->word_0c.death_drop.object_id != KF_OBJECT_NONE &&
                         (rand() >> 7) < target->word_0c.death_drop.chance) {
                         map_object_spawn_effect(
-                            1, target->word_0c.death_drop.object_id, &actor->position,
+                            KF_MAP_OBJECT_DROP_FROM_DEFINITION,
+                                target->word_0c.death_drop.object_id, &actor->position,
                             -(actor->collision_height >> 1));
                     }
                 } else if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
                            actor->death_drop_object_id != KF_OBJECT_NONE) {
                     map_object_spawn_effect(
-                        0, actor->death_drop_object_id, &actor->position,
+                        KF_MAP_OBJECT_DROP_FROM_PLACEMENT,
+                            actor->death_drop_object_id, &actor->position,
                         -(actor->collision_height >> 1));
                 }
             }
@@ -2260,9 +2260,9 @@ dispatch_action:
                 goto case3_motion;
             }
             if (old_state == 20) {
-                actor->lighting_override = 0x42;
+                actor->lighting_override = KF_LIGHTING_PRESET_42;
                 actor->lighting_blend = 0x400;
-                actor->render_mode = 1;
+                actor->render_mode = KF_RENDER_QUEUE_BLEND_ADD;
             } else if (old_state < 38) {
                 if (actor->lighting_blend < 0x1000) {
                     actor->lighting_blend += 192;
@@ -3256,7 +3256,7 @@ case3_motion:
         KfActorSlotState slot_state = actor->slot_state;
 
         if (slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
-            actor->current_map_layer = 0;
+            actor->current_map_layer = KF_MAP_LAYER_NONE;
             if (other->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
                 actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
                 goto behavior_done;

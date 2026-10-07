@@ -34,7 +34,7 @@ ADDRESS_AT("OPEN", 0x800120c8, 0x13c)
 ADDRESS_AT("END", 0x80011b40, 0x140)
 void display_initialize(void)
 {
-    ResetGraph(0);
+    ResetGraph(KF_GPU_RESET_FULL);
     SetGraphDebug(0);
     InitGeom();
     SetGeomOffset(DISPLAY_WIDTH / 2, KF_DISPLAY_HEIGHT / 2);

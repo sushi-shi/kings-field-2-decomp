@@ -1,6 +1,7 @@
 #ifndef KF_DISPLAY_H
 #define KF_DISPLAY_H
 #include <kf/lib/types.h>
+#include <kf/lib/gpu.h>
 #include <psyq/sdk.h>
 
 /* Double-buffered display state shared by OPEN.EXE and END.EXE. */

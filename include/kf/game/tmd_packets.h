@@ -4,6 +4,7 @@
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/tmd.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 /* Prepared TMD packet indices are byte offsets into projected vertices. */
@@ -22,6 +23,10 @@ enum {
     KF_TMD_MODE_G4 = 0x38,
     KF_TMD_MODE_GT4 = 0x3c,
     KF_TMD_MODE_MASK = 0xfd,
+    /* TMD mode bytes are GPU primitive codes; bit 1 enables semi-transparency. */
+    KF_TMD_MODE_SEMI_TRANSPARENT = 0x02,
+    /* A tpage word without its semi-transparency (ABR) bits 5-6. */
+    KF_GPU_TPAGE_WITHOUT_ABR = 0xff9f,
     KF_MAP_OT_DEPTH_BIAS = 240,
     KF_MAP_OT_DEPTH_LIMIT = 8192,
     KF_MAP_CELL_PREPARED_BYTES = 4096,
@@ -298,7 +303,8 @@ typedef char kf_gpu_gt4_last_uv_offset[
     offsetof(KfGpuGT4, packed.uv3) == 48 ? 1 : -1];
 
 extern CVECTOR map_textured_primitive_color;
-void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode);
+void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
+                   KF_ENUM_PARAM(KfRenderQueueMode, s32) render_mode);
 void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias);
 void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_depth);
 void render_enqueue_map(u16 object_index);

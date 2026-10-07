@@ -14,7 +14,7 @@ const char *overlay_path_table[3] = {
 };
 
 DATA(0x80010260, 0x4, ".sdata")
-long overlay_index = 0;
+long overlay_index = KF_OVERLAY_OPEN;
 
 /* Fixed mailbox byte that GAME.EXE writes to select the next overlay.
  * Unresolved: how the original spelled or obtained this address. */

@@ -138,12 +138,12 @@ void player_reload_map_resources(
 
     player_sync_position_to_map();
     reset_collision_rows_and_overlay();
-    render_frames_with_color_overlay(0x82, 0x1000, 0x1000, 0);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0x1000, 0);
     if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
-        resource_tmd_queue_read(0, 0x101, 0x181);
+        resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
     }
     cd_request_wait_idle();
-    render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0, -128);
     resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
                                 KF_RESOURCE_REQUEST_KEEP, fourth, fifth,
                                 KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT,
@@ -918,12 +918,12 @@ void player_clear_motion(void)
 ADDRESS(0x80025234, 0xb0)
 void player_sync_position_to_map(void)
 {
-    s32 layer;
+    KF_ENUM_STORAGE(KfMapLayerMask, s32) layer;
 
     player_state.equipment_effect_ticks = 0;
-    layer = 2;
+    layer = KF_MAP_LAYER_SECOND;
     if (player_state.map_layer_index == 0) {
-        layer = 1;
+        layer = KF_MAP_LAYER_FIRST;
     }
     player_state.camera_position.vy =
         collision_sample_map_layer_height(layer, player_state.camera_position.vx,
@@ -2015,7 +2015,7 @@ b32 player_move_horizontal(s32 heading, s32 distance)
     b32 diagonal_retry;
     b32 high_collision;
     SVECTOR delta;
-    s32 diagonal_kind;
+    KF_ENUM_STORAGE(KfQuarterTurn, s32) diagonal_kind;
 
     result = KF_FALSE;
     collision_retry = 0;
@@ -2118,9 +2118,9 @@ retry: {
                 }
                 diagonal_retry = KF_TRUE;
             } while (0);
-            diagonal_kind =
-                KF_COLLISION_CACHE_SHAPE->quarter_turns & 3;
-            if (diagonal_kind == 0 || diagonal_kind == 2) {
+            diagonal_kind = KF_ENUM_DECODE(KfQuarterTurn,
+                KF_COLLISION_CACHE_SHAPE->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK);
+            if (diagonal_kind == KF_QUARTER_TURN_0 || diagonal_kind == KF_QUARTER_TURN_2) {
                 dx = (initial_dx + initial_dz) >> 1;
                 dz = dx;
             } else {
@@ -2651,7 +2651,7 @@ void player_update_actions_and_charge(void)
                                   player_state.secondary_item_shortcut_id);
                 }
             } else {
-                notify_enqueue(20);
+                notify_enqueue(KF_NOTIFICATION_NOTHING_HAPPENS);
             }
         }
     }
@@ -2809,11 +2809,12 @@ void player_handle_interaction_and_menu(void)
                                          &player_state.camera_rotation_target,
                                          KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), value));
         }
-    } else if (value == -3) {
+    } else if (value == KF_MENU_RESULT_GAME_LOADED) {
         s32 resource;
         player_restore_equipment_effects();
         resource = resource_state.active_resource_ids[0];
-        player_reload_map_resources(resource, resource, resource, resource, resource, 255);
+        player_reload_map_resources(resource, resource, resource, resource, resource,
+                                    KF_RESOURCE_REQUEST_KEEP);
     }
     player_clear_motion();
 }
@@ -3262,15 +3263,15 @@ update_reaction_pose:
                 || player_state.equipped_extra_id == KF_ITEM_STATUS_GUARD_ACCESSORY)
             && game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)] != 0) {
             game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)]--;
-            render_frames_with_color_overlay(1, 0, 4096, 512);
+            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 512);
             player_reset_status();
-            render_frames_with_color_overlay(1, 4096, 0, -512);
+            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -512);
         }
         if (player_state.death_transition_frame > 31) {
             if (player_state.death_transition_frame < 65) {
                 s32 shade = fixed_lerp_q12(0, 255,
                                             (player_state.death_transition_frame - 32) * 128);
-                render_set_color_overlay(0x82, shade, shade, shade);
+                render_set_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, shade, shade, shade);
             } else {
                 KfEffectRecord *effect = effect_state.records;
                 s32 count;
@@ -3297,7 +3298,7 @@ update_reaction_pose:
                 } else {
                     player_initialize_state();
                     event_state_initialize();
-                    player_reload_map_resources(0, 0, 0, 0, 0, 255);
+                    player_reload_map_resources(0, 0, 0, 0, 0, KF_RESOURCE_REQUEST_KEEP);
                 }
             }
         }
@@ -3326,20 +3327,20 @@ after_reaction:
         player_state.full_mp_timer--;
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
         if (player_state.full_mp_timer == 0) {
-            notify_enqueue(34);
+            notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
         }
     }
     if (player_state.magic_boost_timer != 0 && --player_state.magic_boost_timer == 0) {
         player_recalculate_combat_stats();
-        notify_enqueue(34);
+        notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
     }
     if (player_state.map_marker_visual_effect_timer != 0) {
         if (player_state.map_marker_visual_effect_timer == 1) {
             MoveImage(&player_status_texture_row_0, 0x240, 0x103);
             MoveImage(&player_status_texture_row_2, 0x240, 0x106);
-            notify_enqueue(34);
+            notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
             player_state.map_marker_visual_effect_timer = 0;
-            map_object_refresh_cell_markers(0);
+            map_object_refresh_cell_markers(KF_MAP_CELL_MARKER_PLACE);
         } else {
             if ((player_state.map_marker_visual_effect_timer & 7) == 0) {
                 MoveImage(&player_status_texture_row_1, 0x240, 0x103);
@@ -3348,7 +3349,7 @@ after_reaction:
                 MoveImage(&player_status_texture_row_3, 0x240, 0x106);
             }
             if ((player_state.map_marker_visual_effect_timer & 7) == 1) {
-                map_object_refresh_cell_markers(1);
+                map_object_refresh_cell_markers(KF_MAP_CELL_MARKER_CLEAR);
             }
             player_state.map_marker_visual_effect_timer--;
         }

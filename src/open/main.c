@@ -27,9 +27,7 @@ enum {
     OPENING_CLOSE_FRAMES = 3,
     OPENING_CLOSE_OT_DEPTH = 200,
     OPENING_DISPLAY_WIDTH = 640,
-    OPENING_CLOSE_DISPLAY_WIDTH = 320,
-    OPENING_STATE_TITLE_FADE_IN = 0,
-    OPENING_STATE_BANNER_FADE_IN = 1
+    OPENING_CLOSE_DISPLAY_WIDTH = 320
 };
 
 DATA(0x8003db88, 0x4, ".data")
@@ -46,10 +44,10 @@ ADDRESS(0x80011ac0, 0x4dc)
 void main(void)
 {
     RECT rect;
-    s32 prompt_mode = 0;
+    KfTitleMode prompt_mode = KF_TITLE_ANIMATE;
     s32 idle_frames = 0;
-    s32 state;
-    s32 choice;
+    KfOpeningState state;
+    KfOpeningChoice choice;
     s32 frame;
 
     ResetCallback();
@@ -69,7 +67,7 @@ void main(void)
     display_current = &display_buffers[1];
     PutDrawEnv(&display_current->draw);
     PutDispEnv(&display_current->disp);
-    state = OPENING_STATE_TITLE_FADE_IN;
+    state = KF_OPENING_STATE_TITLE_FADE_IN;
     opening_open_audio();
 restart:
     SsSetMVol(OPENING_MASTER_VOLUME, OPENING_MASTER_VOLUME);
@@ -77,14 +75,14 @@ restart:
     SsSeqPlay(audio_title_sequence_id, SSPLAY_PLAY, 1);
     for (;;) {
         display_begin_frame();
-        if (state == OPENING_STATE_TITLE_FADE_IN) {
+        if (state == KF_OPENING_STATE_TITLE_FADE_IN) {
             if (opening_draw_title(KF_TITLE_ANIMATE) == KF_TRUE) {
-                state = OPENING_STATE_BANNER_FADE_IN;
+                state = KF_OPENING_STATE_BANNER_FADE_IN;
             }
         } else {
             opening_draw_title(KF_TITLE_SHOW);
         }
-        if (state == OPENING_STATE_BANNER_FADE_IN && opening_draw_banner(KF_TITLE_ANIMATE) == KF_TRUE) {
+        if (state == KF_OPENING_STATE_BANNER_FADE_IN && opening_draw_banner(KF_TITLE_ANIMATE) == KF_TRUE) {
             break;
         }
         if (PadRead(1) != 0) {
@@ -112,7 +110,7 @@ restart:
         }
         if (idle_frames >= OPENING_IDLE_FRAMES) {
             opening_fade_out(prompt_mode);
-            state = OPENING_STATE_TITLE_FADE_IN;
+            state = KF_OPENING_STATE_TITLE_FADE_IN;
             opening_draw_title(KF_TITLE_RESET);
             opening_draw_banner(KF_TITLE_RESET);
             idle_frames = 0;
@@ -152,12 +150,12 @@ restart:
     SsVabClose(audio_vab_id);
     SsEnd();
     PadStop();
-    ResetGraph(3);
+    ResetGraph(KF_GPU_RESET_KEEP_DISPLAY);
 }
 
 /* Darkens the title screen while fading the title music out. */
 ADDRESS(0x80011f9c, 0xc4)
-void opening_fade_out(s32 prompt_mode)
+void opening_fade_out(KfTitleMode prompt_mode)
 {
     s32 level = 0;
 

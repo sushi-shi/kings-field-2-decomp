@@ -8,10 +8,10 @@
 
 /* GAME.EXE sound effects: sound ids index the loaded sound table; bit 15 of
  * a spatial sound id selects an alternate panning mode. */
-enum {
+KF_ENUM_BEGIN(KfAudioPlaybackResult, s32)
     KF_AUDIO_NOT_PLAYED = 0,
     KF_AUDIO_PLAYED = 1
-};
+KF_ENUM_END(KfAudioPlaybackResult)
 
 enum {
     KF_AUDIO_DEFAULT_MAX_DISTANCE = 0x4800,
@@ -29,11 +29,14 @@ enum {
 };
 
 /* Stream slots are queued, retained while requested, then made reclaimable. */
-enum {
+KF_ENUM_BEGIN(KfAudioVabStreamState, s16)
     KF_AUDIO_VAB_STREAM_FREE = 0,
     KF_AUDIO_VAB_STREAM_IN_USE = 1,
     KF_AUDIO_VAB_STREAM_RECLAIMABLE = 2,
-    KF_AUDIO_VAB_STREAM_LOADING = 3,
+    KF_AUDIO_VAB_STREAM_LOADING = 3
+KF_ENUM_END(KfAudioVabStreamState)
+
+enum {
     KF_AUDIO_VAB_ID_STREAM_PENDING = 0xfe,
     KF_AUDIO_VAB_STREAM_POOL_COUNT = 5,
     KF_AUDIO_VAB_STREAM_SLOT_FOR_VAB_1 = 5,
@@ -41,11 +44,10 @@ enum {
     KF_AUDIO_VAB_STREAM_SLOT_COUNT = 7
 };
 
-typedef s32 KfAudioPlaybackResult;
 struct KfEulerAngles;
 
 typedef struct KfAudioVabStreamSlot {
-    s16 state;
+    KfAudioVabStreamState state;
     u8 *buffer;
 } KfAudioVabStreamSlot;
 

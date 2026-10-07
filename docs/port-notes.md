@@ -124,6 +124,13 @@ checks include structures with pointers. The port therefore builds for i686
 Linux (and wasm32, whose pointers are also 32-bit). Moving to LP64 requires
 host representations at the resource and save boundaries first.
 
+## WebAssembly
+
+`emcmake cmake --preset wasm && cmake --build --preset wasm` compiles and links
+the same sources for wasm32, which is ILP32 as well. The page has no disc
+import yet, and the busy pad wait in `PadRead` and the program loader still
+need browser yields (Asyncify, as in the King's Field port) before it can run.
+
 ## Diagnostics
 
 `KF_CAPTURE`, `KF_PAD_SCRIPT`, `KF_TRACE` and `KF_WATCHDOG` are described in the

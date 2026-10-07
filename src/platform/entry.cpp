@@ -63,23 +63,6 @@ static void start_watchdog() {
     }
 }
 #else
-// Reports the faulting instruction and the return address at the stack top; a
-// jump through a bad function pointer leaves no unwindable frame.
-static void fault_report(int, siginfo_t *info, void *context) {
-    char line[160];
-#if defined(__i386__)
-    const auto *registers = static_cast<ucontext_t *>(context)->uc_mcontext.gregs;
-    const auto *stack = reinterpret_cast<const unsigned *>(registers[REG_ESP]);
-    const int length = std::snprintf(line, sizeof line, "kf2: fault at %p eip=%08x stack top=%08x %08x\n",
-                                     info->si_addr, static_cast<unsigned>(registers[REG_EIP]), stack[0], stack[1]);
-#else
-    (void)context;
-    const int length = std::snprintf(line, sizeof line, "kf2: fault at %p\n", info->si_addr);
-#endif
-    (void)!write(2, line, static_cast<std::size_t>(length));
-    watchdog_expired(SIGSEGV);
-}
-
 static void start_watchdog() {}
 #endif
 

@@ -5,31 +5,16 @@
 #include <kf/game/player.h>
 
 s32 collision_sample_map_cell_layer(s32 x, s32 y, s32 z);
-s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_evaluate_shape_records(
+    s32 x, s32 y, s32 z, s32 radius, s32 height);
 s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height);
 void collision_cache_load_hit_bounds(void);
-s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_shapes_with_layer_sample(
+    s32 x, s32 y, s32 z, s32 radius, s32 height);
 b32 collision_probe_forward_shape_0x20(const VECTOR *position, const struct KfEulerAngles *angles);
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(
+    s32 x, s32 y, s32 z, s32 radius, s32 height, KF_ENUM_PARAM(KfCollisionQuery, u8) mode);
 void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount);
-
-/* collision_query_world uses the same bit positions to request and report
- * actor and map-object checks. Shape records only report bits below 0x10. */
-enum {
-    KF_COLLISION_QUERY_SHAPES = 0x01,
-    KF_COLLISION_QUERY_LAYER_FLAG_40 = 0x02,
-    KF_COLLISION_QUERY_ACTORS = 0x10,
-    KF_COLLISION_QUERY_MAP_OBJECTS = 0x20,
-    KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 = 0x40,
-    KF_COLLISION_QUERY_PLAYER = 0x80,
-    KF_COLLISION_HIT_AXIS = 0x01,
-    KF_COLLISION_HIT_DIAGONAL = 0x02,
-    KF_COLLISION_HIT_FLOOR = 0x04,
-    KF_COLLISION_HIT_HEIGHT_LIMIT = 0x08,
-    KF_COLLISION_HIT_ACTOR = 0x10,
-    KF_COLLISION_HIT_MAP_OBJECT = 0x20,
-    KF_COLLISION_HIT_PLAYER = 0x80
-};
 
 /* The high bit of the shape-query height argument enables floor records
  * (record kind 0x18); the low bits still carry the collision height. */

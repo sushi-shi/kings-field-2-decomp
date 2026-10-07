@@ -16,7 +16,7 @@ KfActor	0xb	0x1	death_drop_object_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	g
 KfActor	0xc	0x1	animation_id	KfAnimationClip	supported	actor_set_animation writes;render_world_model clip argument;animation_sample_vertex;KF1 KfActor animation_id	Current animation clip ID
 KfActor	0xd	0x1	vertical_motion_state	KfActorVerticalState	supported	GAME actor_update_vertical_motion state dispatch;actor_suspend_vertical_motion;KF1 vertical_state analog	Current vertical motion mode; observed values differ from KF1 enum
 KfActor	0xe	0x1	target_type	KfActorTargetType	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
-KfActor	0xf	0x1	target_action_state	u8	supported	actor_set_target;actor_select_best_target;actor_update_behavior	0 newly selected, 0xf0/0xf1 active action states, 0xff absent or reset
+KfActor	0xf	0x1	target_action_state	KfActorTargetActionState	supported	actor_set_target;actor_select_best_target;actor_update_behavior	0 newly selected, 0xf0/0xf1 active action states, 0xff absent or reset
 KfActor	0x10	0x1	previous_target_type	KfActorTargetType	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x11	0x1	unknown_11	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
@@ -32,7 +32,7 @@ KfActor	0x20	0x2	word_20	KfActorWord20	supported	GAME actor_set_home_position;ac
 KfActor	0x22	0x2	word_22	KfActorWord22	supported	GAME actor_set_home_position;actor_target_selection;actor_fixup_group_targets	Signed home-local Z offset; linked actors and a linked map object use this word as an index in specific modes
 KfActor	0x24	0x2	word_24	KfActorWord24	supported	GAME actor_set_home_position;actor_update_behavior	Signed home-local X offset; linked actor behavior also uses this word as an animation vertex index
 KfActor	0x26	0x2	vertical_anchor_offset	s16	supported	actor_load_records;actor_set_home_position;actor_animation;actor_behavior_dispatch	signed local Y offset used for placement, collision baseline, and target sampling
-KfActor	0x28	0x4	flags	u32	supported	GAME 0x80038d70/0x8003b64c andi;0x8003d3a8/0x8003d448 andi;0x8003fd74/0x800451e8 ori;actor_initialize_from_group;render_world_model	Flag word; 0x10 links actor motion, 0x80 selects blended model render mode, 0x400 chooses raw map-layer floor, 0x800 holds effect-gated animation; other bits unresolved
+KfActor	0x28	0x4	flags	KfActorFlags	supported	GAME 0x80038d70/0x8003b64c andi;0x8003d3a8/0x8003d448 andi;0x8003fd74/0x800451e8 ori;actor_initialize_from_group;render_world_model	Flag word; 0x10 links actor motion, 0x80 selects blended model render mode, 0x400 chooses raw map-layer floor, 0x800 holds effect-gated animation; other bits unresolved
 KfActor	0x2c	0x10	position	VECTOR	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x3c	0x4	ballistic_origin_y	s32	supported	actor_start_ballistic_motion;actor_update_vertical_motion state 0x30	captures actor Y at ballistic start and anchors the parabolic position equation
 KfActor	0x40	0x6	rotation	KfEulerAngles	supported	game/actor.h;retail GAME actor motion	three signed rotation angles passed to pitch_yaw_to_forward_vector
@@ -84,8 +84,8 @@ KfActorState70Bytes	0x1	0x1	high	u8	supported	GAME 0x8003d934 sb;GAME 0x8003da4c
 KfActorStateGame	0x0	0x60e0	actors	KfActor[200]	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x60e0	0x12c0	target_groups	KfTargetGroup[40]	supported	game/actor.h;retail GAME actor chain;8003f7ec 40-group loop	member used by reconstructed actor code
 KfActorStateGame	0x73a0	0x2000	target_candidate_blob	u8[8192]	supported	game/actor.h;GAME 0x80016820 archive copy;0x8003f7ec fixup	0x32c0-byte copy covers 40 groups and this opaque candidate-record span; internal record layout unresolved
-KfActorStateGame	0x93a0	0x1	actor_overlap_exclusion_flags	u8	supported	player_update_frame;actor_find_overlap;actor_find_overlap_excluding_target_type3	set to 4 during player collision pass; actors with intersecting flags are excluded from overlap scans
-KfActorStateGame	0x93a4	0x4	actor_collision_query_flags	s32	supported	actor_update_behavior;actor_move_with_collision;collision_query_world	set per actor behavior and passed as collision mode bitmask; bit 0x20 is temporarily cleared around selected moves
+KfActorStateGame	0x93a0	0x1	actor_overlap_exclusion_flags	KF_ENUM_STORAGE(KfActorFlags, u8)	supported	player_update_frame;actor_find_overlap;actor_find_overlap_excluding_target_type3	set to 4 during player collision pass; actors with intersecting flags are excluded from overlap scans
+KfActorStateGame	0x93a4	0x4	actor_collision_query_flags	KfCollisionQuery	supported	actor_update_behavior;actor_move_with_collision;collision_query_world	set per actor behavior and passed as collision mode bitmask; bit 0x20 is temporarily cleared around selected moves
 KfActorStateGame	0x93a8	0x4	active_group	KfTargetGroup *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x93ac	0x4	current	KfActor *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActorStateGame	0x93b0	0x4	other_group	KfTargetGroup *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
@@ -245,7 +245,7 @@ KfCollisionCache	0x04	0x04	shape	KfMapOccupancyLayer *	supported	game/collision_
 KfCollisionCache	0x8	0x2	unknown_08	u8[2]	opaque	game/player.h	layout span without a supported meaning
 KfCollisionCache	0x0a	0x02	layer	u16	supported	game/collision_cache.h;GAME 0x8002aa10/0x8002aa28/0x8002aa7c sh	selected layer byte offset within the two-layer cell
 KfCollisionCache	0x0c	0x14	heights	KfCollisionHeights	supported	game/collision_cache.h;collision_evaluate_shape_records base pointer at bss_801c7540+0x1180c	height results addressed through one pointer by the shape evaluator
-KfCollisionCache	0x20	0x4	flags	u32	candidate	game/player.h	KfCollisionCache member from reconstructed header
+KfCollisionCache	0x20	0x4	flags	KfCollisionHitFlags	candidate	game/player.h	KfCollisionCache member from reconstructed header
 KfCollisionCache	0x24	0x4	actor_index	s32	candidate	game/player.h	KfCollisionCache member from reconstructed header
 KfCollisionCache	0x28	0x4	object_index	s32	supported	game/player.h;map_cell_apply_rotated_pattern;map_cell_copy_rotated_fields;map_object_set_cell_marker	object_index access in exact source
 KfCollisionCache	0x2c	0x4	unknown_2c	u8[4]	opaque	game/player.h	layout span without a supported meaning
@@ -307,18 +307,19 @@ KfEffectKind12Aim	0x00	0x02	max_length	s16	supported	GAME 0x80040d90 sh;GAME 0x8
 KfEffectKind12Aim	0x02	0x02	scale	s16	supported	GAME 0x80040d9c sh;GAME 0x80043d48 lh	Motion scale passed to effect_aim_and_move
 KfEffectKind12Aim	0x04	0x02	turn_step	s16	supported	GAME 0x80040da8 sh;GAME 0x80043d4c lh	Angular step passed to effect_aim_and_move
 KfEffectKind12Aim	0x06	0x02	close_scale	s16	supported	GAME 0x80040db4 sh;GAME 0x80043d64 lh	Close-range scale passed to effect_aim_and_move
-KfEffectKind1Stage	0x0	0x1	collision_stage	u8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_stage access in exact source
+KfEffectKind1Stage	0x0	0x1	collision_stage	KfEffectStage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_stage access in exact source
 KfEffectKind23Attachment	0x00	0x02	actor_index	s16	supported	GAME 0x800415dc sh;GAME 0x80042940 lh	Signed actor index selecting actor_state.actors during kind-23 attachment
 KfEffectKind23Attachment	0x02	0x02	vertex_index	s16	supported	GAME 0x800415e8 sh;GAME 0x80042984 lh	Signed animation vertex index passed to actor_sample_rotated_animation_vertex
 KfEffectKind23Attachment	0x04	0x02	release_animation_phase	u16	supported	GAME 0x800415f8 sh;GAME 0x80042a88 lhu	Unsigned actor animation phase threshold releasing the attached effect
+KfEffectKind26Stage	0x0	0x1	stage	KF_ENUM_STORAGE(KfEffectStage, s8)	supported	effect_update_dispatch signed switch on payload byte 0	travel until blocked, then shrink
 KfEffectKind2Scale	0x00	0x02	max_scale	s16	supported	game/effect.h;GAME 0x80043c9c lh;effect_update_dispatch	Signed comparison after scaling ends the kind-2 effect
 KfEffectKind2Scale	0x02	0x02	scale_step	s16	supported	game/effect.h;GAME 0x80043c1c lhu/0x80043c6c lh	Unsigned growth step also used as signed damage-radius adjustment
 KfEffectKind2Scale	0x04	0x02	radial_damage_parameter	s16	supported	game/effect.h;GAME 0x80043c78 lh;effect_update_dispatch	Passed as signed halfword to radial magic damage
 KfEffectKind42Countdown	0x0	0x1	ticks_remaining	s8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	ticks_remaining access in exact source
-KfEffectKind46State	0x00	0x01	phase	s8	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
+KfEffectKind46State	0x00	0x01	phase	KF_ENUM_STORAGE(KfEffectStage, s8)	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
 KfEffectKind46State	0x01	0x01	linked_effect_index	s8	supported	GAME 0x80042dc8 lb;effect_construct_record kind 46	Signed index into effect_state.records
 KfEffectKind46State	0x02	0x02	age_q12	u16	supported	GAME 0x80042ec0 sh;GAME 0x80042ed0 lh;GAME 0x80042edc lhu	Fade interpolation age advanced by 512 to 4096
-KfEffectKind50Stage	0x0	0x1	stage	s8	candidate	game/effect.h	KfEffectKind50Stage member from reconstructed header
+KfEffectKind50Stage	0x0	0x1	stage	KF_ENUM_STORAGE(KfEffectStage, s8)	candidate	game/effect.h	KfEffectKind50Stage member from reconstructed header
 KfEffectKind5Fanout	0x00	0x01	initial_child_count	u8	supported	GAME 0x80043fd8 sb;GAME 0x800440f4/0x8004416c lbu	Initial number of kind-105 children for hit fraction
 KfEffectKind5Fanout	0x01	0x01	actor_index	u8	supported	GAME 0x80044014/0x800440f0/0x80044120 lbu;effect_construct_record kind 5	Actor record index or 0xff sentinel
 KfEffectKind5Fanout	0x02	0x02	children_remaining	s16	supported	GAME 0x80043fd4 sh;GAME 0x80044054/0x80044320/0x80044384 lh	Signed count decremented by kind-105 children
@@ -338,6 +339,7 @@ KfEffectKindPayload	0x0	0x6	kind2	KfEffectKind2Scale	supported	game/effect.h;eff
 KfEffectKindPayload	0x0	0x1	collision_latch	KfEffectCollisionLatch	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_latch access in exact source
 KfEffectKindPayload	0x0	0x1	kind42	KfEffectKind42Countdown	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind42 access in exact source
 KfEffectKindPayload	0x0	0x1	kind1	KfEffectKind1Stage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind1 access in exact source
+KfEffectKindPayload	0x0	0x1	kind26	KfEffectKind26Stage	supported	effect_construct_record kinds 26/27;effect_update_dispatch kinds 26/27	kind26/27 travel/shrink stage view
 KfEffectKindPayload	0x0	0x1	kind50	KfEffectKind50Stage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind50 access in exact source
 KfEffectKindPayload	0x0	0x1	kind106	KfEffectKind106Children	supported	game/effect.h;effect_update_dispatch	kind106 access in exact source
 KfEffectKindPayload	0x0	0x2	scale_step_argument	KfEffectScaleStepArgument	supported	game/effect.h;effect_construct_record;effect_update_dispatch	scale_step_argument access in exact source
@@ -991,9 +993,9 @@ KfPlayerState	0xc9	0x01	hud_gauges_enabled	KfPlayerOption	supported	asm;render_g
 KfPlayerState	0xca	0x01	compass_enabled	KfPlayerOption	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates rotating compass render model row 0
 KfPlayerState	0xcb	0x01	item_preview_enabled	KfPlayerOption	supported	asm;menu_load_item_model;menu_update_item_preview	gates 3D item preview loading and drawing
 KfPlayerState	0xcc	0x01	walking_bob_enabled	KfPlayerOption	supported	asm;player_update_vertical_motion	gates sinusoidal walking camera bob
-KfPlayerState	0xcd	0x01	death_state	u8	supported	GAME 0x80029be0 lbu and 0x00..0x12 jump-table dispatch;player reaction setters	General camera, overlap, damage, and death reaction state
+KfPlayerState	0xcd	0x01	death_state	KfPlayerReaction	supported	GAME 0x80029be0 lbu and 0x00..0x12 jump-table dispatch;player reaction setters	General camera, overlap, damage, and death reaction state
 KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet modelled
-KfPlayerState	0xd0	0x01	vertical_motion_state	u8	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses
+KfPlayerState	0xd0	0x01	vertical_motion_state	KfPlayerVerticalState	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses
 KfPlayerState	0xd1	0x04	queued_magic_action	KfQueuedMagicAction	supported	asm;player_select_magic_action;player_update_frame	magic ID sentinel 0xff and dispatch-count/interval/countdown loop
 KfPlayerState	0xd5	0x01	fatal_fall_latch	b8	supported	asm;player_check_fall_death;player_move_reaction_with_collision;player_update_frame	set after fatal fall and gates recovery at death-transition frame 31
 KfPlayerState	0xd8	0x10	camera_position	VECTOR	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
@@ -1037,7 +1039,7 @@ KfPlayerVitals	0x00	0x02	maximum_hp	u16	supported	asm;xrefs;KF1 player.h counter
 KfPlayerVitals	0x02	0x02	current_hp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerVitals	0x04	0x02	maximum_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
 KfPlayerVitals	0x06	0x02	current_mp	u16	supported	asm;xrefs;KF1 player.h counterpart	member used by reconstructed code
-KfPoolRecord	0x00	0x02	state	s16	supported	game headers;asm;xrefs	member used by reconstructed code
+KfPoolRecord	0x00	0x02	state	KF_ENUM_STORAGE(KfAnimationCacheState, s16)	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x02	0x02	asset_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x04	0x02	clip_index	KF_ENUM_STORAGE(KfAnimationClip, u16)	supported	game headers;asm;xrefs	member used by reconstructed code
 KfPoolRecord	0x06	0x02	keyframe_index	u16	supported	game headers;asm;xrefs	member used by reconstructed code
@@ -1237,7 +1239,7 @@ KfTargetGroup	0x1e	0x2	experience_reward	u16	supported	GAME actor_fixed_curve pl
 KfTargetGroup	0x20	0x10	magic_component_divisors	u16[8]	supported	GAME 0x80039c94 eight lhu reads;actor_magic_component_curve third parameter	Eight divisors for the per-component magic response curve
 KfTargetGroup	0x30	0x2	scattered_effect_id_center	u16	supported	actor_behavior_dispatch;map_object_spawn_scattered_effect	center of randomized effect ID passed to scattered-effect constructor
 KfTargetGroup	0x32	0x2	initial_model_scale_q12	u16	supported	actor_copy_group_defaults;actor_behavior_dispatch;render_resource_dispatch;actor_group_position	uniform Q12 model scale copied to actor X/Y/Z scale components
-KfTargetGroup	0x34	0x4	initial_actor_flags	u32	supported	actor_copy_group_defaults;actor_group_effects;actor_animation;actor_fixup_group_targets	copied to KfActor +0x28 on initialization and spawn; group bits gate actor behavior
+KfTargetGroup	0x34	0x4	initial_actor_flags	KfActorFlags	supported	actor_copy_group_defaults;actor_group_effects;actor_animation;actor_fixup_group_targets	copied to KfActor +0x28 on initialization and spawn; group bits gate actor behavior
 KfTargetGroup	0x38	0x40	targets	KfTargetReference[16]	supported	game/actor.h;retail GAME actor chain;8003f7ec offset fixup	encoded relative offsets become candidate pointers
 KfTargetGroupWord1a	0x0	0x2	initial_health	u16	supported	game/actor.h;actor_copy_group_defaults	initial_health access in exact source
 KfTargetGroupWord1a	0x0	0x2	slot3_home_x_fallback	u16	supported	game/actor.h;actor_load_records	slot3_home_x_fallback access in exact source

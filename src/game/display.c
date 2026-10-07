@@ -2402,17 +2402,17 @@ void render_scene_and_update_resources(void)
         if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
             goto actor_next;
         }
-        if (actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) {
+        if ((actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) != KF_ACTOR_FLAGS_NONE) {
             layer = actor->current_map_layer | KF_MAP_LAYER_IN_VIEW;
         } else {
             layer = actor->current_map_layer;
         }
-        if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
+        if ((actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) != KF_ACTOR_FLAGS_NONE) goto actor_radius_check;
         if ((map_cell_layer_mask(&actor->position) & layer) == KF_MAP_LAYER_NONE) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
-            if (actor->flags & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) {
+            if ((actor->flags & KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX) != KF_ACTOR_FLAGS_NONE) {
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
@@ -2983,8 +2983,9 @@ void asset_registry_select(u16 index)
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
 
 ADDRESS(0x80033b34, 0xc8)
-KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase,
-                                          s32 *keyframe_index, u32 *blend_fraction)
+KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset,
+    KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase, s32 *keyframe_index,
+    u32 *blend_fraction)
 {
     u32 *clip_table = ASSET_CLIP_TABLE(asset);
     KfAnimClip *clip = ASSET_CLIP(asset, clip_table[KF_ENUM_ENCODE(s32, clip_index)]);
@@ -3272,7 +3273,8 @@ allocate_vertices:
 }
 
 ADDRESS(0x80034344, 0x2a0)
-b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase, s32 vertex_index,
+b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase,
+                            s32 vertex_index,
                   SVECTOR *output)
 {
     KfAssetHeader *asset = resource_registry_get(asset_index);
@@ -3297,7 +3299,8 @@ b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32)
     tmd = ASSET_TMD(asset);
     if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
 copy_object_vertex:
-        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32, clip) & KF_ASSET_OBJECT_INDEX_MASK]);
+        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32,
+            clip) & KF_ASSET_OBJECT_INDEX_MASK]);
         *output = vertices[vertex_index];
         goto finished;
     }

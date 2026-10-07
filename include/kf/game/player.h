@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/collision_flags.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
 #include <kf/game/render_types.h>
@@ -45,17 +46,29 @@ enum {
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
-enum {
+/* player_cap_status_components groups: FIRST caps curse and slow, SECOND
+ * caps darkness (either also clears poison), THIRD caps slow and clears
+ * paralysis. Member names stay WIP. */
+KF_ENUM_BEGIN(KfPlayerStatusMask, u32)
+    KF_PLAYER_STATUS_NONE = 0,
+    KF_PLAYER_STATUS_FIRST = 1,
+    KF_PLAYER_STATUS_SECOND = 2,
+    KF_PLAYER_STATUS_THIRD = 4
+KF_ENUM_END(KfPlayerStatusMask)
+KF_ENUM_FLAGS(KfPlayerStatusMask, u32)
+
+/* player_update_vertical_motion state (KF1 KfPlayerVerticalState). */
+KF_ENUM_BEGIN(KfPlayerVerticalState, u8)
     KF_PLAYER_VERTICAL_GROUNDED = 0,
     KF_PLAYER_VERTICAL_FALLING = 0x10,
     KF_PLAYER_VERTICAL_STEP_UP = 0x20,
     KF_PLAYER_VERTICAL_DEEP_FALL = 0x40,
     KF_PLAYER_VERTICAL_LANDING = 0x50
-};
+KF_ENUM_END(KfPlayerVerticalState)
 
 /* The byte at player +0xcd selects the camera, overlap, damage, and death
  * reaction paths in player_update_frame. */
-enum {
+KF_ENUM_BEGIN(KfPlayerReaction, u8)
     KF_PLAYER_REACTION_NORMAL = 0,
     KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW = 1,
     KF_PLAYER_REACTION_MAP_OBJECT_APPROACH = 2,
@@ -65,7 +78,7 @@ enum {
     KF_PLAYER_REACTION_MOVING_DAMAGE = 0x10,
     KF_PLAYER_REACTION_DEATH = 0x11,
     KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
-};
+KF_ENUM_END(KfPlayerReaction)
 
 /* Buttons that stay pressed when the player's motion is cleared; the
  * direction and shoulder buttons are dropped. */
@@ -341,7 +354,7 @@ typedef struct KfCollisionCache {
     u8 unknown_08[2];
     u16 layer;
     KfCollisionHeights heights;
-    u32 flags;
+    KfCollisionHitFlags flags;
     s32 actor_index;
     s32 object_index;
     u8 unknown_2c[4];
@@ -376,7 +389,9 @@ typedef char kf_collision_shape_bank_size[
     sizeof(((KfBss801c7540 *)NULL)->shape_bank) == 0x1800 ? 1 : -1];
 enum { KF_EQUIPMENT_RECORD_FIRST_ID = 21, KF_EQUIPMENT_RECORD_COUNT = 64 };
 
-enum {
+/* player_set_equipment_slot target; NONE only refreshes the record
+ * pointers of the current equipment. */
+KF_ENUM_BEGIN(KfEquipmentSlot, u8)
     KF_EQUIPMENT_SLOT_HEAD = 0,
     KF_EQUIPMENT_SLOT_BODY = 1,
     KF_EQUIPMENT_SLOT_LEG = 2,
@@ -384,8 +399,12 @@ enum {
     KF_EQUIPMENT_SLOT_ARM = 4,
     KF_EQUIPMENT_SLOT_ACCESSORY = 5,
     KF_EQUIPMENT_SLOT_EXTRA = 6,
-    KF_EQUIPMENT_NONE = 0xff
-};
+    KF_EQUIPMENT_SLOT_NONE = 0xff
+KF_ENUM_END(KfEquipmentSlot)
+
+/* Encoded empty byte of the menu's equipped item/magic label rows (lane B
+ * menu locals, which mix KfObjectId and KfEffectKind values). */
+enum { KF_EQUIPMENT_NONE = 0xff };
 
 /*
  * The player object: game_main_loop clears 0x160 bytes at its base and the
@@ -472,9 +491,9 @@ typedef struct KfPlayerState {
     KfPlayerOption compass_enabled;
     KfPlayerOption item_preview_enabled;
     KfPlayerOption walking_bob_enabled;
-    u8 death_state;
+    KfPlayerReaction death_state;
     u8 unknown_ce[2];
-    u8 vertical_motion_state;
+    KfPlayerVerticalState vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
     b8 fatal_fall_latch;
     VECTOR camera_position;
@@ -587,14 +606,14 @@ void player_apply_radial_damage(VECTOR *position, s32 start, s32 end, s32 mode,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 damage8, s32 scale_and_flags, u16 record_id);
 void player_adjust_hp_unclamped(s32 delta);
-void player_cap_status_components(u32 mask);
+void player_cap_status_components(KfPlayerStatusMask mask);
 void player_death_begin(const SVECTOR *rotation);
 void player_adjust_hp(s32 delta);
 void player_adjust_mp(s32 delta);
 void player_set_primary_magic_shortcut_id(KfEffectKind value);
 void player_set_secondary_magic_shortcut_id(KfEffectKind value);
 void player_set_secondary_item_shortcut_id(KF_ENUM_PARAM(KfObjectId, u8) value);
-void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, u8 slot);
+void player_set_equipment_slot(KF_ENUM_PARAM(KfObjectId, u8) item_id, KfEquipmentSlot slot);
 void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id);
 struct KfActor *player_probe_view_target_and_vectors(s32 scale, VECTOR *position,
                               SVECTOR *direction, s32 *distance);

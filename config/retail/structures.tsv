@@ -66,6 +66,7 @@ KfEffectKind114State	0x8	supported	game/effect.h	Kind 114 keeps its launch Y aft
 KfEffectKind12Aim	0x08	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Four signed aiming parameters at record +0x40
 KfEffectKind1Stage	0x1	supported	game/effect.h	Kinds 1 and 28 advance through initial, collision, and fade stages.
 KfEffectKind23Attachment	0x06	supported	GAME 0x800415dc/0x800415e8/0x800415f8;GAME 0x80042940/0x80042984/0x80042a88	Signed actor and vertex indices followed by an unsigned animation-phase threshold at record +0x40
+KfEffectKind26Stage	0x1	supported	effect_construct_record kinds 26/27;effect_update_dispatch	Kinds 26 and 27 travel until blocked, then shrink away.
 KfEffectKind2Scale	0x06	supported	game/effect.h;GAME 0x80043c1c/0x80043c6c/0x80043c78/0x80043c9c	Three halfwords at effect record +0x40; kind-2 payload view, not a standalone object
 KfEffectKind42Countdown	0x1	supported	game/effect.h	Kind 42 counts down before its scale step.
 KfEffectKind46State	0x04	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Signed phase and linked-effect index, then unsigned Q12 age, at record +0x40

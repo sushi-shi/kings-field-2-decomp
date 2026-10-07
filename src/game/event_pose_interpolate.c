@@ -730,7 +730,8 @@ decay_update:
                  remaining != -1; remaining--, scan++) {
                 KfMapObject *object = scan;
 
-                if (map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_kind != KF_MAP_OBJECT_OP_SCENE_INSPECT ||
+                if (map_object_state.templates[KF_ENUM_ENCODE(u16,
+                                                              object->object_id)].collision_kind != KF_MAP_OBJECT_OP_SCENE_INSPECT ||
                     object->extra_40.saved_layer.layer_mask != side) {
                     continue;
                 }
@@ -1124,7 +1125,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
                     object->action_timer = 1;
                     break;
                 }
-                if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_15)] != 0) {
+                if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[KF_ENUM_ENCODE(u8,
+                    KF_OBJECT_15)] != 0) {
                     object->action_timer = 1;
                     break;
                 }
@@ -1174,7 +1176,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             break;
         case KF_MAP_OBJECT_OP_PLAYER_REACTION:
-            if (player_state.death_state == 0) {
+            if (player_state.death_state == KF_PLAYER_REACTION_NORMAL) {
                 KfMapObjectRecord40 *record;
                 player_begin_view_reaction(object_index);
                 record = object->extra_40.record;
@@ -1529,7 +1531,8 @@ void event_world_state_restore_slot(s32 save_slot)
             object->object_id = KF_OBJECT_NONE;
             break;
         case KF_EVENT_WORLD_SAVE_EFFECT - KF_EVENT_WORLD_SAVE_ACTION_60:
-            object->tail.event_effect.pending_event_command = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), *stream++);
+            object->tail.event_effect.pending_event_command = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId),
+                *stream++);
             object->tail.event_effect.effect_object_index = *stream++;
             break;
         case KF_EVENT_WORLD_SAVE_ACTION_60 - KF_EVENT_WORLD_SAVE_ACTION_60: {

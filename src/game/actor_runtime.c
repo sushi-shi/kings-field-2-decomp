@@ -258,10 +258,9 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 23:
     case 24:
     case 132:
-        score = 0;
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_1a.value < player_distance) {
-            break;
+            goto zero_score;
         }
         if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
@@ -320,8 +319,9 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case 19:
     case 20:
+        score = 0;
         if (target->word_0e.value < player_distance) {
-            goto zero_score;
+            break;
         }
         if (player_state.weapon_attack_phase == -1) {
             break;
@@ -478,6 +478,12 @@ void actor_set_animation_if_changed(u8 animation_id)
     }
 }
 
+/* Puts an actor back to sleep at its home position. */
+#define ACTOR_RETURN_HOME(actor) do { \
+    (actor)->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT; \
+    actor_set_home_position(actor); \
+} while (0)
+
 ADDRESS(0x8003983c, 0x31c)
 void actor_update_lifecycle_for_player_range(void)
 {
@@ -562,8 +568,7 @@ void actor_update_lifecycle_for_player_range(void)
         }
         map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                        actor->collision_radius, -1);
-        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
-        actor_set_home_position(actor);
+        ACTOR_RETURN_HOME(actor);
         return;
 
     case KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT:
@@ -580,8 +585,7 @@ void actor_update_lifecycle_for_player_range(void)
                 return;
             }
         }
-        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
-        actor_set_home_position(actor);
+        ACTOR_RETURN_HOME(actor);
         return;
     }
 }
@@ -639,8 +643,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
     KfTargetGroup *group;
     KfTargetCandidate *candidate;
     KfActor *linked;
-    s32 total;
-    s32 applied;
+    s32 damage;
     s32 remaining;
     s32 mode;
     s32 kind;
@@ -672,23 +675,23 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         return;
     }
 
-    total = actor_magic_component_curve(power, magic_06, group->magic_component_divisors[0]);
-    total += actor_magic_component_curve(power, magic_08, group->magic_component_divisors[1]);
-    total += actor_magic_component_curve(power, magic_0a, group->magic_component_divisors[2]);
-    total += actor_magic_component_curve(power, magic_0c, group->magic_component_divisors[3]);
-    total += actor_magic_component_curve(power, magic_0e, group->magic_component_divisors[4]);
-    total += actor_magic_component_curve(power, magic_10, group->magic_component_divisors[5]);
-    total += actor_magic_component_curve(power, magic_12, group->magic_component_divisors[6]);
-    total += actor_magic_component_curve(power, magic_14, group->magic_component_divisors[7]);
-    if (total > 0x68db7) {
-        total = 0x68db7;
+    damage = actor_magic_component_curve(power, magic_06, group->magic_component_divisors[0]);
+    damage += actor_magic_component_curve(power, magic_08, group->magic_component_divisors[1]);
+    damage += actor_magic_component_curve(power, magic_0a, group->magic_component_divisors[2]);
+    damage += actor_magic_component_curve(power, magic_0c, group->magic_component_divisors[3]);
+    damage += actor_magic_component_curve(power, magic_0e, group->magic_component_divisors[4]);
+    damage += actor_magic_component_curve(power, magic_10, group->magic_component_divisors[5]);
+    damage += actor_magic_component_curve(power, magic_12, group->magic_component_divisors[6]);
+    damage += actor_magic_component_curve(power, magic_14, group->magic_component_divisors[7]);
+    if (damage > 0x68db7) {
+        damage = 0x68db7;
     }
-    applied = ((total * (u16)amount) / 5000 + 128) >> 4;
+    damage = ((damage * (u16)amount) / 5000 + 128) >> 4;
     /* Slot 18's target is unresolved; its O32 arguments are observed. */
     ((KfMagicRecipientCallback)state_8017d118.active_table[18])(
-        actor, applied, magic_06, magic_08, magic_0a, magic_0c,
+        actor, damage, magic_06, magic_08, magic_0a, magic_0c,
         magic_0e, magic_10, magic_12, magic_14);
-    if (applied == 0) {
+    if (damage == 0) {
         return;
     }
 
@@ -720,7 +723,7 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         }
     }
 
-    remaining = (u16)actor->health - applied;
+    remaining = (u16)actor->health - damage;
     if (remaining <= 0) {
         if (actor->health != 0 && kind == 0x10) {
             player_add_experience(group->experience_reward);
@@ -731,16 +734,15 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
         target_slot = group->targets;
         remaining_slots = 15;
         do {
-            candidate = (target_slot++)->pointer;
-            if (candidate == NULL) {
+            KfTargetCandidate *reaction = (target_slot++)->pointer;
+            if (reaction == NULL) {
                 break;
             }
-            if (candidate->type == 2 && candidate->word_0c.value <= applied) {
-                u8 chance = candidate->word_02.damage_reaction.reaction_chance;
+            if (reaction->type == 2 && reaction->word_0c.value <= damage) {
+                s32 chance = reaction->word_02.damage_reaction.reaction_chance;
                 if (chance == 0xff || (rand() >> 7) < chance) {
-                    actor_set_target(actor, candidate);
-                    actor->health = remaining;
-                    goto update_motion;
+                    actor_set_target(actor, reaction);
+                    break;
                 }
             }
         } while (--remaining_slots != -1);
@@ -750,27 +752,26 @@ void actor_apply_magic_to_actor(s32 actor_index, u16 power, u16 magic_06,
 update_motion:
     if (actor->flags & KF_ACTOR_FLAG_LINKED) {
         KfActorStateGame *state = &actor_state;
+        KfTargetGroup *groups = state->target_groups;
         linked = &state->actors[actor->word_22.linked_actor_slot];
-        motion_divisor =
-            state->target_groups[linked->group_index].knockback_divisor;
+        motion_divisor = groups[linked->group_index].knockback_divisor;
     } else {
         motion_divisor = group->knockback_divisor;
     }
     if (position != NULL && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
         SVECTOR *motion = &actor->motion.vector;
-        s32 speed;
 
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - (actor->collision_height >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
         pitch_yaw_to_forward_vector(&angles, motion);
-        speed = SquareRoot0(SquareRoot0(applied << 11));
-        speed = (((speed << 10) / motion_divisor) << 5) / motion_divisor;
-        if (speed > 512) {
-            speed = 512;
+        damage = SquareRoot0(SquareRoot0(damage << 11));
+        damage = (((damage << 10) / motion_divisor) << 5) / motion_divisor;
+        if (damage > 512) {
+            damage = 512;
         }
-        vector3s_scale_shift12(speed, motion);
+        vector3s_scale_shift12(damage, motion);
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;
@@ -2048,7 +2049,6 @@ enum {
     KF_TARGET_SOUND_BASE_ID = 96,
     KF_TARGET_SOUND_ALTERNATE_RANGE = 0x80,
     KF_TARGET_SOUND_INDEX_MASK = 0x7f,
-    KF_TARGET_SOUND_TRIGGER_INTERVAL_MASK = 0x3fff,
     KF_TARGET_SOUND_TRIGGER_MODE_MASK = 0xc000,
     KF_TARGET_SOUND_TRIGGER_STAGGERED = 0x4000,
     KF_TARGET_SOUND_TRIGGER_RANDOM = 0x8000
@@ -2088,7 +2088,6 @@ void actor_update_behavior(void)
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
     KfTargetCandidate *target = actor->target;
-    u16 trigger;
     s32 interval;
 
     if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != 0) {
@@ -2103,9 +2102,8 @@ void actor_update_behavior(void)
                    actor->collision_radius, -1);
 
     if (target->sound_code != KF_AUDIO_SOUND_NONE) {
-        trigger = target->sound_trigger;
-        interval = trigger & KF_TARGET_SOUND_TRIGGER_INTERVAL_MASK;
-        switch (trigger & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
+        interval = target->sound_trigger.fields.interval;
+        switch (target->sound_trigger.value & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
         case 0:
             if (actor_animation_crossed_phase(actor, interval)) {
                 goto play_sound;
@@ -2116,12 +2114,14 @@ void actor_update_behavior(void)
                 goto play_sound;
             }
             break;
-        case KF_TARGET_SOUND_TRIGGER_STAGGERED:
-            if ((interval * actor_state.current_actor_slot_index / 3) % interval ==
-                (s32)actor_state.actor_update_frame_count % interval) {
+        case KF_TARGET_SOUND_TRIGGER_STAGGERED: {
+            s32 phase = (interval * actor_state.current_actor_slot_index / 3) % interval;
+
+            if ((s32)actor_state.actor_update_frame_count % interval == phase) {
                 goto play_sound;
             }
             break;
+        }
         }
     }
     goto dispatch_action;
@@ -2376,7 +2376,7 @@ case3_motion:
         s32 delta_y;
         s32 delta_z;
         s32 distance;
-        struct KfEulerAngles opposite;
+        SVECTOR opposite;
 
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -2406,10 +2406,10 @@ case3_motion:
                           group->movement_step,
                           group->turn_acceleration, 17);
         } else {
-            opposite.x = -512;
-            opposite.y = actor->tail_72.angles.y + 2048;
-            opposite.z = 0;
-            actor_turn_and_move_along_euler_angles(&opposite, target->word_0c.value,
+            opposite.vx = -512;
+            opposite.vy = actor->tail_72.angles.y + 2048;
+            opposite.vz = 0;
+            actor_turn_and_move_along_euler_angles((struct KfEulerAngles *)&opposite, target->word_0c.value,
                           target->word_0e.value,
                           group->movement_step,
                           group->turn_acceleration, 17);
@@ -2586,8 +2586,8 @@ case3_motion:
         actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
     case 24: {
-        s32 speed;
         s32 step;
+        s32 speed;
         s32 angle;
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -2635,14 +2635,14 @@ case3_motion:
         case 0:
             actor_advance_animation_clamped(actor, target->animation_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
-                struct KfEulerAngles toward_player;
+                SVECTOR toward_player;
 
                 vector_displacement_to_pitch_yaw(
                     player_state.camera_position.vx - actor->position.vx,
                     player_state.camera_position.vy - actor->position.vy,
                     player_state.camera_position.vz - actor->position.vz,
-                    &toward_player);
-                pitch_yaw_to_forward_vector(&toward_player,
+                    (struct KfEulerAngles *)&toward_player);
+                pitch_yaw_to_forward_vector((struct KfEulerAngles *)&toward_player,
                                             &actor->tail_72.direction);
                 actor->state_70.signed_state = 1;
             }
@@ -2652,8 +2652,8 @@ case3_motion:
             SVECTOR outer;
             s32 collision;
 
-            forward = actor->tail_72.direction;
-            outer = forward;
+            outer = actor->tail_72.direction;
+            forward = outer;
             vector3s_scale_shift12(target->word_14.value, &forward);
             vector3s_scale_shift12(target->word_18.value, &outer);
             actor->motion.vector.vx = value_approach(actor->motion.vector.vx,

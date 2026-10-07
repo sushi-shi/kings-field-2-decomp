@@ -2,6 +2,7 @@
 #include <kf/lib/math.h>
 #include <kf/game/actor.h>
 #include <kf/game/collision_cache.h>
+#include <kf/lib/quarter_turn.h>
 #include <kf/game/graphics.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_object.h>
@@ -73,8 +74,8 @@ next_layer:
         cell_z = z & 0x7ff;
         local_x = x & 0x7ff;
         local_z = z & 0x7ff;
-        switch (*record++) {
-        case 0x10: {
+        switch (KF_ENUM_DECODE(KfShapeRecordKind, *record++)) {
+        case KF_SHAPE_RECORD_FLOOR: {
             KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
 
             record = (s16 *)(level + 1);
@@ -88,7 +89,7 @@ next_layer:
             }
             break;
         }
-        case 0x11: {
+        case KF_SHAPE_RECORD_CEILING: {
             KfShapeCeilingRecord *ceiling = (KfShapeCeilingRecord *)record;
             s32 top;
 
@@ -111,12 +112,12 @@ next_layer:
             }
             break;
         }
-        case 0x20:
+        case KF_SHAPE_RECORD_WALL:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 if (wall->offset + radius < cell_x) {
                     break;
                 }
@@ -130,47 +131,47 @@ next_layer:
                     heights->height_limit = limit;
                 }
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 if (0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 if (0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 if (cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
                 break;
             }
             break;
-        case 0x21:
+        case KF_SHAPE_RECORD_OUTER_CORNER_WALL:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
                     || 0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 if (0x800 - wall->offset - radius <= cell_z
                     || 0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 if (0x800 - wall->offset - radius <= cell_x
                     || cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
                 break;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 if (cell_z <= wall->offset + radius
                     || cell_x <= wall->offset + radius) {
                     goto wall_hit;
@@ -178,30 +179,30 @@ next_layer:
                 break;
             }
             break;
-        case 0x22:
+        case KF_SHAPE_RECORD_INNER_CORNER_WALL:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
                     && 0x800 - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 if (0x800 - wall->offset - radius <= cell_z
                     && 0x800 - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 if (0x800 - wall->offset - radius <= cell_x
                     && cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
                 break;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 if (cell_z <= wall->offset + radius
                     && cell_x <= wall->offset + radius) {
                     goto wall_hit;
@@ -209,32 +210,32 @@ next_layer:
                 break;
             }
             break;
-        case 0x23: {
+        case KF_SHAPE_RECORD_DIAGONAL_WALL: {
             s32 reach;
 
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
-            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 reach = radius - 0x800;
                 if (local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 reach = radius - 0x1000;
                 if (-local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 reach = radius - 0x800;
                 if (local_z - local_x <= wall->offset + reach) {
                     goto wall_hit;
                 }
                 break;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 if (local_x + local_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
@@ -242,11 +243,11 @@ next_layer:
             }
             break;
         }
-        case 0x30:
+        case KF_SHAPE_RECORD_STAIRS:
             slope = (KfShapeSlopeRecord *)record;
             record = (s16 *)(slope + 1);
-            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 if (local_x < slope->start - radius || slope->end + radius < local_x) {
                     break;
                 }
@@ -256,21 +257,21 @@ next_layer:
                 floor = slope->floor + heights->height - step;
                 KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 if (0x800 - slope->start + radius < local_z
                     || local_z < 0x800 - slope->end - radius) {
                     break;
                 }
                 step = cell_x / slope->run;
                 goto stair_floor;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 if (0x800 - slope->start + radius < local_x
                     || local_x < 0x800 - slope->end - radius) {
                     break;
                 }
                 step = (0x800 - cell_z) / slope->run;
                 goto stair_floor;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 if (local_z < slope->start - radius || slope->end + radius < local_z) {
                     break;
                 }
@@ -278,11 +279,11 @@ next_layer:
                 goto stair_floor;
             }
             break;
-        case 0x32:
+        case KF_SHAPE_RECORD_RAMP:
             slope = (KfShapeSlopeRecord *)record;
             record = (s16 *)(slope + 1);
-            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
-            case 0:
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & 3)) {
+            case KF_QUARTER_TURN_0:
                 step = 0x800 - local_x + local_z;
             ramp_floor:
                 if (step < slope->start) {
@@ -295,18 +296,18 @@ next_layer:
                 floor = slope->floor + heights->height - step;
                 KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
                 break;
-            case 1:
+            case KF_QUARTER_TURN_1:
                 step = local_x + local_z;
                 goto ramp_floor;
-            case 2:
+            case KF_QUARTER_TURN_2:
                 step = 0x800 - local_z + local_x;
                 goto ramp_floor;
-            case 3:
+            case KF_QUARTER_TURN_3:
                 step = 0x1000 - local_x - local_z;
                 goto ramp_floor;
             }
             break;
-        case 0x31:
+        case KF_SHAPE_RECORD_LEDGE:
             /* Only an axis hit is tested, and its record is skipped only then. */
             if ((flags & KF_COLLISION_HIT_AXIS) != KF_COLLISION_HIT_NONE) {
                 KfShapeLedgeRecord *ledge = (KfShapeLedgeRecord *)record;
@@ -316,8 +317,8 @@ next_layer:
                 record = (s16 *)(ledge + 1);
                 distance = cell_z;
                 x_distance = cell_x;
-                switch ((layer->quarter_turns + ledge->quarter_turns) & 3) {
-                case 0:
+                switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + ledge->quarter_turns) & 3)) {
+                case KF_QUARTER_TURN_0:
                 ledge_floor:
                     if (distance >= ledge->start + radius
                         && distance <= ledge->end - radius) {
@@ -333,19 +334,19 @@ next_layer:
                         }
                     }
                     break;
-                case 1:
+                case KF_QUARTER_TURN_1:
                     distance = x_distance;
                     goto ledge_floor;
-                case 2:
+                case KF_QUARTER_TURN_2:
                     distance = 0x800 - cell_z;
                     goto ledge_floor;
-                case 3:
+                case KF_QUARTER_TURN_3:
                     distance = 0x800 - cell_x;
                     goto ledge_floor;
                 }
             }
             break;
-        case 0x40:
+        case KF_SHAPE_RECORD_OTHER_LAYER:
             if (other_layer_visited) {
                 return flags;
             }
@@ -359,7 +360,7 @@ next_layer:
             KF_COLLISION_CACHE_HEIGHT = -layer->elevation * 0x80;
             other_layer_visited = KF_TRUE;
             goto next_layer;
-        case 0x18: {
+        case KF_SHAPE_RECORD_BASE_FLOOR: {
             KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
 
             record = (s16 *)(level + 1);
@@ -380,7 +381,7 @@ next_layer:
             }
             break;
         }
-        case 0x19: {
+        case KF_SHAPE_RECORD_UPPER_BOUND: {
             KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
 
             record = (s16 *)(level + 1);
@@ -471,7 +472,7 @@ void collision_cache_load_hit_bounds(void)
         KF_COLLISION_CACHE_POSITION = player_state.camera_position;
         KF_COLLISION_CACHE_RADIUS = 800;
         KF_COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
-    } else if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
+    } else if (KF_COLLISION_CACHE_ACTOR_INDEX != KF_ACTOR_INDEX_NONE) {
         KfActor *actor = &actor_state.actors[KF_COLLISION_CACHE_ACTOR_INDEX];
         KF_COLLISION_CACHE_POSITION = actor->position;
         KF_COLLISION_CACHE_RADIUS = actor->collision_radius;
@@ -514,17 +515,17 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(s32 x, s32 y, s32 
     if (KF_COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if ((mode & KF_COLLISION_QUERY_ACTORS) != KF_COLLISION_QUERY_NONE) {
             KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
-            if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
+            if (KF_COLLISION_CACHE_ACTOR_INDEX != KF_ACTOR_INDEX_NONE) {
                 result |= KF_COLLISION_HIT_ACTOR;
             }
         } else {
             if ((mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) != KF_COLLISION_QUERY_NONE) {
                 KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
-                if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
+                if (KF_COLLISION_CACHE_ACTOR_INDEX != KF_ACTOR_INDEX_NONE) {
                     result |= KF_COLLISION_HIT_ACTOR;
                 }
             }
-            KF_COLLISION_CACHE_ACTOR_INDEX = -1;
+            KF_COLLISION_CACHE_ACTOR_INDEX = KF_ACTOR_INDEX_NONE;
         }
 
         if ((mode & KF_COLLISION_QUERY_MAP_OBJECTS) != KF_COLLISION_QUERY_NONE) {
@@ -541,7 +542,7 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(s32 x, s32 y, s32 
             result |= KF_COLLISION_HIT_PLAYER;
         }
     } else {
-        KF_COLLISION_CACHE_ACTOR_INDEX = -1;
+        KF_COLLISION_CACHE_ACTOR_INDEX = KF_ACTOR_INDEX_NONE;
         KF_COLLISION_CACHE_OBJECT_INDEX = -1;
     }
 

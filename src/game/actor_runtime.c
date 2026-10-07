@@ -533,7 +533,7 @@ void actor_update_lifecycle_for_player_range(void)
 
         if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
                           actor->position.vz, group->collision_radius,
-                          group->collision_height) != -1) {
+                          group->collision_height) != KF_ACTOR_INDEX_NONE) {
             goto set_dormant;
         }
 
@@ -999,7 +999,7 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
             }
         }
     }
-    return -1;
+    return KF_ACTOR_INDEX_NONE;
 }
 
 ADDRESS(0x8003ab5c, 0x158)
@@ -1034,7 +1034,7 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
             }
         }
     }
-    return -1;
+    return KF_ACTOR_INDEX_NONE;
 }
 
 ADDRESS(0x8003acb4, 0xdc)
@@ -1330,8 +1330,8 @@ s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 
     if (trajectory_solve_motion_between_points(mode, actor->position.vx, actor->position.vy,
         actor->position.vz, target_x, target_y, target_z,
         trajectory_parameter, trajectory_speed, &result,
-        &actor->ballistic_horizontal_speed, &actor->ballistic_launch_speed_y) != 0) {
-        return -1;
+        &actor->ballistic_horizontal_speed, &actor->ballistic_launch_speed_y) != KF_TRAJECTORY_SOLVED) {
+        return KF_ENUM_ENCODE(s32, KF_TRAJECTORY_UNREACHABLE);
     }
     actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_BALLISTIC;
     actor->motion.ballistic.phase = 1;
@@ -1559,9 +1559,9 @@ s32 actor_turn_and_move_toward_point(s32 world_x, s32 world_z, s32 speed, s32 ra
     s32 angle = vector_xz_to_angle(dx, dz);
     s32 distance = abs(dx) + abs(dz);
 
-    if (reference_angle != -1 && distance <= 600
+    if (reference_angle != KF_ACTOR_HEADING_NONE && distance <= 600
         && !angle_within_tolerance(angle, reference_angle, 0x320)) {
-        return -1;
+        return KF_ACTOR_HEADING_NONE;
     }
     actor_turn_and_move_along_heading(angle, speed, range, step, mode, move_flags);
     return angle & KF_ANGLE_WRAP_MASK;
@@ -1769,7 +1769,7 @@ s32 actor_compute_target_direction(KfActor *actor, const VECTOR *origin, s32 ste
         }
         angles.y = angle_lerp_shortest_q12(angles.y, actor->rotation.y, yaw_delta);
 
-        if ((s16)pitch == -1) {
+        if ((s16)pitch == KF_ACTOR_PITCH_TRACK_TARGET) {
             pitch_error = (angles.x - actor->rotation.x) & KF_ANGLE_WRAP_MASK;
             if (pitch_error >= KF_ANGLE_HALF_TURN) {
                 pitch_error = KF_ANGLE_FULL_TURN - pitch_error;
@@ -2072,7 +2072,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                                             trajectory_target.vz - position.vz);
             if (trajectory_solve_time_angle(KF_TRAJECTORY_SHORTER_TIME, distance,
                     position.vy - (trajectory_target.vy - 1400), 10, 800,
-                    &travel_time, &trajectory_angle) != 0) {
+                    &travel_time, &trajectory_angle) != KF_TRAJECTORY_SOLVED) {
                 trajectory_angle = 0x100;
             }
             count--;
@@ -3099,7 +3099,7 @@ case3_motion:
         if (actor->target_action_state == KF_ACTOR_TARGET_ACTION_ENTRY) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_ALLOWED;
             actor->state_70.signed_state = 0;
-            actor->tail_72.signed_state = -1;
+            actor->tail_72.signed_state = KF_ACTOR_HEADING_NONE;
             actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_16.bytes.low));
         }
         switch (actor->state_70.signed_state) {
@@ -3114,7 +3114,7 @@ case3_motion:
                     actor->tail_72.signed_state,
                     group->movement_step,
                     group->turn_acceleration, KF_ACTOR_MOVE_AVOID_LEDGE | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED);
-                if (actor->tail_72.signed_state == -1) {
+                if (actor->tail_72.signed_state == KF_ACTOR_HEADING_NONE) {
                     actor->state_70.signed_state = 1;
                 }
             }

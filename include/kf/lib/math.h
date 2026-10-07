@@ -90,10 +90,19 @@ KF_ENUM_BEGIN(KfTrajectoryMode, s32)
     KF_TRAJECTORY_LONGER_TIME = 1
 KF_ENUM_END(KfTrajectoryMode)
 
-s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
+/* The trajectory solvers fail when no positive flight time reaches the
+ * target; actor_start_ballistic_motion forwards the failure in place of
+ * the travel time it otherwise returns. */
+KF_ENUM_BEGIN(KfTrajectoryResult, s32)
+    KF_TRAJECTORY_UNREACHABLE = -1,
+    KF_TRAJECTORY_SOLVED = 0
+KF_ENUM_END(KfTrajectoryResult)
+
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle);
-s32 trajectory_solve_motion_between_points(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_motion_between_points(
+    KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
     s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z);
 void vector_add_scaled_delta(const VECTOR *origin, const SVECTOR *delta, s32 scale,

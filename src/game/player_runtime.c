@@ -1807,7 +1807,7 @@ regular_weapon:
             world_position.vz += step.vz;
             index = actor_find_overlap_excluding_target_type3(world_position.vx, world_position.vy,
                                    world_position.vz, 400, 600);
-            if (index != -1) {
+            if (index != KF_ACTOR_INDEX_NONE) {
                 KfActor *actor = &actor_state.actors[index];
                 KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
                 s32 bearing = vector_xz_to_angle(actor->position.vx - player_state.camera_position.vx,
@@ -3381,7 +3381,7 @@ after_reaction:
     index = actor_find_overlap_excluding_target_type3(player_state.camera_position.vx,
                            player_state.camera_position.vy,
                            player_state.camera_position.vz, 1, KF_PLAYER_HEIGHT);
-    if (index != -1 &&
+    if (index != KF_ACTOR_INDEX_NONE &&
         (actor_state.actors[index].flags & KF_ACTOR_FLAG_PLAYER_OVERLAP_BOB) != KF_ACTOR_FLAGS_NONE) {
         player_begin_actor_overlap_bob();
     }

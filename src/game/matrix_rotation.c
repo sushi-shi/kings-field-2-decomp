@@ -578,7 +578,7 @@ void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output
 }
 
 ADDRESS(0x80015918, 0x2b0)
-s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle)
 {
@@ -598,14 +598,14 @@ s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 h
     s32 vertical_component;
 
     if (discriminant < 0) {
-        return -1;
+        return KF_TRAJECTORY_UNREACHABLE;
     }
     discriminant = SquareRoot0(discriminant << 4) << 2;
     midpoint = (amplitude_squared >> 2) - ((vertical_distance * speed) >> 2);
     longer_time = ((midpoint + discriminant) << 1) / speed_squared;
     shorter_time = ((midpoint - discriminant) << 1) / speed_squared;
     if (longer_time <= 0 && shorter_time <= 0) {
-        return -1;
+        return KF_TRAJECTORY_UNREACHABLE;
     }
     if (mode == KF_TRAJECTORY_SHORTER_TIME) {
         chosen_time = shorter_time;
@@ -624,11 +624,12 @@ s32 trajectory_solve_time_angle(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 h
         / (amplitude >> 1)) / (result_time >> 1);
     *travel_time = result_time;
     *angle = vector_xz_to_angle(vertical_component, horizontal_component);
-    return 0;
+    return KF_TRAJECTORY_SOLVED;
 }
 
 ADDRESS(0x80015bc8, 0x118)
-s32 trajectory_solve_motion_between_points(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
+KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_motion_between_points(
+    KF_ENUM_PARAM(KfTrajectoryMode, s32) mode,
     s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
 {
@@ -637,13 +638,13 @@ s32 trajectory_solve_motion_between_points(KF_ENUM_PARAM(KfTrajectoryMode, s32) 
         u16 half;
     } result_value;
     s32 angle;
-    s32 status;
+    KF_ENUM_PARAM(KfTrajectoryResult, s32) status;
     s32 distance = fixed_vector2_length(target_x - source_x,
                                        target_z - source_z);
 
     status = trajectory_solve_time_angle(mode, distance, source_y - target_y,
                            speed, amplitude, &result_value.word, &angle);
-    if (status == 0) {
+    if (status == KF_TRAJECTORY_SOLVED) {
         *motion_x = (amplitude * rcos(angle)) >> KF_FIXED12_BITS;
         *motion_z = (amplitude * -rsin(angle)) >> KF_FIXED12_BITS;
         *result = result_value.half;

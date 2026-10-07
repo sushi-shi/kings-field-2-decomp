@@ -43,7 +43,27 @@ typedef char kf_collision_shape_offset_table_size[
 
 /* A collision shape is a radius scale, a record count and that many records,
  * each a halfword opcode followed by the operands below. Wall, slope and
- * ledge records are rotated by the cell's and their own quarter turns. */
+ * ledge records are rotated by the cell's and their own quarter turns.
+ * FLOOR/CEILING bound the column; BASE_FLOOR and UPPER_BOUND feed the cached
+ * bounds and the height-mode checks. Walls test one plane, either of two
+ * (OUTER_CORNER), both (INNER_CORNER) or a diagonal; STAIRS step by run and
+ * RAMP slopes along the diagonal; LEDGE follows an axis hit; OTHER_LAYER
+ * evaluates the cell's second layer once. */
+KF_ENUM_BEGIN(KfShapeRecordKind, s16)
+    KF_SHAPE_RECORD_FLOOR = 0x10,
+    KF_SHAPE_RECORD_CEILING = 0x11,
+    KF_SHAPE_RECORD_BASE_FLOOR = 0x18,
+    KF_SHAPE_RECORD_UPPER_BOUND = 0x19,
+    KF_SHAPE_RECORD_WALL = 0x20,
+    KF_SHAPE_RECORD_OUTER_CORNER_WALL = 0x21,
+    KF_SHAPE_RECORD_INNER_CORNER_WALL = 0x22,
+    KF_SHAPE_RECORD_DIAGONAL_WALL = 0x23,
+    KF_SHAPE_RECORD_STAIRS = 0x30,
+    KF_SHAPE_RECORD_LEDGE = 0x31,
+    KF_SHAPE_RECORD_RAMP = 0x32,
+    KF_SHAPE_RECORD_OTHER_LAYER = 0x40
+KF_ENUM_END(KfShapeRecordKind)
+
 typedef struct KfShapeHeightRecord {
     s16 height;
 } KfShapeHeightRecord;

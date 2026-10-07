@@ -1550,7 +1550,7 @@ void effect_update_dispatch(void)
             if (actor->animation_phase >= attachment->release_animation_phase) {
                 actor_compute_target_direction(actor, &player_state.camera_position,
                                650, &record->position, &record->direction,
-                               -1, 0x400, 5);
+                               KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 5);
                 record->phase = 0;
                 record->updates_remaining = 50;
             }
@@ -1723,7 +1723,7 @@ void effect_update_dispatch(void)
         work_position.vz = record->position.vz;
         actor_index = actor_find_overlap_excluding_target_type3(work_position.vx, work_position.vy, work_position.vz,
                                     100, 10000);
-        if (actor_index != -1) {
+        if (actor_index != KF_ACTOR_INDEX_NONE) {
             effect_construct_record(10, record->type, KF_EFFECT_KIND_45,
                            &actor_state.actors[actor_index].position, NULL,
                            0x4ec);

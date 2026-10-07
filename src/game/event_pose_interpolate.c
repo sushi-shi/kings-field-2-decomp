@@ -1032,7 +1032,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
     }
 
     object_index = actor_find_overlap_excluding_target_type3(probe.vx, probe.vy, probe.vz, 0x578, 0xc80);
-    if (object_index != -1) {
+    if (object_index != KF_ACTOR_INDEX_NONE) {
         KfActor *actor = &actor_state.actors[object_index];
         s32 angle = vector_xz_to_angle(actor->position.vx - probe.vx,
                                        actor->position.vz - probe.vz);
@@ -1217,6 +1217,8 @@ enum {
     KF_EVENT_WORLD_SAVE_STATE_BYTE = 0xfd,
     KF_EVENT_WORLD_SAVE_UNCHANGED = 0xfe,
     KF_EVENT_WORLD_SAVE_EMPTY = 0xff,
+    /* Ends the saved actor-lifecycle and event-group lists. */
+    KF_EVENT_WORLD_SAVE_LIST_END = 0xff
 };
 
 
@@ -1357,7 +1359,7 @@ void event_world_state_save_slot(s32 save_slot)
             write++;
         }
     }
-    *write++ = 0xff;
+    *write++ = KF_EVENT_WORLD_SAVE_LIST_END;
 
     group = actor_state.target_groups;
     for (index = 0; index < (s32)(sizeof(actor_state.target_groups) / sizeof(actor_state.target_groups[0]));
@@ -1373,7 +1375,7 @@ void event_world_state_save_slot(s32 save_slot)
             *write++ = candidate->word_12.bytes.marker_state;
         }
     }
-    *write++ = 0xff;
+    *write++ = KF_EVENT_WORLD_SAVE_LIST_END;
 
     object = map_object_state.objects;
     for (index = 0; index < KF_MAP_OBJECT_CAPACITY; object++, index++) {
@@ -1499,7 +1501,7 @@ void event_world_state_restore_slot(s32 save_slot)
     for (;;) {
         s32 actor_index = *stream++;
         KfActor *actor;
-        if (actor_index == 0xff) {
+        if (actor_index == KF_EVENT_WORLD_SAVE_LIST_END) {
             break;
         }
         actor = &actor_state.actors[actor_index];
@@ -1510,7 +1512,7 @@ void event_world_state_restore_slot(s32 save_slot)
         s32 group_index = *stream++;
         KfTargetGroup *group;
         KfTargetCandidate *candidate;
-        if (group_index == 0xff) {
+        if (group_index == KF_EVENT_WORLD_SAVE_LIST_END) {
             break;
         }
         group = &actor_state.target_groups[group_index];

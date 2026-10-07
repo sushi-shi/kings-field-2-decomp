@@ -19,6 +19,11 @@ enum {
     KF_ACTOR_DYNAMIC_START = 190,
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
     KF_ACTOR_PITCH_TRACK_TARGET = -1,
+    /* actor_turn_and_move_toward_point: no reference heading on input; on
+     * return, the actor reached the point after passing that heading. */
+    KF_ACTOR_HEADING_NONE = -1,
+    /* Actor-overlap finders return no actor index. */
+    KF_ACTOR_INDEX_NONE = -1,
     KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
     /* An unused target-group row ends the loaded group list. */
     KF_TARGET_GROUP_DEFINITION_END = 0xff

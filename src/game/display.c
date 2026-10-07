@@ -2402,7 +2402,7 @@ void render_scene_and_update_resources(void)
         KfTargetGroup *group;
         const VECTOR *position;
 
-        if (actor->lifecycle != 1) {
+        if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
             goto actor_next;
         }
         if (actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) {

@@ -17,15 +17,7 @@ enum {
     KF_ACTOR_DYNAMIC_COUNT = KF_ACTOR_CAPACITY - KF_ACTOR_DYNAMIC_START,
     KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED = 0xf0,
     KF_ACTOR_TARGET_ACTION_UNSELECTED = 0xff,
-    KF_ACTOR_VERTICAL_MOTION_VELOCITY = 0x10,
-    KF_ACTOR_VERTICAL_MOTION_FALLING = 0x20,
-    KF_ACTOR_VERTICAL_MOTION_BALLISTIC = 0x30,
-    KF_ACTOR_VERTICAL_MOTION_SUSPENDED = 0x60,
     KF_ACTOR_PITCH_TRACK_TARGET = -1,
-    KF_ACTOR_LIFECYCLE_DORMANT = 0,
-    KF_ACTOR_LIFECYCLE_ACTIVE = 1,
-    KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
-    KF_ACTOR_LIFECYCLE_DISABLED = 3,
     KF_ACTOR_PLACEMENT_KEEP_INITIAL_YAW = 1,
     KF_ACTOR_POSITION_MODE_MASK = 0x3,
     KF_ACTOR_POSITION_DIRECT = 0,
@@ -44,6 +36,26 @@ enum {
     KF_ACTOR_FLAG_CONE_TARGET_PRIORITY = 0x20000,
     KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY = 0x80000
 };
+
+/* Activation state, independent of the slot policy (KF1 KfActorLifecycle). */
+KF_ENUM_BEGIN(KfActorLifecycle, u8)
+    KF_ACTOR_LIFECYCLE_DORMANT = 0,
+    KF_ACTOR_LIFECYCLE_ACTIVE = 1,
+    KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT = 2,
+    KF_ACTOR_LIFECYCLE_DISABLED = 3
+KF_ENUM_END(KfActorLifecycle)
+
+/* actor_update_vertical_motion state (KF1 KfActorVerticalState): NONE runs
+ * the floor check only; VELOCITY integrates rise/fall velocity; FALLING
+ * applies gravity to the floor; BALLISTIC follows the launch arc; SUSPENDED
+ * skips the update. */
+KF_ENUM_BEGIN(KfActorVerticalState, u8)
+    KF_ACTOR_VERTICAL_MOTION_NONE = 0,
+    KF_ACTOR_VERTICAL_MOTION_VELOCITY = 0x10,
+    KF_ACTOR_VERTICAL_MOTION_FALLING = 0x20,
+    KF_ACTOR_VERTICAL_MOTION_BALLISTIC = 0x30,
+    KF_ACTOR_VERTICAL_MOTION_SUSPENDED = 0x60
+KF_ENUM_END(KfActorVerticalState)
 
 /*
  * Slot policy byte of a placed or spawned actor (KF1 KfActorSlotState). The
@@ -613,11 +625,11 @@ typedef struct KfActor {
     u8 home_map_layer;
     u8 home_cell_z;
     u8 home_cell_x;
-    u8 lifecycle;
+    KfActorLifecycle lifecycle;
     u8 spawn_chance;
     KF_ENUM_STORAGE(KfObjectId, u8) death_drop_object_id;
     u8 animation_id;
-    u8 vertical_motion_state;
+    KfActorVerticalState vertical_motion_state;
     KfActorTargetType target_type;
     u8 target_action_state;
     KfActorTargetType previous_target_type;

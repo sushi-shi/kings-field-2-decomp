@@ -1343,9 +1343,9 @@ void event_world_state_save_slot(s32 save_slot)
             actor->slot_state == KF_ACTOR_SLOT_PERSISTENT) {
             *write++ = index;
             if (actor->lifecycle == KF_ACTOR_LIFECYCLE_DISABLED) {
-                *write = KF_ACTOR_LIFECYCLE_DISABLED;
+                *write = KF_ENUM_ENCODE(u8, KF_ACTOR_LIFECYCLE_DISABLED);
             } else {
-                *write = KF_ACTOR_LIFECYCLE_DORMANT;
+                *write = KF_ENUM_ENCODE(u8, KF_ACTOR_LIFECYCLE_DORMANT);
             }
             write++;
         }
@@ -1496,7 +1496,7 @@ void event_world_state_restore_slot(s32 save_slot)
             break;
         }
         actor = &actor_state.actors[actor_index];
-        actor->lifecycle = *stream++;
+        actor->lifecycle = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfActorLifecycle), *stream++);
     }
 
     for (;;) {

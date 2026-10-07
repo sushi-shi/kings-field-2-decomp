@@ -1517,7 +1517,7 @@ void effect_update_dispatch(void)
             VECTOR old_position;
             VECTOR *position;
 
-            if (actor->lifecycle != 1 || actor->target_type != KF_ACTOR_TARGET_25) {
+            if (actor->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE || actor->target_type != KF_ACTOR_TARGET_25) {
                 record->type = KF_EFFECT_SLOT_FREE;
                 break;
             }

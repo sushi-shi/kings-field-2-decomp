@@ -93,7 +93,7 @@ void actor_initialize_from_group(KfActor *actor)
     actor->animation_id = 0;
     actor->animation_phase = 0;
     actor->unknown_11 = 0;
-    actor->vertical_motion_state = 0;
+    actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
     actor->target_type = KF_ACTOR_TARGET_0;
     actor->target_action_state = KF_ACTOR_TARGET_ACTION_UNSELECTED;
     actor->target = NULL;
@@ -1131,7 +1131,7 @@ retry_move:
         actor_state.actor_collision_query_flags);
     if (collision == 0) {
     check_floor:
-        if (actor->vertical_motion_state == 0 && (flags & 0x24)) {
+        if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE && (flags & 0x24)) {
             s32 floor_height = KF_COLLISION_CACHE_RESULT;
             s32 probe_x;
             s32 probe_z;
@@ -1347,7 +1347,7 @@ void actor_update_vertical_motion(void)
 {
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
-    s32 vertical_state;
+    KF_ENUM_PROMOTED(KfActorVerticalState) vertical_state;
     const u16 *collision_layer = &KF_COLLISION_CACHE.layer;
 
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
@@ -1360,8 +1360,9 @@ void actor_update_vertical_motion(void)
 
     vertical_state = actor->vertical_motion_state;
     if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) goto state_20;
-    if (vertical_state < 33) {
-        if (vertical_state == 0) goto state_0;
+    /* Retail splits the remaining states with a "below FALLING + 1" test. */
+    if (KF_ENUM_ENCODE(s32, vertical_state) < KF_ENUM_ENCODE(s32, KF_ACTOR_VERTICAL_MOTION_FALLING) + 1) {
+        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) goto state_0;
         if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) goto state_10;
         return;
     }
@@ -1424,7 +1425,7 @@ state_20:
         }
         actor->position.vy = KF_COLLISION_CACHE_RESULT;
 reset_vertical_motion_state:
-        actor->vertical_motion_state = 0;
+        actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
         return;
 
 state_30: {
@@ -1463,7 +1464,7 @@ s32 actor_damp_horizontal_motion(s32 decay, s32 target)
     KfActor *actor = actor_state.current;
     s32 length;
 
-    if (actor->vertical_motion_state == 0) {
+    if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
         length = SquareRoot0(actor->motion.vector.vx * actor->motion.vector.vx
                            + actor->motion.vector.vz * actor->motion.vector.vz);
         if (length == 0) {
@@ -2469,7 +2470,7 @@ case3_motion:
             actor_damp_horizontal_motion(group->movement_step * 2, 10);
             break;
         case 2:
-            if (actor->vertical_motion_state == 0) {
+            if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
                 actor->state_70.signed_state = 3;
                 actor_set_animation(target->word_14.bytes[1]);
             } else {
@@ -2932,7 +2933,7 @@ case3_motion:
         }
             /* fall through */
         case 1:
-            actor->vertical_motion_state = 0;
+            actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
             goto case29_shared_motion;
         }
         break;

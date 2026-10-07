@@ -26,15 +26,9 @@
 
 RODATA(0x80011098, 0x6c)
 
-/* Unit-private state, defined with its retail claims below. */
+/* Used before the unit's data below. C++ has no tentative definitions, so
+ * the modern view keeps this one and omits the claimed repetition. */
 static POLY_FT4 *current_poly_ft4;
-static u8 menu_saved_music_enabled;
-static u_long *menu_frame_upload_pixels;
-static RECT menu_frame_upload_rect;
-static SVECTOR menu_item_preview_translation;
-static SVECTOR menu_item_preview_rotation;
-static s32 menu_item_preview_rotation_step;
-static KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
 
 
 enum {
@@ -85,17 +79,17 @@ enum {
 /* The templates copied here use four, five, or six 16-bit glyph codes. */
 static inline void menu_copy_prefix8(s16 *destination, const s16 *source)
 {
-    memcpy(destination, source, 8);
+    memcpy((void *)destination, (const void *)source, 8);
 }
 
 static inline void menu_copy_prefix10(s16 *destination, const s16 *source)
 {
-    memcpy(destination, source, 10);
+    memcpy((void *)destination, (const void *)source, 10);
 }
 
 static inline void menu_copy_prefix12(s16 *destination, const s16 *source)
 {
-    memcpy(destination, source, 12);
+    memcpy((void *)destination, (const void *)source, 12);
 }
 /* Unreferenced empty function; its original role and TU owner are unresolved. */
 ADDRESS(0x80018764, 0x8)
@@ -457,7 +451,7 @@ void menu_show_map_preview(s32 menu_code)
 
         primitive_buffer_begin_poly_ft4();
         setRGB0(current_poly_ft4, 0x7f, 0x7f, 0x7f);
-        SetSemiTrans(current_poly_ft4, 1);
+        SetSemiTrans((void *)current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1f;
         current_poly_ft4->clut = 0x7fe4;
         setXYWH(current_poly_ft4, 0x3c, 0x14, 200, 200);
@@ -466,7 +460,7 @@ void menu_show_map_preview(s32 menu_code)
 
         primitive_buffer_begin_poly_ft4();
         setRGB0(current_poly_ft4, 0x7f, 0x7f, 0x7f);
-        SetSemiTrans(current_poly_ft4, 1);
+        SetSemiTrans((void *)current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1c;
         current_poly_ft4->clut = 0x7d25;
         setXYWH(current_poly_ft4,
@@ -600,7 +594,7 @@ void menu_equipment_list_controller(void)
     s32 frame;
     u32 choice;
 
-    memcpy(initial_rows, menu_equipment_category_labels, sizeof initial_rows);
+    memcpy((void *)initial_rows, (const void *)menu_equipment_category_labels, sizeof initial_rows);
     menu_build_equipped_label_rows(current_rows);
     menu_list_init(&menu.list, 0, 2);
     menu.list.entry_count = MENU_CATEGORY_COUNT;
@@ -738,7 +732,7 @@ void menu_equipment_category_controller(s32 category)
 
     count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, item_ids,
         first, last);
-    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+    memcpy((void *)rows[count].codes, (const void *)menu_none_option_glyphs.codes,
         MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     values[count] = 0xff;
     item_ids[count] = 0xff;
@@ -830,7 +824,7 @@ void menu_choose_primary_magic_shortcut(void)
     s32 frame;
 
     count = menu_collect_available_magic_rows(effect_state.magic_records, rows, values, indices, 0, 13);
-    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+    memcpy((void *)rows[count].codes, (const void *)menu_none_option_glyphs.codes,
         MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     values[count] = -1;
     indices[count] = 0xff;
@@ -907,7 +901,7 @@ void menu_item_magic_controller(void)
 
     count += menu_collect_available_magic_rows(effect_state.magic_records, &rows[count],
         &numbers[count], &magic_ids[count], 0, 19);
-    memcpy(rows[count].codes, menu_none_option_glyphs.codes,
+    memcpy((void *)rows[count].codes, (const void *)menu_none_option_glyphs.codes,
         MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     count++;
 
@@ -1540,7 +1534,7 @@ void menu_build_card_probe_error_rows(KfMenuGlyphString *row)
 {
     row->position.x = 70;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
     row->glyphs.codes[8] = 84;
     row->glyphs.codes[9] = 65;
     row->glyphs.codes[10] = 83;
@@ -1573,7 +1567,7 @@ void menu_build_card_full_rows(KfMenuGlyphString *row)
 {
     row->position.x = 104;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
     row++;
     row->position.x = 104;
     row->position.y = 120;
@@ -1598,7 +1592,7 @@ void menu_build_card_full_rows(KfMenuGlyphString *row)
     row++;
     row->position.x = 104;
     row->position.y = 150;
-    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes, sizeof(KfMenuLabelSuffix));
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[2].codes, sizeof(KfMenuLabelSuffix));
 }
 
 ADDRESS(0x8001bcfc, 0x26c)
@@ -1746,19 +1740,19 @@ s32 menu_confirm_card_format(s32 kind)
     if (kind == 1) {
         labels[2].position.x = 90;
         labels[2].position.y = 110;
-        memcpy(labels[2].glyphs.codes, menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
+        memcpy((void *)labels[2].glyphs.codes, (const void *)menu_label_suffixes[5].codes, sizeof(KfMenuLabelSuffix));
         labels[3].position.x = 90;
         labels[3].position.y = 125;
-        memcpy(labels[3].glyphs.codes, menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
+        memcpy((void *)labels[3].glyphs.codes, (const void *)menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
         labels[4].position.x = 174;
         labels[4].position.y = 125;
-        memcpy(labels[4].glyphs.codes, menu_label_suffixes[7].codes, sizeof(KfMenuLabelSuffix));
+        memcpy((void *)labels[4].glyphs.codes, (const void *)menu_label_suffixes[7].codes, sizeof(KfMenuLabelSuffix));
         labels[5].position.x = 90;
         labels[5].position.y = 140;
-        memcpy(labels[5].glyphs.codes, menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
+        memcpy((void *)labels[5].glyphs.codes, (const void *)menu_label_suffixes[6].codes, sizeof(KfMenuLabelSuffix));
         labels[6].position.x = 174;
         labels[6].position.y = 140;
-        memcpy(labels[6].glyphs.codes, menu_label_suffixes[8].codes, sizeof(KfMenuLabelSuffix));
+        memcpy((void *)labels[6].glyphs.codes, (const void *)menu_label_suffixes[8].codes, sizeof(KfMenuLabelSuffix));
     }
 
     for (;;) {
@@ -1802,12 +1796,12 @@ void menu_prepare_card_browser_rows(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[0].codes,
         sizeof menu_label_suffixes[0]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[1].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[1].codes,
         sizeof menu_label_suffixes[1]);
     row->glyphs.codes[10] = -1;
 }
@@ -1817,17 +1811,17 @@ void menu_prepare_card_io_error_rows(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[2].codes,
         sizeof menu_label_suffixes[2]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[3].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[3].codes,
         sizeof menu_label_suffixes[3]);
     row++;
     row->position.x = 90;
     row->position.y = 135;
-    memcpy(row->glyphs.codes, menu_label_suffixes[4].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[4].codes,
         sizeof menu_label_suffixes[4]);
     row->glyphs.codes[10] = -1;
 }
@@ -1837,17 +1831,17 @@ void menu_prepare_card_format_declined_rows(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[6].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[6].codes,
         sizeof menu_label_suffixes[6]);
     row++;
     row->position.x = 174;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[9].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[9].codes,
         sizeof menu_label_suffixes[9]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[2].codes,
         sizeof menu_label_suffixes[2]);
 }
 
@@ -1856,17 +1850,17 @@ void menu_prepare_card_write_full_rows(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[2].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[2].codes,
         sizeof menu_label_suffixes[2]);
     row++;
     row->position.x = 102;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[0].codes,
         sizeof menu_label_suffixes[0]);
     row++;
     row->position.x = 102;
     row->position.y = 135;
-    memcpy(row->glyphs.codes, menu_label_suffixes[12].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[12].codes,
         sizeof menu_label_suffixes[12]);
     row->glyphs.codes[10] = -1;
 }
@@ -1876,13 +1870,13 @@ void menu_prepare_card_write_rows(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[0].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[0].codes,
         sizeof menu_label_suffixes[0]);
     row->glyphs.codes[7] = 85;
     row++;
     row->position.x = 102;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[11].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[11].codes,
         sizeof menu_label_suffixes[11]);
 }
 
@@ -1891,7 +1885,7 @@ void menu_prepare_card_read_row(KfMenuGlyphString *row)
 {
     row->position.x = 102;
     row->position.y = 112;
-    memcpy(row->glyphs.codes, menu_label_suffixes[13].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[13].codes,
         sizeof menu_label_suffixes[13]);
 }
 
@@ -1901,7 +1895,7 @@ void menu_prepare_card_read_failure_rows(KfMenuGlyphString *row, s32 kind)
     row->position.x = 90;
     row->position.y = 105;
     if (kind == KF_CARD_READ_IO_FAILURE) {
-        memcpy(row->glyphs.codes, menu_label_suffixes[10].codes,
+        memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[10].codes,
             sizeof menu_label_suffixes[10]);
     } else {
         row->glyphs.codes[0] = 0x1012;
@@ -1915,12 +1909,12 @@ void menu_prepare_card_read_failure_rows(KfMenuGlyphString *row, s32 kind)
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[3].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[3].codes,
         sizeof menu_label_suffixes[3]);
     row++;
     row->position.x = 90;
     row->position.y = 135;
-    memcpy(row->glyphs.codes, menu_label_suffixes[4].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[4].codes,
         sizeof menu_label_suffixes[4]);
     row->glyphs.codes[10] = -1;
 }
@@ -1930,12 +1924,12 @@ void menu_prepare_card_exit_rows(KfMenuGlyphString *row)
 {
     row->position.x = 90;
     row->position.y = 105;
-    memcpy(row->glyphs.codes, menu_label_suffixes[14].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[14].codes,
         sizeof menu_label_suffixes[14]);
     row++;
     row->position.x = 90;
     row->position.y = 120;
-    memcpy(row->glyphs.codes, menu_label_suffixes[15].codes,
+    memcpy((void *)row->glyphs.codes, (const void *)menu_label_suffixes[15].codes,
         sizeof menu_label_suffixes[15]);
     row->glyphs.codes[10] = -1;
 }
@@ -2455,7 +2449,9 @@ s32 menu_cursor_animation_frame = 0;
 DATA(0x8006d69c, 0x4, ".sdata")
 s32 menu_cursor_animation_direction = 0;
 DATA(0x8006d9e0, 0x4, ".sbss")
+#ifndef __cplusplus
 static POLY_FT4 *current_poly_ft4;
+#endif
 DATA(0x8006d9e8, 0x1, ".sbss")
 static u8 menu_saved_music_enabled;
 DATA(0x8006d9f0, 0x4, ".sbss")
@@ -3764,7 +3760,7 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v,
         sprite->width, sprite->height);
-    SetSemiTrans(current_poly_ft4, 1);
+    SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     for (row = 0; row < list->visible_rows; row++) {
@@ -3779,7 +3775,7 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
             sprite->width, sprite->height);
         setUVWH(current_poly_ft4, sprite->u, sprite->v,
             sprite->width, sprite->height);
-        SetSemiTrans(current_poly_ft4, 1);
+        SetSemiTrans((void *)current_poly_ft4, 1);
         primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
     }
 
@@ -3793,7 +3789,7 @@ void menu_render_list(const KfMenuList *menu, s32 render_mode)
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v,
         sprite->width, sprite->height);
-    SetSemiTrans(current_poly_ft4, 1);
+    SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     if (((u32)render_mode - 10u) < 2u || ((u32)render_mode - 13u) < 2u)
@@ -3948,7 +3944,7 @@ void menu_blit_sprite_translucent(
         position->y - KF_MENU_TRANSLUCENT_SPRITE_OFFSET,
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v, sprite->width, sprite->height);
-    SetSemiTrans(current_poly_ft4, 1);
+    SetSemiTrans((void *)current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 }
 
@@ -4123,7 +4119,7 @@ void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
             }
             primitive_buffer_begin_poly_ft4();
             setRGB0(current_poly_ft4, 0xff, 0xff, 0xff);
-            SetSemiTrans(current_poly_ft4, 1);
+            SetSemiTrans((void *)current_poly_ft4, 1);
             current_poly_ft4->tpage = tile->tpage;
             clut = tile->clut;
             setXYWH(current_poly_ft4, draw_x, draw_y, draw_width, draw_height);
@@ -4284,7 +4280,7 @@ void primitive_buffer_begin_poly_ft4(void)
 ADDRESS(0x80021f60, 0x50)
 void primitive_buffer_commit_poly_ft4(s32 depth)
 {
-    AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], current_poly_ft4);
+    AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)current_poly_ft4);
     current_poly_ft4++;
     game_graphics_runtime.display_state.primitive_buffer->cursor = (u8 *)current_poly_ft4;
 }

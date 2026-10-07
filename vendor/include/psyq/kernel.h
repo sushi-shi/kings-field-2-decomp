@@ -52,7 +52,13 @@ extern long lseek(long file, long offset, long origin);
 extern long read(long file, void *buffer, long length);
 extern long write(long file, const void *buffer, long length);
 extern long erase(const char *name);
+#if defined(__cplusplus)
+/* delete is a C++ keyword; bind the BIOS entry point by its linked name. */
+extern long bios_delete(const char *name) __asm__("delete");
+#else
 extern long delete(const char *name);
+#define bios_delete delete
+#endif
 extern long format(const char *device);
 extern struct DIRENTRY *firstfile(const char *pattern, struct DIRENTRY *entry);
 extern struct DIRENTRY *nextfile(struct DIRENTRY *entry);

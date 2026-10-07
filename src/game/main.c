@@ -37,7 +37,7 @@ enum {
 ADDRESS(0x80013634, 0x68)
 void main(void)
 {
-    InitHeap(BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
+    InitHeap((void *)BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
     CdInit();
     PadInit(0);
     InitCARD(1);

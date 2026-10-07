@@ -53,7 +53,7 @@ void main(void)
     s32 frame;
 
     ResetCallback();
-    InitHeap(OPENING_HEAP_BASE, OPENING_HEAP_BYTES);
+    InitHeap((void *)OPENING_HEAP_BASE, OPENING_HEAP_BYTES);
     CdInit();
     PadInit(0);
     ExitCriticalSection();

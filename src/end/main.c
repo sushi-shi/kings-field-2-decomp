@@ -34,7 +34,7 @@ void main(void)
     RECT rect;
 
     ResetCallback();
-    InitHeap(ENDING_HEAP_BASE, ENDING_HEAP_BYTES);
+    InitHeap((void *)ENDING_HEAP_BASE, ENDING_HEAP_BYTES);
     CdInit();
     PadInit(0);
     ExitCriticalSection();

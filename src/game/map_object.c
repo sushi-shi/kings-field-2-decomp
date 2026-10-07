@@ -209,7 +209,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         }
         object->position.vy = placements->height - ((s32)layer->elevation << 7);
         object->tail.placement.copy_words = placements->tail_words;
-        memset(&object->extra_40, 0xff, sizeof object->extra_40);
+        memset((void *)&object->extra_40, 0xff, sizeof object->extra_40);
 
         if (object_template->collision_radius != 0) {
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz,

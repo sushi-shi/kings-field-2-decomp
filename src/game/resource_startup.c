@@ -213,7 +213,7 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
 /* Retail treats $v0 as live at every exit (an int-returning function whose
  * returns carry no value); callers ignore the result. */
 ADDRESS(0x80016260, 0x55c)
-s32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
+KF_VALUELESS_S32 resource_request_transition(u8 map_region_id, u8 tmd_id, u8 tim_id, u8 vab_id,
                     u8 sequence_id, s8 offset_x, s8 offset_z, s8 offset_y)
 {
     u8 current_map_region_id;

@@ -8,6 +8,7 @@
 #include <kf/game/player.h>
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
+#include <psyq/pad.h>
 #include <psyq/sdk.h>
 #include <kf/game/actor.h>
 #include <kf/game/animation.h>
@@ -15,7 +16,6 @@
 #include <kf/game/asset.h>
 #include <kf/game/map_cell.h>
 #include <psyq/libc.h>
-#include <stdarg.h>
 #include <kf/game/audio.h>
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
@@ -1186,7 +1186,7 @@ void player_dispatch_magic_effect(s32 effect_id, ...)
     s32 target_scale;
     s32 simple_scale;
     s32 case3_z;
-    va_list arguments;
+    char *arguments;
     const VECTOR *override_position;
     /* The cursor stays on the named argument and is advanced before each
      * read, so every optional pointer is read one word above effect_id. */
@@ -1419,7 +1419,6 @@ sequence_effect: {
     default:
         break;
     }
-    va_end(arguments);
 }
 
 

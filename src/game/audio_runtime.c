@@ -8,6 +8,7 @@
 #include <kf/lib/math.h>
 #include <psyq/audio.h>
 #include <psyq/kernel.h>
+#include <LIBSPU.H>
 
 enum {
     AUDIO_VAB_STREAM_BUFFER_BYTES = 0x1000,
@@ -266,7 +267,7 @@ void audio_refresh_voice_handles(void)
     KfAudioVoiceHandle *handle;
     s32 index;
 
-    SpuGetAllKeysStatus(status);
+    SpuGetAllKeysStatus((char *)status);
     handle = audio_state.voices.handles;
     index = KF_AUDIO_VOICE_HANDLE_COUNT - 1;
     do {
@@ -414,7 +415,7 @@ void cd_request_service_vab(void)
         location = &request->location;
         vab_slot = &audio_state.vab_slots[request->payload.vab.slot_index];
         for (;;) {
-            result = SsVabTransBodyPartly(request->destination,
+            result = SsVabTransBodyPartly((u8 *)request->destination,
                 KF_CD_VAB_BODY_CHUNK_BYTES, vab_slot->vab_id);
             if (result == -1) {
                 SsVabClose(vab_slot->vab_id);

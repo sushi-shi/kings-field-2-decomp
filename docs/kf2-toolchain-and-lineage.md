@@ -244,6 +244,16 @@ Lane B6 traced these further links:
   temporary from 6 to 9 weighted refs (priority 3.0 to 6.75) but a long
   tied quantity only from 16 to 24 (3.6 to 5.3). The temporary then takes
   `v0` first (`menu_draw_string`'s glyph-cell macro).
+- **Three-quantity blocks (local-alloc.c `block_alloc`).** With exactly
+  three local quantities, the sorting network's last step compares
+  quantities 0 and 1 by number, not by position. The first-born quantity can
+  therefore be allocated first despite a lower priority. A `divmodsi4` births
+  its remainder quantity before its quotient.
+- **Preferences from local copies (global.c `set_preference`).** A global
+  variable copied from a local temporary inherits that temporary's hard
+  register as a copy preference. `x /= 10` after a block-local `x % 10`
+  keeps the quotient in a temporary until the copy, so the variable prefers
+  the temporary's register over a parameter's (`memory_card_write_title_stats`).
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

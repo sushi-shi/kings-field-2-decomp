@@ -119,7 +119,7 @@ keyboard. User play-testing remains the gameplay acceptance check, as in KF1.
   `docs/port-notes.md` so conflicts stay small.
 
 The bootstrap branch is `port-bootstrap`. Its root is a `source` snapshot
-generated locally from master `d886a3f` plus a one-line generator workaround
-(`KF_ENUM_VALUE` in the classic view). When the build-hygiene fix lands and
-`source` is published from master, rebase the bootstrap onto it and rename it
-to `port`.
+generated from `fix/build-hygiene` (`c5cf53b`). That branch carries the
+export-generator fixes (`KF_ENUM_VALUE`, the Psy-Q 3.0 kit and END's entry
+point) and has not been merged yet. When it lands, publish `source` from
+master, rebase the bootstrap onto it and rename it to `port`.

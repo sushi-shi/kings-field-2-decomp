@@ -257,7 +257,7 @@ void event_target_stream_execute(KfActor *actor)
         case 4:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
-            resource_state.active_table[4](actor, *cursor);
+            ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
             goto advance;
         case 5:
             cursor++;
@@ -1242,7 +1242,7 @@ void event_state_initialize(void)
 ADDRESS(0x800483a8, 0x30)
 void callback_invoke_slot_04_zero(void)
 {
-    resource_state.active_table[1](0);
+    ((void (*)(s32))resource_state.active_table[1])(0);
 }
 
 ADDRESS(0x800483d8, 0x50)

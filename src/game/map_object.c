@@ -430,7 +430,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->layer_mask = 0;
             break;
         default:
-            resource_state.active_table[8](object, object_template);
+            ((void (*)(KfMapObject *, const KfMapObjectTemplate *))
+                 resource_state.active_table[8])(object, object_template);
             break;
         case 0x21:
         case 0xff:

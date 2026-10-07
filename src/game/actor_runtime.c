@@ -134,7 +134,7 @@ void actor_disable_type3_transition_actors(void)
             actor->target_action_state == KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED &&
             (actor->state_70.signed_state != 0 ||
              actor->animation_phase > KF_ACTOR_ANIMATION_PHASE_PERIOD / 2)) {
-            resource_state.active_table[19](actor);
+            ((void (*)(KfActor *))resource_state.active_table[19])(actor);
             actor_set_lifecycle_and_home_position(actor);
         }
         actor++;
@@ -2213,7 +2213,7 @@ dispatch_action:
                     actor->lighting_blend = 0x1000;
                 }
             } else {
-                resource_state.active_table[19](actor);
+                ((void (*)(KfActor *))resource_state.active_table[19])(actor);
                 if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT) {
                     actor_set_lifecycle_and_home_position(actor);
                 } else if (actor->slot_state == KF_ACTOR_SLOT_RESPAWNING) {

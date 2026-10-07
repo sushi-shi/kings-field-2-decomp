@@ -112,9 +112,8 @@ match KF1's `KfMapObjectOperation`) and the `resource_trigger` tail view; 35
 members keep WIP decimal names, matching the existing `action83`/`action224`
 view names.
 
-**Placeholder operations against retail data.** `python -m
-scripts.kf.map_object_census --disc-dir DISC --actor-flag 0x200` decodes the
-templates (FDAT 48 chunk 0), each object's model (MO `0x80 + id`), the
+**Placeholder operations against retail data.** A one-off read of the JP
+disc decoded the templates (FDAT 48 chunk 0), each object's model (MO `0x80 + id`), the
 placements of map regions 0-7 and 10 (FDAT `3r + 1`, object bytes `0x38..0x3f`
 from placement bytes 16-23) and the operation immediates of map callback slots
 8 and 9 (FDAT `3r + 2`). Every model below is a TMD whose primitives are all

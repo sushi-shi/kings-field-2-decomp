@@ -112,6 +112,48 @@ match KF1's `KfMapObjectOperation`) and the `resource_trigger` tail view; 35
 members keep WIP decimal names, matching the existing `action83`/`action224`
 view names.
 
+**Placeholder operations against retail data.** A one-off read of the JP
+disc decoded the templates (FDAT 48 chunk 0), each object's model (MO `0x80 + id`), the
+placements of map regions 0-7 and 10 (FDAT `3r + 1`, object bytes `0x38..0x3f`
+from placement bytes 16-23) and the operation immediates of map callback slots
+8 and 9 (FDAT `3r + 2`). Every model below is a TMD whose primitives are all
+textured. "Collision" means a nonzero template radius: only then does the
+loader add cell occupancy and `map_object_find_collision_at_point` (the
+`KF_COLLISION_QUERY_MAP_OBJECTS` part of `collision_query_world`) report the
+object. No placement uses layer mask 0, every one is drawn by the ordinary
+render path, and none of these operations is in KF1's numbering with the same
+behaviour (KF1 0/11/80/81 are a hinged door, restore point, projectile emitter
+and swing release).
+
+| Op | Objects | Collision | Model | Placements | Behaviour (GAME, then map callbacks) | Name |
+| --- | --- | --- | --- | --- | --- | --- |
+| 0 | none | - | - | no template | save state byte; init falls to callback 8, which no map handles | WIP `OP_0` |
+| 11 | none | - | - | no template | init hides it (layer 0) like hidden screen image 20, no interaction | WIP `OP_11` |
+| 15 | 189 | radius 400 | 443 FT3 | 19, regions 0-6 | items 114..116 used on it are spawned in the event pool and lowered onto it; items 111..113 (10 MP) warp back in front of it; empty socket notifies 16; markers refused; pending item saved | `RECALL_SOCKET` |
+| 17 | 184 | none | 88 FT3 + 16 GT3, unbiased depth | 28, pairs in regions 1/4/5/6 | item 103 used on it is spawned and slid in, then ORs bit 1 or 2 into linked signal door 139's `0xfc` marker (open from front/back); markers refused | `DOOR_SOCKET` |
+| 33 | 239 | radius 600 | 20 FT3 | none | no init, update, interaction or save case | WIP `OP_33` |
+| 48 | 246 | none | 2 GT3 (one quad) | 1, region 1 layer 1 | additive blend, raised by byte `0x3c` * 256 (`0x14`); no update case in any map | `RAISED_ADDITIVE` |
+| 80 | none | - | - | no template | marker-signal receiver, saved; no update in any map | WIP `OP_80` |
+| 81 | 200, 201, 202, 213 | none | 27 / 222 / 118 / 118 textured | 8 / 16 / 13 / 5 | plays its clips when the camera region (200/201: always) or an interaction (202/213: region never) starts it, probes actors and player at a model vertex and applies hazard damage | `ANIMATED_HAZARD` |
+| 95 | 204 | none (rewrites cells) | 102 FT3, 22 semi | 1, region 0 | marker receiver; region 0: loops sound `0xed`; marker `0xf0` plays the clip, copies a 3x2 cell block at half phase and fades the sound out | `SIGNAL_CELL_COPY` |
+| 160 | 185 | none | 132 FT3 | 1, region 0 | region 0: item 101 arms it; it moves placed item 101 into itself, then signals `0xf0` (opens 95) | `REGION0_ITEM_SOCKET` |
+| 161 | 187 | radius 1024 | 104 FT3 | 3, region 1 | region 1: item 105 arms it; it lowers placed item 105 into itself, then signals its byte `0x3a` (`0xc5`/`0xc6` start 162) | `REGION1_ITEM_SOCKET` |
+| 162 | 196-198 | none | 217 FT3, 52 semi | 1 each, region 1 | marker receiver, not saved; region 1: plays its clip, sets event bit 1/2/4 that enables a floor restore spot, loops sound `0xf0` | `SIGNAL_EVENT_BIT` |
+| 163 | 192 | radius 800 | 466 GT3, 124 semi | regions 1 and 3 | marker receiver, saved; region 1 activates when bits 1/2/4 are all set, sets bit 8 and signals `0xc8`; region 3 shows it active once bit 8 is set; loops restore sound `0xee` | `EVENT_BIT_ACTIVATED` |
+| 164 | 188 | none | 670 FT3 | 2, region 4 | saved; region 4: item 109 is inserted, each interaction steps byte `0x38` through 12 positions and the item turns to `n * 4096 / 12` | `ITEM_DIAL` |
+| 165 | 276 | radius 1500 | 312 textured, 192 semi | 8, region 6 | interacts like `NONE`; region 6: lighting row `0x3f`, and while drawn and slot 192 (item 94) remains it spawns effect kind 101 around itself with random sound `0xf5` | `EFFECT_EMITTER` |
+
+Region 10's callback table points outside the `0x8019e138` workspace and none
+of its placements use these operations. `KF_ACTOR_FLAG_DIE_WITH_LINKED`
+(`0x200`) is tested once (`0x8003f4d4`, `actor_update_behavior`): when a
+linked companion's partner leaves the active lifecycle the companion detaches,
+blocks player targeting and, with the flag, selects target type 3 (the type
+`actor_apply_damage` selects at zero health, which spawns the death drop).
+No code or map callback sets or clears the bit; it comes only from
+`initial_actor_flags` `0x212`/`0x612`, i.e. linked groups of definitions 5, 7
+and 30 whose partners use definitions 4, 6 and 29 (regions 0-3, 52 actors).
+It gates behaviour only, not rendering, collision or damage.
+
 **`KfMemoryBlockKind` (u8, `include/kf/game/memory.h`).** The arena block header
 byte, `memory_block_set_kind`/`memory_block_kind` and the two
 `event_arena_owner_pointers_*` walks. Their `kind < 4` bound is the named

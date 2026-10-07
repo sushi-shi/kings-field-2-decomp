@@ -16,10 +16,10 @@ GAME.EXE	0x8006d6c8	player_status_texture_row_3	.sdata	retail layout: eight-byte
 GAME.EXE	0x8006d6d0	map_textured_primitive_color	.sdata	retail layout: display word in the game .sdata run after the player status rows;four-byte CVECTOR under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6d4	render_model_yaw_smoothing_accumulator	.sdata	retail layout: display word in the game .sdata run;initialized word under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d6dc	menu_transition_rect	.sdata	retail layout: display eight-byte RECT in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
-GAME.EXE	0x8006d6e4	map_object_motion_action15_start_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run after display small data;initialized under cc1 -G8;native-gcc257-aspsx107-G8
-GAME.EXE	0x8006d6ec	map_object_motion_action15_end_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
-GAME.EXE	0x8006d6f4	map_object_motion_action17_start_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
-GAME.EXE	0x8006d6fc	map_object_motion_action17_end_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006d6e4	map_object_motion_recall_socket_start_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run after display small data;initialized under cc1 -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006d6ec	map_object_motion_recall_socket_end_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006d6f4	map_object_motion_door_socket_start_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
+GAME.EXE	0x8006d6fc	map_object_motion_door_socket_end_offset	.sdata	retail layout: map_object_action_update eight-byte SVECTOR in the game .sdata run;initialized under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d704	effect_trail_next_slot	.sdata	retail layout: effect_runtime word in the game .sdata run before LIBCD .sdata;initialized word under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d708	effect_zero_direction	.sdata	retail layout: effect_runtime eight-byte static SVECTOR ending the game .sdata run at 0x8006d710;initialized under cc1 -G8;native-gcc257-aspsx107-G8
 GAME.EXE	0x8006d9e0	current_poly_ft4	.sbss	retail layout: menu_root static in the eight-byte .lcomm run 0x8006d9e0-0x8006da18 before the memory card statics;native-gcc257-aspsx107-G8

@@ -37,6 +37,8 @@ enum {
  * IGNORE_MAGIC_REACTION skips the magic-hit retarget and
  * IGNORE_HAZARD_DAMAGE ignores hazard-class damage; PLAYER_OVERLAP_BOB starts
  * the player's overlap bob when the player stands inside the actor.
+ * DIE_WITH_LINKED sends a linked companion into its zero-health target type
+ * when the actor it is linked to leaves the active lifecycle.
  */
 KF_ENUM_BEGIN(KfActorFlags, u32)
     KF_ACTOR_FLAGS_NONE = 0,
@@ -50,7 +52,7 @@ KF_ENUM_BEGIN(KfActorFlags, u32)
     KF_ACTOR_FLAG_RENDER_WITH_IDENTITY_MATRIX = 0x20,
     KF_ACTOR_FLAG_BLENDED_MODEL = 0x80,
     KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING = 0x100,
-    KF_ACTOR_FLAG_200 = 0x200,
+    KF_ACTOR_FLAG_DIE_WITH_LINKED = 0x200,
     KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR = 0x400,
     KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD = 0x800,
     KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20 = 0x2000,

@@ -78,7 +78,7 @@ void map_object_update_actions(void)
             map_object_state.current_template = object_template;
 
             switch (object->action) {
-        case KF_MAP_OBJECT_OP_2:
+        case KF_MAP_OBJECT_OP_LIFT_DOOR:
             switch (object->action_timer) {
             case 1:
                 if (object->phase_q12 == 0) {
@@ -120,7 +120,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_3: {
+        case KF_MAP_OBJECT_OP_SIGNAL_DOOR: {
             switch (object->action_timer) {
             case 0: {
                 u8 phase_byte = object->tail.marker.marker_id;
@@ -296,7 +296,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_8:
+        case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
             switch (object->action_timer) {
             case 0:
                 if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
@@ -334,7 +334,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
             switch (object->action_timer) {
             case 0:
                 if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
@@ -381,7 +381,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_5:
+        case KF_MAP_OBJECT_OP_ANIMATED_CONTAINER:
             switch (object->action_timer) {
             case 0: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
@@ -422,7 +422,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_83:
+        case KF_MAP_OBJECT_OP_SWITCH:
             switch (object->action_timer) {
             case 1:
                 map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
@@ -489,7 +489,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_88:
+        case KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE:
             switch (object->action_timer) {
             case 1:
                 switch (object->tail.action_88_cell_copy.transition_mode) {
@@ -539,7 +539,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_89:
+        case KF_MAP_OBJECT_OP_LAYER_FADE:
             switch (object->action_timer) {
             case 1:
                 object->extra_40.layer_fade.delay_frames_left = object->tail.action_89_layer_fade.delay_frames;
@@ -603,13 +603,13 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_16:
+        case KF_MAP_OBJECT_OP_BOB:
             object->rotation.vy += 128;
             object->position.vy = object->extra_40.bob_base_y +
                                   (rsin(object->rotation.vy) >> 6);
             break;
 
-        case KF_MAP_OBJECT_OP_84:
+        case KF_MAP_OBJECT_OP_PATTERN_GATE:
             switch (object->action_timer) {
             case 0: {
                 s32 depth = (-(s32)object->tail.action_84_pattern.depth_code) * 128;
@@ -689,7 +689,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_9: {
+        case KF_MAP_OBJECT_OP_ITEM_CONTAINER: {
             u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
@@ -848,14 +848,14 @@ void map_object_update_actions(void)
             break;
         }
 
-        case KF_MAP_OBJECT_OP_18:
+        case KF_MAP_OBJECT_OP_RESTORE_POINT:
             if ((s32)(object->extra_40.next_sound_frame - cd_state.frame_count) < 0) {
                 object->extra_40.next_sound_frame = cd_state.frame_count + 30;
                 map_object_play_spatial_sound(object, 0xee);
             }
             break;
 
-        case KF_MAP_OBJECT_OP_19: {
+        case KF_MAP_OBJECT_OP_GROW_ITEM: {
             KfMapObject *linked = &map_object_state.objects[object->tail.scale_link.linked_object_index];
             switch (object->action_timer) {
             case 0:
@@ -1010,7 +1010,7 @@ void map_object_update_actions(void)
             }
             break;
 
-        case KF_MAP_OBJECT_OP_34:
+        case KF_MAP_OBJECT_OP_WARP:
             if (player_camera_within_map_region(object->tail.transition.region_x,
                                object->tail.transition.region_z,
                                object->tail.transition.region_width,
@@ -1022,7 +1022,7 @@ void map_object_update_actions(void)
                     audio_play_sound(0x14, 0x6e);
                     render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 0x1000, 0x100);
                     do {
-                        if (candidate->action == KF_MAP_OBJECT_OP_34) {
+                        if (candidate->action == KF_MAP_OBJECT_OP_WARP) {
                             candidate->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_SET;
                         }
                         candidate++;

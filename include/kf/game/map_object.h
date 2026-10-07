@@ -15,39 +15,42 @@
  * selectors unchanged into the runtime action byte (GAME 0x80035a74 jump
  * table, sb +4), which map_object_update_actions dispatches; the interaction
  * and world-state switches read the template selector directly. Definition-
- * only and runtime-only operations therefore share one namespace. Members
- * without behavioural evidence keep their decimal encoding as a WIP name. */
+ * only and runtime-only operations therefore share one namespace. Names
+ * follow the update/interaction code (and KF1's numbering where it agrees:
+ * lift door 2, hinged container 8, item container 9, screen image 13, save
+ * point 14, item pickup 64); members without behavioural evidence keep
+ * their decimal encoding as a WIP name. */
 KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_0 = 0,
-    KF_MAP_OBJECT_OP_2 = 2,
-    KF_MAP_OBJECT_OP_3 = 3,
+    KF_MAP_OBJECT_OP_LIFT_DOOR = 2,
+    KF_MAP_OBJECT_OP_SIGNAL_DOOR = 3,
     KF_MAP_OBJECT_OP_HINGE = 4,
-    KF_MAP_OBJECT_OP_5 = 5,
-    KF_MAP_OBJECT_OP_8 = 8,
-    KF_MAP_OBJECT_OP_9 = 9,
+    KF_MAP_OBJECT_OP_ANIMATED_CONTAINER = 5,
+    KF_MAP_OBJECT_OP_HINGED_CONTAINER = 8,
+    KF_MAP_OBJECT_OP_ITEM_CONTAINER = 9,
     KF_MAP_OBJECT_OP_11 = 11,
-    KF_MAP_OBJECT_OP_13 = 13,
-    KF_MAP_OBJECT_OP_14 = 14,
+    KF_MAP_OBJECT_OP_SCREEN_IMAGE = 13,
+    KF_MAP_OBJECT_OP_SAVE_POINT = 14,
     KF_MAP_OBJECT_OP_15 = 15,
-    KF_MAP_OBJECT_OP_16 = 16,
+    KF_MAP_OBJECT_OP_BOB = 16,
     KF_MAP_OBJECT_OP_17 = 17,
-    KF_MAP_OBJECT_OP_18 = 18,
-    KF_MAP_OBJECT_OP_19 = 19,
-    KF_MAP_OBJECT_OP_20 = 20,
-    KF_MAP_OBJECT_OP_21 = 21,
-    KF_MAP_OBJECT_OP_22 = 22,
+    KF_MAP_OBJECT_OP_RESTORE_POINT = 18,
+    KF_MAP_OBJECT_OP_GROW_ITEM = 19,
+    KF_MAP_OBJECT_OP_HIDDEN_SCREEN_IMAGE = 20,
+    KF_MAP_OBJECT_OP_HIDDEN_ITEM_CONTAINER = 21,
+    KF_MAP_OBJECT_OP_SLIDING_CONTAINER = 22,
     KF_MAP_OBJECT_OP_AMBIENT_SOUND = 31,
     KF_MAP_OBJECT_OP_PLAYER_REACTION = 32,
     KF_MAP_OBJECT_OP_33 = 33,
-    KF_MAP_OBJECT_OP_34 = 34,
+    KF_MAP_OBJECT_OP_WARP = 34,
     KF_MAP_OBJECT_OP_48 = 48,
-    KF_MAP_OBJECT_OP_64 = 64,
+    KF_MAP_OBJECT_OP_ITEM_PICKUP = 64,
     KF_MAP_OBJECT_OP_80 = 80,
     KF_MAP_OBJECT_OP_81 = 81,
-    KF_MAP_OBJECT_OP_83 = 83,
-    KF_MAP_OBJECT_OP_84 = 84,
-    KF_MAP_OBJECT_OP_88 = 88,
-    KF_MAP_OBJECT_OP_89 = 89,
+    KF_MAP_OBJECT_OP_SWITCH = 83,
+    KF_MAP_OBJECT_OP_PATTERN_GATE = 84,
+    KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE = 88,
+    KF_MAP_OBJECT_OP_LAYER_FADE = 89,
     KF_MAP_OBJECT_OP_95 = 95,
     KF_MAP_OBJECT_OP_FALL_AND_TIP = 96,
     KF_MAP_OBJECT_OP_FALL_AND_SPIN = 97,
@@ -61,7 +64,7 @@ KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_165 = 165,
     KF_MAP_OBJECT_OP_RESOURCE_TRIGGER = 224,
     KF_MAP_OBJECT_OP_REGION_TRIGGER = 225,
-    KF_MAP_OBJECT_OP_226 = 226,
+    KF_MAP_OBJECT_OP_SCENE_INSPECT = 226,
     KF_MAP_OBJECT_OP_ANIMATED_MODEL = 240,
     KF_MAP_OBJECT_OP_NONE = 255
 KF_ENUM_END(KfMapObjectOperation)

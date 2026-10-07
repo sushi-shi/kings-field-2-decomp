@@ -730,7 +730,7 @@ decay_update:
                  remaining != -1; remaining--, scan++) {
                 KfMapObject *object = scan;
 
-                if (map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_kind != KF_MAP_OBJECT_OP_226 ||
+                if (map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_kind != KF_MAP_OBJECT_OP_SCENE_INSPECT ||
                     object->extra_40.saved_layer.layer_mask != side) {
                     continue;
                 }
@@ -873,7 +873,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         KfMapObject *child = &map_object_state.objects[object->extra_40.object_index];
         KfMapObject *next = &map_object_state.objects[
             child->tail.fields.unknown_3a.bytes.high];
-        if (next->action == KF_MAP_OBJECT_OP_3 && next->action_timer != 0) {
+        if (next->action == KF_MAP_OBJECT_OP_SIGNAL_DOOR && next->action_timer != 0) {
             return;
         }
     }
@@ -1066,14 +1066,14 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
-        case KF_MAP_OBJECT_OP_64:
+        case KF_MAP_OBJECT_OP_ITEM_PICKUP:
             event_map_object_interact(object);
             if (object->object_id == KF_OBJECT_NONE) {
                 goto invoke_callback;
             }
             break;
-        case KF_MAP_OBJECT_OP_9:
-        case KF_MAP_OBJECT_OP_21: {
+        case KF_MAP_OBJECT_OP_ITEM_CONTAINER:
+        case KF_MAP_OBJECT_OP_HIDDEN_ITEM_CONTAINER: {
             u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index == 0xffff ||
                 objects[linked_index].object_id == KF_OBJECT_NONE) {
@@ -1096,12 +1096,12 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             break;
         }
-        case KF_MAP_OBJECT_OP_83:
+        case KF_MAP_OBJECT_OP_SWITCH:
             if (object->action_timer == 0) {
                 object->action_timer = 1;
             }
             break;
-        case KF_MAP_OBJECT_OP_2:
+        case KF_MAP_OBJECT_OP_LIFT_DOOR:
             if (object->action_timer == 0) {
                 if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_CLEARED) {
                     object->action_timer = 1;
@@ -1110,7 +1110,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
             }
             break;
-        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
             if (object->action_timer == 0) {
                 if (object->tail.marker.marker_id >= 0xfc &&
@@ -1137,14 +1137,14 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 object->action_timer = 1;
             }
             break;
-        case KF_MAP_OBJECT_OP_8:
-        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
+        case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
             if (!angle_within_tolerance(rotation->angles[1],
                                         object->rotation.vy + 0x800, 0x155)) {
                 break;
             }
             /* Kind five enters the same state handler without the angle gate. */
-        case KF_MAP_OBJECT_OP_5:
+        case KF_MAP_OBJECT_OP_ANIMATED_CONTAINER:
             switch (object->tail.marker.marker_id) {
             case KF_MAP_OBJECT_MARKER_TRIGGERED: {
                 u16 linked_index = object->tail.linked_property.linked_object_index;
@@ -1183,16 +1183,16 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 }
             }
             break;
-        case KF_MAP_OBJECT_OP_13:
-        case KF_MAP_OBJECT_OP_20:
+        case KF_MAP_OBJECT_OP_SCREEN_IMAGE:
+        case KF_MAP_OBJECT_OP_HIDDEN_SCREEN_IMAGE:
             menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.pair_38.value_38 + 0x78);
             break;
-        case KF_MAP_OBJECT_OP_18:
+        case KF_MAP_OBJECT_OP_RESTORE_POINT:
             color_overlay_transition(0x200, 0, 0, 0, 0x80, 0xc8, 0xff);
             player_state.vitals.current_hp = player_state.vitals.maximum_hp;
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
-        case KF_MAP_OBJECT_OP_14:
+        case KF_MAP_OBJECT_OP_SAVE_POINT:
             event_world_state_save_slot(resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
@@ -1384,7 +1384,7 @@ void event_world_state_save_slot(s32 save_slot)
         kind = map_object_state.templates[KF_ENUM_ENCODE(s32, object_id)].collision_kind;
         /* Save packets carry the low byte of the 16-bit template ID. */
         switch (kind) {
-        case KF_MAP_OBJECT_OP_64:
+        case KF_MAP_OBJECT_OP_ITEM_PICKUP:
             switch (object->action) {
             case KF_MAP_OBJECT_OP_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
@@ -1429,21 +1429,21 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             }
             break;
-        case KF_MAP_OBJECT_OP_83:
+        case KF_MAP_OBJECT_OP_SWITCH:
             if (object->tail.action_83.transition_mode < KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED) {
                 break;
             }
         case KF_MAP_OBJECT_OP_0:
-        case KF_MAP_OBJECT_OP_2:
-        case KF_MAP_OBJECT_OP_3:
+        case KF_MAP_OBJECT_OP_LIFT_DOOR:
+        case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
-        case KF_MAP_OBJECT_OP_5:
-        case KF_MAP_OBJECT_OP_8:
-        case KF_MAP_OBJECT_OP_22:
+        case KF_MAP_OBJECT_OP_ANIMATED_CONTAINER:
+        case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
+        case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
         case KF_MAP_OBJECT_OP_80:
         case KF_MAP_OBJECT_OP_81:
-        case KF_MAP_OBJECT_OP_84:
-        case KF_MAP_OBJECT_OP_88:
+        case KF_MAP_OBJECT_OP_PATTERN_GATE:
+        case KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE:
         case KF_MAP_OBJECT_OP_95:
         case KF_MAP_OBJECT_OP_160:
         case KF_MAP_OBJECT_OP_161:

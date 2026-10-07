@@ -863,7 +863,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
 ADDRESS(0x8003a614, 0x164)
 b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
                   s32 angle_tolerance, u16 damage0, u16 damage1,
-                  u16 damage2, u16 damage3)
+                  u16 damage2, u16 damage_flags)
 {
     s32 offset = y_offset << 5;
     KfActor *actor = actor_state.current;
@@ -894,7 +894,7 @@ b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, 
         return KF_FALSE;
     }
 
-    player_apply_damage(damage0, damage1, damage2, damage3,
+    player_apply_damage(damage0, damage1, damage2, damage_flags,
                   0, 0, 0, 0, 0, 0x1000, 10, &origin);
     return KF_TRUE;
 }
@@ -2624,7 +2624,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.attack.damage_component3);
+                           target->word_10.attack.damage_flags);
         }
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_reset_target_and_reselect();
@@ -2649,7 +2649,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.attack.damage_component3 | 0x80);
+                           target->word_10.attack.damage_flags | KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY);
         }
         if (target->secondary_hit_phase != 0 &&
             actor_animation_crossed_phase(actor, target->secondary_hit_phase)) {
@@ -2697,7 +2697,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.attack.damage_component3);
+                           target->word_10.attack.damage_flags);
         }
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_reset_target_and_reselect();
@@ -2808,7 +2808,7 @@ case3_motion:
                            target->word_10.bytes.fallback_offset,
                            target->word_12.value, target->word_14.value,
                            target->word_16.value,
-                           target->word_10.attack.damage_component3);
+                           target->word_10.attack.damage_flags);
         }
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_reset_target_and_reselect();

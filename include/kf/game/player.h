@@ -597,7 +597,18 @@ s32 player_charge_gain_for_rank(s32 value, s32 rank);
 void player_add_equipment_bonuses(KF_ENUM_PARAM(KfObjectId, s32) item_id);
 s32 player_calculate_damage_component(s32 base_power, s32 defense, s32 attack);
 void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction_flags);
-void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
+/* player_apply_damage's flags word (actor attacks, magic records): the low
+ * nibble is a status kind plus one, which the status-guard accessory can
+ * clear, and bits 6 and 7 select the strong and rotation-only reactions
+ * of player_apply_damage_reaction. */
+enum {
+    KF_PLAYER_DAMAGE_STATUS_MASK = 0xf,
+    KF_PLAYER_DAMAGE_GUARDED_STATUS = 0x7,
+    KF_PLAYER_DAMAGE_REACTION_STRONG = 0x40,
+    KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY = 0x80
+};
+
+void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 damage_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 scale_q16, u16 multiplier_tenths,
                    const VECTOR *origin);

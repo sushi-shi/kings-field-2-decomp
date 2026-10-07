@@ -261,7 +261,7 @@ typedef char kf_target_candidate_word10_bytes_size[
 
 typedef struct KfTargetCandidateWord10Attack {
     u8 fallback_offset;
-    u8 damage_component3;
+    u8 damage_flags;
 } KfTargetCandidateWord10Attack;
 typedef char kf_target_candidate_word10_attack_size[
     sizeof(KfTargetCandidateWord10Attack) == 2 ? 1 : -1];
@@ -437,8 +437,8 @@ typedef char kf_target_candidate_word_0e_offset[offsetof(KfTargetCandidate, word
 typedef char kf_target_candidate_word_0e_low_offset[offsetof(KfTargetCandidate, word_0e.bytes.low) == 0x0e ? 1 : -1];
 typedef char kf_target_candidate_completion_animation_offset[offsetof(KfTargetCandidateWord10Bytes, completion_animation_id) == 1 ? 1 : -1];
 typedef char kf_target_candidate_completion_animation_total_offset[offsetof(KfTargetCandidate, word_10.bytes.completion_animation_id) == 0x11 ? 1 : -1];
-typedef char kf_target_candidate_attack_damage_component3_offset[
-    offsetof(KfTargetCandidate, word_10.attack.damage_component3) == 0x11 ? 1 : -1];
+typedef char kf_target_candidate_attack_damage_flags_offset[
+    offsetof(KfTargetCandidate, word_10.attack.damage_flags) == 0x11 ? 1 : -1];
 typedef char kf_target_candidate_word_12_offset[offsetof(KfTargetCandidate, word_12) == 0x12 ? 1 : -1];
 typedef char kf_target_candidate_flight_vertical_step_offset[
     offsetof(KfTargetCandidate, word_12.flight.vertical_velocity_step) == 0x12 ? 1 : -1];
@@ -933,7 +933,7 @@ s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 
 void actor_suspend_vertical_motion(void);
 b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance,
                   s32 y_offset, s32 angle_tolerance, u16 damage0,
-                  u16 damage1, u16 damage2, u16 damage3);
+                  u16 damage1, u16 damage2, u16 damage_flags);
 KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_turn_and_move_along_heading(s16 angle, s32 speed,
     s32 range, s32 step, s32 mode, KF_ENUM_PARAM(KfActorMoveFlags, s32) move_flags);
 KF_ENUM_PARAM(KfActorEulerMoveResult, s32) actor_turn_and_move_along_euler_angles(

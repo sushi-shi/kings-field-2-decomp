@@ -455,9 +455,7 @@ enum {
     KF_PLAYER_DAMAGE_STRONG_MAX = 600,
     KF_PLAYER_DAMAGE_VERTICAL_LIMIT = 200,
     KF_PLAYER_DAMAGE_DURATION_BASE = 1300,
-    KF_PLAYER_DAMAGE_DURATION_MIN = 70,
-    KF_PLAYER_DAMAGE_REACTION_STRONG = 0x40,
-    KF_PLAYER_DAMAGE_REACTION_ROTATION_ONLY = 0x80
+    KF_PLAYER_DAMAGE_DURATION_MIN = 70
 };
 
 ADDRESS(0x80024498, 0x34c)
@@ -641,7 +639,7 @@ enum {
 };
 
 ADDRESS(0x800248a8, 0x3fc)
-void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags,
+void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 damage_flags,
                    u16 damage3, u16 damage4, u16 damage5, u16 damage6,
                    u16 damage7, u16 scale_q16, u16 multiplier_tenths,
                    const VECTOR *origin)
@@ -654,7 +652,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     s32 paralysis_duration;
     s32 slow_duration;
     s32 poison_duration;
-    u16 flags = status_flags;
+    u16 flags = damage_flags;
 
     if (player_state.weapon_guard_active != 0) {
         return;
@@ -662,7 +660,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
     if (player_state.equipped_accessory_id == KF_ITEM_STATUS_GUARD_ACCESSORY
         || player_state.equipped_extra_id == KF_ITEM_STATUS_GUARD_ACCESSORY) {
         if (rand() < KF_PLAYER_STATUS_GUARD_CHANCE) {
-            flags &= 0xfff8;
+            flags &= ~KF_PLAYER_DAMAGE_GUARDED_STATUS;
         }
     }
     if (player_state.equipped_accessory_id == KF_ITEM_STATUS_DURATION_HALVING_ACCESSORY
@@ -680,7 +678,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 status_flags
         slow_duration = 600;
     }
 
-    switch ((flags & 0xf) - 1) {
+    switch ((flags & KF_PLAYER_DAMAGE_STATUS_MASK) - 1) {
     case PLAYER_DAMAGE_STATUS_CURSE:
         player_state.curse_phase_limit = curse_phase_limit;
         player_state.curse_strength = 1;

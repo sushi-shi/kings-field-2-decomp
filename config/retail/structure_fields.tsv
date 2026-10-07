@@ -1181,7 +1181,7 @@ KfTargetCandidateWord10	0x0	0x2	value	u16	supported	GAME 0x800391ac lhu candidat
 KfTargetCandidateWord10	0x0	0x2	bytes	KfTargetCandidateWord10Bytes	supported	GAME event save/restore;message marker scan	byte-addressable view of the same halfword
 KfTargetCandidateWord10	0x0	0x2	attack	KfTargetCandidateWord10Attack	supported	game/actor.h;actor_update_behavior	attack access in exact source
 KfTargetCandidateWord10Attack	0x0	0x1	fallback_offset	u8	supported	game/actor.h;actor_score_target_candidate;actor_update_behavior;event_target_stream_execute	fallback_offset access in exact source
-KfTargetCandidateWord10Attack	0x1	0x1	damage_component3	u8	supported	game/actor.h;actor_update_behavior	damage_component3 access in exact source
+KfTargetCandidateWord10Attack	0x1	0x1	damage_flags	u8	supported	game/actor.h;actor_update_behavior	damage_component3 access in exact source
 KfTargetCandidateWord10Bytes	0x0	0x1	fallback_offset	u8	supported	game/actor.h;message marker scan	fallback cursor after FF stream terminator
 KfTargetCandidateWord10Bytes	0x1	0x1	completion_animation_id	KfAnimationClip	supported	GAME 0x800462bc retail lbu at +0x11;event_target_stream_execute	animation played to its final phase after the stream menu action, before the prior actor animation ID is restored; 0xff skips
 KfTargetCandidateWord12	0x0	0x2	value	u16	supported	GAME 0x80039108 lhu candidate+0x12	unsigned candidate distance bound

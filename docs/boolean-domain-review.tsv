@@ -1,0 +1,409 @@
+# Boolean-candidate domains from kf literals, with the lane E2 verdict (converted, reject or e1 hand-off).
+# Regenerate the census with kf literals --output; domain roots are stable, D-numbers are not.
+root	verdict	reason	literal_sites	members
+*actor_dispatch_group_effect::arguments	reject	pointer-valued slot; its zero is a null pointer, not false	1	*actor_dispatch_group_effect::arguments
+*actor_update_vertical_motion::collision_layer	reject	pointer-valued slot; its zero is a null pointer, not false	2	*actor_update_vertical_motion::collision_layer
+*animation_prepare_asset_vertices:arg0	reject	pointer-valued slot; its zero is a null pointer, not false	5	*animation_prepare_asset_vertices:arg0;KfActor.animation_cache;KfMapObjectTailAnimatedView.animation_cache;animation_prepare_asset_vertices::record;animation_prepare_asset_vertices:return;pool_record_release:arg0
+*clear_map_cell_layer_masks::mask	reject	pointer-valued slot; its zero is a null pointer, not false	1	*clear_map_cell_layer_masks::mask
+*collision_evaluate_shape_records::layer_offset	reject	pointer-valued slot; its zero is a null pointer, not false	2	*collision_evaluate_shape_records::layer_offset
+*memory_card_read_slot_summary:arg1	reject	pointer-valued slot; its zero is a null pointer, not false	1	*memory_card_read_slot_summary:arg1
+*memory_card_read_slot_summary:arg2	reject	pointer-valued slot; its zero is a null pointer, not false	1	*memory_card_read_slot_summary:arg2
+*memory_card_scan_save_entries:arg1	reject	pointer-valued slot; its zero is a null pointer, not false	1	*memory_card_scan_save_entries:arg1
+*menu_collect_available_item_rows::entry	reject	pointer-valued slot; its zero is a null pointer, not false	1	*menu_collect_available_item_rows::entry
+*menu_collect_available_item_rows:arg2	reject	pointer-valued slot; its zero is a null pointer, not false	1	*menu_collect_available_item_rows:arg2
+*menu_collect_masked_item_rows::entry	reject	pointer-valued slot; its zero is a null pointer, not false	1	*menu_collect_masked_item_rows::entry;*menu_collect_masked_item_rows:arg2
+*menu_draw_options_rows:arg2	reject	pointer-valued slot; its zero is a null pointer, not false	1	*menu_draw_options_rows:arg2
+*menu_item_buy_controller::counters	reject	pointer-valued slot; its zero is a null pointer, not false	1	*menu_item_buy_controller::counters
+*menu_poll_choice_input:arg3	converted	member is now a Boolean storage type	0	*menu_poll_choice_input:arg3
+*menu_update_list_input:arg2	converted	member is now a Boolean storage type	0	*menu_update_list_input:arg2
+*notify_enqueue::head	reject	pointer-valued slot; its zero is a null pointer, not false	1	*notify_enqueue::head;KfNotificationControl.queue_tail;[KfGraphicsRuntimeGame.notification_message_ids];[KfGraphicsRuntimeGame.notification_payloads];notification_update::tail
+*sweep_map_cell_layer_mask_line::cursor	reject	pointer-valued slot; its zero is a null pointer, not false	2	*sweep_map_cell_layer_mask_line::cursor;sweep_map_cell_layer_mask_line::first;sweep_map_cell_layer_mask_line::second
+*update_current_map_cell_layer_mask::mask	reject	pointer-valued slot; its zero is a null pointer, not false	1	*update_current_map_cell_layer_mask::mask;update_current_map_cell_layer_mask::value
+CdControl:return	reject	SDK/libc boundary CdControl	1	CdControl:return
+CdRead2:return	reject	SDK/libc boundary CdRead2	1	CdRead2:return
+CdReadSync:arg0	reject	SDK/tutorial structure or call boundary	0	CdReadSync:arg0
+CdReadSync:return	reject	SDK return; cd_read_sectors also compares it against sync status codes	1	CdReadSync:return;cd_read_sectors::result
+CdReady:arg0	reject	SDK/libc boundary CdReady	1	CdReady:arg0
+CdReady:return	reject	SDK/libc boundary CdReady	0	CdReady:return
+CdlLOC.track	reject	SDK/tutorial structure or call boundary	2	CdlLOC.track
+ChangeClearPAD:arg0	reject	SDK/libc boundary ChangeClearPAD	1	ChangeClearPAD:arg0
+ClearImage:arg1	reject	SDK/libc boundary ClearImage	1	ClearImage:arg1
+ClearImage:arg2	reject	SDK/libc boundary ClearImage	1	ClearImage:arg2
+ClearImage:arg3	reject	SDK/libc boundary ClearImage	1	ClearImage:arg3
+DECENV.isdone	converted	member is now a Boolean storage type	0	DECENV.isdone
+DECENV.rectid	reject	SDK/tutorial structure or call boundary	7	DECENV.rectid;[DECENV.rect]
+DECENV.vlcid	reject	pointer-valued slot; its zero is a null pointer, not false	5	DECENV.vlcid;[DECENV.vlcbuf]
+DecDCTReset:arg0	reject	SDK/libc boundary DecDCTReset	1	DecDCTReset:arg0
+DrawSync:arg0	reject	SDK/libc boundary DrawSync	21	DrawSync:arg0
+EXEC.s_addr	reject	SDK/tutorial structure or call boundary	1	EXEC.s_addr
+EXEC.s_size	reject	SDK/tutorial structure or call boundary	1	EXEC.s_size
+Exec:arg1	reject	SDK/libc boundary Exec	1	Exec:arg1
+InitCARD:arg0	reject	SDK/libc boundary InitCARD	1	InitCARD:arg0
+InitClip:arg4	reject	SDK/libc boundary InitClip	1	InitClip:arg4
+KfActor.animation_id	reject	animation clip number; resource callbacks write other clips	1	KfActor.animation_id
+KfActor.flags&0x10	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfActor.flags&0x10
+KfActor.flags&0x10000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfActor.flags&0x10000
+KfActor.flags&0x20000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	KfActor.flags&0x20000
+KfActor.flags&0x4	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfActor.flags&0x4
+KfActor.flags&0x8	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfActor.flags&0x8
+KfActor.flags&0x800	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	KfActor.flags&0x800
+KfActor.health	reject	counter or arithmetic quantity (incremented/decremented)	2	KfActor.health
+KfActor.model_scale_x	reject	counter or arithmetic quantity (incremented/decremented)	1	KfActor.model_scale_x
+KfActor.model_scale_z	reject	counter or arithmetic quantity (incremented/decremented)	1	KfActor.model_scale_z
+KfActor.placement_flags	reject	placement flag byte copied from resource records	2	KfActor.placement_flags;KfActorLoadRecord.placement_flags
+KfActor.placement_flags&0x1	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfActor.placement_flags&0x1
+KfActor.spawn_chance	reject	counter or arithmetic quantity (incremented/decremented)	1	KfActor.spawn_chance
+KfActor.turn_rate	reject	counter or arithmetic quantity (incremented/decremented)	7	KfActor.turn_rate
+KfActor.unknown_04	reject	unresolved byte with resource-callback writers	3	KfActor.unknown_04
+KfActor.unknown_11	reject	unresolved byte with resource-callback writers	1	KfActor.unknown_11
+KfActorBallisticPhaseView.phase	reject	counter or arithmetic quantity (incremented/decremented)	2	KfActorBallisticPhaseView.phase
+KfActorModelScaleY.value	reject	counter or arithmetic quantity (incremented/decremented)	1	KfActorModelScaleY.value
+KfActorState70Bytes.high	reject	half of the signed state_70 word; resource callbacks write the whole word	5	KfActorState70Bytes.high
+KfActorState70Bytes.low	reject	half of the signed state_70 word; resource callbacks write the whole word	6	KfActorState70Bytes.low
+KfActorTail72Script.effect_cycle_index	reject	counter or arithmetic quantity (incremented/decremented)	1	KfActorTail72Script.effect_cycle_index
+KfActorTail72Script.word_index	reject	counter or arithmetic quantity (incremented/decremented)	2	KfActorTail72Script.word_index
+KfAnimKeyframe.reverse	reject	serialized animation data; shipped values unchecked	1	KfAnimKeyframe.reverse
+KfAssetHeader.animation_present	reject	serialized asset header word; shipped values unchecked	2	KfAssetHeader.animation_present
+KfAudioVoiceParams.tone	reject	SsUtKeyOn tone number (SDK short), not a truth value	3	KfAudioVoiceParams.tone;SsUtKeyOff:arg3;SsUtKeyOn:arg2;audio_play_voice:arg2
+KfCardPlayerSnapshot.audio_effects_enabled	e1	player option byte; KF1 models these as KfPlayerOption and they feed render_model_rows[].state	2	KfCardPlayerSnapshot.audio_effects_enabled;KfPlayerState.audio_effects_enabled
+KfCardPlayerSnapshot.audio_music_enabled	e1	player option byte; KF1 models these as KfPlayerOption	5	KfCardPlayerSnapshot.audio_music_enabled;KfPlayerState.audio_music_enabled;menu_exit_display_state::music_enabled;menu_saved_music_enabled
+KfCardPlayerSnapshot.item_preview_enabled	e1	player option byte; KF1 models these as KfPlayerOption	3	KfCardPlayerSnapshot.item_preview_enabled;KfPlayerState.item_preview_enabled
+KfCardPlayerSnapshot.magic_tint_phase	reject	tint animation phase; also written with other values	1	KfCardPlayerSnapshot.magic_tint_phase;KfPlayerState.magic_tint_phase
+KfCardPlayerSnapshot.walking_bob_enabled	e1	player option byte; KF1 models these as KfPlayerOption	2	KfCardPlayerSnapshot.walking_bob_enabled;KfPlayerState.walking_bob_enabled
+KfCdRequest.phase	e1	switch selector; 0/1 are members of a state domain	0	KfCdRequest.phase
+KfCdRequest.stream_complete	e1	named CD_STREAM_WAITING/CHUNK_READY states; request callbacks write it	0	KfCdRequest.stream_complete
+KfCdState.frame_count	reject	counter or arithmetic quantity (incremented/decremented)	1	KfCdState.frame_count
+KfCollisionCache.flags&0xf	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfCollisionCache.flags&0xf
+KfCollisionCache.layer	reject	counter or arithmetic quantity (incremented/decremented)	10	KfCollisionCache.layer
+KfCollisionHeights.height	reject	counter or arithmetic quantity (incremented/decremented)	1	KfCollisionHeights.height
+KfEffectBallisticState.age	reject	frame counter	2	KfEffectBallisticState.age
+KfEffectCollisionLatch.impact_handled	reject	byte of the effect-kind payload union; other kinds' views write the same byte	11	KfEffectCollisionLatch.impact_handled
+KfEffectKind42Countdown.ticks_remaining	reject	counter or arithmetic quantity (incremented/decremented)	1	KfEffectKind42Countdown.ticks_remaining
+KfEffectKind46State.age_q12	reject	Q12 age quantity	1	KfEffectKind46State.age_q12
+KfEffectKind46State.phase	e1	switch selector; 0/1 are members of a state domain	4	KfEffectKind46State.phase
+KfEffectKind5Fanout.children_remaining	reject	counter or arithmetic quantity (incremented/decremented)	3	KfEffectKind5Fanout.children_remaining
+KfEffectKind5Fanout.initial_child_count	reject	counter or arithmetic quantity (incremented/decremented)	1	KfEffectKind5Fanout.initial_child_count
+KfEffectKindPayload.raw	e1	switch selector; 0/1 are members of a state domain	10	KfEffectKindPayload.raw
+KfEffectRecord.midpoint_collision_enabled	converted	member is now a Boolean storage type	0	KfEffectRecord.midpoint_collision_enabled
+KfEffectRecord.type&0x10	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	KfEffectRecord.type&0x10
+KfEffectRecord.unknown_05	reject	unresolved byte also written with other values	1	KfEffectRecord.unknown_05
+KfEffectTrailState.frame_index	reject	counter or arithmetic quantity (incremented/decremented)	4	KfEffectTrailState.frame_index
+KfEquipmentRecord.hp_drain_interval	reject	counter or arithmetic quantity (incremented/decremented)	1	KfEquipmentRecord.hp_drain_interval
+KfEquipmentRecord.hp_regen_interval	reject	counter or arithmetic quantity (incremented/decremented)	1	KfEquipmentRecord.hp_regen_interval
+KfEulerAngles.z	reject	counter or arithmetic quantity (incremented/decremented)	9	KfEulerAngles.z
+KfEventControlFields.counter_53_decreased	reject	event control byte also written through bytes[0x40 + operand] by map scripts	1	KfEventControlFields.counter_53_decreased
+KfEventControlFields.post_death_reload_flags&0x8	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfEventControlFields.post_death_reload_flags&0x8
+KfEventState.interaction_handled	converted	member is now a Boolean storage type	0	KfEventState.interaction_handled
+KfFloorItem.frames_until_update	reject	counter or arithmetic quantity (incremented/decremented)	2	KfFloorItem.frames_until_update
+KfFloorItem.row_offset	reject	counter or arithmetic quantity (incremented/decremented)	2	KfFloorItem.row_offset
+KfFloorItem.update_interval	reject	frame interval quantity	5	KfFloorItem.update_interval;floor_item_capture_image:arg2
+KfGameAudioState.sequence_active	converted	member is now a Boolean storage type	0	KfGameAudioState.sequence_active
+KfGameAudioState.sequence_ready	converted	member is now a Boolean storage type	1	KfGameAudioState.sequence_ready
+KfGraphicsRuntimeGame.collision_rotation_dirty	converted	member is now a Boolean storage type	0	KfGraphicsRuntimeGame.collision_rotation_dirty
+KfGraphicsRuntimeGame.color_overlay_blue_sum	reject	counter or arithmetic quantity (incremented/decremented)	1	KfGraphicsRuntimeGame.color_overlay_blue_sum
+KfGraphicsRuntimeGame.color_overlay_green_sum	reject	counter or arithmetic quantity (incremented/decremented)	1	KfGraphicsRuntimeGame.color_overlay_green_sum
+KfGraphicsRuntimeGame.color_overlay_red_sum	reject	counter or arithmetic quantity (incremented/decremented)	1	KfGraphicsRuntimeGame.color_overlay_red_sum
+KfGraphicsRuntimeGame.color_overlay_sample_count	reject	counter or arithmetic quantity (incremented/decremented)	2	KfGraphicsRuntimeGame.color_overlay_sample_count
+KfGraphicsRuntimeGame.frame_counter_a	reject	frame counter cleared to 0	1	KfGraphicsRuntimeGame.frame_counter_a
+KfGraphicsRuntimeGame.frame_counter_b	reject	frame counter cleared to 0	1	KfGraphicsRuntimeGame.frame_counter_b
+KfGraphicsRuntimeGame.map_placed_frame_counter	reject	counter or arithmetic quantity (incremented/decremented)	1	KfGraphicsRuntimeGame.map_placed_frame_counter
+KfMagicRecord.charge_rate	reject	charge rank quantity	1	KfMagicRecord.charge_rate;KfWeaponRecordGame.charge_rank;player_charge_gain_for_rank:arg1
+KfMagicRecord.menu_available	reject	magic records are copied from resource data and the card payload; shipped values unchecked	4	KfMagicRecord.menu_available
+KfMapObjectOffsetMotionState.elapsed_frames	reject	counter or arithmetic quantity (incremented/decremented)	1	KfMapObjectOffsetMotionState.elapsed_frames
+KfMapObjectStateGame.definition_drop_sequence	reject	counter or arithmetic quantity (incremented/decremented)	1	KfMapObjectStateGame.definition_drop_sequence
+KfMapObjectStateGame.placement_drop_sequence	reject	counter or arithmetic quantity (incremented/decremented)	1	KfMapObjectStateGame.placement_drop_sequence
+KfMapObjectStateGame.spawn_sequence_pool_15e	reject	counter or arithmetic quantity (incremented/decremented)	1	KfMapObjectStateGame.spawn_sequence_pool_15e
+KfMapObjectTail.reset_words	reject	whole-word clears of the tail union	3	KfMapObjectTail.reset_words
+KfMapObjectTailAction88CellCopyView.transition_mode	e1	switch selector; 0/1 are members of a state domain	3	KfMapObjectTailAction88CellCopyView.transition_mode
+KfMapObjectTailAmbientSoundView.vertical_attenuation_flags	reject	tail-union byte with other writers; flag byte	1	KfMapObjectTailAmbientSoundView.vertical_attenuation_flags
+KfMapObjectTailFields.unknown_39	reject	tail-union byte with other writers	1	KfMapObjectTailFields.unknown_39
+KfMapObjectTailTransitionView.destination_layer_code	reject	layer code	1	KfMapObjectTailTransitionView.destination_layer_code
+KfMapObjectTemplate.collision_radius	reject	counter or arithmetic quantity (incremented/decremented)	2	KfMapObjectTemplate.collision_radius
+KfMapOccupancyLayer.elevation	reject	counter or arithmetic quantity (incremented/decremented)	4	KfMapOccupancyLayer.elevation
+KfMapPlacedEntry.frame_index	reject	counter or arithmetic quantity (incremented/decremented)	1	KfMapPlacedEntry.frame_index
+KfMapPlacedEntry.frame_period	reject	counter or arithmetic quantity (incremented/decremented)	0	KfMapPlacedEntry.frame_period
+KfMenuList.cursor_row	reject	counter or arithmetic quantity (incremented/decremented)	3	KfMenuList.cursor_row
+KfMenuList.scroll_offset	reject	counter or arithmetic quantity (incremented/decremented)	3	KfMenuList.scroll_offset
+KfMenuList.selected_index	reject	counter or arithmetic quantity (incremented/decremented)	3	KfMenuList.selected_index
+KfNotificationControl.effect_phase	reject	phase byte also written with other values	2	KfNotificationControl.effect_phase
+KfNotificationControl.queue_head	reject	queue index	1	KfNotificationControl.queue_head
+KfPlayerMovementSpeed.unsigned_value	reject	counter or arithmetic quantity (incremented/decremented)	1	KfPlayerMovementSpeed.unsigned_value
+KfPlayerPadButtonHalves.previous&0xb0	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfPlayerPadButtonHalves.previous&0xb0
+KfPlayerPadButtons.current&0x10	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	KfPlayerPadButtons.current&0x10
+KfPlayerPadButtons.current&0x5000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfPlayerPadButtons.current&0x5000
+KfPlayerPadButtons.current&0x80	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	KfPlayerPadButtons.current&0x80
+KfPlayerPadButtons.current&0xb0	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfPlayerPadButtons.current&0xb0
+KfPlayerReactionOverlay.angle_phase	reject	angle phase quantity	1	KfPlayerReactionOverlay.angle_phase;player_update_frame::angle_phase
+KfPlayerState.attack_charge_committed	reject	charge quantity shifted into damage	1	KfPlayerState.attack_charge_committed;KfPlayerState.attack_charge_committed>>2;player_update_weapon_attack::damage_amount
+KfPlayerState.camera_yaw_roll_offsets	reject	counter or arithmetic quantity (incremented/decremented)	4	KfPlayerState.camera_yaw_roll_offsets
+KfPlayerState.equipment_effect_ticks	reject	counter or arithmetic quantity (incremented/decremented)	1	KfPlayerState.equipment_effect_ticks
+KfPlayerState.fatal_fall_latch	converted	member is now a Boolean storage type	1	KfPlayerState.fatal_fall_latch
+KfPlayerState.force_actor_lifecycle_refresh	converted	member is now a Boolean storage type	2	KfPlayerState.force_actor_lifecycle_refresh
+KfPlayerState.forward_velocity	reject	counter or arithmetic quantity (incremented/decremented)	9	KfPlayerState.forward_velocity
+KfPlayerState.gold	reject	counter or arithmetic quantity (incremented/decremented)	1	KfPlayerState.gold
+KfPlayerState.landing_vertical_offset	reject	counter or arithmetic quantity (incremented/decremented)	6	KfPlayerState.landing_vertical_offset
+KfPlayerState.movement_speed_adjustment_decay_latch	reject	counter or arithmetic quantity (incremented/decremented)	4	KfPlayerState.movement_speed_adjustment_decay_latch
+KfPlayerState.paralysis_timer&0x3	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfPlayerState.paralysis_timer&0x3
+KfPlayerState.poison_timer	reject	counter or arithmetic quantity (incremented/decremented)	8	KfPlayerState.poison_timer
+KfPlayerState.reaction_rotation_offset	reject	counter or arithmetic quantity (incremented/decremented)	12	KfPlayerState.reaction_rotation_offset
+KfPlayerState.strafe_velocity	reject	counter or arithmetic quantity (incremented/decremented)	9	KfPlayerState.strafe_velocity
+KfPlayerState.unknown_9c	reject	unresolved bytes, single value	1	KfPlayerState.unknown_9c
+KfPlayerState.vertical_motion_pitch_offset	reject	counter or arithmetic quantity (incremented/decremented)	6	KfPlayerState.vertical_motion_pitch_offset
+KfPlayerState.walking_bob_phase	reject	counter or arithmetic quantity (incremented/decremented)	1	KfPlayerState.walking_bob_phase
+KfPlayerState.weapon_attack_fully_charged	converted	member is now a Boolean storage type	1	KfPlayerState.weapon_attack_fully_charged
+KfPlayerState.weapon_guard_active	converted	member is now a Boolean storage type	2	KfPlayerState.weapon_guard_active
+KfPlayerState.weapon_magic_shots_configured	reject	counter or arithmetic quantity (incremented/decremented)	4	KfPlayerState.weapon_magic_shots_configured
+KfPlayerState.yaw_step	reject	counter or arithmetic quantity (incremented/decremented)	7	KfPlayerState.yaw_step
+KfPlayerViewReaction.approach_step	reject	counter or arithmetic quantity (incremented/decremented)	1	KfPlayerViewReaction.approach_step
+KfPlayerViewRotationOffset.components	reject	counter or arithmetic quantity (incremented/decremented)	13	KfPlayerViewRotationOffset.components
+KfPlayerVitals.current_hp	reject	counter or arithmetic quantity (incremented/decremented)	2	KfPlayerVitals.current_hp
+KfRenderMaskScanState.first_layer_byte_offset	reject	counter or arithmetic quantity (incremented/decremented)	1	KfRenderMaskScanState.first_layer_byte_offset
+KfResourceState.current_map_region_id	reject	counter or arithmetic quantity (incremented/decremented)	1	KfResourceState.current_map_region_id
+KfResourceState.tmd_object_limit_active	converted	member is now a Boolean storage type	0	KfResourceState.tmd_object_limit_active
+KfResourceState.transition_active	converted	member is now a Boolean storage type	0	KfResourceState.transition_active
+KfResourceState.world_shift_applied	converted	member is now a Boolean storage type	1	KfResourceState.world_shift_applied
+KfScreenVertex.depth_cue	reject	counter or arithmetic quantity (incremented/decremented)	3	KfScreenVertex.depth_cue
+KfTargetCandidate.secondary_hit_phase	reject	phase number from resource records	1	KfTargetCandidate.secondary_hit_phase
+KfTargetCandidate.start_vertical_motion_on_entry	reject	resource record byte compared with 1; shipped values unchecked	1	KfTargetCandidate.start_vertical_motion_on_entry
+KfTargetCandidateWord0e.value	reject	counter or arithmetic quantity (incremented/decremented)	1	KfTargetCandidateWord0e.value
+KfTargetCandidateWord10Bytes.fallback_offset	reject	counter or arithmetic quantity (incremented/decremented)	2	KfTargetCandidateWord10Bytes.fallback_offset
+KfTargetCandidateWord12Bytes.marker_state	reject	also restored from the event stream byte by byte	5	KfTargetCandidateWord12Bytes.marker_state
+KfTargetCandidateWord1e.value	reject	turn-rate quantity	3	KfTargetCandidateWord1e.value;actor_turn_and_move_along_euler_angles:arg2;actor_turn_and_move_along_heading:arg2;actor_turn_and_move_toward_point:arg3
+KfTargetGroup.initial_actor_flags&0x10000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	KfTargetGroup.initial_actor_flags&0x10000
+KfTargetGroup.turn_acceleration	reject	turn-rate quantity	2	KfTargetGroup.turn_acceleration;actor_turn_and_move_along_euler_angles:arg4;actor_turn_and_move_along_heading:arg4;actor_turn_and_move_toward_point:arg6;actor_turn_toward_angle:arg3
+KfWeaponRecordGame.alternate_attack_phase_step	reject	phase step quantity	1	KfWeaponRecordGame.alternate_attack_phase_step
+KfWeaponRecordGame.alternate_attack_sound_phase_step	reject	phase step quantity	1	KfWeaponRecordGame.alternate_attack_sound_phase_step;player_update_weapon_attack::sound_step
+KfWeaponRecordGame.hp_regen_interval	reject	counter or arithmetic quantity (incremented/decremented)	1	KfWeaponRecordGame.hp_regen_interval
+KfWeaponRecordGame.mp_regen_interval	reject	counter or arithmetic quantity (incremented/decremented)	1	KfWeaponRecordGame.mp_regen_interval
+Load:return	reject	SDK/libc boundary Load	1	Load:return
+NormalClip:return	reject	SDK/libc boundary NormalClip	17	NormalClip:return
+PadInit:arg0	reject	SDK/libc boundary PadInit	4	PadInit:arg0
+PadRead:vararg	reject	SDK/libc boundary PadRead	20	PadRead:vararg
+Rewind_Switch	converted	member is now a Boolean storage type	0	Rewind_Switch
+SetDefDispEnv:arg1	reject	SDK/libc boundary SetDefDispEnv	12	SetDefDispEnv:arg1
+SetDefDrawEnv:arg1	reject	SDK/libc boundary SetDefDrawEnv	12	SetDefDrawEnv:arg1
+SetDispMask:arg0	reject	SDK/libc boundary SetDispMask	1	SetDispMask:arg0
+SetFarColor:arg0	reject	SDK/libc boundary SetFarColor	1	SetFarColor:arg0
+SetFarColor:arg1	reject	SDK/libc boundary SetFarColor	1	SetFarColor:arg1
+SetFarColor:arg2	reject	SDK/libc boundary SetFarColor	1	SetFarColor:arg2
+SetGraphDebug:arg0	reject	SDK/libc boundary SetGraphDebug	1	SetGraphDebug:arg0
+SetSemiTrans:arg1	reject	SDK/libc boundary SetSemiTrans	11	SetSemiTrans:arg1
+SpuGetAllKeysStatus:arg0	reject	pointer-valued slot; its zero is a null pointer, not false	1	SpuGetAllKeysStatus:arg0;audio_refresh_voice_handles::status
+SsSeqPlay:arg1	reject	SDK/libc boundary SsSeqPlay	0	SsSeqPlay:arg1
+SsSeqPlay:arg2	reject	SDK/libc boundary SsSeqPlay	4	SsSeqPlay:arg2
+SsSetTableSize:arg2	reject	SDK/libc boundary SsSetTableSize	0	SsSetTableSize:arg2
+SsSetTickMode:arg0	reject	SDK/libc boundary SsSetTickMode	0	SsSetTickMode:arg0
+SsUtKeyOn:arg4	reject	SDK/libc boundary SsUtKeyOn	2	SsUtKeyOn:arg4
+SsVabTransCompleted:arg0	reject	SDK/libc boundary SsVabTransCompleted	0	SsVabTransCompleted:arg0
+StSetStream:arg0	reject	SDK/libc boundary StSetStream	1	StSetStream:arg0
+StSetStream:arg1	reject	SDK/libc boundary StSetStream	1	StSetStream:arg1
+TestEvent:return	reject	SDK/libc boundary TestEvent	4	TestEvent:return
+VSync:arg0	reject	SDK/libc boundary VSync	15	VSync:arg0
+[KfMapCellPattern.variant]	reject	array index	7	[KfMapCellPattern.variant];map_cell_apply_rotated_pattern:arg5
+_card_info:arg0	reject	SDK/libc boundary _card_info	1	_card_info:arg0
+actor_advance_animation_clamped:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_advance_animation_clamped:arg1
+actor_advance_animation_wrapped:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_advance_animation_wrapped:arg1
+actor_animation_seek_phase:arg2	reject	animation phase number	3	actor_animation_seek_phase:arg2;event_target_stream_execute::phase
+actor_apply_area_magic:arg14&0x8000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	actor_apply_area_magic:arg14&0x8000
+actor_apply_magic_to_actor::remaining	reject	counter or arithmetic quantity (incremented/decremented)	2	actor_apply_magic_to_actor::remaining
+actor_damp_horizontal_motion::length	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_damp_horizontal_motion::length
+actor_dispatch_group_effect::distance	reject	counter or arithmetic quantity (incremented/decremented)	2	actor_dispatch_group_effect::distance
+actor_fixup_group_targets::group_index	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_fixup_group_targets::group_index
+actor_fixup_group_targets::slot_index	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_fixup_group_targets::slot_index
+actor_magic_component_curve:arg0	reject	counter or arithmetic quantity (incremented/decremented)	2	actor_magic_component_curve:arg0
+actor_magic_component_curve:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_magic_component_curve:arg1
+actor_magic_component_curve:return	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_magic_component_curve:return
+actor_move_horizontal_with_collision::axis_attempted	converted	member is now a Boolean storage type	0	actor_move_horizontal_with_collision::axis_attempted
+actor_move_horizontal_with_collision::diagonal_attempted	converted	member is now a Boolean storage type	0	actor_move_horizontal_with_collision::diagonal_attempted
+actor_move_horizontal_with_collision::motion_x	reject	counter or arithmetic quantity (incremented/decremented)	5	actor_move_horizontal_with_collision::motion_x
+actor_move_horizontal_with_collision::motion_z	reject	counter or arithmetic quantity (incremented/decremented)	5	actor_move_horizontal_with_collision::motion_z
+actor_move_horizontal_with_collision::original_x	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_move_horizontal_with_collision::original_x
+actor_move_horizontal_with_collision::original_z	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_move_horizontal_with_collision::original_z
+actor_move_horizontal_with_collision::probe_x	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_move_horizontal_with_collision::probe_x
+actor_move_horizontal_with_collision::probe_z	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_move_horizontal_with_collision::probe_z
+actor_sample_rotated_animation_vertex:return	reject	single value 1, result unused	1	actor_sample_rotated_animation_vertex:return
+actor_score_target_candidate:return	reject	score quantity	1	actor_score_target_candidate:return
+actor_start_ballistic_motion:arg0	e1	trajectory mode with named TRAJECTORY_* values	2	actor_start_ballistic_motion:arg0;trajectory_solve_motion_between_points:arg0;trajectory_solve_time_angle:arg0
+actor_try_damage_player_in_cone:arg0	reject	counter or arithmetic quantity (incremented/decremented)	5	actor_try_damage_player_in_cone:arg0
+actor_try_damage_player_in_cone:return	converted	member is now a Boolean storage type	0	actor_try_damage_player_in_cone:return
+actor_update_behavior::effect_id	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_update_behavior::effect_id
+actor_update_behavior::repeat	reject	counter or arithmetic quantity (incremented/decremented)	1	actor_update_behavior::repeat
+actor_update_motion_animation::motion	reject	motion quantity selecting a clip	2	actor_update_motion_animation::motion
+actor_update_vertical_motion::next_y	reject	counter or arithmetic quantity (incremented/decremented)	2	actor_update_vertical_motion::next_y
+angle_lerp_shortest_q12:arg0	reject	counter or arithmetic quantity (incremented/decremented)	3	angle_lerp_shortest_q12:arg0
+angle_lerp_shortest_q12:arg1	reject	counter or arithmetic quantity (incremented/decremented)	3	angle_lerp_shortest_q12:arg1
+angle_shortest_delta:return	reject	counter or arithmetic quantity (incremented/decremented)	1	angle_shortest_delta:return
+angle_velocity_step:arg2	reject	counter or arithmetic quantity (incremented/decremented)	2	angle_velocity_step:arg2
+angle_within_tolerance:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	angle_within_tolerance:arg1
+animation_prepare_asset_vertices::remaining	reject	counter or arithmetic quantity (incremented/decremented)	2	animation_prepare_asset_vertices::remaining
+animation_sample_vertex:return	converted	member is now a Boolean storage type	0	animation_sample_vertex:return
+asset_vertex_count:return	reject	count	1	asset_vertex_count:return
+audio_play_spatial:arg5	reject	spatial-audio mode argument; only 0 is passed, meaning unresolved	8	audio_play_spatial:arg5;audio_play_spatial_default_range:arg3;audio_play_spatial_range:arg5
+audio_play_spatial:return	reject	already KfAudioPlaybackResult enum	0	audio_play_spatial:return;audio_play_spatial_default_range:return;audio_play_spatial_range:return;effect_play_spatial_sound:return;map_object_play_spatial_sound:return
+audio_queue_vab_stream:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	audio_queue_vab_stream:arg1
+banner_phase	e1	named TITLE_PHASE_FADE_IN/SETTLE states	0	banner_phase
+cd_read_sectors::failed	converted	member is now a Boolean storage type	0	cd_read_sectors::failed
+cd_request_service_stream::consumed	reject	counter or arithmetic quantity (incremented/decremented)	1	cd_request_service_stream::consumed
+cd_request_service_stream::height	reject	counter or arithmetic quantity (incremented/decremented)	1	cd_request_service_stream::height
+cd_request_service_stream::rows	reject	counter or arithmetic quantity (incremented/decremented)	1	cd_request_service_stream::rows
+collision_evaluate_shape_records::base_ceiling_hit	reject	single value 0; never set true in this build	1	collision_evaluate_shape_records::base_ceiling_hit
+collision_evaluate_shape_records::base_floor_hit	converted	member is now a Boolean storage type	0	collision_evaluate_shape_records::base_floor_hit
+collision_evaluate_shape_records::other_layer_visited	converted	member is now a Boolean storage type	0	collision_evaluate_shape_records::other_layer_visited
+collision_probe_forward_shape_0x20:return	converted	member is now a Boolean storage type	1	collision_probe_forward_shape_0x20:return
+directed_intervals_overlap:return	converted	member is now a Boolean storage type	0	directed_intervals_overlap:return
+display_fade_level	reject	counter or arithmetic quantity (incremented/decremented)	2	display_fade_level
+display_frame_cleared_word	reject	single value 0	1	display_frame_cleared_word
+effect_apply_radial_magic_damage:arg1	reject	counter or arithmetic quantity (incremented/decremented)	2	effect_apply_radial_magic_damage:arg1
+effect_probe_collision_by_type:return&0xf	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	effect_probe_collision_by_type:return&0xf
+effect_scatter_lower_bound:return	converted	member is now a Boolean storage type	0	effect_scatter_lower_bound:return
+effect_spawn_at_lower_bound:return	converted	member is now a Boolean storage type	0	effect_spawn_at_lower_bound:return
+effect_update_dispatch::collision&0x5	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	effect_update_dispatch::collision&0x5
+effect_update_dispatch::collision&0xf	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	2	effect_update_dispatch::collision&0xf
+effect_update_dispatch::frame_index	reject	counter or arithmetic quantity (incremented/decremented)	1	effect_update_dispatch::frame_index
+effect_update_dispatch::matches	reject	counter or arithmetic quantity (incremented/decremented)	1	effect_update_dispatch::matches
+effect_update_dispatch::progress	reject	counter or arithmetic quantity (incremented/decremented)	1	effect_update_dispatch::progress
+event_map_object_interact::buttons&0x20	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	event_map_object_interact::buttons&0x20
+event_map_object_interact::initial_render_depth_offset	reject	render depth quantity	1	event_map_object_interact::initial_render_depth_offset
+event_scene_command_dispatch::distance	reject	counter or arithmetic quantity (incremented/decremented)	1	event_scene_command_dispatch::distance
+event_scene_command_dispatch::spin	reject	counter or arithmetic quantity (incremented/decremented)	1	event_scene_command_dispatch::spin
+event_target_stream_execute::repeat	reject	counter or arithmetic quantity (incremented/decremented)	2	event_target_stream_execute::repeat
+event_target_stream_execute::restore_state	converted	member is now a Boolean storage type	0	event_target_stream_execute::restore_state
+find_map_cell_layer_mask_run_boundary::state	e1	switch selector; 0/1 are members of a state domain	4	find_map_cell_layer_mask_run_boundary::state
+firstfile:arg1	converted	member is now a Boolean storage type	0	firstfile:arg1;firstfile:return;memory_card_buffer;memory_card_scan_save_entries::first_entry;memory_card_scan_save_entries::ordered;memory_card_write_slot::entries;memory_card_write_slot::occupied;memset:vararg;read:arg1;write:arg1
+fixed_lerp_q12:arg0	reject	counter or arithmetic quantity (incremented/decremented)	8	fixed_lerp_q12:arg0
+format:return	reject	SDK/libc boundary format	1	format:return
+game_counter_decrement:return	converted	member is now a Boolean storage type	0	game_counter_decrement:return
+game_counter_increment:return	converted	member is now a Boolean storage type	0	game_counter_increment:return
+game_main_exit_flag	e1	named GAME_MAIN_RUNNING/EXIT_REQUESTED states	0	game_main_exit_flag
+input_press_pending	converted	member is now a Boolean storage type	0	input_press_pending
+input_wait_brief_release::polls	reject	counter or arithmetic quantity (incremented/decremented)	1	input_wait_brief_release::polls
+item_id_is_71_to_80:return	converted	member is now a Boolean storage type	2	item_id_is_71_to_80:return
+magic_load_records::count	reject	counter or arithmetic quantity (incremented/decremented)	1	magic_load_records::count
+main::state	e1	named OPENING_STATE_* states	0	main::state
+map_cell_apply_rotated_pattern::first_layer_offset	reject	counter or arithmetic quantity (incremented/decremented)	2	map_cell_apply_rotated_pattern::first_layer_offset
+map_cell_apply_rotated_pattern::second_layer_offset	reject	counter or arithmetic quantity (incremented/decremented)	1	map_cell_apply_rotated_pattern::second_layer_offset
+map_cell_visible:return	converted	member is now a Boolean storage type	0	map_cell_visible:return
+map_object_effect_pool_acquire::age	reject	counter or arithmetic quantity (incremented/decremented)	1	map_object_effect_pool_acquire::age
+map_object_find_interaction_target:arg0	reject	search mode argument, meaning unresolved	4	map_object_find_interaction_target:arg0
+map_object_spawn_effect:arg0	e1	drop source compared with KF_MAP_OBJECT_DROP_FROM_PLACEMENT	2	map_object_spawn_effect:arg0
+map_object_step_offset_motion:arg4	converted	member is now a Boolean storage type	0	map_object_step_offset_motion:arg4
+map_object_step_offset_motion:return	converted	member is now a Boolean storage type	0	map_object_step_offset_motion:return
+memory_card_payload_byte_sum::index	reject	counter or arithmetic quantity (incremented/decremented)	1	memory_card_payload_byte_sum::index
+memory_card_read_slot::path	reject	counter or arithmetic quantity (incremented/decremented)	1	memory_card_read_slot::path
+memory_card_read_slot_summary:return	converted	member is now a Boolean storage type	0	memory_card_read_slot_summary:return
+memory_card_write_slot::path	reject	counter or arithmetic quantity (incremented/decremented)	1	memory_card_write_slot::path
+memory_card_write_slot::present	converted	member is now a Boolean storage type	0	memory_card_write_slot::present
+memory_card_write_title_stats::experience	reject	counter or arithmetic quantity (incremented/decremented)	1	memory_card_write_title_stats::experience
+memory_card_write_title_stats::level	reject	counter or arithmetic quantity (incremented/decremented)	1	memory_card_write_title_stats::level
+menu_buy_masked_stock_items::confirmed	converted	member is now a Boolean storage type	0	menu_buy_masked_stock_items::confirmed
+menu_buy_owned_items::confirmed	converted	member is now a Boolean storage type	0	menu_buy_owned_items::confirmed
+menu_card_browser::confirmed	converted	member is now a Boolean storage type	0	menu_card_browser::confirmed;menu_draw_window:arg3;menu_item_buy_sell_controller::confirmed;menu_item_stock_choice_controller::confirmed;menu_options_controller::confirmed;menu_run_card_choice::confirmed;menu_run_root_controller::confirmed
+menu_card_browser::matching_count	reject	count	1	menu_card_browser::matching_count
+menu_card_load_browser::confirmed	converted	member is now a Boolean storage type	0	menu_card_load_browser::confirmed
+menu_card_load_slot_browser::confirmed	converted	member is now a Boolean storage type	0	menu_card_load_slot_browser::confirmed
+menu_card_save_browser::confirmed	converted	member is now a Boolean storage type	0	menu_card_save_browser::confirmed
+menu_choose_inventory_item::confirmed	converted	member is now a Boolean storage type	0	menu_choose_inventory_item::confirmed
+menu_choose_magic_action::confirmed	converted	member is now a Boolean storage type	0	menu_choose_magic_action::confirmed
+menu_choose_primary_magic_shortcut::confirmed	converted	member is now a Boolean storage type	0	menu_choose_primary_magic_shortcut::confirmed
+menu_collect_available_item_rows:arg4	reject	counter or arithmetic quantity (incremented/decremented)	2	menu_collect_available_item_rows:arg4
+menu_confirm_card_format::confirmed	converted	member is now a Boolean storage type	0	menu_confirm_card_format::confirmed;menu_draw_two_option:arg3;menu_preview_choice::confirmed;menu_prompt_two_option::confirmed
+menu_confirm_card_format:arg0	reject	card dialog kind, single value 1	3	menu_confirm_card_format:arg0
+menu_draw_card_dialog_rows::row	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_draw_card_dialog_rows::row
+menu_draw_card_dialog_rows:arg7	reject	pixel overlap quantity	2	menu_draw_card_dialog_rows:arg7
+menu_draw_number::x_offset	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_draw_number::x_offset
+menu_draw_string::i	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_draw_string::i
+menu_draw_window::index	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_draw_window::index
+menu_enter_display_state:arg0	reject	unread parameter; meaning unresolved	7	menu_enter_display_state:arg0
+menu_equipment_category_controller::confirmed	converted	member is now a Boolean storage type	0	menu_equipment_category_controller::confirmed
+menu_equipment_list_controller::confirmed	converted	member is now a Boolean storage type	0	menu_equipment_list_controller::confirmed
+menu_exit_display_state:arg0	converted	member is now a Boolean storage type	0	menu_exit_display_state:arg0
+menu_fill_item_counts_and_prices:arg4	reject	counter or arithmetic quantity (incremented/decremented)	3	menu_fill_item_counts_and_prices:arg4
+menu_fill_item_prices:arg2	reject	counter or arithmetic quantity (incremented/decremented)	2	menu_fill_item_prices:arg2
+menu_format_number:arg0	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_format_number:arg0
+menu_format_number:arg2	e1	padding mode; KF1 models it as KfFormatPaddingMode	40	menu_format_number:arg2
+menu_item_buy_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_buy_controller::confirmed
+menu_item_magic_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_magic_controller::confirmed
+menu_item_model_allocation_pending	converted	member is now a Boolean storage type	0	menu_item_model_allocation_pending
+menu_item_selection_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_selection_controller::confirmed
+menu_item_sell_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_sell_controller::confirmed
+menu_item_trade_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_trade_controller::confirmed
+menu_item_use_controller::confirmed	converted	member is now a Boolean storage type	0	menu_item_use_controller::confirmed
+menu_load_item_model:return	reject	failure predicate that returns 0 on every path in this build	15	menu_load_item_model:return
+menu_options_controller::choice	reject	counter or arithmetic quantity (incremented/decremented)	3	menu_options_controller::choice
+menu_options_controller::selected	e1	player option bytes (KfPlayerOption)	1	menu_options_controller::selected
+menu_poll_choice_input:arg0	reject	counter or arithmetic quantity (incremented/decremented)	2	menu_poll_choice_input:arg0
+menu_render_list::row	reject	counter or arithmetic quantity (incremented/decremented)	2	menu_render_list::row
+menu_run_root_controller::buttons&0x4	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	menu_run_root_controller::buttons&0x4
+menu_run_root_controller::buttons&0x8	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	menu_run_root_controller::buttons&0x8
+menu_run_root_controller::result&0x1000	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	menu_run_root_controller::result&0x1000
+menu_show_dialog_panel::row	reject	counter or arithmetic quantity (incremented/decremented)	1	menu_show_dialog_panel::row
+menu_show_dialog_panel:arg8	reject	dialog detail value, single value 0	9	menu_show_dialog_panel:arg8
+notification_update::frames	reject	counter or arithmetic quantity (incremented/decremented)	1	notification_update::frames
+opening_draw_banner::settled	converted	member is now a Boolean storage type	0	opening_draw_banner::settled;opening_draw_banner:return
+opening_draw_title::settled	converted	member is now a Boolean storage type	0	opening_draw_title::settled;opening_draw_title:return
+opening_play_movie::skipped	converted	member is now a Boolean storage type	0	opening_play_movie::skipped
+player_adjust_hp::value	reject	counter or arithmetic quantity (incremented/decremented)	1	player_adjust_hp::value
+player_adjust_hp_unclamped::hp	reject	counter or arithmetic quantity (incremented/decremented)	2	player_adjust_hp_unclamped::hp
+player_adjust_mp::value	reject	counter or arithmetic quantity (incremented/decremented)	1	player_adjust_mp::value
+player_adjust_mp:arg0	reject	MP delta quantity	1	player_adjust_mp:arg0
+player_apply_damage_reaction::remaining	reject	counter or arithmetic quantity (incremented/decremented)	3	player_apply_damage_reaction::remaining
+player_apply_damage_reaction:arg1	reject	counter or arithmetic quantity (incremented/decremented)	1	player_apply_damage_reaction:arg1
+player_calculate_damage_component::attack_scaled	reject	counter or arithmetic quantity (incremented/decremented)	1	player_calculate_damage_component::attack_scaled
+player_calculate_damage_component::excess	reject	counter or arithmetic quantity (incremented/decremented)	2	player_calculate_damage_component::excess
+player_calculate_damage_component:return	reject	counter or arithmetic quantity (incremented/decremented)	1	player_calculate_damage_component:return
+player_camera_within_map_region:return	converted	member is now a Boolean storage type	1	player_camera_within_map_region:return
+player_move_horizontal::diagonal_retry	converted	member is now a Boolean storage type	0	player_move_horizontal::diagonal_retry
+player_move_horizontal::dx	reject	counter or arithmetic quantity (incremented/decremented)	2	player_move_horizontal::dx
+player_move_horizontal::dz	reject	counter or arithmetic quantity (incremented/decremented)	2	player_move_horizontal::dz
+player_move_horizontal::flags&-0x6	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	player_move_horizontal::flags&-0x6
+player_move_horizontal::high_collision	converted	member is now a Boolean storage type	0	player_move_horizontal::high_collision
+player_move_horizontal::result	converted	member is now a Boolean storage type	0	player_move_horizontal::result;player_move_horizontal:return
+player_move_horizontal::slide_attempted	converted	member is now a Boolean storage type	0	player_move_horizontal::slide_attempted
+player_move_horizontal::slide_distance	reject	counter or arithmetic quantity (incremented/decremented)	2	player_move_horizontal::slide_distance
+player_move_reaction_with_collision:return	converted	member is now a Boolean storage type	0	player_move_reaction_with_collision:return
+player_recalculate_combat_stats::power	reject	counter or arithmetic quantity (incremented/decremented)	2	player_recalculate_combat_stats::power
+player_update_actions_and_charge::timer	reject	counter or arithmetic quantity (incremented/decremented)	2	player_update_actions_and_charge::timer
+player_update_collision_bounds::upper	reject	counter or arithmetic quantity (incremented/decremented)	1	player_update_collision_bounds::upper
+player_update_horizontal_motion::forward	reject	counter or arithmetic quantity (incremented/decremented)	2	player_update_horizontal_motion::forward
+player_update_horizontal_motion::magnitude	reject	counter or arithmetic quantity (incremented/decremented)	1	player_update_horizontal_motion::magnitude
+player_update_horizontal_motion::strafe	reject	counter or arithmetic quantity (incremented/decremented)	3	player_update_horizontal_motion::strafe
+player_update_vertical_motion::bob	reject	counter or arithmetic quantity (incremented/decremented)	1	player_update_vertical_motion::bob
+player_update_vertical_motion::collision_flags&0x4	reject	masked bit of a wider flags or packed word (flags-domain review, not a Boolean slot)	1	player_update_vertical_motion::collision_flags&0x4
+player_update_weapon_attack::hit_step	reject	counter or arithmetic quantity (incremented/decremented)	1	player_update_weapon_attack::hit_step
+primitive_buffer_commit_poly_ft4::level	reject	counter or arithmetic quantity (incremented/decremented)	1	primitive_buffer_commit_poly_ft4::level
+prompt_phase	e1	named PROMPT_PHASE_BRIGHTEN/DIM states	0	prompt_phase
+rasterize_map_cell_layer_mask_line::count	reject	counter or arithmetic quantity (incremented/decremented)	2	rasterize_map_cell_layer_mask_line::count
+rasterize_map_cell_layer_mask_line::dx	reject	counter or arithmetic quantity (incremented/decremented)	1	rasterize_map_cell_layer_mask_line::dx
+rasterize_map_cell_layer_mask_line::dz	reject	counter or arithmetic quantity (incremented/decremented)	1	rasterize_map_cell_layer_mask_line::dz
+rasterize_map_cell_layer_mask_line::error	reject	counter or arithmetic quantity (incremented/decremented)	2	rasterize_map_cell_layer_mask_line::error
+render_enqueue_blended_tmd::average	reject	counter or arithmetic quantity (incremented/decremented)	2	render_enqueue_blended_tmd::average
+render_enqueue_textured_tmd::average	reject	counter or arithmetic quantity (incremented/decremented)	2	render_enqueue_textured_tmd::average
+render_enqueue_textured_tmd:arg0	reject	object index	3	render_enqueue_textured_tmd:arg0
+render_enqueue_tmd_fixed_depth:arg0	reject	object index	2	render_enqueue_tmd_fixed_depth:arg0
+render_game_frame::yaw_delta	reject	counter or arithmetic quantity (incremented/decremented)	2	render_game_frame::yaw_delta
+render_scene_and_update_resources::distance	reject	counter or arithmetic quantity (incremented/decremented)	2	render_scene_and_update_resources::distance
+render_scene_and_update_resources::nearest	reject	counter or arithmetic quantity (incremented/decremented)	1	render_scene_and_update_resources::nearest
+render_scene_and_update_resources::tmd_flags	converted	member is now a Boolean storage type	0	render_scene_and_update_resources::tmd_flags
+render_scene_and_update_resources::vab_flags	converted	member is now a Boolean storage type	0	render_scene_and_update_resources::vab_flags
+render_textured_quad:arg0	reject	screen coordinate	4	render_textured_quad:arg0
+render_textured_quad:arg1	reject	screen coordinate	2	render_textured_quad:arg1
+render_world_model::object_index	reject	object index	1	render_world_model::object_index
+repeat_store_word:arg1	reject	fill word value	16	repeat_store_word:arg1
+scene_position_from_camera_offset:arg5	reject	counter or arithmetic quantity (incremented/decremented)	3	scene_position_from_camera_offset:arg5
+scene_position_from_camera_offset:arg6	reject	counter or arithmetic quantity (incremented/decremented)	3	scene_position_from_camera_offset:arg6
+status_phase_step_scaled::current	reject	counter or arithmetic quantity (incremented/decremented)	1	status_phase_step_scaled::current
+status_phase_step_scaled::other	reject	counter or arithmetic quantity (incremented/decremented)	3	status_phase_step_scaled::other
+strncmp:return	reject	SDK/libc boundary strncmp	4	strncmp:return
+title_phase	e1	named TITLE_PHASE_FADE_IN/SETTLE states	0	title_phase
+tmd_get_object:arg0	reject	counter or arithmetic quantity (incremented/decremented)	6	tmd_get_object:arg0
+tmd_prepare_subdivided_object::midpoint_count	reject	counter or arithmetic quantity (incremented/decremented)	1	tmd_prepare_subdivided_object::midpoint_count
+tmd_prepare_subdivided_object::output_bytes	reject	counter or arithmetic quantity (incremented/decremented)	1	tmd_prepare_subdivided_object::output_bytes
+tmd_select_object_vertices:arg0	reject	object index	6	tmd_select_object_vertices:arg0
+trajectory_solve_time_angle::discriminant	reject	counter or arithmetic quantity (incremented/decremented)	1	trajectory_solve_time_angle::discriminant
+trajectory_solve_time_angle::longer_time	reject	counter or arithmetic quantity (incremented/decremented)	2	trajectory_solve_time_angle::longer_time
+trajectory_solve_time_angle::shorter_time	reject	counter or arithmetic quantity (incremented/decremented)	1	trajectory_solve_time_angle::shorter_time
+value_approach:arg1	reject	counter or arithmetic quantity (incremented/decremented)	2	value_approach:arg1
+value_approach:arg2	reject	counter or arithmetic quantity (incremented/decremented)	1	value_approach:arg2
+vector_xz_to_angle:arg0	reject	counter or arithmetic quantity (incremented/decremented)	1	vector_xz_to_angle:arg0
+vector_xz_to_angle:arg1	reject	counter or arithmetic quantity (incremented/decremented)	2	vector_xz_to_angle:arg1
+vector_xz_to_angle:return	reject	counter or arithmetic quantity (incremented/decremented)	1	vector_xz_to_angle:return

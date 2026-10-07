@@ -1268,18 +1268,18 @@ void event_arena_owner_pointers_add_delta(s32 delta)
 {
     KfMemoryBlock *block = &event_state.arena.first_block;
 
-    if (block->kind != 0xff) {
+    if (block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            s32 kind = block->kind;
+            KF_ENUM_PROMOTED(KfMemoryBlockKind) kind = block->kind;
             u32 step;
-            if (kind < 4) {
-                if (kind != 0) {
+            if (kind < KF_MEMORY_BLOCK_KIND_COUNT) {
+                if (kind != KF_MEMORY_BLOCK_FREE) {
                     block->owner = (u8 **)((u8 *)block->owner + delta);
                 }
             }
             step = block->size + sizeof(*block);
             block = (KfMemoryBlock *)((u8 *)block + step);
-        } while (block->kind != 0xff);
+        } while (block->kind != KF_MEMORY_BLOCK_END);
     }
 }
 
@@ -1306,18 +1306,18 @@ void event_arena_owner_pointers_subtract_delta(s32 delta)
 {
     KfMemoryBlock *block = &event_state.arena.first_block;
 
-    if (block->kind != 0xff) {
+    if (block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            s32 kind = block->kind;
+            KF_ENUM_PROMOTED(KfMemoryBlockKind) kind = block->kind;
             u32 step;
-            if (kind < 4) {
-                if (kind != 0) {
+            if (kind < KF_MEMORY_BLOCK_KIND_COUNT) {
+                if (kind != KF_MEMORY_BLOCK_FREE) {
                     block->owner = (u8 **)((u8 *)block->owner - delta);
                 }
             }
             step = block->size + sizeof(*block);
             block = (KfMemoryBlock *)((u8 *)block + step);
-        } while (block->kind != 0xff);
+        } while (block->kind != KF_MEMORY_BLOCK_END);
     }
 }
 

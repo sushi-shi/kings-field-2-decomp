@@ -382,13 +382,13 @@ void memory_block_release(u8 *data)
 }
 
 ADDRESS(0x800176e0, 0x8)
-void memory_block_set_kind(u8 *data, u8 kind)
+void memory_block_set_kind(u8 *data, KfMemoryBlockKind kind)
 {
     MEMORY_BLOCK(data)->kind = kind;
 }
 
 ADDRESS(0x800176e8, 0xc)
-u8 memory_block_kind(u8 *data)
+KfMemoryBlockKind memory_block_kind(u8 *data)
 {
     return MEMORY_BLOCK(data)->kind;
 }

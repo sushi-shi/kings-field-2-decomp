@@ -2229,7 +2229,8 @@ KfAssetHeader *resource_registry_get(u16 index)
     if (index < 104) {
         return asset;
     }
-    if (asset != NULL && (u8)(memory_block_kind((u8 *)asset) - 1) < 2) {
+    /* Encoded range test: RECLAIMABLE or OWNED. */
+    if (asset != NULL && (u8)(KF_ENUM_ENCODE(u8, memory_block_kind((u8 *)asset)) - 1) < 2) {
         return asset;
     }
     return NULL;
@@ -2241,7 +2242,7 @@ void resource_tmd_read_complete(u8 *data)
     KfAssetHeader *asset = (KfAssetHeader *)data;
 
     tmd_prepare_primitive_indices(ASSET_TMD(asset));
-    memory_block_set_kind(data, 2);
+    memory_block_set_kind(data, KF_MEMORY_BLOCK_OWNED);
 }
 
 ADDRESS(0x80032040, 0x70)
@@ -2316,7 +2317,7 @@ void resource_tmd_queue_read(s32 archive_slot, s32 entry, s32 registry_index)
     block = memory_arena_allocate_block(KF_GAME_RESOURCE_ARENA_BASE, size,
         (u8 **)&game_graphics_runtime.asset_registry_entries[registry_index]);
     if (block != NULL) {
-        memory_block_set_kind(block, 3);
+        memory_block_set_kind(block, KF_MEMORY_BLOCK_PENDING);
         memory_block_set_tag(block, registry_index);
         /* Kind 0x10 completion passes the destination, not the request. */
         cd_archive_queue_read(archive_slot, entry, (u_long *)block,
@@ -2361,13 +2362,13 @@ void resource_tmd_update_range(s32 archive_slot, s32 entry, s32 registry_index,
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
             if (block == NULL) {
                 resource_tmd_queue_read(archive_slot, entry, registry_index);
-            } else if (memory_block_kind(block) == 1) {
-                memory_block_set_kind(block, 2);
+            } else if (memory_block_kind(block) == KF_MEMORY_BLOCK_RECLAIMABLE) {
+                memory_block_set_kind(block, KF_MEMORY_BLOCK_OWNED);
             }
         } else {
             block = (u8 *)game_graphics_runtime.asset_registry_entries[registry_index];
-            if (block != NULL && memory_block_kind(block) != 3) {
-                memory_block_set_kind(block, 1);
+            if (block != NULL && memory_block_kind(block) != KF_MEMORY_BLOCK_PENDING) {
+                memory_block_set_kind(block, KF_MEMORY_BLOCK_RECLAIMABLE);
             }
         }
         entry++;

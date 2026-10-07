@@ -835,7 +835,7 @@ KfMapPlacedSource	0x07	0x02	unknown_07	u8[2]	opaque	asm;map_placed_expand_source
 KfMapPlacedSource	0x0a	0x02	local_z	s16	supported	asm;map_placed_expand_sources	local Z coordinate
 KfMapPlacedSource	0x0c	0x02	local_x	s16	supported	asm;map_placed_expand_sources	local X coordinate
 KfMapPlacedSource	0x0e	0x02	height_offset	s16	supported	asm;map_placed_expand_sources	added to map result
-KfMemoryBlock	0x00	0x01	kind	u8	supported	game headers;asm;xrefs	member used by reconstructed code
+KfMemoryBlock	0x00	0x01	kind	KfMemoryBlockKind	supported	game headers;asm;xrefs;memory_arena_*;event_arena_owner_pointers_*;enum-domain-plan.md	block state: free 0, reclaimable 1, owned 2, pending 3, list end 255
 KfMemoryBlock	0x01	0x01	flags	u8	supported	game headers;asm;xrefs	member used by reconstructed code
 KfMemoryBlock	0x02	0x02	tag	u16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfMemoryBlock	0x04	0x04	size	u32	supported	game headers;asm;xrefs	member used by reconstructed code

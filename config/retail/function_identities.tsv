@@ -88,8 +88,8 @@ GAME.EXE	0x80017504	memory_arena_compact	memory	arena_compact	void	KfMemoryBlock
 GAME.EXE	0x800175e8	memory_arena_initialize_blocks	memory	arena_initialize_blocks	void	KfMemoryBlock *arena;u32 capacity	supported	candidate	asm;cfg;two callers;block header layout	initializes the first free block and final sentinel at the caller-provided arena boundary
 GAME.EXE	0x80017608	memory_arena_allocate_block	memory	arena_allocate_block	u8 *	KfMemoryBlock *arena;u32 size;u8 **owner	supported	candidate	asm;cfg;two callers;block lookup and compaction;header layout	allocates a tracked arena block, splitting large free blocks and updating the owner pointer
 GAME.EXE	0x800176c0	memory_block_release			void	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
-GAME.EXE	0x800176e0	memory_block_set_kind			void	void *data;u8 kind	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
-GAME.EXE	0x800176e8	memory_block_kind			u8	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176e0	memory_block_set_kind			void	void *data;KfMemoryBlockKind kind	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
+GAME.EXE	0x800176e8	memory_block_kind			KfMemoryBlockKind	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x800176f4	memory_block_set_flags			void	void *data;u8 flags	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x800176fc	memory_block_flags			u8	void *data	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers
 GAME.EXE	0x80017708	memory_block_set_tag			void	void *data;u16 tag	supported	candidate	asm;cfg;callers;callees;KF1 memory.c counterparts	arena block header accessors and heap wrappers

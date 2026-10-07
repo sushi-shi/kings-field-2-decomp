@@ -891,8 +891,8 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         if ((s32)(effect_kind102_sound_cooldown_frame - cd_state.frame_count) >= 0) {
             break;
         }
-        volume = record->cache_tail.payload.kind102.amplitude / 90;
         effect_kind102_sound_cooldown_frame = cd_state.frame_count + 30;
+        volume = record->cache_tail.payload.kind102.amplitude / 90;
         if (volume >= 128) {
             volume = 127;
         }
@@ -967,10 +967,10 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         }
         record->position.vx = candidate_position.vx - 2730;
         record->position.vz = candidate_position.vz - 2730;
-        record->direction.vx = 100;
-        record->direction.vz = 100;
         record->position.vy -= 16384;
+        record->direction.vx = 100;
         record->direction.vy = 600;
+        record->direction.vz = 100;
         record->scale_z = 0x4000;
         record->scale_y = 0x4000;
         record->scale_x = 0x4000;

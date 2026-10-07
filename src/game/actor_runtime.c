@@ -235,6 +235,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
         case KF_ACTOR_TARGET_132:
             score *= 2;
             break;
+        default:
+            break;
         }
         break;
 
@@ -587,6 +589,8 @@ void actor_update_lifecycle_for_player_range(void)
         }
         ACTOR_RETURN_HOME(actor);
         return;
+    default:
+        break;
     }
 }
 
@@ -2046,6 +2050,8 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
             effect->updates_remaining = 0x32;
             effect->phase = 0;
         }
+        break;
+    default:
         break;
     }
 }

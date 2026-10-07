@@ -433,17 +433,17 @@ void map_object_update_actions(void)
             case 1:
                 map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 switch (object->tail.action_83.transition_mode) {
-                case 0:
-                case 1:
+                case KF_MAP_OBJECT_TRANSITION_ONCE:
+                case KF_MAP_OBJECT_TRANSITION_ONCE_AND_RETURN:
                     object->action_timer = 2;
                     break;
-                case 2:
+                case KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED:
                     object->action_timer = 2;
-                    object->tail.action_83.transition_mode = 3;
+                    object->tail.action_83.transition_mode = KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN;
                     break;
-                case 3:
+                case KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN:
                     object->action_timer = 3;
-                    object->tail.action_83.transition_mode = 2;
+                    object->tail.action_83.transition_mode = KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED;
                     break;
                 default:
                     break;
@@ -458,15 +458,15 @@ void map_object_update_actions(void)
             action83_complete:
                 map_object_apply_marker_signal(object->tail.action_83.completion_marker);
                 switch (object->tail.action_83.transition_mode) {
-                case 0:
+                case KF_MAP_OBJECT_TRANSITION_ONCE:
                     object->action_timer = 99;
                     break;
-                case 1:
+                case KF_MAP_OBJECT_TRANSITION_ONCE_AND_RETURN:
                     map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                     object->action_timer = 4;
                     break;
-                case 2:
-                case 3:
+                case KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED:
+                case KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN:
                     object->action_timer = 0;
                     break;
                 }
@@ -485,7 +485,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 9:
-                if (object->tail.action_83.transition_mode == 3) {
+                if (object->tail.action_83.transition_mode == KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN) {
                     object->phase_q12 = 0xfff;
                 }
                 object->action_timer = 0;
@@ -499,11 +499,11 @@ void map_object_update_actions(void)
             switch (object->action_timer) {
             case 1:
                 switch (object->tail.action_88_cell_copy.transition_mode) {
-                case 0:
+                case KF_MAP_OBJECT_CELL_COPY_REVERT:
                     object->action_timer = 2;
                     map_object_play_spatial_sound(object, 0x44);
                     break;
-                case 1:
+                case KF_MAP_OBJECT_CELL_COPY_HOLD:
                     object->action_timer = 3;
                     map_object_play_spatial_sound(object, 0x44);
                     break;
@@ -701,7 +701,7 @@ void map_object_update_actions(void)
                 KfMapObject *linked = &map_object_state.objects[linked_index];
                 if (linked->object_id != KF_OBJECT_NONE) {
                     linked->layer_mask = KF_MAP_LAYER_NONE;
-                    linked->tail.fields.unknown_38 = 0;
+                    linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
                 }
             }
             object->action = KF_MAP_OBJECT_OP_NONE;
@@ -713,13 +713,13 @@ void map_object_update_actions(void)
 
             switch (object->action_timer) {
             case 0:
-                if (object->tail.collision_probe.marker_trigger_state == 0) {
+                if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_STOPPED) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
                     object->asset_clip_selector = 1;
                     object->phase_q12 = 0xfff;
-                } else if (object->tail.collision_probe.camera_region_width != 0xfe &&
-                           (object->tail.collision_probe.camera_region_width == 0xff ||
+                } else if (object->tail.collision_probe.camera_region_width != KF_MAP_OBJECT_REGION_NEVER &&
+                           (object->tail.collision_probe.camera_region_width == KF_MAP_OBJECT_REGION_ALWAYS ||
                             player_camera_within_map_region(object->position.vx >> 11,
                                             object->position.vz >> 11,
                                             object->tail.collision_probe.camera_region_width,
@@ -734,7 +734,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1:
-                if (object->tail.collision_probe.camera_region_width != 0xff) {
+                if (object->tail.collision_probe.camera_region_width != KF_MAP_OBJECT_REGION_ALWAYS) {
                     if (object->phase_q12 == 0) {
                         map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_CLEAR,
                             object_template->params.collision.marker_action_51);
@@ -745,7 +745,7 @@ void map_object_update_actions(void)
                         map_object_play_spatial_sound(object, 0x4e);
                     }
                 }
-                if (object->tail.collision_probe.marker_trigger_state == 0 &&
+                if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_STOPPED &&
                     object->phase_q12 >= 0x1000 - increment) {
                     object->action_timer = 2;
                     object->phase_q12 = 0;
@@ -754,7 +754,7 @@ void map_object_update_actions(void)
                 }
                 object->phase_q12 += increment;
                 if (object->phase_q12 >= 0xfff) {
-                    if (object->tail.collision_probe.camera_region_width != 0xff) {
+                    if (object->tail.collision_probe.camera_region_width != KF_MAP_OBJECT_REGION_ALWAYS) {
                         object->phase_q12 = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE,
@@ -795,7 +795,7 @@ void map_object_update_actions(void)
                 object->phase_q12 += 64;
                 if (object->phase_q12 >= 0xfff) {
                     object->phase_q12 = 0xfff;
-                    if (object->tail.collision_probe.marker_trigger_state == 0xff) {
+                    if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_RUNNING) {
                         object->asset_clip_selector = 2;
                         object->phase_q12 = 0;
                         object->action_timer = 3;
@@ -876,7 +876,7 @@ void map_object_update_actions(void)
                     linked->action = KF_MAP_OBJECT_OP_NONE;
                     linked->position.vy += 300;
                     linked->layer_mask = object->layer_mask;
-                    linked->tail.fields.unknown_38 = 0;
+                    linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
                     scale = object->tail.scale_link.scale_step_code << 5;
                     linked->scale.vz = scale;
                     linked->scale.vy = scale;
@@ -901,7 +901,7 @@ void map_object_update_actions(void)
             }
         start_action_19:
             object->tail.scale_link.scale_step_code = 0xff;
-            linked->tail.fields.unknown_38 = 0xff;
+            linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
             map_object_start_action_if_idle(linked, KF_MAP_OBJECT_OP_BOUNCE);
             object->action_timer = 2;
             break;

@@ -2178,13 +2178,15 @@ dispatch_action:
                     if (target->word_0c.death_drop.object_id != KF_OBJECT_NONE &&
                         (rand() >> 7) < target->word_0c.death_drop.chance) {
                         map_object_spawn_effect(
-                            1, target->word_0c.death_drop.object_id, &actor->position,
+                            KF_MAP_OBJECT_DROP_FROM_DEFINITION,
+                                target->word_0c.death_drop.object_id, &actor->position,
                             -(actor->collision_height >> 1));
                     }
                 } else if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
                            actor->death_drop_object_id != KF_OBJECT_NONE) {
                     map_object_spawn_effect(
-                        0, actor->death_drop_object_id, &actor->position,
+                        KF_MAP_OBJECT_DROP_FROM_PLACEMENT,
+                            actor->death_drop_object_id, &actor->position,
                         -(actor->collision_height >> 1));
                 }
             }

@@ -77,12 +77,69 @@ enum {
     KF_MAP_OBJECT_DEFINITION_DROP_FIRST = 0x168,
     KF_MAP_OBJECT_PLACEMENT_DROP_FIRST = 0x172,
     KF_MAP_OBJECT_EFFECT_POOL_SIZE = 10,
-    KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
-    KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1,
     KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
     KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
 };
+
+/* map_object_spawn_effect pool: an actor's own placement drop or its target
+ * group's definition drop. */
+KF_ENUM_BEGIN(KfMapObjectDropSource, u8)
+    KF_MAP_OBJECT_DROP_FROM_PLACEMENT = 0,
+    KF_MAP_OBJECT_DROP_FROM_DEFINITION = 1
+KF_ENUM_END(KfMapObjectDropSource)
+
+/* Action 83: ONCE runs forward and stops, ONCE_AND_RETURN runs forward and
+ * falls back; the toggle pair alternates, CLOSED running forward to OPEN and
+ * OPEN running back to CLOSED. Only the toggle states are saved. */
+KF_ENUM_BEGIN(KfMapObjectTransitionMode, u8)
+    KF_MAP_OBJECT_TRANSITION_ONCE = 0,
+    KF_MAP_OBJECT_TRANSITION_ONCE_AND_RETURN = 1,
+    KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED = 2,
+    KF_MAP_OBJECT_TRANSITION_TOGGLE_OPEN = 3
+KF_ENUM_END(KfMapObjectTransitionMode)
+
+/* Action 88 copies its alternate cells, then REVERT fades back and restores
+ * the source cells while HOLD fades in and keeps them; a marker signal
+ * toggles the mode. */
+KF_ENUM_BEGIN(KfMapObjectCellCopyMode, u8)
+    KF_MAP_OBJECT_CELL_COPY_REVERT = 0,
+    KF_MAP_OBJECT_CELL_COPY_HOLD = 1
+KF_ENUM_END(KfMapObjectCellCopyMode)
+
+/* tail.fields.unknown_38 interaction flags: set_property arms all of them,
+ * event masks clear or set individual bits, pickups require ARMED. */
+enum {
+    KF_MAP_OBJECT_EVENT_DISARMED = 0,
+    KF_MAP_OBJECT_EVENT_ARMED = 0xff
+};
+
+/* Action 81 collision probe: a marker signal toggles RUNNING; region width
+ * NEVER disables the camera trigger and ALWAYS skips the region test. */
+enum {
+    KF_MAP_OBJECT_PROBE_STOPPED = 0,
+    KF_MAP_OBJECT_PROBE_RUNNING = 0xff,
+    KF_MAP_OBJECT_REGION_NEVER = 0xfe,
+    KF_MAP_OBJECT_REGION_ALWAYS = 0xff
+};
+
+/* Template byte 1, the pickup category of a dropped or placed object: a drop
+ * tips over (0x10/0x13/0x16), spins (0x17) or bounces (the rest); GOLD is a
+ * gold pile whose pickup adds its amount. Clearing a 0x10 object's layer
+ * stands it up. Other members keep their encoding as a WIP name. */
+KF_ENUM_BEGIN(KfMapObjectKind, u8)
+    KF_MAP_OBJECT_KIND_10 = 0x10,
+    KF_MAP_OBJECT_KIND_11 = 0x11,
+    KF_MAP_OBJECT_KIND_12 = 0x12,
+    KF_MAP_OBJECT_KIND_13 = 0x13,
+    KF_MAP_OBJECT_KIND_14 = 0x14,
+    KF_MAP_OBJECT_KIND_15 = 0x15,
+    KF_MAP_OBJECT_KIND_16 = 0x16,
+    KF_MAP_OBJECT_KIND_17 = 0x17,
+    KF_MAP_OBJECT_KIND_18 = 0x18,
+    KF_MAP_OBJECT_KIND_19 = 0x19,
+    KF_MAP_OBJECT_KIND_GOLD = 0x20
+KF_ENUM_END(KfMapObjectKind)
 
 /* map_object_set_property selector; SET_LAYER_MASK and SET_RENDER_DEPTH
  * read one variadic value. */
@@ -146,7 +203,7 @@ typedef union KfMapObjectTemplateParams {
 
 typedef struct KfMapObjectTemplate {
     KfMapObjectOperation collision_kind;
-    u8 kind;
+    KfMapObjectKind kind;
     u8 vab_resource_index;
     u8 collision_flags;
     u16 collision_radius;
@@ -385,7 +442,7 @@ typedef char kf_map_object_tail_cell_copy_link_offset[
 /* Action 88 stores its copy coordinates and dimensions at different offsets. */
 typedef struct KfMapObjectTailAction88CellCopyView {
     u32 unknown_34;
-    u8 transition_mode;
+    KfMapObjectCellCopyMode transition_mode;
     u8 marker_id;
     u8 destination_x;
     u8 destination_z;
@@ -477,7 +534,7 @@ typedef char kf_map_object_tail_linked_property_index_offset[
 /* Action 83 emits its marker after each opening or closing phase. */
 typedef struct KfMapObjectTailAction83View {
     u32 unknown_34;
-    u8 transition_mode;
+    KfMapObjectTransitionMode transition_mode;
     u8 completion_marker;
     u8 unknown_3a[6];
 } KfMapObjectTailAction83View;
@@ -814,8 +871,8 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTOR *result);
 void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset);
-void map_object_spawn_effect(u8 source, KF_ENUM_PARAM(KfObjectId, u8) object_id, const VECTOR *position,
-                             s32 height_offset);
+void map_object_spawn_effect(KfMapObjectDropSource source, KF_ENUM_PARAM(KfObjectId, u8) object_id,
+                             const VECTOR *position, s32 height_offset);
 void map_object_update_actions(void);
 void map_object_refresh_cell_markers(KfMapCellMarkerMode mode);
 s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,

@@ -626,7 +626,7 @@ KfMapObjectTailAction51MarkerView	0x8	0x1	unknown_3c	u8	opaque	game/map_object.h
 KfMapObjectTailAction51MarkerView	0x9	0x1	marker_id	u8	supported	GAME 0x80036800 lbu and compare with incoming marker	action-0x51 trigger marker identifier
 KfMapObjectTailAction51MarkerView	0xa	0x2	unknown_3e	KfMapObjectTailHalfword	opaque	game/map_object.h	remaining action-specific halfword
 KfMapObjectTailAction83View	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 83
-KfMapObjectTailAction83View	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 83	selects opening, closing, and return path on phase completion
+KfMapObjectTailAction83View	0x4	0x1	transition_mode	KfMapObjectTransitionMode	supported	map_object_update_actions action 83	selects opening, closing, and return path on phase completion
 KfMapObjectTailAction83View	0x5	0x1	completion_marker	u8	supported	GAME 0x80037ab0 lbu;map_object_apply_marker_signal	marker emitted when action 83 opening or closing phase completes
 KfMapObjectTailAction83View	0x6	0x6	unknown_3a	u8[6]	opaque	game/map_object.h	remaining action-specific bytes
 KfMapObjectTailAction84PatternView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 84
@@ -639,7 +639,7 @@ KfMapObjectTailAction84PatternView	0x9	0x1	depth_code	u8	supported	GAME 0x80037e
 KfMapObjectTailAction84PatternView	0xa	0x1	pattern_flags	u8	supported	GAME 0x80037f44/0x80037fc8 lbu;map_cell_apply_rotated_pattern	bit zero picks pattern row and bit one selects terminal action state
 KfMapObjectTailAction84PatternView	0xb	0x1	unknown_3f	u8	opaque	game/map_object.h	last tail byte remains unresolved
 KfMapObjectTailAction88CellCopyView	0x0	0x4	unknown_34	u32	opaque	game/map_object.h	first tail word remains unresolved for action 88
-KfMapObjectTailAction88CellCopyView	0x4	0x1	transition_mode	u8	supported	map_object_update_actions action 88	zero selects decreasing phase and second cell copy; one selects increasing phase
+KfMapObjectTailAction88CellCopyView	0x4	0x1	transition_mode	KfMapObjectCellCopyMode	supported	map_object_update_actions action 88	zero selects decreasing phase and second cell copy; one selects increasing phase
 KfMapObjectTailAction88CellCopyView	0x5	0x1	marker_id	u8	supported	GAME 0x800367dc lbu and compare with incoming marker in action 0x58	Action-88 marker identifier that arms the copy transition
 KfMapObjectTailAction88CellCopyView	0x6	0x1	destination_x	u8	supported	GAME 0x80037c44 lbu;map_cell_copy_rotated_fields	destination map-cell X argument
 KfMapObjectTailAction88CellCopyView	0x7	0x1	destination_z	u8	supported	GAME 0x80037c34 lbu;map_cell_copy_rotated_fields	destination map-cell Z argument
@@ -782,7 +782,7 @@ KfMapObjectTailTransitionView	0x9	0x1	destination_cell_z	u8	supported	map_object
 KfMapObjectTailTransitionView	0xa	0x1	destination_layer_code	u8	supported	map_object_update_actions action 34	code 1 selects layer 0; other values select layer 5
 KfMapObjectTailTransitionView	0xb	0x1	destination_yaw_code	u8	supported	map_object_update_actions action 34	new camera yaw is negative code times 16
 KfMapObjectTemplate	0x00	0x01	collision_kind	KfMapObjectOperation	supported	asm;GAME 0x80035a74 lbu+jump table;map_object_initialize_from_placements;event_world_dispatch_interaction;enum-domain-plan.md	operation selector; most cases are stored unchanged as the runtime action
-KfMapObjectTemplate	0x01	0x01	kind	u8	supported	asm;map_object_set_property	0x10 selects a rotation reset value
+KfMapObjectTemplate	0x01	0x01	kind	KfMapObjectKind	supported	asm;map_object_set_property	0x10 selects a rotation reset value
 KfMapObjectTemplate	0x02	0x01	vab_resource_index	u8	supported	render_scene_and_update_resources;resource_vab_update_range	indexes frame VAB demand flags for visible map objects
 KfMapObjectTemplate	0x03	0x01	collision_flags	u8	supported	map_object_initialize_from_placements	copied into KfMapObject.collision_flags
 KfMapObjectTemplate	0x04	0x02	collision_radius	u16	supported	asm;map_object_find_collision_at_point;vector_distance_to_point	map-object collision radius added to query radius

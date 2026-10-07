@@ -354,7 +354,7 @@ void event_spawn_effect_object(KfMapObject *event, KF_ENUM_PARAM(KfObjectId, s32
     /* The byte store wraps pool slots 0x17c..0x18b to offsets 0..15. */
     event->tail.event_effect.effect_object_index = (object - map_object_state.objects) - 0x7c;
     object->object_id = object_id;
-    object->tail.fields.unknown_38 = 0;
+    object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
 }
 
 ADDRESS(0x8004678c, 0xc54)
@@ -850,15 +850,15 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;
-        object->tail.fields.unknown_38 = 0xff;
+        object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
     }
 
     object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
     initial_render_depth_offset = object->render_depth_offset;
-    if (object->tail.fields.unknown_38 != 0xff) {
+    if (object->tail.fields.unknown_38 != KF_MAP_OBJECT_EVENT_ARMED) {
         return;
     }
-    if (object_template->kind == 0x20) {
+    if (object_template->kind == KF_MAP_OBJECT_KIND_GOLD) {
         notify_enqueue(KF_NOTIFICATION_PAYLOAD_ID, object->tail.gold_reward.gold_amount);
         object->object_id = KF_OBJECT_NONE;
         player_state.gold += object->tail.gold_reward.gold_amount;
@@ -1080,12 +1080,12 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 KfMapObject *linked = &objects[linked_index];
                 KfMapLayerMask linked_state = object->extra_40.saved_layer.layer_mask;
                 KF_ENUM_STORAGE(KfObjectId, u16) result_id;
-                linked->tail.fields.unknown_38 = 0xff;
+                linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
                 linked->layer_mask = linked_state;
                 event_map_object_interact(linked);
                 result_id = linked->object_id;
                 linked->layer_mask = KF_MAP_LAYER_NONE;
-                linked->tail.fields.unknown_38 = 0;
+                linked->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
                 if (result_id == KF_OBJECT_NONE) {
                     object->tail.linked_property.linked_object_index = 0xffff;
                 }
@@ -1129,7 +1129,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_OP_81:
             if (object->action_timer == 0 &&
-                object->tail.collision_probe.marker_trigger_state == 0xff) {
+                object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_RUNNING) {
                 object->action_timer = 1;
             }
             break;
@@ -1426,7 +1426,7 @@ void event_world_state_save_slot(s32 save_slot)
             }
             break;
         case KF_MAP_OBJECT_OP_83:
-            if (object->tail.action_83.transition_mode < 2) {
+            if (object->tail.action_83.transition_mode < KF_MAP_OBJECT_TRANSITION_TOGGLE_CLOSED) {
                 break;
             }
         case KF_MAP_OBJECT_OP_0:
@@ -1557,7 +1557,7 @@ apply_position:
             collision_sample_map_cell_layer(object->position.vx, object->position.vy,
                            object->position.vz);
             object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
-            object->tail.fields.unknown_38 = 0xff;
+            object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
             break;
         }
         case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:

@@ -48,8 +48,12 @@ this port follows it subsystem by subsystem.
   mirrored yet.
 - **GTE**: library functions evaluated with the coprocessor's fixed-point
   stages (from the King's Field port): Q12 matrices, 16-bit saturation, the
-  seeded reciprocal, depth cue and normal-color lighting. `Clip3FTP`/`Clip4FTP`
-  return no output yet; `catan` is a floating-point approximation.
+  seeded reciprocal, depth cue and normal-color lighting. Transforms report
+  the coprocessor FLAG bits: GAME sends every vertex whose flag is not exactly
+  `0x1000` (only IR0 saturated) to the clipping path. `Clip3FTP`/`Clip4FTP`
+  clip in camera space against the near plane and an `hw x vw` window at
+  distance `h`; the library's exact clipping arithmetic is not reproduced.
+  `catan` is a floating-point approximation.
 - **CD-ROM**: sectors come from the user's BIN/CUE or ISO image; `CdSearchFile`
   walks ISO9660, so `.T` archives and movie streams use their real extents.
   Reads complete synchronously.

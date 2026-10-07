@@ -7,6 +7,7 @@
 #include <bit>
 #include <cmath>
 #include <cstdint>
+#include <vector>
 
 // Geometry library calls evaluated on the host with the coprocessor's
 // fixed-point stages: Q12 matrices, 16-bit intermediate saturation, the
@@ -195,6 +196,152 @@ u8 depth_cue_channel(int64_t color_q16, s32 far_color, s16 depth_cue) {
     return static_cast<u8>(std::clamp<int64_t>(result_q4 >> 4, 0, 255));
 }
 
+// Coprocessor FLAG bits used by the library's transform results.
+constexpr u32 flag_ir1 = 1u << 24, flag_ir2 = 1u << 23, flag_ir3 = 1u << 22;
+constexpr u32 flag_mac_positive[3] = {1u << 30, 1u << 29, 1u << 28};
+constexpr u32 flag_mac_negative[3] = {1u << 27, 1u << 26, 1u << 25};
+constexpr u32 flag_sz = 1u << 18, flag_divide = 1u << 17;
+constexpr u32 flag_mac0_positive = 1u << 16, flag_mac0_negative = 1u << 15;
+constexpr u32 flag_sx = 1u << 14, flag_sy = 1u << 13, flag_ir0 = 1u << 12;
+constexpr u32 flag_error_mask = 0x7f87e000;
+
+u32 finish_flags(u32 flags) {
+    return (flags & flag_error_mask) ? flags | 0x80000000u : flags;
+}
+
+// Rotation plus translation with 44-bit accumulator flags and IR saturation
+// flags, as the coprocessor's RT stage reports them (sf=1, lm=0).
+std::array<s32, 3> transform(const SVECTOR &vector, u32 &flags) {
+    const s16 components[3] = {vector.vx, vector.vy, vector.vz};
+    std::array<s32, 3> result{};
+    constexpr u32 ir_flags[3] = {flag_ir1, flag_ir2, flag_ir3};
+    for (int row = 0; row < 3; ++row) {
+        int64_t accumulator = int64_t(gte.rotation.t[row]) << 12;
+        for (int column = 0; column < 3; ++column)
+            accumulator += int64_t(gte.rotation.m[row][column]) * components[column];
+        if (accumulator > (int64_t(1) << 43) - 1)
+            flags |= flag_mac_positive[row];
+        if (accumulator < -(int64_t(1) << 43))
+            flags |= flag_mac_negative[row];
+        result[row] = static_cast<s32>(accumulator >> 12);
+        if (result[row] < -32768 || result[row] > 32767)
+            flags |= ir_flags[row];
+    }
+    return result;
+}
+
+struct Projected {
+    s16 x, y;
+    u16 depth;
+    s32 depth_cue;
+    u32 flag;
+};
+
+Projected project_camera(const std::array<s32, 3> &camera, u32 flags) {
+    if (camera[2] < 0 || camera[2] > 65535)
+        flags |= flag_sz;
+    const u16 depth = static_cast<u16>(std::clamp<s32>(camera[2], 0, 65535));
+    if (u32(gte.screen) >= u32(depth) * 2)
+        flags |= flag_divide;
+    const u32 scale = projection_scale_q16(gte.screen, depth);
+    const auto screen = [scale, &flags](s32 value, s32 offset, u32 saturation_flag) {
+        const int64_t position = (int64_t(saturate16(value)) * scale + offset) >> 16;
+        if (position < -1024 || position > 1023)
+            flags |= saturation_flag;
+        return static_cast<s16>(std::clamp<int64_t>(position, -1024, 1023));
+    };
+    const s16 x = screen(camera[0], gte.offset_x, flag_sx);
+    const s16 y = screen(camera[1], gte.offset_y, flag_sy);
+    const int64_t mac0 = int64_t(scale) * gte.depth_a + gte.depth_b;
+    if (mac0 > 0x7fffffff)
+        flags |= flag_mac0_positive;
+    if (mac0 < -int64_t(0x80000000))
+        flags |= flag_mac0_negative;
+    const int64_t cue = mac0 >> 12;
+    if (cue < 0 || cue > 4096)
+        flags |= flag_ir0;
+    return {x, y, depth, static_cast<s32>(std::clamp<int64_t>(cue, 0, 4096)), finish_flags(flags)};
+}
+
+Projected perspective_transform(const SVECTOR &vector) {
+    u32 flags = 0;
+    const auto camera = transform(vector, flags);
+    return project_camera(camera, flags);
+}
+
+// Near-plane and window clipping for the library's Clip*FTP functions.
+struct ClipSetup {
+    EVECTOR *buffer;
+    s32 half_width, half_height, distance, near_z, far_z;
+};
+ClipSetup clip_setup;
+
+struct ClipVertex {
+    double x, y, z, u, v;
+};
+
+std::vector<ClipVertex> clip_against(const std::vector<ClipVertex> &input, double (*distance)(const ClipVertex &)) {
+    std::vector<ClipVertex> output;
+    for (std::size_t i = 0; i < input.size(); ++i) {
+        const auto &current = input[i];
+        const auto &next = input[(i + 1) % input.size()];
+        const double a = distance(current), b = distance(next);
+        if (a >= 0)
+            output.push_back(current);
+        if ((a >= 0) != (b >= 0)) {
+            const double t = a / (a - b);
+            output.push_back({current.x + (next.x - current.x) * t, current.y + (next.y - current.y) * t,
+                              current.z + (next.z - current.z) * t, current.u + (next.u - current.u) * t,
+                              current.v + (next.v - current.v) * t});
+        }
+    }
+    return output;
+}
+
+long clip_polygon(const SVECTOR *const *vertices, const short *const *uvs, int count, EVECTOR **evmx) {
+    if (!clip_setup.buffer)
+        return 0;
+    std::vector<ClipVertex> polygon;
+    for (int i = 0; i < count; ++i) {
+        u32 flags = 0;
+        const auto camera = transform(*vertices[i], flags);
+        const u16 uv = static_cast<u16>(*uvs[i]);
+        polygon.push_back({double(camera[0]), double(camera[1]), double(camera[2]), double(uv & 0xff),
+                           double(uv >> 8)});
+    }
+    static double near_z, far_z, slope_x, slope_y;
+    near_z = std::max(1, clip_setup.near_z);
+    far_z = clip_setup.far_z;
+    slope_x = double(clip_setup.half_width) / clip_setup.distance;
+    slope_y = double(clip_setup.half_height) / clip_setup.distance;
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return p.z - near_z; });
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return far_z - p.z; });
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return p.z * slope_x - p.x; });
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return p.z * slope_x + p.x; });
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return p.z * slope_y - p.y; });
+    polygon = clip_against(polygon, [](const ClipVertex &p) { return p.z * slope_y + p.y; });
+    const std::size_t output_count = std::min<std::size_t>(polygon.size(), 16);
+    for (std::size_t i = 0; i < output_count; ++i) {
+        const auto &point = polygon[i];
+        const std::array<s32, 3> camera = {static_cast<s32>(std::lround(point.x)), static_cast<s32>(std::lround(point.y)),
+                                           static_cast<s32>(std::lround(point.z))};
+        const auto projected = project_camera(camera, 0);
+        auto &out = clip_setup.buffer[i];
+        out.sxyz.vx = camera[0];
+        out.sxyz.vy = camera[1];
+        out.sxyz.vz = projected.depth;
+        // The consumer halves this field to obtain the depth-cue factor.
+        out.sxyz.pad = projected.depth_cue << 1;
+        out.sxy.vx = projected.x;
+        out.sxy.vy = projected.y;
+        const int u = std::clamp(static_cast<int>(std::lround(point.u)), 0, 255);
+        const int v = std::clamp(static_cast<int>(std::lround(point.v)), 0, 255);
+        out.txuv = static_cast<short>(u | (v << 8));
+        evmx[i] = &out;
+    }
+    return static_cast<long>(output_count);
+}
+
 CVECTOR light_normal(const SVECTOR &normal, const CVECTOR &base, s16 depth_cue) {
     std::array<s32, 3> illumination;
     const auto dots = rotate(gte.light, normal);
@@ -254,30 +401,20 @@ void SetFogNear(long a, long h) {
 }
 
 long RotTransPers(SVECTOR *v0, long *sxy, long *p, long *flag) {
-    const auto rotated = rotate(gte.rotation, *v0);
-    s32 camera[3];
-    for (int i = 0; i < 3; ++i)
-        camera[i] = static_cast<s32>(static_cast<u32>(rotated[i]) + static_cast<u32>(gte.rotation.t[i]));
-    const u16 depth = static_cast<u16>(std::clamp<s32>(camera[2], 0, 65535));
-    const u32 scale = projection_scale_q16(gte.screen, depth);
-    const auto screen = [scale](s32 value, s32 offset) {
-        const int64_t position = int64_t(saturate16(value)) * scale + offset;
-        return static_cast<s16>(std::clamp<int64_t>(position >> 16, -1024, 1023));
-    };
-    const s16 x = screen(camera[0], gte.offset_x), y = screen(camera[1], gte.offset_y);
-    *sxy = static_cast<long>((static_cast<u32>(static_cast<u16>(y)) << 16) | static_cast<u16>(x));
-    const int64_t cue = (int64_t(scale) * gte.depth_a + gte.depth_b) >> 12;
-    *p = static_cast<long>(std::clamp<int64_t>(cue, 0, 4096));
-    *flag = 0;
-    return depth >> 2;
+    const auto result = perspective_transform(*v0);
+    *sxy = static_cast<long>((static_cast<u32>(static_cast<u16>(result.y)) << 16) | static_cast<u16>(result.x));
+    *p = result.depth_cue;
+    *flag = static_cast<long>(result.flag);
+    return result.depth >> 2;
 }
 
 void RotTrans(SVECTOR *v0, VECTOR *v1, long *flag) {
-    const auto rotated = rotate(gte.rotation, *v0);
-    v1->vx = static_cast<s32>(static_cast<u32>(rotated[0]) + static_cast<u32>(gte.rotation.t[0]));
-    v1->vy = static_cast<s32>(static_cast<u32>(rotated[1]) + static_cast<u32>(gte.rotation.t[1]));
-    v1->vz = static_cast<s32>(static_cast<u32>(rotated[2]) + static_cast<u32>(gte.rotation.t[2]));
-    *flag = 0;
+    u32 flags = 0;
+    const auto camera = transform(*v0, flags);
+    v1->vx = camera[0];
+    v1->vy = camera[1];
+    v1->vz = camera[2];
+    *flag = static_cast<long>(finish_flags(flags));
 }
 
 long NormalClip(long sxy0, long sxy1, long sxy2) {
@@ -357,16 +494,25 @@ VECTOR *ApplyMatrix(MATRIX *m, SVECTOR *v0, VECTOR *v1) {
     return v1;
 }
 
-void InitClip(EVECTOR *, long, long, long, long, long) {}
-
-long Clip3FTP(SVECTOR *, SVECTOR *, SVECTOR *, short *, short *, short *, EVECTOR **) {
-    warn_once("Clip3FTP (near-plane clipping)");
-    return 0;
+void InitClip(EVECTOR *evbfad, long hw, long vw, long h, long near_z, long far_z) {
+    clip_setup = {evbfad, static_cast<s32>(hw / 2), static_cast<s32>(vw / 2), static_cast<s32>(h > 0 ? h : 1),
+                  static_cast<s32>(near_z), static_cast<s32>(far_z)};
 }
 
-long Clip4FTP(SVECTOR *, SVECTOR *, SVECTOR *, SVECTOR *, short *, short *, short *, short *, EVECTOR **) {
-    warn_once("Clip4FTP (near-plane clipping)");
-    return 0;
+// The library's exact clipping arithmetic is not reproduced: polygons are clipped
+// in camera space against the near plane and a window of hw x vw at distance h.
+long Clip3FTP(SVECTOR *v0, SVECTOR *v1, SVECTOR *v2, short *uv0, short *uv1, short *uv2, EVECTOR **evmx) {
+    const SVECTOR *vertices[3] = {v0, v1, v2};
+    const short *uvs[3] = {uv0, uv1, uv2};
+    return clip_polygon(vertices, uvs, 3, evmx);
+}
+
+long Clip4FTP(SVECTOR *v0, SVECTOR *v1, SVECTOR *v2, SVECTOR *v3, short *uv0, short *uv1, short *uv2, short *uv3,
+              EVECTOR **evmx) {
+    // Quads use the library's vertex order 0, 1, 3, 2 around the perimeter.
+    const SVECTOR *vertices[4] = {v0, v1, v3, v2};
+    const short *uvs[4] = {uv0, uv1, uv3, uv2};
+    return clip_polygon(vertices, uvs, 4, evmx);
 }
 
 int rsin(int a) { return sine(a); }
